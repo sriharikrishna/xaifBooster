@@ -2,27 +2,27 @@
 #define _XAIFBOOSTERCONTROLFLOWREVERSAL_PRELOOPALG_INCLUDE_
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
-#include "xaifBooster/system/inc/PreLoopAlgBase.hpp"
-#include "xaifBooster/system/inc/PreLoop.hpp"
+#include "xaifBooster/system/inc/ForLoopAlgBase.hpp"
+#include "xaifBooster/system/inc/ForLoop.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal {  
 
   /** 
-   * class to provide algorithm for PreLoop
+   * class to provide algorithm for ForLoop
    */
-  class PreLoopAlg : public PreLoopAlgBase, public ControlFlowGraphVertexAlg {
+  class ForLoopAlg : public ForLoopAlgBase, public ControlFlowGraphVertexAlg {
   public:
     
-    PreLoopAlg(PreLoop& theContaining);
+    ForLoopAlg(ForLoop& theContaining);
                                                                                 
-    ~PreLoopAlg();
+    ~ForLoopAlg();
 
     std::string debug() const;
 
     ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E getKind() const {
-      return ControlFlowGraphVertexAlg::PRELOOP;
+      return ControlFlowGraphVertexAlg::FORLOOP;
     };
 
 
@@ -31,17 +31,17 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    PreLoopAlg();
+    ForLoopAlg();
 
     /** 
      * no def
      */
-    PreLoopAlg(const PreLoopAlg&);
+    ForLoopAlg(const ForLoopAlg&);
 
     /** 
      * no def
      */
-    PreLoopAlg operator=(const PreLoopAlg&);
+    ForLoopAlg operator=(const ForLoopAlg&);
 
   };  // end of class
 

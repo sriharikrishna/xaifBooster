@@ -21,7 +21,7 @@ namespace xaifBoosterControlFlowReversal {
 
     std::string debug() const;
 
-    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E getKind() {
+    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E getKind() const {
       return ControlFlowGraphVertexAlg::IF;
     };
 
