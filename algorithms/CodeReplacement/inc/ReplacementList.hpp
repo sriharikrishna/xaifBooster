@@ -13,6 +13,12 @@ namespace xaifBoosterCodeReplacement {
   class ReplacementList : public ControlFlowGraphCommonAttributes {
   public:
 
+    /**
+     * \todo revisit this. Allowing only this constructor 
+     * requires us to pull this information from the containing 
+     * CallGraphVertex instance and we become open for 
+     * some ordering conflict among the constructors. 
+     */
     ReplacementList(const Symbol& theSymbol,
 		    const Scope& theScope,
 		    const std::string& aTemplateName);
@@ -41,7 +47,7 @@ namespace xaifBoosterCodeReplacement {
     
     /** 
      * no def 
-     */ 
+     */
     ReplacementList();
 
     typedef std::list<Replacement*> ReplacementPList;
