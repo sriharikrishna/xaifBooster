@@ -1,4 +1,3 @@
-#include <sstream>
 #include <list>
 #include <algorithm>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
@@ -156,83 +155,61 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     LinearizedComputationalGraphCopy::EdgePointerList::iterator bi;
     unsigned int highestdegree = 0;
 
-    //in this case, it was most likely that the last elimination was a front elimination
-    if(thePredList.size() == 1){
-      //iterate through the list of elimination candidates
-      for(bi = theOldEdgeList.begin(); bi != theOldEdgeList.end(); bi++){
-	unsigned int predMatch = 0;
-	unsigned int succMatch = 0;
-	//if the current edge shares the source with the previously eliminated edge and it is a front elimination, increment predmatch
-	if((&theCopy.getSourceOf(*(*bi).edge_p) == *thePredList.begin()) && ((*bi).direction == LinearizedComputationalGraphCopy::FRONT)){
-	  predMatch++;
-	}// end if
-	//if the source matches
-	if(predMatch){
-	  //search through successor list for successor matches
-	  for(succi=theSuccList.begin(); succi != theSuccList.end(); succi++){
-	    LinearizedComputationalGraphCopy::ConstInEdgeIteratorPair inedges (theCopy.getInEdgesOf(**succi));
-	    LinearizedComputationalGraphCopy::ConstInEdgeIterator ie=inedges.first, iend=inedges.second;
-	    for(; ie != iend; ++ie){
-	      if(&theCopy.getSourceOf(*ie) == &theCopy.getTargetOf(*(*bi).edge_p)){
-		succMatch++;
-		break;
-	      }// end if
-	    }// end for
-	  }// end for
-	}// end if
-	//if the current edge "sibling degree" is higher than those in the list, clear the list then push
-	if(predMatch*succMatch > highestdegree){
-	  highestdegree = predMatch*succMatch;
-	  theNewList.clear();
-	  theNewList.push_back(*bi);
-	}// end if
-	//if the "sibling degree" is the same, simply push to the list
-	else if((predMatch*succMatch == highestdegree) && (highestdegree > 0)){
-	  theNewList.push_back(*bi);
-	}// end else if
-      }// end for edges in list
-    }// end if predlist = 1
-    //in this case, it was most likely that the last elimination was a back elimination
-    else if (theSuccList.size() == 1){
-      //iterate through the list of elimination candidates
-      for(bi = theOldEdgeList.begin(); bi != theOldEdgeList.end(); bi++) {
-	unsigned int predMatch = 0;
-	unsigned int succMatch = 0;
-	//if the current edge shares the target with the previously eliminated edge and it is a back elimination, increment succmatch
-	if((&theCopy.getTargetOf(*(*bi).edge_p) == *theSuccList.begin()) && ((*bi).direction == LinearizedComputationalGraphCopy::BACK)){
-	  succMatch++;
-	}// end if
-	//if the target matches
-	if(succMatch){
-	  //search through predecessor list for predecessor matches
-	  for(predi=thePredList.begin(); predi != thePredList.end(); predi++) {
-	    LinearizedComputationalGraphCopy::ConstOutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**predi));
-	    LinearizedComputationalGraphCopy::ConstOutEdgeIterator oute=outedges.first, outend=outedges.second;
-	    for(; oute != outend; ++oute){
-	      if(&theCopy.getTargetOf(*oute) == &theCopy.getSourceOf(*(*bi).edge_p)){
-		predMatch++;
-		break;
-	      }// end if
-	    }// end for
-	  }// end for
-	}// end if
-	//if the current edge "sibling degree" is higher than those in the list, clear the list then push
-	if(predMatch*succMatch > highestdegree){
-	  highestdegree = predMatch*succMatch;
-	  theNewList.clear();
-	  theNewList.push_back(*bi);
-	}// end if
-	//if the "sibling degree" is the same, simply push to the list
-	else if((predMatch*succMatch == highestdegree) && (highestdegree > 0)){
-	  theNewList.push_back(*bi);
-	}// end else if
-      }// end for edges in list
-    }// end else if
+    //iterate through the list of elimination candidates
+    for(bi = theOldEdgeList.begin(); bi != theOldEdgeList.end(); bi++){
+      unsigned int predMatch = 0;
+      unsigned int succMatch = 0;
+      for(predi=thePredList.begin(); predi != thePredList.end(); predi++){
+	for(succi=theSuccList.begin(); succi != theSuccList.end(); succi++){
+	  if((*bi).direction == LinearizedComputationalGraphCopy::FRONT){
+	    //if the current edge shares the source with the previously eliminated edge and it is a front elimination, increment predmatch
+	    if(&theCopy.getSourceOf(*(*bi).edge_p) == *predi){
+	      predMatch++;
+	    }// end if
+	    if(predMatch){
+	      LinearizedComputationalGraphCopy::ConstInEdgeIteratorPair inedges (theCopy.getInEdgesOf(**succi));
+	      LinearizedComputationalGraphCopy::ConstInEdgeIterator ie=inedges.first, iend=inedges.second;
+	      for(; ie != iend; ++ie){
+		if(&theCopy.getSourceOf(*ie) == &theCopy.getTargetOf(*(*bi).edge_p)){
+		  succMatch++;
+		  break;
+		}// end if
+	      }// end for
+	    }// end if predmatch
+	  }// end if direction is front
+	  else if((*bi).direction == LinearizedComputationalGraphCopy::BACK){
+	    //if the current edge shares the target with the previously eliminated edge and it is a back elimination, increment succmatch
+	    if(&theCopy.getTargetOf(*(*bi).edge_p) == *succi){
+	      succMatch++;
+	    }// end if
+	    if(succMatch){
+	      LinearizedComputationalGraphCopy::ConstOutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**predi));
+	      LinearizedComputationalGraphCopy::ConstOutEdgeIterator oe=outedges.first, oend=outedges.second;
+	      for(; oe != oend; ++oe){
+		if(&theCopy.getTargetOf(*oe) == &theCopy.getSourceOf(*(*bi).edge_p)){
+		  predMatch++;
+		  break;
+		}// end if
+	      }// end for
+	    }// end if succmatch
+	  }// end if direction is back
+	}// end for succlist
+      }// end for predlist
+      //if the current edge "sibling degree" is higher than those in the list, clear the list then push
+      if(predMatch*succMatch > highestdegree){
+	highestdegree = predMatch*succMatch;
+	theNewList.clear();
+	theNewList.push_back(*bi);
+      }// end if
+      //if the "sibling degree" is the same, simply push to the list
+      else if((predMatch*succMatch == highestdegree) && (highestdegree > 0)){
+	theNewList.push_back(*bi);
+      }// end else if
+    }// end for edges in list
     if(theNewList.size() > 0){
       theOldEdgeList = theNewList;
     }// end if
   }// end sibling2Mode_e
-
 
   void EdgeElim::front_elim_edge(LinearizedComputationalGraphCopy& theCopy,
 				 LinearizedComputationalGraphCopyEdge& theEdge,
