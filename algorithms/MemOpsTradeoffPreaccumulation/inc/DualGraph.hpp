@@ -8,10 +8,11 @@
 #define _DUALGRAPH_INCLUDE_
 
 #include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/DualGraphEdge.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/DualGraphVertex.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/DualGraphPath.hpp"
-
+#include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/JacobianAccumulationExpressionCopy.hpp"
 
 using namespace MemOpsTradeoffPreaccumulation;
 
@@ -21,7 +22,9 @@ namespace MemOpsTradeoffPreaccumulation {
 
   public:
 
-    DualGraph(){};
+    unsigned int absum, opsum;
+
+    DualGraph(const LinearizedComputationalGraph& theOriginal);
     ~DualGraph();
 
     typedef std::list<DualGraphEdge*> FacePointerList;
@@ -31,19 +34,21 @@ namespace MemOpsTradeoffPreaccumulation {
     const DualGraphVertex& getDualVertex(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& theEdge) const;
     
     void populatePathList();
+    void copyPath(DualGraphPath* thePath);
     void clearPathList();
-    void copyPath(const DualGraphPath& thePath);
-    const PathList& getPathList() const;
     
-    //returns true if the list has elements and they are all complete
-    //returns false if any elements are incomplete or if the size is zero
-    bool allComplete() const;
+    FacePointerList populateElimList();
+    bool isFinal(DualGraphVertex& theVertex) const;
 
-    unsigned int checkSequence(DualGraphVertex& theFirst, DualGraphVertex& theSecond);
-
-  private: 
+    DualGraphVertex* elim_face(
+      DualGraphEdge& theFace,
+      const DualGraph::VertexPointerList& thePredList,
+      const DualGraph::VertexPointerList& theSuccList,
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
 
     PathList myPathList;
+
+  private:
 
   }; // end of class DualGraph 
 

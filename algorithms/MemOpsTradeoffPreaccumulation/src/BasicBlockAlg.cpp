@@ -3,18 +3,15 @@
 #include <iostream>
 #include <fstream>
 #include <list>
-#include <algorithm>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/EdgeElim.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/VertexElim.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/FaceElim.hpp"
-
-
-enum Heuristic{VERTEX, EDGE, FACE, FORWARD, REVERSE, MARKOWITZ, SIBLING, SIBLING2, SUCCPRED};
 
 using namespace MemOpsTradeoffPreaccumulation;
 
@@ -24,256 +21,149 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 						   int mode,
 						   xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
 
-    //readme
+    ConceptuallyStaticInstances::HeuristicList HeuristicSequence = ConceptuallyStaticInstances::instance()->getList();
 
-    //run QuickRegression.bash at /home/lyonsam/Argonne/xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/test
-    // and make sure the results are correct.  then push, they will be the standard from then on 
-
-    if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)){
-      GraphVizDisplay::show(theOriginal,"flattened");
+    //if no heuristics are passed on the command line, we use defaults as defined here
+    if(HeuristicSequence.empty()){
+      if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+        std::cout << "Error parsing command line heuristic arguments, using default mode and heuristics" << std::endl;
+      }
+      HeuristicSequence.push_back(ConceptuallyStaticInstances::EDGE);
+      HeuristicSequence.push_back(ConceptuallyStaticInstances::MARKOWITZ);
+      HeuristicSequence.push_back(ConceptuallyStaticInstances::SIBLING2);
+      HeuristicSequence.push_back(ConceptuallyStaticInstances::REVERSE);
     }
 
-    //input from file to construct heuristic sequence
-    std::list<Heuristic> heuristicEnumSequence;
-    bool usable = true;
+    //FACE ELIMINATION
+    if(HeuristicSequence.front() == ConceptuallyStaticInstances::FACE){
 
-    std::ifstream hfile("HeuristicList.txt");
-    if(!hfile){
-      std::cout << "Error opening heuristic file, using default mode and heuristics" << std::endl;
-      usable = false;
-    }
+      DualGraph theDual (theOriginal);
 
-    else{
-      char line[10];
-      while(hfile.getline(line, 10)){
-	std::string theline = line;
- 	if(theline == "VERTEX"){
-	  if(heuristicEnumSequence.size() == 0){heuristicEnumSequence.push_back(VERTEX);}
-	  else{
-	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	  }
-	}// end if VERTEX
-	else if(theline == "EDGE"){
-	  if(heuristicEnumSequence.size() == 0){heuristicEnumSequence.push_back(EDGE);}
-	  else{
-	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	  }
-	}// end if EDGE
-	else if(theline == "FACE"){
-	  if(heuristicEnumSequence.size() == 0){heuristicEnumSequence.push_back(FACE);}
-	  else{
-	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	  }
-	}// end if FACE
-	else if(theline == "FORWARD"){
-	  if(heuristicEnumSequence.size() == 0){
-	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	  }
-	  else{heuristicEnumSequence.push_back(FORWARD);}
-	}// end if FORWARD
-	else if(theline == "REVERSE"){
-	  if(heuristicEnumSequence.size() == 0){
-	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	  }
-	  else{heuristicEnumSequence.push_back(REVERSE);}
-	}// end if REVERSE
-	else if(theline == "MARKOWITZ"){
-	  if(heuristicEnumSequence.size() == 0){
-	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	  }
-	  else{heuristicEnumSequence.push_back(MARKOWITZ);}
-	}// end if MARKOWITZ
-	else if(theline == "SIBLING"){
-	  if(heuristicEnumSequence.size() == 0){
-	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	  }
-	  else{heuristicEnumSequence.push_back(SIBLING);}
-	}// end if SIBLING
-	else if(theline == "SIBLING2"){
-	  if(heuristicEnumSequence.size() == 0){
-	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	  }
-	  else{heuristicEnumSequence.push_back(SIBLING2);}
-	}// end if SIBLING2
-	else if(theline == "SUCCPRED"){
-	  if(heuristicEnumSequence.size() == 0){
-	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	  }
-	  else{heuristicEnumSequence.push_back(SUCCPRED);}
-	}// end if SUCCPRED
-	else{
- 	  usable = false;
- 	  std::cout << "Error reading heuristic file, using default mode and heuristics";
-        }// end else
-	if(!usable){break;}
-      }// end while
-    }// end else
-    hfile.close();
-    
-    if(!usable){
-      heuristicEnumSequence.clear();
-      heuristicEnumSequence.push_back(EDGE);
-      heuristicEnumSequence.push_back(MARKOWITZ);
-      heuristicEnumSequence.push_back(SIBLING2);
-      heuristicEnumSequence.push_back(REVERSE);
-    }// end if usable
+      //display the dual graph
+      if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	GraphVizDisplay::show(theDual,"Dual");
+      }
 
-    if(heuristicEnumSequence.front() == FACE){
-
-      DualGraph theDual;
-      
-      //Create Dual Graph Vertices
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIteratorPair deip (theOriginal.edges());
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIterator dei (deip.first), de_end (deip.second);
-      //iterate through edges in the original graph, and create a vertex in the dual for each one
-      for(; dei != de_end; ++dei){
-	DualGraphVertex& DV = theDual.addVertex();
-	DV.setOriginalRef(*dei);
-      }// end for original edges
-
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair dv (theOriginal.vertices());
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator dvi (dv.first), dv_end (dv.second);
-      //iterate through vertices in the original graph, and create a vertex in the copy for each one
-      for(; dvi != dv_end; ++dvi){
-	if(theOriginal.numInEdgesOf(*dvi) == 0){
-
-	  DualGraphVertex& DV = theDual.addVertex();
-	  DV.setAssumedInEdgeRef(*dvi);
-
-	  // for each outedge of the vertex, make an edge from that outedge vertex to the assumed inedge vertex
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair doe (theOriginal.getOutEdgesOf(*dvi));
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator doei (doe.first), doe_end (doe.second);
-	  for(; doei != doe_end; ++doei){
-	    theDual.addEdge(DV, theDual.getDualVertex(*doei));
-	  }// end for outedges
-	}// end if minimal
-	if(theOriginal.numOutEdgesOf(*dvi) == 0){
-
-	  DualGraphVertex& DV = theDual.addVertex();
-	  DV.setAssumedOutEdgeRef(*dvi);
-
-	  // for each inedge of the vertex, make an edge from the inedge to the assumed inedge vertex
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair die (theOriginal.getInEdgesOf(*dvi));
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator diei (die.first), die_end (die.second);
-	  for(; diei != die_end; ++diei){
-	    theDual.addEdge(theDual.getDualVertex(*diei), DV);
-	  }// end for inedges
-	}// end if maximal
-      }// end for original vertices
-
-      //generate edges in dual graph
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair dv2 (theOriginal.vertices());
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator dv2i (dv2.first), dv2_end (dv2.second);
-      for(; dv2i != dv2_end; ++dv2i){
-
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair die2 (theOriginal.getInEdgesOf(*dv2i));
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator die2i (die2.first), die2_end (die2.second);
-	for(; die2i != die2_end; ++die2i){
-
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair doe2 (theOriginal.getOutEdgesOf(*dv2i));
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator doe2i (doe2.first), doe2_end (doe2.second);
-	  for(; doe2i != doe2_end; ++doe2i){
-
-	    theDual.addEdge(theDual.getDualVertex(*die2i),theDual.getDualVertex(*doe2i));
-
-	  }// end for outedges
-	}// end for inedges
-      }// end for original vertices
-
-      typedef void(*faceHeuristicFunc) (const DualGraph&,
+      typedef void(*faceHeuristicFunc) (DualGraph&,
 					DualGraph::FacePointerList&,
 					const DualGraph::VertexPointerList&,
-				        const DualGraph::VertexPointerList&);
+				        const DualGraph::VertexPointerList&,
+					DualGraphVertex*);
 
       std::list<faceHeuristicFunc> faceHeuristicSequence;
 
-      heuristicEnumSequence.pop_front();
+      HeuristicSequence.pop_front();
       //generate a list of function pointers that point to each heuristic that is to be used
-      while(heuristicEnumSequence.size() > 0){
-	switch(heuristicEnumSequence.front()){
-	  case FORWARD:
-	    faceHeuristicSequence.push_back(&FaceElim::forwardMode_f);
-	    break;
-	  case REVERSE:
-	    faceHeuristicSequence.push_back(&FaceElim::reverseMode_f);
-	    break;
-	  case MARKOWITZ:
-	    faceHeuristicSequence.push_back(&FaceElim::markowitzMode_f);
-	    break;
-	  case SIBLING:
-	    faceHeuristicSequence.push_back(&FaceElim::siblingMode_f);
+      while(!HeuristicSequence.empty()){
+	switch(HeuristicSequence.front()){
+	  case ConceptuallyStaticInstances::ABSORB:
+	    faceHeuristicSequence.push_back(&FaceElim::absorbMode_f);
 	    break;
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("Error: unknown face heuristic passed");
-	}// end switch heuristicEnumSequence
-	heuristicEnumSequence.pop_front();
+	}// end switch HeuristicSequence
+	HeuristicSequence.pop_front();
       }// end while
 
-      //the face list holds all the faces that are candidates for elimination
       faceHeuristicFunc func_pt;
       std::list<faceHeuristicFunc>::iterator fhiter;
       DualGraph::VertexPointerList thePredList, theSuccList;
-      DualGraph::FacePointerList theFaceList;
+      DualGraphVertex* newOrAbsorb = NULL;
 
-      std::cout << "about to populate path list" << std::endl;
-
-      //populate the dual path list
+      //populate the dual path and elim lists
       theDual.populatePathList();
+      DualGraph::FacePointerList theElimList = theDual.populateElimList();
 
-      //generate list of eliminatable faces
-      
+      while(!theElimList.empty()){
 
-      // while(1){
+ 	//this loop runs the list through each heuristic
+ 	for(fhiter = faceHeuristicSequence.begin(); fhiter != faceHeuristicSequence.end(); fhiter++){
+ 	  func_pt = *fhiter;
+ 	  func_pt(theDual, theElimList, thePredList, theSuccList, newOrAbsorb);
+ 	}// end for
 
-      
+ 	//if(theElimList.size() == 1){//if the heuristics have decided on one single face
 
-// 	//this loop runs the list through each heuristic
-// 	if(1){
-// 	  for(fhiter=faceHeuristicSequence.begin(); fhiter!=faceHeuristicSequence.end(); fhiter++){
-// 	    func_pt = *fhiter;
-// 	    func_pt(theDual, theFaceList, thePredList, theSuccList);
-// 	  }// end for
-// 	}// end if
-	
-// 	if(1){
+	//the predlist and thesucclist hold the predecessors and successors respectively of the face about to be eliminated.
+	//this information is stored in case one of the heuristics needs to use it to make it's determinations.
+	thePredList.clear();
+	theSuccList.clear();
+	DualGraph::InEdgeIteratorPair newpreds (theDual.getInEdgesOf(theDual.getSourceOf(*theElimList.back())));
+	DualGraph::InEdgeIterator newpredi (newpreds.first), newprede (newpreds.second);
+	//go through predecessors and add them to the list of predecessors
+	for(; newpredi != newprede; ++newpredi){
+	  thePredList.push_back(&theDual.getSourceOf(*newpredi));
+	}// end for
+	DualGraph::OutEdgeIteratorPair newsuccs (theDual.getOutEdgesOf(theDual.getTargetOf(*theElimList.back())));
+	DualGraph::OutEdgeIterator newsucci (newsuccs.first), newsucce (newsuccs.second);
+	//go through successors and add them to the list of successors
+	for(; newsucci != newsucce; ++newsucci){
+	  theSuccList.push_back(&theDual.getTargetOf(*newsucci));
+	}// end for
 
-// 	  //populate succlist and predlist
+	//eliminate the face
+	newOrAbsorb = theDual.elim_face(*theElimList.back(), thePredList, theSuccList, theJacobianAccumulationExpressionList);
+	//}
+	//else{
+	//THROW_LOGICEXCEPTION_MACRO("Error: Heuristics could not decide on a single face");
+	//}
 
-// 	  //eliminate the face
-// 	  FaceElim::elim_face(theDual, *theFaceList.front(), theJacobianAccumulationExpressionList);
+	if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	  GraphVizDisplay::show(theDual,"intermediate");
+	}
 
-// 	}
-// 	else{
-// 	  THROW_LOGICEXCEPTION_MACRO("Error: Heuristics could not decide on a single face");
-// 	}
+	//regenerate path list and list of eliminatable faces
+	theDual.clearPathList();
+ 	theDual.populatePathList();
+	theElimList = theDual.populateElimList();
 
-// 	theDual.clearPathList();
-// 	theDual.populatePathList();
+      }// end while
 
-// 	//generate list of eliminatable faces
+      //iterate through remaining intermediate vertices and set corresponding expressions as jacobian entries
+      DualGraph::VertexIteratorPair jvip (theDual.vertices());
+      DualGraph::VertexIterator jvi (jvip.first), jv_end (jvip.second);
+      for(; jvi != jv_end; ++jvi){
 
-//       }// end while
+	//check to see if the edge was an original edge, if so, create a JAE comprised of one vertex for it
+	if((*jvi).getRefType() == DualGraphVertex::TO_ORIGINAL_EDGE){
 
+	  JacobianAccumulationExpressionCopy* theNewExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
 
-      theDual.clearPathList();
+	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& orig = ((*theNewExpression).myExpression).addVertex();
+	  orig.setExternalReference((*jvi).getOriginalRef());
+	  (*theNewExpression).setMaximal(orig);
+	  (*jvi).setJacobianRef(theNewExpression);
 
-      //set JAElist entries
+	  (((*jvi).getJacobianRef()).myExpression).setJacobianEntry(theOriginal.getTargetOf((*jvi).getOriginalRef()), theOriginal.getSourceOf((*jvi).getOriginalRef()));
+	}// end if
+	else if((*jvi).getRefType() == DualGraphVertex::TO_INTERNAL_EXPRESSION){
 
-      GraphVizDisplay::show(theDual,"Dual");
+	  DualGraph::InEdgeIteratorPair iep (theDual.getInEdgesOf(*jvi));
+	  DualGraph::InEdgeIterator ie (iep.first);
+	  DualGraph::OutEdgeIteratorPair oep (theDual.getOutEdgesOf(*jvi));
+	  DualGraph::OutEdgeIterator oe (oep.first);
+
+	  (((*jvi).getJacobianRef()).myExpression).setJacobianEntry((theDual.getTargetOf(*oe)).getAssumedRef(), (theDual.getSourceOf(*ie)).getAssumedRef());
+
+	}// end else if
+      }// end for
+
+      if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	GraphVizDisplay::show(theDual,"tripartite");
+      }
+
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: ab sum: " << theDual.absum);
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: op sum: " << theDual.opsum);
 
     }// end if face
     else{
 
       LinearizedComputationalGraphCopy theCopy;
+
+      theCopy.sdsum = 0;
+      theCopy.spsum = 0;
+      theCopy.opsum = 0;
+
       struct vertexMap {
 	const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* original;
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* copy;
@@ -291,7 +181,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       //declaration of iterators
       const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& originalIndependents = theOriginal.getIndependentList();
       const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& originalDependents = theOriginal.getDependentList();
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator oIndeps, odeps;
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator oIndeps, oDeps;
 
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair vip (theOriginal.vertices());
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator vi (vip.first), v_end (vip.second);
@@ -311,8 +201,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	}// end for original indep list
       
 	//go through deps, if its in the dep list, add to the copy dep list
-	for(odeps=originalDependents.begin(); odeps != originalDependents.end(); odeps++) {
-	  if(copymap[i].original == *odeps){
+	for(oDeps=originalDependents.begin(); oDeps != originalDependents.end(); oDeps++) {
+	  if(copymap[i].original == *oDeps){
 	    theCopy.addToDependentList(*copymap[i].copy);
 	    break;
 	  }// end if
@@ -373,41 +263,42 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	}// end else
       }// end while
 
-      if(heuristicEnumSequence.front() == VERTEX){
+      //VERTEX ELIMINATION
+      if(HeuristicSequence.front() == ConceptuallyStaticInstances::VERTEX){
 
-	typedef void(*vertexHeuristicFunc) (const LinearizedComputationalGraphCopy&,
+	typedef void(*vertexHeuristicFunc) (LinearizedComputationalGraphCopy&,
 					    LinearizedComputationalGraphCopy::VertexPointerList&,
 					    const LinearizedComputationalGraphCopy::VertexPointerList&,
 					    const LinearizedComputationalGraphCopy::VertexPointerList&);
 
 	std::list<vertexHeuristicFunc> vertexHeuristicSequence;
 
-	heuristicEnumSequence.pop_front();
+	HeuristicSequence.pop_front();
 	//generate a list of function pointers that point to each heuristic that is to be used
-	while(heuristicEnumSequence.size() > 0){
-	  switch(heuristicEnumSequence.front()){
-	  case FORWARD:
+	while(!HeuristicSequence.empty()){
+	  switch(HeuristicSequence.front()){
+	  case ConceptuallyStaticInstances::FORWARD:
 	    vertexHeuristicSequence.push_back(&VertexElim::forwardMode_v);
 	    break;
-	  case REVERSE:
+	  case ConceptuallyStaticInstances::REVERSE:
 	    vertexHeuristicSequence.push_back(&VertexElim::reverseMode_v);
 	    break;
-	  case MARKOWITZ:
+	  case ConceptuallyStaticInstances::MARKOWITZ:
 	    vertexHeuristicSequence.push_back(&VertexElim::markowitzMode_v);
 	    break;
-	  case SIBLING:
+	  case ConceptuallyStaticInstances::SIBLING:
 	    vertexHeuristicSequence.push_back(&VertexElim::siblingMode_v);
 	    break;
-	  case SIBLING2:
+	  case ConceptuallyStaticInstances::SIBLING2:
 	    vertexHeuristicSequence.push_back(&VertexElim::sibling2Mode_v);
 	    break;
-	  case SUCCPRED:
+	  case ConceptuallyStaticInstances::SUCCPRED:
 	    vertexHeuristicSequence.push_back(&VertexElim::succPredMode_v);
 	    break;
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("Error: unknown heuristic passed");
-	  }// end switch heuristicEnumSequence
-	  heuristicEnumSequence.pop_front();
+	  }// end switch HeuristicSequence
+	  HeuristicSequence.pop_front();
 	}// end while
 
 	//the vertex list holds all the vertices that are candidates for elimination
@@ -422,24 +313,21 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	}// end if TEMPORARY
 
 	//this is the elimination loop, it eliminates one vertex per iteration
-	while(theVertexList.size() > 0){
-	  //thevertexlist will be passed to and reduced by each heuristic
+	while(!theVertexList.empty()){
+
 	  theVertexList = theCopy.getVertexList();
 
 	  //all vertices that are minimal or maximal are removed from the list, they cannot be eliminated
 	  LinearizedComputationalGraphCopy::VertexIteratorPair cvip (theCopy.vertices());
 	  LinearizedComputationalGraphCopy::VertexIterator cvi (cvip.first), cv_end (cvip.second);
 	  for(; cvi != cv_end; ++cvi){
-	    if(theCopy.numInEdgesOf(*cvi) == 0){
-	      theVertexList.remove(&*cvi);
-	    }// end if
-	    else if(theCopy.numOutEdgesOf(*cvi) == 0){
+	    if((theCopy.numInEdgesOf(*cvi) == 0) || (theCopy.numOutEdgesOf(*cvi) == 0)){
 	      theVertexList.remove(&*cvi);
 	    }// end if
 	  }// end for
 
 	  //this loop runs the list through each heuristic
-	  if(theVertexList.size() > 0){
+	  if(!theVertexList.empty()){
 	    for(vhiter=vertexHeuristicSequence.begin(); vhiter!=vertexHeuristicSequence.end(); vhiter++){
 	      func_pt = *vhiter;
 	      func_pt(theCopy, theVertexList, thePredList, theSuccList);
@@ -470,12 +358,17 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	      sequencedump << s << std::endl;
 	    }// end if TEMPORARY
 
-	    VertexElim::elim_vertex(theCopy, *theVertexList.front(), theJacobianAccumulationExpressionList);
+	    theCopy.elim_vertex(*theVertexList.front(), theJacobianAccumulationExpressionList);
+
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	      GraphVizDisplay::show(theCopy,"intermediate");
+	    }
 
 	  }// end if
 	  else if(theVertexList.size() > 1){
 	    THROW_LOGICEXCEPTION_MACRO("Error: More than one vertex in list of possible eliminations");
 	  }// end else
+
 	}// end while
 
 	if(DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)){
@@ -484,34 +377,35 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
       }// end if
 
-      else if(heuristicEnumSequence.front() == EDGE){
+      //EDGE ELIMINATION
+      else if(HeuristicSequence.front() == ConceptuallyStaticInstances::EDGE){
 
-	typedef void(*edgeHeuristicFunc) (const LinearizedComputationalGraphCopy&,
+	typedef void(*edgeHeuristicFunc) (LinearizedComputationalGraphCopy&,
 					  LinearizedComputationalGraphCopy::EdgePointerList&,
 					  const LinearizedComputationalGraphCopy::VertexPointerList&,
 					  const LinearizedComputationalGraphCopy::VertexPointerList&);
 	std::list<edgeHeuristicFunc> edgeHeuristicSequence;
 
-	heuristicEnumSequence.pop_front();
+	HeuristicSequence.pop_front();
 	//generate a list of function pointers that point to each heuristic that is to be used
-	while(heuristicEnumSequence.size() > 0){
-	  switch(heuristicEnumSequence.front()){
-	  case FORWARD:
+	while(!HeuristicSequence.empty()){
+	  switch(HeuristicSequence.front()){
+	  case ConceptuallyStaticInstances::FORWARD:
 	    edgeHeuristicSequence.push_back(&EdgeElim::forwardMode_e);
 	    break;
-	  case REVERSE:
+	  case ConceptuallyStaticInstances::REVERSE:
 	    edgeHeuristicSequence.push_back(&EdgeElim::reverseMode_e);
 	    break;
-	  case MARKOWITZ:
+	  case ConceptuallyStaticInstances::MARKOWITZ:
 	    edgeHeuristicSequence.push_back(&EdgeElim::markowitzMode_e);
 	    break;
-	  case SIBLING2:
+	  case ConceptuallyStaticInstances::SIBLING2:
 	    edgeHeuristicSequence.push_back(&EdgeElim::sibling2Mode_e);
 	    break;
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("Error: Unknown heuristic passed");
-	  }// end switch heuristicEnumSequence
-	  heuristicEnumSequence.pop_front();
+	  }// end switch HeuristicSequence
+	  HeuristicSequence.pop_front();
 	}// end while
       
 	edgeHeuristicFunc func_pt;
@@ -523,33 +417,20 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  sequencedump.open("f.txt");
 	}// end if TEMPORARY
 
-	//create list of possible edge eliminations with associated elim directions
-	LinearizedComputationalGraphCopy::EdgeIteratorPair edgelist (theCopy.edges());
-	LinearizedComputationalGraphCopy::EdgeIterator eli (edgelist.first), ele (edgelist.second);
-	for(; eli != ele; ++eli){
-	  if((theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0) && (!theCopy.isDep(theCopy.getTargetOf(*eli)))){
-	    // if the target of the edge is not a dependent and has inedges
-	    theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
-	  }// end if 
-
-	  //if the source has inedges
-	  if(theCopy.numInEdgesOf(theCopy.getSourceOf(*eli)) > 0){//can be back eliminated
-	    theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::BACK);
-	  }// end if
-	}// end for
-
-	LinearizedComputationalGraphCopy::EdgePointerList theEdgeList = theCopy.getEdgeList();
+	//populate a list of edge eliminations
+	LinearizedComputationalGraphCopy::EdgePointerList theEdgeList = theCopy.populateEdgeList();
 
 	//this is the elimination loop, it eliminates one vertex per iteration
-	while(theEdgeList.size() > 0){
+	while(!theEdgeList.empty()){
 	
 	  //send theEdgeList to each heuristic
-	  for(ehiter=edgeHeuristicSequence.begin(); ehiter!=edgeHeuristicSequence.end(); ehiter++){
+	  for(ehiter = edgeHeuristicSequence.begin(); ehiter != edgeHeuristicSequence.end(); ehiter++){
 	    func_pt = *ehiter;
 	    func_pt(theCopy, theEdgeList, thePredList, theSuccList);
 	  }// end for
 
 	  if(theEdgeList.size() == 1){//if the heuristics have decided on one single edge
+
 	    //reset pred and succ lists and eliminate the edge as specified
 	    thePredList.clear();
 	    theSuccList.clear();
@@ -568,7 +449,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 		sequencedump << s << " " << t << std::endl;
 	      }// end if TEMPORARY
 
-	      EdgeElim::front_elim_edge(theCopy, *(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
+	      theCopy.front_elim_edge(*(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
 	    }// end if
 	    else if((theEdgeList.front()).direction == LinearizedComputationalGraphCopy::BACK){
 	      theSuccList.push_back(&theCopy.getTargetOf(*(theEdgeList.front().edge_p)));
@@ -585,34 +466,24 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 		sequencedump << s << " " << t << std::endl;
 	      }// end if TEMPORARY
 
-	      EdgeElim::back_elim_edge(theCopy, *(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
+	      theCopy.back_elim_edge(*(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
 	    }// end else if
 	    else{
 	      THROW_LOGICEXCEPTION_MACRO("Error: Edge has no elimination direction specified");
 	    }
 	
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	      GraphVizDisplay::show(theCopy,"intermediate");
+	    }
+
 	  }// end if
 	  else{
 	    THROW_LOGICEXCEPTION_MACRO("Error: More than one edge in list of possible eliminations");
 	  }// end else
 
-	  //create list of possible edge eliminations with associated elim directions
+	  //clear edge list and pupolate a new new one
 	  theCopy.clearEdgeList();
-	  LinearizedComputationalGraphCopy::EdgeIteratorPair edgelist (theCopy.edges());
-	  LinearizedComputationalGraphCopy::EdgeIterator eli (edgelist.first), ele (edgelist.second);
-	  for(; eli != ele; ++eli){
-	    if((theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0) && (!theCopy.isDep(theCopy.getTargetOf(*eli)))){
-	      // if the target of the edge is not a dependent and has outedges
-	      theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
-   	    }// end if target has outedges
-
-	    //if the source has inedges
-	    if(theCopy.numInEdgesOf(theCopy.getSourceOf(*eli)) > 0){//can be back eliminated
-	      theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::BACK);
-	    }// end if
-	  }// end for
-	  
-	  theEdgeList = theCopy.getEdgeList();
+	  theEdgeList = theCopy.populateEdgeList();
 
 	}// end while
       
@@ -621,10 +492,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	}// end if TEMPORARY
 
       }// end else if
-
-      else{
-	THROW_LOGICEXCEPTION_MACRO("Error: Must specify either vertex or edge elimination");
-      }// end else
 
       //iterate through remaining edges and set corresponding expressions as jacobian entries
       LinearizedComputationalGraphCopy::EdgeIteratorPair jeip (theCopy.edges());
@@ -651,14 +518,20 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
 	GraphVizDisplay::show(theCopy,"bipartite");
       }
+
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: sd sum: " << theCopy.sdsum);
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: sp sum: " << theCopy.spsum);
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: op sum: " << theCopy.opsum);
+
+
     }// end else (vertex or edge)
 
   } // end compute_elimination_sequence
   
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
-      xaifBooster::BasicBlockAlgBase(theContaining),
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) {
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::compute_elimination_sequence=&compute_elimination_sequence; 
+    xaifBooster::BasicBlockAlgBase(theContaining),
+    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) {
+    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::compute_elimination_sequence=&compute_elimination_sequence; 
   }
 
   void

@@ -26,7 +26,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
    */
   class BasicBlockAlg : public xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg {
   public:
-    
+
     BasicBlockAlg(BasicBlock& theContaining);
                                                                                 
     virtual ~BasicBlockAlg() {};

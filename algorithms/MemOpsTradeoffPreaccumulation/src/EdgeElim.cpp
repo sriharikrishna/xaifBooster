@@ -7,9 +7,9 @@
 
 using namespace MemOpsTradeoffPreaccumulation;
 
-namespace xaifBoosterMemOpsTradeoffPreaccumulation { 
-  
-  void EdgeElim::forwardMode_e(const LinearizedComputationalGraphCopy& theCopy,
+namespace xaifBoosterMemOpsTradeoffPreaccumulation {
+
+  void EdgeElim::forwardMode_e(LinearizedComputationalGraphCopy& theCopy,
 			       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,	    
 			       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 			       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -24,8 +24,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     for(vli = theVertexList.begin(); vli != theVertexList.end(); vli++){
       //iterate through the topsorted vertex list for possible targets.  The earlier in this list the better.
       for(vli2 = theVertexList.begin(); vli2 != theVertexList.end(); vli2++){
-	LinearizedComputationalGraphCopy::ConstOutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**vli));
-	LinearizedComputationalGraphCopy::ConstOutEdgeIterator outi (outedges.first), oute (outedges.second);
+	LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**vli));
+	LinearizedComputationalGraphCopy::OutEdgeIterator outi (outedges.first), oute (outedges.second);
 	//search through outedges of the source for edges in the list
         for(; outi != oute; ++outi){
 	  //if there is an edge fro source to target, check to see if its in the list
@@ -50,7 +50,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     theOldEdgeList = theNewList;
   }// end forwardMode
 
-  void EdgeElim::reverseMode_e(const LinearizedComputationalGraphCopy& theCopy,
+  void EdgeElim::reverseMode_e(LinearizedComputationalGraphCopy& theCopy,
 			       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
 			       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
  			       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -65,8 +65,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     for(rvli = theVertexList.rbegin(); rvli != theVertexList.rend(); rvli++){
       //iterate backwards through the topsorted vertex list for possible sources.  The later in this list the better
       for(rvli2 = theVertexList.rbegin(); rvli2 != theVertexList.rend(); rvli2++){
-	LinearizedComputationalGraphCopy::ConstInEdgeIteratorPair inedges (theCopy.getInEdgesOf(**rvli));
-	LinearizedComputationalGraphCopy::ConstInEdgeIterator ini (inedges.first), ine (inedges.second);
+	LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (theCopy.getInEdgesOf(**rvli));
+	LinearizedComputationalGraphCopy::InEdgeIterator ini (inedges.first), ine (inedges.second);
 	//search through inedges of the target for edges in the list
         for(; ini != ine; ++ini){
 	  //if there is an edge fro source to target, check to see if its in the list
@@ -91,15 +91,17 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     theOldEdgeList = theNewList;
   }// end reverseMode
 
-  void EdgeElim::markowitzMode_e(const LinearizedComputationalGraphCopy& theCopy,
+  void EdgeElim::markowitzMode_e(LinearizedComputationalGraphCopy& theCopy,
 				 LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
 
     LinearizedComputationalGraphCopy::EdgePointerList theNewList;
     unsigned int currentMin;
-    LinearizedComputationalGraphCopy::EdgePointerList::iterator ei=theOldEdgeList.begin();
+    LinearizedComputationalGraphCopy::EdgePointerList::iterator ei = theOldEdgeList.begin();
+
     theNewList.push_back(*ei);
+
     //put the first element in the new list, and set currentMin to the its markowitz degree
     if((*ei).direction == LinearizedComputationalGraphCopy::BACK){
       currentMin = theCopy.numInEdgesOf(theCopy.getSourceOf(*(*ei).edge_p));
@@ -145,7 +147,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     theOldEdgeList = theNewList;
   }// end markowitzMode
 
-  void EdgeElim::sibling2Mode_e(const LinearizedComputationalGraphCopy& theCopy,
+  void EdgeElim::sibling2Mode_e(LinearizedComputationalGraphCopy& theCopy,
 				LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
 				const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -167,8 +169,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	      predMatch++;
 	    }// end if
 	    if(predMatch){
-	      LinearizedComputationalGraphCopy::ConstInEdgeIteratorPair inedges (theCopy.getInEdgesOf(**succi));
-	      LinearizedComputationalGraphCopy::ConstInEdgeIterator ie=inedges.first, iend=inedges.second;
+	      LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (theCopy.getInEdgesOf(**succi));
+	      LinearizedComputationalGraphCopy::InEdgeIterator ie=inedges.first, iend=inedges.second;
 	      for(; ie != iend; ++ie){
 		if(&theCopy.getSourceOf(*ie) == &theCopy.getTargetOf(*(*bi).edge_p)){
 		  succMatch++;
@@ -183,8 +185,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	      succMatch++;
 	    }// end if
 	    if(succMatch){
-	      LinearizedComputationalGraphCopy::ConstOutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**predi));
-	      LinearizedComputationalGraphCopy::ConstOutEdgeIterator oe=outedges.first, oend=outedges.second;
+	      LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**predi));
+	      LinearizedComputationalGraphCopy::OutEdgeIterator oe=outedges.first, oend=outedges.second;
 	      for(; oe != oend; ++oe){
 		if(&theCopy.getTargetOf(*oe) == &theCopy.getSourceOf(*(*bi).edge_p)){
 		  predMatch++;
@@ -195,6 +197,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  }// end if direction is back
 	}// end for succlist
       }// end for predlist
+
       //if the current edge "sibling degree" is higher than those in the list, clear the list then push
       if(predMatch*succMatch > highestdegree){
 	highestdegree = predMatch*succMatch;
@@ -207,184 +210,9 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       }// end else if
     }// end for edges in list
     if(theNewList.size() > 0){
+      theCopy.sdsum += highestdegree;
       theOldEdgeList = theNewList;
     }// end if
   }// end sibling2Mode_e
-
-  void EdgeElim::front_elim_edge(LinearizedComputationalGraphCopy& theCopy,
-				 LinearizedComputationalGraphCopyEdge& theEdge,
-				 xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
-
-    //iterator over outedges of theTarget
-    LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(theCopy.getTargetOf(theEdge)));
-    LinearizedComputationalGraphCopy::OutEdgeIterator oe=outedges.first, oend=outedges.second;
-    for(; oe != oend; ++oe){
-      JacobianAccumulationExpressionCopy* theExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
-
-      //add first minimal vertex: the edge being eliminated, set its pointer appropriately
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& miniin = ((*theExpression).myExpression).addVertex();
-      if(theEdge.getRefType() == LinearizedComputationalGraphCopyEdge::TO_INTERNAL_EXPRESSION){
-	miniin.setInternalReference((theEdge.getJacobianRef()).getMaximal());
-      }
-      else{
-        miniin.setExternalReference(theEdge.getOriginalRef());
-      }
-      //add second minimal vertex: edge out of theVertex
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& miniout = ((*theExpression).myExpression).addVertex();    
-      if((*oe).getRefType() == LinearizedComputationalGraphCopyEdge::TO_INTERNAL_EXPRESSION){
-        miniout.setInternalReference(((*oe).getJacobianRef()).getMaximal());
-      }// end if
-      else{
-        miniout.setExternalReference((*oe).getOriginalRef());
-      }// end else
-      //create "mult" vertex and connect it to miniin and miniout
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& mult = ((*theExpression).myExpression).addVertex();
-      mult.setOperation(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP);
-      ((*theExpression).myExpression).addEdge(miniin, mult);
-      ((*theExpression).myExpression).addEdge(miniout, mult);
-      
-      //iterator used to check for a direct edge from source to target
-      LinearizedComputationalGraphCopy::OutEdgeIteratorPair srcoutedges (theCopy.getOutEdgesOf(theCopy.getSourceOf(theEdge)));
-      LinearizedComputationalGraphCopy::OutEdgeIterator srcoe = srcoutedges.first, srcoend = srcoutedges.second;
-      LinearizedComputationalGraphCopyEdge* directEdge_pt = NULL;
-      for(; srcoe != srcoend; ++srcoe){
-	//if there already was a direct edge from the source vertex to the target vertex, directEdge_pt is set to point to that edge
-        if(&theCopy.getTargetOf(*srcoe) == &theCopy.getTargetOf(*oe)){
-          directEdge_pt = &*srcoe;
-          break;
-        } //endif
-      }//end while
-      
-      LinearizedComputationalGraphCopyEdge& theNewEdge = theCopy.addEdge(theCopy.getSourceOf(theEdge), theCopy.getTargetOf(*oe));
-      
-      theNewEdge.setJacobianRef(theExpression);
-      if(directEdge_pt != NULL){        //create vertex for direct edge, and "add" vertex, point new edge to it
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& add = ((*theExpression).myExpression).addVertex();
-        add.setOperation(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP);
-        //add vertex for direct edge
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& minidirect = ((*theExpression).myExpression).addVertex();
-        if((*directEdge_pt).getRefType() == LinearizedComputationalGraphCopyEdge::TO_INTERNAL_EXPRESSION){
-          minidirect.setInternalReference(((*directEdge_pt).getJacobianRef()).getMaximal());
-        }
-        else{
-          minidirect.setExternalReference((*directEdge_pt).getOriginalRef());
-        }
-	//connect "add" vertex to minidirect and mult
-        ((*theExpression).myExpression).addEdge(mult, add);
-        ((*theExpression).myExpression).addEdge(minidirect, add);
-        theCopy.removeAndDeleteEdge(*directEdge_pt);
-        (*theExpression).setMaximal(add);
-      }// end if
-      else{      //point the new edge to "mult"
-        (*theExpression).setMaximal(mult);	  
-      }// end else
-    }// end outedge iteration
-
-    //if the front elimination isolates the vertex, delete the vertex (which automatically deletes the edge)
-    if(theCopy.numInEdgesOf(theCopy.getTargetOf(theEdge)) == 1){
-      theCopy.removeFromVertexList(theCopy.getTargetOf(theEdge));
-      theCopy.removeAndDeleteVertex(theCopy.getTargetOf(theEdge));
-    }// end if
-    // if the elimination does not isolate the target vertex, we simply delete the edge
-    else{
-      theCopy.removeAndDeleteEdge(theEdge);
-    }
-
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-      GraphVizDisplay::show(theCopy,"intermediate");
-    }
-  }// end front_elim_edge
-
-  void EdgeElim::back_elim_edge(LinearizedComputationalGraphCopy& theCopy,
-				LinearizedComputationalGraphCopyEdge& theEdge,
-				xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
-
-    //iterator over inedges of theVertex
-    LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (theCopy.getInEdgesOf(theCopy.getSourceOf(theEdge)));
-    LinearizedComputationalGraphCopy::InEdgeIterator ie=inedges.first, iend=inedges.second;
-    for(; ie != iend; ++ie){
-      JacobianAccumulationExpressionCopy* theExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
-
-      //add first minimal vertex: edge into theVertex
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& miniin = ((*theExpression).myExpression).addVertex();
-      if((*ie).getRefType() == LinearizedComputationalGraphCopyEdge::TO_INTERNAL_EXPRESSION){
-        miniin.setInternalReference(((*ie).getJacobianRef()).getMaximal());
-      }
-      else{
-        miniin.setExternalReference((*ie).getOriginalRef());
-      }
-      //add second minimal vertex: the edge being eliminated
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& miniout = ((*theExpression).myExpression).addVertex();    
-      if(theEdge.getRefType() == LinearizedComputationalGraphCopyEdge::TO_INTERNAL_EXPRESSION){
-        miniout.setInternalReference((theEdge.getJacobianRef()).getMaximal());
-      }// end if
-      else{
-        miniout.setExternalReference(theEdge.getOriginalRef());
-      }// end else
-      //create "mult" vertex and connect it to miniin and miniout
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& mult = ((*theExpression).myExpression).addVertex();
-      mult.setOperation(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP);
-      ((*theExpression).myExpression).addEdge(miniin, mult);
-      ((*theExpression).myExpression).addEdge(miniout, mult);
-      
-      //iterator used to check for a direct edge from source to target
-      LinearizedComputationalGraphCopy::OutEdgeIteratorPair srcoutedges (theCopy.getOutEdgesOf(theCopy.getSourceOf(*ie)));
-      LinearizedComputationalGraphCopy::OutEdgeIterator srcoe = srcoutedges.first, srcoend = srcoutedges.second;
-      LinearizedComputationalGraphCopyEdge* directEdge_pt = NULL;
-      for(; srcoe != srcoend; ++srcoe){
-	//if there already was a direct edge from the source vertex to the target vertex, directEdge_pt is set to point to that edge
-        if(&theCopy.getTargetOf(*srcoe) == &theCopy.getTargetOf(theEdge)){
-          directEdge_pt = &*srcoe;
-          break;
-        } //endif
-      }//end while
-
-      LinearizedComputationalGraphCopyEdge& theNewEdge = theCopy.addEdge(theCopy.getSourceOf(*ie), theCopy.getTargetOf(theEdge));
-
-      theNewEdge.setJacobianRef(theExpression);
-      if(directEdge_pt != NULL){        //create vertex for direct edge, and "add" vertex, point new edge to it
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& add = ((*theExpression).myExpression).addVertex();
-        add.setOperation(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP);
-        //add vertex for direct edge
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& minidirect = ((*theExpression).myExpression).addVertex();
-        if((*directEdge_pt).getRefType() == LinearizedComputationalGraphCopyEdge::TO_INTERNAL_EXPRESSION){
-          minidirect.setInternalReference(((*directEdge_pt).getJacobianRef()).getMaximal());
-        }
-        else{
-          minidirect.setExternalReference((*directEdge_pt).getOriginalRef());
-        }
-	//connect "add" vertex to minidirect and mult
-        ((*theExpression).myExpression).addEdge(mult, add);
-        ((*theExpression).myExpression).addEdge(minidirect, add);
-        theCopy.removeAndDeleteEdge(*directEdge_pt);
-        (*theExpression).setMaximal(add);
-      }// end if
-      else{      //point the new edge to "mult"
-        (*theExpression).setMaximal(mult);	  
-      }// end else
-    }// end inedge iteration
-
-    if(theCopy.numOutEdgesOf(theCopy.getSourceOf(theEdge)) == 1){
-      const LinearizedComputationalGraphCopy::ConstVertexPointerList& copyDependents = theCopy.getDependentList();
-      // if the now isolated vertex is not a dependent
-      if(find(copyDependents.begin(), copyDependents.end(), &theCopy.getSourceOf(theEdge)) == copyDependents.end()){
-	theCopy.removeFromVertexList(theCopy.getSourceOf(theEdge));
-	theCopy.removeAndDeleteVertex(theCopy.getSourceOf(theEdge));
-      }// end if
-      // is the source of the edge is a dependent vertex
-      else{
-	theCopy.removeAndDeleteEdge(theEdge);
-      }// end else
-
-    }// end if
-    // if the vertex is not now isolated
-    else{
-      theCopy.removeAndDeleteEdge(theEdge);
-    }// end else
-
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-      GraphVizDisplay::show(theCopy,"intermediate");
-    }
-  }// end back_elim_edge
 
 } // end of namespace
