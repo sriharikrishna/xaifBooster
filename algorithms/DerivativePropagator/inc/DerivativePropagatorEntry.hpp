@@ -1,13 +1,17 @@
-#ifndef _DERIVATIVEPROPAGATORENTRY_INCLUDE_
-#define _DERIVATIVEPROPAGATORENTRY_INCLUDE_
+#ifndef _XAIFBOOSTERDERIVATIVEPROPAGATORENTRY_INCLUDE_
+#define _XAIFBOOSTERDERIVATIVEPROPAGATORENTRY_INCLUDE_
 
 #include <list>
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 namespace xaifBooster { 
-
   class Variable; 
+}
+
+using namespace xaifBooster;
+
+namespace xaifBoosterDerivativePropagator { 
 
   class DerivativePropagatorEntry : public XMLPrintable {
   public:
@@ -38,6 +42,6 @@ namespace xaifBooster {
 
   }; // end of class DerivativePropagatorEntry
  
-} // end of namespace xaifBooster
+} // end of namespace
                                                                      
 #endif

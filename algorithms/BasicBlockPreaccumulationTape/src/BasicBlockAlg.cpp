@@ -1,5 +1,5 @@
 #include "xaifBooster/system/inc/BasicBlock.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
@@ -21,15 +21,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } // end of BasicBlockAlg::printXMLHierarchy
   
   void xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::printDerivativePropagatorAsTape(std::ostream& os,
- 												const DerivativePropagator& aPropagator) { 
+ 												const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) { 
     // create an InlinableSubroutinecall for each Variable in each saxpy element in the propagator
-    const DerivativePropagator::EntryList& theEntryList(aPropagator.getEntryList());
-    for (DerivativePropagator::EntryList::const_iterator entryListI=theEntryList.begin();
+    const xaifBoosterDerivativePropagator::DerivativePropagator::EntryList& theEntryList(aPropagator.getEntryList());
+    for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryList::const_iterator entryListI=theEntryList.begin();
  	 entryListI!=theEntryList.end();
  	 ++entryListI) { 
-      DerivativePropagatorEntry::VariablePList aVariablePList;
+      xaifBoosterDerivativePropagator::DerivativePropagatorEntry::VariablePList aVariablePList;
       (*entryListI)->getVariables(aVariablePList);
-      for (DerivativePropagatorEntry::VariablePList::iterator aVariablePListI=aVariablePList.begin();
+      for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::VariablePList::iterator aVariablePListI=aVariablePList.begin();
  	   aVariablePListI!=aVariablePList.end();
  	   ++aVariablePListI) { 
  	InlinableSubroutineCall theSubroutineCall("push");

@@ -1,10 +1,13 @@
-#ifndef _DERIVATIVEPROPAGATORSETDERIV_INCLUDE_
-#define _DERIVATIVEPROPAGATORSETDERIV_INCLUDE_
+#ifndef _XAIFBOOSTERDERIVATIVEPROPAGATORSETDERIV_INCLUDE_
+#define _XAIFBOOSTERDERIVATIVEPROPAGATORSETDERIV_INCLUDE_
 
 #include "xaifBooster/system/inc/Variable.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorEntry.hpp"
 
-namespace xaifBooster { 
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
+
+using namespace xaifBooster;
+
+namespace xaifBoosterDerivativePropagator { 
 
   class DerivativePropagatorSetDeriv : public DerivativePropagatorEntry {
   public:
@@ -55,6 +58,6 @@ namespace xaifBooster {
 
   }; // end of class DerivativePropagatorSetDeriv
  
-} // end of namespace xaifBooster
+} // end of namespace 
                                                                      
 #endif

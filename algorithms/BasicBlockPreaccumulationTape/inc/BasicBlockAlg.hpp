@@ -31,7 +31,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      * need to have something to take a function pointer from
      */
     static void printDerivativePropagatorAsTape(std::ostream& os,
- 						const DerivativePropagator& aPropagator);
+ 						const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator);
     
     /** 
      * no def

@@ -4,9 +4,11 @@
 
 #include "xaifBooster/system/inc/Variable.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSetDeriv.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterDerivativePropagator { 
 
   const std::string DerivativePropagatorSetDeriv::ourXAIFName("xaif:SetDeriv");
   const std::string DerivativePropagatorSetDeriv::our_myTarget_XAIFName("xaif:Tgt");
@@ -78,4 +80,4 @@ namespace xaifBooster {
     return myTarget;
   }
 
-} // end of namespace xaifBooster 
+} // end of namespace 

@@ -19,14 +19,17 @@ include ../../../Makefile.incl
 # pick up all algorith specific obj files
 ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o)
 
-VPATH+=../../CodeReplacement/lib
-LIBS+=-lxaifBoosterCodeReplacement
+VPATH+=../../CrossCountryInterface/lib
+LIBS+=-lxaifBoosterCrossCountryInterface
+
+VPATH+=../../DerivativePropagator/lib
+LIBS+=-lxaifBoosterDerivativePropagator
 
 VPATH+=../../InlinableXMLRepresentation/lib
 LIBS+=-lxaifBoosterInlinableXMLRepresentation
 
-VPATH+=../../CrossCountryInterface/lib
-LIBS+=-lxaifBoosterCrossCountryInterface
+VPATH+=../../CodeReplacement/lib
+LIBS+=-lxaifBoosterCodeReplacement
 
 # setup for ANGEL
 UNDEF_ENV_VARS=""

@@ -1,13 +1,17 @@
-#ifndef _DERIVATIVEPROPAGATORSAXPY_INCLUDE_
-#define _DERIVATIVEPROPAGATORSAXPY_INCLUDE_
+#ifndef _XAIFBOOSTERDERIVATIVEPROPAGATORSAXPY_INCLUDE_
+#define _XAIFBOOSTERDERIVATIVEPROPAGATORSAXPY_INCLUDE_
 
 #include <list>
+
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorEntry.hpp"
 
-namespace xaifBooster { 
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
+
+using namespace xaifBooster;
+
+namespace xaifBoosterDerivativePropagator { 
 
   class DerivativePropagatorSaxpy : public DerivativePropagatorEntry {
   public:
@@ -96,6 +100,6 @@ namespace xaifBooster {
 
   }; // end of class DerivativePropagatorSaxpy
  
-} // end of namespace xaifBooster
+} // end of namespace 
                                                                      
 #endif

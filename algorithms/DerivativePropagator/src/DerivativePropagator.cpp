@@ -2,14 +2,14 @@
 
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagator.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSetDeriv.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorZeroDeriv.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorZeroDeriv.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+namespace xaifBoosterDerivativePropagator { 
 
   const std::string DerivativePropagator::ourXAIFName("xaif:DerivativePropagator");
 
@@ -94,4 +94,4 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myEntryList;
   }
 
-} 
+} // end of namespace 
