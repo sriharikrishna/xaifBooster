@@ -1,7 +1,7 @@
 TARGET=head
 
 ifdef REVERSE_MODE
-REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_tape.o iaddr.o
+REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_rev.o OpenAD_tape.o iaddr.o
 TARGETDRIVER=driver_adm
 else
 TARGETDRIVER=driver
@@ -36,7 +36,7 @@ CC=gcc
 RM=rm -f
 
 $(TARGET).B: $(TARGET).f mfef90
-	./mfef90 $(TARGET).f
+	./mfef90 -F -N80 $(TARGET).f
 
 $(TARGET).xaif : $(TARGET).B whirl2xaif
 	./whirl2xaif -o $(TARGET).xaif $(TARGET).B
@@ -81,7 +81,7 @@ xaifBooster:
 	./pickAlgorithm.bash
 
 # make the $TARGETDRIVER)
-$(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o $(REVERSE_MODULES)
+$(TARGETDRIVER): w2f__types.o active_module.o $(REVERSE_MODULES) $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
 	$(F95) $^ -o $@
 
 run: params.conf tmpOutput $(TARGETDRIVER)
@@ -92,8 +92,8 @@ w2f__types.o : w2f__types.f
 	$(F95) -c $<
 
 # this is not free form fortran either
-$(TARGET).xb.x2w.w2f.pp.o : $(TARGET).xb.x2w.w2f.pp.f $(REVERSE_MODULES)
-	$(F95) -c $<
+$(TARGET).xb.x2w.w2f.pp.o : $(REVERSE_MODULES) $(TARGET).xb.x2w.w2f.pp.f 
+	$(F95) -c $(TARGET).xb.x2w.w2f.pp.f
 
 %.o:%.f
 	$(F95) -free -c $<

@@ -44,17 +44,17 @@
         <xaif:Entry vertex_id="1" annotation=""/>
         <xaif:BasicBlock vertex_id="2" annotation="" scope_id="2">
           <xaif:Assignment statement_id="ass1" active="1">
-            <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:AssignmentLHS active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
               </xaif:VariableReference>
-              <xaif:VariableReference vertex_id="2" active="true" deriv="0">
+              <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
               </xaif:VariableReference>
-              <xaif:VariableReference vertex_id="3" active="true" deriv="0">
+              <xaif:VariableReference vertex_id="3" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
               </xaif:VariableReference>
               <xaif:Intrinsic vertex_id="4" annotation="" name="mul_scal_scal"/>
@@ -74,15 +74,15 @@
         <xaif:Entry vertex_id="1" annotation=""/>
         <xaif:BasicBlock vertex_id="2" annotation="" scope_id="2">
           <xaif:Assignment statement_id="replacement for ass1" active="1">
-            <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:Intrinsic vertex_id="4" annotation="" name="mul_scal_scal"/>
-              <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
               </xaif:VariableReference>
-              <xaif:VariableReference vertex_id="2" active="true" deriv="0">
+              <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
               </xaif:VariableReference>
               <xaif:ExpressionEdge edge_id="1" source="1" target="4" position="1"/>
@@ -90,15 +90,15 @@
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:Assignment statement_id="replacement for ass1" active="1">
-            <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
-              <xaif:VariableReference vertex_id="3" active="true" deriv="0">
+              <xaif:VariableReference vertex_id="3" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
               </xaif:VariableReference>
-              <xaif:VariableReference vertex_id="4" active="false" deriv="0">
+              <xaif:VariableReference vertex_id="4" active="false" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
               </xaif:VariableReference>
               <xaif:ExpressionEdge edge_id="3" source="3" target="5" position="1"/>
@@ -106,64 +106,64 @@
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:Assignment statement_id="elementary_partial" active="0">
-            <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:Assignment statement_id="elementary_partial" active="0">
-            <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:Assignment statement_id="elementary_partial" active="0">
-            <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:Assignment statement_id="elementary_partial" active="0">
-            <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:Assignment statement_id="ass1: delayed LHS assignment for correct partials" active="1">
-            <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:AssignmentLHS active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:Assignment statement_id="jacobian_accumulation" active="1">
-            <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" scope_id="1"/>
               </xaif:VariableReference>
-              <xaif:VariableReference vertex_id="2" active="false" deriv="0">
+              <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" scope_id="1"/>
               </xaif:VariableReference>
               <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
@@ -172,14 +172,14 @@
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:Assignment statement_id="jacobian_accumulation" active="1">
-            <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" scope_id="1"/>
               </xaif:VariableReference>
-              <xaif:VariableReference vertex_id="2" active="false" deriv="0">
+              <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" scope_id="1"/>
               </xaif:VariableReference>
               <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
@@ -188,27 +188,27 @@
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:Assignment statement_id="jacobian_accumulation" active="1">
-            <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
@@ -221,94 +221,94 @@
         <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
         <xaif:BasicBlock vertex_id="2" annotation="" scope_id="2">
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_12" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_12" scope_id="2"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="2"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" scope_id="2"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="1"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="1"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" scope_id="1"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
@@ -322,17 +322,17 @@
         <xaif:Exit vertex_id="2" annotation="cp_exit"/>
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="2">
           <xaif:InlinableSubroutineCall subroutine_name="cp_arg_store" statement_id="cp_arg_store">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_arg_store" statement_id="cp_arg_store">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_arg_store" statement_id="cp_arg_store">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
@@ -345,17 +345,17 @@
         <xaif:Exit vertex_id="2" annotation="cp_exit"/>
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="2">
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_store" statement_id="cp_res_store">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_store" statement_id="cp_res_store">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_store" statement_id="cp_res_store">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
@@ -368,17 +368,17 @@
         <xaif:Exit vertex_id="2" annotation="cp_exit"/>
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="2">
           <xaif:InlinableSubroutineCall subroutine_name="cp_arg_restore" statement_id="cp_arg_restore">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_arg_restore" statement_id="cp_arg_restore">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_arg_restore" statement_id="cp_arg_restore">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
@@ -391,17 +391,17 @@
         <xaif:Exit vertex_id="2" annotation="cp_exit"/>
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="2">
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore" statement_id="cp_res_restore">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore" statement_id="cp_res_restore">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore" statement_id="cp_res_restore">
-            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>

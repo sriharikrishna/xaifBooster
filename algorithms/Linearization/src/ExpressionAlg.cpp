@@ -162,6 +162,11 @@ namespace xaifBoosterLinearization {
 		  << " the set of used positions is " 
 		  << theUsedPositions.debug().c_str());
 	Expression::ConstInEdgeIterator anExpressionEdgeI2_1(pE.first);
+	// first add the result (position 0) if needed:
+	if (usedByThisPartial.has(0))
+	    theI2EdgeAlg.addArgumentsConcretizationPair(getContaining().getTargetOf(*anExpressionEdgeI2_1),
+							thePartialExpression.getPartialArgumentAt(0));
+	// then go to all arguments:
 	for (;anExpressionEdgeI2_1!=anExpressionEdgeIEnd;++anExpressionEdgeI2_1) { // inner inner loop over all arguments to determine
 	  // matches for this partial expression: 
 	  if (usedByThisPartial.has((*anExpressionEdgeI2_1).getPosition()))

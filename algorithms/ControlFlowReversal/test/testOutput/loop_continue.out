@@ -17,19 +17,19 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
     </xaif:AliasSetList>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" annotation="" active="1">
+    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="x" scope_id="2" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="3" symbol_id="y" scope_id="2" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="x" scope_id="2" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="3" symbol_id="y" scope_id="2" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation=""/>
       <xaif:PreLoop vertex_id="2" annotation="">
         <xaif:Condition>
           <xaif:BooleanOperation vertex_id="1" name="less_than"/>
-          <xaif:VariableReference vertex_id="2" active="true" deriv="0">
+          <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:VariableReference>
-          <xaif:VariableReference vertex_id="3" active="true" deriv="0">
+          <xaif:VariableReference vertex_id="3" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
           </xaif:VariableReference>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
@@ -38,11 +38,11 @@
       </xaif:PreLoop>
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
         <xaif:Assignment statement_id="1" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
+          <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="2" type="integer" value="1"/>
@@ -55,11 +55,11 @@
       <xaif:Goto vertex_id="4" annotation=""/>
       <xaif:BasicBlock vertex_id="5" annotation="" scope_id="2">
         <xaif:Assignment statement_id="2" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
+          <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="2" type="integer" value="1"/>
@@ -73,7 +73,7 @@
       <xaif:Exit vertex_id="7" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_4" annotation="_cfr_" scope_id="1">
         <xaif:Assignment statement_id="_cfr_init" active="0">
-          <xaif:AssignmentLHS active="false" deriv="0">
+          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
@@ -83,7 +83,7 @@
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_5" annotation="_cfr_" scope_id="1">
         <xaif:Assignment statement_id="_cfr_init" active="0">
-          <xaif:AssignmentLHS active="false" deriv="0">
+          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_1" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
@@ -92,8 +92,8 @@
         </xaif:Assignment>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
-        <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="_cfr_push">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_1" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
@@ -111,11 +111,11 @@
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
         <xaif:Assignment statement_id="1" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
+          <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="2" type="integer" value="1"/>
