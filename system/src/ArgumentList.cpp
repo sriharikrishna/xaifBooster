@@ -64,8 +64,13 @@ namespace xaifBooster {
     if (myScope_p)
       THROW_LOGICEXCEPTION_MACRO("ArgumentList::setScope: cannot reset");
     myScope_p=&aScope;
+  } 
+
+  Scope& ArgumentList::getScope() const { 
+    return *myScope_p;
   }
 
+/* UN: want this later on
   Scope& ArgumentList::getScope() { 
     return *myScope_p;
   }
@@ -73,5 +78,6 @@ namespace xaifBooster {
   const Scope& ArgumentList::getScope() const { 
     return *myScope_p;
   }
+*/
 
 } // end of namespace xaifBooster 

@@ -10,9 +10,9 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : original(false), myOriginalEdge_p(NULL), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : toLoopBody(false), original(false), myOriginalEdge_p(NULL), myNewEdge_p(NULL) {}
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : original(true), myOriginalEdge_p(theOriginal), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : toLoopBody(false), original(true), myOriginalEdge_p(theOriginal), myNewEdge_p(NULL) {}
 
   ReversibleControlFlowGraphEdge::~ReversibleControlFlowGraphEdge() { 
     if (!original) delete myNewEdge_p;
@@ -44,7 +44,7 @@ namespace xaifBoosterControlFlowReversal {
         os << src.myNewVertex_p->getId().c_str();
       os << "\" " << myOriginalEdge_p->our_target_XAIFName << "=\"";
       const ReversibleControlFlowGraphVertex& tgt = theGraph.getTargetOf(*this);
-      if (src.original)
+      if (tgt.original)
         os << tgt.myOriginalVertex_p->getId().c_str();
       else
         os << tgt.myNewVertex_p->getId().c_str();
@@ -68,7 +68,7 @@ namespace xaifBoosterControlFlowReversal {
         os << src.myNewVertex_p->getId().c_str();
       os << "\" " << myNewEdge_p->our_target_XAIFName << "=\"";
       const ReversibleControlFlowGraphVertex& tgt = theGraph.getTargetOf(*this);
-      if (src.original)
+      if (tgt.original)
         os << tgt.myOriginalVertex_p->getId().c_str();
       else
         os << tgt.myNewVertex_p->getId().c_str();

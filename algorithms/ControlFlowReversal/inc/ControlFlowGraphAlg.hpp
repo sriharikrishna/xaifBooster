@@ -16,7 +16,7 @@ namespace xaifBoosterControlFlowReversal {
   class ControlFlowGraphAlg : public ControlFlowGraphAlgBase {
   public:
     
-    ControlFlowGraphAlg(ControlFlowGraph& theContaining);
+    ControlFlowGraphAlg(const ControlFlowGraph& theContaining);
                                                                                 
     ~ControlFlowGraphAlg();
 

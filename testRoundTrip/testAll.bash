@@ -1,5 +1,11 @@
 #!/bin/bash
-for i in `ls examples`
+if [ $# -gt 0 ]
+then
+    TESTFILES=$@
+else
+    TESTFILES=`ls examples`
+fi
+for i in `echo ${TESTFILES}`
 do 
   make clean
   echo "** running $i *************************************************"
