@@ -17,6 +17,14 @@ public:
     static const PartialDerivativeKind_E fromString(const std::string& aName);
     
     static const std::string our_attribute_XAIFName;
+    
+    /** 
+     * dependency comparison with min being PASSIVE
+     * and max being NONLINEAR
+     * this is a partial order
+     */
+    static PartialDerivativeKind_E leastDependent(PartialDerivativeKind_E aKind,
+						  PartialDerivativeKind_E anotherKind);
 
   }; // end of class PartialDerivativeKind
 

@@ -41,6 +41,8 @@ namespace xaifBooster {
     void setBuiltinFunctionName(std::string);
     std::string getBuiltinFunctionName() const;
     
+    PartialDerivativeKind::PartialDerivativeKind_E getPartialDerivativeKind() const; 
+
   private: 
 
     /**

@@ -60,4 +60,9 @@ namespace xaifBooster {
     return myUsedPositionalArguments;
   } 
 
+  PartialDerivativeKind::PartialDerivativeKind_E 
+  InlinableIntrinsicsExpression::getPartialDerivativeKind() const { 
+    return myPartialDerivativeKind;
+  } 
+
 } 

@@ -29,6 +29,10 @@ namespace xaifBoosterLinearization {
   void ExpressionEdgeAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
+  bool ExpressionEdgeAlg::hasPartial() const { 
+    return (myPartialDerivative_p!=0);
+  }
+
   const InlinableIntrinsicsExpression&  
   ExpressionEdgeAlg::getPartial() const { 
     if (!myPartialDerivative_p)
@@ -41,11 +45,13 @@ namespace xaifBoosterLinearization {
     if (myPartialDerivative_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::setPartial: already set");
     myPartialDerivative_p=&thePartial;
+    myConcretePartialDerivativeKind=PartialDerivativeKind::leastDependent(myConcretePartialDerivativeKind, 
+									  thePartial.getPartialDerivativeKind());
   } 
 
   void 
   ExpressionEdgeAlg::addArgumentsConcretizationPair(const ExpressionVertex& aConcreteArgument,
-						 const InlinableIntrinsicsExpressionVertex& anAbstractArgument) { 
+						    const InlinableIntrinsicsExpressionVertex& anAbstractArgument) { 
     // for safety check uniqueness
     for (VertexPairList::iterator it=myConcreteArgumentInstancesList.begin();
 	 it!=myConcreteArgumentInstancesList.end();
@@ -91,10 +97,6 @@ namespace xaifBoosterLinearization {
     myConcretePartialDerivativeKind=PartialDerivativeKind::PASSIVE;
   } 
   
-  void ExpressionEdgeAlg::setPartialDerivativeKind(PartialDerivativeKind::PartialDerivativeKind_E theKind) { 
-    myConcretePartialDerivativeKind=theKind;
-  } 
-
   const ExpressionEdgeAlg::VertexPairList& ExpressionEdgeAlg::getConcreteArgumentInstancesList() const { 
     return myConcreteArgumentInstancesList;
   }

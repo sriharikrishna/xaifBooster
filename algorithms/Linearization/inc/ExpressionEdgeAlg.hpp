@@ -27,6 +27,8 @@ namespace xaifBoosterLinearization {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    bool hasPartial() const; 
+
     const InlinableIntrinsicsExpression& getPartial() const ;
 
     void setPartial(const InlinableIntrinsicsExpression& thePartial);
@@ -47,7 +49,7 @@ namespace xaifBoosterLinearization {
     typedef std::list<VertexPair> VertexPairList;
 
     PartialDerivativeKind::PartialDerivativeKind_E getPartialDerivativeKind() const;
-    void setPartialDerivativeKind(PartialDerivativeKind::PartialDerivativeKind_E );
+    //    void setPartialDerivativeKind(PartialDerivativeKind::PartialDerivativeKind_E );
 
     void passivate();
 
