@@ -29,6 +29,9 @@ namespace xaifBooster {
     case TEMPORARY: 
       returnString="TEMPORARY";
       break;
+    case WARNING:
+      returnString="WARNING";
+      break;
     default: 
       throw PrintingIntException("DbgGroup::toString: unknown value",aGroup);
       break;

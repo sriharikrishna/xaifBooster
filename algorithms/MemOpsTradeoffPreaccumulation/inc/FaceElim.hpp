@@ -20,44 +20,14 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
   public:
 
-    /**    
-     */
-    static void forwardMode_f(
-      const DualGraph& theDual,
-      DualGraph::FacePointerList& theOldFaceList,
-      const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList);
-
     /**
      */
-    static void reverseMode_f(
-      const DualGraph& theDual,
-      DualGraph::FacePointerList& theOldFaceList,
-      const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList);
-
-    /**
-     */
-    static void markowitzMode_f(
-      const DualGraph& theDual,
-      DualGraph::FacePointerList& theOldFaceList,
-      const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList);
-
-    /**
-     */
-    static void siblingMode_f(
-      const DualGraph& theDual,
-      DualGraph::FacePointerList& theOldFaceList,
-      const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList);
-
-    /**
-     */
-    static void elim_face(
+    static void absorbMode_f(
       DualGraph& theDual,
-      DualGraphEdge& theFace,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
+      DualGraph::FacePointerList& theOldFaceList,
+      const DualGraph::VertexPointerList& thePredList,
+      const DualGraph::VertexPointerList& theSuccList,
+      DualGraphVertex* newOrAbsorb);
 
   };  // end of class
 

@@ -28,7 +28,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * forwardmode makes no use of the predecessor and successor lists .    
      */
     static void forwardMode_e(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -40,7 +40,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * reversemode makes no use of the predecessor and successor lists   .  
      */
     static void reverseMode_e(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -50,7 +50,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * markowitzmode makes no use of the predecessor and successor lists.
      */
     static void markowitzMode_e(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -65,28 +65,10 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * the edge list is not changed.
      */
     static void sibling2Mode_e(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
-
-    /**
-     * front_elim_edge receives an edge to be front eliminated.  the edge is eliminated, the corresponding
-     * new edges are created, and the relevant accumulation expressions are constructed and added to the list.
-     */
-    static void front_elim_edge(
-      LinearizedComputationalGraphCopy& theCopy,
-      LinearizedComputationalGraphCopyEdge& theEdge,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
-
-    /**
-     * back_elim_edge receives an edge to be back eliminated.  the edge is eliminated, the corresponding
-     * new edges are created, and the relevant accumulation expressions are constructed and added to the list.
-     */
-    static void back_elim_edge(
-      LinearizedComputationalGraphCopy& theCopy,
-      LinearizedComputationalGraphCopyEdge& theEdge,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
 
   };  // end of class
 
