@@ -48,4 +48,17 @@ namespace xaifBoosterDerivativePropagator {
     return out.str();
   } // end of DerivativePropagatorZeroDeriv::debug
 
+  void DerivativePropagatorZeroDeriv::getSources(VariablePList& theVariablePList) const { 
+  }
+
+  void  DerivativePropagatorZeroDeriv::getFactors(FactorList& theFactorList) const { 
+    Factor aFactor;
+    aFactor.setZero();
+    theFactorList.push_back(aFactor);
+  } 
+
+  const Variable& DerivativePropagatorZeroDeriv::getTarget() const { 
+    return myTarget;
+  } 
+
 } // end of namespace 

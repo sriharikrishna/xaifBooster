@@ -34,6 +34,10 @@ namespace xaifBoosterDerivativePropagator {
 
     static const std::string our_mySource_XAIFName;
 
+    virtual void  getSources(VariablePList& theVariablePList) const ; 
+
+    virtual void  getFactors(FactorList& theFactorList) const ; 
+
     const Variable& getTarget() const;
 
   private:

@@ -27,15 +27,17 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryList::const_iterator entryListI=theEntryList.begin();
  	 entryListI!=theEntryList.end();
  	 ++entryListI) { 
-      xaifBoosterDerivativePropagator::DerivativePropagatorEntry::VariablePList aVariablePList;
-      (*entryListI)->getVariables(aVariablePList);
-      for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::VariablePList::iterator aVariablePListI=aVariablePList.begin();
- 	   aVariablePListI!=aVariablePList.end();
- 	   ++aVariablePListI) { 
- 	InlinableSubroutineCall theSubroutineCall("push");
-	theSubroutineCall.setId("inline_push");
- 	(*aVariablePListI)->copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
- 	theSubroutineCall.printXMLHierarchy(os);
+      xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList aFactorList;
+      (*entryListI)->getFactors(aFactorList);
+      for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::iterator aFactorListI=aFactorList.begin();
+ 	   aFactorListI!=aFactorList.end();
+ 	   ++aFactorListI) { 
+	if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) { 
+	  InlinableSubroutineCall theSubroutineCall("push");
+	  theSubroutineCall.setId("inline_push");
+	  (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
+	  theSubroutineCall.printXMLHierarchy(os);
+	}
       }
     } 
   } // end of xaifBoosterBasicBlockPreaccumulationTape::printDerivativePropagatorAsTape

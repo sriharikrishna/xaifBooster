@@ -4,6 +4,7 @@
 
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 
@@ -188,7 +189,14 @@ namespace xaifBoosterDerivativePropagator {
     return out.str();
   } // end of DerivativePropagatorSaxpy::debug
 
-  void  DerivativePropagatorSaxpy::getVariables(VariablePList& theVariablePList) const { 
+  void DerivativePropagatorSaxpy::getSources(VariablePList& theVariablePList) const { 
+    for (AXPList::const_iterator i=myAXPList.begin();
+	 i!=myAXPList.end();
+	 ++i)
+      theVariablePList.push_back(&(*i)->myX);
+  }
+
+  void  DerivativePropagatorSaxpy::getFactors(FactorList& theFactorList) const { 
     for (AXPList::const_iterator i=myAXPList.begin();
 	 i!=myAXPList.end();
 	 ++i) { 
@@ -197,9 +205,26 @@ namespace xaifBoosterDerivativePropagator {
       if(theA.numVertices()!=1) 
 	THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorSaxpy::getVariables: not defined for factor expressions");
       const ExpressionVertex& theVertex(*(theA.vertices().first));
-      if (theVertex.isArgument())
-	theVariablePList.push_back(&(dynamic_cast<const Argument&>(theVertex).getVariable()));
+      if (theVertex.isArgument()) { 
+	Factor aFactor;
+	aFactor.setVariable(dynamic_cast<const Argument&>(theVertex).getVariable());
+	theFactorList.push_back(aFactor);
+      }
+      else { 
+	// This cast shouldn't fail or something else is seriously wrong
+	Factor aFactor;
+	aFactor.setConstant(dynamic_cast<const Constant&>(theVertex));
+	theFactorList.push_back(aFactor);
+      } 
     }
-  }
+  } 
+
+  const Variable& DerivativePropagatorSaxpy::getTarget() const { 
+    return myY;
+  } 
+
+  bool DerivativePropagatorSaxpy::isIncremental() { 
+    return !useAsSaxFlag;
+  }  
 
 } // end of namespace 
