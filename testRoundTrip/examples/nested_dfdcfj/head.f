@@ -44,9 +44,9 @@ c     MINPACK-2 Project. October 1991.
 c     Argonne National Laboratory and University of Minnesota.
 c     Brett M. Averick.
 c
-c
-c     Modified by Uwe Naumann to enable checkpointing in
-c     the adjoint code. ACTS Project, September 2004, RWTH Aachen
+c     Split routine into three routines head, foo, and bar to demonstrate
+c     subroutine level checkpointing in the adjoint code. 
+c     ACTS Project, September 2004, RWTH Aachen
 c
 c     **********
       double precision zero,one,two,three,four
