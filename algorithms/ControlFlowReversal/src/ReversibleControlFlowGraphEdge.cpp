@@ -83,21 +83,27 @@ namespace xaifBoosterControlFlowReversal {
       os << src.getOriginalVertex().getId().c_str();
     else
       os << src.getNewVertex().getId().c_str();
-    os << "\" " << ControlFlowGraphEdge::our_target_XAIFName << "=\"";
+    os << "\" " 
+       << ControlFlowGraphEdge::our_target_XAIFName.c_str() 
+       << "=\"";
     const ReversibleControlFlowGraphVertex& tgt = theGraph.getTargetOf(*this);
     if (tgt.isOriginal())
       os << tgt.getOriginalVertex().getId().c_str();
     else
       os << tgt.getNewVertex().getId().c_str();
     os << "\" "
-       << ControlFlowGraphEdge::our_myConditionValueFlag_XAIFName
+       << ControlFlowGraphEdge::our_myConditionValueFlag_XAIFName.c_str()
        << "=\""
        << myConditionValueFlag
-       << "\" "
-       << ControlFlowGraphEdge::our_myConditionValue_XAIFName
-       << "=\""
-       << myConditionValue
-       << "\"/>" << std::endl;
+       << "\"";
+    if (myConditionValueFlag) { 
+      os << " "
+	 << ControlFlowGraphEdge::our_myConditionValue_XAIFName.c_str()
+	 << "=\""
+	 << myConditionValue
+	 << "\"";
+    }
+    os << "\"/>" << std::endl;
     pm.releaseInstance();
   } // end of ReversibleControlFlowGraphEdge::printXMLHierarchy
 
