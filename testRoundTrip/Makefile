@@ -2,11 +2,14 @@ ifndef TARGET
 TARGET=head
 endif
 
+ifndef TARGET_DRIVER
+TARGET_DRIVER=driver_tlm
+endif
+
 ifdef REVERSE_MODE
 REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_rev.o OpenAD_tape.o iaddr.o
-TARGETDRIVER=driver_adm
+TARGET_DRIVER=driver_adm_split
 else
-TARGETDRIVER=driver
 PP_FLAGS=-f
 endif
 
@@ -31,9 +34,9 @@ endif
 
 LN=ln -sf
 
-F95=f95 -g 
+F95=ifort -g  
 
-CC=gcc
+CC=icc
 
 RM=rm -rf
 
@@ -88,12 +91,12 @@ whirl2f whirl2f_be:
 xaifBooster:
 	./pickAlgorithm.bash
 
-# make the $TARGETDRIVER)
-$(TARGETDRIVER): w2f__types.o active_module.o all_globals_mod.o $(REVERSE_MODULES) $(TARGETDRIVER).o $(TARGET).prh.xb.x2w.w2f.urh.pp.o 
+# make the $TARGET_DRIVER)
+$(TARGET_DRIVER): w2f__types.o active_module.o all_globals_mod.o all_globals_cp_mod.o $(REVERSE_MODULES) $(TARGET_DRIVER).o $(TARGET).prh.xb.x2w.w2f.urh.pp.o 
 	$(F95) $^ -o $@ 
 
-run: params.conf tmpOutput $(TARGETDRIVER)
-	./$(TARGETDRIVER)
+run: params.conf tmpOutput $(TARGET_DRIVER)
+	./$(TARGET_DRIVER)
 
 %.o:%.f
 	$(F95) -fixed -c $<
@@ -105,11 +108,11 @@ tmpOutput:
 	mkdir -p $@
 
 testAllclean: 
-	$(RM) $(TARGET).* $(TARGETDRIVER)* params.conf all_globals_mod* *mod-whirl tmpOutput
+	$(RM) $(TARGET).* $(TARGET_DRIVER)* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput
 
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f *.pl xaifBooster 
+	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f *.pl xaifBooster .lastRun
 	$(RM) *.mod *.o
 
 obj test doc: 
