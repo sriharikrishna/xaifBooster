@@ -132,73 +132,111 @@ namespace xaifBoosterLinearization {
     const ExpressionAlg::ArgumentPList& thePartialUsageList(theExpressionAlg.getPartialUsageList());
     AliasMap::AliasMapKeyList theUsedArgumentsKeyList;
     for(ExpressionAlg::ArgumentPList::const_iterator uLI=thePartialUsageList.begin();
-	uLI!=thePartialUsageList.end();
+	  uLI!=thePartialUsageList.end();
 	++uLI)
       theUsedArgumentsKeyList.push_back(&((*uLI)->getVariable().getAliasMapKey()));
     if (ConceptuallyStaticInstances::instance()->
-	getCallGraph().getAliasMap().
+	  getCallGraph().getAliasMap().
 	mayAlias(getContaining().getLHS().getAliasMapKey(),
 		 theUsedArgumentsKeyList)) 
-      // the top level node may not require replacement 
-      // itself but needs to be replaced if any subexpression is replaced: 
+      // The current final execution sequence is: 
+      //   the assignment or all replacement assignments in a block 
+      //   followed by the all partials pertaining to this assignment in a block
+      // Therefore the aliasing question applies to all inputs. 
+      // Note: 
+      // If we somehow changed the order that all partial expression follow immediately 
+      // their respective replacement assignments then the alias question would include 
+      // only those variables who appear in the top level replacement assignment. 
+      // This however is not the case here.
       needDelay=true;
+    // the top level node may not require replacement 
+    // itself but needs to be replaced if any subexpression is replaced: 
     if(mySSAReplacementAssignmentList.size() 
        || 
        needDelay) { 
-      Assignment& theReplacementAssignment(dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).
-					   makeReplacementAssignment());
-      theReplacementAssignment.setId("replacement for " + getContaining().getId());
-      // now we add a copy of the  target vertex  to the replacement assignment
-      ExpressionVertex& theReplacementTargetVertex((*ExpressionVertexI).createCopyOfMyself());
-      theReplacementAssignment.getRHS().supplyAndAddVertexInstance(theReplacementTargetVertex);
-      // keep track of the node map for the edges: 
-      PointerPairList theVertexPointerPairList; // first is the original, second is the copy
-      theVertexPointerPairList.push_back(PointerPair(&(*ExpressionVertexI),
-						     &theReplacementTargetVertex));
-      if (needDelay) { 
-	// need the extra temporary assignment: 
-	myDelayedLHSAssignment_p=new Assignment(true);
-	myDelayedLHSAssignment_p->setId(getContaining().getId()+ ": delayed LHS assignment for correct partials");
+      // we need a replacement assignment: 
+      // A: if the maximal vertex's value is needed for a partial 
+      //    in which case we already have a replacement assignment created
+      //    by the call to localRHSExtractionOuter further up in this code
+      // B: if there is any other replacement assignment in this expression because 
+      //    we need to create the replacement assignment for the 'remainder', 
+      //    i.e. all elements in this expression not covered by any of the previously 
+      //    created replacement assignments
+      if (!dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).hasReplacement()) { // this is case B
+	Assignment& theReplacementAssignment(dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).
+									getExpressionVertexAlgBase()).
+				     makeReplacementAssignment());
+	theReplacementAssignment.setId("replacement for " + getContaining().getId());
+	// now we add a copy of the  target vertex  to the replacement assignment
+	ExpressionVertex& theReplacementTargetVertex((*ExpressionVertexI).createCopyOfMyself());
+	theReplacementAssignment.getRHS().supplyAndAddVertexInstance(theReplacementTargetVertex);
+	// keep track of the node map for the edges: 
+	PointerPairList theVertexPointerPairList; // first is the original, second is the copy
+	theVertexPointerPairList.push_back(PointerPair(&(*ExpressionVertexI),
+						       &theReplacementTargetVertex));
+	if (needDelay) { // we create a new LHS which is the right hand side of the delay 
+	  // need the extra temporary assignment: 
+	  myDelayedLHSAssignment_p=new Assignment(true);
+	  myDelayedLHSAssignment_p->setId(getContaining().getId()+ ": delayed LHS assignment for correct partials");
 	// make a temporary Variable on the RHS:
+	  Argument* theDelayVertex_p=new Argument();
+	  theDelayVertex_p->setId(1);
+	  // add it to the RHS of the temp assignment
+	  myDelayedLHSAssignment_p->getRHS().supplyAndAddVertexInstance(*theDelayVertex_p);
+	  // set the alias key to temporary: 
+	  theDelayVertex_p->getVariable().getAliasMapKey().setTemporary();
+	  // get the global scope
+	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+				getCallGraph().getScopeTree().getGlobalScope());
+	  // create a new symbol and add a new VariableSymbolReference in the Variable
+	  VariableSymbolReference* theNewVariableSymbolReference_p=
+	    new VariableSymbolReference(theGlobalScope.
+					getSymbolTable().
+					addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							   SymbolType::REAL_STYPE,
+							   SymbolShape::SCALAR,
+							   false),
+					theGlobalScope);
+	  theNewVariableSymbolReference_p->setId("1");
+	  theDelayVertex_p->getVariable().
+	    supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+	  // set the new LHS to the original LHS
+	  getContaining().getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
+	  // make the temporary the LHS of theReplacementAssignment 
+	  theDelayVertex_p->getVariable().copyMyselfInto(theReplacementAssignment.getLHS());
+	} // end if 
+	else // no extra temporary needed, we use the original LHS
+	  getContaining().getLHS().copyMyselfInto(theReplacementAssignment.getLHS());
+	// create the top level replacement
+	// we iterate through all the in edges
+	Expression::InEdgeIteratorPair pInner(theExpression.getInEdgesOf((*ExpressionVertexI)));
+	Expression::InEdgeIterator ExpressionInEdgeI(pInner.first), ExpressionInEdgeIEnd(pInner.second);
+	for (;ExpressionInEdgeI!=ExpressionInEdgeIEnd;++ExpressionInEdgeI) { 
+	  localRHSExtractionInner(*ExpressionInEdgeI,
+				  theReplacementAssignment,
+				  (*ExpressionVertexI),
+				  theReplacementTargetVertex,
+				  theVertexPointerPairList);
+	} // end for 
+	mySSAReplacementAssignmentList.push_back(&theReplacementAssignment);	
+      } // end if case B
+      else { // this is case A
+	// we have the top level replacement, so we need the delay assignment no matter what
+	// but the difference is now that the RHS of the delay assignment is the LHS 
+	// of the top level replacement.
+	myDelayedLHSAssignment_p=new Assignment(true);
+	myDelayedLHSAssignment_p->setId(getContaining().getId()+ ": delayed LHS assignment for top level replacement");
+	// make a the replacement the RHS:
 	Argument* theDelayVertex_p=new Argument();
 	theDelayVertex_p->setId(1);
 	// add it to the RHS of the temp assignment
 	myDelayedLHSAssignment_p->getRHS().supplyAndAddVertexInstance(*theDelayVertex_p);
 	// set the alias key to temporary: 
-	theDelayVertex_p->getVariable().getAliasMapKey().setTemporary();
-	// get the global scope
-	Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-			      getCallGraph().getScopeTree().getGlobalScope());
-	// create a new symbol and add a new VariableSymbolReference in the Variable
-	VariableSymbolReference* theNewVariableSymbolReference_p=
-	  new VariableSymbolReference(theGlobalScope.
-				      getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::REAL_STYPE,
-							 SymbolShape::SCALAR,
-							 false),
-				      theGlobalScope);
-	theNewVariableSymbolReference_p->setId("1");
-	theDelayVertex_p->getVariable().
-	  supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+	dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).
+	  getReplacementAssignment().getLHS().copyMyselfInto(theDelayVertex_p->getVariable());
 	// set the new LHS to the original LHS
 	getContaining().getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
-	// make the temporary the LHS of theReplacementAssignment 
-	theDelayVertex_p->getVariable().copyMyselfInto(theReplacementAssignment.getLHS());
-      } // end if 
-      else // no extra temporary needed:  
-	getContaining().getLHS().copyMyselfInto(theReplacementAssignment.getLHS());
-      // we iterate through all the in edges
-      Expression::InEdgeIteratorPair pInner(theExpression.getInEdgesOf((*ExpressionVertexI)));
-      Expression::InEdgeIterator ExpressionInEdgeI(pInner.first), ExpressionInEdgeIEnd(pInner.second);
-      for (;ExpressionInEdgeI!=ExpressionInEdgeIEnd;++ExpressionInEdgeI) { 
-	localRHSExtractionInner(*ExpressionInEdgeI,
-				theReplacementAssignment,
-				(*ExpressionVertexI),
-				theReplacementTargetVertex,
-				theVertexPointerPairList);
-      } // end for 
-      mySSAReplacementAssignmentList.push_back(&theReplacementAssignment);	
+      } // end else (case A)
     } // end if  
   } // end of AssignmentAlg::makeSSACodeList
 

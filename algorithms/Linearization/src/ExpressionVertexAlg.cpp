@@ -92,6 +92,20 @@ namespace xaifBoosterLinearization {
     return *myReplacementAssignment_p;
   }
 
+  Assignment&
+  ExpressionVertexAlg::getReplacementAssignment() { 
+    if (!myReplacementAssignment_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::makeReplacementAssignment : has no replacement");
+    return *myReplacementAssignment_p;
+  }
+
+  const Assignment&
+  ExpressionVertexAlg::getReplacementAssignment() const { 
+    if (!myReplacementAssignment_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::makeReplacementAssignment : has no replacement");
+    return *myReplacementAssignment_p;
+  }
+
   bool ExpressionVertexAlg::isActive() const { 
     return myActiveFlag;
   } // end of ExpressionVertexAlg::isActive
