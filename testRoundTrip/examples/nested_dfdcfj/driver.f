@@ -17,11 +17,11 @@
 	double precision zero,one,two,three,four
 	parameter(zero=0.0d0,one=1.0d0,two=2.0d0,three=3.0d0,four=4.0d0)
 
-	nx1=10
-	nx2=10
+	nx1=5
+	nx2=5
 				!	  n should nx1*nx2 
-	n=100
-	m=100
+	n=25
+	m=25
 	h=0.00001
 	r%v=10.0
 	

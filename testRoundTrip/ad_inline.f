@@ -121,7 +121,6 @@ C $OpenAD$ INLINE DECLS
 C $OpenAD$ END DECLS
           theResFStackoffset=theResFStackoffset+1
           theResFStack(theResFStackoffset)=x%v
-          print*, "store idx, value, x ", theResFStackoffset, x%v
         end subroutine 
 
 
@@ -130,7 +129,6 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision :: x
 C $OpenAD$ END DECLS
-          print*, "restore idx, value, x ", theResFStackoffset, x%v
           x%v=theResFStack(theResFStackoffset)
           theResFStackoffset=theResFStackoffset+1
         end subroutine 

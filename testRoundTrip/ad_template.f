@@ -1,6 +1,8 @@
         subroutine template()
+          use OpenAD_dct
           use OpenAD_tape
           use OpenAD_rev
+          use OpenAD_checkpoints
 
           ! original arguments get inserted before version
           ! and declared here together with all local variables
@@ -8,21 +10,96 @@
 
 !$TEMPLATE_PRAGMA_DECLARATIONS
 
-          integer iaddr
+
+          ! checkpointing stacks and offsets
+          integer, parameter :: theMaxStackSize=2000
+
+          integer :: cp_loop_variable_1,cp_loop_variable_2,
+     +cp_loop_variable_3,cp_loop_variable_4
+          ! floats 'F'
+          double precision, dimension(theMaxStackSize), save :: 
+     +theArgFStack
+          integer, save :: theArgFStackoffset=0
+          double precision, dimension(theMaxStackSize), save :: 
+     +theResFStack
+          integer, save :: theResFStackoffset=0
+          ! integers 'I'
+          integer, dimension(theMaxStackSize), save :: 
+     +theArgIStack
+          integer, save :: theArgIStackoffset=0
+          integer, dimension(theMaxStackSize), save :: 
+     +theResIStack
+          integer, save :: theResIStackoffset=0
+          ! booleans 'B'
+          logical, dimension(theMaxStackSize), save :: 
+     +theArgBStack
+          integer, save :: theArgBStackoffset=0
+          logical, dimension(theMaxStackSize), save :: 
+     +theResBStack
+          integer, save :: theResBStackoffset=0
+          ! strings 'S'
+          character*(80), dimension(theMaxStackSize), save :: 
+     +theArgSStack
+          integer, save :: theArgSStackoffset=0
+          character*(80), dimension(theMaxStackSize), save :: 
+     +theResSStack
+          integer, save :: theResSStackoffset=0
+
+	  ! call external C function used in inlined code
+	  integer iaddr
           external iaddr
 
-         if (our_rev_mode%plain) then
+
+          if (our_rev_mode%arg_store) then 
+! store arguments
+!$PLACEHOLDER_PRAGMA$ id=4
+          end if 
+          if (our_rev_mode%arg_restore) then
+! restore arguments
+!$PLACEHOLDER_PRAGMA$ id=6
+          end if
+          if (our_rev_mode%plain) then
+            our_orig_mode=our_rev_mode
+            our_rev_mode%arg_store=.FALSE.
 ! original function
 !$PLACEHOLDER_PRAGMA$ id=1
-          end if
+            our_rev_mode=our_orig_mode
+          end if 
           if (our_rev_mode%tape) then
+            our_rev_mode%arg_store=.TRUE.
+            our_rev_mode%arg_restore=.FALSE.
+            our_rev_mode%res_store=.FALSE.
+            our_rev_mode%res_restore=.FALSE.
+            our_rev_mode%plain=.TRUE.
+            our_rev_mode%tape=.FALSE.
+            our_rev_mode%adjoint=.FALSE.
 ! taping
 !$PLACEHOLDER_PRAGMA$ id=2
+            our_rev_mode%arg_store=.FALSE.
+            our_rev_mode%arg_restore=.FALSE.
+            our_rev_mode%res_store=.FALSE.
+            our_rev_mode%res_restore=.FALSE.
+            our_rev_mode%plain=.FALSE.
+            our_rev_mode%tape=.FALSE.
+            our_rev_mode%adjoint=.TRUE.
+          end if 
+          if (our_rev_mode%res_store) then
+! store results
+!$PLACEHOLDER_PRAGMA$ id=5
+          end if 
+          if (our_rev_mode%res_restore) then
+! restore results
+!$PLACEHOLDER_PRAGMA$ id=7
           end if 
           if (our_rev_mode%adjoint) then
+            our_rev_mode%arg_store=.FALSE.
+            our_rev_mode%arg_restore=.TRUE.
+            our_rev_mode%res_store=.FALSE.
+            our_rev_mode%res_restore=.FALSE.
+            our_rev_mode%plain=.FALSE.
+            our_rev_mode%tape=.TRUE.
+            our_rev_mode%adjoint=.FALSE.
 ! adjoint
 !$PLACEHOLDER_PRAGMA$ id=3
           end if 
-          print*, "double_tape_pointer", double_tape_pointer
-          print*, "integer_tape_pointer", integer_tape_pointer
         end subroutine template
