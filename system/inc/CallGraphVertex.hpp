@@ -20,6 +20,7 @@ namespace xaifBooster {
 
     CallGraphVertex (const Symbol& theSymbol,
 		     const Scope& theScope,
+		     const Scope& theCFGScope,
 		     const bool activeFlag,
 		     bool makeAlgorithm=true);
 
