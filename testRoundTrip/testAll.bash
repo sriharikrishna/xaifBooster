@@ -63,8 +63,8 @@ do
 ### this is temporary until we got rid of the RETURNs
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    sed 's/RETURN//' head.xb.x2w.w2f.pp.f >| head.xb.x2w.w2f.pp.f.1
-    mv head.xb.x2w.w2f.pp.f.1 head.xb.x2w.w2f.pp.f
+    sed 's/RETURN//' head.prh.xb.x2w.w2f.urh.pp.f >| head.prh.xb.x2w.w2f.urh.pp.f.1
+    mv head.prh.xb.x2w.w2f.urh.pp.f.1 head.prh.xb.x2w.w2f.urh.pp.f
   fi
 ### end of temporary fix
   make $DRIVER_NAME
