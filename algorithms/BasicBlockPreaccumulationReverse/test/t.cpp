@@ -6,6 +6,7 @@
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -18,7 +19,8 @@ void Usage(char** argv) {
 	    << "                 both default to cout" << std::endl
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
-	    << "                 default to 0(ERROR)" << std::endl;
+	    << "                 default to 0(ERROR)" << std::endl
+	    << "             [-S] force statement level preaccumulation" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -28,8 +30,9 @@ int main(int argc,char** argv) {
   std::string inFileName, outFileName, intrinsicsFileName, schemaPath;
   // to contain the namespace url in case of -s having a schema location
   std::string aUrl;
+  bool forceStatementLevel=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgs",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsS",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -40,6 +43,8 @@ int main(int argc,char** argv) {
       DbgLoggerManager::instance()->setFile(CommandLineParser::instance()->argAsString('d'));
     if (CommandLineParser::instance()->isSet('g')) 
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
+    if (CommandLineParser::instance()->isSet('S')) 
+      forceStatementLevel=true;
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -51,6 +56,8 @@ int main(int argc,char** argv) {
     DBG_MACRO(DbgGroup::TEMPORARY,
 	      "t.cpp: " 
 	      << xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->debug().c_str());
+    if (forceStatementLevel)
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     if (schemaPath.size()) { 
@@ -72,7 +79,10 @@ int main(int argc,char** argv) {
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
-    newLocation.append(" xaif_output.xsd");
+    if (schemaPath.size())
+      newLocation.append(" "+schemaPath+"/xaif_output.xsd");
+    else 
+      newLocation.append(" xaif_output.xsd");
     Cg.resetSchemaLocation(newLocation);
     if (CommandLineParser::instance()->isSet('o')) { 
       std::ofstream theOutFile(CommandLineParser::instance()->argAsString('o').c_str(),
@@ -87,6 +97,10 @@ int main(int argc,char** argv) {
 	      "caught exception: " << e.getReason());
     return -1;
   } // end catch 
+  DBG_MACRO(DbgGroup::METRIC,"total number of assignments: "
+	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getAssignmentCounter()
+	    << " total number of Sequences: "
+	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getSequenceCounter());
   return 0;
 }
   

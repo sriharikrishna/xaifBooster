@@ -32,10 +32,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
        << "=\"" 
        << getContaining().getScope().getId().c_str()
        << "\" " 
-       << ArgumentSymbolReference::our_myActiveFlag_XAIFName.c_str() 
-       << "=\"" 
-       << getContaining().getActiveFlag()
-       << "\" " 
        << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str() 
        << "=\""
        << getContaining().getAnnotation().c_str()

@@ -3,8 +3,7 @@
 	  double precision, dimension(10), intent(out) :: y
 	  double precision pi
           integer i
-          
-          
+c$openad INDEPENDENT(x)
           pi=3.1415
           do i=1,9
             if (i>5) then
@@ -14,6 +13,5 @@
             end if 
           end do
           y(10)=y(1)*y(9) 
-          
-
+c$openad DEPENDENT(y)
 	end subroutine

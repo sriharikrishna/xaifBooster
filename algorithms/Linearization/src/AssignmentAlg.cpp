@@ -1,3 +1,4 @@
+
 #include <sstream>
 
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
@@ -23,7 +24,8 @@ namespace xaifBoosterLinearization {
     AssignmentAlgBase(theContainingAssignment),
     myHaveLinearizedRightHandSide(false),
     myDelayedLHSAssignment_p(0),
-    myActiveFlag(theContainingAssignment.getActiveFlag()) { 
+    myActiveFlag(true), // note: delayed initialization
+    myActiveFlagInit(false) { 
   }
 
   std::string AssignmentAlg::debug() const { 
@@ -136,16 +138,16 @@ namespace xaifBoosterLinearization {
     // correctness of partial calculations: 
     ExpressionAlg& theExpressionAlg(dynamic_cast<ExpressionAlg&>(theExpression.getExpressionAlgBase()));
     const ExpressionAlg::ArgumentPList& thePartialUsageList(theExpressionAlg.getPartialUsageList());
-    AliasMap::AliasMapKeyList theUsedArgumentsKeyList;
+    AliasMap::AliasMapKeyPList theUsedArgumentsKeyPList;
     const Assignment& theContainingAssignment(dynamic_cast<const Assignment&>(getContaining()));
     for(ExpressionAlg::ArgumentPList::const_iterator uLI=thePartialUsageList.begin();
 	uLI!=thePartialUsageList.end();
 	++uLI)
-      theUsedArgumentsKeyList.push_back(&((*uLI)->getVariable().getAliasMapKey()));
+      theUsedArgumentsKeyPList.push_back(&((*uLI)->getVariable().getAliasMapKey()));
     if (ConceptuallyStaticInstances::instance()->
 	getCallGraph().getAliasMap().
 	mayAlias(theContainingAssignment.getLHS().getAliasMapKey(),
-		 theUsedArgumentsKeyList)) 
+		 theUsedArgumentsKeyPList)) 
       // The current final execution sequence is: 
       //   the assignment or all replacement assignments in a block 
       //   followed by the all partials pertaining to this assignment in a block
@@ -390,6 +392,7 @@ namespace xaifBoosterLinearization {
       // note that the 'active'=true may just 
       // be the default set by the schema...
       myActiveFlag=false;
+      myActiveFlagInit=true;
       // skip the rest
       return;
     }
@@ -410,6 +413,7 @@ namespace xaifBoosterLinearization {
     if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()) { 
       // make the entire assignment passive
       myActiveFlag=false;
+      myActiveFlagInit=true;
     }
     if (!myActiveFlag)
       return;
@@ -449,6 +453,7 @@ namespace xaifBoosterLinearization {
 	 !dynamic_cast<const Argument&>(*iV).getVariable().getActiveType())) {
       // make the entire assignment passive
       myActiveFlag=false;
+      myActiveFlagInit=true;
       // remove all possibly created code: 
       if (myDelayedLHSAssignment_p) { 
 	delete myDelayedLHSAssignment_p;
@@ -484,7 +489,9 @@ namespace xaifBoosterLinearization {
 
   Expression& AssignmentAlg::getLinearizedRightHandSide() { 
     if (!myHaveLinearizedRightHandSide)
-      THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::getLinearizedRightHandSide: this has not been linearized");
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::getLinearizedRightHandSide: "
+				 << getContainingAssignment().debug().c_str()
+				 << " has not been linearized");
     return myLinearizedRightHandSide;
   } // end of AssignmentAlg::getLinearizedRightHandSide
 
@@ -499,6 +506,10 @@ namespace xaifBoosterLinearization {
   } // end of AssignmentAlg::haveLinearizedRightHandSide
 
   bool AssignmentAlg::getActiveFlag() const { 
+    if (!myActiveFlagInit) { 
+      myActiveFlag=getContainingAssignment().getLHS().getActiveFlag();
+      myActiveFlagInit=true;
+    }
     return myActiveFlag;
   } 
 

@@ -52,13 +52,27 @@ namespace xaifBooster {
     /**
      * perform a deep copy of the contents 
      * into theTarget
+     * \param withNewId indicates if the graph 
+     * elements will have their own Id's  
+     * created from getNexVertex/EdgeId()
      * \param withAlgorithm indicates if the graph 
      * elements will have their algorithm objects 
      * created.
      */
     void copyMyselfInto(Expression& theTarget,
 			bool withNewId,
-			bool withAlgorithm) const;  //changing the function and removing default conditions: 	bool withAlgorithm=false,bool withNewId=false)
+			bool withAlgorithm) const;  
+
+    /**
+     * similar to copyMyselfInto
+     * perform a deep copy of the subexpression  contents 
+     * starting with theTopVertex into theTarget
+     * returning the copy of theTopVertex in theTarget
+     */
+    ExpressionVertex& copySubExpressionInto(Expression& theTarget,
+					    const ExpressionVertex& theTopVertex,
+					    bool withNewId,
+					    bool withAlgorithm) const;
     
     /** 
      * algorithm access where the Expression may 
@@ -76,6 +90,11 @@ namespace xaifBooster {
      */
     void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    /**
+     * finds top vertex of positional subexpression
+     */
+    const ExpressionVertex& findPositionalSubExpressionOf(const ExpressionVertex& aVertex,
+							  unsigned int aPosition) const;
 
   private:
 
@@ -86,6 +105,19 @@ namespace xaifBooster {
      * destruction
      */
     ExpressionAlgBase* myExpressionAlgBase_p;
+
+    typedef std::list<const ExpressionVertex*> ExpressionVertexPList;
+
+    /** 
+     * recursively invoked implementation for public copySubExpressionInto
+     */
+    void copySubExpressionInto(Expression& theTarget,
+					    const ExpressionVertex& theTopVertex,
+					    ExpressionVertex& theTopCopy,
+					    bool withNewId,
+					    bool withAlgorithm,
+					    ExpressionVertexPList theList) const;
+
 
   }; // end of class Expression
 

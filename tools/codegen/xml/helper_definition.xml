@@ -14,7 +14,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="1" nr_templates="1" outfile="helper_definition.inc">
 
-  <CodeGen:RepeatableCode nr_versions="26">
+  <CodeGen:RepeatableCode nr_versions="29">
     <CodeGen:CodeTemplate nr_entries="70">
       <CodeGen:StaticCode text="void "/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -169,6 +169,10 @@
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
+      <CodeGen:DynamicCode hook_ref="2" text="SideEffectList"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
       <CodeGen:DynamicCode hook_ref="2" text="SubroutineCall"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -190,6 +194,14 @@
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
       <CodeGen:DynamicCode hook_ref="2" text="Label"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
+      <CodeGen:DynamicCode hook_ref="2" text="DuUdMapEntry"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
+      <CodeGen:DynamicCode hook_ref="2" text="DuUdMap"/>
     </CodeGen:CodeVersion>
   </CodeGen:RepeatableCode>
 </CodeGen:Document>

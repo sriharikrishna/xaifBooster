@@ -70,6 +70,13 @@ int main(int argc,char** argv) {
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // analyze
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // generate code 
+    const std::string& oldSchemaLocation(Cg.getSchemaLocation());
+    std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
+    if (schemaPath.size())
+      newLocation.append(" "+schemaPath+"/xaif.xsd");
+    else 
+      newLocation.append(" xaif.xsd");
+    Cg.resetSchemaLocation(newLocation);
     if (CommandLineParser::instance()->isSet('o')) { 
       std::ofstream theOutFile(CommandLineParser::instance()->argAsString('o').c_str(),
 			       std::ios::out);

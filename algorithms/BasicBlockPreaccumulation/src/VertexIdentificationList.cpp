@@ -4,7 +4,8 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  VertexIdentificationList::VertexIdentificationList() { 
+  VertexIdentificationList::VertexIdentificationList() :
+    myBasedOnDuUdMapFlag(false) { 
   } 
 
   VertexIdentificationList::~VertexIdentificationList() {
@@ -31,7 +32,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     out << "]" 
 	<< std::ends;
     return out.str();
-  } // end of Symbol::debug
+  } 
 
   VertexIdentificationList::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
 					       const DuUdMapKey& aDuUdMapKey) : 
@@ -62,5 +63,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   }
 
-} // end of namespace 
+  void VertexIdentificationList::getAliasMapKeyPList(AliasMap::AliasMapKeyPList& anAliasMapKeyPList) const { 
+    for (ListItemPList::const_iterator aListIterator=myList.begin();
+	 aListIterator!=myList.end(); 
+	 ++aListIterator) { 
+      anAliasMapKeyPList.push_back(&((*aListIterator)->getAliasMapKey()));
+    } 
+  } 
 
+  void VertexIdentificationList::baseOnDuUdMap()const {
+    myBasedOnDuUdMapFlag=true;
+  } 
+
+  bool VertexIdentificationList::isDuUdMapBased() const { 
+    return myBasedOnDuUdMapFlag;
+  } 
+
+
+} // end of namespace 

@@ -76,14 +76,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// push later
       } // end if 
       else if (thePassiveIdResult==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
-	// note, this isn't the exact question to ask here but it is 
-	// a conservatively correct question to ask 
+	// note, that for the passive identification we have a misnomer here but 
+	// uniquely identified means positively passive identfied regardless if 
+	// the actual identification is unique to a particular LHS or not as long 
+	// as all possibly identified LHSs are passive.
 	// passivate this: 
 	dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).passivate();
       } // end if 
       else { // the vertex cannot be uniquely identified
-	if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED && 
-	    thePassiveIdResult==VertexIdentificationList::NOT_IDENTIFIED) {
+	if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
 	  // the RHS identification doesn't really matter since we cannot 
 	  // uniquely identify within the RHSs it is only important that we don't 
 	  // alias a preceding LHS
@@ -92,17 +93,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	else // there is an ambiguity
 	  // don't continue here. 
 	  // Note that this is the point where we cut off somewhat arbitrarily in 
-	  // two respects: 
-	  // A: we decide to break the flattening here because it is convenient
-	  //    but we could continue to flatten other not connected unambiguous portions 
-	  //    into this graph at the cost of more maintenance. see the basic block 
-	  //    flattening paper
-	  // B: for the purpose of identifying passive portions it would actually 
-	  //    be sufficient to just verify that all ambiguous definitions are 
-	  //    constant as well so we could proceed despite ambiguity. 
-	  //    Here too it requires additional logic and we don't expect any 
-	  //    significant gains in practice. Therefore we decided it is ok 
-	  //    to split here. For more detail see the basic block flattening paper. 
+	  // that we decide to break the flattening here because it is convenient
+	  // but we could continue to flatten other not connected unambiguous portions 
+	  // into this graph at the cost of more maintenance. see the basic block 
+	  // flattening paper
 	  return false;
       } // end else (no unique identification)
     } // end for all vertices in this LHS 
@@ -139,6 +133,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // and leave
       return;
     } 
+    BasicBlockAlgParameter::get().addMyselfToAssignmentIdList(getContainingAssignment());
+    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(BasicBlockAlgParameter::get().getAssignmentIdList());
     // now redo the activity analysis
 //     if (haveLinearizedRightHandSide() && 
 // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
@@ -154,8 +150,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
     if (!getActiveFlag()) { 
       if (getContainingAssignment().getLHS().getActiveType()) {   // but the LHS has active type
-	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS());
-	if (getContainingAssignment().getActiveFlag()) // this means the assignment has been passivated 
+	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS(),
+						      getContainingAssignment().getId());
+	if (getContainingAssignment().getLHS().getActiveFlag()) // this means the LHS has been passivated 
 	  BasicBlockAlgParameter::get().getDerivativePropagator(getContainingAssignment()).
 	    addZeroDerivToEntryPList(getContainingAssignment().getLHS());
       } // end if
@@ -214,7 +211,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      Variable& theVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	      if (theRHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) { 
 		theVertexIdentificationListActiveRHS.addElement(theVariable,
-								theLCGVertex_p);
+								theLCGVertex_p,
+								theKnownAssignments);
 		DBG_MACRO(DbgGroup::DATA,
 			  "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) added to RHS: "
 			  << theVertexIdentificationListActiveRHS.debug().c_str());
@@ -304,7 +302,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// where the top vertex is the top vertex of <some expression> which 
 	// has 't1' as LHS and now we would 
 	// try to add 't2' as another LHS.
-	// The clean solution to represent t2=t1 by adding another vertex 
+	// The clean solution is to represent t2=t1 by adding another vertex 
 	// with a special unit edge.
 	// the top node becomes the old LHS
 	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
@@ -333,16 +331,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       DBG_MACRO(DbgGroup::DATA,
 		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) after remove from RHS: "
 		<< theVertexIdentificationListActiveRHS.debug().c_str());
-      // a known active lhs cannot have a passive idenitification
+      // a known active lhs cannot have a passive identification
       theVertexIdentificationListPassive.removeIfIdentifiable(theLHS);
       // an overwritten LHS needs to refer to the respective last definition
       theVertexIdentificationListActiveLHS.removeIfIdentifiable(theLHS);
       theVertexIdentificationListActiveLHS.addElement(theLHS,
-					     	      theLHSLCGVertex_p);
+					     	      theLHSLCGVertex_p,
+						      getContainingAssignment().getId());
       theLHSLCGVertex_p->setLHSVariable(theLHS);
-      // JU: this is a temporary measure, add all LHSs to the 
-      // JU: list of dependent variables
-      theFlattenedSequence.addToDependentList(*theLHSLCGVertex_p);
+      // as we step through the assignments we add all 
+      // the left hand sides as dependendents and when we are 
+      // done with one flattening section we remove the ones not 
+      // needed
+      theFlattenedSequence.addToDependentList(*theLHSLCGVertex_p,
+					      getContainingAssignment().getId());
       DBG_MACRO(DbgGroup::DATA,
 		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "
 		<< theVertexIdentificationListPassive.debug().c_str()
@@ -355,5 +357,5 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
-  
+
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

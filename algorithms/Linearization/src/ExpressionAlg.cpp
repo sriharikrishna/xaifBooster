@@ -61,6 +61,10 @@ namespace xaifBoosterLinearization {
     for (;anExpressionVertexI!=anExpressionVertexIEnd;++anExpressionVertexI)
       if (!getContaining().numOutEdgesOf(*anExpressionVertexI))
 	break;
+    if (anExpressionVertexI==anExpressionVertexIEnd) 
+      THROW_LOGICEXCEPTION_MACRO("ExpressionAlg::activityAnalysis: Expression " 
+				 << getContaining().debug().c_str() 
+				 << " does not have a maximal vertex!");
     activityAnalysisBottomUpPass(*anExpressionVertexI);
     activityAnalysisTopDownPass(*anExpressionVertexI);
   } // end of  ExpressionAlg::activityAnalysis

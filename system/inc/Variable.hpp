@@ -17,7 +17,7 @@ namespace xaifBooster {
   class ArrayAccess;
 
   /**
-   * the default representation for VariableReferences as a graph
+   * the default representation for Variables as a graph
    */
   class Variable : public GraphWrapperTraversable<VariableVertex,VariableEdge> , 
 		   public XMLPrintable,
@@ -157,6 +157,13 @@ namespace xaifBooster {
      */
     bool getConstantUseFlag() const;
 
+    /** 
+     * returns the first VariableVertex that is a VariableSymbolReference
+     * \todo: this is a bit of a hack because we might 
+     * conceivably have something with more than one such vertex
+     */
+    const VariableSymbolReference& getVariableSymbolReference() const;
+
   private: 
     
     /** 
@@ -176,12 +183,7 @@ namespace xaifBooster {
      */
     bool myDerivFlag;
 
-    /** 
-     * returns the first VariableVertex that is a VariableSymbolReference
-     * \todo: this is a bit of a hack because we might 
-     * conceivably have something with more than one such vertex
-     */
-    const VariableSymbolReference& getVariableSymbolReference() const;
+  private:
 
     /** 
      * indicating how a variable is used, 
@@ -193,7 +195,7 @@ namespace xaifBooster {
      */
     mutable ActiveUseType::ActiveUseType_E myActiveUseType;
 
-    bool myActiveUseTypeSetFlag;
+    mutable bool myActiveUseTypeSetFlag;
 
     /**
      * defaults to false, 

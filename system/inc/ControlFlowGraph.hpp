@@ -1,7 +1,8 @@
 #ifndef _CONTROLFLOWGRAPH_INCLUDE_
 #define _CONTROLFLOWGRAPH_INCLUDE_
 
-#include "xaifBooster/system/inc/InOutList.hpp"
+#include "xaifBooster/system/inc/SideEffectList.hpp"
+#include "xaifBooster/system/inc/SideEffectListType.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphCommonAttributes.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphBase.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
@@ -48,8 +49,11 @@ namespace xaifBooster {
      */
     static const std::string our_myActiveFlag_XAIFName;
 
-    InOutList& getInOutList();
-    const InOutList& getInOutList() const;
+    Variable& addSideEffectReference(SideEffectListType::SideEffectListType_E aType);
+
+    const SideEffectList& getSideEffectList(SideEffectListType::SideEffectListType_E aType) const;
+
+    SideEffectList& getSideEffectList(SideEffectListType::SideEffectListType_E aType);
 
     /**
      * get algorithm
@@ -89,9 +93,32 @@ namespace xaifBooster {
     ControlFlowGraph();
 
     /**
-     * IN/OUT sets
+     * the list of Variables
+     * modified 
+     * by this subroutine and its callees
      */
-    InOutList myInOutList;
+    SideEffectList myModList;
+
+    /**
+     * the list of Variables
+     * modified 
+     * by this subroutine excluding its calles
+     */
+    SideEffectList myModLocalList;
+
+    /**
+     * the list of Variables
+     * read 
+     * by this subroutine and its callees
+     */
+    SideEffectList myReadList;
+
+    /**
+     * the list of Variables
+     * read 
+     * by this subroutine excluding its calles
+     */
+    SideEffectList myReadLocalList;
 
     /**
      * the flag indicating that this subroutine is active or passive

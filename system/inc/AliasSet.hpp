@@ -6,7 +6,7 @@
 
 namespace xaifBooster{ 
 
-  class BaseAlias;
+  class AliasRange;
 
   /**
    * class to hold an alias sets 
@@ -23,22 +23,23 @@ namespace xaifBooster{
 
     void printXMLHierarchy(std::ostream& os) const; 
 
-    void addAlias(unsigned int address);
-
     void addAlias(unsigned int lower,
-		  unsigned int upper);
+		  unsigned int upper,
+		  bool isPartial);
 
     bool sharesAliasWith(const AliasSet& anotherSet) const;
 
     bool mustAlias(const AliasSet& anotherSet) const;
 
+    bool subSetOf(const AliasSet& anotherSet) const;
+
+    typedef std::list<AliasRange*> AliasRangePList;
+
+    const AliasRangePList& getAliasRangePList() const;
+
   private:
 
-    void addAlias(BaseAlias* anAlias);
-
-    typedef std::list<BaseAlias*> AliasList;
-
-    AliasList myAliasList;
+    AliasRangePList myAliasRangePList;
 
     /**
      * no def
