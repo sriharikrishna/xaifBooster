@@ -568,54 +568,53 @@ namespace xaifBoosterControlFlowReversal {
       }
   }
 
-  bool 
-  ReversibleControlFlowGraph::topologicalSortRecursively(ReversibleControlFlowGraphVertex& theCurrentVertex_r, int& idx,std::vector<ReversibleControlFlowGraphVertex*>& tmpSortedVertices_p_v) {
+  /**
+   * assign index to current vertex and call on successors
+   */
+
+  void
+  ReversibleControlFlowGraph::topologicalSortRecursively(ReversibleControlFlowGraphVertex& theCurrentVertex_r, int& idx,std::stack<ReversibleControlFlowGraphVertex*>& endNodes_p_s_r) {
+    if (theCurrentVertex_r.getVisited()) return;
     theCurrentVertex_r.setVisited(true);
-    if (theCurrentVertex_r.isOriginal()&&theCurrentVertex_r.getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::GOTO) return false;
-    if ((!(theCurrentVertex_r.isOriginal()))||theCurrentVertex_r.isOriginal()&&theCurrentVertex_r.getOriginalControlFlowGraphVertexAlg().getKind()!= ControlFlowGraphVertexAlg::ENDLOOP) {
-      if (theCurrentVertex_r.isOriginal()&&(theCurrentVertex_r.getOriginalControlFlowGraphVertexAlg().getKind()!= ControlFlowGraphVertexAlg::FORLOOP||theCurrentVertex_r.getOriginalControlFlowGraphVertexAlg().getKind()!= ControlFlowGraphVertexAlg::PRELOOP)) {
-        { // loop body first
-        OutEdgeIteratorPair pie(getOutEdgesOf(theCurrentVertex_r));
-        OutEdgeIterator beginItie(pie.first),endItie(pie.second);
-        for (;beginItie!=endItie ;++beginItie) 
-          if ((*beginItie).toLoopBody) {
-            getTargetOf(*beginItie).setIndex(idx++);
-            tmpSortedVertices_p_v.push_back(&getTargetOf(*beginItie));
-            if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
-          }
-        }
-        { // then rest
-        OutEdgeIteratorPair pie(getOutEdgesOf(theCurrentVertex_r));
-        OutEdgeIterator beginItie(pie.first),endItie(pie.second);
-        for (;beginItie!=endItie ;++beginItie) 
-          if (!((*beginItie).toLoopBody)) {
-            if (getTargetOf(*beginItie).getVisited())
-              tmpSortedVertices_p_v[getTargetOf(*beginItie).getIndex()-1]=0;
-            getTargetOf(*beginItie).setIndex(idx++);
-            tmpSortedVertices_p_v.push_back(&getTargetOf(*beginItie));
-            if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
-          }
-        }
-      }
-      else {
-        {
-        OutEdgeIteratorPair pie(getOutEdgesOf(theCurrentVertex_r));
-        OutEdgeIterator beginItie(pie.first),endItie(pie.second);
-        for (;beginItie!=endItie ;++beginItie)
-          if (getTargetOf(*beginItie).getVisited())
-            tmpSortedVertices_p_v[getTargetOf(*beginItie).getIndex()-1]=0;
-          getTargetOf(*beginItie).setIndex(idx++);
-          if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
-        }
-        {
-        OutEdgeIteratorPair pie(getOutEdgesOf(theCurrentVertex_r));
-        OutEdgeIterator beginItie(pie.first),endItie(pie.second);
-        for (;beginItie!=endItie ;++beginItie) 
-          if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
-        }
-      }
+    // push current node to stack if ENDBRANCH and return
+    if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::ENDBRANCH) {
+      endNodes_p_s_r.push(&theCurrentVertex_r);
+      return;
+    } 
+    // set index of current node and increment
+    theCurrentVertex_r.setIndex(idx++);
+    mySortedVertices_p_l.push_back(&theCurrentVertex_r);
+    // return if ENDLOOP
+    if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::ENDLOOP) return;
+    // for loops make sure that loop body is tranversed first
+    if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::PRELOOP||theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::FORLOOP) {
+      OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(theCurrentVertex_r));
+      // sort loop body
+      OutEdgeIterator begin_oei_toLoopBody(theCurrentVertex_oeip.first),end_oei_toLoopBody(theCurrentVertex_oeip.second);
+      for (;begin_oei_toLoopBody!=end_oei_toLoopBody;++begin_oei_toLoopBody) 
+        if ((*begin_oei_toLoopBody).toLoopBody) 
+          topologicalSortRecursively(getTargetOf(*begin_oei_toLoopBody),idx,endNodes_p_s_r); 
+      // sort nodes after loop
+      OutEdgeIterator begin_oei_toAfterLoop(theCurrentVertex_oeip.first),end_oei_toAfterLoop(theCurrentVertex_oeip.second);
+      for (;begin_oei_toAfterLoop!=end_oei_toAfterLoop;++begin_oei_toAfterLoop) 
+        if (!(*begin_oei_toAfterLoop).toLoopBody) 
+          topologicalSortRecursively(getTargetOf(*begin_oei_toAfterLoop),idx,endNodes_p_s_r); 
     }
-    return true;
+    else { // go for all successors otherwise
+      OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(theCurrentVertex_r));
+      OutEdgeIterator begin_oei(theCurrentVertex_oeip.first),end_oei(theCurrentVertex_oeip.second);
+      for (;begin_oei!=end_oei;++begin_oei) 
+        topologicalSortRecursively(getTargetOf(*begin_oei),idx,endNodes_p_s_r); 
+    }
+    // if branch node then handle corresponding end node
+    if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::BRANCH) {
+      endNodes_p_s_r.top()->setIndex(idx++);
+      mySortedVertices_p_l.push_back(endNodes_p_s_r.top());
+      // sort successor  
+      OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(*(endNodes_p_s_r.top())));
+      topologicalSortRecursively(getTargetOf(*(theCurrentVertex_oeip.first)),idx,endNodes_p_s_r); 
+      endNodes_p_s_r.pop();
+    }
   }
 
   void
@@ -624,15 +623,8 @@ namespace xaifBoosterControlFlowReversal {
     clearIndeces();
     mySortedVertices_p_l.clear();
     int idx=1;
-    getEntry().setIndex(idx++);
-    std::vector<ReversibleControlFlowGraphVertex*> tmpSortedVertices_p_v;
-    tmpSortedVertices_p_v.push_back(&getEntry());
-    if (!topologicalSortRecursively(getEntry(),idx,tmpSortedVertices_p_v))
-      THROW_LOGICEXCEPTION_MACRO("Trying to sort an unstructured flow graph");
-    // copy into dense list
-    std::vector<ReversibleControlFlowGraphVertex*>::iterator tmpSortedVertices_p_v_it;
-    for (tmpSortedVertices_p_v_it=tmpSortedVertices_p_v.begin();tmpSortedVertices_p_v_it!=tmpSortedVertices_p_v.end();tmpSortedVertices_p_v_it++)
-      if (*tmpSortedVertices_p_v_it) mySortedVertices_p_l.push_back(*tmpSortedVertices_p_v_it);
+    std::stack<ReversibleControlFlowGraphVertex*> endNodes_p_s;
+    topologicalSortRecursively(getEntry(),idx,endNodes_p_s);
   }
 
   /*
