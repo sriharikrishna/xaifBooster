@@ -70,11 +70,14 @@ whirl2f whirl2f_be:
 
 xaifBooster:
 	$(COMPLAIN)
-	$(LN) ${XAIFBOOSTERROOT}/xaifBooster/algorithms/BasicBlockPreaccumulation/test/t  $@
+	$(LN) ${XAIFBOOSTERROOT}/xaifBooster/algorithms/ControlFlowReversal/test/t  $@
 
 # make the $TARGETDRIVER)
-$(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o
+$(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
 	$(F95) $^ -o $@
+
+run: params.conf tmpOutput
+	./driver
 
 # this is not free form fortran
 w2f__types.o : w2f__types.f
@@ -95,12 +98,23 @@ $(TARGETDRIVER).f :
 $(TARGET).f : 
 	ln -s simple.f $(TARGET).f
 
+# link the sample files if necessary
+params.conf : 
+	ln -s simple.params.conf params.conf
+
+tmpOutput: 
+	mkdir -p $@
+
+testclean:
+	$(RM) $(TARGET).B $(TARGET).x* $(TARGETDRIVER) $(TARGETDRIVER).o
+	$(RM) -r tmpOutput 
+
 # cleanup
-clean:
+clean: testclean
 	$(RM) *.xsd 
 	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f pp.pl xaifBooster 
-	$(RM) $(TARGET).B $(TARGET).x* $(TARGETDRIVER) $(TARGETDRIVER).o w2f__types.o active_module.o w2f__types.mod active_module.mod
+	$(RM) w2f__types.o active_module.o w2f__types.mod active_module.mod $(TARGET).f $(TARGETDRIVER).f tmpOutput verifiedOutput params.conf
 
 obj test doc: 
 
-.PHONY: all obj test doc clean
+.PHONY: all obj test doc clean testclean run
