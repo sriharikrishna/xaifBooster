@@ -51,12 +51,12 @@ do
     echo "ERROR in: make run"; exit -1;
   fi
   hasDiffAD=$(diff tmpOutput/ad.out $exdir/refOutput/ad.out)
-  if [ $? -ne 0 ] 
+  if [ $? -eq 2 ] 
   then 
     echo "ERROR in: diff tmpOutput/ad.out $exdir/refOutput/ad.out"; exit -1;
   fi
   hasDiffDD=$(diff tmpOutput/dd.out $exdir/refOutput/dd.out)
-  if [ $? -ne 0 ] 
+  if [ $? -eq 2 ] 
   then 
     echo "ERROR in: diff tmpOutput/dd.out $exdir/refOutput/dd.out"; exit -1;
   fi

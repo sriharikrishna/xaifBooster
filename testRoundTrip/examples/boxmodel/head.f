@@ -760,16 +760,16 @@ c-- parameters for numerically solving the steady state problem:
       noise_correlation_time = day*15.D0
 c-- time step:
       delta_t=5.D0*day
-      print *, 'delta_t = ', delta_t
+c     print *, 'delta_t = ', delta_t
 c-- integration time:
 cph time to stable solution:
 cph      integration_time=5000.D0*year
 cph time for the optimization
       integration_time=50.D0*year
-      print *, 'integration_time = ', integration_time
+c     print *, 'integration_time = ', integration_time
 c-- number of time steps:
       n_max = INT((integration_time/delta_t))
-      print *, 'n_max = ', n_max
+c     print *, 'n_max = ', n_max
 
       fdeps = 1.D-6
 
@@ -1015,7 +1015,7 @@ c-- inititialise this before loop to avoid additional forward run!
 CADJ INIT tapelev2    = USER
 CADJ INIT comlevfinal = COMMON, 1
 
-      print *, 'box_ini_fields START'
+c     print *, 'box_ini_fields START'
       call box_ini_fields
 
       maxlev2 = n_max/nlev1 + 1
@@ -1050,7 +1050,7 @@ cph(
 cph      print *, 'box_metric START'
 cph      call box_metric
 cph)
-      print *, 'box_final START'
+c     print *, 'box_final START'
       call box_final_state
 
 cph(
