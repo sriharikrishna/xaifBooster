@@ -11,6 +11,7 @@
 
 #include <list>
 #include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/LinearizedComputationalGraphCopyEdge.hpp"
 
@@ -37,7 +38,18 @@ namespace MemOpsTradeoffPreaccumulation {
     typedef std::list<edgeEntry> EdgePointerList;
 
     /**
-     * these functions return the independent and dependent  lists associated with the graph
+     * these functions facilitate the elimination of vertices and edges in an LCG.  the corresponding
+     * new edges are created, and the relevant accumulation expressions are constructed and added to the list.
+     */
+    void front_elim_edge(LinearizedComputationalGraphCopyEdge& theEdge,
+			 xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
+    void back_elim_edge(LinearizedComputationalGraphCopyEdge& theEdge,
+			xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
+    void elim_vertex(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theVertex,
+		     xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
+
+    /**
+     * these functions return the independent and dependent lists associated with the graph.
      */
     const ConstVertexPointerList& getIndependentList() const;
     const ConstVertexPointerList& getDependentList() const;

@@ -37,7 +37,6 @@ namespace MemOpsTradeoffPreaccumulation {
     
     FacePointerList populateElimList();
     bool isFinal(DualGraphVertex& theVertex) const;
-    void clearElimList();
 
     DualGraphVertex* elim_face(
       DualGraphEdge& theFace,
@@ -47,9 +46,7 @@ namespace MemOpsTradeoffPreaccumulation {
 
     PathList myPathList;
 
-  private: 
-
-    FacePointerList myElimList;
+  private:
 
   }; // end of class DualGraph 
 

@@ -7,62 +7,65 @@ namespace MemOpsTradeoffPreaccumulation {
   DualGraph::DualGraph(const LinearizedComputationalGraph& theOriginal){
 
     //Create Dual Graph Vertices
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIteratorPair deip (theOriginal.edges());
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIterator dei (deip.first), de_end (deip.second);
-      //iterate through edges in the original graph, and create a vertex in the dual for each one
-      for(; dei != de_end; ++dei){
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIteratorPair deip (theOriginal.edges());
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIterator dei (deip.first), de_end (deip.second);
+    //iterate through edges in the original graph, and create a vertex in the dual for each one
+    for(; dei != de_end; ++dei){
+      DualGraphVertex& DV = addVertex();
+      DV.setOriginalRef(*dei);
+    }// end for original edges
+
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair dv (theOriginal.vertices());
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator dvi (dv.first), dv_end (dv.second);
+    //iterate through vertices in the original graph, and create a vertex in the copy for each one
+    for(; dvi != dv_end; ++dvi){
+      if(theOriginal.numInEdgesOf(*dvi) == 0){
+
 	DualGraphVertex& DV = addVertex();
-	DV.setOriginalRef(*dei);
-      }// end for original edges
+	DV.setAssumedInEdgeRef(*dvi);
 
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair dv (theOriginal.vertices());
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator dvi (dv.first), dv_end (dv.second);
-      //iterate through vertices in the original graph, and create a vertex in the copy for each one
-      for(; dvi != dv_end; ++dvi){
-	if(theOriginal.numInEdgesOf(*dvi) == 0){
+	// for each outedge of the vertex, make an edge from that outedge vertex to the assumed inedge vertex
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair doe (theOriginal.getOutEdgesOf(*dvi));
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator doei (doe.first), doe_end (doe.second);
+	for(; doei != doe_end; ++doei){
+	  addEdge(DV, getDualVertex(*doei));
+	}// end for outedges
+      }// end if minimal
+      if(theOriginal.numOutEdgesOf(*dvi) == 0){
 
-	  DualGraphVertex& DV = addVertex();
-	  DV.setAssumedInEdgeRef(*dvi);
+	DualGraphVertex& DV = addVertex();
+	DV.setAssumedOutEdgeRef(*dvi);
 
-	  // for each outedge of the vertex, make an edge from that outedge vertex to the assumed inedge vertex
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair doe (theOriginal.getOutEdgesOf(*dvi));
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator doei (doe.first), doe_end (doe.second);
-	  for(; doei != doe_end; ++doei){
-	    addEdge(DV, getDualVertex(*doei));
-	  }// end for outedges
-	}// end if minimal
-	if(theOriginal.numOutEdgesOf(*dvi) == 0){
-
-	  DualGraphVertex& DV = addVertex();
-	  DV.setAssumedOutEdgeRef(*dvi);
-
-	  // for each inedge of the vertex, make an edge from the inedge to the assumed inedge vertex
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair die (theOriginal.getInEdgesOf(*dvi));
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator diei (die.first), die_end (die.second);
-	  for(; diei != die_end; ++diei){
-	    addEdge(getDualVertex(*diei), DV);
-	  }// end for inedges
-	}// end if maximal
-      }// end for original vertices
-
-      //generate edges in dual graph
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair dv2 (theOriginal.vertices());
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator dv2i (dv2.first), dv2_end (dv2.second);
-      for(; dv2i != dv2_end; ++dv2i){
-
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair die2 (theOriginal.getInEdgesOf(*dv2i));
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator die2i (die2.first), die2_end (die2.second);
-	for(; die2i != die2_end; ++die2i){
-
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair doe2 (theOriginal.getOutEdgesOf(*dv2i));
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator doe2i (doe2.first), doe2_end (doe2.second);
-	  for(; doe2i != doe2_end; ++doe2i){
-
-	    addEdge(getDualVertex(*die2i),getDualVertex(*doe2i));
-
-	  }// end for outedges
+	// for each inedge of the vertex, make an edge from the inedge to the assumed inedge vertex
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair die (theOriginal.getInEdgesOf(*dvi));
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator diei (die.first), die_end (die.second);
+	for(; diei != die_end; ++diei){
+	  addEdge(getDualVertex(*diei), DV);
 	}// end for inedges
-      }// end for original vertices
+      }// end if maximal
+    }// end for original vertices
+
+    //generate edges in dual graph
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair dv2 (theOriginal.vertices());
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator dv2i (dv2.first), dv2_end (dv2.second);
+    for(; dv2i != dv2_end; ++dv2i){
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair die2 (theOriginal.getInEdgesOf(*dv2i));
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator die2i (die2.first), die2_end (die2.second);
+      for(; die2i != die2_end; ++die2i){
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair doe2 (theOriginal.getOutEdgesOf(*dv2i));
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator doe2i (doe2.first), doe2_end (doe2.second);
+	for(; doe2i != doe2_end; ++doe2i){
+	  addEdge(getDualVertex(*die2i),getDualVertex(*doe2i));
+	}// end for outedges
+      }// end for inedges
+    }// end for original vertices
+
+    //mark all final vertices as such
+    DualGraph::VertexIteratorPair fip (vertices());
+    DualGraph::VertexIterator fipi (fip.first), fip_end (fip.second);
+    for(; fipi != fip_end; ++fipi){
+      (*fipi).final = isFinal(*fipi);
+    }// end for all vertices in the dual graph
 
   }// end constructor
 
@@ -115,8 +118,8 @@ namespace MemOpsTradeoffPreaccumulation {
         DualGraph::OutEdgeIteratorPair doe (getOutEdgesOf(*((**pathi).myPath).back()));
 	DualGraph::OutEdgeIterator doei (doe.first), doe_end (doe.second);
 	unsigned int i = 0;
+	//loop finds the correct successor to expand the path to
 	for(; doei != doe_end; ++doei){
-	  //check to see if there is already a path from the vertex to the successor
 	  if((**pathi).pathNum == i){
 	    break;
 	  }// end if
@@ -164,13 +167,15 @@ namespace MemOpsTradeoffPreaccumulation {
 
   DualGraph::FacePointerList DualGraph::populateElimList() {
 
+    FacePointerList myElimList;
+
     //iterate over all faces in the dual graph
     EdgeIteratorPair deip (edges());
     EdgeIterator dei (deip.first), de_end (deip.second);
     for(; dei != de_end; ++dei){
       //if the face is an intermediate and has no path conflicts
       if((numInEdgesOf(getSourceOf(*dei)) > 0) && (numOutEdgesOf(getTargetOf(*dei)) > 0)){
-	if(isFinal(getSourceOf(*dei)) || isFinal(getTargetOf(*dei))){
+	if((getSourceOf(*dei).final) || (getTargetOf(*dei).final)){
 	  myElimList.push_back(&*dei);
 	}// end if
       }// end if
@@ -195,120 +200,34 @@ namespace MemOpsTradeoffPreaccumulation {
     DualGraph::ConstOutEdgeIterator doei (doe.first), doe_end (doe.second);
 
     for(; diei != die_end; ++diei){
-      for(; doei != doe_end; ++doei){
-	if((numOutEdgesOf(getSourceOf(*diei)) > 1) && (numInEdgesOf(getTargetOf(*doei)) > 1)){
-
-	  for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-	    for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
-	      if(*svertex == &getSourceOf(*diei)){
-		//if path contains the vertex, go to next path
-		svertex++;
-		if(*svertex == &theVertex){break;}
-		svertex++;
-		svertex++;
-
-		for(; svertex != ((**spath).myPath).end(); svertex++){
-		  if(*svertex == &getTargetOf(*doei)){
-		    return false;
-		  }// end if we find 
-		}// end for all vertices after the pred
-
-		//if we dont find the succ, go to next path
-		break;
-
-	      }// end if vertex is the pred
-	    }// end for each vertex in the path
-	  }// end for all paths
-
-	}// end if pred and succ have alternate paths
-      }// end for all out edges
+      if(numOutEdgesOf(getSourceOf(*diei)) > 1){
+	for(; doei != doe_end; ++doei){
+	  if(numInEdgesOf(getTargetOf(*doei)) > 1){
+	    for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+	      for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
+		if(*svertex == &getSourceOf(*diei)){
+		  //if path contains the vertex, go to next path
+		  svertex++;
+		  if(*svertex == &theVertex){break;}
+		  svertex++;
+		  svertex++;
+		  for(; svertex != ((**spath).myPath).end(); svertex++){
+		    if(*svertex == &getTargetOf(*doei)){
+		      return false;
+		    }// end if we find 
+		  }// end for all vertices after the pred
+		  //if we dont find the succ, go to next path
+		  break;
+		}// end if vertex is the pred
+	      }// end for each vertex in the path
+	    }// end for all paths
+	  }// end if succ has alternate paths
+	}// end for all out edges
+      }// end if pred has alternate paths
     }// end for all inedges
 
     return true;
-
-    // if(numOutEdgesOf(getSourceOf(theFace)) > 1){
-
-//       // check for alternate paths from source
-//       //built list of reachable from target
-//       for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-// 	//for each vertex in the path
-// 	for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
-// 	  //if the path contains the target vertex
-// 	  if(*svertex == &getTargetOf(theFace)){
-// 	    vertexReach.push_back(((**spath).myPath).back());
-// 	    break;
-// 	  }// end if target is in path
-// 	}// end for vertices
-//       }// end for paths
-
-//       //go through list again, find paths that contain source
-//       for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-// 	//for each vertex in the path
-// 	for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
-// 	  //if the path contains the source of the face
-// 	  if(*svertex == &getSourceOf(theFace)){
-// 	    //if the path contains the face
-// 	    svertex++;
-// 	    if(*svertex == &getTargetOf(theFace)){break;}//leave this path
-// 	    //if path doesnt have source->target it doesnt have face
-// 	    for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
-// 	      if(*reachi == ((**spath).myPath).back()){
-// 		return false;
-// 	      }// end if reachi = svertex
-// 	    }// end for all vertexReach
-// 	    //if we have no conflicts, leave this path 
-// 	    break;
-// 	  }//end if path contains source
-// 	}//end for each vertex in the path
-//       }//end for all paths
-
-//       vertexReach.clear();
-//     }// end if
-  
-//     if(numInEdgesOf(getTargetOf(theFace)) > 1){
-
-//       // check for alternate paths to target
-//       //built list of reachable to source
-//       for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-// 	//for each vertex in the path
-// 	for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
-// 	  //if the path contains the source vertex push back the minimal vertex in the path
-// 	  if(*svertexr == &getSourceOf(theFace)){
-// 	    vertexReach.push_back(((**spath).myPath).front());
-// 	    break;
-// 	  }// end if source is in path
-// 	}// end for vertices
-//       }// end for paths
-
-//       //go through list again, find paths that contain target
-//       for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-// 	//for each vertex in the path
-// 	for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
-// 	  //if the path contains the target
-// 	  if(*svertexr == &getTargetOf(theFace)){
-// 	    //if the path contains the face
-// 	    svertexr++;
-// 	    if(*svertexr == &getSourceOf(theFace)){break;}//leave this path
-// 	    //if path doesnt have source->target it doesnt have face
-// 	    for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
-// 	      if(*reachi == ((**spath).myPath).front()){
-// 		return false;
-// 	      }// end if reachi = svertex
-// 	    }// end for all vertexReach
-// 	    //if we have no conflicts, leave this path 
-// 	    break;
-// 	  }//end if path contains source
-// 	}//end for each vertex in the path
-//       }//end for all paths
-//     }// end if
-
-//     return true;
-
   }// end isFinal
-
-  void DualGraph::clearElimList() {
-    myElimList.clear();
-  }
 
   DualGraphVertex* DualGraph::elim_face(DualGraphEdge& theFace,
 					const DualGraph::VertexPointerList& thePredList,
@@ -415,10 +334,12 @@ namespace MemOpsTradeoffPreaccumulation {
 	      }// end for each successor
 	      //if a direcpred wasnt in pred list  
 	      if(succi == theSuccList.end()){
+		std::cout << "This is the dreaded ERROR message.  Be very afraid." << std::endl;
 		THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
 	      }//end if a direcpred wasnt in pred list
 	    }// end for direct outedges
 	    if(i != theSuccList.size()){
+	      std::cout << "This is the dreaded ERROR message.  Be very afraid." << std::endl;
 	      THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
 	    }
 	    spath = myPathList.end();
@@ -431,6 +352,7 @@ namespace MemOpsTradeoffPreaccumulation {
 
     //if there was a direct vertex from predecessors to successors
     if(directVertex_pt != NULL){
+
       //create vertex for direct edge, and "add" vertex, point new edge to it
       xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& add = ((*theExpression).myExpression).addVertex();
       add.setOperation(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP);
@@ -453,7 +375,7 @@ namespace MemOpsTradeoffPreaccumulation {
     }// end else
   
     //if the face elimination isolates both the source and the target, delete them both (which automatically deletes the face)
-    if(numOutEdgesOf(getSourceOf(theFace))*numInEdgesOf(getTargetOf(theFace)) == 1){
+    if(   (numOutEdgesOf(getSourceOf(theFace)) == 1) && (numInEdgesOf(getTargetOf(theFace)) == 1)){
       removeAndDeleteVertex(getSourceOf(theFace));
       removeAndDeleteVertex(getTargetOf(theFace));
     }// end if
@@ -469,6 +391,9 @@ namespace MemOpsTradeoffPreaccumulation {
     else{
       removeAndDeleteEdge(theFace);
     }
+
+    //set final for the new vertex
+    theNewVertex.final = isFinal(theNewVertex);
 
     return &theNewVertex;
   }// end elim_face

@@ -14,7 +14,7 @@
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/FaceElim.hpp"
 
 
-enum Heuristic{VERTEX, EDGE, FACE, FORWARD, REVERSE, MARKOWITZ, SIBLING, SIBLING2, SUCCPRED};
+enum Heuristic{VERTEX, EDGE, FACE, FORWARD, REVERSE, MARKOWITZ, SIBLING, SIBLING2, SUCCPRED, ABSORB};
 
 using namespace MemOpsTradeoffPreaccumulation;
 
@@ -121,6 +121,15 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  }
 	  else{heuristicEnumSequence.push_back(SUCCPRED);}
 	}// end if SUCCPRED
+	else if(theline == "ABSORB"){
+	  if(heuristicEnumSequence.empty()){
+	    usable = false;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
+	  }
+	  else{heuristicEnumSequence.push_back(ABSORB);}
+	}// end if SUCCPRED
 	else{
  	  usable = false;
 	  if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
@@ -142,10 +151,12 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     
     if(!usable){
       heuristicEnumSequence.clear();
-      heuristicEnumSequence.push_back(EDGE);
-      heuristicEnumSequence.push_back(MARKOWITZ);
-      heuristicEnumSequence.push_back(SIBLING2);
-      heuristicEnumSequence.push_back(REVERSE);
+      heuristicEnumSequence.push_back(FACE);
+
+      // heuristicEnumSequence.push_back(EDGE);
+//       heuristicEnumSequence.push_back(MARKOWITZ);
+//       heuristicEnumSequence.push_back(SIBLING2);
+//       heuristicEnumSequence.push_back(REVERSE);
     }// end if usable
 
     if(heuristicEnumSequence.front() == FACE){
@@ -181,6 +192,9 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  case SIBLING:
 	    faceHeuristicSequence.push_back(&FaceElim::siblingMode_f);
 	    break;
+	  case ABSORB:
+	    faceHeuristicSequence.push_back(&FaceElim::absorbMode_f);
+	    break;
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("Error: unknown face heuristic passed");
 	}// end switch heuristicEnumSequence
@@ -192,25 +206,17 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       std::list<faceHeuristicFunc>::iterator fhiter;
       DualGraph::VertexPointerList thePredList, theSuccList;
       DualGraphVertex* newOrAbsorb = NULL;
-      DualGraph::FacePointerList theFaceList;
 
-      std::cout << "about to populate path list" << std::endl;
-
-      //populate the dual path list
+      //populate the dual path and elim lists
       theDual.populatePathList();
-
-      std::cout << "about to populate elim list" << std::endl;
-
       DualGraph::FacePointerList theElimList = theDual.populateElimList();
 
       while(!theElimList.empty()){
 
-	std::cout << "elimlist has " << theElimList.size() << " elements.  about to apply heuristics" << std::endl;
-
  	//this loop runs the list through each heuristic
- 	for(fhiter=faceHeuristicSequence.begin(); fhiter!=faceHeuristicSequence.end(); fhiter++){
+ 	for(fhiter = faceHeuristicSequence.begin(); fhiter != faceHeuristicSequence.end(); fhiter++){
  	  func_pt = *fhiter;
- 	  func_pt(theDual, theFaceList, thePredList, theSuccList, newOrAbsorb);
+ 	  func_pt(theDual, theElimList, thePredList, theSuccList, newOrAbsorb);
  	}// end for
 	
  	//if(theElimList.size() == 1){//if the heuristics have decided on one single face
@@ -219,23 +225,21 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	//this information is stored in case one of the heuristics needs to use it to make its determinations.
 	thePredList.clear();
 	theSuccList.clear();
-	DualGraph::InEdgeIteratorPair newpreds (theDual.getInEdgesOf(theDual.getSourceOf(*theElimList.front())));
+	DualGraph::InEdgeIteratorPair newpreds (theDual.getInEdgesOf(theDual.getSourceOf(*theElimList.back())));
 	DualGraph::InEdgeIterator newpredi (newpreds.first), newprede (newpreds.second);
 	//go through predecessors and add them to the list of predecessors
 	for(; newpredi != newprede; ++newpredi){
 	  thePredList.push_back(&theDual.getSourceOf(*newpredi));
 	}// end for
-	DualGraph::OutEdgeIteratorPair newsuccs (theDual.getOutEdgesOf(theDual.getTargetOf(*theElimList.front())));
+	DualGraph::OutEdgeIteratorPair newsuccs (theDual.getOutEdgesOf(theDual.getTargetOf(*theElimList.back())));
 	DualGraph::OutEdgeIterator newsucci (newsuccs.first), newsucce (newsuccs.second);
 	//go through successors and add them to the list of successors
 	for(; newsucci != newsucce; ++newsucci){
 	  theSuccList.push_back(&theDual.getTargetOf(*newsucci));
 	}// end for
 
-	std::cout << "succ list and pred list built, about to eliminate a face" << std::endl;
-
  	  //eliminate the face
- 	  newOrAbsorb = theDual.elim_face(*theElimList.front(), thePredList, theSuccList, theJacobianAccumulationExpressionList);
+ 	  newOrAbsorb = theDual.elim_face(*theElimList.back(), thePredList, theSuccList, theJacobianAccumulationExpressionList);
 	  //}
 	  //else{
  	  //THROW_LOGICEXCEPTION_MACRO("Error: Heuristics could not decide on a single face");
@@ -246,25 +250,47 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	}
 
 	//regenerate path list and list of eliminatable faces
- 	theDual.clearPathList();
-	theDual.clearElimList();
-
-	std::cout << "about to populate path list" << std::endl;
-
+	theDual.clearPathList();
  	theDual.populatePathList();
-
-	std::cout << "about to populate elim list" << std::endl;
-
 	theElimList = theDual.populateElimList();
 
       }// end while
 
-      theDual.clearElimList();
       theDual.clearPathList();
 
-      //set JAElist entries
+      //iterate through remaining intermediate vertices and set corresponding expressions as jacobian entries
+      DualGraph::VertexIteratorPair jvip (theDual.vertices());
+      DualGraph::VertexIterator jvi (jvip.first), jv_end (jvip.second);
+      for(; jvi != jv_end; ++jvi){
+	if((theDual.numOutEdgesOf(*jvi) > 0) && (theDual.numInEdgesOf(*jvi) > 0)){
 
-      GraphVizDisplay::show(theDual,"tripartite");
+	  //check to see if the edge was an original edge, if so, create a JAE comprised of one vertex for it
+	  if((*jvi).getRefType() == DualGraphVertex::TO_ORIGINAL_EDGE){
+
+	    JacobianAccumulationExpressionCopy* theNewExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
+	
+	    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& orig = ((*theNewExpression).myExpression).addVertex();
+	    orig.setExternalReference((*jvi).getOriginalRef());
+	    (*theNewExpression).setMaximal(orig);
+	    (*jvi).setJacobianRef(theNewExpression);
+
+	    (((*jvi).getJacobianRef()).myExpression).setJacobianEntry(theOriginal.getTargetOf((*jvi).getOriginalRef()), theOriginal.getSourceOf((*jvi).getOriginalRef()));
+	  }// end if
+	  else{
+
+	    DualGraph::InEdgeIteratorPair iep (theDual.getInEdgesOf(*jvi));
+	    DualGraph::InEdgeIterator ie (iep.first);
+	    DualGraph::OutEdgeIteratorPair oep (theDual.getOutEdgesOf(*jvi));
+	    DualGraph::OutEdgeIterator oe (oep.first);
+
+	    (((*jvi).getJacobianRef()).myExpression).setJacobianEntry((theDual.getTargetOf(*oe)).getAssumedRef(), (theDual.getSourceOf(*ie)).getAssumedRef());
+	  }// end else
+	}// end if
+      }// end for
+      
+      if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	GraphVizDisplay::show(theDual,"tripartite");
+      }
 
     }// end if face
     else{
@@ -463,7 +489,11 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	      sequencedump << s << std::endl;
 	    }// end if TEMPORARY
 
-	    VertexElim::elim_vertex(theCopy, *theVertexList.front(), theJacobianAccumulationExpressionList);
+	    theCopy.elim_vertex(*theVertexList.front(), theJacobianAccumulationExpressionList);
+
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	      GraphVizDisplay::show(theCopy,"intermediate");
+	    }
 
 	  }// end if
 	  else if(theVertexList.size() > 1){
@@ -549,7 +579,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 		sequencedump << s << " " << t << std::endl;
 	      }// end if TEMPORARY
 
-	      EdgeElim::front_elim_edge(theCopy, *(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
+	      theCopy.front_elim_edge(*(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
 	    }// end if
 	    else if((theEdgeList.front()).direction == LinearizedComputationalGraphCopy::BACK){
 	      theSuccList.push_back(&theCopy.getTargetOf(*(theEdgeList.front().edge_p)));
@@ -566,12 +596,16 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 		sequencedump << s << " " << t << std::endl;
 	      }// end if TEMPORARY
 
-	      EdgeElim::back_elim_edge(theCopy, *(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
+	      theCopy.back_elim_edge(*(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
 	    }// end else if
 	    else{
 	      THROW_LOGICEXCEPTION_MACRO("Error: Edge has no elimination direction specified");
 	    }
 	
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	      GraphVizDisplay::show(theCopy,"intermediate");
+	    }
+
 	  }// end if
 	  else{
 	    THROW_LOGICEXCEPTION_MACRO("Error: More than one edge in list of possible eliminations");
