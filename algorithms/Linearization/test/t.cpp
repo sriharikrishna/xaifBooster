@@ -63,6 +63,7 @@ int main(int argc,char** argv) {
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
+    return -1;
   } // end catch 
   return 0;
 }

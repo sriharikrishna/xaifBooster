@@ -301,6 +301,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    const Variable& 
 	      theIndepVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
 			       (theExpression.getIndependent()).getRHSVariable());
+	    const Variable* theIndepVariableContainer_cp=0;
 	    if (isAliased(theIndepVariable,
 			  theFlattenedSequence)) { 
 	      // make a Variable (container) for use in the saxpys:
@@ -334,37 +335,42 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		  addElement(theIndepVariable.equivalenceSignature(),
 			     &((*i)->myDerivativePropagator.addSetDerivToEntryList(theTarget,
 										   theIndepVariable).getTarget()));
-	      } 
+	      } // end if (wasn't assigned efore  
 	      else {
 		// yes, it was assigned before
 		// copy the previously created temporary into the container
 		(theListOfAlreadyAssignedIndependents.getElement(theIndepVariable.equivalenceSignature()))->
 		  copyMyselfInto(*theIndepVariableContainer_p); 
 	      }
-	      // make the entry to the DerivativePropagator
-	      // UN: use the  variable in the container theIndepVariableContainer_p 
-	      // instead of original independent
-	      const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-					   (theExpression.getDependent()).getLHSVariable());
-	      DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryList(theLHS,
-												   *theIndepVariableContainer_p,
-												   theDependent));
-	      bool found=false;
-	      for (VariablePList::iterator i=theListOfAlreadyAssignedDependents.begin();
-		   i!=theListOfAlreadyAssignedDependents.end();
-		   ++i) { 
-		if (*i==&theDependent){ 
-		  found=true;
-		  break;
-		} 
-	      }
-	      if (!found) { 
-		theSaxpy.useAsSax();
-		theListOfAlreadyAssignedDependents.push_back(&theDependent);
-	      }
-	    } // UN: done
-	  }
-						       
+	      // point to the new or previously created temporary
+	      theIndepVariableContainer_cp=theIndepVariableContainer_p;
+	    } // end if isAliased
+	    else { // not aliased
+	      // point to the original independent
+	      theIndepVariableContainer_cp=&theIndepVariable;
+	    }
+	    // make the entry to the DerivativePropagator
+	    // UN: use the  variable in the container theIndepVariableContainer_p 
+	    // instead of original independent
+	    const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
+					 (theExpression.getDependent()).getLHSVariable());
+	    DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryList(theLHS,
+												 *theIndepVariableContainer_cp,
+												 theDependent));
+	    bool found=false;
+	    for (VariablePList::iterator i=theListOfAlreadyAssignedDependents.begin();
+		 i!=theListOfAlreadyAssignedDependents.end();
+		 ++i) { 
+	      if (*i==&theDependent){ 
+		found=true;
+		break;
+	      } 
+	    }
+	    if (!found) { 
+	      theSaxpy.useAsSax();
+	      theListOfAlreadyAssignedDependents.push_back(&theDependent);
+	    }
+	  } // end if is JacobianEntry
 	  // iterate through all vertices bottom up
 	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair aPair(theExpression.vertices());
 	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator aJacExprVertexI(aPair.first), aJacExprVertexIEnd(aPair.second);
