@@ -12,36 +12,36 @@ namespace xaifBoosterCodeReplacement {
 
   Replacement::Replacement (unsigned aPlaceHolder) : 
     myPlaceHolder(aPlaceHolder),
-    myControlFlowGraphBaseOwnerFlag(false), 
     myControlFlowGraphBase_p(0),
+    myReversibleControlFlowGraph_p(0),
     myPrintVersion(PrintVersion::ORIGINAL) { 
   } 
 
   Replacement::~Replacement(){
-    if (myControlFlowGraphBaseOwnerFlag && myControlFlowGraphBase_p)
-      delete myControlFlowGraphBase_p;
   }
 
-  ControlFlowGraphBase& Replacement::makeNewControlFlowGraphBase() { 
-    if (myControlFlowGraphBase_p)
-      THROW_LOGICEXCEPTION_MACRO("Replacement::makeNewControlFlowGraphBase: already got one");
-    ControlFlowGraphBase* theCFG_p(new ControlFlowGraphBase());
-    myControlFlowGraphBase_p=theCFG_p;
-    myControlFlowGraphBaseOwnerFlag=true;
-    return *theCFG_p;
-  } 
-
   void Replacement::setControlFlowGraphBase(const ControlFlowGraphBase& theOtherControlFlowGraphBase) { 
-    if (myControlFlowGraphBase_p)
+    if (myControlFlowGraphBase_p || myReversibleControlFlowGraph_p)
       THROW_LOGICEXCEPTION_MACRO("Replacement::setControlFlowGraphBase: already got one");
     myControlFlowGraphBase_p=&theOtherControlFlowGraphBase;
-    myControlFlowGraphBaseOwnerFlag=false;
   } 
 
   const ControlFlowGraphBase& Replacement::getControlFlowGraphBase() const { 
     if (!myControlFlowGraphBase_p)
       THROW_LOGICEXCEPTION_MACRO("Replacement::setControlFlowGraphBase: don't have one");
     return *myControlFlowGraphBase_p;
+  } 
+
+  void Replacement::setReversibleControlFlowGraph(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraph& theOtherReversibleControlFlowGraph) { 
+    if (myControlFlowGraphBase_p || myReversibleControlFlowGraph_p)
+      THROW_LOGICEXCEPTION_MACRO("Replacement::setReversibleControlFlowGraph: already got one");
+    myReversibleControlFlowGraph_p=&theOtherReversibleControlFlowGraph;
+  } 
+
+  const xaifBoosterControlFlowReversal::ReversibleControlFlowGraph& Replacement::getReversibleControlFlowGraph() const { 
+    if (!myReversibleControlFlowGraph_p)
+      THROW_LOGICEXCEPTION_MACRO("Replacement::setReversibleControlFlowGraph: don't have one");
+    return *myReversibleControlFlowGraph_p;
   } 
 
   void
@@ -58,15 +58,21 @@ namespace xaifBoosterCodeReplacement {
        << "\""
        << ">" 
        << std::endl;
-    ControlFlowGraphBase::ConstVertexIteratorPair p(getControlFlowGraphBase().vertices());
-    ControlFlowGraphBase::ConstVertexIterator beginIt(p.first),endIt(p.second);
-    for (;beginIt!=endIt ;++beginIt)
-      (*beginIt).printXMLHierarchy(os);
-    ControlFlowGraphBase::ConstEdgeIteratorPair pe(getControlFlowGraphBase().edges());
-    ControlFlowGraphBase::ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
-    for (;beginIte!=endIte ;++beginIte)
-      (*beginIte).printXMLHierarchy(os,
-				    getControlFlowGraphBase());
+    if (myControlFlowGraphBase_p) { 
+      ControlFlowGraphBase::ConstVertexIteratorPair p(getControlFlowGraphBase().vertices());
+      ControlFlowGraphBase::ConstVertexIterator beginIt(p.first),endIt(p.second);
+      for (;beginIt!=endIt ;++beginIt)
+	(*beginIt).printXMLHierarchy(os);
+      ControlFlowGraphBase::ConstEdgeIteratorPair pe(getControlFlowGraphBase().edges());
+      ControlFlowGraphBase::ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
+      for (;beginIte!=endIte ;++beginIte)
+	(*beginIte).printXMLHierarchy(os,
+				      getControlFlowGraphBase());
+    }
+    else if (myReversibleControlFlowGraph_p) 
+      myReversibleControlFlowGraph_p->printXMLHierarchy(os);
+    else 
+      THROW_LOGICEXCEPTION_MACRO("Replacement::printXMLHierarchy: no CFG set");
     os << pm.indent()
        << "</"
        << ourXAIFName.c_str()
