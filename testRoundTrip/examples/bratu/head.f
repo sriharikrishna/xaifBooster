@@ -3,7 +3,9 @@
           double precision :: F(7)
           integer i
           double precision h 
-         
+
+c$openad INDEPENDENT(x)      
+   
           h = 2.0/8.
           F(1) = -2*x(1)+h*h*x(7+1)/12.0*(1+10*exp(x(1)/(1.0+x(7+2)
      &*x(1))))
@@ -21,5 +23,8 @@
           F(7) = F(7)-2*x(7)
           F(7) = F(7)+h*h*x(7+1)/12.0*(1+10*exp(x(7)/        
      &      (1.0+x(7+2)*x(7))))
+
+c$openad DEPENDENT(F)
+
       end subroutine head
 
