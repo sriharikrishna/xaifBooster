@@ -10,6 +10,22 @@ namespace MemOpsTradeoffPreaccumulation{
     return myDependentList;
   }
 
+  bool LinearizedComputationalGraphCopy::isDep(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theVertex) const {
+
+    bool isdep = false;
+
+    const ConstVertexPointerList& depList = getDependentList();
+    ConstVertexPointerList::const_iterator depCheck;
+    for(depCheck = depList.begin(); depCheck != depList.end(); depCheck++){
+      if(*depCheck == &theVertex){
+	isdep = true;
+	break;
+      }// end if
+    }// end for
+
+    return isdep;
+  }
+
   const unsigned int LinearizedComputationalGraphCopy::numIndeps() const{
     return myIndependentList.size();
   }
