@@ -7,7 +7,6 @@
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
 #include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
-#include "xaifBooster/system/inc/ArgumentList.hpp"
 #include "xaifBooster/system/inc/SymbolReference.hpp"
 
 namespace xaifBooster { 
@@ -46,23 +45,10 @@ namespace xaifBooster {
      */
     static const std::string our_scopeId_XAIFName;
 
-    ArgumentList& getArgumentList();
-    const ArgumentList& getArgumentList() const;
-
     /** 
      * this is the subroutine name
      */
     const SymbolReference& getSymbolReference() const;
-
-    /** 
-     * this is the scope of the ArgumentList
-     */ 
-    const Scope& getScope() const; 
-
-    /** 
-     * this is the scope of the ArgumentList
-     */ 
-    Scope& getScope(); 
 
   protected: 
     
@@ -70,14 +56,6 @@ namespace xaifBooster {
      * no def
      */
     ControlFlowGraphCommonAttributes();
-
-    /**
-     * a list of arguments 
-     * these are owned by this instance and 
-     * will be deleted in the dtor 
-     * of ControlFlowGraph
-     */
-    ArgumentList myArgumentList;
 
     /**
      * the reference to the subroutine symbol 

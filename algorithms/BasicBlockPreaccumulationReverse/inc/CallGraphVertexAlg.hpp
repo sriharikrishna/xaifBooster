@@ -28,6 +28,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    virtual void algorithm_action_4();
+
   private:
     
     /** 

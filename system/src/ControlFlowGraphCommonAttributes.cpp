@@ -43,27 +43,9 @@ namespace xaifBooster {
     return out.str();
   } // end of ControlFlowGraphCommonAttributes::debug
 
-  ArgumentList& 
-  ControlFlowGraphCommonAttributes::getArgumentList() { 
-    return myArgumentList;
-  } 
-  
-  const ArgumentList& 
-  ControlFlowGraphCommonAttributes::getArgumentList() const { 
-    return myArgumentList;
-  } 
-  
   const SymbolReference& 
   ControlFlowGraphCommonAttributes::getSymbolReference() const { 
     return mySymbolReference;
   } 
-
-  const Scope& ControlFlowGraphCommonAttributes::getScope() const { 
-    return myArgumentList.getScope();
-  }
-
-  Scope& ControlFlowGraphCommonAttributes::getScope() { 
-    return myArgumentList.getScope();
-  }
 
 } // end of namespace xaifBooster 

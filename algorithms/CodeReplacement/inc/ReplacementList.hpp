@@ -3,6 +3,7 @@
 
 #include <list>
 #include "xaifBooster/system/inc/ControlFlowGraphCommonAttributes.hpp"
+#include "xaifBooster/system/inc/ArgumentList.hpp"
 
 using namespace xaifBooster;
 
@@ -21,7 +22,8 @@ namespace xaifBoosterCodeReplacement {
      */
     ReplacementList(const Symbol& theSymbol,
 		    const Scope& theScope,
-		    const std::string& aTemplateName);
+		    const std::string& aTemplateName,
+		    const ArgumentList& anArgumentList);
 
     ~ReplacementList();
 
@@ -55,6 +57,8 @@ namespace xaifBoosterCodeReplacement {
     ReplacementPList myReplacementPList;
 
     std::string myTemplateName;
+
+    const ArgumentList& myArgumentList;
 
   }; // end of class ReplacementList
  
