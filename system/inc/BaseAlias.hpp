@@ -59,7 +59,7 @@ namespace xaifBooster{
     /**
      * no def
      */
-    BaseAlias operator=(const BaseAlias&);
+    BaseAlias& operator=(const BaseAlias&);
     
   }; // end of class BaseAlias
 

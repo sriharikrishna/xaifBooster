@@ -19,6 +19,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
   void BasicBlockAlg::compute_elimination_sequence(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theOriginal,
 						   int mode,
+						   double, // consolidate interfaces
 						   xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
 
     ConceptuallyStaticInstances::HeuristicList HeuristicSequence = ConceptuallyStaticInstances::instance()->getList();
@@ -170,7 +171,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	bool topsorted;
       };
       //copymap maps the copy vertices to the original graph vertices
-      vertexMap copymap[theOriginal.numVertices()];
+      vertexMap* copymap=new vertexMap[theOriginal.numVertices()];
       unsigned int i = 0, s = 0, t = 0;
 
       //declaration of lists to hold information about the last vertex/edge eliminated
@@ -523,6 +524,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: sp sum: " << theCopy.spsum);
       DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: op sum: " << theCopy.opsum);
 
+      delete[] copymap;
 
     }// end else (vertex or edge)
 
@@ -531,7 +533,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
     xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) {
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::compute_elimination_sequence=&compute_elimination_sequence; 
+    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::ourCompute_elimination_sequence_fp=&compute_elimination_sequence; 
   }
 
   void

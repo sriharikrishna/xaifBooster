@@ -2,13 +2,15 @@
 #define _BASEVARIABLESYMBOLREFERENCE_INCLUDE_
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/VariableVertex.hpp"
 #include "xaifBooster/system/inc/SymbolReference.hpp"
 
 namespace xaifBooster { 
 
   class VariableSymbolReference : public VariableVertex,
-				  public SymbolReference {
+				  public SymbolReference,
+				  public ObjectWithAnnotation {
   public:
 
     VariableSymbolReference (const Symbol& theSymbol,

@@ -1,18 +1,65 @@
 #!/bin/bash
-if [ -f .REVERSE_MODE ] 
+CP="cp -f"
+MAKE="gmake"
+
+function copyDefaultBeforeExample { 
+  exampleDir=$1
+  fileName=$2
+  targetFileName=$3  
+  ${CP} simple.$fileName $targetFileName 
+  if [ $? -ne 0 ] 
+    then 
+      echo "ERROR in: ${CP} simple.$fileName $targetFileName"; exit -1;
+    fi
+  if [ -f $exampleDir/$fileName ] 
+  then 
+    ${CP} $exampleDir/$fileName $targetFileName
+    if [ $? -ne 0 ] 
+    then 
+      echo "ERROR in: ${CP} $exampleDir/$fileName $targetFileName"; exit -1;
+    fi
+  fi
+} 
+askAll="n"
+mode="none"
+submode="none"
+if [ -f .lastRun ] 
 then 
-    rm -f .REVERSE_MODE
-fi 
-echo -n "use reverse mode y/[n]"
-read answer
-if [ "$answer" == "y" ]
-then
-    export REVERSE_MODE=y
-    echo "using reverse mode"
+  read mode submode < .lastRun 
+  echo -n "reuse last settings (${mode} ${submode})? [y]/n "
+  read answer
+  if [ "$answer" == "n" ]
+  then
+    askAll="y"
+  else 
+    if [ "$mode" == "adm" ] 
+    then 
+      export REVERSE_MODE=y
+    fi
+  fi
 else
-    export REVERSE_MODE=
-    echo "using plain drivers"
+  askAll="y"
 fi
+if [ "$askAll" == "y" ] 
+then 
+  echo -n "use reverse mode y/[n] "
+  read answer
+  if [ "$answer" == "y" ]
+  then
+    export REVERSE_MODE=y
+    mode="adm"
+    submode="split"
+    echo -n "use submode [split]/joint"
+    read answer
+    if [ "$answer" == "joint" ]
+    then
+	submode="$answer"
+    fi
+  else
+    mode="tlm"
+  fi
+fi 
+echo $mode $submode > .lastRun
 if [ $# -gt 0 ]
 then
     TESTFILES=$@
@@ -21,61 +68,62 @@ else
 fi
 for i in `echo ${TESTFILES}`
 do 
-  make testAllclean
+  export TARGET=head
+  ${MAKE} testAllclean
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make testAllclean"; exit -1;
+    echo "ERROR in: ${MAKE} testAllclean"; exit -1;
   fi
   echo "** running $i *************************************************"
+  TARGET_DRIVER=driver_${mode}
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    DRIVER_NAME=driver_adm
-  else
-    DRIVER_NAME=driver
+    TARGET_DRIVER=${TARGET_DRIVER}_${submode}
   fi
   exdir=examples/$i
-  if [ -f $exdir/$DRIVER_NAME.f ] 
+  copyDefaultBeforeExample $exdir ${TARGET_DRIVER}.f90 driver.f90
+  copyDefaultBeforeExample $exdir params.conf params.conf
+  copyDefaultBeforeExample $exdir head.f head.f
+  copyDefaultBeforeExample $exdir all_globals_mod.f all_globals_mod.f
+  if [ "$REVERSE_MODE" == "y" ] 
   then 
-    ln -sf $exdir/$DRIVER_NAME.f .
-    if [ $? -ne 0 ] 
-    then 
-      echo "ERROR in: ln -sf $exdir/$DRIVER_NAME.f ."; exit -1;
-    fi
-  fi
-  ln -sf $exdir/head.f .
+    copyDefaultBeforeExample $exdir all_globals_cp_mod.f90 all_globals_cp_mod.f90
+    copyDefaultBeforeExample $exdir ad_template_${submode}.f ad_template.f
+  fi  
+  export TARGET=all_globals_mod
+  ${MAKE}
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: ln -sf $exdir/head.f ."; exit -1;
+    echo "ERROR in: ${MAKE} for all_globals_mod"; exit -1;
   fi
-  if [ -f $exdir/params.conf ]
-  then  
-    ln -sf $exdir/params.conf .
-    if [ $? -ne 0 ] 
-    then 
-      echo "ERROR in: ln -sf $exdir/params.conf ."; exit -1;
-    fi
-  fi
-  make
+  ${CP}  all_globals_mod.prh.xb.x2w.w2f.urh.pp.f all_globals_mod.f
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make"; exit -1;
+    echo "ERROR in: ${CP}  all_globals_mod.prh.xb.x2w.w2f.urh.pp.f all_globals_mod.f"; exit -1;
+  fi
+  export TARGET=head
+  ${MAKE}
+  if [ $? -ne 0 ] 
+  then 
+    echo "ERROR in: ${MAKE} for head"; exit -1;
   fi
 ### this is temporary until we got rid of the RETURNs
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    sed 's/RETURN//' head.xb.x2w.w2f.pp.f >| head.xb.x2w.w2f.pp.f.1
-    mv head.xb.x2w.w2f.pp.f.1 head.xb.x2w.w2f.pp.f
+    sed 's/RETURN//' head.prh.xb.x2w.w2f.urh.pp.f >| head.prh.xb.x2w.w2f.urh.pp.f.1
+    mv head.prh.xb.x2w.w2f.urh.pp.f.1 head.prh.xb.x2w.w2f.urh.pp.f
   fi
 ### end of temporary fix
-  make $DRIVER_NAME
+  export TARGET_DRIVER=driver
+  ${MAKE} $TARGET_DRIVER
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make driver"; exit -1;
+    echo "ERROR in: ${MAKE} driver"; exit -1;
   fi
-  make run
+  ${MAKE} run
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make run"; exit -1;
+    echo "ERROR in: ${MAKE} run"; exit -1;
   fi
   hasDiffAD=$(diff tmpOutput/ad.out $exdir/refOutput/ad.out)
   if [ $? -eq 2 ] 
@@ -101,3 +149,4 @@ do
     echo "no diffs"
   fi
 done
+

@@ -3,23 +3,24 @@
       <xaif:Scope vertex_id="1" annotation="">
         <xaif:SymbolTable>
           <xaif:Symbol symbol_id="head" kind="subroutine" type="void" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="my_add" kind="subroutine" type="void" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_10" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_11" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_12" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_13" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_14" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_20" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_15" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_21" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_16" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_22" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_17" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_23" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_18" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_19" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_2" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_20" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_21" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_22" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_23" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_3" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_4" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_5" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
@@ -27,14 +28,13 @@
           <xaif:Symbol symbol_id="test_prefixSymbol_7" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_8" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_9" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="my_add" kind="subroutine" type="void" shape="scalar" annotation="" active="1" temp="0"/>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="2" annotation="">
         <xaif:SymbolTable>
+          <xaif:Symbol symbol_id="i" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="0"/>
           <xaif:Symbol symbol_id="t1" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
           <xaif:Symbol symbol_id="t2" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
-          <xaif:Symbol symbol_id="i" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="0"/>
           <xaif:Symbol symbol_id="x" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
           <xaif:Symbol symbol_id="y" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
         </xaif:SymbolTable>
@@ -60,7 +60,7 @@
       <xaif:ForLoop vertex_id="2" annotation="">
         <xaif:Initialization>
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="integer" value="1"/>
@@ -69,7 +69,7 @@
         <xaif:Condition>
           <xaif:BooleanOperation vertex_id="1" name="less_or_equal"/>
           <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
           </xaif:VariableReference>
           <xaif:Constant vertex_id="3" type="integer" value="11"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
@@ -77,12 +77,12 @@
         </xaif:Condition>
         <xaif:Update>
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="3" type="integer" value="1"/>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
@@ -93,27 +93,27 @@
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
         <xaif:Assignment statement_id="replacement for sage_1" active="1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterLinearization::ExpressionVertexAlg::makeAuxilliaryVariable" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="2" annotation="" name="sin_scal"/>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="1" target="2" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="replacement for sage_1" active="1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="4" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterLinearization::ExpressionVertexAlg::makeAuxilliaryVariable" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="3" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="2" source="2" target="4" position="1"/>
             <xaif:ExpressionEdge edge_id="3" source="3" target="4" position="2"/>
@@ -121,56 +121,56 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="cos_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterLinearization::ExpressionVertexAlg::makeAuxilliaryVariable" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="sage_1: delayed LHS assignment for correct partials" active="1">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_12" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_12" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
@@ -179,77 +179,77 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_12" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_12" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
             </xaif:Y>
           </xaif:Sax>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="replacement for sage_2" active="1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="5" annotation="" name="add_scal_scal"/>
             <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="4" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="3" source="3" target="5" position="1"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
@@ -259,27 +259,27 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="integer" value="1"/>
@@ -287,24 +287,24 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="sage_2: delayed LHS assignment for correct partials" active="1">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
@@ -313,14 +313,14 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_18" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_18" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
@@ -330,60 +330,60 @@
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
             </xaif:Y>
           </xaif:Sax>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_18" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_18" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
         <xaif:SubroutineCall statement_id="my_add_1" symbol_id="my_add" scope_id="1" active="1">
           <xaif:Argument position="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:Argument>
           <xaif:Argument position="2">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
           </xaif:Argument>
           <xaif:Argument position="3">
-            <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
@@ -405,14 +405,14 @@
       <xaif:BasicBlock vertex_id="2" annotation="" scope_id="3">
         <xaif:Assignment statement_id="whatever" active="1">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="v" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="v" annotation="" scope_id="3"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="u1" scope_id="3"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="u1" annotation="" scope_id="3"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="u2" scope_id="3"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="u2" annotation="" scope_id="3"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
@@ -421,7 +421,7 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="integer" value="1"/>
@@ -429,7 +429,7 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="integer" value="1"/>
@@ -437,69 +437,69 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_20" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_20" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_22" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_22" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="u2" scope_id="3"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="u2" annotation="" scope_id="3"/>
             </xaif:Src>
           </xaif:SetDeriv>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="u1" scope_id="3"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="u1" annotation="" scope_id="3"/>
             </xaif:Src>
           </xaif:SetDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_20" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_20" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="v" scope_id="3"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="v" annotation="" scope_id="3"/>
             </xaif:Y>
           </xaif:Sax>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_22" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_22" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="v" scope_id="3"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="v" annotation="" scope_id="3"/>
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>

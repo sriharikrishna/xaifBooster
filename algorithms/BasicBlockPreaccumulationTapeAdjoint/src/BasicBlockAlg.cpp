@@ -108,6 +108,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 						     false),
 				  getContaining().getScope());
     theNewVariableSymbolReference_p->setId("1");
+    theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addConstantAssignment");
     // pass it on to the LHS and relinquish ownership
     theNewAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
     theNewAssignment_p->getLHS().getAliasMapKey().setTemporary();
@@ -156,6 +157,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 						       false),
 				    getContaining().getScope());
       theNewVariableSymbolReference_p->setId("1");
+      theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess");
       // pass it on to the variable and relinquish ownership
       theInlineVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
       theInlineVariable.getAliasMapKey().setTemporary();
@@ -285,6 +287,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 								     false),
 						  getContaining().getScope());
 		    theNewVariableSymbolReference_p->setId("1");
+		    theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4");
 		    // pass it on to the variable and relinquish ownership
 		    theInlineVariable_p->supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
 		    theInlineVariable_p->getAliasMapKey().setTemporary();

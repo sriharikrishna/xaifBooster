@@ -31,7 +31,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 AMBIGUOUSLY_IDENTIFIED,
 				 UNIQUELY_IDENTIFIED };
 
-  protected:
+  // JU: I don't believe ListItem should have to be 
+  // public but SUN CC 5.6 insists. Moved protected down
+  //  protected:
 
     /** 
      * an entry in the list 
@@ -72,7 +74,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       const DuUdMapKey& myDuUdMapKey;
       
     };
-    
+   
+   protected: 
+ 
     /** 
      * just for convenience we keep a list of 
      * all keys in ListItem for use with 

@@ -49,7 +49,7 @@
 	end do
 	do k=1,n
 	   do i=1,m   
-              write(2,*) "F(",i,",",k,")=",res_dd(i,k)
+              write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",i,",",k,")=",res_dd(i,k)
 	   end do
 	end do
 	close(2)
@@ -72,7 +72,7 @@
 	end do
 	do k=1,n
 	   do i=1,m   
-              write(2,*) "F(",i,",",k,")=",res_ad(i,k)
+              write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",i,",",k,")=",res_ad(i,k)
 	   end do
 	end do
 	close(2)

@@ -3,23 +3,24 @@
       <xaif:Scope vertex_id="1" annotation="">
         <xaif:SymbolTable>
           <xaif:Symbol symbol_id="head" kind="subroutine" type="void" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="my_add" kind="subroutine" type="void" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_10" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_11" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_12" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_13" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_14" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_20" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_15" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_21" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_16" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_22" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_17" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_23" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_18" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_19" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_2" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_20" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_21" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_22" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_23" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_3" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_4" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_5" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
@@ -27,29 +28,28 @@
           <xaif:Symbol symbol_id="test_prefixSymbol_7" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_8" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_9" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="my_add" kind="subroutine" type="void" shape="scalar" annotation="" active="1" temp="0"/>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="2" annotation="">
         <xaif:SymbolTable>
+          <xaif:Symbol symbol_id="i" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="0"/>
           <xaif:Symbol symbol_id="t1" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
           <xaif:Symbol symbol_id="t2" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
-          <xaif:Symbol symbol_id="i" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="0"/>
-          <xaif:Symbol symbol_id="x" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
-          <xaif:Symbol symbol_id="y" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_24" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_25" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_26" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_27" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="x" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="y" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="3" annotation="">
         <xaif:SymbolTable>
+          <xaif:Symbol symbol_id="test_prefixSymbol_28" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_29" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="u1" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
           <xaif:Symbol symbol_id="u2" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
           <xaif:Symbol symbol_id="v" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_28" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_29" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:ScopeEdge edge_id="1" source="2" target="1"/>
@@ -66,7 +66,7 @@
       <xaif:ForLoop vertex_id="2" annotation="">
         <xaif:Initialization>
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="integer" value="1"/>
@@ -75,7 +75,7 @@
         <xaif:Condition>
           <xaif:BooleanOperation vertex_id="1" name="less_or_equal"/>
           <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
           </xaif:VariableReference>
           <xaif:Constant vertex_id="3" type="integer" value="11"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
@@ -83,12 +83,12 @@
         </xaif:Condition>
         <xaif:Update>
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="3" type="integer" value="1"/>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
@@ -97,145 +97,141 @@
         </xaif:Update>
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="my_add" scope_id="1" active="1">
           <xaif:Argument position="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:Argument>
           <xaif:Argument position="2">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
           </xaif:Argument>
           <xaif:Argument position="3">
-            <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_24" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_24" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_24" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_24" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="2"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_25" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_25" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_25" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_25" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="2"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_26" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_26" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_26" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_26" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="2"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_27" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_27" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_27" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_27" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="2"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -257,65 +253,65 @@
       <xaif:BasicBlock vertex_id="2" annotation="" scope_id="3">
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_28" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_28" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_28" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_28" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="v" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="v" annotation="" scope_id="3"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_29" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_29" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_29" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_29" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="v" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="v" annotation="" scope_id="3"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="v" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="v" annotation="" scope_id="3"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="u1" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="u1" annotation="" scope_id="3"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="u2" scope_id="3"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="u2" annotation="" scope_id="3"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>

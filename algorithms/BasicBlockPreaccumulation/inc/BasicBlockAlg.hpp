@@ -54,11 +54,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /**
      * pointer to function for computing elimination sequence
      */
-    void (*compute_elimination_sequence)(
-					 const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
-					 int,
-					 xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
-					 );
+     typedef void (*Compute_elimination_sequence_fp)(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
+						     int,
+						     double,
+						     xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
+						     );
+
+    static Compute_elimination_sequence_fp ourCompute_elimination_sequence_fp;
+    static int ourIntParameter;
+    static double ourGamma;
     static PrivateLinearizedComputationalGraphAlgFactory *getPrivateLinearizedComputationalGraphAlgFactory();
     static PrivateLinearizedComputationalGraphEdgeAlgFactory *getPrivateLinearizedComputationalGraphEdgeAlgFactory();
     static PrivateLinearizedComputationalGraphVertexAlgFactory *getPrivateLinearizedComputationalGraphVertexAlgFactory();
