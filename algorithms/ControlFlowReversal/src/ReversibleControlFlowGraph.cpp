@@ -5,6 +5,7 @@
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -44,6 +45,17 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void ReversibleControlFlowGraph::storeControlFlow() {
+/*
+    ReversibleControlFlowGraph::ConstVertexIteratorPair p(vertices());
+    ReversibleControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
+    for (;beginIt!=endIt ;++beginIt) {
+      if ((*beginIt).original) {
+        if ((*beginIt).myOriginalVertex_p->getControlFlowGraphVertexAlgBase().getKind()==ControlFlowGraphVertexAlg::UNDEF) std::cout << "UWE FOUND UNDEF" << std::endl;
+        if ((*beginIt).myOriginalVertex_p->getControlFlowGraphVertexAlgBase().getKind()==ControlFlowGraphVertexAlg::IF) std::cout << "UWE FOUND IF" << std::endl;
+        if ((*beginIt).myOriginalVertex_p->getControlFlowGraphVertexAlgBase().getKind()==ControlFlowGraphVertexAlg::PRELOOP) std::cout << "UWE FOUND PRELOOP" << std::endl;
+      }
+    }
+*/
   }
 
   

@@ -3,6 +3,8 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/IfStatementAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/PreLoopAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -32,6 +34,8 @@ namespace xaifBoosterControlFlowReversal {
     xaifBooster::AlgFactoryManager::init();
     resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
     resetControlFlowGraphVertexAlgFactory(new ControlFlowGraphVertexAlgFactory());
+    resetIfStatementAlgFactory(new IfStatementAlgFactory());
+    resetPreLoopAlgFactory(new PreLoopAlgFactory());
   }
 
 }
