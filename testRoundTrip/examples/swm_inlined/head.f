@@ -232,7 +232,7 @@ c depth(ix,iy) = xc(k)
          print *, 'map_from_control_vector: ',
      & 'dimensions of control vector are wrong'
          print *, k, ' should be ', nctrl
-         stop
+cun         stop
       end if
 cph)
 c
@@ -539,18 +539,19 @@ cph call cost_function( time , cost )
 c
 c load the data
 c
-      if ( is_eta_data_time( time ) ) then
+cun      if ( is_eta_data_time( time ) ) then
 cph(
 cph no observed eta are used for this experiment
 cph i.e. simplified cost function!
 cph call read_eta_data( time )
 cph)
-      end if
+cun      end if
 c
 c calculate cost function, if there is only one data slab, or if
 c the time step matches a data time
 c
-      if ( nedt .eq. -1 .or. is_eta_data_time( time ) ) then
+cun      if ( nedt .eq. -1 .or. is_eta_data_time( time ) ) then
+      if ( nedt .eq. -1) then
 c
 c calculate cost function terms
 c
@@ -570,8 +571,8 @@ c$$$ cf = cf + zonal_transport*wf_zonal_transport
          cost = cost + .5*(zonal_transport-zonal_transport_data)**2
      & *weight_zonal_transport
 c
-         do iy = 1, ny
-            do ix = 1, nx
+cun         do iy = 1, ny
+cun            do ix = 1, nx
 c sea surface height
 cph cost = cost + .5*(eta(ix,iy)-eta_data(ix,iy))**2
 cph & *weight_eta(ix,iy)
@@ -580,8 +581,8 @@ cph cost = cost + .5*(u(ix,iy)-u_data(ix,iy))**2
 cph & *weight_u(ix,iy)
 cph cost = cost + .5*(v(ix,iy)-v_data(ix,iy))**2
 cph & *weight_v(ix,iy)
-            end do
-         end do
+cun            end do
+cun         end do
       end if
 cph)
                end if
