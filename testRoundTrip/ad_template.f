@@ -13,7 +13,8 @@
 
           ! checkpointing stacks and offsets
           integer, parameter :: theMaxStackSize=200
-          integer :: cp_loop_variable
+          integer :: cp_loop_variable_1,cp_loop_variable_2,
+     +cp_loop_variable_3,cp_loop_variable_4
           double precision, dimension(theMaxStackSize), save :: 
      +theArgStack
           integer, save :: theArgStackoffset=0
@@ -26,6 +27,12 @@
           integer, dimension(theMaxStackSize), save :: 
      +theResIStack
           integer, save :: theResIStackoffset=0
+          character*(80), dimension(theMaxStackSize), save :: 
+     +theArgSStack
+          integer, save :: theArgSStackoffset=0
+          character*(80), dimension(theMaxStackSize), save :: 
+     +theResSStack
+          integer, save :: theResSStackoffset=0
 
 	  ! call external C function used in inlined code
 	  integer iaddr

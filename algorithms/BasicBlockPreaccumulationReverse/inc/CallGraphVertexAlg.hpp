@@ -78,26 +78,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     
     /** 
      * give a name for the inlinable routine to which we append 
-     * e.g. '_i' for pushing/popping integers, right now 
-     * the choices are 
-     * cp_arg_store 
-     * cp_arg_restore
-     * cp_arg_store_v 
-     * cp_arg_restore_v
-     * cp_res_store 
-     * cp_res_restore
-     * cp_res_store_v 
-     * cp_res_restore_v
-     * cp_arg_store_i 
-     * cp_arg_restore_i
-     * cp_arg_store_v_i 
-     * cp_arg_restore_v_i
-     * cp_res_store_i 
-     * cp_res_restore_i
-     * cp_res_store_v_i 
-     * cp_res_restore_v_i
-     * where arg/res are for argument/result, 'v' is vectors
-     * and 'i' is for integers and the respetive combinations thereof;
+     * e.g. '_<type_string>_<shape_string>';
      * with intent type to be excluded we filter out all 
      * non-applicable things (OUT for argument and IN for result)
      * and the ControlFlowGraph is the one we are adding to
