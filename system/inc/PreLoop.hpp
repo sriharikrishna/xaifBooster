@@ -3,6 +3,7 @@
 
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include "xaifBooster/system/inc/Condition.hpp"
+#include "xaifBooster/system/inc/PreLoopAlgBase.hpp"
 
 namespace xaifBooster { 
 
@@ -13,9 +14,9 @@ namespace xaifBooster {
   class PreLoop : public ControlFlowGraphVertex {
   public:
 
-    PreLoop (){};
+    PreLoop ();
 
-    ~PreLoop(){};
+    ~PreLoop();
 
     /**
      * print XML hierarchy
@@ -38,12 +39,27 @@ namespace xaifBooster {
 
     const Condition& getCondition() const;
 
+    /**
+     * get algorithm
+     */
+    PreLoopAlgBase& getPreLoopAlgBase();
+    const PreLoopAlgBase& getPreLoopAlgBase() const;
+
+
   private:
     
     /** 
      * the condition for the preloop
      */
     Condition myCondition;
+
+    /**
+     * this will be set to point a dynamically instance
+     * during construction and deleted during
+     * destruction
+     */
+    PreLoopAlgBase* myPreLoopAlgBase_p;
+
 
   };
  
