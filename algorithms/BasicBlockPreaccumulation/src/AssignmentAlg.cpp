@@ -76,14 +76,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// push later
       } // end if 
       else if (thePassiveIdResult==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
-	// note, this isn't the exact question to ask here but it is 
-	// a conservatively correct question to ask 
+	// note, that for the passive identification we have a misnomer here but 
+	// uniquely identified means positively passive identfied regardless if 
+	// the actual identification is unique to a particular LHS or not as long 
+	// as all possibly identified LHSs are passive.
 	// passivate this: 
 	dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).passivate();
       } // end if 
       else { // the vertex cannot be uniquely identified
-	if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED && 
-	    thePassiveIdResult==VertexIdentificationList::NOT_IDENTIFIED) {
+	if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
 	  // the RHS identification doesn't really matter since we cannot 
 	  // uniquely identify within the RHSs it is only important that we don't 
 	  // alias a preceding LHS
@@ -92,17 +93,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	else // there is an ambiguity
 	  // don't continue here. 
 	  // Note that this is the point where we cut off somewhat arbitrarily in 
-	  // two respects: 
-	  // A: we decide to break the flattening here because it is convenient
-	  //    but we could continue to flatten other not connected unambiguous portions 
-	  //    into this graph at the cost of more maintenance. see the basic block 
-	  //    flattening paper
-	  // B: for the purpose of identifying passive portions it would actually 
-	  //    be sufficient to just verify that all ambiguous definitions are 
-	  //    constant as well so we could proceed despite ambiguity. 
-	  //    Here too it requires additional logic and we don't expect any 
-	  //    significant gains in practice. Therefore we decided it is ok 
-	  //    to split here. For more detail see the basic block flattening paper. 
+	  // that we decide to break the flattening here because it is convenient
+	  // but we could continue to flatten other not connected unambiguous portions 
+	  // into this graph at the cost of more maintenance. see the basic block 
+	  // flattening paper
 	  return false;
       } // end else (no unique identification)
     } // end for all vertices in this LHS 
