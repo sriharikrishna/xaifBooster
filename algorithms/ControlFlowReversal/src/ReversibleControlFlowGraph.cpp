@@ -99,8 +99,10 @@ namespace xaifBoosterControlFlowReversal {
     return (oss.str());
   }
 
+// direction indicates if the characteristics of the replaceEdge should
+// be preserved by the new in (false) or outedge (true)
   BasicBlock&
-  ReversibleControlFlowGraph::insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before, const ReversibleControlFlowGraphEdge& replacedEdge_r) {
+  ReversibleControlFlowGraph::insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before, const ReversibleControlFlowGraphEdge& replacedEdge_r, bool direction) {
     ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     aNewReversibleControlFlowGraphVertex_p->setIndex(numVertices()+1);
@@ -124,9 +126,11 @@ namespace xaifBoosterControlFlowReversal {
       aNewReversibleControlFlowGraphInEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getNewEdge().get_condition_value());
     }
 */
+    if (!direction) {
       aNewReversibleControlFlowGraphInEdge_p->set_has_condition_value(replacedEdge_r.has_condition_value());
       aNewReversibleControlFlowGraphInEdge_p->set_condition_value(replacedEdge_r.get_condition_value());
-
+    }
+  
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphOutEdge_p=new ReversibleControlFlowGraphEdge();
     aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().setId(makeUniqueEdgeId());
 /*
@@ -139,8 +143,10 @@ namespace xaifBoosterControlFlowReversal {
       aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getNewEdge().get_condition_value());
     }
 */
+    if (direction) {
       aNewReversibleControlFlowGraphOutEdge_p->set_has_condition_value(replacedEdge_r.has_condition_value());
       aNewReversibleControlFlowGraphOutEdge_p->set_condition_value(replacedEdge_r.get_condition_value());
+    }
 
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,after,*aNewReversibleControlFlowGraphVertex_p);
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphOutEdge_p,*aNewReversibleControlFlowGraphVertex_p,before);
@@ -379,7 +385,7 @@ namespace xaifBoosterControlFlowReversal {
           std::list<InEdgeIterator>::iterator ieilIt;
           for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt) {
             if (!((*(*ieilIt)).isBackEdge(*this))) {
-              BasicBlock& theBasicBlock_r(insert_basic_block(getSourceOf(*(*ieilIt)),getTargetOf(*(*ieilIt)),(*(*ieilIt))));
+              BasicBlock& theBasicBlock_r(insert_basic_block(getSourceOf(*(*ieilIt)),getTargetOf(*(*ieilIt)),(*(*ieilIt)),false));
               theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
               theLoopCounterSymbol_p=insert_init_integer(0,theBasicBlock_r);
               theLoopCounterSymbolStack_r.push(theLoopCounterSymbol_p);
@@ -401,7 +407,7 @@ namespace xaifBoosterControlFlowReversal {
           std::list<OutEdgeIterator>::iterator oeilIt;
           for (oeilIt=oeil.begin();oeilIt!=oeil.end();++oeilIt) 
             if (getTargetOf(*(*oeilIt)).getIndex()>endLoopIndex) {
-                BasicBlock& theBasicBlock_r(insert_basic_block(getSourceOf(*(*oeilIt)),getTargetOf(*(*oeilIt)),(*(*oeilIt))));
+                BasicBlock& theBasicBlock_r(insert_basic_block(getSourceOf(*(*oeilIt)),getTargetOf(*(*oeilIt)),(*(*oeilIt)),true));
                 theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
                 insert_push_integer(theLoopCounterSymbol_p,theBasicBlock_r);
                 removeAndDeleteEdge(*(*oeilIt));
@@ -414,7 +420,7 @@ namespace xaifBoosterControlFlowReversal {
           // insert "counter=counter+1" before *(*the_mySortedVertices_p_l_it)
           InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
           InEdgeIterator beginItie(pie.first);
-          BasicBlock& theBasicBlock_r(insert_basic_block(getSourceOf((*beginItie)),getTargetOf((*beginItie)),(*beginItie)));
+          BasicBlock& theBasicBlock_r(insert_basic_block(getSourceOf((*beginItie)),getTargetOf((*beginItie)),(*beginItie),false));
           theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
           insert_increment_integer(theLoopCounterSymbolStack_r.top(),theBasicBlock_r);
           theLoopCounterSymbolStack_r.pop();
@@ -447,7 +453,7 @@ namespace xaifBoosterControlFlowReversal {
           int branch_idx=1;
           for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt,--branch_idx) {
             ReversibleControlFlowGraphVertex& theSource_r(getSourceOf(*(*ieilIt)));
-            BasicBlock& theBasicBlock_r(insert_basic_block(theSource_r,getTargetOf(*(*ieilIt)),(*(*ieilIt))));
+            BasicBlock& theBasicBlock_r(insert_basic_block(theSource_r,getTargetOf(*(*ieilIt)),(*(*ieilIt)),true));
             theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
             const Symbol* theLhsSymbol;
             if (ieil.size()==2) {
@@ -772,7 +778,7 @@ namespace xaifBoosterControlFlowReversal {
         case ControlFlowGraphVertexAlg::BRANCH : {
           // insert pop() in front
           InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).second)));
-          BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first)));
+          BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first),true));
           theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
           removeAndDeleteEdge(*(singleInEdge_ieitp.first));
           const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
@@ -797,7 +803,7 @@ namespace xaifBoosterControlFlowReversal {
         case ControlFlowGraphVertexAlg::FORLOOP : {
           // insert pop() in front
           InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).second)));
-          BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first)));
+          BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first),true));
           theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
           removeAndDeleteEdge(*(singleInEdge_ieitp.first));
           const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
