@@ -3,7 +3,7 @@
 
 #include <list>
 
-#include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 
 #include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
 
@@ -15,7 +15,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
    * class to implement algorithms relevant for the 
    * angel interface
    */
-  class CallGraphVertexAlg : public CallGraphVertexAlgBase {
+  class CallGraphVertexAlg : public xaifBoosterControlFlowReversal::CallGraphVertexAlg {
   public:
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);

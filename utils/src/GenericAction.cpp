@@ -24,6 +24,18 @@ namespace xaifBooster {
     case ALGORITHM_ACTION_4:
       returnString="algorithm_action_4";
       break;
+    case ALGORITHM_ACTION_5:
+      returnString="algorithm_action_5";
+      break;
+    case ALGORITHM_ACTION_6:
+      returnString="algorithm_action_6";
+      break;
+    case ALGORITHM_ACTION_7:
+      returnString="algorithm_action_7";
+      break;
+    case ALGORITHM_ACTION_8:
+      returnString="algorithm_action_8";
+      break;
     default: 
       throw PrintingIntException("GenericAction::toString: unknown value",anAction);
       break;
@@ -44,6 +56,14 @@ namespace xaifBooster {
       returnValue=ALGORITHM_ACTION_3;
     else if (aName=="algorithm_action_4")
       returnValue=ALGORITHM_ACTION_4;
+    else if (aName=="algorithm_action_5")
+      returnValue=ALGORITHM_ACTION_5;
+    else if (aName=="algorithm_action_6")
+      returnValue=ALGORITHM_ACTION_6;
+    else if (aName=="algorithm_action_7")
+      returnValue=ALGORITHM_ACTION_7;
+    else if (aName=="algorithm_action_8")
+      returnValue=ALGORITHM_ACTION_8;
     else  
       THROW_LOGICEXCEPTION_MACRO("GenericAction::fromString: unknown value >" << aName.c_str() << "<");
     return returnValue;

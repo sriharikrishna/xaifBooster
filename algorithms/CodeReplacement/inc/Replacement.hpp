@@ -3,6 +3,7 @@
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphBase.hpp"
+#include "xaifBooster/algorithms/CodeReplacement/inc/PrintVersion.hpp"
 
 using namespace xaifBooster;
 
@@ -48,6 +49,10 @@ namespace xaifBoosterCodeReplacement {
 
     const ControlFlowGraphBase& getControlFlowGraphBase() const; 
 
+    void setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion);
+
+    PrintVersion::PrintVersion_E getPrintVersion() const;
+
   private: 
 
     /** 
@@ -63,6 +68,8 @@ namespace xaifBoosterCodeReplacement {
     bool myControlFlowGraphBaseOwnerFlag;
 
     const ControlFlowGraphBase* myControlFlowGraphBase_p;
+
+    PrintVersion::PrintVersion_E myPrintVersion;
 
   }; // end of class Replacement
  

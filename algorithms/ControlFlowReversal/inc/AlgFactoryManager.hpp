@@ -1,7 +1,7 @@
 #ifndef _XAIFBOOSTERCONTROLFLOWREVERSAL_ALGFACTORYMANAGER_INCLUDE_
 #define _XAIFBOOSTERCONTROLFLOWREVERSAL_ALGFACTORYMANAGER_INCLUDE_
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/system/inc/AlgFactoryManager.hpp"
 
 namespace xaifBoosterControlFlowReversal { 
 
@@ -9,7 +9,7 @@ namespace xaifBoosterControlFlowReversal {
    * the singleton class for 
    * setting algorithm factory pointers
    */
-  class AlgFactoryManager : public xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager { 
+  class AlgFactoryManager : public xaifBooster::AlgFactoryManager { 
 
   public: 
 
