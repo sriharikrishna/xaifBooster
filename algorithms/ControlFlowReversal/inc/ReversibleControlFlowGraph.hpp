@@ -37,7 +37,6 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphVertex& getEntry(); 
     ReversibleControlFlowGraphVertex& getExit(); 
 
-    void markBranchEntryEdges();
     void topologicalSort();
     void storeControlFlow();
     void buildAdjointControlFlowGraph(ReversibleControlFlowGraph&);
@@ -99,10 +98,34 @@ namespace xaifBoosterControlFlowReversal {
     addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl);
 
     /** 
-     * find branch exit edge that corresponds to theCurrentEdge_r
+     * find branch entry edge that corresponds to theCurrentEdge_r
+     */
+    const ReversibleControlFlowGraphEdge&
+    find_corresponding_branch_entry_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
+
+                                                   
+   /**
+    * The branch entry edges are marked by has_condition_value()==true and
+    * a corresponding integer get_condition_value().
+    * This information is projected onto the branch exit edges.
+    */
+
+    void markBranchExitEdges();
+
+    /** 
+     * a find branch exit edge that corresponds to theCurrentEdge_r
      */
     const ReversibleControlFlowGraphEdge&
     find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
+
+   /**
+    * Assuming that the branch exit edges are marked by has_condition_value()==
+    * true and a corresponding integer get_condition_value() this information is
+    * projected onto the branch entry edges.
+    */
+
+
+    void markBranchEntryEdges();
 
     /** 
      * bottom-up augmentation of the cfg by statements that store
@@ -179,6 +202,11 @@ namespace xaifBoosterControlFlowReversal {
      * append "push_cfg(i)" to theBasicBlock_r
      */
     void insert_push_integer(const Symbol* theSymbol_p, BasicBlock& theBasicBlock_r);
+
+    /** 
+     * append "pop_cfg(i)" to theBasicBlock_r
+     */
+    const Symbol& insert_pop_integer(BasicBlock& theBasicBlock_r);
 
     /** 
      * reference to original cfg

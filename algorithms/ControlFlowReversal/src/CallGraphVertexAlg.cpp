@@ -71,7 +71,12 @@ namespace xaifBoosterControlFlowReversal {
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
-      out << "[label=\"" << theReversibleControlFlowGraphEdge_p->has_condition_value() << "\"]";
+      if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
+        out << "[label=\"" << theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value() << "," << theReversibleControlFlowGraphEdge_p->getOriginalEdge().get_condition_value() << "\"]";
+      }
+      else {
+        out << "[label=\"" << theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value() << "," << theReversibleControlFlowGraphEdge_p->getNewEdge().get_condition_value() <<"\"]";
+      }
     };
     const ReversibleControlFlowGraph& myG;
   };
@@ -124,6 +129,8 @@ namespace xaifBoosterControlFlowReversal {
     getContaining().getControlFlowGraph().getArgumentList().printXMLHierarchy(os);
                                                                                 
     myTapingControlFlowGraph->printXMLHierarchy(os);
+    // short cut: has 2 ENTRIES and EXITS in one cfg
+    myAdjointControlFlowGraph->printXMLHierarchy(os);
                                                                                 
         os << pm.indent()
        << "</"
