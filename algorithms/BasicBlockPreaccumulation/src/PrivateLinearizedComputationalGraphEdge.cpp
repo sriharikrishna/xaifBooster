@@ -9,7 +9,8 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
   PrivateLinearizedComputationalGraphEdge::PrivateLinearizedComputationalGraphEdge() : 
-    myLinearizedExpressionEdge_p(0) {
+    myLinearizedExpressionEdge_p(0),
+    myUnitExpressionEdgeFlag(false) {
   };
 
   std::string PrivateLinearizedComputationalGraphEdge::debug() const { 
@@ -29,9 +30,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   void PrivateLinearizedComputationalGraphEdge::setLinearizedExpressionEdge(ExpressionEdge& anExpressionEdge) {
-    if (myLinearizedExpressionEdge_p) 
+    if (myLinearizedExpressionEdge_p || myUnitExpressionEdgeFlag) 
       THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphEdge::setLinearizedExpressionEdge: already set");
     myLinearizedExpressionEdge_p=&anExpressionEdge;
+  }
+
+  void PrivateLinearizedComputationalGraphEdge::setUnitExpressionEdge() {
+    if (myLinearizedExpressionEdge_p || myUnitExpressionEdgeFlag) 
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphEdge::setUnitExpressionEdge: already set");
+    myUnitExpressionEdgeFlag=true;
+  }
+
+  bool PrivateLinearizedComputationalGraphEdge::isUnitExpressionEdge() const {
+    return myUnitExpressionEdgeFlag;
   }
 
   const ExpressionEdge& 
