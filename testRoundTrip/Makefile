@@ -1,14 +1,18 @@
+ifndef TARGET
 TARGET=head
+endif
+
+ifndef TARGET_DRIVER
+TARGET_DRIVER=driver
+endif
 
 ifdef REVERSE_MODE
-REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_rev.o OpenAD_tape.o iaddr.o
-TARGETDRIVER=driver_adm
+REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_rev.o OpenAD_tape.o iaddr.o all_globals_cp_mod.o 
 else
-TARGETDRIVER=driver
 PP_FLAGS=-f
 endif
 
-all: $(TARGET).xb.x2w.w2f.pp.f
+all: $(TARGET).prh.xb.x2w.w2f.urh.pp.f
 
 export UNDEF_ENV_VARS=""
 ifndef RICETOOLROOT
@@ -29,32 +33,39 @@ endif
 
 LN=ln -sf
 
+#F95=ifort -g  -fpe0
 F95=f95 -g
 
-CC=gcc
+CC=icc
 
-RM=rm -f
+RM=rm -rf
 
-$(TARGET).B: $(TARGET).f mfef90
-	./mfef90 -F -N80 $(TARGET).f
+$(TARGET).prh.f: $(TARGET).f prh.pl
+	perl prh.pl $<
 
-$(TARGET).xaif : $(TARGET).B whirl2xaif
-	./whirl2xaif -o $(TARGET).xaif $(TARGET).B
+$(TARGET).prh.B: $(TARGET).prh.f mfef90
+	./mfef90 -F -N132 $<
 
-$(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
+$(TARGET).prh.xaif : $(TARGET).prh.B whirl2xaif
+	./whirl2xaif -o $@ $<
+
+$(TARGET).prh.xb.xaif : $(TARGET).prh.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
 	$(COMPLAIN)
-#	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif -g 15
-	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
+#	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ -g 15
+	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@
 
-$(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
-	./xaif2whirl --structured $(TARGET).B $(TARGET).xb.xaif
+$(TARGET).prh.xb.x2w.B : $(TARGET).prh.xb.xaif xaif2whirl
+	./xaif2whirl --structured $(TARGET).prh.B $<
 
-$(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
+$(TARGET).prh.xb.x2w.w2f.f: $(TARGET).prh.xb.x2w.B whirl2f whirl2f_be
 	$(COMPLAIN)
-	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f -openad $(TARGET).xb.x2w.B
+	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f -openad $<
 
-$(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
-	perl pp.pl $(PP_FLAGS) $(TARGET).xb.x2w.w2f.f
+$(TARGET).prh.xb.x2w.w2f.urh.f: $(TARGET).prh.xb.x2w.w2f.f urh.pl
+	perl urh.pl $<
+
+$(TARGET).prh.xb.x2w.w2f.urh.pp.f: $(TARGET).prh.xb.x2w.w2f.urh.f pp.pl
+	perl pp.pl $(PP_FLAGS) $<
 
 # setup some links
 %.xsd:
@@ -69,7 +80,7 @@ whirl2xaif xaif2whirl:
 	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/OpenADFortTk/obj/i686-Linux/obj/$@ .
 
-pp.pl: 
+%.pl: 
 	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
 
@@ -80,56 +91,30 @@ whirl2f whirl2f_be:
 xaifBooster:
 	./pickAlgorithm.bash
 
-# make the $TARGETDRIVER)
-$(TARGETDRIVER): w2f__types.o active_module.o $(REVERSE_MODULES) $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
-	$(F95) $^ -o $@
+# make the $TARGET_DRIVER)
+$(TARGET_DRIVER): w2f__types.o active_module.o all_globals_mod.o $(REVERSE_MODULES) $(TARGET_DRIVER).o $(TARGET).prh.xb.x2w.w2f.urh.pp.o 
+	$(F95) $^ -o $@ 
 
-run: params.conf tmpOutput $(TARGETDRIVER)
-	./$(TARGETDRIVER)
-
-# this is not free form fortran
-w2f__types.o : w2f__types.f
-	$(F95) -c $<
-
-# this is not free form fortran either
-$(TARGET).xb.x2w.w2f.pp.o : $(REVERSE_MODULES) $(TARGET).xb.x2w.w2f.pp.f 
-	$(F95) -c $(TARGET).xb.x2w.w2f.pp.f
+run: params.conf tmpOutput $(TARGET_DRIVER)
+	./$(TARGET_DRIVER)
 
 %.o:%.f
+	$(F95) -fixed -c $<
+
+%.o:%.f90
 	$(F95) -free -c $<
-
-%.o:%.f95
-	$(F95) -c $<
-
-# link the sample files if necessary
-$(TARGETDRIVER).f : 
-	ln -s simple.$(TARGETDRIVER).f $(TARGETDRIVER).f
-
-# link the sample files if necessary
-$(TARGET).f : 
-	ln -s simple.f $(TARGET).f
-
-# link the sample files if necessary
-params.conf : 
-	ln -s simple.params.conf params.conf
 
 tmpOutput: 
 	mkdir -p $@
 
-testclean:
-	$(RM) $(TARGET).B $(TARGET).x* $(TARGETDRIVER) $(TARGETDRIVER).o 
-	$(RM) -rf tmpOutput 
+testAllclean:
+	$(RM) $(TARGET).* $(TARGET_DRIVER)* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput
 
-testAllclean: testclean
-	$(RM) $(TARGET).f $(TARGETDRIVER).f params.conf
-	$(RM) -rf  tmpOutput verifiedOutput 
-
-# cleanup
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f pp.pl xaifBooster 
+	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f *.pl xaifBooster .lastRun
 	$(RM) *.mod *.o
 
 obj test doc: 
 
-.PHONY: all obj test doc clean testclean testAllclean run
+.PHONY: all obj test doc clean testAllclean run
