@@ -297,7 +297,7 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces. 
 
-INPUT                  =  ../inc ../inc/TemplateImpl ../../utils/inc ../../utils/inc/TemplateImpl ../src ../src/srcDummyFactories ../../utils/src
+INPUT                  =  ../inc ../inc/TemplateImpl ../../utils/inc ../../utils/inc/TemplateImpl ../src ../src/srcFactories ../../utils/src
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 

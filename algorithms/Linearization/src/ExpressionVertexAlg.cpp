@@ -24,7 +24,23 @@ namespace xaifBoosterLinearization {
 
   std::string 
   ExpressionVertexAlg::debug() const { 
-    return std::string("ExpressionVertexAlg");
+    std::ostringstream out;
+    out << "xaifBoosterLinearization::ExpressionVertexAlg["
+	<< this 
+	<< ","
+	<< "myAuxilliaryVariable_p="
+	<< "="
+	<< myAuxilliaryVariable_p
+	<< ","
+	<< "myReplacementAssignment_p="
+	<< "="
+	<< myReplacementAssignment_p
+	<< ","
+	<< "myActiveFlag="
+	<< "="
+	<< myActiveFlag
+	<< "]" << std::ends;  
+    return out.str();
   }
 
   void

@@ -22,13 +22,37 @@ namespace xaifBoosterLinearization {
     AssignmentAlgBase(theContainingAssignment),
     myHaveLinearizedRightHandSide(false),
     myDelayedLHSAssignment_p(0),
-    myActiveFlag(true),
-    myLHSActiveFlag(true) { 
+    myActiveFlag(theContainingAssignment.getActiveFlag()),
+    myLHSActiveFlag(theContainingAssignment.getLHSActiveFlag()) { 
   }
 
   std::string 
   AssignmentAlg::debug() const { 
-    return std::string("AssignmentAlg");
+    std::ostringstream out;
+    out << "xaifBoosterLinearization::AssignmentAlg[" 
+	<< this 
+	<< ","
+	<< "mySSAReplacementAssignmentList.size()="
+	<< "="
+	<< mySSAReplacementAssignmentList.size()
+	<< ","
+	<< "myHaveLinearizedRightHandSide"
+	<< "="
+	<< myHaveLinearizedRightHandSide
+	<< ","
+	<< "myDelayedLHSAssignment_p"
+	<< "="
+	<< myDelayedLHSAssignment_p
+	<< ","
+	<< "myActiveFlag"
+	<< "="
+	<< myActiveFlag
+	<< ","
+	<< "myLHSActiveFlag"
+	<< "="
+	<< myLHSActiveFlag
+	<< "]" << std::ends;  
+    return out.str();
   }
 
   void
@@ -81,7 +105,7 @@ namespace xaifBoosterLinearization {
 				   os); 
     if (dynamic_cast<ExpressionEdgeAlg&>(theEdge.getExpressionEdgeAlgBase()).hasConcretePartialAssignment()) { 
       DBG_MACRO(DbgGroup::CALLSTACK,
-		"AssignmentAlg::printEdgeAnnotationsBottomUp: printing for " 
+		"xaifBoosterLinearization::AssignmentAlg::printEdgeAnnotationsBottomUp: printing for " 
 		<< theEdge.debug().c_str() 
 		<< " in " 
 		<< theExpression.debug().c_str());
@@ -185,7 +209,7 @@ namespace xaifBoosterLinearization {
   } // end of AssignmentAlg::makeSSACodeList
 
   void AssignmentAlg::localRHSExtractionOuter(const ExpressionEdge& theEdge) { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "AssignmentAlg::localRHSExtractionOuter");
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterLinearization::AssignmentAlg::localRHSExtractionOuter");
     Expression& theExpression(myLinearizedRightHandSide);
     ExpressionVertex& theVertex(theExpression.getSourceOf(theEdge));
     Expression::InEdgeIteratorPair p(theExpression.getInEdgesOf(theVertex));
@@ -235,7 +259,7 @@ namespace xaifBoosterLinearization {
 					      const ExpressionVertex& theTargetVertex,
 					      ExpressionVertex& theReplacementTargetVertex,
 					      AssignmentAlg::PointerPairList& theVertexPointerPairList) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "AssignmentAlg::localRHSExtractionInner");
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterLinearization::AssignmentAlg::localRHSExtractionInner");
     Expression& theExpression(myLinearizedRightHandSide);
     ExpressionVertex& theSourceVertex(theExpression.getSourceOf(theEdge));
     ExpressionVertexAlg& theSourceVertexAlg(dynamic_cast<ExpressionVertexAlg&>(theSourceVertex.getExpressionVertexAlgBase()));
@@ -301,35 +325,49 @@ namespace xaifBoosterLinearization {
   } // end of AssignmentAlg::localRHSExtractionInner
 
   void AssignmentAlg::algorithm_action_1() { 
+    DBG_MACRO(DbgGroup::CALLSTACK, 
+	      "xaifBoosterLinearization::AssignmentAlg::algorithm_action_1(linearize) called for: "
+	      << debug().c_str());
     if (myHaveLinearizedRightHandSide)
-      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_1(linearize): cannot be called twice");
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::algorithm_action_1(linearize): cannot be called twice");
     if (!getContaining().getLHS().getActiveType()) { 
       // the LHS is an inactive type
       // passivate the entire statement.
       // note that the 'active'=true may just 
       // be the default set by the schema...
       myLHSActiveFlag=false;
+      myActiveFlag=false;
       // skip the rest
       return;
     }
+
     // perform the activity analysis on the original right hand side
-    
     dynamic_cast<ExpressionAlg&>(getContaining().getRHS().getExpressionAlgBase()).activityAnalysis(); 
+
     // has the maximal node become passive?
     Expression::ConstVertexIteratorPair pV(getContaining().getRHS().vertices());
     Expression::ConstVertexIterator iV(pV.first),iVe(pV.second);
     for (;iV!=iVe ;++iV)
       if (!getContaining().getRHS().numOutEdgesOf(*iV))
 	break;
-    if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive())
+    if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()) { 
       // make the entire assignment passive
       myLHSActiveFlag=false;
+      myActiveFlag=false;
+    }
     if (!myLHSActiveFlag)
       return;
+
     // copy the right hand side: 
     getContaining().getRHS().
       copyMyselfInto(myLinearizedRightHandSide,
 		     true); // make algorithm objects in the copy
+
+    // repeat the activity analysis on the copy
+    // \todo: could change to always create the copy and run the 
+    // the activityAnalysis once on the copy instead.
+    dynamic_cast<ExpressionAlg&>(myLinearizedRightHandSide.getExpressionAlgBase()).activityAnalysis(); 
+
     // set the flag
     myHaveLinearizedRightHandSide=true;
     // create auxilliary variables and 
@@ -343,13 +381,13 @@ namespace xaifBoosterLinearization {
 
   Expression& AssignmentAlg::getLinearizedRightHandSide() { 
     if (!myHaveLinearizedRightHandSide)
-      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::getLinearizedRightHandSide: this has not been linearized");
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::getLinearizedRightHandSide: this has not been linearized");
     return myLinearizedRightHandSide;
   } // end of AssignmentAlg::getLinearizedRightHandSide
 
   const Expression& AssignmentAlg::getLinearizedRightHandSide() const { 
     if (!myHaveLinearizedRightHandSide)
-      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::getLinearizedRightHandSide: this has not been linearized");
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::getLinearizedRightHandSide: this has not been linearized");
     return myLinearizedRightHandSide;
   } // end of AssignmentAlg::getLinearizedRightHandSide
 

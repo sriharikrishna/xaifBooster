@@ -14,11 +14,25 @@ else
 fi
 for i in `echo ${TESTFILES}`
     do
-    echo "executing ./t -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg"
+    echo "executing: ./t -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg"
     ./t -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg
-    echo "debug messages:"
-    cat tmp/${i}.dbg
-    echo "diffs base (<) vs. current (>):"
-    diff testOutput/${i}.out tmp/${i}.out
+    debugLines=`wc -l tmp/${i}.dbg | awk '{ print $1}'`
+    if [ $debugLines -gt 0 ] 
+    then 
+	echo "debug messages:"
+	cat tmp/${i}.dbg
+	exit
+    else
+	echo "no debug messages"
+    fi
+    diffs=`diff testOutput/${i}.out tmp/${i}.out`
+    if [ -n "$diffs" ] 
+    then 
+	echo "diffs base (<) vs. current (>):"
+	diff testOutput/${i}.out tmp/${i}.out
+	exit
+    else 
+	echo "no diffs"
+    fi
     echo ""
 done
