@@ -533,8 +533,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  } 
 	  else { 
 	    Argument* theExternalArgument_p=new Argument();
-	    dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(thePrivateEdge.getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).
-	      getConcretePartialAssignment().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
+	    thePrivateEdge.getAssignmentFromEdge().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
 	    theExternalArgument_p->setId(theNewAssignment.getRHS().getNextVertexId());
 	    theNewAssignment.getRHS().supplyAndAddVertexInstance(*theExternalArgument_p);
 	    theNewVertex_p=theExternalArgument_p;
@@ -558,13 +557,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    theNewExpressionVertex_p=theConstant_p;
 	  } // end if 
 	  else { 
-	    const ExpressionEdge& theOriginalAssignmentExpressionEdge(thePrivateEdge.getLinearizedExpressionEdge());
 	    // we make the new Argument
 	    // use the LHS of the local elementary partial assignment
 	    Argument* theExternalArgument_p=new Argument();
 	    theNewExpressionVertex_p=theExternalArgument_p;
-	    dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(theOriginalAssignmentExpressionEdge.getExpressionEdgeAlgBase()).
-	      getConcretePartialAssignment().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
+	     thePrivateEdge.getAssignmentFromEdge().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
 	  } // end else
 	  theNewExpressionVertex_p->setId(theNewAssignment.getRHS().getNextVertexId());
 	  theNewAssignment.getRHS().supplyAndAddVertexInstance(*theNewExpressionVertex_p);

@@ -26,6 +26,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   private:
 
+    static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactoryInstance_p;
+
     PrivateLinearizedComputationalGraphVertexAlgFactory (const PrivateLinearizedComputationalGraphVertexAlgFactory&);
 
     PrivateLinearizedComputationalGraphVertexAlgFactory operator= (const PrivateLinearizedComputationalGraphVertexAlgFactory&);
