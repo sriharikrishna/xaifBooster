@@ -374,7 +374,7 @@ namespace xaifBoosterLinearization {
       out << "[label=\"" << dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
 														  myE.getInternalBoostGraph()),
 												       v))).getExpressionVertexAlgBase()).isActive() << "\"]";
-    };
+    }
     const Expression& myE;
   };
 

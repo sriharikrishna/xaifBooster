@@ -1,5 +1,6 @@
 #!/bin/bash
 CP="cp -f"
+MAKE="gmake"
 
 function copyDefaultBeforeExample { 
   exampleDir=$1
@@ -68,10 +69,10 @@ fi
 for i in `echo ${TESTFILES}`
 do 
   export TARGET=head
-  make testAllclean
+  ${MAKE} testAllclean
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make testAllclean"; exit -1;
+    echo "ERROR in: ${MAKE} testAllclean"; exit -1;
   fi
   echo "** running $i *************************************************"
   TARGET_DRIVER=driver_${mode}
@@ -90,10 +91,10 @@ do
     copyDefaultBeforeExample $exdir ad_template_${submode}.f ad_template.f
   fi  
   export TARGET=all_globals_mod
-  make
+  ${MAKE}
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make for all_globals_mod"; exit -1;
+    echo "ERROR in: ${MAKE} for all_globals_mod"; exit -1;
   fi
   ${CP}  all_globals_mod.prh.xb.x2w.w2f.urh.pp.f all_globals_mod.f
   if [ $? -ne 0 ] 
@@ -101,10 +102,10 @@ do
     echo "ERROR in: ${CP}  all_globals_mod.prh.xb.x2w.w2f.urh.pp.f all_globals_mod.f"; exit -1;
   fi
   export TARGET=head
-  make
+  ${MAKE}
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make for head"; exit -1;
+    echo "ERROR in: ${MAKE} for head"; exit -1;
   fi
 ### this is temporary until we got rid of the RETURNs
   if [ "$REVERSE_MODE" == "y" ] 
@@ -114,15 +115,15 @@ do
   fi
 ### end of temporary fix
   export TARGET_DRIVER=driver
-  make $TARGET_DRIVER
+  ${MAKE} $TARGET_DRIVER
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make driver"; exit -1;
+    echo "ERROR in: ${MAKE} driver"; exit -1;
   fi
-  make run
+  ${MAKE} run
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make run"; exit -1;
+    echo "ERROR in: ${MAKE} run"; exit -1;
   fi
   hasDiffAD=$(diff tmpOutput/ad.out $exdir/refOutput/ad.out)
   if [ $? -eq 2 ] 
