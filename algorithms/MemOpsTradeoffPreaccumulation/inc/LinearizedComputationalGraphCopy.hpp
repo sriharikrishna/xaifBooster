@@ -51,10 +51,9 @@ namespace MemOpsTradeoffPreaccumulation {
     const unsigned int numDeps() const;
 
     /**
-     * these functions return the vertex and edge lists associated with the graph
+     * returns the vertex list associated with the graph
      */
     VertexPointerList getVertexList() const;
-    EdgePointerList getEdgeList() const;
 
     /**
      * these functions facilitate the population of the dependent and independent lists when the graph copy is made
@@ -64,14 +63,12 @@ namespace MemOpsTradeoffPreaccumulation {
 
     /**
      * vertexlist is a topologically sorted list of all the vertices in the graph, the vertex list stays the same throughout
-     * the elimination proce3ss, except that when a vertex is eliminated it is removed from the list.  the edgelist is
+     * the elimination process, except that when a vertex is eliminated it is removed from the list.  the edgelist is
      * cleared and recreated based on the vertex list before every edge elimination decision is made.
      */
     void addToVertexList(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theVertex);
-    void addToEdgeList(LinearizedComputationalGraphCopy& theCopy,
-		       LinearizedComputationalGraphCopyEdge& theEdge,
-		       LinearizedComputationalGraphCopy::edgeElimDirection theDirection);
     void removeFromVertexList(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theVertex);
+    EdgePointerList populateEdgeList();
     void clearEdgeList();
 
   private: 
