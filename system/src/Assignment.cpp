@@ -25,8 +25,7 @@ namespace xaifBooster {
 			 bool makeAlgorithm) : 
     myRHS(makeAlgorithm),
     myAssignmentAlgBase_p(0),
-    myActiveFlag(theActiveFlag),
-    myLHSActiveFlag(true) {
+    myActiveFlag(theActiveFlag) {
     if (makeAlgorithm)
       myAssignmentAlgBase_p=AssignmentAlgFactory::instance()->makeNewAlg(*this); 
   } 
@@ -56,18 +55,24 @@ namespace xaifBooster {
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
-       << ourXAIFName
+       << ourXAIFName.c_str()
        << " " 
-       << our_myId_XAIFName 
+       << our_myId_XAIFName.c_str() 
        << "=\"" 
-       << getId()
-       << "\">" 
+       << getId().c_str()
+       << "\""
+       << " " 
+       << our_myActiveFlag_XAIFName.c_str() 
+       << "=\"" 
+       << myActiveFlag
+       << "\""
+       << ">" 
        << std::endl;
     printXMLHierarchyLHS(os);
     printXMLHierarchyRHS(os);
     os << pm.indent()
        << "</"
-       << ourXAIFName
+       << ourXAIFName.c_str()
        << ">"
        << std::endl;
     pm.releaseInstance();
@@ -78,30 +83,15 @@ namespace xaifBooster {
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
-       << our_myLHS_XAIFName;
-    if (myLHS.getAliasActivityMapKey().getKind()==AliasActivityMapKey::SET) { 
-      os << " "
-	 << Variable::our_myKey_XAIFName
-	 << "=\""
-	 << myLHS.getAliasActivityMapKey().getKey()
-	 << "\"";
-    }
-    os << " " 
-       << our_myActiveFlag_XAIFName.c_str() 
-       << "=\"" 
-       << myLHSActiveFlag
-       << "\""
-       << " "
-       << Variable::our_myDerivFlag_XAIFName.c_str()
-       << "=\""
-       << myLHS.getDerivFlag()
-       << "\""
-       << ">" 
+       << our_myLHS_XAIFName.c_str()
+       << " ";
+    myLHS.printVariableReferenceXMLAttributes(os);
+    os << ">" 
        << std::endl;
     myLHS.printXMLHierarchy(os);
     os << pm.indent()
        << "</"
-       << our_myLHS_XAIFName
+       << our_myLHS_XAIFName.c_str()
        << ">"
        << std::endl;
     pm.releaseInstance();
@@ -112,13 +102,13 @@ namespace xaifBooster {
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
-       << our_myRHS_XAIFName
+       << our_myRHS_XAIFName.c_str()
        << ">"
        << std::endl;
     myRHS.printXMLHierarchy(os);
     os << pm.indent()
        << "</"
-       << our_myRHS_XAIFName
+       << our_myRHS_XAIFName.c_str()
        << ">"
        << std::endl;
     pm.releaseInstance();
@@ -156,10 +146,6 @@ namespace xaifBooster {
 	<< "myActiveFlag"
 	<< "="
 	<< myActiveFlag
-	<< ","
-	<< "myLHSActiveFlag"
-	<< "="
-	<< myLHSActiveFlag
 	<< BasicBlockElement::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
@@ -171,16 +157,8 @@ namespace xaifBooster {
     myLHS.genericTraversal(anAction_c);
   } 
 
-  void Assignment::passivateLHS() { 
-    myLHSActiveFlag=false;
-  }
-
   bool Assignment::getActiveFlag() const { 
     return myActiveFlag;
-  } 
-
-  bool Assignment::getLHSActiveFlag() const { 
-    return myLHSActiveFlag;
   } 
 
 } // end of namespace xaifBooster 

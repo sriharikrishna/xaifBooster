@@ -68,14 +68,7 @@ namespace xaifBooster {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    /** 
-     * set myLHSActiveFlag to false
-     */
-    void passivateLHS();
-
     bool getActiveFlag() const;
-
-    bool getLHSActiveFlag() const;
 
   private: 
 
@@ -115,13 +108,6 @@ namespace xaifBooster {
      * this determines if the assignment is active or not
      */
     const bool myActiveFlag;
-
-    /** 
-     * this determines if the LHS is active or not
-     * associated with xaif:AssignmentLHS
-     * initialized to true
-     */
-    bool myLHSActiveFlag;
 
   }; // end of class Assignment
  

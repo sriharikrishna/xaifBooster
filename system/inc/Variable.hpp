@@ -8,6 +8,7 @@
 #include "xaifBooster/system/inc/VariableEdge.hpp"
 #include "xaifBooster/system/inc/AliasActivityMapKey.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
+#include "xaifBooster/system/inc/ActiveUseType.hpp"
 
 namespace xaifBooster { 
 
@@ -27,6 +28,11 @@ namespace xaifBooster {
      * print XML hierarchy
      */
     void printXMLHierarchy(std::ostream& os) const;
+
+    /**
+     * print attributes associated with VariableReference XML type
+     */
+    void printVariableReferenceXMLAttributes(std::ostream& os) const;
 
     /**
      * print debug information
@@ -93,6 +99,20 @@ namespace xaifBooster {
      */
     static const std::string our_myDerivFlag_XAIFName;
 
+    /** 
+     * get the active use of this Variable
+     * if UNDEFINED we go by the type specified in 
+     * the SymbolTable
+     */
+    bool getActiveFlag() const; 
+
+    ActiveUseType::ActiveUseType_E getActiveUseType() const; 
+
+    /** 
+     * set myActiveUseType once
+     */
+    void setActiveUseType(ActiveUseType::ActiveUseType_E anActiveUseType); 
+
   private: 
     
     /** 
@@ -108,6 +128,18 @@ namespace xaifBooster {
     bool myDerivFlag;
 
     const VariableSymbolReference& getVariableSymbolReference() const;
+
+    /** 
+     * indicating how a variable is used, 
+     * defaults to UNDEFINED which is 
+     * also the schema default, 
+     * can be set once with setActiveUseType
+     * and modified if UNDEFINED 
+     * in getActiveFlag
+     */
+    mutable ActiveUseType::ActiveUseType_E myActiveUseType;
+
+    bool myactiveUseTypeSetFlag;
 
   }; // end of class Variable
 

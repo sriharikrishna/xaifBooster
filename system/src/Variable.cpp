@@ -9,7 +9,9 @@ namespace xaifBooster {
   const std::string Variable::our_myDerivFlag_XAIFName("deriv");
 
   Variable::Variable() : 
-    myDerivFlag(false) { 
+    myDerivFlag(false),
+    myActiveUseType(ActiveUseType::UNDEFINEDUSE),
+    myactiveUseTypeSetFlag(false) { 
   } 
 
   void 
@@ -88,6 +90,26 @@ namespace xaifBooster {
     return theSignature.str();
   } 
 
+  void 
+  Variable::printVariableReferenceXMLAttributes(std::ostream& os) const { 
+    os << ActiveUseType::our_attribute_XAIFName.c_str() 
+       << "=\"" 
+       << ActiveUseType::toString(getActiveUseType()).c_str()
+       << "\"";
+    if (getAliasActivityMapKey().getKind()==AliasActivityMapKey::SET) { 
+      os << " "
+	 << our_myKey_XAIFName
+	 << "=\""
+	 << getAliasActivityMapKey().getKey()
+	 << "\"";
+      }
+    os << " " 
+       << our_myDerivFlag_XAIFName.c_str() 
+       << "=\"" 
+       << getDerivFlag()
+       << "\"";
+  } 
+
   void
   Variable::printXMLHierarchy(std::ostream& os) const { 
     Variable::ConstVertexIteratorPair p(vertices());
@@ -149,6 +171,44 @@ namespace xaifBooster {
 
   bool Variable::getDerivFlag() const { 
     return myDerivFlag;
+  } 
+
+  void Variable::setActiveUseType(ActiveUseType::ActiveUseType_E anActiveUseType) { 
+    if (myactiveUseTypeSetFlag)
+      THROW_LOGICEXCEPTION_MACRO("Variable::setActiveUseType: already set, cannot reset");
+    myActiveUseType=anActiveUseType;
+    myactiveUseTypeSetFlag=true;
+  } 
+
+  bool Variable::getActiveFlag() const { 
+    bool theAnswer;
+    switch (myActiveUseType) {
+    case ActiveUseType::ACTIVEUSE: 
+      theAnswer=true;
+      break;
+    case ActiveUseType::PASSIVEUSE:
+      theAnswer=false;
+      break;
+    case ActiveUseType::UNDEFINEDUSE:
+      { 
+	if (theAnswer=getActiveType())
+	  myActiveUseType=ActiveUseType::ACTIVEUSE;
+	else 
+	  myActiveUseType=ActiveUseType::PASSIVEUSE;
+	break;
+      }
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("Variable::getActiveFlag: unknown value of myActiveUseType:"
+				 << myActiveUseType);
+      break;
+    }
+    return theAnswer;
+  } 
+
+  ActiveUseType::ActiveUseType_E
+  Variable::getActiveUseType() const { 
+    getActiveFlag(); // update it if needed
+    return myActiveUseType;
   } 
 
 } // end of namespace xaifBooster 

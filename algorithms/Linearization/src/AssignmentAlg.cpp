@@ -22,8 +22,7 @@ namespace xaifBoosterLinearization {
     AssignmentAlgBase(theContainingAssignment),
     myHaveLinearizedRightHandSide(false),
     myDelayedLHSAssignment_p(0),
-    myActiveFlag(theContainingAssignment.getActiveFlag()),
-    myLHSActiveFlag(theContainingAssignment.getLHSActiveFlag()) { 
+    myActiveFlag(theContainingAssignment.getActiveFlag()) { 
   }
 
   std::string 
@@ -47,10 +46,6 @@ namespace xaifBoosterLinearization {
 	<< "myActiveFlag"
 	<< "="
 	<< myActiveFlag
-	<< ","
-	<< "myLHSActiveFlag"
-	<< "="
-	<< myLHSActiveFlag
 	<< "]" << std::ends;  
     return out.str();
   }
@@ -335,7 +330,6 @@ namespace xaifBoosterLinearization {
       // passivate the entire statement.
       // note that the 'active'=true may just 
       // be the default set by the schema...
-      myLHSActiveFlag=false;
       myActiveFlag=false;
       // skip the rest
       return;
@@ -352,10 +346,9 @@ namespace xaifBoosterLinearization {
 	break;
     if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()) { 
       // make the entire assignment passive
-      myLHSActiveFlag=false;
       myActiveFlag=false;
     }
-    if (!myLHSActiveFlag)
+    if (!myActiveFlag)
       return;
 
     // copy the right hand side: 
@@ -443,10 +436,6 @@ namespace xaifBoosterLinearization {
 
   bool AssignmentAlg::getActiveFlag() const { 
     return myActiveFlag;
-  } 
-
-  bool AssignmentAlg::getLHSActiveFlag() const { 
-    return myLHSActiveFlag;
   } 
 
 }

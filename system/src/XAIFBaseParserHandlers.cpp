@@ -163,9 +163,6 @@ namespace xaifBooster {
     passingOut.setAliasActivityMap(theAliasActivityMap);
   };
 
-  /**
-   * \todo JU: need to retrieve active flag after it is added to the schema
-   */
   void 
   XAIFBaseParserHandlers::onAliasActivity(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasActivity" ); 
@@ -240,11 +237,9 @@ namespace xaifBooster {
       setReference(atoi(XMLParser::getAttributeValueByName(
 						Variable::our_myKey_XAIFName).c_str()));
     passingOut.setVariable(theAssignment.getLHS());
-    
-    // JU todo: remove this ugly hack.
-    if (!XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(
-						  Assignment::our_myActiveFlag_XAIFName))) 
-      theAssignment.passivateLHS();
+
+    theAssignment.getLHS().
+      setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
   };
 
   void 
@@ -292,13 +287,8 @@ namespace xaifBooster {
     theArgument_p->getVariable().getAliasActivityMapKey().
       setReference(atoi(XMLParser::getAttributeValueByName(
 						Variable::our_myKey_XAIFName).c_str()));
-    if (! ConceptuallyStaticInstances::instance()->getCallGraph().
-	getAliasActivityMap().
-	isActive(theArgument_p->getVariable().
-		 getAliasActivityMapKey())) {
-      // it is marked as passive in the AliasActivityMap:
-      // theArgument_p->passivate();
-    }
+    theArgument_p->getVariable().
+      setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
     passingOut.setVariable(theArgument_p->getVariable());
   };
 
