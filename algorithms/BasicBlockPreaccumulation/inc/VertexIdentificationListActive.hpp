@@ -69,12 +69,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual void addElement(const Variable& theVariable,
 			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
 
-    /** 
-     * \todo JU incomplete, no handling for du info
-     */
-    void replaceOrAddElement(const Variable& theVariable,
-			     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
-
     void VertexIdentificationListActive::removeIfIdentifiable(const Variable& theVariable); 
 
   protected:

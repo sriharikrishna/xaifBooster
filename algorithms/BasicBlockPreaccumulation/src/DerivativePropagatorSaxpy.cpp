@@ -188,4 +188,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } // end of DerivativePropagatorSaxpy::debug
 
+  void  DerivativePropagatorSaxpy::getVariables(VariablePList& theVariablePList) const { 
+    for (AXPList::const_iterator i=myAXPList.begin();
+	 i!=myAXPList.end();
+	 ++i) { 
+      // get the Expression
+      const Expression& theA((*i)->myA);
+      if(theA.numVertices()!=1) 
+	THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorSaxpy::getVariables: not defined for factor expressions");
+      const ExpressionVertex& theVertex(*(theA.vertices().first));
+      if (theVertex.isArgument())
+	theVariablePList.push_back(&(dynamic_cast<const Argument&>(theVertex).getVariable()));
+    }
+  }
+
 }
