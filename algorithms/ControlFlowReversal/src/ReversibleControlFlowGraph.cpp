@@ -622,12 +622,13 @@ namespace xaifBoosterControlFlowReversal {
     }
     // if branch node then handle corresponding end node
     if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::BRANCH) {
-      endNodes_p_s_r.top()->setIndex(idx++);
-      mySortedVertices_p_l.push_back(endNodes_p_s_r.top());
-      // sort successor  
-      OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(*(endNodes_p_s_r.top())));
-      topologicalSortRecursively(getTargetOf(*(theCurrentVertex_oeip.first)),idx,endNodes_p_s_r); 
+      ReversibleControlFlowGraphVertex* the_endBranch_p=endNodes_p_s_r.top();
       endNodes_p_s_r.pop();
+      the_endBranch_p->setIndex(idx++);
+      mySortedVertices_p_l.push_back(the_endBranch_p);
+      // sort successor  
+      OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(*(the_endBranch_p)));
+      topologicalSortRecursively(getTargetOf(*(theCurrentVertex_oeip.first)),idx,endNodes_p_s_r); 
     }
   }
 
