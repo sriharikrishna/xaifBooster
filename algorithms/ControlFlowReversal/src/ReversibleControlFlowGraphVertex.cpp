@@ -8,13 +8,11 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex() : original(false), adjoint(false), myOriginalVertex_p(NULL), myNewVertex_p(NULL), myVisitedFlag(false), myIndex(-1) {}
+  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex() : original(false), adjoint(false), myOriginalVertex_p(NULL), myVisitedFlag(false), myIndex(-1) {}
 
-  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : original(true), adjoint(false), myOriginalVertex_p(theOriginal), myNewVertex_p(NULL), myVisitedFlag(false), myIndex(-1) {}
+  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : original(true), adjoint(false), myOriginalVertex_p(theOriginal), myVisitedFlag(false), myIndex(-1) {}
 
-  ReversibleControlFlowGraphVertex::~ReversibleControlFlowGraphVertex() { 
-    if (!original) delete myNewVertex_p;
-  }
+  ReversibleControlFlowGraphVertex::~ReversibleControlFlowGraphVertex() {}
 
   const ControlFlowGraphVertexAlg&
   ReversibleControlFlowGraphVertex::getOriginalControlFlowGraphVertexAlg() const {

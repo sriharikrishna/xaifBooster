@@ -72,10 +72,10 @@ namespace xaifBoosterControlFlowReversal {
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
       if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
-        out << "[label=\"" << theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value() << "," << theReversibleControlFlowGraphEdge_p->getOriginalEdge().get_condition_value() << "\"]";
+        out << "[label=\"" << theReversibleControlFlowGraphEdge_p->getOriginalEdge().getId().c_str() << "(" << theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value() << "," << theReversibleControlFlowGraphEdge_p->getOriginalEdge().get_condition_value() << ")\"]";
       }
       else {
-        out << "[label=\"" << theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value() << "," << theReversibleControlFlowGraphEdge_p->getNewEdge().get_condition_value() <<"\"]";
+        out << "[label=\"" << theReversibleControlFlowGraphEdge_p->getNewEdge().getId().c_str() << "(" << theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value() << "," << theReversibleControlFlowGraphEdge_p->getNewEdge().get_condition_value() << ")\"]";
       }
     };
     const ReversibleControlFlowGraph& myG;

@@ -47,11 +47,13 @@ namespace xaifBoosterControlFlowReversal {
       return *myOriginalVertex_p; 
     }
 
-    const ControlFlowGraphVertex& getNewVertex() const { 
+    ControlFlowGraphVertex& getNewVertex() { 
       return *myNewVertex_p; 
     }
 
-    
+    void supplyAndAddNewVertex(ControlFlowGraphVertex& theNewVertex) { 
+      myNewVertex_p=&theNewVertex; 
+    }
 
   private:
 
