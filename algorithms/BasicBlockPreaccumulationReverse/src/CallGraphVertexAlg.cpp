@@ -118,7 +118,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	handleCheckPointing("cp_res_restore",
 			    IntentType::IN_ITYPE,
 			    *myCFGRestoreResults_p,
-			    true);
+			    false);
 	break;
       default: 
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_4: no handler for ReplacementID  "
@@ -222,6 +222,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     VariableSymbolReference& theNewVariableSymbolReference(*(new VariableSymbolReference(theSymbol,
 											 theScope)));
     theNewVariableSymbolReference.setId("1");
+    theNewVariableSymbolReference.setAnnotation("xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall");
     // pass it on to the variable and relinquish ownership
     theInlineVariable.supplyAndAddVertexInstance(theNewVariableSymbolReference);
     theInlineVariable.getAliasMapKey().setTemporary();

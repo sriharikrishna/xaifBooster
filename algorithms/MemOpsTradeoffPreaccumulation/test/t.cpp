@@ -14,6 +14,7 @@ void Usage(char** argv) {
   std::cout << "test driver: "
 	    << argv[0]
 	    << " -i <inputFile> -c <intrinsicsCatalogueFile> " << std::endl
+	    << "             [-s <pathToSchema> ] defaults to ./" << std::endl
 	    << "             [-o <outputFile> ] [-d <debugOutputFile>]" << std::endl
 	    << "                 both default to cout" << std::endl
             << "             [-h <Heuristic List>]" << std::endl
@@ -29,11 +30,15 @@ int main(int argc,char** argv) {
   DbgLoggerManager::instance()->setSelection(DbgGroup::ERROR 
 					     //| DbgGroup::CALLSTACK | DbgGroup::TEMPORARY
 					     );
-  std::string inFileName, outFileName, intrinsicsFileName;
+  std::string inFileName, outFileName, intrinsicsFileName, schemaPath;
+  // to contain the namespace url in case of -s having a schema location
+  std::string aUrl;
   try { 
-    CommandLineParser::instance()->initialize("iocdgh",argc,argv);
+    CommandLineParser::instance()->initialize("iocdghs",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
+    if (CommandLineParser::instance()->isSet('s')) 
+      schemaPath=CommandLineParser::instance()->argAsString('s');
     if (CommandLineParser::instance()->isSet('o'))
       outFileName=CommandLineParser::instance()->argAsString('o');
     if (CommandLineParser::instance()->isSet('d'))
@@ -52,9 +57,17 @@ int main(int argc,char** argv) {
     xaifBoosterMemOpsTradeoffPreaccumulation::AlgFactoryManager::instance()->init();
     InlinableIntrinsicsParser ip(xaifBooster::ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
+    if (schemaPath.size()) { 
+      aUrl="http://www.mcs.anl.gov/XAIFInlinableIntrinsics ";
+      ip.setExternalSchemaLocation(aUrl+schemaPath+"/xaif_inlinable_intrinsics.xsd");
+    } 
     ip.parse(intrinsicsFileName);
     XAIFBaseParser p;
     p.initialize();
+    if (schemaPath.size()) { 
+      aUrl="http://www.mcs.anl.gov/XAIF ";
+      p.setExternalSchemaLocation(aUrl+schemaPath+"/xaif.xsd");
+    } 
     p.parse(inFileName);
     CallGraph& Cg(xaifBooster::ConceptuallyStaticInstances::instance()->getCallGraph());
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize

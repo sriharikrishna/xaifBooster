@@ -27,8 +27,6 @@ namespace xaifBooster {
       myParser_p = XERCES_CPP_NAMESPACE::XMLReaderFactory::createXMLReader();
       myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgSAX2CoreValidation, true);
       myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgXercesDynamic, false);
-
-
       myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgSAX2CoreNameSpaces, true);
       myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgXercesSchema,true);
       myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgXercesSchemaFullChecking,true);
@@ -57,6 +55,26 @@ namespace xaifBooster {
     }
   } // end of parse
 
+  void XMLParser::setExternalSchemaLocation(std::string theSchemaLocation) { 
+    DBG_MACRO(DbgGroup::CALLSTACK, 
+	      "in XMLParser::setExternalSchemaLocation for " 
+	      << theSchemaLocation.c_str());
+    try {
+      myParser_p->setProperty(XERCES_CPP_NAMESPACE::XMLUni::fgXercesSchemaExternalSchemaLocation,
+			      (void*)XERCES_CPP_NAMESPACE::XMLString::transcode(theSchemaLocation.c_str()));
+    }
+    catch (const xercesc::XMLException& e) {
+      THROW_LOGICEXCEPTION_MACRO("XMLParser::setExternalSchemaLocation: XMLException:"
+                                 << XMLParserMessage(e.getMessage()));
+    }
+    catch (BaseException& e) {
+      throw e;
+    }
+    catch (...) {
+      THROW_LOGICEXCEPTION_MACRO("XMLParser::setExternalSchemaLocation: caught an unspecified exception");
+    }
+  } // end of setExternalSchemaLocation
+
 
   bool
   XMLParser::convertToBoolean(const std::string& aValueString) { 
@@ -71,32 +89,6 @@ namespace xaifBooster {
 				 << "<");
     return returnWhat;
   } // end of XMLParser::convertToBoolean
-
-  /*
-
-  void XMLParser::parse(std::string theXMLFileName) { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XMLParser::parse" );
-    try { 
-      myParser_p->parse(theXMLFileName.c_str());
-    }
-    catch (const xercesc::XMLException& e) {
-      THROW_LOGICEXCEPTION_MACRO("XMLParser::parse: XMLException:" 
-				 << XMLParserMessage(e.getMessage()));
-    }
-    catch (BaseException& e) { 
-      throw e;
-    }
-    catch (...) {
-      THROW_LOGICEXCEPTION_MACRO("XMLParser::parse: caught an unspecified exception");
-    }
-  } // end of XMLParser::parse
-  */
-
-  /*
-   * UN: given the name of an attribute its value is returned as
-   * a string; involves a linear search through the list of
-   * attributes
-   */
 
   std::string XMLParser::getAttributeValueByName(const std::string& theName) {
     unsigned int len = ourAttributes_p->getLength();
