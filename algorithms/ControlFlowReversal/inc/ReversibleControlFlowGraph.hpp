@@ -39,6 +39,11 @@ namespace xaifBoosterControlFlowReversal {
 
     void topologicalSort();
 
+    /**
+     * Augmentation of cfg to record the flow of control. This assumes
+     * that all vertices have at most two inedges (loops and endbranches)
+     * and at most two outedges (loops and branches)
+     */
     void storeControlFlow();
 
     void buildAdjointControlFlowGraph(ReversibleControlFlowGraph&);

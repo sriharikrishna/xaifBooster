@@ -103,7 +103,7 @@ namespace xaifBoosterControlFlowReversal {
 	 << myConditionValue
 	 << "\"";
     }
-    os << "\"/>" << std::endl;
+    os << "/>" << std::endl;
     pm.releaseInstance();
   } // end of ReversibleControlFlowGraphEdge::printXMLHierarchy
 
