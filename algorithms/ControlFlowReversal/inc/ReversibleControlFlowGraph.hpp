@@ -95,7 +95,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * insert a new basic block between after and before and return it
      */
-    BasicBlock& insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before);
+    BasicBlock& insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before, const ReversibleControlFlowGraphEdge& replacedEdge_r);
 
     /** 
      * make a new basic block
