@@ -7,7 +7,7 @@ else
 fi
 for i in `echo ${TESTFILES}`
 do 
-  make clean
+  make testAllclean
   echo "** running $i *************************************************"
   exdir=examples/$i
   if [ -f $exdir/driver.f ] 
