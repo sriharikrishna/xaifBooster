@@ -53,4 +53,8 @@ namespace xaifBooster {
     return myActiveFlag;
   } // end of AliasActivity::getActivity
 
+  bool AliasActivity::disjointFrom(const AliasActivity& theOtherAliastActivity) const { 
+    return (!myAliasSet.sharesAliasWith(theOtherAliastActivity.myAliasSet));
+  } 
+
 } 

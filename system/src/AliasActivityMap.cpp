@@ -86,8 +86,40 @@ namespace xaifBooster {
     return returnValue;
   } // end of AliasActivityMap::isActive 
 
-  bool AliasActivityMap::isAliased(const AliasActivityMapKey& theKey, const AliasActivityMap::AliasActivityMapKeyList& theList) const { 
+  bool AliasActivityMap::isAliased(const AliasActivityMapKey& theKey, 
+				   const AliasActivityMap::AliasActivityMapKeyList& theList) const { 
+    // some obvious things first
+    if (!theList.size()) 
+      return false; 
+    if (theKey.getKind()==AliasActivityMapKey::TEMP_VAR)
+      // by agreed usage patterns, i.e. a single 
+      // relevant assignment within a given scope
+      return false; 
+    if (theKey.getKind()!=AliasActivityMapKey::NO_INFO) {
+      AliasActivityMapKeyList::const_iterator i=theList.begin();
+      for (;i!=theList.end();
+	   ++i)
+	if (haveNonEmptyIntersection(theKey,**i))
+	  break;
+      if(i==theList.end())
+	return false;
+    } 
     return true;
   }
+
+  bool AliasActivityMap::haveNonEmptyIntersection(const AliasActivityMapKey& thisKey,
+						 const AliasActivityMapKey& theOtherKey) const { 
+    if (theOtherKey.getKind()==AliasActivityMapKey::TEMP_VAR)
+      // by agreed usage patterns, i.e. a single 
+      // relevant assignment within a given scope
+      return false; 
+    if (theOtherKey.getKind()!=AliasActivityMapKey::NO_INFO) {
+      if (thisKey.getKey()!=theOtherKey.getKey()) { 
+	if (myAAVector[thisKey.getKey()]->disjointFrom(*myAAVector[theOtherKey.getKey()]))
+	  return false;
+      }
+    } 
+    return true;
+  } 
 
 } // end of namespace  

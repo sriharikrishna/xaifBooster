@@ -6,7 +6,9 @@ namespace xaifBooster {
 
   std::string BasicBlockElement::debug () const { 
     std::ostringstream out;
-    out << "BasicBlockElement[" << this 
+    out << "BasicBlockElement[" 
+	<< this 
+	<< ObjectWithId::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of BasicBlockElement::debug

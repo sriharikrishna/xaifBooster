@@ -52,8 +52,12 @@ namespace xaifBooster {
     /**
      * perform a deep copy of the contents 
      * into theTarget
+     * \param withAlgorithm indicates if the graph 
+     * elements will have their algorithm objects 
+     * created.
      */
-    void copyMyselfInto(Expression& theTarget) const;
+    void copyMyselfInto(Expression& theTarget,
+			bool withAlgorithm=false) const;
     
     /** 
      * algorithm access where the Expression may 

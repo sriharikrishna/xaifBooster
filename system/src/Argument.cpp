@@ -1,26 +1,36 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
+#include "xaifBooster/system/inc/ArgumentAlgFactory.hpp"
 
 namespace xaifBooster { 
 
   const std::string Argument::ourXAIFName("xaif:VariableReference");
   const std::string Argument::our_myId_XAIFName("vertex_id");
 
-  Argument::Argument() { 
+  Argument::Argument(bool makeAlgorithm) { 
+    myExpressionVertexAlgBase_p=0;
+    if (makeAlgorithm)
+      myExpressionVertexAlgBase_p=ArgumentAlgFactory::instance()->makeNewAlg(*this);
   } 
 
   ExpressionVertex& Argument::createCopyOfMyself(bool withAlgorithm) const { 
-    Argument* aNewArgument_p=new Argument();
+    Argument* aNewArgument_p=new Argument(withAlgorithm);
     myVariable.copyMyselfInto(aNewArgument_p->myVariable);
     aNewArgument_p->setId(getId());
-//     if (!isActive())
-//       aNewVariable_p->passivate();
     return *aNewArgument_p;
-  } 
+  }
+ 
+  void
+  Argument::printXMLHierarchy(std::ostream& os) const {
+    if (myExpressionVertexAlgBase_p)
+      getArgumentAlgBase().printXMLHierarchy(os);
+    else
+      printXMLHierarchyImpl(os);
+  } // end of printXMLHierarchy
 
   void
-  Argument::printXMLHierarchy(std::ostream& os) const { 
+  Argument::printXMLHierarchyImpl(std::ostream& os) const { 
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
@@ -78,5 +88,16 @@ namespace xaifBooster {
   std::string Argument::equivalenceSignature() const { 
     return myVariable.equivalenceSignature();
   } ;
+
+  ArgumentAlgBase&
+  Argument::getArgumentAlgBase() const {
+    if (!myExpressionVertexAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("Argument::getArgumentAlgBase: not set");
+    return dynamic_cast<ArgumentAlgBase&>(*myExpressionVertexAlgBase_p);
+  } // end getArgumentAlgBase
+
+  void Argument::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+    getArgumentAlgBase().genericTraversal(anAction_c);
+  } // end traversalToChildren 
 
 } // end of namespace xaifBooster 

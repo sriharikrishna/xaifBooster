@@ -2,7 +2,7 @@
 #define _CALLGRAPH_INCLUDE_
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
-#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
+#include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/CallGraphEdge.hpp"
 #include "xaifBooster/system/inc/Scopes.hpp"
@@ -16,7 +16,7 @@ namespace xaifBooster {
    * representation. It describes targets of calls (subroutines)
    * as vertices and the calls being made as edges
    */
-  class CallGraph : public GraphWrapper<CallGraphVertex, CallGraphEdge> , 
+  class CallGraph : public GraphWrapperTraversable<CallGraphVertex, CallGraphEdge> , 
 		    public XMLPrintable { 
   public:
     

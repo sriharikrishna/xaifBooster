@@ -31,13 +31,13 @@ namespace xaifBooster {
     /** 
      * nothing implemented. this is for edges
      */
-    void printXMLHierarchyImpl(std::ostream& os, const Expression& theExpression) const {};
+    virtual void printXMLHierarchyImpl(std::ostream& os, const Expression& theExpression) const {};
 
     /**
      * actual implementation for printing xaif
      * always invoked by the graph
      */
-    void printXMLHierarchyImpl(std::ostream& os) const {};
+    virtual void printXMLHierarchyImpl(std::ostream& os) const {};
 
     std::string debug() const ;
 

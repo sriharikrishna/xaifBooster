@@ -1,6 +1,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/BooleanOperation.hpp"
+#include "xaifBooster/system/inc/BooleanOperationAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -8,15 +9,18 @@ namespace xaifBooster {
   const std::string BooleanOperation::our_myType_XAIFName("name");
   const std::string BooleanOperation::our_myId_XAIFName("vertex_id");
 
-  BooleanOperation::BooleanOperation(BooleanOperationType::BooleanOperationType_E theType) :
+  BooleanOperation::BooleanOperation(BooleanOperationType::BooleanOperationType_E theType,
+				     bool makeAlgorithm) :
     myType(theType) {
+    if (makeAlgorithm)
+      myExpressionVertexAlgBase_p=BooleanOperationAlgFactory::instance()->makeNewAlg(*this); 
   }
 
   ExpressionVertex& BooleanOperation::createCopyOfMyself(bool withAlgorithm) const { 
     BooleanOperation* aNewBooleanOperation_p=new BooleanOperation(myType);
-//     aNewBooleanOperation_p->setId(getId());
-//     if (!isActive())
-//       aNewBooleanOperation_p->passivate();
+    //     aNewBooleanOperation_p->setId(getId());
+    //     if (!isActive())
+    //       aNewBooleanOperation_p->passivate();
     return *aNewBooleanOperation_p;
   } 
 
@@ -37,7 +41,15 @@ namespace xaifBooster {
     return std::string(oss.str());
   }
 
-  void BooleanOperation::printXMLHierarchy(std::ostream& os) const { 
+  void
+  BooleanOperation::printXMLHierarchy(std::ostream& os) const {
+    if (myExpressionVertexAlgBase_p)
+      getBooleanOperationAlgBase().printXMLHierarchy(os);
+    else
+      printXMLHierarchyImpl(os);
+  } // end of printXMLHierarchy
+
+  void BooleanOperation::printXMLHierarchyImpl(std::ostream& os) const { 
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
@@ -53,6 +65,17 @@ namespace xaifBooster {
        << "\"/>" 
        << std::endl; 
     pm.releaseInstance();
+  } 
+
+  BooleanOperationAlgBase&
+  BooleanOperation::getBooleanOperationAlgBase() const {
+    if (!myExpressionVertexAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("BooleanOperation::getBooleanOperationAlgBase: not set");
+    return dynamic_cast<BooleanOperationAlgBase&>(*myExpressionVertexAlgBase_p);
+  } 
+
+  void BooleanOperation::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+    getBooleanOperationAlgBase().genericTraversal(anAction_c);
   } 
 
 } // end of namespace 

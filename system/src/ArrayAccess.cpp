@@ -8,9 +8,9 @@ namespace xaifBooster {
     ArrayAccess* theCopy_p=new ArrayAccess();
     for (IndexListType::const_iterator i=myIndexList.begin();
 	 i!=myIndexList.end();
-	 ++i) 
-      // \todo JU to be reinserted with expression complete: 
-      //      (*i)->copyMyselfInto(theCopy_p->addIndex());
+	 ++i) { 
+      (*i)->copyMyselfInto(theCopy_p->addIndex());
+    } 
     theCopy_p->setId(getId());
     return *theCopy_p;
   }

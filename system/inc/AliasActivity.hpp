@@ -56,6 +56,8 @@ namespace xaifBooster{
      */
     static const std::string our_myActiveFlag_XAIFName;
 
+    bool disjointFrom(const AliasActivity& theOtherAliastActivity) const;
+
   private:
 
     /** 

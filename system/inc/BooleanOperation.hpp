@@ -3,38 +3,36 @@
 
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/BooleanOperationType.hpp"
+#include "xaifBooster/system/inc/BooleanOperationAlgBase.hpp"
 
 namespace xaifBooster { 
 
   class BooleanOperation : public ExpressionVertex {
+
   public:
 
-    BooleanOperation(BooleanOperationType::BooleanOperationType_E theType);
+    BooleanOperation(BooleanOperationType::BooleanOperationType_E theType,
+		     bool makeAlgorithm=true);
 
     ~BooleanOperation(){};
 
     void printXMLHierarchy(std::ostream& os) const;
+    void printXMLHierarchyImpl(std::ostream& os) const;
+    void printXMLHierarchyImpl(std::ostream& os, const Expression& theExpression) const {};
 
     std::string debug() const;
 
-    /**
-     * name for this class as represented in XAIF schema
-     */
-    static const std::string ourXAIFName;
-
-    /**
-     * name for member myType as represented in XAIF schema
-     */
-    static const std::string our_myType_XAIFName;
-
-    /**
-     * name for inherited member myId as represented in XAIF schema
-     */
-    static const std::string our_myId_XAIFName;
-
     virtual std::string equivalenceSignature() const;
 
+    static const std::string ourXAIFName;
+    static const std::string our_myType_XAIFName;
+    static const std::string our_myId_XAIFName;
+
     virtual ExpressionVertex& createCopyOfMyself(bool withAlgorithm=false) const;
+
+    BooleanOperationAlgBase& getBooleanOperationAlgBase() const;
+
+    void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
   private : 
 
@@ -42,6 +40,17 @@ namespace xaifBooster {
      * no def
      */
     BooleanOperation ();
+
+    /**
+     * no def
+     */
+    BooleanOperation (const BooleanOperation&);
+
+    /**
+     * no def
+     */
+    BooleanOperation& operator=(const BooleanOperation&);
+
 
     /**
      * the type of the boolean operation

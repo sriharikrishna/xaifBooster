@@ -21,7 +21,7 @@ namespace xaifBoosterLinearization {
     
     ExpressionVertexAlg(ExpressionVertex& theContainingExpressionVertex);
 
-    virtual ~ExpressionVertexAlg(){};
+    virtual ~ExpressionVertexAlg();
 
     virtual void printXMLHierarchy(std::ostream& os) const;
 
@@ -38,7 +38,7 @@ namespace xaifBoosterLinearization {
 
     bool hasReplacement() const; 
 
-    void setReplacement(const Assignment&); 
+    Assignment& makeReplacementAssignment(); 
 
     /** 
      * is this vertex active?
@@ -85,8 +85,9 @@ namespace xaifBoosterLinearization {
      * we will have to built an assignment that replaces 
      * the subgraph with this vertex as maximal element 
      * in the original RHS
+     * owned by this, deleted in the dtor
      */
-    const Assignment* myReplacementAssignment_p;
+    Assignment* myReplacementAssignment_p;
 
     /**
      * we maintain a flag indicating activity; 

@@ -473,9 +473,9 @@ namespace xaifBooster {
       setReference(atoi(getAttributeValueByName(theNode_p,
 						Variable::our_myKey_XAIFName).c_str()));
     passingOut.setVariable(theAssignment.getLHS());
-    
-    theAssignment.setLHSActiveFlag(convertToBoolean(getAttributeValueByName(theNode_p,
-									    Assignment::our_myActiveFlag_XAIFName))); 
+    if (!convertToBoolean(getAttributeValueByName(theNode_p,
+						  Assignment::our_myActiveFlag_XAIFName)))
+      theAssignment.passivateLHS(); 
   };
 
   void 

@@ -8,15 +8,20 @@ namespace xaifBooster {
 
   class Expression;
 
+  /** 
+   * this is an intrinsic (such as an operator 
+   * or a function) within an Expression
+   */
   class Intrinsic : public ExpressionVertex {
+
   public:
 
-    Intrinsic(const std::string& aName, bool hasAlgorithm=true);
+    Intrinsic(const std::string& aName, 
+	      bool makeAlgorithm=true);
 
     ~Intrinsic(){};
 
     void printXMLHierarchy(std::ostream& os) const;
-
     void printXMLHierarchyImpl(std::ostream& os) const;
     void printXMLHierarchyImpl(std::ostream& os, const Expression& theExpression) const {};
 
@@ -27,36 +32,18 @@ namespace xaifBooster {
     static const std::string our_myName_XAIFName;
     static const std::string our_myId_XAIFName;
 
-    /**
-     * virtual in ExpressionVertex
-     */
     std::string equivalenceSignature() const;
 
+    /** 
+     * the only useful implementation for this virtual
+     */
     virtual const InlinableIntrinsicsCatalogueItem& getInlinableIntrinsicsCatalogueItem() const;
 
-    /**
-     * copy into provided object
-     */
-    void copyMyselfInto(Intrinsic& theCopy) const;
-
-    /**
-     * virtual in ExpressionVertex
-     */
     ExpressionVertex& createCopyOfMyself(bool withAlgorithm=false) const;
 
-    /**
-     * routines for accessing the algorithm
-     */
-    IntrinsicAlgBase& getIntrinsicAlgBase();
-    const IntrinsicAlgBase& getIntrinsicAlgBase() const;
+    IntrinsicAlgBase& getIntrinsicAlgBase() const;
 
-    /**
-     * used by generic traversal
-     * child is myIntrinsicAlgBase_p (if set)
-     * virtual in utils/GenericTraverseInvoke
-     */
     void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
 
   private : 
 
@@ -66,15 +53,19 @@ namespace xaifBooster {
     Intrinsic();
 
     /**
+     * no def
+     */
+    Intrinsic (const Intrinsic&);
+
+    /**
+     * no def
+     */
+    Intrinsic& operator=(const Intrinsic&);
+
+    /**
      * \todo replace with reference to IntrinsicCatalogue
      */
     const std::string myName;
-
-    /**
-     * pointer to algorithm
-     */
-    IntrinsicAlgBase* myIntrinsicAlgBase_p;
-
 
   }; // end of class Intrinsic
  
