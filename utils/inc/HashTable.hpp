@@ -1,23 +1,8 @@
 #ifndef _HASHTABLE_INCLUDE_
 #define _HASHTABLE_INCLUDE_
 
-#ifdef __GNUC__
-#if __GNUC__ < 3
-#include <hash_map.h>
-namespace Sgi { using ::hash_map; }; // inherit globals
-#else
-#include <ext/hash_map>
-#if __GNUC_MINOR__ == 0
-namespace Sgi = std;               // GCC 3.0
-#else
-namespace Sgi = ::__gnu_cxx;       // GCC 3.1 and later
-#endif
-#endif
-#else      // ...  there are other compilers, right?
-namespace Sgi = std;
-#endif
-
 #include <string>
+#include <map>
 
 #include "Debuggable.hpp"
 
@@ -45,25 +30,17 @@ namespace xaifBooster {
 
   protected:
     
-    struct myHash;
-    struct myEqual;
+    struct myLtOp;
 
     typedef
-    Sgi::hash_map<const std::string, 
-		  HashTableElement, 
-		  myHash, 
-		  myEqual> InternalHashMapType;
+    std::map<std::string, 
+	     HashTableElement, 
+	     myLtOp> InternalHashMapType;
     InternalHashMapType myHashMap; 
-
-    struct myHash{
-      std::size_t operator()(const std::string __s) const { 
-	return Sgi::__stl_hash_string(__s.c_str()); 
-      };
-    };
     
-    struct myEqual {
+    struct myLtOp {
       bool operator()(const std::string s1, const std::string s2) const {
-	return (s1==s2);
+	return (s1<s2);
       }
     };
 

@@ -58,7 +58,7 @@ namespace xaifBooster {
      */
     bool isSet(char theSwitch) const ;
 
-    typedef std::map<const char, CommandLineSwitchArgument> 
+    typedef std::map<char, CommandLineSwitchArgument> 
     SwitchArgumentMap;
 
     /** 

@@ -25,7 +25,7 @@ namespace xaifBooster {
       template <class BoostInternalVertexDescriptor>
       void operator()(std::ostream& out, const BoostInternalVertexDescriptor& v) const { 
 	out << "[label=\"V_" << v << "\"]"; // the 'dot' utility cannot parse hex addresses as labels
-      };
+      }
     };
     
     /**
@@ -37,7 +37,7 @@ namespace xaifBooster {
       template <class BoostInternalEdgeDescriptor>
       void operator()(std::ostream& out, const BoostInternalEdgeDescriptor& v) const { 
 	//	out << "[label=\"" << v << "\"]"; // we don't want to clutter the picture
-      };
+      }
     };
 
 //     
