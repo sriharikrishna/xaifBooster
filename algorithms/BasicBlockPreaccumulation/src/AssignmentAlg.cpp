@@ -17,6 +17,9 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdgeAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertexAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -202,7 +205,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // uniquely identify within the RHSs it is only important that we don't 
 	    // alias a preceding LHS
 	    // we need to add this vertex
-	    theLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
+	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
 	    theFlattenedSequence.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA,
 		      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
@@ -278,7 +281,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  dynamic_cast<PrivateLinearizedComputationalGraphEdge&>(*aPrivLinCompGEdgeI).addParallel(*ExpressionEdgeI);
 	  continue; // we can skip the rest
 	}
-	PrivateLinearizedComputationalGraphEdge* theEdge_p=new PrivateLinearizedComputationalGraphEdge();
+	PrivateLinearizedComputationalGraphEdge* theEdge_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge();
 	// set the back reference
 	theEdge_p->setLinearizedExpressionEdge(*ExpressionEdgeI);
 	theFlattenedSequence.supplyAndAddEdgeInstance(*theEdge_p,
@@ -306,14 +309,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// the top node becomes the old LHS
 	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
 	// now we make a new one which will be top node
-	theLHSLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
+	theLHSLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
 	// the new one needs to be added to the graph, 
 	// the old one is already in there
 	theFlattenedSequence.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
 	// the new one needs to have its RHS set to the old ones LHS
 	theLHSLCGVertex_p->setRHSVariable(theOldLHSLCGVertex_p->getLHSVariable());
 	// we need to add the unit edge
-	PrivateLinearizedComputationalGraphEdge* theEdge_p=new PrivateLinearizedComputationalGraphEdge();
+	PrivateLinearizedComputationalGraphEdge* theEdge_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge();
 	// we can't set a back reference because there is none
 	theEdge_p->setUnitExpressionEdge();
 	// add the edge to the graph
