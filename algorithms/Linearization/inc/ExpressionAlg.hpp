@@ -80,14 +80,15 @@ namespace xaifBoosterLinearization {
     ArgumentPList myPartialUsageList;
 
     /**
-     * mark all passive vertices/edges bottom up
-     */
-    void activityAnalysisBottomUpPass(const ExpressionEdge& theEdge);
-
-    /**
      * mark theVertex and all outgoing edges bottom up
      */
     void activityAnalysisBottomUpPass(const ExpressionVertex& theVertex);
+
+    /**
+     * mark all passive vertices/edges top down
+     * we assume activityAnalysisBottomUpPass has run first
+     */
+    void activityAnalysisTopDownPass(const ExpressionVertex& theVertex);
 
   };
  

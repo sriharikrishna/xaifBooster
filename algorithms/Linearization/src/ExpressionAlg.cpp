@@ -62,6 +62,7 @@ namespace xaifBoosterLinearization {
       if (!getContaining().numOutEdgesOf(*anExpressionVertexI))
 	break;
     activityAnalysisBottomUpPass(*anExpressionVertexI);
+    activityAnalysisTopDownPass(*anExpressionVertexI);
   } // end of  ExpressionAlg::activityAnalysis
 
   void ExpressionAlg::createPartialExpressions() { 
@@ -337,5 +338,35 @@ namespace xaifBoosterLinearization {
 	dynamic_cast<ExpressionEdgeAlg&>((*oE).getExpressionEdgeAlgBase()).passivate();
     }  
   } // end of ExpressionAlg::activityAnalysisBottomUpPass
+
+  void ExpressionAlg::activityAnalysisTopDownPass(const ExpressionVertex& theVertex) { 
+    Expression::ConstOutEdgeIteratorPair pE(getContaining().getOutEdgesOf(theVertex));
+    Expression::ConstOutEdgeIterator oE(pE.first),oEe(pE.second);
+    bool makePassive=false;
+    if (oE!=oEe) { 
+      // we have out edges
+      // assume we want to passivate
+      makePassive=true;
+    }
+    for (;oE!=oEe ;++oE) { 
+      ExpressionEdgeAlg& theEdgeAlg(dynamic_cast<ExpressionEdgeAlg&>((*oE).getExpressionEdgeAlgBase()));
+      if (theEdgeAlg.getPartialDerivativeKind()!=PartialDerivativeKind::PASSIVE) { 
+	makePassive=false;
+	break; 
+      }
+    }
+    if (makePassive) { 
+      // take care of the vertex
+      dynamic_cast<ExpressionVertexAlg&>(theVertex.getExpressionVertexAlgBase()).passivate();
+    }
+    // and all its in-edges
+    Expression::ConstInEdgeIteratorPair pE2(getContaining().getInEdgesOf(theVertex));
+    Expression::ConstInEdgeIterator iE(pE2.first),iEe(pE2.second);
+    for (;iE!=iEe ;++iE) { 
+      if (makePassive) 
+	dynamic_cast<ExpressionEdgeAlg&>((*iE).getExpressionEdgeAlgBase()).passivate();
+      activityAnalysisTopDownPass(getContaining().getSourceOf(*iE));
+    }  
+  } // end of ExpressionAlg::activityAnalysisTopDownPass
 
 }
