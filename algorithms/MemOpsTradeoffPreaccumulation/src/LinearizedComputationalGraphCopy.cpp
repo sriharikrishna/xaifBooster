@@ -1,36 +1,58 @@
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/LinearizedComputationalGraphCopy.hpp"
 
-namespace MemOpsTradeoffPreaccumulation {
+namespace MemOpsTradeoffPreaccumulation{
 
-  const LinearizedComputationalGraphCopy::ConstVertexPointerList&
-  LinearizedComputationalGraphCopy::getIndependentList() const { 
+  const LinearizedComputationalGraphCopy::ConstVertexPointerList& LinearizedComputationalGraphCopy::getIndependentList() const{ 
     return myIndependentList;
   }
   
-  const LinearizedComputationalGraphCopy::ConstVertexPointerList& 
-  LinearizedComputationalGraphCopy::getDependentList() const {
+  const LinearizedComputationalGraphCopy::ConstVertexPointerList& LinearizedComputationalGraphCopy::getDependentList() const{
     return myDependentList;
   }
 
-  LinearizedComputationalGraphCopy::VertexPointerList 
-  LinearizedComputationalGraphCopy::getIntermediateList(){
-    return myIntermediateList;
+  const unsigned int LinearizedComputationalGraphCopy::numIndeps() const{
+    return myIndependentList.size();
   }
 
-  void LinearizedComputationalGraphCopy::addToIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndepdentVertex) { 
+  const unsigned int LinearizedComputationalGraphCopy::numDeps() const{
+    return myDependentList.size();
+  }
+
+  LinearizedComputationalGraphCopy::VertexPointerList LinearizedComputationalGraphCopy::getVertexList() const{
+    return myVertexList;
+  }
+
+  LinearizedComputationalGraphCopy::EdgePointerList LinearizedComputationalGraphCopy::getEdgeList() const{
+    return myEdgeList;
+  }
+
+  void LinearizedComputationalGraphCopy::addToIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndepdentVertex){ 
     myIndependentList.push_back(&theIndepdentVertex);
   } 
 
-  void LinearizedComputationalGraphCopy::addToDependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theDepdentVertex) { 
+  void LinearizedComputationalGraphCopy::addToDependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theDepdentVertex){ 
     myDependentList.push_back(&theDepdentVertex);
   }
 
-  void LinearizedComputationalGraphCopy::addToIntermediateList(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theInterVertex) { 
-    myIntermediateList.push_back(&theInterVertex);
+  void LinearizedComputationalGraphCopy::addToVertexList(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theVertex){ 
+    myVertexList.push_back(&theVertex);
   }
 
-  void LinearizedComputationalGraphCopy::removeFromIntermediateList(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theInterVertex) { 
-    myIntermediateList.remove(&theInterVertex);
+  void LinearizedComputationalGraphCopy::addToEdgeList(LinearizedComputationalGraphCopy& theCopy,
+						       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopyEdge& theEdge,
+						       LinearizedComputationalGraphCopy::edgeElimDirection theDirection){ 
+    edgeEntry theNewEntry;
+    theNewEntry.edge_p = &theEdge;
+    theNewEntry.direction = theDirection;
+    myEdgeList.push_front(theNewEntry);
+  }// end addToEdgeList
+
+  void LinearizedComputationalGraphCopy::removeFromVertexList(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theVertex){ 
+    myVertexList.remove(&theVertex);
   }
 
-} 
+  void LinearizedComputationalGraphCopy::clearEdgeList(){
+    myEdgeList.clear();
+  }// end clearEdgeList
+
+}// end namespace MemOpsTradeoffPreaccumulation
