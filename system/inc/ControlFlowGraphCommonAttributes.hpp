@@ -10,8 +10,6 @@
 #include "xaifBooster/system/inc/ArgumentList.hpp"
 #include "xaifBooster/system/inc/SymbolReference.hpp"
 
-#include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
-
 namespace xaifBooster { 
 
   /**
@@ -50,12 +48,6 @@ namespace xaifBooster {
 
     ArgumentList& getArgumentList();
     const ArgumentList& getArgumentList() const;
-
-    /**
-     * get algorithm
-     */
-    ControlFlowGraphAlgBase& getControlFlowGraphAlgBase();
-    const ControlFlowGraphAlgBase& getControlFlowGraphAlgBase() const;
 
     /** 
      * this is the subroutine name

@@ -1,7 +1,7 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphEdge.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphBase.hpp"
 
 namespace xaifBooster { 
 
@@ -12,7 +12,7 @@ namespace xaifBooster {
 
   void
   ControlFlowGraphEdge::printXMLHierarchy(std::ostream& os,
-					  const ControlFlowGraph& theGraph) const { 
+					  const ControlFlowGraphBase& theGraph) const { 
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent()
        << "<"

@@ -6,7 +6,7 @@
 
 namespace xaifBooster { 
   
-  class ControlFlowGraph;
+  class ControlFlowGraphBase;
 
   class ControlFlowGraphEdge : public EdgeTraversable, 
 			       public ObjectWithId {
@@ -17,7 +17,7 @@ namespace xaifBooster {
     ~ControlFlowGraphEdge(){};
     
     void printXMLHierarchy(std::ostream& os,
-			   const ControlFlowGraph& theGraph) const;
+			   const ControlFlowGraphBase& theGraph) const;
 
     std::string debug() const ;
 
