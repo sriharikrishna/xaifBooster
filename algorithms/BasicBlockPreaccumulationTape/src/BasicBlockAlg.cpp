@@ -33,7 +33,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
  	   aFactorListI!=aFactorList.end();
  	   ++aFactorListI) { 
 	if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) { 
-	  InlinableSubroutineCall theSubroutineCall("push");
+	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall theSubroutineCall("push");
 	  theSubroutineCall.setId("inline_push");
 	  (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
 	  theSubroutineCall.printXMLHierarchy(os);

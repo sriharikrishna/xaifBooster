@@ -6,10 +6,6 @@ using namespace xaifBooster;
 
 namespace xaifBoosterDerivativePropagator { 
 
-  void  DerivativePropagatorEntry::getSources(VariablePList&) const { 
-    // do nothing
-  }
-
   void DerivativePropagatorEntry::Factor::setZero() { 
     if (myFactorKind!=NOT_SET)
       THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorEntry::Factor::setZero: already set");
@@ -52,5 +48,17 @@ namespace xaifBoosterDerivativePropagator {
   DerivativePropagatorEntry::Factor::getKind() const { 
     return myFactorKind;
   }
+
+  void DerivativePropagatorEntry::Factor::setSource(const Variable& theVariable) { 
+    if (mySource_p)
+      THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorEntry::Factor::setSource: already set");
+    mySource_p=&theVariable;
+  }  
+
+  const Variable& DerivativePropagatorEntry::Factor::getSource() const { 
+    if (!mySource_p)
+      THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorEntry::Factor::getSource: not set");
+    return *mySource_p;
+  }  
 
 } // end of namespace

@@ -5,7 +5,9 @@
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterInlinableXMLRepresentation { 
 
   const std::string InlinableSubroutineCall::ourXAIFName("xaif:InlinableSubroutineCall");
 

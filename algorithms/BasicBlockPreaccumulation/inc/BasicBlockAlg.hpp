@@ -118,7 +118,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * no def
      */
     BasicBlockAlg operator=(const BasicBlockAlg&);
-    
+   
+  protected: 
     /**
      * an instance of Sequence is held 
      * for every sequence of consecutive assignments 
@@ -210,6 +211,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     }; // end of struct Sequence
 
+  private: 
+
     /**
      * Variables representing the independent and 
      * the dependent variables of the basic block. Owned by the
@@ -235,7 +238,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
 
+  protected: 
+
     typedef std::list<Sequence*> SequencePList;
+
+    const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
+
+  private: 
     
     /** 
      * this list owns all the Sequence instances
