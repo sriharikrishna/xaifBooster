@@ -429,7 +429,13 @@ namespace xaifBoosterLinearization {
     for (;iV!=iVe ;++iV)
       if (!myLinearizedRightHandSide.numOutEdgesOf(*iV))
 	break;
-    if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()) { 
+    if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()
+      ||
+      (myLinearizedRightHandSide.numVertices()==1 // we have only one vertex which must
+       // be an argument, otherwise it would be a constant and we would have hit the previous condition
+       // and not execute this one
+       &&
+       !dynamic_cast<const Argument&>(*iV).getVariable().getActiveType())) {
       // make the entire assignment passive
       myActiveFlag=false;
       // remove all possibly created code: 

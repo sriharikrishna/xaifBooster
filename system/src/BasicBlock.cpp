@@ -10,9 +10,11 @@
 
 namespace xaifBooster { 
 
-  BasicBlock::BasicBlock(Scope& theScope) : 
+  BasicBlock::BasicBlock(Scope& theScope,
+			 bool makeAlgorithm) : 
     PlainBasicBlock(theScope) { 
-    myControlFlowGraphVertexAlgBase_p=BasicBlockAlgFactory::instance()->makeNewAlg(*this);
+    if (makeAlgorithm)
+      myControlFlowGraphVertexAlgBase_p=BasicBlockAlgFactory::instance()->makeNewAlg(*this);
   }
 
   BasicBlock::~BasicBlock() {

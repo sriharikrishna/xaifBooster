@@ -14,7 +14,8 @@ namespace xaifBooster {
   class BasicBlock : public PlainBasicBlock, public ControlFlowGraphVertex {
   public:
     
-    BasicBlock (Scope& theScope);
+    BasicBlock (Scope& theScope,
+		bool makeAlgorithm=true);
 
     ~BasicBlock();
 
