@@ -16,8 +16,7 @@ namespace xaifBoosterConstantFolding {
 
   public:
     AssignmentAlg(Assignment& theContainingAssignment);
-    void AssignmentAlg::algorithm_action_3();
- 
+//    void AssignmentAlg::algorithm_action_3();
   private: 
  
   }; // end of class Assignment

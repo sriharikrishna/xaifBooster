@@ -15,7 +15,7 @@ namespace xaifBoosterConstantFolding {
     xaifBoosterBasicBlockPreaccumulation::AssignmentAlg(theContainingAssignment) { 
   }
 
-  void AssignmentAlg::algorithm_action_3() {
+//  void AssignmentAlg::algorithm_action_3() {
     /*    //we need to get the BasicBlock, and then iterator thoguht the sequence and get every PrivateLinearizedComputationalGRaph and perform the opperations upon it.
     // we accomplish this by ..
     BasicBlock BB = ;//stuff
@@ -30,6 +30,6 @@ namespace xaifBoosterConstantFolding {
       g.RunTrivialCheckForward();
       g.RunTrivialCheckBackward();
       }*/
-    }
+//    }
   
 }

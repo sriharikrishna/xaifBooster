@@ -2,7 +2,6 @@
 #define _XAIFBOOSTERCONSTANTFOLDING_BASICBLOCKALG_INCLUDE_
 
 #include <list>
-#include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/ConstantFolding/inc/EnhancedPrivateLinearizedComputationalGraph.hpp"
 
@@ -17,7 +16,13 @@ namespace xaifBoosterConstantFolding {
   class BasicBlockAlg : public xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg {
   public:
     BasicBlockAlg( BasicBlock& theContaining ) ;
-    void do_ConstantFolding();
+
+//  Used for the Constant Folding
+    virtual void algorithm_action_3();
+
+/* function that creates the EnhancedPrivateLinearizedComputational factories*/
+    static void init();
+    
   };
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms
                                                                      

@@ -23,8 +23,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     friend class BasicBlockAlg;
 
     PrivateLinearizedComputationalGraphEdgeAlgFactory(){};
-
   private:
+
+    static PrivateLinearizedComputationalGraphEdgeAlgFactory* ourPrivateLinearizedComputationalGraphEdgeAlgFactoryInstance_p;
 
     PrivateLinearizedComputationalGraphEdgeAlgFactory (const PrivateLinearizedComputationalGraphEdgeAlgFactory&);
 

@@ -3,9 +3,11 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation {
-
-  xaifBoosterBasicBlockPreaccumulation ::PrivateLinearizedComputationalGraphVertexAlgFactory* PrivateLinearizedComputationalGraphVertexAlgFactory::instance() {
-    return BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory();
+  PrivateLinearizedComputationalGraphVertexAlgFactory* PrivateLinearizedComputationalGraphVertexAlgFactory::ourPrivateLinearizedComputationalGraphVertexAlgFactoryInstance_p(0);
+  xaifBoosterBasicBlockPreaccumulation ::PrivateLinearizedComputationalGraphVertexAlgFactory* PrivateLinearizedComputationalGraphVertexAlgFactory::instance () {
+    if (!ourPrivateLinearizedComputationalGraphVertexAlgFactoryInstance_p)
+      ourPrivateLinearizedComputationalGraphVertexAlgFactoryInstance_p=new PrivateLinearizedComputationalGraphVertexAlgFactory();
+    return ourPrivateLinearizedComputationalGraphVertexAlgFactoryInstance_p;
   }
 
   std::string PrivateLinearizedComputationalGraphVertexAlgFactory::debug() const {
