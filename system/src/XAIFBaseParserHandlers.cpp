@@ -229,6 +229,8 @@ namespace xaifBooster {
       setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName).c_str()));
     theAssignment.getLHS().
       setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
+    if (XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Variable::our_myConstantUseFlag_XAIFName)))
+      theAssignment.getLHS().setConstantUseFlag();
     passingOut.setVariable(theAssignment.getLHS());
   };
 
@@ -274,6 +276,8 @@ namespace xaifBooster {
       setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName).c_str()));
     theArgument_p->getVariable().
       setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
+    if (XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Variable::our_myConstantUseFlag_XAIFName)))
+      theArgument_p->getVariable().setConstantUseFlag();
     passingOut.setVariable(theArgument_p->getVariable());
   };
 
