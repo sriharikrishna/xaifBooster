@@ -4,6 +4,7 @@
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphBase.hpp"
 #include "xaifBooster/algorithms/CodeReplacement/inc/PrintVersion.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
 
 using namespace xaifBooster;
 
@@ -33,21 +34,20 @@ namespace xaifBoosterCodeReplacement {
     const unsigned int getPlaceHolder() const; 
 
     /** 
-     * use this if we are building 
-     * a new one in this instance rather than
-     * referring to another ControlFlowGraphBase 
-     * which lives somewhere else  
-     */
-    ControlFlowGraphBase& makeNewControlFlowGraphBase();
-
-    /** 
      * use this if we are referring to another ControlFlowGraphBase 
-     * which lives somewhere else rather than building 
-     * a new one in this instance
+     * we don't own it
      */
     void setControlFlowGraphBase(const ControlFlowGraphBase& theOtherControlFlowGraphBase); 
 
     const ControlFlowGraphBase& getControlFlowGraphBase() const; 
+
+    /** 
+     * use this if we are referring to another ReversibleControlFlowGraph 
+     * we don't own it
+     */
+    void setReversibleControlFlowGraph(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraph& theOtherReversibleControlFlowGraph); 
+
+    const xaifBoosterControlFlowReversal::ReversibleControlFlowGraph& getReversibleControlFlowGraph() const; 
 
     void setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion);
 
@@ -62,12 +62,24 @@ namespace xaifBoosterCodeReplacement {
     
     const unsigned int myPlaceHolder;
 
-    /**
-     * indicator if we own the ControlFlowGraphBase or not
+    /** 
+     * reference to external ControlFlowGraph
+     * we don't own this and it is exclusively 
+     * either this reference or 
+     * the reference in 
+     * myReversibleControlFlowGraph_p
      */
-    bool myControlFlowGraphBaseOwnerFlag;
-
     const ControlFlowGraphBase* myControlFlowGraphBase_p;
+
+    /** 
+     * reference to external ReversibleControlFlowGraph
+     * we don't own this and it is exclusively 
+     * either this reference or 
+     * the reference in 
+     * myControlFlowGraphBase_p 
+     */
+    const xaifBoosterControlFlowReversal::ReversibleControlFlowGraph* 
+    myReversibleControlFlowGraph_p;
 
     PrintVersion::PrintVersion_E myPrintVersion;
 
