@@ -1432,14 +1432,8 @@
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#6:7:9:19:25:45:65:75:85}" scope_id="2">
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_cycle_fields__28" scope_id="1" active="1">
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_robert_filter__30" scope_id="1" active="1">
           <xaif:Argument position="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_78" annotation="" scope_id="1"/>
@@ -1451,10 +1445,6 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="SNEW_77" annotation="" scope_id="1"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_robert_filter__30" scope_id="1" active="1">
           <xaif:Argument position="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_89" annotation="" scope_id="1"/>
@@ -1466,10 +1456,6 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="TNEW_88" annotation="" scope_id="1"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_timestep__31" scope_id="1" active="1">
           <xaif:Argument position="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_S_46" annotation="" scope_id="1"/>
@@ -1493,10 +1479,6 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="SNEW_77" annotation="" scope_id="1"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_timestep__31" scope_id="1" active="1">
           <xaif:Argument position="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_T_47" annotation="" scope_id="1"/>
@@ -1520,10 +1502,6 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="TNEW_88" annotation="" scope_id="1"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_transport__32" scope_id="1" active="1">
           <xaif:Argument position="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="RHO_69" annotation="" scope_id="1"/>
@@ -1532,10 +1510,6 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="UVEL_97" annotation="" scope_id="1"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_density__29" scope_id="1" active="1">
           <xaif:Argument position="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_89" annotation="" scope_id="1"/>
@@ -1547,8 +1521,6 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="RHO_69" annotation="" scope_id="1"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="3" annotation="{WHIRL_Id#86}">
         <xaif:Initialization>
@@ -3017,8 +2989,6 @@
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="5" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="8" annotation="{WHIRL_Id#474:484}" scope_id="12">
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_update__642" scope_id="1" active="1">
           <xaif:Argument position="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_7" annotation="" scope_id="12"/>
@@ -3030,8 +3000,6 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_9" annotation="" scope_id="12"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="6" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="4" annotation="{WHIRL_Id#342:395:448}" scope_id="12">
@@ -8641,12 +8609,8 @@
     <xaif:ControlFlowGraph vertex_id="10" symbol_id="box_model_body__354" scope_id="1" controlflowgraph_scope_id="6" annotation="{PU_Id#5}" active="1">
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#1550:1551:1552:1553:1566:1567:1568}" scope_id="6">
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_ini_fields__187" scope_id="1" active="1">
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:Branch vertex_id="21" annotation="{WHIRL_Id#1574}">
         <xaif:Condition>
@@ -8762,15 +8726,11 @@
         </xaif:Condition>
       </xaif:Branch>
       <xaif:BasicBlock vertex_id="11" annotation="{WHIRL_Id#1628}" scope_id="6">
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_forward__20" scope_id="1" active="1">
           <xaif:Argument position="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="ILEV1_6" annotation="" scope_id="6"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="13" annotation="{WHIRL_Id#}"/>
       <xaif:EndLoop vertex_id="23" annotation="{WHIRL_Id#}"/>
@@ -8781,12 +8741,8 @@
       <xaif:BasicBlock vertex_id="15" annotation="{WHIRL_Id#}" scope_id="6">
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="18" annotation="{WHIRL_Id#1633:1634:1635:1648:1649:1650}" scope_id="6">
-        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="box_final_state__109" scope_id="1" active="1">
         </xaif:SubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:ControlFlowEdge edge_id="1" source="1" target="2" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="2" source="2" target="21" has_condition_value="0" condition_value="1"/>
