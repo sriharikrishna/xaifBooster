@@ -77,6 +77,17 @@ C $OpenAD$ END DECLS
           x%d=x%d+y%d
         end subroutine
 
+        subroutine condinczeroderiv(y,x)
+C $OpenAD$ INLINE DECLS
+          type(active), intent(out) :: x
+          type(active), intent(in) :: y
+C $OpenAD$ END DECLS
+          if (iaddr(y).ne.iaddr(x)) then
+            x%d=x%d+y%d
+            y%d=0
+          end if
+        end subroutine
+
 C Checkpointing stuff ---------------------------------------
 
         subroutine cp_arg_store(x)

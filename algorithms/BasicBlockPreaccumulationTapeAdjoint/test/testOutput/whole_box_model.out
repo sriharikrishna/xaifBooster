@@ -4297,7 +4297,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_645" scope_id="10"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_614" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -4321,19 +4321,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_614" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_644" scope_id="10"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_646" scope_id="10"/>
@@ -4344,7 +4331,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_647" scope_id="10"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SOLD_615" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -4368,19 +4355,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SOLD_615" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_646" scope_id="10"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_648" scope_id="10"/>
@@ -4391,7 +4365,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_649" scope_id="10"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_625" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -4415,19 +4389,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_625" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_648" scope_id="10"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_650" scope_id="10"/>
@@ -4438,7 +4399,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_651" scope_id="10"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TOLD_626" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -4456,19 +4417,6 @@
               <xaif:Index>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_651" scope_id="10"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TOLD_626" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_650" scope_id="10"/>
                 </xaif:VariableReference>
               </xaif:Index>
             </xaif:ArrayElementReference>
@@ -4592,7 +4540,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_654" scope_id="3"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TSVEC_173" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -4616,19 +4564,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TSVEC_173" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_653" scope_id="3"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_655" scope_id="3"/>
@@ -4639,7 +4574,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_656" scope_id="3"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TSVEC_173" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -4657,19 +4592,6 @@
               <xaif:Index>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_656" scope_id="3"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TSVEC_173" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_655" scope_id="3"/>
                 </xaif:VariableReference>
               </xaif:Index>
             </xaif:ArrayElementReference>
@@ -5452,7 +5374,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_676" scope_id="4"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_236" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -5476,19 +5398,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_236" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_675" scope_id="4"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_677" scope_id="4"/>
@@ -5499,7 +5408,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_678" scope_id="4"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_247" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -5523,19 +5432,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_247" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_677" scope_id="4"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_679" scope_id="4"/>
@@ -5546,7 +5442,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_680" scope_id="4"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SOLD_237" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -5570,19 +5466,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SOLD_237" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_679" scope_id="4"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_681" scope_id="4"/>
@@ -5593,7 +5476,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_682" scope_id="4"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TOLD_248" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -5617,19 +5500,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TOLD_248" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_681" scope_id="4"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_683" scope_id="4"/>
@@ -5640,7 +5510,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_684" scope_id="4"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SNEW_235" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -5664,19 +5534,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SNEW_235" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_683" scope_id="4"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_685" scope_id="4"/>
@@ -5687,7 +5544,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_686" scope_id="4"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TNEW_246" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -5711,33 +5568,15 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TNEW_246" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_685" scope_id="4"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="18" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="14" annotation="{WHIRL_Id#912:914}" scope_id="4">
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" du_ud="62" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="UVEL_255" scope_id="1"/>
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" du_ud="61" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="UBAR_253" scope_id="1"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" du_ud="62" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="UVEL_255" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -5844,7 +5683,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_540" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="R_302" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -5856,17 +5695,6 @@
           </xaif:ArgumentSubstitute>
           <xaif:ArgumentSubstitute position="2" active="true" du_ud="24" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="BETA_278" scope_id="1"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="R_302" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="5"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
@@ -7584,7 +7412,7 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
           <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="BLENGTH_280" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -7599,17 +7427,6 @@
             <xaif:ArrayElementReference vertex_id="2">
               <xaif:Index>
                 <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ArgumentSubstitute>
-        </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="BLENGTH_280" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="3"/>
               </xaif:Index>
             </xaif:ArrayElementReference>
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>

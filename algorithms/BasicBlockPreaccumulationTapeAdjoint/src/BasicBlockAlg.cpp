@@ -7,6 +7,8 @@
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 
@@ -238,14 +240,26 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 		{ 
 		  /** 
 		   * The inlinable call incDeriv(y,x) is supposed to do x.d+=y.d
+		   * HOWEVER, this should not happen when y and x are the same
+		   * so we make an educated guess based on the alias information
+		   * and add a checker if we can't decide. 
 		   */
-		  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv"));
-		  theSetDerivCall.setId("inline_IncDeriv");
-		  theActualTarget.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(1).getVariable());
-		  theActualSource.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(2).getVariable());
-		  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv"));
-		  theZeroDerivCall.setId("inline_zeroderiv");
-		  theActualTarget.copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
+		  if (ConceptuallyStaticInstances::instance()->getCallGraph().getAliasMap().mayAlias(theActualTarget.getAliasMapKey(),
+												     theActualSource.getAliasMapKey())) { 
+		    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("CondIncZeroDeriv"));
+		    theSetDerivCall.setId("inline_CondIncZeroDeriv");
+		    theActualTarget.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(1).getVariable());
+		    theActualSource.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(2).getVariable());
+		  }
+		  else { 
+		    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv"));
+		    theSetDerivCall.setId("inline_IncDeriv");
+		    theActualTarget.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(1).getVariable());
+		    theActualSource.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(2).getVariable());
+		    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv"));
+		    theZeroDerivCall.setId("inline_zeroderiv");
+		    theActualTarget.copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
+		  }
 		  break; 
 		} 
 	      case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::CONSTANT_FACTOR: 
