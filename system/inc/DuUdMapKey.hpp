@@ -1,11 +1,11 @@
-#ifndef _ALIASMAPKEY_INCLUDE_
-#define _ALIASMAPKEY_INCLUDE_
+#ifndef _DUUDMAPKEY_INCLUDE_
+#define _DUUDMAPKEY_INCLUDE_
 
 #include "xaifBooster/system/inc/InfoMapKey.hpp"
 
 namespace xaifBooster { 
 
-  class AliasMapKey : public InfoMapKey {};
+  class DuUdMapKey : public InfoMapKey {};
 
 } // end of namespace xaifBooster
                                                                      

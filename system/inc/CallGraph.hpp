@@ -7,6 +7,7 @@
 #include "xaifBooster/system/inc/CallGraphEdge.hpp"
 #include "xaifBooster/system/inc/Scopes.hpp"
 #include "xaifBooster/system/inc/AliasMap.hpp"
+#include "xaifBooster/system/inc/DuUdMap.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 namespace xaifBooster { 
@@ -22,6 +23,7 @@ namespace xaifBooster {
     
     /**
      * print XML hierarchy
+     * \todo add printing DuUd Map
      */
     virtual void printXMLHierarchy(std::ostream& os) const;
 
@@ -75,6 +77,16 @@ namespace xaifBooster {
      */
     const AliasMap& getAliasMap() const;
 
+    /**
+     * get the DuUdMap
+     */
+    DuUdMap& getDuUdMap();
+
+    /**
+     * get the DuUdMap
+     */
+    const DuUdMap& getDuUdMap() const;
+
     void setProgramName(const std::string& aProgramName);
 
     const std::string& getSchemaLocation() const;
@@ -119,6 +131,12 @@ namespace xaifBooster {
      * alias information
      */
     AliasMap myAliasMap;
+
+    /**
+     * the CallGraph owns the map for 
+     * def-use/use-def information
+     */
+    DuUdMap myDuUdMap;
 
     /**
      * the schema instance 

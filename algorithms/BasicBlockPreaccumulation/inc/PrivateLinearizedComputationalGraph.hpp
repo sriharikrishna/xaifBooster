@@ -3,8 +3,9 @@
 
 #include "xaifBooster/utils/inc/HashTable.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ActiveVertexIdentificationList.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PassiveVertexIdentificationList.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveLHS.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveRHS.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListPassive.hpp"
 
 using namespace xaifBooster;
 
@@ -31,16 +32,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     std::string debug() const { return std::string("PrivateLinearizedComputationalGraph");};
 
-    ActiveVertexIdentificationList& getVertexRHSIdentificationList() { 
-      return myVertexRHSIdentificationList;
+    VertexIdentificationListActiveRHS& getVertexIdentificationListActiveRHS() { 
+      return myVertexIdentificationListActiveRHS;
     };    
 
-    ActiveVertexIdentificationList& getVertexLHSIdentificationList() { 
-      return myVertexLHSIdentificationList;
+    VertexIdentificationListActiveLHS& getVertexIdentificationListActiveLHS() { 
+      return myVertexIdentificationListActiveLHS;
     };    
 
-    PassiveVertexIdentificationList& getPassiveVertexIdentificationList() { 
-      return myPassiveVertexIdentificationList;
+    VertexIdentificationListPassive& getVertexIdentificationListPassive() { 
+      return myVertexIdentificationListPassive;
     };    
 
   private: 
@@ -54,13 +55,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * to the flattened graph. 
      * RHS identification serves the purpose 
      * of identifying RHSs within or accross RHSs
-     * myVertexRHSIdentificationList and myVertexLHSIdentificationList
+     * myVertexIdentificationListActiveRHS and myVertexIdentificationListActiveLHS
      * are disjoint
      * RHS identification doesn't preclude 
      * aliased vertices in the list 
      * this list doesn't own any elements
      */
-    ActiveVertexIdentificationList myVertexRHSIdentificationList; 
+    VertexIdentificationListActiveRHS myVertexIdentificationListActiveRHS; 
 
     /**
      * we need to track the relation 
@@ -77,7 +78,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * LHS identification does not allow aliased vertices in the list
      * this list doesn't own any elements
      */
-    ActiveVertexIdentificationList myVertexLHSIdentificationList; 
+    VertexIdentificationListActiveLHS myVertexIdentificationListActiveLHS; 
 
     /**
      * we need to track the set of 
@@ -86,7 +87,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * elements in this list are mutually exclusive 
      * with elements in the active lists.
      */
-    PassiveVertexIdentificationList myPassiveVertexIdentificationList; 
+    VertexIdentificationListPassive myVertexIdentificationListPassive; 
 
   }; // end of class PrivateLinearizedComputationalGraph 
 
