@@ -110,6 +110,7 @@ C $OpenAD$ INLINE DECLS
           double precision :: x
 C $OpenAD$ END DECLS
           x%v=theArgFStack(theArgFStackoffset)
+C          write(*,'(A,EN26.16E3)') "restore(s)  ", x%v
           theArgFStackoffset=theArgFStackoffset-1
         end subroutine 
 
@@ -129,7 +130,7 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision :: x
 C $OpenAD$ END DECLS
-          print*, "restore idx, value, x ", theResFStackoffset, x%v
+C          print*, "restore idx, value, x ", theResFStackoffset, x%v
           x%v=theResFStack(theResFStackoffset)
           theResFStackoffset=theResFStackoffset+1
         end subroutine 
@@ -154,6 +155,8 @@ C $OpenAD$ END DECLS
           do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
              x(cp_loop_variable_1)%v=theArgFStack(theArgFStackoffset)
              theArgFStackoffset=theArgFStackoffset-1
+C          write(*,'(A,EN26.16E3)') "restore(v)  ", 
+C     +x(cp_loop_variable_1)%v
           end do
         end subroutine 
 
@@ -343,6 +346,7 @@ C $OpenAD$ INLINE DECLS
 C $OpenAD$ END DECLS
           i=theArgIStack(theArgIStackoffset)
           theArgIStackoffset=theArgIStackoffset-1
+C          write(*,'(A,I5)') "restore(s)  ", i
         end subroutine 
 
 
