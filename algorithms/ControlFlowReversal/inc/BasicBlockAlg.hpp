@@ -1,9 +1,11 @@
 #ifndef _XAIFBOOSTERCONTROLFLOWREVERSAL_BASICBLOCKALG_INCLUDE_
 #define _XAIFBOOSTERCONTROLFLOWREVERSAL_BASICBLOCKALG_INCLUDE_
 
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
 #include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/system/inc/ForLoopReversalType.hpp"
+
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -26,6 +28,9 @@ namespace xaifBoosterControlFlowReversal {
       return ControlFlowGraphVertexAlg::BASICBLOCK;
     };
 
+    virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
+
+    void setReversalType(ForLoopReversalType::ForLoopReversalType_E aReversalType); 
 
   private:
     
@@ -43,6 +48,11 @@ namespace xaifBoosterControlFlowReversal {
      * no def
      */
     BasicBlockAlg operator=(const BasicBlockAlg&);
+
+    /** 
+     * reversal type 
+     */
+    ForLoopReversalType::ForLoopReversalType_E myReversalType;
 
   };  // end of class
 

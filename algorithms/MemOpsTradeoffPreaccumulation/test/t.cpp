@@ -75,7 +75,10 @@ int main(int argc,char** argv) {
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
-    newLocation.append(" xaif_derivative_propagator.xsd");
+    if (schemaPath.size())
+      newLocation.append(" "+schemaPath+"/xaif_derivative_propagator.xsd");
+    else 
+      newLocation.append(" xaif_derivative_propagator.xsd");
     Cg.resetSchemaLocation(newLocation);
     if (CommandLineParser::instance()->isSet('o')) { 
       std::ofstream theOutFile(CommandLineParser::instance()->argAsString('o').c_str(),

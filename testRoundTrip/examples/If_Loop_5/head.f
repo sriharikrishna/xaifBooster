@@ -1,7 +1,7 @@
 	subroutine head(x,y)
 	  double precision x(2),y(2)
           integer i
-          
+c$openad INDEPENDENT(x)
           i=1
           do while (i<3)
             if (i<2) then
@@ -12,5 +12,5 @@
             i=i+1
           end do
           y(2)=y(1)*y(2)
-
+c$openad DEPENDENT(y)
 	end subroutine

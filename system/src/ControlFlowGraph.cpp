@@ -48,6 +48,14 @@ namespace xaifBooster {
        << "\">" 
        << std::endl;
     myArgumentList.printXMLHierarchy(os);
+    myModLocalList.printXMLHierarchy(SideEffectListType::our_ModLocal_XAIFName,
+				     os);
+    myModList.printXMLHierarchy(SideEffectListType::our_Mod_XAIFName,
+				os);
+    myReadLocalList.printXMLHierarchy(SideEffectListType::our_ReadLocal_XAIFName,
+				      os);
+    myReadList.printXMLHierarchy(SideEffectListType::our_Read_XAIFName,
+				 os);
     ControlFlowGraph::ConstVertexIteratorPair p(vertices());
     ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt)
@@ -71,16 +79,6 @@ namespace xaifBooster {
 	<< "]" << std::ends;  
     return out.str();
   } // end of ControlFlowGraph::debug
-
-  InOutList& 
-  ControlFlowGraph::getInOutList() { 
-    return myInOutList;
-  } 
-  
-  const InOutList& 
-  ControlFlowGraph::getInOutList() const { 
-    return myInOutList;
-  } 
 
   ControlFlowGraphAlgBase&
   ControlFlowGraph::getControlFlowGraphAlgBase() {
@@ -126,5 +124,53 @@ namespace xaifBooster {
   // Scope& ControlFlowGraph::getScope() { 
   //   return myArgumentList.getScope();
   // }
+
+  Variable& ControlFlowGraph::addSideEffectReference(SideEffectListType::SideEffectListType_E aType) { 
+    return getSideEffectList(aType).addSideEffectReference();
+  }
+
+  SideEffectList& ControlFlowGraph::getSideEffectList(SideEffectListType::SideEffectListType_E aType) { 
+    SideEffectList* aSideEffectList_p=0;
+    switch(aType) { 
+    case SideEffectListType::MOD_LIST : 
+      aSideEffectList_p=&myModList;
+      break;
+    case SideEffectListType::MOD_LOCAL_LIST : 
+      aSideEffectList_p=&myModLocalList;
+      break;
+    case SideEffectListType::READ_LIST : 
+      aSideEffectList_p=&myReadList;
+      break;
+    case SideEffectListType::READ_LOCAL_LIST : 
+      aSideEffectList_p=&myReadLocalList;
+      break;
+    default:
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getSideEffectList: unknown list type >" << aType << "<.");
+      break;
+    }
+    return  *aSideEffectList_p;
+  }
+
+  const SideEffectList& ControlFlowGraph::getSideEffectList(SideEffectListType::SideEffectListType_E aType) const { 
+    const SideEffectList* aSideEffectList_p=0;
+    switch(aType) { 
+    case SideEffectListType::MOD_LIST : 
+      aSideEffectList_p=&myModList;
+      break;
+    case SideEffectListType::MOD_LOCAL_LIST : 
+      aSideEffectList_p=&myModLocalList;
+      break;
+    case SideEffectListType::READ_LIST : 
+      aSideEffectList_p=&myReadList;
+      break;
+    case SideEffectListType::READ_LOCAL_LIST : 
+      aSideEffectList_p=&myReadLocalList;
+      break;
+    default:
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getSideEffectList: unknown list type >" << aType << "<.");
+      break;
+    }
+    return  *aSideEffectList_p;
+  }
 
 } // end of namespace xaifBooster 

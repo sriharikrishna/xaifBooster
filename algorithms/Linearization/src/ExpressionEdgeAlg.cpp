@@ -74,7 +74,7 @@ namespace xaifBoosterLinearization {
   void ExpressionEdgeAlg::makeConcretePartialAssignment() { 
     if (myConcretePartialAssignment_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::getConcretePartialAssignment: already set");
-    myConcretePartialAssignment_p=new Assignment(false,false);
+    myConcretePartialAssignment_p=new Assignment(false);
   } 
 
   Assignment& ExpressionEdgeAlg::getConcretePartialAssignment() { 

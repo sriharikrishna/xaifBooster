@@ -70,6 +70,15 @@ namespace xaifBoosterDerivativePropagator {
     const DerivativePropagatorSetDeriv& addSetDerivToEntryPList(const Variable& theTarget,
 								const Variable& theSource);
 
+    /** 
+     * orderring this list becomes more complicated
+     * we need to determine the insertion point
+     * via supplying an iterator
+     */
+    const DerivativePropagatorSetDeriv& addSetDerivToEntryPList(const Variable& theTarget,
+								const Variable& theSource,
+								EntryPList::iterator& insertBefore);
+
     DerivativePropagatorSaxpy& addSaxpyToEntryPList(const Constant& thePartial,
 						    const Variable& theDependent,
 						    const Variable& theIndependent);
@@ -81,6 +90,12 @@ namespace xaifBoosterDerivativePropagator {
     void addZeroDerivToEntryPList(const Variable& theTarget);
 
     const EntryPList& getEntryPList() const;
+
+    /** 
+     * now that we want to have control over the insertion point
+     * we need to supply a non-const list
+     */
+    EntryPList& getEntryPList();
 
   private:
 
