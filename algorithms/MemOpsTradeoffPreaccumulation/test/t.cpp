@@ -6,6 +6,7 @@
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/HeuristicParse.hpp"
 
 using namespace xaifBooster;
 
@@ -15,7 +16,11 @@ void Usage(char** argv) {
 	    << " -i <inputFile> -c <intrinsicsCatalogueFile> " << std::endl
 	    << "             [-o <outputFile> ] [-d <debugOutputFile>]" << std::endl
 	    << "                 both default to cout" << std::endl
-	    << "             [-g <debugGroup]" << std::endl
+            << "             [-h <Heuristic List>]" << std::endl
+            << "                 List must be in all caps, the first word must be either VERTEX, FACE, or EDGE," << std::endl
+            << "                 followed by applicable heuristics as noted in the readme file." << std::endl
+            << "                 all words are to be separated by a single space" << std::endl
+            << "             [-g <debugGroup>]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl;
 } 
@@ -26,30 +31,32 @@ int main(int argc,char** argv) {
 					     );
   std::string inFileName, outFileName, intrinsicsFileName;
   try { 
-    CommandLineParser::instance()->initialize("iocdg",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgh",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
-    if (CommandLineParser::instance()->isSet('o')) 
+    if (CommandLineParser::instance()->isSet('o'))
       outFileName=CommandLineParser::instance()->argAsString('o');
-    if (CommandLineParser::instance()->isSet('d')) 
+    if (CommandLineParser::instance()->isSet('d'))
       DbgLoggerManager::instance()->setFile(CommandLineParser::instance()->argAsString('d'));
-    if (CommandLineParser::instance()->isSet('g')) 
+    if (CommandLineParser::instance()->isSet('g'))
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
-  } catch (BaseException& e) { 
+    if (CommandLineParser::instance()->isSet('h'))
+      MemOpsTradeoffPreaccumulation::HeuristicParse::fromString(CommandLineParser::instance()->argAsString('h'));
+  } catch (BaseException& e) {
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
     Usage(argv);
     return -1;
-  } // end catch 
+  } // end catch
   try {   
     xaifBoosterMemOpsTradeoffPreaccumulation::AlgFactoryManager::instance()->init();
-    InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
+    InlinableIntrinsicsParser ip(xaifBooster::ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     ip.parse(intrinsicsFileName);
     XAIFBaseParser p;
     p.initialize();
     p.parse(inFileName);
-    CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    CallGraph& Cg(xaifBooster::ConceptuallyStaticInstances::instance()->getCallGraph());
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // flatten
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
@@ -72,4 +79,3 @@ int main(int argc,char** argv) {
   } // end catch 
   return 0;
 }
-  
