@@ -52,32 +52,31 @@
 	   xx2 = xx2 + hx2
 	end do
 	
-!	open(2,file='tmpOutput/dd.out')
-!	write(2,*) "DD"
-!        call forward_mode()
-!	do i=1,n   
-!	   do j=1,n   
-!              x(j)%v=x0(j)
-!              if (i==j) then 
-!		 xph(j)%v=x0(j)+h
-!              else
-!		 xph(j)%v=x0(j)
-!              end if
-!	      call head(nx1,nx2,xph,yph,r)
-!	      call head(nx1,nx2,x,y,r)
-!              do k=1,m
-!		 res_dd(k,i)=(yph(k)%v-y(k)%v)/h
-!              end do
-!	   end do
-!	end do
-!	do k=1,n
-!	   do i=1,m   
-!              write(2,*) "F(",i,",",k,")=",res_dd(i,k)
-!	   end do
-!	end do
-!	close(2)
+	open(2,file='tmpOutput/dd.out')
+	write(2,*) "DD"
+        call forward_mode()
+	do i=1,n   
+	   do j=1,n   
+              x(j)%v=x0(j)
+              if (i==j) then 
+		 xph(j)%v=x0(j)+h
+              else
+		 xph(j)%v=x0(j)
+              end if
+	      call head(nx1,nx2,xph,yph,r)
+	      call head(nx1,nx2,x,y,r)
+              do k=1,m
+		 res_dd(k,i)=(yph(k)%v-y(k)%v)/h
+              end do
+	   end do
+	end do
+	do k=1,n
+	   do i=1,m   
+              write(2,*) "F(",i,",",k,")=",res_dd(i,k)
+	   end do
+	end do
+	close(2)
 
-	write(*,*) "The real stuff starts now"
         call tape_init()
 	open(2,file='tmpOutput/ad.out')
 	write(2,*) "AD"
@@ -86,6 +85,8 @@
              x(j)%v=x0(j)
              x(j)%d=0.0
            end do
+           call taping_mode()
+	   call head(nx1,nx2,x,y,r)
 	   do j=1,m   
               if (i==j) then 
 		 y(j)%d=1.0
@@ -93,21 +94,15 @@
 		 y(j)%d=0.0
               end if
 	   end do
-           our_rev_mode%arg_store=.FALSE.
-           our_rev_mode%arg_restore=.FALSE.
-           our_rev_mode%res_store=.FALSE.
-           our_rev_mode%res_restore=.FALSE.
-           our_rev_mode%plain=.FALSE.
-           our_rev_mode%tape=.TRUE.
-           our_rev_mode%adjoint=.TRUE.
+           call adjoint_mode()
 	   call head(nx1,nx2,x,y,r)
 	   do k=1,n
               res_ad(i,k)=x(k)%d
 	   end do
 	end do
-	   do i=1,m   
-	      print *, "y(",i,")=",y(i)%v
-	   end do
+!	   do i=1,m   
+!	      print *, "y(",i,")=",y(i)%v
+!	   end do
 	do k=1,n
 	   do i=1,m   
 	      write(2,*) "F(",i,",",k,")=",res_ad(i,k)
