@@ -3,9 +3,12 @@
 	  double precision, dimension(1), intent(out) :: y
           integer i
                                                                                 
-          y(1)=1.D0
           do i=1,10
-            y(1)=y(1)*x(i)
+            if (i==1) then
+              y(1)=x(1)
+            else
+              y(1)=y(1)*x(i)
+            end if
           end do
 
 	end subroutine

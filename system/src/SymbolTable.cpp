@@ -8,8 +8,7 @@ namespace xaifBooster {
 
   const std::string SymbolTable::ourXAIFName("xaif:SymbolTable");
   
-  SymbolTable::SymbolTable() : 
-    myNameCreator(ConceptuallyStaticInstances::instance()->getCallGraph().getPrefix()+"Symbol") { 
+  SymbolTable::SymbolTable() { 
   } // end of SymbolTable::SymbolTable
 
   Symbol& 
@@ -48,7 +47,7 @@ namespace xaifBooster {
 				  const SymbolShape::SymbolShape_E& aShape,
 				  bool anActiveTypeFlag) { 
     // use a unique name
-    std::string aName=myNameCreator.makeName();
+    std::string aName(ConceptuallyStaticInstances::instance()->getNameCreator().makeName());
     Symbol& theSymbol(addSymbol(aName,
 				aKind,
 				aType,

@@ -12,7 +12,11 @@ public:
 				 GREATER_THAN_OTYPE,
 				 GREATER_OR_EQUAL_OTYPE,
 				 EQUAL_OTYPE,
-				 NOT_EQUAL_OTYPE};
+				 NOT_EQUAL_OTYPE,
+				 AND_OTYPE,
+				 OR_OTYPE,
+				 NOT_OTYPE,
+				 XOR_OTYPE};
     static std::string toString(const BooleanOperationType_E& aType) throw (PrintingIntException);
 
     static const BooleanOperationType_E fromString(const std::string& aName);
