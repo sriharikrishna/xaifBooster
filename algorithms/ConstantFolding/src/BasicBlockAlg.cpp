@@ -1,5 +1,7 @@
 #include <sstream>
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+//#include <iostream.h>
+//#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/ConstantFolding/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/ConstantFolding/inc/EnhancedPrivateLinearizedComputationalGraph.hpp"
@@ -16,10 +18,26 @@ namespace xaifBoosterConstantFolding {
     SequencePList SpL = getUniqueSequencePList();
     for (SequencePList::iterator i=(SpL).begin();i!=(SpL).end();++i) {
       EnhancedPrivateLinearizedComputationalGraph& g=(dynamic_cast <EnhancedPrivateLinearizedComputationalGraph&> (*(*i)->myFlattenedSequence_p));
+//      GraphVizDisplay::show(g,"flattened");
+      g.RunParallelEdgeAddition();
+//      GraphVizDisplay::show(g,"flattened");
+//      cout<<"Parallel Addition Complete\n";
       g.RunConstantCheckForwardBackward();
+//      GraphVizDisplay::show(g,"flattened");
+//      cout<<"ConstantCheck Complete\n";
       g.RunTrivialCheckForward();
+//      GraphVizDisplay::show(g,"flattened");
+//      cout<<"Trivial CheckForward Complete\n";
       g.RunTrivialCheckBackwards();
+//      GraphVizDisplay::show(g,"flattened");
+      g.RunTrivialCheckForwardAgain();
+//      cout<<"Trivial CheckForward Complete\n";
+//      GraphVizDisplay::show(g,"flattened");
+      g.RunTrivialCheckBackwardsAgain();
+//      cout<<"PLCG is Constant Folded\n";
+//      GraphVizDisplay::show(g,"flattened");
     }
+//    cout<<"\n\nConstantFolding is Done, so the error is in Basic Block or Lower\n\n";
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3();
   }
   void BasicBlockAlg::init() {
