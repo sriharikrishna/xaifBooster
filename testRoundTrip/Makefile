@@ -1,7 +1,7 @@
 TARGET=head
 
 ifdef REVERSE_MODE
-REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_tape.o iaddr.o
+REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_rev.o OpenAD_tape.o iaddr.o
 TARGETDRIVER=driver_adm
 else
 TARGETDRIVER=driver
