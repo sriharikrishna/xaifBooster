@@ -79,4 +79,8 @@ namespace xaifBoosterCodeReplacement {
     return *aReplacement_p;
   } 
 
+  const ArgumentList& ReplacementList::getArgumentList() const { 
+    return myArgumentList;
+  } 
+
 } 

@@ -1,0 +1,11 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_ARGUMENTSYMBOLREFERENCEALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_ARGUMENTSYMBOLREFERENCEALGFACTORY_INCLUDE_
+
+#include "xaifBooster/system/inc/ArgumentSymbolReferenceAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
+
+  DERIVED_ALG_FACTORY_DECL_MACRO(ArgumentSymbolReference,
+				 xaifBooster::ArgumentSymbolReferenceAlgFactory,
+				 xaifBoosterBasicBlockPreaccumulationReverse);
+
+#endif

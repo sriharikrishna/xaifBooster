@@ -2,6 +2,8 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/system/inc/ArgumentSymbolReference.hpp"
+#include "xaifBooster/system/inc/ArgumentSymbolReferenceAlgFactory.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 namespace xaifBooster { 
 
@@ -16,14 +18,40 @@ namespace xaifBooster {
 						    const Scope& theScope,
 						    unsigned int thePosition,
 						    bool theActiveFlag,
-						    IntentType::IntentType_E theIntent) :
+						    IntentType::IntentType_E theIntent,
+						    bool makeAlgorithm) :
     SymbolReference(theSymbol,theScope),
     myPosition(thePosition),
     myActiveFlag(theActiveFlag),
     myIntent(theIntent) {
+    if (makeAlgorithm)
+      myArgumentSymbolReferenceAlgBase_p=
+	ArgumentSymbolReferenceAlgFactory::instance()->makeNewAlg(*this); 
   }
 
-  void ArgumentSymbolReference::printXMLHierarchy(std::ostream& os) const {
+  ArgumentSymbolReference::~ArgumentSymbolReference() {
+    if (myArgumentSymbolReferenceAlgBase_p)
+      delete myArgumentSymbolReferenceAlgBase_p;
+  } 
+
+  ArgumentSymbolReferenceAlgBase& 
+  ArgumentSymbolReference::getArgumentSymbolReferenceAlgBase() const { 
+    if (!myArgumentSymbolReferenceAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("ArgumentSymbolReference::getArgumentSymbolReferenceAlgBase: not set");
+    return *myArgumentSymbolReferenceAlgBase_p;
+  }
+
+  void
+  ArgumentSymbolReference::printXMLHierarchy(std::ostream& os) const { 
+    if (myArgumentSymbolReferenceAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
+      getArgumentSymbolReferenceAlgBase().printXMLHierarchy(os);
+    else 
+      printXMLHierarchyImpl(os);
+  }
+
+  void ArgumentSymbolReference::printXMLHierarchyImpl(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
@@ -45,6 +73,10 @@ namespace xaifBooster {
        << "=\"" 
        << myActiveFlag
        << "\" " 
+       << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str() 
+       << "=\""
+       << getAnnotation().c_str()
+       << "\" " 
        << our_myIntent_XAIFName.c_str() 
        << "=\"" 
        << IntentType::toString(myIntent).c_str()
@@ -55,9 +87,31 @@ namespace xaifBooster {
   
   std::string ArgumentSymbolReference::debug () const { 
     std::ostringstream out;
-    out << "ArgumentSymbolReference[" << this 
+    out << "ArgumentSymbolReference[" 
+	<< this 
+	<< ","
+	<< "myArgumentSymbolReferenceAlgBase_p"
+	<< "="
+	<< myArgumentSymbolReferenceAlgBase_p
 	<< "]" << std::ends;  
     return out.str();
   } // end of ArgumentSymbolReference::debug
+
+  unsigned int ArgumentSymbolReference::getPosition() const { 
+    return myPosition;
+  } 
+    
+  bool ArgumentSymbolReference::getActiveFlag() const { 
+    return myActiveFlag;
+  } 
+
+  IntentType::IntentType_E ArgumentSymbolReference::getIntent() const { 
+    return myIntent;
+  } 
+
+  void ArgumentSymbolReference::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+    getArgumentSymbolReferenceAlgBase().genericTraversal(anAction_c);
+  } 
+
 
 } // end of namespace xaifBooster 

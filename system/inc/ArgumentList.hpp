@@ -4,6 +4,7 @@
 #include <list>
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 #include "xaifBooster/system/inc/ArgumentSymbolReference.hpp"
 
 namespace xaifBooster { 
@@ -13,7 +14,8 @@ namespace xaifBooster {
    * the control flow for a subroutine
    * it is a member of a CallGraphVertex
    */
-  class ArgumentList : public XMLPrintable {
+  class ArgumentList : public XMLPrintable,
+		       public GenericTraverseInvoke {
 
   public:
 
@@ -22,6 +24,8 @@ namespace xaifBooster {
     ~ArgumentList();
 
     void printXMLHierarchy(std::ostream& os) const;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     std::string debug() const ;
     
