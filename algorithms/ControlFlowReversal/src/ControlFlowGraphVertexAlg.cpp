@@ -6,8 +6,12 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ControlFlowGraphVertexAlg::ControlFlowGraphVertexAlg(ControlFlowGraphVertex& theContaining) : ControlFlowGraphVertexAlgBase(theContaining) {}
-  ControlFlowGraphVertexAlg::~ControlFlowGraphVertexAlg() {}
+  ControlFlowGraphVertexAlg::ControlFlowGraphVertexAlg(ControlFlowGraphVertex& theContaining) : 
+    ControlFlowGraphVertexAlgBase(theContaining) {
+  }
+
+  ControlFlowGraphVertexAlg::~ControlFlowGraphVertexAlg() {
+  }
 
   std::string
   ControlFlowGraphVertexAlg::kindToString() const {

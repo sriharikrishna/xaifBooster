@@ -12,7 +12,8 @@
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
-  std::string CallGraphAlg::myAlgorithmSignature(std::string("_cfr_"));
+ 
+ std::string CallGraphAlg::myAlgorithmSignature(std::string("_cfr_"));
 
 
   CallGraphAlg::CallGraphAlg(CallGraph& theContaining) : CallGraphAlgBase(theContaining) {
@@ -36,7 +37,7 @@ namespace xaifBoosterControlFlowReversal {
                                        v)->getSubroutineName() << "\"]";
     }
     const CallGraph& myG;
-  }
+  };
 
   void CallGraphAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,
@@ -44,7 +45,7 @@ namespace xaifBoosterControlFlowReversal {
               << debug().c_str());
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
       GraphVizDisplay::show(getContaining(),"call_graph",
-      CallGraphVertexLabelWriter(getContaining()));
+			    CallGraphVertexLabelWriter(getContaining()));
     }
   } // end CallGraphAlg::algorithm_action_4() 
 
@@ -55,8 +56,8 @@ namespace xaifBoosterControlFlowReversal {
 
   std::string
   CallGraphAlg::debug() const {
-     std::ostringstream out;
-     out << "xaifBoosterControlFlowReversal::CallGraphAlg["
+    std::ostringstream out;
+    out << "xaifBoosterControlFlowReversal::CallGraphAlg["
         << this
         << "]" << std::ends;
     return out.str();

@@ -59,7 +59,7 @@ namespace xaifBoosterControlFlowReversal {
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
     }
     const ReversibleControlFlowGraph& myG;
-  }
+  };
 
   class ControlFlowGraphEdgeLabelWriter {
   public:
@@ -78,7 +78,7 @@ namespace xaifBoosterControlFlowReversal {
       if (theReversibleControlFlowGraphEdge_p->has_condition_value()) out << "[label=\"1\"]";
     }
     const ReversibleControlFlowGraph& myG;
-  }
+  };
 
   void CallGraphVertexAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,
