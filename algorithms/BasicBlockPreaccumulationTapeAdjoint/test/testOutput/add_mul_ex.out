@@ -106,10 +106,10 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="1076321912"/>
+            <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="2"/>
           </xaif:ArgumentSubstitute>
@@ -130,10 +130,10 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="0"/>
+            <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" scope_id="2"/>
           </xaif:ArgumentSubstitute>
@@ -207,10 +207,10 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="136468704"/>
+            <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="2"/>
           </xaif:ArgumentSubstitute>
@@ -231,10 +231,10 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="7209065"/>
+            <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" scope_id="2"/>
           </xaif:ArgumentSubstitute>
@@ -255,10 +255,10 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="136470768"/>
+            <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="2"/>
           </xaif:ArgumentSubstitute>
@@ -316,10 +316,10 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_12" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="136478448"/>
+            <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_12" scope_id="2"/>
           </xaif:ArgumentSubstitute>
@@ -340,10 +340,10 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="0"/>
+            <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+        <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="2"/>
           </xaif:ArgumentSubstitute>
