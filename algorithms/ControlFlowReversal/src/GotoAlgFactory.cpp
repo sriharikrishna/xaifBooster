@@ -3,10 +3,8 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/GotoAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/GotoAlg.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  ALG_FACTORY_DEF_MACRO(Goto,xaifBooster::GotoAlgBase,GotoAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Goto,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 

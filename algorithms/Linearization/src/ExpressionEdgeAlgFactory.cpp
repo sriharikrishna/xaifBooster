@@ -3,8 +3,6 @@
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
-namespace xaifBoosterLinearization {  
 
-  ALG_FACTORY_DEF_MACRO(ExpressionEdge,xaifBooster::ExpressionEdgeAlgBase,ExpressionEdgeAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(ExpressionEdge,xaifBoosterLinearization);
 
-} // end of namespace 

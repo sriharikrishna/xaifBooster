@@ -3,9 +3,7 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulationReverse {  
 
-  ALG_FACTORY_DEF_MACRO(CallGraphVertex,xaifBooster::CallGraphVertexAlgBase,CallGraphVertexAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(CallGraphVertex,xaifBoosterBasicBlockPreaccumulationReverse);
 
-} // end of namespace 
 

@@ -4,10 +4,8 @@
 #include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBooster::BasicBlockAlgBase,xaifBooster::BasicBlockAlgFactory);
+  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBooster::BasicBlockAlgFactory,xaifBoosterBasicBlockPreaccumulation);
 
-} // end of namespace 
 
 #endif

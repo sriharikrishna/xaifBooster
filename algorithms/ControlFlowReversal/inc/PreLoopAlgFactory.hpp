@@ -4,10 +4,8 @@
 #include "xaifBooster/system/inc/PreLoopAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(PreLoop,xaifBooster::PreLoopAlgBase,xaifBooster::PreLoopAlgFactory);
+  DERIVED_ALG_FACTORY_DECL_MACRO(PreLoop,xaifBooster::PreLoopAlgFactory,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 #endif

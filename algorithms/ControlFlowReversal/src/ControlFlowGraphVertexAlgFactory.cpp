@@ -3,10 +3,8 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  ALG_FACTORY_DEF_MACRO(ControlFlowGraphVertex,xaifBooster::ControlFlowGraphVertexAlgBase,ControlFlowGraphVertexAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(ControlFlowGraphVertex,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 

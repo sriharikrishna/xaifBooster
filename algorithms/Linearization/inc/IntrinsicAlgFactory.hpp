@@ -4,10 +4,8 @@
 #include "xaifBooster/system/inc/IntrinsicAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
 
-namespace xaifBoosterLinearization {  
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(Intrinsic,xaifBooster::IntrinsicAlgBase,xaifBooster::IntrinsicAlgFactory);
+  DERIVED_ALG_FACTORY_DECL_MACRO(Intrinsic,xaifBooster::IntrinsicAlgFactory,xaifBoosterLinearization);
 
-} // end of namespace 
 
 #endif

@@ -3,10 +3,8 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/IfStatementAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/IfStatementAlg.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  ALG_FACTORY_DEF_MACRO(IfStatement,xaifBooster::IfStatementAlgBase,IfStatementAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(IfStatement,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 

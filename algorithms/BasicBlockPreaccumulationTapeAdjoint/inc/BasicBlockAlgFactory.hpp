@@ -5,10 +5,8 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBooster::BasicBlockAlgBase,xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlgFactory);
+  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlgFactory,xaifBoosterBasicBlockPreaccumulationTapeAdjoint);
 
-} // end of namespace 
 
 #endif

@@ -4,12 +4,6 @@
 #include "xaifBooster/system/inc/AlgFactory.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
 
-namespace xaifBooster {  
-
-  class ControlFlowGraph;
-
-  BASE_ALG_FACTORY_DECL_MACRO(ControlFlowGraph,ControlFlowGraphAlgBase);
-
-} // end of namespace 
+  BASE_ALG_FACTORY_DECL_MACRO(ControlFlowGraph);
 
 #endif
