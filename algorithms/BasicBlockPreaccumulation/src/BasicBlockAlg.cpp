@@ -80,6 +80,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     BasicBlockAlgBase(theContaining) { 
+    compute_elimination_sequence=&angel::compute_elimination_sequence;
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
@@ -255,7 +256,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (theFlattenedSequence.numVertices()>1) { 
 	// call Angel which fills myJacobianAccumulationExpressionList
 	try { 
-	  angel::compute_elimination_sequence (theFlattenedSequence, 1, (*i)->myJacobianAccumulationExpressionList);
+	  (*compute_elimination_sequence) (theFlattenedSequence, 1, (*i)->myJacobianAccumulationExpressionList);
 	} 
 	catch(...) { 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
