@@ -206,6 +206,7 @@ namespace xaifBoosterLinearization {
 							   false),
 					theGlobalScope);
 	  theNewVariableSymbolReference_p->setId("1");
+	  theNewVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::AssignmentAlg::makeSSACodeList");
 	  theDelayVertex_p->getVariable().
 	    supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
 	  // set the new LHS to the original LHS

@@ -189,6 +189,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 							 false),
 				      getContaining().getScope());
 	theNewVariableSymbolReference_p->setId("1");
+	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess");
 	// pass it on to the LHS and relinquish ownership
 	theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
 	theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();

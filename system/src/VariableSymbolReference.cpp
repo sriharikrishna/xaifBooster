@@ -21,6 +21,7 @@ namespace xaifBooster {
     VariableSymbolReference* aNewVariableSymbolReference_p=new VariableSymbolReference(mySymbol_r,
 										       myScope_r);
     aNewVariableSymbolReference_p->setId(getId());
+    aNewVariableSymbolReference_p->setAnnotation(getAnnotation());
     return *aNewVariableSymbolReference_p;
   }
 
@@ -49,6 +50,10 @@ namespace xaifBooster {
        << Symbol::our_myId_XAIFName
        << "=\"" 
        << mySymbol_r.getId().c_str()
+       << "\" " 
+       << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str() 
+       << "=\""
+       << getAnnotation().c_str()
        << "\" " 
        << our_scopeId_XAIFName 
        << "=\"" 

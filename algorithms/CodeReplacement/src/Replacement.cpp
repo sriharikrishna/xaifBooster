@@ -71,8 +71,9 @@ namespace xaifBoosterCodeReplacement {
     }
     else if (myReversibleControlFlowGraph_p) 
       myReversibleControlFlowGraph_p->printXMLHierarchy(os);
-    else 
-      THROW_LOGICEXCEPTION_MACRO("Replacement::printXMLHierarchy: no CFG set");
+    else { 
+//      THROW_LOGICEXCEPTION_MACRO("Replacement::printXMLHierarchy: no CFG set");
+    } 
     os << pm.indent()
        << "</"
        << ourXAIFName.c_str()
