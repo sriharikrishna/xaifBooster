@@ -5,6 +5,10 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/IfStatementAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/PreLoopAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ForLoopAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/EntryAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ExitAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -36,6 +40,10 @@ namespace xaifBoosterControlFlowReversal {
     resetControlFlowGraphVertexAlgFactory(new ControlFlowGraphVertexAlgFactory());
     resetIfStatementAlgFactory(new IfStatementAlgFactory());
     resetPreLoopAlgFactory(new PreLoopAlgFactory());
+    resetForLoopAlgFactory(new ForLoopAlgFactory());
+    resetEntryAlgFactory(new EntryAlgFactory());
+    resetExitAlgFactory(new ExitAlgFactory());
+    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
   }
 
 }
