@@ -36,9 +36,7 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphVertex& getEntry(); 
     ReversibleControlFlowGraphVertex& getExit(); 
 
-    void markBranchExitEdges();
     void markBranchEntryEdges();
-    void markLoopBodyEntryEdges();
     void topologicalSort();
     void storeControlFlow();
     void buildAdjointControlFlowGraph();
@@ -77,30 +75,33 @@ namespace xaifBoosterControlFlowReversal {
     void clearIndeces(); 
 
    /**
-    * Returns closest original predecessor of a given vertex.
-    * This makes only sense if we are looking at a chain of dilation,
-    * which we do
+    * Insert edge from theAdjointSource_cr to theAdjointTarget_cr.
+    * Return reference to the newly created ReversibleControlFlowGraphEdge.
     */
-                                                                                
-    ReversibleControlFlowGraphVertex*
-    findClosestOriginalPredecessor(ReversibleControlFlowGraphVertex* theVertex_p);
+    ReversibleControlFlowGraphEdge&
+    insertAdjointControlFlowGraphEdge(const ReversibleControlFlowGraphVertex& theAdjointSource_cr, const ReversibleControlFlowGraphVertex& theAdjointTarget_cr);
 
-    /** 
-     * find branch entry edge that corresponds to theCurrentEdge_r
-     */
-    const ReversibleControlFlowGraphEdge&
-    find_corresponding_branch_entry_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
+   /**
+    * For a given edge in the original control flow, build its adjoint.
+    * The correspondence between original and adjoint vertices is recorded in
+    * theVertexCorrespondence_ppl where the first entry of each pair is the
+    * original vertex and the second entry is the adjoint vertex.
+    *
+    * Add edge from the adjoint of the target to the adjoint of the source
+    * if the source it is not a LOOP node and the target is not the first node
+    * of the loop body, that is, its inedge.
+    * Otherwise, find the matching original ENDLOOP node and add edge
+    * from theSource_p to the ENDLOOP node's adjoint (a FORLOOP) node.
+   */
+
+    ReversibleControlFlowGraphEdge&
+    addAdjointControlFlowGraphEdge(const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl);
 
     /** 
      * find branch exit edge that corresponds to theCurrentEdge_r
      */
     const ReversibleControlFlowGraphEdge&
     find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
-
-    /** 
-     * check if theEdge_r lies on a path to theLoopVertex_r
-     */
-    bool isLoopBodyEntryEdge(const ReversibleControlFlowGraphVertex& theLoopVertex_r, const ReversibleControlFlowGraphEdge& theEdge_r);
 
     /** 
      * bottom-up augmentation of the cfg by statements that store
