@@ -169,120 +169,308 @@ namespace MemOpsTradeoffPreaccumulation {
     EdgeIterator dei (deip.first), de_end (deip.second);
     for(; dei != de_end; ++dei){
       //if the face is an intermediate and has no path conflicts
-      if((numInEdgesOf(getSourceOf(*dei))*numOutEdgesOf(getTargetOf(*dei)) > 0) && (isFinal(*dei))){
-	myElimList.push_back(&*dei);
+      if((numInEdgesOf(getSourceOf(*dei)) > 0) && (numOutEdgesOf(getTargetOf(*dei)) > 0)){
+	if(isFinal(getSourceOf(*dei)) || isFinal(getTargetOf(*dei))){
+	  myElimList.push_back(&*dei);
+	}// end if
       }// end if
     }// end for edges
 
     return myElimList;
   }// end populateElimlist
 
-  bool DualGraph::isFinal(DualGraphEdge& theFace) const {
+  bool DualGraph::isFinal(DualGraphVertex& theVertex) const {
 
-    VertexPointerList vertexReach;
 
     //spath iterates through each path in the list
     DualGraph::PathList::const_iterator spath;
-    //svertex iterates through each vertex in the path, svertexr iterates in reverse order
+    //svertex iterates through each vertex in the path
     DualGraphPath::Path::iterator svertex;
-    DualGraphPath::Path::reverse_iterator svertexr;
-    DualGraph::VertexPointerList::iterator reachi;
 
-    if(numOutEdgesOf(getSourceOf(theFace)) > 1){
-      //check for alternate paths from source
-      //built list of reachable from target
-      for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-	//for each vertex in the path
-	for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
-	  //if the path contains the target vertex
-	  if(*svertex == &getTargetOf(theFace)){
-	    //iterate through the remaining vertices and add them to vertexReach
-	    svertex++;
-	    for(; svertex != ((**spath).myPath).end(); svertex++){
-	      vertexReach.push_back(*svertex);
-	    }//end for remaining vertices
-	    svertex--;
-	  }// end if source is in path
-	}// end for vertices
-      }// end for paths
+    //if there is any path from a pred to a succ not containing theVertex, return false
 
-      //go through list again, find paths that contain source
-      for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-	//for each vertex in the path
-	for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
-	  if(*svertex == &getSourceOf(theFace)){
-	    svertex++;
-	    //if the path contains the face
-	    if(*svertex == &getTargetOf(theFace)){break;}//leave this path
-	    //if path doesnt have source->target it doesnt have face
-	    else{
-	      //for each remaining vertex in the path
-	      for(; svertex != ((**spath).myPath).end(); svertex++){
-	      
-		for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
-		  if(*svertex == *reachi){
+    DualGraph::ConstInEdgeIteratorPair die (getInEdgesOf(theVertex));
+    DualGraph::ConstInEdgeIterator diei (die.first), die_end (die.second);
+    DualGraph::ConstOutEdgeIteratorPair doe (getOutEdgesOf(theVertex));
+    DualGraph::ConstOutEdgeIterator doei (doe.first), doe_end (doe.second);
+
+    for(; diei != die_end; ++diei){
+      for(; doei != doe_end; ++doei){
+	if((numOutEdgesOf(getSourceOf(*diei)) > 1) && (numInEdgesOf(getTargetOf(*doei)) > 1)){
+
+	  for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+	    for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
+	      if(*svertex == &getSourceOf(*diei)){
+		//if path contains the vertex, go to next path
+		svertex++;
+		if(*svertex == &theVertex){break;}
+		svertex++;
+		svertex++;
+
+		for(; svertex != ((**spath).myPath).end(); svertex++){
+		  if(*svertex == &getTargetOf(*doei)){
 		    return false;
-		  }// end if reachi = svertex
-		}// end for all vertexReach
-	      }//end for remaining vertices
-	      svertex--;
-	    }// end else
-	  }//end if path contains source
-	}//end for each vertex in the path
-      }//end for all paths
+		  }// end if we find 
+		}// end for all vertices after the pred
 
-      vertexReach.clear();
-    }// end if
-  
-    if(numInEdgesOf(getTargetOf(theFace)) > 1){
-      //check for alternate paths to target
-      //built list of reachable to source
-      for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-	//for each vertex in the path
-	for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
-	  //if the path contains the source vertex
-	  if(*svertexr == &getSourceOf(theFace)){
-	    //iterate through the previous vertices and add them to vertexReach
-	    svertexr++;
-	    for(; svertexr != ((**spath).myPath).rend(); svertexr++){
-	      vertexReach.push_back(*svertexr);
-	    }//end for remaining vertices
-	    svertexr--;
-	  }// end if source is in path
-	}// end for vertices
-      }// end for paths
+		//if we dont find the succ, go to next path
+		break;
 
-      //go through list again, find paths that contain target
-      for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-	//for each vertex in the path
-	for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
-	  //if the path contains the target
-	  if(*svertexr == &getTargetOf(theFace)){
-	    svertexr++;
-	    //if the path contains the face
-	    if(*svertexr == &getSourceOf(theFace)){break;}//leave this path
-	    //if path doesnt have source->target it doesnt have face
-	    else{
-	      //for each remaining vertex in the path
-	      for(; svertexr != ((**spath).myPath).rend(); svertexr++){
-		for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
-		  if(*svertex == *reachi){
-		    return false;
-		  }// end if reachi = svertex
-		}// end for all vertexReach
-	      }//end for remaining vertices
-	      svertexr--;
-	    }// end else
-	  }//end if path contains source
-	}//end for each vertex in the path
-      }//end for all paths
-    }// end if
+	      }// end if vertex is the pred
+	    }// end for each vertex in the path
+	  }// end for all paths
+
+	}// end if pred and succ have alternate paths
+      }// end for all out edges
+    }// end for all inedges
 
     return true;
+
+    // if(numOutEdgesOf(getSourceOf(theFace)) > 1){
+
+//       // check for alternate paths from source
+//       //built list of reachable from target
+//       for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+// 	//for each vertex in the path
+// 	for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
+// 	  //if the path contains the target vertex
+// 	  if(*svertex == &getTargetOf(theFace)){
+// 	    vertexReach.push_back(((**spath).myPath).back());
+// 	    break;
+// 	  }// end if target is in path
+// 	}// end for vertices
+//       }// end for paths
+
+//       //go through list again, find paths that contain source
+//       for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+// 	//for each vertex in the path
+// 	for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
+// 	  //if the path contains the source of the face
+// 	  if(*svertex == &getSourceOf(theFace)){
+// 	    //if the path contains the face
+// 	    svertex++;
+// 	    if(*svertex == &getTargetOf(theFace)){break;}//leave this path
+// 	    //if path doesnt have source->target it doesnt have face
+// 	    for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
+// 	      if(*reachi == ((**spath).myPath).back()){
+// 		return false;
+// 	      }// end if reachi = svertex
+// 	    }// end for all vertexReach
+// 	    //if we have no conflicts, leave this path 
+// 	    break;
+// 	  }//end if path contains source
+// 	}//end for each vertex in the path
+//       }//end for all paths
+
+//       vertexReach.clear();
+//     }// end if
+  
+//     if(numInEdgesOf(getTargetOf(theFace)) > 1){
+
+//       // check for alternate paths to target
+//       //built list of reachable to source
+//       for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+// 	//for each vertex in the path
+// 	for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
+// 	  //if the path contains the source vertex push back the minimal vertex in the path
+// 	  if(*svertexr == &getSourceOf(theFace)){
+// 	    vertexReach.push_back(((**spath).myPath).front());
+// 	    break;
+// 	  }// end if source is in path
+// 	}// end for vertices
+//       }// end for paths
+
+//       //go through list again, find paths that contain target
+//       for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+// 	//for each vertex in the path
+// 	for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
+// 	  //if the path contains the target
+// 	  if(*svertexr == &getTargetOf(theFace)){
+// 	    //if the path contains the face
+// 	    svertexr++;
+// 	    if(*svertexr == &getSourceOf(theFace)){break;}//leave this path
+// 	    //if path doesnt have source->target it doesnt have face
+// 	    for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
+// 	      if(*reachi == ((**spath).myPath).front()){
+// 		return false;
+// 	      }// end if reachi = svertex
+// 	    }// end for all vertexReach
+// 	    //if we have no conflicts, leave this path 
+// 	    break;
+// 	  }//end if path contains source
+// 	}//end for each vertex in the path
+//       }//end for all paths
+//     }// end if
+
+//     return true;
+
   }// end isFinal
 
   void DualGraph::clearElimList() {
     myElimList.clear();
   }
+
+  DualGraphVertex* DualGraph::elim_face(DualGraphEdge& theFace,
+					const DualGraph::VertexPointerList& thePredList,
+					const DualGraph::VertexPointerList& theSuccList,
+					xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
+    
+    //create a new JAE graph
+    JacobianAccumulationExpressionCopy* theExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
+
+    //add first minimal vertex: the source of the face
+    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& minisource = ((*theExpression).myExpression).addVertex();
+    if((getSourceOf(theFace)).getRefType() == DualGraphVertex::TO_INTERNAL_EXPRESSION){
+      minisource.setInternalReference(((getSourceOf(theFace)).getJacobianRef()).getMaximal());
+    }
+    else{
+      minisource.setExternalReference((getSourceOf(theFace)).getOriginalRef());
+    }
+    //add second minimal vertex: the target of the face
+    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& minitarget = ((*theExpression).myExpression).addVertex();    
+    if((getTargetOf(theFace)).getRefType() == DualGraphVertex::TO_INTERNAL_EXPRESSION){
+      minitarget.setInternalReference(((getTargetOf(theFace)).getJacobianRef()).getMaximal());
+    }// end if
+    else{
+      minitarget.setExternalReference((getTargetOf(theFace)).getOriginalRef());
+    }// end else
+
+    //create "mult" vertex and connect it to minisource and minitarget
+    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& mult = ((*theExpression).myExpression).addVertex();
+    mult.setOperation(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP);
+    ((*theExpression).myExpression).addEdge(minisource, mult);
+    ((*theExpression).myExpression).addEdge(minitarget, mult);
+
+    //create a new vertex and set its jacobian ref to the new JAE
+    DualGraphVertex& theNewVertex = addVertex();
+    theNewVertex.setJacobianRef(theExpression);
+
+    // iterate over predecessors of the source and successors of the target, connect them all to the new vertex
+    DualGraph::InEdgeIteratorPair die (getInEdgesOf(getSourceOf(theFace)));
+    DualGraph::InEdgeIterator diei (die.first), die_end (die.second);
+    for(; diei != die_end; ++diei){
+      addEdge(getSourceOf(*diei), theNewVertex);
+    }// end for inedges
+    DualGraph::OutEdgeIteratorPair doe (getOutEdgesOf(getTargetOf(theFace)));
+    DualGraph::OutEdgeIterator doei (doe.first), doe_end (doe.second);
+    for(; doei != doe_end; ++doei){
+      addEdge(theNewVertex, getTargetOf(*doei));
+    }// end for outedges
+    
+    //check for direct vertex
+    DualGraphVertex* directVertex_pt = NULL;
+    //spath iterates through each path in the list
+    DualGraph::PathList::const_iterator spath;
+    //svertex iterates through each vertex in the path
+    DualGraphPath::Path::iterator svertex;
+    //predi and succi iterate over the predecessor and successor lists of the face being eliminated
+    DualGraph::VertexPointerList::const_iterator predi, succi;
+    unsigned int i = 0;
+
+    //go through all paths to find a path with a direct vertex between source and target
+    for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+      //for each vertex in the path
+      for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
+	for(predi = thePredList.begin(); predi != thePredList.end(); predi++){
+	  //if the vertex is a pred
+	  if(*predi == *svertex){break;}
+	}// end for each predecessor
+	//if vertex is a pred of the face
+	if(predi != thePredList.end()){
+	  svertex++;
+	  svertex++;
+	  //check for svertex in succlist
+	  for(succi = theSuccList.begin(); succi != theSuccList.end(); succi++){
+	    //if the vertex is a succ
+	    if(*succi == *svertex){break;}
+	  }// end for each successor
+	  //if a succ is in path
+	  if(succi != theSuccList.end()){
+	    svertex--;
+	    directVertex_pt = *svertex;
+	    // if the direct vertex doesnt have inedges from all preds and outedges to all succs throw exception
+	    i = 0;
+	    DualGraph::InEdgeIteratorPair dvie (getInEdgesOf(*directVertex_pt));
+	    DualGraph::InEdgeIterator dviei (dvie.first), dvie_end (dvie.second);
+	    for(; dviei != dvie_end; ++dviei){
+	      i++;
+	      for(predi = thePredList.begin(); predi != thePredList.end(); predi++){
+		if(*predi == &getSourceOf(*dviei)){break;}
+	      }// end for each predecessor
+	      //if a direcpred wasnt in pred list  
+	      if(predi == thePredList.end()){
+		THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
+	      }//end if a direcpred wasnt in pred list
+	    }// end for direct inedges
+	    if(i != thePredList.size()){
+	      THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
+	    }
+	    i = 0;
+	    DualGraph::OutEdgeIteratorPair dvoe (getOutEdgesOf(*directVertex_pt));
+	    DualGraph::OutEdgeIterator dvoei (dvoe.first), dvoe_end (dvoe.second);
+	    for(; dvoei != dvoe_end; ++dvoei){
+	      i++;
+	      for(succi = theSuccList.begin(); succi != theSuccList.end(); succi++){
+		if(*succi == &getTargetOf(*dvoei)){break;}
+	      }// end for each successor
+	      //if a direcpred wasnt in pred list  
+	      if(succi == theSuccList.end()){
+		THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
+	      }//end if a direcpred wasnt in pred list
+	    }// end for direct outedges
+	    if(i != theSuccList.size()){
+	      THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
+	    }
+	    spath = myPathList.end();
+	    spath--;
+	    break;
+	  }//end if we found direct vertex
+	}//end if a pred is in path
+      }//end for each vertex in the path
+    }//end for all paths
+
+    //if there was a direct vertex from predecessors to successors
+    if(directVertex_pt != NULL){
+      //create vertex for direct edge, and "add" vertex, point new edge to it
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& add = ((*theExpression).myExpression).addVertex();
+      add.setOperation(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP);
+      //add vertex for direct vertex
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& minidirect = ((*theExpression).myExpression).addVertex();
+      if((*directVertex_pt).getRefType() == DualGraphVertex::TO_INTERNAL_EXPRESSION){
+	minidirect.setInternalReference(((*directVertex_pt).getJacobianRef()).getMaximal());
+      }
+      else{
+	minidirect.setExternalReference((*directVertex_pt).getOriginalRef());
+      }
+      //connect "add" vertex to minidirect and mult, point the new vertex to add, delete the old vertex
+      ((*theExpression).myExpression).addEdge(mult, add);
+      ((*theExpression).myExpression).addEdge(minidirect, add);
+      removeAndDeleteVertex(*directVertex_pt);
+      (*theExpression).setMaximal(add);
+    }// end if
+    else{      //point the new vertex to "mult"
+      (*theExpression).setMaximal(mult);
+    }// end else
+  
+    //if the face elimination isolates both the source and the target, delete them both (which automatically deletes the face)
+    if(numOutEdgesOf(getSourceOf(theFace))*numInEdgesOf(getTargetOf(theFace)) == 1){
+      removeAndDeleteVertex(getSourceOf(theFace));
+      removeAndDeleteVertex(getTargetOf(theFace));
+    }// end if
+    //if the face elimination isolates the source, delete the source (which automatically deletes the face)
+    else if(numOutEdgesOf(getSourceOf(theFace)) == 1){
+      removeAndDeleteVertex(getSourceOf(theFace));
+    }
+    //if the face elimination isolates the target, delete the target (which automatically deletes the face)
+    else if(numInEdgesOf(getTargetOf(theFace)) == 1){
+      removeAndDeleteVertex(getTargetOf(theFace));
+    }
+    // if the elimination does not isolate either the source or the target, we simply delete the face
+    else{
+      removeAndDeleteEdge(theFace);
+    }
+
+    return &theNewVertex;
+  }// end elim_face
 
 }// end namespace MemOpsTradeoffPreaccumulation

@@ -160,7 +160,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       typedef void(*faceHeuristicFunc) (const DualGraph&,
 					DualGraph::FacePointerList&,
 					const DualGraph::VertexPointerList&,
-				        const DualGraph::VertexPointerList&);
+				        const DualGraph::VertexPointerList&,
+					DualGraphVertex*);
 
       std::list<faceHeuristicFunc> faceHeuristicSequence;
 
@@ -190,6 +191,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       faceHeuristicFunc func_pt;
       std::list<faceHeuristicFunc>::iterator fhiter;
       DualGraph::VertexPointerList thePredList, theSuccList;
+      DualGraphVertex* newOrAbsorb = NULL;
       DualGraph::FacePointerList theFaceList;
 
       std::cout << "about to populate path list" << std::endl;
@@ -208,7 +210,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
  	//this loop runs the list through each heuristic
  	for(fhiter=faceHeuristicSequence.begin(); fhiter!=faceHeuristicSequence.end(); fhiter++){
  	  func_pt = *fhiter;
- 	  func_pt(theDual, theFaceList, thePredList, theSuccList);
+ 	  func_pt(theDual, theFaceList, thePredList, theSuccList, newOrAbsorb);
  	}// end for
 	
  	//if(theElimList.size() == 1){//if the heuristics have decided on one single face
@@ -233,11 +235,15 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	std::cout << "succ list and pred list built, about to eliminate a face" << std::endl;
 
  	  //eliminate the face
- 	  FaceElim::elim_face(theDual, *theElimList.front(), thePredList, theSuccList, theJacobianAccumulationExpressionList);
+ 	  newOrAbsorb = theDual.elim_face(*theElimList.front(), thePredList, theSuccList, theJacobianAccumulationExpressionList);
 	  //}
 	  //else{
  	  //THROW_LOGICEXCEPTION_MACRO("Error: Heuristics could not decide on a single face");
 	  //}
+
+	if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	  GraphVizDisplay::show(theDual,"intermediate");
+	}
 
 	//regenerate path list and list of eliminatable faces
  	theDual.clearPathList();

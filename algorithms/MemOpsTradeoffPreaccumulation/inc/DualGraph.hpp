@@ -8,10 +8,11 @@
 #define _DUALGRAPH_INCLUDE_
 
 #include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/DualGraphEdge.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/DualGraphVertex.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/DualGraphPath.hpp"
-
+#include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/JacobianAccumulationExpressionCopy.hpp"
 
 using namespace MemOpsTradeoffPreaccumulation;
 
@@ -35,8 +36,14 @@ namespace MemOpsTradeoffPreaccumulation {
     void clearPathList();
     
     FacePointerList populateElimList();
-    bool isFinal(DualGraphEdge& theFace) const;
+    bool isFinal(DualGraphVertex& theVertex) const;
     void clearElimList();
+
+    DualGraphVertex* elim_face(
+      DualGraphEdge& theFace,
+      const DualGraph::VertexPointerList& thePredList,
+      const DualGraph::VertexPointerList& theSuccList,
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
 
     PathList myPathList;
 
