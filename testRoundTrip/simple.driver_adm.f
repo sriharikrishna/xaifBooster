@@ -6,7 +6,7 @@
 	external head
 
 	double precision, dimension(:), allocatable :: x0
-	double precision, dimension(:), allocatable :: res_dd, res_ad
+	double precision, dimension(:,:), allocatable :: res_adj
 	type(active), dimension(:), allocatable :: x, xph
 	type(active), dimension(:), allocatable :: y, yph
 	real h
@@ -19,12 +19,11 @@
 
 	
 	allocate(x0(n))
-	allocate(res_dd(m))
-	allocate(res_ad(n))
 	allocate(x(n))
 	allocate(xph(n))
 	allocate(y(m))
 	allocate(yph(m))
+	allocate(res_adj(m,n))
 
 	do i=1,n   
 	   x0(i)=i/2.
@@ -44,14 +43,14 @@
 	   call head(xph,yph,1)
 	   call head(x,y,2)
 	   do k=1,m
-	      res_dd(k)=(yph(k)%v-y(k)%v)/h
+	      write(2,*) "F(",k,",",i,")=",(yph(k)%v-y(k)%v)/h
 	   end do
-	   write(2,*) "F(", i , ",:)= ", res_dd
 	end do
 	close(2)
 
 	open(2,file='tmpOutput/ad.out')
 	write(2,*) "AD"
+
 	do i=1,m   
 	   do j=1,m   
               if (i==j) then 
@@ -60,20 +59,29 @@
 		 y(j)%d=0.0
               end if
 	   end do
+	   do k=1,n
+	      x(k)%d=0.0
+	   end do
 	   call head(x,y,3)
 	   do k=1,n
-              write(2,*) "F(", i , ",",k,")= ", x(k)%d
+              res_adj(i,k)=x(k)%d
 	   end do
 	end do
+
+	do k=1,n
+	   do i=1,m   
+              write(2,*) "F(",i,",",k,")=",res_adj(i,k)
+	   end do
+	end do
+
 	close(2)
 
 	deallocate(x0)
-	deallocate(res_dd)
-	deallocate(res_ad)
 	deallocate(x)
 	deallocate(xph)
 	deallocate(y)
 	deallocate(yph)
+	deallocate(res_adj)
 
         end
 
