@@ -133,6 +133,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // and leave
       return;
     } 
+    BasicBlockAlgParameter::get().addMyselfToAssignmentIdList(getContainingAssignment());
+    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(BasicBlockAlgParameter::get().getAssignmentIdList());
     // now redo the activity analysis
 //     if (haveLinearizedRightHandSide() && 
 // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
@@ -209,7 +211,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      Variable& theVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	      if (theRHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) { 
 		theVertexIdentificationListActiveRHS.addElement(theVariable,
-								theLCGVertex_p);
+								theLCGVertex_p,
+								theKnownAssignments);
 		DBG_MACRO(DbgGroup::DATA,
 			  "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) added to RHS: "
 			  << theVertexIdentificationListActiveRHS.debug().c_str());

@@ -977,5 +977,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   unsigned int BasicBlockAlg::getSequenceCounter() { 
     return ourSequenceCounter;
   }
+
+  const DuUdMapDefinitionResult::StatementIdList& BasicBlockAlg::getAssignmentIdList()const { 
+    return ourAssignmentIdList;
+  } 
+
+  void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment) { 
+    ourAssignmentIdList.push_back(anAssignment.getId());
+  } 
   
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 
