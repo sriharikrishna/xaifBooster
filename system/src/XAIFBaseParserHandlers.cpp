@@ -366,7 +366,7 @@ namespace xaifBooster {
 									      *theTarget_p));
     theControlFlowGraphEdge.setId(XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_myId_XAIFName));
     theControlFlowGraphEdge.set_has_condition_value(XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_has_condition_value_XAIFName)));
-    theControlFlowGraphEdge.set_condition_value(XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_condition_value_XAIFName)));
+    theControlFlowGraphEdge.set_condition_value(atoi(XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_condition_value_XAIFName).c_str()));
   };
 
   void 
