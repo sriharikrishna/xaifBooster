@@ -22,8 +22,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   };
 
   void
-  DerivativePropagator::printXMLHierarchy(std::ostream& os) const { 
-    if (!myEntryList.size())
+  DerivativePropagator::printXMLHierarchyImpl(std::ostream& os,
+					      const DerivativePropagator& aDerivativePropagator) { 
+    if (!aDerivativePropagator.myEntryList.size())
       return;
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent()
@@ -31,8 +32,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        << ourXAIFName 
        << ">" 
        << std::endl; 
-    for(EntryList::const_iterator  entryList_iterator= myEntryList.begin();
-	entryList_iterator!= myEntryList.end();
+    for(EntryList::const_iterator  entryList_iterator= aDerivativePropagator.myEntryList.begin();
+	entryList_iterator!= aDerivativePropagator.myEntryList.end();
 	++entryList_iterator)
       (*entryList_iterator)->printXMLHierarchy(os);       
     os << pm.indent() 
@@ -41,6 +42,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        << ">" 
        << std::endl;
     pm.releaseInstance();
+  } // end of DerivativePropagator::printXMLHierarchyImpl
+
+  void
+  DerivativePropagator::printXMLHierarchy(std::ostream& os) const { 
+    printXMLHierarchyImpl(os,*this);
   } // end of DerivativePropagator::printXMLHierarchy
 
   std::string DerivativePropagator::debug () const { 
@@ -83,5 +89,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void DerivativePropagator::addZeroDerivToEntryList(const Variable& theTarget) { 
     myEntryList.push_back(new DerivativePropagatorZeroDeriv(theTarget));
   } 
+
+  const DerivativePropagator::EntryList& DerivativePropagator::getEntryList() const { 
+    return myEntryList;
+  }
 
 } 

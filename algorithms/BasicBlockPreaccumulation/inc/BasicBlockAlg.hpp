@@ -53,10 +53,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * pointer to function for computing elimination sequence
      */
     void (*compute_elimination_sequence)(
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
-      int,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
-     );
+					 const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
+					 int,
+					 xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
+					 );
 
     /** 
      * returns the PrivateLinearizedComputationalGraph 
@@ -85,6 +85,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
     
+    
+  protected: 
+
+    /**
+     * pointer to printer for DerivativePropagator
+     */
+    typedef void (*PrintDerivativePropagator_fp)(std::ostream& os,
+						 const DerivativePropagator& aPropagator);
+
+    void printXMLHierarchyImpl(std::ostream& os,
+			       PrintDerivativePropagator_fp aPrintDerivativePropagator_fp) const;
+
   private:
     
     /** 
