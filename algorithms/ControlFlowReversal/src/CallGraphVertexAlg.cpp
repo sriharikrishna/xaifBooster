@@ -87,6 +87,7 @@ namespace xaifBoosterControlFlowReversal {
       myTapingControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
       myAdjointControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
       myTapingControlFlowGraph->makeThisACopyOfOriginalControlFlowGraph();
+//	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       myTapingControlFlowGraph->topologicalSort();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
