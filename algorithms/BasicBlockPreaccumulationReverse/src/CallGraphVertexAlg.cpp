@@ -197,37 +197,12 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 					    const ArgumentSymbolReference& theArgumentSymbolReference) { 
     if (theArgumentSymbolReference.getIntent()!=theExcludedIntent) { 
       // all non-out parameters will be stored:
-      std::string shapeName;
-      switch (theArgumentSymbolReference.getSymbol().getSymbolShape()) { 
-      case SymbolShape::SCALAR :
-	// do nothing
-	break; 
-      case SymbolShape::VECTOR : 
-	shapeName="_v";
-	break; 
-      default: 
-	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::handleCheckPoint: no handler for checkpointing argument of shape  "
-				   << SymbolShape::toString(theArgumentSymbolReference.getSymbol().getSymbolShape()).c_str());
-	break;
-      } // end switch
-      switch (theArgumentSymbolReference.getSymbol().getSymbolType()) { 
-      case SymbolType::INTEGER_STYPE :
-	addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+shapeName+"_i",
-						theBasicBlock,
-						theArgumentSymbolReference.getSymbol(),
-						theArgumentSymbolReference.getScope());
-	break; 
-      case SymbolType::REAL_STYPE : 
-	addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+shapeName,
-						theBasicBlock,
-						theArgumentSymbolReference.getSymbol(),
-						theArgumentSymbolReference.getScope());
-	break; 
-      default: 
-	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::handleCheckPoint: no handler for checkpointing argument of type  "
-				   << SymbolType::toString(theArgumentSymbolReference.getSymbol().getSymbolType()).c_str());
-	break;
-      } // end switch
+      addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+"_"+
+					      SymbolType::toString(theArgumentSymbolReference.getSymbol().getSymbolType())+"_"+
+					      SymbolShape::toString(theArgumentSymbolReference.getSymbol().getSymbolShape()),
+					      theBasicBlock,
+					      theArgumentSymbolReference.getSymbol(),
+					      theArgumentSymbolReference.getScope());
     } // end if 
   }
 

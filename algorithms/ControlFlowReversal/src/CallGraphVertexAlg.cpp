@@ -67,14 +67,14 @@ namespace xaifBoosterControlFlowReversal {
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
-/*
-      if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
+      /*
+	if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
         if (theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value()) out << "[label=\"1\"]";
-      }
-      else {
+	}
+	else {
         if (theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value()) out << "[label=\"1\"]";
-      }
-*/
+	}
+      */
       if (theReversibleControlFlowGraphEdge_p->has_condition_value()) out << "[label=\"1\"]";
     };
     const ReversibleControlFlowGraph& myG;
@@ -84,29 +84,32 @@ namespace xaifBoosterControlFlowReversal {
     DBG_MACRO(DbgGroup::CALLSTACK,
               "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(reverse control flow) called for: "
               << debug().c_str());
-      myTapingControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
-      myAdjointControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
-      myTapingControlFlowGraph->makeThisACopyOfOriginalControlFlowGraph();
-//	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
-      myTapingControlFlowGraph->topologicalSort();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
-      }
-      // buildAdjointControlFlowGraph() should always be based on the
-      // original CFG, that is, it should preceed the call to 
-      // storeControlFlow()
-      myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
-      }
-      myTapingControlFlowGraph->markBranchExitEdges();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
-      }
-      myTapingControlFlowGraph->storeControlFlow();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_taping", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
-      }
+    if (!getContaining().getControlFlowGraph().numVertices())
+      // for instance modules may have an empty CallGraph
+      return; 
+    myTapingControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
+    myAdjointControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
+    myTapingControlFlowGraph->makeThisACopyOfOriginalControlFlowGraph();
+    //	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+    myTapingControlFlowGraph->topologicalSort();
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+    }
+    // buildAdjointControlFlowGraph() should always be based on the
+    // original CFG, that is, it should preceed the call to 
+    // storeControlFlow()
+    myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+    }
+    myTapingControlFlowGraph->markBranchExitEdges();
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+    }
+    myTapingControlFlowGraph->storeControlFlow();
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_taping", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+    }
   } // end CallGraphVertexAlg::algorithm_action_4() 
 
   void
@@ -129,7 +132,7 @@ namespace xaifBoosterControlFlowReversal {
     // short cut: has 2 ENTRIES and EXITS in one cfg
     myAdjointControlFlowGraph->printXMLHierarchy(os);
                                                                                 
-        os << pm.indent()
+    os << pm.indent()
        << "</"
        << getContaining().getControlFlowGraph().ourXAIFName
        << ">"
@@ -139,8 +142,8 @@ namespace xaifBoosterControlFlowReversal {
 
   std::string
   CallGraphVertexAlg::debug() const {
-     std::ostringstream out;
-     out << "xaifBoosterControlFlowReversal::CallGraphVertexAlg["
+    std::ostringstream out;
+    out << "xaifBoosterControlFlowReversal::CallGraphVertexAlg["
         << this
         << "]" << std::ends;
     return out.str();
