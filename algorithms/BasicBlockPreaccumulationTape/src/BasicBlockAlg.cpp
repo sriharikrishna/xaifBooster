@@ -23,12 +23,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   void xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::printDerivativePropagatorAsTape(std::ostream& os,
  												const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) { 
     // create an InlinableSubroutinecall for each Variable in each saxpy element in the propagator
-    const xaifBoosterDerivativePropagator::DerivativePropagator::EntryList& theEntryList(aPropagator.getEntryList());
-    for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryList::const_iterator entryListI=theEntryList.begin();
- 	 entryListI!=theEntryList.end();
- 	 ++entryListI) { 
+    const xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList& theEntryPList(aPropagator.getEntryPList());
+    for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_iterator entryPListI=theEntryPList.begin();
+ 	 entryPListI!=theEntryPList.end();
+ 	 ++entryPListI) { 
       xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList aFactorList;
-      (*entryListI)->getFactors(aFactorList);
+      (*entryPListI)->getFactors(aFactorList);
       for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::iterator aFactorListI=aFactorList.begin();
  	   aFactorListI!=aFactorList.end();
  	   ++aFactorListI) { 

@@ -1,8 +1,12 @@
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/Scope.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
+
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
@@ -18,6 +22,34 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   void
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
+    PrintManager& pm=PrintManager::getInstance();
+    os << pm.indent() 
+       << "<"
+       << PlainBasicBlock::ourXAIFName.c_str()
+       << " " 
+       << PlainBasicBlock::our_myId_XAIFName.c_str()
+       << "=\"" 
+       << getContaining().getId().c_str()
+       << "\" " 
+       << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str() 
+       << "=\""
+       << getContaining().getAnnotation().c_str()
+       << "\" " 
+       << PlainBasicBlock::our_myScopeId_XAIFName.c_str() 
+       << "=\""
+       << getContaining().getScope().getId().c_str()
+       << "\">" 
+       << std::endl;
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementList.begin();
+         li!=myBasicBlockElementList.end();
+         li++)
+      (*(li))->printXMLHierarchy(os);
+    os << pm.indent()
+       << "</"
+       << PlainBasicBlock::ourXAIFName
+       << ">"
+       << std::endl;
+    pm.releaseInstance();
   } // end of BasicBlockAlg::printXMLHierarchy
   
   std::string BasicBlockAlg::debug () const { 
@@ -40,6 +72,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   const Assignment& 
   BasicBlockAlg::addConstantAssignment(const BaseConstant& theConstant) { 
     Assignment* theNewAssignment_p(new Assignment(false,false));
+    theNewAssignment_p->setId("tape_adjoint_constant_assignment");
     myBasicBlockElementList.push_back(theNewAssignment_p);
     Constant* theConstantRHS_p(new Constant(theConstant.getType(),false));
     theConstantRHS_p->setId(theNewAssignment_p->getRHS().getNextVertexId());
@@ -62,25 +95,25 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   } 
 
   void BasicBlockAlg::algorithm_action_4() { // adjoin the DerivativePropagators
-    for(SequencePList::const_reverse_iterator i=getUniqueSequencePList().rbegin();
-	i!=getUniqueSequencePList().rend();
-	++i) { 
-      const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator((*i)->myDerivativePropagator);
-      for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryList::const_reverse_iterator entryList_iterator=
-	    aDerivativePropagator.getEntryList().rbegin();
-	  entryList_iterator!= aDerivativePropagator.getEntryList().rend();
-	  ++entryList_iterator) {
+    for(SequencePList::const_reverse_iterator aSequencePListI=getUniqueSequencePList().rbegin();
+	aSequencePListI!=getUniqueSequencePList().rend();
+	++aSequencePListI) { 
+      const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator((*aSequencePListI)->myDerivativePropagator);
+      for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_reverse_iterator entryPListI=
+	    aDerivativePropagator.getEntryPList().rbegin();
+	  entryPListI!= aDerivativePropagator.getEntryPList().rend();
+	  ++entryPListI) {
 	xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList aFactorList;
-	(*entryList_iterator)->getFactors(aFactorList);
+	(*entryPListI)->getFactors(aFactorList);
 	for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::reverse_iterator aFactorListI=aFactorList.rbegin();
 	     aFactorListI!=aFactorList.rend();
-	     ++aFactorListI=aFactorList.rbegin()) { 
+	     ++aFactorListI) { 
 	  switch((*aFactorListI).getKind()) { 
 	  case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR:  // the ZeroDeriv in tlm
 	    { 
 	      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSubroutineCall(addInlinableSubroutineCall("ZeroDeriv"));
 	      theSubroutineCall.setId("inline_zeroderiv");
-	      (*entryList_iterator)->getTarget().copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
+	      (*entryPListI)->getTarget().copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
 	      break; 
 	    } 
 	  case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::UNIT_FACTOR: // the SetDeriv in tlm
@@ -91,11 +124,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall(addInlinableSubroutineCall("Saxpy"));
 	      theSaxpyCall.setId("inline_saxpy");
 	      theConstantAssignment.getLHS().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(1).getVariable());
-	      (*entryList_iterator)->getTarget().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(2).getVariable());
+	      (*entryPListI)->getTarget().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(2).getVariable());
 	      (*aFactorListI).getSource().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(3).getVariable());
 	      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv"));
 	      theZeroDerivCall.setId("inline_zeroderiv");
-	      (*entryList_iterator)->getTarget().copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
+	      (*entryPListI)->getTarget().copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
 	      break; 
 	    } 
 	  case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::CONSTANT_FACTOR: 
@@ -130,12 +163,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall(addInlinableSubroutineCall("Saxpy"));
 	      theSaxpyCall.setId("inline_saxpy");
 	      theFactorVariable_p->copyMyselfInto(theSaxpyCall.addArgumentSubstitute(1).getVariable());
-	      (*entryList_iterator)->getTarget().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(2).getVariable());
+	      (*entryPListI)->getTarget().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(2).getVariable());
 	      (*aFactorListI).getSource().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(3).getVariable());
-	      if (!(*entryList_iterator)->isIncremental()) { 
+	      if (!(*entryPListI)->isIncremental()) { 
 		xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv"));
 		theZeroDerivCall.setId("inline_zeroderiv");
-		(*entryList_iterator)->getTarget().copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
+		(*entryPListI)->getTarget().copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
 	      }
 	      break; 
 	    } 
@@ -143,10 +176,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_4: cannot handle factor kind " 
 				       << (*aFactorListI).getKind()); 
 	    break; 
-	  } 
-	} 
-      }
-    } 
-  } 
+	  } // end switch 
+	} // end for FactorList
+      } // end for DerivativePropagatorEntry list
+    } // end for SeqyencePList 
+  } // end of algorithm_action_4 
 
 } // end of namespace
