@@ -1,6 +1,8 @@
 	program driver
 
 	use active_module
+	use OpenAD_tape
+	use OpenAD_rev
 	implicit none 
 
 	external head
@@ -17,11 +19,11 @@
 	double precision zero,one,two,three,four
 	parameter(zero=0.0d0,one=1.0d0,two=2.0d0,three=3.0d0,four=4.0d0)
 
-	nx1=10
-	nx2=10
+	nx1=5
+	nx2=5
 				!	  n should nx1*nx2 
-	n=100
-	m=100
+	n=25
+	m=25
 	h=0.00001
 	r%v=10.0
 	
@@ -52,6 +54,7 @@
 	
 	open(2,file='tmpOutput/dd.out')
 	write(2,*) "DD"
+        call forward_mode()
 	do i=1,n   
 	   do j=1,n   
               x(j)%v=x0(j)
@@ -74,20 +77,27 @@
 	end do
 	close(2)
 
+        call tape_init()
 	open(2,file='tmpOutput/ad.out')
 	write(2,*) "AD"
-	do i=1,n   
+	do i=1,m   
 	   do j=1,n   
-              x(j)%v=x0(j)
+             x(j)%v=x0(j)
+             x(j)%d=0.0
+           end do
+           call taping_mode()
+	   call head(nx1,nx2,x,y,r)
+	   do j=1,m   
               if (i==j) then 
-		 x(j)%d=1.0
+		 y(j)%d=1.0
               else
-		 x(j)%d=0.0
+		 y(j)%d=0.0
               end if
 	   end do
+           call adjoint_mode()
 	   call head(nx1,nx2,x,y,r)
-	   do k=1,m
-              res_ad(k,i)=y(k)%d
+	   do k=1,n
+              res_ad(i,k)=x(k)%d
 	   end do
 	end do
 !	   do i=1,m   
