@@ -114,6 +114,7 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
     aNewReversibleControlFlowGraphInEdge_p->getNewEdge().setId(makeUniqueEdgeId());
+/*
     if (replacedEdge_r.original) {
       aNewReversibleControlFlowGraphInEdge_p->getNewEdge().set_has_condition_value(replacedEdge_r.getOriginalEdge().has_condition_value());
       aNewReversibleControlFlowGraphInEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getOriginalEdge().get_condition_value());
@@ -122,8 +123,13 @@ namespace xaifBoosterControlFlowReversal {
       aNewReversibleControlFlowGraphInEdge_p->getNewEdge().set_has_condition_value(replacedEdge_r.getNewEdge().has_condition_value());
       aNewReversibleControlFlowGraphInEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getNewEdge().get_condition_value());
     }
+*/
+      aNewReversibleControlFlowGraphInEdge_p->set_has_condition_value(replacedEdge_r.has_condition_value());
+      aNewReversibleControlFlowGraphInEdge_p->set_condition_value(replacedEdge_r.get_condition_value());
+
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphOutEdge_p=new ReversibleControlFlowGraphEdge();
     aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().setId(makeUniqueEdgeId());
+/*
     if (replacedEdge_r.original) {
       aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().set_has_condition_value(replacedEdge_r.getOriginalEdge().has_condition_value());
       aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getOriginalEdge().get_condition_value());
@@ -132,6 +138,9 @@ namespace xaifBoosterControlFlowReversal {
       aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().set_has_condition_value(replacedEdge_r.getNewEdge().has_condition_value());
       aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getNewEdge().get_condition_value());
     }
+*/
+      aNewReversibleControlFlowGraphOutEdge_p->set_has_condition_value(replacedEdge_r.has_condition_value());
+      aNewReversibleControlFlowGraphOutEdge_p->set_condition_value(replacedEdge_r.get_condition_value());
 
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,after,*aNewReversibleControlFlowGraphVertex_p);
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphOutEdge_p,*aNewReversibleControlFlowGraphVertex_p,before);
@@ -302,8 +311,8 @@ namespace xaifBoosterControlFlowReversal {
 
   void
   ReversibleControlFlowGraph::insert_push_integer(const Symbol* theIntegerSymbol_p, BasicBlock& theBasicBlock_r) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
-    theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "push");
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+    theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "push_i");
     Variable theSubstitutionArgument;
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theIntegerSymbol_p,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1");
@@ -316,8 +325,8 @@ namespace xaifBoosterControlFlowReversal {
 
   const Symbol&
   ReversibleControlFlowGraph::insert_pop_integer(BasicBlock& theBasicBlock_r) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop");
-    theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "pop");
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i");
+    theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "pop_i");
     Variable theSubstitutionArgument;
     Symbol* theIntegerSymbol_p= new Symbol(theBasicBlock_r.getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,SymbolType::INTEGER_STYPE,SymbolShape::SCALAR,false));
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theIntegerSymbol_p,theBasicBlock_r.getScope());

@@ -1,6 +1,6 @@
 	subroutine head(x,y) 
-	  double precision, dimension(4), intent(in) :: x
-	  double precision, dimension(4), intent(out) :: y
+	  double precision, dimension(4), intent(inout) :: x
+	  double precision, dimension(4), intent(inout) :: y
 	  double precision t1,t2,t3
 
 	  t1=x(1)/x(2)

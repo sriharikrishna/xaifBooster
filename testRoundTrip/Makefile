@@ -1,5 +1,6 @@
 TARGET=head
 TARGETDRIVER=driver
+TEMPLATE_MODULE_OBJ=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_tape.o
 
 all: $(TARGET).xb.x2w.w2f.pp.f
 
@@ -22,7 +23,7 @@ endif
 
 LN=ln -sf
 
-F95=f95
+F95=f95 -g
 
 RM=rm -f
 
@@ -46,6 +47,7 @@ $(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
 
 $(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
 	perl pp.pl $(TARGET).xb.x2w.w2f.f
+#	perl pp.pl -f $(TARGET).xb.x2w.w2f.f
 
 # setup some links
 %.xsd:
@@ -72,7 +74,7 @@ xaifBooster:
 	./pickAlgorithm.bash
 
 # make the $TARGETDRIVER)
-$(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
+$(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o $(TEMPLATE_MODULE_OBJ)
 	$(F95) $^ -o $@
 
 run: params.conf tmpOutput
@@ -83,11 +85,14 @@ w2f__types.o : w2f__types.f
 	$(F95) -c $<
 
 # this is not free form fortran either
-$(TARGET).xb.x2w.w2f.pp.o : $(TARGET).xb.x2w.w2f.pp.f
+$(TARGET).xb.x2w.w2f.pp.o : $(TARGET).xb.x2w.w2f.pp.f $(TEMPLATE_MODULE_OBJ)
 	$(F95) -c $<
 
 %.o:%.f
 	$(F95) -free -c $<
+
+%.o:%.f95
+	$(F95) -c $<
 
 # link the sample files if necessary
 $(TARGETDRIVER).f : 
