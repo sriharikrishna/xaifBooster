@@ -189,8 +189,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	    switch((*aFactorListI).getKind()) { 
 	    case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::UNIT_FACTOR: // the SetDeriv in tlm
 	      { 
-		xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("SetDeriv"));
-		theSetDerivCall.setId("inline_SetDeriv");
+		/** 
+		 * The inlinable call incDeriv(y,x) is supposed to do x.d+=y.d
+		 */
+		xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv"));
+		theSetDerivCall.setId("inline_IncDeriv");
 		theActualTarget.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(1).getVariable());
 		theActualSource.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(2).getVariable());
 		xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv"));
@@ -227,6 +230,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 		  theInlineVariable_p->getDuUdMapKey().setTemporary();
 		  theFactorVariable_p=theInlineVariable_p;
 		} 
+		/** 
+		 * The inlinable call saxpy(a,x,y) is supposed to do y.d=y.d+a*x.d which in reverse means
+		 * we have to switch arguments properly
+		 */
 		xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall(addInlinableSubroutineCall("Saxpy"));
 		theSaxpyCall.setId("inline_saxpy");
 		theFactorVariable_p->copyMyselfInto(theSaxpyCall.addArgumentSubstitute(1).getVariable());

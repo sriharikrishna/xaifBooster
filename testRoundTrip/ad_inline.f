@@ -66,3 +66,12 @@ C $OpenAD$  INLINE DECLS
 C   $OpenAD$ END DECLS
           x%d=y%d
         end subroutine setderiv
+
+        subroutine incderiv(y,x)
+C $OpenAD$  INLINE DECLS
+          type(active), intent(out) :: x
+          type(active), intent(in) :: y
+
+C   $OpenAD$ END DECLS
+          x%d=y%d+x%d
+        end subroutine incderiv
