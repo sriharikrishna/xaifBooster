@@ -125,11 +125,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      << debug().c_str());
     // this was set in BasicBlockAlg::algorithm_action_2
     PrivateLinearizedComputationalGraph& theFlattenedSequence=
-      BasicBlockAlgParameter::get().getFlattenedSequence(getContaining());
+      BasicBlockAlgParameter::get().getFlattenedSequence(getContainingAssignment());
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theFlattenedSequence)) { 
       // there is an ambiguity, do the split
-      BasicBlockAlgParameter::get().splitFlattenedSequence(getContaining());
+      BasicBlockAlgParameter::get().splitFlattenedSequence(getContainingAssignment());
       // redo everything for this assignment
       algorithm_action_2();
       // and leave
@@ -149,11 +149,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
     if (!getActiveFlag()) { 
-      if (getContaining().getLHS().getActiveType()) {   // but the LHS has active type
-	theVertexIdentificationListPassive.addElement(getContaining().getLHS());
-	if (getContaining().getActiveFlag()) // this means the assignment has been passivated 
-	  BasicBlockAlgParameter::get().getDerivativePropagator(getContaining()).
-	    addZeroDerivToEntryPList(getContaining().getLHS());
+      if (getContainingAssignment().getLHS().getActiveType()) {   // but the LHS has active type
+	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS());
+	if (getContainingAssignment().getActiveFlag()) // this means the assignment has been passivated 
+	  BasicBlockAlgParameter::get().getDerivativePropagator(getContainingAssignment()).
+	    addZeroDerivToEntryPList(getContainingAssignment().getLHS());
       } // end if
     } // end if 
     else {
@@ -284,7 +284,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		  << " target " 
 		  <<  theLCGTarget_p->debug().c_str());
       }  // end for 
-      const Variable& theLHS(getContaining().getLHS());
+      const Variable& theLHS(getContainingAssignment().getLHS());
       if (!theLHSLCGVertex_p)
 	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): don't have a maximal vertex");
       if (theLHSLCGVertex_p->hasLHSVariable()) { 
