@@ -1,0 +1,15 @@
+we expect the rest of the system be build
+including Open64/OpenAnalysis/whirl2xaif etc. 
+
+and the following environment variables: 
+
+RICETOOLROOT    as set in ./setenv.sh
+
+XAIFBOOSTERROOT as set in ../setenv.sh
+
+XAIFSCHEMAROOT  as set in <xaif_repository>/setenv.sh
+
+We assume the test code to be named 
+
+testCode.f 
+

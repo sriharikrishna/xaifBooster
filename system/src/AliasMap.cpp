@@ -98,20 +98,48 @@ namespace xaifBooster {
 	||
 	theOtherKey.getKind()==AliasMapKey::NO_INFO) 
       return false;
+    if (theKey.getKey()<0 
+	|| 
+	theKey.getKey()>=myAAVector.size()
+	||
+	theOtherKey.getKey()<0 
+	|| 
+	theOtherKey.getKey()>=myAAVector.size()) 
+      // have an explicit check here rather than using 'at' which 
+      // wouldn't hint where the problem is...
+      THROW_LOGICEXCEPTION_MACRO("AliasMap::mustAlias: key >" 
+				 << theKey.getKey() 
+				 << "< or >"
+				 << theOtherKey.getKey()
+				 << "< out of range");
     if (myAAVector[theKey.getKey()]->mustAlias(*myAAVector[theOtherKey.getKey()]))
       return true;
     return false;
   }
 
-  bool AliasMap::haveNonEmptyIntersection(const AliasMapKey& thisKey,
+  bool AliasMap::haveNonEmptyIntersection(const AliasMapKey& theKey,
 					  const AliasMapKey& theOtherKey) const { 
     if (theOtherKey.getKind()==AliasMapKey::TEMP_VAR)
       // by agreed usage patterns, i.e. a single 
       // relevant assignment within a given scope
       return false; 
     if (theOtherKey.getKind()!=AliasMapKey::NO_INFO) {
-      if (thisKey.getKey()!=theOtherKey.getKey()) { 
-	if (myAAVector[thisKey.getKey()]->disjointFrom(*myAAVector[theOtherKey.getKey()]))
+      if (theKey.getKey()!=theOtherKey.getKey()) { 
+	if (theKey.getKey()<0 
+	    || 
+	    theKey.getKey()>=myAAVector.size()
+	    ||
+	    theOtherKey.getKey()<0 
+	    || 
+	    theOtherKey.getKey()>=myAAVector.size()) 
+	  // have an explicit check here rather than using 'at' which 
+	  // wouldn't hint where the problem is...
+	  THROW_LOGICEXCEPTION_MACRO("AliasMap::haveNonEmptyIntersection: key >" 
+				     << theKey.getKey() 
+				     << "< or >"
+				     << theOtherKey.getKey()
+				     << "< out of range");
+	if (myAAVector[theKey.getKey()]->disjointFrom(*myAAVector[theOtherKey.getKey()]))
 	  return false;
       }
     } 

@@ -1,0 +1,2 @@
+export RICETOOLROOT=$HOME/Argonne/cvs
+echo RICETOOLROOT set to $RICETOOLROOT
