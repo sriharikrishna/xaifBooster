@@ -187,7 +187,7 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onDuUdMap" ); 
     DuUdMap& theDuUdMap(passingIn.getDuUdMap());
     passingOut.setDuUdMap(theDuUdMap);
-  };
+  }
 
   void 
   XAIFBaseParserHandlers::onDuUdMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
@@ -196,14 +196,14 @@ namespace xaifBooster {
     DuUdMapEntry& theDuUdMapEntry=theDuUdMap.
       addDuUdMapEntry(atoi(XMLParser::getAttributeValueByName(DuUdMapEntry::our_myKey_XAIFName).c_str()));
     passingOut.setDuUdMapEntry(theDuUdMapEntry);
-  };
+  }
 
   void 
   XAIFBaseParserHandlers::onStatementId(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onStatementId" ); 
     DuUdMapEntry& theDuUdMapEntry(passingIn.getDuUdMapEntry());
     theDuUdMapEntry.appendToStatementIdList(XMLParser::getAttributeValueByName(DuUdMapEntry::our_IdRef_XAIFName));
-  };
+  }
 
   void 
   XAIFBaseParserHandlers::onScopes(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
@@ -593,14 +593,14 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onMod"); 
     passingOut.setSideEffectList(passingIn.getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LOCAL_LIST));
     return;
-  };
+  }
 
   void 
   XAIFBaseParserHandlers::onRead(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onRead"); 
     passingOut.setSideEffectList(passingIn.getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST));
     return;
-  };
+  }
 
   void
   XAIFBaseParserHandlers::onReadLocal(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
