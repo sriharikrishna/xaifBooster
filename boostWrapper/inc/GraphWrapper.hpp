@@ -134,6 +134,11 @@ namespace xaifBooster {
      */
     GraphWrapper(const GraphWrapper&);
 
+    /**
+     * disallow assignment, same rationale as with copy constructor
+     */
+    GraphWrapper& operator=(const GraphWrapper&);
+
     typedef typename boost::graph_traits<InternalBoostGraphType>::edge_iterator InternalBoostEdgeIteratorType;
     typedef typename boost::graph_traits<InternalBoostGraphType>::out_edge_iterator InternalBoostOutEdgeIteratorType;
     typedef typename boost::graph_traits<InternalBoostGraphType>::in_edge_iterator InternalBoostInEdgeIteratorType;
