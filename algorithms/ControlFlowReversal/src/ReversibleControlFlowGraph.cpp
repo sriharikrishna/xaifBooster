@@ -811,16 +811,16 @@ namespace xaifBoosterControlFlowReversal {
           Argument* theLoopCounterUse_p=new Argument(false); // no algorithm
           theLoopCounterUse_p->setId("2");
           VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
-          theVariableSymbolReference_p->setId("2");
+          theVariableSymbolReference_p->setId("1");
           theLoopCounterUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
           theLoopCounterUse_p->getVariable().getAliasMapKey().setTemporary();
           theLoopCounterUse_p->getVariable().getDuUdMapKey().setTemporary();
           theForLoop_r.getCondition().getExpression().supplyAndAddVertexInstance(*theLoopCounterUse_p);
           // the popped integer symbol
           Argument* thePoppedIntegerUse_p=new Argument(false); // no algorithm
-          thePoppedIntegerUse_p->setId("2");
+          thePoppedIntegerUse_p->setId("3");
           theVariableSymbolReference_p=new VariableSymbolReference(thePoppedIntegerSymbol_cr,theNewBasicBlock_r.getScope());
-          theVariableSymbolReference_p->setId("3");
+          theVariableSymbolReference_p->setId("1");
           thePoppedIntegerUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
           thePoppedIntegerUse_p->getVariable().getAliasMapKey().setTemporary();
           thePoppedIntegerUse_p->getVariable().getDuUdMapKey().setTemporary();
