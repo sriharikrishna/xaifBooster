@@ -1,5 +1,6 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/ArgumentAlgFactory.hpp"
 
@@ -23,7 +24,9 @@ namespace xaifBooster {
  
   void
   Argument::printXMLHierarchy(std::ostream& os) const {
-    if (myExpressionVertexAlgBase_p)
+    if (myExpressionVertexAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getArgumentAlgBase().printXMLHierarchy(os);
     else
       printXMLHierarchyImpl(os);

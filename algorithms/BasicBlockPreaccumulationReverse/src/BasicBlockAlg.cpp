@@ -1,5 +1,6 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/CodeReplacement/inc/ConceptuallyStaticInstances.hpp"
 
@@ -19,7 +20,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
     switch(xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->getPrintVersion()) { 
     case xaifBoosterCodeReplacement::PrintVersion::ORIGINAL: 
+      xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBooster::PrintVersion::SYSTEM_ONLY);
       xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::getContaining().printXMLHierarchyImpl(os);
+      xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBooster::PrintVersion::VIRTUAL);
       break;
     case xaifBoosterCodeReplacement::PrintVersion::AUGMENTED: 
       xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::printXMLHierarchy(os);

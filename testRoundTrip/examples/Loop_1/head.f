@@ -8,6 +8,6 @@
           do i=1,3
             y(1)=y(1)*x(1)
           end do
-          y(1)=x(1) 
+          y(1)=y(1) 
 
 	end subroutine

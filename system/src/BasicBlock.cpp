@@ -1,6 +1,7 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
 #include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
@@ -27,7 +28,12 @@ namespace xaifBooster {
 
   void
   BasicBlock::printXMLHierarchy(std::ostream& os) const { 
-    getBasicBlockAlgBase().printXMLHierarchy(os);
+    if (myControlFlowGraphVertexAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
+      getBasicBlockAlgBase().printXMLHierarchy(os);
+    else
+      printXMLHierarchyImpl(os);
   } // end of BasicBlock::printXMLHierarchy
 
   void

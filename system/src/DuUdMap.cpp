@@ -16,7 +16,10 @@ namespace xaifBooster {
       for (DuUdMap::StatementIdList::const_iterator li=anIdList.begin();
 	   li!=anIdList.end();
 	   ++li) { 
-	// here comes the shortcut: 
+	// here come the shortcuts:
+	if (*li==0)
+	  // we have unknown stuff in the lhs:
+	  return theResult;
 	if (aKey.getKey()==*li) { 
 	  theResult.myAnswer=UNIQUE_INSIDE;
 	  theResult.myStatementId=*li;

@@ -2,6 +2,7 @@
 #define _CONCEPTUALLYSTATICINSTANCES_INCLUDE_
 
 #include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
+#include "xaifBooster/system/inc/PrintVersion.hpp"
 
 namespace xaifBooster { 
 
@@ -31,6 +32,21 @@ namespace xaifBooster {
 			 const std::string& aSchemaLocation,
 			 const std::string& aPrefix);
 
+    /**
+     * instantiated as "VIRTUAL" meaning 
+     * printXMLHierarchy uses the normal virtual 
+     * invocation mechanism
+     * modifiable through setPrintVersion
+     */
+    PrintVersion::PrintVersion_E getPrintVersion() const;
+
+    /**
+     * set PrintVersion to either 
+     * VIRTUAL or SYSTEM_ONLY
+     */
+    void setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion);
+
+
   private: 
     
     ConceptuallyStaticInstances();
@@ -55,6 +71,12 @@ namespace xaifBooster {
     CallGraph* myCallGraph_p;
 
     InlinableIntrinsicsCatalogue myInlinableIntrinsicsCatalogue;
+
+    /**
+     * initialized to 
+     * VIRTUAL 
+     */
+    PrintVersion::PrintVersion_E myPrintVersion;
 
   }; // end of ConceptuallyStaticInstances
   

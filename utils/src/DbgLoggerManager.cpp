@@ -128,7 +128,7 @@ namespace xaifBooster {
 	      << ":"
 	      << DbgGroup::toString(aGroup_c)
 	      << ":";
-      if (aGroup_c && DbgGroup::TIMING) {
+      if (aGroup_c & DbgGroup::TIMING) {
 	timeval aTimeVal;
 	gettimeofday(&aTimeVal,0);
 	message << std::setw(10)
