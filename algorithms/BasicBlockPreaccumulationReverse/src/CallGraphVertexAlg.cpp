@@ -1,7 +1,6 @@
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
+
+#include "xaifBooster/algorithms/CodeReplacement/inc/Replacement.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
@@ -16,12 +15,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     // here since it opens the door to ordering problems between the ctors.
     myReplacementList(theContaining.getControlFlowGraph().getSymbolReference().getSymbol(),
 		      theContaining.getControlFlowGraph().getSymbolReference().getScope(),
-                      "reverse_subroutine_template") { 
+                      "reverse_subroutine_template",
+		      theContaining.getControlFlowGraph().getArgumentList()) { 
   }
 
   void
   CallGraphVertexAlg::printXMLHierarchy(std::ostream& os) const { 
-    getContaining().CallGraphVertex::printXMLHierarchyImpl(os);
+    myReplacementList.printXMLHierarchy(os);
+    //  getContaining().CallGraphVertex::printXMLHierarchyImpl(os);
   } // end of CallGraphVertexAlg::printXMLHierarchy
   
 
@@ -33,6 +34,13 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   } // end of CallGraphVertexAlg::debug
 
   void CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+  } 
+
+  void CallGraphVertexAlg::algorithm_action_4() { 
+    myReplacementList.setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
+    myReplacementList.setId(getContaining().getControlFlowGraph().getId());
+    xaifBoosterCodeReplacement::Replacement& theReplacement(myReplacementList.addReplacement(1));
+    theReplacement.setControlFlowGraphBase(getContaining().getControlFlowGraph());
   } 
 
 } // end of namespace 
