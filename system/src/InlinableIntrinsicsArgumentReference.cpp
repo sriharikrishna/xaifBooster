@@ -1,6 +1,6 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsArgumentReference.hpp"
-#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/Argument.hpp"
 
 namespace xaifBooster { 
 
@@ -14,7 +14,7 @@ namespace xaifBooster {
 			       << myPosition);
     // not reachable but we should match return type...
     // somebody will always complain
-    return *(new Variable());
+    return *(new Argument());
   } 
 
 } 
