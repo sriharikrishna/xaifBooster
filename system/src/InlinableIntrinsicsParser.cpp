@@ -1,21 +1,13 @@
-#include <sstream>
-
-#include "xercesc/dom/DOM.hpp"
-#include "xercesc/util/PlatformUtils.hpp"
-
-#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
+#include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/TransService.hpp>
+#include <xercesc/sax2/SAX2XMLReader.hpp>
+#include <xercesc/sax2/XMLReaderFactory.hpp>
 #include "xaifBooster/utils/inc/XMLParserErrorHandler.hpp"
 #include "xaifBooster/utils/inc/XMLParserMessage.hpp"
-
-#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
-#include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
-#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
-#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
-#include "xaifBooster/system/inc/InlinableIntrinsicsArgumentReference.hpp"
-#include "xaifBooster/system/inc/InlinableIntrinsicsConstant.hpp"
-#include "xaifBooster/system/inc/InlinableIntrinsicsIntrinsic.hpp"
-#include "xaifBooster/system/inc/InlinableIntrinsicsExpressionEdge.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include <sstream>
 
 namespace xaifBooster {
   
@@ -31,17 +23,8 @@ namespace xaifBooster {
 
       if (!ourStaticInitFlag)
 	staticInitialize();
-
-      // per process parser init
-      xercesc::XMLPlatformUtils::Initialize();
-      
-      myParser_p = new xercesc::XercesDOMParser();
-      myParser_p->setValidationScheme(xercesc::XercesDOMParser::Val_Always);
-      myParser_p->setDoNamespaces(true);
-      myParser_p->setDoSchema(true);
-      myParser_p->setValidationSchemaFullChecking(true);
-      myParser_p->setCreateEntityReferenceNodes(true);
-
+      XMLParser::initialize();
+      myParser_p->setContentHandler(this);
       static XMLParserErrorHandler anErrorHandler;
       myParser_p->setErrorHandler(&anErrorHandler);
 
@@ -50,243 +33,6 @@ namespace xaifBooster {
 				 << XMLParserMessage(e.getMessage()));
     }
   } // end of InlinableIntrinsicsParser::initialize
-
-  void InlinableIntrinsicsParser::parse(std::string theXMLFileName) { 
-    try { 
-      myParser_p->parse(theXMLFileName.c_str());
-      // get the DOM representation
-      xercesc::DOMDocument *theDocument_p = myParser_p->getDocument();
-      if (!theDocument_p)
-	THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsParser::parse: didn't get a document");
-      xercesc::DOMTreeWalker *theTreeWalker_p=
-	theDocument_p->createTreeWalker(theDocument_p,
-					// JU: alternatively SHOW_ALL
-					xercesc::DOMNodeFilter::SHOW_ELEMENT,
-					0, // no filter specified
-					true); // expand all EntityReference nodes
-      if (!theTreeWalker_p)
-	THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsParser::parse: didn't get a tree walker");
-      InlinableIntrinsicsParserHelper aParserHelper;
-      moveOn(theTreeWalker_p,
-	     aParserHelper);
-    }
-    catch (const xercesc::XMLException& e) {
-      THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsParser::parse: XMLException:"
-				 << XMLParserMessage(e.getMessage()));
-    }
-    catch (const xercesc::DOMException& e) {
-      // the following bit is suggested as such by Xercesc
-      // to retrieve the message encoded in the exception
-      const unsigned int maxChars = 2047;
-      XMLCh errText[maxChars + 1];
-      std::ostringstream err;
-      err << "InlinableIntrinsicsParser::parse: DOMException: "
-	  << "DOMException code is: " << e.code; 
-      if (xercesc::DOMImplementation::loadDOMExceptionMsg(e.code, 
-							  errText, 
-							  maxChars))
-	err << " Message is: " << XMLParserMessage(errText) << std::ends;
-      // JU: not sure if calling str() still requires a subsequent 
-      // delete of the returned pointer...
-      THROW_LOGICEXCEPTION_MACRO(err.str());
-    }
-    catch (BaseException& e) { 
-      throw e;
-    }
-    catch (...) {
-      THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsParser::parse: caught an unspecified exception");
-    }
-  } // end of InlinableIntrinsicsParser::parse
-
-  void InlinableIntrinsicsParser::actionInvocation(xercesc::DOMTreeWalker *theTreeWalker_p,
-						   const InlinableIntrinsicsParserHelper & passingFromParent,
-						   InlinableIntrinsicsParserHelper& passingToChild) { 
-    xercesc::DOMNode* theCurrentNode_p=theTreeWalker_p->getCurrentNode();
-    try { 
-      ActionItem& theAction=ourActionCatalogue.getElement(XMLParserMessage(theCurrentNode_p->getNodeName()).toString());
-      (this->*(theAction.myAction))(theCurrentNode_p,
-				    passingFromParent,
-				    passingToChild) ;
-    } 
-    catch (LogicException& e) { 
-      DBG_MACRO(DbgGroup::ERROR,
-		"InlinableIntrinsicsParser::actionInvocation: caught: " 
-		<< e.getReason().c_str());
-      throw e;
-    } 
-  } // end of InlinableIntrinsicsParser::actionInvocation
-
-  void 
-  InlinableIntrinsicsParser::moveOn(xercesc::DOMTreeWalker *theTreeWalker_p,
-				    const InlinableIntrinsicsParserHelper & passingFromParent) { 
-    // do whatever needs to be done for this node: 
-    InlinableIntrinsicsParserHelper toBePassedDownFromFirstChild;
-    actionInvocation(theTreeWalker_p,
-		     passingFromParent,
-		     toBePassedDownFromFirstChild);
-    // go to its first child
-    if (theTreeWalker_p->firstChild()) { // we have a child node 
-      // recursion
-      moveOn(theTreeWalker_p,
-	     toBePassedDownFromFirstChild);
-    }
-    // go to all of this node's siblings
-    while (theTreeWalker_p->nextSibling()) { // we have a sibling
-      // do whatever needs to be done for the current sibling node
-      InlinableIntrinsicsParserHelper toBePassedDownFromSiblings;
-      actionInvocation(theTreeWalker_p,
-		       passingFromParent,
-		       toBePassedDownFromSiblings);
-      // go to the sibling's first child if any
-      if (theTreeWalker_p->firstChild()) { // we have a child node 
-	moveOn(theTreeWalker_p,
-	       toBePassedDownFromSiblings);
-      }
-    } // end while
-    // reset up to the parent node and return
-    theTreeWalker_p->parentNode();
-  }; // end of InlinableIntrinsicsParser::moveOn
-
-  std::string InlinableIntrinsicsParser::getAttributeValueByName(xercesc::DOMNode *theNode_p,
-								 const std::string& theName) {
-    xercesc::DOMNamedNodeMap* attributeNodeMap_p=theNode_p->getAttributes();
-    if (!attributeNodeMap_p)
-      THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsParser::getAttributeValueByName didn't get attribute map");
-    xercesc::DOMNode* aNode_p=attributeNodeMap_p->getNamedItem(xercesc::XMLString::transcode(theName.c_str()));
-    if (!aNode_p)
-      THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsParser::getAttributeValueByName didn't get attribute for >"
-				 << theName.c_str() << "<");
-    return XMLParserMessage(aNode_p->getNodeValue()).toString();
-  } // end of InlinableIntrinsicsParser::getAttributeValueByName
-
-
-  void 
-  InlinableIntrinsicsParser::onInlinableIntrinsicsCatalogue(xercesc::DOMNode *theNode_p,
-							    const InlinableIntrinsicsParserHelper& passingIn,
-							    InlinableIntrinsicsParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::onInlinableIntrinsicDefinitions");
-    InlinableIntrinsicsCatalogue& theInlinableIntrinsicsCatalogue_r(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
-    passingOut.setInlinableIntrinsicsCatalogue(theInlinableIntrinsicsCatalogue_r);
-  };
-
-  void 
-  InlinableIntrinsicsParser::onInlinableIntrinsicsCatalogueItem(xercesc::DOMNode *theNode_p,
-								const InlinableIntrinsicsParserHelper& passingIn,
-								InlinableIntrinsicsParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::onInlinableIntrinsic");
-    InlinableIntrinsicsCatalogue& theInlinableIntrinsicsCatalogue_r(passingIn.getInlinableIntrinsicsCatalogue());
-    InlinableIntrinsicsCatalogueItem& theItem_r(theInlinableIntrinsicsCatalogue_r.addCatalogueItem(getAttributeValueByName(theNode_p,InlinableIntrinsicsCatalogueItem::our_myName_XAIFName), getAttributeValueByName(theNode_p,InlinableIntrinsicsCatalogueItem::our_myNrArgs_XAIFName)));
-    passingOut.setInlinableIntrinsicsCatalogueItem(theItem_r);
-  };
-
-  void 
-  InlinableIntrinsicsParser::onInlinableIntrinsicsFunction(xercesc::DOMNode *theNode_p,
-							   const InlinableIntrinsicsParserHelper& passingIn,
-							   InlinableIntrinsicsParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::onInlinableIntrinsicsFunction");
-    InlinableIntrinsicsCatalogueItem& theItem_r(passingIn.getInlinableIntrinsicsCatalogueItem());
-    InlinableIntrinsicsExpression& theFunction_r(theItem_r.getFunction());
-    if (getAttributeValueByName(theNode_p,InlinableIntrinsicsCatalogueItem::our_myFunctionType_XAIFName)=="builtin") {
-      theFunction_r.setBuiltinFunction();
-      theFunction_r.setBuiltinFunctionName(getAttributeValueByName(theNode_p,InlinableIntrinsicsCatalogueItem::our_myFunctionBuiltinName_XAIFName) );
-    }
-    passingOut.setInlinableIntrinsicsExpression(theFunction_r);
-  };
-
-  void 
-  InlinableIntrinsicsParser::onInlinableIntrinsicsPartial(xercesc::DOMNode *theNode_p,
-							  const InlinableIntrinsicsParserHelper& passingIn,
-							  InlinableIntrinsicsParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::onInlinableIntrinsicsPartial" ); 
-    InlinableIntrinsicsCatalogueItem& theItem_r(passingIn.getInlinableIntrinsicsCatalogueItem());
-    int id=atoi(getAttributeValueByName(theNode_p,InlinableIntrinsicsCatalogueItem::our_myPartialId_XAIFName).c_str());
-    PartialDerivativeKind::PartialDerivativeKind_E pdk_e(PartialDerivativeKind::fromString(getAttributeValueByName(theNode_p,InlinableIntrinsicsCatalogueItem::our_myPartialType_XAIFName)));
-    InlinableIntrinsicsExpression& thePartial_r(theItem_r.addPartial(id,pdk_e));
-    passingOut.setInlinableIntrinsicsExpression(thePartial_r);
-  };
-
-  void 
-  InlinableIntrinsicsParser::onInlinableIntrinsicsArgumentReference(xercesc::DOMNode *theNode_p,
-								    const InlinableIntrinsicsParserHelper& passingIn,
-								    InlinableIntrinsicsParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::onArgumentReference" ); 
-    InlinableIntrinsicsExpression& theExpression_r(passingIn.getInlinableIntrinsicsExpression());
-    int argref=atoi(getAttributeValueByName(theNode_p,InlinableIntrinsicsArgumentReference::our_myArgRef_XAIFName).c_str());
-    InlinableIntrinsicsArgumentReference* aReference_p=new InlinableIntrinsicsArgumentReference(argref);
-    aReference_p->setId(getAttributeValueByName(theNode_p,InlinableIntrinsicsArgumentReference::our_myId_XAIFName));
-    theExpression_r.supplyAndAddVertexInstance(*aReference_p);
-    theExpression_r.setPartialArgument(*aReference_p,argref);
-  };
-
-  void 
-  InlinableIntrinsicsParser::onInlinableIntrinsicsConstant(xercesc::DOMNode *theNode_p,
-							   const InlinableIntrinsicsParserHelper& passingIn,
-							   InlinableIntrinsicsParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::onInlinableIntrinsicsConstant" ); 
-    InlinableIntrinsicsExpression& theExpression_r(passingIn.getInlinableIntrinsicsExpression());
-    InlinableIntrinsicsConstant* aConstant_p=new InlinableIntrinsicsConstant(
-									     SymbolType::fromString(getAttributeValueByName(theNode_p,InlinableIntrinsicsConstant::our_myType_XAIFName)));
-    aConstant_p->setId(getAttributeValueByName(theNode_p,InlinableIntrinsicsConstant::our_myId_XAIFName));
-    aConstant_p->setFromString(
-			       getAttributeValueByName(theNode_p,InlinableIntrinsicsConstant::our_myValue_XAIFName));
-    theExpression_r.supplyAndAddVertexInstance(*aConstant_p);
-  };
-
-  void 
-  InlinableIntrinsicsParser::onInlinableIntrinsicsIntrinsic(xercesc::DOMNode *theNode_p,
-							    const InlinableIntrinsicsParserHelper& passingIn,
-							    InlinableIntrinsicsParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::onInlinableIntrinsicsIntrinsic" ); 
-    InlinableIntrinsicsExpression& theExpression_r(passingIn.getInlinableIntrinsicsExpression());
-    InlinableIntrinsicsIntrinsic* aIntrinsic_p=new InlinableIntrinsicsIntrinsic(
-										getAttributeValueByName(theNode_p,InlinableIntrinsicsIntrinsic::our_myName_XAIFName));
-    aIntrinsic_p->setId(getAttributeValueByName(theNode_p,InlinableIntrinsicsConstant::our_myId_XAIFName));
-    theExpression_r.supplyAndAddVertexInstance(*aIntrinsic_p);
-  };
-
-  void 
-  InlinableIntrinsicsParser::onInlinableIntrinsicsExpressionEdge(xercesc::DOMNode *theNode_p,
-								 const InlinableIntrinsicsParserHelper& passingIn,
-								 InlinableIntrinsicsParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::onInlinableIntrinsicsExpressionEdge" ); 
-    InlinableIntrinsicsExpression& theExpression_r(passingIn.getInlinableIntrinsicsExpression());
-    std::string sourceId=getAttributeValueByName(theNode_p,
-						 InlinableIntrinsicsExpressionEdge::our_source_XAIFName);
-    std::string targetId=getAttributeValueByName(theNode_p,
-						 InlinableIntrinsicsExpressionEdge::our_target_XAIFName);
-    InlinableIntrinsicsExpression::VertexIteratorPair p=theExpression_r.vertices();
-    InlinableIntrinsicsExpression::VertexIterator beginIt(p.first),endIt(p.second);
-    InlinableIntrinsicsExpressionVertex *theSource_p(0), *theTarget_p(0);
-    for (; (beginIt!=endIt)
-	   && !(theSource_p && theTarget_p)
-	   ;++beginIt) { 
-      if (!theSource_p && sourceId==(*beginIt).getId())
-	theSource_p=&(*beginIt);
-      if (!theTarget_p && targetId==(*beginIt).getId())
-	theTarget_p=&(*beginIt);
-    }
-    if (!theTarget_p || 
- 	!theSource_p)
-      THROW_LOGICEXCEPTION_MACRO("XAIFInlinableIntrinsicsParser::onInlinableIntrinsicsExpressionEdge: can't find source  " 
-				 << sourceId.c_str()
-				 << " or target "
-				 << targetId.c_str());
-    InlinableIntrinsicsExpressionEdge& theInlinableIntrinsicsExpressionEdge(theExpression_r.addEdge(*theSource_p, *theTarget_p));
-    theInlinableIntrinsicsExpressionEdge.setId(getAttributeValueByName(theNode_p,InlinableIntrinsicsExpressionEdge::our_myId_XAIFName));
-    theInlinableIntrinsicsExpressionEdge.setPosition(getAttributeValueByName(theNode_p, InlinableIntrinsicsExpressionEdge::our_myPosition_XAIFName));
-  };
-
-  void 
-  InlinableIntrinsicsParser::onDummy(xercesc::DOMNode *theNode_p,
-				     const InlinableIntrinsicsParserHelper& passingIn,
-				     InlinableIntrinsicsParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK,
-	      "InlinableIntrinsicsParser::onDummy for " 
-	      << XMLParserMessage(theNode_p->getNodeName()));
-    // pass all set elements through
-    passingOut=passingIn;
-    return;
-  };
 
   void 
   InlinableIntrinsicsParser::staticInitialize() { 
@@ -316,7 +62,71 @@ namespace xaifBooster {
     ourActionCatalogue.addElement("#text",
 				  ActionItem(&InlinableIntrinsicsParser::onDummy));
   } // end of InlinableIntrinsicsParser::staticInitialize
-  
+
+  /*
+   * UN: Implementation of startElement handler
+   */
+
+  void InlinableIntrinsicsParser::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attributes) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::startElement" );
+    XMLParser::ourAttributes_p=&attributes;
+    actionInvocation(qname); 
+  }
+
+  /*
+   * UN: Implementation of endElement handler
+   */
+
+  void InlinableIntrinsicsParser::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::endElement" );
+    XMLParserHelper* myDummyHelper=myXMLParserHelperStack.top();
+    myXMLParserHelperStack.pop();
+    delete myDummyHelper;
+  }
+
+  /*
+   * UN: Implementation of startDocument handler
+   */
+
+  void InlinableIntrinsicsParser::startDocument() {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::startDocument" );
+    InlinableIntrinsicsParserHelper* myDummyHelper=new InlinableIntrinsicsParserHelper;
+    myXMLParserHelperStack.push(myDummyHelper);
+  }
+
+  /*
+   * UN: Implementation of endDocument handler
+   */
+
+  void InlinableIntrinsicsParser::endDocument() {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParser::endDocument" );
+    XMLParserHelper* myDummyHelper=myXMLParserHelperStack.top();
+    myXMLParserHelperStack.pop();
+    delete myDummyHelper;
+  }
+
+    /*
+   * UN: takes only the name of the current element and
+   * calls the appropriate handler routine
+   */
+                                                           
+  void InlinableIntrinsicsParser::actionInvocation(const XMLCh* const
+qname) {
+    InlinableIntrinsicsParserHelper* passingFromParent=dynamic_cast<InlinableIntrinsicsParserHelper*>(myXMLParserHelperStack.top());
+    InlinableIntrinsicsParserHelper* passingToChild=new InlinableIntrinsicsParserHelper;
+    myXMLParserHelperStack.push(passingToChild);
+    try {
+      ActionItem& theAction=ourActionCatalogue.getElement(XMLParserMessage(qname).toString());
+      (this->*(theAction.myAction))(*passingFromParent,
+                                    *passingToChild) ;
+    }
+    catch (LogicException& e) {
+      DBG_MACRO(DbgGroup::ERROR,
+                "XMLParser::actionInvocation: caught: "
+                << e.getReason().c_str());
+      throw e;
+    }
+  } // end of InlinableIntrinsicsParser::actionInvocation
 
 } // end of namespace 
 
