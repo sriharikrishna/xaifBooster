@@ -2,6 +2,7 @@
 #define _XAIFBOOSTERLINEARIZATION_ASSIGNMENTALG_INCLUDE_
 
 #include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
 
 using namespace xaifBooster; 
 
