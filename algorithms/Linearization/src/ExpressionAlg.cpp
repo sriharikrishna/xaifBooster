@@ -286,6 +286,7 @@ namespace xaifBoosterLinearization {
 	theVariableSymbolReference_p->setId("1");
 	theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	theLHS.getAliasMapKey().setTemporary();
+	theLHS.getDuUdMapKey().setTemporary();
       } // end for
     } // end for 
   } // end of ExpressionAlg::createPartialExpressions
