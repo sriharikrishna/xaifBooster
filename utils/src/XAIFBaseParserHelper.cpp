@@ -1,4 +1,5 @@
 #include "xaifBooster/utils/inc/XAIFBaseParserHelper.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 namespace xaifBooster { 
 
