@@ -71,7 +71,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     virtual void removeIfIdentifiable(const Variable& theVariable); 
 
-  protected:
+  // JU: I don't believe ListItem should have to be
+  // public but SUN CC 5.6 insists. 
+  //  protected:
 
     /** 
      * an entry in the list 

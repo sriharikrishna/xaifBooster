@@ -9,7 +9,7 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
-    xaifBooster::BasicBlockAlgBase::BasicBlockAlgBase(theContaining),
+    BasicBlockAlgBase(theContaining),
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining),
     xaifBoosterControlFlowReversal::BasicBlockAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg(theContaining),
