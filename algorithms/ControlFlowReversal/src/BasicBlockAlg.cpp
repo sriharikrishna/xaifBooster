@@ -7,7 +7,7 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining), ControlFlowGraphVertexAlg(theContaining) {
+  BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : xaifBoosterMemOpsTradeoffPreaccumulation::BasicBlockAlg(theContaining), ControlFlowGraphVertexAlg(theContaining) {
   }
 
   BasicBlockAlg::~BasicBlockAlg() {}
