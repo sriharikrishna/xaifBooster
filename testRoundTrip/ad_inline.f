@@ -183,18 +183,47 @@ C $OpenAD$ INLINE DECLS
           use OpenAD_rev
           implicit none
 C $OpenAD$ END DECLS
-          OpenAD_rev_orig_mode=OpenAD_rev_mode
-          OpenAD_rev_mode=plainforward
+          our_orig_mode=our_rev_mode
+
+          our_rev_mode%arg_store=.FALSE.
+          our_rev_mode%arg_restore=.FALSE.
+          our_rev_mode%res_store=.FALSE.
+          our_rev_mode%res_restore=.FALSE.
+          our_rev_mode%plain=.TRUE.
+          our_rev_mode%tape=.FALSE.
+          our_rev_mode%adjoint=.FALSE.
         end subroutine 
 
+        subroutine forward_arg_store_mode()
+C $OpenAD$ INLINE DECLS
+          use OpenAD_rev
+          implicit none
+C $OpenAD$ END DECLS
+          our_orig_mode=our_rev_mode
+
+          our_rev_mode%arg_store=.TRUE.
+          our_rev_mode%arg_restore=.FALSE.
+          our_rev_mode%res_store=.FALSE.
+          our_rev_mode%res_restore=.FALSE.
+          our_rev_mode%plain=.TRUE.
+          our_rev_mode%tape=.FALSE.
+          our_rev_mode%adjoint=.FALSE.
+        end subroutine 
 
         subroutine reverse_mode()
 C $OpenAD$ INLINE DECLS
           use OpenAD_rev
           implicit none
 C $OpenAD$ END DECLS
-          OpenAD_rev_orig_mode=OpenAD_rev_mode
-          OpenAD_rev_mode=reverse
+          our_orig_mode=our_rev_mode
+
+          our_rev_mode%arg_store=.FALSE.
+          our_rev_mode%arg_restore=.TRUE.
+          our_rev_mode%res_store=.FALSE.
+          our_rev_mode%res_restore=.FALSE.
+          our_rev_mode%plain=.FALSE.
+          our_rev_mode%tape=.TRUE.
+          our_rev_mode%adjoint=.TRUE.
         end subroutine 
 
 
@@ -203,7 +232,6 @@ C $OpenAD$ INLINE DECLS
           use OpenAD_rev
           implicit none
 C $OpenAD$ END DECLS
-          OpenAD_rev_orig_mode=OpenAD_rev_mode
-          OpenAD_rev_mode=plainforward
+          our_rev_mode=our_orig_mode
         end subroutine 
 

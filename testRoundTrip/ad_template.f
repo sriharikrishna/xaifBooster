@@ -1,6 +1,7 @@
-        subroutine template(version)
+        subroutine template()
           use OpenAD_dct
           use OpenAD_tape
+          use OpenAD_rev
           use OpenAD_checkpoints
 
           ! original arguments get inserted before version
@@ -9,7 +10,6 @@
 
 !$TEMPLATE_PRAGMA_DECLARATIONS
 
-          integer, intent(in), optional :: version
 
           ! checkpointing stacks and offsets
           integer, parameter :: theMaxStackSize=200
@@ -32,27 +32,32 @@
           external iaddr
           call tape_init
 
-          select case (version)
-            case (1) 
-! original function
-!$PLACEHOLDER_PRAGMA$ id=1
-            case (2) 
+          if (our_rev_mode%arg_store) then 
 ! store arguments
 !$PLACEHOLDER_PRAGMA$ id=4
-! original function
-!$PLACEHOLDER_PRAGMA$ id=1
-            case (3) 
+          end if 
+          if (our_rev_mode%arg_restore) then
 ! restore arguments
 !$PLACEHOLDER_PRAGMA$ id=6
-! tape
+          end if
+          if (our_rev_mode%plain) then
+! original function
+!$PLACEHOLDER_PRAGMA$ id=1
+          end if 
+          if (our_rev_mode%tape) then
+! original function
 !$PLACEHOLDER_PRAGMA$ id=2
-! adjoint
-!$PLACEHOLDER_PRAGMA$ id=3
-            case (4) 
+          end if 
+          if (our_rev_mode%res_store) then
 ! store results
 !$PLACEHOLDER_PRAGMA$ id=5
+          end if 
+          if (our_rev_mode%res_restore) then
 ! restore results
 !$PLACEHOLDER_PRAGMA$ id=7
-          end select
-
+          end if 
+          if (our_rev_mode%adjoint) then
+! adjoint
+!$PLACEHOLDER_PRAGMA$ id=3
+          end if 
         end subroutine template
