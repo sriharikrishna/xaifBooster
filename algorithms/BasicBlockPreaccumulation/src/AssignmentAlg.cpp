@@ -305,8 +305,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // a known active lhs cannot have a passive idenitification
       theVertexIdentificationListPassive.removeIfIdentifiable(theLHS);
       // an overwritten LHS needs to refer to the respective last definition
-      theVertexIdentificationListActiveLHS.replaceOrAddElement(theLHS,
-							 theLHSLCGVertex_p);
+      theVertexIdentificationListActiveLHS.removeIfIdentifiable(theLHS);
+      theVertexIdentificationListActiveLHS.addElement(theLHS,
+					     	      theLHSLCGVertex_p);
       theLHSLCGVertex_p->setLHSVariable(theLHS);
       // JU: this is a temporary measure, add all LHSs to the 
       // JU: list of dependent variables
