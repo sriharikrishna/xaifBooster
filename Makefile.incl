@@ -30,7 +30,7 @@ export DUMMY_FACTORY_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src
 export SYSTEM_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src/obj/*.o)
 
 export SYSTEM_INC_DIR=$(XAIFBOOSTERROOT)
-export UTILS_LIB_NAME=xaifboosterutils
+export UTILS_LIB_NAME=xaifBoosterutils
 export UTILS_LIB=-l$(UTILS_LIB_NAME)
 export UTILS_LIB_DIR=$(XAIFBOOSTERROOT)/$(ROOTDIR)/utils/lib
 
