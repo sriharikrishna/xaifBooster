@@ -139,16 +139,10 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   ReversibleControlFlowGraphVertex*
-  ReversibleControlFlowGraph::new_basic_block() {
-    ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
+  ReversibleControlFlowGraph::old_basic_block(const BasicBlock& theOriginalBasicBlock) {
+    ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex(&theOriginalBasicBlock);
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
-// myOriginalGraph_r does not have a scope yet since nobody sets it
-// use the global scope for the time being
-//    aNewReversibleControlFlowGraphVertex->myNewVertex_p=new BasicBlock(myOriginalGraph_r.getScope());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -721,7 +715,9 @@ namespace xaifBoosterControlFlowReversal {
           break;
         }
         case ControlFlowGraphVertexAlg::BASICBLOCK : {
-          theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_basic_block();
+          theReversibleControlFlowGraphVertex_p=
+	    theAdjointControlFlowGraph_r.old_basic_block(dynamic_cast<const BasicBlock&>((*the_mySortedVertices_p_l_rit)->
+											 getOriginalControlFlowGraphVertexAlg().getContaining()));
           break;
         }
         case ControlFlowGraphVertexAlg::ENDBRANCH : {
@@ -745,7 +741,7 @@ namespace xaifBoosterControlFlowReversal {
     // add reversed edges
     std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::const_iterator theVertexCorrespondence_ppl_cit;
     for (theVertexCorrespondence_ppl_cit=theVertexCorrespondence_ppl.begin();theVertexCorrespondence_ppl_cit!=theVertexCorrespondence_ppl.end();theVertexCorrespondence_ppl_cit++) {
-      switch ((*theVertexCorrespondence_ppl_cit).second->getNewControlFlowGraphVertexAlg().getKind()) {
+      switch ((*theVertexCorrespondence_ppl_cit).second->getKind()) {
         case ControlFlowGraphVertexAlg::ENTRY : 
         case ControlFlowGraphVertexAlg::ENDBRANCH : 
         case ControlFlowGraphVertexAlg::BASICBLOCK : {

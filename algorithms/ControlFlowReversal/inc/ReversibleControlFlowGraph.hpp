@@ -159,9 +159,9 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphVertex* new_exit();
 
     /** 
-     * make a new basic block
+     * use the old basic block
      */
-    ReversibleControlFlowGraphVertex* new_basic_block();
+    ReversibleControlFlowGraphVertex* old_basic_block(const BasicBlock& theOriginalBasicBlock);
 
     /** 
      * make a new branch
