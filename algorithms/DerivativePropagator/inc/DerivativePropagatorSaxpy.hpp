@@ -57,7 +57,7 @@ namespace xaifBoosterDerivativePropagator {
     
     virtual void  getFactors(FactorList& theFactorList) const ; 
 
-    virtual bool isIncremental(); 
+    virtual bool isIncremental()const; 
 
   private:
 
