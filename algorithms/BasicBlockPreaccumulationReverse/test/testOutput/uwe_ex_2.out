@@ -55,7 +55,7 @@
       </xaif:AliasSet>
     </xaif:AliasSetList>
     <xaif:DUUDSetList>
-      <xaif:DUUDSet>
+      <xaif:DUUDSet key="0">
       </xaif:DUUDSet>
     </xaif:DUUDSetList>
     <xaif:ReplacementList vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" template_name="reverse_subroutine_template">
@@ -158,11 +158,11 @@
         </xaif:BasicBlock>
         <xaif:EndLoop vertex_id="4" annotation=""/>
         <xaif:Exit vertex_id="5" annotation=""/>
-        <xaif:ControlFlowEdge edge_id="1" source="1" target="2" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="2" source="2" target="3" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="3" source="3" target="4" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="4" source="4" target="2" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="4" source="2" target="5" has_condition_value="0" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="1" source="1" target="2" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="2" source="2" target="3" has_condition_value="1" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="3" source="3" target="4" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="4" source="4" target="2" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="4" source="2" target="5" has_condition_value="0"/>
       </xaif:Replacement>
       <xaif:Replacement placeholder="2">
         <xaif:Entry vertex_id="1" annotation=""/>
@@ -506,14 +506,14 @@
             </xaif:AssignmentRHS>
           </xaif:Assignment>
         </xaif:BasicBlock>
-        <xaif:ControlFlowEdge edge_id="2" source="2" target="3" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="4" source="4" target="2" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="1" target="_aug__cfr_v_6" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="_aug__cfr_v_6" target="2" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="2" target="_aug__cfr_v_7" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_4" source="_aug__cfr_v_7" target="5" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_5" source="3" target="_aug__cfr_v_8" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_6" source="_aug__cfr_v_8" target="4" has_condition_value="0" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="2" target="3" has_condition_value="1" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_4" source="4" target="2" has_condition_value="0" condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_6" source="1" target="_aug__cfr_v_6" has_condition_value="0" condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_7" source="_aug__cfr_v_6" target="2" has_condition_value="0" condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_8" source="2" target="_aug__cfr_v_7" has_condition_value="0" condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_9" source="_aug__cfr_v_7" target="5" has_condition_value="0" condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_10" source="3" target="_aug__cfr_v_8" has_condition_value="0" condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_11" source="_aug__cfr_v_8" target="4" has_condition_value="0" condition_value="0"/>
       </xaif:Replacement>
       <xaif:Replacement placeholder="3">
         <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
@@ -752,12 +752,12 @@
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
         </xaif:BasicBlock>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="_adj__cfr_v_1" target="_adj__cfr_v_5" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="_adj__cfr_v_5" target="_adj__cfr_v_2" has_condition_value="0" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="_adj__cfr_v_1" target="_adj__cfr_v_5" has_condition_value="0" condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="_adj__cfr_v_5" target="_adj__cfr_v_2" has_condition_value="0" condition_value="0"/>
         <xaif:ControlFlowEdge edge_id="_cfr_e_4" source="_adj__cfr_v_2" target="3" has_condition_value="1" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_5" source="_adj__cfr_v_2" target="_adj__cfr_v_4" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_6" source="3" target="_adj__cfr_v_2" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_7" source="_adj__cfr_v_3" target="_adj__cfr_v_2" has_condition_value="0" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_5" source="_adj__cfr_v_2" target="_adj__cfr_v_4" has_condition_value="0" condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_6" source="3" target="_adj__cfr_v_3" has_condition_value="1" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_7" source="_adj__cfr_v_3" target="_adj__cfr_v_2" has_condition_value="0" condition_value="0"/>
       </xaif:Replacement>
       <xaif:Replacement placeholder="4">
         <xaif:Entry vertex_id="1" annotation="cp_entry"/>
@@ -774,8 +774,8 @@
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
         </xaif:BasicBlock>
-        <xaif:ControlFlowEdge edge_id="1" source="1" target="3" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="2" source="3" target="2" has_condition_value="0" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="1" source="1" target="3" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="2" source="3" target="2" has_condition_value="0"/>
       </xaif:Replacement>
       <xaif:Replacement placeholder="5">
         <xaif:Entry vertex_id="1" annotation="cp_entry"/>
@@ -792,8 +792,8 @@
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
         </xaif:BasicBlock>
-        <xaif:ControlFlowEdge edge_id="1" source="1" target="3" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="2" source="3" target="2" has_condition_value="0" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="1" source="1" target="3" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="2" source="3" target="2" has_condition_value="0"/>
       </xaif:Replacement>
       <xaif:Replacement placeholder="6">
         <xaif:Entry vertex_id="1" annotation="cp_entry"/>
@@ -810,8 +810,8 @@
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
         </xaif:BasicBlock>
-        <xaif:ControlFlowEdge edge_id="1" source="1" target="3" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="2" source="3" target="2" has_condition_value="0" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="1" source="1" target="3" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="2" source="3" target="2" has_condition_value="0"/>
       </xaif:Replacement>
       <xaif:Replacement placeholder="7">
         <xaif:Entry vertex_id="1" annotation="cp_entry"/>
@@ -828,8 +828,8 @@
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
         </xaif:BasicBlock>
-        <xaif:ControlFlowEdge edge_id="1" source="1" target="3" has_condition_value="0" condition_value="1"/>
-        <xaif:ControlFlowEdge edge_id="2" source="3" target="2" has_condition_value="0" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="1" source="1" target="3" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="2" source="3" target="2" has_condition_value="0"/>
       </xaif:Replacement>
     </xaif:ReplacementList>
   </xaif:CallGraph>

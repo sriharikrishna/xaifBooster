@@ -60,7 +60,7 @@
       </xaif:AliasSet>
     </xaif:AliasSetList>
     <xaif:DUUDSetList>
-      <xaif:DUUDSet>
+      <xaif:DUUDSet key="0">
       </xaif:DUUDSet>
     </xaif:DUUDSetList>
     <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" active="1">
@@ -68,6 +68,19 @@
         <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" annotation="" intent="inout"/>
       </xaif:ArgumentList>
+      <xaif:ModLocal>
+        <xaif:SideEffectReference active="true" deriv="0" constant="0">
+          <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
+        </xaif:SideEffectReference>
+        <xaif:SideEffectReference active="true" deriv="0" constant="0">
+          <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
+        </xaif:SideEffectReference>
+      </xaif:ModLocal>
+      <xaif:ReadLocal>
+        <xaif:SideEffectReference active="true" deriv="0" constant="0">
+          <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
+        </xaif:SideEffectReference>
+      </xaif:ReadLocal>
       <xaif:Entry vertex_id="1" annotation=""/>
       <xaif:BasicBlock vertex_id="2" annotation="" scope_id="2">
         <xaif:Assignment statement_id="sage_0">
@@ -466,8 +479,8 @@
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="1">
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="4" annotation=""/>
-      <xaif:ControlFlowEdge edge_id="1" source="1" target="2" has_condition_value="0" condition_value="1"/>
-      <xaif:ControlFlowEdge edge_id="2" source="2" target="3" has_condition_value="0" condition_value="1"/>
-      <xaif:ControlFlowEdge edge_id="3" source="3" target="4" has_condition_value="0" condition_value="1"/>
+      <xaif:ControlFlowEdge edge_id="1" source="1" target="2" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="2" source="2" target="3" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="3" source="3" target="4" has_condition_value="0"/>
     </xaif:ControlFlowGraph>
   </xaif:CallGraph>
