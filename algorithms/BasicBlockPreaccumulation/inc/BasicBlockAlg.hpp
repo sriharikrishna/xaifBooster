@@ -20,7 +20,9 @@ namespace xaifBooster {
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
-
+  class PrivateLinearizedComputationalGraphAlgFactory;
+  class PrivateLinearizedComputationalGraphEdgeAlgFactory;
+  class PrivateLinearizedComputationalGraphVertexAlgFactory;
   /** 
    * class to implement algorithms relevant for the 
    * angel interface
@@ -57,7 +59,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					 int,
 					 xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
 					 );
-
+    static PrivateLinearizedComputationalGraphAlgFactory *getPrivateLinearizedComputationalGraphAlgFactory();
+    static PrivateLinearizedComputationalGraphEdgeAlgFactory *getPrivateLinearizedComputationalGraphEdgeAlgFactory();
+    static PrivateLinearizedComputationalGraphVertexAlgFactory *getPrivateLinearizedComputationalGraphVertexAlgFactory();
+    static void setPrivateLinearizedComputationalGraphAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphAlgFactory*);
+    static void setPrivateLinearizedComputationalGraphEdgeAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphEdgeAlgFactory*);
+    static void setPrivateLinearizedComputationalGraphVertexAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertexAlgFactory*);
     /** 
      * returns the PrivateLinearizedComputationalGraph 
      * to be used by theAssignment
@@ -67,6 +74,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * instances to be used by sequences of consecutive
      * assignments. 
      */
+
     PrivateLinearizedComputationalGraph& getFlattenedSequence(const Assignment& theAssignment);
 
     /** 
@@ -104,7 +112,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       PrintDerivativePropagator_fp aPrintDerivativePropagator_fp) const;
 
   private:
-
+    static PrivateLinearizedComputationalGraphAlgFactory* ourPrivateLinearizedComputationalGraphAlgFactory_p;
+    static PrivateLinearizedComputationalGraphEdgeAlgFactory* ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p;
+    static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;
     /** 
      * no def
      */
@@ -131,7 +141,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     class Sequence : public Debuggable { 
 
     public: 
-      
+
+      Sequence();      
       ~Sequence();
 
       virtual std::string debug() const ;
@@ -142,7 +153,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * nontrivial derivative computations all zero 
        * expressions are clipped from the graph
        */
-      PrivateLinearizedComputationalGraph myFlattenedSequence;
+      PrivateLinearizedComputationalGraph* myFlattenedSequence_p;
     
       /**
        * here we hold the results from the Angel call,
@@ -209,6 +220,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * the end of this sequence
        */
       AssignmentPList myEndAssignmentList;
+      Sequence(const Sequence&);
+      Sequence& operator= (const Sequence&);
 
     }; // end of struct Sequence
 
@@ -223,6 +236,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     VariablePList myNewIndependentsPList;
     VariablePList myIndependentsPList;
     VariablePList myDependentsPList;
+
 
     typedef std::pair<BasicBlockElement*,
 		      Sequence*> BasicBlockElementSequencePPair;

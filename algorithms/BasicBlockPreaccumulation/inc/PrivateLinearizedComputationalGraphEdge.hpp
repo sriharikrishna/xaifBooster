@@ -2,7 +2,11 @@
 #define _PRIVATELINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
 
 #include <list>
+
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 
 namespace xaifBooster { 
   class ExpressionEdge;
@@ -34,6 +38,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     typedef std::list<ExpressionEdge*> ExpressionEdgePList;
     
     void addParallel(ExpressionEdge&);
+
+    virtual Assignment& getAssignmentFromEdge() const {
+      return (dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getConcretePartialAssignment());
+    };
 
     const ExpressionEdgePList& getParallels() const;
 
