@@ -27,6 +27,9 @@
      +theResIStack
           integer, save :: theResIStackoffset=0
 
+	  ! call external C function used in inlined code
+	  integer iaddr
+          external iaddr
           call tape_init
 
           select case (version)

@@ -11,6 +11,9 @@ namespace xaifBooster {
     case ERROR:
       returnString="ERROR";
       break;
+    case WARNING:
+      returnString="WARNING";
+      break;
     case CALLSTACK: 
       returnString="CALLSTACK";
       break;
@@ -35,7 +38,7 @@ namespace xaifBooster {
 
   std::string 
   DbgGroup::printAll() throw (PrintingIntException) {
-    return std::string("ERROR=0, CALLSTACK=1, DATA=2, GRAPHICS=4, TIMING=8, TEMPORARY=16");
+    return std::string("ERROR=0, WARNING=1. CALLSTACK=2, DATA=4, GRAPHICS=8, TIMING=16, TEMPORARY=32");
   }
 
 } // end of namespace xaifBooster
