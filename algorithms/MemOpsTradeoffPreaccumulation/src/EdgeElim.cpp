@@ -98,8 +98,10 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
     LinearizedComputationalGraphCopy::EdgePointerList theNewList;
     unsigned int currentMin;
-    LinearizedComputationalGraphCopy::EdgePointerList::iterator ei=theOldEdgeList.begin();
+    LinearizedComputationalGraphCopy::EdgePointerList::iterator ei = theOldEdgeList.begin();
+
     theNewList.push_back(*ei);
+
     //put the first element in the new list, and set currentMin to the its markowitz degree
     if((*ei).direction == LinearizedComputationalGraphCopy::BACK){
       currentMin = theCopy.numInEdgesOf(theCopy.getSourceOf(*(*ei).edge_p));
@@ -290,7 +292,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       theCopy.removeAndDeleteEdge(theEdge);
     }
 
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+    if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
       GraphVizDisplay::show(theCopy,"intermediate");
     }
   }// end front_elim_edge

@@ -38,10 +38,6 @@ namespace MemOpsTradeoffPreaccumulation{
     return myVertexList;
   }
 
-  LinearizedComputationalGraphCopy::EdgePointerList LinearizedComputationalGraphCopy::getEdgeList() const{
-    return myEdgeList;
-  }
-
   void LinearizedComputationalGraphCopy::addToIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndepdentVertex){ 
     myIndependentList.push_back(&theIndepdentVertex);
   } 
@@ -54,18 +50,37 @@ namespace MemOpsTradeoffPreaccumulation{
     myVertexList.push_back(&theVertex);
   }
 
-  void LinearizedComputationalGraphCopy::addToEdgeList(LinearizedComputationalGraphCopy& theCopy,
-						       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopyEdge& theEdge,
-						       LinearizedComputationalGraphCopy::edgeElimDirection theDirection){ 
-    edgeEntry theNewEntry;
-    theNewEntry.edge_p = &theEdge;
-    theNewEntry.direction = theDirection;
-    myEdgeList.push_front(theNewEntry);
-  }// end addToEdgeList
-
   void LinearizedComputationalGraphCopy::removeFromVertexList(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theVertex){ 
     myVertexList.remove(&theVertex);
   }
+
+  LinearizedComputationalGraphCopy::EdgePointerList LinearizedComputationalGraphCopy::populateEdgeList() {
+
+    EdgeIteratorPair edgelist (edges());
+    EdgeIterator eli (edgelist.first), ele (edgelist.second);
+    for(; eli != ele; ++eli){
+      if((numOutEdgesOf(getTargetOf(*eli)) > 0) && (!isDep(getTargetOf(*eli)))){
+	// if the target of the edge is not a dependent and has inedges
+
+	edgeEntry newFrontElim;
+	newFrontElim.edge_p = &*eli;
+	newFrontElim.direction = FRONT;
+	myEdgeList.push_front(newFrontElim);
+
+      }// end if 
+      //if the source has inedges
+      if(numInEdgesOf(getSourceOf(*eli)) > 0){//can be back eliminated
+
+	edgeEntry newBackElim;
+	newBackElim.edge_p = &*eli;
+	newBackElim.direction = BACK;
+	myEdgeList.push_front(newBackElim);
+
+      }// end if
+    }// end for
+
+    return myEdgeList;
+  }// end populateEdgeList
 
   void LinearizedComputationalGraphCopy::clearEdgeList(){
     myEdgeList.clear();

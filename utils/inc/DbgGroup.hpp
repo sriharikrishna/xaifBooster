@@ -24,7 +24,8 @@ namespace xaifBooster {
 		     DATA=2, // any dumping of data
 		     GRAPHICS=4, // anything producing graphic output 
 		     TIMING=8, // anything producing a time stamp 
-		     TEMPORARY=16}; // the rest of the messages that can be removed at any time
+		     TEMPORARY=16, // the rest of the messages that can be removed at any time
+		     WARNING=32}; // any non-critical, possibly non-relevant message
 
     static std::string toString(const DbgGroup_E& aKind) throw (PrintingIntException);
     
