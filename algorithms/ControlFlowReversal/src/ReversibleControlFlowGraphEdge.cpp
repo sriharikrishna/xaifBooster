@@ -23,6 +23,26 @@ namespace xaifBoosterControlFlowReversal {
     return theGraph.getSourceOf(*this).getIndex()>theGraph.getTargetOf(*this).getIndex();
   }
 
+  bool 
+  ReversibleControlFlowGraphEdge::isOriginal() const {
+    return original;
+  }
+
+  const ControlFlowGraphEdge& 
+  ReversibleControlFlowGraphEdge::getOriginalEdge() const {
+    return *myOriginalEdge_p;
+  }
+
+  const ControlFlowGraphEdge& 
+  ReversibleControlFlowGraphEdge::getNewEdge() const {
+    return *myNewEdge_p;
+  }
+
+  ControlFlowGraphEdge& 
+  ReversibleControlFlowGraphEdge::getNewEdge() {
+    return *myNewEdge_p;
+  }
+
   void
   ReversibleControlFlowGraphEdge::printXMLHierarchy(std::ostream& os, const ReversibleControlFlowGraph& theGraph) const {
     PrintManager& pm=PrintManager::getInstance();
@@ -48,7 +68,15 @@ namespace xaifBoosterControlFlowReversal {
         os << tgt.myOriginalVertex_p->getId().c_str();
       else
         os << tgt.myNewVertex_p->getId().c_str();
-      os << "\"/>" << std::endl;
+      os << "\" "
+         << myOriginalEdge_p->our_has_condition_value_XAIFName
+         << "=\""
+         << myOriginalEdge_p->has_condition_value()
+         << "\" "
+         << myOriginalEdge_p->our_condition_value_XAIFName
+         << "=\""
+         << myOriginalEdge_p->get_condition_value()
+         << "\"/>" << std::endl;
     } 
     else {
       os << pm.indent()
@@ -72,7 +100,15 @@ namespace xaifBoosterControlFlowReversal {
         os << tgt.myOriginalVertex_p->getId().c_str();
       else
         os << tgt.myNewVertex_p->getId().c_str();
-      os << "\"/>" << std::endl;
+      os << "\" "
+         << myNewEdge_p->our_has_condition_value_XAIFName
+         << "=\""
+         << myNewEdge_p->has_condition_value()
+         << "\" "
+         << myNewEdge_p->our_condition_value_XAIFName
+         << "=\""
+         << myNewEdge_p->get_condition_value()
+         << "\"/>" << std::endl;
     }
     pm.releaseInstance();
   } // end of ReversibleControlFlowGraphEdge::printXMLHierarchy
