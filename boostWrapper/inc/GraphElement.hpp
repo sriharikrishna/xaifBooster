@@ -58,6 +58,16 @@ namespace xaifBooster {
     
   private:
 
+    /**
+     * disallow copy ctor for now
+     */
+    GraphElement(const GraphElement&);
+
+    /**
+     * disallow assignment, same rationale as with copy constructor
+     */
+    GraphElement& operator=(const GraphElement&);
+
     /** 
      * flag to determine if 
      * the descriptor has been initialized
