@@ -1,9 +1,10 @@
 
         module active_module
+        use w2f__types
         implicit none
         private
-        public :: active, saxpy, sax, setderiv, zero_deriv, &
-     &            assignment(=)
+        public :: active, saxpy, sax, setderiv, zero_deriv
+
         
         !
         ! active needs to be a sequence type
@@ -11,15 +12,9 @@
         !
         type active
           sequence
-          ! double precision :: v = 0
-          ! double precision :: d = 0
           double precision :: v 
           double precision :: d
         end type active
-        
-        interface assignment
-          module procedure active_assign_active
-        end interface
         
         interface saxpy
           module procedure saxpy_a_a
@@ -34,22 +29,10 @@
         end interface
         
         interface sax
-          module procedure sax_a_a
+          module procedure sax_d_a_a, sax_i_a_a
         end interface
         
         contains
-        
-        !
-        ! assignment of active variables
-        !
-        
-        elemental subroutine active_assign_active(a1,a2)
-          type(active), intent(out) :: a1
-          type(active), intent(in) :: a2
-        
-          a1%v=a2%v
-          a1%d=a2%d
-        end subroutine
         
         !
         ! chain rule saxpy to be used in forward and reverse modes
@@ -70,13 +53,21 @@
         ! zeroed out
         !
         
-        subroutine sax_a_a(a,x,y)
+        subroutine sax_d_a_a(a,x,y)
           double precision, intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
         
           y%d=x%d*a
-        end subroutine sax_a_a
+        end subroutine sax_d_a_a
+
+        subroutine sax_i_a_a(a,x,y)
+          integer(kind=w2f__i8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+        
+          y%d=x%d*a
+        end subroutine sax_i_a_a
         
         !
         ! set derivative of y to be equal to derivative of x
