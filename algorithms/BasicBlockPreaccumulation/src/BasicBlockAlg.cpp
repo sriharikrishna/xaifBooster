@@ -29,12 +29,26 @@
 namespace angel { 
   extern void compute_elimination_sequence (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
 					    int tasks, 
+					    double gamma,
 					    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list);
+  extern void compute_elimination_sequence_lsa_vertex (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
+						       int iterations, 
+						       double gamma,
+						       xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list);
+
+  extern void compute_elimination_sequence_lsa_face (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
+						     int iterations, 
+						     double gamma,
+						     xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list);
 }
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
+
+  BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=0;
+  int BasicBlockAlg::ourIntParameter=1;
+  double BasicBlockAlg::ourGamma=0.0;
 
   BasicBlockAlg::Sequence::~Sequence() { 
     for (AssignmentPList::iterator i=myFrontAssignmentList.begin();
@@ -81,7 +95,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     BasicBlockAlgBase(theContaining) { 
-    compute_elimination_sequence=&angel::compute_elimination_sequence;
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
@@ -273,7 +286,45 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (theFlattenedSequence.numVertices()) {
 	// call Angel which fills myJacobianAccumulationExpressionList
 	try { 
-	  (*compute_elimination_sequence) (theFlattenedSequence, 1, (*i)->myJacobianAccumulationExpressionList);
+	  if (!ourCompute_elimination_sequence_fp) { 
+	    int interfaceNumber(0);
+	    bool done(false);
+	    while (!done) { 
+	      std::cout << std::endl; 
+	      std::cout << "Pick an ANGEL interface:" << std::endl
+			<< "1: compute_elimination_sequence" << std::endl
+			<< "2: compute_elimination_sequence_lsa_vertex" << std::endl
+			<< "3: compute_elimination_sequence_lsa_face" << std::endl;
+	      std::cin >> interfaceNumber;
+	      done=true;
+	      switch (interfaceNumber) { 
+	      case 1: 
+	      ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence;
+	      break;
+	      case 2: 
+		ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex;
+		break;
+	      case 3: 
+		ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_face;
+		break;
+	      default:
+		std::cout << interfaceNumber << " is not a valid choice" << std::endl; 
+		done=false;
+		break;
+	      }
+	    }
+	    if (interfaceNumber==1) 
+	      done=true;
+	    else { 
+	      std::cout << "choose the number of iterations: ";
+	      std::cin >> ourIntParameter;
+	      std::cout << "chosen number of iterations is : " << ourIntParameter << std::endl; 
+	      std::cout << "choose gamma: ";
+	      std::cin >> ourGamma;
+	      std::cout << "chosen gamma is : " << ourGamma << std::endl; 
+	    }
+	  }
+	  (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, (*i)->myJacobianAccumulationExpressionList);
 	} 
 	catch(...) { 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
