@@ -35,6 +35,12 @@ namespace xaifBoosterControlFlowReversal {
     const ControlFlowGraphEdge& getNewEdge() const;
     ControlFlowGraphEdge& getNewEdge();
 
+    bool has_condition_value() const;
+    void set_has_condition_value(bool hcv);
+                                                                                
+    void set_condition_value(int cv);
+    const int& get_condition_value() const;
+
   private:
 
     friend class ReversibleControlFlowGraph;
@@ -48,6 +54,18 @@ namespace xaifBoosterControlFlowReversal {
      * no def
      */
     ReversibleControlFlowGraphEdge operator=(const ReversibleControlFlowGraphEdge&);
+
+    /**
+     * indicates if edges has condition value
+     */
+    bool my_has_condition_value;
+
+    
+    /**
+     * condition value
+     */
+    int my_condition_value;
+                                                                                
 
     /** 
      * indicates if as an outedge of a loop vertex

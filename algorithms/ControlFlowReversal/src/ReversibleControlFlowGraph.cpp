@@ -40,8 +40,10 @@ namespace xaifBoosterControlFlowReversal {
           for (vertexCopyListTgtIt=vertexCopy_l.begin();
                vertexCopyListTgtIt!=vertexCopy_l.end();vertexCopyListTgtIt++) {
             if ((*vertexCopyListTgtIt).first==&theOriginalTarget_r) {
-              ReversibleControlFlowGraphEdge* theEdgeCopy=new ReversibleControlFlowGraphEdge(&(*beginIte));
-              supplyAndAddEdgeInstance(*theEdgeCopy,*(*vertexCopyListSrcIt).second,*(*vertexCopyListTgtIt).second);
+              ReversibleControlFlowGraphEdge* theEdgeCopy_p=new ReversibleControlFlowGraphEdge(&(*beginIte));
+              theEdgeCopy_p->set_has_condition_value((*beginIte).has_condition_value());
+              theEdgeCopy_p->set_condition_value((*beginIte).get_condition_value());
+              supplyAndAddEdgeInstance(*theEdgeCopy_p,*(*vertexCopyListSrcIt).second,*(*vertexCopyListTgtIt).second);
               break;
             }
           }
@@ -79,7 +81,7 @@ namespace xaifBoosterControlFlowReversal {
   std::string 
   ReversibleControlFlowGraph::makeUniqueVertexId() {
     std::ostringstream oss;
-    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature().c_str() << "new_vertex_" << getNextVertexId() << std::ends;
+    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature().c_str() << "v_" << getNextVertexId() << std::ends;
     return (oss.str());
   }
   std::string 
@@ -129,6 +131,39 @@ namespace xaifBoosterControlFlowReversal {
 // use the global scope for the time being
 //    aNewReversibleControlFlowGraphVertex->myNewVertex_p=new BasicBlock(myOriginalGraph_r.getScope());
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    return aNewReversibleControlFlowGraphVertex_p;
+  }
+
+  ReversibleControlFlowGraphVertex*
+  ReversibleControlFlowGraph::new_entry() {
+    ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
+    aNewReversibleControlFlowGraphVertex_p->setVisited(true);
+    supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new Entry();
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    return aNewReversibleControlFlowGraphVertex_p;
+  }
+
+  ReversibleControlFlowGraphVertex*
+  ReversibleControlFlowGraph::new_exit() {
+    ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
+    aNewReversibleControlFlowGraphVertex_p->setVisited(true);
+    supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new Exit();
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    return aNewReversibleControlFlowGraphVertex_p;
+  }
+
+  ReversibleControlFlowGraphVertex*
+  ReversibleControlFlowGraph::new_branch() {
+    ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
+    aNewReversibleControlFlowGraphVertex_p->setVisited(true);
+    supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new Branch();
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
@@ -401,6 +436,99 @@ namespace xaifBoosterControlFlowReversal {
     return return_value;
   }
 
+  const ReversibleControlFlowGraphEdge&
+  ReversibleControlFlowGraph::find_corresponding_branch_entry_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const {
+    const ReversibleControlFlowGraphVertex& theSource_cr(getSourceOf(theCurrentEdge_r));
+    if (theSource_cr.isOriginal()&&theSource_cr.getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BRANCH) {
+      if (nesting_depth==0) 
+        return theCurrentEdge_r;
+      else 
+        nesting_depth--;
+    }
+    if (theSource_cr.isOriginal()&&theSource_cr.getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDBRANCH) {
+      nesting_depth++;
+    }
+    ConstInEdgeIteratorPair pie(getInEdgesOf(theSource_cr));
+    ConstInEdgeIterator beginItie(pie.first),endItie(pie.second);
+    for (;beginItie!=endItie ;++beginItie) {
+      // We do not want the inedge that emanates from an ENDLOOP to avoid
+      // endless looping
+      if (getSourceOf(*beginItie).isOriginal()&&getSourceOf(*beginItie).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDLOOP) continue;
+      return find_corresponding_branch_entry_edge_rec(*beginItie, nesting_depth);
+    }
+    // should never get here, just to calm the compiler...
+    return find_corresponding_branch_entry_edge_rec(theCurrentEdge_r, nesting_depth);
+  }
+
+  /* 
+   The branch entry edges are marked by has_condition_value()==true and
+   a corresponding integer get_condition_value().
+   This information is projected onto the branch exit edges.
+   */
+  void 
+  ReversibleControlFlowGraph::markBranchExitEdges() {
+    ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
+    ReversibleControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
+    for (;beginIt!=endIt ;++beginIt) 
+      if ((*beginIt).isOriginal()&&(*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDBRANCH) {
+        InEdgeIteratorPair pie(getInEdgesOf(*beginIt));
+        InEdgeIterator beginItie(pie.first),endItie(pie.second);
+        for (;beginItie!=endItie ;++beginItie) {
+          int nesting_depth=0; 
+          const ReversibleControlFlowGraphEdge& theEntryEdge_cr(find_corresponding_branch_entry_edge_rec((*beginItie),nesting_depth));
+          (*beginItie).set_has_condition_value(theEntryEdge_cr.has_condition_value());
+          (*beginItie).set_condition_value(theEntryEdge_cr.get_condition_value());
+        }
+      }
+  }
+
+  const ReversibleControlFlowGraphEdge&
+  ReversibleControlFlowGraph::find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const {
+    const ReversibleControlFlowGraphVertex& theTarget_cr(getTargetOf(theCurrentEdge_r));
+    if (!(theTarget_cr.isOriginal())&&theTarget_cr.getNewControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDBRANCH) {
+      if (nesting_depth==0)
+        return theCurrentEdge_r;
+      else
+        nesting_depth--;
+    }
+    if (!(theTarget_cr.isOriginal())&&theTarget_cr.getNewControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BRANCH) {
+      nesting_depth++;
+    }
+    ConstOutEdgeIteratorPair pie(getOutEdgesOf(theTarget_cr));
+    ConstOutEdgeIterator beginItie(pie.first),endItie(pie.second);
+    for (;beginItie!=endItie ;++beginItie) {
+      // We do not want the outedge that emanates from an LOOP into its
+      // body to avoid endless looping
+      if (!(getSourceOf(*beginItie)).isOriginal()&&(
+          getSourceOf(*beginItie).getNewControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP||
+          getSourceOf(*beginItie).getNewControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP)&&
+          (*beginItie).has_condition_value()) continue;
+      return find_corresponding_branch_exit_edge_rec(*beginItie, nesting_depth);
+    }
+    // should never get here, just to calm the compiler...
+    return find_corresponding_branch_exit_edge_rec(theCurrentEdge_r, nesting_depth);
+  }
+
+  /*
+   Assuming that the branch exit edges are marked by has_condition_value()==
+   true and a corresponding integer get_condition_value() this information is 
+   projected onto the branch entry edges.
+   */
+  void
+  ReversibleControlFlowGraph::markBranchEntryEdges() {
+    ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
+    ReversibleControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);    for (;beginIt!=endIt ;++beginIt)
+      if (!((*beginIt).isOriginal())&&(*beginIt).getNewControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BRANCH) {
+        OutEdgeIteratorPair pie(getOutEdgesOf(*beginIt));
+        OutEdgeIterator beginItie(pie.first),endItie(pie.second);
+        for (;beginItie!=endItie ;++beginItie) {
+          int nesting_depth=0;
+          const ReversibleControlFlowGraphEdge& theExitEdge_cr(find_corresponding_branch_exit_edge_rec((*beginItie),nesting_depth));
+          (*beginItie).set_has_condition_value(theExitEdge_cr.has_condition_value());
+          (*beginItie).set_condition_value(theExitEdge_cr.get_condition_value());
+        }
+      }
+  }
 
   void 
   ReversibleControlFlowGraph::markLoopBodyEntryEdges() {
@@ -512,179 +640,220 @@ namespace xaifBoosterControlFlowReversal {
         std::cout << "NULL" << std::endl;
   }
 
-  void 
-  ReversibleControlFlowGraph::reverseControlFlow() {
-    std::stack<ReversibleControlFlowGraphVertex*> theReversedVertices_p_s;
+  /*
+     This makes only sense if we are looking at a chain of dilation, 
+     which we do
+   */
+  
+  ReversibleControlFlowGraphVertex*
+  ReversibleControlFlowGraph::findClosestOriginalPredecessor(ReversibleControlFlowGraphVertex* theVertex_p) {
+    InEdgeIteratorPair pie(getInEdgesOf(*theVertex_p));
+    InEdgeIterator beginItie(pie.first),endItie(pie.second);
+    for (;beginItie!=endItie ;++beginItie) {
+      if (!(*beginItie).isBackEdge(*this)) {
+        if(getSourceOf(*beginItie).isOriginal()) return &(getSourceOf(*beginItie));
+        return findClosestOriginalPredecessor(&(getSourceOf(*beginItie)));
+      } 
+    }
+    // to calm the compiler
+    return NULL;
+  }
+ 
+  void
+  ReversibleControlFlowGraph::buildAdjointControlFlowGraph() {
+    std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > the_vertex_ppl;
     std::list<ReversibleControlFlowGraphVertex*>::reverse_iterator the_mySortedVertices_p_l_rit;
     for (the_mySortedVertices_p_l_rit=mySortedVertices_p_l.rbegin(); the_mySortedVertices_p_l_rit!=mySortedVertices_p_l.rend(); the_mySortedVertices_p_l_rit++) {
+      ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p;
       switch ((*the_mySortedVertices_p_l_rit)->getOriginalControlFlowGraphVertexAlg().getKind()) {
         case ControlFlowGraphVertexAlg::EXIT : {
-          InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_rit)));
-          theReversedVertices_p_s.push(&(getSourceOf(*(pie.first))));
-          removeAndDeleteEdge(*(pie.first));
+          theReversibleControlFlowGraphVertex_p=new_entry();
           break;
         }
         case ControlFlowGraphVertexAlg::ENTRY : {
-          ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
-          supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,*(theReversedVertices_p_s.top()),getExit());
-          theReversedVertices_p_s.pop();
+          theReversibleControlFlowGraphVertex_p=new_exit();
+          break;
+        }
+        case ControlFlowGraphVertexAlg::BRANCH : {
+          theReversibleControlFlowGraphVertex_p=new_endbranch();
           break;
         }
         case ControlFlowGraphVertexAlg::BASICBLOCK : {
-          // insert adjoint basic block
-          ReversibleControlFlowGraphVertex* theNewBasicBlock_p=new_basic_block();
-          // same index as original for better readability
-          theNewBasicBlock_p->setIndex((*the_mySortedVertices_p_l_rit)->getIndex());
-
-
-          ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theVertexKind;
-          if (theReversedVertices_p_s.top()->isOriginal()) 
-            theVertexKind=theReversedVertices_p_s.top()->getOriginalControlFlowGraphVertexAlg().getKind();
-          else
-            theVertexKind=theReversedVertices_p_s.top()->getNewControlFlowGraphVertexAlg().getKind();
-
-          ReversibleControlFlowGraphVertex* saveIfBranch=0;
-          OutEdgeIteratorPair poe(getOutEdgesOf(*(*the_mySortedVertices_p_l_rit)));
-          // there is only one outedge
-          if (getTargetOf(*(poe.first)).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::IF&&theVertexKind!=ControlFlowGraphVertexAlg::IF) {
-            saveIfBranch=theReversedVertices_p_s.top();
-            theReversedVertices_p_s.pop();
-            if (theReversedVertices_p_s.top()->isOriginal()) 
-              theVertexKind=theReversedVertices_p_s.top()->getOriginalControlFlowGraphVertexAlg().getKind();
-            else
-              theVertexKind=theReversedVertices_p_s.top()->getNewControlFlowGraphVertexAlg().getKind();
-          }
-
-          ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
-          supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,*(theReversedVertices_p_s.top()),*theNewBasicBlock_p);
-
-          switch (theVertexKind) {
-            case ControlFlowGraphVertexAlg::PRELOOP : 
-            case ControlFlowGraphVertexAlg::FORLOOP : 
-            case ControlFlowGraphVertexAlg::IF : {
-              // keep tos
-              break;
-            }
-            default : {
-              theReversedVertices_p_s.pop();
-              break;
-            }
-          }
-          if (saveIfBranch) theReversedVertices_p_s.push(saveIfBranch);
-          theReversedVertices_p_s.push(theNewBasicBlock_p);
-          break;
-        }
-        case ControlFlowGraphVertexAlg::FORLOOP :  
-        case ControlFlowGraphVertexAlg::PRELOOP : {
-          // insert ENDLOOP
-          ReversibleControlFlowGraphVertex* theNewEndLoop_p=new_endloop();
-          switch (theReversedVertices_p_s.top()->getNewControlFlowGraphVertexAlg().getKind()) {
-            case ControlFlowGraphVertexAlg::PRELOOP : 
-            case ControlFlowGraphVertexAlg::FORLOOP : 
-            case ControlFlowGraphVertexAlg::IF : {
-              // keep tos
-              break;
-            }
-            default : {
-              theReversedVertices_p_s.pop();
-              break;
-            }
-          }
-          theReversedVertices_p_s.push(theNewEndLoop_p);
-          break;
-        }
-        case ControlFlowGraphVertexAlg::IF : {
-          // insert ENDBRANCH
-          ReversibleControlFlowGraphVertex* theNewEndBranch_p=new_endbranch();
-          // edge to if branch
-          ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
-          supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,*(theReversedVertices_p_s.top()),*theNewEndBranch_p);
-          theReversedVertices_p_s.pop();
-          // edge to else branch
-          aNewReversibleControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
-          supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,*(theReversedVertices_p_s.top()),*theNewEndBranch_p);
-          if (theReversedVertices_p_s.top()->getNewControlFlowGraphVertexAlg().getKind()!=ControlFlowGraphVertexAlg::IF) {
-            theReversedVertices_p_s.pop();
-          } 
-          // pop if vertex
-          theReversedVertices_p_s.pop();
-          theReversedVertices_p_s.push(theNewEndBranch_p);
+          theReversibleControlFlowGraphVertex_p=new_basic_block();
           break;
         }
         case ControlFlowGraphVertexAlg::ENDBRANCH : {
-          // insert if (pop_cfg()) then ... else ... 
-          ReversibleControlFlowGraphVertex* theNewIf_p=new_if();
-/*
-          ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theVertexKind;
-          if (theReversedVertices_p_s.top()->isOriginal()) 
-            theVertexKind=theReversedVertices_p_s.top()->getOriginalControlFlowGraphVertexAlg().getKind();
-          else
-            theVertexKind=theReversedVertices_p_s.top()->getNewControlFlowGraphVertexAlg().getKind();
-
-          ReversibleControlFlowGraphVertex* saveIfBranch=0;
-          OutEdgeIteratorPair poe(getOutEdgesOf(*(*the_mySortedVertices_p_l_rit)));
-          // there is only one outedge
-          if (getTargetOf(*(pie.first)).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::IF&&theVertexKind!=ControlFlowGraphVertexAlg::IF) {
-            saveIfBranch=theReversedVertices_p_s.top();
-            theReversedVertices_p_s.pop();
-            if (theReversedVertices_p_s.top()->isOriginal()) 
-              theVertexKind=theReversedVertices_p_s.top()->getOriginalControlFlowGraphVertexAlg().getKind();
-            else
-              theVertexKind=theReversedVertices_p_s.top()->getNewControlFlowGraphVertexAlg().getKind();
-          }
-*/
-
-          ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
-          aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
-          supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,*(theReversedVertices_p_s.top()),*theNewIf_p);
-
-          switch (theReversedVertices_p_s.top()->getNewControlFlowGraphVertexAlg().getKind()) {
-            case ControlFlowGraphVertexAlg::PRELOOP : 
-            case ControlFlowGraphVertexAlg::FORLOOP : 
-            case ControlFlowGraphVertexAlg::IF : {
-              // keep tos
-              break;
-            }
-            default : {
-              theReversedVertices_p_s.pop();
-              break;
-            }
-          }
- //         if (saveIfBranch) theReversedVertices_p_s.push(saveIfBranch);
-          theReversedVertices_p_s.push(theNewIf_p);
+          theReversibleControlFlowGraphVertex_p=new_branch();
+          break;
+        }
+        case ControlFlowGraphVertexAlg::PRELOOP : 
+        case ControlFlowGraphVertexAlg::FORLOOP : {
+          theReversibleControlFlowGraphVertex_p=new_endloop();
           break;
         }
         case ControlFlowGraphVertexAlg::ENDLOOP : {
-          // insert for (i=1;i<=pop_cfg();i++) ...
-          ReversibleControlFlowGraphVertex* theNewForLoop_p=new_forloop();
-          switch (theReversedVertices_p_s.top()->getNewControlFlowGraphVertexAlg().getKind()) {
-            case ControlFlowGraphVertexAlg::PRELOOP : 
-            case ControlFlowGraphVertexAlg::FORLOOP : 
-            case ControlFlowGraphVertexAlg::IF : {
-              // keep tos
-              break;
+          theReversibleControlFlowGraphVertex_p=new_forloop();
+          break;
+        }
+        default: break;
+      }
+      the_vertex_ppl.push_back(std::make_pair(*the_mySortedVertices_p_l_rit,theReversibleControlFlowGraphVertex_p)); 
+    }
+    // add reversed edges
+    std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::iterator the_vertex_ppl_it;
+    for (the_vertex_ppl_it=the_vertex_ppl.begin();the_vertex_ppl_it!=the_vertex_ppl.end();the_vertex_ppl_it++) {
+      switch ((*the_vertex_ppl_it).second->getNewControlFlowGraphVertexAlg().getKind()) {
+        case ControlFlowGraphVertexAlg::ENTRY : 
+        case ControlFlowGraphVertexAlg::ENDBRANCH : 
+        case ControlFlowGraphVertexAlg::BASICBLOCK : 
+        case ControlFlowGraphVertexAlg::BRANCH : {
+          const ReversibleControlFlowGraphVertex& theOriginalVertex_cr(*((*the_vertex_ppl_it).first));
+          InEdgeIteratorPair pie(getInEdgesOf(theOriginalVertex_cr));
+          InEdgeIterator beginItie(pie.first),endItie(pie.second);
+          for (;beginItie!=endItie ;++beginItie) {
+            // find new vertex s corresponding to source of inedge
+            // insert edge between adjoint entry and s unless s is LOOP
+            std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::iterator the_source_ppl_it;
+            // if s is LOOP then connect current vertex with corresponding
+            // LOOP in reversed code
+            if (getSourceOf(*beginItie).isOriginal()&&(getSourceOf(*beginItie).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP||getSourceOf(*beginItie).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP)&&!(*beginItie).has_condition_value()) {
+              // find original ENDLOOP
+              ReversibleControlFlowGraphVertex* theOriginalEndLoop_p;
+              InEdgeIteratorPair pie1(getInEdgesOf(getSourceOf(*beginItie)));
+              InEdgeIterator beginItie1(pie1.first),endItie1(pie1.second);
+              for (;beginItie1!=endItie1 ;++beginItie1) 
+                if (getSourceOf(*beginItie1).isOriginal()&&getSourceOf(*beginItie1).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDLOOP) {
+                  theOriginalEndLoop_p=&getSourceOf(*beginItie1);
+                  break;
+                }
+              // find new FORLOOP node the corresponds to original ENDLOOP
+              // and insert edges
+              for (the_source_ppl_it=the_vertex_ppl.begin();the_source_ppl_it!=the_vertex_ppl.end();the_source_ppl_it++) {
+                if ((*the_source_ppl_it).first==theOriginalEndLoop_p) {
+                  ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
+                  aNewReversibleControlFlowGraphEdge_p->set_has_condition_value((*beginItie).has_condition_value());
+                  aNewReversibleControlFlowGraphEdge_p->set_condition_value((*beginItie).get_condition_value());
+                  supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,*((*the_vertex_ppl_it).second),*((*the_source_ppl_it).second));
+                  break;
+                }
+              }
             }
-            default : {
-              theReversedVertices_p_s.pop();
+            else {
+              for (the_source_ppl_it=the_vertex_ppl.begin();the_source_ppl_it!=the_vertex_ppl.end();the_source_ppl_it++) {
+                if ((*the_source_ppl_it).first==&(getSourceOf(*beginItie))) {
+                  ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
+                  aNewReversibleControlFlowGraphEdge_p->set_has_condition_value((*beginItie).has_condition_value());
+                  aNewReversibleControlFlowGraphEdge_p->set_condition_value((*beginItie).get_condition_value());
+                  supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,*((*the_vertex_ppl_it).second),*((*the_source_ppl_it).second));
+                  break;
+                }
+              }
+            }
+          }
+          break;
+        }
+        case ControlFlowGraphVertexAlg::PRELOOP :
+        case ControlFlowGraphVertexAlg::FORLOOP : {
+          const ReversibleControlFlowGraphVertex& theOriginalVertex_cr(*((*the_vertex_ppl_it).first));
+          InEdgeIteratorPair pie(getInEdgesOf(theOriginalVertex_cr));
+          InEdgeIterator beginItie(pie.first),endItie(pie.second);
+          for (;beginItie!=endItie ;++beginItie) {
+            // find new vertex s corresponding to source of inedge
+            // insert edge between adjoint entry and s unless s is LOOP
+            std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::iterator the_source_ppl_it;
+            // if s is LOOP then connect current vertex with corresponding
+            // LOOP in reversed code
+            if (getSourceOf(*beginItie).isOriginal()&&(getSourceOf(*beginItie).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP||getSourceOf(*beginItie).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP)&&!(*beginItie).has_condition_value()) {
+              // find original ENDLOOP
+              ReversibleControlFlowGraphVertex* theOriginalEndLoop_p;
+              InEdgeIteratorPair pie1(getInEdgesOf(getSourceOf(*beginItie)));
+              InEdgeIterator beginItie1(pie1.first),endItie1(pie1.second);
+              for (;beginItie1!=endItie1 ;++beginItie1) 
+                if (getSourceOf(*beginItie1).isOriginal()&&getSourceOf(*beginItie1).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDLOOP) {
+                  theOriginalEndLoop_p=&getSourceOf(*beginItie1);
+                  break;
+                }
+              // find new FORLOOP node the corresponds to original ENDLOOP
+              // and insert edges
+              for (the_source_ppl_it=the_vertex_ppl.begin();the_source_ppl_it!=the_vertex_ppl.end();the_source_ppl_it++) {
+                if ((*the_source_ppl_it).first==theOriginalEndLoop_p) {
+                  ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
+                  aNewReversibleControlFlowGraphEdge_p->set_has_condition_value((*beginItie).has_condition_value());
+                  aNewReversibleControlFlowGraphEdge_p->set_condition_value((*beginItie).get_condition_value());
+                  supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,*((*the_vertex_ppl_it).second),*((*the_source_ppl_it).second));
+                  break;
+                }
+              }
+            }
+            else {
+              for (the_source_ppl_it=the_vertex_ppl.begin();the_source_ppl_it!=the_vertex_ppl.end();the_source_ppl_it++) {
+                if ((*the_source_ppl_it).first==&(getSourceOf(*beginItie))) {
+                  ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
+                  aNewReversibleControlFlowGraphEdge_p->set_has_condition_value((*beginItie).has_condition_value());
+                  aNewReversibleControlFlowGraphEdge_p->set_condition_value((*beginItie).get_condition_value());
+                  supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,*((*the_vertex_ppl_it).second),*((*the_source_ppl_it).second));
+                  break;
+                }
+              }
+            }
+          }
+          { // begin scope
+          // and we want edge to original predecessor of LOOP node 
+          // corresponding to l
+          // TODO: need the special LOOP treatment here too!!!
+          OutEdgeIteratorPair pie(getOutEdgesOf(*((*the_vertex_ppl_it).first)));
+          // ENDLOOP has only one outedge
+          ReversibleControlFlowGraphVertex* theClosestOriginalPredecessor_p=findClosestOriginalPredecessor(&getTargetOf(*(pie.first)));
+          std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::iterator the_source_ppl_it;
+          for (the_source_ppl_it=the_vertex_ppl.begin();the_source_ppl_it!=the_vertex_ppl.end();the_source_ppl_it++) {
+            if ((*the_source_ppl_it).first==theClosestOriginalPredecessor_p) {
+              ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+              aNewReversibleControlFlowGraphEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
+              aNewReversibleControlFlowGraphEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
+              supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,*((*the_vertex_ppl_it).second),*((*the_source_ppl_it).second));
               break;
             }
           }
-          theReversedVertices_p_s.push(theNewForLoop_p);
+          } // end scope
           break;
         }
-        default : break;
+        case ControlFlowGraphVertexAlg::ENDLOOP : {
+          // the corresp LOOP node l
+          // we want an edge to the ENDLOOP node that goes along with l
+          const ReversibleControlFlowGraphVertex& theOriginalVertex_cr(*((*the_vertex_ppl_it).first));
+          InEdgeIteratorPair pie(getInEdgesOf(theOriginalVertex_cr));
+          InEdgeIterator beginItie(pie.first),endItie(pie.second);
+          for (;beginItie!=endItie ;++beginItie) {
+            if (getSourceOf(*beginItie).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDLOOP) { 
+              std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::iterator the_source_ppl_it;
+              for (the_source_ppl_it=the_vertex_ppl.begin();the_source_ppl_it!=the_vertex_ppl.end();the_source_ppl_it++) {
+                if ((*the_source_ppl_it).first==&(getSourceOf(*beginItie))) {
+                  ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
+                  aNewReversibleControlFlowGraphEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
+                  supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,*((*the_vertex_ppl_it).second),*((*the_source_ppl_it).second));
+                  break;
+                }
+              }
+            }
+          }
+          break;
+        }
+        default: break;
       }
     }
+    markBranchEntryEdges();
   }
+
+
 
   void
   ReversibleControlFlowGraph::printXMLHierarchy(std::ostream& os) const {

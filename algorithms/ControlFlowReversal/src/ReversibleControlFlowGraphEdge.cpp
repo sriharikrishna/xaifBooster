@@ -10,9 +10,9 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : toLoopBody(false), original(false), myOriginalEdge_p(NULL), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : my_has_condition_value(false), my_condition_value(1), toLoopBody(false), original(false), myOriginalEdge_p(NULL), myNewEdge_p(NULL) {}
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : toLoopBody(false), original(true), myOriginalEdge_p(theOriginal), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : my_has_condition_value(false), my_condition_value(1), toLoopBody(false), original(true), myOriginalEdge_p(theOriginal), myNewEdge_p(NULL) {}
 
   ReversibleControlFlowGraphEdge::~ReversibleControlFlowGraphEdge() { 
     if (!original) delete myNewEdge_p;
@@ -20,6 +20,7 @@ namespace xaifBoosterControlFlowReversal {
 
   bool
   ReversibleControlFlowGraphEdge::isBackEdge(const ReversibleControlFlowGraph& theGraph) const {
+    if (theGraph.getSourceOf(*this).getIndex()==-1||theGraph.getTargetOf(*this).getIndex()==-1) return false;
     return theGraph.getSourceOf(*this).getIndex()>theGraph.getTargetOf(*this).getIndex();
   }
 
@@ -42,6 +43,21 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraphEdge::getNewEdge() {
     return *myNewEdge_p;
   }
+
+  bool ReversibleControlFlowGraphEdge::has_condition_value() const {
+    return my_has_condition_value;
+  }
+  void ReversibleControlFlowGraphEdge::set_has_condition_value(bool hcv) {
+    my_has_condition_value=hcv;
+  }
+                                                                                
+  void ReversibleControlFlowGraphEdge::set_condition_value(int cv) {
+    my_condition_value=cv;
+  }
+  const int& ReversibleControlFlowGraphEdge::get_condition_value() const {
+    return my_condition_value;
+  }
+
 
   void
   ReversibleControlFlowGraphEdge::printXMLHierarchy(std::ostream& os, const ReversibleControlFlowGraph& theGraph) const {

@@ -41,7 +41,7 @@ namespace xaifBoosterControlFlowReversal {
     int getIndex() const;
     void setIndex(int);
 
-    bool isOriginal() { return original; }
+    bool isOriginal() const { return original; }
 
     const ControlFlowGraphVertex& getOriginalVertex() const { 
       return *myOriginalVertex_p; 

@@ -87,14 +87,7 @@ namespace xaifBoosterControlFlowReversal {
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
-      bool has_condition_value;
-      if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
-        has_condition_value=theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value();
-      }
-      else {
-        has_condition_value=theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value();
-      }
-      out << "[label=\"" << has_condition_value << "\"]";
+      out << "[label=\"" << theReversibleControlFlowGraphEdge_p->has_condition_value() << "\"]";
     };
     const ReversibleControlFlowGraph& myG;
   };
@@ -113,18 +106,19 @@ namespace xaifBoosterControlFlowReversal {
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_2",
 			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
+/*
       myTransformedControlFlowGraph->storeControlFlow();
+      myTransformedControlFlowGraph->markBranchExitEdges();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_3",
 			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
-/*
-      myTransformedControlFlowGraph->reverseControlFlow();
+*/
+      myTransformedControlFlowGraph->buildAdjointControlFlowGraph();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_4",
 			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
-*/
   } // end AssignmentAlg::algorithm_action_4() 
 
   void

@@ -11,6 +11,9 @@
 #include "xaifBooster/system/inc/EndLoop.hpp"
 #include "xaifBooster/system/inc/ForLoop.hpp"
 #include "xaifBooster/system/inc/IfStatement.hpp"
+#include "xaifBooster/system/inc/Branch.hpp"
+#include "xaifBooster/system/inc/Entry.hpp"
+#include "xaifBooster/system/inc/Exit.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphVertex.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphEdge.hpp"
 
@@ -33,10 +36,12 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphVertex& getEntry(); 
     ReversibleControlFlowGraphVertex& getExit(); 
 
+    void markBranchExitEdges();
+    void markBranchEntryEdges();
     void markLoopBodyEntryEdges();
     void topologicalSort();
     void storeControlFlow();
-    void reverseControlFlow();
+    void buildAdjointControlFlowGraph();
  
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
@@ -71,6 +76,27 @@ namespace xaifBoosterControlFlowReversal {
      */
     void clearIndeces(); 
 
+   /**
+    * Returns closest original predecessor of a given vertex.
+    * This makes only sense if we are looking at a chain of dilation,
+    * which we do
+    */
+                                                                                
+    ReversibleControlFlowGraphVertex*
+    findClosestOriginalPredecessor(ReversibleControlFlowGraphVertex* theVertex_p);
+
+    /** 
+     * find branch entry edge that corresponds to theCurrentEdge_r
+     */
+    const ReversibleControlFlowGraphEdge&
+    find_corresponding_branch_entry_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
+
+    /** 
+     * find branch exit edge that corresponds to theCurrentEdge_r
+     */
+    const ReversibleControlFlowGraphEdge&
+    find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
+
     /** 
      * check if theEdge_r lies on a path to theLoopVertex_r
      */
@@ -98,9 +124,24 @@ namespace xaifBoosterControlFlowReversal {
     BasicBlock& insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before, const ReversibleControlFlowGraphEdge& replacedEdge_r);
 
     /** 
+     * make a new entry node
+     */
+    ReversibleControlFlowGraphVertex* new_entry();
+
+    /** 
+     * make a new exit node
+     */
+    ReversibleControlFlowGraphVertex* new_exit();
+
+    /** 
      * make a new basic block
      */
     ReversibleControlFlowGraphVertex* new_basic_block();
+
+    /** 
+     * make a new branch
+     */
+    ReversibleControlFlowGraphVertex* new_branch();
 
     /** 
      * make a new if-statement
