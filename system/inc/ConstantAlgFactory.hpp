@@ -8,7 +8,7 @@ namespace xaifBooster {
 
   class Constant;
 
-  ALG_FACTORY_DECL_MACRO(Constant,ConstantAlgBase,ConstantAlgBase);
+  BASE_ALG_FACTORY_DECL_MACRO(Constant,ConstantAlgBase);
 
 } // end of namespace 
 

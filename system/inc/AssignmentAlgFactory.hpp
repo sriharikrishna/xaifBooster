@@ -8,7 +8,7 @@ namespace xaifBooster {
 
   class Assignment;
 
-  ALG_FACTORY_DECL_MACRO(Assignment,AssignmentAlgBase,AssignmentAlgBase);
+  BASE_ALG_FACTORY_DECL_MACRO(Assignment,AssignmentAlgBase);
 
 } // end of namespace 
 

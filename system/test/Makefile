@@ -13,5 +13,5 @@ oabj doc: ;
 include ../../Makefile.incl
 -include $(DEPINCL)
 
-$(MAIN): obj/$(MAIN).o $(SYSTEM_OBJ_SET) $(DUMMY_FACTORY_OBJ_SET) $(LIBS)
+$(MAIN): obj/$(MAIN).o $(SYSTEM_OBJ_SET) $(LIBS)
 	$(CC) $^ $(LFLAGS) -o $@

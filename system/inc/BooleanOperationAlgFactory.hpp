@@ -8,7 +8,7 @@ namespace xaifBooster {
 
   class BooleanOperation;
 
-  ALG_FACTORY_DECL_MACRO(BooleanOperation,BooleanOperationAlgBase,BooleanOperationAlgBase);
+  BASE_ALG_FACTORY_DECL_MACRO(BooleanOperation,BooleanOperationAlgBase);
 
 } // end of namespace 
 

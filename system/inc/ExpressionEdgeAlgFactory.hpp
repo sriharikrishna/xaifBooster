@@ -8,7 +8,7 @@ namespace xaifBooster {
 
   class ExpressionEdge;
 
-  ALG_FACTORY_DECL_MACRO(ExpressionEdge,ExpressionEdgeAlgBase,ExpressionEdgeAlgBase);
+  BASE_ALG_FACTORY_DECL_MACRO(ExpressionEdge,ExpressionEdgeAlgBase);
 
 } // end of namespace 
 

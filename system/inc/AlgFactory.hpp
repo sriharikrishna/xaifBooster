@@ -1,7 +1,7 @@
 #ifndef _ALGFACTORY_INCLUDE_
 #define _ALGFACTORY_INCLUDE_
 
-namespace xaifBooster {  
+#include "xaifBooster/system/inc/AlgFactoryManager.hpp"
 
   /** 
    * factory interface for an algorithm class 
@@ -23,46 +23,64 @@ namespace xaifBooster {
    * the template parameter is in the signature. 
    * Hence the macro :-( 
    */
-#define ALG_FACTORY_DECL_MACRO(AlgContaining,BaseAlgorithm,Algorithm) \
+#define BASE_ALG_FACTORY_DECL_MACRO(AlgContaining,BaseAlgorithm) \
   class AlgContaining##AlgFactory { \
  \
   public: \
  \
     static AlgContaining##AlgFactory* instance(); \
  \
-    ~AlgContaining##AlgFactory(){}; \
+    virtual ~AlgContaining##AlgFactory(){}; \
  \
-    BaseAlgorithm* makeNewAlg(AlgContaining& theContaining); \
+    virtual BaseAlgorithm* makeNewAlg(AlgContaining& theContaining); \
  \
-  private: \
+  protected: \
+ \
+    friend class AlgFactoryManager; \
  \
     AlgContaining##AlgFactory(){}; \
+ \
+  private: \
  \
     AlgContaining##AlgFactory(const AlgContaining##AlgFactory&); \
  \
     AlgContaining##AlgFactory operator=(const AlgContaining##AlgFactory&); \
  \
-    static AlgContaining##AlgFactory* ourInstance_p; \
+  } 
+
+#define DERIVED_ALG_FACTORY_DECL_MACRO(AlgContaining,BaseAlgorithm,BaseAlgFactory) \
+  class AlgContaining##AlgFactory : public BaseAlgFactory{ \
+ \
+  public: \
+ \
+    static xaifBooster :: AlgContaining##AlgFactory* instance(); \
+ \
+    virtual ~AlgContaining##AlgFactory(){}; \
+ \
+    virtual BaseAlgorithm* makeNewAlg(xaifBooster :: AlgContaining& theContaining); \
+ \
+  protected: \
+ \
+    friend class AlgFactoryManager; \
+ \
+    AlgContaining##AlgFactory(){}; \
+ \
+  private: \
+ \
+    AlgContaining##AlgFactory(const AlgContaining##AlgFactory&); \
+ \
+    AlgContaining##AlgFactory operator=(const AlgContaining##AlgFactory&); \
  \
   } 
 
-
-
 #define ALG_FACTORY_DEF_MACRO(AlgContaining,BaseAlgorithm,Algorithm) \
-  AlgContaining##AlgFactory* AlgContaining##AlgFactory::ourInstance_p=0; \
- \
   BaseAlgorithm* AlgContaining##AlgFactory::makeNewAlg(AlgContaining& theContaining) { \
     return (new Algorithm(theContaining)); \
   } \
  \
-  AlgContaining##AlgFactory* \
+  xaifBooster :: AlgContaining##AlgFactory* \
   AlgContaining##AlgFactory::instance() { \
-    if (!ourInstance_p) \
-      ourInstance_p=new AlgContaining##AlgFactory(); \
-    return ourInstance_p; \
+    return AlgFactoryManager::instance()->get##AlgContaining##AlgFactory(); \
   } 
-
-
-} // end of namespace 
 
 #endif
