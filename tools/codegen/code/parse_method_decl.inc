@@ -38,4 +38,7 @@ void onSymbolTable(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& 
 void onUpdate(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onVariable(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onVariableEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onInOutList(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onInput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onOutput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onDummy(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

@@ -30,6 +30,7 @@
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/ScopeContainment.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/InOutList.hpp"
 
 namespace xaifBooster {
 

@@ -38,6 +38,10 @@ ourActionCatalogue.addElement(SymbolTable::ourXAIFName, ActionItem(&XAIFBasePars
 ourActionCatalogue.addElement(Update::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onUpdate));
 ourActionCatalogue.addElement(Argument::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onVariable));
 ourActionCatalogue.addElement(VariableEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onVariableEdge));
+ourActionCatalogue.addElement(InOutList::our_OutList_XAIFName, ActionItem(&XAIFBaseParserHandlers::onInOutList));
+ourActionCatalogue.addElement(InOutList::our_InList_XAIFName, ActionItem(&XAIFBaseParserHandlers::onInOutList));
+ourActionCatalogue.addElement(InOutList::our_Output_XAIFName, ActionItem(&XAIFBaseParserHandlers::onOutput));
+ourActionCatalogue.addElement(InOutList::our_Input_XAIFName, ActionItem(&XAIFBaseParserHandlers::onInput));
 ourActionCatalogue.addElement("#comment", ActionItem(&XAIFBaseParserHandlers::onDummy));
 ourActionCatalogue.addElement("#document", ActionItem(&XAIFBaseParserHandlers::onDummy));
 ourActionCatalogue.addElement("#text", ActionItem(&XAIFBaseParserHandlers::onDummy));
