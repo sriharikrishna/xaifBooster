@@ -89,12 +89,12 @@ namespace xaifBoosterControlFlowReversal {
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_2",
 			      VertexLabelWriter(*myTransformedControlFlowGraph));
       }
+/*
       myTransformedControlFlowGraph->storeControlFlow();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_3",
 			      VertexLabelWriter(*myTransformedControlFlowGraph));
       }
-/*
       myTransformedControlFlowGraph->reverseControlFlow();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_4",

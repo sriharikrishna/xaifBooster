@@ -55,6 +55,17 @@ namespace xaifBooster {
   };
 
   void 
+  XAIFBaseParserHandlers::onBranch(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onBranch");
+    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
+    Branch* theNewBranch_p=new Branch();
+    theControlFlowGraph.supplyAndAddVertexInstance(*theNewBranch_p);
+    theNewBranch_p->setId(XMLParser::getAttributeValueByName(Branch::our_myId_XAIFName));
+    passingOut.setCondition(theNewBranch_p->getCondition());
+    theNewBranch_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+  };
+
+  void 
   XAIFBaseParserHandlers::onBasicBlock(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onBasicBlock");
     ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
@@ -571,6 +582,26 @@ namespace xaifBooster {
     // pass all set elements through
     passingOut=passingIn;
     return;
+  };
+
+  void 
+  XAIFBaseParserHandlers::onGoto(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onGoto" ); 
+    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
+    Goto* theNewGoto_p=new Goto();
+    theControlFlowGraph.supplyAndAddVertexInstance(*theNewGoto_p);
+    theNewGoto_p->setId(XMLParser::getAttributeValueByName(Goto::our_myId_XAIFName));
+    theNewGoto_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+  };
+
+  void 
+  XAIFBaseParserHandlers::onLabel(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onLabel" ); 
+    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
+    Label* theNewLabel_p=new Label();
+    theControlFlowGraph.supplyAndAddVertexInstance(*theNewLabel_p);
+    theNewLabel_p->setId(XMLParser::getAttributeValueByName(Label::our_myId_XAIFName));
+    theNewLabel_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   };
 
 } // end of namespace 

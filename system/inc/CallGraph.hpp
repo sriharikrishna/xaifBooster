@@ -9,6 +9,8 @@
 #include "xaifBooster/system/inc/AliasMap.hpp"
 #include "xaifBooster/system/inc/DuUdMap.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/CallGraphAlgBase.hpp"
+ 
 
 namespace xaifBooster { 
 
@@ -20,12 +22,15 @@ namespace xaifBooster {
   class CallGraph : public GraphWrapperTraversable<CallGraphVertex, CallGraphEdge> , 
 		    public XMLPrintable { 
   public:
+
+    ~CallGraph();
     
     /**
      * print XML hierarchy
      * \todo add printing DuUd Map
      */
     virtual void printXMLHierarchy(std::ostream& os) const;
+    virtual void printXMLHierarchyImpl(std::ostream& os) const;
 
     /**
      * print debug information
@@ -95,6 +100,18 @@ namespace xaifBooster {
 
     const std::string& getPrefix() const; 
 
+    /**
+     * get algorithm
+     */
+    CallGraphAlgBase& getCallGraphAlgBase();
+                                                                                
+    /**
+     * get algorithm
+     */
+    const CallGraphAlgBase& getCallGraphAlgBase() const;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
   private:
 
     /**
@@ -105,6 +122,7 @@ namespace xaifBooster {
 	      const std::string& anXAIFInstance,
 	      const std::string& aSchemaLocation,
 	      const std::string& aPrefix);
+
 
     /**
      * in order to access the ctor
@@ -162,6 +180,13 @@ namespace xaifBooster {
      * the prefix 
      */
     const std::string myPrefix;
+
+    /**
+     * this will be set to point a dynamically instance
+     * during construction and deleted during
+     * destruction
+     */
+    CallGraphAlgBase* myCallGraphAlgBase_p;
 
   }; // end of class CallGraph
 

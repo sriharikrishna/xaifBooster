@@ -14,18 +14,12 @@
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlg.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
-  std::string ReversibleControlFlowGraph::myAnnotationSignature(std::string("__cfg_rev_"));
-
-  ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal_r) : myOriginalGraph_r(theOriginal_r),
-    myPushIntegerSymbol_r(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope().getSymbolTable().addSymbol(std::string("push_integer"),SymbolKind::SUBROUTINE,SymbolType::VOID_STYPE,SymbolShape::SCALAR,false,true)),
-    myPopIntegerSymbol_r(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope().getSymbolTable().addSymbol(std::string("pop_integer"),SymbolKind::SUBROUTINE,SymbolType::VOID_STYPE,SymbolShape::SCALAR,false,true))
- {
-    myPushIntegerSymbol_r.setAnnotation(myAnnotationSignature);
-    myPopIntegerSymbol_r.setAnnotation(myAnnotationSignature);
+  ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal_r) : myOriginalGraph_r(theOriginal_r) {
     std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > vertexCopy_l;
     ControlFlowGraph::ConstVertexIteratorPair p(theOriginal_r.vertices());
     ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
@@ -85,13 +79,13 @@ namespace xaifBoosterControlFlowReversal {
   std::string 
   ReversibleControlFlowGraph::makeUniqueVertexId() {
     std::ostringstream oss;
-    oss << myAnnotationSignature.c_str() << "new_vertex_" << getNextVertexId() << std::ends;
+    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature().c_str() << "new_vertex_" << getNextVertexId() << std::ends;
     return (oss.str());
   }
   std::string 
   ReversibleControlFlowGraph::makeUniqueEdgeId() {
     std::ostringstream oss;
-    oss << myAnnotationSignature.c_str() << "new_edge_" << getNextEdgeId() << std::ends;
+    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature().c_str() << "new_edge_" << getNextEdgeId() << std::ends;
     return (oss.str());
   }
 
@@ -105,7 +99,7 @@ namespace xaifBoosterControlFlowReversal {
 //    aNewReversibleControlFlowGraphVertex->myNewVertex_p=new BasicBlock(myOriginalGraph_r.getScope());
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(myAnnotationSignature);
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
     aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
     aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
@@ -128,7 +122,7 @@ namespace xaifBoosterControlFlowReversal {
 //    aNewReversibleControlFlowGraphVertex->myNewVertex_p=new BasicBlock(myOriginalGraph_r.getScope());
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(myAnnotationSignature);
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -139,7 +133,7 @@ namespace xaifBoosterControlFlowReversal {
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new IfStatement();
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(myAnnotationSignature);
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -150,7 +144,7 @@ namespace xaifBoosterControlFlowReversal {
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new ForLoop();
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(myAnnotationSignature);
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -161,7 +155,7 @@ namespace xaifBoosterControlFlowReversal {
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new EndBranch();
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(myAnnotationSignature);
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -172,7 +166,7 @@ namespace xaifBoosterControlFlowReversal {
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new EndLoop();
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(myAnnotationSignature);
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -192,7 +186,7 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraph::insert_increment_integer(const Symbol* theIntegerSymbol_p,BasicBlock& theBasicBlock_r) {
     // not active, no algorithm
     Assignment* theAssignment_p=new Assignment(false,false);
-    theAssignment_p->setId(myAnnotationSignature + "increment");
+    theAssignment_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "increment");
 
     // set lhs
 
@@ -233,7 +227,7 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraph::insert_init_integer(int value, BasicBlock& theBasicBlock_r) {
     // not active, no algorithm
     Assignment* theAssignment_p=new Assignment(false,false);
-    theAssignment_p->setId(myAnnotationSignature + "init");
+    theAssignment_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "init");
     // set lhs
     const Symbol* theLhsSymbol=makeAuxilliaryIntegerLHS(*theAssignment_p,theBasicBlock_r);
     // set rhs
@@ -247,8 +241,8 @@ namespace xaifBoosterControlFlowReversal {
 
   void
   ReversibleControlFlowGraph::insert_push_integer(const Symbol* theIntegerSymbol_p, BasicBlock& theBasicBlock_r) {
-    SubroutineCall* theSubroutineCall_p=new SubroutineCall(myPushIntegerSymbol_r,theBasicBlock_r.getScope(),false);
-    theSubroutineCall_p->setId(myAnnotationSignature + "push");
+    SubroutineCall* theSubroutineCall_p=new SubroutineCall(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getPushIntegerSymbol(),theBasicBlock_r.getScope(),false);
+    theSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "push");
     ConcreteArgument* theConcreteArgument_p=new ConcreteArgument(1);
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theIntegerSymbol_p,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1");

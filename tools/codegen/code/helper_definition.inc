@@ -152,6 +152,17 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "IfStatement" 
 return *myIfStatement_p;
 }
 
+void XAIFBaseParserHelper::setBranch(Branch& whatToSet) {
+if (myBranch_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Branch" << " item already set");
+myBranch_p=&whatToSet;
+}
+Branch& XAIFBaseParserHelper::getBranch() const {
+if (!myBranch_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Branch" << " item not set");
+return *myBranch_p;
+}
+
 void XAIFBaseParserHelper::setInitialization(Initialization& whatToSet) {
 if (myInitialization_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Initialization" << " item already set");
@@ -249,5 +260,27 @@ ArgumentList& XAIFBaseParserHelper::getArgumentList() const {
 if (!myArgumentList_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "ArgumentList" << " item not set");
 return *myArgumentList_p;
+}
+
+void XAIFBaseParserHelper::setGoto(Goto& whatToSet) {
+if (myGoto_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Goto" << " item already set");
+myGoto_p=&whatToSet;
+}
+Goto& XAIFBaseParserHelper::getGoto() const {
+if (!myGoto_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Goto" << " item not set");
+return *myGoto_p;
+}
+
+void XAIFBaseParserHelper::setLabel(Label& whatToSet) {
+if (myLabel_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Label" << " item already set");
+myLabel_p=&whatToSet;
+}
+Label& XAIFBaseParserHelper::getLabel() const {
+if (!myLabel_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Label" << " item not set");
+return *myLabel_p;
 }
 
