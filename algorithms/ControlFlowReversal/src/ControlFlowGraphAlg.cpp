@@ -55,9 +55,9 @@ namespace xaifBoosterControlFlowReversal {
 
   
 
-  class VertexLabelWriter {
+  class ControlFlowGraphVertexLabelWriter {
   public:
-    VertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
+    ControlFlowGraphVertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
       ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
@@ -82,23 +82,23 @@ namespace xaifBoosterControlFlowReversal {
       myTransformedControlFlowGraph=new ReversibleControlFlowGraph(getContaining());
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
-			      VertexLabelWriter(*myTransformedControlFlowGraph));
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph));
       }
       myTransformedControlFlowGraph->topologicalSort();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_2",
-			      VertexLabelWriter(*myTransformedControlFlowGraph));
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph));
       }
 /*
       myTransformedControlFlowGraph->storeControlFlow();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_3",
-			      VertexLabelWriter(*myTransformedControlFlowGraph));
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph));
       }
       myTransformedControlFlowGraph->reverseControlFlow();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_4",
-			      VertexLabelWriter(*myTransformedControlFlowGraph));
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph));
       }
 */
   } // end AssignmentAlg::algorithm_action_4() 
