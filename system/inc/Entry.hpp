@@ -12,9 +12,9 @@ namespace xaifBooster {
   class Entry : public ControlFlowGraphVertex {
   public:
     
-    Entry (){};
+    Entry ();
 
-    ~Entry(){};
+    ~Entry();
 
     void printXMLHierarchy(std::ostream& os) const;
 

@@ -12,9 +12,9 @@ namespace xaifBooster {
   class Exit : public ControlFlowGraphVertex {
   public:
     
-    Exit (){};
+    Exit();
 
-    ~Exit(){};
+    ~Exit();
 
     void printXMLHierarchy(std::ostream& os) const;
 

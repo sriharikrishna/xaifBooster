@@ -1,40 +1,66 @@
 #include <sstream>
+#include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
 #include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/system/inc/BasicBlockElement.hpp"
+#include "xaifBooster/system/inc/Scope.hpp"
 
 namespace xaifBooster { 
 
   BasicBlock::BasicBlock(Scope& theScope) : 
-    PlainBasicBlock(theScope) {
-    myBasicBlockAlgBase_p=BasicBlockAlgFactory::instance()->makeNewAlg(*this);
+    PlainBasicBlock(theScope) { 
+    myControlFlowGraphVertexAlgBase_p=BasicBlockAlgFactory::instance()->makeNewAlg(*this);
   }
 
   BasicBlock::~BasicBlock() {
-    if (myBasicBlockAlgBase_p)
-      delete myBasicBlockAlgBase_p;
+    if (myControlFlowGraphVertexAlgBase_p) delete myControlFlowGraphVertexAlgBase_p;
   }
 
   BasicBlockAlgBase&
-  BasicBlock::getBasicBlockAlgBase() {
-    if (!myBasicBlockAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlock::getBasicBlockAlgBase: not set");
-    return *myBasicBlockAlgBase_p;
-  }
-
-  const BasicBlockAlgBase&
   BasicBlock::getBasicBlockAlgBase() const {
-    if (!myBasicBlockAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlock::getBasicBlockAlgBase: not set");
-    return *myBasicBlockAlgBase_p;
+    if (!myControlFlowGraphVertexAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlock::getControlFlowGraphVertexAlgBase: not set");
+    return dynamic_cast<BasicBlockAlgBase&>(*myControlFlowGraphVertexAlgBase_p);
   }
 
   void
   BasicBlock::printXMLHierarchy(std::ostream& os) const { 
     getBasicBlockAlgBase().printXMLHierarchy(os);
   } // end of BasicBlock::printXMLHierarchy
+
+  void
+  BasicBlock::printXMLHierarchyImpl(std::ostream& os) const { 
+    PrintManager& pm=PrintManager::getInstance();
+    os << pm.indent()
+       << "<"
+       << ourXAIFName
+       << " "
+       << our_myId_XAIFName
+       << "=\""
+       << getId()
+       << "\" "
+       << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str()
+       << "=\""
+       << getAnnotation().c_str()
+       << "\" "
+       << PlainBasicBlock::our_myScopeId_XAIFName.c_str()
+       << "=\""
+       << PlainBasicBlock::myScope_r.getId().c_str()
+       << "\">"
+       << std::endl;
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myElementList.begin();
+         li!=myElementList.end();
+         li++)
+      (*(li))->printXMLHierarchy(os);
+    os << pm.indent()
+       << "</"
+       << ourXAIFName
+       << ">"
+       << std::endl;
+    pm.releaseInstance();
+  } // end of BasicBlock::printXMLHierarchyImpl
 
   std::string BasicBlock::debug () const { 
     return PlainBasicBlock::debug();

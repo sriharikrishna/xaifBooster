@@ -59,6 +59,8 @@ namespace xaifBooster {
      */
     AlgBase& operator=(const AlgBase&);
 
+    protected:
+
     /** 
      * the back reference to AlgContaining 
      * this is constant because by design 
