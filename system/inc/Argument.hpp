@@ -3,6 +3,7 @@
 
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/ArgumentAlgBase.hpp"
 
 namespace xaifBooster { 
 
@@ -18,24 +19,17 @@ namespace xaifBooster {
 
   public: 
 
-    Argument();
+    Argument(bool makeAlgorithm=true);
     
     ~Argument(){};
 
     void printXMLHierarchy(std::ostream& os) const;
+    void printXMLHierarchyImpl(std::ostream& os) const;
+    void printXMLHierarchyImpl(std::ostream& os, const Expression& theExpression) const {};
     
     std::string debug() const ;
 
-    /**
-     * name for the representation of this class in the 
-     * XAIF schema
-     */
     static const std::string ourXAIFName;
-    
-    /**
-     * name for the inherited member myId 
-     * in the XAIF schema
-     */
     static const std::string our_myId_XAIFName;
 
     Variable& getVariable();
@@ -44,9 +38,26 @@ namespace xaifBooster {
 
     virtual std::string equivalenceSignature() const ;
 
+    /** 
+     * deep copy
+     */
     virtual ExpressionVertex& createCopyOfMyself(bool withAlgorithm=false) const;
 
+    ArgumentAlgBase& getArgumentAlgBase() const;
+
+    void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
   private: 
+
+    /**
+     * no def
+     */
+    Argument (const Argument&);
+
+    /**
+     * no def
+     */
+    Argument& operator=(const Argument&);
 
     /**
      * the actual representation of the 

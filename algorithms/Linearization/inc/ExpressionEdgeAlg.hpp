@@ -29,8 +29,6 @@ namespace xaifBoosterLinearization {
 
     const InlinableIntrinsicsExpression& getPartial() const ;
 
-    void updatePartial(const InlinableIntrinsicsExpression& thePartial);
-
     void setPartial(const InlinableIntrinsicsExpression& thePartial);
 
     void addArgumentsConcretizationPair(const ExpressionVertex& aConcreteArgument,

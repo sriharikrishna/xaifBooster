@@ -8,7 +8,10 @@
 namespace xaifBoosterLinearization { 
 
   ExpressionEdgeAlg::ExpressionEdgeAlg(ExpressionEdge& theContainingExpressionEdge) : 
-    ExpressionEdgeAlgBase(theContainingExpressionEdge) { 
+    ExpressionEdgeAlgBase(theContainingExpressionEdge),
+    myPartialDerivative_p(0),
+    myConcretePartialAssignment_p(0),
+    myConcretePartialDerivativeKind(PartialDerivativeKind::NONLINEAR) { 
   }
 
   std::string 
@@ -29,11 +32,6 @@ namespace xaifBoosterLinearization {
     if (!myPartialDerivative_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::getPartial: not set");
     return *myPartialDerivative_p;
-  } 
-
-  void 
-  ExpressionEdgeAlg::updatePartial(const InlinableIntrinsicsExpression& thePartial) { 
-    myPartialDerivative_p=&thePartial;
   } 
 
   void 

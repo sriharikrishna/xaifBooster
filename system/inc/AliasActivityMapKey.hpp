@@ -55,7 +55,7 @@ namespace xaifBooster {
      * key kind initialized to NOT_SET
      */
     AliasActivityMapKey_E myKind;
-    
+
   }; // end of class AliasActivityMapKey
 
 } // end of namespace xaifBooster

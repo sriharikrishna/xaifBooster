@@ -45,7 +45,6 @@ namespace xaifBooster {
     /**
      * check disjunction of alias sets 
      */
-
     typedef std::list<const AliasActivityMapKey*> AliasActivityMapKeyList;
     bool isAliased(const AliasActivityMapKey& theKey, const AliasActivityMapKeyList& theList) const;
 
@@ -80,6 +79,13 @@ namespace xaifBooster {
      * no def
      */
     AliasActivityMap operator=(const AliasActivityMap&);
+
+    /** 
+     * this key is a regular key
+     * theOtherKey may not be a regular key
+     */
+    bool haveNonEmptyIntersection(const AliasActivityMapKey& thisKey,
+				 const AliasActivityMapKey& theOtherKey) const;
 
   }; // end of class AliasActivityMap
 

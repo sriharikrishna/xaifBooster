@@ -10,16 +10,12 @@ namespace xaifBooster {
   const std::string Intrinsic::our_myName_XAIFName("name");
   const std::string Intrinsic::our_myId_XAIFName("vertex_id");
 
-  Intrinsic::Intrinsic(const std::string& aName, bool hasAlgorithm) :
-      myName(aName) {
-    myIntrinsicAlgBase_p=0;
-    if (hasAlgorithm)
-      myIntrinsicAlgBase_p=IntrinsicAlgFactory::instance()->makeNewAlg(*this);
+  Intrinsic::Intrinsic(const std::string& aName, bool makeAlgorithm) :
+    myName(aName) {
+    myExpressionVertexAlgBase_p=0;
+    if (makeAlgorithm)
+      myExpressionVertexAlgBase_p=IntrinsicAlgFactory::instance()->makeNewAlg(*this);
   }
-
-  void Intrinsic::copyMyselfInto(Intrinsic& theCopy) const {
-    theCopy.setId(getId());
-  } // end copyMyselfInto
 
   ExpressionVertex& Intrinsic::createCopyOfMyself(bool withAlgorithm) const { 
     Intrinsic* aNewIntrinsic_p=new Intrinsic(myName,withAlgorithm);
@@ -47,18 +43,13 @@ namespace xaifBooster {
     return ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement(myName);
   } 
 
-  /*
-   * if there is an algorithm, then let it decide what to print;
-   * otherwise call the local implementation
-   */
   void
   Intrinsic::printXMLHierarchy(std::ostream& os) const {
-    if (myIntrinsicAlgBase_p)
-      myIntrinsicAlgBase_p->printXMLHierarchy(os);
+    if (myExpressionVertexAlgBase_p)
+      getIntrinsicAlgBase().printXMLHierarchy(os);
     else
       printXMLHierarchyImpl(os);
   } // end of printXMLHierarchy
-
 
   void Intrinsic::printXMLHierarchyImpl(std::ostream& os) const { 
     PrintManager& pm=PrintManager::getInstance();
@@ -79,21 +70,14 @@ namespace xaifBooster {
   } 
 
   IntrinsicAlgBase&
-  Intrinsic::getIntrinsicAlgBase() {
-    if (!myIntrinsicAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("Intrinsic::getIntrinsicAlgBase: not set"); 
-    return *myIntrinsicAlgBase_p;
-  } // end getIntrinsicAlgBase
-
-  const IntrinsicAlgBase&
   Intrinsic::getIntrinsicAlgBase() const {
-    if (!myIntrinsicAlgBase_p)
+    if (!myExpressionVertexAlgBase_p)
       THROW_LOGICEXCEPTION_MACRO("Intrinsic::getIntrinsicAlgBase: not set");
-    return *myIntrinsicAlgBase_p;
-  } // end getIntrinsicAlgBase
+    return dynamic_cast<IntrinsicAlgBase&>(*myExpressionVertexAlgBase_p);
+  } 
 
   void Intrinsic::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
     getIntrinsicAlgBase().genericTraversal(anAction_c);
-  } // end traversalToChildren 
+  } 
 
 } // end of namespace 

@@ -15,14 +15,13 @@ namespace xaifBooster {
   public:
     
     /** 
-     * ctor news up an algorithm object if required
+     * \param theActiveFlag initializes myActiveFlag
+     * \param makeAlgorithm  news up an algorithm object if required
+     * this is also carried through for the respective members
      */
     Assignment (bool theActiveFlag,
 		bool makeAlgorithm=true);
 
-    /** 
-     * dtor deletes the algorithm object if present 
-     */
     ~Assignment();
 
     /** 
@@ -61,34 +60,18 @@ namespace xaifBooster {
 
     const Expression& getRHS() const;
 
-    /** 
-     * name for this class as represented in XAIF schema
-     */
     static const std::string ourXAIFName;
-
-    /**
-     * name for inherited member myId as represented in XAIF schema
-     */
     static const std::string our_myId_XAIFName;
-
-    /**
-     * name for inherited member myLHS as represented in XAIF schema
-     */
     static const std::string our_myLHS_XAIFName;
-
-    /**
-     * name for inherited member myRHS as represented in XAIF schema
-     */
     static const std::string our_myRHS_XAIFName;
-
-    /**
-     * name for member myActiveFlag as represented in XAIF schema
-     */
     static const std::string our_myActiveFlag_XAIFName;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    void setLHSActiveFlag(bool anActiveFlag);
+    /** 
+     * set myLHSActiveFlag to false
+     */
+    void passivateLHS();
 
   private: 
 
@@ -108,13 +91,12 @@ namespace xaifBooster {
     Assignment operator=(const Assignment&);
 
     /**
-     * lvalue on the 
      * left hand side 
      */
     Variable myLHS;
 
     /** 
-     * expression on the right hand side
+     * right hand side
      */
     Expression myRHS;
 
@@ -128,10 +110,12 @@ namespace xaifBooster {
     /** 
      * this determines if the assignment is active or not
      */
-    bool myActiveFlag;
+    const bool myActiveFlag;
 
     /** 
-     * this determines if the assignment is active or not
+     * this determines if the LHS is active or not
+     * associated with xaif:AssignmentLHS
+     * initialized to true
      */
     bool myLHSActiveFlag;
 

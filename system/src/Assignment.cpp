@@ -23,7 +23,10 @@ namespace xaifBooster {
 
   Assignment::Assignment(bool theActiveFlag,
 			 bool makeAlgorithm) : 
-    myActiveFlag(theActiveFlag) {
+    myRHS(makeAlgorithm),
+    myAssignmentAlgBase_p(0),
+    myActiveFlag(theActiveFlag),
+    myLHSActiveFlag(true) {
     if (makeAlgorithm)
       myAssignmentAlgBase_p=AssignmentAlgFactory::instance()->makeNewAlg(*this); 
   } 
@@ -42,7 +45,10 @@ namespace xaifBooster {
 
   void
   Assignment::printXMLHierarchy(std::ostream& os) const { 
-    getAssignmentAlgBase().printXMLHierarchy(os);
+    if (myAssignmentAlgBase_p)
+      getAssignmentAlgBase().printXMLHierarchy(os);
+    else 
+      printXMLHierarchyImpl(os);
   }
 
   void
@@ -140,7 +146,21 @@ namespace xaifBooster {
 
   std::string Assignment::debug () const { 
     std::ostringstream out;
-    out << "Assignment[" << this 
+    out << "Assignment[" 
+	<< this 
+	<< ","
+	<< "myAssignmentAlgBase_p"
+	<< "="
+	<< myAssignmentAlgBase_p
+	<< ","
+	<< "myActiveFlag"
+	<< "="
+	<< myActiveFlag
+	<< ","
+	<< "myLHSActiveFlag"
+	<< "="
+	<< myLHSActiveFlag
+	<< BasicBlockElement::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of Assignment::debug
@@ -151,8 +171,8 @@ namespace xaifBooster {
     myLHS.genericTraversal(anAction_c);
   } 
 
-  void Assignment::setLHSActiveFlag(bool anActiveFlag) { 
-    myLHSActiveFlag=anActiveFlag;
+  void Assignment::passivateLHS() { 
+    myLHSActiveFlag=false;
   }
 
 } // end of namespace xaifBooster 

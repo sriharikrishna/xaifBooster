@@ -9,7 +9,17 @@
 namespace xaifBoosterLinearization { 
 
   ExpressionVertexAlg::ExpressionVertexAlg(ExpressionVertex& theContainingExpressionVertex) : 
-    ExpressionVertexAlgBase(theContainingExpressionVertex) { 
+    ExpressionVertexAlgBase(theContainingExpressionVertex),
+    myAuxilliaryVariable_p(0),
+    myReplacementAssignment_p(0), 
+    myActiveFlag(true) { 
+  }
+
+  ExpressionVertexAlg::~ExpressionVertexAlg() { 
+    if (myAuxilliaryVariable_p)
+      delete myAuxilliaryVariable_p;
+    if (myReplacementAssignment_p)
+      delete myReplacementAssignment_p;
   }
 
   std::string 
@@ -58,11 +68,12 @@ namespace xaifBoosterLinearization {
     return (myReplacementAssignment_p!=0);
   }
 
-  void
-  ExpressionVertexAlg::setReplacement(const Assignment& theReplacement) { 
+  Assignment&
+  ExpressionVertexAlg::makeReplacementAssignment() { 
     if (myReplacementAssignment_p)
-      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::setReplacement : has already a replacement");
-    myReplacementAssignment_p=&theReplacement;
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::makeReplacementAssignment : has already a replacement");
+    myReplacementAssignment_p=new Assignment(true);
+    return *myReplacementAssignment_p;
   }
 
   bool ExpressionVertexAlg::isActive() const { 

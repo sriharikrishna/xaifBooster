@@ -127,15 +127,12 @@ namespace xaifBoosterLinearization {
     if(mySSAReplacementAssignmentList.size() 
        || 
        needDelay) { 
-      Assignment* theReplacementAssignment_p=new Assignment(true);
-      theReplacementAssignment_p->setId(getContaining().getId());
-      // make the replacement known to the vertex which is its 
-      // maximal node
-      dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).
-	setReplacement(*theReplacementAssignment_p);
+      Assignment& theReplacementAssignment(dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).
+					   makeReplacementAssignment());
+      theReplacementAssignment.setId("replacement for " + getContaining().getId());
       // now we add a copy of the  target vertex  to the replacement assignment
       ExpressionVertex& theReplacementTargetVertex((*ExpressionVertexI).createCopyOfMyself());
-      theReplacementAssignment_p->getRHS().supplyAndAddVertexInstance(theReplacementTargetVertex);
+      theReplacementAssignment.getRHS().supplyAndAddVertexInstance(theReplacementTargetVertex);
       // keep track of the node map for the edges: 
       PointerPairList theVertexPointerPairList; // first is the original, second is the copy
       theVertexPointerPairList.push_back(PointerPair(&(*ExpressionVertexI),
@@ -169,21 +166,21 @@ namespace xaifBoosterLinearization {
 	// set the new LHS to the original LHS
 	getContaining().getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
 	// make the temporary the LHS of theReplacementAssignment 
-	theDelayVertex_p->getVariable().copyMyselfInto(theReplacementAssignment_p->getLHS());
+	theDelayVertex_p->getVariable().copyMyselfInto(theReplacementAssignment.getLHS());
       } // end if 
       else // no extra temporary needed:  
-	getContaining().getLHS().copyMyselfInto(theReplacementAssignment_p->getLHS());
+	getContaining().getLHS().copyMyselfInto(theReplacementAssignment.getLHS());
       // we iterate through all the in edges
       Expression::InEdgeIteratorPair pInner(theExpression.getInEdgesOf((*ExpressionVertexI)));
       Expression::InEdgeIterator ExpressionInEdgeI(pInner.first), ExpressionInEdgeIEnd(pInner.second);
       for (;ExpressionInEdgeI!=ExpressionInEdgeIEnd;++ExpressionInEdgeI) { 
 	localRHSExtractionInner(*ExpressionInEdgeI,
-				*theReplacementAssignment_p,
+				theReplacementAssignment,
 				(*ExpressionVertexI),
 				theReplacementTargetVertex,
 				theVertexPointerPairList);
       } // end for 
-      mySSAReplacementAssignmentList.push_back(theReplacementAssignment_p);	
+      mySSAReplacementAssignmentList.push_back(&theReplacementAssignment);	
     } // end if  
   } // end of AssignmentAlg::makeSSACodeList
 
@@ -205,31 +202,28 @@ namespace xaifBoosterLinearization {
       // the leafs first.
       if (!theTargetVertexAlg.hasReplacement()) { 
 	// create replacement Assignment, 
-	Assignment* theReplacementAssignment_p=new Assignment(true);
-	theReplacementAssignment_p->setId(getContaining().getId());
-	// make the replacement known to the vertex which is its 
-	// maximal node
-	theTargetVertexAlg.setReplacement(*theReplacementAssignment_p);
+	Assignment& theReplacementAssignment(theTargetVertexAlg.makeReplacementAssignment());
+	theReplacementAssignment.setId("replacement for " + getContaining().getId());
 	// now we add a copy of the  target vertex  to the replacement assignment
 	ExpressionVertex& theReplacementTargetVertex(theTargetVertex.createCopyOfMyself());
-	theReplacementAssignment_p->getRHS().supplyAndAddVertexInstance(theReplacementTargetVertex);
+	theReplacementAssignment.getRHS().supplyAndAddVertexInstance(theReplacementTargetVertex);
 	// keep track of the node map for the edges: 
 	PointerPairList theVertexPointerPairList; // first is the original, second is the copy
 	theVertexPointerPairList.push_back(PointerPair(&theTargetVertex,
 						       &theReplacementTargetVertex));
 	// set the LHS
-	theTargetVertexAlg.getAuxilliaryVariable().copyMyselfInto(theReplacementAssignment_p->getLHS());
+	theTargetVertexAlg.getAuxilliaryVariable().copyMyselfInto(theReplacementAssignment.getLHS());
 	// we iterate through all the in edges
 	Expression::InEdgeIteratorPair pInner(theExpression.getInEdgesOf(theTargetVertex));
 	Expression::InEdgeIterator ExpressionInEdgeI(pInner.first), ExpressionInEdgeIEnd(pInner.second);
 	for (;ExpressionInEdgeI!=ExpressionInEdgeIEnd;++ExpressionInEdgeI) { 
 	  localRHSExtractionInner(*ExpressionInEdgeI,
-				  *theReplacementAssignment_p,
+				  theReplacementAssignment,
 				  theTargetVertex,
 				  theReplacementTargetVertex,
 				  theVertexPointerPairList);
 	} // end for 
-	mySSAReplacementAssignmentList.push_back(theReplacementAssignment_p);	
+	mySSAReplacementAssignmentList.push_back(&theReplacementAssignment);	
       } // end if  
       // else we have already dealt with this vertex, nothing to be done
     } // end if 
@@ -333,7 +327,9 @@ namespace xaifBoosterLinearization {
     if (!myLHSActiveFlag)
       return;
     // copy the right hand side: 
-    getContaining().getRHS().copyMyselfInto(myLinearizedRightHandSide);
+    getContaining().getRHS().
+      copyMyselfInto(myLinearizedRightHandSide,
+		     true); // make algorithm objects in the copy
     // set the flag
     myHaveLinearizedRightHandSide=true;
     // create auxilliary variables and 
@@ -342,7 +338,7 @@ namespace xaifBoosterLinearization {
       createPartialExpressions();
     // create ssa code
     makeSSACodeList();
-      passiveReduction();
+    passiveReduction();
   } // end of AssignmentAlg::algorithm_action_1(linearize)
 
   Expression& AssignmentAlg::getLinearizedRightHandSide() { 

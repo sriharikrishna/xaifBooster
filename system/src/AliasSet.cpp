@@ -90,15 +90,41 @@ namespace xaifBooster {
       }
       else  // *anAlias_p must be less than **it
 	if (it==myAliasList.begin()) { 
-	myAliasList.insert(it,anAlias_p); 
-	// insert before it
-	return;
+	  myAliasList.insert(it,anAlias_p); 
+	  // insert before it
+	  return;
 	}
-	--it;
+      --it;
     } 
     // if we haven't returned yet then we are in trouble
     delete anAlias_p;
     THROW_LOGICEXCEPTION_MACRO("AliasSet::addAlias: problem with insertion");
+  } 
+
+  bool AliasSet::sharesAliasWith(const AliasSet& anotherSet) const {
+    if (myAliasList.empty() || anotherSet.myAliasList.empty()) { 
+      return false;
+    }
+    AliasList::const_iterator myI=myAliasList.begin();
+    AliasList::const_iterator theOtherI=anotherSet.myAliasList.begin();
+    while (myI!=myAliasList.end()
+	   &&
+	   theOtherI!=anotherSet.myAliasList.end()) { 
+      // both sets are ordered
+      if ((*myI)->isGreaterThan(**theOtherI)) { 
+	++theOtherI; 
+      }
+      else if ((*myI)->overlapsWith(**theOtherI)
+	       || 
+	       (*myI)->isContainedIn(**theOtherI)
+	       ||
+	       (*theOtherI)->isContainedIn(**myI)) { 
+	return true;
+      }
+      else  // myI must be less than theOtherI
+	++myI;
+    }
+    return false;
   } 
 
 }

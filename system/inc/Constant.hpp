@@ -3,6 +3,7 @@
 
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/BaseConstant.hpp"
+#include "xaifBooster/system/inc/ConstantAlgBase.hpp"
 
 namespace xaifBooster { 
 
@@ -16,32 +17,23 @@ namespace xaifBooster {
     ~Constant(){};
 
     void printXMLHierarchy(std::ostream& os) const;
+    void printXMLHierarchyImpl(std::ostream& os) const;
+    void printXMLHierarchyImpl(std::ostream& os, const Expression& theExpression) const {};
 
     std::string debug() const;
 
     virtual std::string equivalenceSignature() const;
 
-    /**
-     * name for this class as represented in XAIF schema
-     */
     static const std::string ourXAIFName;
-
-    /**
-     * name for member myType as represented in XAIF schema
-     */
     static const std::string our_myType_XAIFName;
-
-    /**
-     * name for member myValue as represented in XAIF schema
-     */
     static const std::string our_myValue_XAIFName;
-
-    /**
-     * name for member myId as represented in XAIF schema
-     */
     static const std::string our_myId_XAIFName;
 
     virtual ExpressionVertex& createCopyOfMyself(bool withAlgorithm=false) const;
+
+    ConstantAlgBase& getConstantAlgBase() const;
+
+    void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
   private : 
 
@@ -49,10 +41,12 @@ namespace xaifBooster {
      * no def
      */
     Constant ();
+
     /**
      * no def
      */
     Constant (const Constant&);
+
     /**
      * no def
      */

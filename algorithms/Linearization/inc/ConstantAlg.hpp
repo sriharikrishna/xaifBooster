@@ -16,11 +16,9 @@ namespace xaifBoosterLinearization {
 
   public:
     
-    ConstantAlg(Constant& theContainingConstant) : 
-      ConstantAlgBase(theContainingConstant),
-      ExpressionVertexAlg(theContainingConstant) {};
+    ConstantAlg(Constant& theContainingConstant);
 
-    virtual ~ConstantAlg(){};
+    virtual ~ConstantAlg();
 
     virtual void printXMLHierarchy(std::ostream& os) const;
 

@@ -15,7 +15,7 @@ namespace xaifBooster {
     BaseConstant(aType) {
     if (makeAlgorithm)
       myExpressionVertexAlgBase_p=ConstantAlgFactory::instance()->makeNewAlg(*this); 
-  };
+  }
 
   std::string Constant::debug () const { 
     std::ostringstream out;
@@ -62,7 +62,15 @@ namespace xaifBooster {
     return std::string(oss.str());
   } 
 
-  void Constant::printXMLHierarchy(std::ostream& os) const { 
+  void
+  Constant::printXMLHierarchy(std::ostream& os) const {
+    if (myExpressionVertexAlgBase_p)
+      getConstantAlgBase().printXMLHierarchy(os);
+    else
+      printXMLHierarchyImpl(os);
+  } // end of printXMLHierarchy
+
+  void Constant::printXMLHierarchyImpl(std::ostream& os) const { 
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
@@ -83,5 +91,17 @@ namespace xaifBooster {
        << std::endl; 
     pm.releaseInstance();
   } 
+
+  ConstantAlgBase&
+  Constant::getConstantAlgBase() const {
+    if (!myExpressionVertexAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("Constant::getConstantAlgBase: not set");
+    return dynamic_cast<ConstantAlgBase&>(*myExpressionVertexAlgBase_p);
+  } 
+
+  void Constant::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+    getConstantAlgBase().genericTraversal(anAction_c);
+  } 
+
 
 } // end of namespace 
