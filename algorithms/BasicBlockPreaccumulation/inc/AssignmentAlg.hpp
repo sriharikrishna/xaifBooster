@@ -10,7 +10,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   /** 
    * class to implement algorithms relevant for the 
-   * angel interface
+   * angel interface and the flattening
    */
   class AssignmentAlg : public xaifBoosterLinearization::AssignmentAlg {
   public:
@@ -63,8 +63,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     bool vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence);
     
-
-
   }; // end of class AssignmentAlg
  
 } 

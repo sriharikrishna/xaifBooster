@@ -107,7 +107,9 @@ namespace xaifBooster {
     char* thisArg_p=myArgv[myArgvIndex];
     int escapes =0;
     if (!thisArg_p) {
-      THROW_LOGICEXCEPTION_MACRO("Error in CommandLineSegment::parseArgument(): the current argument is a NULL pointer!");
+      // we are probably at the end with an argumentless switch
+      // dont
+      return;
     } 
     if (!strlen(thisArg_p)) { 
       THROW_LOGICEXCEPTION_MACRO("Error in CommandLineSegment::parseArgument(): the current argument is empty!");
