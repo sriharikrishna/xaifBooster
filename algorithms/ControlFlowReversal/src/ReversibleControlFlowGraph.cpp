@@ -24,7 +24,10 @@
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
-  ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal_r) : myOriginalGraph_r(theOriginal_r) {}
+
+  ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal_r) : 
+    myOriginalGraph_r(theOriginal_r) {
+  }
 
   void
   ReversibleControlFlowGraph::makeThisACopyOfOriginalControlFlowGraph() {
@@ -88,20 +91,26 @@ namespace xaifBoosterControlFlowReversal {
   std::string 
   ReversibleControlFlowGraph::makeUniqueVertexId() {
     std::ostringstream oss;
-    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature().c_str() << "v_" << getNextVertexId() << std::ends;
+    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).
+      getAlgorithmSignature().c_str() << "v_" << getNextVertexId() << std::ends;
     return (oss.str());
   }
+
   std::string 
   ReversibleControlFlowGraph::makeUniqueEdgeId() {
     std::ostringstream oss;
-    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature().c_str() << "e_" << getNextEdgeId() << std::ends;
+    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).
+      getAlgorithmSignature().c_str() << "e_" << getNextEdgeId() << std::ends;
     return (oss.str());
   }
 
   // direction indicates if the characteristics of the replaceEdge should
   // be preserved by the new in (false) or outedge (true)
   BasicBlock&
-  ReversibleControlFlowGraph::insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before, const ReversibleControlFlowGraphEdge& replacedEdge_r, bool direction) {
+  ReversibleControlFlowGraph::insert_basic_block(const ReversibleControlFlowGraphVertex& after, 
+						 const ReversibleControlFlowGraphVertex& before, 
+						 const ReversibleControlFlowGraphEdge& replacedEdge_r, 
+						 bool direction) {
     ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     aNewReversibleControlFlowGraphVertex_p->setIndex(numVertices()+1);
@@ -118,13 +127,11 @@ namespace xaifBoosterControlFlowReversal {
     if (!direction && replacedEdge_r.hasConditionValue()) {
       aNewReversibleControlFlowGraphInEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
     }
-  
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphOutEdge_p=new ReversibleControlFlowGraphEdge();
     aNewReversibleControlFlowGraphOutEdge_p->setId(makeUniqueEdgeId());
     if (direction && replacedEdge_r.hasConditionValue()) {
       aNewReversibleControlFlowGraphOutEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
     }
-
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,after,*aNewReversibleControlFlowGraphVertex_p);
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphOutEdge_p,*aNewReversibleControlFlowGraphVertex_p,before);
     return dynamic_cast<BasicBlock&>(aNewReversibleControlFlowGraphVertex_p->getNewVertex());
@@ -513,7 +520,8 @@ namespace xaifBoosterControlFlowReversal {
         for (;beginItie!=endItie ;++beginItie) {
           int nesting_depth=0; 
           const ReversibleControlFlowGraphEdge& theEntryEdge_cr(find_corresponding_branch_entry_edge_rec((*beginItie),nesting_depth));
-          (*beginItie).setConditionValue(theEntryEdge_cr.getConditionValue());
+	  if (theEntryEdge_cr.hasConditionValue())
+	    (*beginItie).setConditionValue(theEntryEdge_cr.getConditionValue());
         }
       }
   }
@@ -560,7 +568,8 @@ namespace xaifBoosterControlFlowReversal {
         for (;beginItie!=endItie ;++beginItie) {
           int nesting_depth=0;
           const ReversibleControlFlowGraphEdge& theExitEdge_cr(find_corresponding_branch_exit_edge_rec((*beginItie),nesting_depth));
-          (*beginItie).setConditionValue(theExitEdge_cr.getConditionValue());
+	  if(theExitEdge_cr.hasConditionValue())
+	    (*beginItie).setConditionValue(theExitEdge_cr.getConditionValue());
         }
       }
   }
@@ -568,9 +577,11 @@ namespace xaifBoosterControlFlowReversal {
   /**
    * assign index to current vertex and call on successors
    */
-
   void
-  ReversibleControlFlowGraph::topologicalSortRecursively(ReversibleControlFlowGraphVertex& theCurrentVertex_r, int& idx,std::stack<ReversibleControlFlowGraphVertex*>& endNodes_p_s_r, ForLoopReversalType::ForLoopReversalType_E aReversalType) {
+  ReversibleControlFlowGraph::topologicalSortRecursively(ReversibleControlFlowGraphVertex& theCurrentVertex_r, 
+							 int& idx,
+							 std::stack<ReversibleControlFlowGraphVertex*>& endNodes_p_s_r, 
+							 ForLoopReversalType::ForLoopReversalType_E aReversalType) {
     if (theCurrentVertex_r.getVisited()) return;
     theCurrentVertex_r.setVisited(true);
     // push current node to stack if ENDBRANCH and return
@@ -659,20 +670,48 @@ namespace xaifBoosterControlFlowReversal {
   }
 
 
-  /*
-    For a given edge in the original control flow, build its adjoint.
-    The correspondence between original and adjoint vertices is recorded in
-    theVertexCorrespondence_ppl where the first entry of each pair is the
-    original vertex and the second entry is the adjoint vertex.
+  class ReversibleControlFlowGraphVertexLabelWriter {
+  public:
+    ReversibleControlFlowGraphVertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
+      std::string theVertexKind;
+      std::string theXaifId;
+      if (theReversibleControlFlowGraphVertex_p->isOriginal()) {
+        theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex().getControlFlowGraphVertexAlgBase()).kindToString();
+        theXaifId=dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex()).getId();
+        
+      }
+      else {
+        theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()).kindToString();
+        theXaifId=dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getNewVertex()).getId();
+      }
+      if (theReversibleControlFlowGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) { 
+	std::ostringstream temp;
+	temp << theXaifId.c_str() << ".e" << std::ends;
+	theXaifId=temp.str();
+      }
+      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
+    }
+    const ReversibleControlFlowGraph& myG;
+  };
 
-    Add edge from the adjoint of the target to the adjoint of the source 
-    if the source it is not a LOOP node and the target is not the first node 
-    of the loop body, that is, its inedge.
-    Otherwise, find the matching original ENDLOOP node and add edge
-    from theSource_p to the ENDLOOP node's adjoint (a FORLOOP) node.
-  */
+  class ReversibleControlFlowGraphEdgeLabelWriter {
+  public:
+    ReversibleControlFlowGraphEdgeLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
+      ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
+      if (theReversibleControlFlowGraphEdge_p->hasConditionValue()) out << "[label=\"1\"]";
+    }
+    const ReversibleControlFlowGraph& myG;
+  };
+
   ReversibleControlFlowGraphEdge&
-  ReversibleControlFlowGraph::addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r, const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl) {
+  ReversibleControlFlowGraph::addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r, 
+							     const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, 
+							     const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl) {
     std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::const_iterator theVertexCorrespondence_ppl_cit;
     // source and target of adjoint edge to be inserted
     // source is fixed, target depends on kind of original source
@@ -680,7 +719,11 @@ namespace xaifBoosterControlFlowReversal {
     // initialize source and target of adjoint edge to be inserted
     bool foundAdjointSource=false;
     bool foundAdjointTarget=false;
-    for (theVertexCorrespondence_ppl_cit=theVertexCorrespondence_ppl.begin();theVertexCorrespondence_ppl_cit!=theVertexCorrespondence_ppl.end(),!(foundAdjointSource&&foundAdjointTarget);theVertexCorrespondence_ppl_cit++) {
+    for (theVertexCorrespondence_ppl_cit=theVertexCorrespondence_ppl.begin();
+	 theVertexCorrespondence_ppl_cit!=theVertexCorrespondence_ppl.end()
+	   &&
+	   !(foundAdjointSource&&foundAdjointTarget);
+	 theVertexCorrespondence_ppl_cit++) {
       if ((*theVertexCorrespondence_ppl_cit).first==&getTargetOf(theOriginalEdge_cr)) {
         theAdjointSource_p=(*theVertexCorrespondence_ppl_cit).second; 
         foundAdjointSource=true;
@@ -690,40 +733,54 @@ namespace xaifBoosterControlFlowReversal {
         foundAdjointTarget=true;
       }
     }
-    // distinguish type of original source
-    if ((getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP||getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP)&&!theOriginalEdge_cr.hasConditionValue()) {
-      // if LOOP, then find matching original ENDLOOP
-      ReversibleControlFlowGraphVertex* theOriginalEndLoop_p;
-      InEdgeIteratorPair ieitp(getInEdgesOf(getSourceOf(theOriginalEdge_cr)));
-      InEdgeIterator begin_ieit(ieitp.first),end_ieit(ieitp.second);
-      for (;begin_ieit!=end_ieit;++begin_ieit) 
-	if (getSourceOf(*begin_ieit).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDLOOP) {
-	  theOriginalEndLoop_p=&getSourceOf(*begin_ieit);
-	  break;
-	}
-      // find adjoint FORLOOP node that corresponds to original ENDLOOP node
-      for (theVertexCorrespondence_ppl_cit=theVertexCorrespondence_ppl.begin();theVertexCorrespondence_ppl_cit!=theVertexCorrespondence_ppl.end();theVertexCorrespondence_ppl_cit++) 
-	if ((*theVertexCorrespondence_ppl_cit).first==theOriginalEndLoop_p) {
+    // if this is the original  edge from a loop  vertex to loop construct successor, i.e. not the loop body
+    // reset the target to the corresponding  adjoint FORLOOP
+    // this is because the FORLOOP turns into an ENDLOOP but that is not the target of the successor in the 
+    // reverse.
+    if ((getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP
+	 ||
+	 getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP)
+	&&
+	!theOriginalEdge_cr.hasConditionValue()) {
+      // the original ENDLOOP vertex that matches the original LOOP vertex is the counterPart
+      ReversibleControlFlowGraphVertex& theOriginalEndLoop=getSourceOf(theOriginalEdge_cr).getCounterPart();
+      // find the adjoint FORLOOP node that corresponds to original ENDLOOP node
+      for (theVertexCorrespondence_ppl_cit=theVertexCorrespondence_ppl.begin();
+	   theVertexCorrespondence_ppl_cit!=theVertexCorrespondence_ppl.end();
+	   ++theVertexCorrespondence_ppl_cit) {
+	if ((*theVertexCorrespondence_ppl_cit).first==&theOriginalEndLoop) {
 	  theAdjointTarget_p=(*theVertexCorrespondence_ppl_cit).second; 
 	  break;
 	}
+      }
     }
     // insert edge from *theAdjointSource_p to *theAdjointTarget_p
-    ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*theAdjointSource_p,*theAdjointTarget_p));
-    // set condition value
+    ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,
+													     *theAdjointSource_p,
+													     *theAdjointTarget_p));
+    // this gives us values on edges that normally don't have conditions but these values 
+    // are needed for the branch matches:
     if (theOriginalEdge_cr.hasConditionValue())
       theNewReversibleControlFlowGraphEdge_r.setConditionValue(theOriginalEdge_cr.getConditionValue());
+//     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+//       GraphVizDisplay::show(theAdjointControlFlowGraph_r,
+// 			    "adjoint_edge_insert", 
+// 			    ReversibleControlFlowGraphVertexLabelWriter(theAdjointControlFlowGraph_r),
+// 			    ReversibleControlFlowGraphEdgeLabelWriter(theAdjointControlFlowGraph_r));
+//     }
     return theNewReversibleControlFlowGraphEdge_r;
   }
 
   /*
-    Construct the adjoint control flow graph.
+    Construct the adjoint control flow graph from this graph
   */
   void
   ReversibleControlFlowGraph::buildAdjointControlFlowGraph(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r) {
     std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > theVertexCorrespondence_ppl;
     std::list<ReversibleControlFlowGraphVertex*>::reverse_iterator the_mySortedVertices_p_l_rit;
-    for (the_mySortedVertices_p_l_rit=mySortedVertices_p_l.rbegin(); the_mySortedVertices_p_l_rit!=mySortedVertices_p_l.rend(); the_mySortedVertices_p_l_rit++) {
+    for (the_mySortedVertices_p_l_rit=mySortedVertices_p_l.rbegin(); 
+	 the_mySortedVertices_p_l_rit!=mySortedVertices_p_l.rend(); 
+	 ++the_mySortedVertices_p_l_rit) {
       ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p;
       switch ((*the_mySortedVertices_p_l_rit)->getOriginalControlFlowGraphVertexAlg().getKind()) {
       case ControlFlowGraphVertexAlg::EXIT : {
@@ -763,15 +820,25 @@ namespace xaifBoosterControlFlowReversal {
 	theReversibleControlFlowGraphVertex_p->getNewVertex().setId(std::string("_adj_")+makeUniqueVertexId());
 	break;
       }
-      default: break;
+      default: 
+	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: missing logic to handle ControlFlowGraphVertex of kind "
+				   << (*the_mySortedVertices_p_l_rit)->getOriginalControlFlowGraphVertexAlg().getKind());
+	break;
       }
       theVertexCorrespondence_ppl.push_back(std::make_pair(*the_mySortedVertices_p_l_rit,theReversibleControlFlowGraphVertex_p)); 
+      DBG_MACRO(DbgGroup::DATA, "copying data for index " 
+		<< (*the_mySortedVertices_p_l_rit)->getIndex()
+		<< " and type "
+		<< (*the_mySortedVertices_p_l_rit)->getReversalType());
       theReversibleControlFlowGraphVertex_p->setAdjointIndex((*the_mySortedVertices_p_l_rit)->getIndex());
       theReversibleControlFlowGraphVertex_p->setReversalType((*the_mySortedVertices_p_l_rit)->getReversalType());
     }
     // add reversed edges
     std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::const_iterator theVertexCorrespondence_ppl_cit;
-    for (theVertexCorrespondence_ppl_cit=theVertexCorrespondence_ppl.begin();theVertexCorrespondence_ppl_cit!=theVertexCorrespondence_ppl.end();theVertexCorrespondence_ppl_cit++) {
+    for (theVertexCorrespondence_ppl_cit=theVertexCorrespondence_ppl.begin();
+	 theVertexCorrespondence_ppl_cit!=theVertexCorrespondence_ppl.end();
+	 ++theVertexCorrespondence_ppl_cit) {
+      // we switch on the kind of the *adjoint* vertices:
       switch ((*theVertexCorrespondence_ppl_cit).second->getKind()) {
       case ControlFlowGraphVertexAlg::ENTRY : 
       case ControlFlowGraphVertexAlg::ENDBRANCH : 
@@ -785,11 +852,13 @@ namespace xaifBoosterControlFlowReversal {
 	if ((*theVertexCorrespondence_ppl_cit).second->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
 	  // insert pop() in front
 	  InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).second)));
-	  BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first),false));
+	  BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),
+											 *((*theVertexCorrespondence_ppl_cit).second),
+											 *(singleInEdge_ieitp.first),
+											 false));
 	  theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
 	  removeAndDeleteEdge(*(singleInEdge_ieitp.first));
 	  const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
-	    
 	  // add thePoppedIntegerSymbol_cr to branch condition as select value
 	  Expression& theSelectExpression_r(dynamic_cast<Branch&>((*theVertexCorrespondence_ppl_cit).second->getNewVertex()).getCondition().getExpression());
 	  Argument* theArgument_p=new Argument();
@@ -801,10 +870,6 @@ namespace xaifBoosterControlFlowReversal {
 	  theArgument_p->getVariable().supplyAndAddVertexInstance(*theSelectVariableSymbolReference_p);
 	  theSelectVariableSymbolReference_p->setId("1");
 	  theSelectVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(BRANCH)");
-	  // insert adjoint edges
-	  InEdgeIteratorPair ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
-	  InEdgeIterator begin_ieit(ieitp.first),end_ieit(ieitp.second);
-	  for (;begin_ieit!=end_ieit ;++begin_ieit) addAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*begin_ieit,theVertexCorrespondence_ppl);
 	} 
 	else { // explicit reversal
 	  // maintain the original condition.
@@ -816,129 +881,105 @@ namespace xaifBoosterControlFlowReversal {
 	  dynamic_cast<const Branch&>((*theVertexCorrespondence_ppl_cit).first->getCounterPart().getOriginalVertex()).
 	    getCondition().getExpression().copyMyselfInto(theConditionExpression,false,false);
 	}
+	// insert adjoint edges
+	InEdgeIteratorPair ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
+	InEdgeIterator begin_ieit(ieitp.first),end_ieit(ieitp.second);
+	for (;begin_ieit!=end_ieit ; ++begin_ieit) 
+	  addAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*begin_ieit,theVertexCorrespondence_ppl);
 	break;
       }
       case ControlFlowGraphVertexAlg::FORLOOP : {
 	if ((*theVertexCorrespondence_ppl_cit).second->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
-          // insert pop() in front
-          InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).second)));
-          BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first),false));
-          theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
-          removeAndDeleteEdge(*(singleInEdge_ieitp.first));
-          const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
+	  // insert pop() in front
+	  InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).second)));
+	  BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first),false));
+	  theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
+	  removeAndDeleteEdge(*(singleInEdge_ieitp.first));
+	  const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
 
-          // fill ForLoop  
-          ForLoop& theForLoop_r(dynamic_cast<ForLoop&>((*theVertexCorrespondence_ppl_cit).second->getNewVertex()));
+	  // fill ForLoop  
+	  ForLoop& theForLoop_r(dynamic_cast<ForLoop&>((*theVertexCorrespondence_ppl_cit).second->getNewVertex()));
 
-          // initialization
-          theForLoop_r.getInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "init");
-          // set lhs
-          const Symbol* theLoopCounterSymbol_p=makeAuxilliaryIntegerLHS(theForLoop_r.getInitialization().getAssignment(),theNewBasicBlock_r);
-          // set rhs
-          Constant* theOne=new Constant(SymbolType::INTEGER_STYPE,false);
-          theOne->setint(1);
-          theOne->setId("1");
-          theForLoop_r.getInitialization().getAssignment().getRHS().supplyAndAddVertexInstance(*theOne);
+	  // initialization
+	  theForLoop_r.getInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "init");
+	  // set lhs
+	  const Symbol* theLoopCounterSymbol_p=makeAuxilliaryIntegerLHS(theForLoop_r.getInitialization().getAssignment(),theNewBasicBlock_r);
+	  // set rhs
+	  Constant* theOne=new Constant(SymbolType::INTEGER_STYPE,false);
+	  theOne->setint(1);
+	  theOne->setId("1");
+	  theForLoop_r.getInitialization().getAssignment().getRHS().supplyAndAddVertexInstance(*theOne);
 
-          // condition
-          // counter
-          Argument* theLoopCounterUse_p=new Argument(false); // no algorithm
-          theLoopCounterUse_p->setId("2");
-          VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
-          theVariableSymbolReference_p->setId("1");
+	  // condition
+	  // counter
+	  Argument* theLoopCounterUse_p=new Argument(false); // no algorithm
+	  theLoopCounterUse_p->setId("2");
+	  VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
+	  theVariableSymbolReference_p->setId("1");
 	  theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/COUNTER)");
-          theLoopCounterUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-          theLoopCounterUse_p->getVariable().getAliasMapKey().setTemporary();
-          theLoopCounterUse_p->getVariable().getDuUdMapKey().setTemporary();
-          theForLoop_r.getCondition().getExpression().supplyAndAddVertexInstance(*theLoopCounterUse_p);
-          // the popped integer symbol
-          Argument* thePoppedIntegerUse_p=new Argument(false); // no algorithm
-          thePoppedIntegerUse_p->setId("3");
-          theVariableSymbolReference_p=new VariableSymbolReference(thePoppedIntegerSymbol_cr,theNewBasicBlock_r.getScope());
-          theVariableSymbolReference_p->setId("1");
+	  theLoopCounterUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+	  theLoopCounterUse_p->getVariable().getAliasMapKey().setTemporary();
+	  theLoopCounterUse_p->getVariable().getDuUdMapKey().setTemporary();
+	  theForLoop_r.getCondition().getExpression().supplyAndAddVertexInstance(*theLoopCounterUse_p);
+	  // the popped integer symbol
+	  Argument* thePoppedIntegerUse_p=new Argument(false); // no algorithm
+	  thePoppedIntegerUse_p->setId("3");
+	  theVariableSymbolReference_p=new VariableSymbolReference(thePoppedIntegerSymbol_cr,theNewBasicBlock_r.getScope());
+	  theVariableSymbolReference_p->setId("1");
 	  theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/POP_INTEGER)");
-          thePoppedIntegerUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-          thePoppedIntegerUse_p->getVariable().getAliasMapKey().setTemporary();
-          thePoppedIntegerUse_p->getVariable().getDuUdMapKey().setTemporary();
-          theForLoop_r.getCondition().getExpression().supplyAndAddVertexInstance(*thePoppedIntegerUse_p);
-          // <=
-          BooleanOperation* theLessThanOrEqualOperator_p=new BooleanOperation(BooleanOperationType::LESS_OR_EQUAL_OTYPE,false);
-          theLessThanOrEqualOperator_p->setId("1");
-          theForLoop_r.getCondition().getExpression().supplyAndAddVertexInstance(*theLessThanOrEqualOperator_p);
-          // edges
-          ExpressionEdge& theFirstExpressionEdge(theForLoop_r.getCondition().getExpression().addEdge(*theLoopCounterUse_p,*theLessThanOrEqualOperator_p));
-          theFirstExpressionEdge.setId(1);
-          theFirstExpressionEdge.setPosition(1);
-          ExpressionEdge& theSecondExpressionEdge(theForLoop_r.getCondition().getExpression().addEdge(*thePoppedIntegerUse_p,*theLessThanOrEqualOperator_p));
-          theSecondExpressionEdge.setId(2);
-          theSecondExpressionEdge.setPosition(2);
+	  thePoppedIntegerUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+	  thePoppedIntegerUse_p->getVariable().getAliasMapKey().setTemporary();
+	  thePoppedIntegerUse_p->getVariable().getDuUdMapKey().setTemporary();
+	  theForLoop_r.getCondition().getExpression().supplyAndAddVertexInstance(*thePoppedIntegerUse_p);
+	  // <=
+	  BooleanOperation* theLessThanOrEqualOperator_p=new BooleanOperation(BooleanOperationType::LESS_OR_EQUAL_OTYPE,false);
+	  theLessThanOrEqualOperator_p->setId("1");
+	  theForLoop_r.getCondition().getExpression().supplyAndAddVertexInstance(*theLessThanOrEqualOperator_p);
+	  // edges
+	  ExpressionEdge& theFirstExpressionEdge(theForLoop_r.getCondition().getExpression().addEdge(*theLoopCounterUse_p,*theLessThanOrEqualOperator_p));
+	  theFirstExpressionEdge.setId(1);
+	  theFirstExpressionEdge.setPosition(1);
+	  ExpressionEdge& theSecondExpressionEdge(theForLoop_r.getCondition().getExpression().addEdge(*thePoppedIntegerUse_p,*theLessThanOrEqualOperator_p));
+	  theSecondExpressionEdge.setId(2);
+	  theSecondExpressionEdge.setPosition(2);
           
-          // update
-          // set lhs
-          theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
-          theVariableSymbolReference_p->setId("1");
+	  // update
+	  // set lhs
+	  theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
+	  theVariableSymbolReference_p->setId("1");
 	  theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/LHS)");
-          theForLoop_r.getUpdate().getAssignment().getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-          theForLoop_r.getUpdate().getAssignment().getLHS().getAliasMapKey().setTemporary();
-          theForLoop_r.getUpdate().getAssignment().getLHS().getDuUdMapKey().setTemporary();
+	  theForLoop_r.getUpdate().getAssignment().getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+	  theForLoop_r.getUpdate().getAssignment().getLHS().getAliasMapKey().setTemporary();
+	  theForLoop_r.getUpdate().getAssignment().getLHS().getDuUdMapKey().setTemporary();
 
-          // set rhs
-          // counter
-          Argument* theUse_p=new Argument(false); // no algorithm
-          theUse_p->setId("2");
-          theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
-          theVariableSymbolReference_p->setId("1");
+	  // set rhs
+	  // counter
+	  Argument* theUse_p=new Argument(false); // no algorithm
+	  theUse_p->setId("2");
+	  theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
+	  theVariableSymbolReference_p->setId("1");
 	  theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/RHS)");
-          theUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-          theUse_p->getVariable().getAliasMapKey().setTemporary();
-          theUse_p->getVariable().getDuUdMapKey().setTemporary();
-          theForLoop_r.getUpdate().getAssignment().getRHS().supplyAndAddVertexInstance(*theUse_p);
-          // 1
-          Constant* theOne_p=new Constant(SymbolType::INTEGER_STYPE,false);
-          theOne_p->setint(1);
-          theOne_p->setId("3");
-          theForLoop_r.getUpdate().getAssignment().getRHS().supplyAndAddVertexInstance(*theOne_p);
-          // +
-          Intrinsic* theAddition_p=new Intrinsic(std::string("add_scal_scal"),false);
-          theAddition_p->setId("1");
-          theForLoop_r.getUpdate().getAssignment().getRHS().supplyAndAddVertexInstance(*theAddition_p);
-          // edges
-          ExpressionEdge& theFirstUpdateEdge(theForLoop_r.getUpdate().getAssignment().getRHS().addEdge(*theUse_p,*theAddition_p));
-          theFirstUpdateEdge.setId(1);
-          theFirstUpdateEdge.setPosition(1);
-          ExpressionEdge& theSecondUpdateEdge(theForLoop_r.getUpdate().getAssignment().getRHS().addEdge(*theOne_p,*theAddition_p));
-          theSecondUpdateEdge.setId(2);
-          theSecondUpdateEdge.setPosition(2);
+	  theUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+	  theUse_p->getVariable().getAliasMapKey().setTemporary();
+	  theUse_p->getVariable().getDuUdMapKey().setTemporary();
+	  theForLoop_r.getUpdate().getAssignment().getRHS().supplyAndAddVertexInstance(*theUse_p);
+	  // 1
+	  Constant* theOne_p=new Constant(SymbolType::INTEGER_STYPE,false);
+	  theOne_p->setint(1);
+	  theOne_p->setId("3");
+	  theForLoop_r.getUpdate().getAssignment().getRHS().supplyAndAddVertexInstance(*theOne_p);
+	  // +
+	  Intrinsic* theAddition_p=new Intrinsic(std::string("add_scal_scal"),false);
+	  theAddition_p->setId("1");
+	  theForLoop_r.getUpdate().getAssignment().getRHS().supplyAndAddVertexInstance(*theAddition_p);
+	  // edges
+	  ExpressionEdge& theFirstUpdateEdge(theForLoop_r.getUpdate().getAssignment().getRHS().addEdge(*theUse_p,*theAddition_p));
+	  theFirstUpdateEdge.setId(1);
+	  theFirstUpdateEdge.setPosition(1);
+	  ExpressionEdge& theSecondUpdateEdge(theForLoop_r.getUpdate().getAssignment().getRHS().addEdge(*theOne_p,*theAddition_p));
+	  theSecondUpdateEdge.setId(2);
+	  theSecondUpdateEdge.setPosition(2);
           
-          // insert adjoint edges
-          InEdgeIteratorPair theEndLoop_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
-          ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(addAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*(theEndLoop_ieitp.first),theVertexCorrespondence_ppl));
-          // set condition value to true because this is a loop body entry edge
-          theNewReversibleControlFlowGraphEdge_r.setConditionValue(1);
-
-          // insert edge from current adjoint node to adjoint of the
-          // predecessor of the LOOP node that matches the original
-          // (LOOP) of the original (ENDLOOP) of the current adjoint node 
-          ReversibleControlFlowGraphVertex *theAdjointSource_p, *theAdjointTarget_p;
-          std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::const_iterator theVertexCorrespondence_ppl_cit_1;
-          for (theVertexCorrespondence_ppl_cit_1=theVertexCorrespondence_ppl.begin();theVertexCorrespondence_ppl_cit_1!=theVertexCorrespondence_ppl.end();theVertexCorrespondence_ppl_cit_1++) 
-            if ((*theVertexCorrespondence_ppl_cit_1).first==(*theVertexCorrespondence_ppl_cit).first) {
-              theAdjointSource_p=(*theVertexCorrespondence_ppl_cit_1).second; 
-              break;
-            } 
-          OutEdgeIteratorPair toLoop_oeitp(getOutEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
-          InEdgeIteratorPair ieitp(getInEdgesOf(getTargetOf(*toLoop_oeitp.first)));
-          InEdgeIterator begin_ieit(ieitp.first),end_ieit(ieitp.second);
-          for (;begin_ieit!=end_ieit ;++begin_ieit) 
-            if (!(*begin_ieit).isBackEdge(*this)) {
-              for (theVertexCorrespondence_ppl_cit_1=theVertexCorrespondence_ppl.begin();theVertexCorrespondence_ppl_cit_1!=theVertexCorrespondence_ppl.end();theVertexCorrespondence_ppl_cit_1++) 
-                if ((*theVertexCorrespondence_ppl_cit_1).first==&getSourceOf(*begin_ieit)) {
-                  theAdjointTarget_p=(*theVertexCorrespondence_ppl_cit_1).second; 
-                  break;
-                } 
-              break;
-            } 
-          insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*theAdjointSource_p,*theAdjointTarget_p);
 	} 
 	else { // explicit reversal
 	  // the old ForLoop is the counter part of the ENDLOOP that is the original to this vertex 
@@ -981,16 +1022,15 @@ namespace xaifBoosterControlFlowReversal {
 					 theNewForLoop,
 					 countUp);
 	}
-	break;
-      }
-      case ControlFlowGraphVertexAlg::ENDLOOP : {
-	// Insert back-edge from current adjoint node to matching
-	// FORLOOP node.
-	// The original node corresponding to the the current adjoint
-	// node is a LOOP. We need to find the adjoint corresponding to the
-	// matching original ENDLOOP node. 
+	// insert adjoint edges
+	InEdgeIteratorPair theEndLoop_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
+	ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(addAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*(theEndLoop_ieitp.first),theVertexCorrespondence_ppl));
+	// set condition value to true because this is a loop body entry edge
+	theNewReversibleControlFlowGraphEdge_r.setConditionValue(1);
 
-	// determine adjoint source 
+	// insert edge from current adjoint node to adjoint of the
+	// predecessor of the LOOP node that matches the original
+	// (LOOP) of the original (ENDLOOP) of the current adjoint node 
 	ReversibleControlFlowGraphVertex *theAdjointSource_p, *theAdjointTarget_p;
 	std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::const_iterator theVertexCorrespondence_ppl_cit_1;
 	for (theVertexCorrespondence_ppl_cit_1=theVertexCorrespondence_ppl.begin();theVertexCorrespondence_ppl_cit_1!=theVertexCorrespondence_ppl.end();theVertexCorrespondence_ppl_cit_1++) 
@@ -998,20 +1038,51 @@ namespace xaifBoosterControlFlowReversal {
 	    theAdjointSource_p=(*theVertexCorrespondence_ppl_cit_1).second; 
 	    break;
 	  } 
-	// find adjoint target
-	InEdgeIteratorPair ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
+	OutEdgeIteratorPair toLoop_oeitp(getOutEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
+	InEdgeIteratorPair ieitp(getInEdgesOf(getTargetOf(*toLoop_oeitp.first)));
 	InEdgeIterator begin_ieit(ieitp.first),end_ieit(ieitp.second);
 	for (;begin_ieit!=end_ieit ;++begin_ieit) 
-	  if (getSourceOf(*begin_ieit).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDLOOP)  
+	  if (!(*begin_ieit).isBackEdge(*this)) {
 	    for (theVertexCorrespondence_ppl_cit_1=theVertexCorrespondence_ppl.begin();theVertexCorrespondence_ppl_cit_1!=theVertexCorrespondence_ppl.end();theVertexCorrespondence_ppl_cit_1++) 
 	      if ((*theVertexCorrespondence_ppl_cit_1).first==&getSourceOf(*begin_ieit)) {
 		theAdjointTarget_p=(*theVertexCorrespondence_ppl_cit_1).second; 
 		break;
 	      } 
+	    break;
+	  } 
 	insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*theAdjointSource_p,*theAdjointTarget_p);
 	break;
       }
-      default: break; // only EXIT left
+      case ControlFlowGraphVertexAlg::ENDLOOP : {
+	// Insert back-edge from this adjoint ENDLOOP to the matching adjoint FORLOOP vertex.
+	// The original vertex corresponding to this adjoint ENDLOOP is a LOOP. 
+	// We need to find the adjoint vertex corresponding to the
+	// original ENDLOOP counterPart. 
+	// find adjoint target as the adjoint to the counterpart
+	ReversibleControlFlowGraphVertex* theAdjointTarget_p(0);
+	ReversibleControlFlowGraphVertex& theOriginalEndLoop((*theVertexCorrespondence_ppl_cit).first->getCounterPart());
+	for (std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::const_iterator theVertexCorrespondence_ppl_cit_1=theVertexCorrespondence_ppl.begin();
+	     theVertexCorrespondence_ppl_cit_1!=theVertexCorrespondence_ppl.end();
+	     theVertexCorrespondence_ppl_cit_1++) { 
+	  if ((*theVertexCorrespondence_ppl_cit_1).first==&theOriginalEndLoop) {
+	    theAdjointTarget_p=(*theVertexCorrespondence_ppl_cit_1).second; 
+	    break;
+	  } 
+	}
+	if (!theAdjointTarget_p)
+	  THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: adjoint ENDLOOP counterpart not found");
+	insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,
+					  *(*theVertexCorrespondence_ppl_cit).second,
+					  *theAdjointTarget_p);
+	break;
+      }
+      case ControlFlowGraphVertexAlg::EXIT : 
+	// do nothing
+	break;
+      default: 
+	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: missing logic to handle ControlFlowGraphVertex of kind "
+				   << (*theVertexCorrespondence_ppl_cit).second->getKind());
+	break; 
       }
     }
     theAdjointControlFlowGraph_r.markBranchEntryEdges(); 
@@ -1033,8 +1104,8 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraph::debug() const {
     std::ostringstream out;
     out << "xaifBoosterControlFlowReversal::ControlFlowGraph["
-        << this
-        << "]" << std::ends;
+	<< this
+	<< "]" << std::ends;
     return out.str();
   }
 
@@ -1168,10 +1239,10 @@ namespace xaifBoosterControlFlowReversal {
       break;
     case BooleanOperationType::GREATER_THAN_OTYPE :
       if (countUp) { 
- 	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: loop reversal count up and > condition logic goof up");
+	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: loop reversal count up and > condition logic goof up");
       }
       else
- 	adjustDown=true;
+	adjustDown=true;
       break;
     case BooleanOperationType::LESS_OR_EQUAL_OTYPE: 
       if (!countUp)  
