@@ -45,6 +45,8 @@ namespace xaifBoosterCodeReplacement {
 
     const std::string& getTemplateName() const;
 
+    const ArgumentList& getArgumentList() const;
+
   private: 
     
     /** 

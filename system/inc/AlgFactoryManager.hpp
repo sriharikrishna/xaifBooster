@@ -7,6 +7,7 @@
 namespace xaifBooster { 
 
 class ArgumentAlgFactory;
+class ArgumentSymbolReferenceAlgFactory;
 class AssignmentAlgFactory;
 class BasicBlockAlgFactory;
 class BooleanOperationAlgFactory;
@@ -55,6 +56,7 @@ class CallGraphVertexAlgFactory;
     virtual void resets(); 
 
     ArgumentAlgFactory* getArgumentAlgFactory() const ;
+    ArgumentSymbolReferenceAlgFactory* getArgumentSymbolReferenceAlgFactory() const ;
     AssignmentAlgFactory* getAssignmentAlgFactory() const ;
     BasicBlockAlgFactory* getBasicBlockAlgFactory() const ;
     BooleanOperationAlgFactory* getBooleanOperationAlgFactory() const ;
@@ -82,6 +84,7 @@ class CallGraphVertexAlgFactory;
   protected: 
     
     void resetArgumentAlgFactory(ArgumentAlgFactory*);
+    void resetArgumentSymbolReferenceAlgFactory(ArgumentSymbolReferenceAlgFactory*);
     void resetAssignmentAlgFactory(AssignmentAlgFactory*);
     void resetBasicBlockAlgFactory(BasicBlockAlgFactory*);
     void resetBooleanOperationAlgFactory(BooleanOperationAlgFactory*);
@@ -118,6 +121,7 @@ class CallGraphVertexAlgFactory;
   private: 
 
     ArgumentAlgFactory* ourArgumentAlgFactory_p;
+    ArgumentSymbolReferenceAlgFactory* ourArgumentSymbolReferenceAlgFactory_p;
     AssignmentAlgFactory* ourAssignmentAlgFactory_p;
     BasicBlockAlgFactory* ourBasicBlockAlgFactory_p;
     BooleanOperationAlgFactory* ourBooleanOperationAlgFactory_p;

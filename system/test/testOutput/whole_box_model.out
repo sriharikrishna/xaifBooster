@@ -652,7 +652,7 @@
     </xaif:AliasSetList>
     <xaif:ControlFlowGraph vertex_id="1" symbol_id="box_forward__20" scope_id="1" annotation="{PU_Id#1}" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="ILEV1_1" scope_id="2" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="ILEV1_1" scope_id="2" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#6:7:9:19:25:45:65:75:85}" scope_id="2">
@@ -849,9 +849,9 @@
     </xaif:ControlFlowGraph>
     <xaif:ControlFlowGraph vertex_id="2" symbol_id="box_density__29" scope_id="1" annotation="{PU_Id#6}" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="TLOC_1" scope_id="7" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="SLOC_2" scope_id="7" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="3" symbol_id="RHOLOC_3" scope_id="7" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="TLOC_1" scope_id="7" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="SLOC_2" scope_id="7" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="3" symbol_id="RHOLOC_3" scope_id="7" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#122}" scope_id="7">
@@ -959,8 +959,8 @@
     </xaif:ControlFlowGraph>
     <xaif:ControlFlowGraph vertex_id="3" symbol_id="box_transport__32" scope_id="1" annotation="{PU_Id#7}" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="RHOLOC_1" scope_id="8" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="UVELLOC_2" scope_id="8" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="RHOLOC_1" scope_id="8" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="UVELLOC_2" scope_id="8" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#162:163:192}" scope_id="8">
@@ -1037,13 +1037,13 @@
     </xaif:ControlFlowGraph>
     <xaif:ControlFlowGraph vertex_id="4" symbol_id="box_timestep__31" scope_id="1" annotation="{PU_Id#11}" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="GAMMALOC_1" scope_id="12" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="FLDSTAR_2" scope_id="12" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="3" symbol_id="EXTFORLOC_3" scope_id="12" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="4" symbol_id="UVELLOC_4" scope_id="12" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="5" symbol_id="FLDNOW_5" scope_id="12" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="6" symbol_id="FLDOLD_6" scope_id="12" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="7" symbol_id="FLDNEW_7" scope_id="12" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="GAMMALOC_1" scope_id="12" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="FLDSTAR_2" scope_id="12" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="3" symbol_id="EXTFORLOC_3" scope_id="12" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="4" symbol_id="UVELLOC_4" scope_id="12" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="5" symbol_id="FLDNOW_5" scope_id="12" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="6" symbol_id="FLDOLD_6" scope_id="12" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="7" symbol_id="FLDNEW_7" scope_id="12" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#204}" scope_id="12">
@@ -1621,9 +1621,9 @@
     </xaif:ControlFlowGraph>
     <xaif:ControlFlowGraph vertex_id="5" symbol_id="box_robert_filter__30" scope_id="1" annotation="{PU_Id#8}" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="FLDNOW_1" scope_id="9" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="FLDOLD_2" scope_id="9" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="3" symbol_id="FLDNEW_3" scope_id="9" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="FLDNOW_1" scope_id="9" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="FLDOLD_2" scope_id="9" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="3" symbol_id="FLDNEW_3" scope_id="9" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#492}" scope_id="9">
@@ -4539,9 +4539,9 @@
     </xaif:ControlFlowGraph>
     <xaif:ControlFlowGraph vertex_id="12" symbol_id="box_update__642" scope_id="1" annotation="{PU_Id#10}" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="FLDNEW_1" scope_id="11" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="FLDOLD_2" scope_id="11" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="3" symbol_id="DFLDDT_3" scope_id="11" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="FLDNEW_1" scope_id="11" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="FLDOLD_2" scope_id="11" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="3" symbol_id="DFLDDT_3" scope_id="11" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#1658}" scope_id="11">

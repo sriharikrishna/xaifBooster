@@ -44,9 +44,9 @@
     </xaif:AliasSetList>
     <xaif:ReplacementList vertex_id="1" symbol_id="head" scope_id="1" annotation="" template_name="reverse_subroutine_template">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="3" symbol_id="z" scope_id="2" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="3" symbol_id="z" scope_id="2" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Replacement placeholder="1">
         <xaif:Entry vertex_id="1" annotation=""/>

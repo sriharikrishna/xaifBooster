@@ -70,6 +70,14 @@ namespace xaifBooster {
     return *myScope_p;
   }
 
+  void ArgumentList::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+    for (ArgumentSymbolReferencePList::iterator i=myArgumentSymbolReferencePList.begin();
+	 i!=myArgumentSymbolReferencePList.end();
+	 ++i) { 
+       (*i)->genericTraversal(anAction_c);
+    }
+  } 
+
 /* UN: want this later on
   Scope& ArgumentList::getScope() { 
     return *myScope_p;

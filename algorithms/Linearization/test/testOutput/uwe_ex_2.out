@@ -32,8 +32,8 @@
     </xaif:AliasSetList>
     <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" annotation="" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation=""/>
       <xaif:ForLoop vertex_id="2" annotation="">
