@@ -36,7 +36,7 @@ $(TARGET).xaif : $(TARGET).B whirl2xaif
 $(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
 	$(COMPLAIN)
 #	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif -g 15
-	./xaifBooster -i $(TARGET).xaif -g 16 -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
+	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
 
 $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
 	./xaif2whirl --structured $(TARGET).B $(TARGET).xb.xaif
@@ -46,8 +46,8 @@ $(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
 	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f $(TARGET).xb.x2w.B
 
 $(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
-	perl pp.pl $(TARGET).xb.x2w.w2f.f
-#	perl pp.pl -f $(TARGET).xb.x2w.w2f.f
+#	perl pp.pl $(TARGET).xb.x2w.w2f.f
+	perl pp.pl -f $(TARGET).xb.x2w.w2f.f
 
 # setup some links
 %.xsd:

@@ -73,5 +73,5 @@ C $OpenAD$  INLINE DECLS
           type(active), intent(in) :: y
 
 C   $OpenAD$ END DECLS
-          x%d=y%d+x%d
+          x%d=x%d+y%d
         end subroutine incderiv
