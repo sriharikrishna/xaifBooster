@@ -4,7 +4,6 @@
 
 #include "xaifBooster/system/inc/XAIFBaseParserHandlers.hpp"
 #include "xaifBooster/system/inc/XMLParser.hpp"
-#include "xaifBooster/system/inc/DuUd.hpp"
 
 
 namespace xaifBooster {
@@ -211,12 +210,12 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAssignmentLHS" ); 
     Assignment& theAssignment(passingIn.getAssignment());
     theAssignment.getLHS().getAliasMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myKey_XAIFName).c_str()));
-    passingOut.setVariable(theAssignment.getLHS());
-    theAssignment.getLHS().getDuUd().
-      setReference(atoi(XMLParser::getAttributeValueByName(DuUd::our_myDuUdReference_XAIFName).c_str()));
+      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName).c_str()));
+    theAssignment.getLHS().getDuUdMapKey().
+      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName).c_str()));
     theAssignment.getLHS().
       setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
+    passingOut.setVariable(theAssignment.getLHS());
   };
 
   void 
@@ -256,11 +255,11 @@ namespace xaifBooster {
     theArgument_p->setId(XMLParser::getAttributeValueByName(Argument::our_myId_XAIFName));
     theExpression.supplyAndAddVertexInstance(*theArgument_p);
     theArgument_p->getVariable().getAliasMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myKey_XAIFName).c_str()));
+      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName).c_str()));
+    theArgument_p->getVariable().getDuUdMapKey().
+      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName).c_str()));
     theArgument_p->getVariable().
       setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
-    theArgument_p->getVariable().getDuUd().
-      setReference(atoi(XMLParser::getAttributeValueByName(DuUd::our_myDuUdReference_XAIFName).c_str()));
     passingOut.setVariable(theArgument_p->getVariable());
   };
 

@@ -63,6 +63,7 @@ namespace xaifBoosterLinearization {
     theVariableSymbolReference_p->setId("1");
     theVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theVariable_p->getAliasMapKey().setTemporary();
+    theVariable_p->getDuUdMapKey().setTemporary();
     myAuxilliaryVariable_p=theVariable_p;
     DBG_MACRO(DbgGroup::TEMPORARY,
 	      "made auxilliary:"
