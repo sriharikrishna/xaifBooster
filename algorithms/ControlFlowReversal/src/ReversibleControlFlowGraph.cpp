@@ -335,19 +335,8 @@ namespace xaifBoosterControlFlowReversal {
     return *theIntegerSymbol_p;
   }
 
-
-
-
-
-  /**
-   * Augmentation of cfg to record the flow of control. This assumes
-   * that all vertices have at most two inedges (loops and endbranches)
-   * and at most two outedges (loops and branches)
-   */
-
   void 
   ReversibleControlFlowGraph::storeControlFlow() {
-    markBranchExitEdges();
     std::stack<const Symbol*> theLoopCounterSymbolStack_r;
     std::list<ReversibleControlFlowGraphVertex*>::iterator the_mySortedVertices_p_l_it;
     for (the_mySortedVertices_p_l_it=mySortedVertices_p_l.begin(); 
@@ -1014,7 +1003,7 @@ namespace xaifBoosterControlFlowReversal {
 	      &(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement("add_scal_scal"))) 
 	    countUp=true;
 	  else if (&(theOldUpdateIntrinsic_p->getInlinableIntrinsicsCatalogueItem())==
-		   &(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement("minus_scal_scal"))) 
+		   &(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement("sub_scal_scal"))) 
 	    countUp=false;
 	  else
 	    THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: an explicit reversal loop update intrinsic does not match the form i+c or i-c");
@@ -1150,13 +1139,13 @@ namespace xaifBoosterControlFlowReversal {
     // copy the old one into it
     theOldForLoop.getInitialization().getAssignment().getRHS().copyMyselfInto(theNewInitializationRHS, true, false);
     ExpressionVertex& theNewInitMaxVertex(theNewInitializationRHS.getMaxVertex());
-    // add the looping amount which is bound plus/minus init modulo update
-    // e.g. reverseInit=oldInit+oldUpdate*((oldBound-oldInit)%upd ate)
+    // add the looping amount which is bound plus/minus init divided by update
+    // e.g. reverseInit=oldInit+oldUpdate*((oldBound-oldInit)/update)
     Intrinsic* newInitTop_p;
     if (countUp)
       newInitTop_p=new Intrinsic("add_scal_scal");
     else 
-      newInitTop_p=new Intrinsic("minus_scal_scal");
+      newInitTop_p=new Intrinsic("sub_scal_scal");
     newInitTop_p->setId(theNewInitializationRHS.getNextVertexId());
     theNewInitializationRHS.supplyAndAddVertexInstance(*newInitTop_p);
     // add the edge from the max of the old init to the top
@@ -1186,26 +1175,26 @@ namespace xaifBoosterControlFlowReversal {
     newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
     newEdge_p->setPosition(1);
     theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,theTopOftheUpdate,aMult);
-    // 2nd argument to the multiplication is the modulo operation
-    Intrinsic& aMod(*(new Intrinsic("mod_scal_scal")));
+    // 2nd argument to the multiplication is the integer division operation
+    Intrinsic& aMod(*(new Intrinsic("div_scal_scal")));
     aMod.setId(theNewInitializationRHS.getNextVertexId());
     theNewInitializationRHS.supplyAndAddVertexInstance(aMod);
-    // add an edge from the modulo to the multiplication
+    // add an edge from the division to the multiplication
     newEdge_p=new ExpressionEdge(false);
     newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
     newEdge_p->setPosition(2);
     theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,aMod,aMult);
-    // 1st argument to modulo operation involves initializer and bound
-    Intrinsic& aMinus(*(new Intrinsic("minus_scal_scal")));
+    // 1st argument to division operation involves initializer and bound
+    Intrinsic& aMinus(*(new Intrinsic("sub_scal_scal")));
     aMinus.setId(theNewInitializationRHS.getNextVertexId());
     theNewInitializationRHS.supplyAndAddVertexInstance(aMinus);
-    // add an edge from the minus to the modulo
+    // add an edge from the minus to the division
     newEdge_p=new ExpressionEdge(false);
     newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
     newEdge_p->setPosition(1);
     theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,aMinus,aMod);
-    // 2nd argument to modulo operation is the update which we have already
-    // add an edge from the update to the modulo
+    // 2nd argument to division operation is the update which we have already
+    // add an edge from the update to the division
     newEdge_p=new ExpressionEdge(false);
     newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
     newEdge_p->setPosition(2);
@@ -1276,7 +1265,7 @@ namespace xaifBoosterControlFlowReversal {
       theNewInitializationRHS.supplyAndAddVertexInstance(theOne);
       Intrinsic* theAdjustmentIntrinsic_p;
       if (adjustDown) 
-	theAdjustmentIntrinsic_p=new Intrinsic("minus_scal_scal");
+	theAdjustmentIntrinsic_p=new Intrinsic("sub_scal_scal");
       else 
 	theAdjustmentIntrinsic_p=new Intrinsic("plus_scal_scal");
       theAdjustmentIntrinsic_p->setId(theNewInitializationRHS.getNextVertexId());
@@ -1340,8 +1329,6 @@ namespace xaifBoosterControlFlowReversal {
 								  bool countUp) { 
     // get the new RHS
     Expression& theNewUpdateRHS(theNewForLoop.getUpdate().getAssignment().getRHS());
-    // copy the old initialization into it
-    theOldForLoop.getInitialization().getAssignment().getRHS().copyMyselfInto(theNewUpdateRHS, true, false);
     const Expression& theOldUpdateRHS(theOldForLoop.getUpdate().getAssignment().getRHS());
     // copy the old update left operand which we expect to be the varref into the new update
     ExpressionVertex& 
@@ -1358,9 +1345,9 @@ namespace xaifBoosterControlFlowReversal {
 									 false));
     Intrinsic* theNewUpdateOp_p;
     if(countUp)
-      theNewUpdateOp_p=new Intrinsic("minus_scal_scal",false);
+      theNewUpdateOp_p=new Intrinsic("sub_scal_scal",false);
     else
-      theNewUpdateOp_p=new Intrinsic("minus_scal_scal",false);
+      theNewUpdateOp_p=new Intrinsic("add_scal_scal",false);
     theNewUpdateOp_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
     theNewUpdateRHS.supplyAndAddVertexInstance(*theNewUpdateOp_p);
     ExpressionEdge* newEdge_p=new ExpressionEdge(false);
