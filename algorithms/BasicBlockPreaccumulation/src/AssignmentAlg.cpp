@@ -23,7 +23,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
-    getContaining().printXMLHierarchyImpl(os);
+    xaifBoosterLinearization::AssignmentAlg::printXMLHierarchy(os);
   }
 
   std::string 

@@ -49,6 +49,11 @@ namespace xaifBooster {
      */
     virtual void algorithm_action_2(){};
 
+    /** 
+     * a generic algorithm action
+     */
+    virtual void algorithm_action_3(){};
+
   private: 
 
     /** 

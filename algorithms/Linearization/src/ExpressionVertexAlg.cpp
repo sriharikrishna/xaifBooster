@@ -72,7 +72,7 @@ namespace xaifBoosterLinearization {
   ExpressionVertexAlg::makeReplacementAssignment() { 
     if (myReplacementAssignment_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::makeReplacementAssignment : has already a replacement");
-    myReplacementAssignment_p=new Assignment(true);
+    myReplacementAssignment_p=new Assignment(true,false);
     return *myReplacementAssignment_p;
   }
 
