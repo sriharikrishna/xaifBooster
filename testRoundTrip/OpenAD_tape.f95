@@ -6,8 +6,8 @@ module OpenAD_tape
 &           integer_tape, integer_tape_pointer, &
 &           tape_init, tape_dump
 
-  integer, parameter :: max_double_tape_size=1000
-  integer, parameter :: max_integer_tape_size=1000
+  integer, parameter :: max_double_tape_size=1000000
+  integer, parameter :: max_integer_tape_size=1000000
   double precision :: double_tape(max_double_tape_size)
   integer :: integer_tape(max_integer_tape_size)
   integer double_tape_pointer, integer_tape_pointer
