@@ -6,6 +6,8 @@
 #include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/VertexTraversable.hpp"
 
+#include "xaifBooster/system/inc/ControlFlowGraphVertexAlgBase.hpp"
+
 namespace xaifBooster { 
 
   /**
@@ -21,22 +23,40 @@ namespace xaifBooster {
     /**
      * ctor
      */
-    ControlFlowGraphVertex (){};
+    ControlFlowGraphVertex ();
 
     /** 
      * dtor
      */
-    ~ControlFlowGraphVertex(){};
+    ~ControlFlowGraphVertex();
 
     /**
      * print XML hierarchy
      */
-    void printXMLHierarchy(std::ostream& os) const;
+    virtual void printXMLHierarchy(std::ostream& os) const;
+    virtual void printXMLHierarchyImpl(std::ostream& os) const;
 
     /**
      * print debug information
      */
     std::string debug() const ;
+
+
+    /**
+     * get algorithm
+     */
+    ControlFlowGraphVertexAlgBase& getControlFlowGraphVertexAlgBase();
+    const ControlFlowGraphVertexAlgBase& getControlFlowGraphVertexAlgBase() const;
+
+    protected:
+
+    /**
+     * this will be set to point a dynamically instance
+     * during construction and deleted during
+     * destruction
+     */
+    ControlFlowGraphVertexAlgBase* myControlFlowGraphVertexAlgBase_p;
+
 
   }; // end of class ControlFlowGraphVertex
  

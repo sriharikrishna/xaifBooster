@@ -9,6 +9,13 @@
 #include "xaifBooster/system/inc/ExpressionAlgFactory.hpp"
 #include "xaifBooster/system/inc/ExpressionEdgeAlgFactory.hpp"
 #include "xaifBooster/system/inc/IntrinsicAlgFactory.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertexAlgFactory.hpp"
+#include "xaifBooster/system/inc/IfStatementAlgFactory.hpp"
+#include "xaifBooster/system/inc/PreLoopAlgFactory.hpp"
+#include "xaifBooster/system/inc/ForLoopAlgFactory.hpp"
+#include "xaifBooster/system/inc/EntryAlgFactory.hpp"
+#include "xaifBooster/system/inc/ExitAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -43,7 +50,15 @@ namespace xaifBooster {
     ourConstantAlgFactory_p(0),
     ourExpressionAlgFactory_p(0),
     ourExpressionEdgeAlgFactory_p(0),
-    ourIntrinsicAlgFactory_p(0) {
+    ourIntrinsicAlgFactory_p(0), 
+    ourControlFlowGraphAlgFactory_p(0), 
+    ourControlFlowGraphVertexAlgFactory_p(0), 
+    ourIfStatementAlgFactory_p(0), 
+    ourPreLoopAlgFactory_p(0), 
+    ourForLoopAlgFactory_p(0), 
+    ourEntryAlgFactory_p(0), 
+    ourExitAlgFactory_p(0) 
+  {
   }
 
   AlgFactoryManager::~AlgFactoryManager() {
@@ -63,6 +78,20 @@ namespace xaifBooster {
       delete ourExpressionEdgeAlgFactory_p;
     if (ourIntrinsicAlgFactory_p)
       delete ourIntrinsicAlgFactory_p;
+    if (ourControlFlowGraphAlgFactory_p)
+      delete ourControlFlowGraphAlgFactory_p;
+    if (ourControlFlowGraphVertexAlgFactory_p)
+      delete ourControlFlowGraphVertexAlgFactory_p;
+    if (ourIfStatementAlgFactory_p)
+      delete ourIfStatementAlgFactory_p;
+    if (ourPreLoopAlgFactory_p)
+      delete ourPreLoopAlgFactory_p;
+    if (ourForLoopAlgFactory_p)
+      delete ourForLoopAlgFactory_p;
+    if (ourEntryAlgFactory_p)
+      delete ourEntryAlgFactory_p;
+    if (ourExitAlgFactory_p)
+      delete ourExitAlgFactory_p;
   } // end of AlgFactoryManager::~AlgFactoryManager
 
   void AlgFactoryManager::init() {
@@ -74,6 +103,13 @@ namespace xaifBooster {
     resetExpressionAlgFactory(new ExpressionAlgFactory());
     resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
     resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
+    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
+    resetControlFlowGraphVertexAlgFactory(new ControlFlowGraphVertexAlgFactory());
+    resetIfStatementAlgFactory(new IfStatementAlgFactory());
+    resetPreLoopAlgFactory(new PreLoopAlgFactory());
+    resetForLoopAlgFactory(new ForLoopAlgFactory());
+    resetEntryAlgFactory(new EntryAlgFactory());
+    resetExitAlgFactory(new ExitAlgFactory());
   }
 
   void AlgFactoryManager::resetArgumentAlgFactory(ArgumentAlgFactory* anotherArgumentAlgFactory_p){ 
@@ -124,6 +160,48 @@ namespace xaifBooster {
     ourIntrinsicAlgFactory_p=anotherIntrinsicAlgFactory_p;
   }
 
+  void AlgFactoryManager::resetControlFlowGraphAlgFactory(ControlFlowGraphAlgFactory* anotherControlFlowGraphAlgFactory_p){ 
+    if(ourControlFlowGraphAlgFactory_p) 
+      delete ourControlFlowGraphAlgFactory_p;
+    ourControlFlowGraphAlgFactory_p=anotherControlFlowGraphAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetControlFlowGraphVertexAlgFactory(ControlFlowGraphVertexAlgFactory* anotherControlFlowGraphVertexAlgFactory_p){ 
+    if(ourControlFlowGraphVertexAlgFactory_p) 
+      delete ourControlFlowGraphVertexAlgFactory_p;
+    ourControlFlowGraphVertexAlgFactory_p=anotherControlFlowGraphVertexAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetIfStatementAlgFactory(IfStatementAlgFactory* anotherIfStatementAlgFactory_p){ 
+    if(ourIfStatementAlgFactory_p) 
+      delete ourIfStatementAlgFactory_p;
+    ourIfStatementAlgFactory_p=anotherIfStatementAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetPreLoopAlgFactory(PreLoopAlgFactory* anotherPreLoopAlgFactory_p){ 
+    if(ourPreLoopAlgFactory_p) 
+      delete ourPreLoopAlgFactory_p;
+    ourPreLoopAlgFactory_p=anotherPreLoopAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetForLoopAlgFactory(ForLoopAlgFactory* anotherForLoopAlgFactory_p){ 
+    if(ourForLoopAlgFactory_p) 
+      delete ourForLoopAlgFactory_p;
+    ourForLoopAlgFactory_p=anotherForLoopAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetEntryAlgFactory(EntryAlgFactory* anotherEntryAlgFactory_p){ 
+    if(ourEntryAlgFactory_p) 
+      delete ourEntryAlgFactory_p;
+    ourEntryAlgFactory_p=anotherEntryAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetExitAlgFactory(ExitAlgFactory* anotherExitAlgFactory_p){ 
+    if(ourExitAlgFactory_p) 
+      delete ourExitAlgFactory_p;
+    ourExitAlgFactory_p=anotherExitAlgFactory_p;
+  }
+
   ArgumentAlgFactory* AlgFactoryManager::getArgumentAlgFactory() const { 
     if (!ourArgumentAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getArgumentAlgFactory: not set");
@@ -170,6 +248,48 @@ namespace xaifBooster {
     if (!ourIntrinsicAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getIntrinsicAlgFactory: not set");
     return ourIntrinsicAlgFactory_p;
+  }
+
+  ControlFlowGraphAlgFactory* AlgFactoryManager::getControlFlowGraphAlgFactory() const { 
+    if (!ourControlFlowGraphAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getControlFlowGraphAlgFactory: not set");
+    return ourControlFlowGraphAlgFactory_p;
+  }
+
+  ControlFlowGraphVertexAlgFactory* AlgFactoryManager::getControlFlowGraphVertexAlgFactory() const { 
+    if (!ourControlFlowGraphVertexAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getControlFlowGraphVertexAlgFactory: not set");
+    return ourControlFlowGraphVertexAlgFactory_p;
+  }
+
+  IfStatementAlgFactory* AlgFactoryManager::getIfStatementAlgFactory() const { 
+    if (!ourIfStatementAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getIfStatementAlgFactory: not set");
+    return ourIfStatementAlgFactory_p;
+  }
+
+  PreLoopAlgFactory* AlgFactoryManager::getPreLoopAlgFactory() const { 
+    if (!ourPreLoopAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getPreLoopAlgFactory: not set");
+    return ourPreLoopAlgFactory_p;
+  }
+
+  ForLoopAlgFactory* AlgFactoryManager::getForLoopAlgFactory() const { 
+    if (!ourForLoopAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getForLoopAlgFactory: not set");
+    return ourForLoopAlgFactory_p;
+  }
+
+  EntryAlgFactory* AlgFactoryManager::getEntryAlgFactory() const { 
+    if (!ourEntryAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getEntryAlgFactory: not set");
+    return ourEntryAlgFactory_p;
+  }
+
+  ExitAlgFactory* AlgFactoryManager::getExitAlgFactory() const { 
+    if (!ourExitAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getExitAlgFactory: not set");
+    return ourExitAlgFactory_p;
   }
 
 }

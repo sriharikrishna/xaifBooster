@@ -27,7 +27,7 @@ namespace xaifBooster {
 
   void
   PlainBasicBlock::printXMLHierarchyImpl(std::ostream& os) const { 
-    PrintManager& pm=PrintManager::getInstance();
+/*    PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
        << ourXAIFName 
@@ -55,12 +55,13 @@ namespace xaifBooster {
        << ">"
        << std::endl;
     pm.releaseInstance();
+*/
   } // end of PlainBasicBlock::printXMLHierarchyImpl
 
   std::string PlainBasicBlock::debug () const { 
     std::ostringstream out;
     out << "PlainBasicBlock[" << this 
-	<< ControlFlowGraphVertex::debug()
+//UN	<< ControlFlowGraphVertex::debug()
 	<< ",myElementList[#items=" << myElementList.size() << "]"
 	<< "]" << std::ends;  
     return out.str();

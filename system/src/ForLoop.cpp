@@ -1,6 +1,7 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/ForLoop.hpp"
+#include "xaifBooster/system/inc/ForLoopAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -11,7 +12,12 @@ namespace xaifBooster {
   ForLoop::ForLoop() : 
     myInitialization(true),
     myUpdate(true) { 
-  } 
+     myControlFlowGraphVertexAlgBase_p=ForLoopAlgFactory::instance()->makeNewAlg(*this);
+  }
+                                                                                
+  ForLoop::~ForLoop() {
+    if (myControlFlowGraphVertexAlgBase_p) delete myControlFlowGraphVertexAlgBase_p;
+  }
 
   void
   ForLoop::printXMLHierarchy(std::ostream& os) const { 
@@ -71,5 +77,13 @@ namespace xaifBooster {
   const Update& ForLoop::getUpdate() const { 
     return myUpdate;
   } 
+
+  ForLoopAlgBase&
+  ForLoop::getForLoopAlgBase() const {
+    if (!myControlFlowGraphVertexAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("ForLoop::getControlFlowGraphVertexAlgBase: not set");
+    return dynamic_cast<ForLoopAlgBase&>(*myControlFlowGraphVertexAlgBase_p);
+  }
+
 
 } // end of namespace xaifBooster 
