@@ -6,7 +6,14 @@ XAIFBOOSTERROOT   the path to the xaifBooster install, i.e. the parent of the xa
 		  e.g. XAIFBOOSTERROOT=/sandbox/xaifBooster_current
 
 and for the test driver that uses the ANGEL library: 
-ANGELROOT         the path to the ANGEL isnatll, e.g. ANGELROOT=/sandbox/CVS/angel
+ANGELROOT         the path to the ANGEL install, e.g. ANGELROOT=/sandbox/CVS/angel
+                  Note, in order to build ANGEL for use with xaifBooster edit 
+		  $(ANGELROOT)/specs/lib_usage.conf and make sure
+			CPPFLAGS	+= -DUSE_XAIF
+		  and 
+			CPPFLAGS	+= -I$(XAIF_DIR)
+		  are not commented out and XAIF_DIR (used by the angel build) 
+		  is set to the same value as XAIFBOOSTERROOT
 
 before any make do: 
 

@@ -453,8 +453,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theExternalArgument_p->setId(theNewAssignment.getRHS().getNextVertexId());
 	  theNewAssignment.getRHS().supplyAndAddVertexInstance(*theExternalArgument_p);
 	  if (theIntrinsic_p) { // have one addition already
-	    ExpressionEdge& theNewEdge(theNewAssignment.getRHS().addEdge(*theIntrinsic_p,
-									 *theExternalArgument_p));
+	    ExpressionEdge& theNewEdge(theNewAssignment.getRHS().addEdge(*theExternalArgument_p,
+									 *theIntrinsic_p));
 	    // make up an ID
 	    theNewEdge.setId(theNewAssignment.getRHS().getNextEdgeId());
 	    theNewEdge.setPosition(position++);
