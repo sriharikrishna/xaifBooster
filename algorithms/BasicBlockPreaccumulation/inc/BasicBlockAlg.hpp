@@ -49,6 +49,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual void algorithm_action_3();
 
+    /**
+     * pointer to function for computing elimination sequence
+     */
+    void (*compute_elimination_sequence)(
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
+      int,
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
+     );
+
     /** 
      * returns the PrivateLinearizedComputationalGraph 
      * to be used by theAssignment

@@ -1,0 +1,83 @@
+MAIN=t
+
+test: $(MAIN) quickRegression.bash
+
+clean:
+	rm -f obj/*.o obj/*.d $(MAIN) quickRegression.bash
+	rm -rf tmp
+
+obj doc: ;
+
+.PHONY: obj test doc clean
+
+quickRegression.bash: 
+	ln -sf $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/test/quickRegression.bash
+
+include ../../../Makefile.incl
+-include $(DEPINCL)
+
+# make name patterns for algorithm specific factory object files
+ALG_FACTORY_OBJ_NAMEPATTERNS=$(addprefix %, $(notdir $(wildcard ../src/srcFactories/obj/*.o)))
+
+
+# make name patterns for BasicBlockPreaccumulation algorithm specific factory object files
+BASICBLOCKPREACCUMULATION_FACTORY_OBJ_NAMEPATTERNS=$(addprefix %, $(notdir $(wildcard ../../BasicBlockPreaccumulation/src/srcFactories/obj/*.o)))
+
+# make set  for BasicBlockPreaccumulation algorithm specific factory object files
+BASICBLOCKPREACCUMULATION_FACTORY_OBJ_SET=$(wildcard ../../BasicBlockPreaccumulation/src/srcFactories/obj/*.o)
+
+# pick up BasicBlockPreaccumulation factory objects for factories 
+# that we don't define
+REMANING_BASICBLOCKPREACCUMULATION_FACTORY_OBJ_SET=$(filter-out $(ALG_FACTORY_OBJ_NAMEPATTERNS),$(BASICBLOCKPREACCUMULATION_FACTORY_OBJ_SET))
+
+# make name patterns for Linearization algorithm specific factory object files
+LINEARIZATION_FACTORY_OBJ_NAMEPATTERNS=$(addprefix %, $(notdir $(wildcard ../../Linearization/src/srcFactories/obj/*.o)))
+
+# make set  for Linearization algorithm specific factory object files
+LINEARIZATION_FACTORY_OBJ_SET=$(wildcard ../../Linearization/src/srcFactories/obj/*.o)
+
+# pick up Linearization factory objects for factories 
+# that we don't define
+REMANING_LINEARIZATION_FACTORY_OBJ_SET_1=$(filter-out $(ALG_FACTORY_OBJ_NAMEPATTERNS), $(LINEARIZATION_FACTORY_OBJ_SET))
+
+# pick up Linearization factory objects for factories 
+# that BasicBlockPreaccumulation does not define
+REMANING_LINEARIZATION_FACTORY_OBJ_SET_2=$(filter-out $(BASICBLOCKPREACCUMULATION_FACTORY_OBJ_NAMEPATTERNS), $(REMANING_LINEARIZATION_FACTORY_OBJ_SET_1))
+
+
+NON_DUMMY_FACTORY_OBJ_NAMEPATTERNS=$(ALG_FACTORY_OBJ_NAMEPATTERNS) $(LINEARIZATION_FACTORY_OBJ_NAMEPATTERNS) $(BASICBLOCKPREACCUMULATION_FACTORY_OBJ_NAMEPATTERNS) 
+
+# pick up dummy factories for the rest, 
+# i.e. the ones not in ALG_FACTORY_OBJ_NAMEPATTERNS
+REMANING_DUMMY_FACTORY_OBJ_SET=$(filter-out $(NON_DUMMY_FACTORY_OBJ_NAMEPATTERNS),$(DUMMY_FACTORY_OBJ_SET))
+
+# pick up all algorith specific obj files
+ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../src/srcFactories/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) 
+
+CCIF_LIB=-lxaifBoosterCrossCountryInterface
+CCIF_LIB_DIR=../../CrossCountryInterface/lib 
+
+VPATH+=$(CCIF_LIB_DIR) 
+LIBS+=$(CCIF_LIB)
+
+# setup for ANGEL
+UNDEF_ENV_VARS=""
+ifndef ANGELROOT
+UNDEF_ENV_VARS+=" ANGELROOT "
+endif
+
+ANGEL_LIB=-langel
+ANGEL_LIB_DIR=$(ANGELROOT)/lib 
+
+VPATH+=$(ANGEL_LIB_DIR) 
+LIBS+=$(ANGEL_LIB)
+
+ifneq ($(UNDEF_ENV_VARS),"")
+export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1
+endif
+
+$(MAIN): $(OBJS) $(ALG_OBJ_SET) $(REMANING_BASICBLOCKPREACCUMULATION_FACTORY_OBJ_SET) $(REMANING_LINEARIZATION_FACTORY_OBJ_SET_2) $(SYSTEM_OBJ_SET) $(REMANING_DUMMY_FACTORY_OBJ_SET) $(LIBS)
+	$(COMPLAIN)
+	$(CC) $^ $(LFLAGS) -o $@
+
+
