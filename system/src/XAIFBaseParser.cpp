@@ -39,6 +39,11 @@ namespace xaifBooster {
 
   } // end of XAIFBaseParser::staticInitialize
 
+    void XAIFBaseParser::setDocumentLocator(const XERCES_CPP_NAMESPACE::Locator* const locator)
+    {
+      myLocator_p=locator;
+    };
+
   /*
    * UN: Implementation of startElement handler
    */
@@ -98,7 +103,7 @@ namespace xaifBooster {
     catch (LogicException& e) { 
       DBG_MACRO(DbgGroup::ERROR,
 		"XMLParser::actionInvocation: caught: " 
-		<< e.getReason().c_str()); 
+		<< e.getReason().c_str() << " at line " << myLocator_p->getLineNumber()); 
       throw e;
     } 
   } // end of XAIFBaseParser::actionInvocation
