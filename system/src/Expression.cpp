@@ -113,4 +113,78 @@ namespace xaifBooster {
     } // end for 
   } // end of Expression::copyMyselfInto
 
+  ExpressionVertex&
+  Expression::copySubExpressionInto(Expression& theTarget,
+				    const ExpressionVertex& theTopVertex,
+				    bool withNewId,
+				    bool withAlgorithm) const { 
+    typedef std::list<const ExpressionVertex*> ExpressionVertexPList;
+    ExpressionVertexPList theList;
+    ExpressionVertex& theTopCopy(theTopVertex.createCopyOfMyself(withAlgorithm));
+    if(withNewId)
+      theTopCopy.overWriteId(theTarget.getNextVertexId());
+    theTarget.supplyAndAddVertexInstance(theTopCopy);
+    theList.push_back(&theTopVertex);
+    copySubExpressionInto(theTarget,
+			  theTopVertex,
+			  theTopCopy,
+			  withNewId,
+			  withAlgorithm,
+			  theList);
+    return theTopCopy;
+  }
+
+  void
+  Expression::copySubExpressionInto(Expression& theTarget,
+				    const ExpressionVertex& theTopVertex,
+				    ExpressionVertex& theTopCopy,
+				    bool withNewId,
+				    bool withAlgorithm,
+				    Expression::ExpressionVertexPList theList) const { 
+    ConstInEdgeIteratorPair pe=getInEdgesOf(theTopVertex);
+    ConstInEdgeIterator beginIte(pe.first),endIte(pe.second);
+    for (;beginIte!=endIte ;++beginIte) { 
+      const ExpressionVertex& theOriginalSource(getSourceOf(*beginIte));
+      // check if we created the target already
+      bool haveIt=false;
+      for (ExpressionVertexPList::iterator i=theList.begin();
+	   i!=theList.end();
+	   ++i) { 
+	if (&theOriginalSource==*i){ 
+	  haveIt=true;
+	  break;
+	}
+      }
+      if (haveIt)
+	continue;
+      ExpressionVertex& theCopy(theOriginalSource.createCopyOfMyself(withAlgorithm));
+      if(withNewId)
+	theCopy.overWriteId(theTarget.getNextVertexId());
+      theTarget.supplyAndAddVertexInstance(theCopy);
+      theList.push_back(&theOriginalSource);
+      ExpressionEdge* theEdgeCopy = new ExpressionEdge(withAlgorithm);
+      (*beginIte).copyMyselfInto(*theEdgeCopy);
+      if(withNewId) 
+	(*theEdgeCopy).overWriteId(theTarget.getNextEdgeId());
+      theTarget.supplyAndAddEdgeInstance(*theEdgeCopy,theCopy, theTopCopy );
+      copySubExpressionInto(theTarget,
+			    theOriginalSource,
+			    theCopy,
+			    withNewId,
+			    withAlgorithm,
+			    theList);
+    } // end for 
+  } 
+
+  const ExpressionVertex& Expression::findPositionalSubExpressionOf(const ExpressionVertex& aVertex,
+								    unsigned int aPosition) const { 
+    ConstInEdgeIteratorPair p=getInEdgesOf(aVertex);
+    ConstInEdgeIterator vI(p.first),vIE(p.second);
+    for(; vI!=vIE; ++vI) 
+      if(aPosition==(*vI).getPosition())
+	return getSourceOf(*vI);
+    THROW_LOGICEXCEPTION_MACRO("Expression::findPositionalSubExpressionOf: no such subexpression");
+    return aVertex;
+  }
+
 } // end of namespace xaifBooster 

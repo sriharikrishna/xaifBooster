@@ -157,9 +157,15 @@ namespace xaifBoosterLinearization {
 
     /** 
      * this determines if the assignment is active or not
-     * it is a modifiable copy of the same flag in Assignment
+     * it has a delayed initialization from the active informantion 
+     * if the containing assignments LHS.
      */
-    bool myActiveFlag;
+    mutable bool myActiveFlag;
+
+    /** 
+     * determines whether myActiveFlag has been initialized 
+     */
+    mutable bool myActiveFlagInit;
 
     /**
      * create replacement assignments that use the 

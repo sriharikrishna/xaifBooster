@@ -2,6 +2,7 @@
 #define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPE_BASICBLOCKALG_INCLUDE_
 
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
+#include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
@@ -32,6 +33,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      * or we have this fixed by a proper TBR analysis
      */
     virtual void algorithm_action_4();
+
+    /** 
+     * this implementation always returns ANONYMOUS. 
+     * EXPLICIT reversal only makes sense after we ran the 
+     * ControlFlowReversal 
+     * BasicBlockPreaccumulationReverse which inherits from ControlFlowReversal
+     * overwrites this implementation
+     */
+    virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
 
   private:
 
@@ -81,9 +91,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       /** 
        * adding a reinterpretation element to our list
        */ 
-      void supplyAndAddBasicBlockElementInstance(BasicBlockElement& theBasicBlockElement);
+      void supplyAndAddBasicBlockElementInstance(BasicBlockElement& theBasicBlockElement,
+						 const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
-      const PlainBasicBlock::BasicBlockElementList& getBasicBlockElementList() const; 
+      const PlainBasicBlock::BasicBlockElementList& getBasicBlockElementList(const ForLoopReversalType::ForLoopReversalType_E& aReversalType) const; 
 
     private: 
 
@@ -103,9 +114,19 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       ReinterpretedDerivativePropagator operator=(const ReinterpretedDerivativePropagator&);
 
       /** 
-       * the element that the reinterpretation consists of
+       * the elements that the reinterpretation consists of
+       * which assumes an anonymous reversal (no knowledge about the original 
+       * loop variables)
        */
-      PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;
+      PlainBasicBlock::BasicBlockElementList myBasicBlockElementListAnonymousReversal;
+
+      /** 
+       * the elements that the reinterpretation consists of
+       * under an explicit reversal (loop constructs are reversed explicitly
+       * and we assume all index expressions can be recalculated explcitly 
+       * at reversal time from explicitly reversed loops)
+       */
+      PlainBasicBlock::BasicBlockElementList myBasicBlockElementListExplicitReversal;
 
       /** 
        * the xaifBoosterDerivativePropagator::DerivativePropagator

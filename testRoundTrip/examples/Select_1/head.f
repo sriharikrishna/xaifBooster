@@ -2,7 +2,7 @@
 	  double precision, dimension(1), intent(in) :: x
 	  double precision, dimension(1), intent(out) :: y
           integer i
-
+c$openad INDEPENDENT(x)
           i=1
           y(1)=2. 
           select case (i) 
@@ -14,5 +14,5 @@
             y(1)=x(1)
           end select
           y(1)=y(1)*y(1)
-
+c$openad DEPENDENT(y)
 	end subroutine

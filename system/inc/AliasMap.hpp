@@ -31,12 +31,12 @@ namespace xaifBooster {
     AliasMapEntry&  
     addAliasMapEntry(const std::string& aKey);
 
-    typedef std::list<const AliasMapKey*> AliasMapKeyList;
+    typedef std::list<const AliasMapKey*> AliasMapKeyPList;
 
     /**
      * check disjunction of alias sets 
      */
-    bool mayAlias(const AliasMapKey& theKey, const AliasMapKeyList& theList) const;
+    bool mayAlias(const AliasMapKey& theKey, const AliasMapKeyPList& theList) const;
 
     /**
      * check disjunction of alias sets 
@@ -50,6 +50,11 @@ namespace xaifBooster {
      */
     bool mustAlias(const AliasMapKey& theKey,
 		   const AliasMapKey& theOtherKey) const;
+
+    /**
+     * check if addresses in theKey are a subset of addresses associated with keys in theList 
+     */
+    bool subSet(const AliasMapKey& theKey, const AliasMapKeyPList& theList) const;
 
     std::string debug() const ; 
 

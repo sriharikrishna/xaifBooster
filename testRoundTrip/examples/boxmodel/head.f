@@ -28,6 +28,8 @@ c-- local variables:
 
       integer ilev1
 
+c$openad INDEPENDENT(xx)
+
 c-- routine body
 
             ikey = ilev1
@@ -63,7 +65,8 @@ CADJ STORE tNow = comlev1, key = ikey, byte = isbyte
                if ( tNow(l) .LT. -2. )  tNow(l) = 2.
             end do
 
-
+c$openad DEPENDENT(tnew)
+c$openad DEPENDENT(snew)
       end
 
 c-----------------------------------------------------------------------
