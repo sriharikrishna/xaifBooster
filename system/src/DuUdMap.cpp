@@ -55,6 +55,8 @@ namespace xaifBooster {
 						    const DuUdMapDefinitionResult::StatementIdList& anIdList) const {
     DuUdMapDefinitionResult theResult;
     if (aKey.getKind()==DuUdMapKey::TEMP_VAR)
+      // obviously because the map doesn't contain any info on temporaries, 
+      // the calling context should figure it out itself
       THROW_LOGICEXCEPTION_MACRO("DuUdMap::definition: not supported for temporaries");
     if (aKey.getKind()!=DuUdMapKey::NO_INFO) { 
       // we get the entry:
@@ -73,6 +75,16 @@ namespace xaifBooster {
 				   << aKey.getKey() 
 				   << "< has no entry");
     } // end if
+    return theResult;
+  } 
+
+  const DuUdMapUseResult DuUdMap::use(const DuUdMapKey& aKey,
+				      const DuUdMapUseResult::StatementIdList& anIdList) const {
+    DuUdMapUseResult theResult;
+    // for now there is no difference
+    DuUdMapDefinitionResult aDefinitionResult(definition(aKey,anIdList));
+    theResult.myAnswer=aDefinitionResult.myAnswer;
+    theResult.myStatementId=aDefinitionResult.myStatementId;
     return theResult;
   } 
 

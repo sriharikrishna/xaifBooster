@@ -299,7 +299,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// where the top vertex is the top vertex of <some expression> which 
 	// has 't1' as LHS and now we would 
 	// try to add 't2' as another LHS.
-	// The clean solution to represent t2=t1 by adding another vertex 
+	// The clean solution is to represent t2=t1 by adding another vertex 
 	// with a special unit edge.
 	// the top node becomes the old LHS
 	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
@@ -336,9 +336,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					     	      theLHSLCGVertex_p,
 						      getContainingAssignment().getId());
       theLHSLCGVertex_p->setLHSVariable(theLHS);
-      // JU: this is a temporary measure, add all LHSs to the 
-      // JU: list of dependent variables
-      theFlattenedSequence.addToDependentList(*theLHSLCGVertex_p);
+      // as we step through the assignments we add all 
+      // the left hand sides as dependendents and when we are 
+      // done with one flattening section we remove the ones not 
+      // needed
+      theFlattenedSequence.addToDependentList(*theLHSLCGVertex_p,
+					      getContainingAssignment().getId());
       DBG_MACRO(DbgGroup::DATA,
 		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "
 		<< theVertexIdentificationListPassive.debug().c_str()

@@ -1,3 +1,4 @@
+
 #ifndef _PRIVATELINEARIZEDCOMPUTATIONALGRAPH_INCLUDE_
 #define _PRIVATELINEARIZEDCOMPUTATIONALGRAPH_INCLUDE_
 
@@ -44,6 +45,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       return myVertexIdentificationListPassive;
     };    
 
+    void addToIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndependentVertex);
+
+    void addToDependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theDependentVertex,
+			    const ObjectWithId::Id& aStatementId);
+
+    void removeFromIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndependentVertex);
+
+    void removeFromDependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theDependentVertex);
+
+    const DuUdMapDefinitionResult::StatementIdList& getDependentStatementIdList()const;
+
   private: 
 
     /**
@@ -89,6 +101,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     VertexIdentificationListPassive myVertexIdentificationListPassive; 
 
+    /** 
+     * this is the list of statementIds for the statements in which  
+     * the resp. dependent is the right hand side
+     */
+    DuUdMapDefinitionResult::StatementIdList myDependentStatementIdList;
+    
   }; // end of class PrivateLinearizedComputationalGraph 
 
 } 

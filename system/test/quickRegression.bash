@@ -10,7 +10,7 @@ if [ $# -gt 0 ]
 then  
     TESTFILES=$@
 else
-    TESTFILES='add_mul_ex1 add_mul_ex2 add_mul_ex uwe_ex_1 uwe_ex_2 uwe_ex_3 uwe_ex_4 uwe_ex_5 whole_box_model goto_label_1 select_case loop_continue loop_exit'
+    TESTFILES='add_mul_ex1 add_mul_ex2 add_mul_ex_duud_lineUp add_mul_ex_no_duud add_mul_ex uwe_ex_1 uwe_ex_2 uwe_ex_3 uwe_ex_4 uwe_ex_5 whole_box_model goto_label_1 select_case loop_continue loop_exit'
 fi
 for i in `echo ${TESTFILES}`
     do
