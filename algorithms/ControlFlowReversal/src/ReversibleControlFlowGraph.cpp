@@ -19,20 +19,23 @@
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
-  ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal_r) : myOriginalGraph_r(theOriginal_r) {
+  ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal_r) : myOriginalGraph_r(theOriginal_r) {}
+
+  void
+  ReversibleControlFlowGraph::makeThisACopyOfOriginalControlFlowGraph() {
     std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > vertexCopy_l;
-    ControlFlowGraph::ConstVertexIteratorPair p(theOriginal_r.vertices());
+    ControlFlowGraph::ConstVertexIteratorPair p(myOriginalGraph_r.vertices());
     ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt) {
       ReversibleControlFlowGraphVertex* anOriginalVertex=new ReversibleControlFlowGraphVertex(&(*beginIt));
       vertexCopy_l.push_back(std::make_pair(&(*beginIt),anOriginalVertex));  
       supplyAndAddVertexInstance(*anOriginalVertex);
     }
-    ControlFlowGraph::ConstEdgeIteratorPair pe(theOriginal_r.edges());
+    ControlFlowGraph::ConstEdgeIteratorPair pe(myOriginalGraph_r.edges());
     ControlFlowGraph::ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
     for (;beginIte!=endIte ;++beginIte) {
-      const ControlFlowGraphVertex& theOriginalSource_r(theOriginal_r.getSourceOf(*beginIte));
-      const ControlFlowGraphVertex& theOriginalTarget_r(theOriginal_r.getTargetOf(*beginIte));
+      const ControlFlowGraphVertex& theOriginalSource_r(myOriginalGraph_r.getSourceOf(*beginIte));
+      const ControlFlowGraphVertex& theOriginalTarget_r(myOriginalGraph_r.getTargetOf(*beginIte));
       std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::iterator vertexCopyListSrcIt, vertexCopyListTgtIt;
       for (vertexCopyListSrcIt=vertexCopy_l.begin();
            vertexCopyListSrcIt!=vertexCopy_l.end();vertexCopyListSrcIt++) {
@@ -564,11 +567,11 @@ namespace xaifBoosterControlFlowReversal {
    Return reference to the newly created ReversibleControlFlowGraphEdge.
    */
   ReversibleControlFlowGraphEdge&
-  ReversibleControlFlowGraph::insertAdjointControlFlowGraphEdge(const ReversibleControlFlowGraphVertex& theAdjointSource_cr, const ReversibleControlFlowGraphVertex& theAdjointTarget_cr) {
+  ReversibleControlFlowGraph::insertAdjointControlFlowGraphEdge(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r, const ReversibleControlFlowGraphVertex& theAdjointSource_cr, const ReversibleControlFlowGraphVertex& theAdjointTarget_cr) {
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
     aNewReversibleControlFlowGraphEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
     aNewReversibleControlFlowGraphEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
-    supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,theAdjointSource_cr,theAdjointTarget_cr);
+    theAdjointControlFlowGraph_r.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,theAdjointSource_cr,theAdjointTarget_cr);
     return *aNewReversibleControlFlowGraphEdge_p;
   }
 
@@ -586,7 +589,7 @@ namespace xaifBoosterControlFlowReversal {
    from theSource_p to the ENDLOOP node's adjoint (a FORLOOP) node.
    */
   ReversibleControlFlowGraphEdge&
-  ReversibleControlFlowGraph::addAdjointControlFlowGraphEdge(const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl) {
+  ReversibleControlFlowGraph::addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r, const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl) {
     std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::const_iterator theVertexCorrespondence_ppl_cit;
     // source and target of adjoint edge to be inserted
     // source is fixed, target depends on kind of original source
@@ -623,7 +626,7 @@ namespace xaifBoosterControlFlowReversal {
          }
     }
     // insert edge from *theAdjointSource_p to *theAdjointTarget_p
-    ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(insertAdjointControlFlowGraphEdge(*theAdjointSource_p,*theAdjointTarget_p));
+    ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*theAdjointSource_p,*theAdjointTarget_p));
     // set condition value
     theNewReversibleControlFlowGraphEdge_r.set_has_condition_value(theOriginalEdge_cr.has_condition_value());
     theNewReversibleControlFlowGraphEdge_r.set_condition_value(theOriginalEdge_cr.get_condition_value());
@@ -634,39 +637,39 @@ namespace xaifBoosterControlFlowReversal {
    Construct the adjoint control flow graph.
    */
   void
-  ReversibleControlFlowGraph::buildAdjointControlFlowGraph() {
+  ReversibleControlFlowGraph::buildAdjointControlFlowGraph(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r) {
     std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > theVertexCorrespondence_ppl;
     std::list<ReversibleControlFlowGraphVertex*>::reverse_iterator the_mySortedVertices_p_l_rit;
     for (the_mySortedVertices_p_l_rit=mySortedVertices_p_l.rbegin(); the_mySortedVertices_p_l_rit!=mySortedVertices_p_l.rend(); the_mySortedVertices_p_l_rit++) {
       ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p;
       switch ((*the_mySortedVertices_p_l_rit)->getOriginalControlFlowGraphVertexAlg().getKind()) {
         case ControlFlowGraphVertexAlg::EXIT : {
-          theReversibleControlFlowGraphVertex_p=new_entry();
+          theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_entry();
           break;
         }
         case ControlFlowGraphVertexAlg::ENTRY : {
-          theReversibleControlFlowGraphVertex_p=new_exit();
+          theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_exit();
           break;
         }
         case ControlFlowGraphVertexAlg::BRANCH : {
-          theReversibleControlFlowGraphVertex_p=new_endbranch();
+          theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_endbranch();
           break;
         }
         case ControlFlowGraphVertexAlg::BASICBLOCK : {
-          theReversibleControlFlowGraphVertex_p=new_basic_block();
+          theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_basic_block();
           break;
         }
         case ControlFlowGraphVertexAlg::ENDBRANCH : {
-          theReversibleControlFlowGraphVertex_p=new_branch();
+          theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_branch();
           break;
         }
         case ControlFlowGraphVertexAlg::PRELOOP : 
         case ControlFlowGraphVertexAlg::FORLOOP : {
-          theReversibleControlFlowGraphVertex_p=new_endloop();
+          theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_endloop();
           break;
         }
         case ControlFlowGraphVertexAlg::ENDLOOP : {
-          theReversibleControlFlowGraphVertex_p=new_forloop();
+          theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_forloop();
           break;
         }
         default: break;
@@ -683,13 +686,13 @@ namespace xaifBoosterControlFlowReversal {
         case ControlFlowGraphVertexAlg::BRANCH : {
           InEdgeIteratorPair ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
           InEdgeIterator begin_ieit(ieitp.first),end_ieit(ieitp.second);
-          for (;begin_ieit!=end_ieit ;++begin_ieit) addAdjointControlFlowGraphEdge(*begin_ieit,theVertexCorrespondence_ppl);
+          for (;begin_ieit!=end_ieit ;++begin_ieit) addAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*begin_ieit,theVertexCorrespondence_ppl);
           break;
         }
         case ControlFlowGraphVertexAlg::FORLOOP : {
           // original is ENDLOOP
           InEdgeIteratorPair theEndLoop_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
-          ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(addAdjointControlFlowGraphEdge(*(theEndLoop_ieitp.first),theVertexCorrespondence_ppl));
+          ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(addAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*(theEndLoop_ieitp.first),theVertexCorrespondence_ppl));
           // set condition value to true because this is a loop body entry edge
           theNewReversibleControlFlowGraphEdge_r.set_has_condition_value(true);
 
@@ -715,7 +718,7 @@ namespace xaifBoosterControlFlowReversal {
                 } 
               break;
             } 
-          insertAdjointControlFlowGraphEdge(*theAdjointSource_p,*theAdjointTarget_p);
+          insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*theAdjointSource_p,*theAdjointTarget_p);
           break;
         }
         case ControlFlowGraphVertexAlg::ENDLOOP : {
@@ -743,13 +746,13 @@ namespace xaifBoosterControlFlowReversal {
                   theAdjointTarget_p=(*theVertexCorrespondence_ppl_cit_1).second; 
                   break;
                 } 
-          insertAdjointControlFlowGraphEdge(*theAdjointSource_p,*theAdjointTarget_p);
+          insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*theAdjointSource_p,*theAdjointTarget_p);
           break;
         }
         default: break; // only EXIT left
       }
     }
-    markBranchEntryEdges(); 
+    theAdjointControlFlowGraph_r.markBranchEntryEdges(); 
   }
 
 

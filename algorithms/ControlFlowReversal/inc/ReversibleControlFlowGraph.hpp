@@ -29,6 +29,7 @@ namespace xaifBoosterControlFlowReversal {
   public:
     
     ReversibleControlFlowGraph(const ControlFlowGraph&);
+    void makeThisACopyOfOriginalControlFlowGraph();
 
     std::string makeUniqueVertexId();
     std::string makeUniqueEdgeId();
@@ -39,7 +40,7 @@ namespace xaifBoosterControlFlowReversal {
     void markBranchEntryEdges();
     void topologicalSort();
     void storeControlFlow();
-    void buildAdjointControlFlowGraph();
+    void buildAdjointControlFlowGraph(ReversibleControlFlowGraph&);
  
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
@@ -79,7 +80,7 @@ namespace xaifBoosterControlFlowReversal {
     * Return reference to the newly created ReversibleControlFlowGraphEdge.
     */
     ReversibleControlFlowGraphEdge&
-    insertAdjointControlFlowGraphEdge(const ReversibleControlFlowGraphVertex& theAdjointSource_cr, const ReversibleControlFlowGraphVertex& theAdjointTarget_cr);
+    insertAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, const ReversibleControlFlowGraphVertex& theAdjointSource_cr, const ReversibleControlFlowGraphVertex& theAdjointTarget_cr);
 
    /**
     * For a given edge in the original control flow, build its adjoint.
@@ -95,7 +96,7 @@ namespace xaifBoosterControlFlowReversal {
    */
 
     ReversibleControlFlowGraphEdge&
-    addAdjointControlFlowGraphEdge(const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl);
+    addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl);
 
     /** 
      * find branch exit edge that corresponds to theCurrentEdge_r
