@@ -31,13 +31,13 @@
 
           select case (version)
             case (1) 
+! original function
+!$PLACEHOLDER_PRAGMA$ id=1
+            case (2) 
 ! store arguments
 !$PLACEHOLDER_PRAGMA$ id=4
 ! original function
 !$PLACEHOLDER_PRAGMA$ id=1
-! store results
-!$PLACEHOLDER_PRAGMA$ id=5
-            case (2) 
             case (3) 
 ! restore arguments
 !$PLACEHOLDER_PRAGMA$ id=6
@@ -46,6 +46,8 @@
 ! adjoint
 !$PLACEHOLDER_PRAGMA$ id=3
             case (4) 
+! store results
+!$PLACEHOLDER_PRAGMA$ id=5
 ! restore results
 !$PLACEHOLDER_PRAGMA$ id=7
           end select
