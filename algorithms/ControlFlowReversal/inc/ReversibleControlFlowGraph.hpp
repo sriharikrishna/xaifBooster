@@ -131,12 +131,12 @@ namespace xaifBoosterControlFlowReversal {
     find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, 
 					    int& nesting_depth) const;
 
-   /**
-    * Assuming that the branch exit edges are marked by has_condition_value()==
-    * true and a corresponding integer get_condition_value() this information is
-    * projected onto the branch entry edges.
-    */
-    void markBranchEntryEdges();
+//    /**
+//     * Assuming that the branch exit edges are marked by has_condition_value()==
+//     * true and a corresponding integer get_condition_value() this information is
+//     * projected onto the branch entry edges.
+//     */
+//     void markBranchEntryEdges();
 
     /** 
      * bottom-up augmentation of the cfg by statements that store

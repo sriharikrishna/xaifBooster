@@ -128,10 +128,16 @@ namespace xaifBoosterControlFlowReversal {
     if (!direction && replacedEdge_r.hasConditionValue()) {
       aNewReversibleControlFlowGraphInEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
     }
+    if (!direction && replacedEdge_r.hasRevConditionValue()) {
+      aNewReversibleControlFlowGraphInEdge_p->setRevConditionValue(replacedEdge_r.getRevConditionValue());
+    }
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphOutEdge_p=new ReversibleControlFlowGraphEdge();
     aNewReversibleControlFlowGraphOutEdge_p->setId(makeUniqueEdgeId());
     if (direction && replacedEdge_r.hasConditionValue()) {
       aNewReversibleControlFlowGraphOutEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
+    }
+    if (direction && replacedEdge_r.hasRevConditionValue()) {
+      aNewReversibleControlFlowGraphOutEdge_p->setRevConditionValue(replacedEdge_r.getRevConditionValue());
     }
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,after,*aNewReversibleControlFlowGraphVertex_p);
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphOutEdge_p,*aNewReversibleControlFlowGraphVertex_p,before);
@@ -410,18 +416,6 @@ namespace xaifBoosterControlFlowReversal {
 	  break;
 	}
 	case ControlFlowGraphVertexAlg::ENDBRANCH : {
-	  /*
-	    insert 
-	    branch_index=1 
-	    call push_cfg(branch_index) 
-	    before *(*the_mySortedVertices_p_l_it) in if branch
-	  */
-	  /*
-	    insert 
-	    branch_index=0 
-	    call push_cfg(branch_index) 
-	    before *(*the_mySortedVertices_p_l_it) in else branch if present
-	  */
 	  InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
 	  InEdgeIterator beginItie(pie.first),endItie(pie.second);
 	  /*
@@ -433,19 +427,25 @@ namespace xaifBoosterControlFlowReversal {
 	  for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
 	  std::list<InEdgeIterator>::iterator ieilIt;
 	  int branch_idx=1;
-	  for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt,--branch_idx) {
+	  for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt,branch_idx++) {
 	    ReversibleControlFlowGraphVertex& theSource_r(getSourceOf(*(*ieilIt)));
 	    BasicBlock& theBasicBlock_r(insert_basic_block(theSource_r,getTargetOf(*(*ieilIt)),(*(*ieilIt)),true));
 	    theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
 	    const Symbol* theLhsSymbol;
 	    if (ieil.size()==2) {
-	      if ((*(*ieilIt)).hasConditionValue())
+	      // this is a true if-then-else
+	      if ((*(*ieilIt)).hasRevConditionValue())
 		theLhsSymbol=insert_init_integer(1,theBasicBlock_r);
 	      else 
 		theLhsSymbol=insert_init_integer(0,theBasicBlock_r);
 	    }
-	    else
-	      theLhsSymbol=insert_init_integer((*(*ieilIt)).getConditionValue(),theBasicBlock_r);
+	    else { 
+	      // this is a switch, all of them should have a value assigned now
+	      if ((*(*ieilIt)).hasRevConditionValue())
+		theLhsSymbol=insert_init_integer((*(*ieilIt)).getRevConditionValue(),theBasicBlock_r);
+	      else
+		THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::storeControlFlow: switch branch exit without condition value");
+	    }
 	    insert_push_integer(theLhsSymbol,theBasicBlock_r);
 	    removeAndDeleteEdge(*(*ieilIt));
 	  }
@@ -458,7 +458,6 @@ namespace xaifBoosterControlFlowReversal {
 	if ((*the_mySortedVertices_p_l_it)->getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BASICBLOCK) { 
 	  BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>((*the_mySortedVertices_p_l_it)->getOriginalControlFlowGraphVertexAlg()));
 	  aBasicBlockAlg.setReversalType((*the_mySortedVertices_p_l_it)->getReversalType());
-	  
 	} 
       } 
     } 
@@ -514,17 +513,25 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraph::markBranchExitEdges() {
     ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
     ReversibleControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
-    for (;beginIt!=endIt ;++beginIt) 
+    for (;beginIt!=endIt ;++beginIt) { 
       if ((*beginIt).isOriginal()&&(*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENDBRANCH) {
         InEdgeIteratorPair pie(getInEdgesOf(*beginIt));
         InEdgeIterator beginItie(pie.first),endItie(pie.second);
-        for (;beginItie!=endItie ;++beginItie) {
+	int branchIdx=1;
+        for (;beginItie!=endItie ;++beginItie,branchIdx++) {
           int nesting_depth=0; 
           const ReversibleControlFlowGraphEdge& theEntryEdge_cr(find_corresponding_branch_entry_edge_rec((*beginItie),nesting_depth));
-	  if (theEntryEdge_cr.hasConditionValue())
-	    (*beginItie).setConditionValue(theEntryEdge_cr.getConditionValue());
+	  if (numInEdgesOf(*beginIt)==2) { 
+	    // this is a if-then-else branch
+	    if (theEntryEdge_cr.hasConditionValue())
+	      (*beginItie).setRevConditionValue(theEntryEdge_cr.getConditionValue());
+	  }
+	  else { 
+	    (*beginItie).setRevConditionValue(branchIdx);
+	  } 
         }
       }
+    }
   }
 
   const ReversibleControlFlowGraphEdge&
@@ -554,26 +561,28 @@ namespace xaifBoosterControlFlowReversal {
     return find_corresponding_branch_exit_edge_rec(theCurrentEdge_r, nesting_depth);
   }
 
-  /*
-    Assuming that the branch exit edges are marked by hasConditionValue()==
-    true and a corresponding integer getConditionValue() this information is 
-    projected onto the branch entry edges.
-  */
-  void
-  ReversibleControlFlowGraph::markBranchEntryEdges() {
-    ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
-    ReversibleControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);    for (;beginIt!=endIt ;++beginIt)
-      if (!((*beginIt).isOriginal())&&(*beginIt).getNewControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BRANCH) {
-        OutEdgeIteratorPair pie(getOutEdgesOf(*beginIt));
-        OutEdgeIterator beginItie(pie.first),endItie(pie.second);
-        for (;beginItie!=endItie ;++beginItie) {
-          int nesting_depth=0;
-          const ReversibleControlFlowGraphEdge& theExitEdge_cr(find_corresponding_branch_exit_edge_rec((*beginItie),nesting_depth));
-	  if(theExitEdge_cr.hasConditionValue())
-	    (*beginItie).setConditionValue(theExitEdge_cr.getConditionValue());
-        }
-      }
-  }
+//   /*
+//     Assuming that the branch exit edges are marked by hasConditionValue()==
+//     true and a corresponding integer getConditionValue() this information is 
+//     projected onto the branch entry edges.
+//   */
+//   void
+//   ReversibleControlFlowGraph::markBranchEntryEdges() {
+//     ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
+//     ReversibleControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);   
+//     for (;beginIt!=endIt ;++beginIt) { 
+//       if (!((*beginIt).isOriginal())&&(*beginIt).getNewControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BRANCH) {
+//         OutEdgeIteratorPair pie(getOutEdgesOf(*beginIt));
+//         OutEdgeIterator beginItie(pie.first),endItie(pie.second);
+//         for (;beginItie!=endItie ;++beginItie) {
+//           int nesting_depth=0;
+//           const ReversibleControlFlowGraphEdge& theExitEdge_cr(find_corresponding_branch_exit_edge_rec((*beginItie),nesting_depth));
+// 	  if(theExitEdge_cr.hasConditionValue())
+// 	    (*beginItie).setConditionValue(theExitEdge_cr.getConditionValue());
+//         }
+//       }
+//     }
+//   }
 
   /**
    * assign index to current vertex and call on successors
@@ -704,7 +713,15 @@ namespace xaifBoosterControlFlowReversal {
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
-      if (theReversibleControlFlowGraphEdge_p->hasConditionValue()) out << "[label=\"1\"]";
+      if (theReversibleControlFlowGraphEdge_p->hasConditionValue() ||
+	  theReversibleControlFlowGraphEdge_p->hasRevConditionValue()) { 
+	out << "[label=\"";
+	if (theReversibleControlFlowGraphEdge_p->hasConditionValue())
+	  out << theReversibleControlFlowGraphEdge_p->getConditionValue();
+	if (theReversibleControlFlowGraphEdge_p->hasRevConditionValue())
+	  out << "r" << theReversibleControlFlowGraphEdge_p->getRevConditionValue();
+	out << "\"]";
+      }
     }
     const ReversibleControlFlowGraph& myG;
   };
@@ -761,8 +778,8 @@ namespace xaifBoosterControlFlowReversal {
 													     *theAdjointTarget_p));
     // this gives us values on edges that normally don't have conditions but these values 
     // are needed for the branch matches:
-    if (theOriginalEdge_cr.hasConditionValue())
-      theNewReversibleControlFlowGraphEdge_r.setConditionValue(theOriginalEdge_cr.getConditionValue());
+    if (theOriginalEdge_cr.hasRevConditionValue())
+      theNewReversibleControlFlowGraphEdge_r.setConditionValue(theOriginalEdge_cr.getRevConditionValue());
     //     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
     //       GraphVizDisplay::show(theAdjointControlFlowGraph_r,
     // 			    "adjoint_edge_insert", 
@@ -892,6 +909,12 @@ namespace xaifBoosterControlFlowReversal {
       }
       case ControlFlowGraphVertexAlg::FORLOOP : {
 	if ((*theVertexCorrespondence_ppl_cit).second->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
+// 	  if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+// 	    GraphVizDisplay::show(theAdjointControlFlowGraph_r,
+// 				  "adjoint_beforeEntryMark", 
+// 				  ReversibleControlFlowGraphVertexLabelWriter(theAdjointControlFlowGraph_r),
+// 				  ReversibleControlFlowGraphEdgeLabelWriter(theAdjointControlFlowGraph_r));
+// 	  }
 	  // insert pop() in front
 	  InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).second)));
 	  BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first),false));
@@ -1087,7 +1110,13 @@ namespace xaifBoosterControlFlowReversal {
 	break; 
       }
     }
-    theAdjointControlFlowGraph_r.markBranchEntryEdges(); 
+//     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+//       GraphVizDisplay::show(theAdjointControlFlowGraph_r,
+//      			    "adjoint_beforeEntryMark", 
+//      			    ReversibleControlFlowGraphVertexLabelWriter(theAdjointControlFlowGraph_r),
+//      			    ReversibleControlFlowGraphEdgeLabelWriter(theAdjointControlFlowGraph_r));
+//     }
+//     theAdjointControlFlowGraph_r.markBranchEntryEdges(); 
   }
 
   void
