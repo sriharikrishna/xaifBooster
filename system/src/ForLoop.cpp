@@ -9,9 +9,10 @@ namespace xaifBooster {
 
   const std::string ForLoop::our_myId_XAIFName("vertex_id");
 
-  ForLoop::ForLoop() : 
+  ForLoop::ForLoop(const ForLoopReversalType::ForLoopReversalType_E theReversalType) : 
     myInitialization(true),
-    myUpdate(true) { 
+    myUpdate(true),
+    myReversalType(theReversalType){ 
      myControlFlowGraphVertexAlgBase_p=ForLoopAlgFactory::instance()->makeNewAlg(*this);
   }
                                                                                 

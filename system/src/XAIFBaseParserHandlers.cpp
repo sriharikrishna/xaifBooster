@@ -34,7 +34,7 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onForLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onForLoop");
     ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
-    ForLoop* theNewForLoop_p=new ForLoop();
+    ForLoop* theNewForLoop_p=new ForLoop(ForLoopReversalType::fromString(XMLParser::getAttributeValueByName(ForLoopReversalType::our_attribute_XAIFName)));
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewForLoop_p);
     theNewForLoop_p->setId(XMLParser::getAttributeValueByName(ForLoop::our_myId_XAIFName));
     passingOut.setInitialization(theNewForLoop_p->getInitialization());

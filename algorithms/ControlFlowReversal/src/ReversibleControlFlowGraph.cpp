@@ -210,7 +210,7 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new ForLoop();
+    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new ForLoop(ForLoopReversalType::ANONYMOUS);
 //    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
