@@ -9,4 +9,8 @@ namespace xaifBooster {
 
   SubroutineCallAlgBase::~SubroutineCallAlgBase(){}
 
+  const SubroutineCall& SubroutineCallAlgBase::getContainingSubroutineCall() const { 
+    return dynamic_cast<const SubroutineCall&>(getContaining());
+  }
+
 } 

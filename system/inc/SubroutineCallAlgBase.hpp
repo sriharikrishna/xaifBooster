@@ -15,6 +15,8 @@ namespace xaifBooster {
 
     virtual ~SubroutineCallAlgBase();
 
+    const SubroutineCall& getContainingSubroutineCall() const;
+
   private: 
 
     /** 

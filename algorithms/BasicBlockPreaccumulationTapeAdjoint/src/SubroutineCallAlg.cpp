@@ -1,8 +1,10 @@
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
+#include "xaifBooster/system/inc/BasicBlock.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
 
@@ -27,6 +29,22 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   }
 
   void SubroutineCallAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+  } 
+
+  void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock) { 
+    BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(theBasicBlock.getBasicBlockAlgBase()));
+    SubroutineCall& theNewSubroutineCall(theBasicBlockAlg.addSubroutineCall(getContainingSubroutineCall().getSymbolReference().getSymbol(),
+									    getContainingSubroutineCall().getSymbolReference().getScope(),
+									    getContainingSubroutineCall().getActiveFlag()));
+    const SubroutineCall::ConcreteArgumentPList& theOldConcreteArgumentPList(getContainingSubroutineCall().getConcreteArgumentPList());
+    SubroutineCall::ConcreteArgumentPList& theNewConcreteArgumentPList(theNewSubroutineCall.getConcreteArgumentPList());
+    for (SubroutineCall::ConcreteArgumentPList::const_iterator theOldConcreteArgumentPListI=theOldConcreteArgumentPList.begin();
+	 theOldConcreteArgumentPListI!=theOldConcreteArgumentPList.end();
+	 ++theOldConcreteArgumentPListI) { 
+      ConcreteArgument* theNewConcreteArgument_p(new ConcreteArgument((*theOldConcreteArgumentPListI)->getPosition()));
+      theNewConcreteArgumentPList.push_back(theNewConcreteArgument_p);
+      (*theOldConcreteArgumentPListI)->getVariable().copyMyselfInto(theNewConcreteArgument_p->getVariable());
+    } // end for
   } 
   
 } // end of namespace 
