@@ -176,3 +176,23 @@ C $OpenAD$ END DECLS
              theResStackoffset=theResStackoffset-1
           end do
         end subroutine 
+
+
+        subroutine forward_mode()
+C $OpenAD$ INLINE DECLS
+          use OpenAD_rev
+          implicit none
+C $OpenAD$ END DECLS
+          OpenAD_rev_orig_mode=OpenAD_rev_mode
+          OpenAD_rev_mode=plainforward
+        end subroutine 
+
+        subroutine reset_mode()
+C $OpenAD$ INLINE DECLS
+          use OpenAD_rev
+          implicit none
+C $OpenAD$ END DECLS
+          OpenAD_rev_orig_mode=OpenAD_rev_mode
+          OpenAD_rev_mode=plainforward
+        end subroutine 
+

@@ -3,6 +3,8 @@
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 
@@ -33,6 +35,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock) { 
     BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(theBasicBlock.getBasicBlockAlgBase()));
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theRevModeCall(theBasicBlockAlg.addInlinableSubroutineCall("reverse_mode"));
+    theRevModeCall.setId("inline_reverse_mode");
     SubroutineCall& theNewSubroutineCall(theBasicBlockAlg.addSubroutineCall(getContainingSubroutineCall().getSymbolReference().getSymbol(),
 									    getContainingSubroutineCall().getSymbolReference().getScope(),
 									    getContainingSubroutineCall().getActiveFlag()));
@@ -45,6 +49,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       theNewConcreteArgumentPList.push_back(theNewConcreteArgument_p);
       (*theOldConcreteArgumentPListI)->getVariable().copyMyselfInto(theNewConcreteArgument_p->getVariable());
     } // end for
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theRestoreModeCall(theBasicBlockAlg.addInlinableSubroutineCall("restore_mode"));
+    theRestoreModeCall.setId("inline_restore_mode");
   } 
   
 } // end of namespace 
