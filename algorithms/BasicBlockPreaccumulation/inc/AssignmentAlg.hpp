@@ -61,8 +61,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * returning false in case of ambiguous identification
      * and true otherwise
      */
-    bool vertexIdentification(VertexPPairList& theVertexTrackList,
-			      PrivateLinearizedComputationalGraph& theFlattenedSequence);
+    bool vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence);
     
 
 
