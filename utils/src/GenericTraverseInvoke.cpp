@@ -21,6 +21,9 @@ namespace xaifBooster {
     case GenericAction::ALGORITHM_ACTION_2 :
       algorithm_action_2();
       break; 
+    case GenericAction::ALGORITHM_ACTION_3 :
+      algorithm_action_3();
+      break; 
     default:
       THROW_LOGICEXCEPTION_MACRO("GenericTraverseInvoke::genericInvocation: unknown action");
       break; 

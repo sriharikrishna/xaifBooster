@@ -16,7 +16,8 @@ public:
 
     enum GenericAction_E {ALGORITHM_INIT,
 			  ALGORITHM_ACTION_1,
-			  ALGORITHM_ACTION_2};
+			  ALGORITHM_ACTION_2,
+			  ALGORITHM_ACTION_3};
 
     static std::string toString(const GenericAction_E& anAction) throw (PrintingIntException);
 

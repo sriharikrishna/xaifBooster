@@ -239,7 +239,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       VariablePList theListOfAlreadyAssignedDependents;
       if (theFlattenedSequence.numVertices()>1) { 
 	// call Angel which fills myJacobianAccumulationExpressionList
-	angel::compute_elimination_sequence (theFlattenedSequence, 1, (*i)->myJacobianAccumulationExpressionList);
+	try { 
+	  angel::compute_elimination_sequence (theFlattenedSequence, 1, (*i)->myJacobianAccumulationExpressionList);
+	} 
+	catch(...) { 
+	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
+	}
 	// UN: this is used to keep track of those independent variables
 	// that were already assigned to temporary variables to ensure correctness
 	// of the Jacobian accumulation code.

@@ -1,15 +1,16 @@
 # default target
-obj: default
-
-clean:
-	rm -f obj/*.o obj/*.d
-
-.PHONY: obj clean default
+default: obj
 
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
-IPATH+=-I../inc
+obj: $(OBJS)
+	cd srcFactories && $(MAKE) 
 
-default: $(OBJS)
+clean:
+	rm -f obj/*.o obj/*.d
+	cd srcFactories && $(MAKE) clean 
 
+test doc: ;
+
+.PHONY: obj test doc clean

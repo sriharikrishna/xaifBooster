@@ -5,11 +5,11 @@ include ../../Makefile.incl
 -include $(DEPINCL)
 
 obj: $(OBJS)
-	cd srcDummyFactories && $(MAKE) 
+	cd srcFactories && $(MAKE) 
 
 clean:
 	rm -f obj/*.o obj/*.d
-	cd srcDummyFactories && $(MAKE) clean 
+	cd srcFactories && $(MAKE) clean 
 
 test doc: ;
 
