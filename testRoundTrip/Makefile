@@ -12,7 +12,7 @@ else
 PP_FLAGS=-f
 endif
 
-all: $(TARGET).prh.xb.x2w.w2f.urh.pp.f
+all: $(TARGET).xb.x2w.w2f.pp.f
 
 export UNDEF_ENV_VARS=""
 ifndef RICETOOLROOT
@@ -40,31 +40,25 @@ CC=icc
 
 RM=rm -rf
 
-$(TARGET).prh.f: $(TARGET).f prh.pl
-	perl prh.pl $<
-
-$(TARGET).prh.B: $(TARGET).prh.f mfef90
+$(TARGET).B: $(TARGET).f mfef90
 	./mfef90 -F -N132 $<
 
-$(TARGET).prh.xaif : $(TARGET).prh.B whirl2xaif
+$(TARGET).xaif : $(TARGET).B whirl2xaif
 	./whirl2xaif -o $@ $<
 
-$(TARGET).prh.xb.xaif : $(TARGET).prh.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
+$(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
 	$(COMPLAIN)
 #	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ -g 15
 	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@
 
-$(TARGET).prh.xb.x2w.B : $(TARGET).prh.xb.xaif xaif2whirl
-	./xaif2whirl --structured $(TARGET).prh.B $<
+$(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
+	./xaif2whirl --structured $(TARGET).B $<
 
-$(TARGET).prh.xb.x2w.w2f.f: $(TARGET).prh.xb.x2w.B whirl2f whirl2f_be
+$(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
 	$(COMPLAIN)
 	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f -openad $<
 
-$(TARGET).prh.xb.x2w.w2f.urh.f: $(TARGET).prh.xb.x2w.w2f.f urh.pl
-	perl urh.pl $<
-
-$(TARGET).prh.xb.x2w.w2f.urh.pp.f: $(TARGET).prh.xb.x2w.w2f.urh.f pp.pl
+$(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
 	perl pp.pl $(PP_FLAGS) $<
 
 # setup some links
@@ -92,7 +86,7 @@ xaifBooster:
 	./pickAlgorithm.bash
 
 # make the $TARGET_DRIVER)
-$(TARGET_DRIVER): w2f__types.o active_module.o all_globals_mod.o $(REVERSE_MODULES) $(TARGET_DRIVER).o $(TARGET).prh.xb.x2w.w2f.urh.pp.o 
+$(TARGET_DRIVER): w2f__types.o active_module.o all_globals_mod.o $(REVERSE_MODULES) $(TARGET_DRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
 	$(F95) $^ -o $@ 
 
 run: params.conf tmpOutput $(TARGET_DRIVER)
