@@ -28,6 +28,9 @@ LIBS+=-lxaifBoosterCrossCountryInterface
 VPATH+=../../DerivativePropagator/lib
 LIBS+=-lxaifBoosterDerivativePropagator
 
+VPATH+=../../InlinableXMLRepresentation/lib
+LIBS+=-lxaifBoosterInlinableXMLRepresentation
+
 # setup for ANGEL
 UNDEF_ENV_VARS=""
 ifndef ANGELROOT
