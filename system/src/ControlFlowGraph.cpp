@@ -7,26 +7,17 @@ namespace xaifBooster {
 
   const std::string ControlFlowGraph::ourXAIFName("xaif:ControlFlowGraph");
   const std::string ControlFlowGraph::our_myId_XAIFName("vertex_id");
-  const std::string ControlFlowGraph::our_symbolId_XAIFName("symbol_id");
-  const std::string ControlFlowGraph::our_scopeId_XAIFName("scope_id");
   const std::string ControlFlowGraph::our_myActiveFlag_XAIFName("active");
-  const std::string ControlFlowGraph::our_myArgumentList_XAIFName("xaif:ArgumentList");
 
   ControlFlowGraph::ControlFlowGraph (const Symbol& theSymbol,
 				      const Scope& theScope,
 				      const bool activeFlag) :
-    mySymbolReference(theSymbol,theScope),
+    ControlFlowGraphCommonAttributes(theSymbol,theScope),
     myActiveFlag(activeFlag) { 
     myControlFlowGraphAlgBase_p=ControlFlowGraphAlgFactory::instance()->makeNewAlg(*this);
   } 
 
   ControlFlowGraph::~ControlFlowGraph() { 
-    for (ArgumentList::iterator i=myArgumentList.begin();
-	 i!=myArgumentList.end();
-	 ++i) { 
-      if (*i)
-	delete *i;
-    }
     if (myControlFlowGraphAlgBase_p) delete myControlFlowGraphAlgBase_p;
   } 
 
@@ -44,29 +35,15 @@ namespace xaifBooster {
     os << pm.indent() 
        << "<"
        << ourXAIFName.c_str() 
-       << " " 
-       << our_myId_XAIFName.c_str() 
-       << "=\"" 
-       << getId().c_str()
-       << "\" " 
-       << our_symbolId_XAIFName.c_str() 
-       << "=\"" 
-       << mySymbolReference.getSymbol().getId().c_str()
-       << "\" " 
-       << our_scopeId_XAIFName.c_str() 
-       << "=\"" 
-       << mySymbolReference.getScope().getId().c_str()
-       << "\" " 
+       << " ";
+    printAttributes(os);
+    os << " " 
        << our_myActiveFlag_XAIFName.c_str() 
        << "=\"" 
        << myActiveFlag
-       << "\" " 
-       << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str() 
-       << "=\""
-       << getAnnotation().c_str()
        << "\">" 
        << std::endl;
-    printXMLHierarchyArgumentList(os);
+    myArgumentList.printXMLHierarchy(os);
     ControlFlowGraph::ConstVertexIteratorPair p(vertices());
     ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt)
@@ -84,47 +61,12 @@ namespace xaifBooster {
     pm.releaseInstance();
   } // end of ControlFlowGraph::printXMLHierarchyImpl
 
-  
-
-  void
-  ControlFlowGraph::printXMLHierarchyArgumentList(std::ostream& os) const { 
-    if (!myArgumentList.size()) // nothing to print
-      return;
-    PrintManager& pm=PrintManager::getInstance();
-    os << pm.indent() 
-       << "<"
-       << our_myArgumentList_XAIFName.c_str()
-       << ">" 
-       << std::endl;
-    for(ArgumentList::const_iterator i=myArgumentList.begin();
-	i!=myArgumentList.end();
-	++i) { 
-      (*i)->printXMLHierarchy(os);
-    } // end for 
-    os << pm.indent()
-       << "</"
-       << our_myArgumentList_XAIFName.c_str()
-       << ">"
-       << std::endl;
-    pm.releaseInstance();
-  } // end of ControlFlowGraph::printXMLHierarchyArgumentList
-
   std::string ControlFlowGraph::debug () const { 
     std::ostringstream out;
     out << "ControlFlowGraph[" << this 
 	<< "]" << std::ends;  
     return out.str();
   } // end of ControlFlowGraph::debug
-
-  ControlFlowGraph::ArgumentList& 
-  ControlFlowGraph::getArgumentList() { 
-    return myArgumentList;
-  } 
-  
-  const ControlFlowGraph::ArgumentList& 
-  ControlFlowGraph::getArgumentList() const { 
-    return myArgumentList;
-  } 
 
   InOutList& 
   ControlFlowGraph::getInOutList() { 
@@ -155,13 +97,29 @@ namespace xaifBooster {
     GraphWrapperTraversable<ControlFlowGraphVertex,ControlFlowGraphEdge>::traverseToChildren(anAction_c);
   }
   
-  const SymbolReference& 
-  ControlFlowGraph::getSymbolReference() const { 
-    return mySymbolReference;
-  } 
-
   const bool& 
   ControlFlowGraph::getActiveFlag() const { 
     return myActiveFlag;
   } 
+
+  ArgumentList& 
+  ControlFlowGraph::getArgumentList() { 
+    return myArgumentList;
+  } 
+  
+  const ArgumentList& 
+  ControlFlowGraph::getArgumentList() const { 
+    return myArgumentList;
+  } 
+  
+  // non-const return is a temporary hack
+  Scope& ControlFlowGraph::getScope() const { 
+    return myArgumentList.getScope();
+  }
+
+  // uncomment this when the above is fixed
+  // Scope& ControlFlowGraph::getScope() { 
+  //   return myArgumentList.getScope();
+  // }
+
 } // end of namespace xaifBooster 

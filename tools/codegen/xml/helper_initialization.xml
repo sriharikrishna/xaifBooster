@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="3" nr_templates="1" outfile="helper_initialization.inc">
 
-  <CodeGen:RepeatableCode nr_versions="21">
+  <CodeGen:RepeatableCode nr_versions="25">
     <CodeGen:CodeTemplate nr_entries="4">
       <CodeGen:StaticCode text="my"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -53,6 +53,9 @@
       <CodeGen:DynamicCode hook_ref="1" text="ForLoop"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Branch"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="IfStatement"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -76,14 +79,18 @@
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="SymbolTable"/>
     </CodeGen:CodeVersion>
-<!-- special treatment for last entry 
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Update"/>
     </CodeGen:CodeVersion>
--->
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="ArgumentList"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Goto"/>
+    </CodeGen:CodeVersion>
   </CodeGen:RepeatableCode>
 <!-- last entry is not succeeded by a comma -->
-  <CodeGen:NonRepeatableCodeOrLineBreak text="myUpdate_p(0)"/>
+  <CodeGen:NonRepeatableCodeOrLineBreak text="myLabel_p(0)"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
 
 </CodeGen:Document>

@@ -21,8 +21,6 @@ namespace xaifBooster {
 
     ~PlainBasicBlock(){};
 
-    void printXMLHierarchyImpl(std::ostream& os) const;
-
     std::string debug() const;
 
     /**

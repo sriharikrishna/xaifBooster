@@ -10,12 +10,37 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : original(false), myOriginalEdge_p(NULL), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : toLoopBody(false), original(false), myOriginalEdge_p(NULL), myNewEdge_p(NULL) {}
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : original(true), myOriginalEdge_p(theOriginal), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : toLoopBody(false), original(true), myOriginalEdge_p(theOriginal), myNewEdge_p(NULL) {}
 
   ReversibleControlFlowGraphEdge::~ReversibleControlFlowGraphEdge() { 
     if (!original) delete myNewEdge_p;
+  }
+
+  bool
+  ReversibleControlFlowGraphEdge::isBackEdge(const ReversibleControlFlowGraph& theGraph) const {
+    return theGraph.getSourceOf(*this).getIndex()>theGraph.getTargetOf(*this).getIndex();
+  }
+
+  bool 
+  ReversibleControlFlowGraphEdge::isOriginal() const {
+    return original;
+  }
+
+  const ControlFlowGraphEdge& 
+  ReversibleControlFlowGraphEdge::getOriginalEdge() const {
+    return *myOriginalEdge_p;
+  }
+
+  const ControlFlowGraphEdge& 
+  ReversibleControlFlowGraphEdge::getNewEdge() const {
+    return *myNewEdge_p;
+  }
+
+  ControlFlowGraphEdge& 
+  ReversibleControlFlowGraphEdge::getNewEdge() {
+    return *myNewEdge_p;
   }
 
   void
@@ -39,11 +64,19 @@ namespace xaifBoosterControlFlowReversal {
         os << src.myNewVertex_p->getId().c_str();
       os << "\" " << myOriginalEdge_p->our_target_XAIFName << "=\"";
       const ReversibleControlFlowGraphVertex& tgt = theGraph.getTargetOf(*this);
-      if (src.original)
+      if (tgt.original)
         os << tgt.myOriginalVertex_p->getId().c_str();
       else
         os << tgt.myNewVertex_p->getId().c_str();
-      os << "\"/>" << std::endl;
+      os << "\" "
+         << myOriginalEdge_p->our_has_condition_value_XAIFName
+         << "=\""
+         << myOriginalEdge_p->has_condition_value()
+         << "\" "
+         << myOriginalEdge_p->our_condition_value_XAIFName
+         << "=\""
+         << myOriginalEdge_p->get_condition_value()
+         << "\"/>" << std::endl;
     } 
     else {
       os << pm.indent()
@@ -63,11 +96,19 @@ namespace xaifBoosterControlFlowReversal {
         os << src.myNewVertex_p->getId().c_str();
       os << "\" " << myNewEdge_p->our_target_XAIFName << "=\"";
       const ReversibleControlFlowGraphVertex& tgt = theGraph.getTargetOf(*this);
-      if (src.original)
+      if (tgt.original)
         os << tgt.myOriginalVertex_p->getId().c_str();
       else
         os << tgt.myNewVertex_p->getId().c_str();
-      os << "\"/>" << std::endl;
+      os << "\" "
+         << myNewEdge_p->our_has_condition_value_XAIFName
+         << "=\""
+         << myNewEdge_p->has_condition_value()
+         << "\" "
+         << myNewEdge_p->our_condition_value_XAIFName
+         << "=\""
+         << myNewEdge_p->get_condition_value()
+         << "\"/>" << std::endl;
     }
     pm.releaseInstance();
   } // end of ReversibleControlFlowGraphEdge::printXMLHierarchy

@@ -22,23 +22,20 @@ BASICBLOCKPREACCUMULATION_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/algor
 CROSSCOUNTRYINTERFACE_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/algorithms/CrossCountryInterface/src/obj/*.o)
 LINEARIZATION_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/algorithms/Linearization/src/obj/*.o)
 
-CCIF_LIB=-lxaifBoosterCrossCountryInterface
-CCIF_LIB_DIR=../../CrossCountryInterface/lib
-                                                                                
-VPATH+=$(CCIF_LIB_DIR)
-LIBS+=$(CCIF_LIB)
-                                                                                
+VPATH+=../../CrossCountryInterface/lib
+LIBS+=-lxaifBoosterCrossCountryInterface
+
+VPATH+=../../DerivativePropagator/lib
+LIBS+=-lxaifBoosterDerivativePropagator
+
 # setup for ANGEL
 UNDEF_ENV_VARS=""
 ifndef ANGELROOT
 UNDEF_ENV_VARS+=" ANGELROOT "
 endif
-                                                                                
-ANGEL_LIB=-langel
-ANGEL_LIB_DIR=$(ANGELROOT)/lib
-                                                                                
-VPATH+=$(ANGEL_LIB_DIR)
-LIBS+=$(ANGEL_LIB)
+
+VPATH+=$(ANGELROOT)/lib
+LIBS+=-langel
 
 ifneq ($(UNDEF_ENV_VARS),"")
 export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1

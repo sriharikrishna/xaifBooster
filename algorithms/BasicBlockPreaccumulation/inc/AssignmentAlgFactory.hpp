@@ -5,10 +5,8 @@
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,xaifBooster::AssignmentAlgBase,xaifBoosterLinearization::AssignmentAlgFactory);
+  DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,xaifBoosterLinearization::AssignmentAlgFactory,xaifBoosterBasicBlockPreaccumulation);
 
-} // end of namespace 
 
 #endif

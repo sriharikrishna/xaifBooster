@@ -1,5 +1,5 @@
 #include "xaifBooster/system/inc/BasicBlock.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
@@ -21,28 +21,30 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } // end of BasicBlockAlg::printXMLHierarchy
   
   void xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::printDerivativePropagatorAsTape(std::ostream& os,
- 												const DerivativePropagator& aPropagator) { 
+ 												const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) { 
     // create an InlinableSubroutinecall for each Variable in each saxpy element in the propagator
-    const DerivativePropagator::EntryList& theEntryList(aPropagator.getEntryList());
-    for (DerivativePropagator::EntryList::const_iterator entryListI=theEntryList.begin();
- 	 entryListI!=theEntryList.end();
- 	 ++entryListI) { 
-      DerivativePropagatorEntry::VariablePList aVariablePList;
-      (*entryListI)->getVariables(aVariablePList);
-      for (DerivativePropagatorEntry::VariablePList::iterator aVariablePListI=aVariablePList.begin();
- 	   aVariablePListI!=aVariablePList.end();
- 	   ++aVariablePListI) { 
- 	InlinableSubroutineCall theSubroutineCall("push");
-	theSubroutineCall.setId("inline_push");
- 	(*aVariablePListI)->copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
- 	theSubroutineCall.printXMLHierarchy(os);
+    const xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList& theEntryPList(aPropagator.getEntryPList());
+    for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_iterator entryPListI=theEntryPList.begin();
+ 	 entryPListI!=theEntryPList.end();
+ 	 ++entryPListI) { 
+      xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList aFactorList;
+      (*entryPListI)->getFactors(aFactorList);
+      for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::iterator aFactorListI=aFactorList.begin();
+ 	   aFactorListI!=aFactorList.end();
+ 	   ++aFactorListI) { 
+	if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) { 
+	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall theSubroutineCall("push");
+	  theSubroutineCall.setId("inline_push");
+	  (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
+	  theSubroutineCall.printXMLHierarchy(os);
+	}
       }
     } 
   } // end of xaifBoosterBasicBlockPreaccumulationTape::printDerivativePropagatorAsTape
 
   std::string BasicBlockAlg::debug () const { 
     std::ostringstream out;
-    out << "BasicBlockAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg[" << this
  	<< "]" << std::ends;  
     return out.str();
   } // end of BasicBlockAlg::debug

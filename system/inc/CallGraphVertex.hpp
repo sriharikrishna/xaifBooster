@@ -4,6 +4,7 @@
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/system/inc/VertexTraversable.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
 
 namespace xaifBooster { 
 
@@ -19,11 +20,14 @@ namespace xaifBooster {
 
     CallGraphVertex (const Symbol& theSymbol,
 		     const Scope& theScope,
-		     const bool activeFlag);
+		     const bool activeFlag,
+		     bool makeAlgorithm=true);
 
-    ~CallGraphVertex(){};
+    ~CallGraphVertex();
 
     void printXMLHierarchy(std::ostream& os) const;
+
+    void printXMLHierarchyImpl(std::ostream& os) const;
 
     std::string debug() const ;
 
@@ -42,6 +46,21 @@ namespace xaifBooster {
      */
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c); 
 
+    /** 
+     * algorithm access where the CallGraphVertex may 
+     * be const but in difference to the 
+     * internal representation (wich is always 
+     * const for the algorithms) the algorithm 
+     * instances will always be modifiable.
+     */
+    CallGraphVertexAlgBase& getCallGraphVertexAlgBase()const;
+
+    /** 
+     * get name of subroutine associated with myControlFlowGraph
+     * \todo implement
+     */
+    std::string getSubroutineName() const;
+
   private: 
 
     /**
@@ -54,6 +73,13 @@ namespace xaifBooster {
      * @see ControlFlowGraph
      */
     ControlFlowGraph myControlFlowGraph;
+
+    /** 
+     * this will be set to point a dynamically instance
+     * during construction and deleted during 
+     * destruction
+     */
+    CallGraphVertexAlgBase* myCallGraphVertexAlgBase_p;
 
   }; // end of class CallGraphVertex
  

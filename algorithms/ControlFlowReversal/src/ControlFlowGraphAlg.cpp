@@ -11,7 +11,7 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ControlFlowGraphAlg::ControlFlowGraphAlg(ControlFlowGraph& theContaining) : ControlFlowGraphAlgBase(theContaining), myTransformedControlFlowGraph(NULL) {
+  ControlFlowGraphAlg::ControlFlowGraphAlg(const ControlFlowGraph& theContaining) : ControlFlowGraphAlgBase(theContaining), myTransformedControlFlowGraph(NULL) {
   }
 
   ControlFlowGraphAlg::~ControlFlowGraphAlg() {
@@ -53,14 +53,48 @@ namespace xaifBoosterControlFlowReversal {
     THROW_LOGICEXCEPTION_MACRO("ControlFlowReversal::ControlFlowGraphAlg::getOriginalExit: not found");
   }
 
-  class VertexLabelWriter {
+  
+
+  class ControlFlowGraphVertexLabelWriter {
   public:
-    VertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
+    ControlFlowGraphVertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
+      std::string theVertexIdx;
+      std::string theVertexKind;
+      if (theReversibleControlFlowGraphVertex_p->isOriginal()) {
+        theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex().getControlFlowGraphVertexAlgBase()).kindToString();
+        theVertexIdx=theReversibleControlFlowGraphVertex_p->getOriginalVertex().getId();
+      }
+      else {
+        theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()).kindToString();
+        theVertexIdx=theReversibleControlFlowGraphVertex_p->getNewVertex().getId();
+      }
+        
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(),
                                                   myG.getInternalBoostGraph()),
-                                       v)->getIndex() << "\"]";
+                                       v)->getIndex() << ": " 
+          << theVertexIdx.c_str() << " " 
+          << theVertexKind.c_str() << "\"]";
+    };
+    const ReversibleControlFlowGraph& myG;
+  };
+
+  class ControlFlowGraphEdgeLabelWriter {
+  public:
+    ControlFlowGraphEdgeLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
+      ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
+      bool has_condition_value;
+      if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
+        has_condition_value=theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value();
+      }
+      else {
+        has_condition_value=theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value();
+      }
+      out << "[label=\"" << has_condition_value << "\"]";
     };
     const ReversibleControlFlowGraph& myG;
   };
@@ -70,16 +104,27 @@ namespace xaifBoosterControlFlowReversal {
               "xaifBoosterControlFlowReversal::ControlFlowGraphAlg::algorithm_action_4(reverse control flow) called for: "
               << debug().c_str());
       myTransformedControlFlowGraph=new ReversibleControlFlowGraph(getContaining());
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg",
-			      VertexLabelWriter(*myTransformedControlFlowGraph));
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
       myTransformedControlFlowGraph->topologicalSort();
-      myTransformedControlFlowGraph->storeControlFlow();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
-			      VertexLabelWriter(*myTransformedControlFlowGraph));
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_2",
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
+      myTransformedControlFlowGraph->storeControlFlow();
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_3",
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
+      }
+/*
+      myTransformedControlFlowGraph->reverseControlFlow();
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_4",
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
+      }
+*/
   } // end AssignmentAlg::algorithm_action_4() 
 
   void
@@ -88,29 +133,15 @@ namespace xaifBoosterControlFlowReversal {
     os << pm.indent()
        << "<"
        << getContaining().ourXAIFName.c_str()
-       << " "
-       << getContaining().our_myId_XAIFName.c_str()
-       << "=\""
-       << getContaining().getId().c_str()
-       << "\" "
-       << getContaining().our_symbolId_XAIFName.c_str()
-       << "=\""
-       << getContaining().getSymbolReference().getSymbol().getId().c_str()
-       << "\" "
-       << getContaining().our_scopeId_XAIFName.c_str()
-       << "=\""
-       << getContaining().getSymbolReference().getScope().getId().c_str()
-       << "\" "
+       << " ";
+    getContaining().printAttributes(os);
+    os << " "
        << getContaining().our_myActiveFlag_XAIFName.c_str()
        << "=\""
        << getContaining().getActiveFlag()
-       << "\" "
-       << getContaining().ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str()
-       << "=\""
-       << getContaining().getAnnotation().c_str()
        << "\">"
        << std::endl;
-    getContaining().printXMLHierarchyArgumentList(os);
+    getContaining().getArgumentList().printXMLHierarchy(os);
 
     myTransformedControlFlowGraph->printXMLHierarchy(os);
 

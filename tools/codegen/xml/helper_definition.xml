@@ -14,7 +14,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="1" nr_templates="1" outfile="helper_definition.inc">
 
-  <CodeGen:RepeatableCode nr_versions="22">
+  <CodeGen:RepeatableCode nr_versions="26">
     <CodeGen:CodeTemplate nr_entries="70">
       <CodeGen:StaticCode text="void "/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -145,6 +145,10 @@
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
+      <CodeGen:DynamicCode hook_ref="2" text="Branch"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
       <CodeGen:DynamicCode hook_ref="2" text="Initialization"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -174,6 +178,18 @@
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
       <CodeGen:DynamicCode hook_ref="2" text="Update"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ArgumentList"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
+      <CodeGen:DynamicCode hook_ref="2" text="Goto"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
+      <CodeGen:DynamicCode hook_ref="2" text="Label"/>
     </CodeGen:CodeVersion>
   </CodeGen:RepeatableCode>
 </CodeGen:Document>

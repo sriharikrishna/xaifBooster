@@ -3,10 +3,8 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ExitAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ExitAlg.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  ALG_FACTORY_DEF_MACRO(Exit,xaifBooster::ExitAlgBase,ExitAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Exit,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 

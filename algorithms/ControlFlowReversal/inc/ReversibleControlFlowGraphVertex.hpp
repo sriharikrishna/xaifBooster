@@ -2,10 +2,7 @@
 #define _XAIFBOOSTERCONTROLFLOWREVERSAL_REVERSIBLECONTROLFLOWGRAPHVERTEX_INCLUDE_
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
-#include "xaifBooster/utils/inc/ObjectWithId.hpp"
-#include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/VertexTraversable.hpp"
-
 
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
@@ -18,10 +15,7 @@ namespace xaifBoosterControlFlowReversal {
    * class to implement vertices that are used in
    * ControlFlowGraphAlg::myTransformedControlFlowGraph
    */
-  class ReversibleControlFlowGraphVertex : public VertexTraversable,
-                                 public XMLPrintable,
-                                 public ObjectWithId,
-                                 public ObjectWithAnnotation {
+  class ReversibleControlFlowGraphVertex : public VertexTraversable, public XMLPrintable {
 
   public:
     
@@ -31,6 +25,9 @@ namespace xaifBoosterControlFlowReversal {
 
     const ControlFlowGraphVertexAlg&
     getOriginalControlFlowGraphVertexAlg() const;
+
+    const ControlFlowGraphVertexAlg&
+    getNewControlFlowGraphVertexAlg() const;
 
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
@@ -43,6 +40,18 @@ namespace xaifBoosterControlFlowReversal {
 
     int getIndex() const;
     void setIndex(int);
+
+    bool isOriginal() { return original; }
+
+    const ControlFlowGraphVertex& getOriginalVertex() const { 
+      return *myOriginalVertex_p; 
+    }
+
+    const ControlFlowGraphVertex& getNewVertex() const { 
+      return *myNewVertex_p; 
+    }
+
+    
 
   private:
 

@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="1" nr_templates="1" outfile="parse_method_decl.inc">
 
-  <CodeGen:RepeatableCode nr_versions="44">
+  <CodeGen:RepeatableCode nr_versions="49">
     <CodeGen:CodeTemplate nr_entries="4">
       <CodeGen:StaticCode text="void on"/>
       <CodeGen:DynamicCodePlaceholder hook="3"/>
@@ -80,6 +80,18 @@
       <CodeGen:DynamicCode hook_ref="3" text="Exit"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="3" text="EndLoop"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="3" text="EndBranch"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="3" text="Label"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="3" text="Goto"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="3" text="ExpressionEdge"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -87,6 +99,9 @@
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="3" text="IfStatement"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="3" text="Branch"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="3" text="Initialization"/>

@@ -4,12 +4,6 @@
 #include "xaifBooster/system/inc/AlgFactory.hpp"
 #include "xaifBooster/system/inc/ExitAlgBase.hpp"
 
-namespace xaifBooster {  
-
-  class Exit;
-
-  BASE_ALG_FACTORY_DECL_MACRO(Exit,ExitAlgBase);
-
-} // end of namespace 
+  BASE_ALG_FACTORY_DECL_MACRO(Exit);
 
 #endif
