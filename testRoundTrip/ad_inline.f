@@ -187,6 +187,17 @@ C $OpenAD$ END DECLS
           OpenAD_rev_mode=plainforward
         end subroutine 
 
+
+        subroutine reverse_mode()
+C $OpenAD$ INLINE DECLS
+          use OpenAD_rev
+          implicit none
+C $OpenAD$ END DECLS
+          OpenAD_rev_orig_mode=OpenAD_rev_mode
+          OpenAD_rev_mode=reverse
+        end subroutine 
+
+
         subroutine reset_mode()
 C $OpenAD$ INLINE DECLS
           use OpenAD_rev
