@@ -59,10 +59,21 @@ namespace xaifBooster {
 					     StatementIdList anIdList) const;
 
     /** 
+     * this returns true if the use-def chains for both 
+     * keys are provably identical and false otherwise
      * \todo incomplete
      */
     bool sameDefinition(const DuUdMapKey& aKey,
-						 const DuUdMapKey& anotherKey) const;
+			const DuUdMapKey& anotherKey) const;
+
+
+    /** 
+     * this returns true if the use-def chains for both 
+     * keys are provably disjoint and false otherwise
+     * \todo incomplete
+     */
+    bool disjointDefinition(const DuUdMapKey& aKey,
+			    const DuUdMapKey& anotherKey) const;
 
   private: 
 

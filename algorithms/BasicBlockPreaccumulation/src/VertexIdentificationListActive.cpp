@@ -117,23 +117,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end while 
   } 
 
+  std::string VertexIdentificationListActive::ListItem::debug() const { 
+    std::ostringstream out;
+    out << "VertexIdentificationListActive::ListItem[" 
+	<< this
+	<< ","
+	<< VertexIdentificationList::ListItem::debug().c_str()
+	<< "myPrivateLinearizedComputationalGraphVertex_p="
+	<< myPrivateLinearizedComputationalGraphVertex_p
+	<< "]" 
+	<< std::ends;
+    return out.str();
+  }
+
   std::string VertexIdentificationListActive::debug () const { 
     std::ostringstream out;
     out << "VertexIdentificationListActive[" << this 
-	<< ",myList=";  
-    for (ListItemPList::const_iterator aListIterator=myList.begin();
-	 aListIterator!=myList.end(); 
-	 ++aListIterator) { 
-      ListItem& theItem(dynamic_cast<ListItem&>(**aListIterator));
-      out << "("
-	  << theItem.myPrivateLinearizedComputationalGraphVertex_p
-	  << ","
-	  << theItem.getAliasMapKey().debug().c_str()
-	  << ","
-	  << theItem.getDuUdMapKey().debug().c_str()
-	  << ")";
-    } // end for 
-    out << std::ends;
+	<< ","
+	<< VertexIdentificationList::debug().c_str()
+	<< "]" 
+	<< std::ends;
     return out.str();
   } // end of Symbol::debug
 

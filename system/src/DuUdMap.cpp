@@ -23,6 +23,10 @@ namespace xaifBooster {
 	  break;
 	} // end if
       } // end for
+      // shortcut for now, if we have the 
+      // information it is supposed to be 
+      // either unique inside or outside
+      theResult.myAnswer=UNIQUE_OUTSIDE;
     } // end if
     return theResult;
   } 
@@ -38,6 +42,21 @@ namespace xaifBooster {
 	anotherKey.getKind()!=DuUdMapKey::NO_INFO) { 
       // here comes the shortcut: 
       return (aKey.getKey()==anotherKey.getKey())?true:false;
+    }
+    return false;
+  } 
+
+  bool DuUdMap::disjointDefinition(const DuUdMapKey& aKey,
+				   const DuUdMapKey& anotherKey) const {
+    if (aKey.getKind()==DuUdMapKey::TEMP_VAR
+	|| 
+	anotherKey.getKind()==DuUdMapKey::TEMP_VAR)
+      THROW_LOGICEXCEPTION_MACRO("DuUdMap::disjointDefinition: not supported for temporaries");
+    if (aKey.getKind()!=DuUdMapKey::NO_INFO
+	&&
+	anotherKey.getKind()!=DuUdMapKey::NO_INFO) { 
+      // here comes the shortcut: 
+      return (aKey.getKey()==anotherKey.getKey())?false:true;
     }
     return false;
   } 

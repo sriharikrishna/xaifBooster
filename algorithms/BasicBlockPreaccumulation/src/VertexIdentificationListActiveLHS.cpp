@@ -60,4 +60,34 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myStatementIdList.push_back(theStatementId);
   } 
 
+  std::string VertexIdentificationListActiveLHS::ListItem::debug() const { 
+    std::ostringstream out;
+    out << "VertexIdentificationListActiveLHS::ListItem[" 
+	<< this
+	<< ","
+	<< VertexIdentificationListActive::ListItem::debug().c_str()
+	<< "myStatementId="
+	<< myStatementId
+	<< "]" 
+	<< std::ends;
+    return out.str();
+  }
+
+  std::string VertexIdentificationListActiveLHS::debug () const { 
+    std::ostringstream out;
+    out << "VertexIdentificationListActiveLHS[" << this 
+	<< ","
+	<< VertexIdentificationListActive::debug().c_str()
+	<< "myStatementIdList=";
+    for (DuUdMap::StatementIdList::const_iterator aListIterator=myStatementIdList.begin();
+	 aListIterator!=myStatementIdList.end(); 
+	 ++aListIterator)
+      out << "("
+	  << *aListIterator
+	  << ")";
+    out << "]" 
+	<< std::ends;
+    return out.str();
+  } // end of Symbol::debug
+
 } // end of namespace 

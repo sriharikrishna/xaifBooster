@@ -81,15 +81,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string VertexIdentificationListPassive::debug () const { 
     std::ostringstream out;
-    out << "VertexIdentificationListPassive[" << this 
-	<< ",myList=";  
-    for (ListItemPList::const_iterator aListIterator=myList.begin();
-	 aListIterator!=myList.end(); 
-	 ++aListIterator) { 
-      out << (*aListIterator)->getAliasMapKey().debug().c_str()
-	  << ",";
-    } // end for 
-    out << std::ends;
+    out << "VertexIdentificationListPassive[" 
+	<< this 
+	<< VertexIdentificationList::debug().c_str()
+	<< "]"
+	<< std::ends;
     return out.str();
   } // end of Symbol::debug
 
