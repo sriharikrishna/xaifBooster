@@ -56,6 +56,7 @@
 	    do j=1,m   
 	      do k=1,n   
                 x(k)%v=x0(k)
+                x(k)%d=0.0
               end do 
               if (i==j) then 
                 y(j)%d=1.0

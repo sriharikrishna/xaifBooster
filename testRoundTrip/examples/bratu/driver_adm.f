@@ -26,9 +26,15 @@
           allocate(y(m))
           allocate(yph(m))
 
-	  do i=1,n   
-            x0(i)=i/2.
-          end do
+          x0(1) = 1.72
+          x0(2) = 3.45
+          x0(3) = 4.16
+          x0(4) = 4.87
+          x0(5) = 4.16
+          x0(6) = 3.45
+          x0(7) = 1.72
+          x0(8) = 1.3
+          x0(9) = 0.245828
 
           open(2,file='tmpOutput/dd.out')
           write(2,*) "DD"
