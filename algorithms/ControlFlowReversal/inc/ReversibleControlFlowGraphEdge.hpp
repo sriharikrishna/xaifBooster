@@ -30,6 +30,11 @@ namespace xaifBoosterControlFlowReversal {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    bool isOriginal() const;
+    const ControlFlowGraphEdge& getOriginalEdge() const;
+    const ControlFlowGraphEdge& getNewEdge() const;
+    ControlFlowGraphEdge& getNewEdge();
+
   private:
 
     friend class ReversibleControlFlowGraph;
