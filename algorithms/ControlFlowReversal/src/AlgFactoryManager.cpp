@@ -42,7 +42,7 @@ namespace xaifBoosterControlFlowReversal {
   } // end of AlgFactoryManager::instance
 
   void AlgFactoryManager::init() {
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::init();
+    xaifBooster::AlgFactoryManager::init();
     resetCallGraphAlgFactory(new CallGraphAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
     resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());

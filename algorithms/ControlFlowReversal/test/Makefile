@@ -18,7 +18,6 @@ include ../../../Makefile.incl
 
 # pick up all algorithm specific obj files
 ALG_OBJ_SET=$(wildcard ../src/obj/*.o)
-MEMOPSTRADEOFFPREACCUMULATION_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/algorithms/MemOpsTradeoffPreaccumulation/src/obj/*.o)
 BASICBLOCKPREACCUMULATION_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/algorithms/BasicBlockPreaccumulation/src/obj/*.o)
 CROSSCOUNTRYINTERFACE_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/algorithms/CrossCountryInterface/src/obj/*.o)
 LINEARIZATION_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/algorithms/Linearization/src/obj/*.o)
@@ -45,7 +44,7 @@ ifneq ($(UNDEF_ENV_VARS),"")
 export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1
 endif
 
-$(MAIN): $(OBJS) $(ALG_OBJ_SET) $(MEMOPSTRADEOFFPREACCUMULATION_OBJ_SET) $(BASICBLOCKPREACCUMULATION_OBJ_SET) $(LINEARIZATION_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS) 
+$(MAIN): $(OBJS) $(ALG_OBJ_SET) $(BASICBLOCKPREACCUMULATION_OBJ_SET) $(LINEARIZATION_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS) 
 	$(COMPLAIN)
 	$(CC) $^ $(LFLAGS) -o $@
 
