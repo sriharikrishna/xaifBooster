@@ -1,3 +1,5 @@
+#include <cerrno>
+
 #include "xaifBooster/utils/inc/CommandLineParser.hpp"
 
 namespace xaifBooster { 
