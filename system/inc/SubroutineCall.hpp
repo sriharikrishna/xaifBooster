@@ -4,6 +4,7 @@
 #include "xaifBooster/system/inc/BasicBlockElement.hpp"
 #include "xaifBooster/system/inc/SymbolReference.hpp"
 #include "xaifBooster/system/inc/ConcreteArgument.hpp"
+#include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
 
 namespace xaifBooster { 
 
@@ -13,14 +14,33 @@ namespace xaifBooster {
    */
   class SubroutineCall : public BasicBlockElement {
   public:
-    
+    /** 
+     * \param theActiveFlag initializes myActiveFlag
+     * \param makeAlgorithm  news up an algorithm object if required
+     * this is also carried through for the respective members
+     */
     SubroutineCall (const Symbol& theSymbol,
 		    const Scope& theScope,
-		    const bool activeFlag);
+		    const bool activeFlag,
+		    bool makeAlgorithm=true);
 
     ~SubroutineCall();
 
+    /** 
+     * algorithm access where the SubroutineCall may 
+     * be const but in difference to the 
+     * internal representation (wich is always 
+     * const for the algorithms) the algorithm 
+     * instances will always be modifiable.
+     */
+    SubroutineCallAlgBase& getSubroutineCallAlgBase()const;
+
     void printXMLHierarchy(std::ostream& os) const;
+
+    /**
+     * actual implementation for printing xaif
+     */
+    void printXMLHierarchyImpl(std::ostream& os) const;
 
     std::string debug() const ;
 

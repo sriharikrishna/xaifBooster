@@ -98,13 +98,6 @@ namespace xaifBooster {
     Expression myRHS;
 
     /** 
-     * this will be set to point a dynamically instance
-     * during construction and deleted during 
-     * destruction
-     */
-    AssignmentAlgBase* myAssignmentAlgBase_p;
-
-    /** 
      * this determines if the assignment is active or not
      */
     const bool myActiveFlag;
