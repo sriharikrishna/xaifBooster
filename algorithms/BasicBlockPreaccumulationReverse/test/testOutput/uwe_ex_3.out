@@ -499,8 +499,6 @@
           </xaif:Update>
         </xaif:ForLoop>
         <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
-          <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
-          </xaif:InlinableSubroutineCall>
           <xaif:SubroutineCall statement_id="reverse_call" symbol_id="my_add" scope_id="1" active="1">
             <xaif:Argument position="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
@@ -512,8 +510,6 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
             </xaif:Argument>
           </xaif:SubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
-          </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
             <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_27" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="2"/>
@@ -717,12 +713,12 @@
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="2">
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore_real_scalar" statement_id="cp_res_restore_real_scalar">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore_real_scalar" statement_id="cp_res_restore_real_scalar">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
         </xaif:BasicBlock>
@@ -904,7 +900,7 @@
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="3">
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore_real_scalar" statement_id="cp_res_restore_real_scalar">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="v" annotation="xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall" scope_id="3"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="u1" annotation="xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall" scope_id="3"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore_real_scalar" statement_id="cp_res_restore_real_scalar">
@@ -914,7 +910,7 @@
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore_real_scalar" statement_id="cp_res_restore_real_scalar">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="u1" annotation="xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall" scope_id="3"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="v" annotation="xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall" scope_id="3"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
         </xaif:BasicBlock>
