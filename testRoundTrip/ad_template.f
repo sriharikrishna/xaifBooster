@@ -23,6 +23,4 @@
 ! adjoint
 !$PLACEHOLDER_PRAGMA$ id=3
           end if 
-          print*, "double_tape_pointer", double_tape_pointer
-          print*, "integer_tape_pointer", integer_tape_pointer
         end subroutine template

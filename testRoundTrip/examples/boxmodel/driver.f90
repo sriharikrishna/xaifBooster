@@ -8,6 +8,7 @@
       integer i,j
       double precision :: h=.00001
       double precision tnew_o(kdim), snew_o(kdim)
+      double precision jac(2*kdim,2*kdim)
 
 
       external box_model_body
@@ -16,7 +17,7 @@
 ! DD code
 !
 	open(2,file='tmpOutput/dd.out')
-        write(2,*) "Jacobian (computed by DD, output transposed)"
+        write(2,*) "Jacobian (computed by DD)"
         do i=1,2*kdim
           call box_ini_params
           call box_ini_fields
@@ -32,12 +33,14 @@
           xx(i)%v=xx(i)%v+h
           call box_model_body
           do j=1,kdim
-            write(2,'(F11.8,"  ")',ADVANCE='NO') (tnew(j)%v-tnew_o(j))/h
+            jac(j,i)=(tnew(j)%v-tnew_o(j))/h
+            jac(j+kdim,i)=(snew(j)%v-snew_o(j))/h
           end do
-          do j=1,kdim
-            write(2,'(F11.8,"  ")',ADVANCE='NO') (snew(j)%v-snew_o(j))/h
+        end do
+        do i=1,2*kdim
+          do j=1,2*kdim
+            write(2,*) "F(",i,",",j,")=",jac(i,j)
           end do
-          write(2,*)
         end do
 	close(2)
 
@@ -45,7 +48,7 @@
 ! ACTS code
 !
 	open(2,file='tmpOutput/ad.out')
-        write(2,*) "Jacobian (computed by TLM, output transposed)"
+        write(2,*) "Jacobian (computed by TLM)"
         do i=1,2*kdim
           call box_ini_params
           call box_ini_fields
@@ -55,12 +58,14 @@
           xx(i)%d=1.D0
           call box_model_body
           do j=1,kdim
-            write(2,'(F11.8,"  ")',ADVANCE='NO') tnew(j)%d
+            jac(j,i)=tnew(j)%d
+            jac(j+kdim,i)=snew(j)%d
           end do
-          do j=1,kdim
-            write(2,'(F11.8,"  ")',ADVANCE='NO') snew(j)%d
+        end do
+        do i=1,2*kdim
+          do j=1,2*kdim
+            write(2,*) "F(",i,",",j,")=",jac(i,j)
           end do
-          write(2,*)
         end do
         close(2)
 
