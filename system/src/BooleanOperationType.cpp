@@ -25,6 +25,18 @@ namespace xaifBooster {
     case NOT_EQUAL_OTYPE:
       returnString="not_equal";
       break;
+    case AND_OTYPE: 
+      returnString="and";
+      break;
+    case OR_OTYPE: 
+      returnString="or";
+      break;
+    case NOT_OTYPE: 
+      returnString="not";
+      break;
+    case XOR_OTYPE: 
+      returnString="xor";
+      break;
     default: 
       throw PrintingIntException("BooleanOperationType::toString: unknown value",aType);
       break;
@@ -47,6 +59,14 @@ namespace xaifBooster {
       returnValue=EQUAL_OTYPE;
     else if (aName=="not_equal")
       returnValue=NOT_EQUAL_OTYPE;
+    else if (aName=="and")
+      returnValue=AND_OTYPE;
+    else if (aName=="or")
+      returnValue=OR_OTYPE;
+    else if (aName=="not")
+      returnValue=NOT_OTYPE;
+    else if (aName=="xor")
+      returnValue=XOR_OTYPE;
     else  
       THROW_LOGICEXCEPTION_MACRO("BooleanOperationType::fromString: unknown value >"
 			   << aName.c_str() << "<");
