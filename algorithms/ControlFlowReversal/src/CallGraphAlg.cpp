@@ -1,11 +1,13 @@
 #include <sstream>
+
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
+#include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlg.hpp"
-#include "xaifBooster/system/inc/CallGraph.hpp"
+
 
 using namespace xaifBooster;
 

@@ -61,6 +61,7 @@ namespace xaifBoosterLinearization {
     // JU: this assignment of the vertex Id might have to change 
     // if we create vector assignments as auxilliary variables...
     theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::ExpressionVertexAlg::makeAuxilliaryVariable");
     theVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theVariable_p->getAliasMapKey().setTemporary();
     theVariable_p->getDuUdMapKey().setTemporary();

@@ -441,6 +441,7 @@ namespace xaifBooster {
 										      theScope);
     theVariable.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theVariableSymbolReference_p->setId(XMLParser::getAttributeValueByName(VariableSymbolReference::our_myId_XAIFName));
+    theVariableSymbolReference_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   };
 
   void 

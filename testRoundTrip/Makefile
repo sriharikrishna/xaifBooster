@@ -51,7 +51,7 @@ $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
 
 $(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
 	$(COMPLAIN)
-	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f $(TARGET).xb.x2w.B
+	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f -openad $(TARGET).xb.x2w.B
 
 $(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
 	perl pp.pl $(PP_FLAGS) $(TARGET).xb.x2w.w2f.f
