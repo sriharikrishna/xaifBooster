@@ -4,17 +4,18 @@ CP="cp -f"
 function copyDefaultBeforeExample { 
   exampleDir=$1
   fileName=$2
-  ${CP} simple.$fileName $fileName 
+  targetFileName=$3  
+  ${CP} simple.$fileName $targetFileName 
   if [ $? -ne 0 ] 
     then 
-      echo "ERROR in: ${CP} simple.$fileName $fileName"; exit -1;
+      echo "ERROR in: ${CP} simple.$fileName $targetFileName"; exit -1;
     fi
   if [ -f $exampleDir/$fileName ] 
   then 
-    ${CP} $exampleDir/$fileName .
+    ${CP} $exampleDir/$fileName $targetFileName
     if [ $? -ne 0 ] 
     then 
-      echo "ERROR in: ${CP} $exampleDir/$fileName"; exit -1;
+      echo "ERROR in: ${CP} $exampleDir/$fileName $targetFileName"; exit -1;
     fi
   fi
 } 
@@ -29,7 +30,12 @@ then
   if [ "$answer" == "n" ]
   then
     askAll="y"
-  fi 
+  else 
+    if [ "$mode" == "adm" ] 
+    then 
+      export REVERSE_MODE=y
+    fi
+  fi
 else
   askAll="y"
 fi
@@ -41,19 +47,12 @@ then
   then
     export REVERSE_MODE=y
     mode="adm"
+    submode="split"
     echo -n "use submode [split]/joint"
     read answer
-    if [ "$answer" == "split" ]
+    if [ "$answer" == "joint" ]
     then
 	submode="$answer"
-    else 
-      if [ "$answer" == "joint" ]
-      then
-	submode="$answer"
-      else 
-        echo "type split or joint"
-        exit -1
-      fi
     fi
   else
     mode="tlm"
@@ -81,12 +80,15 @@ do
     TARGET_DRIVER=${TARGET_DRIVER}_${submode}
   fi
   exdir=examples/$i
-  copyDefaultBeforeExample $exdir ${TARGET_DRIVER}.f90
-  copyDefaultBeforeExample $exdir params.conf
-  copyDefaultBeforeExample $exdir all_globals_mod.f
-  copyDefaultBeforeExample $exdir all_globals_cp_mod.f
-  copyDefaultBeforeExample $exdir ad_template.f
-  copyDefaultBeforeExample $exdir head.f
+  copyDefaultBeforeExample $exdir ${TARGET_DRIVER}.f90 driver.f90
+  copyDefaultBeforeExample $exdir params.conf params.conf
+  copyDefaultBeforeExample $exdir head.f head.f
+  copyDefaultBeforeExample $exdir all_globals_mod.f all_globals_mod.f
+  if [ "$REVERSE_MODE" == "y" ] 
+  then 
+    copyDefaultBeforeExample $exdir all_globals_cp_mod.f90 all_globals_cp_mod.f90
+    copyDefaultBeforeExample $exdir ad_template_${submode}.f ad_template.f
+  fi  
   export TARGET=all_globals_mod
   make
   if [ $? -ne 0 ] 
@@ -111,7 +113,7 @@ do
     mv head.prh.xb.x2w.w2f.urh.pp.f.1 head.prh.xb.x2w.w2f.urh.pp.f
   fi
 ### end of temporary fix
-  export TARGET_DRIVER
+  export TARGET_DRIVER=driver
   make $TARGET_DRIVER
   if [ $? -ne 0 ] 
   then 

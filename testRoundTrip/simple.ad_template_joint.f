@@ -50,44 +50,44 @@
 	  integer iaddr
           external iaddr
 
-          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
-     +"template b:AF:", theArgFStackoffset, 
-     +" AI:",theArgIStackoffset, 
-     +" RF:",theResFStackoffset, 
-     +" RI:",theResIStackoffset, 
-     +" DT:",double_tape_pointer, 
-     +" IT:",integer_tape_pointer
+C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C     +"b:AF:", theArgFStackoffset, 
+C     +" AI:",theArgIStackoffset, 
+C     +" RF:",theResFStackoffset, 
+C     +" RI:",theResIStackoffset, 
+C     +" DT:",double_tape_pointer, 
+C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
-            print*, "arg_store", our_rev_mode
+C            print*, " arg_store  ", our_rev_mode
       call cp_store_globals(
      + theArgFStack,theArgFStackoffset,theArgFStackSize,
      + theArgIStack,theArgIStackoffset,theArgIStackSize,
      + theArgSStack,theArgSStackoffset,theArgSStackSize,
      + theArgBStack,theArgBStackoffset,theArgBStackSize)
 
-! store arguments
+C store arguments
 !$PLACEHOLDER_PRAGMA$ id=4
           end if 
           if (our_rev_mode%arg_restore) then
-            print*, "arg_restore", our_rev_mode
+C            print*, " arg_restore", our_rev_mode
+C restore arguments
+!$PLACEHOLDER_PRAGMA$ id=6
       call cp_restore_globals(
      + theArgFStack,theArgFStackoffset,
      + theArgIStack,theArgIStackoffset,
      + theArgSStack,theArgSStackoffset,
      + theArgBStack,theArgBStackoffset)
-! restore arguments
-!$PLACEHOLDER_PRAGMA$ id=6
           end if
           if (our_rev_mode%plain) then
-            print*, "plain", our_rev_mode
+C            print*, " plain      ", our_rev_mode
             our_orig_mode=our_rev_mode
             our_rev_mode%arg_store=.FALSE.
-! original function
+C original function
 !$PLACEHOLDER_PRAGMA$ id=1
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
-            print*, "tape", our_rev_mode
+C            print*, " tape       ", our_rev_mode
             our_rev_mode%arg_store=.TRUE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -95,7 +95,7 @@
             our_rev_mode%plain=.TRUE.
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.FALSE.
-! taping
+C taping
 !$PLACEHOLDER_PRAGMA$ id=2
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
@@ -105,16 +105,12 @@
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_store) then
-! store results
-!$PLACEHOLDER_PRAGMA$ id=5
-          end if 
           if (our_rev_mode%res_restore) then
-! restore results
+C restore results
 !$PLACEHOLDER_PRAGMA$ id=7
           end if 
           if (our_rev_mode%adjoint) then
-            print*, "adjoint", our_rev_mode
+C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.
@@ -122,14 +118,26 @@
             our_rev_mode%plain=.FALSE.
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
-! adjoint
+C adjoint
 !$PLACEHOLDER_PRAGMA$ id=3
+            our_rev_mode%arg_store=.FALSE.
+            our_rev_mode%arg_restore=.TRUE.
+            our_rev_mode%res_store=.FALSE.
+            our_rev_mode%res_restore=.FALSE.
+            our_rev_mode%plain=.FALSE.
+            our_rev_mode%tape=.TRUE.
+            our_rev_mode%adjoint=.FALSE.
           end if 
-          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
-     +"foo b:AF:", theArgFStackoffset, 
-     +" AI:",theArgIStackoffset, 
-     +" RF:",theResFStackoffset, 
-     +" RI:",theResIStackoffset, 
-     +" DT:",double_tape_pointer, 
-     +" IT:",integer_tape_pointer
+          if (our_rev_mode%res_store) then
+C store results
+C            print*, " res_store  ", our_rev_mode
+!$PLACEHOLDER_PRAGMA$ id=5
+          end if 
+C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C     +"a:AF:", theArgFStackoffset, 
+C     +" AI:",theArgIStackoffset, 
+C     +" RF:",theResFStackoffset, 
+C     +" RI:",theResIStackoffset, 
+C     +" DT:",double_tape_pointer, 
+C     +" IT:",integer_tape_pointer
         end subroutine template
