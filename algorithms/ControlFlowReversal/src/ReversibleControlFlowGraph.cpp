@@ -254,7 +254,7 @@ namespace xaifBoosterControlFlowReversal {
   void    
   ReversibleControlFlowGraph::insert_increment_integer(const Symbol* theIntegerSymbol_p,BasicBlock& theBasicBlock_r) {
     // not active, no algorithm
-    Assignment* theAssignment_p=new Assignment(false,false);
+    Assignment* theAssignment_p=new Assignment(false);
     theAssignment_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "increment");
 
     // set lhs
@@ -305,7 +305,7 @@ namespace xaifBoosterControlFlowReversal {
   const Symbol*
   ReversibleControlFlowGraph::insert_init_integer(int value, BasicBlock& theBasicBlock_r) {
     // not active, no algorithm
-    Assignment* theAssignment_p=new Assignment(false,false);
+    Assignment* theAssignment_p=new Assignment(false);
     theAssignment_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "init");
     // set lhs
     const Symbol* theLhsSymbol=makeAuxilliaryIntegerLHS(*theAssignment_p,theBasicBlock_r);

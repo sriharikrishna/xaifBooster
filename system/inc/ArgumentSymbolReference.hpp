@@ -19,7 +19,6 @@ namespace xaifBooster {
     ArgumentSymbolReference (const Symbol& theSymbol,
 			     const Scope& theScope,
 			     unsigned int thePosition,
-			     bool theActiveFlag,
 			     IntentType::IntentType_E theIntent,
 			     bool makeAlgorithm=true);
 
@@ -66,19 +65,12 @@ namespace xaifBooster {
     static const std::string our_scopeId_XAIFName;
 
     /**
-     * name for member myActiveFlag as represented in XAIF schema
-     */
-    static const std::string our_myActiveFlag_XAIFName;
-
-    /**
      * name for member myIntent as represented in XAIF schema
      */
     static const std::string our_myIntent_XAIFName;
 
     unsigned int getPosition() const;
     
-    bool getActiveFlag() const;
-
     IntentType::IntentType_E getIntent() const;
 
   private:
@@ -93,11 +85,6 @@ namespace xaifBooster {
      * a subroutine
      */
     unsigned int myPosition;
-
-    /**
-     * the flag indicating that this argument is active of passive
-     */
-    const bool myActiveFlag;
 
     /**
      * the flag indicating the intent of this argument

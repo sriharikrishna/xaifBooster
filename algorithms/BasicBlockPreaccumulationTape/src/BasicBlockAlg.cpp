@@ -175,7 +175,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       } // has one vertex 
       else {  // has more then one vertex
 	// make it
-	Assignment* theIndexExpressionAssignment_p(new Assignment(false,false));
+	Assignment* theIndexExpressionAssignment_p(new Assignment(false));
 	// save it in the list
 	aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theIndexExpressionAssignment_p);
 	theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");

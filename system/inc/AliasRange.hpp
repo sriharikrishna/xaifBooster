@@ -15,7 +15,8 @@ namespace xaifBooster{
   public: 
   
     AliasRange(unsigned int lower,
-	       unsigned int upper);
+	       unsigned int upper,
+	       bool partial);
  
     ~AliasRange(){};
 
@@ -35,19 +36,21 @@ namespace xaifBooster{
     static const std::string our_myLowerAddress_XAIFName;
     static const std::string our_myUpperAddress_XAIFName;
 
-
     /**
-     * name as specified for single address in XAIF schema
+     * name of member myPartial 
+     * as specified in XAIF schema
      */
-    static const std::string our_Single_XAIFName;
-
-    /**
-     * name of member myAddress as specified in XAIF schema
-     */
-    static const std::string our_Single_myAddress_XAIFName;
+    static const std::string our_myPartial_XAIFName;
 
     unsigned int max() const;
     unsigned int min() const;
+
+    /**
+     * almost operator '==' like but didn't 
+     * use operator since people could 
+     * epxect them to behave differently
+     */
+    bool sameAs(const AliasRange&) const;
 
     /**
      * almost operator '>' like but didn't 
@@ -77,6 +80,8 @@ namespace xaifBooster{
      */
     void absorb(const AliasRange&);
 
+    bool isPartial()const;
+
   private:
 
     unsigned int myLowerAddress;
@@ -99,6 +104,12 @@ namespace xaifBooster{
      * no def
      */
     AliasRange operator=(const AliasRange&);
+
+    /** 
+     * indicates if this is a full 
+     * or a partial reference
+     */
+    const bool myPartial;
     
   }; // end of class AliasRange
 

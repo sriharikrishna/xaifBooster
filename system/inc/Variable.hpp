@@ -193,7 +193,7 @@ namespace xaifBooster {
      */
     mutable ActiveUseType::ActiveUseType_E myActiveUseType;
 
-    bool myActiveUseTypeSetFlag;
+    mutable bool myActiveUseTypeSetFlag;
 
     /**
      * defaults to false, 

@@ -31,28 +31,36 @@ namespace xaifBooster {
       (*it)->printXMLHierarchy(os);       
   } 
 
-  void AliasSet::addAlias(unsigned int address) { 
-    addAlias(address,
-	     address);
-  } 
-
   void AliasSet::addAlias(unsigned int lower,
-			  unsigned int upper) { 
+			  unsigned int upper,
+			  bool isPartial) { 
     if (myAliasRangePList.empty()) { 
-      myAliasRangePList.push_back(new AliasRange(lower,upper));
+      myAliasRangePList.push_back(new AliasRange(lower,upper,isPartial));
       return;
     }
-    AliasRange theNewRange(lower,upper);
+    AliasRange theNewRange(lower,upper,isPartial);
     AliasRangePList::iterator it=myAliasRangePList.end();
     --it; // start at the end and point to the last
     while (true) { 
+      if (theNewRange.sameAs(**it))
+	return;
       if (theNewRange.isGreaterThan(**it)) { 
 	// the first one for which it is greater
 	if (theNewRange.overlapsWith(**it)
 	    || 
-	    theNewRange.isContainedIn(**it)
-	    ||
-	    theNewRange.bordersWith(**it)) { 
+	    theNewRange.isContainedIn(**it)) { 
+	  if (!(*it)->isPartial() 
+	      ||
+	      !theNewRange.isPartial())
+	    THROW_LOGICEXCEPTION_MACRO("AliasSet::addAlias: overlapping full reference ranges, fix the code");
+	  (*it)->absorb(theNewRange);
+	  return;
+	}
+	else if (theNewRange.bordersWith(**it) 
+		 &&
+		 theNewRange.isPartial() 
+		 &&
+		 (*it)->isPartial()) { 
 	  (*it)->absorb(theNewRange);
 	  return;
 	}
@@ -60,14 +68,14 @@ namespace xaifBooster {
 	  // increment iterator by one
 	  ++it; 
 	  // and insert before it
-	  myAliasRangePList.insert(it,new AliasRange(lower,upper)); 
+	  myAliasRangePList.insert(it,new AliasRange(lower,upper,isPartial)); 
 	  return;
 	}
       }
       else {
 	// *theNewRange must be less than **it
 	if (it==myAliasRangePList.begin()) { 
-	  myAliasRangePList.insert(it,new AliasRange(lower,upper)); 
+	  myAliasRangePList.insert(it,new AliasRange(lower,upper,isPartial)); 
 	  // insert before it
 	  return;
 	}

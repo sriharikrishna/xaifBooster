@@ -174,18 +174,12 @@ namespace xaifBooster {
   };
 
   void 
-  XAIFBaseParserHandlers::onAliasSingle(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasSingle" ); 
-    AliasSet& theAliasSet(passingIn.getAliasMapEntry().getAliasSet());
-    theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(AliasRange::our_Single_myAddress_XAIFName).c_str()));
-  };
-
-  void 
   XAIFBaseParserHandlers::onAliasRange(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasRange" ); 
     AliasSet& theAliasSet(passingIn.getAliasMapEntry().getAliasSet());
     theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(AliasRange::our_myLowerAddress_XAIFName).c_str()),
-			 atoi(XMLParser::getAttributeValueByName(AliasRange::our_myUpperAddress_XAIFName).c_str()));
+			 atoi(XMLParser::getAttributeValueByName(AliasRange::our_myUpperAddress_XAIFName).c_str()),
+			 XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(AliasRange::our_myPartial_XAIFName)));
   };
 
   void 
@@ -237,7 +231,7 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onAssignment(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAssignment" ); 
     BasicBlock& theBasicBlock(passingIn.getBasicBlock());
-    Assignment* theAssignment_p=new Assignment(XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Assignment::our_myActiveFlag_XAIFName)));
+    Assignment* theAssignment_p=new Assignment;
     theAssignment_p->setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theAssignment_p);
     passingOut.setAssignment(*theAssignment_p);
@@ -513,7 +507,7 @@ namespace xaifBooster {
     SubroutineCall* theNewSubroutineCall_p=
       new SubroutineCall(theSymbol,
 			 theScope,
-			 XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(SubroutineCall::our_myActiveFlag_XAIFName)));
+			 ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theNewSubroutineCall_p);
     theNewSubroutineCall_p->setId(XMLParser::getAttributeValueByName(SubroutineCall::our_myId_XAIFName));
     passingOut.setSubroutineCall(*theNewSubroutineCall_p);
@@ -564,7 +558,6 @@ namespace xaifBooster {
       new ArgumentSymbolReference(theSymbol,
 				  theScope,
 				  atoi(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myPosition_XAIFName).c_str()),
-				  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myActiveFlag_XAIFName)),
 				  IntentType::fromString(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myIntent_XAIFName)));
     theNewArgumentSymbolReference_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
     theControlFlowGraph.getArgumentList().getArgumentSymbolReferencePList().push_back(theNewArgumentSymbolReference_p);

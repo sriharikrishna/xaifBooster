@@ -1,7 +1,6 @@
 ourActionCatalogue.addElement(AliasMapEntry::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasMapEntry));
 ourActionCatalogue.addElement(AliasMap::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasMap));
 ourActionCatalogue.addElement(AliasRange::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasRange));
-ourActionCatalogue.addElement(AliasRange::our_Single_XAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasSingle));
 ourActionCatalogue.addElement(ArgumentSymbolReference::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onArgumentSymbolReference));
 ourActionCatalogue.addElement(ArrayAccess::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onArrayAccess));
 ourActionCatalogue.addElement(ArrayAccess::our_myIndex_XAIFName, ActionItem(&XAIFBaseParserHandlers::onArrayIndex));

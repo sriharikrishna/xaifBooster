@@ -1,7 +1,6 @@
 void onAliasMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onAliasMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onAliasRange(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
-void onAliasSingle(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onConcreteArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onArgumentList(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onArgumentSymbolReference(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

@@ -43,7 +43,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     SubroutineCall& addSubroutineCall(const Symbol& aSubroutineNameSymbol,
 				      const Scope& aSubroutineNameScope,
-				      bool anActiveFlag);
+				      ActiveUseType::ActiveUseType_E anActiveUse);
 
     virtual void algorithm_action_4();
 

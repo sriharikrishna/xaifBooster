@@ -39,7 +39,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 //    theRevModeCall.setId("inline_adjoint_mode");
     SubroutineCall& theNewSubroutineCall(theBasicBlockAlg.addSubroutineCall(getContainingSubroutineCall().getSymbolReference().getSymbol(),
 									    getContainingSubroutineCall().getSymbolReference().getScope(),
-									    getContainingSubroutineCall().getActiveFlag()));
+									    getContainingSubroutineCall().getActiveUse()));
     const SubroutineCall::ConcreteArgumentPList& theOldConcreteArgumentPList(getContainingSubroutineCall().getConcreteArgumentPList());
     SubroutineCall::ConcreteArgumentPList& theNewConcreteArgumentPList(theNewSubroutineCall.getConcreteArgumentPList());
     for (SubroutineCall::ConcreteArgumentPList::const_iterator theOldConcreteArgumentPListI=theOldConcreteArgumentPList.begin();

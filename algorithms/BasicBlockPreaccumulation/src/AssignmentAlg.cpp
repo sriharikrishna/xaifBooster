@@ -150,7 +150,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (getContainingAssignment().getLHS().getActiveType()) {   // but the LHS has active type
 	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS(),
 						      getContainingAssignment().getId());
-	if (getContainingAssignment().getActiveFlag()) // this means the assignment has been passivated 
+	if (getContainingAssignment().getLHS().getActiveFlag()) // this means the LHS has been passivated 
 	  BasicBlockAlgParameter::get().getDerivativePropagator(getContainingAssignment()).
 	    addZeroDerivToEntryPList(getContainingAssignment().getLHS());
       } // end if
