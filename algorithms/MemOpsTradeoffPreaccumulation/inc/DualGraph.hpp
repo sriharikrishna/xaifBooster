@@ -21,7 +21,7 @@ namespace MemOpsTradeoffPreaccumulation {
 
   public:
 
-    DualGraph(){};
+    DualGraph(const LinearizedComputationalGraph& theOriginal);
     ~DualGraph();
 
     typedef std::list<DualGraphEdge*> FacePointerList;
@@ -31,19 +31,17 @@ namespace MemOpsTradeoffPreaccumulation {
     const DualGraphVertex& getDualVertex(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& theEdge) const;
     
     void populatePathList();
+    void copyPath(DualGraphPath* thePath);
     void clearPathList();
-    void copyPath(const DualGraphPath& thePath);
-    const PathList& getPathList() const;
     
-    //returns true if the list has elements and they are all complete
-    //returns false if any elements are incomplete or if the size is zero
-    bool allComplete() const;
-
-    unsigned int checkSequence(DualGraphVertex& theFirst, DualGraphVertex& theSecond);
+    FacePointerList populateElimList();
+    bool isFinal(DualGraphEdge& theFace) const;
+    void clearElimList();
 
   private: 
 
     PathList myPathList;
+    FacePointerList myElimList;
 
   }; // end of class DualGraph 
 
