@@ -13,6 +13,8 @@
 #include "xaifBooster/system/inc/ArgumentSymbolReference.hpp"
 #include "xaifBooster/system/inc/InOutList.hpp"
 
+#include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
+
 namespace xaifBooster { 
 
   /**
@@ -33,6 +35,8 @@ namespace xaifBooster {
     ~ControlFlowGraph();
 
     void printXMLHierarchy(std::ostream& os) const;
+
+    void printXMLHierarchyImpl(std::ostream& os) const;
 
     void printXMLHierarchyArgumentList(std::ostream& os) const;
 
@@ -76,6 +80,14 @@ namespace xaifBooster {
     InOutList& getInOutList();
     const InOutList& getInOutList() const;
 
+    /**
+     * get algorithm
+     */
+    ControlFlowGraphAlgBase& getControlFlowGraphAlgBase();
+    const ControlFlowGraphAlgBase& getControlFlowGraphAlgBase() const;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
   private: 
     
     /** 
@@ -106,6 +118,13 @@ namespace xaifBooster {
      */
     const bool myActiveFlag;
 
+    /**
+     * this will be set to point a dynamically instance
+     * during construction and deleted during
+     * destruction
+     */
+    ControlFlowGraphAlgBase* myControlFlowGraphAlgBase_p;
+                                                                                
   }; // end of class ControlFlowGraph
 
 } // end of namespace xaifBooster

@@ -13,6 +13,10 @@ class ConstantAlgFactory;
 class ExpressionAlgFactory;
 class ExpressionEdgeAlgFactory;
 class IntrinsicAlgFactory;
+class ControlFlowGraphAlgFactory;
+class ControlFlowGraphVertexAlgFactory;
+class IfStatementAlgFactory;
+class PreLoopAlgFactory;
 
   /** 
    * the singleton class for 
@@ -40,6 +44,10 @@ class IntrinsicAlgFactory;
     ExpressionAlgFactory* getExpressionAlgFactory() const ;
     ExpressionEdgeAlgFactory* getExpressionEdgeAlgFactory() const ;
     IntrinsicAlgFactory* getIntrinsicAlgFactory() const ;
+    ControlFlowGraphAlgFactory* getControlFlowGraphAlgFactory() const ;
+    ControlFlowGraphVertexAlgFactory* getControlFlowGraphVertexAlgFactory() const ;
+    IfStatementAlgFactory* getIfStatementAlgFactory() const ;
+    PreLoopAlgFactory* getPreLoopAlgFactory() const ;
 
   protected: 
     
@@ -51,6 +59,10 @@ class IntrinsicAlgFactory;
     void resetExpressionAlgFactory(ExpressionAlgFactory*);
     void resetExpressionEdgeAlgFactory(ExpressionEdgeAlgFactory*);
     void resetIntrinsicAlgFactory(IntrinsicAlgFactory*);
+    void resetControlFlowGraphAlgFactory(ControlFlowGraphAlgFactory*);
+    void resetControlFlowGraphVertexAlgFactory(ControlFlowGraphVertexAlgFactory*);
+    void resetIfStatementAlgFactory(IfStatementAlgFactory*);
+    void resetPreLoopAlgFactory(PreLoopAlgFactory*);
     
     AlgFactoryManager();
 
@@ -73,6 +85,10 @@ class IntrinsicAlgFactory;
     ExpressionAlgFactory* ourExpressionAlgFactory_p;
     ExpressionEdgeAlgFactory* ourExpressionEdgeAlgFactory_p;
     IntrinsicAlgFactory* ourIntrinsicAlgFactory_p;
+    ControlFlowGraphAlgFactory* ourControlFlowGraphAlgFactory_p;
+    ControlFlowGraphVertexAlgFactory* ourControlFlowGraphVertexAlgFactory_p;
+    IfStatementAlgFactory* ourIfStatementAlgFactory_p;
+    PreLoopAlgFactory* ourPreLoopAlgFactory_p;
 
     /**
      * no def

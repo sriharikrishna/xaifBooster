@@ -3,6 +3,7 @@
 
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include "xaifBooster/system/inc/Condition.hpp"
+#include "xaifBooster/system/inc/IfStatementAlgBase.hpp"
 
 namespace xaifBooster { 
 
@@ -13,9 +14,9 @@ namespace xaifBooster {
   class IfStatement : public ControlFlowGraphVertex {
   public:
 
-    IfStatement (){};
+    IfStatement ();
 
-    ~IfStatement(){};
+    ~IfStatement();
 
     /**
      * print XML hierarchy
@@ -37,6 +38,11 @@ namespace xaifBooster {
     Condition& getCondition();
 
     const Condition& getCondition() const;
+
+    /**
+     * get algorithm
+     */
+    IfStatementAlgBase& getIfStatementAlgBase() const;
 
   private:
     

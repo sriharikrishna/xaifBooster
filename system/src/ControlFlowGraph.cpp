@@ -1,6 +1,7 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -16,6 +17,7 @@ namespace xaifBooster {
 				      const bool activeFlag) :
     mySymbolReference(theSymbol,theScope),
     myActiveFlag(activeFlag) { 
+    myControlFlowGraphAlgBase_p=ControlFlowGraphAlgFactory::instance()->makeNewAlg(*this);
   } 
 
   ControlFlowGraph::~ControlFlowGraph() { 
@@ -25,10 +27,19 @@ namespace xaifBooster {
       if (*i)
 	delete *i;
     }
+    if (myControlFlowGraphAlgBase_p) delete myControlFlowGraphAlgBase_p;
   } 
 
   void
   ControlFlowGraph::printXMLHierarchy(std::ostream& os) const { 
+    if (myControlFlowGraphAlgBase_p)
+      getControlFlowGraphAlgBase().printXMLHierarchy(os);
+    else
+      printXMLHierarchyImpl(os);
+  } // end of ControlFlowGraph::printXMLHierarchy
+
+  void
+  ControlFlowGraph::printXMLHierarchyImpl(std::ostream& os) const { 
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
@@ -71,7 +82,9 @@ namespace xaifBooster {
        << ">"
        << std::endl;
     pm.releaseInstance();
-  } // end of ControlFlowGraph::printXMLHierarchy
+  } // end of ControlFlowGraph::printXMLHierarchyImpl
+
+  
 
   void
   ControlFlowGraph::printXMLHierarchyArgumentList(std::ostream& os) const { 
@@ -122,5 +135,24 @@ namespace xaifBooster {
   ControlFlowGraph::getInOutList() const { 
     return myInOutList;
   } 
+
+  ControlFlowGraphAlgBase&
+  ControlFlowGraph::getControlFlowGraphAlgBase() {
+    if (!myControlFlowGraphAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getControlFlowGraphAlgBase: not set");
+    return *myControlFlowGraphAlgBase_p;
+  }
+                                                                                
+  const ControlFlowGraphAlgBase&
+  ControlFlowGraph::getControlFlowGraphAlgBase() const {
+    if (!myControlFlowGraphAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getControlFlowGraphAlgBase: not set");
+    return *myControlFlowGraphAlgBase_p;
+  }
+
+  void ControlFlowGraph::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+    getControlFlowGraphAlgBase().genericTraversal(anAction_c);
+    GraphWrapperTraversable<ControlFlowGraphVertex,ControlFlowGraphEdge>::traverseToChildren(anAction_c);
+  }
   
 } // end of namespace xaifBooster 
