@@ -48,6 +48,11 @@
 	end do
 	close(2)
 
+!       we need enough argument checkpoints
+	do i=n+1,m
+	   call head(x,y,2)
+	end do
+
 	open(2,file='tmpOutput/ad.out')
 	write(2,*) "AD"
 

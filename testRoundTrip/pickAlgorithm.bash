@@ -3,7 +3,8 @@ echo "pick one of the following algorithms"
 count=1
 for i in `echo ../algorithms/*/test/t`
 do 
-  echo $count : $i
+  name=${i##../algorithms/}  
+  echo $count : ${name%%/test/t}
   let count=count+1
 done 
 echo -n "pick a number: "
