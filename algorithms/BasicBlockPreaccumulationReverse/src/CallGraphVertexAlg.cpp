@@ -89,27 +89,31 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	break;
       case ReplacementId::STOREARGUMENT: 
 	theReplacement.setControlFlowGraphBase(*myCFGStoreArguments_p);
-	handleCheckPointing("cp_store",
+	handleCheckPointing("cp_arg_store",
 			    IntentType::OUT_ITYPE,
-			    *myCFGStoreArguments_p);
+			    *myCFGStoreArguments_p,
+			    false);
 	break;
       case ReplacementId::STORERESULT: 
 	theReplacement.setControlFlowGraphBase(*myCFGStoreResults_p);
-	handleCheckPointing("cp_store",
+	handleCheckPointing("cp_res_store",
 			    IntentType::IN_ITYPE,
-			    *myCFGStoreResults_p);
+			    *myCFGStoreResults_p, 
+			    false);
 	break;
       case ReplacementId::RESTOREARGUMENT: 
 	theReplacement.setControlFlowGraphBase(*myCFGRestoreArguments_p);
-	handleCheckPointing("cp_restore",
+	handleCheckPointing("cp_arg_restore",
 			    IntentType::OUT_ITYPE,
-			    *myCFGRestoreArguments_p);
+			    *myCFGRestoreArguments_p,
+			    true);
 	break;
       case ReplacementId::RESTORERESULT: 
 	theReplacement.setControlFlowGraphBase(*myCFGRestoreResults_p);
-	handleCheckPointing("cp_restore",
+	handleCheckPointing("cp_res_restore",
 			    IntentType::IN_ITYPE,
-			    *myCFGRestoreResults_p);
+			    *myCFGRestoreResults_p,
+			    true);
 	break;
       default: 
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_4: no handler for ReplacementID  "
@@ -155,36 +159,72 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   void CallGraphVertexAlg::handleCheckPointing(const std::string& aSubroutineNameBase,
 					       IntentType::IntentType_E theExcludedIntent,
-					       ControlFlowGraph& theCFG) { 
+					       ControlFlowGraph& theCFG,
+					       bool reverse) { 
     // initialize
     BasicBlock& theBasicBlock(initCheckPointCFG(theCFG));
     const ArgumentList::ArgumentSymbolReferencePList& theArgumentSymbolReferenceList(getContaining().getControlFlowGraph().getArgumentList().getArgumentSymbolReferencePList());
-    for (ArgumentList::ArgumentSymbolReferencePList::const_iterator i=theArgumentSymbolReferenceList.begin();
-	 i!=theArgumentSymbolReferenceList.end();
-	 ++i) { 
-      if ((*i)->getIntent()!=theExcludedIntent) { 
-	// all non-out parameters will be stored:
-	switch ((*i)->getSymbol().getSymbolType()) { 
-	case SymbolType::INTEGER_STYPE :
-	  addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+"_i",
-						  theBasicBlock,
-						  (*i)->getSymbol(),
-						  (*i)->getScope());
-	  break; 
-	case SymbolType::REAL_STYPE : 
-	  addCheckPointingInlinableSubroutineCall(aSubroutineNameBase,
-						  theBasicBlock,
-						  (*i)->getSymbol(),
-						  (*i)->getScope());
-	  break; 
-	default: 
-	  THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::handleCheckPointing: no handler for checkpointing argument of type  "
-				     << SymbolType::toString((*i)->getSymbol().getSymbolType()).c_str());
-	  break;
-	} // end switch
-      } // end if 
-    } // end for 
+    if (reverse) { 
+      for (ArgumentList::ArgumentSymbolReferencePList::const_reverse_iterator i=theArgumentSymbolReferenceList.rbegin();
+	   i!=theArgumentSymbolReferenceList.rend();
+	   ++i) { 
+	handleCheckPoint(aSubroutineNameBase,
+			 theExcludedIntent,
+			 theBasicBlock,
+			 **i);
+      } // end for 
+    }
+    else { 
+      for (ArgumentList::ArgumentSymbolReferencePList::const_iterator i=theArgumentSymbolReferenceList.begin();
+	   i!=theArgumentSymbolReferenceList.end();
+	   ++i) { 
+	handleCheckPoint(aSubroutineNameBase,
+			 theExcludedIntent,
+			 theBasicBlock,
+			 **i);
+      } // end for 
+    }
   } 
+
+  void CallGraphVertexAlg::handleCheckPoint(const std::string& aSubroutineNameBase,
+					    IntentType::IntentType_E theExcludedIntent,
+					    BasicBlock& theBasicBlock,
+					    const ArgumentSymbolReference& theArgumentSymbolReference) { 
+    if (theArgumentSymbolReference.getIntent()!=theExcludedIntent) { 
+      // all non-out parameters will be stored:
+      std::string shapeName;
+      switch (theArgumentSymbolReference.getSymbol().getSymbolShape()) { 
+      case SymbolShape::SCALAR :
+	// do nothing
+	break; 
+      case SymbolShape::VECTOR : 
+	shapeName="_v";
+	break; 
+      default: 
+	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::handleCheckPoint: no handler for checkpointing argument of shape  "
+				   << SymbolShape::toString(theArgumentSymbolReference.getSymbol().getSymbolShape()).c_str());
+	break;
+      } // end switch
+      switch (theArgumentSymbolReference.getSymbol().getSymbolType()) { 
+      case SymbolType::INTEGER_STYPE :
+	addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+shapeName+"_i",
+						theBasicBlock,
+						theArgumentSymbolReference.getSymbol(),
+						theArgumentSymbolReference.getScope());
+	break; 
+      case SymbolType::REAL_STYPE : 
+	addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+shapeName,
+						theBasicBlock,
+						theArgumentSymbolReference.getSymbol(),
+						theArgumentSymbolReference.getScope());
+	break; 
+      default: 
+	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::handleCheckPoint: no handler for checkpointing argument of type  "
+				   << SymbolType::toString(theArgumentSymbolReference.getSymbol().getSymbolType()).c_str());
+	break;
+      } // end switch
+    } // end if 
+  }
 
   void CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall(const std::string& aSubroutineName,
 								   BasicBlock& theBasicBlock,
