@@ -153,19 +153,6 @@ namespace xaifBoosterControlFlowReversal {
      */
     std::list<std::pair<const ReversibleControlFlowGraphVertex*,const ReversibleControlFlowGraphVertex*> > myVertexMap;
 
-    /** 
-     * signature used in annotations of objects generated
-     * by the algorithm
-     */
-    static std::string myAnnotationSignature;
-
-    /** 
-     * References to symbols for push and pop routines
-     * all live in global scope
-     */
-    Symbol& myPushIntegerSymbol_r;
-    Symbol& myPopIntegerSymbol_r;
-
   };  // end of class
 
 } // end of namespace 

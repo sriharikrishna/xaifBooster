@@ -1,6 +1,7 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/CallGraphAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -19,10 +20,24 @@ namespace xaifBooster {
     myXAIFInstance(anXAIFInstance),
     mySchemaLocation(aSchemaLocation),
     myPrefix(aPrefix) {
+    myCallGraphAlgBase_p=CallGraphAlgFactory::instance()->makeNewAlg(*this);
+  }
+                                                                                
+  CallGraph::~CallGraph() {
+    if (myCallGraphAlgBase_p) delete myCallGraphAlgBase_p;
   }
 
   void
-  CallGraph::printXMLHierarchy(std::ostream& os) const { 
+  CallGraph::printXMLHierarchy(std::ostream& os) const {
+    if (myCallGraphAlgBase_p)
+      getCallGraphAlgBase().printXMLHierarchy(os);
+    else
+      printXMLHierarchyImpl(os);
+  } // end of CallGraph::printXMLHierarchy
+
+
+  void
+  CallGraph::printXMLHierarchyImpl(std::ostream& os) const { 
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
@@ -110,5 +125,25 @@ namespace xaifBooster {
   const std::string& CallGraph::getPrefix() const { 
     return myPrefix;
   }
+
+  CallGraphAlgBase&
+  CallGraph::getCallGraphAlgBase() {
+    if (!myCallGraphAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("CallGraph::getCallGraphAlgBase: not set");
+    return *myCallGraphAlgBase_p;
+  }
+                                                                                
+  const CallGraphAlgBase&
+  CallGraph::getCallGraphAlgBase() const {
+    if (!myCallGraphAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("CallGraph::getCallGraphAlgBase: not set");
+    return *myCallGraphAlgBase_p;
+  }
+                                                                                
+  void CallGraph::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+    getCallGraphAlgBase().genericTraversal(anAction_c);
+    GraphWrapperTraversable<CallGraphVertex,CallGraphEdge>::traverseToChildren(anAction_c);
+  }
+
 
 } // end of namespace xaifBooster 

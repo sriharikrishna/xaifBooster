@@ -10,6 +10,7 @@
 #include "xaifBooster/system/inc/Entry.hpp"
 #include "xaifBooster/system/inc/Exit.hpp"
 #include "xaifBooster/system/inc/EndLoop.hpp"
+#include "xaifBooster/system/inc/Branch.hpp"
 #include "xaifBooster/system/inc/EndBranch.hpp"
 #include "xaifBooster/system/inc/IfStatement.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
@@ -34,6 +35,8 @@
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 #include "xaifBooster/system/inc/InOutList.hpp"
 #include "xaifBooster/system/inc/ArgumentList.hpp"
+#include "xaifBooster/system/inc/Goto.hpp"
+#include "xaifBooster/system/inc/Label.hpp"
 
 namespace xaifBooster {
 

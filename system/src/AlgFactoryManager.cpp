@@ -9,6 +9,7 @@
 #include "xaifBooster/system/inc/ExpressionAlgFactory.hpp"
 #include "xaifBooster/system/inc/ExpressionEdgeAlgFactory.hpp"
 #include "xaifBooster/system/inc/IntrinsicAlgFactory.hpp"
+#include "xaifBooster/system/inc/CallGraphAlgFactory.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphVertexAlgFactory.hpp"
 #include "xaifBooster/system/inc/IfStatementAlgFactory.hpp"
@@ -18,6 +19,9 @@
 #include "xaifBooster/system/inc/ExitAlgFactory.hpp"
 #include "xaifBooster/system/inc/EndLoopAlgFactory.hpp"
 #include "xaifBooster/system/inc/EndBranchAlgFactory.hpp"
+#include "xaifBooster/system/inc/BranchAlgFactory.hpp"
+#include "xaifBooster/system/inc/GotoAlgFactory.hpp"
+#include "xaifBooster/system/inc/LabelAlgFactory.hpp"
 #include "xaifBooster/system/inc/CallGraphVertexAlgFactory.hpp"
 
 namespace xaifBooster { 
@@ -54,6 +58,7 @@ namespace xaifBooster {
     ourExpressionAlgFactory_p(0),
     ourExpressionEdgeAlgFactory_p(0),
     ourIntrinsicAlgFactory_p(0), 
+    ourCallGraphAlgFactory_p(0), 
     ourControlFlowGraphAlgFactory_p(0), 
     ourControlFlowGraphVertexAlgFactory_p(0), 
     ourIfStatementAlgFactory_p(0), 
@@ -62,6 +67,9 @@ namespace xaifBooster {
     ourEntryAlgFactory_p(0), 
     ourExitAlgFactory_p(0), 
     ourEndLoopAlgFactory_p(0), 
+    ourGotoAlgFactory_p(0), 
+    ourLabelAlgFactory_p(0), 
+    ourBranchAlgFactory_p(0), 
     ourEndBranchAlgFactory_p(0), 
     ourCallGraphVertexAlgFactory_p(0) 
   {
@@ -84,6 +92,8 @@ namespace xaifBooster {
       delete ourExpressionEdgeAlgFactory_p;
     if (ourIntrinsicAlgFactory_p)
       delete ourIntrinsicAlgFactory_p;
+    if (ourCallGraphAlgFactory_p)
+      delete ourCallGraphAlgFactory_p;
     if (ourControlFlowGraphAlgFactory_p)
       delete ourControlFlowGraphAlgFactory_p;
     if (ourControlFlowGraphVertexAlgFactory_p)
@@ -100,8 +110,14 @@ namespace xaifBooster {
       delete ourExitAlgFactory_p;
     if (ourEndLoopAlgFactory_p)
       delete ourEndLoopAlgFactory_p;
+    if (ourBranchAlgFactory_p)
+      delete ourBranchAlgFactory_p;
     if (ourEndBranchAlgFactory_p)
       delete ourEndBranchAlgFactory_p;
+    if (ourLabelAlgFactory_p)
+      delete ourLabelAlgFactory_p;
+    if (ourGotoAlgFactory_p)
+      delete ourGotoAlgFactory_p;
     if (ourCallGraphVertexAlgFactory_p)
       delete ourCallGraphVertexAlgFactory_p;
   } // end of AlgFactoryManager::~AlgFactoryManager
@@ -115,6 +131,7 @@ namespace xaifBooster {
     resetExpressionAlgFactory(new ExpressionAlgFactory());
     resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
     resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
+    resetCallGraphAlgFactory(new CallGraphAlgFactory());
     resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
     resetControlFlowGraphVertexAlgFactory(new ControlFlowGraphVertexAlgFactory());
     resetIfStatementAlgFactory(new IfStatementAlgFactory());
@@ -123,7 +140,10 @@ namespace xaifBooster {
     resetEntryAlgFactory(new EntryAlgFactory());
     resetExitAlgFactory(new ExitAlgFactory());
     resetEndLoopAlgFactory(new EndLoopAlgFactory());
+    resetBranchAlgFactory(new BranchAlgFactory());
     resetEndBranchAlgFactory(new EndBranchAlgFactory());
+    resetLabelAlgFactory(new LabelAlgFactory());
+    resetGotoAlgFactory(new GotoAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
   }
 
@@ -343,5 +363,54 @@ namespace xaifBooster {
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getEndBranchAlgFactory: not set");
     return ourEndBranchAlgFactory_p;
   }
+
+  void AlgFactoryManager::resetGotoAlgFactory(GotoAlgFactory* anotherGotoAlgFactory_p){ 
+    if(ourGotoAlgFactory_p) 
+      delete ourGotoAlgFactory_p;
+    ourGotoAlgFactory_p=anotherGotoAlgFactory_p;
+  }
+
+  GotoAlgFactory* AlgFactoryManager::getGotoAlgFactory() const { 
+    if (!ourGotoAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getGotoAlgFactory: not set");
+    return ourGotoAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetLabelAlgFactory(LabelAlgFactory* anotherLabelAlgFactory_p){ 
+    if(ourLabelAlgFactory_p) 
+      delete ourLabelAlgFactory_p;
+    ourLabelAlgFactory_p=anotherLabelAlgFactory_p;
+  }
+
+  LabelAlgFactory* AlgFactoryManager::getLabelAlgFactory() const { 
+    if (!ourLabelAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getLabelAlgFactory: not set");
+    return ourLabelAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetBranchAlgFactory(BranchAlgFactory* anotherBranchAlgFactory_p){ 
+    if(ourBranchAlgFactory_p) 
+      delete ourBranchAlgFactory_p;
+    ourBranchAlgFactory_p=anotherBranchAlgFactory_p;
+  }
+
+  BranchAlgFactory* AlgFactoryManager::getBranchAlgFactory() const { 
+    if (!ourBranchAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getBranchAlgFactory: not set");
+    return ourBranchAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetCallGraphAlgFactory(CallGraphAlgFactory* anotherCallGraphAlgFactory_p){ 
+    if(ourCallGraphAlgFactory_p) 
+      delete ourCallGraphAlgFactory_p;
+    ourCallGraphAlgFactory_p=anotherCallGraphAlgFactory_p;
+  }
+
+  CallGraphAlgFactory* AlgFactoryManager::getCallGraphAlgFactory() const { 
+    if (!ourCallGraphAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getCallGraphAlgFactory: not set");
+    return ourCallGraphAlgFactory_p;
+  }
+
 }
 

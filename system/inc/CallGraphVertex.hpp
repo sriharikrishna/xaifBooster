@@ -55,6 +55,12 @@ namespace xaifBooster {
      */
     CallGraphVertexAlgBase& getCallGraphVertexAlgBase()const;
 
+    /** 
+     * get name of subroutine associated with myControlFlowGraph
+     * \todo implement
+     */
+    std::string getSubroutineName() const;
+
   private: 
 
     /**

@@ -23,9 +23,12 @@ ourActionCatalogue.addElement(Entry::ourXAIFName, ActionItem(&XAIFBaseParserHand
 ourActionCatalogue.addElement(Exit::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onExit));
 ourActionCatalogue.addElement(EndLoop::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEndLoop));
 ourActionCatalogue.addElement(EndBranch::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEndBranch));
+ourActionCatalogue.addElement(Label::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onLabel));
+ourActionCatalogue.addElement(Goto::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onGoto));
 ourActionCatalogue.addElement(ExpressionEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onExpressionEdge));
 ourActionCatalogue.addElement(ForLoop::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onForLoop));
 ourActionCatalogue.addElement(IfStatement::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onIfStatement));
+ourActionCatalogue.addElement(Branch::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onBranch));
 ourActionCatalogue.addElement(Initialization::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onInitialization));
 ourActionCatalogue.addElement(Intrinsic::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onIntrinsic));
 ourActionCatalogue.addElement(Marker::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onMarker));

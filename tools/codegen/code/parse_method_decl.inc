@@ -22,9 +22,12 @@ void onEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passin
 void onExit(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onEndLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onEndBranch(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onLabel(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onGoto(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onExpressionEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onForLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onIfStatement(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onBranch(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onInitialization(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onIntrinsic(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onMarker(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

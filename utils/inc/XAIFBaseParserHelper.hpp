@@ -19,6 +19,7 @@ namespace xaifBooster {
   class ExpressionEdge;
   class ForLoop;
   class IfStatement;
+  class Branch;
   class Initialization;
   class PostLoop;
   class PreLoop;
@@ -28,6 +29,8 @@ namespace xaifBooster {
   class SymbolTable;
   class Update;
   class ArgumentList;
+  class Label;
+  class Goto;
   
   class XAIFBaseParserHelper : public XMLParserHelper { 
   public: 

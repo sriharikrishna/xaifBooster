@@ -20,6 +20,11 @@ namespace xaifBooster {
       delete myCallGraphVertexAlgBase_p;
   } 
 
+  std::string
+  CallGraphVertex::getSubroutineName() const { 
+    return std::string("ASUBROUTINENAME");
+  }
+
   CallGraphVertexAlgBase& 
   CallGraphVertex::getCallGraphVertexAlgBase() const { 
     if (!myCallGraphVertexAlgBase_p)
