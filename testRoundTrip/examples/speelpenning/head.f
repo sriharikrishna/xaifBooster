@@ -1,6 +1,6 @@
 	subroutine head(x,y) 
-	  double precision, dimension(10), intent(in) :: x
-	  double precision, dimension(1), intent(out) :: y
+	  double precision, dimension(10), intent(inout) :: x
+	  double precision, dimension(1), intent(inout) :: y
           integer i
                                                                                 
           do i=1,10

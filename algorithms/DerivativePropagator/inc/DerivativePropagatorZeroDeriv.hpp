@@ -1,8 +1,6 @@
 #ifndef _XAIFBOOSTERDERIVATIVEPROPAGATORZERODERIV_INCLUDE_
 #define _XAIFBOOSTERDERIVATIVEPROPAGATORZERODERIV_INCLUDE_
 
-#include "xaifBooster/system/inc/Variable.hpp"
-
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
 
 using namespace xaifBooster;
@@ -32,8 +30,6 @@ namespace xaifBoosterDerivativePropagator {
 
     virtual void  getFactors(FactorList& theFactorList) const ; 
 
-    const Variable& getTarget() const;
-
   private:
 
     /**
@@ -50,8 +46,6 @@ namespace xaifBoosterDerivativePropagator {
      * no def
      */
     DerivativePropagatorZeroDeriv operator=(const DerivativePropagatorZeroDeriv&);
-
-    Variable myTarget;
 
   }; // end of class DerivativePropagatorZeroDeriv
  

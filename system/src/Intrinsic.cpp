@@ -20,6 +20,8 @@ namespace xaifBooster {
   ExpressionVertex& Intrinsic::createCopyOfMyself(bool withAlgorithm) const { 
     Intrinsic* aNewIntrinsic_p=new Intrinsic(myName,withAlgorithm);
     aNewIntrinsic_p->setId(getId());
+    if (annotationIsSet())
+      aNewIntrinsic_p->setAnnotation(getAnnotation());
     return *aNewIntrinsic_p;
   } 
 
@@ -62,8 +64,13 @@ namespace xaifBooster {
        << our_myId_XAIFName 
        << "=\"" 
        << getId().c_str()
-       << "\" " 
-       << our_myName_XAIFName
+       << "\" ";
+    if (annotationIsSet())
+      os << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str()
+	 << "=\""
+	 << getAnnotation().c_str()
+	 << "\" "; 
+    os << our_myName_XAIFName
        << "=\""
        << myName.c_str()
        << "\"/>" 

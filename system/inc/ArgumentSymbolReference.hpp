@@ -1,23 +1,47 @@
 #ifndef _ARGUMENTSYMBOLREFERENCE_INCLUDE_
 #define _ARGUMENTSYMBOLREFERENCE_INCLUDE_
 
-#include "xaifBooster/system/inc/SymbolReference.hpp"
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
+#include "xaifBooster/system/inc/SymbolReference.hpp"
+#include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/IntentType.hpp"
+#include "xaifBooster/system/inc/ArgumentSymbolReferenceAlgBase.hpp"
+
 
 namespace xaifBooster { 
-  class ArgumentSymbolReference: public SymbolReference, XMLPrintable { 
+  class ArgumentSymbolReference: public SymbolReference, 
+				 public XMLPrintable, 
+				 public ObjectWithAnnotation,
+				 public GenericTraverseInvoke { 
   public:
     
     ArgumentSymbolReference (const Symbol& theSymbol,
 			     const Scope& theScope,
 			     unsigned int thePosition,
 			     bool theActiveFlag,
-			     IntentType::IntentType_E theIntent);
+			     IntentType::IntentType_E theIntent,
+			     bool makeAlgorithm=true);
 
-    ~ArgumentSymbolReference(){};
+    ~ArgumentSymbolReference();
+
+    /** 
+     * algorithm access where the ArgumentSymbolReference may 
+     * be const but in difference to the 
+     * internal representation (wich is always 
+     * const for the algorithms) the algorithm 
+     * instances will always be modifiable.
+     */
+    ArgumentSymbolReferenceAlgBase& getArgumentSymbolReferenceAlgBase()const;
 
     void printXMLHierarchy(std::ostream& os) const;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    /**
+     * actual implementation for printing xaif
+     */
+    void printXMLHierarchyImpl(std::ostream& os) const;
 
     std::string debug() const ;
 
@@ -51,6 +75,12 @@ namespace xaifBooster {
      */
     static const std::string our_myIntent_XAIFName;
 
+    unsigned int getPosition() const;
+    
+    bool getActiveFlag() const;
+
+    IntentType::IntentType_E getIntent() const;
+
   private:
     
     /**
@@ -73,6 +103,13 @@ namespace xaifBooster {
      * the flag indicating the intent of this argument
      */
     const IntentType::IntentType_E myIntent;
+
+    /** 
+     * this will be set to point a dynamically instance
+     * during construction and deleted during 
+     * destruction
+     */
+    ArgumentSymbolReferenceAlgBase* myArgumentSymbolReferenceAlgBase_p;
 
   }; // end of class ArgumentSymbolReference
 

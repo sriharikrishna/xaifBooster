@@ -20,15 +20,16 @@
           
           allocate(x0(n))
           allocate(res_dd(m))
-          allocate(res_ad(m))
+          allocate(res_ad(n))
           allocate(x(n))
           allocate(xph(n))
           allocate(y(m))
           allocate(yph(m))
 
-	  do i=1,n   
-            x0(i)=i/2.
-          end do
+          x0(1) = 2.5d-1
+          x0(2) = 3.9d-1
+          x0(3) = 4.15d-1
+          x0(4) = 3.9d-1
 
           open(2,file='tmpOutput/dd.out')
           write(2,*) "DD"
@@ -40,8 +41,8 @@
               else
                 xph(j)%v=x0(j)
               end if
-	      call head(xph,yph)
-	      call head(x,y)
+	      call head(xph,yph,3)
+	      call head(x,y,3)
               do k=1,m
                 res_dd(k)=(yph(k)%v-y(k)%v)/h
               end do
@@ -52,20 +53,22 @@
 
           open(2,file='tmpOutput/ad.out')
           write(2,*) "AD"
-	  do i=1,n   
-	    do j=1,n   
-              x(j)%v=x0(j)
+	  do i=1,m   
+	    do j=1,m   
+	      do k=1,n   
+                x(k)%v=x0(k)
+                x(k)%d=0.0
+              end do 
               if (i==j) then 
-                x(j)%d=1.0
+                y(j)%d=1.0
               else
-                x(j)%d=0.0
+                y(j)%d=0.0
               end if
             end do
-	    call head(x,y)
-            do k=1,m
-              res_ad(k)=y(k)%d
+	    call head(x,y,3)
+            do k=1,n
+              write(2,*) "F(", i , ",",k,")= ", x(k)%d
             end do
-            write(2,*) "F(", i , ",:)= ", res_ad
           end do
           close(2)
 

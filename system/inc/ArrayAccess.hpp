@@ -47,6 +47,11 @@ namespace xaifBooster {
      * access index list
      */
     const IndexListType& getIndexList() const ;
+
+    /**
+     * access index list
+     */
+    IndexListType& getIndexList();
     
     /** 
      * add a new expression to the list 

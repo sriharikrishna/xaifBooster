@@ -60,24 +60,24 @@ namespace xaifBooster {
     return myArgumentSymbolReferencePList;
   } 
 
-  void ArgumentList::setScope(Scope& aScope) { 
-    if (myScope_p)
-      THROW_LOGICEXCEPTION_MACRO("ArgumentList::setScope: cannot reset");
-    myScope_p=&aScope;
-  } 
-
   Scope& ArgumentList::getScope() const { 
-    return *myScope_p;
+    if (!myScope_p) 
+      // trying to set it: 
+      if (!myArgumentSymbolReferencePList.empty()) 
+	// this const_cast is a hack to be removed once we have a scope algorithm object
+	myScope_p=&(const_cast<Scope&>((*(myArgumentSymbolReferencePList.begin()))->getScope()));
+    if (!myScope_p) 
+      THROW_LOGICEXCEPTION_MACRO("ArgumentList::getScope: not set");
+    // this const_cast is a hack to be removed once we have a scope algorithm object
+    return const_cast<Scope&>(*myScope_p);
   }
 
-/* UN: want this later on
-  Scope& ArgumentList::getScope() { 
-    return *myScope_p;
-  }
-
-  const Scope& ArgumentList::getScope() const { 
-    return *myScope_p;
-  }
-*/
+  void ArgumentList::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+    for (ArgumentSymbolReferencePList::iterator i=myArgumentSymbolReferencePList.begin();
+	 i!=myArgumentSymbolReferencePList.end();
+	 ++i) { 
+       (*i)->genericTraversal(anAction_c);
+    }
+  } 
 
 } // end of namespace xaifBooster 

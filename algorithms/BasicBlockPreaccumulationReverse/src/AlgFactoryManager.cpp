@@ -6,6 +6,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 
 using namespace xaifBooster;
@@ -36,6 +37,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     // we have to pick a path
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resetArgumentSymbolReferenceAlgFactory(new ArgumentSymbolReferenceAlgFactory());
   }
 
   void AlgFactoryManager::init() {
@@ -45,13 +47,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
     xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::resets();
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resets();
-    DBG_MACRO(DbgGroup::TEMPORARY,
-	      "before: " 
-	      << dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager*>(this)->debug().c_str());
     xaifBoosterControlFlowReversal::AlgFactoryManager::resets();
-    DBG_MACRO(DbgGroup::TEMPORARY,
-	      "after: " 
-	      << dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager*>(this)->debug().c_str());
     xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::resets();
   }
 

@@ -15,10 +15,8 @@ namespace xaifBoosterDerivativePropagator {
   const std::string DerivativePropagatorSetDeriv::our_mySource_XAIFName("xaif:Src");
 
   DerivativePropagatorSetDeriv::DerivativePropagatorSetDeriv(const Variable& theTarget,
-							     const Variable& theSource) { 
-    theTarget.copyMyselfInto(myTarget);
-    myTarget.setId(1);
-    myTarget.setDerivFlag();
+							     const Variable& theSource) :
+    DerivativePropagatorEntry(theTarget) { 
     theSource.copyMyselfInto(mySource);
     mySource.setId(1);
     mySource.setDerivFlag();
@@ -69,8 +67,8 @@ namespace xaifBoosterDerivativePropagator {
   std::string DerivativePropagatorSetDeriv::debug () const { 
     std::ostringstream out;
     out << "DerivativePropagatorSetDeriv[" << this 
-	<< ", myTarget=" << myTarget.debug()
-	<< ", mySource=" << mySource.debug()
+	<< DerivativePropagatorEntry::debug().c_str()
+	<< ", mySource=" << mySource.debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of DerivativePropagatorSetDeriv::debug
@@ -81,10 +79,5 @@ namespace xaifBoosterDerivativePropagator {
     aFactor.setSource(mySource);
     theFactorList.push_back(aFactor);
   } 
-
-  const Variable& 
-  DerivativePropagatorSetDeriv::getTarget() const {
-    return myTarget;
-  }
 
 } // end of namespace 

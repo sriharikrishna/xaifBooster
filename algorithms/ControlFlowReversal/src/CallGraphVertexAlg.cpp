@@ -46,11 +46,17 @@ namespace xaifBoosterControlFlowReversal {
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
       ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
       std::string theVertexKind;
-      if (theReversibleControlFlowGraphVertex_p->isOriginal()) 
+      std::string theXaifId;
+      if (theReversibleControlFlowGraphVertex_p->isOriginal()) {
         theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex().getControlFlowGraphVertexAlgBase()).kindToString();
-      else 
+        theXaifId=dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex()).getId();
+        
+      }
+      else {
         theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()).kindToString();
-      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << ": " << theVertexKind.c_str() << "\"]";
+        theXaifId=dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getNewVertex()).getId();
+      }
+      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
     };
     const ReversibleControlFlowGraph& myG;
   };
@@ -61,12 +67,15 @@ namespace xaifBoosterControlFlowReversal {
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
+/*
       if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
         if (theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value()) out << "[label=\"1\"]";
       }
       else {
         if (theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value()) out << "[label=\"1\"]";
       }
+*/
+      if (theReversibleControlFlowGraphEdge_p->has_condition_value()) out << "[label=\"1\"]";
     };
     const ReversibleControlFlowGraph& myG;
   };
@@ -79,18 +88,22 @@ namespace xaifBoosterControlFlowReversal {
       myAdjointControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
       myTapingControlFlowGraph->makeThisACopyOfOriginalControlFlowGraph();
       myTapingControlFlowGraph->topologicalSort();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
       // buildAdjointControlFlowGraph() should always be based on the
       // original CFG, that is, it should preceed the call to 
       // storeControlFlow()
       myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
+      myTapingControlFlowGraph->markBranchExitEdges();
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+      }
       myTapingControlFlowGraph->storeControlFlow();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_taping", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
   } // end CallGraphVertexAlg::algorithm_action_4() 

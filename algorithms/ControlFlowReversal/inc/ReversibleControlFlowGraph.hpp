@@ -109,8 +109,9 @@ namespace xaifBoosterControlFlowReversal {
     * a corresponding integer get_condition_value().
     * This information is projected onto the branch exit edges.
     */
-
+public:
     void markBranchExitEdges();
+private:
 
     /** 
      * a find branch exit edge that corresponds to theCurrentEdge_r
@@ -146,7 +147,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * insert a new basic block between after and before and return it
      */
-    BasicBlock& insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before, const ReversibleControlFlowGraphEdge& replacedEdge_r);
+    BasicBlock& insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before, const ReversibleControlFlowGraphEdge& replacedEdge_r, bool direction);
 
     /** 
      * make a new entry node

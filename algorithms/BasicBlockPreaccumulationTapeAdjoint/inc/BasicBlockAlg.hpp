@@ -65,6 +65,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
      */
     PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;
     
+    /** 
+     * popping array index values if we pushed any
+     */
+    void reinterpretArrayAccess(const Variable& theOriginalVariable,
+				Variable& theActualalVariable);
+
   };
  
 } // end of namespace 

@@ -22,6 +22,7 @@ namespace xaifBooster {
 
     ControlFlowGraph(const Symbol& theSymbol,
 		     const Scope& theScope,
+		     const Scope& theCFGScope,
 		     const bool activeFlag);
 
     ~ControlFlowGraph();

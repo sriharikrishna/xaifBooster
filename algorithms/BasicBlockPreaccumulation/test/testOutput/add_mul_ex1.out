@@ -31,11 +31,11 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
     </xaif:AliasSetList>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" annotation="" active="1">
+    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="3" symbol_id="z" scope_id="2" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="3" symbol_id="z" scope_id="2" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation=""/>
       <xaif:BasicBlock vertex_id="2" annotation="" scope_id="2">
@@ -44,7 +44,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="4" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:VariableReference>
@@ -60,7 +60,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:VariableReference>

@@ -82,11 +82,14 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onControlFlowGraph(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onControlFlowGraph" ); 
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
-			  getScopeById(XMLParser::getAttributeValueByName(ControlFlowGraph::our_scopeId_XAIFName)));
+			  getScopeById(XMLParser::getAttributeValueByName(ControlFlowGraphCommonAttributes::our_mySymbolReferenceScopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
-			    getElement(XMLParser::getAttributeValueByName(ControlFlowGraph::our_symbolId_XAIFName)));
+			    getElement(XMLParser::getAttributeValueByName(ControlFlowGraphCommonAttributes::our_mySymbolReferenceSymbolId_XAIFName)));
+    const Scope& theCFGScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
+			     getScopeById(XMLParser::getAttributeValueByName(ControlFlowGraphCommonAttributes::our_myScope_XAIFName)));
     CallGraphVertex* theCallGraphVertex_p=new CallGraphVertex(theSymbol,
 							      theScope,
+							      theCFGScope,
 							      XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ControlFlowGraph::our_myActiveFlag_XAIFName)));
     ConceptuallyStaticInstances::instance()->
       getCallGraph().supplyAndAddVertexInstance(*theCallGraphVertex_p);
@@ -307,6 +310,7 @@ namespace xaifBooster {
     Expression& theExpression(passingIn.getExpression());
     Intrinsic* theIntrinsic_p=new Intrinsic(XMLParser::getAttributeValueByName(Intrinsic::our_myName_XAIFName));
     theIntrinsic_p->setId(XMLParser::getAttributeValueByName(Intrinsic::our_myId_XAIFName));
+    theIntrinsic_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
     theExpression.supplyAndAddVertexInstance(*theIntrinsic_p);
   };
 
@@ -529,6 +533,7 @@ namespace xaifBooster {
 				  atoi(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myPosition_XAIFName).c_str()),
 				  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myActiveFlag_XAIFName)),
 				  IntentType::fromString(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myIntent_XAIFName)));
+    theNewArgumentSymbolReference_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
     theControlFlowGraph.getArgumentList().getArgumentSymbolReferencePList().push_back(theNewArgumentSymbolReference_p);
   };
 

@@ -2,6 +2,7 @@
 
 #include "xaifBooster/system/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/system/inc/ArgumentAlgFactory.hpp"
+#include "xaifBooster/system/inc/ArgumentSymbolReferenceAlgFactory.hpp"
 #include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/system/inc/BooleanOperationAlgFactory.hpp"
@@ -51,6 +52,7 @@ namespace xaifBooster {
 
   AlgFactoryManager::AlgFactoryManager() : 
     ourArgumentAlgFactory_p(0),
+    ourArgumentSymbolReferenceAlgFactory_p(0),
     ourAssignmentAlgFactory_p(0),
     ourBasicBlockAlgFactory_p(0),
     ourBooleanOperationAlgFactory_p(0),
@@ -78,6 +80,8 @@ namespace xaifBooster {
   AlgFactoryManager::~AlgFactoryManager() {
     if (ourArgumentAlgFactory_p) 
       delete ourArgumentAlgFactory_p;
+    if (ourArgumentSymbolReferenceAlgFactory_p) 
+      delete ourArgumentSymbolReferenceAlgFactory_p;
     if (ourAssignmentAlgFactory_p) 
       delete ourAssignmentAlgFactory_p;
     if (ourBasicBlockAlgFactory_p)
@@ -124,6 +128,7 @@ namespace xaifBooster {
 
   void AlgFactoryManager::resets() {
     resetArgumentAlgFactory(new ArgumentAlgFactory());
+    resetArgumentSymbolReferenceAlgFactory(new ArgumentSymbolReferenceAlgFactory());
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
@@ -155,6 +160,12 @@ namespace xaifBooster {
     if(ourArgumentAlgFactory_p) 
       delete ourArgumentAlgFactory_p;
     ourArgumentAlgFactory_p=anotherArgumentAlgFactory_p;
+  }
+  
+  void AlgFactoryManager::resetArgumentSymbolReferenceAlgFactory(ArgumentSymbolReferenceAlgFactory* anotherArgumentSymbolReferenceAlgFactory_p){ 
+    if(ourArgumentSymbolReferenceAlgFactory_p) 
+      delete ourArgumentSymbolReferenceAlgFactory_p;
+    ourArgumentSymbolReferenceAlgFactory_p=anotherArgumentSymbolReferenceAlgFactory_p;
   }
   
   void AlgFactoryManager::resetAssignmentAlgFactory(AssignmentAlgFactory* anotherAssignmentAlgFactory_p){ 
@@ -252,6 +263,12 @@ namespace xaifBooster {
     if (!ourArgumentAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getArgumentAlgFactory: not set");
     return ourArgumentAlgFactory_p;
+  }
+
+  ArgumentSymbolReferenceAlgFactory* AlgFactoryManager::getArgumentSymbolReferenceAlgFactory() const { 
+    if (!ourArgumentSymbolReferenceAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getArgumentSymbolReferenceAlgFactory: not set");
+    return ourArgumentSymbolReferenceAlgFactory_p;
   }
 
   AssignmentAlgFactory* AlgFactoryManager::getAssignmentAlgFactory() const { 
@@ -421,6 +438,8 @@ namespace xaifBooster {
     out << "AlgFactoryManager[" << this; 
     if (ourArgumentAlgFactory_p) 
       out << "ourArgumentAlgFactory_p=" << ourArgumentAlgFactory_p->debug().c_str() << ",";
+    if (ourArgumentSymbolReferenceAlgFactory_p) 
+      out << "ourArgumentSymbolReferenceAlgFactory_p=" << ourArgumentSymbolReferenceAlgFactory_p->debug().c_str() << ",";
     if (ourAssignmentAlgFactory_p) 
       out << "ourAssignmentAlgFactory_p=" << ourAssignmentAlgFactory_p->debug().c_str() << ",";
     if (ourBasicBlockAlgFactory_p)

@@ -3,6 +3,7 @@
 
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/IntrinsicAlgBase.hpp"
+#include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 
 namespace xaifBooster { 
 
@@ -12,7 +13,8 @@ namespace xaifBooster {
    * this is an intrinsic (such as an operator 
    * or a function) within an Expression
    */
-  class Intrinsic : public ExpressionVertex {
+  class Intrinsic : public ExpressionVertex,
+		    public ObjectWithAnnotation {
 
   public:
 

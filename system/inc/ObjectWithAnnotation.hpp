@@ -23,6 +23,12 @@ namespace xaifBooster {
     virtual std::string debug() const;
 
     /**
+     * check if it is set, 
+     * this is generally not a required attribute
+     */
+    bool annotationIsSet() const;
+
+    /**
      * Get annotation if set
      */    
     const std::string& getAnnotation() const;

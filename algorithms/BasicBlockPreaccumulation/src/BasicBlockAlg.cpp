@@ -110,7 +110,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
     printXMLHierarchyImpl(os,
-			  xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl);
+			  printerWrapper);
   }
 
   void BasicBlockAlg::printXMLHierarchyImpl(std::ostream& os,
@@ -171,6 +171,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    (*(fli))->printXMLHierarchy(os);
 	  // that includes the accumulator
 	  (aPrintDerivativePropagator_fp)(os,
+					  *this,
 					  aSequence_p->myDerivativePropagator);
 	}
       }// end if have sequence

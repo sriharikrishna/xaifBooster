@@ -19,7 +19,7 @@ namespace xaifBooster {
     
     PlainBasicBlock (Scope& theScope);
 
-    ~PlainBasicBlock(){};
+    virtual ~PlainBasicBlock();
 
     std::string debug() const;
 
@@ -70,6 +70,8 @@ namespace xaifBooster {
      * the (ordered) list of basic block elements
      * which are instances of the derived classes 
      * assignment, subroutine call etc..
+     * we own the elements in this list and delete them
+     * at destruction time
      */
     BasicBlockElementList myElementList;
 

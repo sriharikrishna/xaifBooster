@@ -8,9 +8,10 @@ namespace xaifBooster {
 
   CallGraphVertex::CallGraphVertex(const Symbol& theSymbol,
 				   const Scope& theScope,
+				   const Scope& theCFGScope,
 				   const bool activeFlag,
 				   bool makeAlgorithm) : 
-    myControlFlowGraph(theSymbol, theScope, activeFlag),
+    myControlFlowGraph(theSymbol, theScope, theCFGScope, activeFlag),
     myCallGraphVertexAlgBase_p(0) { 
     if (makeAlgorithm)
       myCallGraphVertexAlgBase_p=CallGraphVertexAlgFactory::instance()->makeNewAlg(*this); 
@@ -21,9 +22,9 @@ namespace xaifBooster {
       delete myCallGraphVertexAlgBase_p;
   } 
 
-  std::string
+  const std::string&
   CallGraphVertex::getSubroutineName() const { 
-    return std::string("ASUBROUTINENAME");
+    return myControlFlowGraph.getSymbolReference().getSymbol().getId(); 
   }
 
   CallGraphVertexAlgBase& 
