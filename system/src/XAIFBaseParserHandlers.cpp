@@ -307,6 +307,7 @@ namespace xaifBooster {
     Expression& theExpression(passingIn.getExpression());
     Intrinsic* theIntrinsic_p=new Intrinsic(XMLParser::getAttributeValueByName(Intrinsic::our_myName_XAIFName));
     theIntrinsic_p->setId(XMLParser::getAttributeValueByName(Intrinsic::our_myId_XAIFName));
+    theIntrinsic_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
     theExpression.supplyAndAddVertexInstance(*theIntrinsic_p);
   };
 

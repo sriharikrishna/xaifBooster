@@ -1337,7 +1337,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="18" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_12" scope_id="2"/>
           </xaif:VariableReference>
@@ -1350,7 +1350,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_12" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="25" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_12" scope_id="2"/>
             </xaif:VariableReference>
@@ -1362,7 +1362,7 @@
       </xaif:ForLoop>
       <xaif:Branch vertex_id="4" annotation="{WHIRL_Id#98}">
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lt_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lt_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_89" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -1450,7 +1450,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="7"/>
           </xaif:VariableReference>
@@ -1463,7 +1463,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="7"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="11" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="7"/>
             </xaif:VariableReference>
@@ -1479,8 +1479,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_6" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="sub_scal_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="SLOC_2" scope_id="7"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -1495,7 +1495,7 @@
             <xaif:VariableReference vertex_id="4" active="true" du_ud="7" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BETA_440" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="TLOC_1" scope_id="7"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -1841,7 +1841,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_17" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="11" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="11" annotation="" name="sub_scal_scal"/>
             <xaif:Constant vertex_id="12" type="real" value="1"/>
             <xaif:VariableReference vertex_id="13" active="true" du_ud="3" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DELTA_491" scope_id="1"/>
@@ -1855,9 +1855,9 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_8" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="4" name="sub_scal_scal"/>
-            <xaif:Intrinsic vertex_id="5" name="add_scal_scal"/>
-            <xaif:Intrinsic vertex_id="6" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="4" annotation="" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="6" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="7" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="RHOLOC_1" scope_id="8"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -1870,7 +1870,7 @@
             <xaif:VariableReference vertex_id="8" active="true" du_ud="3" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DELTA_491" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="9" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="9" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="10" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="RHOLOC_1" scope_id="8"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -1907,8 +1907,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_22" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="minus_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" du_ud="1" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="U0_515" scope_id="1"/>
             </xaif:VariableReference>
@@ -2389,7 +2389,7 @@
       </xaif:BasicBlock>
       <xaif:Branch vertex_id="7" annotation="{WHIRL_Id#205}">
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_gteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_gteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="true" du_ud="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_4" scope_id="12"/>
           </xaif:VariableReference>
@@ -2404,7 +2404,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_33" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="9" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="9" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="10" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDSTAR_2" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -2432,7 +2432,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_30" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="7" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="7" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="8" active="true" du_ud="4" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMALOC_1" scope_id="12"/>
             </xaif:VariableReference>
@@ -2448,7 +2448,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_38" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="14" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="14" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="15" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -2476,8 +2476,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_23" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="2" name="add_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="EXTFORLOC_3" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -2487,7 +2487,7 @@
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="VOL_725" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -2500,7 +2500,7 @@
             <xaif:VariableReference vertex_id="7" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_30" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="12" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="12" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="13" active="true" du_ud="7" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_4" scope_id="12"/>
             </xaif:VariableReference>
@@ -2522,7 +2522,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_43" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_23" scope_id="1"/>
             </xaif:VariableReference>
@@ -3276,7 +3276,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_54" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="9" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="9" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="10" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDSTAR_2" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -3304,7 +3304,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_51" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="7" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="7" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="8" active="true" du_ud="4" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMALOC_1" scope_id="12"/>
             </xaif:VariableReference>
@@ -3320,7 +3320,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_59" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="14" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="14" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="15" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -3348,8 +3348,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_44" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="2" name="add_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="EXTFORLOC_3" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -3359,7 +3359,7 @@
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="VOL_725" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -3372,7 +3372,7 @@
             <xaif:VariableReference vertex_id="7" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_51" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="12" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="12" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="13" active="true" du_ud="7" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_4" scope_id="12"/>
             </xaif:VariableReference>
@@ -3394,7 +3394,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_64" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_44" scope_id="1"/>
             </xaif:VariableReference>
@@ -4148,7 +4148,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_68" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="4" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="4" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="5" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -4176,7 +4176,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_65" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="2" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" du_ud="7" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_4" scope_id="12"/>
             </xaif:VariableReference>
@@ -4192,7 +4192,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_73" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_65" scope_id="1"/>
             </xaif:VariableReference>
@@ -4541,7 +4541,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_84" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="9" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="9" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="10" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDSTAR_2" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -4569,7 +4569,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_81" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="7" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="7" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="8" active="true" du_ud="13" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMALOC_1" scope_id="12"/>
             </xaif:VariableReference>
@@ -4585,7 +4585,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_89" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="14" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="14" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="15" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -4613,8 +4613,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_74" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="2" name="sub_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="EXTFORLOC_3" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -4624,7 +4624,7 @@
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="VOL_725" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -4637,7 +4637,7 @@
             <xaif:VariableReference vertex_id="7" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_81" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="12" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="12" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="13" active="true" du_ud="16" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_4" scope_id="12"/>
             </xaif:VariableReference>
@@ -4659,7 +4659,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_94" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_74" scope_id="1"/>
             </xaif:VariableReference>
@@ -5413,7 +5413,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_105" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="9" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="9" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="10" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDSTAR_2" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -5441,7 +5441,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_102" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="7" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="7" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="8" active="true" du_ud="13" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMALOC_1" scope_id="12"/>
             </xaif:VariableReference>
@@ -5457,7 +5457,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_110" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="14" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="14" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="15" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -5485,8 +5485,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_95" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="2" name="sub_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="EXTFORLOC_3" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -5496,7 +5496,7 @@
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="VOL_725" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -5509,7 +5509,7 @@
             <xaif:VariableReference vertex_id="7" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_102" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="12" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="12" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="13" active="true" du_ud="16" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_4" scope_id="12"/>
             </xaif:VariableReference>
@@ -5531,7 +5531,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_115" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_95" scope_id="1"/>
             </xaif:VariableReference>
@@ -6285,7 +6285,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_120" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="5" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -6313,7 +6313,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" du_ud="16" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_4" scope_id="12"/>
             </xaif:VariableReference>
@@ -6329,8 +6329,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_125" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="minus_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" scope_id="1"/>
             </xaif:VariableReference>
@@ -6717,7 +6717,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
           </xaif:VariableReference>
@@ -6730,7 +6730,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="11" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
             </xaif:VariableReference>
@@ -6746,7 +6746,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_128" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="5" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDOLD_2" scope_id="9"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -6758,7 +6758,7 @@
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="7" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="7" annotation="" name="sub_scal_scal"/>
             <xaif:VariableReference vertex_id="8" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_3" scope_id="9"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -6770,7 +6770,7 @@
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="9" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="9" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="10" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_1" scope_id="9"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -6796,7 +6796,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_137" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_1" scope_id="9"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -6808,7 +6808,7 @@
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" du_ud="7" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ROBERT_FILTER_COEFF_553" scope_id="1"/>
             </xaif:VariableReference>
@@ -7255,7 +7255,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
           </xaif:VariableReference>
@@ -7268,7 +7268,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="14" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
             </xaif:VariableReference>
@@ -7516,7 +7516,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
           </xaif:VariableReference>
@@ -7529,7 +7529,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="7" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
             </xaif:VariableReference>
@@ -7583,7 +7583,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="10" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
           </xaif:VariableReference>
@@ -7596,7 +7596,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="18" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
             </xaif:VariableReference>
@@ -7664,7 +7664,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="TSVEC_173" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
               <xaif:Index>
-                <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+                <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
                 <xaif:VariableReference vertex_id="2" active="false" du_ud="14" deriv="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
                 </xaif:VariableReference>
@@ -7695,7 +7695,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="TSVEC_173" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:Index>
-                  <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+                  <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
                   <xaif:VariableReference vertex_id="2" active="false" du_ud="14" deriv="0">
                     <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
                   </xaif:VariableReference>
@@ -7861,7 +7861,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_141" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="4" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="4" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="5" active="true" du_ud="10" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="HUNDRED_210" scope_id="1"/>
             </xaif:VariableReference>
@@ -7877,7 +7877,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_138" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_141" scope_id="1"/>
             </xaif:VariableReference>
@@ -7891,7 +7891,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_146" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="AREA_191" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -8157,7 +8157,7 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="minus_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FW_207" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -8322,7 +8322,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_150" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="18" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="SV_239" scope_id="1"/>
             </xaif:VariableReference>
@@ -8533,7 +8533,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="27" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
           </xaif:VariableReference>
@@ -8546,7 +8546,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="32" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
             </xaif:VariableReference>
@@ -8600,7 +8600,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="35" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
           </xaif:VariableReference>
@@ -8613,7 +8613,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="44" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
             </xaif:VariableReference>
@@ -8637,7 +8637,7 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="T_240" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -8793,7 +8793,7 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="S_233" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -8809,7 +8809,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="XX_261" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:Index>
-                  <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+                  <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
                   <xaif:VariableReference vertex_id="2" active="false" du_ud="39" deriv="0">
                     <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
                   </xaif:VariableReference>
@@ -8869,7 +8869,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="XX_261" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:Index>
-                  <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+                  <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
                   <xaif:VariableReference vertex_id="2" active="false" du_ud="39" deriv="0">
                     <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
                   </xaif:VariableReference>
@@ -8958,7 +8958,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="47" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
           </xaif:VariableReference>
@@ -8971,7 +8971,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="59" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
             </xaif:VariableReference>
@@ -9499,7 +9499,7 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_279" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -9635,7 +9635,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_157" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="3" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_279" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -9663,7 +9663,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_162" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_279" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -9894,7 +9894,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_165" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BLENGTH_280" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -10044,7 +10044,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_168" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BLENGTH_280" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -10194,7 +10194,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_171" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BLENGTH_280" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -10344,7 +10344,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_174" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="AREA_277" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -10512,7 +10512,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_175" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="3" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_279" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -10540,7 +10540,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_180" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="AREA_277" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -10769,7 +10769,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_183" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="AREA_277" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -10981,7 +10981,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_186" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="19" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DAY_283" scope_id="1"/>
             </xaif:VariableReference>
@@ -11059,7 +11059,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_187" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="2" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" du_ud="21" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="SV_308" scope_id="1"/>
             </xaif:VariableReference>
@@ -11073,7 +11073,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_192" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_187" scope_id="1"/>
             </xaif:VariableReference>
@@ -11191,7 +11191,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_193" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" du_ud="19" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DAY_283" scope_id="1"/>
             </xaif:VariableReference>
@@ -11205,7 +11205,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_198" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:Constant vertex_id="2" type="real" value="1"/>
             <xaif:VariableReference vertex_id="3" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_193" scope_id="1"/>
@@ -11297,7 +11297,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_202" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="4" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="4" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="5" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_279" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -11317,7 +11317,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_203" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="7" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="7" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="8" active="true" du_ud="19" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DAY_283" scope_id="1"/>
             </xaif:VariableReference>
@@ -11333,7 +11333,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_199" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_202" scope_id="1"/>
             </xaif:VariableReference>
@@ -11349,7 +11349,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_210" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:Constant vertex_id="2" type="real" value="0"/>
             <xaif:VariableReference vertex_id="3" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_199" scope_id="1"/>
@@ -11612,7 +11612,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_213" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="19" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DAY_283" scope_id="1"/>
             </xaif:VariableReference>
@@ -11644,7 +11644,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_216" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="19" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DAY_283" scope_id="1"/>
             </xaif:VariableReference>
@@ -11740,7 +11740,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_219" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="20" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="YEAR_316" scope_id="1"/>
             </xaif:VariableReference>
@@ -11811,8 +11811,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="N_MAX_298" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="bogus_trunc_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_trunc_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" du_ud="31" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="INTEGRATION_TIME_295" scope_id="1"/>
             </xaif:VariableReference>
@@ -11846,7 +11846,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_222" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="18" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_309" scope_id="1"/>
             </xaif:VariableReference>
@@ -11929,7 +11929,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_225" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="18" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_309" scope_id="1"/>
             </xaif:VariableReference>
@@ -12012,7 +12012,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_228" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="18" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_309" scope_id="1"/>
             </xaif:VariableReference>
@@ -12095,7 +12095,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_231" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="18" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_309" scope_id="1"/>
             </xaif:VariableReference>
@@ -12178,7 +12178,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_234" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="18" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_309" scope_id="1"/>
             </xaif:VariableReference>
@@ -12261,7 +12261,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_237" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="18" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_309" scope_id="1"/>
             </xaif:VariableReference>
@@ -12344,7 +12344,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_240" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="23" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ALPHA_275" scope_id="1"/>
             </xaif:VariableReference>
@@ -12482,7 +12482,7 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="minus_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="23" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ALPHA_275" scope_id="1"/>
             </xaif:VariableReference>
@@ -12543,7 +12543,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_242" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="3" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="sub_scal_scal"/>
             <xaif:Constant vertex_id="4" type="real" value="1"/>
             <xaif:VariableReference vertex_id="5" active="true" du_ud="8" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DELTA_286" scope_id="1"/>
@@ -12557,7 +12557,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_247" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" du_ud="23" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ALPHA_275" scope_id="1"/>
             </xaif:VariableReference>
@@ -12703,8 +12703,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_251" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="minus_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" du_ud="24" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BETA_278" scope_id="1"/>
             </xaif:VariableReference>
@@ -12889,7 +12889,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_253" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="4" name="sub_scal_scal"/>
+            <xaif:Intrinsic vertex_id="4" annotation="" name="sub_scal_scal"/>
             <xaif:Constant vertex_id="5" type="real" value="1"/>
             <xaif:VariableReference vertex_id="6" active="true" du_ud="8" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DELTA_286" scope_id="1"/>
@@ -12903,8 +12903,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_258" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="minus_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" du_ud="24" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="BETA_278" scope_id="1"/>
             </xaif:VariableReference>
@@ -13087,7 +13087,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="47" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:VariableReference>
@@ -13100,7 +13100,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="55" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
             </xaif:VariableReference>
@@ -13116,7 +13116,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_259" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="2" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="R_302" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -13140,7 +13140,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_264" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_259" scope_id="1"/>
             </xaif:VariableReference>
@@ -13391,7 +13391,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="58" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:VariableReference>
@@ -13404,7 +13404,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="68" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
             </xaif:VariableReference>
@@ -13416,7 +13416,7 @@
       </xaif:ForLoop>
       <xaif:Branch vertex_id="8" annotation="{WHIRL_Id#1351}">
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="61" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:VariableReference>
@@ -13555,7 +13555,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="71" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:VariableReference>
@@ -13568,7 +13568,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="80" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
             </xaif:VariableReference>
@@ -13584,7 +13584,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_267" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_T_301" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -13770,7 +13770,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_270" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_S_300" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -14105,7 +14105,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="89" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
           </xaif:VariableReference>
@@ -14118,7 +14118,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="102" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
             </xaif:VariableReference>
@@ -14140,7 +14140,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="93" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
           </xaif:VariableReference>
@@ -14153,7 +14153,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="100" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
             </xaif:VariableReference>
@@ -14169,7 +14169,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_273" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="R_302" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -14393,7 +14393,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="106" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
           </xaif:VariableReference>
@@ -14406,7 +14406,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="120" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
             </xaif:VariableReference>
@@ -14428,7 +14428,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="110" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
           </xaif:VariableReference>
@@ -14441,7 +14441,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="118" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
             </xaif:VariableReference>
@@ -14470,7 +14470,7 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="X_314" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -14679,8 +14679,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="MAXLEV2_12" scope_id="6"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="div_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="false" du_ud="1" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="N_MAX_387" scope_id="1"/>
             </xaif:VariableReference>
@@ -14695,7 +14695,7 @@
       </xaif:BasicBlock>
       <xaif:Branch vertex_id="21" annotation="{WHIRL_Id#1574}">
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_gt_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_gt_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="N_MAX_387" scope_id="1"/>
           </xaif:VariableReference>
@@ -14722,7 +14722,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="4" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="ILEV2_7" scope_id="6"/>
           </xaif:VariableReference>
@@ -14735,7 +14735,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="ILEV2_7" scope_id="6"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="20" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ILEV2_7" scope_id="6"/>
             </xaif:VariableReference>
@@ -14747,7 +14747,7 @@
       </xaif:ForLoop>
       <xaif:Branch vertex_id="7" annotation="{WHIRL_Id#1598}">
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="7" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="ILEV2_7" scope_id="6"/>
           </xaif:VariableReference>
@@ -14770,7 +14770,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="10" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="ILEV1_6" scope_id="6"/>
           </xaif:VariableReference>
@@ -14783,7 +14783,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="ILEV1_6" scope_id="6"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="18" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ILEV1_6" scope_id="6"/>
             </xaif:VariableReference>
@@ -14799,12 +14799,12 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="ILOOP_8" scope_id="6"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="3" active="false" du_ud="13" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ILEV1_6" scope_id="6"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="4" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="5" active="false" du_ud="14" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ILEV2_7" scope_id="6"/>
             </xaif:VariableReference>
@@ -14821,7 +14821,7 @@
       </xaif:BasicBlock>
       <xaif:Branch vertex_id="20" annotation="{WHIRL_Id#1623}">
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="15" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="ILOOP_8" scope_id="6"/>
           </xaif:VariableReference>
@@ -14902,7 +14902,7 @@
           </xaif:AssignmentRHS>
         </xaif:Initialization>
         <xaif:Condition>
-          <xaif:Intrinsic vertex_id="1" name="bogus_lteq_scal_scal"/>
+          <xaif:Intrinsic vertex_id="1" annotation="" name="bogus_lteq_scal_scal"/>
           <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="11"/>
           </xaif:VariableReference>
@@ -14915,7 +14915,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="11"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" du_ud="10" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="11"/>
             </xaif:VariableReference>
@@ -14931,7 +14931,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_278" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="true" du_ud="8" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DELTA_T_657" scope_id="1"/>
             </xaif:VariableReference>
@@ -14945,7 +14945,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_283" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDOLD_2" scope_id="11"/>
               <xaif:ArrayElementReference vertex_id="2">
@@ -14957,7 +14957,7 @@
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_3" scope_id="11"/>
               <xaif:ArrayElementReference vertex_id="2">
