@@ -40,10 +40,6 @@ namespace xaifBooster {
      */
     static const std::string ourXAIFName;
 
-  private:
-
-    NameCreator myNameCreator;
-
   }; // end of class SymbolTable
 
 } // end of namespace 

@@ -3,7 +3,7 @@
 	  double precision, dimension(2), intent(out) :: y
           integer i
 
-          if (x(1)<x(2) then
+          if (x(1)<x(2)) then
             do i=1,2
               y(i)=x(i)*x(i)
             end do

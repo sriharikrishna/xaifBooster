@@ -1,6 +1,8 @@
 #ifndef _CONCEPTUALLYSTATICINSTANCES_INCLUDE_
 #define _CONCEPTUALLYSTATICINSTANCES_INCLUDE_
 
+#include "xaifBooster/utils/inc/NameCreator.hpp"
+
 #include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
 #include "xaifBooster/system/inc/PrintVersion.hpp"
 
@@ -46,6 +48,10 @@ namespace xaifBooster {
      */
     void setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion);
 
+    /** 
+     *  get the NameCreator
+     */
+    const NameCreator& getNameCreator() const;
 
   private: 
     
@@ -77,6 +83,11 @@ namespace xaifBooster {
      * VIRTUAL 
      */
     PrintVersion::PrintVersion_E myPrintVersion;
+
+    /** 
+     * the universal name creator
+     */
+    NameCreator myNameCreator;
 
   }; // end of ConceptuallyStaticInstances
   

@@ -7,7 +7,7 @@ namespace xaifBooster {
 
   ConceptuallyStaticInstances::ConceptuallyStaticInstances() : 
     myCallGraph_p(0),
-    myPrintVersion(PrintVersion::VIRTUAL) {
+    myPrintVersion(PrintVersion::VIRTUAL) { 
   }
 
   ConceptuallyStaticInstances::~ConceptuallyStaticInstances() {
@@ -45,6 +45,7 @@ namespace xaifBooster {
 				anXAIFInstance,
 				aSchemaLocation,
 				aPrefix);
+    myNameCreator.setBaseName(aPrefix+"Symbol");
   } 
 
   PrintVersion::PrintVersion_E 
@@ -55,6 +56,10 @@ namespace xaifBooster {
   void ConceptuallyStaticInstances::setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion) { 
     myPrintVersion=aPrintVersion;
   }
-  
+
+  const NameCreator& ConceptuallyStaticInstances::getNameCreator() const { 
+    return myNameCreator;
+  }
+
 } 
 
