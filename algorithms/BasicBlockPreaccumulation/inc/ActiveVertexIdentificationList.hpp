@@ -28,7 +28,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
 
       IdentificationResult(IdentificationResult_E,
-			   const PrivateLinearizedComputationalGraphVertex*);
+			   PrivateLinearizedComputationalGraphVertex*);
 
       ~IdentificationResult(){};
 
@@ -38,6 +38,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        *this will be valid only if myAnswer!=NOT_IDENTIFIED
        */
       const PrivateLinearizedComputationalGraphVertex* getVertexP() const;
+
+      /**
+       *this will be valid only if myAnswer!=NOT_IDENTIFIED
+       */
+      PrivateLinearizedComputationalGraphVertex* getVertexP();
 
     private:
 
@@ -51,7 +56,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       /**
        * this will be valid only if myAnswer!=NOT_IDENTIFIED
        */
-      const PrivateLinearizedComputationalGraphVertex* myPrivateLinearizedComputationalGraphVertex_p;
+      PrivateLinearizedComputationalGraphVertex* myPrivateLinearizedComputationalGraphVertex_p;
 
     };
 
@@ -66,13 +71,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * \todo JU incomplete, no handling for du info
      */
     void addElement(const Variable& theVariable,
-		    const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
+		    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
 
     /** 
      * \todo JU incomplete, no handling for du info
      */
     void replaceOrAddElement(const Variable& theVariable,
-			     const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
+			     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
 
     void ActiveVertexIdentificationList::removeIfAliased(const Variable& theVariable); 
 
@@ -91,7 +96,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * the pointer to a vertex in the PrivateLinearizedComputationalGraph
        * always set
        */ 
-      const PrivateLinearizedComputationalGraphVertex* myPrivateLinearizedComputationalGraphVertex_p;
+      PrivateLinearizedComputationalGraphVertex* myPrivateLinearizedComputationalGraphVertex_p;
       
     };
     
