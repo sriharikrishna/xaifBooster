@@ -32,6 +32,7 @@ namespace MemOpsTradeoffPreaccumulation {
     
     void populatePathList();
     void clearPathList();
+    void copyPath(const DualGraphPath& thePath);
     const PathList& getPathList() const;
     
     //returns true if the list has elements and they are all complete

@@ -25,19 +25,46 @@ namespace MemOpsTradeoffPreaccumulation {
   }// end getDualVertex
 
   void DualGraph::populatePathList() {
-  
     
+    DualGraph::VertexIteratorPair dvip (vertices());
+    DualGraph::VertexIterator dvi (dvip.first), dv_end (dvip.second);
+    for(; dvi != dv_end; ++dvi){
+      if(numInEdgesOf(*dvi) == 0){
+	DualGraphPath* thenewpath_p = new DualGraphPath;
+	if(numOutEdgesOf(*dvi) == 0){
+	  (*thenewpath_p).setComplete();
+	}// end if
+	else{
+	  copyPath(*thenewpath_p);
+	}// end else
+      }// end if
+    }// end for
 
-
-
-
-
-
-
-
-
-
-
+    DualGraph::PathList::iterator pathi;
+    for(pathi = myPathList.begin(); pathi != myPathList.end(); pathi++){
+      if(!(**pathi).isComplete()){ 
+	//iterate through successors of the last vertex in the path
+        DualGraph::OutEdgeIteratorPair doe (getOutEdgesOf(*((**pathi).myPath).back()));
+	DualGraph::OutEdgeIterator doei (doe.first), doe_end (doe.second);
+	for(; doei != doe_end; ++doei){
+	  //check to see if there is already a path from the vertex to the successor
+	  if(!checkSequence((*((**pathi).myPath).back()), getTargetOf(*doei))){
+	    break;
+	  }// end if
+	}// end for outedges
+	if(doei != doe_end){
+	  THROW_LOGICEXCEPTION_MACRO("Error: no untraveled successor found");
+	}// end if
+	((**pathi).myPath).push_back(&getTargetOf(*doei));
+	if(numOutEdgesOf(getTargetOf(*doei)) == 0) {
+	  (**pathi).setComplete();
+	}// end if
+	else{
+	  copyPath(**pathi);
+	}// end else
+	pathi = myPathList.begin();
+      }// end if not complete
+    }// end for all paths
   }// end populate path list
 
   void DualGraph::clearPathList() {
@@ -54,6 +81,16 @@ namespace MemOpsTradeoffPreaccumulation {
   const DualGraph::PathList& DualGraph::getPathList() const { 
     return myPathList;
   } 
+
+  void DualGraph::copyPath(const DualGraphPath& thePath) {
+
+    unsigned int i;
+    for(i = 1; i < numOutEdgesOf(*(thePath.myPath).back()); i++){
+       DualGraphPath* thenewpath_p= new DualGraphPath;
+       (*thenewpath_p).myPath = thePath.myPath;
+    }// end for
+
+  }// end copyPath
 
   bool DualGraph::allComplete() const {
     bool iscomplete = true;

@@ -223,30 +223,52 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       //the face list holds all the faces that are candidates for elimination
       faceHeuristicFunc func_pt;
       std::list<faceHeuristicFunc>::iterator fhiter;
+      DualGraph::VertexPointerList thePredList, theSuccList;
+      DualGraph::FacePointerList theFaceList;
+
+
 
       //populate the dual path list
-      theDual.populatePathList();
+      //theDual.populatePathList();
+
+      //generate list of eliminatable faces
+      
+
+      // while(1){
+
+      
+
+// 	//this loop runs the list through each heuristic
+// 	if(1){
+// 	  for(fhiter=faceHeuristicSequence.begin(); fhiter!=faceHeuristicSequence.end(); fhiter++){
+// 	    func_pt = *fhiter;
+// 	    func_pt(theDual, theFaceList, thePredList, theSuccList);
+// 	  }// end for
+// 	}// end if
+	
+// 	if(1){
+
+// 	  //populate succlist and predlist
+
+// 	  //eliminate the face
+// 	  FaceElim::elim_face(theDual, *theFaceList.front(), theJacobianAccumulationExpressionList);
+
+// 	}
+// 	else{
+// 	  THROW_LOGICEXCEPTION_MACRO("Error: Heuristics could not decide on a single face");
+// 	}
+
+// 	theDual.clearPathList();
+// 	theDual.populatePathList();
+
+// 	//generate list of eliminatable faces
+
+//       }// end while
 
 
+      theDual.clearPathList();
 
-
-
-
-
-      DualGraph::FacePointerList theFaceList;
-      DualGraph::VertexPointerList thePredList, theSuccList;
-
-      //this loop runs the list through each heuristic
-      if(1){
-	for(fhiter=faceHeuristicSequence.begin(); fhiter!=faceHeuristicSequence.end(); fhiter++){
-	  func_pt = *fhiter;
-	  func_pt(theDual, theFaceList, thePredList, theSuccList);
-	}// end for
-      }// end if
-
-
-
-
+      //set JAElist entries
 
       GraphVizDisplay::show(theDual,"Dual");
 
@@ -454,7 +476,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
 	  }// end if
 	  else if(theVertexList.size() > 1){
-	    THROW_LOGICEXCEPTION_MACRO("More than one vertex in list of possible eliminations");
+	    THROW_LOGICEXCEPTION_MACRO("Error: More than one vertex in list of possible eliminations");
 	  }// end else
 	}// end while
 
@@ -489,7 +511,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	    edgeHeuristicSequence.push_back(&EdgeElim::sibling2Mode_e);
 	    break;
 	  default:
-	    THROW_LOGICEXCEPTION_MACRO("Error: unknown heuristic passed");
+	    THROW_LOGICEXCEPTION_MACRO("Error: Unknown heuristic passed");
 	  }// end switch heuristicEnumSequence
 	  heuristicEnumSequence.pop_front();
 	}// end while
@@ -571,12 +593,12 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	      EdgeElim::back_elim_edge(theCopy, *(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
 	    }// end else if
 	    else{
-	      THROW_LOGICEXCEPTION_MACRO("Error: edge has no elimination direction specified");
+	      THROW_LOGICEXCEPTION_MACRO("Error: Edge has no elimination direction specified");
 	    }
 	
 	  }// end if
 	  else{
-	    THROW_LOGICEXCEPTION_MACRO("More than one edge in list of possible eliminations");
+	    THROW_LOGICEXCEPTION_MACRO("Error: More than one edge in list of possible eliminations");
 	  }// end else
 
 	  //create list of possible edge eliminations with associated elim directions
@@ -609,7 +631,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       }// end else if
 
       else{
-	THROW_LOGICEXCEPTION_MACRO("Must specify either vertex or edge elimination");
+	THROW_LOGICEXCEPTION_MACRO("Error: Must specify either vertex or edge elimination");
       }// end else
 
       //iterate through remaining edges and set corresponding expressions as jacobian entries
