@@ -18,6 +18,11 @@ namespace xaifBoosterControlFlowReversal {
     if (!original) delete myNewEdge_p;
   }
 
+  bool
+  ReversibleControlFlowGraphEdge::isBackEdge(const ReversibleControlFlowGraph& theGraph) const {
+    return theGraph.getSourceOf(*this).getIndex()>theGraph.getTargetOf(*this).getIndex();
+  }
+
   void
   ReversibleControlFlowGraphEdge::printXMLHierarchy(std::ostream& os, const ReversibleControlFlowGraph& theGraph) const {
     PrintManager& pm=PrintManager::getInstance();
