@@ -38,9 +38,10 @@ namespace MemOpsTradeoffPreaccumulation {
     bool isFinal(DualGraphEdge& theFace) const;
     void clearElimList();
 
+    PathList myPathList;
+
   private: 
 
-    PathList myPathList;
     FacePointerList myElimList;
 
   }; // end of class DualGraph 
