@@ -4,7 +4,7 @@
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 #include "xaifBooster/utils/inc/CommandLineParser.hpp"
 
-#include "xaifBooster/system/inc/XMLParser.hpp"
+#include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
@@ -46,7 +46,7 @@ int main(int argc,char** argv) {
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     ip.parse(intrinsicsFileName);
-    XMLParser p;
+    XAIFBaseParser p;
     p.initialize();
     p.parse(inFileName);
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
