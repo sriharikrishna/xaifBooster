@@ -44,7 +44,7 @@ namespace xaifBooster {
     ourConstantAlgFactory_p(0),
     ourExpressionAlgFactory_p(0),
     ourExpressionEdgeAlgFactory_p(0),
-    ourIntrinsicAlgFactory_p(0) 
+    ourIntrinsicAlgFactory_p(0), 
     ourControlFlowGraphAlgFactory_p(0) {
   }
 
