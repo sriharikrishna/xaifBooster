@@ -98,7 +98,8 @@ namespace xaifBooster {
 	||
 	theOtherKey.getKind()==AliasMapKey::NO_INFO) 
       return false;
-    if (myAAVector[theKey.getKey()]->mustAlias(*myAAVector[theOtherKey.getKey()]))
+    // shortcut in the following line: 
+    if (theKey.getKey()==theOtherKey.getKey())
       return true;
     return false;
   }
@@ -111,7 +112,8 @@ namespace xaifBooster {
       return false; 
     if (theOtherKey.getKind()!=AliasMapKey::NO_INFO) {
       if (thisKey.getKey()!=theOtherKey.getKey()) { 
-	if (myAAVector[thisKey.getKey()]->disjointFrom(*myAAVector[theOtherKey.getKey()]))
+	// shortcut by commenting out the following line: 
+	//	if (myAAVector[thisKey.getKey()]->disjointFrom(*myAAVector[theOtherKey.getKey()]))
 	  return false;
       }
     } 
