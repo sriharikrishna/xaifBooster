@@ -11,6 +11,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   VertexIdentificationList::IdentificationResult_E 
   PassiveVertexIdentificationList::canIdentify(const Variable& theVariable) const { 
+    IdentificationResult_E result=NOT_IDENTIFIED;
     // add a block dealing with ud info
     // *******************************
     // TODO: JU incomplete
@@ -27,13 +28,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	   ++aListIterator) { 
 	if (theAliasMap.mustAlias(theVariable.getAliasMapKey(),
 				  *((*aListIterator).myAliasMapKey_p))) 
-	  return UNIQUELY_IDENTIFIED;
+          if (result==NOT_IDENTIFIED)
+	    result=UNIQUELY_IDENTIFIED;
 	if (theAliasMap.mayAlias(theVariable.getAliasMapKey(),
 				 *((*aListIterator).myAliasMapKey_p))) 
-	  return POSSIBLY_ALIASED;
+	  result=POSSIBLY_ALIASED;
       } // end for 
     } // end if aliased
-    return NOT_IDENTIFIED;
+    return result;
   } 
 
   void PassiveVertexIdentificationList::addElement(const Variable& theVariable) { 
@@ -42,28 +44,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // TODO: JU incomplete
     // *******************************
     // here is the block dealing with alias info
-    if (canIdentify(theVariable)!=NOT_IDENTIFIED) 
-      THROW_LOGICEXCEPTION_MACRO("PassiveVertexIdentificationList::addElement: new element must have a unique address");
+    if (canIdentify(theVariable)==UNIQUELY_IDENTIFIED) 
+      // nothing to do 
+      return; 
     ListItem theItem;
     theItem.myAliasMapKey_p=&(theVariable.getAliasMapKey());
     myList.push_back(theItem);
     myAliasMapKeyList.push_back(&(theVariable.getAliasMapKey()));
-  } 
-
-  void PassiveVertexIdentificationList::replaceOrAddElement(const Variable& theVariable) { 
-    // add a block dealing with ud info
-    // *******************************
-    // TODO: JU incomplete
-    // *******************************
-    // here is the block dealing with alias info
-    IdentificationResult_E idResult(canIdentify(theVariable));
-    if (idResult==NOT_IDENTIFIED) 
-      addElement(theVariable);
-    else if (idResult==UNIQUELY_IDENTIFIED) { 
-      // don't need to do anything
-    } // end else if
-    else  
-      THROW_LOGICEXCEPTION_MACRO("PassiveVertexIdentificationList::addElement: ambiguous identification, we should not be here");
   } 
 
   void PassiveVertexIdentificationList::removeIfAliased(const Variable& theVariable) { 

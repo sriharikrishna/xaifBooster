@@ -296,15 +296,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // dependent
 	    // use temporary in DerivativePropagator
 	    // temporary currently lives in global scope 
-	    if (true) { // isAliased(...)
+	    // this is the actual independent:
+	    const Variable& 
+	      theIndepVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
+			       (theExpression.getIndependent()).getRHSVariable());
+	    if (isAliased(theIndepVariable,
+			  theFlattenedSequence)) { 
 	      // make a Variable (container) for use in the saxpys:
 	      Variable* theIndepVariableContainer_p = new Variable;
 	      myNewIndependentsPList.push_back(theIndepVariableContainer_p);
-	      // this is the actual independent:
-	      const Variable& 
-		theIndepVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-				 (theExpression.getIndependent()).getRHSVariable());
 	      // was this actual indepenent already assigned?
+	      // Note, that at this point they should indeed all be syntactically distinct 
 	      if (!(theListOfAlreadyAssignedIndependents.hasElement(theIndepVariable.equivalenceSignature()))) {
 		// no, we have to make a new assignment
 		// this will be the lhs:
@@ -483,7 +485,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  Argument* theExternalArgument_p=new Argument();
 	  theNewExpressionVertex_p=theExternalArgument_p;
 	  dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(theOriginalAssignmentExpressionEdge.getExpressionEdgeAlgBase()).
-	  getConcretePartialAssignment().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
+	    getConcretePartialAssignment().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
 	  theNewExpressionVertex_p->setId(theNewAssignment.getRHS().getNextVertexId());
 	  theNewAssignment.getRHS().supplyAndAddVertexInstance(*theNewExpressionVertex_p);
 	} // end else 
@@ -650,5 +652,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 << theAssignment.debug().c_str());
     return theSequence_p->myDerivativePropagator;
   } // end of BasicBlockAlg::getDerivativePropagator
+
+  bool BasicBlockAlg::isAliased(const Variable& theIndepVariable,
+				const PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& 
+      theDependentList(theFlattenedSequence.getDependentList());
+    AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
+			  getCallGraph().getAliasMap());
+    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator li=theDependentList.begin();
+	 li!=theDependentList.end();
+	 ++li) { 
+      if (theAliasMap.mayAlias(theIndepVariable.getAliasMapKey(),
+			       dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**li).getLHSVariable().getAliasMapKey()))
+	return true;
+    } // end for 
+    return false;
+  } // end of BasicBlockAlg::isAliased
 
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 
