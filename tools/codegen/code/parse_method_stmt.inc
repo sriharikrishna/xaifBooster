@@ -21,6 +21,8 @@ ourActionCatalogue.addElement(ArgumentList::ourXAIFName, ActionItem(&XAIFBasePar
 ourActionCatalogue.addElement(ControlFlowGraphEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onControlFlowGraphEdge));
 ourActionCatalogue.addElement(Entry::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEntry));
 ourActionCatalogue.addElement(Exit::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onExit));
+ourActionCatalogue.addElement(EndLoop::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEndLoop));
+ourActionCatalogue.addElement(EndBranch::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEndBranch));
 ourActionCatalogue.addElement(ExpressionEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onExpressionEdge));
 ourActionCatalogue.addElement(ForLoop::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onForLoop));
 ourActionCatalogue.addElement(IfStatement::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onIfStatement));

@@ -20,6 +20,8 @@ void onControlFlowGraph(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHel
 void onControlFlowGraphEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onExit(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onEndLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onEndBranch(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onExpressionEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onForLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onIfStatement(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

@@ -437,6 +437,26 @@ namespace xaifBooster {
   };
 
   void 
+  XAIFBaseParserHandlers::onEndBranch(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onEndBranch" ); 
+    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
+    EndBranch* theNewEndBranch_p=new EndBranch();
+    theControlFlowGraph.supplyAndAddVertexInstance(*theNewEndBranch_p);
+    theNewEndBranch_p->setId(XMLParser::getAttributeValueByName(EndBranch::our_myId_XAIFName));
+    theNewEndBranch_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+  };
+ 
+  void 
+  XAIFBaseParserHandlers::onEndLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onEndLoop" ); 
+    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
+    EndLoop* theNewEndLoop_p=new EndLoop();
+    theControlFlowGraph.supplyAndAddVertexInstance(*theNewEndLoop_p);
+    theNewEndLoop_p->setId(XMLParser::getAttributeValueByName(EndLoop::our_myId_XAIFName));
+    theNewEndLoop_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+  };
+
+  void 
   XAIFBaseParserHandlers::onSubroutineCall(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onSubroutineCall" ); 
     BasicBlock& theBasicBlock(passingIn.getBasicBlock());
