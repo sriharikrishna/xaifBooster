@@ -56,9 +56,7 @@ namespace xaifBoosterControlFlowReversal {
       return *myNewVertex_p; 
     }
 
-    void supplyAndAddNewVertex(ControlFlowGraphVertex& theNewVertex) { 
-      myNewVertex_p=&theNewVertex; 
-    }
+    void supplyAndAddNewVertex(ControlFlowGraphVertex& theNewVertex);
 
   private:
 
