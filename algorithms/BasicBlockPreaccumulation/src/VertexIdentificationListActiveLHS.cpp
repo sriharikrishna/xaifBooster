@@ -18,7 +18,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   VertexIdentificationListActiveLHS::IdentificationResult 
   VertexIdentificationListActiveLHS::canIdentify(const Variable& theVariable) const { 
-    if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) { 
+    if (isDuUdMapBased() 
+	&& 
+	theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) { 
       DuUdMapDefinitionResult::StatementIdList aStatementIdList;
       getStatementIdList(aStatementIdList);
       DuUdMapDefinitionResult theResult(ConceptuallyStaticInstances::instance()->
@@ -49,34 +51,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	return IdentificationResult(AMBIGUOUSLY_IDENTIFIED,0);
       }
     }
-    return VertexIdentificationListActive::canIdentify(theVariable);
+    if (!isDuUdMapBased()){ 
+      return VertexIdentificationListActive::canIdentify(theVariable);
+    }
+    return IdentificationResult(AMBIGUOUSLY_IDENTIFIED,0);
   } 
 
   void VertexIdentificationListActiveLHS::addElement(const Variable& theVariable,
 						     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
 						     const ObjectWithId::Id& aStatementId) { 
-    if (canIdentify(theVariable).getAnswer()!=NOT_IDENTIFIED) 
+    if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) 
+      // if we ever encounter a usefull piece of duud information:
+      baseOnDuUdMap();
+    if (!isDuUdMapBased() 
+	&& 
+	canIdentify(theVariable).getAnswer()!=NOT_IDENTIFIED) 
       THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::addElement: new element must have a unique address");
     myList.push_back(new ListItem(theVariable.getAliasMapKey(),
      				  theVariable.getDuUdMapKey(),
      				  thePrivateLinearizedComputationalGraphVertex_p,
      				  aStatementId));
-  } 
-
-  void VertexIdentificationListActiveLHS::removeIfIdentifiable(const Variable& theVariable) { 
-    IdentificationResult idResult(canIdentify(theVariable));
-    while(idResult.getAnswer()!=NOT_IDENTIFIED) { 
-      ListItemPList::iterator aListIterator=myList.begin();
-      for (;
-	   aListIterator!=myList.end(); 
-	   ++aListIterator) { 
-	if (dynamic_cast<ListItem&>(**aListIterator).myPrivateLinearizedComputationalGraphVertex_p==idResult.getVertexP()) { 
-	  myList.erase(aListIterator);
-	  break;
-	} // end if 
-      } // end for
-      idResult=canIdentify(theVariable);
-    } // end while 
   } 
 
   std::string VertexIdentificationListActiveLHS::ListItem::debug() const { 

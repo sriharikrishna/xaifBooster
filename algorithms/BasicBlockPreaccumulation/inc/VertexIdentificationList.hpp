@@ -31,9 +31,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 AMBIGUOUSLY_IDENTIFIED,
 				 UNIQUELY_IDENTIFIED };
 
-  // JU: I don't believe ListItem should have to be 
-  // public but SUN CC 5.6 insists. Moved protected down
-  //  protected:
+    // JU: I don't believe ListItem should have to be 
+    // public but SUN CC 5.6 insists. Moved protected down
+    //  protected:
 
     /** 
      * an entry in the list 
@@ -93,6 +93,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * this list owns all the items in it
      */
     ListItemPList myList;
+
+    /** 
+     * lock down list behavior to be based on 
+     * DuUdMap
+     * once it is locked down we cannot change back
+     */
+    void baseOnDuUdMap()const; 
+
+    bool isDuUdMapBased()const;
+
+  private:
+
+    /** 
+     * track if this list is DuUdMap based or not
+     * behavior changes based on this flag
+     */
+    mutable bool myBasedOnDuUdMapFlag;
 
   }; // end of class VertexIdentificationList  
    

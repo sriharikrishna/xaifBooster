@@ -8,7 +8,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   VertexIdentificationListActiveRHS::IdentificationResult 
   VertexIdentificationListActiveRHS::canIdentify(const Variable& theVariable) const { 
-    if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) {
+    if (isDuUdMapBased() 
+	&& 
+	theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) {
       bool isDisjoint=true;
       for (ListItemPList::const_iterator aListIterator=myList.begin();
 	   aListIterator!=myList.end(); 
@@ -28,14 +30,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (isDisjoint)
 	return IdentificationResult(NOT_IDENTIFIED,0);
     } // end if 
-    // if we still don't know try alias information
-    return VertexIdentificationListActive::canIdentify(theVariable);
+    if (!isDuUdMapBased()){ 
+      // if we still don't know try alias information
+      return VertexIdentificationListActive::canIdentify(theVariable);
+    }
+    return IdentificationResult(AMBIGUOUSLY_IDENTIFIED,0);
   } 
-
 
   void VertexIdentificationListActiveRHS::addElement(const Variable& theVariable,
 						     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p) { 
-    if (canIdentify(theVariable).getAnswer()!=NOT_IDENTIFIED) 
+    if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) 
+      // if we ever encounter a usefull piece of duud information:
+      baseOnDuUdMap();
+    if (!isDuUdMapBased() 
+	&& 
+	canIdentify(theVariable).getAnswer()!=NOT_IDENTIFIED) 
       THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActiveRHS::addElement: new element must have a unique address");
     myList.push_back(new ListItem(theVariable.getAliasMapKey(),
 				  theVariable.getDuUdMapKey(),

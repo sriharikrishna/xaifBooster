@@ -46,6 +46,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   VertexIdentificationListActive::IdentificationResult 
   VertexIdentificationListActive::canIdentify(const Variable& theVariable) const { 
+    if (isDuUdMapBased())
+      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::canIdentify: should ot be invoked for DuUd map based lists");
     AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getAliasMap());
     AliasMap::AliasMapKeyPList anAliasMapKeyPList;
@@ -70,6 +72,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   void VertexIdentificationListActive::removeIfIdentifiable(const Variable& theVariable) { 
+    if (myList.empty())
+      return;
+    if (isDuUdMapBased())
+      return;
     IdentificationResult idResult(canIdentify(theVariable));
     while(idResult.getAnswer()!=NOT_IDENTIFIED) { 
       ListItemPList::iterator aListIterator=myList.begin();

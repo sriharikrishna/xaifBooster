@@ -20,6 +20,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     IdentificationResult canIdentify(const Variable& theVariable) const;
 
     /** 
+     * in case of duud information present we keep adding 
+     * variables, 
+     * in case of duud information absent we have to maintain 
+     * uniqueness, i.e. 
      * this will only work if canIdentify returns
      * NOT_IDENTIFIED 
      */
