@@ -15,12 +15,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
     static xaifBooster::AlgFactoryManager* instance();
 
-    /** 
-     * set a selection 
-     * of factories 
-     * overwriting earlier settings 
-     * using the reset methods. 
-     */
+    virtual void resets(); 
+
     virtual void init(); 
 
   }; // end of class AlgFactoryManager

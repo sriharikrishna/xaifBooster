@@ -1,4 +1,5 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlgFactory.hpp"
@@ -41,8 +42,7 @@ namespace xaifBoosterControlFlowReversal {
     return ourInstance_p;
   } // end of AlgFactoryManager::instance
 
-  void AlgFactoryManager::init() {
-    xaifBooster::AlgFactoryManager::init();
+  void AlgFactoryManager::resets() {
     resetCallGraphAlgFactory(new CallGraphAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
     resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
@@ -58,6 +58,14 @@ namespace xaifBoosterControlFlowReversal {
     resetBranchAlgFactory(new BranchAlgFactory());
     resetGotoAlgFactory(new GotoAlgFactory());
     resetLabelAlgFactory(new LabelAlgFactory());
+    DBG_MACRO(DbgGroup::TEMPORARY,
+	      "in CFR reset: " 
+	      << debug().c_str());
+  }
+
+  void AlgFactoryManager::init() {
+    xaifBooster::AlgFactoryManager::init();
+    xaifBoosterControlFlowReversal::AlgFactoryManager::resets();
   }
 
 }

@@ -509,6 +509,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
   } // end compute_elimination_sequence
   
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
+      xaifBooster::BasicBlockAlgBase(theContaining),
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) {
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::compute_elimination_sequence=&compute_elimination_sequence; 
   }

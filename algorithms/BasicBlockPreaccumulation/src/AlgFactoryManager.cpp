@@ -28,10 +28,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return ourInstance_p;
   } // end of AlgFactoryManager::instance
 
-  void AlgFactoryManager::init() {
-    xaifBoosterLinearization::AlgFactoryManager::init();
+  void AlgFactoryManager::resets() {
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+  }
+
+  void AlgFactoryManager::init() {
+    xaifBoosterLinearization::AlgFactoryManager::init();
+    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
   }
 
 }

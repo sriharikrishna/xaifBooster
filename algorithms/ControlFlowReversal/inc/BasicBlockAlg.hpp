@@ -12,7 +12,7 @@ namespace xaifBoosterControlFlowReversal {
   /** 
    * class to provide algorithm for BasicBlock
    */
-  class BasicBlockAlg : public BasicBlockAlgBase,
+  class BasicBlockAlg : virtual public BasicBlockAlgBase,
 			public ControlFlowGraphVertexAlg {
   public:
     

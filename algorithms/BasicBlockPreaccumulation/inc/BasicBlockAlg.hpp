@@ -25,7 +25,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
    * class to implement algorithms relevant for the 
    * angel interface
    */
-  class BasicBlockAlg : public BasicBlockAlgBase {
+  class BasicBlockAlg : virtual public BasicBlockAlgBase {
   public:
     
     BasicBlockAlg(BasicBlock& theContaining);

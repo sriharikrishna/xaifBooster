@@ -33,8 +33,7 @@ namespace xaifBoosterLinearization {
     return ourInstance_p;
   } // end of AlgFactoryManager::instance
 
-  void AlgFactoryManager::init() {
-    xaifBooster::AlgFactoryManager::init();
+  void AlgFactoryManager::resets() {
     resetArgumentAlgFactory(new ArgumentAlgFactory());
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
     resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
@@ -42,6 +41,11 @@ namespace xaifBoosterLinearization {
     resetExpressionAlgFactory(new ExpressionAlgFactory());
     resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
     resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
+  }
+
+  void AlgFactoryManager::init() {
+    xaifBooster::AlgFactoryManager::init();
+    xaifBoosterLinearization::AlgFactoryManager::resets();
   }
 
 }
