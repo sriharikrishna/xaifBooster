@@ -366,7 +366,6 @@ namespace MemOpsTradeoffPreaccumulation {
 
     //set final for the new vertex
     theNewVertex.final = isFinal(theNewVertex);
-
     return &theNewVertex;
   }// end elim_face
 
