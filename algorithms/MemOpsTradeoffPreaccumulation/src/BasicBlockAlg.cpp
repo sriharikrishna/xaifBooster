@@ -170,7 +170,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	bool topsorted;
       };
       //copymap maps the copy vertices to the original graph vertices
-      vertexMap copymap[theOriginal.numVertices()];
+      vertexMap* copymap=new vertexMap[theOriginal.numVertices()];
       unsigned int i = 0, s = 0, t = 0;
 
       //declaration of lists to hold information about the last vertex/edge eliminated
@@ -523,6 +523,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: sp sum: " << theCopy.spsum);
       DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: op sum: " << theCopy.opsum);
 
+      delete[] copymap;
 
     }// end else (vertex or edge)
 
