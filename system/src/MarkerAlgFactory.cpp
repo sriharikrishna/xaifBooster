@@ -2,5 +2,5 @@
 #include "xaifBooster/system/inc/MarkerAlgBase.hpp"
 #include "xaifBooster/system/inc/Marker.hpp"
 
-  BASE_ALG_FACTORY_DEF_MACRO(Marker);
+  BASE_ALG_FACTORY_DEF_MACRO(Marker)
 

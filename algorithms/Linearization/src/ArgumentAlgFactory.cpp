@@ -4,5 +4,5 @@
 #include "xaifBooster/algorithms/Linearization/inc/ArgumentAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(Argument,xaifBoosterLinearization);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Argument,xaifBoosterLinearization)
 

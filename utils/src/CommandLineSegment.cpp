@@ -21,7 +21,7 @@ namespace xaifBooster {
   CommandLineSegment::reset() {
     mySwitches="";
     myArgument="";
-  }; // end CommandLineSegment::addSwitch()
+  } // end CommandLineSegment::addSwitch()
 
   void
   CommandLineSegment::parse(){
@@ -196,12 +196,12 @@ namespace xaifBooster {
   const std::string& 
   CommandLineSegment::getArgument() const {
     return myArgument;
-  }; // end CommandLineSegment::getArgument()
+  } // end CommandLineSegment::getArgument()
 
   const std::string& 
   CommandLineSegment::getSwitches() const {
     return mySwitches;
-  }; // end CommandLineSegment::getArgument()
+  } // end CommandLineSegment::getArgument()
 
   std::string
   CommandLineSegment::copyDroppingEscapes(char* source, int escapes) {

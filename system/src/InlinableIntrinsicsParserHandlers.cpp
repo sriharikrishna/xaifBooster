@@ -12,7 +12,7 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onInlinableIntrinsicDefinitions");
     InlinableIntrinsicsCatalogue& theInlinableIntrinsicsCatalogue_r(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     passingOut.setInlinableIntrinsicsCatalogue(theInlinableIntrinsicsCatalogue_r);
-  };
+  }
 
   void 
   InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsCatalogueItem(
@@ -22,7 +22,7 @@ namespace xaifBooster {
     InlinableIntrinsicsCatalogue& theInlinableIntrinsicsCatalogue_r(passingIn.getInlinableIntrinsicsCatalogue());
     InlinableIntrinsicsCatalogueItem& theItem_r(theInlinableIntrinsicsCatalogue_r.addCatalogueItem(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myName_XAIFName), XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myNrArgs_XAIFName)));
     passingOut.setInlinableIntrinsicsCatalogueItem(theItem_r);
-  };
+  }
 
   void 
   InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsFunction(
@@ -36,7 +36,7 @@ namespace xaifBooster {
       theFunction_r.setBuiltinFunctionName(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myFunctionBuiltinName_XAIFName) );
     }
     passingOut.setInlinableIntrinsicsExpression(theFunction_r);
-  };
+  }
 
   void 
   InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsPartial(
@@ -48,7 +48,7 @@ namespace xaifBooster {
     PartialDerivativeKind::PartialDerivativeKind_E pdk_e(PartialDerivativeKind::fromString(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myPartialType_XAIFName)));
     InlinableIntrinsicsExpression& thePartial_r(theItem_r.addPartial(id,pdk_e));
     passingOut.setInlinableIntrinsicsExpression(thePartial_r);
-  };
+  }
 
   void 
   InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsArgumentReference(
@@ -61,7 +61,7 @@ namespace xaifBooster {
     aReference_p->setId(XMLParser::getAttributeValueByName(InlinableIntrinsicsArgumentReference::our_myId_XAIFName));
     theExpression_r.supplyAndAddVertexInstance(*aReference_p);
     theExpression_r.setPartialArgument(*aReference_p,argref);
-  };
+  }
 
   void 
   InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsConstant(
@@ -75,7 +75,7 @@ namespace xaifBooster {
     aConstant_p->setFromString(
 			       XMLParser::getAttributeValueByName(InlinableIntrinsicsConstant::our_myValue_XAIFName));
     theExpression_r.supplyAndAddVertexInstance(*aConstant_p);
-  };
+  }
 
   void 
   InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsIntrinsic(
@@ -87,7 +87,7 @@ namespace xaifBooster {
 										XMLParser::getAttributeValueByName(InlinableIntrinsicsIntrinsic::our_myName_XAIFName));
     aIntrinsic_p->setId(XMLParser::getAttributeValueByName(InlinableIntrinsicsConstant::our_myId_XAIFName));
     theExpression_r.supplyAndAddVertexInstance(*aIntrinsic_p);
-  };
+  }
 
   void 
   InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsExpressionEdge(
@@ -119,7 +119,7 @@ namespace xaifBooster {
     InlinableIntrinsicsExpressionEdge& theInlinableIntrinsicsExpressionEdge(theExpression_r.addEdge(*theSource_p, *theTarget_p));
     theInlinableIntrinsicsExpressionEdge.setId(XMLParser::getAttributeValueByName(InlinableIntrinsicsExpressionEdge::our_myId_XAIFName));
     theInlinableIntrinsicsExpressionEdge.setPosition(XMLParser::getAttributeValueByName(InlinableIntrinsicsExpressionEdge::our_myPosition_XAIFName));
-  };
+  }
 
   void 
   InlinableIntrinsicsParserHandlers::onDummy(
@@ -130,7 +130,7 @@ namespace xaifBooster {
     // pass all set elements through
     passingOut=passingIn;
     return;
-  };
+  }
 
 } // end of namespace 
 

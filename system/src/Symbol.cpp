@@ -24,7 +24,7 @@ namespace xaifBooster {
     myActiveTypeFlag(anActiveTypeFlag),
     myTempFlag(aTempFlag) {
     setId(aName);
-  };
+  }
 
   void Symbol::printXMLHierarchy(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();

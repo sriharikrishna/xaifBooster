@@ -13,7 +13,7 @@ namespace xaifBooster {
 	<< ", myAliasSet=" << myAliasSet.debug().c_str()
 	<< "]" << std::ends; 
     return out.str();
-  }; // end of AliasMapEntry::debug
+  } // end of AliasMapEntry::debug
   
   void AliasMapEntry::printXMLHierarchy(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();
@@ -33,7 +33,7 @@ namespace xaifBooster {
        << ourXAIFName
        << ">" << std::endl;
     pm.releaseInstance();
-  }; 
+  } 
 
   const AliasSet& AliasMapEntry::getAliasSet() const { 
     return myAliasSet;

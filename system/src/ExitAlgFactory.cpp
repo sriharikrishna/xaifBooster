@@ -2,5 +2,5 @@
 #include "xaifBooster/system/inc/ExitAlgBase.hpp"
 #include "xaifBooster/system/inc/Exit.hpp"
 
-  BASE_ALG_FACTORY_DEF_MACRO(Exit);
+  BASE_ALG_FACTORY_DEF_MACRO(Exit)
 

@@ -4,7 +4,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(ControlFlowGraph,xaifBoosterControlFlowReversal);
+  DERIVED_ALG_FACTORY_DEF_MACRO(ControlFlowGraph,xaifBoosterControlFlowReversal)
 
 
 

@@ -15,7 +15,7 @@ namespace xaifBooster {
 	<< ", myAddress=" << myAddress
 	<< "]" << std::ends; 
     return out.str();
-  }; // end of AliasSingle::debug
+  } // end of AliasSingle::debug
   
   void AliasSingle::printXMLHierarchy(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();
@@ -29,7 +29,7 @@ namespace xaifBooster {
        << "\"/>" 
        << std::endl;
     pm.releaseInstance();
-  }; 
+  } 
 
 
   unsigned int AliasSingle::max() const { 

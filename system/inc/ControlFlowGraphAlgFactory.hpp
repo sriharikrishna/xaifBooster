@@ -4,6 +4,6 @@
 #include "xaifBooster/system/inc/AlgFactory.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
 
-  BASE_ALG_FACTORY_DECL_MACRO(ControlFlowGraph);
+  BASE_ALG_FACTORY_DECL_MACRO(ControlFlowGraph)
 
 #endif

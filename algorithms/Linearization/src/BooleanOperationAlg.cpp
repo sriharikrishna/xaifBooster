@@ -8,9 +8,9 @@ namespace xaifBoosterLinearization {
   BooleanOperationAlg::BooleanOperationAlg(BooleanOperation& theContainingBooleanOperation) : 
     BooleanOperationAlgBase(theContainingBooleanOperation),
     ExpressionVertexAlg(theContainingBooleanOperation) {
-  };
+  }
 
-  BooleanOperationAlg::~BooleanOperationAlg() {};
+  BooleanOperationAlg::~BooleanOperationAlg() {}
 
   std::string 
   BooleanOperationAlg::debug() const { 

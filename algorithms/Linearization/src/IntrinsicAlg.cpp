@@ -8,9 +8,9 @@ namespace xaifBoosterLinearization {
   IntrinsicAlg::IntrinsicAlg(Intrinsic& theContainingIntrinsic) : 
     IntrinsicAlgBase(theContainingIntrinsic),
     ExpressionVertexAlg(theContainingIntrinsic) {
-  };
+  }
 
-  IntrinsicAlg::~IntrinsicAlg() {};
+  IntrinsicAlg::~IntrinsicAlg() {}
 
   std::string IntrinsicAlg::debug () const { 
     std::ostringstream out;

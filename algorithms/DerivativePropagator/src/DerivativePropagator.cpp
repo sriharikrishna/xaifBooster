@@ -19,7 +19,7 @@ namespace xaifBoosterDerivativePropagator {
 	++entryList_iterator)
       if (*entryList_iterator)
 	delete *entryList_iterator;
-  };
+  }
 
   void
   DerivativePropagator::printXMLHierarchyImpl(std::ostream& os,

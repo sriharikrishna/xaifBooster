@@ -27,12 +27,12 @@ namespace xaifBooster {
   void
   PlainBasicBlock::supplyAndAddBasicBlockElementInstance(BasicBlockElement& theBasicBlockElement) { 
     myElementList.push_back(&theBasicBlockElement);
-  }; // end of PlainBasicBlock::supplyAndAddBasicBlockElementInstance
+  } // end of PlainBasicBlock::supplyAndAddBasicBlockElementInstance
 
   void
   PlainBasicBlock::supplyAndAddBasicBlockElementInstanceAtBeginning(BasicBlockElement& theBasicBlockElement) { 
     myElementList.push_front(&theBasicBlockElement);
-  }; // end of PlainBasicBlock::supplyAndAddBasicBlockElementInstanceAtBeginning
+  } // end of PlainBasicBlock::supplyAndAddBasicBlockElementInstanceAtBeginning
 
   std::string PlainBasicBlock::debug () const { 
     std::ostringstream out;

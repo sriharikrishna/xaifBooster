@@ -57,7 +57,7 @@ namespace xaifBooster {
       theEnds=boost::vertices(myBoostGraph);
     return VertexIteratorPair(VertexIterator(myBoostGraph,theEnds.first),
 			      VertexIterator(myBoostGraph,theEnds.second));
-  }; // end of  GraphWrapper<Vertex,Edge>::vertices
+  } // end of  GraphWrapper<Vertex,Edge>::vertices
 
   template <class Vertex, class Edge>
   typename GraphWrapper<Vertex,Edge>::ConstVertexIteratorPair
@@ -71,7 +71,7 @@ namespace xaifBooster {
     // const iterators
     return ConstVertexIteratorPair(ConstVertexIterator(myBoostGraph,theEnds.first),
 				   ConstVertexIterator(myBoostGraph,theEnds.second));
-  }; // end of  GraphWrapper<Vertex,Edge>::vertices
+  } // end of  GraphWrapper<Vertex,Edge>::vertices
   
   template <class Vertex, class Edge>
   typename GraphWrapper<Vertex,Edge>::EdgeIteratorPair
@@ -83,7 +83,7 @@ namespace xaifBooster {
       theEnds=boost::edges(myBoostGraph);
     return EdgeIteratorPair(EdgeIterator(myBoostGraph,theEnds.first),
 			    EdgeIterator(myBoostGraph,theEnds.second));
-  }; // end of  GraphWrapper<Vertex,Edge>::edges
+  } // end of  GraphWrapper<Vertex,Edge>::edges
 
   template <class Vertex, class Edge>
   typename GraphWrapper<Vertex,Edge>::ConstEdgeIteratorPair
@@ -95,7 +95,7 @@ namespace xaifBooster {
       theEnds=boost::edges(myBoostGraph);
     return ConstEdgeIteratorPair(ConstEdgeIterator(myBoostGraph,theEnds.first),
 				 ConstEdgeIterator(myBoostGraph,theEnds.second));
-  }; // end of  GraphWrapper<Vertex,Edge>::edges
+  } // end of  GraphWrapper<Vertex,Edge>::edges
 
   template <class Vertex, class Edge>
   Vertex&
@@ -113,7 +113,7 @@ namespace xaifBooster {
     return *(boost::get(boost::get(BoostVertexContentType(),
 				   myBoostGraph), // get the Vertex property map
 			internalVertex_p->getDescriptor()));
-  }; // end of GraphWrapper<Vertex,Edge>::addVertex
+  } // end of GraphWrapper<Vertex,Edge>::addVertex
 
   template <class Vertex, class Edge>
   void
@@ -126,7 +126,7 @@ namespace xaifBooster {
 	       // get the new vertex descriptor
 	       // see Vertex
 	       &theVertex);
-  }; // end of GraphWrapper<Vertex,Edge>::supplyAndAddVertexInstance
+  } // end of GraphWrapper<Vertex,Edge>::supplyAndAddVertexInstance
 
   template <class Vertex, class Edge>
   void
@@ -177,7 +177,7 @@ namespace xaifBooster {
     boost::remove_vertex(aVertex_cr.getDescriptor(),
 			 myBoostGraph);
     delete &aVertex_cr;
-  }; // end of GraphWrapper<Vertex,Edge>::removeAndDeleteVertex
+  } // end of GraphWrapper<Vertex,Edge>::removeAndDeleteVertex
 
   template <class Vertex, class Edge>
   Edge&
@@ -207,7 +207,7 @@ namespace xaifBooster {
     return *(boost::get(boost::get(BoostEdgeContentType(),
 				   myBoostGraph), // get the Vertex property map
 			internalEdge_p->getDescriptor())); // 
-  }; // end of GraphWrapper<Vertex,Edge>::addEdge
+  } // end of GraphWrapper<Vertex,Edge>::addEdge
   
   template <class Vertex, class Edge>
   void
@@ -233,7 +233,7 @@ namespace xaifBooster {
 	       // get the new vertex descriptor
 	       // see Edge
 	       &theEdge);
-  }; // end of GraphWrapper<Vertex,Edge>::supplyAndAddEdgeInstance
+  } // end of GraphWrapper<Vertex,Edge>::supplyAndAddEdgeInstance
 
   template <class Vertex, class Edge>
   void
@@ -242,7 +242,7 @@ namespace xaifBooster {
     boost::remove_edge(anEdge_cr.getDescriptor(),
 		       myBoostGraph);
     delete &anEdge_cr;
-  }; // end of GraphWrapper<Vertex,Edge>::removeAndDeleteEdge
+  } // end of GraphWrapper<Vertex,Edge>::removeAndDeleteEdge
 
   template <class Vertex, class Edge>
   Vertex&
@@ -251,7 +251,7 @@ namespace xaifBooster {
 				   myBoostGraph), // vertex map
 			boost::source(anEdge_cr.getDescriptor(),
 				      myBoostGraph))); // vertex descr.
-  }; // end of GraphWrapper<Vertex,Edge>::getSourceOf
+  } // end of GraphWrapper<Vertex,Edge>::getSourceOf
 
   template <class Vertex, class Edge>
   const Vertex&
@@ -260,7 +260,7 @@ namespace xaifBooster {
 				   myBoostGraph), // vertex map
 			boost::source(anEdge_cr.getDescriptor(),
 				      myBoostGraph))); // vertex descr.
-  }; // end of GraphWrapper<Vertex,Edge>::getSourceOf
+  } // end of GraphWrapper<Vertex,Edge>::getSourceOf
 
   template <class Vertex, class Edge>
   Vertex&
@@ -269,7 +269,7 @@ namespace xaifBooster {
 				   myBoostGraph), // vertex map
 			boost::target(anEdge_cr.getDescriptor(),
 				      myBoostGraph))); // vertex descr.
-  }; // end of GraphWrapper<Vertex,Edge>::getTargetOf
+  } // end of GraphWrapper<Vertex,Edge>::getTargetOf
 
   template <class Vertex, class Edge>
   const Vertex&
@@ -278,7 +278,7 @@ namespace xaifBooster {
 				   myBoostGraph), // vertex map
 			boost::target(anEdge_cr.getDescriptor(),
 				      myBoostGraph))); // vertex descr.
-  }; // end of GraphWrapper<Vertex,Edge>::getTargetOf
+  } // end of GraphWrapper<Vertex,Edge>::getTargetOf
 
   template <class Vertex, class Edge>
   void
@@ -321,7 +321,7 @@ namespace xaifBooster {
       boost::remove_vertex(*(vi_begin), 
 			   myBoostGraph);
     }
-  }; // end of GraphWrapper<Vertex,Edge>::getTargetOf
+  } // end of GraphWrapper<Vertex,Edge>::getTargetOf
 
   template <class Vertex, class Edge>
   typename GraphWrapper<Vertex,Edge>::OutEdgeIteratorPair
@@ -334,7 +334,7 @@ namespace xaifBooster {
 			       myBoostGraph);
     return OutEdgeIteratorPair(OutEdgeIterator(myBoostGraph,theEnds.first),
 			       OutEdgeIterator(myBoostGraph,theEnds.second));
-  }; // end of  GraphWrapper<Vertex,Edge>::getOutEdgesOf
+  } // end of  GraphWrapper<Vertex,Edge>::getOutEdgesOf
 
   template <class Vertex, class Edge>
   typename GraphWrapper<Vertex,Edge>::ConstOutEdgeIteratorPair
@@ -347,7 +347,7 @@ namespace xaifBooster {
 			       myBoostGraph);
     return ConstOutEdgeIteratorPair(ConstOutEdgeIterator(myBoostGraph,theEnds.first),
 				    ConstOutEdgeIterator(myBoostGraph,theEnds.second));
-  }; // end of  GraphWrapper<Vertex,Edge>::getOutEdgesOf
+  } // end of  GraphWrapper<Vertex,Edge>::getOutEdgesOf
 
   template <class Vertex, class Edge>
   typename GraphWrapper<Vertex,Edge>::InEdgeIteratorPair
@@ -360,7 +360,7 @@ namespace xaifBooster {
 			      myBoostGraph);
     return InEdgeIteratorPair(InEdgeIterator(myBoostGraph,theEnds.first),
 			      InEdgeIterator(myBoostGraph,theEnds.second));
-  }; // end of  GraphWrapper<Vertex,Edge>::getInEdgesOf
+  } // end of  GraphWrapper<Vertex,Edge>::getInEdgesOf
 
   template <class Vertex, class Edge>
   typename GraphWrapper<Vertex,Edge>::ConstInEdgeIteratorPair
@@ -373,7 +373,7 @@ namespace xaifBooster {
 			      myBoostGraph);
     return ConstInEdgeIteratorPair(ConstInEdgeIterator(myBoostGraph,theEnds.first),
 				   ConstInEdgeIterator(myBoostGraph,theEnds.second));
-  }; // end of  GraphWrapper<Vertex,Edge>::getInEdgesOf
+  } // end of  GraphWrapper<Vertex,Edge>::getInEdgesOf
 
   template <class Vertex, class Edge>
   unsigned int 

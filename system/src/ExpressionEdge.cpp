@@ -22,11 +22,11 @@ namespace xaifBooster {
     myExpressionEdgeAlgBase_p=0;
     if (makeAlgorithm)
       myExpressionEdgeAlgBase_p=ExpressionEdgeAlgFactory::instance()->makeNewAlg(*this);
-  }; 
+  } 
 
   ExpressionEdge::~ExpressionEdge(){
     if (myExpressionEdgeAlgBase_p) delete myExpressionEdgeAlgBase_p;
-  };
+  }
 
   /*
    * if there is an algorithm, then let it decide what to print;

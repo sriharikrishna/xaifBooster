@@ -4,7 +4,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/LabelAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(Label,xaifBoosterControlFlowReversal);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Label,xaifBoosterControlFlowReversal)
 
 
 

@@ -3,6 +3,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
 
-DERIVED_ALG_FACTORY_DEF_MACRO(ArgumentSymbolReference,xaifBoosterBasicBlockPreaccumulationReverse);
+DERIVED_ALG_FACTORY_DEF_MACRO(ArgumentSymbolReference,xaifBoosterBasicBlockPreaccumulationReverse)
 
 

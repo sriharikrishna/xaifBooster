@@ -4,5 +4,5 @@
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(ExpressionEdge,xaifBoosterLinearization);
+  DERIVED_ALG_FACTORY_DEF_MACRO(ExpressionEdge,xaifBoosterLinearization)
 

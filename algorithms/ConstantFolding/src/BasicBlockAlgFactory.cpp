@@ -4,6 +4,6 @@
 #include "xaifBooster/algorithms/ConstantFolding/inc/BasicBlockAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(BasicBlock,xaifBoosterConstantFolding);
+  DERIVED_ALG_FACTORY_DEF_MACRO(BasicBlock,xaifBoosterConstantFolding)
 
 

@@ -4,7 +4,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(CallGraphVertex,xaifBoosterControlFlowReversal);
+  DERIVED_ALG_FACTORY_DEF_MACRO(CallGraphVertex,xaifBoosterControlFlowReversal)
 
 
 

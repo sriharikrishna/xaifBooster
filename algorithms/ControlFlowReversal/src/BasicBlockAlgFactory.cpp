@@ -4,7 +4,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/BasicBlockAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(BasicBlock,xaifBoosterControlFlowReversal);
+  DERIVED_ALG_FACTORY_DEF_MACRO(BasicBlock,xaifBoosterControlFlowReversal)
 
 
 

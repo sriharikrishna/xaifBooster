@@ -5,6 +5,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulation::AssignmentAlgFactory,xaifBoosterBasicBlockPreaccumulationTapeAdjoint);
+  DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulation::AssignmentAlgFactory,xaifBoosterBasicBlockPreaccumulationTapeAdjoint)
 
 #endif

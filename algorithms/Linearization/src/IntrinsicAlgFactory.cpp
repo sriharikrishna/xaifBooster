@@ -4,5 +4,5 @@
 #include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(Intrinsic,xaifBoosterLinearization);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Intrinsic,xaifBoosterLinearization)
 

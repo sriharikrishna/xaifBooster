@@ -4,6 +4,6 @@
 #include "xaifBooster/system/inc/AlgFactory.hpp"
 #include "xaifBooster/system/inc/GotoAlgBase.hpp"
 
-  BASE_ALG_FACTORY_DECL_MACRO(Goto);
+  BASE_ALG_FACTORY_DECL_MACRO(Goto)
 
 #endif

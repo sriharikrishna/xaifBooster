@@ -8,9 +8,9 @@ namespace xaifBoosterLinearization {
   ArgumentAlg::ArgumentAlg(Argument& theContainingArgument) : 
     ArgumentAlgBase(theContainingArgument),
     ExpressionVertexAlg(theContainingArgument) {
-  };
+  }
 
-  ArgumentAlg::~ArgumentAlg() {};
+  ArgumentAlg::~ArgumentAlg() {}
 
   std::string ArgumentAlg::debug () const { 
     std::ostringstream out;

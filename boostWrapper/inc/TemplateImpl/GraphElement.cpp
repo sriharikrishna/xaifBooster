@@ -8,7 +8,8 @@ namespace xaifBooster {
 
   template <class VertexOrEdgeDescriptor>
   GraphElement<VertexOrEdgeDescriptor>::GraphElement() 
-    : myInitFlag(false) {};
+    : myInitFlag(false) {
+  }
   
   template <class VertexOrEdgeDescriptor>
   void 
