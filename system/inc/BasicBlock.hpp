@@ -3,6 +3,7 @@
 
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 #include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 
 namespace xaifBooster { 
 
@@ -10,7 +11,7 @@ namespace xaifBooster {
    * representation for basic block with pointer to 
    * BasicBlockAlgBase
    */
-  class BasicBlock : public PlainBasicBlock {
+  class BasicBlock : public PlainBasicBlock, public ControlFlowGraphVertex {
   public:
     
     BasicBlock (Scope& theScope);
@@ -25,29 +26,16 @@ namespace xaifBooster {
      * on the algorithm used.
      */
     virtual void printXMLHierarchy(std::ostream& os) const;
+    void printXMLHierarchyImpl(std::ostream& os) const;
 
     std::string debug() const ;
 
     /** 
      * get algorithm
      */
-    BasicBlockAlgBase& getBasicBlockAlgBase();
-
-    /** 
-     * get algorithm
-     */
-    const BasicBlockAlgBase& getBasicBlockAlgBase() const;
+    BasicBlockAlgBase& getBasicBlockAlgBase() const;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c); 
-
-  private:
-    
-    /** 
-     * this will be set to point a dynamically instance
-     * during construction and deleted during 
-     * destruction
-     */
-    BasicBlockAlgBase* myBasicBlockAlgBase_p;
 
   }; // end of class BasicBlock
  

@@ -42,9 +42,7 @@ namespace xaifBooster {
     /**
      * get algorithm
      */
-    PreLoopAlgBase& getPreLoopAlgBase();
-    const PreLoopAlgBase& getPreLoopAlgBase() const;
-
+    PreLoopAlgBase& getPreLoopAlgBase() const;
 
   private:
     
@@ -52,14 +50,6 @@ namespace xaifBooster {
      * the condition for the preloop
      */
     Condition myCondition;
-
-    /**
-     * this will be set to point a dynamically instance
-     * during construction and deleted during
-     * destruction
-     */
-    PreLoopAlgBase* myPreLoopAlgBase_p;
-
 
   };
  

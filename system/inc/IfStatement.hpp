@@ -42,8 +42,7 @@ namespace xaifBooster {
     /**
      * get algorithm
      */
-    IfStatementAlgBase& getIfStatementAlgBase();
-    const IfStatementAlgBase& getIfStatementAlgBase() const;
+    IfStatementAlgBase& getIfStatementAlgBase() const;
 
   private:
     
@@ -51,14 +50,6 @@ namespace xaifBooster {
      * the condition for the if statement
      */
     Condition myCondition;
-
-    /**
-     * this will be set to point a dynamically instance
-     * during construction and deleted during
-     * destruction
-     */
-    IfStatementAlgBase* myIfStatementAlgBase_p;
-
 
   };
  

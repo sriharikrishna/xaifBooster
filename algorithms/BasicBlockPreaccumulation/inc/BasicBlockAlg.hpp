@@ -84,6 +84,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * getFlattenedSequence
      */
     DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
+
+    /**
+     * access container
+     */
+    const BasicBlock& getContaining() const;
     
   private:
     

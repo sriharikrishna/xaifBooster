@@ -33,8 +33,8 @@ namespace xaifBooster {
     /**
      * print XML hierarchy
      */
-    void printXMLHierarchy(std::ostream& os) const;
-    void printXMLHierarchyImpl(std::ostream& os) const;
+    virtual void printXMLHierarchy(std::ostream& os) const;
+    virtual void printXMLHierarchyImpl(std::ostream& os) const;
 
     /**
      * print debug information
@@ -48,7 +48,7 @@ namespace xaifBooster {
     ControlFlowGraphVertexAlgBase& getControlFlowGraphVertexAlgBase();
     const ControlFlowGraphVertexAlgBase& getControlFlowGraphVertexAlgBase() const;
 
-    private:
+    protected:
 
     /**
      * this will be set to point a dynamically instance
