@@ -5,7 +5,7 @@
 
 namespace xaifBoosterBasicBlockPreaccumulation {
  
-  class xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphAlgFactory : public xaifBooster::Debuggable {
+  class PrivateLinearizedComputationalGraphAlgFactory : public xaifBooster::Debuggable {
 
   public:
     static PrivateLinearizedComputationalGraphAlgFactory* instance();
