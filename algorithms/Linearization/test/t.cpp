@@ -50,7 +50,8 @@ int main(int argc,char** argv) {
     p.initialize();
     p.parse(inFileName);
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
-    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // analyze
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // generate code 
     if (CommandLineParser::instance()->isSet('o')) { 
       std::ofstream theOutFile(CommandLineParser::instance()->argAsString('o').c_str(),
 			       std::ios::out);

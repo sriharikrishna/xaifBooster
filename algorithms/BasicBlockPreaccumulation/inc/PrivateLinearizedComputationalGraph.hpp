@@ -3,7 +3,8 @@
 
 #include "xaifBooster/utils/inc/HashTable.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationList.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ActiveVertexIdentificationList.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PassiveVertexIdentificationList.hpp"
 
 using namespace xaifBooster;
 
@@ -30,12 +31,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     std::string debug() const { return std::string("PrivateLinearizedComputationalGraph");};
 
-    VertexIdentificationList& getVertexRHSIdentificationList() { 
+    ActiveVertexIdentificationList& getVertexRHSIdentificationList() { 
       return myVertexRHSIdentificationList;
     };    
 
-    VertexIdentificationList& getVertexLHSIdentificationList() { 
+    ActiveVertexIdentificationList& getVertexLHSIdentificationList() { 
       return myVertexLHSIdentificationList;
+    };    
+
+    PassiveVertexIdentificationList& getPassiveVertexIdentificationList() { 
+      return myPassiveVertexIdentificationList;
     };    
 
   private: 
@@ -55,7 +60,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * aliased vertices in the list 
      * this list doesn't own any elements
      */
-    VertexIdentificationList myVertexRHSIdentificationList; 
+    ActiveVertexIdentificationList myVertexRHSIdentificationList; 
 
     /**
      * we need to track the relation 
@@ -72,7 +77,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * LHS identification does not allow aliased vertices in the list
      * this list doesn't own any elements
      */
-    VertexIdentificationList myVertexLHSIdentificationList; 
+    ActiveVertexIdentificationList myVertexLHSIdentificationList; 
+
+    /**
+     * we need to track the set of 
+     * passive vertices to do some
+     * basic block level activity analysis
+     * elements in this list are mutually exclusive 
+     * with elements in the active lists.
+     */
+    PassiveVertexIdentificationList myPassiveVertexIdentificationList; 
 
   }; // end of class PrivateLinearizedComputationalGraph 
 

@@ -97,6 +97,11 @@ namespace xaifBooster {
 
     const Vertex& getTargetOf(const Edge& anEdge) const;
 
+    /** 
+     * remove all edges and vertices from a graph
+     */
+    void clear();
+
   protected:
 
     /** 

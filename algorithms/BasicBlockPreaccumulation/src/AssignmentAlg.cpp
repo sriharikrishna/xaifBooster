@@ -8,6 +8,8 @@
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
@@ -40,9 +42,69 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   AssignmentAlg::algorithm_action_1() { 
-    xaifBoosterLinearization::AssignmentAlg::algorithm_action_1();
+    //     xaifBoosterLinearization::AssignmentAlg::algorithm_action_1();
+    // we don't invoke this here. 
+    // rather it becomes a part of 
   }
   
+  bool 
+  AssignmentAlg::vertexIdentification(VertexPPairList& theVertexTrackList,
+				      PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
+    Expression& theExpression(getLinearizedRightHandSide());
+    ActiveVertexIdentificationList& theVertexLHSIdentificationList(theFlattenedSequence.getVertexLHSIdentificationList());
+    ActiveVertexIdentificationList& theVertexRHSIdentificationList(theFlattenedSequence.getVertexRHSIdentificationList());
+    PassiveVertexIdentificationList& thePassiveVertexIdentificationList(theFlattenedSequence.getPassiveVertexIdentificationList());
+    Expression::VertexIteratorPair p=theExpression.vertices();
+    Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
+    for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
+      ActiveVertexIdentificationList::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
+	theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
+      VertexIdentificationList::IdentificationResult_E thePassiveIdResult(VertexIdentificationList::NOT_IDENTIFIED);
+      if ((*ExpressionVertexI).isArgument()) { 
+	theLHSIdResult=theVertexLHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	theRHSIdResult=theVertexRHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	thePassiveIdResult=thePassiveVertexIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+      } 
+      if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED)  
+	theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
+						 theLHSIdResult.getVertexP()));
+      else if (theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
+	theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
+						 theRHSIdResult.getVertexP()));
+      } // end if 
+      else if (thePassiveIdResult==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
+	// note, this isn't the exact question to ask here but it is 
+	// a conservatively correct question to ask 
+	// passivate this: 
+	dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).passivate();
+      } // end if 
+      else { // the vertex cannot be uniquely identified
+	if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
+	  // the RHS identification doesn't really matter since we cannot 
+	  // uniquely identify within the RHSs it is only important that we don't 
+	  // alias a preceding LHS
+	  // don't need to do anything else at this point, just continue
+	} // end if NOT_IDENTIFIED
+	else // there is an ambiguity
+	  // don't continue here. 
+	  // Note that this is the point where we cut off somewhat arbitrarily in 
+	  // two respects: 
+	  // A: we decide to break the flattening here because it is convenient
+	  //    but we could continue to flatten other not connected unambiguous portions 
+	  //    into this graph at the cost of more maintenance. see the basic block 
+	  //    flattening paper
+	  // B: for the purpose of identifying passive portions it would actually 
+	  //    be sufficient to just verify that all ambiguous definitions are 
+	  //    constant as well so we could proceed despite ambiguity. 
+	  //    Here too it requires additional logic and we don't expect any 
+	  //    significant gains in practice. Therefore we decided it is ok 
+	  //    to split here. For more detail see the basic block flattening paper. 
+	  return false;
+      } // end else (no unique identification)
+    } // end for all vertices in this LHS 
+    return true;
+  } // end of AssignmentAlg::vertexIdentification 
+
   void 
   AssignmentAlg::algorithm_action_2() { 
     DBG_MACRO(DbgGroup::CALLSTACK,
@@ -51,41 +113,41 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // this was set in BasicBlockAlg::algorithm_action_2
     PrivateLinearizedComputationalGraph& theFlattenedSequence=
       BasicBlockAlgParameter::get().getFlattenedSequence(getContaining());
+    VertexPPairList theVertexTrackList;
+    vertexIdentification(theVertexTrackList,
+			 theFlattenedSequence);
+    PassiveVertexIdentificationList& thePassiveVertexIdentificationList(theFlattenedSequence.getPassiveVertexIdentificationList());
     if (!getActiveFlag()) { 
-      if (getContaining().getActiveFlag() // this means the assignment has been passivated 
-	  &&
-	  getContaining().getLHS().getActiveType())  // but the LHS is active
-	BasicBlockAlgParameter::get().getDerivativePropagator(getContaining()).
-	  addZeroDerivToEntryList(getContaining().getLHS());
-      // for the ones that are not of active type we don't do anything.
+      if (getContaining().getLHS().getActiveType()) {   // but the LHS has active type
+	thePassiveVertexIdentificationList.replaceOrAddElement(getContaining().getLHS());
+	if (getContaining().getActiveFlag()) // this means the assignment has been passivated 
+	  BasicBlockAlgParameter::get().getDerivativePropagator(getContaining()).
+	    addZeroDerivToEntryList(getContaining().getLHS());
+      } // end if
     } // end if 
     else {
       Expression& theExpression(getLinearizedRightHandSide());
       Expression::VertexIteratorPair p=theExpression.vertices();
       Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
-      typedef std::pair<const ExpressionVertex*, 
-	const PrivateLinearizedComputationalGraphVertex*> VertexPointerPair;
-      std::list<VertexPointerPair> theVertexTrackList;
-
       // keep track of all the vertices we add with this statement in case we need to split and 
       // remove them
       std::list<PrivateLinearizedComputationalGraphVertex*> theUndoThenSplitList;
-      VertexIdentificationList& theVertexLHSIdentificationList(theFlattenedSequence.getVertexLHSIdentificationList());
-      VertexIdentificationList& theVertexRHSIdentificationList(theFlattenedSequence.getVertexRHSIdentificationList());
+      ActiveVertexIdentificationList& theVertexLHSIdentificationList(theFlattenedSequence.getVertexLHSIdentificationList());
+      ActiveVertexIdentificationList& theVertexRHSIdentificationList(theFlattenedSequence.getVertexRHSIdentificationList());
       PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p=0; // LHS representation
       for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
-	VertexIdentificationList::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
+	ActiveVertexIdentificationList::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
 	  theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
 	if ((*ExpressionVertexI).isArgument()) { 
 	  theLHSIdResult=theVertexLHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	  theRHSIdResult=theVertexRHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	} 
 	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED)  
-	  theVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),
-							 theLHSIdResult.getVertexP()));
+	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
+						   theLHSIdResult.getVertexP()));
 	else if (theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
-	  theVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),
-							 theRHSIdResult.getVertexP()));
+	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
+						   theRHSIdResult.getVertexP()));
 	} // end if 
 	else { // the vertex cannot be uniquely identified
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
@@ -106,8 +168,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							  theLCGVertex_p);
 	      theLCGVertex_p->setRHSVariable(theVariable);
 	    } // end if 
-	    theVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),
-							   theLCGVertex_p));
+	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
+						     theLCGVertex_p));
 	    if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
 	      if (theLHSLCGVertex_p)
 		THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
@@ -138,7 +200,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	const PrivateLinearizedComputationalGraphVertex *theLCGSource_p(0), *theLCGTarget_p(0);
 	ExpressionVertex& theSource(theExpression.getSourceOf(*ExpressionEdgeI));
 	ExpressionVertex& theTarget(theExpression.getTargetOf(*ExpressionEdgeI));
-	std::list<VertexPointerPair>::const_iterator listIt;
+	VertexPPairList::const_iterator listIt;
 	for (listIt=theVertexTrackList.begin();
 	     (listIt!=theVertexTrackList.end()) 
 	       &&

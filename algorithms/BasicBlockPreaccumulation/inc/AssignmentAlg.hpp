@@ -52,6 +52,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     AssignmentAlg operator=(const AssignmentAlg&);
 
+    typedef std::pair<const ExpressionVertex*, 
+		      const PrivateLinearizedComputationalGraphVertex*> VertexPPair;
+    typedef std::list<VertexPPair> VertexPPairList;
+
+    /**
+     * method for vertex identification
+     */
+    bool vertexIdentification(VertexPPairList& theVertexTrackList,
+			      PrivateLinearizedComputationalGraph& theFlattenedSequence);
+    
+
+
   }; // end of class AssignmentAlg
  
 } 

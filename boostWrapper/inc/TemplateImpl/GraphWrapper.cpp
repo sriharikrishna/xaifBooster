@@ -14,6 +14,9 @@ namespace xaifBooster {
 
   template <class Vertex, class Edge>
   GraphWrapper<Vertex,Edge>::~GraphWrapper() { 
+    // we could invoke clear() but we can save the 
+    // extra effort or removing all boost vertices and 
+    // edges separately
     // delete all the edges
     std::pair < 
       InternalBoostEdgeIteratorType,
@@ -288,6 +291,43 @@ namespace xaifBooster {
 				   myBoostGraph), // vertex map
 			boost::target(anEdge_cr.getDescriptor(),
 				      myBoostGraph))); // vertex descr.
+  }; // end of GraphWrapper<Vertex,Edge>::getTargetOf
+
+  template <class Vertex, class Edge>
+  void
+  GraphWrapper<Vertex,Edge>::clear() { 
+    // delete all the edges
+    std::pair < 
+      InternalBoostEdgeIteratorType,
+      InternalBoostEdgeIteratorType 
+      > 
+      theEdgeEnds=boost::edges(myBoostGraph);
+    InternalBoostEdgeIteratorType ei_begin(theEdgeEnds.first), ei_end(theEdgeEnds.second);
+    for (;ei_begin!=ei_end;++ei_begin) { 
+      Edge* anEdge_p=boost::get(boost::get(BoostEdgeContentType(),
+					   myBoostGraph), // get the Edge property map
+				*(ei_begin)); // get the descriptor
+      if ( anEdge_p) // this should always be true
+	delete anEdge_p;
+      boost::remove_edge(*(ei_begin), 
+			 myBoostGraph);
+    } // end for
+    // delete all the vertices
+    std::pair < 
+      InternalBoostVertexIteratorType,
+      InternalBoostVertexIteratorType 
+      > 
+      theVertexEnds=boost::vertices(myBoostGraph);
+    InternalBoostVertexIteratorType vi_begin(theVertexEnds.first), vi_end(theVertexEnds.second);
+    for (;vi_begin!=vi_end;++vi_begin) { 
+      Vertex* aVertex_p=boost::get(boost::get(BoostVertexContentType(),
+					      myBoostGraph), // get the Vertex property map
+				   *(vi_begin)); // get the descriptor
+      if ( aVertex_p) // this should always be true
+	delete aVertex_p;
+      boost::remove_vertex(*(vi_begin), 
+			   myBoostGraph);
+    }
   }; // end of GraphWrapper<Vertex,Edge>::getTargetOf
 
   template <class Vertex, class Edge>

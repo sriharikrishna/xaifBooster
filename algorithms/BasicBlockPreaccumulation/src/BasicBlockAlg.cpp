@@ -154,7 +154,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// print the element 
 	(*(li))->printXMLHierarchy(os);
 	// Is it the last element?
-	if (*li==aSequence_p->myFirstElement_p) { 
+	if (*li==aSequence_p->myLastElement_p) { 
 	  // print all the stuff after the last element
 	  const Sequence::AssignmentPList& theEndList(aSequence_p->getEndAssignmentList());
 	  for(Sequence::AssignmentPList::const_iterator fli=theEndList.begin();
