@@ -194,7 +194,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
 	theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
 	// set the RHS
-	theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS());
+	theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false);
 	// make the subroutine call: 
 	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
 	// save it in the list
