@@ -107,6 +107,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return true;
   } // end of AssignmentAlg::vertexIdentification 
 
+  // local writer definition: 
+  class VertexLabelWriter {
+  public:
+    VertexLabelWriter(const Expression& e) : myE(e) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      out << "[label=\"" << dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
+														  myE.getInternalBoostGraph()),
+												       v))).getExpressionVertexAlgBase()).isActive() << "\"]";
+    };
+    const Expression& myE;
+  };
+
   void 
   AssignmentAlg::algorithm_action_2() { 
     DBG_MACRO(DbgGroup::CALLSTACK,
@@ -126,7 +139,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       return;
     } 
     // now redo the activity analysis
+    if (haveLinearizedRightHandSide() && 
+	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+      GraphVizDisplay::show(getLinearizedRightHandSide(),"before",
+			    VertexLabelWriter(getLinearizedRightHandSide()));
     xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
+    if (haveLinearizedRightHandSide() && 
+	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+      GraphVizDisplay::show(getLinearizedRightHandSide(),"after",
+			    VertexLabelWriter(getLinearizedRightHandSide()));
     // and the second part of the linearization
     xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
     PassiveVertexIdentificationList& thePassiveVertexIdentificationList(theFlattenedSequence.getPassiveVertexIdentificationList());
