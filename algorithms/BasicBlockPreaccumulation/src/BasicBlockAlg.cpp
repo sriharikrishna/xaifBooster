@@ -356,12 +356,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      break;
 	  } // end for
 	  VertexPairList theVertexPairList;
-	  int theCounter(0);
 	  traverseAndBuildJacobianAccumulationsFromBottomUp(*aJacExprVertexI,
 							    theExpression,
 							    aNewAssignment,
 							    theInternalReferenceConcretizationList,
-							    theCounter,
 							    theVertexPairList);
 	  // add the LHS to the tracking list: 
 	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
@@ -381,9 +379,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 									const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,
 									Assignment& theNewAssignment,
 									const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
-									int& theCounter,
 									VertexPairList& theVertexPairList) { 
-    int theCurrentId=theCounter;
     xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstInEdgeIteratorPair pi(theExpression.getInEdgesOf(theVertex));
     xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstInEdgeIterator aJacExprEdgeI(pi.first),aJacExprEdgeIEnd(pi.second);
     for (;aJacExprEdgeI!=aJacExprEdgeIEnd ;++aJacExprEdgeI)
@@ -391,7 +387,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							theExpression,
 							theNewAssignment,
 							theInternalReferenceConcretizationList,
-							++theCounter,
 							theVertexPairList); 
     // we add this vertex depending on its type
     ExpressionVertex* theNewExpressionVertex_p(0);
@@ -413,6 +408,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	Argument* theInternalArgument_p=new Argument();
 	theNewExpressionVertex_p=theInternalArgument_p;
 	(*it).second->copyMyselfInto(theInternalArgument_p->getVariable());
+	theNewExpressionVertex_p->setId(theNewAssignment.getRHS().getNextVertexId());
+	theNewAssignment.getRHS().supplyAndAddVertexInstance(*theNewExpressionVertex_p);
 	break;
       } 
     case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::EXTERNAL_REF: 
@@ -420,14 +417,61 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// we know that we can do the following cast
 	// since we handed PrivateLinearizedComputationalGraphEdges
 	// to Angel in the first place
-	const ExpressionEdge& theOriginalAssignmentExpressionEdge(dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(theVertex.getExternalReference()).
-								  getLinearizedExpressionEdge());
-	// we make the new Argument
-	// use the LHS of the local elementary partial assignment
-	Argument* theExternalArgument_p=new Argument();
-	theNewExpressionVertex_p=theExternalArgument_p;
-	dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(theOriginalAssignmentExpressionEdge.getExpressionEdgeAlgBase()).
+	const PrivateLinearizedComputationalGraphEdge& thePrivateEdge(dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(theVertex.getExternalReference()));
+	if(thePrivateEdge.getParallels().size()) { 
+	  unsigned int position;
+	  Intrinsic* theIntrinsic_p=0;
+	  for (PrivateLinearizedComputationalGraphEdge::ExpressionEdgePList::const_iterator i=thePrivateEdge.getParallels().begin();
+	       i!=thePrivateEdge.getParallels().end();
+	       ++i) { 
+	    Argument* theExternalArgument_p=new Argument();
+	    dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>((*i)->getExpressionEdgeAlgBase()).
+	      getConcretePartialAssignment().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
+	    theExternalArgument_p->setId(theNewAssignment.getRHS().getNextVertexId());
+	    theNewAssignment.getRHS().supplyAndAddVertexInstance(*theExternalArgument_p);
+	    if (theIntrinsic_p) { // have one addition already
+	      ExpressionEdge& theNewEdge(theNewAssignment.getRHS().addEdge(*theIntrinsic_p,
+									   *theExternalArgument_p));
+	      // make up an ID
+	      theNewEdge.setId(theNewAssignment.getRHS().getNextEdgeId());
+	      theNewEdge.setPosition(position++);
+	    }	      
+	    theIntrinsic_p=new Intrinsic("add_scal_scal");
+	    position=1; // start a new addition
+	    theIntrinsic_p->setId(theNewAssignment.getRHS().getNextVertexId());
+	    theNewAssignment.getRHS().supplyAndAddVertexInstance(*theIntrinsic_p);
+	    ExpressionEdge& theNewEdge(theNewAssignment.getRHS().addEdge(*theExternalArgument_p,
+									 *theIntrinsic_p));
+	    // make up an ID
+	    theNewEdge.setId(theNewAssignment.getRHS().getNextEdgeId());
+	    theNewEdge.setPosition(position++);
+	  } // end for 
+	  // now deal with this edge
+	  Argument* theExternalArgument_p=new Argument();
+	  dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(thePrivateEdge.getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).
+	    getConcretePartialAssignment().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
+	  theExternalArgument_p->setId(theNewAssignment.getRHS().getNextVertexId());
+	  theNewAssignment.getRHS().supplyAndAddVertexInstance(*theExternalArgument_p);
+	  if (theIntrinsic_p) { // have one addition already
+	    ExpressionEdge& theNewEdge(theNewAssignment.getRHS().addEdge(*theIntrinsic_p,
+									 *theExternalArgument_p));
+	    // make up an ID
+	    theNewEdge.setId(theNewAssignment.getRHS().getNextEdgeId());
+	    theNewEdge.setPosition(position++);
+	  }
+	  theNewExpressionVertex_p=theIntrinsic_p;	      
+	} // end if 
+	else { 
+	  const ExpressionEdge& theOriginalAssignmentExpressionEdge(thePrivateEdge.getLinearizedExpressionEdge());
+	  // we make the new Argument
+	  // use the LHS of the local elementary partial assignment
+	  Argument* theExternalArgument_p=new Argument();
+	  theNewExpressionVertex_p=theExternalArgument_p;
+	  dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(theOriginalAssignmentExpressionEdge.getExpressionEdgeAlgBase()).
 	  getConcretePartialAssignment().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
+	  theNewExpressionVertex_p->setId(theNewAssignment.getRHS().getNextVertexId());
+	  theNewAssignment.getRHS().supplyAndAddVertexInstance(*theNewExpressionVertex_p);
+	} // end else 
 	break;
       } 
     case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION: 
@@ -446,14 +490,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	} // end switch 
 	Intrinsic* theIntrinsic_p=new Intrinsic(anOpName);
 	theNewExpressionVertex_p=theIntrinsic_p;
+	theNewExpressionVertex_p->setId(theNewAssignment.getRHS().getNextVertexId());
+	theNewAssignment.getRHS().supplyAndAddVertexInstance(*theNewExpressionVertex_p);
 	break;
       } 
     default :
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::traverseFromBottomUp: unknown vertex type");
       break;
     } // end switch 
-    theNewExpressionVertex_p->setId(theCurrentId);
-    theNewAssignment.getRHS().supplyAndAddVertexInstance(*theNewExpressionVertex_p);
     theVertexPairList.push_back(VertexPair(&theVertex,theNewExpressionVertex_p));
     if (theVertex.getReferenceType()==xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION) { 
       // add the edges
