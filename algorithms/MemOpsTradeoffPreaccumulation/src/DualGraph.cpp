@@ -28,7 +28,17 @@ namespace MemOpsTradeoffPreaccumulation {
   
     
 
-  }// end generate path list
+
+
+
+
+
+
+
+
+
+
+  }// end populate path list
 
   void DualGraph::clearPathList() {
 
