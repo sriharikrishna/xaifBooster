@@ -19,7 +19,7 @@
           double precision :: d=0.0
           ! double precision :: d
         end type active
-        
+
         interface saxpy
           module procedure saxpy_a_a
         end interface
