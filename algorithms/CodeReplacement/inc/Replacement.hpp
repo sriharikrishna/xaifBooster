@@ -2,15 +2,13 @@
 #define _XAIFBOOSTERCODEREPLACEMENT_REPLACEMENT_INCLUDE_
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraphCommonAttributes.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphBase.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterCodeReplacement { 
 
-  class Replacement : public XMLPrintable,
-		      public ControlFlowGraphBase {
+  class Replacement : public XMLPrintable {
   public:
 
     Replacement (unsigned int aPlaceHolder);
@@ -33,6 +31,23 @@ namespace xaifBoosterCodeReplacement {
 
     const unsigned int getPlaceHolder() const; 
 
+    /** 
+     * use this if we are building 
+     * a new one in this instance rather than
+     * referring to another ControlFlowGraphBase 
+     * which lives somewhere else  
+     */
+    ControlFlowGraphBase& makeNewControlFlowGraphBase();
+
+    /** 
+     * use this if we are referring to another ControlFlowGraphBase 
+     * which lives somewhere else rather than building 
+     * a new one in this instance
+     */
+    void setControlFlowGraphBase(const ControlFlowGraphBase& theOtherControlFlowGraphBase); 
+
+    const ControlFlowGraphBase& getControlFlowGraphBase() const; 
+
   private: 
 
     /** 
@@ -41,6 +56,13 @@ namespace xaifBoosterCodeReplacement {
     Replacement();
     
     const unsigned int myPlaceHolder;
+
+    /**
+     * indicator if we own the ControlFlowGraphBase or not
+     */
+    bool myControlFlowGraphBaseOwnerFlag;
+
+    const ControlFlowGraphBase* myControlFlowGraphBase_p;
 
   }; // end of class Replacement
  

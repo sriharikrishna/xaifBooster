@@ -1,7 +1,7 @@
 #ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_ALGFACTORYMANAGER_INCLUDE_
 #define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_ALGFACTORYMANAGER_INCLUDE_
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
@@ -9,7 +9,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
    * the singleton class for 
    * setting algorithm factory pointers
    */
-  class AlgFactoryManager : public xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager { 
+  class AlgFactoryManager : public xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager { 
 
   public: 
 

@@ -32,7 +32,7 @@ $(TARGET).B: $(TARGET).f mfef90
 $(TARGET).xaif : $(TARGET).B whirl2xaif
 	./whirl2xaif $(TARGET).B
 
-$(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaifBooster
+$(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
 	$(COMPLAIN)
 #	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif -g 15
 	./xaifBooster -i $(TARGET).xaif -g 16 -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif

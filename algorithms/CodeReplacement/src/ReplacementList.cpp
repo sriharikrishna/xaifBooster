@@ -12,9 +12,11 @@ namespace xaifBoosterCodeReplacement {
 
   ReplacementList::ReplacementList (const Symbol& theSymbol,
 				    const Scope& theScope,
-				    const std::string& aTemplateName) : 
+				    const std::string& aTemplateName,
+				    const ArgumentList& anArgumentList) : 
     ControlFlowGraphCommonAttributes(theSymbol, theScope),
-    myTemplateName(aTemplateName) { 
+    myTemplateName(aTemplateName),
+    myArgumentList(anArgumentList) { 
   } 
 
   ReplacementList::~ReplacementList(){
@@ -33,12 +35,14 @@ namespace xaifBoosterCodeReplacement {
        << ourXAIFName.c_str()
        << " ";
     printAttributes(os);
-    os << ""
+    os << " "
        << our_myTemplateName_XAIFName.c_str() 
        << "=\"" 
        << myTemplateName.c_str()
        << "\""
-       << " "; 
+       << ">"
+       << std::endl; 
+    myArgumentList.printXMLHierarchy(os);
     for (ReplacementPList::const_iterator i=myReplacementPList.begin();
 	 i!=myReplacementPList.end();
 	 ++i) 

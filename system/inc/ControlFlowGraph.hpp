@@ -5,6 +5,8 @@
 #include "xaifBooster/system/inc/ControlFlowGraphCommonAttributes.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphBase.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
+#include "xaifBooster/system/inc/ArgumentList.hpp"
+
 
 namespace xaifBooster { 
 
@@ -62,6 +64,20 @@ namespace xaifBooster {
 
     const bool& getActiveFlag() const;
 
+    ArgumentList& getArgumentList();
+
+    const ArgumentList& getArgumentList() const;
+
+    /** 
+     * this is the scope of the ArgumentList
+     */ 
+    const Scope& getScope() const; 
+
+    /** 
+     * this is the scope of the ArgumentList
+     */ 
+    Scope& getScope(); 
+
   private: 
     
     /** 
@@ -86,6 +102,14 @@ namespace xaifBooster {
      */
     ControlFlowGraphAlgBase* myControlFlowGraphAlgBase_p;
                                                                                 
+    /**
+     * a list of arguments 
+     * these are owned by this instance and 
+     * will be deleted in the dtor 
+     * of ControlFlowGraph
+     */
+    ArgumentList myArgumentList;
+
   }; // end of class ControlFlowGraph
 
 } // end of namespace xaifBooster

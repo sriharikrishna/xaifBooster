@@ -3,6 +3,7 @@
 
 #include <list>
 #include "xaifBooster/system/inc/ControlFlowGraphCommonAttributes.hpp"
+#include "xaifBooster/system/inc/ArgumentList.hpp"
 
 using namespace xaifBooster;
 
@@ -13,9 +14,16 @@ namespace xaifBoosterCodeReplacement {
   class ReplacementList : public ControlFlowGraphCommonAttributes {
   public:
 
+    /**
+     * \todo revisit this. Allowing only this constructor 
+     * requires us to pull this information from the containing 
+     * CallGraphVertex instance and we become open for 
+     * some ordering conflict among the constructors. 
+     */
     ReplacementList(const Symbol& theSymbol,
 		    const Scope& theScope,
-		    const std::string& aTemplateName);
+		    const std::string& aTemplateName,
+		    const ArgumentList& anArgumentList);
 
     ~ReplacementList();
 
@@ -41,7 +49,7 @@ namespace xaifBoosterCodeReplacement {
     
     /** 
      * no def 
-     */ 
+     */
     ReplacementList();
 
     typedef std::list<Replacement*> ReplacementPList;
@@ -49,6 +57,8 @@ namespace xaifBoosterCodeReplacement {
     ReplacementPList myReplacementPList;
 
     std::string myTemplateName;
+
+    const ArgumentList& myArgumentList;
 
   }; // end of class ReplacementList
  

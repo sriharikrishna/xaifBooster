@@ -25,7 +25,7 @@ namespace xaifBooster {
     ~Assignment();
 
     /** 
-     * algorithm access where the Expression may 
+     * algorithm access where the Assignment may 
      * be const but in difference to the 
      * internal representation (wich is always 
      * const for the algorithms) the algorithm 
