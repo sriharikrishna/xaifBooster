@@ -26,6 +26,9 @@ namespace xaifBooster {
     case TEMPORARY: 
       returnString="TEMPORARY";
       break;
+    case WARNING:
+      returnString="WARNING";
+      break;
     default: 
       throw PrintingIntException("DbgGroup::toString: unknown value",aGroup);
       break;
@@ -35,7 +38,7 @@ namespace xaifBooster {
 
   std::string 
   DbgGroup::printAll() throw (PrintingIntException) {
-    return std::string("ERROR=0, CALLSTACK=1, DATA=2, GRAPHICS=4, TIMING=8, TEMPORARY=16");
+    return std::string("ERROR=0, CALLSTACK=1, DATA=2, GRAPHICS=4, TIMING=8, TEMPORARY=16, WARNING=32");
   }
 
 } // end of namespace xaifBooster
