@@ -36,7 +36,8 @@ namespace xaifBoosterControlFlowReversal {
 
   private:
 
-    friend class ControlFlowGraphAlg;
+    friend class ReversibleControlFlowGraph;
+    friend class ReversibleControlFlowGraphEdge;
     
     /** 
      * no def
@@ -53,7 +54,21 @@ namespace xaifBoosterControlFlowReversal {
      * or if it got created as a new ControlFlowGraphVertex
      */
     bool original;
+
+    /** 
+     * indicates if a reference to an original ControlFlowGraphVertex
+     * references the augmented forward code or the adjoint code
+     */
+    bool adjoint;
+
+    /** 
+     * pointer to original ControlFlowGraphVertex
+     */
     const ControlFlowGraphVertex* myOriginalVertex_p;
+
+    /** 
+     * pointer to new ControlFlowGraphVertex
+     */
     ControlFlowGraphVertex* myNewVertex_p;
 
   };  // end of class

@@ -11,17 +11,21 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ControlFlowGraphAlg::ControlFlowGraphAlg(ControlFlowGraph& theContaining) : ControlFlowGraphAlgBase(theContaining) {
+  ControlFlowGraphAlg::ControlFlowGraphAlg(ControlFlowGraph& theContaining) : ControlFlowGraphAlgBase(theContaining), myTransformedControlFlowGraph(NULL) {
   }
 
-  ControlFlowGraphAlg::AugmentedControlFlowGraphType& 
+  ControlFlowGraphAlg::~ControlFlowGraphAlg() {
+    if (myTransformedControlFlowGraph) delete myTransformedControlFlowGraph;
+  }
+
+  ReversibleControlFlowGraph& 
   ControlFlowGraphAlg::getTransformedControlFlowGraph() {
-    return myTransformedControlFlowGraph;
+    return *myTransformedControlFlowGraph;
   }
 
-  const ControlFlowGraphAlg::AugmentedControlFlowGraphType& 
+  const ReversibleControlFlowGraph& 
   ControlFlowGraphAlg::getTransformedControlFlowGraph() const {
-    return myTransformedControlFlowGraph;
+    return *myTransformedControlFlowGraph;
   }
 
   const ControlFlowGraphVertex& 
@@ -49,52 +53,17 @@ namespace xaifBoosterControlFlowReversal {
     THROW_LOGICEXCEPTION_MACRO("ControlFlowReversal::ControlFlowGraphAlg::getOriginalExit: not found");
   }
 
-  void ControlFlowGraphAlg::initTransformedControlFlowGraph() {
-    std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > vertexCopyList;
-    ControlFlowGraph::ConstVertexIteratorPair p(getContaining().vertices());
-    ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
-    for (;beginIt!=endIt ;++beginIt) {
-      ReversibleControlFlowGraphVertex* anOriginalVertex=new ReversibleControlFlowGraphVertex(&(*beginIt));
-      vertexCopyList.push_back(std::make_pair(&(*beginIt),anOriginalVertex));  
-      myTransformedControlFlowGraph.supplyAndAddVertexInstance(*anOriginalVertex);
-    }
-    ControlFlowGraph::ConstEdgeIteratorPair pe(getContaining().edges());
-    ControlFlowGraph::ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
-    for (;beginIte!=endIte ;++beginIte) {
-      const ControlFlowGraphVertex& theOriginalSource(getContaining().getSourceOf(*beginIte));
-      const ControlFlowGraphVertex& theOriginalTarget(getContaining().getTargetOf(*beginIte));
-      std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::iterator vertexCopyListSrcIt, vertexCopyListTgtIt;
-      for (vertexCopyListSrcIt=vertexCopyList.begin();
-           vertexCopyListSrcIt!=vertexCopyList.end();vertexCopyListSrcIt++) {
-        if ((*vertexCopyListSrcIt).first==&theOriginalSource) {
-          for (vertexCopyListTgtIt=vertexCopyList.begin();
-               vertexCopyListTgtIt!=vertexCopyList.end();vertexCopyListTgtIt++) {
-            if ((*vertexCopyListTgtIt).first==&theOriginalTarget) {
-              EdgeTraversable* theEdgeCopy=new EdgeTraversable;
-              myTransformedControlFlowGraph.supplyAndAddEdgeInstance(*theEdgeCopy,*(*vertexCopyListSrcIt).second,*(*vertexCopyListTgtIt).second);
-              break;
-            }
-          }
-          break;
-        }
-      }
-    }
-    
-  }
-  
-
   void ControlFlowGraphAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,
               "xaifBoosterControlFlowReversal::ControlFlowGraphAlg::algorithm_action_4(reverse control flow) called for: "
               << debug().c_str());
-
-      initTransformedControlFlowGraph();
-      GraphVizDisplay::show(myTransformedControlFlowGraph,"transformed_cfg");
+      myTransformedControlFlowGraph=new ReversibleControlFlowGraph(getContaining());
+      GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg");
   } // end AssignmentAlg::algorithm_action_4() 
 
   void
   ControlFlowGraphAlg::printXMLHierarchy(std::ostream& os) const {
-    getContaining().printXMLHierarchyImpl(os);
+    myTransformedControlFlowGraph->printXMLHierarchy(os);
   }
 
   std::string
