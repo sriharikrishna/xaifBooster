@@ -2,6 +2,7 @@
 #define _XAIFBOOSTERCONTROLFLOWREVERSAL_BASICBLOCKALG_INCLUDE_
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 
@@ -12,7 +13,7 @@ namespace xaifBoosterControlFlowReversal {
   /** 
    * class to provide algorithm for BasicBlock
    */
-  class BasicBlockAlg : public BasicBlockAlgBase, public ControlFlowGraphVertexAlg {
+  class BasicBlockAlg : public xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg, public ControlFlowGraphVertexAlg {
   public:
     
     BasicBlockAlg(BasicBlock& theContaining);

@@ -155,4 +155,13 @@ namespace xaifBooster {
     GraphWrapperTraversable<ControlFlowGraphVertex,ControlFlowGraphEdge>::traverseToChildren(anAction_c);
   }
   
+  const SymbolReference& 
+  ControlFlowGraph::getSymbolReference() const { 
+    return mySymbolReference;
+  } 
+
+  const bool& 
+  ControlFlowGraph::getActiveFlag() const { 
+    return myActiveFlag;
+  } 
 } // end of namespace xaifBooster 
