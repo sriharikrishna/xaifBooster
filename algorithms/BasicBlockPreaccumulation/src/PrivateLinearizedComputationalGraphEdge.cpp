@@ -52,6 +52,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *myLinearizedExpressionEdge_p;
   } 
 
+  bool
+  PrivateLinearizedComputationalGraphEdge::hasLinearizedExpressionEdge() const { 
+    if (!myLinearizedExpressionEdge_p) return false;
+    return true;
+  } 
+
   void PrivateLinearizedComputationalGraphEdge::addParallel(ExpressionEdge& theParallelEdge ) { 
     myParallelEdges.push_back(&theParallelEdge);
   } 

@@ -32,6 +32,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     bool isUnitExpressionEdge() const;
 
     const ExpressionEdge& getLinearizedExpressionEdge() const;
+    bool hasLinearizedExpressionEdge() const;
 
     std::string debug() const ;
 
