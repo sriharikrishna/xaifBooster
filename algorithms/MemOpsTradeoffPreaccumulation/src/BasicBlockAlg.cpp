@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iostream>
+#include <list>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
@@ -7,6 +8,9 @@
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/BasicBlockAlg.hpp"
 
 #include "xaifBooster/system/inc/BasicBlock.hpp"
+
+enum Heuristic {FORWARD, REVERSE, MARKOWITZ, SIBLING, SUCCPRED};
+
 using namespace xaifBooster;
 
 namespace xaifBoosterMemOpsTradeoffPreaccumulation { 
@@ -16,7 +20,9 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       int mode,
       xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
     
-    GraphVizDisplay::show(theOriginal,"flattened");
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+      GraphVizDisplay::show(theOriginal,"flattened");
+    }
 
     MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy theCopy;
     struct vertexMap {
@@ -59,50 +65,111 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       theCopy.addEdge(*(copymap[s].copy), *(copymap[d].copy)).setOriginalRef(*ei);
     }// end for
 
-    std::cout << "edges copied" << std::endl;
-
     //create a topsorted intermediate list
     i = 0;
-    for(; i < numOriginalVertices; i++){  
+    while(i < numOriginalVertices){  
       if(!copymap[i].topsorted){
-	bool topsortable = true;
 	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::InEdgeIteratorPair tsp (theCopy.getInEdgesOf(*copymap[i].copy));
 	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::InEdgeIterator ti (tsp.first), t_end (tsp.second);
-	for(; ti != t_end; ++ti){
+	for(; ti != t_end; ++ti){//go through sources and make sure they have been topsorted
 	  unsigned int topindex = 0;
 	  for(; copymap[topindex].copy != &theCopy.getSourceOf(*ti); topindex++){ //set topindex to the index of the source of ti
 	  }// end for
-	  if(!copymap[topindex].topsorted){//if there is an edge from a non-topsorted vertex, break and start over
-	    topsortable = false;
-	    i = 0;
+	  if(!copymap[topindex].topsorted){//if there is an edge from a non-topsorted vertex, break and move on
 	    break;
 	  }// end if
         }// end for
-	if(topsortable){//if it is a candidate for topsorting
-	    theCopy.addToIntermediateList(*copymap[i].copy);
-	    copymap[i].topsorted = true;
+	if(ti == t_end){
+	  theCopy.addToIntermediateList(*copymap[i].copy);
+	  copymap[i].topsorted = true;
+	  i = 0;
 	}// end if
+	else{
+	  i++;
+	}// end else
       }// end if
-    }// end for
+      else{
+	i++;
+      }// end else
+    }// end while
 
-    std::cout << "intermediate list constructed" << std::endl;
     
-    //std::cout << "choose the mode to be used (forward=1, reverse=2, markowitz[not implemented]=3): ";
-    //std::cin >> mode;
-    mode = 2;
-    switch(mode){
-      case 1:
-        forwardMode(theCopy,theJacobianAccumulationExpressionList); 
-      break;
-      case 2:
-	reverseMode(theCopy,theJacobianAccumulationExpressionList);
-      break;
-      case 3:
-	markowitzMode(theCopy,theJacobianAccumulationExpressionList);
-      break;
-      default:
-      std::cout << "mode not supported, currently supported modes are: Forward(1) Reverse(2) Markowitz[not implemented](3)";
-    }
+    std::list<Heuristic> heuristicEnumSequence;
+    heuristicEnumSequence.push_back(MARKOWITZ);
+    heuristicEnumSequence.push_back(REVERSE);
+
+    typedef void(*heuristicfunc) (MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy&,
+		 MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList&,
+		 MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList&,
+		 MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList&);
+
+    std::list<heuristicfunc> heuristicSequence;
+
+    while(heuristicEnumSequence.size() > 0){
+
+      switch(heuristicEnumSequence.front()){
+      case FORWARD:
+	heuristicSequence.push_back(&BasicBlockAlg::forwardMode);
+	break;
+      case REVERSE:
+	heuristicSequence.push_back(&BasicBlockAlg::reverseMode);
+	break;
+      case MARKOWITZ:
+	heuristicSequence.push_back(&BasicBlockAlg::markowitzMode);
+	break;
+      case SIBLING:
+	heuristicSequence.push_back(&BasicBlockAlg::siblingMode);
+	break;
+      case SUCCPRED:
+	heuristicSequence.push_back(&BasicBlockAlg::succPredMode);
+	break;
+      }// end switch heuristicEnumSequence
+
+      heuristicEnumSequence.pop_front();
+
+    }// end while
+
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList theList;
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList thePredList;
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList theSuccList;
+    
+   heuristicfunc func_pt;
+
+    std::list<heuristicfunc>::iterator hiter;
+    
+    while((theCopy.getIntermediateList()).size() > 0){
+      theList = theCopy.getIntermediateList();
+
+      for(hiter=heuristicSequence.begin(); hiter!=heuristicSequence.end(); hiter++){
+	func_pt = *hiter;
+	func_pt(theCopy, theList, thePredList, theSuccList);
+      }// end while
+
+      if(theList.size() == 1){
+
+	thePredList.clear();
+	theSuccList.clear();
+	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::InEdgeIteratorPair preds (theCopy.getInEdgesOf(*theList.front()));
+	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::InEdgeIterator predi (preds.first), pred_end (preds.second);
+	for(; predi != pred_end; ++predi){//go through predecessors and add them to the list of predecessors
+	  thePredList.push_back(&theCopy.getSourceOf(*predi));
+	}// end for
+	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::OutEdgeIteratorPair succs (theCopy.getOutEdgesOf(*theList.front()));
+	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::OutEdgeIterator succi (succs.first), succ_end (succs.second);
+	for(; succi != succ_end; ++succi){//go through successors and add them to the list of successors
+	  theSuccList.push_back(&theCopy.getTargetOf(*succi));
+	}// end for
+	elim_vertex(theCopy, *theList.front(), theJacobianAccumulationExpressionList);
+
+      }// end if
+
+      else{
+	//throw exception
+      }// end else
+
+
+    }// end while
+
 
     //iterate through remaining edges and set corresponding expressions as jacobian entries
     MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::EdgeIteratorPair jeip (theCopy.edges());
@@ -116,56 +183,74 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       }
       (((*ci).getJacobianRef()).myExpression).setJacobianEntry(*(copymap[depindex].original), *(copymap[indepindex].original));
     }// end for
-    GraphVizDisplay::show(theCopy,"bipartite");
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+      GraphVizDisplay::show(theCopy,"bipartite");
+    }
   } // end compute_elimination_sequence
   
   void BasicBlockAlg::forwardMode(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
     
-    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& inter_list = theCopy.getIntermediateList();
-    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator bi = inter_list.begin(), be = inter_list.end();
-    while(bi != be) {
-      be--;
-      elim_vertex(theCopy, **be, theJacobianAccumulationExpressionList);
-      theCopy.removeFromIntermediateList(**be);
-    }// end for
-  }
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList theNewList;
+    theNewList.push_back(theOldList.front());
+    theOldList = theNewList;
+
+  }// end forwardMode
 
   void BasicBlockAlg::reverseMode(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
 
-    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& inter_list = theCopy.getIntermediateList();
-    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator bi = inter_list.begin(), be = inter_list.end();
-    for (; bi != be; bi++) {
-      elim_vertex(theCopy, **bi, theJacobianAccumulationExpressionList);
-      theCopy.removeFromIntermediateList(**bi);
-    }// end for
-  }
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList theNewList;
+    theNewList.push_back(theOldList.back());
+    theOldList = theNewList;
+
+  }// end reverseMode
 
   void BasicBlockAlg::markowitzMode(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
 
-    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& inter_list = theCopy.getIntermediateList();
-    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator bi = inter_list.begin(), be = inter_list.end();
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* lowestMarkowitz = *bi;
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList theNewList;
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator bi = theOldList.begin(), be = theOldList.end();
+    theNewList.push_back(*bi);
+    bi++;
     for (; bi != be; bi++) {
-      for (; bi != be; bi++) {
-	if(((theCopy.numInEdgesOf(**bi))*(theCopy.numOutEdgesOf(**bi)))<((theCopy.numInEdgesOf(*lowestMarkowitz))*(theCopy.numOutEdgesOf(*lowestMarkowitz)))){
-	  lowestMarkowitz = *bi;
+      	if(((theCopy.numInEdgesOf(**bi))*(theCopy.numOutEdgesOf(**bi))) <
+	   ((theCopy.numInEdgesOf(*theNewList.front()))*(theCopy.numOutEdgesOf(*theNewList.front())))){
+	  theNewList.clear();
+	  theNewList.push_back(*bi);
 	}// end if
-      }// end for
-      elim_vertex(theCopy, *lowestMarkowitz, theJacobianAccumulationExpressionList);
-      theCopy.removeFromIntermediateList(**bi);
-      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList&  inter_list = theCopy.getIntermediateList();
-      bi = inter_list.begin();
-      be = inter_list.end();
-      lowestMarkowitz = *bi;
-    }// end for
-   
+	else if(((theCopy.numInEdgesOf(**bi))*(theCopy.numOutEdgesOf(**bi))) ==
+	   ((theCopy.numInEdgesOf(*theNewList.front()))*(theCopy.numOutEdgesOf(*theNewList.front())))){
+	  theNewList.push_back(*bi);
+	}// end if
+    }// end for=
+    theOldList = theNewList;
   }// end markowitzMode
+
+  void BasicBlockAlg::siblingMode(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
+
+  }// end siblingMode
+
+  void BasicBlockAlg::succPredMode(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
+
+  }// end succPredMode
 
   void BasicBlockAlg::elim_vertex(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
@@ -240,9 +325,28 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	}// end else
       }// end outedge iteration
     }// end inedge iteration
+    theCopy.removeFromIntermediateList(theVertex);
     theCopy.removeAndDeleteVertex(theVertex);
-    //GraphVizDisplay::show(theCopy,"bipartite");
+    
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+         GraphVizDisplay::show(theCopy,"bipartite");
+    }
+
   }// end elim_vertex
+
+  void BasicBlockAlg::front_elim_edge(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopyEdge& theEdge,
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
+
+  }// end front_elim_edge
+
+  void BasicBlockAlg::back_elim_edge(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopyEdge& theEdge,
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
+
+  }// end back_elim_edge
   
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) {
