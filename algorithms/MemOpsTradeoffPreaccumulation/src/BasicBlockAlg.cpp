@@ -221,15 +221,15 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       }// end while
 
       //the face list holds all the faces that are candidates for elimination
-//       faceHeuristicFunc func_pt;
-//       std::list<faceHeuristicFunc>::iterator fhiter;
-//       DualGraph::VertexPointerList thePredList, theSuccList;
-//       DualGraph::FacePointerList theFaceList;
+      faceHeuristicFunc func_pt;
+      std::list<faceHeuristicFunc>::iterator fhiter;
+      DualGraph::VertexPointerList thePredList, theSuccList;
+      DualGraph::FacePointerList theFaceList;
 
-
+      std::cout << "about to populate path list" << std::endl;
 
       //populate the dual path list
-      //theDual.populatePathList();
+      theDual.populatePathList();
 
       //generate list of eliminatable faces
       
@@ -653,7 +653,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
 	GraphVizDisplay::show(theCopy,"bipartite");
       }
-
     }// end else (vertex or edge)
 
   } // end compute_elimination_sequence

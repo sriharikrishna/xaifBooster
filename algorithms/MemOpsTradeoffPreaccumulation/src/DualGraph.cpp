@@ -27,19 +27,34 @@ namespace MemOpsTradeoffPreaccumulation {
 
   void DualGraph::populatePathList() {
     
+    //create paths for independent vertices
     DualGraph::VertexIteratorPair dvip (vertices());
     DualGraph::VertexIterator dvi (dvip.first), dv_end (dvip.second);
     for(; dvi != dv_end; ++dvi){
       if(numInEdgesOf(*dvi) == 0){
 	DualGraphPath* thenewpath_p = new DualGraphPath;
+	
+	std::cout << "independent found, new path created" << std::endl;
+
 	if(numOutEdgesOf(*dvi) == 0){
 	  (*thenewpath_p).setComplete();
+
+	  std::cout << "independent has no outedges, has been set complete" << std::endl;
+
 	}// end if
 	else{
+
+	  std::cout << "independent has outedges, about to have it copied" << std::endl;
+
 	  copyPath(*thenewpath_p);
+
+	  std::cout << "independent has been copied" << std::endl;
+
 	}// end else
       }// end if
     }// end for
+
+    std::cout << "Initial paths constructed" << std::endl;
 
     DualGraph::PathList::iterator pathi;
     for(pathi = myPathList.begin(); pathi != myPathList.end(); pathi++){
@@ -122,7 +137,7 @@ namespace MemOpsTradeoffPreaccumulation {
       //for each vertex in the path
       for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
 	if(*svertex == &theFirst){
-	  spath++;
+	  svertex++;
 	  if(*svertex == &theSecond){
 	    numSequences++;
 	  }
@@ -132,7 +147,6 @@ namespace MemOpsTradeoffPreaccumulation {
     }// end for paths
 
     return numSequences;
-
   }// end checkSequence
 
 }// end namespace MemOpsTradeoffPreaccumulation
