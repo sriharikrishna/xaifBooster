@@ -11,7 +11,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   PrivateLinearizedComputationalGraphEdge::PrivateLinearizedComputationalGraphEdge() : 
     myLinearizedExpressionEdge_p(0),
     myUnitExpressionEdgeFlag(false) {
-  };
+  }
 
   std::string PrivateLinearizedComputationalGraphEdge::debug() const { 
     std::ostringstream out;

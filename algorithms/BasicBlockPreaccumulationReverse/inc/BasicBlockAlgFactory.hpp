@@ -9,7 +9,7 @@
 
   DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,
 				 xaifBoosterControlFlowReversal::BasicBlockAlgFactory,
-				 xaifBoosterBasicBlockPreaccumulationReverse);
+				 xaifBoosterBasicBlockPreaccumulationReverse)
 
 
 #endif

@@ -8,7 +8,7 @@
 
   DERIVED_ALG_FACTORY_DECL_MACRO(CallGraphVertex,
 				 xaifBoosterControlFlowReversal::CallGraphVertexAlgFactory,
-				 xaifBoosterBasicBlockPreaccumulationReverse);
+				 xaifBoosterBasicBlockPreaccumulationReverse)
 
 
 #endif

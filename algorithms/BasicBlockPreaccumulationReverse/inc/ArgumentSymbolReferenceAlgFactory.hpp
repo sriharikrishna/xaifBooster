@@ -6,6 +6,6 @@
 
   DERIVED_ALG_FACTORY_DECL_MACRO(ArgumentSymbolReference,
 				 xaifBooster::ArgumentSymbolReferenceAlgFactory,
-				 xaifBoosterBasicBlockPreaccumulationReverse);
+				 xaifBoosterBasicBlockPreaccumulationReverse)
 
 #endif
