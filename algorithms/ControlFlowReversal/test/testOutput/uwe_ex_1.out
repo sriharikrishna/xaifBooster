@@ -114,9 +114,9 @@
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="1">
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="4" annotation=""/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="1" target="2" has_condition_value="0""/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="2" target="3" has_condition_value="0""/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="3" target="4" has_condition_value="0""/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="1" target="2" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="2" target="3" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="3" target="4" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="1">
       </xaif:BasicBlock>
@@ -187,8 +187,8 @@
         </xaif:Assignment>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="_adj__cfr_v_2" annotation="_cfr_"/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="_adj__cfr_v_1" target="3" has_condition_value="0""/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="3" target="2" has_condition_value="0""/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="2" target="_adj__cfr_v_2" has_condition_value="0""/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="_adj__cfr_v_1" target="3" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="3" target="2" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="2" target="_adj__cfr_v_2" has_condition_value="0"/>
     </xaif:ControlFlowGraph>
   </xaif:CallGraph>

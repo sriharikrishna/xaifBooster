@@ -470,11 +470,11 @@
         </xaif:BasicBlock>
         <xaif:EndLoop vertex_id="4" annotation=""/>
         <xaif:Exit vertex_id="5" annotation=""/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="1" target="2" has_condition_value="0""/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="2" target="3" has_condition_value="1" condition_value="1""/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="3" target="4" has_condition_value="0""/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_4" source="4" target="2" has_condition_value="0""/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_5" source="2" target="5" has_condition_value="0""/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="1" target="2" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="2" target="3" has_condition_value="1" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="3" target="4" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_4" source="4" target="2" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_5" source="2" target="5" has_condition_value="0"/>
       </xaif:Replacement>
       <xaif:Replacement placeholder="3">
         <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
@@ -488,8 +488,8 @@
               <xaif:Intrinsic vertex_id="2" name="add_scal_scal"/>
               <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
               <xaif:Constant vertex_id="4" type="integer" value="1"/>
-              <xaif:Intrinsic vertex_id="5" name="mod_scal_scal"/>
-              <xaif:Intrinsic vertex_id="6" name="minus_scal_scal"/>
+              <xaif:Intrinsic vertex_id="5" name="div_scal_scal"/>
+              <xaif:Intrinsic vertex_id="6" name="sub_scal_scal"/>
               <xaif:Constant vertex_id="7" type="integer" value="11"/>
               <xaif:ExpressionEdge edge_id="1" source="1" target="2" position="1"/>
               <xaif:ExpressionEdge edge_id="2" source="3" target="2" position="2"/>
@@ -515,14 +515,13 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
               </xaif:VariableReference>
-              <xaif:Constant vertex_id="3" type="integer" value="1"/>
-              <xaif:Intrinsic vertex_id="4" name="minus_scal_scal"/>
-              <xaif:ExpressionEdge edge_id="1" source="2" target="4" position="1"/>
-              <xaif:ExpressionEdge edge_id="2" source="3" target="4" position="2"/>
+              <xaif:Constant vertex_id="2" type="integer" value="1"/>
+              <xaif:Intrinsic vertex_id="4" name="sub_scal_scal"/>
+              <xaif:ExpressionEdge edge_id="1" source="1" target="4" position="1"/>
+              <xaif:ExpressionEdge edge_id="2" source="2" target="4" position="2"/>
             </xaif:AssignmentRHS>
           </xaif:Update>
         </xaif:ForLoop>
@@ -719,11 +718,11 @@
         </xaif:BasicBlock>
         <xaif:EndLoop vertex_id="_adj__cfr_v_3" annotation="_cfr_"/>
         <xaif:Exit vertex_id="_adj__cfr_v_4" annotation="_cfr_"/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="_adj__cfr_v_1" target="_adj__cfr_v_2" has_condition_value="0""/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="_adj__cfr_v_2" target="3" has_condition_value="1" condition_value="1""/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="_adj__cfr_v_2" target="_adj__cfr_v_4" has_condition_value="0""/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_4" source="3" target="_adj__cfr_v_3" has_condition_value="1" condition_value="1""/>
-        <xaif:ControlFlowEdge edge_id="_cfr_e_5" source="_adj__cfr_v_3" target="_adj__cfr_v_2" has_condition_value="0""/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="_adj__cfr_v_1" target="_adj__cfr_v_2" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="_adj__cfr_v_2" target="3" has_condition_value="1" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_3" source="_adj__cfr_v_2" target="_adj__cfr_v_4" has_condition_value="0"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_4" source="3" target="_adj__cfr_v_3" has_condition_value="1" condition_value="1"/>
+        <xaif:ControlFlowEdge edge_id="_cfr_e_5" source="_adj__cfr_v_3" target="_adj__cfr_v_2" has_condition_value="0"/>
       </xaif:Replacement>
       <xaif:Replacement placeholder="4">
         <xaif:Entry vertex_id="1" annotation="cp_entry"/>

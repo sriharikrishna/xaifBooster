@@ -268,6 +268,58 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     recursionGuard--;
   }
 
+  class PrivateLinearizedComputationalGraphVertexLabelWriter {
+  public:
+    PrivateLinearizedComputationalGraphVertexLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, 
+		    const BoostIntenalVertexDescriptor& v) const {
+      const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p=
+	dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
+											     myG.getInternalBoostGraph()),
+										  v));
+      std::string theVertexKind("");
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(myG.getDependentList());
+      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
+	   aDepVertexPListI!=theDepVertexPList.end();
+	   ++aDepVertexPListI) { 
+	if (thePrivateLinearizedComputationalGraphVertex_p==*(aDepVertexPListI)) {
+	  // cast it first
+	  const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
+	  std::ostringstream oss;
+	  oss << myPrivateVertex.getLHSVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+	  if (myPrivateVertex.getLHSVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
+	    oss  << " k=" 
+		 << myPrivateVertex.getLHSVariable().getDuUdMapKey().getKey();
+	  oss << " d" << std::ends;
+	  theVertexKind=oss.str();
+	  break;
+	}
+      }
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theIndepVertexPList(myG.getIndependentList());
+      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aIndepVertexPListI(theIndepVertexPList.begin());
+	   aIndepVertexPListI!=theIndepVertexPList.end();
+	   ++aIndepVertexPListI) { 
+	if (thePrivateLinearizedComputationalGraphVertex_p==*(aIndepVertexPListI)) {
+	  // cast it first
+	  const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aIndepVertexPListI));
+	  std::ostringstream oss;
+	  oss << myPrivateVertex.getRHSVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+	  if (myPrivateVertex.getRHSVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
+	    oss  << " k=" 
+		 << myPrivateVertex.getRHSVariable().getDuUdMapKey().getKey();
+	  oss << " i" << std::ends;
+	  theVertexKind=oss.str();
+	  break;
+	}
+      }
+      out << "[label=\"" 
+	  << theVertexKind.c_str() 
+	  << "\"]";
+    }
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
+  };
+
   void 
   BasicBlockAlg::algorithm_action_3() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
@@ -313,13 +365,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // we can't have this, it will confuse the termination criterion in the elimination algorithm
 	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: attempting to remove a maximal vertex "
 				       << myPrivateVertex.getLHSVariable().debug().c_str()
+				       << " key "
+				       << aDuUdMapKey.debug().c_str()
 				       << " from the dependent list");
 	  // we only use it in the scope of this flattened sequence, therefore remove it
 	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
 	}
-      } 
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	GraphVizDisplay::show(theFlattenedSequence,"flattened");
       } 
       // filter out singleton vertices
       bool findNext=true;
@@ -348,6 +399,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       typedef std::list<const Variable*> VariablePList;
       VariablePList theListOfAlreadyAssignedDependents;
       if (theFlattenedSequence.numVertices()) {
+	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+	  GraphVizDisplay::show(theFlattenedSequence,
+				"flattened",
+				PrivateLinearizedComputationalGraphVertexLabelWriter(theFlattenedSequence));
+	} 
 	// call Angel which fills myJacobianAccumulationExpressionList
 	try { 
 	  if (!ourCompute_elimination_sequence_fp) { 
