@@ -90,5 +90,8 @@ namespace xaifBooster {
     return dynamic_cast<ForLoopAlgBase&>(*myControlFlowGraphVertexAlgBase_p);
   }
 
+  ForLoopReversalType::ForLoopReversalType_E ForLoop::getReversalType() const { 
+    return myReversalType;
+  }
 
 } // end of namespace xaifBooster 

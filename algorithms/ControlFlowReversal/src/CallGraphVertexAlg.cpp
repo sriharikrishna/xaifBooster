@@ -67,15 +67,7 @@ namespace xaifBoosterControlFlowReversal {
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
-      /*
-	if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
-        if (theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value()) out << "[label=\"1\"]";
-	}
-	else {
-        if (theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value()) out << "[label=\"1\"]";
-	}
-      */
-      if (theReversibleControlFlowGraphEdge_p->has_condition_value()) out << "[label=\"1\"]";
+      if (theReversibleControlFlowGraphEdge_p->hasConditionValue()) out << "[label=\"1\"]";
     }
     const ReversibleControlFlowGraph& myG;
   };
@@ -90,6 +82,9 @@ namespace xaifBoosterControlFlowReversal {
     myTapingControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
     myAdjointControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
     myTapingControlFlowGraph->makeThisACopyOfOriginalControlFlowGraph();
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_original", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+    }
     //	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
     myTapingControlFlowGraph->topologicalSort();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     

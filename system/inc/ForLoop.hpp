@@ -58,6 +58,7 @@ namespace xaifBooster {
      */
     ForLoopAlgBase& getForLoopAlgBase() const;
 
+    ForLoopReversalType::ForLoopReversalType_E getReversalType() const; 
 
   private:
 
