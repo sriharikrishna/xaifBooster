@@ -19,6 +19,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     IdentificationResult canIdentify(const Variable& theVariable) const;
 
+    /** 
+     * this will only work if canIdentify returns
+     * NOT_IDENTIFIED 
+     */
+    virtual void addElement(const Variable& theVariable,
+			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
+    
   }; // end of class VertexIdentificationListActiveRHS  
    
 } // end namespace 

@@ -12,16 +12,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							const ObjectWithId::Id& aStatementId) : 
     VertexIdentificationListActive::ListItem(anAliasMapKey,
 					     aDuUdMapKey,
-					     aPrivateLinearizedComputationalGraphVertex_p),
-    myStatementId(aStatementId) { 
+					     aPrivateLinearizedComputationalGraphVertex_p), myStatementId(aStatementId) {
+ 
   }
 
   VertexIdentificationListActiveLHS::IdentificationResult 
   VertexIdentificationListActiveLHS::canIdentify(const Variable& theVariable) const { 
     if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) { 
+      DuUdMapDefinitionResult::StatementIdList aStatementIdList;
+      getStatementIdList(aStatementIdList);
       DuUdMapDefinitionResult theResult(ConceptuallyStaticInstances::instance()->
 					getCallGraph().getDuUdMap().definition(theVariable.getDuUdMapKey(),
-									       myStatementIdList));
+									       aStatementIdList));
       if (theResult.myAnswer==DuUdMapDefinitionResult::UNIQUE_INSIDE) {
 	for (ListItemPList::const_iterator aListIterator=myList.begin();
 	     aListIterator!=myList.end(); 
@@ -51,35 +53,25 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   void VertexIdentificationListActiveLHS::addElement(const Variable& theVariable,
-						     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p) { 
+						     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
+						     const ObjectWithId::Id& aStatementId) { 
     if (canIdentify(theVariable).getAnswer()!=NOT_IDENTIFIED) 
       THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::addElement: new element must have a unique address");
-    // this is a shortcut for the current duud numbering
-    //     DuUdMapEntry::StatementId theStatementId=(theVariable.getDuUdMapKey().getKind()==DuUdMapKey::SET)?theVariable.getDuUdMapKey().getKey():0;
-    //     myList.push_back(new ListItem(theVariable.getAliasMapKey(),
-    // 				  theVariable.getDuUdMapKey(),
-    // 				  thePrivateLinearizedComputationalGraphVertex_p,
-    // 				  theStatementId));
-    //     myAliasMapKeyList.push_back(&(theVariable.getAliasMapKey()));
-    //     // this is a shortcut for the current duud numbering
-    //     myStatementIdList.push_back(theStatementId);
+    myList.push_back(new ListItem(theVariable.getAliasMapKey(),
+     				  theVariable.getDuUdMapKey(),
+     				  thePrivateLinearizedComputationalGraphVertex_p,
+     				  aStatementId));
   } 
 
   void VertexIdentificationListActiveLHS::removeIfIdentifiable(const Variable& theVariable) { 
     IdentificationResult idResult(canIdentify(theVariable));
     while(idResult.getAnswer()!=NOT_IDENTIFIED) { 
       ListItemPList::iterator aListIterator=myList.begin();
-      AliasMap::AliasMapKeyList::iterator aKeyListIterator=myAliasMapKeyList.begin();
-      DuUdMapDefinitionResult::StatementIdList::iterator aStatementIdListIterator=myStatementIdList.begin();
       for (;
 	   aListIterator!=myList.end(); 
-	   ++aListIterator,
-	     ++aKeyListIterator,
-	     ++aStatementIdListIterator) { 
+	   ++aListIterator) { 
 	if (dynamic_cast<ListItem&>(**aListIterator).myPrivateLinearizedComputationalGraphVertex_p==idResult.getVertexP()) { 
-	  myAliasMapKeyList.erase(aKeyListIterator);
 	  myList.erase(aListIterator);
-	  myStatementIdList.erase(aStatementIdListIterator);
 	  break;
 	} // end if 
       } // end for
@@ -102,19 +94,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string VertexIdentificationListActiveLHS::debug () const { 
     std::ostringstream out;
-    out << "VertexIdentificationListActiveLHS[" << this 
+    out << "VertexIdentificationListActiveLHS[" 
+	<< this 
 	<< ","
 	<< VertexIdentificationListActive::debug().c_str()
-	<< "myStatementIdList=";
-    for (DuUdMapDefinitionResult::StatementIdList::const_iterator aListIterator=myStatementIdList.begin();
-	 aListIterator!=myStatementIdList.end(); 
-	 ++aListIterator)
-      out << "("
-	  << *aListIterator
-	  << ")";
-    out << "]" 
+	<< "]" 
 	<< std::ends;
     return out.str();
-  } // end of Symbol::debug
+  } 
+
+  void VertexIdentificationListActiveLHS::getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const { 
+    for (ListItemPList::const_iterator aListIterator=myList.begin();
+	 aListIterator!=myList.end(); 
+	 ++aListIterator) { 
+      aStatementIdList.push_back((dynamic_cast<ListItem&>(**aListIterator)).myStatementId);
+    }
+  } 
 
 } // end of namespace 

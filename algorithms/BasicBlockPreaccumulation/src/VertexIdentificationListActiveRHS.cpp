@@ -32,5 +32,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return VertexIdentificationListActive::canIdentify(theVariable);
   } 
 
+
+  void VertexIdentificationListActiveRHS::addElement(const Variable& theVariable,
+						     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p) { 
+    if (canIdentify(theVariable).getAnswer()!=NOT_IDENTIFIED) 
+      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActiveRHS::addElement: new element must have a unique address");
+    myList.push_back(new ListItem(theVariable.getAliasMapKey(),
+				  theVariable.getDuUdMapKey(),
+				  thePrivateLinearizedComputationalGraphVertex_p));
+  } 
+
+
 } // end of namespace 
 

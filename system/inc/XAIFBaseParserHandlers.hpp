@@ -23,7 +23,6 @@
 #include "xaifBooster/system/inc/ExpressionEdge.hpp"
 #include "xaifBooster/system/inc/AliasMapEntry.hpp"
 #include "xaifBooster/system/inc/AliasSet.hpp"
-#include "xaifBooster/system/inc/AliasSingle.hpp"
 #include "xaifBooster/system/inc/AliasRange.hpp"
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
 #include "xaifBooster/system/inc/ForLoop.hpp"

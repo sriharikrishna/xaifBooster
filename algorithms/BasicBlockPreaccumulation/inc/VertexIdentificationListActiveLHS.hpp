@@ -13,7 +13,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   /**
    * this is for the identification of active variables
    * RHS <-> preceding LHS
-   * in the presence of ud information
+   * in the presence of alias or ud information
    */
   class VertexIdentificationListActiveLHS : public VertexIdentificationListActive {
 
@@ -25,8 +25,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * this will only work if canIdentify returns
      * NOT_IDENTIFIED 
      */
-    virtual void addElement(const Variable& theVariable,
-			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
+    void addElement(const Variable& theVariable,
+		    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
+		    const ObjectWithId::Id& aStatementId);
 
     virtual void removeIfIdentifiable(const Variable& theVariable); 
 
@@ -46,20 +47,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       virtual std::string debug() const;
 
       /**
-       * if set, it is the statement id of the assignment in which this 
-       * vertex represents the LHS, i.e. this is usefull only in the 
-       * presence of ud-chain information
+       * this is the statement id of the assignment in which this 
+       * vertex represents the LHS, i.e. it is the statementID of 
+       * the single entry in the ud chain or alternatively the 
+       * result of looking at the alias map,
+       * this must be set or this ListItem instance is useless
        */
-      ObjectWithId::Id myStatementId;
+      const ObjectWithId::Id& myStatementId;
 
     };
     
     /** 
-     * just for convenience we keep a list of 
-     * all statementIds in ListItem  for use with 
-     * DuUdMap methods
+     * retrieve the list of statement IDs collected in myList
      */
-    DuUdMapDefinitionResult::StatementIdList myStatementIdList;
+    void getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const;
 
   }; // end of class VertexIdentificationListActiveLHS  
    

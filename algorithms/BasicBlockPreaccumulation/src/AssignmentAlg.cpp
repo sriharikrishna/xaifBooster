@@ -154,7 +154,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
     if (!getActiveFlag()) { 
       if (getContainingAssignment().getLHS().getActiveType()) {   // but the LHS has active type
-	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS());
+	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS(),
+						      getContainingAssignment().getId());
 	if (getContainingAssignment().getActiveFlag()) // this means the assignment has been passivated 
 	  BasicBlockAlgParameter::get().getDerivativePropagator(getContainingAssignment()).
 	    addZeroDerivToEntryPList(getContainingAssignment().getLHS());
@@ -333,12 +334,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       DBG_MACRO(DbgGroup::DATA,
 		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) after remove from RHS: "
 		<< theVertexIdentificationListActiveRHS.debug().c_str());
-      // a known active lhs cannot have a passive idenitification
+      // a known active lhs cannot have a passive identification
       theVertexIdentificationListPassive.removeIfIdentifiable(theLHS);
       // an overwritten LHS needs to refer to the respective last definition
       theVertexIdentificationListActiveLHS.removeIfIdentifiable(theLHS);
       theVertexIdentificationListActiveLHS.addElement(theLHS,
-					     	      theLHSLCGVertex_p);
+					     	      theLHSLCGVertex_p,
+						      getContainingAssignment().getId());
       theLHSLCGVertex_p->setLHSVariable(theLHS);
       // JU: this is a temporary measure, add all LHSs to the 
       // JU: list of dependent variables
