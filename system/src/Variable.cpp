@@ -9,11 +9,13 @@ namespace xaifBooster {
   const std::string Variable::our_myAliasMapKey_XAIFName("alias");
   const std::string Variable::our_myDuUdMapKey_XAIFName("du_ud");
   const std::string Variable::our_myDerivFlag_XAIFName("deriv");
+  const std::string Variable::our_myConstantUseFlag_XAIFName("constant");
 
   Variable::Variable() : 
     myDerivFlag(false),
     myActiveUseType(ActiveUseType::UNDEFINEDUSE),
-    myactiveUseTypeSetFlag(false) { 
+    myActiveUseTypeSetFlag(false),
+    myConstantUseFlag(false) { 
   } 
 
   void 
@@ -121,6 +123,11 @@ namespace xaifBooster {
        << our_myDerivFlag_XAIFName.c_str() 
        << "=\"" 
        << getDerivFlag()
+       << "\"";
+    os << " " 
+       << our_myConstantUseFlag_XAIFName.c_str() 
+       << "=\"" 
+       << getConstantUseFlag()
        << "\"";
   } 
 
@@ -251,10 +258,10 @@ namespace xaifBooster {
   } 
 
   void Variable::setActiveUseType(ActiveUseType::ActiveUseType_E anActiveUseType) { 
-    if (myactiveUseTypeSetFlag)
+    if (myActiveUseTypeSetFlag)
       THROW_LOGICEXCEPTION_MACRO("Variable::setActiveUseType: already set, cannot reset");
     myActiveUseType=anActiveUseType;
-    myactiveUseTypeSetFlag=true;
+    myActiveUseTypeSetFlag=true;
   } 
 
   bool Variable::getActiveFlag() const { 
@@ -286,6 +293,14 @@ namespace xaifBooster {
   Variable::getActiveUseType() const { 
     getActiveFlag(); // update it if needed
     return myActiveUseType;
+  } 
+
+  void Variable::setConstantUseFlag() { 
+    myConstantUseFlag=true;
+  } 
+
+  bool Variable::getConstantUseFlag() const { 
+    return myConstantUseFlag;
   } 
 
 } // end of namespace xaifBooster 

@@ -36,18 +36,18 @@
       <xaif:Entry vertex_id="1" annotation=""/>
       <xaif:Branch vertex_id="2" annotation="">
         <xaif:Condition>
-          <xaif:VariableReference vertex_id="2" active="true" deriv="0">
+          <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
           </xaif:VariableReference>
         </xaif:Condition>
       </xaif:Branch>
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
         <xaif:Assignment statement_id="1" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
+          <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="2" type="integer" value="1"/>
@@ -57,7 +57,7 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
-          <xaif:AssignmentLHS active="false" deriv="0">
+          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
@@ -65,11 +65,11 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
-          <xaif:AssignmentLHS active="false" deriv="0">
+          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_6" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
@@ -86,7 +86,7 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_6" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
@@ -102,11 +102,11 @@
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="4" annotation="" scope_id="2">
         <xaif:Assignment statement_id="1" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
+          <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="2" type="integer" value="1"/>
@@ -116,7 +116,7 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
-          <xaif:AssignmentLHS active="false" deriv="0">
+          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_2" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
@@ -124,11 +124,11 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
-          <xaif:AssignmentLHS active="false" deriv="0">
+          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_8" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_2" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
@@ -145,7 +145,7 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_8" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
@@ -161,11 +161,11 @@
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="5" annotation="" scope_id="2">
         <xaif:Assignment statement_id="2" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
+          <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="2" type="integer" value="1"/>
@@ -175,7 +175,7 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial" active="0">
-          <xaif:AssignmentLHS active="false" deriv="0">
+          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_4" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
@@ -183,11 +183,11 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
-          <xaif:AssignmentLHS active="false" deriv="0">
+          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_10" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_4" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
@@ -204,7 +204,7 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_10" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>

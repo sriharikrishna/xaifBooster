@@ -67,191 +67,191 @@
       <xaif:Entry vertex_id="1" annotation=""/>
       <xaif:BasicBlock vertex_id="2" annotation="" scope_id="2">
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_24" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_24" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_25" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_25" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" scope_id="1"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_21" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" scope_id="1"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_23" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_26" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_26" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_27" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_27" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="1"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" scope_id="1"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_19" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_28" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_28" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_29" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_29" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="3" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="1"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" alias="3" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" alias="3" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="1"/>
           </xaif:ArgumentSubstitute>
-          <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="2" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
-          <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
+          <xaif:ArgumentSubstitute position="1" active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
