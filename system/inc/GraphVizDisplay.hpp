@@ -40,6 +40,41 @@ namespace xaifBooster {
       };
     };
 
+//     
+//   // examples: 
+//     
+//   class EdgeLabelWriter {
+//   public:
+//     EdgeLabelWriter(const Expression& e) : myE(e) {};
+//     template <class BoostIntenalEdgeDescriptor>
+//     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
+//       out << "[label=\"" << PartialDerivativeKind::toString(boost::get(boost::get(BoostEdgeContentType(),
+//                                                                                   myE.getInternalBoostGraph()),
+//                                                                        v)->getPartialDerivativeKind()).c_str() << "\"]";
+//     };
+//     const Expression& myE;
+//   };
+
+
+//   class VertexLabelWriter {
+//   public:
+//     VertexLabelWriter(const Expression& e) : myE(e) {};
+//     template <class BoostIntenalVertexDescriptor>
+//     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+//       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(),
+//                                                   myE.getInternalBoostGraph()),
+//                                        v)->equivalenceSignature().c_str() << "\"]";
+//     };
+//     const Expression& myE;
+//   };
+
+//   // usage: 
+//   if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+//     GraphVizDisplay::show(getRHS(),"analyzed",
+//                           VertexLabelWriter(getRHS()),
+//                           EdgeLabelWriter(getRHS()));
+
+
     /** 
      * the name supplied here is the base name 
      * of a file to be created in /tmp
