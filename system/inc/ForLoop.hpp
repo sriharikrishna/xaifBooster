@@ -5,6 +5,7 @@
 #include "xaifBooster/system/inc/Condition.hpp"
 #include "xaifBooster/system/inc/Update.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/ForLoopAlgBase.hpp"
 
 namespace xaifBooster { 
 
@@ -17,7 +18,7 @@ namespace xaifBooster {
 
     ForLoop();
 
-    ~ForLoop(){};
+    ~ForLoop();
 
     /**
      * print XML hierarchy
@@ -50,6 +51,12 @@ namespace xaifBooster {
     Update& getUpdate();
 
     const Update& getUpdate() const;
+
+    /**
+     * get algorithm
+     */
+    ForLoopAlgBase& getForLoopAlgBase() const;
+
 
   private:
     

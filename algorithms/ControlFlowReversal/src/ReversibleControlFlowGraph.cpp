@@ -44,18 +44,35 @@ namespace xaifBoosterControlFlowReversal {
     
   }
 
-  void ReversibleControlFlowGraph::storeControlFlow() {
-/*
-    ReversibleControlFlowGraph::ConstVertexIteratorPair p(vertices());
-    ReversibleControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
+  void 
+  ReversibleControlFlowGraph::storeControlFlow() {
+    ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
+    ReversibleControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt) {
       if ((*beginIt).original) {
-        if ((*beginIt).myOriginalVertex_p->getControlFlowGraphVertexAlgBase().getKind()==ControlFlowGraphVertexAlg::UNDEF) std::cout << "UWE FOUND UNDEF" << std::endl;
-        if ((*beginIt).myOriginalVertex_p->getControlFlowGraphVertexAlgBase().getKind()==ControlFlowGraphVertexAlg::IF) std::cout << "UWE FOUND IF" << std::endl;
-        if ((*beginIt).myOriginalVertex_p->getControlFlowGraphVertexAlgBase().getKind()==ControlFlowGraphVertexAlg::PRELOOP) std::cout << "UWE FOUND PRELOOP" << std::endl;
+        if ((*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::IF) {
+          std::cout << "IF (" << numInEdgesOf(*beginIt) << ")" << std::endl;
+        }
+        else if ((*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP) {
+          std::cout << "PRELOOP (" << numInEdgesOf(*beginIt) << ")" << std::endl;
+        }
+        else if ((*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP) {
+          std::cout << "FORLOOP (" << numInEdgesOf(*beginIt) << ")" << std::endl;
+        }
+        else if ((*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BASICBLOCK) {
+          std::cout << "BASICBLOCK (" << numInEdgesOf(*beginIt) << ")" << std::endl;
+        }
+        else if ((*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENTRY) {
+          std::cout << "ENTRY (" << numInEdgesOf(*beginIt) << ")" << std::endl;
+        }
+        else if ((*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::EXIT) {
+          std::cout << "EXIT (" << numInEdgesOf(*beginIt) << ")" << std::endl;
+        }
+        else if ((*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::UNDEF) {
+          std::cout << "UNDEF (" << numInEdgesOf(*beginIt) << ")" << std::endl;
+        }
       }
     }
-*/
   }
 
   

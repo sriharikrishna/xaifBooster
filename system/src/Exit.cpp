@@ -1,12 +1,21 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Exit.hpp"
+#include "xaifBooster/system/inc/ExitAlgFactory.hpp"
 
 namespace xaifBooster { 
 
   const std::string Exit::ourXAIFName("xaif:Exit");
 
   const std::string Exit::our_myId_XAIFName("vertex_id");
+
+  Exit::Exit() {
+        myControlFlowGraphVertexAlgBase_p=ExitAlgFactory::instance()->makeNewAlg(*this);
+  }
+                                                                                
+  Exit::~Exit() {
+    if (myControlFlowGraphVertexAlgBase_p) delete myControlFlowGraphVertexAlgBase_p;
+  }
 
   void
   Exit::printXMLHierarchy(std::ostream& os) const { 
