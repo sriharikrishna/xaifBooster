@@ -1,6 +1,8 @@
 #ifndef _VERTEXIDENTIFICATIONLISTACTIVELHS_INCLUDE_
 #define _VERTEXIDENTIFICATIONLISTACTIVELHS_INCLUDE_
 
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActive.hpp"
 
@@ -9,8 +11,8 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
   /**
-   * this is for the identification fo active variables
-   * RHS <-> LHS
+   * this is for the identification of active variables
+   * RHS <-> preceding LHS
    * in the presence of ud information
    */
   class VertexIdentificationListActiveLHS : public VertexIdentificationListActive {
@@ -39,7 +41,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       ListItem(const AliasMapKey& anAliasMapKey,
 	       const DuUdMapKey& aDuUdMapKey,
 	       PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p,
-	       DuUdMap::StatementId aStatementId);
+	       const ObjectWithId::Id& aStatementId);
 
       virtual std::string debug() const;
 
@@ -48,7 +50,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * vertex represents the LHS, i.e. this is usefull only in the 
        * presence of ud-chain information
        */
-      DuUdMap::StatementId myStatementId;
+      ObjectWithId::Id myStatementId;
 
     };
     
@@ -57,7 +59,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * all statementIds in ListItem  for use with 
      * DuUdMap methods
      */
-    DuUdMap::StatementIdList myStatementIdList;
+    DuUdMapDefinitionResult::StatementIdList myStatementIdList;
 
   }; // end of class VertexIdentificationListActiveLHS  
    
