@@ -5,6 +5,7 @@
 #include <list>
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
+#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
 #include "xaifBooster/system/inc/DuUdMapEntry.hpp"
 
 namespace xaifBooster { 
@@ -41,6 +42,14 @@ namespace xaifBooster {
     const DuUdMapDefinitionResult definition(const DuUdMapKey& aKey,
 					     const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
 
+    /** 
+     * aKey is the key of a left-hand-side variable
+     * which is to be checked for uses in
+     * statements listed in anIdList
+     */
+    const DuUdMapUseResult use(const DuUdMapKey& aKey,
+			       const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
+    
     /** 
      * this returns true if the use-def chains for both 
      * keys are provably identical and false otherwise;

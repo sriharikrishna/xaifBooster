@@ -37,9 +37,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /**
      * this refers to some Variable in
      * right hand side of an assignment in a 
-     * basic block for independent variables
-     * or a Variable as the LHS of an Assignment
-     * for a dependent variable
+     * basic block for independent variables.
+     * see also myLHSVariable_p.
      * this class doesn't own the Variable pointed 
      * to by myRHSVariable_p
      */
@@ -47,9 +46,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     /**
      * this refers to the Variable in
-     * the left hand side of an Assignment 
-     * The distinction has to be made in order to 
-     * allow two references to be assigned for 
+     * the left hand side of an Assignment.
+     * LHS and RHS while normally mutually 
+     * exclusive cannot use the same data member because 
+     * we have to account for 
      * something like y=x where this vertex needs to 
      * keep a reference to both y and x 
      * this class doesn't own the Variable pointed 

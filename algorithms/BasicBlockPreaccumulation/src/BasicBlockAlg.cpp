@@ -281,9 +281,36 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       for (;it!=endIt;++it) { 
 	// here we should have constants etc. already removed
 	// JU: this is temporary until we have r/w analysis
-	// JU: the dependent variables are all LHSs of all assignments
 	if (!theFlattenedSequence.numInEdgesOf(*it)) {
 	  theFlattenedSequence.addToIndependentList(*it);
+	}
+      } 
+      // now look at all the vertices in the dependent list 
+      // and remove the ones not needed as indicated by 
+      // the duud information:
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(theFlattenedSequence.getDependentList());
+      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
+	   aDepVertexPListI!=theDepVertexPList.end();) { 
+	// cast it first
+	const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
+	// advance the iterator before we delete anything:
+	++aDepVertexPListI;
+	// all the dependent ones should have the LHS set
+	const DuUdMapKey& aDuUdMapKey(myPrivateVertex.getLHSVariable().getDuUdMapKey()); 
+	if (aDuUdMapKey.getKind()==InfoMapKey::TEMP_VAR) { 
+	  // now the assumption is that temporaries are local to the flattened Sequence
+	  // and we can remove: 
+	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
+	  continue;
+	}
+	DuUdMapUseResult theDuUdMapUseResult(ConceptuallyStaticInstances::instance()->
+					     getCallGraph().getDuUdMap().use(aDuUdMapKey,
+									     theFlattenedSequence.getDependentStatementIdList()));
+	if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
+	    || 
+	    theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
+	  // we only use it in the scope of this flattened sequence, therefore remove it
+	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
 	}
       } 
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
@@ -300,12 +327,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  if (!(theFlattenedSequence.numOutEdgesOf(*it)+theFlattenedSequence.numInEdgesOf(*it))) { // a singleton
 	    findNext=true;
 	    // remove this vertex in the dependent/independent lists
-	    theFlattenedSequence.getDependentList().remove(&(*it));
-	    theFlattenedSequence.getIndependentList().remove(&(*it));
+	    theFlattenedSequence.removeFromDependentList(*it);
+	    theFlattenedSequence.removeFromIndependentList(*it);
 	    // make the direct assignment instaed.
 	    (*i)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getLHSVariable(),
 								 dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getRHSVariable());
-	    // removit it from the graph
+	    // remove it from the graph
 	    theFlattenedSequence.removeAndDeleteVertex(*it);
 	    // need to break out here because we removed the vertex
 	    break;
