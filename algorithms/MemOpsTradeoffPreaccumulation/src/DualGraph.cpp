@@ -6,6 +6,9 @@ namespace MemOpsTradeoffPreaccumulation {
 
   DualGraph::DualGraph(const LinearizedComputationalGraph& theOriginal){
 
+    absum = 0;
+    opsum = 0;
+    
     //Create Dual Graph Vertices
     xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIteratorPair oep (theOriginal.edges());
     xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIterator oei (oep.first), oe_end (oep.second);
@@ -81,19 +84,14 @@ namespace MemOpsTradeoffPreaccumulation {
       if((*dvi).getRefType() == DualGraphVertex::TO_ORIGINAL_EDGE){
 	if(&(*dvi).getOriginalRef() == &theEdge){
 	  return *dvi;
-	  break;
 	}
       }
     }
-
-    std::cout << "DG 89" << std::endl;
-
     THROW_LOGICEXCEPTION_MACRO("ERROR: Attempt to determine corresponding dual vertex for an edge which does not have one"); 
-
   }// end getDualVertex
 
   void DualGraph::populatePathList() {
-    
+
     //create paths for independent vertices
     DualGraph::VertexIteratorPair dvip (vertices());
     DualGraph::VertexIterator dvi (dvip.first), dv_end (dvip.second);
@@ -115,7 +113,6 @@ namespace MemOpsTradeoffPreaccumulation {
     DualGraph::PathList::iterator pathi;
     for(pathi = myPathList.begin(); pathi != myPathList.end(); pathi++){
       while(!(**pathi).isComplete()){
-
 	//iterate through successors of the last vertex in the path
         DualGraph::OutEdgeIteratorPair doe (getOutEdgesOf(*((**pathi).myPath).back()));
 	DualGraph::OutEdgeIterator doei (doe.first), doe_end (doe.second);
@@ -128,7 +125,6 @@ namespace MemOpsTradeoffPreaccumulation {
 	  i++;
 	}// end for outedges
 	if(doei == doe_end){
-	  std::cout << "BBA 131" << std::endl;
 	  THROW_LOGICEXCEPTION_MACRO("Error: No match between pathnum and out edge num could be found");
 	}// end if
 	((**pathi).myPath).push_back(&getTargetOf(*doei));
@@ -146,7 +142,7 @@ namespace MemOpsTradeoffPreaccumulation {
   }// end populate path list
 
   void DualGraph::copyPath(DualGraphPath* thepath_p) {
-
+    
     unsigned int i;
     for(i = 1; i < numOutEdgesOf(*((*thepath_p).myPath).back()); i++){      
        DualGraphPath* thenewpath_p= new DualGraphPath;
@@ -188,7 +184,6 @@ namespace MemOpsTradeoffPreaccumulation {
   }// end populateElimlist
 
   bool DualGraph::isFinal(DualGraphVertex& theVertex) const {
-
 
     //spath iterates through each path in the list
     DualGraph::PathList::const_iterator spath;
@@ -236,7 +231,9 @@ namespace MemOpsTradeoffPreaccumulation {
 					const DualGraph::VertexPointerList& thePredList,
 					const DualGraph::VertexPointerList& theSuccList,
 					xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
-    
+
+    opsum ++;
+
     //create a new JAE graph
     JacobianAccumulationExpressionCopy* theExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
 
@@ -288,7 +285,6 @@ namespace MemOpsTradeoffPreaccumulation {
     //predi and succi iterate over the predecessor and successor lists of the face being eliminated
     DualGraph::VertexPointerList::const_iterator predi, succi;
     bool loopcheck = true;
-   
     for(predi = thePredList.begin(); (predi != thePredList.end()) && loopcheck; ++predi){
       if(numOutEdgesOf(**predi) > 1){
 	for(succi = theSuccList.begin(); (succi != theSuccList.end()) && loopcheck; ++succi){
@@ -338,7 +334,7 @@ namespace MemOpsTradeoffPreaccumulation {
     }// end else
   
     //if the face elimination isolates both the source and the target, delete them both (which automatically deletes the face)
-    if(   (numOutEdgesOf(getSourceOf(theFace)) == 1) && (numInEdgesOf(getTargetOf(theFace)) == 1)){
+    if((numOutEdgesOf(getSourceOf(theFace)) == 1) && (numInEdgesOf(getTargetOf(theFace)) == 1)){
       removeAndDeleteVertex(getSourceOf(theFace));
       removeAndDeleteVertex(getTargetOf(theFace));
     }// end if
@@ -362,70 +358,3 @@ namespace MemOpsTradeoffPreaccumulation {
   }// end elim_face
 
 }// end namespace MemOpsTradeoffPreaccumulation
-
-
-    // unsigned int i = 0;
-//     bool pathcheck = true, vertcheck = false;
-//     //go through all paths to find a path with a direct vertex between source and target
-//     for(spath = myPathList.begin(); (spath != myPathList.end()) && pathcheck; spath++){
-//       //for each vertex in the path
-//       for(svertex = ((**spath).myPath).begin(); (svertex != ((**spath).myPath).end()) && vertcheck; svertex++){
-// 	//if vertex is a pred of the face
-// 	for(predi = thePredList.begin(); predi != thePredList.end(); ++predi){
-// 	  if(*predi == *svertex){break;}
-// 	}// end for
-// 	//predi = find(thePredList.begin(), thePredList.end(), *svertex);
-// 	if(predi != thePredList.end()){
-// 	  svertex++;
-// 	  svertex++;
-// 	  //if a succ is in path
-// 	  for(succi = theSuccList.begin(); succi != theSuccList.end(); ++succi){
-// 	    if(*succi == *svertex){break;}
-// 	  }// end for
-// 	  //succi = find(theSuccList.begin(), theSuccList.end(), *svertex);
-// 	  if(succi != theSuccList.end()){
-// 	    svertex--;
-// 	    directVertex_pt = *svertex;
-// 	    // if the direct vertex doesnt have inedges from all preds and outedges to all succs throw exception
-// 	    i = 0;
-// 	    DualGraph::InEdgeIteratorPair dvie (getInEdgesOf(*directVertex_pt));
-// 	    DualGraph::InEdgeIterator dviei (dvie.first), dvie_end (dvie.second);
-// 	    for(; dviei != dvie_end; ++dviei){
-// 	      i++;
-// 	      //if a direcpred wasnt in pred list  
-// 	      for(predi = thePredList.begin(); predi != thePredList.end(); ++predi){
-// 		if(*predi == &getSourceOf(*dviei)){break;}
-// 	      }// end for
-// 	      //predi = find(thePredList.begin(), thePredList.end(), &getSourceOf(*dviei));
-// 	      if(predi == thePredList.end()){
-// 		THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
-// 	      }//end if a direcpred wasnt in pred list
-// 	    }// end for direct inedges
-// 	    if(i != thePredList.size()){
-// 	      THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
-// 	    }
-// 	    i = 0;
-// 	    DualGraph::OutEdgeIteratorPair dvoe (getOutEdgesOf(*directVertex_pt));
-// 	    DualGraph::OutEdgeIterator dvoei (dvoe.first), dvoe_end (dvoe.second);
-// 	    for(; dvoei != dvoe_end; ++dvoei){
-// 	      i++;
-// 	      //if a direcpred wasnt in pred list
-// 	      for(succi = theSuccList.begin(); succi != theSuccList.end(); ++succi){
-// 		if(*succi == &getTargetOf(*dvoei)){break;}
-// 	      }// end for
-// 	      //succi = find(theSuccList.begin(), theSuccList.end(), &getTargetOf(*dvoei));
-// 	      if(succi == theSuccList.end()){
-// 		std::cout << "This is the dreaded ERROR message.  Be very afraid." << std::endl;
-// 		THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
-// 	      }//end if a direcpred wasnt in pred list
-// 	    }// end for direct outedges
-// 	    if(i != theSuccList.size()){
-// 	      std::cout << "This is the dreaded ERROR message.  Be very afraid." << std::endl;
-// 	      THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
-// 	    }
-// 	    pathcheck = false;
-// 	  }//end if we found direct vertex
-// 	  vertcheck = false;
-// 	}//end if a pred is in path
-//       }//end for each vertex in the path
-//     }//end for all paths

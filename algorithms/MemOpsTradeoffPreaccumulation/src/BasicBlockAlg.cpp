@@ -44,7 +44,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	GraphVizDisplay::show(theDual,"Dual");
       }
 
-      typedef void(*faceHeuristicFunc) (const DualGraph&,
+      typedef void(*faceHeuristicFunc) (DualGraph&,
 					DualGraph::FacePointerList&,
 					const DualGraph::VertexPointerList&,
 				        const DualGraph::VertexPointerList&,
@@ -60,8 +60,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	    faceHeuristicSequence.push_back(&FaceElim::absorbMode_f);
 	    break;
 	  default:
-
-	    std::cout << "BBA 64" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: unknown face heuristic passed");
 	}// end switch HeuristicSequence
 	HeuristicSequence.pop_front();
@@ -121,8 +119,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
       }// end while
 
-      theDual.clearPathList();
-
       //iterate through remaining intermediate vertices and set corresponding expressions as jacobian entries
       DualGraph::VertexIteratorPair jvip (theDual.vertices());
       DualGraph::VertexIterator jvi (jvip.first), jv_end (jvip.second);
@@ -157,10 +153,18 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	GraphVizDisplay::show(theDual,"tripartite");
       }
 
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: ab sum: " << theDual.absum);
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: op sum: " << theDual.opsum);
+
     }// end if face
     else{
 
       LinearizedComputationalGraphCopy theCopy;
+
+      theCopy.sdsum = 0;
+      theCopy.spsum = 0;
+      theCopy.opsum = 0;
+
       struct vertexMap {
 	const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* original;
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* copy;
@@ -263,7 +267,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       //VERTEX ELIMINATION
       if(HeuristicSequence.front() == ConceptuallyStaticInstances::VERTEX){
 
-	typedef void(*vertexHeuristicFunc) (const LinearizedComputationalGraphCopy&,
+	typedef void(*vertexHeuristicFunc) (LinearizedComputationalGraphCopy&,
 					    LinearizedComputationalGraphCopy::VertexPointerList&,
 					    const LinearizedComputationalGraphCopy::VertexPointerList&,
 					    const LinearizedComputationalGraphCopy::VertexPointerList&);
@@ -293,7 +297,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	    vertexHeuristicSequence.push_back(&VertexElim::succPredMode_v);
 	    break;
 	  default:
-	    std::cout << "BBA 296" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: unknown heuristic passed");
 	  }// end switch HeuristicSequence
 	  HeuristicSequence.pop_front();
@@ -364,7 +367,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
 	  }// end if
 	  else if(theVertexList.size() > 1){
-	    std::cout << "BBA 366" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: More than one vertex in list of possible eliminations");
 	  }// end else
 
@@ -379,7 +381,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       //EDGE ELIMINATION
       else if(HeuristicSequence.front() == ConceptuallyStaticInstances::EDGE){
 
-	typedef void(*edgeHeuristicFunc) (const LinearizedComputationalGraphCopy&,
+	typedef void(*edgeHeuristicFunc) (LinearizedComputationalGraphCopy&,
 					  LinearizedComputationalGraphCopy::EdgePointerList&,
 					  const LinearizedComputationalGraphCopy::VertexPointerList&,
 					  const LinearizedComputationalGraphCopy::VertexPointerList&);
@@ -402,7 +404,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	    edgeHeuristicSequence.push_back(&EdgeElim::sibling2Mode_e);
 	    break;
 	  default:
-	    std::cout << "BBA 404" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: Unknown heuristic passed");
 	  }// end switch HeuristicSequence
 	  HeuristicSequence.pop_front();
@@ -469,7 +470,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	      theCopy.back_elim_edge(*(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
 	    }// end else if
 	    else{
-	      std::cout << "BBA 471" << std::endl;
 	      THROW_LOGICEXCEPTION_MACRO("Error: Edge has no elimination direction specified");
 	    }
 	
@@ -479,7 +479,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
 	  }// end if
 	  else{
-	    std::cout << "BBA 481" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: More than one edge in list of possible eliminations");
 	  }// end else
 
@@ -520,6 +519,12 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
 	GraphVizDisplay::show(theCopy,"bipartite");
       }
+
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: sd sum: " << theCopy.sdsum);
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: sp sum: " << theCopy.spsum);
+      DBG_MACRO(DbgGroup::CALLSTACK, "Heuristic Metrics: op sum: " << theCopy.opsum);
+
+
     }// end else (vertex or edge)
 
   } // end compute_elimination_sequence

@@ -23,6 +23,8 @@ namespace MemOpsTradeoffPreaccumulation {
 				       LinearizedComputationalGraphCopyEdge>{
   public:
 
+    unsigned int sdsum, spsum, opsum;
+
     /**
      * each edge in an edge list has a direction associated with it, so an edge can be in the list twice, one for each direction
      * this allows the heuristics to be mroe efficient

@@ -6,42 +6,8 @@
 using namespace MemOpsTradeoffPreaccumulation;
 
 namespace xaifBoosterMemOpsTradeoffPreaccumulation { 
-  
-  void FaceElim::forwardMode_f(const DualGraph& theDual,
-			       DualGraph::FacePointerList& theOldFaceList,
-			       const DualGraph::VertexPointerList& thePredList,
-			       const DualGraph::VertexPointerList& theSuccList,
-			       DualGraphVertex* newOrAbsorb){
-    
-  }// end forwardMode_f
 
-  void FaceElim::reverseMode_f(const DualGraph& theDual,
-			       DualGraph::FacePointerList& theOldFaceList,
-			       const DualGraph::VertexPointerList& thePredList,
-			       const DualGraph::VertexPointerList& theSuccList,
-			       DualGraphVertex* newOrAbsorb){
-    
-  }// end reverseMode_f
-
-  void FaceElim::markowitzMode_f(const DualGraph& theDual,
-				 DualGraph::FacePointerList& theOldFaceList,
-				 const DualGraph::VertexPointerList& thePredList,
-				 const DualGraph::VertexPointerList& theSuccList,
-				 DualGraphVertex* newOrAbsorb){
-
-    
-  }// end markowitzMode_f
-
-  void FaceElim::siblingMode_f(const DualGraph& theDual,
-			       DualGraph::FacePointerList& theOldFaceList,
-			       const DualGraph::VertexPointerList& thePredList,
-			       const DualGraph::VertexPointerList& theSuccList,
-			       DualGraphVertex* newOrAbsorb){
-
-   
-  }// end siblingMode_f
-
-  void FaceElim::absorbMode_f(const DualGraph& theDual,
+  void FaceElim::absorbMode_f(DualGraph& theDual,
 			      DualGraph::FacePointerList& theOldFaceList,
 			      const DualGraph::VertexPointerList& thePredList,
 			      const DualGraph::VertexPointerList& theSuccList,
@@ -57,17 +23,16 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
     for(sface = theOldFaceList.begin(); sface != theOldFaceList.end(); sface++){
 
-      DualGraph::ConstInEdgeIteratorPair die (theDual.getInEdgesOf(theDual.getSourceOf(**sface)));
-      DualGraph::ConstInEdgeIterator diei (die.first), die_end (die.second);
-      DualGraph::ConstOutEdgeIteratorPair doe (theDual.getOutEdgesOf(theDual.getTargetOf(**sface)));
-      DualGraph::ConstOutEdgeIterator doei (doe.first), doe_end (doe.second);
+      DualGraph::InEdgeIteratorPair die (theDual.getInEdgesOf(theDual.getSourceOf(**sface)));
+      DualGraph::InEdgeIterator diei (die.first), die_end (die.second);
+      DualGraph::OutEdgeIteratorPair doe (theDual.getOutEdgesOf(theDual.getTargetOf(**sface)));
+      DualGraph::OutEdgeIterator doei (doe.first), doe_end (doe.second);
       bool loopcheck = true;
 
       for(; (diei != die_end) && loopcheck; ++diei){
 	if(theDual.numOutEdgesOf(theDual.getSourceOf(*diei)) > 1){
 	  for(; (doei != doe_end) && loopcheck; ++doei){
 	    if(theDual.numInEdgesOf(theDual.getTargetOf(*doei)) > 1){
-
 	      for(spath = (theDual.myPathList).begin(); (spath != (theDual.myPathList).end()) && loopcheck; spath++){
 		for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
 		  if(*svertex == &theDual.getSourceOf(*diei)){
@@ -81,20 +46,18 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 		      loopcheck = false;
 		      break;
 		    }// end if succ matches
-		  
 		    break;
 		  }// end if vertex is the pred
 		}// end for each vertex in the path
 	      }// end for all paths
-
 	    }// end if succ has alternate paths
 	  }// end for all out edges
 	}// end if pred has alternate path
       }// end for all inedges
-
     }// end for each face in the old list
 
     if(!theNewFaceList.empty()){
+      theDual.absum++;
       theOldFaceList = theNewFaceList;
     }// end if
 

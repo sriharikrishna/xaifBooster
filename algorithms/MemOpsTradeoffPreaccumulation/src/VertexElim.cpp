@@ -10,7 +10,7 @@ using namespace MemOpsTradeoffPreaccumulation;
 
 namespace xaifBoosterMemOpsTradeoffPreaccumulation { 
 
-  void VertexElim::forwardMode_v(const LinearizedComputationalGraphCopy& theCopy,
+  void VertexElim::forwardMode_v(LinearizedComputationalGraphCopy& theCopy,
 				 LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -21,7 +21,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
   }// end forwardMode
 
-  void VertexElim::reverseMode_v(const LinearizedComputationalGraphCopy& theCopy,
+  void VertexElim::reverseMode_v(LinearizedComputationalGraphCopy& theCopy,
 				 LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -32,7 +32,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
   }// end reverseMode
 
-  void VertexElim::markowitzMode_v(const LinearizedComputationalGraphCopy& theCopy,
+  void VertexElim::markowitzMode_v(LinearizedComputationalGraphCopy& theCopy,
 				   LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
 				   const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				   const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -58,7 +58,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     theOldVertexList = theNewList;
   }// end markowitzMode
 
-  void VertexElim::siblingMode_v(const LinearizedComputationalGraphCopy& theCopy,
+  void VertexElim::siblingMode_v(LinearizedComputationalGraphCopy& theCopy,
 				 LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -72,8 +72,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       bool succMatch = false;
 
       //if the vertex has a predecessor in the predlist, set predmatch to true
-      LinearizedComputationalGraphCopy::ConstInEdgeIteratorPair inedges (theCopy.getInEdgesOf(**bi));
-      LinearizedComputationalGraphCopy::ConstInEdgeIterator ie=inedges.first, iend=inedges.second;
+      LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (theCopy.getInEdgesOf(**bi));
+      LinearizedComputationalGraphCopy::InEdgeIterator ie=inedges.first, iend=inedges.second;
       for(; ie != iend; ++ie){
 	for(predi=thePredList.begin(); predi != thePredList.end(); predi++) {
 	  if(&theCopy.getSourceOf(*ie) == *predi){
@@ -88,8 +88,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	
       //if there is a predmatch, check for a succmatch.  if there is a match, push the vertyex to the new list
       if(predMatch){
-	LinearizedComputationalGraphCopy::ConstOutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**bi));
-	LinearizedComputationalGraphCopy::ConstOutEdgeIterator oe=outedges.first, oend=outedges.second;
+	LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**bi));
+	LinearizedComputationalGraphCopy::OutEdgeIterator oe=outedges.first, oend=outedges.second;
 	for(; oe != oend; ++oe){
 	  for(succi=theSuccList.begin(); succi != theSuccList.end(); succi++) {
 	    if(&theCopy.getTargetOf(*oe) == *succi){
@@ -113,7 +113,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     }// end if
   }// end siblingMode
 
-  void VertexElim::sibling2Mode_v(const LinearizedComputationalGraphCopy& theCopy,
+  void VertexElim::sibling2Mode_v(LinearizedComputationalGraphCopy& theCopy,
 				  LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
 				  const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				  const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -127,8 +127,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       unsigned int succMatch = 0;
 
       //find the number of matching predecessors
-      LinearizedComputationalGraphCopy::ConstInEdgeIteratorPair inedges (theCopy.getInEdgesOf(**bi));
-      LinearizedComputationalGraphCopy::ConstInEdgeIterator ie=inedges.first, iend=inedges.second;
+      LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (theCopy.getInEdgesOf(**bi));
+      LinearizedComputationalGraphCopy::InEdgeIterator ie=inedges.first, iend=inedges.second;
       for(; ie != iend; ++ie){
 	for(predi=thePredList.begin(); predi != thePredList.end(); predi++) {
 	  if(&theCopy.getSourceOf(*ie) == *predi){
@@ -139,8 +139,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
       //if any preds match, find the number of matching sucessors
       if(predMatch){
-	LinearizedComputationalGraphCopy::ConstOutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**bi));
-	LinearizedComputationalGraphCopy::ConstOutEdgeIterator oe=outedges.first, oend=outedges.second;
+	LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**bi));
+	LinearizedComputationalGraphCopy::OutEdgeIterator oe=outedges.first, oend=outedges.second;
 	for(; oe != oend; ++oe){
 	  for(succi=theSuccList.begin(); succi != theSuccList.end(); succi++) {
 	    if(&theCopy.getTargetOf(*oe) == *succi){
@@ -163,44 +163,64 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     }// end for each in old list
     //only change the old list if we have found at least one candidate
     if(theNewList.size() > 0){
+
+      theCopy.sdsum += highestdegree;
+
       theOldVertexList = theNewList;
     }// end if
   }// end sibling2Mode
 
-  void VertexElim::succPredMode_v(const LinearizedComputationalGraphCopy& theCopy,
+  void VertexElim::succPredMode_v(LinearizedComputationalGraphCopy& theCopy,
 				  LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
 				  const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				  const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
 
-    LinearizedComputationalGraphCopy::VertexPointerList theNewList;
+    LinearizedComputationalGraphCopy::VertexPointerList theNewListSucc, theNewListPred;
     LinearizedComputationalGraphCopy::VertexPointerList::const_iterator predi, succi;
     LinearizedComputationalGraphCopy::VertexPointerList::iterator bi;
+
     for(bi = theOldVertexList.begin(); bi != theOldVertexList.end(); bi++) {
-      bool isMatch = false;
+      bool found = false;
       //search for the vertex in the predlist
-      for(predi=thePredList.begin(); predi != thePredList.end(); predi++) {
+      for(predi=thePredList.begin(); (predi != thePredList.end()) && (!found); predi++) {
 	if(*bi == *predi){
-	  isMatch = true;
-	  break;
+	  theNewListPred.push_back(*bi);
+	  found = true;
 	}// end if
       }// end for pred list
+
       //search for the vertex in the succlist
-      for(succi=theSuccList.begin(); succi != theSuccList.end(); succi++) {
+      for(succi=theSuccList.begin(); (succi != theSuccList.end()) && (!found); succi++) {
 	if(*bi == *succi){
-	  isMatch = true;
-	  break;
+	  theNewListSucc.push_back(*bi);
+	  found = true;
         }// end if
       }//end for succ list
- 
-      if(isMatch){
-	theNewList.push_back(*bi);
-      }// end if
     }// end for each in old list
 
-    //only change the old list if we have found at least one candidate
-    if(theNewList.size() > 0){
-      theOldVertexList = theNewList;
+    if((thePredList.size() > theSuccList.size()) && (!theNewListSucc.empty())){
+      theOldVertexList = theNewListSucc;
+      theCopy.spsum += thePredList.size();
     }// end if
+    else if((theSuccList.size() > thePredList.size()) && (!theNewListPred.empty())){
+      theOldVertexList = theNewListPred;
+      theCopy.spsum += theSuccList.size();
+    } // end else if
+    else if((!theNewListSucc.empty()) || (!theNewListPred.empty())){
+      //set the target set to all succs and preds
+      theOldVertexList = theNewListPred;
+      for(bi = theNewListSucc.begin(); bi != theNewListSucc.end(); bi++){
+	theOldVertexList.push_back(*bi);
+      }// end for
+
+      if(!theNewListPred.empty()){
+	theCopy.spsum += theSuccList.size();
+      }// end if
+      else{
+	theCopy.spsum += thePredList.size();
+      }// end else
+    }// end else if
+    
   }// end succPredMode
 
 } // end of namespace
