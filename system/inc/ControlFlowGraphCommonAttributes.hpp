@@ -56,13 +56,15 @@ namespace xaifBooster {
 
     /** 
      * this is the scope of the ArgumentList
+     * \todo revisit the whole scoping business
      */ 
-    const Scope& getScope() const; 
+    // const Scope& getScope() const; 
+    Scope& getScope() const; 
 
     /** 
      * this is the scope of the ArgumentList
      */ 
-    Scope& getScope(); 
+    // Scope& getScope(); 
 
   protected: 
     

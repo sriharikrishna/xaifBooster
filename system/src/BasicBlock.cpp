@@ -39,7 +39,7 @@ namespace xaifBooster {
        << " "
        << our_myId_XAIFName
        << "=\""
-       << getId()
+       << getId().c_str()
        << "\" "
        << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str()
        << "=\""

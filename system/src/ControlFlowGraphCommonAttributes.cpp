@@ -58,6 +58,11 @@ namespace xaifBooster {
     return mySymbolReference;
   } 
 
+  Scope& ControlFlowGraphCommonAttributes::getScope() const { 
+    return myArgumentList.getScope();
+  }
+
+/* UN: want this later on 
   const Scope& ControlFlowGraphCommonAttributes::getScope() const { 
     return myArgumentList.getScope();
   }
@@ -65,5 +70,6 @@ namespace xaifBooster {
   Scope& ControlFlowGraphCommonAttributes::getScope() { 
     return myArgumentList.getScope();
   }
+*/
 
 } // end of namespace xaifBooster 

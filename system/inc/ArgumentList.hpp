@@ -46,9 +46,12 @@ namespace xaifBooster {
 
     const ArgumentSymbolReferencePList& getArgumentSymbolReferencePList() const;
 
-    Scope& getScope();
-
-    const Scope& getScope() const;
+    /**
+     * \todo cleanup
+     */ 
+    // Scope& getScope();
+    // const Scope& getScope() const;
+    Scope& getScope() const;
 
     void setScope(Scope& aScope);
 

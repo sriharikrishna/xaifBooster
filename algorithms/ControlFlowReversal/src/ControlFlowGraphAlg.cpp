@@ -11,7 +11,7 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ControlFlowGraphAlg::ControlFlowGraphAlg(ControlFlowGraph& theContaining) : ControlFlowGraphAlgBase(theContaining), myTransformedControlFlowGraph(NULL) {
+  ControlFlowGraphAlg::ControlFlowGraphAlg(const ControlFlowGraph& theContaining) : ControlFlowGraphAlgBase(theContaining), myTransformedControlFlowGraph(NULL) {
   }
 
   ControlFlowGraphAlg::~ControlFlowGraphAlg() {
@@ -53,14 +53,24 @@ namespace xaifBoosterControlFlowReversal {
     THROW_LOGICEXCEPTION_MACRO("ControlFlowReversal::ControlFlowGraphAlg::getOriginalExit: not found");
   }
 
+  
+
   class VertexLabelWriter {
   public:
     VertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
+      std::string theVertexKind;
+      if (theReversibleControlFlowGraphVertex_p->isOriginal()) 
+        theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex().getControlFlowGraphVertexAlgBase()).kindToString();
+      else
+        theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()).kindToString();
+        
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(),
                                                   myG.getInternalBoostGraph()),
-                                       v)->getIndex() << "\"]";
+                                       v)->getIndex() << ": "
+          << theVertexKind << "\"]";
     };
     const ReversibleControlFlowGraph& myG;
   };
@@ -75,7 +85,19 @@ namespace xaifBoosterControlFlowReversal {
 			      VertexLabelWriter(*myTransformedControlFlowGraph));
       }
       myTransformedControlFlowGraph->topologicalSort();
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
+			      VertexLabelWriter(*myTransformedControlFlowGraph));
+      }
+/*
       myTransformedControlFlowGraph->storeControlFlow();
+      myTransformedControlFlowGraph->topologicalNumbering();
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
+			      VertexLabelWriter(*myTransformedControlFlowGraph));
+      }
+*/
+      myTransformedControlFlowGraph->topologicalSortReverse();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
 			      VertexLabelWriter(*myTransformedControlFlowGraph));
