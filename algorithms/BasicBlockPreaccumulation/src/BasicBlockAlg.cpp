@@ -326,8 +326,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		// address of the copy.
 		theListOfAlreadyAssignedIndependents.
 		  addElement(theIndepVariable.equivalenceSignature(),
-			     &((*i)->myDerivativePropagator.addSetDerivToEntryList(theTarget,
-										   theIndepVariable).getTarget()));
+			     &((*i)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+										    theIndepVariable).getTarget()));
 	      } // end if (wasn't assigned efore  
 	      else {
 		// yes, it was assigned before
@@ -347,9 +347,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // instead of original independent
 	    const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
 					 (theExpression.getDependent()).getLHSVariable());
-	    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryList(theLHS,
-																  *theIndepVariableContainer_cp,
-																  theDependent));
+	    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryPList(theLHS,
+																   *theIndepVariableContainer_cp,
+																   theDependent));
 	    bool found=false;
 	    for (VariablePList::iterator i=theListOfAlreadyAssignedDependents.begin();
 		 i!=theListOfAlreadyAssignedDependents.end();
@@ -383,8 +383,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	} // end for 
       } // end if  have flattened graph with more than one vertex
       else if (theFlattenedSequence.numVertices()==1) { // we have only one vertex, i.e. an assignment y=x: 
-	(*i)->myDerivativePropagator.addSetDerivToEntryList(dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getDependentList().begin()))->getLHSVariable(),
-							    dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getIndependentList().begin()))->getRHSVariable());
+	(*i)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getDependentList().begin()))->getLHSVariable(),
+							     dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getIndependentList().begin()))->getRHSVariable());
       } // end else if
       else { 
 	// do nothing, empty graph, as e.g. for a single assignment x=const;

@@ -5,7 +5,7 @@
 #include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
 
 using namespace xaifBooster;
 
@@ -42,7 +42,7 @@ int main(int argc,char** argv) {
     return -1;
   } // end catch 
   try {   
-    xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::instance()->init();
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::instance()->init();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     ip.parse(intrinsicsFileName);
@@ -53,6 +53,7 @@ int main(int argc,char** argv) {
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // flatten
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // tape adjoin
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     newLocation.append(" xaif_output.xsd");
