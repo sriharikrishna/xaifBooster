@@ -581,6 +581,33 @@ namespace xaifBooster {
   };
 
   void 
+  XAIFBaseParserHandlers::onInOutList(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onInOutList"); 
+    passingOut=passingIn;
+    return;
+  };
+
+  void 
+  XAIFBaseParserHandlers::onInput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onInput"); 
+    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
+    Variable* theNewInput=new Variable();
+    InOutList& theInOutList=theControlFlowGraph.getInOutList();
+    theInOutList.getInList().push_back(theNewInput);
+    passingOut.setVariable(*theNewInput);
+  };
+
+  void 
+  XAIFBaseParserHandlers::onOutput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onOutput"); 
+    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
+    Variable* theNewOutput=new Variable();
+    InOutList& theInOutList=theControlFlowGraph.getInOutList();
+    theInOutList.getOutList().push_back(theNewOutput);
+    passingOut.setVariable(*theNewOutput);
+  };
+
+  void 
   XAIFBaseParserHandlers::onDummy(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, 
 	      "in XAIFBaseParserHandlers::onDummy"); 

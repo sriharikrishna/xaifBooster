@@ -11,6 +11,7 @@
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphEdge.hpp"
 #include "xaifBooster/system/inc/ArgumentSymbolReference.hpp"
+#include "xaifBooster/system/inc/InOutList.hpp"
 
 namespace xaifBooster { 
 
@@ -70,8 +71,10 @@ namespace xaifBooster {
     typedef std::list<ArgumentSymbolReference*> ArgumentList;
 
     ArgumentList& getArgumentList();
-
     const ArgumentList& getArgumentList() const;
+
+    InOutList& getInOutList();
+    const InOutList& getInOutList() const;
 
   private: 
     
@@ -87,6 +90,11 @@ namespace xaifBooster {
      * of ControlFlowGraph
      */
     ArgumentList myArgumentList;
+
+    /**
+     * IN/OUT sets
+     */
+    InOutList myInOutList;
 
     /**
      * the reference to the subroutine symbol 
