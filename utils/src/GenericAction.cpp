@@ -34,9 +34,9 @@ namespace xaifBooster {
   const GenericAction::GenericAction_E
   GenericAction::fromString(const std::string& aName) { 
     GenericAction_E returnValue;
-    if (aName=="algorithm_action_1")
+    if (aName=="algorithm_init")
       returnValue=ALGORITHM_INIT;
-    else if (aName=="algorithm_init")
+    else if (aName=="algorithm_action_1")
       returnValue=ALGORITHM_ACTION_1;
     else if (aName=="algorithm_action_2")
       returnValue=ALGORITHM_ACTION_2;

@@ -8,6 +8,7 @@
 
 
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -27,6 +28,9 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex*);
     ReversibleControlFlowGraphVertex();
     ~ReversibleControlFlowGraphVertex();
+
+    const ControlFlowGraphVertexAlg&
+    getOriginalControlFlowGraphVertexAlg() const;
 
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 

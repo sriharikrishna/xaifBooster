@@ -1,28 +1,28 @@
-#ifndef _XAIFBOOSTERCONTROLFLOWREVERSAL_PRELOOPALG_INCLUDE_
-#define _XAIFBOOSTERCONTROLFLOWREVERSAL_PRELOOPALG_INCLUDE_
+#ifndef _XAIFBOOSTERCONTROLFLOWREVERSAL_EXITALG_INCLUDE_
+#define _XAIFBOOSTERCONTROLFLOWREVERSAL_EXITALG_INCLUDE_
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
-#include "xaifBooster/system/inc/PreLoopAlgBase.hpp"
-#include "xaifBooster/system/inc/PreLoop.hpp"
+#include "xaifBooster/system/inc/ExitAlgBase.hpp"
+#include "xaifBooster/system/inc/Exit.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal {  
 
   /** 
-   * class to provide algorithm for PreLoop
+   * class to provide algorithm for Exit
    */
-  class PreLoopAlg : public PreLoopAlgBase, public ControlFlowGraphVertexAlg {
+  class ExitAlg : public ExitAlgBase, public ControlFlowGraphVertexAlg {
   public:
     
-    PreLoopAlg(PreLoop& theContaining);
+    ExitAlg(Exit& theContaining);
                                                                                 
-    ~PreLoopAlg();
+    ~ExitAlg();
 
     std::string debug() const;
 
     ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E getKind() const {
-      return ControlFlowGraphVertexAlg::PRELOOP;
+      return ControlFlowGraphVertexAlg::EXIT;
     };
 
 
@@ -31,17 +31,17 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    PreLoopAlg();
+    ExitAlg();
 
     /** 
      * no def
      */
-    PreLoopAlg(const PreLoopAlg&);
+    ExitAlg(const ExitAlg&);
 
     /** 
      * no def
      */
-    PreLoopAlg operator=(const PreLoopAlg&);
+    ExitAlg operator=(const ExitAlg&);
 
   };  // end of class
 
