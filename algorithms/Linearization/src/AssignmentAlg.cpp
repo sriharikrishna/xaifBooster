@@ -185,6 +185,7 @@ namespace xaifBoosterLinearization {
 	  myDelayedLHSAssignment_p->getRHS().supplyAndAddVertexInstance(*theDelayVertex_p);
 	  // set the alias key to temporary: 
 	  theDelayVertex_p->getVariable().getAliasMapKey().setTemporary();
+	  theDelayVertex_p->getVariable().getDuUdMapKey().setTemporary();
 	  // get the global scope
 	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
 				getCallGraph().getScopeTree().getGlobalScope());

@@ -7,9 +7,9 @@
 #include "xaifBooster/system/inc/VariableVertex.hpp"
 #include "xaifBooster/system/inc/VariableEdge.hpp"
 #include "xaifBooster/system/inc/AliasMapKey.hpp"
+#include "xaifBooster/system/inc/DuUdMapKey.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
-#include "xaifBooster/system/inc/DuUd.hpp"
 
 namespace xaifBooster { 
 
@@ -60,11 +60,18 @@ namespace xaifBooster {
      */
     bool equivalentTo(const Variable& rhs) const;
 
+    /**
+     * \todo: JU think about copying duud information
+     */
     void copyMyselfInto(Variable& theTarget) const;
 
     AliasMapKey& getAliasMapKey();
 
     const AliasMapKey& getAliasMapKey() const;
+
+    DuUdMapKey& getDuUdMapKey();
+
+    const DuUdMapKey& getDuUdMapKey() const;
 
     /**
      * get the data type from the SymbolReference,
@@ -91,9 +98,14 @@ namespace xaifBooster {
     bool getDerivFlag() const;
 
     /**
-     * name of member myKey as represented in XAIF schema
+     * name of member myAliasMapKey as represented in XAIF schema
      */
-    static const std::string our_myKey_XAIFName;
+    static const std::string our_myAliasMapKey_XAIFName;
+
+    /**
+     * name of member myDuUdMapKey as represented in XAIF schema
+     */
+    static const std::string our_myDuUdMapKey_XAIFName;
 
     /**
      * name of member myDerivFlag as represented in XAIF schema
@@ -113,17 +125,17 @@ namespace xaifBooster {
      * set myActiveUseType once
      */
     void setActiveUseType(ActiveUseType::ActiveUseType_E anActiveUseType); 
-
-    DuUd& getDuUd(); 
-
-    const DuUd& getDuUd() const; 
-
   private: 
     
     /** 
      * key into  AliasMap
      */
     AliasMapKey myAliasMapKey;
+
+    /** 
+     * key into  DuUdMap
+     */
+    DuUdMapKey myDuUdMapKey;
 
     /** 
      * indicating the use of the value 
@@ -145,11 +157,6 @@ namespace xaifBooster {
     mutable ActiveUseType::ActiveUseType_E myActiveUseType;
 
     bool myactiveUseTypeSetFlag;
-
-    /** 
-     * this contains duud information 
-     */
-    DuUd myDuUd;
 
   }; // end of class Variable
 

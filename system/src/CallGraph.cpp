@@ -87,6 +87,14 @@ namespace xaifBooster {
     return myAliasMap;
   }
   
+  DuUdMap& CallGraph::getDuUdMap() { 
+    return myDuUdMap;
+  }
+
+  const DuUdMap& CallGraph::getDuUdMap() const { 
+    return myDuUdMap;
+  }
+  
   void CallGraph::setProgramName(const std::string& aProgramName) { 
     myProgramName=aProgramName;
   } 
