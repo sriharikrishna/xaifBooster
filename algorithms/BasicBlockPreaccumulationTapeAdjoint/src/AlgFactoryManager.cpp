@@ -1,6 +1,9 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/MarkerAlgFactory.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
 
@@ -30,6 +33,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   void AlgFactoryManager::resets() {
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+    resetAssignmentAlgFactory(new AssignmentAlgFactory());
+    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
+    resetMarkerAlgFactory(new MarkerAlgFactory());
   }
 
   void AlgFactoryManager::init() {

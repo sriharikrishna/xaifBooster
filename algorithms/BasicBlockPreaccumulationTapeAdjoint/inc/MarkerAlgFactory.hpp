@@ -1,0 +1,10 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPEADJOINT_MARKERALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPEADJOINT_MARKERALGFACTORY_INCLUDE_
+
+#include "xaifBooster/system/inc/MarkerAlgFactory.hpp"
+#include "xaifBooster/system/inc/MarkerAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
+
+  DERIVED_ALG_FACTORY_DECL_MACRO(Marker,xaifBooster::MarkerAlgFactory,xaifBoosterBasicBlockPreaccumulationTapeAdjoint);
+
+#endif

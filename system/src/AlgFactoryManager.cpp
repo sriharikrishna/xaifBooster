@@ -24,6 +24,7 @@
 #include "xaifBooster/system/inc/IfStatementAlgFactory.hpp"
 #include "xaifBooster/system/inc/IntrinsicAlgFactory.hpp"
 #include "xaifBooster/system/inc/LabelAlgFactory.hpp"
+#include "xaifBooster/system/inc/MarkerAlgFactory.hpp"
 #include "xaifBooster/system/inc/PreLoopAlgFactory.hpp"
 #include "xaifBooster/system/inc/SubroutineCallAlgFactory.hpp"
 
@@ -75,6 +76,7 @@ namespace xaifBooster {
     ourIfStatementAlgFactory_p(0), 
     ourIntrinsicAlgFactory_p(0), 
     ourLabelAlgFactory_p(0), 
+    ourMarkerAlgFactory_p(0), 
     ourPreLoopAlgFactory_p(0), 
     ourSubroutineCallAlgFactory_p(0) 
   {
@@ -103,6 +105,7 @@ namespace xaifBooster {
     if (ourIfStatementAlgFactory_p) delete ourIfStatementAlgFactory_p;
     if (ourIntrinsicAlgFactory_p) delete ourIntrinsicAlgFactory_p;
     if (ourLabelAlgFactory_p) delete ourLabelAlgFactory_p;
+    if (ourMarkerAlgFactory_p) delete ourMarkerAlgFactory_p;
     if (ourPreLoopAlgFactory_p) delete ourPreLoopAlgFactory_p;
     if (ourSubroutineCallAlgFactory_p) delete ourSubroutineCallAlgFactory_p;
   } // end of AlgFactoryManager::~AlgFactoryManager
@@ -130,6 +133,7 @@ namespace xaifBooster {
     resetIfStatementAlgFactory(new IfStatementAlgFactory());
     resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
     resetLabelAlgFactory(new LabelAlgFactory());
+    resetMarkerAlgFactory(new MarkerAlgFactory());
     resetPreLoopAlgFactory(new PreLoopAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
   }
@@ -402,6 +406,18 @@ namespace xaifBooster {
     return ourLabelAlgFactory_p;
   }
 
+  void AlgFactoryManager::resetMarkerAlgFactory(MarkerAlgFactory* anotherMarkerAlgFactory_p){ 
+    if(ourMarkerAlgFactory_p) 
+      delete ourMarkerAlgFactory_p;
+    ourMarkerAlgFactory_p=anotherMarkerAlgFactory_p;
+  }
+
+  MarkerAlgFactory* AlgFactoryManager::getMarkerAlgFactory() const { 
+    if (!ourMarkerAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getMarkerAlgFactory: not set");
+    return ourMarkerAlgFactory_p;
+  }
+
   void AlgFactoryManager::resetPreLoopAlgFactory(PreLoopAlgFactory* anotherPreLoopAlgFactory_p){ 
     if(ourPreLoopAlgFactory_p) 
       delete ourPreLoopAlgFactory_p;
@@ -453,6 +469,7 @@ namespace xaifBooster {
     if (ourIfStatementAlgFactory_p) out << "ourIfStatementAlgFactory_p=" << ourIfStatementAlgFactory_p->debug().c_str() << ",";
     if (ourIntrinsicAlgFactory_p) out << "ourIntrinsicAlgFactory_p=" << ourIntrinsicAlgFactory_p->debug().c_str() << ",";
     if (ourLabelAlgFactory_p) out << "ourLabelAlgFactory_p=" << ourLabelAlgFactory_p->debug().c_str() << ",";
+    if (ourMarkerAlgFactory_p) out << "ourMarkerAlgFactory_p=" << ourMarkerAlgFactory_p->debug().c_str() << ",";
     if (ourPreLoopAlgFactory_p) out << "ourPreLoopAlgFactory_p=" << ourPreLoopAlgFactory_p->debug().c_str() << ",";
     if (ourSubroutineCallAlgFactory_p) out << "ourSubroutineCallAlgFactory_p=" << ourSubroutineCallAlgFactory_p->debug().c_str() << ",";
     out << "]" << std::ends;  
