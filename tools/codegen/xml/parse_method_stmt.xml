@@ -114,8 +114,8 @@
       <CodeGen:DynamicCode hook_ref="3" text="ControlFlowGraph"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="ControlFlowGraph"/>
-      <CodeGen:DynamicCode hook_ref="2" text="our_myArgumentList_XAIFName"/>
+      <CodeGen:DynamicCode hook_ref="1" text="ArgumentList"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="ArgumentList"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>

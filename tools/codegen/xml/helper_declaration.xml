@@ -9,7 +9,7 @@
   <CodeGen:NonRepeatableCodeOrLineBreak text="public:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="22">
+  <CodeGen:RepeatableCode nr_versions="23">
     <CodeGen:CodeTemplate nr_entries="11">
       <CodeGen:StaticCode text="void set"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -89,11 +89,14 @@
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Update"/>
     </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="ArgumentList"/>
+    </CodeGen:CodeVersion>
   </CodeGen:RepeatableCode>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak text="private:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="22" use_versions="3">
+  <CodeGen:RepeatableCode nr_versions="23" use_versions="3">
     <CodeGen:CodeTemplate nr_entries="5">
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="* my"/>

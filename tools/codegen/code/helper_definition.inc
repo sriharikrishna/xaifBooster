@@ -240,3 +240,14 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Update" << " 
 return *myUpdate_p;
 }
 
+void XAIFBaseParserHelper::setArgumentList(ArgumentList& whatToSet) {
+if (myArgumentList_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "ArgumentList" << " item already set");
+myArgumentList_p=&whatToSet;
+}
+ArgumentList& XAIFBaseParserHelper::getArgumentList() const {
+if (!myArgumentList_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "ArgumentList" << " item not set");
+return *myArgumentList_p;
+}
+

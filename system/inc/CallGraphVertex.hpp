@@ -25,6 +25,8 @@ namespace xaifBooster {
 
     void printXMLHierarchy(std::ostream& os) const;
 
+    void printXMLHierarchyImpl(std::ostream& os) const;
+
     std::string debug() const ;
 
     /**

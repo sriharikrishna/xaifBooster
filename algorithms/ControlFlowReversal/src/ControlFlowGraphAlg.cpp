@@ -88,29 +88,15 @@ namespace xaifBoosterControlFlowReversal {
     os << pm.indent()
        << "<"
        << getContaining().ourXAIFName.c_str()
-       << " "
-       << getContaining().our_myId_XAIFName.c_str()
-       << "=\""
-       << getContaining().getId().c_str()
-       << "\" "
-       << getContaining().our_symbolId_XAIFName.c_str()
-       << "=\""
-       << getContaining().getSymbolReference().getSymbol().getId().c_str()
-       << "\" "
-       << getContaining().our_scopeId_XAIFName.c_str()
-       << "=\""
-       << getContaining().getSymbolReference().getScope().getId().c_str()
-       << "\" "
+       << " ";
+    getContaining().printAttributes(os);
+    os << " "
        << getContaining().our_myActiveFlag_XAIFName.c_str()
        << "=\""
        << getContaining().getActiveFlag()
-       << "\" "
-       << getContaining().ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str()
-       << "=\""
-       << getContaining().getAnnotation().c_str()
        << "\">"
        << std::endl;
-    getContaining().printXMLHierarchyArgumentList(os);
+    getContaining().getArgumentList().printXMLHierarchy(os);
 
     myTransformedControlFlowGraph->printXMLHierarchy(os);
 
