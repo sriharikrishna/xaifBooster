@@ -1,4 +1,5 @@
 #include <sstream>
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <list>
@@ -11,7 +12,7 @@
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/VertexElim.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 
-enum Heuristic{VERTEX, EDGE, FORWARD, REVERSE, MARKOWITZ, SIBLING, SIBLING2, SUCCPRED};
+enum Heuristic{VERTEX, EDGE, FACE, FORWARD, REVERSE, MARKOWITZ, SIBLING, SIBLING2, SUCCPRED};
 
 using namespace MemOpsTradeoffPreaccumulation;
 
@@ -25,24 +26,126 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     //run QuickRegression.bash at /home/lyonsam/Argonne/xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/test
     // and make sure the results are correct.  then push, they will be the standard from then on 
 
-    
-
     if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)){
       GraphVizDisplay::show(theOriginal,"flattened");
     }
+
+    //input from file to construct heuristic sequence
+    std::list<Heuristic> heuristicEnumSequence;
+    bool usable = true;
+
+    std::ifstream hfile("HeuristicList.txt");
+    if(!hfile){
+      std::cout << "Error opening heuristic file, using default mode and heuristics" << std::endl;
+      usable = false;
+    }
+
+    else{
+      char line[10];
+      while(hfile.getline(line, 10)){
+	std::string theline = line;
+ 	if(theline == "VERTEX"){
+	  if(heuristicEnumSequence.size() == 0){heuristicEnumSequence.push_back(VERTEX);}
+	  else{
+	    usable = false;
+	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	  }
+	}// end if VERTEX
+	else if(theline == "EDGE"){
+	  if(heuristicEnumSequence.size() == 0){heuristicEnumSequence.push_back(EDGE);}
+	  else{
+	    usable = false;
+	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	  }
+	}// end if EDGE
+	else if(theline == "FACE"){
+	  if(heuristicEnumSequence.size() == 0){heuristicEnumSequence.push_back(FACE);}
+	  else{
+	    usable = false;
+	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	  }
+	}// end if FACE
+	else if(theline == "FORWARD"){
+	  if(heuristicEnumSequence.size() == 0){
+	    usable = false;
+	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	  }
+	  else{heuristicEnumSequence.push_back(FORWARD);}
+	}// end if FORWARD
+	else if(theline == "REVERSE"){
+	  if(heuristicEnumSequence.size() == 0){
+	    usable = false;
+	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	  }
+	  else{heuristicEnumSequence.push_back(REVERSE);}
+	}// end if REVERSE
+	else if(theline == "MARKOWITZ"){
+	  if(heuristicEnumSequence.size() == 0){
+	    usable = false;
+	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	  }
+	  else{heuristicEnumSequence.push_back(MARKOWITZ);}
+	}// end if MARKOWITZ
+	else if(theline == "SIBLING"){
+	  if(heuristicEnumSequence.size() == 0){
+	    usable = false;
+	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	  }
+	  else{heuristicEnumSequence.push_back(SIBLING);}
+	}// end if SIBLING
+	else if(theline == "SIBLING2"){
+	  if(heuristicEnumSequence.size() == 0){
+	    usable = false;
+	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	  }
+	  else{heuristicEnumSequence.push_back(SIBLING2);}
+	}// end if SIBLING2
+	else if(theline == "SUCCPRED"){
+	  if(heuristicEnumSequence.size() == 0){
+	    usable = false;
+	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	  }
+	  else{heuristicEnumSequence.push_back(SUCCPRED);}
+	}// end if SUCCPRED
+	else{
+ 	  usable = false;
+ 	  std::cout << "Error reading heuristic file, using default mode and heuristics";
+        }// end else
+	if(!usable){break;}
+      }// end while
+    }// end else
+    hfile.close();
+    
+    if(!usable){
+      heuristicEnumSequence.clear();
+      heuristicEnumSequence.push_back(EDGE);
+      heuristicEnumSequence.push_back(MARKOWITZ);
+      heuristicEnumSequence.push_back(SIBLING2);
+      heuristicEnumSequence.push_back(REVERSE);
+    }// end if usable
+
+
+
+    if(heuristicEnumSequence.front() == FACE){
+
+
+
+
+    }// end if face
+
 
     LinearizedComputationalGraphCopy theCopy;
     //declaration of lists to hold information about the last vertex/edge eliminated
     LinearizedComputationalGraphCopy::VertexPointerList thePredList;
     LinearizedComputationalGraphCopy::VertexPointerList theSuccList;
-    unsigned int i = 0, s = 0, t = 0, numOriginalVertices = theOriginal.numVertices();
+    unsigned int i = 0, s = 0, t = 0;
     struct vertexMap {
       const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* original;
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* copy;
       bool topsorted;
     };
     //vertexmap maps the copy to the original graph
-    vertexMap copymap[numOriginalVertices];
+    vertexMap copymap[theOriginal.numVertices()];
     
 
     // Copy Vertices
@@ -105,7 +208,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
     //create a topsorted vertex list
     i = 0;
-    while(i < numOriginalVertices){  
+    while(i < theOriginal.numVertices()){  
       if(!copymap[i].topsorted){
 	LinearizedComputationalGraphCopy::InEdgeIteratorPair tsp (theCopy.getInEdgesOf(*copymap[i].copy));
 	LinearizedComputationalGraphCopy::InEdgeIterator ti (tsp.first), t_end (tsp.second);
@@ -130,65 +233,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	i++;
       }// end else
     }// end while
-
-    //read in config file
-    // default :edge/mark/dataloc/reverse
-
-    //input from file to construct heuristic sequence
-    std::list<Heuristic> heuristicEnumSequence;
-    //bool usable = true;
-
-    // std::ifstream hfile;
-//     hfile.open("MemOpsTradeoffPreaccumulation/HeuristicList.txt");
-//     if(hfile.fail()){
-//       cout << "Error opening heuristic file, using default" << std::endl;
-//       usable = false;
-//     }
-//     else{
-//       while(!hfile.eof()){
-
-// 	switch(hfile.getline()){
-//           case 'VERTEX':
-// 	    heuristicEnumSequence.push_back(VERTEX);
-// 	    break;
-//           case 'EDGE':
-// 	    heuristicEnumSequence.push_back(EDGE);
-// 	    break;
-//           case 'FORWARD':
-// 	    heuristicEnumSequence.push_back(FORWARD);
-// 	    break;
-//           case 'REVERSE':
-// 	    heuristicEnumSequence.push_back(REVERSE);
-// 	    break;
-//           case 'MARKOWITZ':
-// 	    heuristicEnumSequence.push_back(MARKOWITZ);
-// 	    break;
-//           case 'SIBLING':
-// 	    heuristicEnumSequence.push_back(SIBLING);
-// 	    break;
-//           case 'SIBLING2':
-// 	    heuristicEnumSequence.push_back(SIBLING2);
-// 	    break;
-//           case 'SUCCPRED':
-// 	    heuristicEnumSequence.push_back(SUCCPRED);
-// 	    break;
-//           default:
-// 	    usable = false;
-// 	    cout << "Error reading heuristic file, using default" << std::endl;
-//         }// end switch
-
-// 	if(!usable){break;}
-//     }// end while
-
-//     hfile.close();
-    
-//     if(!usable){
-      heuristicEnumSequence.clear();
-      heuristicEnumSequence.push_back(EDGE);
-      heuristicEnumSequence.push_back(MARKOWITZ);
-      heuristicEnumSequence.push_back(SIBLING2);
-      heuristicEnumSequence.push_back(REVERSE);
-      //}
 
     if(heuristicEnumSequence.front() == VERTEX){
 
@@ -461,6 +505,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
       GraphVizDisplay::show(theCopy,"bipartite");
     }
+
   } // end compute_elimination_sequence
   
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
