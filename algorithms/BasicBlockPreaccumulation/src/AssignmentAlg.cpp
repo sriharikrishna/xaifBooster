@@ -187,9 +187,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		      << theLCGVertex_p->debug().c_str());
 	    if ((*ExpressionVertexI).isArgument()) {
 	      Variable& theVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
-	      if (theRHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED)
+	      if (theRHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) { 
 		theVertexIdentificationListActiveRHS.addElement(theVariable,
-							  theLCGVertex_p);
+								theLCGVertex_p);
+		DBG_MACRO(DbgGroup::DATA,
+			  "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) added to RHS: "
+			  << theVertexIdentificationListActiveRHS.debug().c_str());
+	      }
 	      theLCGVertex_p->setRHSVariable(theVariable);
 	    } // end if 
 	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
@@ -291,7 +295,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end if 
       // we need to keep the lists mutually exclusive
       // a left hand side cannot occur in the right hand side list
+      DBG_MACRO(DbgGroup::DATA,
+		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) before remove from RHS: "
+		<< theVertexIdentificationListActiveRHS.debug().c_str());
       theVertexIdentificationListActiveRHS.removeIfIdentifiable(theLHS);
+      DBG_MACRO(DbgGroup::DATA,
+		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) after remove from RHS: "
+		<< theVertexIdentificationListActiveRHS.debug().c_str());
       // a known active lhs cannot have a passive idenitification
       theVertexIdentificationListPassive.removeIfIdentifiable(theLHS);
       // an overwritten LHS needs to refer to the respective last definition

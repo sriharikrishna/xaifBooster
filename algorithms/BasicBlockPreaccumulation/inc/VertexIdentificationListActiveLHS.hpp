@@ -26,6 +26,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual void addElement(const Variable& theVariable,
 			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
 
+    virtual std::string debug() const;
+
   private: 
 
     class ListItem: public VertexIdentificationListActive::ListItem { 
@@ -36,6 +38,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	       const DuUdMapKey& aDuUdMapKey,
 	       PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p,
 	       DuUdMap::StatementId aStatementId);
+
+      virtual std::string debug() const;
 
       /**
        * if set, it is the statement id of the assignment in which this 

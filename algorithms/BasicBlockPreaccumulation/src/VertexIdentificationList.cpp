@@ -58,7 +58,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	<< "myDuUdMapKey="
 	<< myDuUdMapKey.debug().c_str()
 	<< "]" 
-	  << std::ends;
+	<< std::ends;
     return out.str();
   }
 

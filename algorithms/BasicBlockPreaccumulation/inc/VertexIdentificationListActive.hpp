@@ -90,6 +90,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	       const DuUdMapKey& aDuUdMapKey,
 	       PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p);
 
+      virtual std::string debug() const;
+
       /**
        * the pointer to a vertex in the PrivateLinearizedComputationalGraph
        * always set, 

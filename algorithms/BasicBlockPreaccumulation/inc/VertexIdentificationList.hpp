@@ -58,6 +58,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        */
       ListItem();
 
+      /**
+       * no def
+       */
+      ListItem(const ListItem&);
+
+      /**
+       * no def
+       */
+      ListItem& operator=(const ListItem&);
+
       const AliasMapKey& myAliasMapKey;
       const DuUdMapKey& myDuUdMapKey;
       
