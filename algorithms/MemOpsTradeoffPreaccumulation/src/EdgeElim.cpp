@@ -280,10 +280,12 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       }// end else
     }// end outedge iteration
 
+    //if the front elimination isolates the vertex, delete the vertex (which automatically deletes the edge)
     if(theCopy.numInEdgesOf(theCopy.getTargetOf(theEdge)) == 1){
       theCopy.removeFromVertexList(theCopy.getTargetOf(theEdge));
       theCopy.removeAndDeleteVertex(theCopy.getTargetOf(theEdge));
     }// end if
+    // if the elimination does not isolate the target vertex, we simply delete the edge
     else{
       theCopy.removeAndDeleteEdge(theEdge);
     }
@@ -363,19 +365,19 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     }// end inedge iteration
 
     if(theCopy.numOutEdgesOf(theCopy.getSourceOf(theEdge)) == 1){
-     
       const LinearizedComputationalGraphCopy::ConstVertexPointerList& copyDependents = theCopy.getDependentList();
-
       // if the now isolated vertex is not a dependent
       if(find(copyDependents.begin(), copyDependents.end(), &theCopy.getSourceOf(theEdge)) == copyDependents.end()){
 	theCopy.removeFromVertexList(theCopy.getSourceOf(theEdge));
 	theCopy.removeAndDeleteVertex(theCopy.getSourceOf(theEdge));
       }// end if
+      // is the source of the edge is a dependent vertex
       else{
 	theCopy.removeAndDeleteEdge(theEdge);
       }// end else
 
     }// end if
+    // if the vertex is not now isolated
     else{
       theCopy.removeAndDeleteEdge(theEdge);
     }// end else

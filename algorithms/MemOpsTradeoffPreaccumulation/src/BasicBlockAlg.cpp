@@ -23,6 +23,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
   void BasicBlockAlg::compute_elimination_sequence(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theOriginal,
 						   int mode,
 						   xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
+
     //readme
 
     //run QuickRegression.bash at /home/lyonsam/Argonne/xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/test
@@ -492,7 +493,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  }// end switch heuristicEnumSequence
 	  heuristicEnumSequence.pop_front();
 	}// end while
-
       
 	edgeHeuristicFunc func_pt;
 	std::list<edgeHeuristicFunc>::iterator ehiter;
@@ -503,17 +503,24 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  sequencedump.open("f.txt");
 	}// end if TEMPORARY
 
-	//create list of edges with associated elim directions
+	//create list of possible edge eliminations with associated elim directions
 	LinearizedComputationalGraphCopy::EdgeIteratorPair edgelist (theCopy.edges());
 	LinearizedComputationalGraphCopy::EdgeIterator eli (edgelist.first), ele (edgelist.second);
 	for(; eli != ele; ++eli){
-	  if(theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0){//can be front eliminated
-	    theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
-	  }// end if
+	  if(theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0){
+	    // if the target of the edge is not a dependent and has inedges
+	    const LinearizedComputationalGraphCopy::ConstVertexPointerList& depCheck = theCopy.getDependentList();
+	    if(find(depCheck.begin(), depCheck.end(), &theCopy.getTargetOf(*eli)) == depCheck.end()){//can be front eliminated
+	      theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
+	    }// end if target is not dependent
+	  }// end if target has outedges
+
+	  //if the source has inedges
 	  if(theCopy.numInEdgesOf(theCopy.getSourceOf(*eli)) > 0){//can be back eliminated
 	    theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::BACK);
 	  }// end if
 	}// end for
+
 	LinearizedComputationalGraphCopy::EdgePointerList theEdgeList = theCopy.getEdgeList();
 
 	//this is the elimination loop, it eliminates one vertex per iteration
@@ -572,18 +579,25 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	    THROW_LOGICEXCEPTION_MACRO("More than one edge in list of possible eliminations");
 	  }// end else
 
-	  //create list of edges with associated elim directions
+	  //create list of possible edge eliminations with associated elim directions
 	  theCopy.clearEdgeList();
 	  LinearizedComputationalGraphCopy::EdgeIteratorPair edgelist (theCopy.edges());
 	  LinearizedComputationalGraphCopy::EdgeIterator eli (edgelist.first), ele (edgelist.second);
 	  for(; eli != ele; ++eli){
-	    if(theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0){//can be front eliminated
-	      theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
-	    }// end if
+	    if(theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0){
+	      // if the target of the edge is not a dependent and has inedges
+	      const LinearizedComputationalGraphCopy::ConstVertexPointerList& depCheck = theCopy.getDependentList();
+	      if(find(depCheck.begin(), depCheck.end(), &theCopy.getTargetOf(*eli)) == depCheck.end()){//can be front eliminated
+		theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
+	      }// end if target is not dependent
+	    }// end if target has outedges
+
+	    //if the source has inedges
 	    if(theCopy.numInEdgesOf(theCopy.getSourceOf(*eli)) > 0){//can be back eliminated
 	      theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::BACK);
 	    }// end if
 	  }// end for
+	  
 	  theEdgeList = theCopy.getEdgeList();
 
 	}// end while
@@ -648,12 +662,10 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::printXMLHierarchy(os);
   }
 
-  std::string BasicBlockAlg::debug () const { 
-    std::ostringstream out;
-    out << "xaifBoosterMemOpsTradeoffPreaccumulation::BasicBlockAlg[" << this
- 	<< "]" << std::ends;  
-    return out.str();
-  } // end of BasicBlockAlg::debug
+  std::string
+  BasicBlockAlg::debug() const {
+    return xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::debug();
+  }
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::traverseToChildren(anAction_c);
