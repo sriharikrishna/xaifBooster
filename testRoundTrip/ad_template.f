@@ -15,11 +15,23 @@
 
           select case (version)
             case (1) 
+! original function
 !$PLACEHOLDER_PRAGMA$ id=1
+! store results
+!$PLACEHOLDER_PRAGMA$ id=6
             case (2) 
+! store arguments
+!$PLACEHOLDER_PRAGMA$ id=4
             case (3) 
+! restore arguments
+!$PLACEHOLDER_PRAGMA$ id=5
+! tape
 !$PLACEHOLDER_PRAGMA$ id=2
+! adjoint
 !$PLACEHOLDER_PRAGMA$ id=3
+            case (4) 
+! restore results
+!$PLACEHOLDER_PRAGMA$ id=6
           end select
 
         end subroutine template
