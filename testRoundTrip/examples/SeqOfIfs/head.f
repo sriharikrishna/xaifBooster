@@ -3,14 +3,14 @@
 	  double precision, dimension(2), intent(out) :: y
 
           if (x(1)<=x(2)) then 
-            if (x(1)==x(2)) then 
-              y(1)=x(1)*x(1)
-            else
-              y(1)=x(2)-x(1)
-            end if
+            y(1)=x(2)-x(1)
           else
             y(1)=x(1)-x(2)
           end if
-          y(2)=y(1)
+          if (y(1)==0) then 
+            y(2)=x(1)
+          else
+            y(2)=y(1)
+          end if
 
 	end subroutine
