@@ -75,6 +75,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     theNewAssignment_p->setId("tape_adjoint_constant_assignment");
     myBasicBlockElementList.push_back(theNewAssignment_p);
     Constant* theConstantRHS_p(new Constant(theConstant.getType(),false));
+    theConstantRHS_p->setFromString(theConstant.toString());
     theConstantRHS_p->setId(theNewAssignment_p->getRHS().getNextVertexId());
     theNewAssignment_p->getRHS().supplyAndAddVertexInstance(*theConstantRHS_p);
     // create a new symbol and add a new VariableSymbolReference in the Variable
@@ -122,7 +123,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	      aBaseConstant.setint(1);
 	      const Assignment& theConstantAssignment(addConstantAssignment(aBaseConstant));
 	      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall(addInlinableSubroutineCall("Saxpy"));
-	      theSaxpyCall.setId("inline_saxpy");
+	      theSaxpyCall.setId("inline_saxpy_with_constant_1");
 	      theConstantAssignment.getLHS().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(1).getVariable());
 	      (*entryPListI)->getTarget().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(2).getVariable());
 	      (*aFactorListI).getSource().copyMyselfInto(theSaxpyCall.addArgumentSubstitute(3).getVariable());
