@@ -3,10 +3,8 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlg.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  ALG_FACTORY_DEF_MACRO(CallGraph,xaifBooster::CallGraphAlgBase,CallGraphAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(CallGraph,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 

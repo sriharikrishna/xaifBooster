@@ -17,10 +17,12 @@ namespace xaifBoosterLinearization {
     ExpressionAlgBase(theContainingExpression) { 
   }
 
-  std::string 
-  ExpressionAlg::debug() const { 
-    return std::string("ExpressionAlg");
-  }
+  std::string ExpressionAlg::debug () const { 
+    std::ostringstream out;
+    out << "xaifBoosterLinearization::ExpressionAlg[" << this
+ 	<< "]" << std::ends;  
+    return out.str();
+  } // end of ExpressionAlg::debug
 
   void
   ExpressionAlg::printXMLHierarchy(std::ostream& os) const { 

@@ -4,10 +4,8 @@
 #include "xaifBooster/system/inc/EndBranchAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(EndBranch,xaifBooster::EndBranchAlgBase,xaifBooster::EndBranchAlgFactory);
+  DERIVED_ALG_FACTORY_DECL_MACRO(EndBranch,xaifBooster::EndBranchAlgFactory,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 #endif

@@ -507,10 +507,12 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::printXMLHierarchy(os);
   }
 
-  std::string
-  BasicBlockAlg::debug() const {
-    return xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::debug();
-  }
+  std::string BasicBlockAlg::debug () const { 
+    std::ostringstream out;
+    out << "xaifBoosterMemOpsTradeoffPreaccumulation::BasicBlockAlg[" << this
+ 	<< "]" << std::ends;  
+    return out.str();
+  } // end of BasicBlockAlg::debug
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::traverseToChildren(anAction_c);

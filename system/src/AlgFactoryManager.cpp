@@ -412,5 +412,56 @@ namespace xaifBooster {
     return ourCallGraphAlgFactory_p;
   }
 
+  std::string AlgFactoryManager::debug() const {
+    std::ostringstream out;
+    out << "AlgFactoryManager[" << this; 
+    if (ourArgumentAlgFactory_p) 
+      out << "ourArgumentAlgFactory_p=" << ourArgumentAlgFactory_p->debug().c_str() << ",";
+    if (ourAssignmentAlgFactory_p) 
+      out << "ourAssignmentAlgFactory_p=" << ourAssignmentAlgFactory_p->debug().c_str() << ",";
+    if (ourBasicBlockAlgFactory_p)
+      out << "ourBasicBlockAlgFactory_p=" << ourBasicBlockAlgFactory_p->debug().c_str() << ",";
+    if (ourBooleanOperationAlgFactory_p)
+      out << "ourBooleanOperationAlgFactory_p=" << ourBooleanOperationAlgFactory_p->debug().c_str() << ",";
+    if (ourConstantAlgFactory_p)
+      out << "ourConstantAlgFactory_p=" << ourConstantAlgFactory_p->debug().c_str() << ",";
+    if (ourExpressionAlgFactory_p)
+      out << "ourExpressionAlgFactory_p=" << ourExpressionAlgFactory_p->debug().c_str() << ",";
+    if (ourExpressionEdgeAlgFactory_p)
+      out << "ourExpressionEdgeAlgFactory_p=" << ourExpressionEdgeAlgFactory_p->debug().c_str() << ",";
+    if (ourIntrinsicAlgFactory_p)
+      out << "ourIntrinsicAlgFactory_p=" << ourIntrinsicAlgFactory_p->debug().c_str() << ",";
+    if (ourCallGraphAlgFactory_p)
+      out << "ourCallGraphAlgFactory_p=" << ourCallGraphAlgFactory_p->debug().c_str() << ",";
+    if (ourControlFlowGraphAlgFactory_p)
+      out << "ourControlFlowGraphAlgFactory_p=" << ourControlFlowGraphAlgFactory_p->debug().c_str() << ",";
+    if (ourControlFlowGraphVertexAlgFactory_p)
+      out << "ourControlFlowGraphVertexAlgFactory_p=" << ourControlFlowGraphVertexAlgFactory_p->debug().c_str() << ",";
+    if (ourIfStatementAlgFactory_p)
+      out << "ourIfStatementAlgFactory_p=" << ourIfStatementAlgFactory_p->debug().c_str() << ",";
+    if (ourPreLoopAlgFactory_p)
+      out << "ourPreLoopAlgFactory_p=" << ourPreLoopAlgFactory_p->debug().c_str() << ",";
+    if (ourForLoopAlgFactory_p)
+      out << "ourForLoopAlgFactory_p=" << ourForLoopAlgFactory_p->debug().c_str() << ",";
+    if (ourEntryAlgFactory_p)
+      out << "ourEntryAlgFactory_p=" << ourEntryAlgFactory_p->debug().c_str() << ",";
+    if (ourExitAlgFactory_p)
+      out << "ourExitAlgFactory_p=" << ourExitAlgFactory_p->debug().c_str() << ",";
+    if (ourEndLoopAlgFactory_p)
+      out << "ourEndLoopAlgFactory_p=" << ourEndLoopAlgFactory_p->debug().c_str() << ",";
+    if (ourBranchAlgFactory_p)
+      out << "ourBranchAlgFactory_p=" << ourBranchAlgFactory_p->debug().c_str() << ",";
+    if (ourEndBranchAlgFactory_p)
+      out << "ourEndBranchAlgFactory_p=" << ourEndBranchAlgFactory_p->debug().c_str() << ",";
+    if (ourLabelAlgFactory_p)
+      out << "ourLabelAlgFactory_p=" << ourLabelAlgFactory_p->debug().c_str() << ",";
+    if (ourGotoAlgFactory_p)
+      out << "ourGotoAlgFactory_p=" << ourGotoAlgFactory_p->debug().c_str() << ",";
+    if (ourCallGraphVertexAlgFactory_p)
+      out << "ourCallGraphVertexAlgFactory_p=" << ourCallGraphVertexAlgFactory_p->debug().c_str() << ",";
+    out << "]" << std::ends;  
+    return out.str();
+  } // end of AlgFactoryManager::~AlgFactoryManager
+
 }
 

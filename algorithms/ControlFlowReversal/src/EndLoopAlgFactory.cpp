@@ -3,10 +3,8 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/EndLoopAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/EndLoopAlg.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  ALG_FACTORY_DEF_MACRO(EndLoop,xaifBooster::EndLoopAlgBase,EndLoopAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(EndLoop,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 

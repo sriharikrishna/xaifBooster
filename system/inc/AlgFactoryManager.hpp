@@ -2,6 +2,7 @@
 #define _ALGFACTORYMANAGER_INCLUDE_
 
 #include "xaifBooster/utils/inc/Mutex.hpp"
+#include "xaifBooster/utils/inc/Debuggable.hpp"
 
 namespace xaifBooster { 
 
@@ -32,7 +33,7 @@ class CallGraphVertexAlgFactory;
    * the singleton class for 
    * setting algorithm factory pointers
    */
-  class AlgFactoryManager { 
+  class AlgFactoryManager : public Debuggable { 
 
   public: 
 
@@ -68,6 +69,8 @@ class CallGraphVertexAlgFactory;
     BranchAlgFactory* getBranchAlgFactory() const ;
     EndBranchAlgFactory* getEndBranchAlgFactory() const ;
     CallGraphVertexAlgFactory* getCallGraphVertexAlgFactory() const ;
+
+    virtual std::string debug() const; 
 
   protected: 
     

@@ -3,10 +3,8 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/BranchAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/BranchAlg.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  ALG_FACTORY_DEF_MACRO(Branch,xaifBooster::BranchAlgBase,BranchAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Branch,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 

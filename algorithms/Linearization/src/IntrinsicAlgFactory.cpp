@@ -3,8 +3,6 @@
 #include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlg.hpp"
 
-namespace xaifBoosterLinearization {  
 
-  ALG_FACTORY_DEF_MACRO(Intrinsic,xaifBooster::IntrinsicAlgBase,IntrinsicAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Intrinsic,xaifBoosterLinearization);
 
-} // end of namespace 

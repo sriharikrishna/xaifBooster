@@ -12,10 +12,12 @@ namespace xaifBoosterLinearization {
 
   ArgumentAlg::~ArgumentAlg() {};
 
-  std::string 
-  ArgumentAlg::debug() const { 
-    return std::string("ArgumentAlg");
-  }
+  std::string ArgumentAlg::debug () const { 
+    std::ostringstream out;
+    out << "xaifBoosterLinearization::ArgumentAlg[" << this
+ 	<< "]" << std::ends;  
+    return out.str();
+  } // end of ArgumentAlg::debug
 
   void
   ArgumentAlg::printXMLHierarchy(std::ostream& os) const { 

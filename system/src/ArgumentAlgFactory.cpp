@@ -2,8 +2,5 @@
 #include "xaifBooster/system/inc/ArgumentAlgBase.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 
-namespace xaifBooster {  
+  BASE_ALG_FACTORY_DEF_MACRO(Argument);
 
-  ALG_FACTORY_DEF_MACRO(Argument,ArgumentAlgBase,ArgumentAlgBase);
-
-} // end of namespace 

@@ -3,8 +3,6 @@
 #include "xaifBooster/algorithms/Linearization/inc/ConstantAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ConstantAlg.hpp"
 
-namespace xaifBoosterLinearization {  
 
-  ALG_FACTORY_DEF_MACRO(Constant,xaifBooster::ConstantAlgBase,ConstantAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Constant,xaifBoosterLinearization);
 
-} // end of namespace 

@@ -3,10 +3,8 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  ALG_FACTORY_DEF_MACRO(Assignment,xaifBooster::AssignmentAlgBase,AssignmentAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulation);
 
-} // end of namespace 
 
 

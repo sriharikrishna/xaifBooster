@@ -188,7 +188,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string BasicBlockAlg::debug () const { 
     std::ostringstream out;
-    out << "BasicBlockAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg[" << this
 	<< ",myContaining="
 	<< getContaining().debug().c_str()
 	<< ",myUniqueSequencePList=";

@@ -12,10 +12,12 @@ namespace xaifBoosterLinearization {
 
   IntrinsicAlg::~IntrinsicAlg() {};
 
-  std::string 
-  IntrinsicAlg::debug() const { 
-    return std::string("IntrinsicAlg");
-  }
+  std::string IntrinsicAlg::debug () const { 
+    std::ostringstream out;
+    out << "xaifBoosterLinearization::IntrinsicAlg[" << this
+ 	<< "]" << std::ends;  
+    return out.str();
+  } // end of IntrinsicAlg::debug
 
   void
   IntrinsicAlg::printXMLHierarchy(std::ostream& os) const { 

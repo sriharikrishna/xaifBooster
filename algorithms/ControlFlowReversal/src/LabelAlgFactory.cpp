@@ -3,10 +3,8 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/LabelAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/LabelAlg.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  ALG_FACTORY_DEF_MACRO(Label,xaifBooster::LabelAlgBase,LabelAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Label,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 

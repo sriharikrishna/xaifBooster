@@ -3,8 +3,6 @@
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlg.hpp"
 
-namespace xaifBoosterLinearization {  
 
-  ALG_FACTORY_DEF_MACRO(Assignment,xaifBooster::AssignmentAlgBase,AssignmentAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Assignment,xaifBoosterLinearization);
 
-} // end of namespace 
