@@ -19,6 +19,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
   void BasicBlockAlg::compute_elimination_sequence(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theOriginal,
 						   int mode,
+						   double, // consolidate interfaces
 						   xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
 
     ConceptuallyStaticInstances::HeuristicList HeuristicSequence = ConceptuallyStaticInstances::instance()->getList();
@@ -532,7 +533,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
     xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) {
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::compute_elimination_sequence=&compute_elimination_sequence; 
+    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::ourCompute_elimination_sequence_fp=&compute_elimination_sequence; 
   }
 
   void

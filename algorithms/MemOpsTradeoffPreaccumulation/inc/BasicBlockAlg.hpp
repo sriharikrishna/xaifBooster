@@ -68,6 +68,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     static void compute_elimination_sequence(
       const LinearizedComputationalGraph& theOriginal,
       int mode,
+      double, //consolidate interfaces
       JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
 
   private:
