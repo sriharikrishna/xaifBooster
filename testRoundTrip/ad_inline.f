@@ -110,6 +110,26 @@ C $OpenAD$ END DECLS
         end subroutine 
 
 
+        subroutine cp_arg_store_i(i)
+C $OpenAD$ INLINE DECLS
+          implicit none
+          integer :: i
+C $OpenAD$ END DECLS
+          theArgIStackoffset=theArgIStackoffset+1
+          theArgIStack(theArgIStackoffset)=i
+        end subroutine 
+
+
+        subroutine cp_arg_restore_i(i)
+C $OpenAD$ INLINE DECLS
+          implicit none
+          integer :: i
+C $OpenAD$ END DECLS
+          i=theArgIStack(theArgIStackoffset)
+          theArgIStackoffset=theArgIStackoffset-1
+        end subroutine 
+
+
         subroutine cp_arg_store_v(x,cp_loop_variable)
 C $OpenAD$ INLINE DECLS
           implicit none
@@ -151,6 +171,26 @@ C $OpenAD$ INLINE DECLS
 C $OpenAD$ END DECLS
           x%v=theResStack(theResStackoffset)
           theResStackoffset=theResStackoffset-1
+        end subroutine 
+
+
+        subroutine cp_res_store_i(i)
+C $OpenAD$ INLINE DECLS
+          implicit none
+          integer :: i
+C $OpenAD$ END DECLS
+          theResIStackoffset=theResIStackoffset+1
+          theResIStack(theResIStackoffset)=i
+        end subroutine 
+
+
+        subroutine cp_res_restore_i(i)
+C $OpenAD$ INLINE DECLS
+          implicit none
+          integer :: i
+C $OpenAD$ END DECLS
+          i=theResIStack(theResIStackoffset)
+          theResIStackoffset=theResIStackoffset-1
         end subroutine 
 
 
@@ -227,7 +267,7 @@ C $OpenAD$ END DECLS
         end subroutine 
 
 
-        subroutine reset_mode()
+        subroutine restore_mode()
 C $OpenAD$ INLINE DECLS
           use OpenAD_rev
           implicit none
