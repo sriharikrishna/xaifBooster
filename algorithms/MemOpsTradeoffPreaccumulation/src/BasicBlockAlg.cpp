@@ -181,6 +181,17 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       unsigned int depindex = 0;
       for(; copymap[depindex].copy != &theCopy.getTargetOf(*ci); depindex++){
       }
+      //check to see if the edge was an original edge, if so, create a JAE comprised of one vertex for it
+      if((*ci).getRefType() == MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopyEdge::TO_ORIGINAL_EDGE){
+	MemOpsTradeoffPreaccumulation::JacobianAccumulationExpressionCopy* theNewExpression = 
+	  new MemOpsTradeoffPreaccumulation::JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
+	
+       	xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& orig = ((*theNewExpression).myExpression).addVertex();
+	orig.setExternalReference((*ci).getOriginalRef());
+	(*theNewExpression).setMaximal(orig);
+	(*ci).setJacobianRef(theNewExpression);
+      }// end if
+
       (((*ci).getJacobianRef()).myExpression).setJacobianEntry(*(copymap[depindex].original), *(copymap[indepindex].original));
     }// end for
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
@@ -331,7 +342,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
          GraphVizDisplay::show(theCopy,"bipartite");
     }
-
   }// end elim_vertex
 
   void BasicBlockAlg::front_elim_edge(
