@@ -97,6 +97,8 @@
         </xaif:Update>
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
+        <xaif:InlinableSubroutineCall subroutine_name="reverse_mode" statement_id="inline_reverse_mode">
+        </xaif:InlinableSubroutineCall>
         <xaif:SubroutineCall statement_id="reverse_call" symbol_id="my_add" scope_id="1" active="1">
           <xaif:Argument position="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
@@ -108,6 +110,8 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
           </xaif:Argument>
         </xaif:SubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="restore_mode" statement_id="inline_restore_mode">
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_24" scope_id="2"/>
