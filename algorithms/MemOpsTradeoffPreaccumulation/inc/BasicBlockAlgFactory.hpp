@@ -4,10 +4,8 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/AlgFactoryManager.hpp"
 
-namespace xaifBoosterMemOpsTradeoffPreaccumulation {  
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBooster::BasicBlockAlgBase,xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgFactory);
+  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgFactory,xaifBoosterMemOpsTradeoffPreaccumulation);
 
-} // end of namespace 
 
 #endif

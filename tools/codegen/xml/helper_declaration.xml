@@ -9,7 +9,7 @@
   <CodeGen:NonRepeatableCodeOrLineBreak text="public:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="22">
+  <CodeGen:RepeatableCode nr_versions="26">
     <CodeGen:CodeTemplate nr_entries="11">
       <CodeGen:StaticCode text="void set"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -63,6 +63,9 @@
       <CodeGen:DynamicCode hook_ref="1" text="ForLoop"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Branch"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="IfStatement"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -89,11 +92,20 @@
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Update"/>
     </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="ArgumentList"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Goto"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Label"/>
+    </CodeGen:CodeVersion>
   </CodeGen:RepeatableCode>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak text="private:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="22" use_versions="3">
+  <CodeGen:RepeatableCode nr_versions="26" use_versions="3">
     <CodeGen:CodeTemplate nr_entries="5">
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="* my"/>

@@ -1,5 +1,5 @@
-#ifndef _ARGUMENTSUBSTITUTE_INCLUDE_
-#define _ARGUMENTSUBSTITUTE_INCLUDE_
+#ifndef _XAIFBOOSTERINLINABLEXMLREPRESENTATION_ARGUMENTSUBSTITUTE_INCLUDE_
+#define _XAIFBOOSTERINLINABLEXMLREPRESENTATION_ARGUMENTSUBSTITUTE_INCLUDE_
 
 #include <list>
 
@@ -7,7 +7,9 @@
 
 #include "xaifBooster/system/inc/Variable.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterInlinableXMLRepresentation { 
 
   class ArgumentSubstitute : public XMLPrintable {
   public:
@@ -47,6 +49,6 @@ namespace xaifBooster {
     
   }; // end of class ArgumentSubstitute
  
-} // end of namespace xaifBooster
+} // end of namespace
                                                                      
 #endif

@@ -2,6 +2,7 @@
 #define _ALGFACTORYMANAGER_INCLUDE_
 
 #include "xaifBooster/utils/inc/Mutex.hpp"
+#include "xaifBooster/utils/inc/Debuggable.hpp"
 
 namespace xaifBooster { 
 
@@ -13,6 +14,7 @@ class ConstantAlgFactory;
 class ExpressionAlgFactory;
 class ExpressionEdgeAlgFactory;
 class IntrinsicAlgFactory;
+class CallGraphAlgFactory;
 class ControlFlowGraphAlgFactory;
 class ControlFlowGraphVertexAlgFactory;
 class IfStatementAlgFactory;
@@ -20,12 +22,18 @@ class PreLoopAlgFactory;
 class ForLoopAlgFactory;
 class EntryAlgFactory;
 class ExitAlgFactory;
+class EndLoopAlgFactory;
+class GotoAlgFactory;
+class LabelAlgFactory;
+class BranchAlgFactory;
+class EndBranchAlgFactory;
+class CallGraphVertexAlgFactory;
 
   /** 
    * the singleton class for 
    * setting algorithm factory pointers
    */
-  class AlgFactoryManager { 
+  class AlgFactoryManager : public Debuggable { 
 
   public: 
 
@@ -47,6 +55,7 @@ class ExitAlgFactory;
     ExpressionAlgFactory* getExpressionAlgFactory() const ;
     ExpressionEdgeAlgFactory* getExpressionEdgeAlgFactory() const ;
     IntrinsicAlgFactory* getIntrinsicAlgFactory() const ;
+    CallGraphAlgFactory* getCallGraphAlgFactory() const ;
     ControlFlowGraphAlgFactory* getControlFlowGraphAlgFactory() const ;
     ControlFlowGraphVertexAlgFactory* getControlFlowGraphVertexAlgFactory() const ;
     IfStatementAlgFactory* getIfStatementAlgFactory() const ;
@@ -54,6 +63,14 @@ class ExitAlgFactory;
     ForLoopAlgFactory* getForLoopAlgFactory() const ;
     EntryAlgFactory* getEntryAlgFactory() const ;
     ExitAlgFactory* getExitAlgFactory() const ;
+    EndLoopAlgFactory* getEndLoopAlgFactory() const ;
+    GotoAlgFactory* getGotoAlgFactory() const ;
+    LabelAlgFactory* getLabelAlgFactory() const ;
+    BranchAlgFactory* getBranchAlgFactory() const ;
+    EndBranchAlgFactory* getEndBranchAlgFactory() const ;
+    CallGraphVertexAlgFactory* getCallGraphVertexAlgFactory() const ;
+
+    virtual std::string debug() const; 
 
   protected: 
     
@@ -65,6 +82,7 @@ class ExitAlgFactory;
     void resetExpressionAlgFactory(ExpressionAlgFactory*);
     void resetExpressionEdgeAlgFactory(ExpressionEdgeAlgFactory*);
     void resetIntrinsicAlgFactory(IntrinsicAlgFactory*);
+    void resetCallGraphAlgFactory(CallGraphAlgFactory*);
     void resetControlFlowGraphAlgFactory(ControlFlowGraphAlgFactory*);
     void resetControlFlowGraphVertexAlgFactory(ControlFlowGraphVertexAlgFactory*);
     void resetIfStatementAlgFactory(IfStatementAlgFactory*);
@@ -72,6 +90,12 @@ class ExitAlgFactory;
     void resetForLoopAlgFactory(ForLoopAlgFactory*);
     void resetEntryAlgFactory(EntryAlgFactory*);
     void resetExitAlgFactory(ExitAlgFactory*);
+    void resetEndLoopAlgFactory(EndLoopAlgFactory*);
+    void resetGotoAlgFactory(GotoAlgFactory*);
+    void resetLabelAlgFactory(LabelAlgFactory*);
+    void resetBranchAlgFactory(BranchAlgFactory*);
+    void resetEndBranchAlgFactory(EndBranchAlgFactory*);
+    void resetCallGraphVertexAlgFactory(CallGraphVertexAlgFactory*);
     
     AlgFactoryManager();
 
@@ -94,6 +118,7 @@ class ExitAlgFactory;
     ExpressionAlgFactory* ourExpressionAlgFactory_p;
     ExpressionEdgeAlgFactory* ourExpressionEdgeAlgFactory_p;
     IntrinsicAlgFactory* ourIntrinsicAlgFactory_p;
+    CallGraphAlgFactory* ourCallGraphAlgFactory_p;
     ControlFlowGraphAlgFactory* ourControlFlowGraphAlgFactory_p;
     ControlFlowGraphVertexAlgFactory* ourControlFlowGraphVertexAlgFactory_p;
     IfStatementAlgFactory* ourIfStatementAlgFactory_p;
@@ -101,6 +126,12 @@ class ExitAlgFactory;
     ForLoopAlgFactory* ourForLoopAlgFactory_p;
     EntryAlgFactory* ourEntryAlgFactory_p;
     ExitAlgFactory* ourExitAlgFactory_p;
+    EndLoopAlgFactory* ourEndLoopAlgFactory_p;
+    GotoAlgFactory* ourGotoAlgFactory_p;
+    LabelAlgFactory* ourLabelAlgFactory_p;
+    BranchAlgFactory* ourBranchAlgFactory_p;
+    EndBranchAlgFactory* ourEndBranchAlgFactory_p;
+    CallGraphVertexAlgFactory* ourCallGraphVertexAlgFactory_p;
 
     /**
      * no def

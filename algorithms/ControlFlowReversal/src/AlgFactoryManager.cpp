@@ -1,6 +1,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/IfStatementAlgFactory.hpp"
@@ -9,6 +10,11 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/EntryAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ExitAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/EndLoopAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/EndBranchAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/BranchAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/LabelAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/GotoAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -36,6 +42,7 @@ namespace xaifBoosterControlFlowReversal {
 
   void AlgFactoryManager::init() {
     xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::init();
+    resetCallGraphAlgFactory(new CallGraphAlgFactory());
     resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
     resetControlFlowGraphVertexAlgFactory(new ControlFlowGraphVertexAlgFactory());
     resetIfStatementAlgFactory(new IfStatementAlgFactory());
@@ -43,7 +50,12 @@ namespace xaifBoosterControlFlowReversal {
     resetForLoopAlgFactory(new ForLoopAlgFactory());
     resetEntryAlgFactory(new EntryAlgFactory());
     resetExitAlgFactory(new ExitAlgFactory());
+    resetEndLoopAlgFactory(new EndLoopAlgFactory());
+    resetEndBranchAlgFactory(new EndBranchAlgFactory());
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+    resetBranchAlgFactory(new BranchAlgFactory());
+    resetGotoAlgFactory(new GotoAlgFactory());
+    resetLabelAlgFactory(new LabelAlgFactory());
   }
 
 }

@@ -10,7 +10,7 @@ if [ $# -gt 0 ]
 then  
     TESTFILES=$@
 else
-    TESTFILES='add_mul_ex1 add_mul_ex2 add_mul_ex uwe_ex_1 uwe_ex_2 uwe_ex_3 uwe_ex_4 uwe_ex_5 whole_box_model'
+    TESTFILES='add_mul_ex1 add_mul_ex2 add_mul_ex uwe_ex_1 uwe_ex_2 uwe_ex_3 uwe_ex_4 uwe_ex_5 whole_box_model goto_label_1 loop_continue loop_exit select_case'
 fi
 for i in `echo ${TESTFILES}`
     do
@@ -21,7 +21,10 @@ for i in `echo ${TESTFILES}`
     then 
 	echo "debug messages:"
 	cat tmp/${i}.dbg
-	exit -2
+	if [ -z "$DONT_STOP" ] 
+        then
+	  exit -2
+        fi
     else
 	echo "no debug messages"
     fi

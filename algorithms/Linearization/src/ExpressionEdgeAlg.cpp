@@ -14,10 +14,12 @@ namespace xaifBoosterLinearization {
     myConcretePartialDerivativeKind(PartialDerivativeKind::NONLINEAR) { 
   }
 
-  std::string 
-  ExpressionEdgeAlg::debug() const { 
-    return std::string("ExpressionEdgeAlg");
-  }
+  std::string ExpressionEdgeAlg::debug () const { 
+    std::ostringstream out;
+    out << "xaifBoosterLinearization::ExpressionEdgeAlg[" << this
+ 	<< "]" << std::ends;  
+    return out.str();
+  } // end of ExpressionEdgeAlg::debug
 
   void
   ExpressionEdgeAlg::printXMLHierarchy(std::ostream& os) const { 

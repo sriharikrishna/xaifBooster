@@ -30,12 +30,12 @@ $(TARGET).B: $(TARGET).f mfef90
 	./mfef90 $(TARGET).f
 
 $(TARGET).xaif : $(TARGET).B whirl2xaif
-	./whirl2xaif $(TARGET).B
+	./whirl2xaif -o $(TARGET).xaif $(TARGET).B
 
-$(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaifBooster
+$(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
 	$(COMPLAIN)
 #	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif -g 15
-	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
+	./xaifBooster -i $(TARGET).xaif -g 16 -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
 
 $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
 	./xaif2whirl $(TARGET).B $(TARGET).xb.xaif
@@ -69,8 +69,7 @@ whirl2f whirl2f_be:
 	$(LN) ${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
 
 xaifBooster:
-	$(COMPLAIN)
-	$(LN) ${XAIFBOOSTERROOT}/xaifBooster/algorithms/ControlFlowReversal/test/t  $@
+	./pickAlgorithm.bash
 
 # make the $TARGETDRIVER)
 $(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
@@ -106,15 +105,19 @@ tmpOutput:
 	mkdir -p $@
 
 testclean:
-	$(RM) $(TARGET).B $(TARGET).x* $(TARGETDRIVER) $(TARGETDRIVER).o
-	$(RM) -r tmpOutput 
+	$(RM) $(TARGET).B $(TARGET).x* $(TARGETDRIVER) $(TARGETDRIVER).o 
+	$(RM) -rf tmpOutput 
+
+testAllclean: testclean
+	$(RM) $(TARGET).f $(TARGETDRIVER).f params.conf
+	$(RM) -rf  tmpOutput verifiedOutput 
 
 # cleanup
-clean: testclean
+clean: testAllclean
 	$(RM) *.xsd 
 	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f pp.pl xaifBooster 
-	$(RM) w2f__types.o active_module.o w2f__types.mod active_module.mod $(TARGET).f $(TARGETDRIVER).f tmpOutput verifiedOutput params.conf
+	$(RM) w2f__types.o active_module.o w2f__types.mod active_module.mod 
 
 obj test doc: 
 
-.PHONY: all obj test doc clean testclean run
+.PHONY: all obj test doc clean testclean testAllclean run

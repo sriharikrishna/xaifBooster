@@ -4,12 +4,6 @@
 #include "xaifBooster/system/inc/AlgFactory.hpp"
 #include "xaifBooster/system/inc/ArgumentAlgBase.hpp"
 
-namespace xaifBooster {  
-
-  class Argument;
-
-  BASE_ALG_FACTORY_DECL_MACRO(Argument,ArgumentAlgBase);
-
-} // end of namespace 
+  BASE_ALG_FACTORY_DECL_MACRO(Argument);
 
 #endif

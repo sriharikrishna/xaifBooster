@@ -4,7 +4,9 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterInlinableXMLRepresentation { 
 
   const std::string ArgumentSubstitute::ourXAIFName("xaif:ArgumentSubstitute");
   const std::string ArgumentSubstitute::our_myPosition_XAIFName("position");

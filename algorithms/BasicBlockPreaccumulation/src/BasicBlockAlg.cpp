@@ -15,12 +15,13 @@
 
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSetDeriv.hpp"
 
 /** 
  * the call to the ANGEL library
@@ -68,7 +69,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myEndAssignmentList;
   }
 
-  std::string BasicBlockAlg::Sequence::debug () const { 
+  std::string BasicBlockAlg::Sequence::debug() const { 
     std::ostringstream out;
     out << "Sequence[" << this 
 	<< ",myFirstElement_p=" << myFirstElement_p
@@ -109,7 +110,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
     printXMLHierarchyImpl(os,
-			  DerivativePropagator::printXMLHierarchyImpl);
+			  xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl);
   }
 
   void BasicBlockAlg::printXMLHierarchyImpl(std::ostream& os,
@@ -187,7 +188,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string BasicBlockAlg::debug () const { 
     std::ostringstream out;
-    out << "BasicBlockAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg[" << this
+	<< ",myContaining="
+	<< getContaining().debug().c_str()
 	<< ",myUniqueSequencePList=";
     for(SequencePList::const_iterator myUniqueSequencePListI=myUniqueSequencePList.begin();
 	myUniqueSequencePListI!=myUniqueSequencePList.end();
@@ -222,7 +225,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   BasicBlockAlg::algorithm_action_3() { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3");
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
+	      << debug().c_str());
     for (SequencePList::iterator i=myUniqueSequencePList.begin();
 	 i!=myUniqueSequencePList.end();
 	 ++i) { // outer loop over all items in myUniqueSequencePList
@@ -325,8 +329,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		// address of the copy.
 		theListOfAlreadyAssignedIndependents.
 		  addElement(theIndepVariable.equivalenceSignature(),
-			     &((*i)->myDerivativePropagator.addSetDerivToEntryList(theTarget,
-										   theIndepVariable).getTarget()));
+			     &((*i)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+										    theIndepVariable).getTarget()));
 	      } // end if (wasn't assigned efore  
 	      else {
 		// yes, it was assigned before
@@ -346,9 +350,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // instead of original independent
 	    const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
 					 (theExpression.getDependent()).getLHSVariable());
-	    DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryList(theLHS,
-												 *theIndepVariableContainer_cp,
-												 theDependent));
+	    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryPList(theLHS,
+																   *theIndepVariableContainer_cp,
+																   theDependent));
 	    bool found=false;
 	    for (VariablePList::iterator i=theListOfAlreadyAssignedDependents.begin();
 		 i!=theListOfAlreadyAssignedDependents.end();
@@ -380,10 +384,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // add the LHS to the tracking list: 
 	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
 	} // end for 
-      } // end if  have flattened graph with more than one vertex
+      } // end if have flattened graph with more than one vertex
       else if (theFlattenedSequence.numVertices()==1) { // we have only one vertex, i.e. an assignment y=x: 
-	(*i)->myDerivativePropagator.addSetDerivToEntryList(dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getDependentList().begin()))->getLHSVariable(),
-							    dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getIndependentList().begin()))->getRHSVariable());
+	(*i)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getDependentList().begin()))->getLHSVariable(),
+							     dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getIndependentList().begin()))->getRHSVariable());
       } // end else if
       else { 
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
@@ -662,7 +666,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       << theAssignment.debug().c_str());
   } // end of BasicBlockAlg::splitFlattenedSequence
 
-  DerivativePropagator& 
+  xaifBoosterDerivativePropagator::DerivativePropagator& 
   BasicBlockAlg::getDerivativePropagator(const Assignment& theAssignment) { 
     Sequence* theSequence_p=0;
     for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
@@ -673,7 +677,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theSequence_p=(*i).second;
       } // end if 
     if (!theSequence_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getDerivativeAccumulator: no Sequence exists for element "
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getDerivativePropagator: no Sequence exists for element "
 				 << theAssignment.debug().c_str());
     return theSequence_p->myDerivativePropagator;
   } // end of BasicBlockAlg::getDerivativePropagator
@@ -698,6 +702,5 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::getContaining() const {
     return dynamic_cast<const BasicBlock&>(myContaining);
   }
-
 
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

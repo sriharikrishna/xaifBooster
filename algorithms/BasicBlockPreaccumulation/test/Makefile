@@ -19,11 +19,14 @@ include ../../../Makefile.incl
 # pick up all algorith specific obj files
 ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) 
 
-CCIF_LIB=-lxaifBoosterCrossCountryInterface
-CCIF_LIB_DIR=../../CrossCountryInterface/lib 
+VPATH+=../../InlinableXMLRepresentation/lib
+LIBS+=-lxaifBoosterInlinableXMLRepresentation
 
-VPATH+=$(CCIF_LIB_DIR) 
-LIBS+=$(CCIF_LIB)
+VPATH+=../../DerivativePropagator/lib
+LIBS+=-lxaifBoosterDerivativePropagator
+
+VPATH+=../../CrossCountryInterface/lib
+LIBS+=-lxaifBoosterCrossCountryInterface
 
 # setup for ANGEL
 UNDEF_ENV_VARS=""
@@ -31,11 +34,8 @@ ifndef ANGELROOT
 UNDEF_ENV_VARS+=" ANGELROOT "
 endif
 
-ANGEL_LIB=-langel
-ANGEL_LIB_DIR=$(ANGELROOT)/lib 
-
-VPATH+=$(ANGEL_LIB_DIR) 
-LIBS+=$(ANGEL_LIB)
+VPATH+=$(ANGELROOT)/lib
+LIBS+=-langel
 
 ifneq ($(UNDEF_ENV_VARS),"")
 export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1

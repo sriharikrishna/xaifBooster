@@ -4,10 +4,8 @@
 #include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 
-namespace xaifBoosterControlFlowReversal {  
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(ControlFlowGraph,xaifBooster::ControlFlowGraphAlgBase,xaifBooster::ControlFlowGraphAlgFactory);
+  DERIVED_ALG_FACTORY_DECL_MACRO(ControlFlowGraph,xaifBooster::ControlFlowGraphAlgFactory,xaifBoosterControlFlowReversal);
 
-} // end of namespace 
 
 #endif

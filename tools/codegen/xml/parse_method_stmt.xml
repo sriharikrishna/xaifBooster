@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="2" nr_templates="2" outfile="parse_method_stmt.inc">
 
-  <CodeGen:RepeatableCode nr_versions="44">
+  <CodeGen:RepeatableCode nr_versions="49">
     <CodeGen:CodeTemplate nr_entries="9">
       <CodeGen:StaticCode text="ourActionCatalogue.addElement("/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -114,8 +114,8 @@
       <CodeGen:DynamicCode hook_ref="3" text="ControlFlowGraph"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="ControlFlowGraph"/>
-      <CodeGen:DynamicCode hook_ref="2" text="our_myArgumentList_XAIFName"/>
+      <CodeGen:DynamicCode hook_ref="1" text="ArgumentList"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="ArgumentList"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -134,6 +134,26 @@
       <CodeGen:DynamicCode hook_ref="3" text="Exit"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="EndLoop"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="EndLoop"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="EndBranch"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="EndBranch"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Label"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="Label"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Goto"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="Goto"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="ExpressionEdge"/>
       <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="ExpressionEdge"/>
@@ -147,6 +167,11 @@
       <CodeGen:DynamicCode hook_ref="1" text="IfStatement"/>
       <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="IfStatement"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Branch"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="Branch"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Initialization"/>

@@ -19,6 +19,7 @@
           <xaif:Symbol symbol_id="test_prefixSymbol_23" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_18" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_19" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
+          <xaif:Symbol symbol_id="__control_flow_reversal_pop_integer" kind="subroutine" type="void" shape="scalar" annotation="__control_flow_reversal_" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_2" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
@@ -29,6 +30,7 @@
           <xaif:Symbol symbol_id="test_prefixSymbol_7" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_8" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_9" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="__control_flow_reversal_push_integer" kind="subroutine" type="void" shape="scalar" annotation="__control_flow_reversal_" active="0" temp="1"/>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="2" annotation="">
@@ -59,7 +61,7 @@
         <xaif:AliasRange from_virtual_address="3" to_virtual_address="7"/>
       </xaif:AliasSet>
     </xaif:AliasSetList>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" active="1" annotation="">
+    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" annotation="" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" intent="inout"/>

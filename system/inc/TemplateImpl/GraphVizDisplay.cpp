@@ -46,8 +46,9 @@ namespace xaifBooster {
     // in case of listS there are hex identifiers in the dot file 
     // which dot cannot interpret as a hex number so we need to make it a 'name' 
     // pre prepending HEX
-    std::string commandString(" sed \"s/0x/HEX/g\" " + theFileName + " >| " + theFileName + ".1;" +
-                              " dot -Tgif " + theFileName + ".1 >| " + theFileName + ".gif ; xv -geometry +0+0 " + theFileName + ".gif" );
+    std::string commandString(" sed \"s/0x/HEX/g\" " + theFileName + " >| " + theFileName + ".1;"  +
+			      " sed \"s/digraph G/digraph " + aFileName + "/g\" " + theFileName + ".1" + " >| " + theFileName + ".2;" +
+                              " dot -Tps " + theFileName + ".2 >| " + theFileName + ".ps ; gv " + theFileName + ".ps" );
     system(commandString.c_str());
   } 
 } 

@@ -3,8 +3,6 @@
 #include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlg.hpp"
 
-namespace xaifBoosterLinearization {  
 
-  ALG_FACTORY_DEF_MACRO(BooleanOperation,xaifBooster::BooleanOperationAlgBase,BooleanOperationAlg);
+  DERIVED_ALG_FACTORY_DEF_MACRO(BooleanOperation,xaifBoosterLinearization);
 
-} // end of namespace 

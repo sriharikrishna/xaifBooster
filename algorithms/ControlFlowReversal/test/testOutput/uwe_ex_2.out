@@ -17,6 +17,7 @@
           <xaif:Symbol symbol_id="test_prefixSymbol_23" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_18" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_19" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
+          <xaif:Symbol symbol_id="__control_flow_reversal_pop_integer" kind="subroutine" type="void" shape="scalar" annotation="__control_flow_reversal_" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_2" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
@@ -27,6 +28,7 @@
           <xaif:Symbol symbol_id="test_prefixSymbol_7" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_8" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_9" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="__control_flow_reversal_push_integer" kind="subroutine" type="void" shape="scalar" annotation="__control_flow_reversal_" active="0" temp="1"/>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="2" annotation="">
@@ -42,7 +44,7 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
     </xaif:AliasSetList>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" active="1" annotation="">
+    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" annotation="" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" intent="inout"/>
@@ -467,7 +469,12 @@
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
       </xaif:BasicBlock>
-      <xaif:Exit vertex_id="4" annotation=""/>
+      <xaif:EndLoop vertex_id="4" annotation=""/>
+      <xaif:Exit vertex_id="5" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="1" target="2"/>
+      <xaif:ControlFlowEdge edge_id="2" source="2" target="3"/>
+      <xaif:ControlFlowEdge edge_id="3" source="3" target="4"/>
+      <xaif:ControlFlowEdge edge_id="4" source="4" target="2"/>
+      <xaif:ControlFlowEdge edge_id="4" source="2" target="5"/>
     </xaif:ControlFlowGraph>
   </xaif:CallGraph>
