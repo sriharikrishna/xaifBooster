@@ -12,6 +12,9 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ExitAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/EndLoopAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/EndBranchAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/BranchAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/LabelAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/GotoAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -50,6 +53,9 @@ namespace xaifBoosterControlFlowReversal {
     resetEndLoopAlgFactory(new EndLoopAlgFactory());
     resetEndBranchAlgFactory(new EndBranchAlgFactory());
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+    resetBranchAlgFactory(new BranchAlgFactory());
+    resetGotoAlgFactory(new GotoAlgFactory());
+    resetLabelAlgFactory(new LabelAlgFactory());
   }
 
 }

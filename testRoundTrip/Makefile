@@ -30,7 +30,7 @@ $(TARGET).B: $(TARGET).f mfef90
 	./mfef90 $(TARGET).f
 
 $(TARGET).xaif : $(TARGET).B whirl2xaif
-	./whirl2xaif $(TARGET).B
+	./whirl2xaif -o $(TARGET).xaif $(TARGET).B
 
 $(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
 	$(COMPLAIN)
@@ -42,7 +42,7 @@ $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
 
 $(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
 	$(COMPLAIN)
-	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f $(TARGET).xb.x2w.B
+	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f -o $(TARGET).xb.x2w.w2f.f $(TARGET).xb.x2w.B
 
 $(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
 	perl pp.pl $(TARGET).xb.x2w.w2f.f

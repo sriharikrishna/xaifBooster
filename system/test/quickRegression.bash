@@ -21,7 +21,10 @@ for i in `echo ${TESTFILES}`
     then 
 	echo "debug messages:"
 	cat tmp/${i}.dbg
-	exit -2
+	if [ -z "$DONT_STOP" ] 
+        then
+	  exit -2
+        fi
     else
 	echo "no debug messages"
     fi
