@@ -61,16 +61,40 @@ namespace xaifBoosterControlFlowReversal {
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
       ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
+      std::string theVertexIdx;
       std::string theVertexKind;
-      if (theReversibleControlFlowGraphVertex_p->isOriginal()) 
+      if (theReversibleControlFlowGraphVertex_p->isOriginal()) {
         theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex().getControlFlowGraphVertexAlgBase()).kindToString();
-      else
+        theVertexIdx=theReversibleControlFlowGraphVertex_p->getOriginalVertex().getId();
+      }
+      else {
         theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()).kindToString();
+        theVertexIdx=theReversibleControlFlowGraphVertex_p->getNewVertex().getId();
+      }
         
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(),
                                                   myG.getInternalBoostGraph()),
-                                       v)->getIndex() << ": "
-          << theVertexKind << "\"]";
+                                       v)->getIndex() << ": " 
+          << theVertexIdx.c_str() << " " 
+          << theVertexKind.c_str() << "\"]";
+    };
+    const ReversibleControlFlowGraph& myG;
+  };
+
+  class ControlFlowGraphEdgeLabelWriter {
+  public:
+    ControlFlowGraphEdgeLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
+      ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
+      bool has_condition_value;
+      if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
+        has_condition_value=theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value();
+      }
+      else {
+        has_condition_value=theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value();
+      }
+      out << "[label=\"" << has_condition_value << "\"]";
     };
     const ReversibleControlFlowGraph& myG;
   };
@@ -82,23 +106,23 @@ namespace xaifBoosterControlFlowReversal {
       myTransformedControlFlowGraph=new ReversibleControlFlowGraph(getContaining());
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
-			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph));
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
       myTransformedControlFlowGraph->topologicalSort();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_2",
-			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph));
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
-/*
       myTransformedControlFlowGraph->storeControlFlow();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_3",
-			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph));
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
+/*
       myTransformedControlFlowGraph->reverseControlFlow();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_4",
-			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph));
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
 */
   } // end AssignmentAlg::algorithm_action_4() 
