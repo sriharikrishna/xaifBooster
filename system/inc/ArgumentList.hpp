@@ -51,13 +51,10 @@ namespace xaifBooster {
     const ArgumentSymbolReferencePList& getArgumentSymbolReferencePList() const;
 
     /**
-     * \todo cleanup
+     * \todo cleanup see const casts in the code
+     * \see myScope_p
      */ 
-    // Scope& getScope();
-    // const Scope& getScope() const;
     Scope& getScope() const;
-
-    void setScope(Scope& aScope);
 
   private: 
     
@@ -71,8 +68,11 @@ namespace xaifBooster {
     /** 
      * this is pointer for setting the scope 
      * which we don't know at construction time
+     * it is not explicitly given but taken 
+     * from the first element in myArgumentSymbolReferencePList
+     * in getScope or an exception is thrown.
      */
-    Scope* myScope_p;
+    mutable Scope* myScope_p;
 
   }; // end of class ArgumentList
 
