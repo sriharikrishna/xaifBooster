@@ -267,6 +267,47 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
     recursionGuard--;
   }
+class PrivateLinearizedComputationalGraphVertexLabelWriter {
+  public:
+    PrivateLinearizedComputationalGraphVertexLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out,
+                    const BoostIntenalVertexDescriptor& v) const {
+      unsigned int theKind=0;
+      if (boost::out_degree(v,myG.getInternalBoostGraph())==1&&boost::in_degree(v,myG.getInternalBoostGraph())>0) {
+        const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p=dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()),v));
+        const PrivateLinearizedComputationalGraphEdge& thePrivateLinearizedComputationalGraphOutEdge_r(dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*(myG.getOutEdgesOf(*thePrivateLinearizedComputationalGraphVertex_p).first)));
+
+        theKind=1;
+        if (thePrivateLinearizedComputationalGraphOutEdge_r.hasLinearizedExpressionEdge()) 
+          theKind=dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(thePrivateLinearizedComputationalGraphOutEdge_r.getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getPartialDerivativeKind();
+      }
+      if (theKind==1||theKind==2) 
+        out << "[label=\"\" color=\"black\" style=filled]";
+      else   
+        out << "[label=\"\"]";
+    }
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
+  };
+
+  class PrivateLinearizedComputationalGraphEdgeLabelWriter {
+  public:
+    PrivateLinearizedComputationalGraphEdgeLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out,
+                    const BoostIntenalEdgeDescriptor& v) const {
+      const PrivateLinearizedComputationalGraphEdge* thePrivateLinearizedComputationalGraphEdge_p=
+        dynamic_cast<const PrivateLinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(), myG.getInternalBoostGraph()),v));
+      
+      if (thePrivateLinearizedComputationalGraphEdge_p->hasLinearizedExpressionEdge()) 
+      out << "[label=\"" << dynamic_cast<const xaifBoosterLinearization::ExpressionEdgeAlg&>(thePrivateLinearizedComputationalGraphEdge_p->getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getPartialDerivativeKind()
+          << "\"]";
+      else   
+        out << "[label=\"1\"]";
+    }
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
+  };
+
 
   void 
   BasicBlockAlg::algorithm_action_3() { 
@@ -287,7 +328,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	}
       } 
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	GraphVizDisplay::show(theFlattenedSequence,"flattened");
+	 GraphVizDisplay::show(theFlattenedSequence,"flattened",PrivateLinearizedComputationalGraphVertexLabelWriter(theFlattenedSequence),PrivateLinearizedComputationalGraphEdgeLabelWriter(theFlattenedSequence));
       } 
       // filter out singleton vertices
       bool findNext=true;
