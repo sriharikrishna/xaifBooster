@@ -6,8 +6,8 @@ module OpenAD_checkpoints
 &double_arguments_pointer, double_results_pointer, checkpoints_init, &
 &checkpoints_dump
 
-  integer, parameter :: max_double_arguments_size=1000
-  integer, parameter :: max_double_results_size=1000
+  integer, parameter :: max_double_arguments_size=2000
+  integer, parameter :: max_double_results_size=2000
   double precision :: double_argument_checkpoints(max_double_arguments_size)
   double precision :: double_result_checkpoints(max_double_results_size)
   integer double_arguments_pointer, double_results_pointer

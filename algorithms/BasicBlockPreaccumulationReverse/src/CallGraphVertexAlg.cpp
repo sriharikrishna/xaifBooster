@@ -118,7 +118,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	handleCheckPointing("cp_res_restore",
 			    IntentType::IN_ITYPE,
 			    *myCFGRestoreResults_p,
-			    true);
+			    false);
 	break;
       default: 
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_4: no handler for ReplacementID  "
