@@ -24,6 +24,7 @@ namespace MemOpsTradeoffPreaccumulation {
 
     typedef std::list<DualGraphVertex*> Path;
     Path myPath;
+    unsigned int pathNum;
 
     void setComplete();
     bool isComplete() const;

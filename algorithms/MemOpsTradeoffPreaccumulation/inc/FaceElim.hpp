@@ -26,7 +26,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       const DualGraph& theDual,
       DualGraph::FacePointerList& theOldFaceList,
       const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList);
+      const DualGraph::VertexPointerList& theSuccList,
+      DualGraphVertex* newOrAbsorb);
 
     /**
      */
@@ -34,7 +35,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       const DualGraph& theDual,
       DualGraph::FacePointerList& theOldFaceList,
       const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList);
+      const DualGraph::VertexPointerList& theSuccList,
+      DualGraphVertex* newOrAbsorb);
 
     /**
      */
@@ -42,7 +44,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       const DualGraph& theDual,
       DualGraph::FacePointerList& theOldFaceList,
       const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList);
+      const DualGraph::VertexPointerList& theSuccList,
+      DualGraphVertex* newOrAbsorb);
 
     /**
      */
@@ -50,14 +53,17 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       const DualGraph& theDual,
       DualGraph::FacePointerList& theOldFaceList,
       const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList);
+      const DualGraph::VertexPointerList& theSuccList,
+      DualGraphVertex* newOrAbsorb);
 
     /**
      */
-    static void elim_face(
-      DualGraph& theDual,
-      DualGraphEdge& theFace,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
+    static void absorbMode_f(
+      const DualGraph& theDual,
+      DualGraph::FacePointerList& theOldFaceList,
+      const DualGraph::VertexPointerList& thePredList,
+      const DualGraph::VertexPointerList& theSuccList,
+      DualGraphVertex* newOrAbsorb);
 
   };  // end of class
 
