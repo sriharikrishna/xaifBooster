@@ -70,6 +70,7 @@ namespace xaifBooster {
 
   void 
   Expression::copyMyselfInto(Expression& theTarget,
+			     bool withNewId,
 			     bool withAlgorithm) const { 
     ConstVertexIteratorPair p(vertices());
     ConstVertexIterator beginIt(p.first),endIt(p.second);
@@ -78,6 +79,8 @@ namespace xaifBooster {
     PointerPairList theList; // first original, second copy
     for (;beginIt!=endIt ;++beginIt) {
       ExpressionVertex& theCopy((*beginIt).createCopyOfMyself(withAlgorithm));
+      if(withNewId)
+	theCopy.overWriteId(theTarget.getNextVertexId());
       theTarget.supplyAndAddVertexInstance(theCopy);
       theList.push_back(PointerPair(&(*beginIt),&theCopy));
     }
@@ -104,6 +107,8 @@ namespace xaifBooster {
 	THROW_LOGICEXCEPTION_MACRO("Expression::copyMyselfInto: couldn't find source or target");
       ExpressionEdge* theCopy = new ExpressionEdge(withAlgorithm);
       (*beginIte).copyMyselfInto(*theCopy);
+      if(withNewId) 
+	(*theCopy).overWriteId(theTarget.getNextEdgeId());
       theTarget.supplyAndAddEdgeInstance(*theCopy,*theCopySource_p, *theCopyTarget_p);
     } // end for 
   } // end of Expression::copyMyselfInto

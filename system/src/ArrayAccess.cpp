@@ -9,7 +9,7 @@ namespace xaifBooster {
     for (IndexListType::const_iterator i=myIndexList.begin();
 	 i!=myIndexList.end();
 	 ++i) { 
-      (*i)->copyMyselfInto(theCopy_p->addIndex());
+      (*i)->copyMyselfInto(theCopy_p->addIndex(),false,false);
     } 
     theCopy_p->setId(getId());
     return *theCopy_p;

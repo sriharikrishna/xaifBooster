@@ -57,7 +57,8 @@ namespace xaifBooster {
      * created.
      */
     void copyMyselfInto(Expression& theTarget,
-			bool withAlgorithm=false) const;
+			bool withNewId,
+			bool withAlgorithm) const;  //changing the function and removing default conditions: 	bool withAlgorithm=false,bool withNewId=false)
     
     /** 
      * algorithm access where the Expression may 

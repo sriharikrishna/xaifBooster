@@ -415,7 +415,7 @@ namespace xaifBoosterLinearization {
 
     // copy the right hand side: 
     getContainingAssignment().getRHS().
-      copyMyselfInto(myLinearizedRightHandSide,
+      copyMyselfInto(myLinearizedRightHandSide,false,
 		     true); // make algorithm objects in the copy
     // set the flag
     myHaveLinearizedRightHandSide=true;
