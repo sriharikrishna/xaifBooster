@@ -136,15 +136,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       return;
     } 
     // now redo the activity analysis
-    if (haveLinearizedRightHandSide() && 
-	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
-      GraphVizDisplay::show(getLinearizedRightHandSide(),"before",
-			    VertexLabelWriter(getLinearizedRightHandSide()));
+//     if (haveLinearizedRightHandSide() && 
+// 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+//       GraphVizDisplay::show(getLinearizedRightHandSide(),"before",
+// 			    VertexLabelWriter(getLinearizedRightHandSide()));
     xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
-    if (haveLinearizedRightHandSide() && 
-	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
-      GraphVizDisplay::show(getLinearizedRightHandSide(),"after",
-			    VertexLabelWriter(getLinearizedRightHandSide()));
+//     if (haveLinearizedRightHandSide() && 
+// 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+//       GraphVizDisplay::show(getLinearizedRightHandSide(),"after",
+// 			    VertexLabelWriter(getLinearizedRightHandSide()));
     // and the second part of the linearization
     xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
