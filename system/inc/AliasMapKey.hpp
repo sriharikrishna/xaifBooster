@@ -1,6 +1,8 @@
 #ifndef _ALIASMAPKEY_INCLUDE_
 #define _ALIASMAPKEY_INCLUDE_
 
+#include "xaifBooster/utils/inc/Debuggable.hpp"
+
 namespace xaifBooster { 
 
   /** 
@@ -9,7 +11,7 @@ namespace xaifBooster {
    * special cases which don't have an instance
    * in AliasMap
    */
-  class AliasMapKey { 
+  class AliasMapKey : public Debuggable { 
 
   public:
     
@@ -42,6 +44,8 @@ namespace xaifBooster {
      * return the kind of key
      */
     AliasMapKey_E getKind() const;
+
+    std::string debug() const ;
 
   private:
 

@@ -63,25 +63,35 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       Expression& theExpression(getLinearizedRightHandSide());
       Expression::VertexIteratorPair p=theExpression.vertices();
       Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
-      typedef std::pair<ExpressionVertex*,PrivateLinearizedComputationalGraphVertex*> VertexPointerPair;
-      std::list<VertexPointerPair> theIntermediateVertexTrackList;
+      typedef std::pair<const ExpressionVertex*, 
+	const PrivateLinearizedComputationalGraphVertex*> VertexPointerPair;
+      std::list<VertexPointerPair> theVertexTrackList;
 
       // keep track of all the vertices we add with this statement in case we need to split and 
       // remove them
       std::list<PrivateLinearizedComputationalGraphVertex*> theUndoThenSplitList;
-
-      VertexIdentificationList& theVertexIdentificationList(theFlattenedSequence.getVertexIdentificationList());
+      VertexIdentificationList& theVertexLHSIdentificationList(theFlattenedSequence.getVertexLHSIdentificationList());
+      VertexIdentificationList& theVertexRHSIdentificationList(theFlattenedSequence.getVertexRHSIdentificationList());
       PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p=0; // LHS representation
       for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
-	VertexIdentificationList::IdentificationResult_E theIdResult(VertexIdentificationList::NOT_IDENTIFIED);
-	if ((*ExpressionVertexI).isArgument()) 
-	  theIdResult=theVertexIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable()).getAnswer();
-	if (theIdResult==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
-	  // we have the vertex already in theFlattenedSequence
-	  // nothing to do here
+	VertexIdentificationList::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
+	  theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
+	if ((*ExpressionVertexI).isArgument()) { 
+	  theLHSIdResult=theVertexLHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	  theRHSIdResult=theVertexRHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	} 
+	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED)  
+	  theVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),
+							 theLHSIdResult.getVertexP()));
+	else if (theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
+	  theVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),
+							 theRHSIdResult.getVertexP()));
 	} // end if 
 	else { // the vertex cannot be uniquely identified
-	  if (theIdResult==VertexIdentificationList::NOT_IDENTIFIED) { 
+	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
+	    // the RHS identification doesn't really matter since we cannot 
+	    // uniquely identify within the RHSs it is only important that we don't 
+	    // alias a preceding LHS
 	    // we need to add this vertex
 	    PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
 	    theUndoThenSplitList.push_back(theLCGVertex_p);
@@ -90,23 +100,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
 		      << theLCGVertex_p->debug().c_str());
 	    if ((*ExpressionVertexI).isArgument()) {
-	      theVertexIdentificationList.addElement(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable(),
-						     theLCGVertex_p);
-	      try { 
-		theLCGVertex_p->setRHSVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
-	      } 
-	      catch(std::bad_cast& e) { 
-		THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2: invalid cast of "
-					   << (*ExpressionVertexI).debug().c_str() 
-					   << " into a Variable for "
-					   << getContaining().debug().c_str());
-	      } // end catch
+	      Variable& theVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	      if (theRHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED)
+		theVertexRHSIdentificationList.addElement(theVariable,
+							  theLCGVertex_p);
+	      theLCGVertex_p->setRHSVariable(theVariable);
 	    } // end if 
-	    else { // number of in edges is > 0
-	      // this must be a vertex that is some intermediate
-	      // i.e. an intrinsic
-	      theIntermediateVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),theLCGVertex_p));
-	    } // end else 
+	    theVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),
+							   theLCGVertex_p));
 	    if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
 	      if (theLHSLCGVertex_p)
 		THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
@@ -138,8 +139,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	ExpressionVertex& theSource(theExpression.getSourceOf(*ExpressionEdgeI));
 	ExpressionVertex& theTarget(theExpression.getTargetOf(*ExpressionEdgeI));
 	std::list<VertexPointerPair>::const_iterator listIt;
-	for (listIt=theIntermediateVertexTrackList.begin();
-	     (listIt!=theIntermediateVertexTrackList.end()) 
+	for (listIt=theVertexTrackList.begin();
+	     (listIt!=theVertexTrackList.end()) 
 	       &&
 	       !(theLCGSource_p && theLCGTarget_p);
 	     listIt++) {
@@ -153,17 +154,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      (&theTarget == (*listIt).first))
 	    theLCGTarget_p=(*listIt).second;
 	} // end for
-	if (!theLCGTarget_p) 
-	  THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): cannot find edge target");
-	if (!theLCGSource_p) 
-	  if(!theSource.isArgument())
-	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): edge source must be an Argument");
-	  // we would have to have found the target 
-	  // already (always intermediate) but the 
-	  // source can be a variable reference
-	  // the following call will throw an exception on 
-	  // its own if the source cannot be found. 
-	  theLCGSource_p=theVertexIdentificationList.canIdentify(dynamic_cast<Argument&>(theSource).getVariable()).getVertexP();
+	if (!theLCGTarget_p || !theLCGSource_p) 
+	  THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): cannot find edge source or target");
 	// filter out parallel edges:
 	PrivateLinearizedComputationalGraph::OutEdgeIteratorPair 
 	  anOutEdgeItPair(theFlattenedSequence.getOutEdgesOf(*theLCGSource_p));
@@ -194,8 +186,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       const Variable& theLHS(getContaining().getLHS());
       if (!theLHSLCGVertex_p)
 	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): don't have a maximal vertex");
-      theVertexIdentificationList.replaceOrAddElement(theLHS,
-						      theLHSLCGVertex_p);
+      theVertexRHSIdentificationList.removeIfAliased(theLHS);
+      theVertexLHSIdentificationList.replaceOrAddElement(theLHS,
+							 theLHSLCGVertex_p);
       theLHSLCGVertex_p->setLHSVariable(theLHS);
       // JU: this is a temporary measure, add all LHSs to the 
       // JU: list of dependent variables

@@ -68,6 +68,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myEndAssignmentList;
   }
 
+  std::string BasicBlockAlg::Sequence::debug () const { 
+    std::ostringstream out;
+    out << "Sequence[" << this 
+	<< ",myFirstElement_p=" << myFirstElement_p
+	<< ",myLastElement_p=" << myLastElement_p
+	<< "]" << std::ends;  
+    return out.str();
+  } // end of BasicBlockAlg::debug
+
+
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     BasicBlockAlgBase(theContaining) { 
   }
@@ -169,8 +179,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string BasicBlockAlg::debug () const { 
     std::ostringstream out;
-    out << "BasicBlockAlg[" << this 
-	<< "]" << std::ends;  
+    out << "BasicBlockAlg[" << this
+	<< ",myUniqueSequencePList=";
+    for(SequencePList::const_iterator myUniqueSequencePListI=myUniqueSequencePList.begin();
+	myUniqueSequencePListI!=myUniqueSequencePList.end();
+	++myUniqueSequencePListI) 
+      out << (*myUniqueSequencePListI)->debug().c_str();
+    out << "]" << std::ends;  
     return out.str();
   } // end of BasicBlockAlg::debug
 
@@ -533,6 +548,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   
   PrivateLinearizedComputationalGraph& 
   BasicBlockAlg::getFlattenedSequence(const Assignment& theAssignment) { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::getFlattenedSequence entering with "
+	      << debug().c_str());
     Sequence* theSequence_p=0;
     if(!myBasicBlockElementSequencePPairList.size()) { 
       // not initialized
@@ -581,10 +598,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (!theSequence_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getFlattenedSequence: this basic block does not have element "
 				 << theAssignment.debug().c_str());
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::getFlattenedSequence leaving with "
+	      << debug().c_str());
     return theSequence_p->myFlattenedSequence;
   } // end of BasicBlockAlg::getFlattenedSequence
 
   void BasicBlockAlg::splitFlattenedSequence(const Assignment& theAssignment) { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::splitFlattenedSequence entering with "
+	      << debug().c_str());
     if(!myBasicBlockElementSequencePPairList.size()) { 
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitFlattenedSequence: must be initialized unless called out of order");
     }
@@ -605,8 +626,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	(*i).second=new Sequence;
 	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
 	myUniqueSequencePList.push_back((*i).second);
+	DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::splitFlattenedSequence leaving with "
+		  << debug().c_str());
+	return; 
       } 
-      return; 
     } // end if 
     THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitFlattenedSequence: couldn't find"
 			       << theAssignment.debug().c_str());

@@ -35,4 +35,14 @@ namespace xaifBooster {
     return myKind;
   }
 
+  std::string 
+  AliasMapKey::debug() const { 
+    std::ostringstream out;
+    out << "AliasMapKey[" << this 
+	<< ",myKey=" << myKey
+	<< ",myKind=" << myKind
+	<< "]" << std::ends;  
+    return out.str();
+  } 
+
 } // end of namespace xaifBooster

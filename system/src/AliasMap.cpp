@@ -55,8 +55,8 @@ namespace xaifBooster {
     pm.releaseInstance();
   } // end of  AliasMap::printXMLHierarchy
 
-  bool AliasMap::isAliased(const AliasMapKey& theKey, 
-			   const AliasMap::AliasMapKeyList& theList) const { 
+  bool AliasMap::mayAlias(const AliasMapKey& theKey, 
+			  const AliasMap::AliasMapKeyList& theList) const { 
     // some obvious things first
     if (!theList.size()) 
       return false; 
@@ -73,6 +73,17 @@ namespace xaifBooster {
       if(i==theList.end())
 	return false;
     } 
+    return true;
+  }
+
+  bool AliasMap::mayAlias(const AliasMapKey& theKey, 
+			  const AliasMapKey& theOtherKey) const { 
+    if (theKey.getKind()==AliasMapKey::TEMP_VAR)
+      // by agreed usage patterns, i.e. a single 
+      // relevant assignment within a given scope
+      return false; 
+    if (theKey.getKind()!=AliasMapKey::NO_INFO) 
+      return haveNonEmptyIntersection(theKey,theOtherKey);
     return true;
   }
 

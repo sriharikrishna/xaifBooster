@@ -1,6 +1,7 @@
 #ifndef _VERTEXIDENTIFICATIONLIST_INCLUDE_
 #define _VERTEXIDENTIFICATIONLIST_INCLUDE_
 
+#include "xaifBooster/utils/inc/Debuggable.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/AliasMap.hpp"
 
@@ -14,13 +15,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
    * this is the list against which we will check 
    * for identities with other Variable and Argument instances
    */
-  class VertexIdentificationList {
+  class VertexIdentificationList : public Debuggable {
 
   public:
 
-    VertexIdentificationList(){};
+    VertexIdentificationList();
 
     ~VertexIdentificationList(){};
+
+    virtual std::string debug() const;
 
     /** 
      * the result of an identification attempt
@@ -41,7 +44,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       IdentificationResult_E getAnswer() const;
 
       /**
-       *this will be valid only if myAnswer==UNIQUELY_IDENTIFIED
+       *this will be valid only if myAnswer!=NOT_IDENTIFIED
        */
       const PrivateLinearizedComputationalGraphVertex* getVertexP() const;
 
@@ -55,7 +58,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       IdentificationResult_E myAnswer;
 
       /**
-       * this will be valid only if myAnswer==UNIQUELY_IDENTIFIED
+       * this will be valid only if myAnswer!=NOT_IDENTIFIED
        */
       const PrivateLinearizedComputationalGraphVertex* myPrivateLinearizedComputationalGraphVertex_p;
 
@@ -79,6 +82,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void replaceOrAddElement(const Variable& theVariable,
 			     const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
+
+    /** 
+     * \todo JU incomplete, no handling for du info
+     */
+    void removeIfAliased(const Variable& theVariable);
     
   private:
 
@@ -118,7 +126,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * AliasMap methods
      */
     AliasMap::AliasMapKeyList myAliasMapKeyList;
-    
+
   }; // end of class VertexIdentificationList  
    
 } // end namespace 

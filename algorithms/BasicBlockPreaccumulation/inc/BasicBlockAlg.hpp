@@ -100,12 +100,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * Note that any non Assignment BasicBlockElement 
      * interrupts the sequence
      */
-    class Sequence { 
+    class Sequence : public Debuggable { 
 
     public: 
       
       ~Sequence();
 
+      virtual std::string debug() const ;
 
       /** 
        * the graph of all basic block elements combined, 

@@ -138,8 +138,8 @@ namespace xaifBoosterLinearization {
       theUsedArgumentsKeyList.push_back(&((*uLI)->getVariable().getAliasMapKey()));
     if (ConceptuallyStaticInstances::instance()->
 	getCallGraph().getAliasMap().
-	isAliased(getContaining().getLHS().getAliasMapKey(),
-		  theUsedArgumentsKeyList)) 
+	mayAlias(getContaining().getLHS().getAliasMapKey(),
+		 theUsedArgumentsKeyList)) 
       // the top level node may not require replacement 
       // itself but needs to be replaced if any subexpression is replaced: 
       needDelay=true;

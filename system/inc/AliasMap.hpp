@@ -36,7 +36,12 @@ namespace xaifBooster {
     /**
      * check disjunction of alias sets 
      */
-    bool isAliased(const AliasMapKey& theKey, const AliasMapKeyList& theList) const;
+    bool mayAlias(const AliasMapKey& theKey, const AliasMapKeyList& theList) const;
+
+    /**
+     * check disjunction of alias sets 
+     */
+    bool mayAlias(const AliasMapKey& theKey, const AliasMapKey& theOtherKey) const;
 
     /** 
      * establish must alias
