@@ -162,23 +162,6 @@ namespace xaifBoosterLinearization {
     bool myActiveFlag;
 
     /**
-     * remove passive vertices and edges
-     * on the linearized right hand side which 
-     * must have been created before
-     */
-    void passiveReduction();
-    
-    /**
-     * descend down to the first passive edge encountered
-     */
-    void passiveReductionTopDownPass(const ExpressionEdge& theEdge);
-
-    /**
-     * clip all passive nodes/vertices
-     */
-    void passiveReductionTopDownPass(const ExpressionVertex& theVertex);
-
-    /**
      * create replacement assignments that use the 
      * auxilliary variables for SSA
      */
