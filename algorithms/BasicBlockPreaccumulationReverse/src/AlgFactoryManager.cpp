@@ -29,7 +29,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   } // end of AlgFactoryManager::instance
 
   void AlgFactoryManager::init() {
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::init();
+    xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::init();
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
   }
 
