@@ -40,6 +40,10 @@ namespace xaifBoosterLinearization {
 
     Assignment& makeReplacementAssignment(); 
 
+    Assignment& getReplacementAssignment();
+
+    const Assignment& getReplacementAssignment() const ;
+
     /** 
      * is this vertex active?
      */
