@@ -109,8 +109,9 @@ namespace xaifBoosterControlFlowReversal {
     * a corresponding integer get_condition_value().
     * This information is projected onto the branch exit edges.
     */
-
+public:
     void markBranchExitEdges();
+private:
 
     /** 
      * a find branch exit edge that corresponds to theCurrentEdge_r

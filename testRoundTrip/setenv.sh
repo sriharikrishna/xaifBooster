@@ -1,2 +1,2 @@
-export RICETOOLROOT=$HOME/cvs
+export RICETOOLROOT=$HOME/cvs_external
 echo RICETOOLROOT set to $RICETOOLROOT
