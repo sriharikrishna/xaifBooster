@@ -30,6 +30,9 @@ namespace xaifBooster {
     case STRING_STYPE: 
       returnString="string";
       break;
+    case OPAQUE_STYPE: 
+      returnString="opaque";
+      break;
     default: 
       throw PrintingIntException("SymbolType::toString: unknown value",aType);
       break;
@@ -54,9 +57,11 @@ namespace xaifBooster {
       returnValue=CHAR_STYPE;
     else if (aName=="string")
       returnValue=STRING_STYPE;
+    else if (aName=="opaque")
+      returnValue=OPAQUE_STYPE;
     else  
       THROW_LOGICEXCEPTION_MACRO("SymbolType::fromString: unknown value >"
-			   << aName.c_str() << "<");
+				 << aName.c_str() << "<");
     return returnValue;
   } // end of std::string SymbolType::fromString
   

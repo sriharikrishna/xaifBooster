@@ -6,14 +6,15 @@
 
 namespace xaifBooster { 
   class SymbolType { 
-public:
+  public:
     enum SymbolType_E {VOID_STYPE,
 		       INTEGER_STYPE,
 		       REAL_STYPE,
 		       COMPLEX_STYPE,
 		       BOOL_STYPE,
 		       CHAR_STYPE,
-		       STRING_STYPE};
+		       STRING_STYPE,
+		       OPAQUE_STYPE};
     static std::string toString(const SymbolType_E& aType) throw (PrintingIntException);
 
     static const SymbolType_E fromString(const std::string& aName);
