@@ -543,7 +543,7 @@ namespace xaifBoosterControlFlowReversal {
           ReversibleControlFlowGraphVertex* saveIfBranch=0;
           OutEdgeIteratorPair poe(getOutEdgesOf(*(*the_mySortedVertices_p_l_rit)));
           // there is only one outedge
-          if (getTargetOf(*(pie.first)).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::IF&&theVertexKind!=ControlFlowGraphVertexAlg::IF) {
+          if (getTargetOf(*(poe.first)).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::IF&&theVertexKind!=ControlFlowGraphVertexAlg::IF) {
             saveIfBranch=theReversedVertices_p_s.top();
             theReversedVertices_p_s.pop();
             if (theReversedVertices_p_s.top()->isOriginal()) 
