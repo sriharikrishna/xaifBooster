@@ -20,7 +20,7 @@ namespace MemOpsTradeoffPreaccumulation {
     typedef std::list<xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*> VertexPointerList;
     const ConstVertexPointerList& getIndependentList() const;
     const ConstVertexPointerList& getDependentList() const;
-    VertexPointerList& getIntermediateList();
+    VertexPointerList getIntermediateList();
     void addToIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndepdentVertex);
     void addToDependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theDepdentVertex);
     void addToIntermediateList(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theInterVertex);

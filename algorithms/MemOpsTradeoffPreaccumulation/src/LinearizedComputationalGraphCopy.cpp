@@ -12,7 +12,7 @@ namespace MemOpsTradeoffPreaccumulation {
     return myDependentList;
   }
 
-  LinearizedComputationalGraphCopy::VertexPointerList& 
+  LinearizedComputationalGraphCopy::VertexPointerList 
   LinearizedComputationalGraphCopy::getIntermediateList(){
     return myIntermediateList;
   }
@@ -30,7 +30,7 @@ namespace MemOpsTradeoffPreaccumulation {
   }
 
   void LinearizedComputationalGraphCopy::removeFromIntermediateList(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theInterVertex) { 
-    //myIntermediateList.push_back(&theInterVertex);
+    myIntermediateList.remove(&theInterVertex);
   }
 
 } 

@@ -49,19 +49,47 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
     static void forwardMode(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
 
     static void reverseMode(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
 
     static void markowitzMode(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList); 
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
+
+    static void siblingMode(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
+
+    static void succPredMode(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
 
     static void elim_vertex(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theVertex,
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
+
+    static void front_elim_edge(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopyEdge& theEdge,
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
+
+    static void back_elim_edge(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopyEdge& theEdge,
       xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
     
     /** 
