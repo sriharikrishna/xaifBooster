@@ -20,46 +20,10 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
   public:
 
-    /**    
-     */
-    static void forwardMode_f(
-      const DualGraph& theDual,
-      DualGraph::FacePointerList& theOldFaceList,
-      const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList,
-      DualGraphVertex* newOrAbsorb);
-
-    /**
-     */
-    static void reverseMode_f(
-      const DualGraph& theDual,
-      DualGraph::FacePointerList& theOldFaceList,
-      const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList,
-      DualGraphVertex* newOrAbsorb);
-
-    /**
-     */
-    static void markowitzMode_f(
-      const DualGraph& theDual,
-      DualGraph::FacePointerList& theOldFaceList,
-      const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList,
-      DualGraphVertex* newOrAbsorb);
-
-    /**
-     */
-    static void siblingMode_f(
-      const DualGraph& theDual,
-      DualGraph::FacePointerList& theOldFaceList,
-      const DualGraph::VertexPointerList& thePredList,
-      const DualGraph::VertexPointerList& theSuccList,
-      DualGraphVertex* newOrAbsorb);
-
     /**
      */
     static void absorbMode_f(
-      const DualGraph& theDual,
+      DualGraph& theDual,
       DualGraph::FacePointerList& theOldFaceList,
       const DualGraph::VertexPointerList& thePredList,
       const DualGraph::VertexPointerList& theSuccList,

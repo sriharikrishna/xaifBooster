@@ -7,9 +7,9 @@
 
 using namespace MemOpsTradeoffPreaccumulation;
 
-namespace xaifBoosterMemOpsTradeoffPreaccumulation { 
-  
-  void EdgeElim::forwardMode_e(const LinearizedComputationalGraphCopy& theCopy,
+namespace xaifBoosterMemOpsTradeoffPreaccumulation {
+
+  void EdgeElim::forwardMode_e(LinearizedComputationalGraphCopy& theCopy,
 			       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,	    
 			       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 			       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -24,8 +24,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     for(vli = theVertexList.begin(); vli != theVertexList.end(); vli++){
       //iterate through the topsorted vertex list for possible targets.  The earlier in this list the better.
       for(vli2 = theVertexList.begin(); vli2 != theVertexList.end(); vli2++){
-	LinearizedComputationalGraphCopy::ConstOutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**vli));
-	LinearizedComputationalGraphCopy::ConstOutEdgeIterator outi (outedges.first), oute (outedges.second);
+	LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**vli));
+	LinearizedComputationalGraphCopy::OutEdgeIterator outi (outedges.first), oute (outedges.second);
 	//search through outedges of the source for edges in the list
         for(; outi != oute; ++outi){
 	  //if there is an edge fro source to target, check to see if its in the list
@@ -50,7 +50,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     theOldEdgeList = theNewList;
   }// end forwardMode
 
-  void EdgeElim::reverseMode_e(const LinearizedComputationalGraphCopy& theCopy,
+  void EdgeElim::reverseMode_e(LinearizedComputationalGraphCopy& theCopy,
 			       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
 			       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
  			       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -65,8 +65,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     for(rvli = theVertexList.rbegin(); rvli != theVertexList.rend(); rvli++){
       //iterate backwards through the topsorted vertex list for possible sources.  The later in this list the better
       for(rvli2 = theVertexList.rbegin(); rvli2 != theVertexList.rend(); rvli2++){
-	LinearizedComputationalGraphCopy::ConstInEdgeIteratorPair inedges (theCopy.getInEdgesOf(**rvli));
-	LinearizedComputationalGraphCopy::ConstInEdgeIterator ini (inedges.first), ine (inedges.second);
+	LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (theCopy.getInEdgesOf(**rvli));
+	LinearizedComputationalGraphCopy::InEdgeIterator ini (inedges.first), ine (inedges.second);
 	//search through inedges of the target for edges in the list
         for(; ini != ine; ++ini){
 	  //if there is an edge fro source to target, check to see if its in the list
@@ -91,7 +91,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     theOldEdgeList = theNewList;
   }// end reverseMode
 
-  void EdgeElim::markowitzMode_e(const LinearizedComputationalGraphCopy& theCopy,
+  void EdgeElim::markowitzMode_e(LinearizedComputationalGraphCopy& theCopy,
 				 LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				 const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -147,7 +147,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     theOldEdgeList = theNewList;
   }// end markowitzMode
 
-  void EdgeElim::sibling2Mode_e(const LinearizedComputationalGraphCopy& theCopy,
+  void EdgeElim::sibling2Mode_e(LinearizedComputationalGraphCopy& theCopy,
 				LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
 				const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
 				const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
@@ -169,8 +169,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	      predMatch++;
 	    }// end if
 	    if(predMatch){
-	      LinearizedComputationalGraphCopy::ConstInEdgeIteratorPair inedges (theCopy.getInEdgesOf(**succi));
-	      LinearizedComputationalGraphCopy::ConstInEdgeIterator ie=inedges.first, iend=inedges.second;
+	      LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (theCopy.getInEdgesOf(**succi));
+	      LinearizedComputationalGraphCopy::InEdgeIterator ie=inedges.first, iend=inedges.second;
 	      for(; ie != iend; ++ie){
 		if(&theCopy.getSourceOf(*ie) == &theCopy.getTargetOf(*(*bi).edge_p)){
 		  succMatch++;
@@ -185,8 +185,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	      succMatch++;
 	    }// end if
 	    if(succMatch){
-	      LinearizedComputationalGraphCopy::ConstOutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**predi));
-	      LinearizedComputationalGraphCopy::ConstOutEdgeIterator oe=outedges.first, oend=outedges.second;
+	      LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**predi));
+	      LinearizedComputationalGraphCopy::OutEdgeIterator oe=outedges.first, oend=outedges.second;
 	      for(; oe != oend; ++oe){
 		if(&theCopy.getTargetOf(*oe) == &theCopy.getSourceOf(*(*bi).edge_p)){
 		  predMatch++;
@@ -197,6 +197,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  }// end if direction is back
 	}// end for succlist
       }// end for predlist
+
       //if the current edge "sibling degree" is higher than those in the list, clear the list then push
       if(predMatch*succMatch > highestdegree){
 	highestdegree = predMatch*succMatch;
@@ -209,6 +210,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       }// end else if
     }// end for edges in list
     if(theNewList.size() > 0){
+      theCopy.sdsum += highestdegree;
       theOldEdgeList = theNewList;
     }// end if
   }// end sibling2Mode_e

@@ -28,7 +28,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * forwardmode makes no use of the predecessor and successor lists .    
      */
     static void forwardMode_e(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -40,7 +40,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * reversemode makes no use of the predecessor and successor lists   .  
      */
     static void reverseMode_e(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -50,7 +50,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * markowitzmode makes no use of the predecessor and successor lists.
      */
     static void markowitzMode_e(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -65,7 +65,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * the edge list is not changed.
      */
     static void sibling2Mode_e(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);

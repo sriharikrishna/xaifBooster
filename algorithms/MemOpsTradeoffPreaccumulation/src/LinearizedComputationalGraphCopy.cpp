@@ -9,6 +9,9 @@ namespace MemOpsTradeoffPreaccumulation{
     LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (getOutEdgesOf(getTargetOf(theEdge)));
     LinearizedComputationalGraphCopy::OutEdgeIterator oe=outedges.first, oend=outedges.second;
     for(; oe != oend; ++oe){
+
+      opsum++;
+
       JacobianAccumulationExpressionCopy* theExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
 
       //add first minimal vertex: the edge being eliminated, set its pointer appropriately
@@ -89,6 +92,9 @@ namespace MemOpsTradeoffPreaccumulation{
     LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (getInEdgesOf(getSourceOf(theEdge)));
     LinearizedComputationalGraphCopy::InEdgeIterator ie=inedges.first, iend=inedges.second;
     for(; ie != iend; ++ie){
+
+      opsum++;
+
       JacobianAccumulationExpressionCopy* theExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
 
       //add first minimal vertex: edge into theVertex
@@ -183,6 +189,9 @@ namespace MemOpsTradeoffPreaccumulation{
     for(; ie != iend; ++ie){
       LinearizedComputationalGraphCopy::OutEdgeIterator oe=outedges.first, oend=outedges.second;
       for(; oe != oend; ++oe){
+
+	opsum++;
+
 	JacobianAccumulationExpressionCopy* theExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
 
 	//add first minimal vertex: edge into theVertex

@@ -25,7 +25,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * forwardmode makes no use of the predecessor and successor lists .    
      */
     static void forwardMode_v(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -35,7 +35,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * reversemode makes no use of the predecessor and successor lists .    
      */
     static void reverseMode_v(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -45,18 +45,18 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * markowitzmode makes no use of the predecessor and successor lists.
      */
     static void markowitzMode_v(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::VertexPointerList& theOldvertexList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
 
     /**
-     * siblingmode reduces the vertex list to only those vertices that share at least one predecessor
+     * silingmode reduces the vertex list to only those vertices that share at least one predecessor
      * and sucessor with the most recently eliminated vertex.  if no vertices meet this criteria, the
      * vertex list remains unchanged.
      */
     static void siblingMode_v(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -67,7 +67,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * sucessors shared.  if no vertices meet this criteria, the vertex list remains unchanged. 
      */
     static void sibling2Mode_v(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
@@ -77,7 +77,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * the most recently eliminated vertex.
      */
     static void succPredMode_v(
-      const LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy& theCopy,
       LinearizedComputationalGraphCopy::VertexPointerList& theOldVertexList,
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);

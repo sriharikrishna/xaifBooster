@@ -22,6 +22,8 @@ namespace MemOpsTradeoffPreaccumulation {
 
   public:
 
+    unsigned int absum, opsum;
+
     DualGraph(const LinearizedComputationalGraph& theOriginal);
     ~DualGraph();
 
