@@ -52,30 +52,30 @@
 	   xx2 = xx2 + hx2
 	end do
 	
-!	open(2,file='tmpOutput/dd.out')
-!	write(2,*) "DD"
-!        call forward_mode()
-!	do i=1,n   
-!	   do j=1,n   
-!              x(j)%v=x0(j)
-!              if (i==j) then 
-!		 xph(j)%v=x0(j)+h
-!              else
-!		 xph(j)%v=x0(j)
-!              end if
-!	      call head(nx1,nx2,xph,yph,r)
-!	      call head(nx1,nx2,x,y,r)
-!              do k=1,m
-!		 res_dd(k,i)=(yph(k)%v-y(k)%v)/h
-!              end do
-!	   end do
-!	end do
-!	do k=1,n
-!	   do i=1,m   
-!              write(2,*) "F(",i,",",k,")=",res_dd(i,k)
-!	   end do
-!	end do
-!	close(2)
+	open(2,file='tmpOutput/dd.out')
+	write(2,*) "DD"
+        call forward_mode()
+	do i=1,n   
+	   do j=1,n   
+              x(j)%v=x0(j)
+              if (i==j) then 
+		 xph(j)%v=x0(j)+h
+              else
+		 xph(j)%v=x0(j)
+              end if
+	      call head(nx1,nx2,xph,yph,r)
+	      call head(nx1,nx2,x,y,r)
+              do k=1,m
+		 res_dd(k,i)=(yph(k)%v-y(k)%v)/h
+              end do
+	   end do
+	end do
+	do k=1,n
+	   do i=1,m   
+              write(2,*) "F(",i,",",k,")=",res_dd(i,k)
+	   end do
+	end do
+	close(2)
 
 	write(*,*) "The real stuff starts now"
         call tape_init()
