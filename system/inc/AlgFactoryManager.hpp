@@ -20,6 +20,7 @@ class PreLoopAlgFactory;
 class ForLoopAlgFactory;
 class EntryAlgFactory;
 class ExitAlgFactory;
+class CallGraphVertexAlgFactory;
 
   /** 
    * the singleton class for 
@@ -54,6 +55,7 @@ class ExitAlgFactory;
     ForLoopAlgFactory* getForLoopAlgFactory() const ;
     EntryAlgFactory* getEntryAlgFactory() const ;
     ExitAlgFactory* getExitAlgFactory() const ;
+    CallGraphVertexAlgFactory* getCallGraphVertexAlgFactory() const ;
 
   protected: 
     
@@ -72,6 +74,7 @@ class ExitAlgFactory;
     void resetForLoopAlgFactory(ForLoopAlgFactory*);
     void resetEntryAlgFactory(EntryAlgFactory*);
     void resetExitAlgFactory(ExitAlgFactory*);
+    void resetCallGraphVertexAlgFactory(CallGraphVertexAlgFactory*);
     
     AlgFactoryManager();
 
@@ -101,6 +104,7 @@ class ExitAlgFactory;
     ForLoopAlgFactory* ourForLoopAlgFactory_p;
     EntryAlgFactory* ourEntryAlgFactory_p;
     ExitAlgFactory* ourExitAlgFactory_p;
+    CallGraphVertexAlgFactory* ourCallGraphVertexAlgFactory_p;
 
     /**
      * no def

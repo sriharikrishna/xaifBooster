@@ -17,7 +17,7 @@ ourActionCatalogue.addElement(ConcreteArgument::ourXAIFName, ActionItem(&XAIFBas
 ourActionCatalogue.addElement(Condition::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onCondition));
 ourActionCatalogue.addElement(Constant::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onConstant));
 ourActionCatalogue.addElement(ControlFlowGraph::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onControlFlowGraph));
-ourActionCatalogue.addElement(ControlFlowGraph::our_myArgumentList_XAIFName, ActionItem(&XAIFBaseParserHandlers::onArgumentList));
+ourActionCatalogue.addElement(ArgumentList::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onArgumentList));
 ourActionCatalogue.addElement(ControlFlowGraphEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onControlFlowGraphEdge));
 ourActionCatalogue.addElement(Entry::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEntry));
 ourActionCatalogue.addElement(Exit::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onExit));

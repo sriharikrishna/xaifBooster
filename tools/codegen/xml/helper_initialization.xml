@@ -76,6 +76,9 @@
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="SymbolTable"/>
     </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="ArgumentList"/>
+    </CodeGen:CodeVersion>
 <!-- special treatment for last entry 
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Update"/>

@@ -496,7 +496,7 @@ namespace xaifBooster {
 				  atoi(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myPosition_XAIFName).c_str()),
 				  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myActiveFlag_XAIFName)),
 				  IntentType::fromString(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myIntent_XAIFName)));
-    theControlFlowGraph.getArgumentList().push_back(theNewArgumentSymbolReference_p);
+    theControlFlowGraph.getArgumentList().getArgumentSymbolReferencePList().push_back(theNewArgumentSymbolReference_p);
   };
 
   void 

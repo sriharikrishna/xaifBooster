@@ -15,6 +15,11 @@ namespace xaifBooster {
     myControlFlowGraph.printXMLHierarchy(os);
   } // end of CallGraphVertex::printXMLHierarchy
 
+  void
+  CallGraphVertex::printXMLHierarchyImpl(std::ostream& os) const { 
+    myControlFlowGraph.printXMLHierarchy(os);
+  } // end of CallGraphVertex::printXMLHierarchyImpl
+
   std::string CallGraphVertex::debug () const { 
     std::ostringstream out;
     out << "CallGraphVertex[" << this 

@@ -44,6 +44,8 @@ void setSymbolTable(SymbolTable& whatToSet);
 SymbolTable& getSymbolTable() const;
 void setUpdate(Update& whatToSet);
 Update& getUpdate() const;
+void setArgumentList(ArgumentList& whatToSet);
+ArgumentList& getArgumentList() const;
 
 private:
 AliasMapEntry* myAliasMapEntry_p;
@@ -68,3 +70,4 @@ Scopes* myScopes_p;
 SubroutineCall* mySubroutineCall_p;
 SymbolTable* mySymbolTable_p;
 Update* myUpdate_p;
+ArgumentList* myArgumentList_p;

@@ -16,6 +16,7 @@
 #include "xaifBooster/system/inc/ForLoopAlgFactory.hpp"
 #include "xaifBooster/system/inc/EntryAlgFactory.hpp"
 #include "xaifBooster/system/inc/ExitAlgFactory.hpp"
+#include "xaifBooster/system/inc/CallGraphVertexAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -57,7 +58,8 @@ namespace xaifBooster {
     ourPreLoopAlgFactory_p(0), 
     ourForLoopAlgFactory_p(0), 
     ourEntryAlgFactory_p(0), 
-    ourExitAlgFactory_p(0) 
+    ourExitAlgFactory_p(0), 
+    ourCallGraphVertexAlgFactory_p(0) 
   {
   }
 
@@ -92,6 +94,8 @@ namespace xaifBooster {
       delete ourEntryAlgFactory_p;
     if (ourExitAlgFactory_p)
       delete ourExitAlgFactory_p;
+    if (ourCallGraphVertexAlgFactory_p)
+      delete ourCallGraphVertexAlgFactory_p;
   } // end of AlgFactoryManager::~AlgFactoryManager
 
   void AlgFactoryManager::init() {
@@ -110,6 +114,7 @@ namespace xaifBooster {
     resetForLoopAlgFactory(new ForLoopAlgFactory());
     resetEntryAlgFactory(new EntryAlgFactory());
     resetExitAlgFactory(new ExitAlgFactory());
+    resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
   }
 
   void AlgFactoryManager::resetArgumentAlgFactory(ArgumentAlgFactory* anotherArgumentAlgFactory_p){ 
@@ -202,6 +207,12 @@ namespace xaifBooster {
     ourExitAlgFactory_p=anotherExitAlgFactory_p;
   }
 
+  void AlgFactoryManager::resetCallGraphVertexAlgFactory(CallGraphVertexAlgFactory* anotherCallGraphVertexAlgFactory_p){ 
+    if(ourCallGraphVertexAlgFactory_p) 
+      delete ourCallGraphVertexAlgFactory_p;
+    ourCallGraphVertexAlgFactory_p=anotherCallGraphVertexAlgFactory_p;
+  }
+
   ArgumentAlgFactory* AlgFactoryManager::getArgumentAlgFactory() const { 
     if (!ourArgumentAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getArgumentAlgFactory: not set");
@@ -290,6 +301,12 @@ namespace xaifBooster {
     if (!ourExitAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getExitAlgFactory: not set");
     return ourExitAlgFactory_p;
+  }
+
+  CallGraphVertexAlgFactory* AlgFactoryManager::getCallGraphVertexAlgFactory() const { 
+    if (!ourCallGraphVertexAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getCallGraphVertexAlgFactory: not set");
+    return ourCallGraphVertexAlgFactory_p;
   }
 
 }

@@ -27,6 +27,7 @@ namespace xaifBooster {
   class SubroutineCall;
   class SymbolTable;
   class Update;
+  class ArgumentList;
   
   class XAIFBaseParserHelper : public XMLParserHelper { 
   public: 

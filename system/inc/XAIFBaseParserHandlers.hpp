@@ -31,6 +31,7 @@
 #include "xaifBooster/system/inc/ScopeContainment.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 #include "xaifBooster/system/inc/InOutList.hpp"
+#include "xaifBooster/system/inc/ArgumentList.hpp"
 
 namespace xaifBooster {
 
