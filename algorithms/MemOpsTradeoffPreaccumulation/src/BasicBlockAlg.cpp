@@ -29,8 +29,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     //run QuickRegression.bash at /home/lyonsam/Argonne/xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/test
     // and make sure the results are correct.  then push, they will be the standard from then on 
 
-    GraphVizDisplay::show(theOriginal,"flattened");
-
     if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)){
       GraphVizDisplay::show(theOriginal,"flattened");
     }
