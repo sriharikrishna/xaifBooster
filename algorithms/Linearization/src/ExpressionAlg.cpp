@@ -297,28 +297,38 @@ namespace xaifBoosterLinearization {
     for (;iE!=iEe ;++iE)
       activityAnalysisBottomUpPass(*iE);
     ExpressionVertexAlg& theExpressionVertexAlg(dynamic_cast<ExpressionVertexAlg&>(v.getExpressionVertexAlgBase()));
-    if(theExpressionVertexAlg.isActive()) { 
-      Expression::ConstInEdgeIteratorPair pE(getContaining().getInEdgesOf(v));
-      Expression::ConstInEdgeIterator iE(pE.first),iEe(pE.second);
+    if(theExpressionVertexAlg.isActive()) {
       bool makePassive=false; 
-      for (;iE!=iEe ;++iE) { 
-	makePassive=true; // only if we actually have in edges, 
-	// don't want to make a VariableReferemce passive 
-	if (dynamic_cast<ExpressionEdgeAlg&>((*iE).getExpressionEdgeAlgBase()).
-	    getPartialDerivativeKind()!=PartialDerivativeKind::PASSIVE) { 
-	  makePassive=false;
-	  break;
-	}
-      } // end for 
+      if (v.isArgument()) { 
+	// this may be an argument with a passive type 
+	// whose flag defaulted to 'active'
+	if (!dynamic_cast<const Argument&>(v).getVariable().getActiveType())
+	  makePassive=true;
+      } // end if 
+      else { 
+	Expression::ConstInEdgeIteratorPair pE(getContaining().getInEdgesOf(v));
+	Expression::ConstInEdgeIterator iE(pE.first),iEe(pE.second);
+	for (;iE!=iEe ;++iE) { 
+	  // assume we want to passivate
+	  makePassive=true;
+	  // but... 
+	  if (dynamic_cast<ExpressionEdgeAlg&>((*iE).getExpressionEdgeAlgBase()).
+	      getPartialDerivativeKind()!=PartialDerivativeKind::PASSIVE) { 
+	    // don't passivate if we have an active edge
+	    makePassive=false;
+	    break;
+	  } // end if 
+	} // end for 
+      } // end else 
       if (makePassive)
 	theExpressionVertexAlg.passivate();
-    }
+    } // end if (vertex is active)
     if(!theExpressionVertexAlg.isActive()) { 
       Expression::ConstOutEdgeIteratorPair pE(getContaining().getOutEdgesOf(v));
       Expression::ConstOutEdgeIterator iE(pE.first),iEe(pE.second);
       for (;iE!=iEe ;++iE)
 	dynamic_cast<ExpressionEdgeAlg&>((*iE).getExpressionEdgeAlgBase()).passivate();
-    } 
+    }  
   } // end of ExpressionAlg::activityAnalysisBottomUpPass
 
 }

@@ -168,14 +168,6 @@
             <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial" active="0">
-          <xaif:AssignmentLHS active="false" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="1"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:Assignment statement_id="sage_2: delayed LHS assignment for correct partials" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
