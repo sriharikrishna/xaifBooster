@@ -72,7 +72,10 @@ int main(int argc,char** argv) {
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
-    newLocation.append(" xaif_output.xsd");
+    if (schemaPath.size())
+      newLocation.append(" "+schemaPath+"/xaif_output.xsd");
+    else 
+      newLocation.append(" xaif_output.xsd");
     Cg.resetSchemaLocation(newLocation);
     if (CommandLineParser::instance()->isSet('o')) { 
       std::ofstream theOutFile(CommandLineParser::instance()->argAsString('o').c_str(),
