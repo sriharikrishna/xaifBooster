@@ -11,21 +11,32 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : CallGraphVertexAlgBase(theContaining), myTransformedControlFlowGraph(NULL) {
+  CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : CallGraphVertexAlgBase(theContaining), myTapingControlFlowGraph(NULL), myAdjointControlFlowGraph(NULL) {
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() {
-    if (myTransformedControlFlowGraph) delete myTransformedControlFlowGraph;
+    if (myTapingControlFlowGraph) delete myTapingControlFlowGraph;
+    if (myAdjointControlFlowGraph) delete myAdjointControlFlowGraph;
   }
 
   ReversibleControlFlowGraph&
-  CallGraphVertexAlg::getTransformedControlFlowGraph() {
-    return *myTransformedControlFlowGraph;
+  CallGraphVertexAlg::getTapingControlFlowGraph() {
+    return *myTapingControlFlowGraph;
   }
                                                                                 
   const ReversibleControlFlowGraph&
-  CallGraphVertexAlg::getTransformedControlFlowGraph() const {
-    return *myTransformedControlFlowGraph;
+  CallGraphVertexAlg::getTapingControlFlowGraph() const {
+    return *myTapingControlFlowGraph;
+  }
+
+  ReversibleControlFlowGraph&
+  CallGraphVertexAlg::getAdjointControlFlowGraph() {
+    return *myAdjointControlFlowGraph;
+  }
+                                                                                
+  const ReversibleControlFlowGraph&
+  CallGraphVertexAlg::getAdjointControlFlowGraph() const {
+    return *myAdjointControlFlowGraph;
   }
 
   class ControlFlowGraphVertexLabelWriter {
@@ -69,28 +80,30 @@ namespace xaifBoosterControlFlowReversal {
     DBG_MACRO(DbgGroup::CALLSTACK,
               "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(reverse control flow) called for: "
               << debug().c_str());
-      myTransformedControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
+      myTapingControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
+      myAdjointControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
+      myTapingControlFlowGraph->makeThisACopyOfOriginalControlFlowGraph();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
-			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
+	GraphVizDisplay::show(*myTapingControlFlowGraph,"transformed_cfg_1",
+			      ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
-      myTransformedControlFlowGraph->topologicalSort();
+      myTapingControlFlowGraph->topologicalSort();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_2",
-			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
+	GraphVizDisplay::show(*myTapingControlFlowGraph,"transformed_cfg_2",
+			      ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
       // buildAdjointControlFlowGraph() should always be based on the
       // original CFG, that is, it should preceed the call to 
       // storeControlFlow()
-      myTransformedControlFlowGraph->buildAdjointControlFlowGraph();
+      myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_4",
-			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
+	GraphVizDisplay::show(*myAdjointControlFlowGraph,"transformed_cfg_4",
+			      ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph));
       }
-      myTransformedControlFlowGraph->storeControlFlow();
+      myTapingControlFlowGraph->storeControlFlow();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_3",
-			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
+	GraphVizDisplay::show(*myTapingControlFlowGraph,"transformed_cfg_3",
+			      ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
   } // end CallGraphVertexAlg::algorithm_action_4() 
 
@@ -110,7 +123,7 @@ namespace xaifBoosterControlFlowReversal {
        << std::endl;
     getContaining().getControlFlowGraph().getArgumentList().printXMLHierarchy(os);
                                                                                 
-    myTransformedControlFlowGraph->printXMLHierarchy(os);
+    myTapingControlFlowGraph->printXMLHierarchy(os);
                                                                                 
         os << pm.indent()
        << "</"
