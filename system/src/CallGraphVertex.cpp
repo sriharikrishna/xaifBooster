@@ -21,9 +21,9 @@ namespace xaifBooster {
       delete myCallGraphVertexAlgBase_p;
   } 
 
-  std::string
+  const std::string&
   CallGraphVertex::getSubroutineName() const { 
-    return std::string("ASUBROUTINENAME");
+    return myControlFlowGraph.getSymbolReference().getSymbol().getId(); 
   }
 
   CallGraphVertexAlgBase& 

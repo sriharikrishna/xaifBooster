@@ -31,7 +31,7 @@
 !$PLACEHOLDER_PRAGMA$ id=3
             case (4) 
 ! restore results
-!$PLACEHOLDER_PRAGMA$ id=6
+!$PLACEHOLDER_PRAGMA$ id=7
           end select
 
         end subroutine template

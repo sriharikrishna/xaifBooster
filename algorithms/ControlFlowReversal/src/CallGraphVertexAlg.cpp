@@ -88,22 +88,22 @@ namespace xaifBoosterControlFlowReversal {
       myAdjointControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
       myTapingControlFlowGraph->makeThisACopyOfOriginalControlFlowGraph();
       myTapingControlFlowGraph->topologicalSort();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
       // buildAdjointControlFlowGraph() should always be based on the
       // original CFG, that is, it should preceed the call to 
       // storeControlFlow()
       myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
       myTapingControlFlowGraph->markBranchExitEdges();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
       myTapingControlFlowGraph->storeControlFlow();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_taping", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
       }
   } // end CallGraphVertexAlg::algorithm_action_4() 
