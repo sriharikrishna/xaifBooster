@@ -1,6 +1,7 @@
 #ifndef _INLINABLEINTRINSICSPARSERHELPER_INCLUDE_
 #define _INLINABLEINTRINSICSPARSERHELPER_INCLUDE_
 
+#include "xaifBooster/utils/inc/XMLParserHelper.hpp"
 
 namespace xaifBooster { 
 
@@ -19,7 +20,7 @@ x* my##x##_p;
   class InlinableIntrinsicsConstant;
   class InlinableIntrinsicsExpressionEdge;
   
-  class InlinableIntrinsicsParserHelper { 
+  class InlinableIntrinsicsParserHelper : public XMLParserHelper { 
   public: 
     InlinableIntrinsicsParserHelper();
     ~InlinableIntrinsicsParserHelper(){};
