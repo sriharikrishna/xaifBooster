@@ -55,8 +55,10 @@ namespace xaifBoosterLinearization {
     if (mySSAReplacementAssignmentList.size()) { 
       for (std::list<Assignment*>::const_iterator li=mySSAReplacementAssignmentList.begin();
 	   li!=mySSAReplacementAssignmentList.end();
-	   ++li)
+	   ++li) { 
+	DBG_MACRO(DbgGroup::DATA, "xaifBoosterLinearization::AssignmentAlg::printXMLHierarchy: printing: " << *li );
 	(*li)->printXMLHierarchy(os);
+      }
     }
     else { 
       getContaining().printXMLHierarchyImpl(os);
@@ -97,8 +99,11 @@ namespace xaifBoosterLinearization {
     for (;ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI)
       printEdgeAnnotationsBottomUp(*ExpressionEdgeI,
 				   theExpression,
-				   os); 
-    if (dynamic_cast<ExpressionEdgeAlg&>(theEdge.getExpressionEdgeAlgBase()).hasConcretePartialAssignment()) { 
+				   os);
+    ExpressionEdgeAlg& theExpressionEdgeAlg(dynamic_cast<ExpressionEdgeAlg&>(theEdge.getExpressionEdgeAlgBase())); 
+    if (theExpressionEdgeAlg.hasConcretePartialAssignment()
+	&& 
+	theExpressionEdgeAlg.getPartialDerivativeKind()!=PartialDerivativeKind::PASSIVE) { 
       DBG_MACRO(DbgGroup::CALLSTACK,
 		"xaifBoosterLinearization::AssignmentAlg::printEdgeAnnotationsBottomUp: printing for " 
 		<< theEdge.debug().c_str() 
@@ -134,11 +139,11 @@ namespace xaifBoosterLinearization {
     AliasMap::AliasMapKeyList theUsedArgumentsKeyList;
     const Assignment& theContainingAssignment(dynamic_cast<const Assignment&>(getContaining()));
     for(ExpressionAlg::ArgumentPList::const_iterator uLI=thePartialUsageList.begin();
-	  uLI!=thePartialUsageList.end();
+	uLI!=thePartialUsageList.end();
 	++uLI)
       theUsedArgumentsKeyList.push_back(&((*uLI)->getVariable().getAliasMapKey()));
     if (ConceptuallyStaticInstances::instance()->
-	  getCallGraph().getAliasMap().
+	getCallGraph().getAliasMap().
 	mayAlias(theContainingAssignment.getLHS().getAliasMapKey(),
 		 theUsedArgumentsKeyList)) 
       // The current final execution sequence is: 
@@ -166,8 +171,8 @@ namespace xaifBoosterLinearization {
       //    created replacement assignments
       if (!dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).hasReplacement()) { // this is case B
 	Assignment& theReplacementAssignment(dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).
-									getExpressionVertexAlgBase()).
-				     makeReplacementAssignment());
+										getExpressionVertexAlgBase()).
+					     makeReplacementAssignment());
 	theReplacementAssignment.setId("replacement for " + theContainingAssignment.getId());
 	// now we add a copy of the  target vertex  to the replacement assignment
 	ExpressionVertex& theReplacementTargetVertex((*ExpressionVertexI).createCopyOfMyself());
@@ -180,7 +185,7 @@ namespace xaifBoosterLinearization {
 	  // need the extra temporary assignment: 
 	  myDelayedLHSAssignment_p=new Assignment(true);
 	  myDelayedLHSAssignment_p->setId(theContainingAssignment.getId()+ ": delayed LHS assignment for correct partials");
-	// make a temporary Variable on the RHS:
+	  // make a temporary Variable on the RHS:
 	  Argument* theDelayVertex_p=new Argument();
 	  theDelayVertex_p->setId(1);
 	  // add it to the RHS of the temp assignment
@@ -359,6 +364,19 @@ namespace xaifBoosterLinearization {
     } // end if 
   } // end of AssignmentAlg::localRHSExtractionInner
 
+  // local writer definition: 
+  class VertexLabelWriter {
+  public:
+    VertexLabelWriter(const Expression& e) : myE(e) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      out << "[label=\"" << dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
+														  myE.getInternalBoostGraph()),
+												       v))).getExpressionVertexAlgBase()).isActive() << "\"]";
+    };
+    const Expression& myE;
+  };
+
   void AssignmentAlg::algorithm_action_1() { 
     DBG_MACRO(DbgGroup::CALLSTACK, 
 	      "xaifBoosterLinearization::AssignmentAlg::algorithm_action_1(analyze/copy) called for: "
@@ -375,8 +393,12 @@ namespace xaifBoosterLinearization {
       return;
     }
 
+    //     GraphVizDisplay::show(getContainingAssignment().getRHS(),"originalBefore",
+    //      			  VertexLabelWriter(getContainingAssignment().getRHS()));
     // perform the activity analysis on the original right hand side
     dynamic_cast<ExpressionAlg&>(getContainingAssignment().getRHS().getExpressionAlgBase()).activityAnalysis(); 
+    //     GraphVizDisplay::show(getContainingAssignment().getRHS(),"originalAfter",
+    //      			  VertexLabelWriter(getContainingAssignment().getRHS()));
 
     // has the maximal node become passive?
     Expression::ConstVertexIteratorPair pV(getContainingAssignment().getRHS().vertices());
@@ -403,27 +425,14 @@ namespace xaifBoosterLinearization {
     dynamic_cast<ExpressionAlg&>(myLinearizedRightHandSide.getExpressionAlgBase()).activityAnalysis(); 
   } // end of AssignmentAlg::algorithm_action_1(analyze/copy)
 
-  // local writer definition: 
-  class VertexLabelWriter {
-  public:
-    VertexLabelWriter(const Expression& e) : myE(e) {};
-    template <class BoostIntenalVertexDescriptor>
-    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
-      out << "[label=\"" << dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
-														  myE.getInternalBoostGraph()),
-												       v))).getExpressionVertexAlgBase()).isActive() << "\"]";
-    };
-    const Expression& myE;
-  };
-
   void AssignmentAlg::activityAnalysis() {
     if (!myActiveFlag)
       return;
     if (!myHaveLinearizedRightHandSide)
       THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::activityAnalysis: need right hand side copy");
     dynamic_cast<ExpressionAlg&>(myLinearizedRightHandSide.getExpressionAlgBase()).activityAnalysis(); 
-//     GraphVizDisplay::show(getLinearizedRightHandSide(),"myLinearizedRightHandSideAfter",
-// 			  VertexLabelWriter(getLinearizedRightHandSide()));
+    //     GraphVizDisplay::show(getLinearizedRightHandSide(),"myLinearizedRightHandSideAfter",
+    // 			  VertexLabelWriter(getLinearizedRightHandSide()));
     // has the maximal node become passive?
     Expression::VertexIteratorPair pV(myLinearizedRightHandSide.vertices());
     Expression::VertexIterator iV(pV.first),iVe(pV.second);
@@ -431,12 +440,12 @@ namespace xaifBoosterLinearization {
       if (!myLinearizedRightHandSide.numOutEdgesOf(*iV))
 	break;
     if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()
-      ||
-      (myLinearizedRightHandSide.numVertices()==1 // we have only one vertex which must
-       // be an argument, otherwise it would be a constant and we would have hit the previous condition
-       // and not execute this one
-       &&
-       !dynamic_cast<const Argument&>(*iV).getVariable().getActiveType())) {
+	||
+	(myLinearizedRightHandSide.numVertices()==1 // we have only one vertex which must
+	 // be an argument, otherwise it would be a constant and we would have hit the previous condition
+	 // and not execute this one
+	 &&
+	 !dynamic_cast<const Argument&>(*iV).getVariable().getActiveType())) {
       // make the entire assignment passive
       myActiveFlag=false;
       // remove all possibly created code: 
@@ -470,10 +479,6 @@ namespace xaifBoosterLinearization {
       createPartialExpressions();
     // create ssa code
     makeSSACodeList();
-    // we need to wait with the reduction until after the code 
-    // generation since we need to know e.g. constant values for the 
-    // partials. Have to consider constant folding as a subsequent step.
-    passiveReduction();
   } // end of AssignmentAlg::algorithm_action_2(code generation)
 
   Expression& AssignmentAlg::getLinearizedRightHandSide() { 
@@ -491,55 +496,6 @@ namespace xaifBoosterLinearization {
   bool AssignmentAlg::haveLinearizedRightHandSide() const { 
     return myHaveLinearizedRightHandSide;
   } // end of AssignmentAlg::haveLinearizedRightHandSide
-
-  void AssignmentAlg::passiveReduction() { 
-    // find the maximal vertex: 
-    Expression::VertexIteratorPair pV(myLinearizedRightHandSide.vertices());
-    Expression::VertexIterator iV(pV.first),iVe(pV.second);
-    for (;iV!=iVe ;++iV)
-      if (!myLinearizedRightHandSide.numOutEdgesOf(*iV))
-	break;
-    Expression::InEdgeIteratorPair pE(myLinearizedRightHandSide.getInEdgesOf(*iV));
-    Expression::InEdgeIterator iE(pE.first),iEe(pE.second);
-    for (;iE!=iEe;) { 
-      Expression::InEdgeIterator iEdel(iE);
-      ++iE;
-      passiveReductionTopDownPass(*iEdel);
-    } // end for 
-    // the top level node may be inactive too
-    if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()) { 
-      myLinearizedRightHandSide.removeAndDeleteVertex(*iV);
-    }
-  } // end of AssignmentAlg::passiveReduction
-
-  void AssignmentAlg::passiveReductionTopDownPass(const ExpressionEdge& theEdge) { 
-    ExpressionVertex& v=myLinearizedRightHandSide.getSourceOf(theEdge);
-    if (dynamic_cast<ExpressionEdgeAlg&>(theEdge.getExpressionEdgeAlgBase()).
-	getPartialDerivativeKind()!=PartialDerivativeKind::PASSIVE) { 
-      Expression::InEdgeIteratorPair pE(myLinearizedRightHandSide.getInEdgesOf(v));
-      Expression::InEdgeIterator iE(pE.first),iEe(pE.second);
-      for (;iE!=iEe ;) { 
-	Expression::InEdgeIterator iEdel(iE);
-        ++iE;
-	passiveReductionTopDownPass(*iEdel);
-      }
-    } 
-    else
-      // this gets rid of the vertices 
-      // which implies getting rid of the edges
-      passiveReductionTopDownPass(v);
-  } // end of AssignmentAlg::passiveReductionTopDownPass()
-
-  void AssignmentAlg::passiveReductionTopDownPass(const ExpressionVertex& theVertex) { 
-    Expression::InEdgeIteratorPair pE(myLinearizedRightHandSide.getInEdgesOf(theVertex));
-    Expression::InEdgeIterator iE(pE.first),iEe(pE.second);
-    for (;iE!=iEe ;){ 
-      Expression::InEdgeIterator iEdel(iE);
-      ++iE;
-      passiveReductionTopDownPass(myLinearizedRightHandSide.getSourceOf(*iEdel));
-    }
-    myLinearizedRightHandSide.removeAndDeleteVertex(theVertex);
-  } // end of AssignmentAlg::passiveReductionTopDownPass()
 
   bool AssignmentAlg::getActiveFlag() const { 
     return myActiveFlag;

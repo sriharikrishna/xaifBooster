@@ -9,6 +9,7 @@
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
@@ -220,6 +221,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						     theLCGVertex_p));
 	  } // end if NOT_IDENTIFIED
+	  else if (!dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) { 
+	    // this is passive stuff  we don't do anything
+	  }
 	  else { // there is an ambiquity
 	    // but we should have detected this earlier
 	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): should not find an ambiguity at this point");
@@ -235,7 +239,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end for 
       Expression::EdgeIteratorPair pe=theExpression.edges();
       Expression::EdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second);
-      for (; ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) { 
+      for (; ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) {
+	if (dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>((*ExpressionEdgeI).getExpressionEdgeAlgBase()).getPartialDerivativeKind() ==
+	    PartialDerivativeKind::PASSIVE) 
+	  continue;
 	const PrivateLinearizedComputationalGraphVertex *theLCGSource_p(0), *theLCGTarget_p(0);
 	ExpressionVertex& theSource(theExpression.getSourceOf(*ExpressionEdgeI));
 	ExpressionVertex& theTarget(theExpression.getTargetOf(*ExpressionEdgeI));
@@ -340,7 +347,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		<< theVertexIdentificationListActiveLHS.debug().c_str()
 		<< " RHS " 
 		<< theVertexIdentificationListActiveRHS.debug().c_str());
-
     } // end else 
   } 
 
