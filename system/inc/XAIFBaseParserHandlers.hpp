@@ -32,7 +32,7 @@
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/ScopeContainment.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
-#include "xaifBooster/system/inc/InOutList.hpp"
+#include "xaifBooster/system/inc/SideEffectList.hpp"
 #include "xaifBooster/system/inc/ArgumentList.hpp"
 #include "xaifBooster/system/inc/Goto.hpp"
 #include "xaifBooster/system/inc/Label.hpp"

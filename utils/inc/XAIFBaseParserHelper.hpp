@@ -25,6 +25,7 @@ namespace xaifBooster {
   class PreLoop;
   class Scope;
   class Scopes;
+  class SideEffectList;
   class SubroutineCall;
   class SymbolTable;
   class Update;

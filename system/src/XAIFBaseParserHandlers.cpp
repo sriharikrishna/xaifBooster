@@ -582,30 +582,37 @@ namespace xaifBooster {
   };
 
   void 
-  XAIFBaseParserHandlers::onInOutList(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onInOutList"); 
-    passingOut=passingIn;
+  XAIFBaseParserHandlers::onMod(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onMod"); 
+    passingOut.setSideEffectList(passingIn.getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LIST));
     return;
   };
 
   void 
-  XAIFBaseParserHandlers::onInput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onInput"); 
-    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
-    Variable* theNewInput=new Variable();
-    InOutList& theInOutList=theControlFlowGraph.getInOutList();
-    theInOutList.getInList().push_back(theNewInput);
-    passingOut.setVariable(*theNewInput);
+  XAIFBaseParserHandlers::onModLocal(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onMod"); 
+    passingOut.setSideEffectList(passingIn.getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LOCAL_LIST));
+    return;
   };
 
   void 
-  XAIFBaseParserHandlers::onOutput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onOutput"); 
-    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
-    Variable* theNewOutput=new Variable();
-    InOutList& theInOutList=theControlFlowGraph.getInOutList();
-    theInOutList.getOutList().push_back(theNewOutput);
-    passingOut.setVariable(*theNewOutput);
+  XAIFBaseParserHandlers::onRead(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onRead"); 
+    passingOut.setSideEffectList(passingIn.getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST));
+    return;
+  };
+
+  void
+  XAIFBaseParserHandlers::onReadLocal(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onRead"); 
+    passingOut.setSideEffectList(passingIn.getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LOCAL_LIST));
+    return;
+  };
+
+  void 
+  XAIFBaseParserHandlers::onSideEffectReference(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onSideEffectReference"); 
+    passingOut.setVariable(passingIn.getSideEffectList().addSideEffectReference());
   };
 
   void 

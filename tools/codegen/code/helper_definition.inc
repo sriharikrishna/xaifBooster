@@ -218,6 +218,17 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Scopes" << " 
 return *myScopes_p;
 }
 
+void XAIFBaseParserHelper::setSideEffectList(SideEffectList& whatToSet) {
+if (mySideEffectList_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "SideEffectList" << " item already set");
+mySideEffectList_p=&whatToSet;
+}
+SideEffectList& XAIFBaseParserHelper::getSideEffectList() const {
+if (!mySideEffectList_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "SideEffectList" << " item not set");
+return *mySideEffectList_p;
+}
+
 void XAIFBaseParserHelper::setSubroutineCall(SubroutineCall& whatToSet) {
 if (mySubroutineCall_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "SubroutineCall" << " item already set");

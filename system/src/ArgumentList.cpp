@@ -22,7 +22,7 @@ namespace xaifBooster {
 
   void
   ArgumentList::printXMLHierarchy(std::ostream& os) const { 
-    if (!myArgumentSymbolReferencePList.size()) // nothing to print
+    if (myArgumentSymbolReferencePList.empty()) // nothing to print
       return;
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 

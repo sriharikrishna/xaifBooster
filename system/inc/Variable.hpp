@@ -17,7 +17,7 @@ namespace xaifBooster {
   class ArrayAccess;
 
   /**
-   * the default representation for VariableReferences as a graph
+   * the default representation for Variables as a graph
    */
   class Variable : public GraphWrapperTraversable<VariableVertex,VariableEdge> , 
 		   public XMLPrintable,
