@@ -15,6 +15,15 @@ namespace xaifBooster {
     myScope_r(theScope) { 
   } 
 
+  PlainBasicBlock::~PlainBasicBlock() {
+    for (BasicBlockElementList::const_iterator li=myElementList.begin();
+         li!=myElementList.end();
+         li++) { 
+      if (*li)
+	delete *li;
+    } 
+  }
+
   void
   PlainBasicBlock::supplyAndAddBasicBlockElementInstance(BasicBlockElement& theBasicBlockElement) { 
     myElementList.push_back(&theBasicBlockElement);

@@ -70,6 +70,10 @@ namespace xaifBooster {
     return myIndexList;
   }
   
+  ArrayAccess::IndexListType& ArrayAccess::getIndexList() {
+    return myIndexList;
+  }
+
   Expression& ArrayAccess::addIndex() {
     Expression* anExpression_p=new Expression();
     myIndexList.push_back(anExpression_p);

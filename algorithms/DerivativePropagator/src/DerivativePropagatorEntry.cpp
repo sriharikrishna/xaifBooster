@@ -61,4 +61,22 @@ namespace xaifBoosterDerivativePropagator {
     return *mySource_p;
   }  
 
+  DerivativePropagatorEntry::DerivativePropagatorEntry(const Variable& theTarget) {
+    theTarget.copyMyselfInto(myTarget);
+    myTarget.setId(1);
+    myTarget.setDerivFlag();
+  }  
+
+  const Variable& DerivativePropagatorEntry::getTarget() const { 
+    return myTarget;
+  }  
+
+  std::string DerivativePropagatorEntry::debug () const { 
+    std::ostringstream out;
+    out << "DerivativePropagatorEntry[" << this 
+	<< ", myTarget=" << myTarget.debug().c_str()
+	<< "]" << std::ends;  
+    return out.str();
+  } 
+
 } // end of namespace

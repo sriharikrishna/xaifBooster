@@ -28,9 +28,6 @@
           <xaif:Symbol symbol_id="y" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_14" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="z" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_15" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_16" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="1"/>
-          <xaif:Symbol symbol_id="test_prefixSymbol_17" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="1"/>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:ScopeEdge edge_id="1" source="2" target="1"/>
@@ -276,22 +273,11 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:Assignment statement_id="tape_adjoint_constant_assignment" active="0">
-            <xaif:AssignmentLHS active="false" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="2"/>
-            </xaif:AssignmentLHS>
-            <xaif:AssignmentRHS>
-              <xaif:Constant vertex_id="1" type="integer" value="1"/>
-            </xaif:AssignmentRHS>
-          </xaif:Assignment>
-          <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_15" scope_id="2"/>
-            </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:InlinableSubroutineCall subroutine_name="SetDeriv" statement_id="inline_SetDeriv">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="1"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
@@ -300,22 +286,11 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:Assignment statement_id="tape_adjoint_constant_assignment" active="0">
-            <xaif:AssignmentLHS active="false" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" scope_id="2"/>
-            </xaif:AssignmentLHS>
-            <xaif:AssignmentRHS>
-              <xaif:Constant vertex_id="1" type="integer" value="1"/>
-            </xaif:AssignmentRHS>
-          </xaif:Assignment>
-          <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" scope_id="2"/>
-            </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:InlinableSubroutineCall subroutine_name="SetDeriv" statement_id="inline_SetDeriv">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="1"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
@@ -324,22 +299,11 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="1"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:Assignment statement_id="tape_adjoint_constant_assignment" active="0">
-            <xaif:AssignmentLHS active="false" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="2"/>
-            </xaif:AssignmentLHS>
-            <xaif:AssignmentRHS>
-              <xaif:Constant vertex_id="1" type="integer" value="1"/>
-            </xaif:AssignmentRHS>
-          </xaif:Assignment>
-          <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy_with_constant_1">
-            <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_17" scope_id="2"/>
-            </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
+          <xaif:InlinableSubroutineCall subroutine_name="SetDeriv" statement_id="inline_SetDeriv">
+            <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" scope_id="1"/>
             </xaif:ArgumentSubstitute>
-            <xaif:ArgumentSubstitute position="3" active="true" deriv="0">
+            <xaif:ArgumentSubstitute position="2" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>

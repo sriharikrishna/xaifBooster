@@ -3,7 +3,6 @@
 
 #include <list>
 
-#include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
 
@@ -46,7 +45,7 @@ namespace xaifBoosterDerivativePropagator {
     
     static const std::string our_myX_XAIFName;
 
-    static const std::string our_myY_XAIFName;
+    static const std::string our_myTarget_XAIFName;
 
     static const std::string our_myAX_XAIFName;
 
@@ -57,8 +56,6 @@ namespace xaifBoosterDerivativePropagator {
 	       const Variable& theX);
     
     virtual void  getFactors(FactorList& theFactorList) const ; 
-
-    const Variable& getTarget() const;
 
     virtual bool isIncremental(); 
 
@@ -86,8 +83,6 @@ namespace xaifBoosterDerivativePropagator {
     typedef std::list <AX*> AXPList;
 
     AXPList myAXPList;
-
-    Variable myY;
 
     bool useAsSaxFlag;
 
