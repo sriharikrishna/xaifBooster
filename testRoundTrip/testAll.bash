@@ -60,6 +60,13 @@ do
   then 
     echo "ERROR in: make"; exit -1;
   fi
+### this is temporary until we got rid of the RETURNs
+  if [ "$REVERSE_MODE" == "y" ] 
+  then 
+    sed 's/RETURN//' head.xb.x2w.w2f.pp.f >| head.xb.x2w.w2f.pp.f.1
+    mv head.xb.x2w.w2f.pp.f.1 head.xb.x2w.w2f.pp.f
+  fi
+### end of temporary fix
   make $DRIVER_NAME
   if [ $? -ne 0 ] 
   then 
