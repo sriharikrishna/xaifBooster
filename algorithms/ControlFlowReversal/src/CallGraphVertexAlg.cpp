@@ -57,7 +57,7 @@ namespace xaifBoosterControlFlowReversal {
         theXaifId=dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getNewVertex()).getId();
       }
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
-    };
+    }
     const ReversibleControlFlowGraph& myG;
   };
 
@@ -76,7 +76,7 @@ namespace xaifBoosterControlFlowReversal {
 	}
       */
       if (theReversibleControlFlowGraphEdge_p->has_condition_value()) out << "[label=\"1\"]";
-    };
+    }
     const ReversibleControlFlowGraph& myG;
   };
 

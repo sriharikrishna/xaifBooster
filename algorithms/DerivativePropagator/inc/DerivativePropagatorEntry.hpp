@@ -132,7 +132,7 @@ namespace xaifBoosterDerivativePropagator {
     /**
      * no def
      */
-    DerivativePropagatorEntry operator=(const DerivativePropagatorEntry&);
+    DerivativePropagatorEntry& operator=(const DerivativePropagatorEntry&);
 
   protected: 
 
