@@ -127,4 +127,20 @@ namespace xaifBooster {
     return false;
   } 
 
+  bool AliasSet::mustAlias(const AliasSet& anotherSet) const {
+    if (myAliasList.size()!=1 
+	|| 
+	anotherSet.myAliasList.size()!=1) { 
+      return false;
+    }
+    AliasList::const_iterator myI=myAliasList.begin();
+    AliasList::const_iterator theOtherI=anotherSet.myAliasList.begin();
+    if ((*myI)->isContainedIn(**theOtherI)
+	&&
+	(*theOtherI)->isContainedIn(**myI)) { 
+      return true;
+    }
+    return false;
+  } 
+
 }

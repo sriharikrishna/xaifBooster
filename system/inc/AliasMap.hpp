@@ -31,11 +31,20 @@ namespace xaifBooster {
     AliasMapEntry&  
     addAliasMapEntry(const std::string& aKey);
 
+    typedef std::list<const AliasMapKey*> AliasMapKeyList;
+
     /**
      * check disjunction of alias sets 
      */
-    typedef std::list<const AliasMapKey*> AliasMapKeyList;
     bool isAliased(const AliasMapKey& theKey, const AliasMapKeyList& theList) const;
+
+    /** 
+     * establish must alias
+     * this will throw an exception if we involve temporaries, 
+     * i.e. right now we don't support identification of temporaries...
+     */
+    bool mustAlias(const AliasMapKey& theKey,
+		   const AliasMapKey& theOtherKey) const;
 
     std::string debug() const ; 
 

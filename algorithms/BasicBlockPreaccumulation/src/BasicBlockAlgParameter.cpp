@@ -1,6 +1,3 @@
-#ifndef _BASICBLOCKALGPARAMETER_INCLUDE_
-#define _BASICBLOCKALGPARAMETER_INCLUDE_
-
 #include "xaifBooster/utils/inc/SingletonParameterPerThread.hpp"
 #include "xaifBooster/utils/inc/TemplateImpl/SingletonParameterPerThread.cpp"
 
@@ -13,5 +10,3 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   template class SingletonParameterPerThread<BasicBlockAlg>;
 
 } // end of namespace 
-
-#endif

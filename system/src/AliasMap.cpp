@@ -76,6 +76,22 @@ namespace xaifBooster {
     return true;
   }
 
+  bool AliasMap::mustAlias(const AliasMapKey& theKey, 
+			   const AliasMapKey& theOtherKey) const { 
+    // some obvious things first
+    if (theKey.getKind()==AliasMapKey::TEMP_VAR 
+	|| 
+	theOtherKey.getKind()==AliasMapKey::TEMP_VAR)
+      THROW_LOGICEXCEPTION_MACRO("AliasMap::mustAlias: not supported for temporaries");
+    if (theKey.getKind()==AliasMapKey::NO_INFO
+	||
+	theOtherKey.getKind()==AliasMapKey::NO_INFO) 
+      return false;
+    if (myAAVector[theKey.getKey()]->mustAlias(*myAAVector[theOtherKey.getKey()]))
+      return true;
+    return false;
+  }
+
   bool AliasMap::haveNonEmptyIntersection(const AliasMapKey& thisKey,
 					  const AliasMapKey& theOtherKey) const { 
     if (theOtherKey.getKind()==AliasMapKey::TEMP_VAR)

@@ -49,8 +49,14 @@ namespace xaifBooster {
     /**
      * leaf objects that are derived from this class
      * need to be comparable for equivalence
+     * \todo remove this
      */
     virtual std::string equivalenceSignature() const =0;
+
+    /**
+     * returns true if this is an Argument
+     */
+    virtual bool isArgument() const;
 
     /**
      * ExpressionVertex is base class for variety of leaf classes

@@ -30,6 +30,8 @@ namespace xaifBooster{
 
     bool sharesAliasWith(const AliasSet& anotherSet) const;
 
+    bool mustAlias(const AliasSet& anotherSet) const;
+
   private:
 
     void addAlias(BaseAlias* anAlias);

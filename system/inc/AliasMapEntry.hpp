@@ -40,6 +40,8 @@ namespace xaifBooster{
 
     bool disjointFrom(const AliasMapEntry& theOtherAliasMapEntry) const;
 
+    bool mustAlias(const AliasMapEntry& theOtherAliasMapEntry) const;
+
   private:
 
     /** 

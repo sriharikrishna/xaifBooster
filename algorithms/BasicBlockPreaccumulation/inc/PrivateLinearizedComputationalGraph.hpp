@@ -3,6 +3,7 @@
 
 #include "xaifBooster/utils/inc/HashTable.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationList.hpp"
 
 using namespace xaifBooster;
 
@@ -25,10 +26,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     std::string debug() const { return std::string("PrivateLinearizedComputationalGraph");};
 
-    typedef HashTable<PrivateLinearizedComputationalGraphVertex*> VariableTrackList;
-
-    VariableTrackList& getVariableTrackList() { 
-      return myVariableTrackList;
+    VertexIdentificationList& getVertexIdentificationList() { 
+      return myVertexIdentificationList;
     };    
 
   private: 
@@ -44,7 +43,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * is overwritten by vertex v_new
      * this list doesn't own any elements
      */
-    VariableTrackList myVariableTrackList; 
+    VertexIdentificationList myVertexIdentificationList; 
 
   }; // end of class PrivateLinearizedComputationalGraph 
 
