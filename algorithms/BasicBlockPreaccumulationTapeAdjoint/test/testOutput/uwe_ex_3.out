@@ -92,7 +92,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="add_scal_scal"/>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
             </xaif:VariableReference>

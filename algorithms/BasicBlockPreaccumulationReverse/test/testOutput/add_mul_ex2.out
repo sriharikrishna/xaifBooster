@@ -68,10 +68,10 @@
               <xaif:VariableReference vertex_id="3" active="true" deriv="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
               </xaif:VariableReference>
-              <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
-              <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
-              <xaif:Intrinsic vertex_id="6" name="mul_scal_scal"/>
-              <xaif:Intrinsic vertex_id="7" name="add_scal_scal"/>
+              <xaif:Intrinsic vertex_id="4" annotation="" name="mul_scal_scal"/>
+              <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
+              <xaif:Intrinsic vertex_id="6" annotation="" name="mul_scal_scal"/>
+              <xaif:Intrinsic vertex_id="7" annotation="" name="add_scal_scal"/>
               <xaif:ExpressionEdge edge_id="1" source="1" target="4" position="1"/>
               <xaif:ExpressionEdge edge_id="2" source="2" target="4" position="2"/>
               <xaif:ExpressionEdge edge_id="3" source="3" target="5" position="1"/>
@@ -95,7 +95,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
+              <xaif:Intrinsic vertex_id="4" annotation="" name="mul_scal_scal"/>
               <xaif:VariableReference vertex_id="1" active="true" deriv="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
               </xaif:VariableReference>
@@ -111,7 +111,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
+              <xaif:Intrinsic vertex_id="5" annotation="" name="mul_scal_scal"/>
               <xaif:VariableReference vertex_id="3" active="true" deriv="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
               </xaif:VariableReference>
@@ -127,8 +127,8 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:Intrinsic vertex_id="7" name="add_scal_scal"/>
-              <xaif:Intrinsic vertex_id="6" name="mul_scal_scal"/>
+              <xaif:Intrinsic vertex_id="7" annotation="" name="add_scal_scal"/>
+              <xaif:Intrinsic vertex_id="6" annotation="" name="mul_scal_scal"/>
               <xaif:VariableReference vertex_id="1" active="true" deriv="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
               </xaif:VariableReference>

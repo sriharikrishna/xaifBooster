@@ -17,6 +17,11 @@ namespace xaifBooster {
     return out.str();
   } // end of ObjectWithAnnotation::debug
 
+  bool
+  ObjectWithAnnotation::annotationIsSet() const { 
+    return myAnnotationFlag;
+  }
+
   void
   ObjectWithAnnotation::setAnnotation(const std::string& anAnnotation) { 
     if (myAnnotationFlag)
