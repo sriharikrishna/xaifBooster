@@ -44,6 +44,10 @@ c     MINPACK-2 Project. October 1991.
 c     Argonne National Laboratory and University of Minnesota.
 c     Brett M. Averick.
 c
+c
+c     Modified by Uwe Naumann to enable checkpointing in
+c     the adjoint code. ACTS Project, September 2004, RWTH Aachen
+c
 c     **********
       double precision zero,one,two,three,four
       parameter(zero=0.0d0,one=1.0d0,two=2.0d0,three=3.0d0,four=4.0d0)
