@@ -38,7 +38,9 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphVertex& getExit(); 
 
     void topologicalSort();
+
     void storeControlFlow();
+
     void buildAdjointControlFlowGraph(ReversibleControlFlowGraph&);
  
     virtual void printXMLHierarchy(std::ostream& os) const;
@@ -46,6 +48,13 @@ namespace xaifBoosterControlFlowReversal {
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+   /**
+    * The branch entry edges are marked by has_condition_value()==true and
+    * a corresponding integer get_condition_value().
+    * This information is projected onto the branch exit edges.
+    */
+    void markBranchExitEdges();
 
   private:
 
@@ -75,14 +84,18 @@ namespace xaifBoosterControlFlowReversal {
     void clearIndeces(); 
 
    /**
-    * Insert edge from theAdjointSource_cr to theAdjointTarget_cr.
+    * Insert edge from theAdjointSource_cr to theAdjointTarget_cr as specfied by 
+    * source and target;
     * Return reference to the newly created ReversibleControlFlowGraphEdge.
     */
     ReversibleControlFlowGraphEdge&
-    insertAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, const ReversibleControlFlowGraphVertex& theAdjointSource_cr, const ReversibleControlFlowGraphVertex& theAdjointTarget_cr);
+    insertAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, 
+				      const ReversibleControlFlowGraphVertex& theAdjointSource_cr, 
+				      const ReversibleControlFlowGraphVertex& theAdjointTarget_cr);
 
    /**
-    * For a given edge in the original control flow, build its adjoint.
+    * For a given edge in the original control flow as represented by the initial copy of the CFG, 
+    * build the adjoint edge.
     * The correspondence between original and adjoint vertices is recorded in
     * theVertexCorrespondence_ppl where the first entry of each pair is the
     * original vertex and the second entry is the adjoint vertex.
@@ -93,31 +106,25 @@ namespace xaifBoosterControlFlowReversal {
     * Otherwise, find the matching original ENDLOOP node and add edge
     * from theSource_p to the ENDLOOP node's adjoint (a FORLOOP) node.
    */
-
     ReversibleControlFlowGraphEdge&
-    addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl);
+    addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r, 
+				   const ReversibleControlFlowGraphEdge& theOriginalEdge_cr,
+				   const std::list<std::pair<ReversibleControlFlowGraphVertex*,
+				   ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl);
 
     /** 
      * find branch entry edge that corresponds to theCurrentEdge_r
      */
     const ReversibleControlFlowGraphEdge&
-    find_corresponding_branch_entry_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
-
-                                                   
-   /**
-    * The branch entry edges are marked by has_condition_value()==true and
-    * a corresponding integer get_condition_value().
-    * This information is projected onto the branch exit edges.
-    */
-public:
-    void markBranchExitEdges();
-private:
+    find_corresponding_branch_entry_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, 
+					     int& nesting_depth) const;
 
     /** 
      * a find branch exit edge that corresponds to theCurrentEdge_r
      */
     const ReversibleControlFlowGraphEdge&
-    find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
+    find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, 
+					    int& nesting_depth) const;
 
    /**
     * Assuming that the branch exit edges are marked by has_condition_value()==

@@ -56,6 +56,11 @@ namespace xaifBoosterControlFlowReversal {
         theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()).kindToString();
         theXaifId=dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getNewVertex()).getId();
       }
+      if (theReversibleControlFlowGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) { 
+	std::ostringstream temp;
+	temp << theXaifId.c_str() << ".e" << std::ends;
+	theXaifId=temp.str();
+      }
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
     }
     const ReversibleControlFlowGraph& myG;
@@ -82,20 +87,17 @@ namespace xaifBoosterControlFlowReversal {
     myTapingControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
     myAdjointControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
     myTapingControlFlowGraph->makeThisACopyOfOriginalControlFlowGraph();
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_original", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
-    }
     //	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
     myTapingControlFlowGraph->topologicalSort();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
     }
     // buildAdjointControlFlowGraph() should always be based on the
-    // original CFG, that is, it should preceed the call to 
+    // original CFG, that is, it should precede the call to 
     // storeControlFlow()
     myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+      GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph));
     }
     myTapingControlFlowGraph->markBranchExitEdges();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
