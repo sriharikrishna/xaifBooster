@@ -1,8 +1,8 @@
 #ifndef  _VERTEX_INCLUDE_
 #define  _VERTEX_INCLUDE_
 
-#include "system/inc/GraphElement.hpp" 
-#include "system/inc/WrapperTypeDefs.hpp"
+#include "xaifBooster/system/inc/GraphElement.hpp" 
+#include "xaifBooster/system/inc/WrapperTypeDefs.hpp"
 
 namespace xaifBooster { 
 

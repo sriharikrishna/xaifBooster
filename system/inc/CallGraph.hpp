@@ -1,13 +1,13 @@
 #ifndef _CALLGRAPH_INCLUDE_
 #define _CALLGRAPH_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "system/inc/GraphWrapper.hpp"
-#include "system/inc/CallGraphVertex.hpp"
-#include "system/inc/CallGraphEdge.hpp"
-#include "system/inc/Scopes.hpp"
-#include "system/inc/AliasActivityMap.hpp"
-#include "system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/GraphWrapper.hpp"
+#include "xaifBooster/system/inc/CallGraphVertex.hpp"
+#include "xaifBooster/system/inc/CallGraphEdge.hpp"
+#include "xaifBooster/system/inc/Scopes.hpp"
+#include "xaifBooster/system/inc/AliasActivityMap.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 namespace xaifBooster { 
 

@@ -1,9 +1,9 @@
 #ifndef _BASEVARIABLESYMBOLREFERENCE_INCLUDE_
 #define _BASEVARIABLESYMBOLREFERENCE_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "system/inc/BaseVariableReferenceVertex.hpp"
-#include "system/inc/SymbolReference.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/BaseVariableReferenceVertex.hpp"
+#include "xaifBooster/system/inc/SymbolReference.hpp"
 
 namespace xaifBooster { 
 

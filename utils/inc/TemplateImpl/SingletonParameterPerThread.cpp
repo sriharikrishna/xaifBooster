@@ -1,8 +1,8 @@
 #ifndef  _SINGLETONPARAMETERPERTHREAD_INCLUDE_
-#include "utils/inc/SingletonParameterPerThread.hpp"
+#include "xaifBooster/utils/inc/SingletonParameterPerThread.hpp"
 #endif
 
-#include "utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 namespace xaifBooster {  
 

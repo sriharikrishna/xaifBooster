@@ -1,8 +1,8 @@
 #ifndef _ASSIGNMENTALGFACTORY_INCLUDE_
 #define _ASSIGNMENTALGFACTORY_INCLUDE_
 
-#include "system/inc/AlgFactory.hpp"
-#include "system/inc/AssignmentAlgBase.hpp"
+#include "xaifBooster/system/inc/AlgFactory.hpp"
+#include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
 
 namespace xaifBooster {  
 

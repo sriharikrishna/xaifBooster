@@ -1,6 +1,6 @@
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/InlinableIntrinsicsArgumentReference.hpp"
-#include "system/inc/Variable.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsArgumentReference.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
 
 namespace xaifBooster { 
 

@@ -1,5 +1,5 @@
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/BaseConstant.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/BaseConstant.hpp"
 
 namespace xaifBooster { 
 

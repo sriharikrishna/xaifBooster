@@ -1,8 +1,8 @@
 #ifndef _ALGBASEGRAPHELEMENT_INCLUDE_
 #define _ALGBASEGRAPHELEMENT_INCLUDE_
 
-#include "utils/inc/Debuggable.hpp"
-#include "utils/inc/GenericTraverseInvoke.hpp"
+#include "xaifBooster/utils/inc/Debuggable.hpp"
+#include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 
 namespace xaifBooster {  
 
@@ -76,6 +76,6 @@ namespace xaifBooster {
 
 } // end of namespace 
 
-#include "system/inc/TemplateImpl/AlgBaseGraphElement.cpp"
+#include "xaifBooster/system/inc/TemplateImpl/AlgBaseGraphElement.cpp"
 
 #endif

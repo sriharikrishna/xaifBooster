@@ -1,7 +1,7 @@
 #ifndef _LINEARIZEDCOMPUTATIONALGRAPHVERTEX_INCLUDE_
 #define _LINEARIZEDCOMPUTATIONALGRAPHVERTEX_INCLUDE_
 
-#include "system/inc/Vertex.hpp"
+#include "xaifBooster/system/inc/Vertex.hpp"
 
 namespace xaifBooster { 
 

@@ -2,11 +2,11 @@
 #define _EXPRESSION_INCLUDE_
 
 #include <list>
-#include "system/inc/ExpressionVertex.hpp"
-#include "system/inc/ExpressionEdge.hpp"
-#include "system/inc/GraphWrapperTraversable.hpp"
-#include "utils/inc/XMLPrintable.hpp"
-#include "system/inc/ExpressionAlgBase.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/ExpressionEdge.hpp"
+#include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/ExpressionAlgBase.hpp"
 
 namespace xaifBooster { 
 

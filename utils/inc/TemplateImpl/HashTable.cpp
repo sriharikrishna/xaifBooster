@@ -1,9 +1,9 @@
 #ifndef _HASHTABLE_INCLUDE_
-#include "utils/inc/HashTable.hpp"
+#include "xaifBooster/utils/inc/HashTable.hpp"
 #endif 
 
 #include <sstream>
-#include "utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 
 namespace xaifBooster { 

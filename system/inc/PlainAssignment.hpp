@@ -1,7 +1,7 @@
 #ifndef _PLAINASSIGNMENT_INCLUDE_
 #define _PLAINASSIGNMENT_INCLUDE_
 
-#include "system/inc/AssignmentWrapper.hpp"
+#include "xaifBooster/system/inc/AssignmentWrapper.hpp"
 
 namespace xaifBooster { 
 

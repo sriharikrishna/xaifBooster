@@ -1,7 +1,7 @@
 #ifndef _GRAPHVIZDISPLAY_INCLUDE_
 #define _GRAPHVIZDISPLAY_INCLUDE_
 
-#include "system/inc/GraphWrapper.hpp"
+#include "xaifBooster/system/inc/GraphWrapper.hpp"
 
 namespace xaifBooster { 
 
@@ -74,6 +74,6 @@ namespace xaifBooster {
 
 } 
 
-#include "system/inc/TemplateImpl/GraphVizDisplay.cpp"
+#include "xaifBooster/system/inc/TemplateImpl/GraphVizDisplay.cpp"
 
 #endif 

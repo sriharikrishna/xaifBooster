@@ -3,9 +3,9 @@
 
 #include <string>
 #include <fstream>
-#include "utils/inc/DbgLogger.hpp"
-#include "utils/inc/DbgGroup.hpp"
-#include "utils/inc/Mutex.hpp"
+#include "xaifBooster/utils/inc/DbgLogger.hpp"
+#include "xaifBooster/utils/inc/DbgGroup.hpp"
+#include "xaifBooster/utils/inc/Mutex.hpp"
 
 
 namespace xaifBooster { 

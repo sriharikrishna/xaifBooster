@@ -1,5 +1,5 @@
-#include "utils/inc/DbgGroup.hpp"
-#include "utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/DbgGroup.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 namespace xaifBooster { 
 

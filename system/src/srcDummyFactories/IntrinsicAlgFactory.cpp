@@ -1,6 +1,6 @@
-#include "system/inc/IntrinsicAlgFactory.hpp"
-#include "system/inc/IntrinsicAlgBase.hpp"
-#include "system/inc/Intrinsic.hpp"
+#include "xaifBooster/system/inc/IntrinsicAlgFactory.hpp"
+#include "xaifBooster/system/inc/IntrinsicAlgBase.hpp"
+#include "xaifBooster/system/inc/Intrinsic.hpp"
 
 namespace xaifBooster {  
 

@@ -1,8 +1,8 @@
 #ifndef _COMMANDLINEARGUMENTS_INCLUDE_
 #define _COMMANDLINEARGUMENTS_INCLUDE_
 
-#include "utils/inc/CommandLineSegment.hpp"
-#include "utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/CommandLineSegment.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 #include <map>
 
 namespace xaifBooster { 

@@ -1,7 +1,7 @@
 #include <sstream>
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/Scopes.hpp"
-#include "system/inc/ScopeContainment.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/Scopes.hpp"
+#include "xaifBooster/system/inc/ScopeContainment.hpp"
 
 namespace xaifBooster { 
 

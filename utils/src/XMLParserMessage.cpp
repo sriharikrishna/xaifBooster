@@ -1,4 +1,4 @@
-#include "utils/inc/XMLParserMessage.hpp"
+#include "xaifBooster/utils/inc/XMLParserMessage.hpp"
 #include "xercesc/util/XMLString.hpp"
 
 namespace xaifBooster { 

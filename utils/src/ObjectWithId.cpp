@@ -1,5 +1,5 @@
-#include "utils/inc/ObjectWithId.hpp"
-#include "utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 namespace xaifBooster { 
 

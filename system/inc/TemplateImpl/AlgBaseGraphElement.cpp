@@ -1,5 +1,5 @@
 #ifndef  _ALGBASEGRAPHELEMENT_INCLUDE_
-#include "system/inc/AlgBaseGraphElement.hpp"
+#include "xaifBooster/system/inc/AlgBaseGraphElement.hpp"
 #endif
 
 namespace xaifBooster {  

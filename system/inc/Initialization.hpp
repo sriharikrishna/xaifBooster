@@ -1,8 +1,8 @@
 #ifndef _INITIALIZATION_INCLUDE_
 #define _INITIALIZATION_INCLUDE_
 
-#include "system/inc/Assignment.hpp"
-#include "utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 namespace xaifBooster { 
 

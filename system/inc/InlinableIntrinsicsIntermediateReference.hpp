@@ -1,8 +1,8 @@
 #ifndef _INLINABLEINTRINSICSINTERMEDIATEREFERENCE_INCLUDE_
 #define _INLINABLEINTRINSICSINTERMEDIATEREFERENCE_INCLUDE_
 
-#include "system/inc/InlinableIntrinsicsExpressionVertex.hpp"
-#include "system/inc/InlinableIntrinsicsExpression.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsExpressionVertex.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsExpression.hpp"
 
 namespace xaifBooster { 
 

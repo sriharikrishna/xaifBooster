@@ -1,6 +1,6 @@
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/BaseVariableReferenceEdge.hpp"
-#include "system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/BaseVariableReferenceEdge.hpp"
+#include "xaifBooster/system/inc/BaseVariableReference.hpp"
 
 namespace xaifBooster { 
 

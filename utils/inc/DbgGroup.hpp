@@ -2,7 +2,7 @@
 #define _DBGGROUP_INCLUDE_
 
 #include <string>
-#include "utils/inc/PrintingIntException.hpp"
+#include "xaifBooster/utils/inc/PrintingIntException.hpp"
 
 namespace xaifBooster { 
 

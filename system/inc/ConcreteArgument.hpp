@@ -1,8 +1,8 @@
 #ifndef _CONCRETEARGUMENT_INCLUDE_
 #define _CONCRETEARGUMENT_INCLUDE_
 
-#include "system/inc/BaseVariableReference.hpp"
-#include "utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 namespace xaifBooster { 
 

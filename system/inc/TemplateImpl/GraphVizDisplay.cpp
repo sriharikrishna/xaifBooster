@@ -1,5 +1,5 @@
 #ifndef _GRAPHVIZDISPLAY_INCLUDE_
-#include "system/inc/GraphVizDisplay.hpp"
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #endif
 
 #include "boost/graph/graphviz.hpp"

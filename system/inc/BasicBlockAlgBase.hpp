@@ -1,7 +1,7 @@
 #ifndef _BASICBLOCKALGBASE_INCLUDE_
 #define _BASICBLOCKALGBASE_INCLUDE_
 
-#include "system/inc/AlgBase.hpp"
+#include "xaifBooster/system/inc/AlgBase.hpp"
 
 namespace xaifBooster {  
 

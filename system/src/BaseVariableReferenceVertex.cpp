@@ -1,6 +1,6 @@
-#include "utils/inc/PrintManager.hpp"
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/BaseVariableReferenceVertex.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/BaseVariableReferenceVertex.hpp"
 
 namespace xaifBooster { 
 

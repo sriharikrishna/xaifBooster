@@ -1,13 +1,13 @@
 #ifndef _BASEVARIABLEREFERENCE_INCLUDE_
 #define _BASEVARIABLEREFERENCE_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "utils/inc/ObjectWithId.hpp"
-#include "system/inc/GraphWrapperTraversable.hpp"
-#include "system/inc/BaseVariableReferenceVertex.hpp"
-#include "system/inc/BaseVariableReferenceEdge.hpp"
-#include "system/inc/AliasActivityMapKey.hpp"
-#include "system/inc/SymbolType.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
+#include "xaifBooster/system/inc/BaseVariableReferenceVertex.hpp"
+#include "xaifBooster/system/inc/BaseVariableReferenceEdge.hpp"
+#include "xaifBooster/system/inc/AliasActivityMapKey.hpp"
+#include "xaifBooster/system/inc/SymbolType.hpp"
 
 namespace xaifBooster { 
 

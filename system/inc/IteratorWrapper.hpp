@@ -72,6 +72,6 @@ namespace xaifBooster {
 
 } // end of namespace
 
-#include "system/inc/TemplateImpl/IteratorWrapper.cpp"
+#include "xaifBooster/system/inc/TemplateImpl/IteratorWrapper.cpp"
 
 #endif

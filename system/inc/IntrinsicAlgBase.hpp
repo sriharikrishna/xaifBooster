@@ -1,7 +1,7 @@
 #ifndef _INTRINSICALGBASE_INCLUDE_
 #define _INTRINSICALGBASE_INCLUDE_
 
-#include "system/inc/AlgBaseGraphElement.hpp"
+#include "xaifBooster/system/inc/AlgBaseGraphElement.hpp"
 
 namespace xaifBooster {  
   

@@ -1,5 +1,5 @@
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/ObjectWithAnnotation.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 
 namespace xaifBooster { 
 

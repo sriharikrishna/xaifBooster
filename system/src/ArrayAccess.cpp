@@ -1,5 +1,5 @@
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/ArrayAccess.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/ArrayAccess.hpp"
 
 namespace xaifBooster { 
 

@@ -2,7 +2,7 @@
 #define _LOGICEXCEPTION_INCLUDE_
 
 #include <string>
-#include "utils/inc/BaseException.hpp"
+#include "xaifBooster/utils/inc/BaseException.hpp"
 
 namespace xaifBooster { 
 

@@ -1,7 +1,7 @@
 #ifndef _PRINTINGINTEXCEPTION_INCLUDE_
 #define _PRINTINGINTEXCEPTION_INCLUDE_
 
-#include "utils/inc/BaseException.hpp"
+#include "xaifBooster/utils/inc/BaseException.hpp"
 
 namespace xaifBooster { 
 

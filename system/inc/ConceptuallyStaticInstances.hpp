@@ -1,7 +1,7 @@
 #ifndef _CONCEPTUALLYSTATICINSTANCES_INCLUDE_
 #define _CONCEPTUALLYSTATICINSTANCES_INCLUDE_
 
-#include "system/inc/InlinableIntrinsicsCatalogue.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
 
 namespace xaifBooster { 
 

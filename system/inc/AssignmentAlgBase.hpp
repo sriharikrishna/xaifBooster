@@ -1,7 +1,7 @@
 #ifndef _ASSIGNMENTALGBASE_INCLUDE_
 #define _ASSIGNMENTALGBASE_INCLUDE_
 
-#include "system/inc/AlgBase.hpp"
+#include "xaifBooster/system/inc/AlgBase.hpp"
 
 namespace xaifBooster {  
   

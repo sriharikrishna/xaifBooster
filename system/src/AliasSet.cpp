@@ -1,10 +1,10 @@
-#include "utils/inc/LogicException.hpp"
-#include "utils/inc/DbgLoggerManager.hpp"
-#include "utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
 
-#include "system/inc/AliasSet.hpp"
-#include "system/inc/AliasSingle.hpp"
-#include "system/inc/AliasRange.hpp"
+#include "xaifBooster/system/inc/AliasSet.hpp"
+#include "xaifBooster/system/inc/AliasSingle.hpp"
+#include "xaifBooster/system/inc/AliasRange.hpp"
 
 namespace xaifBooster { 
 

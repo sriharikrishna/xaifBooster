@@ -1,8 +1,8 @@
 #include <sstream>
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/PlainBasicBlock.hpp"
-#include "system/inc/BasicBlockElement.hpp"
-#include "system/inc/Scope.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
+#include "xaifBooster/system/inc/BasicBlockElement.hpp"
+#include "xaifBooster/system/inc/Scope.hpp"
 
 
 namespace xaifBooster { 

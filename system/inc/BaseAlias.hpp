@@ -1,7 +1,7 @@
 #ifndef _BASEALIAS_INCLUDE_
 #define _BASEALIAS_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 namespace xaifBooster{ 
 

@@ -1,9 +1,9 @@
 #ifndef _CALLGRAPHVERTEX_INCLUDE_
 #define _CALLGRAPHVERTEX_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "system/inc/VertexTraversable.hpp"
-#include "system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/VertexTraversable.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 
 namespace xaifBooster { 
 

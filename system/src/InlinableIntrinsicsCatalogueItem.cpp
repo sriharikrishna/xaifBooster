@@ -1,4 +1,4 @@
-#include "system/inc/InlinableIntrinsicsCatalogueItem.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
 
 namespace xaifBooster { 
 

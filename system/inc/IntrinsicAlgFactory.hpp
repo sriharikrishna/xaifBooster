@@ -1,8 +1,8 @@
 #ifndef _EXPRESSIONEDGEALGFACTORY_INCLUDE_
 #define _EXPRESSIONEDGEALGFACTORY_INCLUDE_
 
-#include "system/inc/AlgFactory.hpp"
-#include "system/inc/IntrinsicAlgBase.hpp"
+#include "xaifBooster/system/inc/AlgFactory.hpp"
+#include "xaifBooster/system/inc/IntrinsicAlgBase.hpp"
 
 namespace xaifBooster {  
 

@@ -1,5 +1,5 @@
-#include "system/inc/InlinableIntrinsicsIntrinsic.hpp"
-#include "system/inc/Intrinsic.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsIntrinsic.hpp"
+#include "xaifBooster/system/inc/Intrinsic.hpp"
 
 namespace xaifBooster { 
 

@@ -1,9 +1,9 @@
 #ifndef _SUBROUTINECALL_INCLUDE_
 #define _SUBROUTINECALL_INCLUDE_
 
-#include "system/inc/BasicBlockElement.hpp"
-#include "system/inc/SymbolReference.hpp"
-#include "system/inc/ConcreteArgument.hpp"
+#include "xaifBooster/system/inc/BasicBlockElement.hpp"
+#include "xaifBooster/system/inc/SymbolReference.hpp"
+#include "xaifBooster/system/inc/ConcreteArgument.hpp"
 
 namespace xaifBooster { 
 

@@ -1,9 +1,9 @@
 #ifndef _EXPRESSIONEDGE_INCLUDE_
 #define _EXPRESSIONEDGE_INCLUDE_
 
-#include "system/inc/EdgeTraversable.hpp"
-#include "system/inc/ExpressionEdgeAlgBase.hpp"
-#include "utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/EdgeTraversable.hpp"
+#include "xaifBooster/system/inc/ExpressionEdgeAlgBase.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
 namespace xaifBooster { 
 

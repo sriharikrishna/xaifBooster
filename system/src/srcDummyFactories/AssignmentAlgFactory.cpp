@@ -1,6 +1,6 @@
-#include "system/inc/AssignmentAlgFactory.hpp"
-#include "system/inc/AssignmentAlgBase.hpp"
-#include "system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
 
 namespace xaifBooster {  
 

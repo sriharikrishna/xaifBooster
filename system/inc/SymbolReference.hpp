@@ -1,8 +1,8 @@
 #ifndef _SYMBOLREFERENCE_INCLUDE_
 #define _SYMBOLREFERENCE_INCLUDE_
 
-#include "system/inc/Symbol.hpp"
-#include "system/inc/Scope.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
+#include "xaifBooster/system/inc/Scope.hpp"
 
 namespace xaifBooster { 
 

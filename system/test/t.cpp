@@ -1,12 +1,12 @@
 #include <iostream>
 #include <utility>
 
-#include "utils/inc/DbgLoggerManager.hpp"
-#include "utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/CommandLineParser.hpp"
 
-#include "system/inc/XMLParser.hpp"
-#include "system/inc/InlinableIntrinsicsParser.hpp"
-#include "system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/XMLParser.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 using namespace xaifBooster;
 

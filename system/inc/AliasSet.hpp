@@ -1,7 +1,7 @@
 #ifndef _ALIASSET_INCLUDE_
 #define _ALIASSET_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include <list>
 
 namespace xaifBooster{ 

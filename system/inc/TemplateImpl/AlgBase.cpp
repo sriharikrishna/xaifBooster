@@ -1,5 +1,5 @@
 #ifndef  _ALGBASE_INCLUDE_
-#include "system/inc/AlgBase.hpp"
+#include "xaifBooster/system/inc/AlgBase.hpp"
 #endif
 
 namespace xaifBooster {  

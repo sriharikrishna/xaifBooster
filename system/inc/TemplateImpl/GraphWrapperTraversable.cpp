@@ -1,5 +1,5 @@
 #ifndef  _GRAPHWRAPPERTRAVERSABLE_INCLUDE_
-#include "system/inc/GraphWrapperTraversable.hpp"
+#include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
 #endif
 
 namespace xaifBooster { 

@@ -1,10 +1,10 @@
 #ifndef _SCOPES_INCLUDE_
 #define _SCOPES_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "system/inc/GraphWrapper.hpp"
-#include "system/inc/Scope.hpp"
-#include "system/inc/ScopeContainment.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/GraphWrapper.hpp"
+#include "xaifBooster/system/inc/Scope.hpp"
+#include "xaifBooster/system/inc/ScopeContainment.hpp"
 
 namespace xaifBooster { 
 

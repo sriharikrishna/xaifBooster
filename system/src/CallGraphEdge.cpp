@@ -1,7 +1,7 @@
 #include <sstream>
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/CallGraphEdge.hpp"
-#include "system/inc/CallGraph.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/CallGraphEdge.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
 
 namespace xaifBooster { 
 

@@ -1,10 +1,10 @@
 #ifndef _SYMBOLTABLE_INCLUDE_
 #define _SYMBOLTABLE_INCLUDE_
 
-#include "utils/inc/HashTable.hpp"
-#include "utils/inc/XMLPrintable.hpp"
-#include "utils/inc/NameCreator.hpp"
-#include "system/inc/Symbol.hpp"
+#include "xaifBooster/utils/inc/HashTable.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/NameCreator.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
 
 namespace xaifBooster { 
 

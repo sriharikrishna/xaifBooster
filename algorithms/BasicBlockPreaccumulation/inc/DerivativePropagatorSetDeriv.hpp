@@ -1,8 +1,8 @@
 #ifndef _DERIVATIVEPROPAGATORSETDERIV_INCLUDE_
 #define _DERIVATIVEPROPAGATORSETDERIV_INCLUDE_
 
-#include "system/inc/DerivativePropagatorEntry.hpp"
-#include "system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/system/inc/DerivativePropagatorEntry.hpp"
+#include "xaifBooster/system/inc/BaseVariableReference.hpp"
 
 namespace xaifBooster { 
 

@@ -1,13 +1,13 @@
 #ifndef _SYMBOL_INCLUDE_
 #define _SYMBOL_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
-#include "system/inc/ObjectWithAnnotation.hpp"
-#include "system/inc/SymbolKind.hpp"
-#include "system/inc/SymbolType.hpp"
-#include "system/inc/SymbolShape.hpp"
+#include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
+#include "xaifBooster/system/inc/SymbolKind.hpp"
+#include "xaifBooster/system/inc/SymbolType.hpp"
+#include "xaifBooster/system/inc/SymbolShape.hpp"
 
 namespace xaifBooster { 
 

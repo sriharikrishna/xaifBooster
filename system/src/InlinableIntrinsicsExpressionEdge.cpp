@@ -1,5 +1,5 @@
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/InlinableIntrinsicsExpressionEdge.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsExpressionEdge.hpp"
 
 namespace xaifBooster { 
 

@@ -1,8 +1,8 @@
 #ifndef _VARIABLE_INCLUDE_
 #define _VARIABLE_INCLUDE_
 
-#include "system/inc/BaseVariableReference.hpp"
-#include "system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 
 namespace xaifBooster { 
 

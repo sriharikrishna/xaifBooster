@@ -1,11 +1,11 @@
 #ifndef _SCOPE_INCLUDE_
 #define _SCOPE_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "utils/inc/ObjectWithId.hpp"
-#include "system/inc/ObjectWithAnnotation.hpp"
-#include "system/inc/VertexTraversable.hpp"
-#include "system/inc/SymbolTable.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
+#include "xaifBooster/system/inc/VertexTraversable.hpp"
+#include "xaifBooster/system/inc/SymbolTable.hpp"
 
 namespace xaifBooster { 
 

@@ -1,8 +1,8 @@
 #ifndef _EXPRESSIONVERTEX_INCLUDE_
 #define _EXPRESSIONVERTEX_INCLUDE_
 
-#include "utils/inc/ObjectWithId.hpp"
-#include "system/inc/VertexTraversable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/VertexTraversable.hpp"
 
 namespace xaifBooster { 
 

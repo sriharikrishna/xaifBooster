@@ -1,8 +1,8 @@
 #ifndef  _GRAPHELEMENT_INCLUDE_
-#include "system/inc/GraphElement.hpp"
+#include "xaifBooster/system/inc/GraphElement.hpp"
 #endif
 
-#include "utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 namespace xaifBooster { 
 

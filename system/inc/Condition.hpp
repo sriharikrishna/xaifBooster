@@ -1,8 +1,8 @@
 #ifndef _CONDITION_INCLUDE_
 #define _CONDITION_INCLUDE_
 
-#include "system/inc/Expression.hpp"
-#include "utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 namespace xaifBooster { 
 

@@ -1,8 +1,8 @@
 #ifndef _CONSTANT_INCLUDE_
 #define _CONSTANT_INCLUDE_
 
-#include "system/inc/ExpressionVertex.hpp"
-#include "system/inc/BaseConstant.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/BaseConstant.hpp"
 
 namespace xaifBooster { 
 

@@ -1,8 +1,8 @@
-#include "utils/inc/LogicException.hpp"
-#include "utils/inc/PrintManager.hpp"
-// UN: add later #include "system/inc/ConceptuallyStaticInstances.hpp"
-#include "system/inc/Intrinsic.hpp"
-#include "system/inc/IntrinsicAlgFactory.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+// UN: add later #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/Intrinsic.hpp"
+#include "xaifBooster/system/inc/IntrinsicAlgFactory.hpp"
 
 namespace xaifBooster { 
 

@@ -1,7 +1,7 @@
 #ifndef  _GRAPHELEMENT_INCLUDE_
 #define  _GRAPHELEMENT_INCLUDE_
 
-#include "utils/inc/Debuggable.hpp" 
+#include "xaifBooster/utils/inc/Debuggable.hpp" 
 
 namespace xaifBooster { 
 
@@ -74,6 +74,6 @@ namespace xaifBooster {
 
 } // end of namespace xaifBooster
 
-#include "system/inc/TemplateImpl/GraphElement.cpp"
+#include "xaifBooster/system/inc/TemplateImpl/GraphElement.cpp"
 
 #endif

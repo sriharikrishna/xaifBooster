@@ -1,5 +1,5 @@
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/PartialDerivativeKind.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
 
 namespace xaifBooster { 
 

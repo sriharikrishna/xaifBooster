@@ -1,8 +1,8 @@
 #ifndef _INTRINSIC_INCLUDE_
 #define _INTRINSIC_INCLUDE_
 
-#include "system/inc/ExpressionVertex.hpp"
-#include "system/inc/IntrinsicAlgBase.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/IntrinsicAlgBase.hpp"
 
 namespace xaifBooster { 
 

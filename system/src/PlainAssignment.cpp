@@ -1,8 +1,8 @@
 #include <sstream>
-#include "utils/inc/DbgLoggerManager.hpp"
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/PlainAssignment.hpp"
-#include "system/inc/Variable.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/PlainAssignment.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
 
 namespace xaifBooster { 
 

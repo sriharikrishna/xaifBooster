@@ -3,19 +3,19 @@
 #include "xercesc/dom/DOM.hpp"
 #include "xercesc/util/PlatformUtils.hpp"
 
-#include "utils/inc/DbgLoggerManager.hpp"
-#include "utils/inc/LogicException.hpp"
-#include "utils/inc/XMLParserErrorHandler.hpp"
-#include "utils/inc/XMLParserMessage.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/XMLParserErrorHandler.hpp"
+#include "xaifBooster/utils/inc/XMLParserMessage.hpp"
 
-#include "system/inc/ConceptuallyStaticInstances.hpp"
-#include "system/inc/InlinableIntrinsicsParser.hpp"
-#include "system/inc/InlinableIntrinsicsCatalogue.hpp"
-#include "system/inc/InlinableIntrinsicsCatalogueItem.hpp"
-#include "system/inc/InlinableIntrinsicsArgumentReference.hpp"
-#include "system/inc/InlinableIntrinsicsConstant.hpp"
-#include "system/inc/InlinableIntrinsicsIntrinsic.hpp"
-#include "system/inc/InlinableIntrinsicsExpressionEdge.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsArgumentReference.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsConstant.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsIntrinsic.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsExpressionEdge.hpp"
 
 namespace xaifBooster {
   
