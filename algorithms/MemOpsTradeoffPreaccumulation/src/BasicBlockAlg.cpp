@@ -81,7 +81,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
  	  func_pt = *fhiter;
  	  func_pt(theDual, theElimList, thePredList, theSuccList, newOrAbsorb);
  	}// end for
-	
+
  	//if(theElimList.size() == 1){//if the heuristics have decided on one single face
 
 	//the predlist and thesucclist hold the predecessors and successors respectively of the face about to be eliminated.
@@ -123,32 +123,31 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       DualGraph::VertexIteratorPair jvip (theDual.vertices());
       DualGraph::VertexIterator jvi (jvip.first), jv_end (jvip.second);
       for(; jvi != jv_end; ++jvi){
-	if((theDual.numOutEdgesOf(*jvi) > 0) && (theDual.numInEdgesOf(*jvi) > 0)){
 
-	  //check to see if the edge was an original edge, if so, create a JAE comprised of one vertex for it
-	  if((*jvi).getRefType() == DualGraphVertex::TO_ORIGINAL_EDGE){
+	//check to see if the edge was an original edge, if so, create a JAE comprised of one vertex for it
+	if((*jvi).getRefType() == DualGraphVertex::TO_ORIGINAL_EDGE){
 
-	    JacobianAccumulationExpressionCopy* theNewExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
-	
-	    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& orig = ((*theNewExpression).myExpression).addVertex();
-	    orig.setExternalReference((*jvi).getOriginalRef());
-	    (*theNewExpression).setMaximal(orig);
-	    (*jvi).setJacobianRef(theNewExpression);
+	  JacobianAccumulationExpressionCopy* theNewExpression = new JacobianAccumulationExpressionCopy(theJacobianAccumulationExpressionList.addExpression());
 
-	    (((*jvi).getJacobianRef()).myExpression).setJacobianEntry(theOriginal.getTargetOf((*jvi).getOriginalRef()), theOriginal.getSourceOf((*jvi).getOriginalRef()));
-	  }// end if
-	  else{
+	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& orig = ((*theNewExpression).myExpression).addVertex();
+	  orig.setExternalReference((*jvi).getOriginalRef());
+	  (*theNewExpression).setMaximal(orig);
+	  (*jvi).setJacobianRef(theNewExpression);
 
-	    DualGraph::InEdgeIteratorPair iep (theDual.getInEdgesOf(*jvi));
-	    DualGraph::InEdgeIterator ie (iep.first);
-	    DualGraph::OutEdgeIteratorPair oep (theDual.getOutEdgesOf(*jvi));
-	    DualGraph::OutEdgeIterator oe (oep.first);
-
-	    (((*jvi).getJacobianRef()).myExpression).setJacobianEntry((theDual.getTargetOf(*oe)).getAssumedRef(), (theDual.getSourceOf(*ie)).getAssumedRef());
-	  }// end else
+	  (((*jvi).getJacobianRef()).myExpression).setJacobianEntry(theOriginal.getTargetOf((*jvi).getOriginalRef()), theOriginal.getSourceOf((*jvi).getOriginalRef()));
 	}// end if
+	else if((*jvi).getRefType() == DualGraphVertex::TO_INTERNAL_EXPRESSION){
+
+	  DualGraph::InEdgeIteratorPair iep (theDual.getInEdgesOf(*jvi));
+	  DualGraph::InEdgeIterator ie (iep.first);
+	  DualGraph::OutEdgeIteratorPair oep (theDual.getOutEdgesOf(*jvi));
+	  DualGraph::OutEdgeIterator oe (oep.first);
+
+	  (((*jvi).getJacobianRef()).myExpression).setJacobianEntry((theDual.getTargetOf(*oe)).getAssumedRef(), (theDual.getSourceOf(*ie)).getAssumedRef());
+
+	}// end else if
       }// end for
-      
+
       if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
 	GraphVizDisplay::show(theDual,"tripartite");
       }

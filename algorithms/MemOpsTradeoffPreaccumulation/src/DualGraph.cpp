@@ -49,12 +49,15 @@ namespace MemOpsTradeoffPreaccumulation {
     }// end for original indep list
 
     //generate edges in dual graph
+    //for all vertices in the original graph
     xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair dv2 (theOriginal.vertices());
     xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator dv2i (dv2.first), dv2_end (dv2.second);
     for(; dv2i != dv2_end; ++dv2i){
+      //for all in edges
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair die2 (theOriginal.getInEdgesOf(*dv2i));
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator die2i (die2.first), die2_end (die2.second);
       for(; die2i != die2_end; ++die2i){
+	//for all out edges
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair doe2 (theOriginal.getOutEdgesOf(*dv2i));
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator doe2i (doe2.first), doe2_end (doe2.second);
 	for(; doe2i != doe2_end; ++doe2i){
@@ -294,14 +297,17 @@ namespace MemOpsTradeoffPreaccumulation {
 		if(*svertex == *predi){
 		  //if path contains the vertex, go to next vertex in the path
 		  svertex++;
+		  if(numOutEdgesOf(**svertex) == 0){
+		    break; //break out of this path
+		  }
 		  svertex++;
 		  if(*svertex == *succi){
 		    svertex--;
 		    directVertex_pt = *svertex;
 		    loopcheck = false;
-		    break;
+		    break; //break out of this path
 		  }// end if succ matches
-		  break;
+		  break;  //break out of this path
 		}// end if vertex is the pred
 	      }// end for each vertex in the path
 	    }// end for all paths
@@ -312,20 +318,27 @@ namespace MemOpsTradeoffPreaccumulation {
 
     //if there was a direct vertex from predecessors to successors
     if(directVertex_pt != NULL){
-      //create vertex for direct edge, and "add" vertex, point new edge to it
+      //create vertices for direct edge and "add" vertex
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& minidirect = ((*theExpression).myExpression).addVertex();
       xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& add = ((*theExpression).myExpression).addVertex();
       add.setOperation(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP);
-      //add vertex for direct vertex
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& minidirect = ((*theExpression).myExpression).addVertex();
+
+      //connect "add" vertex to minidirect and mult, point the new vertex to add
+      ((*theExpression).myExpression).addEdge(mult, add);
+      ((*theExpression).myExpression).addEdge(minidirect, add);
+      (*theExpression).setMaximal(add);
+
       if((*directVertex_pt).getRefType() == DualGraphVertex::TO_INTERNAL_EXPRESSION){
 	minidirect.setInternalReference(((*directVertex_pt).getJacobianRef()).getMaximal());
       }
-      else{
+      else if((*directVertex_pt).getRefType() == DualGraphVertex::TO_ORIGINAL_EDGE){
 	minidirect.setExternalReference((*directVertex_pt).getOriginalRef());
       }
-      //connect "add" vertex to minidirect and mult, point the new vertex to add, delete the old vertex
-      ((*theExpression).myExpression).addEdge(mult, add);
-      ((*theExpression).myExpression).addEdge(minidirect, add);
+      else{
+	THROW_LOGICEXCEPTION_MACRO("Error: Direct vertex ref is neither internal nor external");
+      }
+
+      //delete the old vertex
       removeAndDeleteVertex(*directVertex_pt);
       (*theExpression).setMaximal(add);
     }// end if
