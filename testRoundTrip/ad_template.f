@@ -12,7 +12,7 @@
           integer, intent(in), optional :: version
 
           ! checkpointing stacks and offsets
-          integer, parameter :: theMaxStackSize=100
+          integer, parameter :: theMaxStackSize=200
           integer :: cp_loop_variable
           double precision, dimension(theMaxStackSize), save :: 
      +theArgStack
