@@ -1,3 +1,21 @@
+CUN ***************************************************
+CUN 
+CUN This file contains head.f and a main program
+CUN that uses head.f to compute the Jacobian via
+CUN finite differences
+CUN 
+CUN head.f has all globals moved into the module
+CUN all_globals_mod (brute force but working)
+CUN 
+CUN OpenAD does not unparse modules correctly
+CUN for the time being (see output of test)
+CUN 
+CUN For joint reversal all globals need to be 
+CUN checkpointed until we know how to do better
+CUN 
+CUN ***************************************************
+
+
       module all_globals_mod
         integer ndim
         parameter ( ndim = 3 )
@@ -819,5 +837,121 @@ cph      endif
       end if
 
       call box_update ( fldNew, fldOld, dFldDt )
+
+      end
+
+
+c-----------------------------------------------------------------------
+      program box_main
+c-----------------------------------------------------------------------
+
+      use all_globals_mod
+
+      implicit none
+
+
+
+c-- declaring parameter and constants
+
+      integer l, i, j
+      integer iloop
+
+      integer nlev1
+      integer nlev2
+      integer isbyte
+      parameter ( nlev1  =  73 )
+      parameter ( nlev2  =  50 )
+      parameter ( isbyte =   8 )
+
+      integer ikey
+
+
+      double precision admetric
+      common /adfi_metric_r / admetric
+
+      double precision g_metric
+      common /g_fi_metric_r / g_metric
+
+      double precision adxx(2*ndim)
+      common /adfi_controls_r / adxx
+
+      double precision g_xx(2*ndim)
+      common /g_fi_controls_r / g_xx
+
+      double precision adtsvec(2*ndim)
+      common /adfi_final_state_r / adtsvec
+
+      double precision g_tsvec(2*ndim)
+      common /g_fi_final_state_r / g_tsvec
+
+
+c-- local variables:
+      integer ll
+      double precision tsorig(2*ndim)
+      double precision grdadm(2*ndim,2*ndim)
+      double precision grdtlm(2*ndim,2*ndim)
+      double precision grdfdm(2*ndim,2*ndim)
+
+cun -- for time measurements
+
+      real etime
+      real total_1, total_2, total_3, total_4
+      real elapsed(2)
+      integer ti
+
+c-- routine body
+
+
+
+
+
+c*******************************************************************************************
+c-- forward calculation and calculate metric
+c*******************************************************************************************
+
+      call box_ini_params
+
+      call box_ini_params
+
+c--     #####################
+      call box_model_body
+c--     #####################
+
+      call box_final_state
+
+
+
+c*******************************************************************************************
+c-- calculate df = (df_i/dx_j) via finite differences -> store in grdfdm
+c*******************************************************************************************
+
+
+c-- save original dependent variable
+      do i = 1, 2*ndim
+         tsorig(i) = tsvec(i)
+      end do
+c-- now do f.d. calculations
+      do j = 1, 2*ndim
+c-- perturb l-th independent vector element
+         xx(j) = fdeps
+c-- run TLM
+c--        #####################
+         call box_model_body
+c--        #####################
+c-- store in matrix
+         do i = 1, 2*ndim
+            grdfdm(i,j) = (tsvec(i)-tsorig(i))/fdeps
+         enddo
+      enddo
+
+
+c-- gradient checks
+      do j = 1, 2*ndim
+         do i = 1, 2*ndim
+            print '(a,2I3,3x,E12.6)', 
+     &           'un-grd i, j FD ', i, j,
+     &           grdfdm(i,j)
+         end do
+      end do
 
       end
