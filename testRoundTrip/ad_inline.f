@@ -99,8 +99,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision :: x
 C $OpenAD$ END DECLS
-          theArgFStackoffset=theArgFStackoffset+1
-          theArgFStack(theArgFStackoffset)=x%v
+          call cp_store_real_scalar(x%v,theArgFStack,theArgFStackoffset,
+     +theArgFStackSize)
         end subroutine 
 
 
@@ -119,9 +119,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision :: x
 C $OpenAD$ END DECLS
-          theResFStackoffset=theResFStackoffset+1
-          theResFStack(theResFStackoffset)=x%v
-          print*, "store idx, value, x ", theResFStackoffset, x%v
+          call cp_store_real_scalar(x%v,theResFStack,theResFStackoffset,
+     +theResFStackSize)
         end subroutine 
 
 
@@ -141,10 +140,9 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-             theArgFStackoffset=theArgFStackoffset+1
-             theArgFStack(theArgFStackoffset)=x(cp_loop_variable_1)%v
-          end do
+          call cp_store_real_vector(x,size(x),
+     +theArgFStack,theArgFStackoffset,
+     +theArgFStackSize)
         end subroutine 
 
 
@@ -165,10 +163,9 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-             theResFStackoffset=theResFStackoffset+1
-             theResFStack(theResFStackoffset)=x(cp_loop_variable_1)%v
-          end do
+          call cp_store_real_vector(x,size(x),
+     +theResFStack,theResFStackoffset,
+     +theResFStackSize)
         end subroutine 
 
 
@@ -185,23 +182,21 @@ C $OpenAD$ END DECLS
 
 
         subroutine cp_arg_store_real_matrix(x,cp_loop_variable_1,
-     >cp_loop_variable_2)
+     +cp_loop_variable_2)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-             do cp_loop_variable_2=lbound(x,2),ubound(x,2)
-                theArgFStackoffset=theArgFStackoffset+1
-                theArgFStack(theArgFStackoffset)=x(cp_loop_variable_1,
-     >cp_loop_variable_2)%v
-             end do
+          call cp_store_real_vector(x(cp_loop_variable_1),
+     +size(x(cp_loop_variable_1)),theArgFStack,theArgFStackoffset,
+     +theArgFStackSize)
           end do
         end subroutine 
 
 
         subroutine cp_arg_restore_real_matrix(x,cp_loop_variable_1,
-     >cp_loop_variable_2)
+     +cp_loop_variable_2)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
@@ -209,7 +204,7 @@ C $OpenAD$ END DECLS
           do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
              do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
                 x(cp_loop_variable_1,cp_loop_variable_2)%v=
-     >theArgFStack(theArgFStackoffset)
+     +theArgFStack(theArgFStackoffset)
                 theArgFStackoffset=theArgFStackoffset-1
              end do
           end do
@@ -217,23 +212,21 @@ C $OpenAD$ END DECLS
 
 
         subroutine cp_res_store_real_matrix(x,cp_loop_variable_1,
-     >cp_loop_variable_2)
+     +cp_loop_variable_2)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-             do cp_loop_variable_2=lbound(x,2),ubound(x,2)
-                theResFStackoffset=theResFStackoffset+1
-                theResFStack(theResFStackoffset)=x(cp_loop_variable_1,
-     >cp_loop_variable_2)%v
-             end do
+          call cp_store_real_vector(x(cp_loop_variable_1),
+     +size(x(cp_loop_variable_1)),theResFStack,theResFStackoffset,
+     +theResFStackSize)
           end do
         end subroutine 
 
 
         subroutine cp_res_restore_real_matrix(x,cp_loop_variable_1,
-     >cp_loop_variable_2)
+     +cp_loop_variable_2)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
@@ -241,7 +234,7 @@ C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,2),1
              do cp_loop_variable_2=lbound(x,2),ubound(x,2),1
                 x(cp_loop_variable_1,cp_loop_variable_2)%v=
-     >theResFStack(theResFStackoffset)
+     +theResFStack(theResFStackoffset)
                 theResFStackoffset=theResFStackoffset+1
              end do
           end do
@@ -249,7 +242,7 @@ C $OpenAD$ END DECLS
 
 
         subroutine cp_arg_store_real_four_tensor(x,cp_loop_variable_1,
-     >cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
+     +cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
@@ -257,20 +250,20 @@ C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
                 do cp_loop_variable_3=lbound(x,3),ubound(x,3)
-                   do cp_loop_variable_4=lbound(x,4),ubound(x,4)
-                      theArgFStackoffset=theArgFStackoffset+1
-                      theArgFStack(theArgFStackoffset)=
-     >x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,
-     >cp_loop_variable_4)%v
-                   end do
-                end do
+          call cp_store_real_vector(x(cp_loop_variable_1,
+     +cp_loop_variable_2, cp_loop_variable_3),
+     +size(x(cp_loop_variable_1,cp_loop_variable_2, cp_loop_variable_3)),
+     +theArgFStack,
+     +theArgFStackoffset,
+     +theArgFStackSize)
+               end do
              end do
           end do
         end subroutine 
 
 
         subroutine cp_arg_restore_real_four_tensor(x,cp_loop_variable_1,
-     >cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
+     +cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
@@ -280,8 +273,8 @@ C $OpenAD$ END DECLS
                 do cp_loop_variable_3=ubound(x,3),lbound(x,3),-1
                    do cp_loop_variable_4=ubound(x,4),lbound(x,4),-1
                       x(cp_loop_variable_1,cp_loop_variable_2,
-     >cp_loop_variable_3,cp_loop_variable_4)%v=
-     >theArgFStack(theArgFStackoffset)
+     +cp_loop_variable_3,cp_loop_variable_4)%v=
+     +theArgFStack(theArgFStackoffset)
                       theArgFStackoffset=theArgFStackoffset-1
                    end do
                 end do
@@ -291,7 +284,7 @@ C $OpenAD$ END DECLS
 
 
         subroutine cp_res_store_real_four_tensor(x,cp_loop_variable_1,
-     >cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
+     +cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
@@ -299,12 +292,12 @@ C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
                 do cp_loop_variable_3=lbound(x,3),ubound(x,3)
-                   do cp_loop_variable_4=lbound(x,4),ubound(x,4)
-                      theResFStackoffset=theResFStackoffset+1
-                      theResFStack(theResFStackoffset)=
-     >x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,
-     >cp_loop_variable_4)%v
-                   end do
+          call cp_store_real_vector(x(cp_loop_variable_1,
+     +cp_loop_variable_2, cp_loop_variable_3),
+     +size(x(cp_loop_variable_1,cp_loop_variable_2, cp_loop_variable_3)),
+     +theResFStack,
+     +theResFStackoffset,
+     +theResFStackSize)
                 end do
              end do
           end do
@@ -312,7 +305,7 @@ C $OpenAD$ END DECLS
 
 
         subroutine cp_res_restore_real_four_tensor(x,cp_loop_variable_1,
-     >cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
+     +cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
@@ -322,8 +315,8 @@ C $OpenAD$ END DECLS
                 do cp_loop_variable_3=lbound(x,3),ubound(x,3)
                    do cp_loop_variable_4=lbound(x,4),ubound(x,4)
                       x(cp_loop_variable_1,cp_loop_variable_2,
-     >cp_loop_variable_3,cp_loop_variable_4)%v=
-     >theResFStack(theResFStackoffset)
+     +cp_loop_variable_3,cp_loop_variable_4)%v=
+     +theResFStack(theResFStackoffset)
                       theResFStackoffset=theResFStackoffset+1
                    end do
                 end do
@@ -338,8 +331,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           integer :: i
 C $OpenAD$ END DECLS
-          theArgIStackoffset=theArgIStackoffset+1
-          theArgIStack(theArgIStackoffset)=i
+          call cp_store_int_scalar(i,theArgIStack,
+     +theArgIStackoffset, theArgIStackSize)
         end subroutine 
 
 
@@ -358,8 +351,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           integer :: i
 C $OpenAD$ END DECLS
-          theResIStackoffset=theResIStackoffset+1
-          theResIStack(theResIStackoffset)=i
+          call cp_store_int_scalar(i,theResIStack,
+     +theResIStackoffset, theResIStackSize)
         end subroutine 
 
 
@@ -378,9 +371,9 @@ C strings  -----------------------------------------------------
 C $OpenAD$ INLINE DECLS
           implicit none
           character*(80) :: s
-C $OpenAD$ END DECLS
-          theArgSStackoffset=theArgSStackoffset+1
-          theArgSStack(theArgSStackoffset)=s
+C $OpenAD$ END DECLS 
+          call cp_store_string_scalar(s,theArgSStack,
+     +theArgSStackoffset, theArgSStackSize)
         end subroutine 
 
 
@@ -399,8 +392,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           character*(80) :: s
 C $OpenAD$ END DECLS
-          theResSStackoffset=theResSStackoffset+1
-          theResSStack(theResSStackoffset)=s
+          call cp_store_string_scalar(s,theResSStack,
+     +theResSStackoffset, theResSStackSize)
         end subroutine 
 
 
@@ -420,8 +413,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           logical :: b
 C $OpenAD$ END DECLS
-          theArgBStackoffset=theArgBStackoffset+1
-          theArgBStack(theArgBStackoffset)=b
+          call cp_store_bool_scalar(s,theArgBStack,
+     +theArgBStackoffset, theArgBStackSize)
         end subroutine 
 
 
@@ -440,8 +433,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           logical :: b
 C $OpenAD$ END DECLS
-          theResBStackoffset=theResBStackoffset+1
-          theResBStack(theResBStackoffset)=b
+          call cp_store_bool_scalar(s,theResBStack,
+     +theResBStackoffset, theResBStackSize)
         end subroutine 
 
 
@@ -453,62 +446,3 @@ C $OpenAD$ END DECLS
           b=theResBStack(theResBStackoffset)
           theResBStackoffset=theResBStackoffset+1
         end subroutine 
-
-C execution mode control -------------------------------------
-        subroutine forward_mode()
-C $OpenAD$ INLINE DECLS
-          use OpenAD_rev
-          implicit none
-C $OpenAD$ END DECLS
-          our_orig_mode=our_rev_mode
-
-          our_rev_mode%arg_store=.FALSE.
-          our_rev_mode%arg_restore=.FALSE.
-          our_rev_mode%res_store=.FALSE.
-          our_rev_mode%res_restore=.FALSE.
-          our_rev_mode%plain=.TRUE.
-          our_rev_mode%tape=.FALSE.
-          our_rev_mode%adjoint=.FALSE.
-        end subroutine 
-
-        subroutine forward_arg_store_mode()
-C $OpenAD$ INLINE DECLS
-          use OpenAD_rev
-          implicit none
-C $OpenAD$ END DECLS
-          our_orig_mode=our_rev_mode
-
-          our_rev_mode%arg_store=.TRUE.
-          our_rev_mode%arg_restore=.FALSE.
-          our_rev_mode%res_store=.FALSE.
-          our_rev_mode%res_restore=.FALSE.
-          our_rev_mode%plain=.TRUE.
-          our_rev_mode%tape=.FALSE.
-          our_rev_mode%adjoint=.FALSE.
-        end subroutine 
-
-        subroutine reverse_mode()
-C $OpenAD$ INLINE DECLS
-          use OpenAD_rev
-          implicit none
-C $OpenAD$ END DECLS
-          our_orig_mode=our_rev_mode
-
-          our_rev_mode%arg_store=.FALSE.
-          our_rev_mode%arg_restore=.TRUE.
-          our_rev_mode%res_store=.FALSE.
-          our_rev_mode%res_restore=.FALSE.
-          our_rev_mode%plain=.FALSE.
-          our_rev_mode%tape=.TRUE.
-          our_rev_mode%adjoint=.TRUE.
-        end subroutine 
-
-
-        subroutine restore_mode()
-C $OpenAD$ INLINE DECLS
-          use OpenAD_rev
-          implicit none
-C $OpenAD$ END DECLS
-          our_rev_mode=our_orig_mode
-        end subroutine 
-

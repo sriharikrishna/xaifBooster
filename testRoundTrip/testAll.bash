@@ -18,17 +18,48 @@ function copyDefaultBeforeExample {
     fi
   fi
 } 
-
-echo -n "use reverse mode y/[n]"
-read answer
-if [ "$answer" == "y" ]
-then
-    export REVERSE_MODE=y
-    echo "using reverse mode"
+askAll="n"
+mode="none"
+submode="none"
+if [ -f .lastRun ] 
+then 
+  read mode submode < .lastRun 
+  echo -n "reuse last settings (${mode} ${submode})? [y]/n "
+  read answer
+  if [ "$answer" == "n" ]
+  then
+    askAll="y"
+  fi 
 else
-    export REVERSE_MODE=
-    echo "using plain drivers"
+  askAll="y"
 fi
+if [ "$askAll" == "y" ] 
+then 
+  echo -n "use reverse mode y/[n] "
+  read answer
+  if [ "$answer" == "y" ]
+  then
+    export REVERSE_MODE=y
+    mode="adm"
+    echo -n "use submode [split]/joint"
+    read answer
+    if [ "$answer" == "split" ]
+    then
+	submode="$answer"
+    else 
+      if [ "$answer" == "joint" ]
+      then
+	submode="$answer"
+      else 
+        echo "type split or joint"
+        exit -1
+      fi
+    fi
+  else
+    mode="tlm"
+  fi
+fi 
+echo $mode $submode > .lastRun
 if [ $# -gt 0 ]
 then
     TESTFILES=$@
@@ -44,16 +75,17 @@ do
     echo "ERROR in: make testAllclean"; exit -1;
   fi
   echo "** running $i *************************************************"
+  TARGET_DRIVER=driver_${mode}
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    DRIVER_NAME=driver_adm
-  else
-    DRIVER_NAME=driver
+    TARGET_DRIVER=${TARGET_DRIVER}_${submode}
   fi
   exdir=examples/$i
-  copyDefaultBeforeExample $exdir ${DRIVER_NAME}.f90
+  copyDefaultBeforeExample $exdir ${TARGET_DRIVER}.f90
   copyDefaultBeforeExample $exdir params.conf
   copyDefaultBeforeExample $exdir all_globals_mod.f
+  copyDefaultBeforeExample $exdir all_globals_cp_mod.f
+  copyDefaultBeforeExample $exdir ad_template.f
   copyDefaultBeforeExample $exdir head.f
   export TARGET=all_globals_mod
   make
@@ -79,7 +111,8 @@ do
     mv head.prh.xb.x2w.w2f.urh.pp.f.1 head.prh.xb.x2w.w2f.urh.pp.f
   fi
 ### end of temporary fix
-  make $DRIVER_NAME
+  export TARGET_DRIVER
+  make $TARGET_DRIVER
   if [ $? -ne 0 ] 
   then 
     echo "ERROR in: make driver"; exit -1;
