@@ -1,5 +1,5 @@
-#ifndef _CONSTANTALG_INCLUDE_
-#define _CONSTANTALG_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_CONSTANTALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_CONSTANTALG_INCLUDE_
 
 #include "xaifBooster/system/inc/ConstantAlgBase.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"

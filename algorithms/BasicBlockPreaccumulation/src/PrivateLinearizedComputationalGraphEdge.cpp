@@ -4,7 +4,9 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterBasicBlockPreaccumulation { 
 
   std::string PrivateLinearizedComputationalGraphEdge::debug() const { 
     std::ostringstream out;

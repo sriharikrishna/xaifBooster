@@ -1,5 +1,5 @@
-#ifndef _BOOLEANOPERATIONALG_INCLUDE_
-#define _BOOLEANOPERATIONALG_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_BOOLEANOPERATIONALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_BOOLEANOPERATIONALG_INCLUDE_
 
 #include "xaifBooster/system/inc/BooleanOperationAlgBase.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"

@@ -4,10 +4,16 @@
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 
 namespace xaifBooster { 
-  
-  class Variable;
+  class Variable;;
+}
 
-  class PrivateLinearizedComputationalGraphVertex : public LinearizedComputationalGraphVertex {
+using namespace xaifBooster; 
+
+namespace xaifBoosterBasicBlockPreaccumulation { 
+  
+  class PrivateLinearizedComputationalGraphVertex : 
+    public xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex {
+
   public:
 
     PrivateLinearizedComputationalGraphVertex(); 
@@ -51,6 +57,6 @@ namespace xaifBooster {
  
   }; // end of class PrivateLinearizedComputationalGraphVertex
  
-} // end of namespace xaifBooster
+} 
                                                                      
 #endif

@@ -3,8 +3,11 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
 #include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/Argument.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
+
+using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
@@ -21,10 +24,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     useAsSaxFlag(false) { 
     AX* theAX_p=new AX();
     myAXPList.push_back(theAX_p);
-    Variable* theVariable_p=new Variable();
-    theVariable_p->setId(1);
-    theAX_p->myA.supplyAndAddVertexInstance(*theVariable_p);
-    theA.copyMyselfInto(theVariable_p->getVariable());
+    Argument* theArgument_p=new Argument();
+    theArgument_p->setId(1);
+    theAX_p->myA.supplyAndAddVertexInstance(*theArgument_p);
+    theA.copyMyselfInto(theArgument_p->getVariable());
     theX.copyMyselfInto(theAX_p->myX);
     theAX_p->myX.setId(1);
     theAX_p->myX.setDerivFlag();
@@ -37,10 +40,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					const Variable& theX) { 
     AX* theAX_p=new AX();
     myAXPList.push_back(theAX_p);
-    Variable* theVariable_p=new Variable();
-    theVariable_p->setId(1);
-    theAX_p->myA.supplyAndAddVertexInstance(*theVariable_p);
-    theA.copyMyselfInto(theVariable_p->getVariable());
+    Argument* theArgument_p=new Argument();
+    theArgument_p->setId(1);
+    theAX_p->myA.supplyAndAddVertexInstance(*theArgument_p);
+    theA.copyMyselfInto(theArgument_p->getVariable());
     theX.copyMyselfInto(theAX_p->myX);
     theAX_p->myX.setId(1);
     theAX_p->myX.setDerivFlag();

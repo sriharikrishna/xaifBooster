@@ -4,11 +4,11 @@
 #include "xaifBooster/utils/inc/SingletonParameterPerThread.hpp"
 #include "xaifBooster/utils/inc/TemplateImpl/SingletonParameterPerThread.cpp"
 
-#include "xaifBooster/system/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterAngelInterfaceAlgorithms {  
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
   template class SingletonParameterPerThread<BasicBlockAlg>;
 

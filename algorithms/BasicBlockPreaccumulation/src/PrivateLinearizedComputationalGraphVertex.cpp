@@ -2,7 +2,9 @@
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterBasicBlockPreaccumulation { 
 
   PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() : 
     myRHSVariable_p(0), 

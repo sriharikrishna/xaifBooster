@@ -5,6 +5,7 @@
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
@@ -15,10 +16,10 @@
 
 using namespace xaifBooster;
 
-namespace xaifBoosterAngelInterfaceAlgorithms {  
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
   AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
-    AssignmentAlgBase(theContainingAssignment) { 
+    xaifBoosterLinearization::AssignmentAlg(theContainingAssignment) { 
   }
 
   void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
@@ -32,70 +33,75 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 
   void 
   AssignmentAlg::algorithm_action_1() { 
-    DBG_MACRO(DbgGroup::CALLSTACK,"AssignmentAlg::algorithm_action_1(flatten)");
-    // this was set in BasicBlockAlg::algorithm_action_1
+    xaifBoosterLinearization::AssignmentAlg::algorithm_action_1();
+  }
+  
+  void 
+  AssignmentAlg::algorithm_action_2() { 
+    DBG_MACRO(DbgGroup::CALLSTACK,"AssignmentAlg::algorithm_action_2(flatten)");
+    // this was set in BasicBlockAlg::algorithm_action_2
     PrivateLinearizedComputationalGraph& theFlattenedSequence=
       BasicBlockAlgParameter::get().getFlattenedSequence(getContaining());
-    if (!getContaining().isActive()) { 
-      if (getContaining().isPassivated() 
+    if (!getActiveFlag()) { 
+      if (getContaining().getActiveFlag() // this means the assignment has been passivated 
 	  &&
-	  getContaining().getLHS().getActiveType()) 
+	  getContaining().getLHS().getActiveType())  // but the LHS is active
 	BasicBlockAlgParameter::get().getDerivativePropagator(getContaining()).
 	  addZeroDerivToEntryList(getContaining().getLHS());
       // for the ones that are not of active type we don't do anything.
     } // end if 
     else {
-      Expression& theExpression(getContaining().getLinearizedRightHandSide());
+      Expression& theExpression(getLinearizedRightHandSide());
       Expression::VertexIteratorPair p=theExpression.vertices();
-      Expression::VertexIterator beginIt(p.first),endIt(p.second);
+      Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
       typedef std::pair<ExpressionVertex*,PrivateLinearizedComputationalGraphVertex*> VertexPointerPair;
       std::list<VertexPointerPair> theIntermediateVertexTrackList;
-      HashTable<PrivateLinearizedComputationalGraphVertex*>& theVariableReferenceTrackList(theFlattenedSequence.getVariableReferenceTrackList());
+      PrivateLinearizedComputationalGraph::VariableTrackList& theVariableTrackList(theFlattenedSequence.getVariableTrackList());
       PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p=0; // LHS representation
-      for (; beginIt!=endIt ;++beginIt) { 
-	if (theVariableReferenceTrackList.hasElement((*beginIt).equivalenceSignature())) { 
+      for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) { 
+	if (theVariableTrackList.hasElement((*ExpressionVertexI).equivalenceSignature())) { 
 	  // we have the vertex already in theFlattenedSequence
-	  // and since it is in theVariableReferenceTrackList
-	  // it must be a VariableReference
-	  if (theExpression.numOutEdgesOf(*beginIt)>0){ 
+	  // and since it is in theVariableTrackList
+	  // it must be a Variable
+	  if (theExpression.numOutEdgesOf(*ExpressionVertexI)>0){ 
 	    // and this vertex is not maximal in the RHS
 	    // we don't need to do anything
 	  } // end if ,there is no else here, i.e. cannot happen
 	} // end if 
-	else { // the vertex is not in theVariableReferenceTrackList
+	else { // the vertex is not in theVariableTrackList
 	  // we need to add this vertex
 	  PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
 	  theFlattenedSequence.supplyAndAddVertexInstance(*theLCGVertex_p);
 	  DBG_MACRO(DbgGroup::DATA,
-		    "AssignmentAlg::algorithm_action_1(flatten):" 
+		    "AssignmentAlg::algorithm_action_2(flatten):" 
 		    << theLCGVertex_p->debug().c_str());
-	  if (theExpression.numInEdgesOf(*beginIt)==0) {
-	    // JU: this should be a VariableReference
+	  if (theExpression.numInEdgesOf(*ExpressionVertexI)==0) {
+	    // JU: this should be a Variable
 	    // JU: it cannot be a Constant since the Constants 
 	    // JU: are supposed to be removed by the linerarization which has to happen
 	    // JU: before the flattening, so eventually this will operate on a copy of 
 	    // JU: this assignment
 	    // JU: check this statement made above on Constant removal
-	    theVariableReferenceTrackList.addElement((*beginIt).equivalenceSignature(),
-						     theLCGVertex_p);
+	    theVariableTrackList.addElement((*ExpressionVertexI).equivalenceSignature(),
+					    theLCGVertex_p);
 	    // JU: this cast will fail if Constants are not removed:
 	    try { 
-	      theLCGVertex_p->setRHSVariable(dynamic_cast<VariableReference&>(*beginIt).getVariable());
+	      theLCGVertex_p->setRHSVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	    } 
 	    catch(std::bad_cast& e) { 
-	      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_1: invalid cast of "
-					 << (*beginIt).debug().c_str() 
-					 << " into a VariableReference");
+	      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_2: invalid cast of "
+					 << (*ExpressionVertexI).debug().c_str() 
+					 << " into a Variable");
 	    } // end catch
 	  } // end if 
 	  else { // number of in edges is > 0
 	    // this must be a vertex that is some intermediate
 	    // i.e. an intrinsic
-	    theIntermediateVertexTrackList.push_back(VertexPointerPair(&(*beginIt),theLCGVertex_p));
+	    theIntermediateVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),theLCGVertex_p));
 	  } // end else 
-	  if (theExpression.numOutEdgesOf(*beginIt)==0) { 
+	  if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
 	    if (theLHSLCGVertex_p)
-	      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_1(flatten): we should only find one maximal vertex");
+	      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
 	    // the maximal vertex in the RHS is the  
 	    // representation of the LHS
 	    theLHSLCGVertex_p=theLCGVertex_p;
@@ -103,11 +109,11 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	} // end else
       } // end for 
       Expression::EdgeIteratorPair pe=theExpression.edges();
-      Expression::EdgeIterator beginIte(pe.first),endIte(pe.second);
-      for (; beginIte!=endIte ;++beginIte) { 
+      Expression::EdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second);
+      for (; ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) { 
 	PrivateLinearizedComputationalGraphVertex *theLCGSource_p(0), *theLCGTarget_p(0);
-	ExpressionVertex& theSource(theExpression.getSourceOf(*beginIte));
-	ExpressionVertex& theTarget(theExpression.getTargetOf(*beginIte));
+	ExpressionVertex& theSource(theExpression.getSourceOf(*ExpressionEdgeI));
+	ExpressionVertex& theTarget(theExpression.getTargetOf(*ExpressionEdgeI));
 	std::list<VertexPointerPair>::const_iterator listIt;
 	for (listIt=theIntermediateVertexTrackList.begin();
 	     (listIt!=theIntermediateVertexTrackList.end()) 
@@ -125,34 +131,34 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	    theLCGTarget_p=(*listIt).second;
 	} // end for
 	if (!theLCGTarget_p) 
-	  THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_1(flatten): cannot find edge target");
+	  THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_2(flatten): cannot find edge target");
 	if (!theLCGSource_p) 
 	  // we would have to have found the target 
 	  // already (always intermediate) but the 
 	  // source can be a variable reference
 	  // the following call will throw an exception on 
 	  // its own if the source cannot be found. 
-	  theLCGSource_p=theVariableReferenceTrackList.getElement(theSource.equivalenceSignature());
+	  theLCGSource_p=theVariableTrackList.getElement(theSource.equivalenceSignature());
 	PrivateLinearizedComputationalGraphEdge* theEdge_p=new PrivateLinearizedComputationalGraphEdge();
 	// set the back reference
-	theEdge_p->setLinearizedExpressionEdge(*beginIte);
+	theEdge_p->setLinearizedExpressionEdge(*ExpressionEdgeI);
 	theFlattenedSequence.supplyAndAddEdgeInstance(*theEdge_p,
 						      *theLCGSource_p,
 						      *theLCGTarget_p);
 	DBG_MACRO(DbgGroup::DATA,
-		  "AssignmentAlg::algorithm_action_1(flatten)"
+		  "AssignmentAlg::algorithm_action_2(flatten)"
 		  << " Edge source:" 
 		  << theLCGSource_p->debug().c_str() 
 		  << " target " 
 		  <<  theLCGTarget_p->debug().c_str());
       } // end for 
-      Variable& theLHS(getContaining().getLHS());
-      if (theVariableReferenceTrackList.hasElement(theLHS.equivalenceSignature()))  
-	theVariableReferenceTrackList.removeElement(theLHS.equivalenceSignature());
+      const Variable& theLHS(getContaining().getLHS());
+      if (theVariableTrackList.hasElement(theLHS.equivalenceSignature()))  
+	theVariableTrackList.removeElement(theLHS.equivalenceSignature());
       if (!theLHSLCGVertex_p)
-	THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_1(flatten): don't have a maximal vertex");
-      theVariableReferenceTrackList.addElement(theLHS.equivalenceSignature(),
-					       theLHSLCGVertex_p);
+	THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_2(flatten): don't have a maximal vertex");
+      theVariableTrackList.addElement(theLHS.equivalenceSignature(),
+				      theLHSLCGVertex_p);
       theLHSLCGVertex_p->setLHSVariable(theLHS);
       // JU: this is a temporary measure, add all LHSs to the 
       // JU: list of dependent variables

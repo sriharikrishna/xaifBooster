@@ -1,5 +1,5 @@
-#ifndef _ARGUMENTALG_INCLUDE_
-#define _ARGUMENTALG_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_ARGUMENTALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_ARGUMENTALG_INCLUDE_
 
 #include "xaifBooster/system/inc/ArgumentAlgBase.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"

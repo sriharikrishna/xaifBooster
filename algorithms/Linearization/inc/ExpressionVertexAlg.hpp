@@ -1,5 +1,5 @@
-#ifndef _EXPRESSIONVERTEXALG_INCLUDE_
-#define _EXPRESSIONVERTEXALG_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_EXPRESSIONVERTEXALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_EXPRESSIONVERTEXALG_INCLUDE_
 
 #include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
 #include "xaifBooster/system/inc/PartialDerivativeKind.hpp"

@@ -1,5 +1,5 @@
-#ifndef _BASICBLOCKALG_INCLUDE_
-#define _BASICBLOCKALG_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALG_INCLUDE_
 
 #include <list>
 
@@ -10,16 +10,16 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagator.hpp"
 
-namespace xaifBooster {
-class ExpressionVertex;
-class PlainAssignment;
-class Assignment;
-class BasicBlockElement;
+
+namespace xaifBooster { 
+  class ExpressionVertex;
+  class Assignment;
+  class BasicBlockElement;
 }
 
 using namespace xaifBooster;
 
-namespace xaifBoosterAngelInterfaceAlgorithms {  
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
   /** 
    * class to implement algorithms relevant for the 
@@ -42,12 +42,12 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
      * flatten the Assignment level graphs found here into a graph held by 
      * myFlattenedSequence per sequence of consecutive Assignment instances
      */
-    virtual void algorithm_action_1();
+    virtual void algorithm_action_2();
 
     /**
      * generate code for the elimination sequence returned by Angel
      */
-    virtual void algorithm_action_2();
+    virtual void algorithm_action_3();
 
     /** 
      * returns the PrivateLinearizedComputationalGraph 
@@ -114,7 +114,7 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
        * i.e. the expressions for the partial calculation
        * obtained from the optimal elimination sequence
        */
-      JacobianAccumulationExpressionList myJacobianAccumulationExpressionList;    
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList myJacobianAccumulationExpressionList;    
 
       /** 
        * the derivative accumulator for this sequence
@@ -138,27 +138,27 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
       const BasicBlockElement* myLastElement;
 
       /** 
-       * create a new PlainAssignment instance
+       * create a new Assignment instance
        * and append it to the list to be printed 
        * in printXMLHierarchy
        * before any element of the sequence
        */
-      PlainAssignment& appendFrontAssignment();
+      Assignment& appendFrontAssignment();
 
       /** 
-       * create a new PlainAssignment instance
+       * create a new Assignment instance
        * and append it to the list to be printed 
        * in printXMLHierarchy
        * after any element of the sequence but 
        * before the DerivativePropagator
        */
-      PlainAssignment& appendEndAssignment();
+      Assignment& appendEndAssignment();
 
-      typedef std::list<PlainAssignment*> PlainAssignmentPList;
+      typedef std::list<Assignment*> AssignmentPList;
 
-      const PlainAssignmentPList& getFrontAssignmentList() const;
+      const AssignmentPList& getFrontAssignmentList() const;
 
-      const PlainAssignmentPList& getEndAssignmentList() const;
+      const AssignmentPList& getEndAssignmentList() const;
 
     private: 
 
@@ -167,13 +167,13 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
        * list to hold statements to be added to 
        * the front of this sequence
        */
-      PlainAssignmentPList myFrontAssignmentList;
+      AssignmentPList myFrontAssignmentList;
 
       /**
        * list to hold statements to be added to 
        * the end of this sequence
        */
-      PlainAssignmentPList myEndAssignmentList;
+      AssignmentPList myEndAssignmentList;
 
     }; // end of struct Sequence
 
@@ -213,11 +213,11 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
      */
     SequencePList myUniqueSequencePList;
 
-    typedef std::pair<const JacobianAccumulationExpressionVertex*,
+    typedef std::pair<const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex*,
 		      const Variable*> InternalReferenceConcretization; 
     typedef std::list<InternalReferenceConcretization> InternalReferenceConcretizationList;
 
-    typedef std::pair<const JacobianAccumulationExpressionVertex*,
+    typedef std::pair<const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex*,
 		      const ExpressionVertex*> VertexPair; 
     typedef std::list<VertexPair> VertexPairList;
     
@@ -226,9 +226,9 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
      * they don't matter for scalars. In the future for vector valued Jacobian 
      * accumulations ANGEL needs to return the positions. 
      */
-    void traverseAndBuildJacobianAccumulationsFromBottomUp(const JacobianAccumulationExpressionVertex& theVertex,
-							   const JacobianAccumulationExpression& theExpression,
-							   PlainAssignment& theNewAssignment,
+    void traverseAndBuildJacobianAccumulationsFromBottomUp(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& theVertex,
+							   const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,
+							   Assignment& theNewAssignment,
 							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
 							   int& theCounter,
 							   VertexPairList& theVertexPairList);

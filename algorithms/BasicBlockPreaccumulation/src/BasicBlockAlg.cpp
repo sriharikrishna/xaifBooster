@@ -3,64 +3,68 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
-#include "xaifBooster/system/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
-#include "xaifBooster/system/inc/PlainAssignment.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
-#include "xaifBooster/system/inc/VariableReference.hpp"
+#include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
-#include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSetDeriv.hpp"
 
+/** 
+ * the call to the ANGEL library
+ */
 namespace angel { 
-  extern void compute_elimination_sequence (const xaifBooster::LinearizedComputationalGraph& xgraph,
+  extern void compute_elimination_sequence (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
 					    int tasks, 
-					    xaifBooster::JacobianAccumulationExpressionList& expression_list);
+					    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list);
 }
 
 using namespace xaifBooster;
 
-namespace xaifBoosterAngelInterfaceAlgorithms { 
+namespace xaifBoosterBasicBlockPreaccumulation { 
 
   BasicBlockAlg::Sequence::~Sequence() { 
-    for (PlainAssignmentPList::iterator i=myFrontAssignmentList.begin();
+    for (AssignmentPList::iterator i=myFrontAssignmentList.begin();
 	 i!=myFrontAssignmentList.end();
 	 ++i) 
       if (*i)
 	delete *i;
-    for (PlainAssignmentPList::iterator i=myEndAssignmentList.begin();
+    for (AssignmentPList::iterator i=myEndAssignmentList.begin();
 	 i!=myEndAssignmentList.end();
 	 ++i) 
       if (*i)
 	delete *i;
   }
 
-  PlainAssignment& BasicBlockAlg::Sequence::appendFrontAssignment() { 
-    PlainAssignment* theAssignment_p=new PlainAssignment(true);
+  Assignment& BasicBlockAlg::Sequence::appendFrontAssignment() { 
+    Assignment* theAssignment_p=new Assignment(true);
     myFrontAssignmentList.push_back(theAssignment_p);
     return *theAssignment_p;
   }
 
-  PlainAssignment& BasicBlockAlg::Sequence::appendEndAssignment() { 
-    PlainAssignment* theAssignment_p=new PlainAssignment(true);
+  Assignment& BasicBlockAlg::Sequence::appendEndAssignment() { 
+    Assignment* theAssignment_p=new Assignment(true);
     myEndAssignmentList.push_back(theAssignment_p);
     return *theAssignment_p;
   }
 
-  const BasicBlockAlg::Sequence::PlainAssignmentPList& BasicBlockAlg::Sequence::getFrontAssignmentList() const { 
+  const BasicBlockAlg::Sequence::AssignmentPList& BasicBlockAlg::Sequence::getFrontAssignmentList() const { 
     return myFrontAssignmentList;
   }
 
-  const BasicBlockAlg::Sequence::PlainAssignmentPList& BasicBlockAlg::Sequence::getEndAssignmentList() const { 
+  const BasicBlockAlg::Sequence::AssignmentPList& BasicBlockAlg::Sequence::getEndAssignmentList() const { 
     return myEndAssignmentList;
   }
 
@@ -131,8 +135,8 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	// Is it the first element?
 	if (*li==aSequence_p->myFirstElement) { 
 	  // print all the stuff before the first element
-	  const Sequence::PlainAssignmentPList& theFrontList(aSequence_p->getFrontAssignmentList());
-	  for(Sequence::PlainAssignmentPList::const_iterator fli=theFrontList.begin();
+	  const Sequence::AssignmentPList& theFrontList(aSequence_p->getFrontAssignmentList());
+	  for(Sequence::AssignmentPList::const_iterator fli=theFrontList.begin();
 	      fli!=theFrontList.end();
 	      ++fli) 
 	    (*(fli))->printXMLHierarchy(os);
@@ -142,8 +146,8 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	// Is it the last element?
 	if (*li==aSequence_p->myFirstElement) { 
 	  // print all the stuff after the last element
-	  const Sequence::PlainAssignmentPList& theEndList(aSequence_p->getEndAssignmentList());
-	  for(Sequence::PlainAssignmentPList::const_iterator fli=theEndList.begin();
+	  const Sequence::AssignmentPList& theEndList(aSequence_p->getEndAssignmentList());
+	  for(Sequence::AssignmentPList::const_iterator fli=theEndList.begin();
 	      fli!=theEndList.end();
 	      ++fli) 
 	    (*(fli))->printXMLHierarchy(os);
@@ -171,13 +175,13 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
   } // end of BasicBlockAlg::debug
 
   void
-  BasicBlockAlg::algorithm_action_1() {
+  BasicBlockAlg::algorithm_action_2() {
     static unsigned int recursionGuard=0;
     try { 
       recursionGuard++;
       if (recursionGuard>1)
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_1: recursive invocation not allowed");
-      DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorithm_action_1(flatten)");
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_2: recursive invocation not allowed");
+      DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorithm_action_2(flatten)");
       
       // the BasicBlock instance will be used in AssignmentAlg::algorithm_action_1:
       // because of virtual function use on the system structural level we cannot 
@@ -194,8 +198,8 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
   }
 
   void 
-  BasicBlockAlg::algorithm_action_2() { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_2");
+  BasicBlockAlg::algorithm_action_3() { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3");
     for (SequencePList::iterator i=myUniqueSequencePList.begin();
 	 i!=myUniqueSequencePList.end();
 	 ++i) { // outer loop over all items in myUniqueSequencePList
@@ -216,13 +220,13 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	std::ostringstream mesg;
 	mesg << "list of dependents "; 
-	for (LinearizedComputationalGraph::VertexPointerList::const_iterator i=theFlattenedSequence.getDependentList().begin();
+	for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator i=theFlattenedSequence.getDependentList().begin();
 	     i!=theFlattenedSequence.getDependentList().end();
 	     ++i) { 
 	  mesg << dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*i)->getLHSVariable().equivalenceSignature().c_str() << ",";
 	}
 	mesg << "list of independents "; 
-	for (LinearizedComputationalGraph::VertexPointerList::const_iterator i=theFlattenedSequence.getIndependentList().begin();
+	for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator i=theFlattenedSequence.getIndependentList().begin();
 	     i!=theFlattenedSequence.getIndependentList().end();
 	     ++i) { 
 	  mesg << dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*i)->getRHSVariable().equivalenceSignature().c_str() << ",";
@@ -242,12 +246,12 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	HashTable<const Variable*> theListOfAlreadyAssignedIndependents;
 	
 	InternalReferenceConcretizationList theInternalReferenceConcretizationList;
-	for(JacobianAccumulationExpressionList::GraphList::const_iterator it=
+	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
 	      (*i)->myJacobianAccumulationExpressionList.getGraphList().begin();
 	    it!=(*i)->myJacobianAccumulationExpressionList.getGraphList().end();
 	    ++it) { 
 	  // make a new assignment: 
-	  PlainAssignment& aNewAssignment=(*i)->appendEndAssignment();
+	  Assignment& aNewAssignment=(*i)->appendEndAssignment();
 	  // JU should we get away with this setting of "jacobian_accumulation" for the Id
 	  aNewAssignment.setId("jacobian_accumulation");
 	  // make a new LHS: 
@@ -256,17 +260,17 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 				getCallGraph().getScopeTree().getGlobalScope());
 	  VariableSymbolReference* theVariableSymbolReference_p=
 	    new VariableSymbolReference(theGlobalScope.getSymbolTable().
-					    addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							       SymbolType::REAL_STYPE,
-							       SymbolShape::SCALAR,
-							       false),
-					    theGlobalScope);
+					addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							   SymbolType::REAL_STYPE,
+							   SymbolShape::SCALAR,
+							   false),
+					theGlobalScope);
 	  // JU: this assignment of the vertex Id might have to change 
 	  // if we create vector assignments as auxilliary variables...
 	  theVariableSymbolReference_p->setId("1");
 	  theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	  theLHS.getAliasActivityMapKey().setTemporary();
-	  const JacobianAccumulationExpression& theExpression(*(*it));
+	  const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression(*(*it));
 	  if (theExpression.isJacobianEntry()) { 
 	    // UN: assign independent to temporary if aliased by some
 	    // dependent
@@ -279,7 +283,7 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	      // this is the actual independent:
 	      const Variable& 
 		theIndepVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-					      (theExpression.getIndependent()).getRHSVariable());
+				 (theExpression.getIndependent()).getRHSVariable());
 	      // was this actual indepenent already assigned?
 	      if (!(theListOfAlreadyAssignedIndependents.hasElement(theIndepVariable.equivalenceSignature()))) {
 		// no, we have to make a new assignment
@@ -289,11 +293,11 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 				      getCallGraph().getScopeTree().getGlobalScope());
 		VariableSymbolReference* theTemporaryVariableReference_p=
 		  new VariableSymbolReference(theGlobalScope.getSymbolTable().
-						  addUniqueAuxSymbol(SymbolKind::VARIABLE,
-								     SymbolType::REAL_STYPE,
-								     SymbolShape::SCALAR,
-								     true),
-						  theGlobalScope);
+					      addUniqueAuxSymbol(SymbolKind::VARIABLE,
+								 SymbolType::REAL_STYPE,
+								 SymbolShape::SCALAR,
+								 true),
+					      theGlobalScope);
 		theTemporaryVariableReference_p->setId("1");
 		theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
 		theTarget.getAliasActivityMapKey().setTemporary();
@@ -318,7 +322,7 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	      // UN: use the  variable in the container theIndepVariableContainer_p 
 	      // instead of original independent
 	      const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-							(theExpression.getDependent()).getLHSVariable());
+					   (theExpression.getDependent()).getLHSVariable());
 	      DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryList(theLHS,
 												   *theIndepVariableContainer_p,
 												   theDependent));
@@ -339,23 +343,23 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	  }
 						       
 	  // iterate through all vertices bottom up
-	  JacobianAccumulationExpression::ConstVertexIteratorPair aPair(theExpression.vertices());
-	  JacobianAccumulationExpression::ConstVertexIterator it(aPair.first), itEnd(aPair.second);
+	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair aPair(theExpression.vertices());
+	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator aJacExprVertexI(aPair.first), aJacExprVertexIEnd(aPair.second);
 	  // find the maximal vertex
-	  for (;it!=itEnd; ++it) { 
-	    if (!theExpression.numOutEdgesOf(*it))
+	  for (;aJacExprVertexI!=aJacExprVertexIEnd; ++aJacExprVertexI) { 
+	    if (!theExpression.numOutEdgesOf(*aJacExprVertexI))
 	      break;
 	  } // end for
 	  VertexPairList theVertexPairList;
 	  int theCounter(0);
-	  traverseAndBuildJacobianAccumulationsFromBottomUp(*it,
+	  traverseAndBuildJacobianAccumulationsFromBottomUp(*aJacExprVertexI,
 							    theExpression,
 							    aNewAssignment,
 							    theInternalReferenceConcretizationList,
 							    theCounter,
 							    theVertexPairList);
 	  // add the LHS to the tracking list: 
-	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*it,&theLHS));
+	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
 	} // end for 
       } // end if  have flattened graph with more than one vertex
       else if (theFlattenedSequence.numVertices()==1) { // we have only one vertex, i.e. an assignment y=x: 
@@ -366,19 +370,19 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
       }
     } // end for 
-  } // end of BasicBlockAlg::algorihm_action_2
+  } // end of BasicBlockAlg::algorihm_action_3
  
-  void BasicBlockAlg::traverseAndBuildJacobianAccumulationsFromBottomUp(const JacobianAccumulationExpressionVertex& theVertex,
-									const JacobianAccumulationExpression& theExpression,
-									PlainAssignment& theNewAssignment,
+  void BasicBlockAlg::traverseAndBuildJacobianAccumulationsFromBottomUp(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& theVertex,
+									const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,
+									Assignment& theNewAssignment,
 									const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
 									int& theCounter,
 									VertexPairList& theVertexPairList) { 
     int theCurrentId=theCounter;
-    JacobianAccumulationExpression::ConstInEdgeIteratorPair pi(theExpression.getInEdgesOf(theVertex));
-    JacobianAccumulationExpression::ConstInEdgeIterator beginIte(pi.first),endIte(pi.second);
-    for (;beginIte!=endIte ;++beginIte)
-      traverseAndBuildJacobianAccumulationsFromBottomUp(theExpression.getSourceOf(*beginIte),
+    xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstInEdgeIteratorPair pi(theExpression.getInEdgesOf(theVertex));
+    xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstInEdgeIterator aJacExprEdgeI(pi.first),aJacExprEdgeIEnd(pi.second);
+    for (;aJacExprEdgeI!=aJacExprEdgeIEnd ;++aJacExprEdgeI)
+      traverseAndBuildJacobianAccumulationsFromBottomUp(theExpression.getSourceOf(*aJacExprEdgeI),
 							theExpression,
 							theNewAssignment,
 							theInternalReferenceConcretizationList,
@@ -387,9 +391,9 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
     // we add this vertex depending on its type
     ExpressionVertex* theNewExpressionVertex_p(0);
     switch (theVertex.getReferenceType()) { 
-    case JacobianAccumulationExpressionVertex::INTERNAL_REF: 
+    case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::INTERNAL_REF: 
       {
-	const JacobianAccumulationExpressionVertex& theReferredToVertex(theVertex.getInternalReference());
+	const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& theReferredToVertex(theVertex.getInternalReference());
 	// this has to be a maximal vertex in one of previous 
 	// expressions in the list that we tracked already: 
 	InternalReferenceConcretizationList::const_iterator it;
@@ -400,35 +404,35 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
 	    break;
 	if (it==theInternalReferenceConcretizationList.end()) 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::traverseFromBottomUp: unknown internal reference");
-	// we make the new VariableReference
-	VariableReference* theInternalVariableReference_p=new VariableReference();
-	theNewExpressionVertex_p=theInternalVariableReference_p;
-	(*it).second->copyMyselfInto(theInternalVariableReference_p->getVariable());
+	// we make the new Argument
+	Argument* theInternalArgument_p=new Argument();
+	theNewExpressionVertex_p=theInternalArgument_p;
+	(*it).second->copyMyselfInto(theInternalArgument_p->getVariable());
 	break;
       } 
-    case JacobianAccumulationExpressionVertex::EXTERNAL_REF: 
+    case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::EXTERNAL_REF: 
       { 
 	// we know that we can do the following cast
 	// since we handed PrivateLinearizedComputationalGraphEdges
 	// to Angel in the first place
 	const ExpressionEdge& theOriginalAssignmentExpressionEdge(dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(theVertex.getExternalReference()).
 								  getLinearizedExpressionEdge());
-	// we make the new VariableReference
+	// we make the new Argument
 	// use the LHS of the local elementary partial assignment
-	VariableReference* theExternalVariableReference_p=new VariableReference();
-	theNewExpressionVertex_p=theExternalVariableReference_p;
-	theOriginalAssignmentExpressionEdge.getConcretePartialAssignment().getLHS().
-	  copyMyselfInto(theExternalVariableReference_p->getVariable());
+	Argument* theExternalArgument_p=new Argument();
+	theNewExpressionVertex_p=theExternalArgument_p;
+	dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(theOriginalAssignmentExpressionEdge.getExpressionEdgeAlgBase()).
+	  getConcretePartialAssignment().getLHS().copyMyselfInto(theExternalArgument_p->getVariable());
 	break;
       } 
-    case JacobianAccumulationExpressionVertex::OPERATION: 
+    case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION: 
       { 
 	std::string anOpName;
 	switch (theVertex.getOperation()) { 
-	case JacobianAccumulationExpressionVertex::ADD_OP: 
+	case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP: 
 	  anOpName="add_scal_scal";
 	  break;
-	case JacobianAccumulationExpressionVertex::MULT_OP: 
+	case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP: 
 	  anOpName="mul_scal_scal";
 	  break;
 	default: 
@@ -446,15 +450,15 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
     theNewExpressionVertex_p->setId(theCurrentId);
     theNewAssignment.getRHS().supplyAndAddVertexInstance(*theNewExpressionVertex_p);
     theVertexPairList.push_back(VertexPair(&theVertex,theNewExpressionVertex_p));
-    if (theVertex.getReferenceType()==JacobianAccumulationExpressionVertex::OPERATION) { 
+    if (theVertex.getReferenceType()==xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION) { 
       // add the edges
-      JacobianAccumulationExpression::ConstInEdgeIteratorPair pe(theExpression.getInEdgesOf(theVertex));
-      JacobianAccumulationExpression::ConstInEdgeIterator ite(pe.first),endIte(pe.second);
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstInEdgeIteratorPair pe(theExpression.getInEdgesOf(theVertex));
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstInEdgeIterator ite(pe.first),aJacExprEdgeIEnd(pe.second);
       // JU: this is the position hack talked about in the todo item.
       unsigned int position=1;
-      for (;ite!=endIte ;++ite) { 
+      for (;ite!=aJacExprEdgeIEnd ;++ite) { 
 	const ExpressionVertex *theConcreteSourceVertex_p(0);
-	const JacobianAccumulationExpressionVertex& 
+	const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& 
 	  theJacobianAccumulationExpressionSourceVertex(theExpression.getSourceOf(*ite));
 	for (VertexPairList::const_iterator li=theVertexPairList.begin();
 	     li!=theVertexPairList.end();
@@ -483,7 +487,7 @@ namespace xaifBoosterAngelInterfaceAlgorithms {
     Sequence* theSequence_p=0;
     if(!myBasicBlockElementSequencePPairList.size()) { 
       // not initialized
-      for (PlainBasicBlock::BasicBlockElementList::iterator i=
+      for (PlainBasicBlock::BasicBlockElementList::const_iterator i=
 	     getContaining().getBasicBlockElementList().begin();
 	   i!=getContaining().getBasicBlockElementList().end();
 	   ++i)

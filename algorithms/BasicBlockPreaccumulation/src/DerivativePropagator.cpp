@@ -7,7 +7,9 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSetDeriv.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorZeroDeriv.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterBasicBlockPreaccumulation { 
 
   const std::string DerivativePropagator::ourXAIFName("xaif:DerivativePropagator");
 
@@ -82,4 +84,4 @@ namespace xaifBooster {
     myEntryList.push_back(new DerivativePropagatorZeroDeriv(theTarget));
   } 
 
-} // end of namespace xaifBooster 
+} 

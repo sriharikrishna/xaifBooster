@@ -175,4 +175,12 @@ namespace xaifBooster {
     myLHSActiveFlag=false;
   }
 
+  bool Assignment::getActiveFlag() const { 
+    return myActiveFlag;
+  } 
+
+  bool Assignment::getLHSActiveFlag() const { 
+    return myLHSActiveFlag;
+  } 
+
 } // end of namespace xaifBooster 
