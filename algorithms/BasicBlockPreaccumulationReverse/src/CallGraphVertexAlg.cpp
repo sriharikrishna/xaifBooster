@@ -18,6 +18,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     // here since it opens the door to ordering problems between the ctors.
     myReplacementList(theContaining.getControlFlowGraph().getSymbolReference().getSymbol(),
 		      theContaining.getControlFlowGraph().getSymbolReference().getScope(),
+		      theContaining.getControlFlowGraph().getScope(),
                       "reverse_subroutine_template",
 		      theContaining.getControlFlowGraph().getArgumentList()),
     myCFGStoreArguments_p(0),
@@ -59,15 +60,19 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     myReplacementList.setId(getContaining().getControlFlowGraph().getId());
     myCFGStoreArguments_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
 					       getContaining().getControlFlowGraph().getSymbolReference().getScope(),
+					       getContaining().getControlFlowGraph().getScope(),
 					       false);
     myCFGStoreResults_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
 					     getContaining().getControlFlowGraph().getSymbolReference().getScope(),
+					     getContaining().getControlFlowGraph().getScope(),
 					     false);
     myCFGRestoreArguments_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
 						 getContaining().getControlFlowGraph().getSymbolReference().getScope(),
+						 getContaining().getControlFlowGraph().getScope(),
 						 false);
     myCFGRestoreResults_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
 					       getContaining().getControlFlowGraph().getSymbolReference().getScope(),
+					       getContaining().getControlFlowGraph().getScope(),
 					       false);
     ReplacementId theId;
     for (theId.reset();

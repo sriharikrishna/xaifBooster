@@ -12,8 +12,9 @@ namespace xaifBooster {
 
   ControlFlowGraph::ControlFlowGraph (const Symbol& theSymbol,
 				      const Scope& theScope,
+				      const Scope& theCFGScope,
 				      const bool activeFlag) :
-    ControlFlowGraphCommonAttributes(theSymbol,theScope),
+    ControlFlowGraphCommonAttributes(theSymbol,theScope,theCFGScope),
     myActiveFlag(activeFlag) { 
     myControlFlowGraphAlgBase_p=ControlFlowGraphAlgFactory::instance()->makeNewAlg(*this);
   } 
