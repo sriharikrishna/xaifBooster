@@ -7,6 +7,8 @@
 
 #include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ReplacementId.hpp"
+
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse {  
@@ -20,7 +22,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);
 
-    virtual ~CallGraphVertexAlg(){};
+    virtual ~CallGraphVertexAlg();
 
     virtual void printXMLHierarchy(std::ostream& os) const;
 
@@ -48,7 +50,53 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
 
     xaifBoosterCodeReplacement::ReplacementList myReplacementList;
+
+    /** 
+     * we own this
+     */
+    ControlFlowGraph* myCFGStoreArguments_p;
+
+    /** 
+     * we own this
+     */
+    ControlFlowGraph* myCFGStoreResults_p;
+
+    /** 
+     * we own this
+     */
+    ControlFlowGraph* myCFGRestoreArguments_p;
+
+    /** 
+     * we own this
+     */
+    ControlFlowGraph* myCFGRestoreResults_p;
     
+    /**
+     * make entry, exit and a basic block which is returned
+     */
+    BasicBlock& initCheckPointCFG(ControlFlowGraph& aCheckPointCFG); 
+    
+    /** 
+     * give a name for the inlinable routine to which we append 
+     * e.g. '_i' for pushing/popping integers, right now 
+     * the choices are cp_push and cp_pop
+     * with intent type to be excluded we filter out all 
+     * non-applicable things (OUT for argument and IN for result)
+     * and the ControlFlowGraph is the one we are adding to
+     */
+    void handleCheckPointing(const std::string& aSubroutineNameBase,
+			     IntentType::IntentType_E theExcludedIntent,
+			     ControlFlowGraph& theCFG);
+    /** 
+     * add the InlinableSubroutineCall with name  aSubroutineName
+     * to theBasicBlock which pushes or pops to/from a Variable 
+     * with name as specified by theSymbol and theScope
+     */
+    void addCheckPointingInlinableSubroutineCall(const std::string& aSubroutineName,
+						 BasicBlock& theBasicBlock,
+						 const Symbol& theSymbol,
+						 const Scope& theScope);
+
   };
  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms

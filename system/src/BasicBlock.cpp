@@ -43,9 +43,9 @@ namespace xaifBooster {
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent()
        << "<"
-       << ourXAIFName
+       << ourXAIFName.c_str()
        << " "
-       << our_myId_XAIFName
+       << our_myId_XAIFName.c_str()
        << "=\""
        << getId().c_str()
        << "\" "
