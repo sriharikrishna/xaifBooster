@@ -12,6 +12,16 @@ namespace xaifBoosterCrossCountryInterface {
     return myDependentList;
   }
 
+  LinearizedComputationalGraph::VertexPointerList&
+  LinearizedComputationalGraph::getIndependentList() { 
+    return myIndependentList;
+  }
+  
+  LinearizedComputationalGraph::VertexPointerList& 
+  LinearizedComputationalGraph::getDependentList() {
+    return myDependentList;
+  }
+
   void LinearizedComputationalGraph::addToIndependentList(const LinearizedComputationalGraphVertex& theIndepdentVertex) { 
     myIndependentList.push_back(&theIndepdentVertex);
   } 
