@@ -27,6 +27,12 @@ namespace xaifBooster {
      */
     virtual void printXMLHierarchy(std::ostream& os) const =0 ; 
 
+    /**
+     * when in a debugging session dump the whole 
+     * subhierarchy to std::cout 
+     */
+    void dumpAsXML() const; 
+
   };  // end  of class XMLPrintable 
 
 } // end of namespace xaifBooster
