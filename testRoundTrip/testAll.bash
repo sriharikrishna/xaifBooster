@@ -1,4 +1,18 @@
 #!/bin/bash
+if [ -f .REVERSE_MODE ] 
+then 
+    rm -f .REVERSE_MODE
+fi 
+echo -n "use reverse mode y/[n]"
+read answer
+if [ "$answer" == "y" ]
+then
+    export REVERSE_MODE=y
+    echo "using reverse mode"
+else
+    export REVERSE_MODE=
+    echo "using plain drivers"
+fi
 if [ $# -gt 0 ]
 then
     TESTFILES=$@
@@ -13,13 +27,19 @@ do
     echo "ERROR in: make testAllclean"; exit -1;
   fi
   echo "** running $i *************************************************"
-  exdir=examples/$i
-  if [ -f $exdir/driver.f ] 
+  if [ "$REVERSE_MODE" == "y" ] 
   then 
-    ln -sf $exdir/driver.f .
+    DRIVER_NAME=driver_adm.f
+  else
+    DRIVER_NAME=driver.f
+  fi
+  exdir=examples/$i
+  if [ -f $exdir/$DRIVER_NAME ] 
+  then 
+    ln -sf $exdir/$DRIVER_NAME .
     if [ $? -ne 0 ] 
     then 
-      echo "ERROR in: ln -sf $exdir/driver.f ."; exit -1;
+      echo "ERROR in: ln -sf $exdir/$DRIVER_NAME ."; exit -1;
     fi
   fi
   ln -sf $exdir/head.f .
