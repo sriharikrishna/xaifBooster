@@ -5,7 +5,7 @@
 #include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 
 using namespace xaifBooster;
 
@@ -42,7 +42,7 @@ int main(int argc,char** argv) {
     return -1;
   } // end catch 
   try {   
-    xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::instance()->init();
+    xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->init();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     ip.parse(intrinsicsFileName);
