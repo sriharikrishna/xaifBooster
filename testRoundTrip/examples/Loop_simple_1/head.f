@@ -3,6 +3,7 @@
 	  double precision, dimension(1), intent(out) :: y
           integer i
 
+c$openad INDEPENDENT(x)
           
           y(1)=x(1) 
 
@@ -11,5 +12,5 @@ c$openad xxx simple loop
             y(1)=y(1)*x(1)
           end do
           y(1)=y(1) 
-
+c$openad DEPENDENT(y)
 	end subroutine
