@@ -178,7 +178,8 @@ C $OpenAD$ END DECLS
         end subroutine 
 
 
-        subroutine cp_arg_store_real_matrix(x,cp_loop_variable_1,cp_loop_variable_2)
+        subroutine cp_arg_store_real_matrix(x,cp_loop_variable_1,
+     >cp_loop_variable_2)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
@@ -186,27 +187,31 @@ C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
                 theArgStackoffset=theArgStackoffset+1
-                theArgStack(theArgStackoffset)=x(cp_loop_variable_1,cp_loop_variable_2)%v
+                theArgStack(theArgStackoffset)=x(cp_loop_variable_1,
+     >cp_loop_variable_2)%v
              end do
           end do
         end subroutine 
 
 
-        subroutine cp_arg_restore_real_matrix(x,cp_loop_variable_1,cp_loop_variable_2)
+        subroutine cp_arg_restore_real_matrix(x,cp_loop_variable_1,
+     >cp_loop_variable_2)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
              do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
-                x(cp_loop_variable_1,cp_loop_variable_2)%v=theArgStack(theArgStackoffset)
+                x(cp_loop_variable_1,cp_loop_variable_2)%v=
+     >theArgStack(theArgStackoffset)
                 theArgStackoffset=theArgStackoffset-1
              end do
           end do
         end subroutine 
 
 
-        subroutine cp_res_store_real_matrix(x,cp_loop_variable_1,cp_loop_variable_2)
+        subroutine cp_res_store_real_matrix(x,cp_loop_variable_1,
+     >cp_loop_variable_2)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
@@ -214,27 +219,31 @@ C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
                 theResStackoffset=theResStackoffset+1
-                theResStack(theResStackoffset)=x(cp_loop_variable_1,cp_loop_variable_2)%v
+                theResStack(theResStackoffset)=x(cp_loop_variable_1,
+     >cp_loop_variable_2)%v
              end do
           end do
         end subroutine 
 
 
-        subroutine cp_res_restore_real_matrix(x,cp_loop_variable_1,cp_loop_variable_2)
+        subroutine cp_res_restore_real_matrix(x,cp_loop_variable_1,
+     >cp_loop_variable_2)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
              do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
-                x(cp_loop_variable_1,cp_loop_variable_2)%v=theResStack(theResStackoffset)
+                x(cp_loop_variable_1,cp_loop_variable_2)%v=
+     >theResStack(theResStackoffset)
                 theResStackoffset=theResStackoffset-1
              end do
           end do
         end subroutine 
 
 
-        subroutine cp_arg_store_real_four_tensor(x,cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
+        subroutine cp_arg_store_real_four_tensor(x,cp_loop_variable_1,
+     >cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
@@ -244,7 +253,9 @@ C $OpenAD$ END DECLS
                 do cp_loop_variable_3=lbound(x,3),ubound(x,3)
                    do cp_loop_variable_4=lbound(x,4),ubound(x,4)
                       theArgStackoffset=theArgStackoffset+1
-                      theArgStack(theArgStackoffset)=x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)%v
+                      theArgStack(theArgStackoffset)=
+     >x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,
+     >cp_loop_variable_4)%v
                    end do
                 end do
              end do
@@ -252,7 +263,8 @@ C $OpenAD$ END DECLS
         end subroutine 
 
 
-        subroutine cp_arg_restore_real_four_tensor(x,cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
+        subroutine cp_arg_restore_real_four_tensor(x,cp_loop_variable_1,
+     >cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
@@ -261,7 +273,9 @@ C $OpenAD$ END DECLS
              do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
                 do cp_loop_variable_3=ubound(x,3),lbound(x,3),-1
                    do cp_loop_variable_4=ubound(x,4),lbound(x,4),-1
-                      x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)%v=theArgStack(theArgStackoffset)
+                      x(cp_loop_variable_1,cp_loop_variable_2,
+     >cp_loop_variable_3,cp_loop_variable_4)%v=
+     >theArgStack(theArgStackoffset)
                       theArgStackoffset=theArgStackoffset-1
                    end do
                 end do
@@ -270,7 +284,8 @@ C $OpenAD$ END DECLS
           end subroutine 
 
 
-        subroutine cp_res_store_real_four_tensor(x,cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
+        subroutine cp_res_store_real_four_tensor(x,cp_loop_variable_1,
+     >cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
@@ -280,7 +295,9 @@ C $OpenAD$ END DECLS
                 do cp_loop_variable_3=lbound(x,3),ubound(x,3)
                    do cp_loop_variable_4=lbound(x,4),ubound(x,4)
                       theResStackoffset=theResStackoffset+1
-                      theResStack(theResStackoffset)=x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)%v
+                      theResStack(theResStackoffset)=
+     >x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,
+     >cp_loop_variable_4)%v
                    end do
                 end do
              end do
@@ -288,7 +305,8 @@ C $OpenAD$ END DECLS
         end subroutine 
 
 
-        subroutine cp_res_restore_real_four_tensor(x,cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
+        subroutine cp_res_restore_real_four_tensor(x,cp_loop_variable_1,
+     >cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)
 C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
@@ -297,7 +315,9 @@ C $OpenAD$ END DECLS
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
                 do cp_loop_variable_3=ubound(x,3),lbound(x,3),-1
                    do cp_loop_variable_4=ubound(x,4),lbound(x,4),-1
-                      x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)%v=theResStack(theResStackoffset)
+                      x(cp_loop_variable_1,cp_loop_variable_2,
+     >cp_loop_variable_3,cp_loop_variable_4)%v=
+     >theResStack(theResStackoffset)
                       theResStackoffset=theResStackoffset-1
                    end do
                 end do
