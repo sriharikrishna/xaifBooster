@@ -177,14 +177,14 @@
         </xaif:Initialization>
         <xaif:Condition>
           <xaif:VariableReference vertex_id="2" active="false" deriv="0">
-            <xaif:SymbolReference vertex_id="2" symbol_id="test_prefixSymbol_1" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" scope_id="1"/>
           </xaif:VariableReference>
-          <xaif:VariableReference vertex_id="2" active="false" deriv="0">
-            <xaif:SymbolReference vertex_id="3" symbol_id="test_prefixSymbol_0" scope_id="1"/>
+          <xaif:VariableReference vertex_id="3" active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" scope_id="1"/>
           </xaif:VariableReference>
           <xaif:BooleanOperation vertex_id="1" name="less_or_equal"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-          <xaif:ExpressionEdge edge_id="2" source="2" target="1" position="2"/>
+          <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:Condition>
         <xaif:Update>
           <xaif:AssignmentLHS active="false" deriv="0">
