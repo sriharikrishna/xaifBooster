@@ -10,6 +10,7 @@
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpression.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpressionVertex.hpp"
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionAlg.hpp"
@@ -401,12 +402,27 @@ namespace xaifBoosterLinearization {
     dynamic_cast<ExpressionAlg&>(myLinearizedRightHandSide.getExpressionAlgBase()).activityAnalysis(); 
   } // end of AssignmentAlg::algorithm_action_1(analyze/copy)
 
+  // local writer definition: 
+  class VertexLabelWriter {
+  public:
+    VertexLabelWriter(const Expression& e) : myE(e) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      out << "[label=\"" << dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
+														  myE.getInternalBoostGraph()),
+												       v))).getExpressionVertexAlgBase()).isActive() << "\"]";
+    };
+    const Expression& myE;
+  };
+
   void AssignmentAlg::activityAnalysis() {
     if (!myActiveFlag)
       return;
     if (!myHaveLinearizedRightHandSide)
       THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::activityAnalysis: need right hand side copy");
     dynamic_cast<ExpressionAlg&>(myLinearizedRightHandSide.getExpressionAlgBase()).activityAnalysis(); 
+//     GraphVizDisplay::show(getLinearizedRightHandSide(),"myLinearizedRightHandSideAfter",
+// 			  VertexLabelWriter(getLinearizedRightHandSide()));
     // has the maximal node become passive?
     Expression::VertexIteratorPair pV(myLinearizedRightHandSide.vertices());
     Expression::VertexIterator iV(pV.first),iVe(pV.second);

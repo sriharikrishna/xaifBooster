@@ -63,7 +63,12 @@ namespace xaifBooster {
   } // end of BasicBlock::printXMLHierarchyImpl
 
   std::string BasicBlock::debug () const { 
-    return PlainBasicBlock::debug();
+    std::ostringstream out;
+    out << "BasicBlock[" << this 
+	<< PlainBasicBlock::debug().c_str()
+	<< ControlFlowGraphVertex::debug().c_str()
+	<< "]" << std::ends;  
+    return out.str();
   } // end of BasicBlock::debug
 
   void BasicBlock::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
