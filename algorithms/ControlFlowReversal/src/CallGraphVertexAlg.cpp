@@ -56,6 +56,11 @@ namespace xaifBoosterControlFlowReversal {
         theVertexKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()).kindToString();
         theXaifId=dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getNewVertex()).getId();
       }
+      if (theReversibleControlFlowGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) { 
+	std::ostringstream temp;
+	temp << theXaifId.c_str() << ".e" << std::ends;
+	theXaifId=temp.str();
+      }
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
     }
     const ReversibleControlFlowGraph& myG;
@@ -67,15 +72,15 @@ namespace xaifBoosterControlFlowReversal {
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
-      /*
-	if (theReversibleControlFlowGraphEdge_p->isOriginal()) {
-        if (theReversibleControlFlowGraphEdge_p->getOriginalEdge().has_condition_value()) out << "[label=\"1\"]";
-	}
-	else {
-        if (theReversibleControlFlowGraphEdge_p->getNewEdge().has_condition_value()) out << "[label=\"1\"]";
-	}
-      */
-      if (theReversibleControlFlowGraphEdge_p->has_condition_value()) out << "[label=\"1\"]";
+      if (theReversibleControlFlowGraphEdge_p->hasConditionValue() ||
+	  theReversibleControlFlowGraphEdge_p->hasRevConditionValue()) { 
+	out << "[label=\"";
+	if (theReversibleControlFlowGraphEdge_p->hasConditionValue())
+	  out << theReversibleControlFlowGraphEdge_p->getConditionValue();
+	if (theReversibleControlFlowGraphEdge_p->hasRevConditionValue())
+	  out << "r" << theReversibleControlFlowGraphEdge_p->getRevConditionValue();
+	out << "\"]";
+      }
     }
     const ReversibleControlFlowGraph& myG;
   };
@@ -95,16 +100,17 @@ namespace xaifBoosterControlFlowReversal {
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
     }
-    // buildAdjointControlFlowGraph() should always be based on the
-    // original CFG, that is, it should preceed the call to 
-    // storeControlFlow()
-    myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
-    }
     myTapingControlFlowGraph->markBranchExitEdges();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+    }
+    // buildAdjointControlFlowGraph() should always be based on the
+    // original CFG, that is, it should precede the call to 
+    // storeControlFlow()
+    // but we should have found out how to label branch edges...
+    myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph));
     }
     myTapingControlFlowGraph->storeControlFlow();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     

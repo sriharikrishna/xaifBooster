@@ -34,6 +34,8 @@ namespace xaifBooster {
 
     void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    BooleanOperationType::BooleanOperationType_E getType()const;
+
   private : 
 
     /** 

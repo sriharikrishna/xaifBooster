@@ -8,7 +8,7 @@
 	  double precision m00,m03,m11,m12,m22,m33
 
 	  double precision a,sqrt3 
-    
+c$openad INDEPENDENT(x)
 	  a=5.00000000000000000000000000000e-01
 	  sqrt3=5.77350269189625797959429519858e-01
 
@@ -35,5 +35,5 @@
 
 	  loc1=a*(1/g)
 	  obj(1)=f*loc1
-
+c$openad DEPENDENT(obj)
 	end subroutine

@@ -45,8 +45,7 @@ namespace xaifBooster {
     /**
      * get algorithm
      */
-    ControlFlowGraphVertexAlgBase& getControlFlowGraphVertexAlgBase();
-    const ControlFlowGraphVertexAlgBase& getControlFlowGraphVertexAlgBase() const;
+    ControlFlowGraphVertexAlgBase& getControlFlowGraphVertexAlgBase() const;
 
     protected:
 

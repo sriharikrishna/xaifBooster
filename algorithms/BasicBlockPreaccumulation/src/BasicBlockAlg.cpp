@@ -48,6 +48,10 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
+  bool BasicBlockAlg::ourLimitToStatementLevelFlag=false;
+  unsigned int BasicBlockAlg::ourAssignmentCounter=0;
+  unsigned int BasicBlockAlg::ourSequenceCounter=0;
+
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
@@ -309,6 +313,58 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
   };
 
 
+  class PrivateLinearizedComputationalGraphVertexLabelWriter {
+  public:
+    PrivateLinearizedComputationalGraphVertexLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, 
+		    const BoostIntenalVertexDescriptor& v) const {
+      const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p=
+	dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
+											     myG.getInternalBoostGraph()),
+										  v));
+      std::string theVertexKind("");
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(myG.getDependentList());
+      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
+	   aDepVertexPListI!=theDepVertexPList.end();
+	   ++aDepVertexPListI) { 
+	if (thePrivateLinearizedComputationalGraphVertex_p==*(aDepVertexPListI)) {
+	  // cast it first
+	  const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
+	  std::ostringstream oss;
+	  oss << myPrivateVertex.getLHSVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+	  if (myPrivateVertex.getLHSVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
+	    oss  << " k=" 
+		 << myPrivateVertex.getLHSVariable().getDuUdMapKey().getKey();
+	  oss << " d" << std::ends;
+	  theVertexKind=oss.str();
+	  break;
+	}
+      }
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theIndepVertexPList(myG.getIndependentList());
+      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aIndepVertexPListI(theIndepVertexPList.begin());
+	   aIndepVertexPListI!=theIndepVertexPList.end();
+	   ++aIndepVertexPListI) { 
+	if (thePrivateLinearizedComputationalGraphVertex_p==*(aIndepVertexPListI)) {
+	  // cast it first
+	  const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aIndepVertexPListI));
+	  std::ostringstream oss;
+	  oss << myPrivateVertex.getRHSVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+	  if (myPrivateVertex.getRHSVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
+	    oss  << " k=" 
+		 << myPrivateVertex.getRHSVariable().getDuUdMapKey().getKey();
+	  oss << " i" << std::ends;
+	  theVertexKind=oss.str();
+	  break;
+	}
+      }
+      out << "[label=\"" 
+	  << theVertexKind.c_str() 
+	  << "\"]";
+    }
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
+  };
+
   void 
   BasicBlockAlg::algorithm_action_3() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
@@ -322,7 +378,6 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
       for (;it!=endIt;++it) { 
 	// here we should have constants etc. already removed
 	// JU: this is temporary until we have r/w analysis
-	// JU: the dependent variables are all LHSs of all assignments
 	if (!theFlattenedSequence.numInEdgesOf(*it)) {
 	  theFlattenedSequence.addToIndependentList(*it);
 	}
@@ -331,6 +386,7 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
 	 GraphVizDisplay::show(theFlattenedSequence,"flattened",PrivateLinearizedComputationalGraphVertexLabelWriter(theFlattenedSequence),PrivateLinearizedComputationalGraphEdgeLabelWriter(theFlattenedSequence));
       } 
       // filter out singleton vertices
+      xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator aDPBeginI((*i)->myDerivativePropagator.getEntryPList().begin());
       bool findNext=true;
       while (findNext) {
 	// try to find a singleton vertex
@@ -341,12 +397,67 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
 	  if (!(theFlattenedSequence.numOutEdgesOf(*it)+theFlattenedSequence.numInEdgesOf(*it))) { // a singleton
 	    findNext=true;
 	    // remove this vertex in the dependent/independent lists
-	    theFlattenedSequence.getDependentList().remove(&(*it));
-	    theFlattenedSequence.getIndependentList().remove(&(*it));
-	    // make the direct assignment instaed.
+	    theFlattenedSequence.removeFromDependentList(*it);
+	    theFlattenedSequence.removeFromIndependentList(*it);
+	    // this is the independent:
+	    const Variable& theIndepVariable(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getRHSVariable());
+	    // now figure out if the independent may be overwritten:
+	    const Variable* theIndepVariableContainer_cp=0;
+	    if (isAliased(theIndepVariable,
+			  theDepVertexPListCopyWithoutRemovals)) { 
+	      // make a Variable (container) for use in the setDeriv
+	      Variable* theIndepVariableContainer_p = new Variable;
+	      myNewIndependentsPList.push_back(theIndepVariableContainer_p);
+	      // was this actual indepenent already assigned?
+	      // Note, that at this point they should indeed all be syntactically distinct 
+	      if (!(theListOfAlreadyAssignedIndependents.hasElement(theIndepVariable.equivalenceSignature()))) {
+		// no, we have to make a new assignment
+		// this will be the lhs:
+		Variable theTarget;
+		Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+				      getCallGraph().getScopeTree().getGlobalScope());
+		VariableSymbolReference* theTemporaryVariableReference_p=
+		  new VariableSymbolReference(theGlobalScope.getSymbolTable().
+					      addUniqueAuxSymbol(SymbolKind::VARIABLE,
+								 SymbolType::REAL_STYPE,
+								 SymbolShape::SCALAR,
+								 true),
+					      theGlobalScope);
+		theTemporaryVariableReference_p->setId("1");
+		theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
+		theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
+		theTarget.getAliasMapKey().setTemporary();
+		theTarget.getDuUdMapKey().setTemporary();
+		// copy the new temporary into the container
+		theTarget.copyMyselfInto(*theIndepVariableContainer_p);
+		// "theTarget" is only local but the DerivativePropagatorSetDeriv 
+		// ctor performs a deep copy and owns the new instance so we are fine
+		// the theListOfAlreadyAssignedIndependents needs to contain the 
+		// address of the copy.
+		theListOfAlreadyAssignedIndependents.
+		  addElement(theIndepVariable.equivalenceSignature(),
+			     &((*i)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+										    theIndepVariable).getTarget()));
+	      } // end if (wasn't assigned efore  
+	      else {
+		// yes, it was assigned before
+		// copy the previously created temporary into the container
+		(theListOfAlreadyAssignedIndependents.getElement(theIndepVariable.equivalenceSignature()))->
+		  copyMyselfInto(*theIndepVariableContainer_p); 
+	      }
+	      // point to the new or previously created temporary
+	      theIndepVariableContainer_cp=theIndepVariableContainer_p;
+	    } // end if isAliased
+	    else { // not aliased
+	      // point to the original independent
+	      theIndepVariableContainer_cp=&theIndepVariable;
+	    }
+
+	    // make the direct assignment instead.
 	    (*i)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getLHSVariable(),
-								 dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getRHSVariable());
-	    // removit it from the graph
+								 *theIndepVariableContainer_cp,
+								 aDPBeginI);
+	    // remove it from the graph
 	    theFlattenedSequence.removeAndDeleteVertex(*it);
 	    // need to break out here because we removed the vertex
 	    break;
@@ -357,6 +468,11 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
       typedef std::list<const Variable*> VariablePList;
       VariablePList theListOfAlreadyAssignedDependents;
       if (theFlattenedSequence.numVertices()) {
+	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+	  GraphVizDisplay::show(theFlattenedSequence,
+				"flattened",
+				PrivateLinearizedComputationalGraphVertexLabelWriter(theFlattenedSequence));
+	} 
 	// call Angel which fills myJacobianAccumulationExpressionList
 	try { 
 	  if (!ourCompute_elimination_sequence_fp) { 
@@ -402,12 +518,6 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
 	catch(...) { 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
 	}
-	// UN: this is used to keep track of those independent variables
-	// that were already assigned to temporary variables to ensure correctness
-	// of the Jacobian accumulation code.
-	HashTable<const Variable*> theListOfAlreadyAssignedIndependents;
-	
-	InternalReferenceConcretizationList theInternalReferenceConcretizationList;
 	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
 	      (*i)->myJacobianAccumulationExpressionList.getGraphList().begin();
 	    it!=(*i)->myJacobianAccumulationExpressionList.getGraphList().end();
@@ -446,7 +556,7 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
 			       (theExpression.getIndependent()).getRHSVariable());
 	    const Variable* theIndepVariableContainer_cp=0;
 	    if (isAliased(theIndepVariable,
-			  theFlattenedSequence)) { 
+			  theDepVertexPListCopyWithoutRemovals)) { 
 	      // make a Variable (container) for use in the saxpys:
 	      Variable* theIndepVariableContainer_p = new Variable;
 	      myNewIndependentsPList.push_back(theIndepVariableContainer_p);
@@ -737,13 +847,20 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
 	 ++i) 
       if ((*i).first==&theAssignment) { 
 	if(!(*i).second) { // nothing assigned yet
+	  ourAssignmentCounter++;
 	  if(i!=myBasicBlockElementSequencePPairList.begin()) { 
 	    // have a predecessor: 
 	    --i;
-	    if(!(*i).second) { 
-	      // nothing assigned yet which means this is not an 
-	      // assignment unless we call this out of order
+	    if(!(*i).second ||
+	       hasLimitToStatementLevel()) { 
+	      // either nothing assigned yet which means this is not an 
+	      // assignment (unless we call this out of order) this is how 
+	      // we handle splits for subroutine calls
+	      // OR
+	      // we intend to not flatten at all and keep one assignment per sequence
+	      // while leaving the rest of the code unchanged
 	      theSequence_p=new Sequence;
+	      ourSequenceCounter++;
 	      theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	      myUniqueSequencePList.push_back(theSequence_p);
 	    } 
@@ -759,6 +876,7 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
 	  } 
 	  else { // have no predecessor
 	    theSequence_p=new Sequence;
+	    ourSequenceCounter++;
 	    theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	    myUniqueSequencePList.push_back(theSequence_p);
 	  }
@@ -797,6 +915,7 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
 	}
 	// now make a new one for this assignment
 	(*i).second=new Sequence;
+	ourSequenceCounter++;
 	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
 	myUniqueSequencePList.push_back((*i).second);
 	DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::splitFlattenedSequence leaving with "
@@ -825,16 +944,14 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
   } // end of BasicBlockAlg::getDerivativePropagator
 
   bool BasicBlockAlg::isAliased(const Variable& theIndepVariable,
-				const PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& 
-      theDependentList(theFlattenedSequence.getDependentList());
+				const BasicBlockAlg::VariableCPList& theDependentList) { 
     AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getAliasMap());
-    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator li=theDependentList.begin();
+    for (VariableCPList::const_iterator li=theDependentList.begin();
 	 li!=theDependentList.end();
 	 ++li) { 
       if (theAliasMap.mayAlias(theIndepVariable.getAliasMapKey(),
-			       dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**li).getLHSVariable().getAliasMapKey()))
+			       (*li)->getAliasMapKey()))
 	return true;
     } // end for 
     return false;
@@ -845,4 +962,28 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
     return dynamic_cast<const BasicBlock&>(myContaining);
   }
 
+  void BasicBlockAlg::limitToStatementLevel() { 
+    ourLimitToStatementLevelFlag=true;
+  }
+  
+  bool BasicBlockAlg::hasLimitToStatementLevel() { 
+    return ourLimitToStatementLevelFlag;
+  }
+
+  unsigned int BasicBlockAlg::getAssignmentCounter() { 
+    return ourAssignmentCounter;
+  }
+  
+  unsigned int BasicBlockAlg::getSequenceCounter() { 
+    return ourSequenceCounter;
+  }
+
+  const DuUdMapDefinitionResult::StatementIdList& BasicBlockAlg::getAssignmentIdList()const { 
+    return ourAssignmentIdList;
+  } 
+
+  void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment) { 
+    ourAssignmentIdList.push_back(anAssignment.getId());
+  } 
+  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

@@ -2,7 +2,7 @@
 	  double precision, dimension(1), intent(inout) :: x
 	  double precision, dimension(1), intent(inout) :: y
           integer i
-
+c$openad INDEPENDENT(x)
           
           y(1)=x(1) 
           if (y(1)>0.) then
@@ -12,6 +12,5 @@
           else
             y(1)=y(1)/x(1)
           end if 
-            
-
+c$openad DEPENDENT(y)            
 	end subroutine

@@ -11,14 +11,14 @@ namespace xaifBooster {
   const std::string SubroutineCall::our_myId_XAIFName("statement_id");
   const std::string SubroutineCall::our_symbolId_XAIFName("symbol_id");
   const std::string SubroutineCall::our_scopeId_XAIFName("scope_id");
-  const std::string SubroutineCall::our_myActiveFlag_XAIFName("active");
 
   SubroutineCall::SubroutineCall (const Symbol& theSymbol,
 				  const Scope& theScope,
-				  const bool activeFlag,
+				  const ActiveUseType::ActiveUseType_E activeUse,
 				  bool makeAlgorithm) :
     mySymbolReference(theSymbol,theScope),
-    myActiveFlag(activeFlag) { 
+    myActiveUse(activeUse),
+    myActiveUseSetFlag(false){ 
     if (makeAlgorithm)
       myBasicBlockElementAlgBase_p=SubroutineCallAlgFactory::instance()->makeNewAlg(*this); 
   } 
@@ -68,9 +68,9 @@ namespace xaifBooster {
        << "=\"" 
        << mySymbolReference.getScope().getId().c_str()
        << "\" " 
-       << our_myActiveFlag_XAIFName.c_str() 
+       << ActiveUseType::our_attribute_XAIFName.c_str() 
        << "=\"" 
-       << myActiveFlag
+       << ActiveUseType::toString(myActiveUse).c_str()
        << "\">" 
        << std::endl;
     for (ConcreteArgumentPList::const_iterator i=myConcreteArgumentPList.begin();
@@ -90,9 +90,9 @@ namespace xaifBooster {
     out << "SubroutineCall[" 
 	<< this 
 	<< BasicBlockElement::debug().c_str()
-	<< "myActiveFlag"
+	<< "myActiveUse"
 	<< "="
-	<< myActiveFlag
+	<< ActiveUseType::toString(myActiveUse).c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of SubroutineCall::debug
@@ -116,8 +116,45 @@ namespace xaifBooster {
     return mySymbolReference;
   } 
 
+  bool SubroutineCall::getActiveType() const { 
+    return mySymbolReference.getSymbol().getActiveTypeFlag();
+  }
+
   bool SubroutineCall::getActiveFlag() const { 
-    return myActiveFlag;
+    bool theAnswer(true);
+    switch (myActiveUse) {
+    case ActiveUseType::ACTIVEUSE: 
+      theAnswer=true;
+      break;
+    case ActiveUseType::PASSIVEUSE:
+      theAnswer=false;
+      break;
+    case ActiveUseType::UNDEFINEDUSE:
+      { 
+	if (theAnswer=getActiveType())
+	  myActiveUse=ActiveUseType::ACTIVEUSE;
+	else 
+	  myActiveUse=ActiveUseType::PASSIVEUSE;
+	myActiveUseSetFlag=true;
+	break;
+      }
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCall::getActiveFlag: unknown value of myActiveUse:"
+				 << myActiveUse);
+      break;
+    }
+    return theAnswer;
+  } 
+
+  void SubroutineCall::setActiveUse(ActiveUseType::ActiveUseType_E anActiveUse) { 
+    if (myActiveUseSetFlag)
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCall::setActiveUseType: already set, cannot reset");
+    myActiveUse=anActiveUse;
+    myActiveUseSetFlag=true;
+  } 
+
+  ActiveUseType::ActiveUseType_E SubroutineCall::getActiveUse() const { 
+    return myActiveUse;
   } 
   
 } // end of namespace xaifBooster 

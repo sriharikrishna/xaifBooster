@@ -12,8 +12,11 @@ namespace xaifBooster {
 			       public ObjectWithId {
   public:
 
-    ControlFlowGraphEdge() : my_has_condition_value(false), my_condition_value(1) {};
-
+    ControlFlowGraphEdge() : 
+      myConditionValueFlag(false), 
+      myConditionValue(0) {
+    };
+    
     ~ControlFlowGraphEdge(){};
     
     void printXMLHierarchy(std::ostream& os,
@@ -42,27 +45,28 @@ namespace xaifBooster {
     static const std::string our_target_XAIFName;
 
     /**
-     * name for has_condition_value as represented in XAIF schema
+     * name for hasConditionValue as represented in XAIF schema
      */
-    static const std::string our_has_condition_value_XAIFName;
+    static const std::string our_myConditionValueFlag_XAIFName;
 
     /**
      * name for condition_value as represented in XAIF schema
      */
-    static const std::string our_condition_value_XAIFName;
+    static const std::string our_myConditionValue_XAIFName;
 
 
 
-    bool has_condition_value() const;
-    void set_has_condition_value(bool hcv);
+    bool hasConditionValue() const;
 
-    void set_condition_value(int cv);
-    const int& get_condition_value() const;
+    void setConditionValue(int cv);
+
+    int getConditionValue() const;
 
   private:
 
-    bool my_has_condition_value;
-    int my_condition_value;  
+    bool myConditionValueFlag;
+    
+    int myConditionValue;  
 
   }; // end of class ControlFlowGraphEdge
  

@@ -54,6 +54,7 @@ c     **********
 
       integer k,n
       double precision hy,hx,hy2,hx2,nxp1,nyp1
+c$openad INDEPENDENT(x)
 
       n = nx*ny
       nxp1=nx+1
@@ -72,7 +73,7 @@ c     Scale the Result.  This is not desired if preconditioning.
  70   continue
 
       return
-
+c$openad DEPENDENT(fvec)
       end
 
 

@@ -6,6 +6,7 @@
 #include "xaifBooster/system/inc/Update.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include "xaifBooster/system/inc/ForLoopAlgBase.hpp"
+#include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 
 namespace xaifBooster { 
 
@@ -16,7 +17,7 @@ namespace xaifBooster {
   class ForLoop : public ControlFlowGraphVertex {
   public:
 
-    ForLoop();
+    ForLoop(const ForLoopReversalType::ForLoopReversalType_E theReversalType);
 
     ~ForLoop();
 
@@ -57,8 +58,14 @@ namespace xaifBooster {
      */
     ForLoopAlgBase& getForLoopAlgBase() const;
 
+    ForLoopReversalType::ForLoopReversalType_E getReversalType() const; 
 
   private:
+
+    /** 
+     * no def
+     */
+    ForLoop();
     
     /** 
      * the initialization 
@@ -78,6 +85,13 @@ namespace xaifBooster {
      * may be passivated in the parser
      */
     Update myUpdate;
+
+    /** 
+     * the attribute indicating  
+     * the reversal option as specified by 
+     * a user directive
+     */
+    const ForLoopReversalType::ForLoopReversalType_E myReversalType;
 
   };
  
