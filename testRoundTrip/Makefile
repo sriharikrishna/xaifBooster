@@ -38,7 +38,7 @@ $(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrins
 	./xaifBooster -i $(TARGET).xaif -g 16 -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
 
 $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
-	./xaif2whirl $(TARGET).B $(TARGET).xb.xaif
+	./xaif2whirl --structured $(TARGET).B $(TARGET).xb.xaif
 
 $(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
 	$(COMPLAIN)
