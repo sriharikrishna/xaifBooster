@@ -3,6 +3,7 @@
 
 #include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
 
 using namespace xaifBooster;
 
@@ -30,6 +31,9 @@ namespace xaifBoosterControlFlowReversal {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    ReversibleControlFlowGraph& getTransformedControlFlowGraph();
+    const ReversibleControlFlowGraph& getTransformedControlFlowGraph() const;
+
   private:
     
     /** 
@@ -46,6 +50,12 @@ namespace xaifBoosterControlFlowReversal {
      * no def
      */
     CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
+
+    /**
+     * transformed copy of the control flow graph
+     */
+    ReversibleControlFlowGraph* myTransformedControlFlowGraph;
+
 
   };  // end of class
 
