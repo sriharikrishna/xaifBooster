@@ -57,9 +57,8 @@ namespace xaifBooster {
 
     /** 
      * get name of subroutine associated with myControlFlowGraph
-     * \todo implement
      */
-    std::string getSubroutineName() const;
+    const std::string& getSubroutineName() const;
 
   private: 
 
