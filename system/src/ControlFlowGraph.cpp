@@ -119,7 +119,7 @@ namespace xaifBooster {
   
   // non-const return is a temporary hack
   Scope& ControlFlowGraph::getScope() const { 
-    return myArgumentList.getScope();
+    return const_cast<Scope&>(myScope);
   }
 
   // uncomment this when the above is fixed
