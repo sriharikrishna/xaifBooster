@@ -35,8 +35,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock) { 
     BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(theBasicBlock.getBasicBlockAlgBase()));
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theRevModeCall(theBasicBlockAlg.addInlinableSubroutineCall("reverse_mode"));
-    theRevModeCall.setId("inline_reverse_mode");
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theRevModeCall(theBasicBlockAlg.addInlinableSubroutineCall("adjoint_mode"));
+    theRevModeCall.setId("inline_adjoint_mode");
     SubroutineCall& theNewSubroutineCall(theBasicBlockAlg.addSubroutineCall(getContainingSubroutineCall().getSymbolReference().getSymbol(),
 									    getContainingSubroutineCall().getSymbolReference().getScope(),
 									    getContainingSubroutineCall().getActiveFlag()));

@@ -3,7 +3,8 @@ module OpenAD_rev
 implicit none
 
 private
-public :: modeType, our_rev_mode, our_orig_mode, forward_mode, forward_arg_store_mode, reverse_mode, restore_mode
+public :: modeType, our_rev_mode, our_orig_mode, forward_mode, &
+& forward_arg_store_mode, reverse_mode, adjoint_mode, taping_mode, restore_mode
 
 type modeType
   logical :: arg_store=.FALSE.
@@ -23,6 +24,14 @@ end interface
 
 interface forward_arg_store_mode
   module procedure forward_arg_store_mode_i
+end interface
+
+interface taping_mode
+  module procedure taping_mode_i
+end interface
+
+interface adjoint_mode
+  module procedure adjoint_mode_i
 end interface
 
 interface reverse_mode
@@ -57,6 +66,30 @@ subroutine forward_arg_store_mode_i()
   our_rev_mode%plain=.TRUE.
   our_rev_mode%tape=.FALSE.
   our_rev_mode%adjoint=.FALSE.
+end subroutine 
+
+subroutine taping_mode_i()
+  our_orig_mode=our_rev_mode
+
+  our_rev_mode%arg_store=.FALSE.
+  our_rev_mode%arg_restore=.FALSE.
+  our_rev_mode%res_store=.FALSE.
+  our_rev_mode%res_restore=.FALSE.
+  our_rev_mode%plain=.FALSE.
+  our_rev_mode%tape=.TRUE.
+  our_rev_mode%adjoint=.FALSE.
+end subroutine 
+
+subroutine adjoint_mode_i()
+  our_orig_mode=our_rev_mode
+
+  our_rev_mode%arg_store=.FALSE.
+  our_rev_mode%arg_restore=.FALSE.
+  our_rev_mode%res_store=.FALSE.
+  our_rev_mode%res_restore=.FALSE.
+  our_rev_mode%plain=.FALSE.
+  our_rev_mode%tape=.FALSE.
+  our_rev_mode%adjoint=.TRUE.
 end subroutine 
 
 subroutine reverse_mode_i()

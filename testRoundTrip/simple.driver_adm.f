@@ -2,6 +2,7 @@
 
 	use active_module
 	use OpenAD_rev
+	use OpenAD_tape
 
 	implicit none 
 
@@ -55,18 +56,19 @@
 	close(2)
 
 !       we need enough argument checkpoints
-	do i=n+1,m
-	   call forward_arg_store_mode()
-	   call head(x,y)
-	   call restore_mode()
-	end do
+!	do i=n+1,m
+!	   call forward_arg_store_mode()
+!	   call head(x,y)
+!	   call restore_mode()
+!	end do
 
-        call reverse_mode()
+!        call reverse_mode()
 	open(2,file='tmpOutput/ad.out')
 	write(2,*) "AD"
 
 	do i=1,m   
 	   do j=1,m   
+              x(j)%v=x0(j)
               if (i==j) then 
 		 y(j)%d=1.0
               else
@@ -74,9 +76,20 @@
               end if
 	   end do
 	   do k=1,n
-	      x(k)%d=0.0
+             x(k)%d=0.0
+	   end do
+           call taping_mode()
+           call tape_init()
+	   call head(x,y)
+           print*, x
+           print*, y
+           call adjoint_mode()
+	   do j=1,m   
+              x(j)%v=x0(j)
 	   end do
 	   call head(x,y)
+           print*, x
+           print*, y
 	   do k=1,n
               res_adj(i,k)=x(k)%d
 	   end do
