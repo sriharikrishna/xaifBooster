@@ -57,12 +57,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			    getCallGraph().getAliasMap());
       AliasMap::AliasMapKeyPList anAliasMapKeyPList;
       getAliasMapKeyPList(anAliasMapKeyPList);
-
-      if (theAliasMap.subSet(theVariable.getAliasMapKey(),
-			     anAliasMapKeyPList)) 
+      if (anAliasMapKeyPList.empty()) 
+	result=NOT_IDENTIFIED;
+      else if (theAliasMap.subSet(theVariable.getAliasMapKey(),
+				  anAliasMapKeyPList)) 
 	result=UNIQUELY_IDENTIFIED;
       else 
-	    result=AMBIGUOUSLY_IDENTIFIED;
+	result=AMBIGUOUSLY_IDENTIFIED;
     } // end else (look at alias information) 
     return result;
   } 
@@ -77,26 +78,49 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   void VertexIdentificationListPassive::removeIfIdentifiable(const Variable& theVariable) { 
-    // add a block dealing with ud info
-    // *******************************
-    // TODO: JU incomplete
-    // *******************************
-    // here is the block dealing with alias info
-    AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
-			  getCallGraph().getAliasMap());
-    IdentificationResult_E idResult(canIdentify(theVariable));
-    while(idResult!=NOT_IDENTIFIED) { 
-      for (ListItemPList::iterator aListIterator(myList.begin());
-	   aListIterator!=myList.end(); 
-	   ++aListIterator) { 
-	if (theAliasMap.mayAlias(theVariable.getAliasMapKey(),
-				 (*aListIterator)->getAliasMapKey())) { 
-	  myList.erase(aListIterator);
-	  break;
-	}
-      } // end for 
-      idResult=canIdentify(theVariable);
-    } // end while 
+    if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) { 
+      DuUdMapDefinitionResult::StatementIdList aStatementIdList;
+      getStatementIdList(aStatementIdList);
+      DuUdMapDefinitionResult theResult(ConceptuallyStaticInstances::instance()->
+					getCallGraph().getDuUdMap().definition(theVariable.getDuUdMapKey(),
+									       aStatementIdList));
+      while (theResult.myAnswer==DuUdMapDefinitionResult::UNIQUE_INSIDE 
+	     ||
+	     theResult.myAnswer==DuUdMapDefinitionResult::AMBIGUOUS_INSIDE
+	     ||
+	     theResult.myAnswer==DuUdMapDefinitionResult::AMBIGUOUS_BOTHSIDES) { 
+	for (ListItemPList::iterator aListIterator(myList.begin());
+	     aListIterator!=myList.end(); 
+	     ++aListIterator) { 
+	  if (theResult.myStatementId==(dynamic_cast<ListItem&>(**aListIterator)).myStatementId) { 
+	    myList.erase(aListIterator);
+	    break;
+	  }
+	} // end for 
+	getStatementIdList(aStatementIdList);
+	theResult=ConceptuallyStaticInstances::instance()->
+	  getCallGraph().getDuUdMap().definition(theVariable.getDuUdMapKey(),
+						 aStatementIdList);
+      } // end while
+    }
+    // have to rely on alias information:
+    else { 
+      AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
+			    getCallGraph().getAliasMap());
+      IdentificationResult_E idResult(canIdentify(theVariable));
+      while(idResult!=NOT_IDENTIFIED) { 
+	for (ListItemPList::iterator aListIterator(myList.begin());
+	     aListIterator!=myList.end(); 
+	     ++aListIterator) { 
+	  if (theAliasMap.mayAlias(theVariable.getAliasMapKey(),
+				   (*aListIterator)->getAliasMapKey())) { 
+	    myList.erase(aListIterator);
+	    break;
+	  }
+	} // end for 
+	idResult=canIdentify(theVariable);
+      } // end while 
+    } // end else 
   } 
 
   std::string VertexIdentificationListPassive::debug () const { 
