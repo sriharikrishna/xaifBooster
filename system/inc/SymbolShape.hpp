@@ -10,8 +10,10 @@ public:
     enum SymbolShape_E {
 	    SCALAR,
 	    VECTOR,
-	    MATRIX};
-
+	    MATRIX,
+	    THREE_TENSOR,
+	    FOUR_TENSOR};
+    
     static std::string toString(const SymbolShape_E& aShape) throw (PrintingIntException);
 
     static const SymbolShape_E fromString(const std::string& aName);
