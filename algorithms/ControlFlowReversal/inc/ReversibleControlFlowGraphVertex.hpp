@@ -42,7 +42,11 @@ namespace xaifBoosterControlFlowReversal {
     void setIndex(int);
     void setAdjointIndex(int);
 
+    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E getKind() const;
+
     bool isOriginal() const { return original; }
+
+    
 
     const ControlFlowGraphVertex& getOriginalVertex() const { 
       return *myOriginalVertex_p; 

@@ -17,7 +17,13 @@ include ../../../Makefile.incl
 -include $(DEPINCL)
 
 # pick up all algorith specific obj files
-ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o)
+ALG_OBJ_SET=  							   \
+$(wildcard ../src/obj/*.o) 					   \
+$(wildcard ../../ControlFlowReversal/src/obj/*.o) 		   \
+$(wildcard ../../BasicBlockPreaccumulationTapeAdjoint/src/obj/*.o) \
+$(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) 	   \
+$(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o)            \
+$(wildcard ../../Linearization/src/obj/*.o)
 
 VPATH+=../../CrossCountryInterface/lib
 LIBS+=-lxaifBoosterCrossCountryInterface
