@@ -50,4 +50,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *myLHSVariable_p;
   } 
 
+  bool
+  PrivateLinearizedComputationalGraphVertex::hasLHSVariable() const { 
+    return (myLHSVariable_p)?true:false;
+  } 
+
 } 

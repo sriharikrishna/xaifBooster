@@ -10,7 +10,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   ActiveVertexIdentificationList::IdentificationResult::IdentificationResult(IdentificationResult_E anAnswer,
-									     const PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p) : 
+									     PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p) : 
     myAnswer(anAnswer),
     myPrivateLinearizedComputationalGraphVertex_p(aPrivateLinearizedComputationalGraphVertex_p) { 
   }
@@ -22,6 +22,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   const PrivateLinearizedComputationalGraphVertex*
   ActiveVertexIdentificationList::IdentificationResult::getVertexP() const { 
+    if (myAnswer==NOT_IDENTIFIED ||
+	!myPrivateLinearizedComputationalGraphVertex_p) 
+      THROW_LOGICEXCEPTION_MACRO("ActiveVertexIdentificationList::getVertexP: vertex not uniquely identified");
+    return myPrivateLinearizedComputationalGraphVertex_p;
+  } 
+
+  PrivateLinearizedComputationalGraphVertex*
+  ActiveVertexIdentificationList::IdentificationResult::getVertexP() { 
     if (myAnswer==NOT_IDENTIFIED ||
 	!myPrivateLinearizedComputationalGraphVertex_p) 
       THROW_LOGICEXCEPTION_MACRO("ActiveVertexIdentificationList::getVertexP: vertex not uniquely identified");
@@ -60,7 +68,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   void ActiveVertexIdentificationList::addElement(const Variable& theVariable,
-						  const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p) { 
+						  PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p) { 
     // add a block dealing with ud info
     // *******************************
     // TODO: JU incomplete
@@ -76,7 +84,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   void ActiveVertexIdentificationList::replaceOrAddElement(const Variable& theVariable,
-							   const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p) { 
+							   PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p) { 
     // add a block dealing with ud info
     // *******************************
     // TODO: JU incomplete

@@ -28,6 +28,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     const Variable& getLHSVariable() const;
 
+    bool hasLHSVariable() const; 
+
     std::string debug() const ;
     
   private:

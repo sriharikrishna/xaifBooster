@@ -147,16 +147,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
 	ActiveVertexIdentificationList::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
 	  theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
+	PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=0;
 	if ((*ExpressionVertexI).isArgument()) { 
 	  theLHSIdResult=theVertexLHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	  theRHSIdResult=theVertexRHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	} 
-	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED)  
+	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
 	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						   theLHSIdResult.getVertexP()));
+	  theLCGVertex_p=theLHSIdResult.getVertexP();
+	}
 	else if (theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
 	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						   theRHSIdResult.getVertexP()));
+	  theLCGVertex_p=theRHSIdResult.getVertexP();
 	} // end if 
 	else { // the vertex cannot be uniquely identified
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED
@@ -169,7 +173,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // uniquely identify within the RHSs it is only important that we don't 
 	    // alias a preceding LHS
 	    // we need to add this vertex
-	    PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
+	    theLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
 	    theFlattenedSequence.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA,
 		      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
@@ -183,19 +187,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    } // end if 
 	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						     theLCGVertex_p));
-	    if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
-	      if (theLHSLCGVertex_p)
-		THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
-	      // the maximal vertex in the RHS is the  
-	      // representation of the LHS
-	      theLHSLCGVertex_p=theLCGVertex_p;
-	    }
 	  } // end if NOT_IDENTIFIED
 	  else { // there is an ambiquity
 	    // but we should have detected this earlier
 	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): should not find an ambiguity at this point");
 	  } // end else (ambiguity)
 	} // end else
+	if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
+	  if (theLHSLCGVertex_p)
+	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
+	  // the maximal vertex in the RHS is the  
+	  // representation of the LHS
+	  theLHSLCGVertex_p=theLCGVertex_p;
+	}
       } // end for 
       Expression::EdgeIteratorPair pe=theExpression.edges();
       Expression::EdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second);
@@ -247,10 +251,37 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		  << theLCGSource_p->debug().c_str() 
 		  << " target " 
 		  <<  theLCGTarget_p->debug().c_str());
-      } // end for 
+      }  // end for 
       const Variable& theLHS(getContaining().getLHS());
       if (!theLHSLCGVertex_p)
 	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): don't have a maximal vertex");
+      if (theLHSLCGVertex_p->hasLHSVariable()) { 
+	// now we are in a case like: 
+	// t1=<some expression>
+	// t2=t1
+	// where the top vertex is the top vertex of <some expression> which 
+	// has 't1' as LHS and now we would 
+	// try to add 't2' as another LHS.
+	// The clean solution to represent t2=t1 by adding another vertex 
+	// with a special unit edge.
+	// the top node becomes the old LHS
+	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
+	// now we make a new one which will be top node
+	theLHSLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
+	// the new one needs to be added to the graph, 
+	// the old one is already in there
+	theFlattenedSequence.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
+	// the new one needs to have its RHS set to the old ones LHS
+	theLHSLCGVertex_p->setRHSVariable(theOldLHSLCGVertex_p->getLHSVariable());
+	// we need to add the unit edge
+	PrivateLinearizedComputationalGraphEdge* theEdge_p=new PrivateLinearizedComputationalGraphEdge();
+	// we can't set a back reference because there is none
+	theEdge_p->setUnitExpressionEdge();
+	// add the edge to the graph
+	theFlattenedSequence.supplyAndAddEdgeInstance(*theEdge_p,
+						      *theOldLHSLCGVertex_p,
+						      *theLHSLCGVertex_p);
+      } // end if 
       // we need to keep the lists mutually exclusive
       // a left hand side cannot occur in the right hand side list
       theVertexRHSIdentificationList.removeIfAliased(theLHS);

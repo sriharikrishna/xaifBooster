@@ -23,6 +23,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
  
     void setLinearizedExpressionEdge(ExpressionEdge& anExpressionEdge);
 
+    void setUnitExpressionEdge();
+
+    bool isUnitExpressionEdge() const;
+
     const ExpressionEdge& getLinearizedExpressionEdge() const;
 
     std::string debug() const ;
@@ -56,6 +60,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * none of the edges are owned by this class
      */
     ExpressionEdgePList myParallelEdges;
+
+    /** 
+     * this is a special purpose edge 
+     * that needs to represent an assignment t1=t2, 
+     * i.e. something for which we don't have an edge in the 
+     * Expression
+     */
+    bool myUnitExpressionEdgeFlag;
 
   }; // end of class LinearizedComputationalGraphEdge
  
