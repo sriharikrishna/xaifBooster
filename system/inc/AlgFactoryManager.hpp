@@ -28,6 +28,7 @@ class GotoAlgFactory;
 class IfStatementAlgFactory;
 class IntrinsicAlgFactory;
 class LabelAlgFactory;
+class MarkerAlgFactory;
 class PreLoopAlgFactory;
 class SubroutineCallAlgFactory;
 
@@ -78,6 +79,7 @@ class SubroutineCallAlgFactory;
     IfStatementAlgFactory* getIfStatementAlgFactory() const ;
     IntrinsicAlgFactory* getIntrinsicAlgFactory() const ;
     LabelAlgFactory* getLabelAlgFactory() const ;
+    MarkerAlgFactory* getMarkerAlgFactory() const ;
     PreLoopAlgFactory* getPreLoopAlgFactory() const ;
     SubroutineCallAlgFactory* getSubroutineCallAlgFactory() const ;
 
@@ -107,6 +109,7 @@ class SubroutineCallAlgFactory;
     void resetIfStatementAlgFactory(IfStatementAlgFactory*);
     void resetIntrinsicAlgFactory(IntrinsicAlgFactory*);
     void resetLabelAlgFactory(LabelAlgFactory*);
+    void resetMarkerAlgFactory(MarkerAlgFactory*);
     void resetPreLoopAlgFactory(PreLoopAlgFactory*);
     void resetSubroutineCallAlgFactory(SubroutineCallAlgFactory*);
     
@@ -145,6 +148,7 @@ class SubroutineCallAlgFactory;
     IfStatementAlgFactory* ourIfStatementAlgFactory_p;
     IntrinsicAlgFactory* ourIntrinsicAlgFactory_p;
     LabelAlgFactory* ourLabelAlgFactory_p;
+    MarkerAlgFactory* ourMarkerAlgFactory_p;
     PreLoopAlgFactory* ourPreLoopAlgFactory_p;
     SubroutineCallAlgFactory* ourSubroutineCallAlgFactory_p;
 

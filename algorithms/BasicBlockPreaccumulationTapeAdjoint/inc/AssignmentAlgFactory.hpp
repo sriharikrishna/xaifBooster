@@ -1,0 +1,10 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPEADJOINT_ASSIGNMENTALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPEADJOINT_ASSIGNMENTALGFACTORY_INCLUDE_
+
+#include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
+
+  DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulation::AssignmentAlgFactory,xaifBoosterBasicBlockPreaccumulationTapeAdjoint);
+
+#endif

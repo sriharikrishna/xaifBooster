@@ -13,6 +13,7 @@
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -153,6 +154,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   } 
 
   void BasicBlockAlg::algorithm_action_4() { // adjoin the DerivativePropagators
+    for(PlainBasicBlock::BasicBlockElementList::const_iterator i=getContaining().getBasicBlockElementList().begin();
+	i!=getContaining().getBasicBlockElementList().end();
+	++i) { 
+      dynamic_cast<BasicBlockElementAlg&>((**i).getBasicBlockElementAlgBase()).insertYourself(getContaining());
+    } 
     for(SequencePList::const_reverse_iterator aSequencePListI=getUniqueSequencePList().rbegin();
 	aSequencePListI!=getUniqueSequencePList().rend();
 	++aSequencePListI) { 

@@ -1,6 +1,6 @@
-#include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
-#include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
 
-  BASE_ALG_FACTORY_DEF_MACRO(Assignment);
+  BASE_ALG_FACTORY_DEF_MACRO(SubroutineCall);
 
