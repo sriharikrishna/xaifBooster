@@ -63,6 +63,23 @@ namespace xaifBoosterLinearization {
     Expression::ConstInEdgeIterator iE(pE.first),iEe(pE.second);
     for (;iE!=iEe;++iE)
       activityAnalysisBottomUpPass(*iE);
+    // now we are done with all in-edges of the top vertex
+    // and we need to take care of the top vertex
+    Expression::ConstInEdgeIterator iE2(pE.first);
+    bool makePassive=false;
+    for (;iE2!=iEe ;++iE2) { 
+      // assume we want to passivate
+      makePassive=true;
+      // but... 
+      if (dynamic_cast<ExpressionEdgeAlg&>((*iE2).getExpressionEdgeAlgBase()).
+	  getPartialDerivativeKind()!=PartialDerivativeKind::PASSIVE) { 
+	// don't passivate if we have an active in edge
+	makePassive=false;
+	break;
+      } // end if 
+    } // end for 
+    if (makePassive)
+      dynamic_cast<ExpressionVertexAlg&>((*anExpressionVertexI).getExpressionVertexAlgBase()).passivate();
   } // end of  ExpressionAlg::activityAnalysis
 
   void ExpressionAlg::createPartialExpressions() { 

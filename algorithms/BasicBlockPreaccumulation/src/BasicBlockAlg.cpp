@@ -69,7 +69,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myEndAssignmentList;
   }
 
-  std::string BasicBlockAlg::Sequence::debug () const { 
+  std::string BasicBlockAlg::Sequence::debug() const { 
     std::ostringstream out;
     out << "Sequence[" << this 
 	<< ",myFirstElement_p=" << myFirstElement_p
@@ -189,6 +189,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   std::string BasicBlockAlg::debug () const { 
     std::ostringstream out;
     out << "BasicBlockAlg[" << this
+	<< ",myContaining="
+	<< getContaining().debug().c_str()
 	<< ",myUniqueSequencePList=";
     for(SequencePList::const_iterator myUniqueSequencePListI=myUniqueSequencePList.begin();
 	myUniqueSequencePListI!=myUniqueSequencePList.end();
@@ -223,7 +225,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   BasicBlockAlg::algorithm_action_3() { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3");
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
+	      << debug().c_str());
     for (SequencePList::iterator i=myUniqueSequencePList.begin();
 	 i!=myUniqueSequencePList.end();
 	 ++i) { // outer loop over all items in myUniqueSequencePList
@@ -381,7 +384,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // add the LHS to the tracking list: 
 	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
 	} // end for 
-      } // end if  have flattened graph with more than one vertex
+      } // end if have flattened graph with more than one vertex
       else if (theFlattenedSequence.numVertices()==1) { // we have only one vertex, i.e. an assignment y=x: 
 	(*i)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getDependentList().begin()))->getLHSVariable(),
 							     dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getIndependentList().begin()))->getRHSVariable());
@@ -699,6 +702,5 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::getContaining() const {
     return dynamic_cast<const BasicBlock&>(myContaining);
   }
-
 
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 
