@@ -32,6 +32,11 @@ namespace xaifBooster {
     os << pm.indent() 
        << "<" 
        << ourXAIFName.c_str() 
+       << " "
+       << our_myKey_XAIFName.c_str()
+       << "=\""
+       << myKey
+       << "\""
        << ">" 
        << std::endl; 
     for(DuUdMapDefinitionResult::StatementIdList::const_iterator it=myStatementIdList.begin();
@@ -60,7 +65,7 @@ namespace xaifBooster {
   } 
 
   const DuUdMapDefinitionResult DuUdMapEntry::definition(const DuUdMapDefinitionResult::StatementIdList& anIdList) const { 
-    if (!myStatementIdList.size()) 
+    if (myStatementIdList.empty()) 
       THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::definition: empty StatementIdList implies use of a variable that has not been defined");
     DuUdMapDefinitionResult theResult;
     unsigned int matchNumber=0;

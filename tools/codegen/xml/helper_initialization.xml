@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="3" nr_templates="1" outfile="helper_initialization.inc">
 
-  <CodeGen:RepeatableCode nr_versions="27">
+  <CodeGen:RepeatableCode nr_versions="28">
     <CodeGen:CodeTemplate nr_entries="4">
       <CodeGen:StaticCode text="my"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -14,16 +14,13 @@
       <CodeGen:LineBreak/>
     </CodeGen:CodeTemplate>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="AliasMapEntry"/>
-    </CodeGen:CodeVersion>
-    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="AliasMap"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="DuUdMapEntry"/>
+      <CodeGen:DynamicCode hook_ref="1" text="AliasMapEntry"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="DuUdMap"/>
+      <CodeGen:DynamicCode hook_ref="1" text="ArgumentList"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="ArrayAccess"/>
@@ -32,13 +29,10 @@
       <CodeGen:DynamicCode hook_ref="1" text="Assignment"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="Variable"/>
-    </CodeGen:CodeVersion>
-    <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="VariableEdge"/>
-    </CodeGen:CodeVersion>
-    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="BasicBlock"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Branch"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="CallGraph"/>
@@ -50,6 +44,12 @@
       <CodeGen:DynamicCode hook_ref="1" text="ControlFlowGraph"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="DuUdMap"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="DuUdMapEntry"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Expression"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -59,13 +59,16 @@
       <CodeGen:DynamicCode hook_ref="1" text="ForLoop"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="Branch"/>
+      <CodeGen:DynamicCode hook_ref="1" text="Goto"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="IfStatement"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Initialization"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Label"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="PostLoop"/>
@@ -80,6 +83,9 @@
       <CodeGen:DynamicCode hook_ref="1" text="Scopes"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="SideEffectList"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="SubroutineCall"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -89,14 +95,11 @@
       <CodeGen:DynamicCode hook_ref="1" text="Update"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="ArgumentList"/>
-    </CodeGen:CodeVersion>
-    <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="Goto"/>
+      <CodeGen:DynamicCode hook_ref="1" text="Variable"/>
     </CodeGen:CodeVersion>
   </CodeGen:RepeatableCode>
 <!-- last entry is not succeeded by a comma -->
-  <CodeGen:NonRepeatableCodeOrLineBreak text="myLabel_p(0)"/>
+  <CodeGen:NonRepeatableCodeOrLineBreak text="myVariableEdge_p(0)"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
 
 </CodeGen:Document>
