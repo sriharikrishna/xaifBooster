@@ -62,7 +62,7 @@ namespace xaifBoosterLinearization {
     // if we create vector assignments as auxilliary variables...
     theVariableSymbolReference_p->setId("1");
     theVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-    theVariable_p->getAliasActivityMapKey().setTemporary();
+    theVariable_p->getAliasMapKey().setTemporary();
     myAuxilliaryVariable_p=theVariable_p;
     DBG_MACRO(DbgGroup::TEMPORARY,
 	      "made auxilliary:"

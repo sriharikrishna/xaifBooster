@@ -8,7 +8,6 @@
 #include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
-#include "xaifBooster/system/inc/AliasActivityMap.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"

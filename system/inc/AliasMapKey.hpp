@@ -1,21 +1,21 @@
-#ifndef _ALIASACTIVITYMAPKEY_INCLUDE_
-#define _ALIASACTIVITYMAPKEY_INCLUDE_
+#ifndef _ALIASMAPKEY_INCLUDE_
+#define _ALIASMAPKEY_INCLUDE_
 
 namespace xaifBooster { 
 
   /** 
    * class to represent generic key 
-   * into AliasActivityMap also covering 
+   * into AliasMap also covering 
    * special cases which don't have an instance
-   * in AliasActivityMap
+   * in AliasMap
    */
-  class AliasActivityMapKey { 
+  class AliasMapKey { 
 
   public:
     
-    AliasActivityMapKey();
+    AliasMapKey();
 
-    ~AliasActivityMapKey() {};
+    ~AliasMapKey() {};
 
     /** 
      * indicate there is a regular key
@@ -29,10 +29,10 @@ namespace xaifBooster {
      */
     void setTemporary();
 
-    enum AliasActivityMapKey_E {NOT_SET,   // not initialized
-				SET,       // has regular key
-				NO_INFO,   // has 0 key
-				TEMP_VAR}; // temporary
+    enum AliasMapKey_E {NOT_SET,   // not initialized
+			SET,       // has regular key
+			NO_INFO,   // has 0 key
+			TEMP_VAR}; // temporary
     /**
      * get the key, if no regular key throws exception
      */
@@ -41,12 +41,12 @@ namespace xaifBooster {
     /**
      * return the kind of key
      */
-    AliasActivityMapKey_E getKind() const;
+    AliasMapKey_E getKind() const;
 
   private:
 
     /**
-     * key into AliasActivityMap
+     * key into AliasMap
      * initialized to invalid value 0
      */
     unsigned int myKey;
@@ -54,9 +54,9 @@ namespace xaifBooster {
     /**
      * key kind initialized to NOT_SET
      */
-    AliasActivityMapKey_E myKind;
+    AliasMapKey_E myKind;
 
-  }; // end of class AliasActivityMapKey
+  }; // end of class AliasMapKey
 
 } // end of namespace xaifBooster
                                                                      

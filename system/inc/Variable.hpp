@@ -6,7 +6,7 @@
 #include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
 #include "xaifBooster/system/inc/VariableVertex.hpp"
 #include "xaifBooster/system/inc/VariableEdge.hpp"
-#include "xaifBooster/system/inc/AliasActivityMapKey.hpp"
+#include "xaifBooster/system/inc/AliasMapKey.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
 
@@ -61,9 +61,9 @@ namespace xaifBooster {
 
     void copyMyselfInto(Variable& theTarget) const;
 
-    AliasActivityMapKey& getAliasActivityMapKey();
+    AliasMapKey& getAliasMapKey();
 
-    const AliasActivityMapKey& getAliasActivityMapKey() const;
+    const AliasMapKey& getAliasMapKey() const;
 
     /**
      * get the data type from the SymbolReference,
@@ -116,9 +116,9 @@ namespace xaifBooster {
   private: 
     
     /** 
-     * key into  AliasActivityMap
+     * key into  AliasMap
      */
-    AliasActivityMapKey myAliasActivityMapKey;
+    AliasMapKey myAliasMapKey;
 
     /** 
      * indicating the use of the value 

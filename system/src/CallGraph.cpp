@@ -50,7 +50,7 @@ namespace xaifBooster {
        << "\">" 
        << std::endl; 
     myScopeTree.printXMLHierarchy(os);
-    myAliasActivityMap.printXMLHierarchy(os);
+    myAliasMap.printXMLHierarchy(os);
     CallGraph::ConstVertexIteratorPair p(vertices());
     CallGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt)
@@ -79,12 +79,12 @@ namespace xaifBooster {
     return myScopeTree;
   }
 
-  AliasActivityMap& CallGraph::getAliasActivityMap() { 
-    return myAliasActivityMap;
+  AliasMap& CallGraph::getAliasMap() { 
+    return myAliasMap;
   }
 
-  const AliasActivityMap& CallGraph::getAliasActivityMap() const { 
-    return myAliasActivityMap;
+  const AliasMap& CallGraph::getAliasMap() const { 
+    return myAliasMap;
   }
   
   void CallGraph::setProgramName(const std::string& aProgramName) { 

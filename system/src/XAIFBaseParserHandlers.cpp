@@ -157,26 +157,26 @@ namespace xaifBooster {
   };
 
   void 
-  XAIFBaseParserHandlers::onAliasActivityMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasActivityMap" ); 
-    AliasActivityMap& theAliasActivityMap(passingIn.getAliasActivityMap());
-    passingOut.setAliasActivityMap(theAliasActivityMap);
+  XAIFBaseParserHandlers::onAliasMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasMap" ); 
+    AliasMap& theAliasMap(passingIn.getAliasMap());
+    passingOut.setAliasMap(theAliasMap);
   };
 
   void 
-  XAIFBaseParserHandlers::onAliasActivity(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasActivity" ); 
-    AliasActivityMap& theAliasActivityMap(passingIn.getAliasActivityMap());
-    AliasActivity& theAliasActivity=theAliasActivityMap.
-      addAliasActivity(XMLParser::getAttributeValueByName(
-					       AliasActivity::our_myKey_XAIFName));
-    passingOut.setAliasActivity(theAliasActivity);
+  XAIFBaseParserHandlers::onAliasMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasMapEntry" ); 
+    AliasMap& theAliasMap(passingIn.getAliasMap());
+    AliasMapEntry& theAliasMapEntry=theAliasMap.
+      addAliasMapEntry(XMLParser::getAttributeValueByName(
+					       AliasMapEntry::our_myKey_XAIFName));
+    passingOut.setAliasMapEntry(theAliasMapEntry);
   };
 
   void 
   XAIFBaseParserHandlers::onAliasSingle(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasSingle" ); 
-    AliasSet& theAliasSet(passingIn.getAliasActivity().getAliasSet());
+    AliasSet& theAliasSet(passingIn.getAliasMapEntry().getAliasSet());
     theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(
 						      AliasSingle::our_myAddress_XAIFName).c_str()));
   };
@@ -184,7 +184,7 @@ namespace xaifBooster {
   void 
   XAIFBaseParserHandlers::onAliasRange(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasRange" ); 
-    AliasSet& theAliasSet(passingIn.getAliasActivity().getAliasSet());
+    AliasSet& theAliasSet(passingIn.getAliasMapEntry().getAliasSet());
     theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(
 						      AliasRange::our_myLowerAddress_XAIFName).c_str()),
 			 atoi(XMLParser::getAttributeValueByName(
@@ -214,7 +214,7 @@ namespace xaifBooster {
     theCallGraph.setProgramName(XMLParser::getAttributeValueByName(
 							CallGraph::our_myProgramName_XAIFName));
     passingOut.setScopes(theCallGraph.getScopeTree());
-    passingOut.setAliasActivityMap(theCallGraph.getAliasActivityMap());
+    passingOut.setAliasMap(theCallGraph.getAliasMap());
   };
 
   void 
@@ -233,7 +233,7 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onAssignmentLHS(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAssignmentLHS" ); 
     Assignment& theAssignment(passingIn.getAssignment());
-    theAssignment.getLHS().getAliasActivityMapKey().
+    theAssignment.getLHS().getAliasMapKey().
       setReference(atoi(XMLParser::getAttributeValueByName(
 						Variable::our_myKey_XAIFName).c_str()));
     passingOut.setVariable(theAssignment.getLHS());
@@ -284,7 +284,7 @@ namespace xaifBooster {
     theArgument_p->setId(XMLParser::getAttributeValueByName(
 							  Argument::our_myId_XAIFName));
     theExpression.supplyAndAddVertexInstance(*theArgument_p);
-    theArgument_p->getVariable().getAliasActivityMapKey().
+    theArgument_p->getVariable().getAliasMapKey().
       setReference(atoi(XMLParser::getAttributeValueByName(
 						Variable::our_myKey_XAIFName).c_str()));
     theArgument_p->getVariable().

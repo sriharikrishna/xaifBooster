@@ -1,23 +1,23 @@
-void XAIFBaseParserHelper::setAliasActivity(AliasActivity& whatToSet) {
-if (myAliasActivity_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "AliasActivity" << " item already set");
-myAliasActivity_p=&whatToSet;
+void XAIFBaseParserHelper::setAliasMapEntry(AliasMapEntry& whatToSet) {
+if (myAliasMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "AliasMapEntry" << " item already set");
+myAliasMapEntry_p=&whatToSet;
 }
-AliasActivity& XAIFBaseParserHelper::getAliasActivity() const {
-if (!myAliasActivity_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "AliasActivity" << " item not set");
-return *myAliasActivity_p;
+AliasMapEntry& XAIFBaseParserHelper::getAliasMapEntry() const {
+if (!myAliasMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "AliasMapEntry" << " item not set");
+return *myAliasMapEntry_p;
 }
 
-void XAIFBaseParserHelper::setAliasActivityMap(AliasActivityMap& whatToSet) {
-if (myAliasActivityMap_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "AliasActivityMap" << " item already set");
-myAliasActivityMap_p=&whatToSet;
+void XAIFBaseParserHelper::setAliasMap(AliasMap& whatToSet) {
+if (myAliasMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "AliasMap" << " item already set");
+myAliasMap_p=&whatToSet;
 }
-AliasActivityMap& XAIFBaseParserHelper::getAliasActivityMap() const {
-if (!myAliasActivityMap_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "AliasActivityMap" << " item not set");
-return *myAliasActivityMap_p;
+AliasMap& XAIFBaseParserHelper::getAliasMap() const {
+if (!myAliasMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "AliasMap" << " item not set");
+return *myAliasMap_p;
 }
 
 void XAIFBaseParserHelper::setArrayAccess(ArrayAccess& whatToSet) {

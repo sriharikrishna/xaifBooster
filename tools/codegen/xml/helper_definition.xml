@@ -89,11 +89,11 @@
     </CodeGen:CodeTemplate>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
-      <CodeGen:DynamicCode hook_ref="2" text="AliasActivity"/>
+      <CodeGen:DynamicCode hook_ref="2" text="AliasMapEntry"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
-      <CodeGen:DynamicCode hook_ref="2" text="AliasActivityMap"/>
+      <CodeGen:DynamicCode hook_ref="2" text="AliasMap"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>

@@ -18,7 +18,7 @@
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/ExpressionEdge.hpp"
-#include "xaifBooster/system/inc/AliasActivity.hpp"
+#include "xaifBooster/system/inc/AliasMapEntry.hpp"
 #include "xaifBooster/system/inc/AliasSet.hpp"
 #include "xaifBooster/system/inc/AliasSingle.hpp"
 #include "xaifBooster/system/inc/AliasRange.hpp"

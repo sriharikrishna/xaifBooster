@@ -1,9 +1,9 @@
 public:
 
-void setAliasActivity(AliasActivity& whatToSet);
-AliasActivity& getAliasActivity() const;
-void setAliasActivityMap(AliasActivityMap& whatToSet);
-AliasActivityMap& getAliasActivityMap() const;
+void setAliasMapEntry(AliasMapEntry& whatToSet);
+AliasMapEntry& getAliasMapEntry() const;
+void setAliasMap(AliasMap& whatToSet);
+AliasMap& getAliasMap() const;
 void setArrayAccess(ArrayAccess& whatToSet);
 ArrayAccess& getArrayAccess() const;
 void setAssignment(Assignment& whatToSet);
@@ -46,8 +46,8 @@ void setUpdate(Update& whatToSet);
 Update& getUpdate() const;
 
 private:
-AliasActivity* myAliasActivity_p;
-AliasActivityMap* myAliasActivityMap_p;
+AliasMapEntry* myAliasMapEntry_p;
+AliasMap* myAliasMap_p;
 ArrayAccess* myArrayAccess_p;
 Assignment* myAssignment_p;
 Variable* myVariable_p;

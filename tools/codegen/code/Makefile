@@ -12,7 +12,6 @@ all: $(TARGETS)
 
 %.inc : $(XMLDIR)/%.xml
 	$(COMPLAIN)
-	java CodeGenerator $<
+	java -cp $(CLASSPATH) CodeGenerator $<
 
 .PHONY: all 
-	
