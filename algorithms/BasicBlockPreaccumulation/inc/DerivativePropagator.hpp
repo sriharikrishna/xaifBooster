@@ -21,6 +21,14 @@ namespace xaifBooster {
 
     void printXMLHierarchy(std::ostream& os) const;
 
+    /**
+     * the actual printing is in here 
+     * so we can take a function pointer and 
+     * replace this 
+     */
+    static void printXMLHierarchyImpl(std::ostream& os,
+				      const DerivativePropagator& aDerivativePropagator);
+
     std::string debug() const ;
 
     /**
