@@ -55,8 +55,6 @@ namespace xaifBooster {
 		  myEqual> InternalHashMapType;
     InternalHashMapType myHashMap; 
 
-  private:
-
     struct myHash{
       std::size_t operator()(const std::string __s) const { 
 	return Sgi::__stl_hash_string(__s.c_str()); 

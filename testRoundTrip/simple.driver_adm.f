@@ -1,6 +1,8 @@
 	program driver
 
 	use active_module
+	use OpenAD_rev
+
 	implicit none 
 
 	external head
@@ -40,8 +42,12 @@
 		 xph(j)%v=x0(j)
               end if
 	   end do 
-	   call head(xph,yph,1)
-	   call head(x,y,2)
+	   call forward_mode()
+	   call head(xph,yph)
+	   call reset_mode()
+	   call forward_arg_store_mode()
+	   call head(x,y)
+	   call reset_mode()
 	   do k=1,m
 	      write(2,*) "F(",k,",",i,")=",(yph(k)%v-y(k)%v)/h
 	   end do
@@ -50,9 +56,12 @@
 
 !       we need enough argument checkpoints
 	do i=n+1,m
-	   call head(x,y,2)
+	   call forward_arg_store_mode()
+	   call head(x,y)
+	   call reset_mode()
 	end do
 
+        call reverse_mode()
 	open(2,file='tmpOutput/ad.out')
 	write(2,*) "AD"
 
@@ -67,7 +76,7 @@
 	   do k=1,n
 	      x(k)%d=0.0
 	   end do
-	   call head(x,y,3)
+	   call head(x,y)
 	   do k=1,n
               res_adj(i,k)=x(k)%d
 	   end do

@@ -113,6 +113,11 @@ namespace xaifBooster {
      */
     static const std::string our_myDerivFlag_XAIFName;
 
+    /**
+     * name of member myConstantUseFlag as represented in XAIF schema
+     */
+    static const std::string our_myConstantUseFlag_XAIFName;
+
     /** 
      * get the active use of this Variable
      * if UNDEFINED we go by the type specified in 
@@ -140,6 +145,17 @@ namespace xaifBooster {
      * \todo see also getArrayAccess 
      */
     bool hasArrayAccess() const;
+
+    /**
+     * \see myConstantUseFlag
+     * sets it to true
+     */
+    void setConstantUseFlag();
+
+    /**
+     * \see myConstantUseFlag
+     */
+    bool getConstantUseFlag() const;
 
   private: 
     
@@ -177,7 +193,23 @@ namespace xaifBooster {
      */
     mutable ActiveUseType::ActiveUseType_E myActiveUseType;
 
-    bool myactiveUseTypeSetFlag;
+    bool myActiveUseTypeSetFlag;
+
+    /**
+     * defaults to false, 
+     * set from XAIF constant attribute
+     * set to true for a use of a variable 
+     * which provably always has a unique literal
+     * value, but not necessarily a constant type modifier
+     * Conversely, a variable with constant 
+     * type modifier that is however not initialized 
+     * by a literal constant but instead from a parameter
+     * would have this flag set to false
+     * i.e this flag decides if the value is known at 
+     * compile time or not so we may use it for 
+     * constant folding or may not.
+     */
+    bool myConstantUseFlag;
 
   }; // end of class Variable
 
