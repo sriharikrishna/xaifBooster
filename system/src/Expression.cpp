@@ -35,7 +35,9 @@ namespace xaifBooster {
 
   void
   Expression::printXMLHierarchy(std::ostream& os) const { 
-    if (myExpressionAlgBase_p)
+    if (myExpressionAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getExpressionAlgBase().printXMLHierarchy(os);
     else
       printXMLHierarchyImpl(os);

@@ -6,7 +6,8 @@ namespace xaifBooster {
   ConceptuallyStaticInstances* ConceptuallyStaticInstances::ourInstance_p(0);
 
   ConceptuallyStaticInstances::ConceptuallyStaticInstances() : 
-    myCallGraph_p(0) {
+    myCallGraph_p(0),
+    myPrintVersion(PrintVersion::VIRTUAL) {
   }
 
   ConceptuallyStaticInstances::~ConceptuallyStaticInstances() {
@@ -46,6 +47,14 @@ namespace xaifBooster {
 				aPrefix);
   } 
 
+  PrintVersion::PrintVersion_E 
+  ConceptuallyStaticInstances::getPrintVersion() const { 
+    return myPrintVersion;
+  }
+
+  void ConceptuallyStaticInstances::setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion) { 
+    myPrintVersion=aPrintVersion;
+  }
   
 } 
 

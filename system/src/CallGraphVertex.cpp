@@ -1,5 +1,6 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/CallGraphVertexAlgFactory.hpp"
 
@@ -34,7 +35,9 @@ namespace xaifBooster {
 
   void
   CallGraphVertex::printXMLHierarchy(std::ostream& os) const { 
-    if (myCallGraphVertexAlgBase_p)
+    if (myCallGraphVertexAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getCallGraphVertexAlgBase().printXMLHierarchy(os);
     else 
       myControlFlowGraph.printXMLHierarchy(os);
