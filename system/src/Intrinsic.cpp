@@ -45,7 +45,9 @@ namespace xaifBooster {
 
   void
   Intrinsic::printXMLHierarchy(std::ostream& os) const {
-    if (myExpressionVertexAlgBase_p)
+    if (myExpressionVertexAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getIntrinsicAlgBase().printXMLHierarchy(os);
     else
       printXMLHierarchyImpl(os);

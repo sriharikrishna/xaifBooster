@@ -4,6 +4,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/system/inc/ExpressionEdge.hpp"
 #include "xaifBooster/system/inc/ExpressionEdgeAlgFactory.hpp"
@@ -34,7 +35,9 @@ namespace xaifBooster {
   void
   ExpressionEdge::printXMLHierarchy(std::ostream& os,
 				    const Expression& theExpression) const { 
-    if (myExpressionEdgeAlgBase_p)
+    if (myExpressionEdgeAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       myExpressionEdgeAlgBase_p->printXMLHierarchy(os,theExpression);
     else
       printXMLHierarchyImpl(os,theExpression);

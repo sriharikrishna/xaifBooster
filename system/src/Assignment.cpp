@@ -43,7 +43,9 @@ namespace xaifBooster {
 
   void
   Assignment::printXMLHierarchy(std::ostream& os) const { 
-    if (myAssignmentAlgBase_p)
+    if (myAssignmentAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getAssignmentAlgBase().printXMLHierarchy(os);
     else 
       printXMLHierarchyImpl(os);
