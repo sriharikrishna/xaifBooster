@@ -10,8 +10,13 @@ namespace xaifBooster {
   class Scopes;
 
   /** 
-   * ScopeContainment represents the parent-child relationship 
-   * between scopes 
+   * ScopeContainment represents the relationship 
+   * between scopes. 
+   * Note that this this particular case the source is 
+   * the child and the target the containing parent Scope. 
+   * This choice was made to facilitate the more frequently 
+   * used up-traversal from a Scope to the containing 
+   * Scope.
    */
   class ScopeContainment : public EdgeTraversable, 
 			   public XMLPrintable,
