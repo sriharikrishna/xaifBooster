@@ -34,7 +34,7 @@ namespace xaifBoosterControlFlowReversal {
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(),
                                                   myG.getInternalBoostGraph()),
                                        v)->getSubroutineName() << "\"]";
-    };
+    }
     const CallGraph& myG;
   };
 

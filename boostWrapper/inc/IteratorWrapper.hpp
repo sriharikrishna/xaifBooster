@@ -3,6 +3,8 @@
 
 namespace xaifBooster { 
 
+  template<class,class> class GraphWrapper;
+
   /**
    * wrapper around boost  iterator
    * with the main purpose of returning 
@@ -42,7 +44,7 @@ namespace xaifBooster {
 
   protected:
     
-    template<class Vertex, class Edge> friend class GraphWrapper;
+    template<class,class> friend class GraphWrapper;
 
     /** 
      * private representation of the boost iterator
