@@ -29,17 +29,17 @@ do
   echo "** running $i *************************************************"
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    DRIVER_NAME=driver_adm.f
+    DRIVER_NAME=driver_adm
   else
-    DRIVER_NAME=driver.f
+    DRIVER_NAME=driver
   fi
   exdir=examples/$i
-  if [ -f $exdir/$DRIVER_NAME ] 
+  if [ -f $exdir/$DRIVER_NAME.f ] 
   then 
-    ln -sf $exdir/$DRIVER_NAME .
+    ln -sf $exdir/$DRIVER_NAME.f .
     if [ $? -ne 0 ] 
     then 
-      echo "ERROR in: ln -sf $exdir/$DRIVER_NAME ."; exit -1;
+      echo "ERROR in: ln -sf $exdir/$DRIVER_NAME.f ."; exit -1;
     fi
   fi
   ln -sf $exdir/head.f .
@@ -60,7 +60,7 @@ do
   then 
     echo "ERROR in: make"; exit -1;
   fi
-  make driver
+  make $DRIVER_NAME
   if [ $? -ne 0 ] 
   then 
     echo "ERROR in: make driver"; exit -1;

@@ -11,20 +11,36 @@
 
           integer, intent(in), optional :: version
 
+          ! checkpointing stacks and offsets
+          integer, parameter :: theMaxStackSize=100
+          integer :: cp_loop_variable
+          double precision, dimension(theMaxStackSize), save :: 
+     +theArgStack
+          integer, save :: theArgStackoffset=0
+          double precision, dimension(theMaxStackSize), save :: 
+     +theResStack
+          integer, save :: theResStackoffset=0
+          integer, dimension(theMaxStackSize), save :: 
+     +theArgIStack
+          integer, save :: theArgIStackoffset=0
+          integer, dimension(theMaxStackSize), save :: 
+     +theResIStack
+          integer, save :: theResIStackoffset=0
+
           call tape_init
 
           select case (version)
             case (1) 
+! store arguments
+!$PLACEHOLDER_PRAGMA$ id=4
 ! original function
 !$PLACEHOLDER_PRAGMA$ id=1
 ! store results
-!$PLACEHOLDER_PRAGMA$ id=6
+!$PLACEHOLDER_PRAGMA$ id=5
             case (2) 
-! store arguments
-!$PLACEHOLDER_PRAGMA$ id=4
             case (3) 
 ! restore arguments
-!$PLACEHOLDER_PRAGMA$ id=5
+!$PLACEHOLDER_PRAGMA$ id=6
 ! tape
 !$PLACEHOLDER_PRAGMA$ id=2
 ! adjoint
