@@ -1015,8 +1015,9 @@ CADJ INIT comlevfinal = COMMON, 1
       call box_ini_fields
 
       maxlev2 = n_max/nlev1 + 1
-      if ( nlev1*nlev2 .LT. n_max )
-     &     STOP 'NEED TO SET nlev1*nlev2 >= n_max '
+      if ( nlev1*nlev2 .LT. n_max ) then 
+         print *, 'NEED TO SET nlev1*nlev2 >= n_max '
+      else
 
       do ilev2 = 1, nlev2
        if ( ilev2 .LE. maxlev2 ) then
@@ -1060,6 +1061,8 @@ c-- and kicks it out. That's good, but of course now it's missing.
 cph      print *, 'box_metric START'
 cph      call box_metric
 cph)
+
+      endif 
 
       end
 
