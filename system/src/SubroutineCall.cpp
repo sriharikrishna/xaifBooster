@@ -1,6 +1,9 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
+#include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
+#include "xaifBooster/system/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 namespace xaifBooster { 
 
@@ -12,22 +15,42 @@ namespace xaifBooster {
 
   SubroutineCall::SubroutineCall (const Symbol& theSymbol,
 				  const Scope& theScope,
-				  const bool activeFlag) :
+				  const bool activeFlag,
+				  bool makeAlgorithm) :
     mySymbolReference(theSymbol,theScope),
     myActiveFlag(activeFlag) { 
+    if (makeAlgorithm)
+      myBasicBlockElementAlgBase_p=SubroutineCallAlgFactory::instance()->makeNewAlg(*this); 
   } 
 
   SubroutineCall::~SubroutineCall() { 
-    for (ArgumentList::iterator i=myArgumentList.begin();
-	 i!=myArgumentList.end();
+    for (ConcreteArgumentPList::iterator i=myConcreteArgumentPList.begin();
+	 i!=myConcreteArgumentPList.end();
 	 ++i) { 
       if (*i)
 	delete *i;
     }
   } 
 
+  SubroutineCallAlgBase& 
+  SubroutineCall::getSubroutineCallAlgBase() const { 
+    if (!myBasicBlockElementAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCall::getSubroutineCallAlgBase: not set");
+    return dynamic_cast<SubroutineCallAlgBase&>(*myBasicBlockElementAlgBase_p);
+  }
+
   void
   SubroutineCall::printXMLHierarchy(std::ostream& os) const { 
+    if (myBasicBlockElementAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
+      getSubroutineCallAlgBase().printXMLHierarchy(os);
+    else 
+      printXMLHierarchyImpl(os);
+  }
+
+  void
+  SubroutineCall::printXMLHierarchyImpl(std::ostream& os) const { 
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
@@ -50,8 +73,8 @@ namespace xaifBooster {
        << myActiveFlag
        << "\">" 
        << std::endl;
-    for (ArgumentList::const_iterator i=myArgumentList.begin();
-	 i!=myArgumentList.end();
+    for (ConcreteArgumentPList::const_iterator i=myConcreteArgumentPList.begin();
+	 i!=myConcreteArgumentPList.end();
 	 ++i)
       (*i)->printXMLHierarchy(os);
     os << pm.indent() 
@@ -60,26 +83,41 @@ namespace xaifBooster {
        << ">" 
        << std::endl;
     pm.releaseInstance();
-  } // end of SubroutineCall::printXMLHierarchy
+  } 
 
   std::string SubroutineCall::debug () const { 
     std::ostringstream out;
-    out << "SubroutineCall[" << this 
+    out << "SubroutineCall[" 
+	<< this 
+	<< BasicBlockElement::debug().c_str()
+	<< "myActiveFlag"
+	<< "="
+	<< myActiveFlag
 	<< "]" << std::ends;  
     return out.str();
   } // end of SubroutineCall::debug
 
   void SubroutineCall::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+    getSubroutineCallAlgBase().genericTraversal(anAction_c);
   } 
 
-  SubroutineCall::ArgumentList& 
-  SubroutineCall::getArgumentList() { 
-    return myArgumentList;
+  SubroutineCall::ConcreteArgumentPList& 
+  SubroutineCall::getConcreteArgumentPList() { 
+    return myConcreteArgumentPList;
   } 
   
-  const SubroutineCall::ArgumentList& 
-  SubroutineCall::getArgumentList() const { 
-    return myArgumentList;
+  const SubroutineCall::ConcreteArgumentPList& 
+  SubroutineCall::getConcreteArgumentPList() const { 
+    return myConcreteArgumentPList;
+  } 
+  
+  const SymbolReference& 
+  SubroutineCall::getSymbolReference() const { 
+    return mySymbolReference;
+  } 
+
+  bool SubroutineCall::getActiveFlag() const { 
+    return myActiveFlag;
   } 
   
 } // end of namespace xaifBooster 

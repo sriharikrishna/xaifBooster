@@ -506,7 +506,11 @@ namespace xaifBooster {
     SubroutineCall& theSubroutineCall(passingIn.getSubroutineCall());
     ConcreteArgument* theNewConcreteArgument_p=
       new ConcreteArgument(atoi(XMLParser::getAttributeValueByName(ConcreteArgument::our_myPosition_XAIFName).c_str()));
-    theSubroutineCall.getArgumentList().push_back(theNewConcreteArgument_p);
+    theSubroutineCall.getConcreteArgumentPList().push_back(theNewConcreteArgument_p);
+    theNewConcreteArgument_p->getVariable().getAliasMapKey().
+      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName).c_str()));
+    theNewConcreteArgument_p->getVariable().getDuUdMapKey().
+      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName).c_str()));
     passingOut.setVariable(theNewConcreteArgument_p->getVariable());
   };
 

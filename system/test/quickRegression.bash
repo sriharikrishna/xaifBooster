@@ -16,6 +16,10 @@ for i in `echo ${TESTFILES}`
     do
     echo "executing: ./t -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg"
     ./t -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg
+    if [ $? -ne 0 ] 
+    then 
+	echo "ERROR during execution!"; exit -1;
+    fi
     debugLines=`wc -l tmp/${i}.dbg | awk '{ print $1}'`
     if [ $debugLines -gt 0 ] 
     then 
@@ -25,10 +29,12 @@ for i in `echo ${TESTFILES}`
         then
 	  exit -2
         fi
-    else
-	echo "no debug messages"
     fi
     diffs=`diff testOutput/${i}.out tmp/${i}.out`
+    if [ $? -eq 2 ] 
+    then 
+      echo "ERROR in: diff testOutput/${i}.out tmp/${i}.out"; exit -1;
+    fi
     if [ -n "$diffs" ] 
     then 
 	echo "diffs base (<) vs. current (>):"
@@ -37,8 +43,6 @@ for i in `echo ${TESTFILES}`
 	then
 	  exit -3
 	fi
-    else 
-	echo "no diffs"
     fi
     echo ""
 done

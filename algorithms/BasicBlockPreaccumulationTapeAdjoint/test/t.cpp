@@ -66,9 +66,25 @@ int main(int argc,char** argv) {
     } 
     else 
       Cg.printXMLHierarchy(std::cout);
-  } catch (BaseException& e) { 
+  } 
+  catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
+    return -1;
+  } // end catch 
+  catch (std::bad_cast& e) { 
+    DBG_MACRO(DbgGroup::ERROR,
+	      "caught std::bad_cast exception: " << e.what());
+    return -1;
+  } // end catch 
+  catch (std::exception& e) { 
+    DBG_MACRO(DbgGroup::ERROR,
+	      "caught std::exception: " << e.what());
+    return -1;
+  } // end catch 
+  catch (...) { 
+    DBG_MACRO(DbgGroup::ERROR,
+	      "caught something");
     return -1;
   } // end catch 
   return 0;
