@@ -52,11 +52,15 @@ namespace xaifBooster {
        << our_myConditionValueFlag_XAIFName.c_str() 
        << "=\"" 
        << hasConditionValue()
-       << "\" " 
-       << our_myConditionValue_XAIFName.c_str() 
-       << "=\"" 
-       << getConditionValue()
-       << "\"/>" 
+       << "\"";
+    if (hasConditionValue()) {
+      os << " "
+	 << our_myConditionValue_XAIFName.c_str() 
+	 << "=\"" 
+	 << getConditionValue()
+	 << "\"";
+    }
+    os << "/>" 
        << std::endl; 
     pm.releaseInstance();
   } // end of ControlFlowGraphEdge::printXMLHierarchy

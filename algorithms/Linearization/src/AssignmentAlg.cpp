@@ -1,3 +1,4 @@
+
 #include <sstream>
 
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
@@ -391,6 +392,7 @@ namespace xaifBoosterLinearization {
       // note that the 'active'=true may just 
       // be the default set by the schema...
       myActiveFlag=false;
+      myActiveFlagInit=true;
       // skip the rest
       return;
     }
@@ -411,6 +413,7 @@ namespace xaifBoosterLinearization {
     if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()) { 
       // make the entire assignment passive
       myActiveFlag=false;
+      myActiveFlagInit=true;
     }
     if (!myActiveFlag)
       return;
@@ -450,6 +453,7 @@ namespace xaifBoosterLinearization {
 	 !dynamic_cast<const Argument&>(*iV).getVariable().getActiveType())) {
       // make the entire assignment passive
       myActiveFlag=false;
+      myActiveFlagInit=true;
       // remove all possibly created code: 
       if (myDelayedLHSAssignment_p) { 
 	delete myDelayedLHSAssignment_p;
@@ -485,7 +489,9 @@ namespace xaifBoosterLinearization {
 
   Expression& AssignmentAlg::getLinearizedRightHandSide() { 
     if (!myHaveLinearizedRightHandSide)
-      THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::getLinearizedRightHandSide: this has not been linearized");
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::getLinearizedRightHandSide: "
+				 << getContainingAssignment().debug().c_str()
+				 << " has not been linearized");
     return myLinearizedRightHandSide;
   } // end of AssignmentAlg::getLinearizedRightHandSide
 
