@@ -1,4 +1,6 @@
+ifndef TARGET
 TARGET=head
+endif
 
 ifdef REVERSE_MODE
 REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_rev.o OpenAD_tape.o iaddr.o
@@ -29,11 +31,11 @@ endif
 
 LN=ln -sf
 
-F95=f95 -g
+F95=f95 -g 
 
 CC=gcc
 
-RM=rm -f
+RM=rm -rf
 
 $(TARGET).prh.f: $(TARGET).f prh.pl
 	perl prh.pl $<
@@ -79,18 +81,6 @@ whirl2xaif xaif2whirl:
 	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
 
-#pp.pl: 
-#	$(COMPLAIN)
-#	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
-
-#prh.pl: 
-#	$(COMPLAIN)
-#	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
-
-#urh.pl: 
-#	$(COMPLAIN)
-#	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
-
 whirl2f whirl2f_be:
 	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
@@ -99,55 +89,29 @@ xaifBooster:
 	./pickAlgorithm.bash
 
 # make the $TARGETDRIVER)
-$(TARGETDRIVER): w2f__types.o active_module.o $(REVERSE_MODULES) $(TARGETDRIVER).o $(TARGET).prh.xb.x2w.w2f.urh.pp.o 
+$(TARGETDRIVER): w2f__types.o active_module.o all_globals_mod.o $(REVERSE_MODULES) $(TARGETDRIVER).o $(TARGET).prh.xb.x2w.w2f.urh.pp.o 
 	$(F95) $^ -o $@ 
 
 run: params.conf tmpOutput $(TARGETDRIVER)
 	./$(TARGETDRIVER)
 
-# this is not free form fortran
-w2f__types.o : w2f__types.f
-	$(F95) -c $<
-
-# this is not free form fortran either
-$(TARGET).prh.xb.x2w.w2f.urh.pp.o : $(REVERSE_MODULES) $(TARGET).prh.xb.x2w.w2f.urh.pp.f 
-	$(F95) -c $(TARGET).prh.xb.x2w.w2f.urh.pp.f
-
 %.o:%.f
+	$(F95) -fixed -c $<
+
+%.o:%.f90
 	$(F95) -free -c $<
-
-%.o:%.f95
-	$(F95) -c $<
-
-# link the sample files if necessary
-$(TARGETDRIVER).f : 
-	ln -s simple.$(TARGETDRIVER).f $(TARGETDRIVER).f
-
-# link the sample files if necessary
-$(TARGET).f : 
-	ln -s simple.f $(TARGET).f
-
-# link the sample files if necessary
-params.conf : 
-	ln -s simple.params.conf params.conf
 
 tmpOutput: 
 	mkdir -p $@
 
-testclean:
-	$(RM) $(TARGET).B $(TARGET).prh* $(TARGETDRIVER) $(TARGETDRIVER).o 
-	$(RM) -rf tmpOutput 
+testAllclean: 
+	$(RM) $(TARGET).* $(TARGETDRIVER)* params.conf all_globals_mod* *mod-whirl tmpOutput
 
-testAllclean: testclean
-	$(RM) $(TARGET).f $(TARGETDRIVER).f params.conf
-	$(RM) -rf  tmpOutput verifiedOutput 
-
-# cleanup
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f pp.pl xaifBooster 
+	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f *.pl xaifBooster 
 	$(RM) *.mod *.o
 
 obj test doc: 
 
-.PHONY: all obj test doc clean testclean testAllclean run
+.PHONY: all obj test doc clean testAllclean run
