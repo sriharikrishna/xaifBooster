@@ -20,7 +20,6 @@ namespace xaifBoosterConstantFolding {
     
     virtual ~EnhancedPrivateLinearizedComputationalGraph() {};
     
-
     void front_elim(xaifBoosterConstantFolding::EnhancedPrivateLinearizedComputationalGraphEdge& e);
     void back_elim(xaifBoosterConstantFolding::EnhancedPrivateLinearizedComputationalGraphEdge& e);
     void ConstantFolding();
@@ -31,7 +30,12 @@ namespace xaifBoosterConstantFolding {
     void RunConstantCheckForwardBackward();
     void RunTrivialCheckForward();
     void RunTrivialCheckBackwards();
-
+    void RunParallelEdgeAddition();
+    void RunTrivialCheckForwardAgain();
+    void RunTrivialCheckBackwardsAgain();
+    void CheckInEdgesForTrivialitySecondRun(xaifBoosterConstantFolding::EnhancedPrivateLinearizedComputationalGraphVertex& j);
+    void CheckOutEdgesForTrivialitySecondRun(xaifBoosterConstantFolding::EnhancedPrivateLinearizedComputationalGraphVertex& j);
+   
   };
   
 } 
