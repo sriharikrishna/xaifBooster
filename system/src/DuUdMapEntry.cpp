@@ -122,7 +122,9 @@ namespace xaifBooster {
 	!anotherSize) { 
       THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::sameDefinitionAs: empty chain(s)");
     }
-    return (aSize==1 && anotherSize==1 && 
+    return (aSize==1 && anotherSize==1 &&
+	    !(*(myStatementIdList.begin())).empty()
+	    &&
 	    *(myStatementIdList.begin())==*(anotherEntry.myStatementIdList.begin()));
   } 
 

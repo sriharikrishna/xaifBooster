@@ -19,16 +19,17 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
       <xaif:AliasSet key="0">
+        <xaif:Alias virtual_address="1"/>
       </xaif:AliasSet>
     </xaif:AliasSetList>
     <xaif:DUUDSetList>
       <xaif:DUUDSet>
       </xaif:DUUDSet>
       <xaif:DUUDSet>
-        <xaif:StatementId idRef="a2">
+        <xaif:StatementId idRef="a2"/>
       </xaif:DUUDSet>
       <xaif:DUUDSet>
-        <xaif:StatementId idRef="a1">
+        <xaif:StatementId idRef="a1"/>
       </xaif:DUUDSet>
     </xaif:DUUDSetList>
     <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" active="1">

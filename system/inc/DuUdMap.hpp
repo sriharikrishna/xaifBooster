@@ -55,6 +55,8 @@ namespace xaifBooster {
      * keys are provably identical and false otherwise;
      * the keys have to come from the same ControlFlowGraph
      * as we don't require global uniqueness of statement ids
+     * Note: sameDefinition returning false does not 
+     * imply the definitions are disjoint
      */
     bool sameDefinition(const DuUdMapKey& aKey,
 			const DuUdMapKey& anotherKey) const;
@@ -65,6 +67,8 @@ namespace xaifBooster {
      * keys are provably disjoint and false otherwise;
      * the keys have to come from the same ControlFlowGraph
      * as we don't require global uniqueness of statement ids
+     * Note: disjointDefinition returning false does not 
+     * imply the definitions are the same
      */
     bool disjointDefinition(const DuUdMapKey& aKey,
 			    const DuUdMapKey& anotherKey) const;

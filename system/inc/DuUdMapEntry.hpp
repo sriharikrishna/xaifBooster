@@ -47,11 +47,15 @@ namespace xaifBooster{
 
     /** 
      * the name says it all
+     * Note: sameDefinitionAs returning false does not 
+     * imply the definitions are disjoint
      */
     bool sameDefinitionAs(const DuUdMapEntry& anotherEntry) const;
 
     /** 
      * the name says it all
+     * Note: disjointDefinitionFrom returning false does not 
+     * imply the definitions are the same
      */
     bool disjointDefinitionFrom(const DuUdMapEntry& anotherEntry) const;
 
