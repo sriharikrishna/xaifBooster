@@ -183,13 +183,6 @@ namespace xaifBooster {
      */
     bool myDerivFlag;
 
-  public:
-    /** 
-     * returns the first VariableVertex that is a VariableSymbolReference
-     * \todo: this is a bit of a hack because we might 
-     * conceivably have something with more than one such vertex
-     */
-    const VariableSymbolReference& getVariableSymbolReference() const;
   private:
 
     /** 
