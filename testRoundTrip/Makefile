@@ -8,7 +8,7 @@ TARGETDRIVER=driver
 PP_FLAGS=-f
 endif
 
-all: $(TARGET).xb.x2w.w2f.pp.f
+all: $(TARGET).prh.xb.x2w.w2f.urh.pp.f
 
 export UNDEF_ENV_VARS=""
 ifndef RICETOOLROOT
@@ -35,26 +35,32 @@ CC=gcc
 
 RM=rm -f
 
-$(TARGET).B: $(TARGET).f mfef90
-	./mfef90 -F -N80 $(TARGET).f
+$(TARGET).prh.f: $(TARGET).f prh.pl
+	perl prh.pl $<
 
-$(TARGET).xaif : $(TARGET).B whirl2xaif
-	./whirl2xaif -o $(TARGET).xaif $(TARGET).B
+$(TARGET).prh.B: $(TARGET).prh.f mfef90
+	./mfef90 -F -N132 $<
 
-$(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
+$(TARGET).prh.xaif : $(TARGET).prh.B whirl2xaif
+	./whirl2xaif -o $@ $<
+
+$(TARGET).prh.xb.xaif : $(TARGET).prh.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
 	$(COMPLAIN)
-#	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif -g 15
-	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
+#	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ -g 15
+	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@
 
-$(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
-	./xaif2whirl --structured $(TARGET).B $(TARGET).xb.xaif
+$(TARGET).prh.xb.x2w.B : $(TARGET).prh.xb.xaif xaif2whirl
+	./xaif2whirl --structured $(TARGET).prh.B $<
 
-$(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
+$(TARGET).prh.xb.x2w.w2f.f: $(TARGET).prh.xb.x2w.B whirl2f whirl2f_be
 	$(COMPLAIN)
-	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f -openad $(TARGET).xb.x2w.B
+	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f -openad $<
 
-$(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
-	perl pp.pl $(PP_FLAGS) $(TARGET).xb.x2w.w2f.f
+$(TARGET).prh.xb.x2w.w2f.urh.f: $(TARGET).prh.xb.x2w.w2f.f urh.pl
+	perl urh.pl $<
+
+$(TARGET).prh.xb.x2w.w2f.urh.pp.f: $(TARGET).prh.xb.x2w.w2f.urh.f pp.pl
+	perl pp.pl $(PP_FLAGS) $<
 
 # setup some links
 %.xsd:
@@ -69,9 +75,21 @@ whirl2xaif xaif2whirl:
 	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/OpenADFortTk/obj/i686-Linux/obj/$@ .
 
-pp.pl: 
+%.pl: 
 	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
+
+#pp.pl: 
+#	$(COMPLAIN)
+#	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
+
+#prh.pl: 
+#	$(COMPLAIN)
+#	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
+
+#urh.pl: 
+#	$(COMPLAIN)
+#	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
 
 whirl2f whirl2f_be:
 	$(COMPLAIN)
