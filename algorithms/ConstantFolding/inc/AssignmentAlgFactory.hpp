@@ -1,0 +1,11 @@
+#ifndef _XAIFBOOSTERCONSTANTFOLDING_ASSIGNMENTALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERCONSTANTFOLDING_ASSIGNMENTALGFACTORY_INCLUDE_
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/algorithms/ConstantFolding/inc/AlgFactoryManager.hpp"
+
+
+  DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulation::AssignmentAlgFactory,xaifBoosterConstantFolding);
+
+
+#endif
