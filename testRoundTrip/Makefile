@@ -1,4 +1,5 @@
-TARGET=testCode
+TARGET=head
+TARGETDRIVER=driver
 
 all: $(TARGET).xb.x2w.w2f.pp.f
 
@@ -21,6 +22,8 @@ endif
 
 LN=ln -sf
 
+F95=f95
+
 RM=rm -f
 
 $(TARGET).B: $(TARGET).f mfef90
@@ -31,7 +34,8 @@ $(TARGET).xaif : $(TARGET).B whirl2xaif
 
 $(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaifBooster
 	$(COMPLAIN)
-	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif -g 15
+#	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif -g 15
+	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
 
 $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
 	./xaif2whirl $(TARGET).B $(TARGET).xb.xaif
@@ -68,11 +72,34 @@ xaifBooster:
 	$(COMPLAIN)
 	$(LN) ${XAIFBOOSTERROOT}/xaifBooster/algorithms/BasicBlockPreaccumulation/test/t  $@
 
+# make the $TARGETDRIVER)
+$(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o
+	$(F95) $^ -o $@
+
+# this is not free form fortran
+w2f__types.o : w2f__types.f
+	$(F95) -c $<
+
+# this is not free form fortran either
+$(TARGET).xb.x2w.w2f.pp.o : $(TARGET).xb.x2w.w2f.pp.f
+	$(F95) -c $<
+
+%.o:%.f
+	$(F95) -free -c $<
+
+# link the sample files if necessary
+$(TARGETDRIVER).f : 
+	ln -s simpleDriver.f $(TARGETDRIVER).f
+
+# link the sample files if necessary
+$(TARGET).f : 
+	ln -s simple.f $(TARGET).f
+
 # cleanup
 clean:
 	$(RM) *.xsd 
 	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f pp.pl xaifBooster 
-	$(RM) $(TARGET).*
+	$(RM) $(TARGET).B $(TARGET).x* $(TARGETDRIVER) $(TARGETDRIVER).o w2f__types.o active_module.o w2f__types.mod active_module.mod
 
 obj test doc: 
 
