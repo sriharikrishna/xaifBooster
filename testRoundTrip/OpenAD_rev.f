@@ -3,7 +3,7 @@ module OpenAD_rev
 implicit none
 
 private
-public :: modeType, our_rev_mode, our_orig_mode, forward_mode, forward_arg_store_mode, reverse_mode, reset_mode
+public :: modeType, our_rev_mode, our_orig_mode, forward_mode, forward_arg_store_mode, reverse_mode, restore_mode
 
 type modeType
   logical :: arg_store=.FALSE.
@@ -29,8 +29,8 @@ interface reverse_mode
   module procedure reverse_mode_i
 end interface
 
-interface reset_mode
-  module procedure reset_mode_i
+interface restore_mode
+  module procedure restore_mode_i
 end interface
 
 contains
@@ -71,7 +71,7 @@ subroutine reverse_mode_i()
   our_rev_mode%adjoint=.TRUE.
 end subroutine 
 
-subroutine reset_mode_i()
+subroutine restore_mode_i()
   our_rev_mode=our_orig_mode
 end subroutine 
 	

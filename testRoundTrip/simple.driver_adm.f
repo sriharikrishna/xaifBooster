@@ -44,10 +44,10 @@
 	   end do 
 	   call forward_mode()
 	   call head(xph,yph)
-	   call reset_mode()
+	   call restore_mode()
 	   call forward_arg_store_mode()
 	   call head(x,y)
-	   call reset_mode()
+	   call restore_mode()
 	   do k=1,m
 	      write(2,*) "F(",k,",",i,")=",(yph(k)%v-y(k)%v)/h
 	   end do
@@ -58,7 +58,7 @@
 	do i=n+1,m
 	   call forward_arg_store_mode()
 	   call head(x,y)
-	   call reset_mode()
+	   call restore_mode()
 	end do
 
         call reverse_mode()
