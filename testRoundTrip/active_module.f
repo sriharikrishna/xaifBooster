@@ -13,7 +13,7 @@
         type active
           sequence
           double precision :: v 
-          double precision :: d
+          double precision :: d=0.0
         end type active
         
         interface saxpy
