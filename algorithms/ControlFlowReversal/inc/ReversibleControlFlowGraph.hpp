@@ -24,7 +24,7 @@ namespace xaifBoosterControlFlowReversal {
   /** 
    * class to implement a reversible control flow graph
    */
-  class ReversibleControlFlowGraph : public GraphWrapperTraversable<ReversibleControlFlowGraphVertex, ReversibleControlFlowGraphEdge> {
+  class ReversibleControlFlowGraph : public GraphWrapperTraversable<ReversibleControlFlowGraphVertex,ReversibleControlFlowGraphEdge> {
 
   public:
     
@@ -241,6 +241,13 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * vertex list for generating various topological sorts
      */
+    std::list<ReversibleControlFlowGraphVertex*> mySortedVertices_p_l;
+
+    /** 
+     * list of correspondences between original vertices
+     * and new ones in the reversed cfg
+     */
+    std::list<std::pair<const ReversibleControlFlowGraphVertex*,const ReversibleControlFlowGraphVertex*> > myVertexMap;
 
     void makeLoopExplicitReversalInitialization(const ForLoop& theOldForLoop,
 						ForLoop& theNewForLoop,

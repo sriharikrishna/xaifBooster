@@ -271,47 +271,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
     recursionGuard--;
   }
-class PrivateLinearizedComputationalGraphVertexLabelWriter {
-  public:
-    PrivateLinearizedComputationalGraphVertexLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
-    template <class BoostIntenalVertexDescriptor>
-    void operator()(std::ostream& out,
-                    const BoostIntenalVertexDescriptor& v) const {
-      unsigned int theKind=0;
-      if (boost::out_degree(v,myG.getInternalBoostGraph())==1&&boost::in_degree(v,myG.getInternalBoostGraph())>0) {
-        const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p=dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()),v));
-        const PrivateLinearizedComputationalGraphEdge& thePrivateLinearizedComputationalGraphOutEdge_r(dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*(myG.getOutEdgesOf(*thePrivateLinearizedComputationalGraphVertex_p).first)));
-
-        theKind=1;
-        if (thePrivateLinearizedComputationalGraphOutEdge_r.hasLinearizedExpressionEdge()) 
-          theKind=dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(thePrivateLinearizedComputationalGraphOutEdge_r.getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getPartialDerivativeKind();
-      }
-      if (theKind==1||theKind==2) 
-        out << "[label=\"\" color=\"black\" style=filled]";
-      else   
-        out << "[label=\"\"]";
-    }
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
-  };
-
-  class PrivateLinearizedComputationalGraphEdgeLabelWriter {
-  public:
-    PrivateLinearizedComputationalGraphEdgeLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
-    template <class BoostIntenalEdgeDescriptor>
-    void operator()(std::ostream& out,
-                    const BoostIntenalEdgeDescriptor& v) const {
-      const PrivateLinearizedComputationalGraphEdge* thePrivateLinearizedComputationalGraphEdge_p=
-        dynamic_cast<const PrivateLinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(), myG.getInternalBoostGraph()),v));
-      
-      if (thePrivateLinearizedComputationalGraphEdge_p->hasLinearizedExpressionEdge()) 
-      out << "[label=\"" << dynamic_cast<const xaifBoosterLinearization::ExpressionEdgeAlg&>(thePrivateLinearizedComputationalGraphEdge_p->getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getPartialDerivativeKind()
-          << "\"]";
-      else   
-        out << "[label=\"1\"]";
-    }
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
-  };
-
 
   class PrivateLinearizedComputationalGraphVertexLabelWriter {
   public:
@@ -382,9 +341,50 @@ class PrivateLinearizedComputationalGraphVertexLabelWriter {
 	  theFlattenedSequence.addToIndependentList(*it);
 	}
       } 
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	 GraphVizDisplay::show(theFlattenedSequence,"flattened",PrivateLinearizedComputationalGraphVertexLabelWriter(theFlattenedSequence),PrivateLinearizedComputationalGraphEdgeLabelWriter(theFlattenedSequence));
+      // now look at all the vertices in the dependent list 
+      // and remove the ones not needed as indicated by 
+      // the duud information:
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(theFlattenedSequence.getDependentList());
+      // we need a complete copy to ensure correctness in case of overwritten (local) independents
+      VariableCPList theDepVertexPListCopyWithoutRemovals;
+      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
+	   aDepVertexPListI!=theDepVertexPList.end();) { 
+	// cast it first
+	const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
+	// copy it
+	theDepVertexPListCopyWithoutRemovals.push_back(&(myPrivateVertex.getLHSVariable()));
+	// advance the iterator before we delete anything:
+	++aDepVertexPListI;
+	// all the dependent ones should have the LHS set
+	const DuUdMapKey& aDuUdMapKey(myPrivateVertex.getLHSVariable().getDuUdMapKey()); 
+	if (aDuUdMapKey.getKind()==InfoMapKey::TEMP_VAR) { 
+	  // now the assumption is that temporaries are local to the flattened Sequence
+	  // and we can remove: 
+	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
+	  continue;
+	}
+	DuUdMapUseResult theDuUdMapUseResult(ConceptuallyStaticInstances::instance()->
+					     getCallGraph().getDuUdMap().use(aDuUdMapKey,
+									     theFlattenedSequence.getDependentStatementIdList()));
+	if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
+	    || 
+	    theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
+	  if (!theFlattenedSequence.numOutEdgesOf(myPrivateVertex)) 
+	    // we can't have this, it will confuse the termination criterion in the elimination algorithm
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: attempting to remove a maximal vertex "
+				       << myPrivateVertex.getLHSVariable().debug().c_str()
+				       << " key "
+				       << aDuUdMapKey.debug().c_str()
+				       << " from the dependent list");
+	  // we only use it in the scope of this flattened sequence, therefore remove it
+	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
+	}
       } 
+      // UN: this is used to keep track of those independent variables
+      // that were already assigned to temporary variables to ensure correctness
+      // of the Jacobian accumulation code.
+      HashTable<const Variable*> theListOfAlreadyAssignedIndependents;
+      InternalReferenceConcretizationList theInternalReferenceConcretizationList;
       // filter out singleton vertices
       xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator aDPBeginI((*i)->myDerivativePropagator.getEntryPList().begin());
       bool findNext=true;

@@ -39,6 +39,32 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     void VertexIdentificationListPassive::removeIfIdentifiable(const Variable& theVariable); 
 
+  private:
+
+    class ListItem: public VertexIdentificationList::ListItem { 
+      
+    public: 
+
+      ListItem(const AliasMapKey& anAliasMapKey,
+	       const DuUdMapKey& aDuUdMapKey,
+	       const ObjectWithId::Id& aStatementId);
+
+      virtual std::string debug() const;
+
+      /**
+       * this is the statement id of the assignment in which this 
+       * vertex represents the LHS
+       * this must be set or this ListItem instance is useless
+       */
+      const ObjectWithId::Id& myStatementId;
+
+    };
+    
+    /** 
+     * retrieve the list of statement IDs collected in myList
+     */
+    void getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const;
+
   }; // end of class VertexIdentificationListPassive  
    
 } // end namespace 
