@@ -35,6 +35,15 @@ NON_DUMMY_FACTORY_OBJ_NAMEPATTERNS=$(ALG_FACTORY_OBJ_NAMEPATTERNS) $(LINEARIZATI
 # i.e. the ones not in ALG_FACTORY_OBJ_NAMEPATTERNS
 REMANING_DUMMY_FACTORY_OBJ_SET=$(filter-out $(NON_DUMMY_FACTORY_OBJ_NAMEPATTERNS),$(DUMMY_FACTORY_OBJ_SET))
 
+# pick up all algorith specific obj files
+ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../src/srcFactories/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) 
+
+CCIF_LIB=-lxaifBoosterCrossCountryInterface
+CCIF_LIB_DIR=../../CrossCountryInterface/lib 
+
+VPATH+=$(CCIF_LIB_DIR) 
+LIBS+=$(CCIF_LIB)
+
 # setup for ANGEL
 UNDEF_ENV_VARS=""
 ifndef ANGELROOT
@@ -44,10 +53,7 @@ endif
 ANGEL_LIB=-langel
 ANGEL_LIB_DIR=$(ANGELROOT)/lib 
 
-# pick up all algorith specific obj files
-ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../src/srcFactories/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) $(wildcard ../../CrossCountryInterface/src/obj/*.o)
-
-VPATH+=$(ANGEL_LIB_DIR)
+VPATH+=$(ANGEL_LIB_DIR) 
 LIBS+=$(ANGEL_LIB)
 
 ifneq ($(UNDEF_ENV_VARS),"")
