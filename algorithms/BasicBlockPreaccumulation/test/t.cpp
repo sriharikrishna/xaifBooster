@@ -42,6 +42,7 @@ int main(int argc,char** argv) {
     return -1;
   } // end catch 
   try {   
+    DBG_MACRO(DbgGroup::TIMING,"before XML parsing");
     xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::instance()->init();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
@@ -50,9 +51,13 @@ int main(int argc,char** argv) {
     p.initialize();
     p.parse(inFileName);
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    DBG_MACRO(DbgGroup::TIMING,"before linearize");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
+    DBG_MACRO(DbgGroup::TIMING,"before flatten");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // flatten
+    DBG_MACRO(DbgGroup::TIMING,"before accumulation");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
+    DBG_MACRO(DbgGroup::TIMING,"before unparse");
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     newLocation.append(" xaif_derivative_propagator.xsd");
@@ -70,6 +75,7 @@ int main(int argc,char** argv) {
 	      "caught exception: " << e.getReason());
     return -1;
   } // end catch 
+  DBG_MACRO(DbgGroup::TIMING,"done");
   return 0;
 }
   
