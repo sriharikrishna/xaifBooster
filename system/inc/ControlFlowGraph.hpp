@@ -1,12 +1,9 @@
 #ifndef _CONTROLFLOWGRAPH_INCLUDE_
 #define _CONTROLFLOWGRAPH_INCLUDE_
 
-#include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraphEdge.hpp"
 #include "xaifBooster/system/inc/InOutList.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphCommonAttributes.hpp"
-
+#include "xaifBooster/system/inc/ControlFlowGraphBase.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
 
 namespace xaifBooster { 
@@ -16,8 +13,9 @@ namespace xaifBooster {
    * the control flow for a subroutine
    * it is a member of a CallGraphVertex
    */
-  class ControlFlowGraph : public GraphWrapperTraversable<ControlFlowGraphVertex, ControlFlowGraphEdge> , 
-			   public ControlFlowGraphCommonAttributes {
+  class ControlFlowGraph : public ControlFlowGraphCommonAttributes,
+			   public ControlFlowGraphBase {
+
   public:
 
     ControlFlowGraph(const Symbol& theSymbol,

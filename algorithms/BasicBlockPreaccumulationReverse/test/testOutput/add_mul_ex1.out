@@ -1,0 +1,186 @@
+  <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif_output.xsd" program_name="Example" prefix="test_prefix">
+    <xaif:ScopeHierarchy>
+      <xaif:Scope vertex_id="1" annotation="">
+        <xaif:SymbolTable>
+          <xaif:Symbol symbol_id="head" kind="subroutine" type="void" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_10" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_11" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
+          <xaif:Symbol symbol_id="x" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="y" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="z" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_2" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_3" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_4" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_5" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_6" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_7" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_8" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="test_prefixSymbol_9" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
+        </xaif:SymbolTable>
+      </xaif:Scope>
+      <xaif:Scope vertex_id="2" annotation="">
+        <xaif:SymbolTable>
+          <xaif:Symbol symbol_id="x" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="y" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="z" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0"/>
+        </xaif:SymbolTable>
+      </xaif:Scope>
+      <xaif:ScopeEdge edge_id="1" source="2" target="1"/>
+    </xaif:ScopeHierarchy>
+    <xaif:AliasSetList>
+    </xaif:AliasSetList>
+    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" active="1" annotation="">
+      <xaif:ArgumentList>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="3" symbol_id="z" scope_id="2" active="1" intent="inout"/>
+      </xaif:ArgumentList>
+      <xaif:Entry vertex_id="1" annotation=""/>
+      <xaif:BasicBlock vertex_id="2" annotation="" scope_id="2">
+        <xaif:Assignment statement_id="replacement for ass1" active="1">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+            </xaif:VariableReference>
+            <xaif:VariableReference vertex_id="2" active="true" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+            </xaif:VariableReference>
+            <xaif:ExpressionEdge edge_id="1" source="1" target="4" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="2" target="4" position="2"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="replacement for ass1" active="1">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
+            <xaif:VariableReference vertex_id="3" active="true" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
+            </xaif:VariableReference>
+            <xaif:VariableReference vertex_id="4" active="false" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
+            </xaif:VariableReference>
+            <xaif:ExpressionEdge edge_id="3" source="3" target="5" position="1"/>
+            <xaif:ExpressionEdge edge_id="4" source="4" target="5" position="2"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="elementary_partial" active="0">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" scope_id="1"/>
+            </xaif:VariableReference>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="elementary_partial" active="0">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+            </xaif:VariableReference>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="elementary_partial" active="0">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+            </xaif:VariableReference>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="elementary_partial" active="0">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
+            </xaif:VariableReference>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="ass1: delayed LHS assignment for correct partials" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
+            </xaif:VariableReference>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="jacobian_accumulation" active="1">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" scope_id="1"/>
+            </xaif:VariableReference>
+            <xaif:VariableReference vertex_id="2" active="false" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" scope_id="1"/>
+            </xaif:VariableReference>
+            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="jacobian_accumulation" active="1">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" scope_id="1"/>
+            </xaif:VariableReference>
+            <xaif:VariableReference vertex_id="2" active="false" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" scope_id="1"/>
+            </xaif:VariableReference>
+            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="jacobian_accumulation" active="1">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" scope_id="1"/>
+            </xaif:VariableReference>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+      </xaif:BasicBlock>
+      <xaif:Exit vertex_id="3" annotation=""/>
+      <xaif:ControlFlowEdge edge_id="1" source="1" target="2"/>
+      <xaif:ControlFlowEdge edge_id="2" source="2" target="3"/>
+    </xaif:ControlFlowGraph>
+  </xaif:CallGraph>
