@@ -18,6 +18,12 @@ namespace xaifBooster {
     case MATRIX:
       returnString="matrix";
       break;
+    case THREE_TENSOR:
+      returnString="three_tensor";
+      break;
+    case FOUR_TENSOR:
+      returnString="four_tensor";
+      break;
     default: 
       throw PrintingIntException("SymbolShape::toString: unknown value",aShape);
       break;
@@ -34,6 +40,10 @@ namespace xaifBooster {
       returnValue=VECTOR;
     else if (aName=="matrix")
       returnValue=MATRIX;
+    else if (aName=="three_tensor")
+      returnValue=THREE_TENSOR;
+    else if (aName=="four_tensor")
+      returnValue=FOUR_TENSOR;
     else  
       THROW_LOGICEXCEPTION_MACRO("SymbolShape::fromString: unknown value >"
 			   << aName.c_str() << "<");
