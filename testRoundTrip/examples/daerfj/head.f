@@ -35,10 +35,10 @@ c     **********
       y(10)=2.35d-2
       y(11)=2.46d-2
 
-      do 10 i = 1, 11
+      do i = 1, 11
          temp1 = v(i)*(v(i)+x(2))
          temp2 = v(i)*(v(i)+x(3)) + x(4)
          fvec(i) = y(i) - x(1)*temp1/temp2
-   10 continue
+      end do
 
       end subroutine
