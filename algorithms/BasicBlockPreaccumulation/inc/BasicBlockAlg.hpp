@@ -115,6 +115,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     static unsigned int getSequenceCounter();
 
+    const DuUdMapDefinitionResult::StatementIdList& getAssignmentIdList()const;
+
+    void addMyselfToAssignmentIdList(const Assignment&);
+
   protected: 
 
     /**
@@ -338,6 +342,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * counting all Sequence instances
      */
     static unsigned int ourSequenceCounter;
+
+    /** 
+     * the list of all Assignment statement Ids
+     */ 
+    DuUdMapDefinitionResult::StatementIdList ourAssignmentIdList;
 
   };
  

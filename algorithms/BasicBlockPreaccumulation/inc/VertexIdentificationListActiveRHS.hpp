@@ -2,6 +2,7 @@
 #define _VERTEXIDENTIFICATIONLISTACTIVERHS_INCLUDE_
 
 #include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActive.hpp"
 
 using namespace xaifBooster;
@@ -28,7 +29,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * NOT_IDENTIFIED 
      */
     virtual void addElement(const Variable& theVariable,
-			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
+			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
+			    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignmentsList);
     
   }; // end of class VertexIdentificationListActiveRHS  
    
