@@ -411,7 +411,6 @@ namespace xaifBoosterControlFlowReversal {
           break;
         }
         case ControlFlowGraphVertexAlg::ENDBRANCH : {
-          std::cout << "ENDBRANCH " << theLoopCounterSymbolStack_r.size() << std::endl;
           /*
           insert 
                  branch_index=1 
@@ -468,7 +467,7 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraph::clearIndeces() {
     ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
     ReversibleControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
-    for (;beginIt!=endIt ;++beginIt) (*beginIt).setIndex(-1);
+    for (;beginIt!=endIt ;++beginIt) (*beginIt).setIndex(0);
   }
 
   const ReversibleControlFlowGraphEdge&
@@ -587,7 +586,7 @@ namespace xaifBoosterControlFlowReversal {
         for (;beginItie!=endItie ;++beginItie) 
           if (!((*beginItie).toLoopBody)) {
             if (getTargetOf(*beginItie).getVisited())
-              tmpSortedVertices_p_v[getTargetOf(*beginItie).getIndex()]=0;
+              tmpSortedVertices_p_v[getTargetOf(*beginItie).getIndex()-1]=0;
             getTargetOf(*beginItie).setIndex(idx++);
             tmpSortedVertices_p_v.push_back(&getTargetOf(*beginItie));
             if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
@@ -600,7 +599,7 @@ namespace xaifBoosterControlFlowReversal {
         OutEdgeIterator beginItie(pie.first),endItie(pie.second);
         for (;beginItie!=endItie ;++beginItie)
           if (getTargetOf(*beginItie).getVisited())
-            tmpSortedVertices_p_v[getTargetOf(*beginItie).getIndex()]=0;
+            tmpSortedVertices_p_v[getTargetOf(*beginItie).getIndex()-1]=0;
           getTargetOf(*beginItie).setIndex(idx++);
           if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
         }
@@ -620,36 +619,16 @@ namespace xaifBoosterControlFlowReversal {
     initVisit();
     clearIndeces();
     mySortedVertices_p_l.clear();
-    int idx=0;
+    int idx=1;
     getEntry().setIndex(idx++);
     std::vector<ReversibleControlFlowGraphVertex*> tmpSortedVertices_p_v;
     tmpSortedVertices_p_v.push_back(&getEntry());
     if (!topologicalSortRecursively(getEntry(),idx,tmpSortedVertices_p_v))
       THROW_LOGICEXCEPTION_MACRO("Trying to sort an unstructured flow graph");
-
-    // print mySortedVertices_p_v
-  {
-    std::vector<ReversibleControlFlowGraphVertex*>::iterator tmpSortedVertices_p_v_it;
-    for (tmpSortedVertices_p_v_it=tmpSortedVertices_p_v.begin();tmpSortedVertices_p_v_it!=tmpSortedVertices_p_v.end();tmpSortedVertices_p_v_it++)
-      if (*tmpSortedVertices_p_v_it) 
-        std::cout << (*tmpSortedVertices_p_v_it)->getIndex() << std::endl;
-      else
-        std::cout << "NULL" << std::endl;
-
-  }
-
     // copy into dense list
     std::vector<ReversibleControlFlowGraphVertex*>::iterator tmpSortedVertices_p_v_it;
     for (tmpSortedVertices_p_v_it=tmpSortedVertices_p_v.begin();tmpSortedVertices_p_v_it!=tmpSortedVertices_p_v.end();tmpSortedVertices_p_v_it++)
       if (*tmpSortedVertices_p_v_it) mySortedVertices_p_l.push_back(*tmpSortedVertices_p_v_it);
-
-    // print mySortedVertices_p_l
-    std::list<ReversibleControlFlowGraphVertex*>::iterator mySortedVertices_p_l_it;
-    for (mySortedVertices_p_l_it=mySortedVertices_p_l.begin();mySortedVertices_p_l_it!=mySortedVertices_p_l.end();mySortedVertices_p_l_it++)
-      if (*mySortedVertices_p_l_it)
-        std::cout << (*mySortedVertices_p_l_it)->getIndex() << std::endl;
-      else
-        std::cout << "NULL" << std::endl;
   }
 
   /*
@@ -764,6 +743,7 @@ namespace xaifBoosterControlFlowReversal {
         default: break;
       }
       theVertexCorrespondence_ppl.push_back(std::make_pair(*the_mySortedVertices_p_l_rit,theReversibleControlFlowGraphVertex_p)); 
+      theReversibleControlFlowGraphVertex_p->setAdjointIndex((*the_mySortedVertices_p_l_rit)->getIndex());
     }
     // add reversed edges
     std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::const_iterator theVertexCorrespondence_ppl_cit;

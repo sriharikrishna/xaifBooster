@@ -40,6 +40,7 @@ namespace xaifBoosterControlFlowReversal {
 
     int getIndex() const;
     void setIndex(int);
+    void setAdjointIndex(int);
 
     bool isOriginal() const { return original; }
 
