@@ -309,6 +309,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
 	    || 
 	    theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
+	  if (!theFlattenedSequence.numOutEdgesOf(myPrivateVertex)) 
+	    // we can't have this, it will confuse the termination criterion in the elimination algorithm
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: attempting to remove a maximal vertex from the dependent list");
 	  // we only use it in the scope of this flattened sequence, therefore remove it
 	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
 	}
