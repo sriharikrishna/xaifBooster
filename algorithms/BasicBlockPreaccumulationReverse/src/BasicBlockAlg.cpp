@@ -19,11 +19,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
     switch(xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->getPrintVersion()) { 
-    case xaifBoosterCodeReplacement::PrintVersion::ORIGINAL: 
+    case xaifBoosterCodeReplacement::PrintVersion::ORIGINAL: { 
+      xaifBooster::PrintVersion::PrintVersion_E aPrintVersion(xaifBooster::ConceptuallyStaticInstances::instance()->
+							      getPrintVersion());
       xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBooster::PrintVersion::SYSTEM_ONLY);
       xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::getContaining().printXMLHierarchyImpl(os);
-      xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBooster::PrintVersion::VIRTUAL);
+      xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(aPrintVersion);
       break;
+    }
     case xaifBoosterCodeReplacement::PrintVersion::AUGMENTED: 
       xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::printXMLHierarchy(os);
       break;
