@@ -25,6 +25,8 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphEdge();
     ~ReversibleControlFlowGraphEdge();
 
+    bool isBackEdge(const ReversibleControlFlowGraph&) const;
+
     virtual void printXMLHierarchy(std::ostream& os, const ReversibleControlFlowGraph&) const;
                                                                                 
     virtual std::string debug() const ;
