@@ -3,18 +3,15 @@
 #include <iostream>
 #include <fstream>
 #include <list>
-#include <algorithm>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/EdgeElim.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/VertexElim.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/FaceElim.hpp"
-
-
-enum Heuristic{VERTEX, EDGE, FACE, FORWARD, REVERSE, MARKOWITZ, SIBLING, SIBLING2, SUCCPRED, ABSORB};
 
 using namespace MemOpsTradeoffPreaccumulation;
 
@@ -24,142 +21,21 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 						   int mode,
 						   xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
 
-    //input from file to construct heuristic sequence
-    std::list<Heuristic> heuristicEnumSequence;
-    bool usable = true;
+    ConceptuallyStaticInstances::HeuristicList HeuristicSequence = ConceptuallyStaticInstances::instance()->getList();
 
-    std::ifstream hfile("HeuristicList.txt");
-    if(!hfile){
+    //if no heuristics are passed on the command line, we use defaults as defined here
+    if(HeuristicSequence.empty()){
       if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	std::cout << "Error opening heuristic file, using default mode and heuristics" << std::endl;
+        std::cout << "Error parsing command line heuristic arguments, using default mode and heuristics" << std::endl;
       }
-      usable = false;
+      HeuristicSequence.push_back(ConceptuallyStaticInstances::EDGE);
+      HeuristicSequence.push_back(ConceptuallyStaticInstances::MARKOWITZ);
+      HeuristicSequence.push_back(ConceptuallyStaticInstances::SIBLING2);
+      HeuristicSequence.push_back(ConceptuallyStaticInstances::REVERSE);
     }
 
-    else{
-      char line[10];
-      while(hfile.getline(line, 10)){
-	std::string theline = line;
- 	if(theline == "VERTEX"){
-	  if(heuristicEnumSequence.empty()){heuristicEnumSequence.push_back(VERTEX);}
-	  else{
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	}// end if VERTEX
-	else if(theline == "EDGE"){
-	  if(heuristicEnumSequence.empty()){heuristicEnumSequence.push_back(EDGE);}
-	  else{
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	}// end if EDGE
-	else if(theline == "FACE"){
-	  if(heuristicEnumSequence.empty()){heuristicEnumSequence.push_back(FACE);}
-	  else{
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	}// end if FACE
-	else if(theline == "FORWARD"){
-	  if(heuristicEnumSequence.empty()){
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	  else{heuristicEnumSequence.push_back(FORWARD);}
-	}// end if FORWARD
-	else if(theline == "REVERSE"){
-	  if(heuristicEnumSequence.empty()){
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	  else{heuristicEnumSequence.push_back(REVERSE);}
-	}// end if REVERSE
-	else if(theline == "MARKOWITZ"){
-	  if(heuristicEnumSequence.empty()){
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	  else{heuristicEnumSequence.push_back(MARKOWITZ);}
-	}// end if MARKOWITZ
-	else if(theline == "SIBLING"){
-	  if(heuristicEnumSequence.empty()){
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	  else{heuristicEnumSequence.push_back(SIBLING);}
-	}// end if SIBLING
-	else if(theline == "SIBLING2"){
-	  if(heuristicEnumSequence.empty()){
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	  else{heuristicEnumSequence.push_back(SIBLING2);}
-	}// end if SIBLING2
-	else if(theline == "SUCCPRED"){
-	  if(heuristicEnumSequence.empty()){
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	  else{heuristicEnumSequence.push_back(SUCCPRED);}
-	}// end if SUCCPRED
-	else if(theline == "ABSORB"){
-	  if(heuristicEnumSequence.empty()){
-	    usable = false;
-	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
-	    }
-	  }
-	  else{heuristicEnumSequence.push_back(ABSORB);}
-	}// end if SUCCPRED
-	else{
- 	  usable = false;
-	  if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic file, using default mode and heuristics" << std::endl;
-	    }
-        }// end else
-	if(!usable){break;}
-      }// end while
-      
-      if(heuristicEnumSequence.empty()){
-	usable = false;
-	if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
-	      std::cout << "Error with heuristic file, using default mode and heuristics" << std::endl;
-	}
-      }// end if empty
-
-    }// end else
-    hfile.close();
-    
-    if(!usable){
-      heuristicEnumSequence.clear();
-      heuristicEnumSequence.push_back(FACE);
-
-      // heuristicEnumSequence.push_back(EDGE);
-//       heuristicEnumSequence.push_back(MARKOWITZ);
-//       heuristicEnumSequence.push_back(SIBLING2);
-//       heuristicEnumSequence.push_back(REVERSE);
-    }// end if usable
-
-    if(heuristicEnumSequence.front() == FACE){
+    //FACE ELIMINATION
+    if(HeuristicSequence.front() == ConceptuallyStaticInstances::FACE){
 
       DualGraph theDual (theOriginal);
 
@@ -176,29 +52,17 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
       std::list<faceHeuristicFunc> faceHeuristicSequence;
 
-      heuristicEnumSequence.pop_front();
+      HeuristicSequence.pop_front();
       //generate a list of function pointers that point to each heuristic that is to be used
-      while(!heuristicEnumSequence.empty()){
-	switch(heuristicEnumSequence.front()){
-	  case FORWARD:
-	    faceHeuristicSequence.push_back(&FaceElim::forwardMode_f);
-	    break;
-	  case REVERSE:
-	    faceHeuristicSequence.push_back(&FaceElim::reverseMode_f);
-	    break;
-	  case MARKOWITZ:
-	    faceHeuristicSequence.push_back(&FaceElim::markowitzMode_f);
-	    break;
-	  case SIBLING:
-	    faceHeuristicSequence.push_back(&FaceElim::siblingMode_f);
-	    break;
-	  case ABSORB:
+      while(!HeuristicSequence.empty()){
+	switch(HeuristicSequence.front()){
+	  case ConceptuallyStaticInstances::ABSORB:
 	    faceHeuristicSequence.push_back(&FaceElim::absorbMode_f);
 	    break;
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("Error: unknown face heuristic passed");
-	}// end switch heuristicEnumSequence
-	heuristicEnumSequence.pop_front();
+	}// end switch HeuristicSequence
+	HeuristicSequence.pop_front();
       }// end while
 
       //the face list holds all the faces that are candidates for elimination
@@ -395,7 +259,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	}// end else
       }// end while
 
-      if(heuristicEnumSequence.front() == VERTEX){
+      //VERTEX ELIMINATION
+      if(HeuristicSequence.front() == ConceptuallyStaticInstances::VERTEX){
 
 	typedef void(*vertexHeuristicFunc) (const LinearizedComputationalGraphCopy&,
 					    LinearizedComputationalGraphCopy::VertexPointerList&,
@@ -404,32 +269,32 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
 	std::list<vertexHeuristicFunc> vertexHeuristicSequence;
 
-	heuristicEnumSequence.pop_front();
+	HeuristicSequence.pop_front();
 	//generate a list of function pointers that point to each heuristic that is to be used
-	while(!heuristicEnumSequence.empty()){
-	  switch(heuristicEnumSequence.front()){
-	  case FORWARD:
+	while(!HeuristicSequence.empty()){
+	  switch(HeuristicSequence.front()){
+	  case ConceptuallyStaticInstances::FORWARD:
 	    vertexHeuristicSequence.push_back(&VertexElim::forwardMode_v);
 	    break;
-	  case REVERSE:
+	  case ConceptuallyStaticInstances::REVERSE:
 	    vertexHeuristicSequence.push_back(&VertexElim::reverseMode_v);
 	    break;
-	  case MARKOWITZ:
+	  case ConceptuallyStaticInstances::MARKOWITZ:
 	    vertexHeuristicSequence.push_back(&VertexElim::markowitzMode_v);
 	    break;
-	  case SIBLING:
+	  case ConceptuallyStaticInstances::SIBLING:
 	    vertexHeuristicSequence.push_back(&VertexElim::siblingMode_v);
 	    break;
-	  case SIBLING2:
+	  case ConceptuallyStaticInstances::SIBLING2:
 	    vertexHeuristicSequence.push_back(&VertexElim::sibling2Mode_v);
 	    break;
-	  case SUCCPRED:
+	  case ConceptuallyStaticInstances::SUCCPRED:
 	    vertexHeuristicSequence.push_back(&VertexElim::succPredMode_v);
 	    break;
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("Error: unknown heuristic passed");
-	  }// end switch heuristicEnumSequence
-	  heuristicEnumSequence.pop_front();
+	  }// end switch HeuristicSequence
+	  HeuristicSequence.pop_front();
 	}// end while
 
 	//the vertex list holds all the vertices that are candidates for elimination
@@ -508,7 +373,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
       }// end if
 
-      else if(heuristicEnumSequence.front() == EDGE){
+      //EDGE ELIMINATION
+      else if(HeuristicSequence.front() == ConceptuallyStaticInstances::EDGE){
 
 	typedef void(*edgeHeuristicFunc) (const LinearizedComputationalGraphCopy&,
 					  LinearizedComputationalGraphCopy::EdgePointerList&,
@@ -516,26 +382,26 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 					  const LinearizedComputationalGraphCopy::VertexPointerList&);
 	std::list<edgeHeuristicFunc> edgeHeuristicSequence;
 
-	heuristicEnumSequence.pop_front();
+	HeuristicSequence.pop_front();
 	//generate a list of function pointers that point to each heuristic that is to be used
-	while(!heuristicEnumSequence.empty()){
-	  switch(heuristicEnumSequence.front()){
-	  case FORWARD:
+	while(!HeuristicSequence.empty()){
+	  switch(HeuristicSequence.front()){
+	  case ConceptuallyStaticInstances::FORWARD:
 	    edgeHeuristicSequence.push_back(&EdgeElim::forwardMode_e);
 	    break;
-	  case REVERSE:
+	  case ConceptuallyStaticInstances::REVERSE:
 	    edgeHeuristicSequence.push_back(&EdgeElim::reverseMode_e);
 	    break;
-	  case MARKOWITZ:
+	  case ConceptuallyStaticInstances::MARKOWITZ:
 	    edgeHeuristicSequence.push_back(&EdgeElim::markowitzMode_e);
 	    break;
-	  case SIBLING2:
+	  case ConceptuallyStaticInstances::SIBLING2:
 	    edgeHeuristicSequence.push_back(&EdgeElim::sibling2Mode_e);
 	    break;
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("Error: Unknown heuristic passed");
-	  }// end switch heuristicEnumSequence
-	  heuristicEnumSequence.pop_front();
+	  }// end switch HeuristicSequence
+	  HeuristicSequence.pop_front();
 	}// end while
       
 	edgeHeuristicFunc func_pt;
