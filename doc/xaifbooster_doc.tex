@@ -13,14 +13,15 @@
 \newcommand{\todo}{{\bf TODO}}
 \newcommand{\xaif}{xaif}
 \newcommand{\xaifbooster}{xaifbooster}
+\newcommand{\xaifii}{xaifii}
 
 \newcommand{\notexists}{{ \kern .2em | \kern -.4em \exists }}
 
 % class names
 \newcommand{\AliasActivityMap}{{\tt AliasActivityMap}}
 \newcommand{\Assignment}{{\tt Assignment}}
-\newcommand{\BaseVariableReference}{{\tt BaseVariableReference}}
-\newcommand{\BaseVariableReferenceVertex}{{\tt BaseVariableReferenceVertex}}
+\newcommand{\Variable}{{\tt Variable}}
+\newcommand{\VariableVertex}{{\tt VariableVertex}}
 \newcommand{\BasicBlock}{{\tt BasicBlock}}
 \newcommand{\CallGraph}{{\tt CallGraph}}
 \newcommand{\CallGraphVertex}{{\tt CallGraphVertex}}
@@ -47,7 +48,7 @@
 \newcommand{\Symbol}{{\tt Symbol}}
 \newcommand{\SymbolReference}{{\tt SymbolReference}}
 \newcommand{\SymbolTable}{{\tt SymbolTable}}
-\newcommand{\VariableReference}{{\tt VariableReference}}
+\newcommand{\Argument}{{\tt Argument}}
 \newcommand{\XMLParserHelper}{{\tt XMLParserHelper}}
 
 %method names
@@ -71,7 +72,7 @@
 
 \chapter*{Prolog}
 
-This \xaifbooster~library provides a set of
+The \xaifbooster~library provides a set of
 algorithms for the semantic transformation of
 numerical programs written in imperative programming
 languages. It also provides a language independent
@@ -97,34 +98,53 @@ simulation programs into programs that compute derivatives.
 
 \section{Overall Structure}
 
+For the structure of \xaif\ please refer to the documentation 
+under ???. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\todo: JU figure out of date
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}
 \epsfig{file=xaif_structure.eps,width=\linewidth}
 \caption{\xaif -- Overall Structure}
 \label{fig:xaif_structure}
 \end{figure}
 
+It should be noted that there are some logical inconsistencies in the schema
+which arise from the lack of multiple inheritance in the schema 
+definition. Such inconsistencies can only be resolved at the expense of 
+repeated definitions of otherwise common constructs. Therfore some 
+compromises lead to extraneous constructs.
+All optional parameters have defaults. The defaults are selected to 
+provide meaningful values, in particular where they impact the 
+behavior of algorithms. I.e. they need to be conservatively correct.  
+
 \chapter{xaifbooster Base}
 
-\section{Parsing and Unparsing xaif}
+\section{Parsing and Unparsing \xaif}
 \label{sec:Parsing_and_Unparsing_xaif}
 We use the Xerces C++ XML parser 
 that can be downloaded from
 {\tt http://xml.apache.org/xerces-c} to convert
-\xaif~documents into \xaifbooster's \InternalRep. 
-While the SAX implementation presumably would save memory 
-we chose the DOM parser implementation. Since \xaifbooster's 
-\InternalRep\ closely resembles the DOM tree it appeared easier to 
-to construct that tree by walking the DOM tree depth first by 
-recursive invocation. At each recursion level the respective \xaifbooster\ objects
-are passed on through an \XMLParserHelper\ instance.  
-The methods handling the different XML elements are kept in function pointer 
-map and keyed by the respective XML element name. 
+\xaif\ documents into \xaifbooster's \InternalRep.
+The parsing code strictly follows the hierarchy 
+described in the schema in depth-first fashion. 
+Therefore either the SAX or the DOM implementation 
+could be used for parsing. 
+ 
+The SAX implementation saves memory while the DOM 
+implementation allows for arbitrary navigation of the contents tree   
+constructed from the \xaif\ document.
+Currently the \xaif\ schema and the \xaifbooster\ \InternalRep\ are similar
+enough so we can avoid arbitrary navigation.
+The methods handling the different XML elements are kept in a function pointer 
+map and keyed by the respective XML element name. All handler methods are 
+members of separate handler class.
 
-The \xaif\ schema and \xaifbooster's \InternalRep\ 
-are close enough to avoid construction of internal objects requiring 
-information from multiple DOM tree levels. Thus we are still able to switch to 
-SAX parsing if need be at the expense of keeping a more complicated helper structure
-than currently afforded by recursively stacked \XMLParserHelper\ parameters.
+In order to pass information across hierarchy levels certain 
+\InternalRep\ element pointers are passed through a subclass of  
+\XMLParserHelper\ instances which are stacked. This subclass is 
+generated from a template by a code generator.
 
 It should be noted that the \InternalRep's unparsing mechanism does not 
 build a DOM tree and use some writer class but rather writes itself directly into a
@@ -135,9 +155,14 @@ in the \xaifbooster\ \InternalRep\ will print a complete \xaif\ subtree.
 It was a deliberate choice to use this approach rather than the functionality provided with 
 \GenericTraverseInvoke.
 
+\section{Parsing \xaifii}
+\label{sec:Parsing_xaifii}
+The parsing mechanism for the intrinsics catalogue described by the 
+\xaifii\ schema is the same as for \xaif, see \ref{sec:Parsing_and_Unparsing_xaif}. 
+
 \section{Internal Representation}
 \label{sec:Internal_Representation}
-The \InternalRep\ reflects the structure of \xaif. 
+The \InternalRep\ mostly reflects the structure of \xaif. 
 The implementation of algorithms 
 however requires at times a more complex class hierarchy. 
 Therefore the class names mentioned below should be seen 
@@ -146,48 +171,67 @@ respective element of the \InternalRep.
 For details  please refer to the \doxygen\ 
 generated documentation. 
 
-The majority of the data structures are graphs of some sort. Rather than implementing a base graph class 
-from scratch the boost graph library is being used. The boost libraries are STL based and 
+The majority of the data structures are graphs of some sort. 
+Rather than implementing a base graph class 
+from scratch the boost graph library is being used. 
+The boost libraries are STL based and 
 can be downloaded from {\tt http://www.boost.org}. 
 In \xaifbooster\ the boost graph and iterator classes are 
 enclosed in specific wrapper classes. This was done in order to 
 \begin{itemize}
-\item hide the edge/vertex descriptor and property maps and rather provide direct access to edge/vertex instances and
+\item hide the edge/vertex descriptor and property maps and rather 
+provide direct access to edge/vertex instances and
 \item allow for a switch in the underlying graph representation if need be.
 \end{itemize}
-The primary advantage of using the boost graph classes is the availability of a growing number of 
-efficient implementations of generic graph algorithms which could have some use in AD specific algorithms.
+The primary advantage of using the boost graph classes is the availability 
+of a growing number of 
+efficient implementations of generic graph algorithms which could have 
+some use in AD specific algorithms. 
+The main disadvantage of using the wrapper that 
+any boost algorithm should be wrapped too if the design is to be 
+kept consistent. 
 
 \subsection{CallGraph} 
 \label{ssec:CallGraph}
 \index{call graph}
-The \CallGraph\ is the top level object in the \InternalRep. It is conceptually a 
-singleton \cite{DesignPatterns}  and its instance is held in \ConceptuallyStaticInstances. 
+The \CallGraph\ is the top level object in the \InternalRep. 
+It is conceptually a 
+singleton \cite{DesignPatterns}  and its instance is 
+held in \ConceptuallyStaticInstances. 
 
-\todo Figure out dependents and independents spec and see the following section, not clear on 
+\todo Figure out dependents and independents spec and see the 
+following section, not clear on 
 headroutine vs. no headroutine.
 
-The \CallGraph\ does not have to be connected, however for each connected subgraph there has 
-to be a specification of the respective dependents and independents together with a single 
+The \CallGraph\ does not have to be connected, however for each 
+connected subgraph there has 
+to be a specification of the respective dependents and 
+independents together with a single 
 vertex representing the entry point.
 The \CallGraph\ is directed and generally not acyclic.
 
 \subsubsection{CallGraphVertex} 
 \index{call graph vertex}
-Each \CallGraphVertex\ instance represents a target of a call, i.e. a subroutine. It has a 
-\ControlFlowGraph\ member representing the internal structure of this subroutine. 
-Note the difference to \xaif\ where the \ControlFlowGraph\ is used directly in place of 
+Each \CallGraphVertex\ instance represents a target of a call, 
+i.e. a subroutine. 
+It has a 
+\ControlFlowGraph\ member representing the internal structure of 
+this subroutine. 
+Note the difference to \xaif\ where the \ControlFlowGraph\ is used 
+directly in place of 
 \CallGraphVertex.
 
 \subsubsection{CallGraphEdge} 
 \index{call graph edge}
 A  \CallGraphEdge\ represents a potential call. 
-
 \todo review the following section
 
-In order to cover invocations by function pointer (e.g. virtual functions in C++) 
-there should be special edges marking a selection from a set of subroutines. The alternative would be edges
-to each subroutine in the set of potential candidates implying that there are calls to all subroutines in 
+In order to cover invocations by function pointer 
+(e.g. virtual functions in C++) 
+there should be special edges marking a selection from a set of subroutines. 
+The alternative would be edges
+to each subroutine in the set of potential candidates implying that there 
+are calls to all subroutines in 
 the set rather than one call. 
 
 \begin{figure}
@@ -230,7 +274,11 @@ It is identified by a unique id.
 \subsubsection{ScopeContainment} 
 \index{scope containment}
 A \ScopeContainment\ is an edge in the \Scopes\ and 
-denotes the parent child containment in the tree.
+denotes the child parent relation in the tree. I.e. in this 
+particular structure the edge source is the child and the 
+edge parent the target. The rationale for this choice is 
+the more frequent up-traversal to the containing \Scope\ rather 
+than traversing the other direction.
 
 \subsection{SymbolTable}
 \label{ssec:SymbolTable}
@@ -246,7 +294,8 @@ variables and subroutines. Since there are no signatures stored
 for subroutines the front-end needs to ensure the uniqueness of 
 the name, e.g. by supplying the mangled name for overloaded 
 C++ soubroutines. For variables the type and shape 
-are specified.
+are specified. New variables created by \xaifbooster\ have a 
+special identifying flag.
 
 \subsection{ControlFlowGraph}
 \label{ssec:ControlFlowGraph}
@@ -319,19 +368,18 @@ relatively simple constructs can be exploited.
 For the canonicalization we should also ensure the correct scoping of 
 {\tt Initialization} and {\tt Udate}.
 
+\todo This should not be used until we have a proper definition.
+
 \subsection{PreLoopStatement}
 \label{ssec:PreLoopStatement}
 \index{preloop-statement}
 
 PreLoopStatement is derived from \ControlFlowGraphVertex.
-\todo ToBeImplemented.
 
 \subsection{PostLoopStatement}
 \label{ssec:PostLoopStatement}
-\index{postloop-statement}
 
 PostLoopStatement is derived from \ControlFlowGraphVertex.
-\todo ToBeImplemented.
 
 \subsection{Exit}
 \label{ssec:Exit}
@@ -348,13 +396,10 @@ An \Assignment\ consists of a left and a right hand side.
 \subsubsection{AssignmentLHS}
 \index{assignment lhs}
 
-The left-hand side of an \Assignment\ is a \BaseVariableReference. 
+The left-hand side of an \Assignment\ is a \Variable. 
 This allows to express array access.
-Note, that this is different from \VariableReference\ which is an 
-\ExpressionVertex\ that has a \BaseVariableReference.
-
-\todo JU that is really ugly. The naming implies 
-	inheritance and we do composition.
+Note, that this is different from \Argument\ which is an 
+\ExpressionVertex\ that has a \Variable.
 
 \subsubsection{AssignmentRHS}
 \index{assignment rhs}
@@ -367,56 +412,60 @@ The right-hand side of an \Assignment\ is an \Expression.
 This is a stand-alone statement representing a subroutine call. 
 Note the 
 difference to a call to a subroutine within an \Expression\ which is 
-refered to as a call to an {\em inlinable intrinsic}, see also \ref{ch:Intrinsics}.
+refered to as a call to an {\em inlinable intrinsic}, 
+see also \ref{ch:Intrinsics}.
 
 \subsection{Expression}
 \label{ssec:Expression}
 \index{expression}
-An \Expression\ is a directed acyclic graph. {\Expression}s are used to represent
+An \Expression\ is a directed acyclic graph. 
+{\Expression}s are used to represent
 the right hand side in an \Assignment. 
 This use would imply some conditions 
-on the graph such as out degree to be exactly one for all non-minimal and non-maximal 
+on the graph such as out degree to be exactly one for all 
+non-minimal and non-maximal 
 vertices and to have exactly one maximal vertex. 
 These conditions are currently 
 not enforced by the \Expression\ class.
 
 \subsubsection{ExpressionVertex}
 \index{expression vertex}
-\ExpressionVertex\ is an abstract class to represent vertices in an \Expression.
+\ExpressionVertex\ is an abstract class to represent 
+vertices in an \Expression.
 
 \subsubsection{ExpressionEdge}
 \index{expression edge}
 Fairly self explanatory, this is an edge in an \Expression.
 
-\subsection{BaseVariableReference}
-\label{ssec:BaseVariableReference}
-\index{base variable reference}
+\subsection{Variable}
+\label{ssec:Variable}
+\index{variable}
 
-{\BaseVariableReference}s are {\em lvalues}. 
+{\Variable}s are {\em lvalues}. 
 They appear on left-hand sides
 of {\Assignment}s. 
 In order to be able to represent array access they are implemented as graphs.
 A single variable on the left hand side would be represented as a graph with a single 
 node that is a \SymbolReference\ and no edges. 
 Note that the \SymbolReference\ refers 
-to an entry in a \SymbolTable\ whereas a \BaseVariableReference\ does not. 
+to an entry in a \SymbolTable\ whereas a \Variable\ does not. 
 Rather, 
-a \BaseVariableReference refers to an entry in the \AliasActivityMap.
+a \Variable refers to an entry in the \AliasActivityMap.
 
-\subsubsection{BaseVariableReferenceVertex}
+\subsubsection{VariableVertex}
 \index{base variable reference vertex}
-A \BaseVariableReferenceVertex\ is an abstract base class.
+A \VariableVertex\ is an abstract base class.
 
-\subsubsection{BaseVariableReferenceEdge}
+\subsubsection{VariableEdge}
 \index{base variable reference edge}
-Fairly self explanatory, this is an edge in a \BaseVariableReference.
+Fairly self explanatory, this is an edge in a \Variable.
 
-\subsection{VariableReference}
-\label{ssec:VariableReference}
-\index{variable reference}
+\subsection{Argument}
+\label{ssec:Argument}
+\index{argument}
 
-{\VariableReference}s are {\em rvalues}, that is, they are vertices in 
-{\Expression}s and have a \BaseVariableReference. 
+{\Argument}s are {\em rvalues}, that is, they are vertices in 
+{\Expression}s and have a \Variable. 
 
 \subsection{Intrinsic}
 \label{ssec:Intrinsic}
@@ -789,7 +838,7 @@ of pairs $(v_e,v_G)$ of certain vertices $v_e$ from the
 \Expression\ $e$ that is the right hand side $rhs(A)$ of an \Assignment\ $A$
 and certain vertices $v_G \in V$. The \Expression\ $e$ itself is a graph 
 $(V_e,E_e$). For simplicity we consider the left hand side $lhs(A)$ to be 
-just like a \VariableReference\ that is an element of $V_e$.
+just like a \Argument\ that is an element of $V_e$.
 Perform the following steps.
 \begin{tabbing}
 \hspace*{3ex}\=\hspace*{3ex}\=\hspace*{3ex}\=\hspace*{3ex}\=\hspace*{-13ex}
@@ -802,7 +851,7 @@ $\forall  A \in S $ (in sequence order) \\
 \>\>\> ${\bf break}$\\
 \>\> else\\
 \>\>\> add new vertex $v'$ to $G$ \\ 
-\>\>\> if (v is a \VariableReference)\\
+\>\>\> if (v is an \Argument)\\
 \>\>\>\> $L_{var}:=L_{var}+(v,v')$\\
 \>\>\> elseif $(|\{(w,v):(w,v)\in E_e\}|>0)$\\
 \>\>\>\> $L_{intr}:=L_{intr}+(v,v')$\\
