@@ -131,14 +131,6 @@ namespace xaifBooster {
   template <class Vertex, class Edge>
   void
   GraphWrapper<Vertex,Edge>::removeAndDeleteVertex(const Vertex& aVertex_cr) { 
-    DBG_MACRO(DbgGroup::TEMPORARY, "GraphWrapper<Vertex,Edge>::removeAndDeleteVertex : start removing vertex "
-	      << aVertex_cr.debug().c_str()
-	      << " with "
-	      << numOutEdgesOf(aVertex_cr)
-	      << " out edges " 
-	      << " and " 
-	      << numInEdgesOf(aVertex_cr)
-	      << " in edges");
     // remove out edges: 
     std::pair < 
       InternalBoostOutEdgeIteratorType,
@@ -157,8 +149,6 @@ namespace xaifBooster {
       boost::remove_edge(*(oei_begin), 
 			 myBoostGraph);
       if ( anEdge_p) {  // this should always be true
-	DBG_MACRO(DbgGroup::TEMPORARY, "GraphWrapper<Vertex,Edge>::removeAndDeleteVertex : removing out_edge "
-		  << anEdge_p->debug().c_str());
 	delete anEdge_p;
       } 
     } // end for
@@ -174,23 +164,18 @@ namespace xaifBooster {
       iei_end(theInEdgeEnds.second);
     for (;iei_begin!=iei_end;iei_begin=iei_next) { 
       ++iei_next;
-      DBG_MACRO(DbgGroup::TEMPORARY, "GraphWrapper<Vertex,Edge>::removeAndDeleteVertex : found an in_edge ");
       Edge* anEdge_p=boost::get(boost::get(BoostEdgeContentType(),
 					   myBoostGraph), // get the Edge property map
 				*(iei_begin)); // get the descriptor
       boost::remove_edge(*(iei_begin), 
 			 myBoostGraph);
       if ( anEdge_p) { // this should always be true
-	DBG_MACRO(DbgGroup::TEMPORARY, "GraphWrapper<Vertex,Edge>::removeAndDeleteVertex : removing in_edge "
-		  << anEdge_p->debug().c_str());
 	delete anEdge_p;
       } 
     } // end for
     // now remove the vertex
     boost::remove_vertex(aVertex_cr.getDescriptor(),
 			 myBoostGraph);
-    DBG_MACRO(DbgGroup::TEMPORARY, "GraphWrapper<Vertex,Edge>::removeAndDeleteVertex : removing vertex "
-	      << aVertex_cr.debug().c_str());
     delete &aVertex_cr;
   }; // end of GraphWrapper<Vertex,Edge>::removeAndDeleteVertex
 

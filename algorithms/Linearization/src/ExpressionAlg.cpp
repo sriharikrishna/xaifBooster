@@ -229,7 +229,6 @@ namespace xaifBoosterLinearization {
 	  // in this new graph the potentially copied Ids are useless.
 	  theNewVertex_p->overWriteId(theNewConcretePartial.getNextVertexId());
 	  theNewConcretePartial.supplyAndAddVertexInstance(*theNewVertex_p);
-	  DBG_MACRO(DbgGroup::TEMPORARY,"pushing " << &(*abstractVertexIt) << "," << theNewVertex_p);
 	  theAbstractToConcreteVertexPairList.push_back(VertexPointerPair(&(*abstractVertexIt),
 									  theNewVertex_p));
 	} // end for all abstract vertices

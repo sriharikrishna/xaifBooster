@@ -485,7 +485,6 @@ namespace xaifBoosterLinearization {
     } // end for 
     // the top level node may be inactive too
     if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()) { 
-      DBG_MACRO(DbgGroup::TEMPORARY, " removing top vertex " << (*iV).debug().c_str());
       myLinearizedRightHandSide.removeAndDeleteVertex(*iV);
     }
   } // end of AssignmentAlg::passiveReduction

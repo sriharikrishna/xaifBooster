@@ -70,13 +70,16 @@ namespace xaifBoosterControlFlowReversal {
               "xaifBoosterControlFlowReversal::ControlFlowGraphAlg::algorithm_action_4(reverse control flow) called for: "
               << debug().c_str());
       myTransformedControlFlowGraph=new ReversibleControlFlowGraph(getContaining());
-      GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg",
-                           VertexLabelWriter(*myTransformedControlFlowGraph));
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg",
+			      VertexLabelWriter(*myTransformedControlFlowGraph));
+      }
       myTransformedControlFlowGraph->topologicalSort();
       myTransformedControlFlowGraph->storeControlFlow();
-      GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
-                           VertexLabelWriter(*myTransformedControlFlowGraph));
-
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
+			      VertexLabelWriter(*myTransformedControlFlowGraph));
+      }
   } // end AssignmentAlg::algorithm_action_4() 
 
   void

@@ -20,6 +20,9 @@ namespace xaifBooster {
     case GRAPHICS: 
       returnString="GRAPHICS";
       break;
+    case TIMING: 
+      returnString="TIMING";
+      break;
     case TEMPORARY: 
       returnString="TEMPORARY";
       break;
@@ -32,7 +35,7 @@ namespace xaifBooster {
 
   std::string 
   DbgGroup::printAll() throw (PrintingIntException) {
-    return std::string("ERROR=0, CALLSTACK=1, DATA=2, GRAPHICS=4, TEMPORARY=8");
+    return std::string("ERROR=0, CALLSTACK=1, DATA=2, GRAPHICS=4, TIMING=8, TEMPORARY=16");
   }
 
 } // end of namespace xaifBooster
