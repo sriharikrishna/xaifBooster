@@ -50,6 +50,9 @@ int main(int argc,char** argv) {
     p.initialize();
     p.parse(inFileName);
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // flatten
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // reverse control flow
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));

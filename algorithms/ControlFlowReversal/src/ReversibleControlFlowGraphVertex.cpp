@@ -8,9 +8,9 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex() : original(false), adjoint(false), myOriginalVertex_p(NULL), myNewVertex_p(NULL) {}
+  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex() : original(false), adjoint(false), myOriginalVertex_p(NULL), myNewVertex_p(NULL), myVisitedFlag(false), myIndex(-1) {}
 
-  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : original(true), adjoint(false), myOriginalVertex_p(theOriginal), myNewVertex_p(NULL) {}
+  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : original(true), adjoint(false), myOriginalVertex_p(theOriginal), myNewVertex_p(NULL), myVisitedFlag(false), myIndex(-1) {}
 
   ReversibleControlFlowGraphVertex::~ReversibleControlFlowGraphVertex() { 
     if (!original) delete myNewVertex_p;
@@ -43,6 +43,22 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void ReversibleControlFlowGraphVertex::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+  }
+
+  void ReversibleControlFlowGraphVertex::setVisited(bool b) {
+    myVisitedFlag=b;
+  } 
+
+  bool ReversibleControlFlowGraphVertex::getVisited() const {
+    return myVisitedFlag;
+  }
+
+  void ReversibleControlFlowGraphVertex::setIndex(int i) {
+    myIndex=i;
+  } 
+
+  int ReversibleControlFlowGraphVertex::getIndex() const {
+    return myIndex;
   }
 
 } // end of namespace

@@ -19,6 +19,10 @@ namespace xaifBoosterControlFlowReversal {
     
     ReversibleControlFlowGraph(const ControlFlowGraph&);
 
+    ReversibleControlFlowGraphVertex& getEntry(); 
+    ReversibleControlFlowGraphVertex& getExit(); 
+
+    void topologicalSort();
     void storeControlFlow();
  
     virtual void printXMLHierarchy(std::ostream& os) const;
@@ -43,6 +47,21 @@ namespace xaifBoosterControlFlowReversal {
      * no def
      */
     ReversibleControlFlowGraph operator=(const ReversibleControlFlowGraph&);
+
+    /** 
+     * set myVisitedFlag of all vertices to false
+     */
+    void initVisit(); 
+
+    /** 
+     * bottom-up handling of points where the control flow merges
+     */
+    void augmentControlFlowGraphRecursively(ReversibleControlFlowGraphVertex&);
+
+    /** 
+     * top down topological sort
+     */
+    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&); 
 
   };  // end of class
 

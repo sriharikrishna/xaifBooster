@@ -38,6 +38,12 @@ namespace xaifBoosterControlFlowReversal {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    bool getVisited() const;
+    void setVisited(bool);
+
+    int getIndex() const;
+    void setIndex(int);
+
   private:
 
     friend class ReversibleControlFlowGraph;
@@ -74,6 +80,16 @@ namespace xaifBoosterControlFlowReversal {
      * pointer to new ControlFlowGraphVertex
      */
     ControlFlowGraphVertex* myNewVertex_p;
+
+    /** 
+     * flag for marking as visited during recursive traversal
+     */
+    bool myVisitedFlag;
+
+    /** 
+     * index for topological sort
+     */
+    int myIndex;
 
   };  // end of class
 

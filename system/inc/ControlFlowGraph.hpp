@@ -87,7 +87,8 @@ namespace xaifBooster {
     const ControlFlowGraphAlgBase& getControlFlowGraphAlgBase() const;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
+    const SymbolReference& getSymbolReference() const;
+    const bool& getActiveFlag() const;
   private: 
     
     /** 

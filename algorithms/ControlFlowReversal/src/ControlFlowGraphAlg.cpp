@@ -53,18 +53,71 @@ namespace xaifBoosterControlFlowReversal {
     THROW_LOGICEXCEPTION_MACRO("ControlFlowReversal::ControlFlowGraphAlg::getOriginalExit: not found");
   }
 
+  class VertexLabelWriter {
+  public:
+    VertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(),
+                                                  myG.getInternalBoostGraph()),
+                                       v)->getIndex() << "\"]";
+    };
+    const ReversibleControlFlowGraph& myG;
+  };
+
   void ControlFlowGraphAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,
               "xaifBoosterControlFlowReversal::ControlFlowGraphAlg::algorithm_action_4(reverse control flow) called for: "
               << debug().c_str());
       myTransformedControlFlowGraph=new ReversibleControlFlowGraph(getContaining());
+      GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg",
+                           VertexLabelWriter(*myTransformedControlFlowGraph));
+      myTransformedControlFlowGraph->topologicalSort();
       myTransformedControlFlowGraph->storeControlFlow();
-      GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg");
+      GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
+                           VertexLabelWriter(*myTransformedControlFlowGraph));
+
   } // end AssignmentAlg::algorithm_action_4() 
 
   void
   ControlFlowGraphAlg::printXMLHierarchy(std::ostream& os) const {
+    PrintManager& pm=PrintManager::getInstance();
+    os << pm.indent()
+       << "<"
+       << getContaining().ourXAIFName.c_str()
+       << " "
+       << getContaining().our_myId_XAIFName.c_str()
+       << "=\""
+       << getContaining().getId().c_str()
+       << "\" "
+       << getContaining().our_symbolId_XAIFName.c_str()
+       << "=\""
+       << getContaining().getSymbolReference().getSymbol().getId().c_str()
+       << "\" "
+       << getContaining().our_scopeId_XAIFName.c_str()
+       << "=\""
+       << getContaining().getSymbolReference().getScope().getId().c_str()
+       << "\" "
+       << getContaining().our_myActiveFlag_XAIFName.c_str()
+       << "=\""
+       << getContaining().getActiveFlag()
+       << "\" "
+       << getContaining().ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str()
+       << "=\""
+       << getContaining().getAnnotation().c_str()
+       << "\">"
+       << std::endl;
+    getContaining().printXMLHierarchyArgumentList(os);
+
     myTransformedControlFlowGraph->printXMLHierarchy(os);
+
+        os << pm.indent()
+       << "</"
+       << getContaining().ourXAIFName
+       << ">"
+       << std::endl;
+    pm.releaseInstance();
+
   }
 
   std::string
