@@ -1,0 +1,18 @@
+export UNDEF_ENV_VARS=""
+ifndef XERCESJROOT
+UNDEF_ENV_VARS+=" XERCESJROOT "
+endif
+                                                                                
+ifndef XAIFBOOSTERROOT
+UNDEF_ENV_VARS+=" XAIFBOOSTERROOT "
+endif
+                                                                                
+ifneq ($(UNDEF_ENV_VARS),"")
+export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1
+endif
+
+CLASSPATH+=:$(XERCESJROOT)/xercesImpl.jar
+CLASSPATH+=:$(XAIFBOOSTERROOT)/tools/codegen/classes
+export CLASSPATH
+
+
