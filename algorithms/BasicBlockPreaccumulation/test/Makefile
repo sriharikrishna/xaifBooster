@@ -4,13 +4,14 @@ test: $(MAIN) quickRegression.bash
 
 clean:
 	rm -f obj/*.o obj/*.d $(MAIN) quickRegression.bash
+	rm -rf tmp
 
 obj doc: ;
 
 .PHONY: obj test doc clean
 
 quickRegression.bash: 
-	ln $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/test/quickRegression.bash
+	ln -sf $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/test/quickRegression.bash
 
 include ../../../Makefile.incl
 -include $(DEPINCL)

@@ -8,13 +8,20 @@ namespace xaifBoosterLinearization {
   ConstantAlg::ConstantAlg(Constant& theContainingConstant) : 
     ConstantAlgBase(theContainingConstant),
     ExpressionVertexAlg(theContainingConstant) {
+    passivate();
   };
 
   ConstantAlg::~ConstantAlg() {};
 
   std::string 
   ConstantAlg::debug() const { 
-    return std::string("ConstantAlg");
+    std::ostringstream out;
+    out << "xaifBoosterLinearization::ConstantAlg["
+	<< this 
+	<< ","
+	<< xaifBoosterLinearization::ExpressionVertexAlg::debug().c_str()
+	<< "]" << std::ends;  
+    return out.str();
   }
 
   void

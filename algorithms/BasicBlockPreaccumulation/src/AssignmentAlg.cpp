@@ -28,7 +28,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string 
   AssignmentAlg::debug() const { 
-    return std::string("AssignmentAlg");
+    std::ostringstream out;
+    out << "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg["
+	<< this 
+	<< ","
+	<< xaifBoosterLinearization::AssignmentAlg::debug().c_str()
+	<< "]" << std::ends;  
+    return out.str();
   }
 
   void 
@@ -38,7 +44,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   
   void 
   AssignmentAlg::algorithm_action_2() { 
-    DBG_MACRO(DbgGroup::CALLSTACK,"AssignmentAlg::algorithm_action_2(flatten)");
+    DBG_MACRO(DbgGroup::CALLSTACK,
+	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
+	      << debug().c_str());
     // this was set in BasicBlockAlg::algorithm_action_2
     PrivateLinearizedComputationalGraph& theFlattenedSequence=
       BasicBlockAlgParameter::get().getFlattenedSequence(getContaining());
@@ -73,7 +81,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
 	  theFlattenedSequence.supplyAndAddVertexInstance(*theLCGVertex_p);
 	  DBG_MACRO(DbgGroup::DATA,
-		    "AssignmentAlg::algorithm_action_2(flatten):" 
+		    "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
 		    << theLCGVertex_p->debug().c_str());
 	  if (theExpression.numInEdgesOf(*ExpressionVertexI)==0) {
 	    // JU: this should be a Variable
@@ -89,9 +97,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      theLCGVertex_p->setRHSVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	    } 
 	    catch(std::bad_cast& e) { 
-	      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_2: invalid cast of "
+	      THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2: invalid cast of "
 					 << (*ExpressionVertexI).debug().c_str() 
-					 << " into a Variable");
+					 << " into a Variable for "
+					 << getContaining().debug().c_str());
 	    } // end catch
 	  } // end if 
 	  else { // number of in edges is > 0
@@ -101,7 +110,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  } // end else 
 	  if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
 	    if (theLHSLCGVertex_p)
-	      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
+	      THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
 	    // the maximal vertex in the RHS is the  
 	    // representation of the LHS
 	    theLHSLCGVertex_p=theLCGVertex_p;
@@ -131,7 +140,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    theLCGTarget_p=(*listIt).second;
 	} // end for
 	if (!theLCGTarget_p) 
-	  THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_2(flatten): cannot find edge target");
+	  THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): cannot find edge target");
 	if (!theLCGSource_p) 
 	  // we would have to have found the target 
 	  // already (always intermediate) but the 
@@ -146,7 +155,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 						      *theLCGSource_p,
 						      *theLCGTarget_p);
 	DBG_MACRO(DbgGroup::DATA,
-		  "AssignmentAlg::algorithm_action_2(flatten)"
+		  "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten)"
 		  << " Edge source:" 
 		  << theLCGSource_p->debug().c_str() 
 		  << " target " 
@@ -156,7 +165,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (theVariableTrackList.hasElement(theLHS.equivalenceSignature()))  
 	theVariableTrackList.removeElement(theLHS.equivalenceSignature());
       if (!theLHSLCGVertex_p)
-	THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_2(flatten): don't have a maximal vertex");
+	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): don't have a maximal vertex");
       theVariableTrackList.addElement(theLHS.equivalenceSignature(),
 				      theLHSLCGVertex_p);
       theLHSLCGVertex_p->setLHSVariable(theLHS);
