@@ -136,7 +136,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * top-down topologically sorted vertex list
      */
-    bool topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&,std::vector<ReversibleControlFlowGraphVertex*>&);
+    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&,std::stack<ReversibleControlFlowGraphVertex*>&);
 
     /** 
      * top down topological sort

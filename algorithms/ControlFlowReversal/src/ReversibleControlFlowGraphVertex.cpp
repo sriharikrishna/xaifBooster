@@ -67,6 +67,14 @@ namespace xaifBoosterControlFlowReversal {
   int ReversibleControlFlowGraphVertex::getIndex() const {
     return myIndex;
   }
+                                                                    
+  ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E 
+  ReversibleControlFlowGraphVertex::getKind() const {
+    if (original)
+      return getOriginalControlFlowGraphVertexAlg().getKind();
+    else
+      return getNewControlFlowGraphVertexAlg().getKind();
+  }
 
 } // end of namespace
 

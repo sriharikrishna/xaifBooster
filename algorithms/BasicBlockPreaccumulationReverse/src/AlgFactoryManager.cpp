@@ -1,6 +1,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/BasicBlockAlgFactory.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 
@@ -29,8 +30,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   } // end of AlgFactoryManager::instance
 
   void AlgFactoryManager::init() {
-    xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::init();
+    xaifBoosterControlFlowReversal::AlgFactoryManager::init();
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
+    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
   }
 
 }
