@@ -49,6 +49,8 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
   bool BasicBlockAlg::ourLimitToStatementLevelFlag=false;
+  unsigned int BasicBlockAlg::ourAssignmentCounter=0;
+  unsigned int BasicBlockAlg::ourSequenceCounter=0;
 
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
@@ -845,6 +847,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 ++i) 
       if ((*i).first==&theAssignment) { 
 	if(!(*i).second) { // nothing assigned yet
+	  ourAssignmentCounter++;
 	  if(i!=myBasicBlockElementSequencePPairList.begin()) { 
 	    // have a predecessor: 
 	    --i;
@@ -857,6 +860,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      // we intend to not flatten at all and keep one assignment per sequence
 	      // while leaving the rest of the code unchanged
 	      theSequence_p=new Sequence;
+	      ourSequenceCounter++;
 	      theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	      myUniqueSequencePList.push_back(theSequence_p);
 	    } 
@@ -872,6 +876,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  } 
 	  else { // have no predecessor
 	    theSequence_p=new Sequence;
+	    ourSequenceCounter++;
 	    theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	    myUniqueSequencePList.push_back(theSequence_p);
 	  }
@@ -910,6 +915,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	}
 	// now make a new one for this assignment
 	(*i).second=new Sequence;
+	ourSequenceCounter++;
 	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
 	myUniqueSequencePList.push_back((*i).second);
 	DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::splitFlattenedSequence leaving with "
@@ -962,6 +968,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   
   bool BasicBlockAlg::hasLimitToStatementLevel() { 
     return ourLimitToStatementLevelFlag;
+  }
+
+  unsigned int BasicBlockAlg::getAssignmentCounter() { 
+    return ourAssignmentCounter;
+  }
+  
+  unsigned int BasicBlockAlg::getSequenceCounter() { 
+    return ourSequenceCounter;
   }
   
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 
