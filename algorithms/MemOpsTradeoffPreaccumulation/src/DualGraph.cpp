@@ -1,5 +1,5 @@
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/DualGraph.hpp"
-
+#include <algorithm>
 using namespace MemOpsTradeoffPreaccumulation;
 
 namespace MemOpsTradeoffPreaccumulation {
@@ -7,43 +7,43 @@ namespace MemOpsTradeoffPreaccumulation {
   DualGraph::DualGraph(const LinearizedComputationalGraph& theOriginal){
 
     //Create Dual Graph Vertices
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIteratorPair deip (theOriginal.edges());
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIterator dei (deip.first), de_end (deip.second);
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIteratorPair oep (theOriginal.edges());
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIterator oei (oep.first), oe_end (oep.second);
     //iterate through edges in the original graph, and create a vertex in the dual for each one
-    for(; dei != de_end; ++dei){
+    for(; oei != oe_end; ++oei){
       DualGraphVertex& DV = addVertex();
-      DV.setOriginalRef(*dei);
+      DV.setOriginalRef(*oei);
     }// end for original edges
 
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair dv (theOriginal.vertices());
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator dvi (dv.first), dv_end (dv.second);
-    //iterate through vertices in the original graph, and create a vertex in the copy for each one
-    for(; dvi != dv_end; ++dvi){
-      if(theOriginal.numInEdgesOf(*dvi) == 0){
+    //iterate through independant and dependant vertices and create assumed in and out edges, respectively
+    //declaration of iterators
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& originalIndependents = theOriginal.getIndependentList();
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& originalDependents = theOriginal.getDependentList();
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator oIndepi, oDepi;
 
-	DualGraphVertex& DV = addVertex();
-	DV.setAssumedInEdgeRef(*dvi);
+    for(oIndepi = originalIndependents.begin(); oIndepi != originalIndependents.end(); oIndepi++) {
+      DualGraphVertex& DV = addVertex();
+      DV.setAssumedInEdgeRef(**oIndepi);
 
-	// for each outedge of the vertex, make an edge from that outedge vertex to the assumed inedge vertex
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair doe (theOriginal.getOutEdgesOf(*dvi));
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator doei (doe.first), doe_end (doe.second);
-	for(; doei != doe_end; ++doei){
-	  addEdge(DV, getDualVertex(*doei));
-	}// end for outedges
-      }// end if minimal
-      if(theOriginal.numOutEdgesOf(*dvi) == 0){
+      // for each outedge of the vertex, make an edge from that outedge vertex to the assumed inedge vertex
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair doe (theOriginal.getOutEdgesOf(**oIndepi));
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator doei (doe.first), doe_end (doe.second);
+      for(; doei != doe_end; ++doei){
+	addEdge(DV, getDualVertex(*doei));
+      }// end for outedges
+    }// end for original indep list
+      
+    for(oDepi = originalDependents.begin(); oDepi != originalDependents.end(); oDepi++) {
+      DualGraphVertex& DV = addVertex();
+      DV.setAssumedOutEdgeRef(**oDepi);
 
-	DualGraphVertex& DV = addVertex();
-	DV.setAssumedOutEdgeRef(*dvi);
-
-	// for each inedge of the vertex, make an edge from the inedge to the assumed inedge vertex
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair die (theOriginal.getInEdgesOf(*dvi));
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator diei (die.first), die_end (die.second);
-	for(; diei != die_end; ++diei){
-	  addEdge(getDualVertex(*diei), DV);
-	}// end for inedges
-      }// end if maximal
-    }// end for original vertices
+      // for each inedge of the vertex, make an edge from the inedge to the assumed inedge vertex
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair die (theOriginal.getInEdgesOf(**oDepi));
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator diei (die.first), die_end (die.second);
+      for(; diei != die_end; ++diei){
+	addEdge(getDualVertex(*diei), DV);
+      }// end for inedges
+    }// end for original indep list
 
     //generate edges in dual graph
     xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair dv2 (theOriginal.vertices());
@@ -284,75 +284,35 @@ namespace MemOpsTradeoffPreaccumulation {
     DualGraphPath::Path::iterator svertex;
     //predi and succi iterate over the predecessor and successor lists of the face being eliminated
     DualGraph::VertexPointerList::const_iterator predi, succi;
-    unsigned int i = 0;
-
-    //go through all paths to find a path with a direct vertex between source and target
-    for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-      //for each vertex in the path
-      for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
-	for(predi = thePredList.begin(); predi != thePredList.end(); predi++){
-	  //if the vertex is a pred
-	  if(*predi == *svertex){break;}
-	}// end for each predecessor
-	//if vertex is a pred of the face
-	if(predi != thePredList.end()){
-	  svertex++;
-	  svertex++;
-	  //check for svertex in succlist
-	  for(succi = theSuccList.begin(); succi != theSuccList.end(); succi++){
-	    //if the vertex is a succ
-	    if(*succi == *svertex){break;}
-	  }// end for each successor
-	  //if a succ is in path
-	  if(succi != theSuccList.end()){
-	    svertex--;
-	    directVertex_pt = *svertex;
-	    // if the direct vertex doesnt have inedges from all preds and outedges to all succs throw exception
-	    i = 0;
-	    DualGraph::InEdgeIteratorPair dvie (getInEdgesOf(*directVertex_pt));
-	    DualGraph::InEdgeIterator dviei (dvie.first), dvie_end (dvie.second);
-	    for(; dviei != dvie_end; ++dviei){
-	      i++;
-	      for(predi = thePredList.begin(); predi != thePredList.end(); predi++){
-		if(*predi == &getSourceOf(*dviei)){break;}
-	      }// end for each predecessor
-	      //if a direcpred wasnt in pred list  
-	      if(predi == thePredList.end()){
-		THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
-	      }//end if a direcpred wasnt in pred list
-	    }// end for direct inedges
-	    if(i != thePredList.size()){
-	      THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
-	    }
-	    i = 0;
-	    DualGraph::OutEdgeIteratorPair dvoe (getOutEdgesOf(*directVertex_pt));
-	    DualGraph::OutEdgeIterator dvoei (dvoe.first), dvoe_end (dvoe.second);
-	    for(; dvoei != dvoe_end; ++dvoei){
-	      i++;
-	      for(succi = theSuccList.begin(); succi != theSuccList.end(); succi++){
-		if(*succi == &getTargetOf(*dvoei)){break;}
-	      }// end for each successor
-	      //if a direcpred wasnt in pred list  
-	      if(succi == theSuccList.end()){
-		std::cout << "This is the dreaded ERROR message.  Be very afraid." << std::endl;
-		THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
-	      }//end if a direcpred wasnt in pred list
-	    }// end for direct outedges
-	    if(i != theSuccList.size()){
-	      std::cout << "This is the dreaded ERROR message.  Be very afraid." << std::endl;
-	      THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
-	    }
-	    spath = myPathList.end();
-	    spath--;
-	    break;
-	  }//end if we found direct vertex
-	}//end if a pred is in path
-      }//end for each vertex in the path
-    }//end for all paths
+    bool loopcheck = true;
+   
+    for(predi = thePredList.begin(); (predi != thePredList.end()) && loopcheck; ++predi){
+      if(numOutEdgesOf(**predi) > 1){
+	for(succi = theSuccList.begin(); (succi != theSuccList.end()) && loopcheck; ++succi){
+	  if(numInEdgesOf(**succi) > 1){
+	    for(spath = myPathList.begin(); (spath != myPathList.end()) && loopcheck; spath++){
+	      for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
+		if(*svertex == *predi){
+		  //if path contains the vertex, go to next vertex in the path
+		  svertex++;
+		  svertex++;
+		  if(*svertex == *succi){
+		    svertex--;
+		    directVertex_pt = *svertex;
+		    loopcheck = false;
+		    break;
+		  }// end if succ matches
+		  break;
+		}// end if vertex is the pred
+	      }// end for each vertex in the path
+	    }// end for all paths
+	  }// end if succ has alternate paths
+	}// end for all out edges
+      }// end if pred has alternate path
+    }// end for all inedges
 
     //if there was a direct vertex from predecessors to successors
     if(directVertex_pt != NULL){
-
       //create vertex for direct edge, and "add" vertex, point new edge to it
       xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& add = ((*theExpression).myExpression).addVertex();
       add.setOperation(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP);
@@ -399,3 +359,70 @@ namespace MemOpsTradeoffPreaccumulation {
   }// end elim_face
 
 }// end namespace MemOpsTradeoffPreaccumulation
+
+
+    // unsigned int i = 0;
+//     bool pathcheck = true, vertcheck = false;
+//     //go through all paths to find a path with a direct vertex between source and target
+//     for(spath = myPathList.begin(); (spath != myPathList.end()) && pathcheck; spath++){
+//       //for each vertex in the path
+//       for(svertex = ((**spath).myPath).begin(); (svertex != ((**spath).myPath).end()) && vertcheck; svertex++){
+// 	//if vertex is a pred of the face
+// 	for(predi = thePredList.begin(); predi != thePredList.end(); ++predi){
+// 	  if(*predi == *svertex){break;}
+// 	}// end for
+// 	//predi = find(thePredList.begin(), thePredList.end(), *svertex);
+// 	if(predi != thePredList.end()){
+// 	  svertex++;
+// 	  svertex++;
+// 	  //if a succ is in path
+// 	  for(succi = theSuccList.begin(); succi != theSuccList.end(); ++succi){
+// 	    if(*succi == *svertex){break;}
+// 	  }// end for
+// 	  //succi = find(theSuccList.begin(), theSuccList.end(), *svertex);
+// 	  if(succi != theSuccList.end()){
+// 	    svertex--;
+// 	    directVertex_pt = *svertex;
+// 	    // if the direct vertex doesnt have inedges from all preds and outedges to all succs throw exception
+// 	    i = 0;
+// 	    DualGraph::InEdgeIteratorPair dvie (getInEdgesOf(*directVertex_pt));
+// 	    DualGraph::InEdgeIterator dviei (dvie.first), dvie_end (dvie.second);
+// 	    for(; dviei != dvie_end; ++dviei){
+// 	      i++;
+// 	      //if a direcpred wasnt in pred list  
+// 	      for(predi = thePredList.begin(); predi != thePredList.end(); ++predi){
+// 		if(*predi == &getSourceOf(*dviei)){break;}
+// 	      }// end for
+// 	      //predi = find(thePredList.begin(), thePredList.end(), &getSourceOf(*dviei));
+// 	      if(predi == thePredList.end()){
+// 		THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
+// 	      }//end if a direcpred wasnt in pred list
+// 	    }// end for direct inedges
+// 	    if(i != thePredList.size()){
+// 	      THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
+// 	    }
+// 	    i = 0;
+// 	    DualGraph::OutEdgeIteratorPair dvoe (getOutEdgesOf(*directVertex_pt));
+// 	    DualGraph::OutEdgeIterator dvoei (dvoe.first), dvoe_end (dvoe.second);
+// 	    for(; dvoei != dvoe_end; ++dvoei){
+// 	      i++;
+// 	      //if a direcpred wasnt in pred list
+// 	      for(succi = theSuccList.begin(); succi != theSuccList.end(); ++succi){
+// 		if(*succi == &getTargetOf(*dvoei)){break;}
+// 	      }// end for
+// 	      //succi = find(theSuccList.begin(), theSuccList.end(), &getTargetOf(*dvoei));
+// 	      if(succi == theSuccList.end()){
+// 		std::cout << "This is the dreaded ERROR message.  Be very afraid." << std::endl;
+// 		THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
+// 	      }//end if a direcpred wasnt in pred list
+// 	    }// end for direct outedges
+// 	    if(i != theSuccList.size()){
+// 	      std::cout << "This is the dreaded ERROR message.  Be very afraid." << std::endl;
+// 	      THROW_LOGICEXCEPTION_MACRO("Error: Successor and predecessor sets of direct vertex do not match those of the face");
+// 	    }
+// 	    pathcheck = false;
+// 	  }//end if we found direct vertex
+// 	  vertcheck = false;
+// 	}//end if a pred is in path
+//       }//end for each vertex in the path
+//     }//end for all paths
