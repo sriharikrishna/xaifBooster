@@ -125,6 +125,16 @@ namespace xaifBooster {
      */
     unsigned int mySelector;
 
+    /**
+     * previous timer seconds
+     */
+    long myPreviousS;
+
+    /**
+     * previous timer micro seconds
+     */
+    long myPreviousMS;
+
   }; // end of class DbgLoggerManager
 
 }

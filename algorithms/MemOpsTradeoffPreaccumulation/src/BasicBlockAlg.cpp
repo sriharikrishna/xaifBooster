@@ -95,7 +95,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
     
     std::list<Heuristic> heuristicEnumSequence;
-    heuristicEnumSequence.push_back(SIBLING2);
+    //    heuristicEnumSequence.push_back(SIBLING2);
     heuristicEnumSequence.push_back(MARKOWITZ);
     heuristicEnumSequence.push_back(REVERSE);
 
