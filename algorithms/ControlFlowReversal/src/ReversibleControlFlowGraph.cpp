@@ -17,6 +17,10 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlg.hpp"
 
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
+
+
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
@@ -303,16 +307,16 @@ namespace xaifBoosterControlFlowReversal {
 
   void
   ReversibleControlFlowGraph::insert_push_integer(const Symbol* theIntegerSymbol_p, BasicBlock& theBasicBlock_r) {
-    SubroutineCall* theSubroutineCall_p=new SubroutineCall(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getPushIntegerSymbol(),theBasicBlock_r.getScope(),false);
-    theSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "push");
-    ConcreteArgument* theConcreteArgument_p=new ConcreteArgument(1);
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
+    theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "push");
+    Variable theSubstitutionArgument;
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theIntegerSymbol_p,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1");
-    theConcreteArgument_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-    theConcreteArgument_p->getVariable().getAliasMapKey().setTemporary();
-    theConcreteArgument_p->getVariable().getDuUdMapKey().setTemporary();
-    theSubroutineCall_p->getArgumentList().push_back(theConcreteArgument_p);
-    theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p);
+    theSubstitutionArgument.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+    theSubstitutionArgument.getAliasMapKey().setTemporary();
+    theSubstitutionArgument.getDuUdMapKey().setTemporary();
+    theSubstitutionArgument.copyMyselfInto(theInlinableSubroutineCall_p->addArgumentSubstitute(1).getVariable());
+    theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
   }
 
   const Symbol&
