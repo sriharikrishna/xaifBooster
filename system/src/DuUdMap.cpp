@@ -20,7 +20,7 @@ namespace xaifBooster {
 	if (aKey.getKey()==*li) { 
 	  theResult.myAnswer=UNIQUE_INSIDE;
 	  theResult.myStatementId=*li;
-	  break;
+	  return theResult;
 	} // end if
       } // end for
       // shortcut for now, if we have the 
