@@ -4,7 +4,7 @@
           integer i
 
           do i=1,2
-            if (i==1)
+            if (i==1) then
               y(i)=x(i)*x(i)
             else
               y(i)=x(i)+x(i)
