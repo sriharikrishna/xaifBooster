@@ -13,11 +13,14 @@ do
   make
   make driver
   make run
-  hasDiff=$(diff tmpOutput $exdir/refOutput)
-  if [ -n "$hasDiff" ] 
+  hasDiffAD=$(diff tmpOutput/ad.out $exdir/refOutput/ad.out)
+  hasDiffDD=$(diff tmpOutput/dd.out $exdir/refOutput/dd.out)
+  if [ -n "$hasDiffAD" -o -n "$hasDiffDD" ] 
   then	 
-    echo "di	ffs base (<) vs. current (>):"
-    diff tmpOutput $exdir/refOutput
+    echo "diffs base (<) vs. current (>) AD:"
+    diff tmpOutput/ad.out $exdir/refOutput/ad.out 
+    echo "diffs base (<) vs. current (>) DD:"
+    diff tmpOutput/dd.out $exdir/refOutput/dd.out 
     if [ -z "$DONT_STOP" ] 
     then
       exit -3

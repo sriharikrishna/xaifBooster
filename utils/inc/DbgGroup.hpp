@@ -23,7 +23,8 @@ namespace xaifBooster {
 		     CALLSTACK=1, // any message relating to entering/exiting a method
 		     DATA=2, // any dumping of data
 		     GRAPHICS=4, // anything producing graphic output 
-		     TEMPORARY=8}; // the rest of the messages that can be removed at any time
+		     TIMING=8, // anything producing a time stamp 
+		     TEMPORARY=16}; // the rest of the messages that can be removed at any time
 
     static std::string toString(const DbgGroup_E& aKind) throw (PrintingIntException);
     

@@ -240,23 +240,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(theFlattenedSequence,"flattened");
       } 
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	std::ostringstream mesg;
-	mesg << "list of dependents "; 
-	for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator i=theFlattenedSequence.getDependentList().begin();
-	     i!=theFlattenedSequence.getDependentList().end();
-	     ++i) { 
-	  mesg << dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*i)->getLHSVariable().equivalenceSignature().c_str() << ",";
-	}
-	mesg << "list of independents "; 
-	for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator i=theFlattenedSequence.getIndependentList().begin();
-	     i!=theFlattenedSequence.getIndependentList().end();
-	     ++i) { 
-	  mesg << dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*i)->getRHSVariable().equivalenceSignature().c_str() << ",";
-	}
-	mesg << std::ends;
-	DBG_MACRO(DbgGroup::TEMPORARY,mesg.str());
-      } 
       // the list to distinguish SAX from SAXPY: 
       typedef std::list<const Variable*> VariablePList;
       VariablePList theListOfAlreadyAssignedDependents;
