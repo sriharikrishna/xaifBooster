@@ -284,3 +284,25 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Label" << " i
 return *myLabel_p;
 }
 
+void XAIFBaseParserHelper::setDuUdMapEntry(DuUdMapEntry& whatToSet) {
+if (myDuUdMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMapEntry" << " item already set");
+myDuUdMapEntry_p=&whatToSet;
+}
+DuUdMapEntry& XAIFBaseParserHelper::getDuUdMapEntry() const {
+if (!myDuUdMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DuUdMapEntry" << " item not set");
+return *myDuUdMapEntry_p;
+}
+
+void XAIFBaseParserHelper::setDuUdMap(DuUdMap& whatToSet) {
+if (myDuUdMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMap" << " item already set");
+myDuUdMap_p=&whatToSet;
+}
+DuUdMap& XAIFBaseParserHelper::getDuUdMap() const {
+if (!myDuUdMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DuUdMap" << " item not set");
+return *myDuUdMap_p;
+}
+
