@@ -17,6 +17,7 @@
           <xaif:Symbol symbol_id="test_prefixSymbol_23" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_18" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_19" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
+          <xaif:Symbol symbol_id="__control_flow_reversal_pop_integer" kind="subroutine" type="void" shape="scalar" annotation="__control_flow_reversal_" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_2" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
@@ -28,6 +29,7 @@
           <xaif:Symbol symbol_id="test_prefixSymbol_8" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="test_prefixSymbol_9" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="my_add" kind="subroutine" type="void" shape="scalar" annotation="" active="1" temp="0"/>
+          <xaif:Symbol symbol_id="__control_flow_reversal_push_integer" kind="subroutine" type="void" shape="scalar" annotation="__control_flow_reversal_" active="0" temp="1"/>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="2" annotation="">
@@ -387,11 +389,13 @@
           </xaif:Argument>
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
-      <xaif:Exit vertex_id="4" annotation=""/>
+      <xaif:EndLoop vertex_id="4" annotation=""/>
+      <xaif:Exit vertex_id="5" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="1" target="2"/>
       <xaif:ControlFlowEdge edge_id="2" source="2" target="3"/>
-      <xaif:ControlFlowEdge edge_id="3" source="3" target="2"/>
-      <xaif:ControlFlowEdge edge_id="4" source="2" target="4"/>
+      <xaif:ControlFlowEdge edge_id="3" source="3" target="4"/>
+      <xaif:ControlFlowEdge edge_id="4" source="4" target="2"/>
+      <xaif:ControlFlowEdge edge_id="5" source="2" target="5"/>
     </xaif:ControlFlowGraph>
     <xaif:ControlFlowGraph vertex_id="2" symbol_id="my_add" scope_id="1" annotation="" active="1">
       <xaif:ArgumentList>

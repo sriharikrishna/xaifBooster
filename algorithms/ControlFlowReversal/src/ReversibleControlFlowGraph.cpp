@@ -416,9 +416,10 @@ namespace xaifBoosterControlFlowReversal {
       }
   }
 
-  void 
+  bool 
   ReversibleControlFlowGraph::topologicalSortRecursively(ReversibleControlFlowGraphVertex& theCurrentVertex_r, int& idx,std::vector<ReversibleControlFlowGraphVertex*>& tmpSortedVertices_p_v) {
     theCurrentVertex_r.setVisited(true);
+    if (theCurrentVertex_r.isOriginal()&&theCurrentVertex_r.getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::GOTO) return false;
     if ((!(theCurrentVertex_r.isOriginal()))||theCurrentVertex_r.isOriginal()&&theCurrentVertex_r.getOriginalControlFlowGraphVertexAlg().getKind()!= ControlFlowGraphVertexAlg::ENDLOOP) {
       if (theCurrentVertex_r.isOriginal()&&(theCurrentVertex_r.getOriginalControlFlowGraphVertexAlg().getKind()!= ControlFlowGraphVertexAlg::FORLOOP||theCurrentVertex_r.getOriginalControlFlowGraphVertexAlg().getKind()!= ControlFlowGraphVertexAlg::PRELOOP)) {
         { // loop body first
@@ -428,7 +429,7 @@ namespace xaifBoosterControlFlowReversal {
           if ((*beginItie).toLoopBody) {
             getTargetOf(*beginItie).setIndex(idx++);
             tmpSortedVertices_p_v.push_back(&getTargetOf(*beginItie));
-            topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v); 
+            if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
           }
         }
         { // then rest
@@ -440,7 +441,7 @@ namespace xaifBoosterControlFlowReversal {
               tmpSortedVertices_p_v[getTargetOf(*beginItie).getIndex()]=0;
             getTargetOf(*beginItie).setIndex(idx++);
             tmpSortedVertices_p_v.push_back(&getTargetOf(*beginItie));
-            topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v); 
+            if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
           }
         }
       }
@@ -452,16 +453,17 @@ namespace xaifBoosterControlFlowReversal {
           if (getTargetOf(*beginItie).getVisited())
             tmpSortedVertices_p_v[getTargetOf(*beginItie).getIndex()]=0;
           getTargetOf(*beginItie).setIndex(idx++);
-          tmpSortedVertices_p_v.push_back(&getTargetOf(*beginItie));
+          if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
         }
         {
         OutEdgeIteratorPair pie(getOutEdgesOf(theCurrentVertex_r));
         OutEdgeIterator beginItie(pie.first),endItie(pie.second);
         for (;beginItie!=endItie ;++beginItie) 
-          topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v); 
+          if (!topologicalSortRecursively(getTargetOf(*beginItie),idx,tmpSortedVertices_p_v)) return false; 
         }
       }
     }
+    return true;
   }
 
   void
@@ -474,7 +476,8 @@ namespace xaifBoosterControlFlowReversal {
     getEntry().setIndex(idx++);
     std::vector<ReversibleControlFlowGraphVertex*> tmpSortedVertices_p_v;
     tmpSortedVertices_p_v.push_back(&getEntry());
-    topologicalSortRecursively(getEntry(),idx,tmpSortedVertices_p_v);
+    if (!topologicalSortRecursively(getEntry(),idx,tmpSortedVertices_p_v))
+      THROW_LOGICEXCEPTION_MACRO("Trying to sort an unstructured flow graph");
 
     // print mySortedVertices_p_v
   {

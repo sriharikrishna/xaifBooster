@@ -15,7 +15,7 @@ namespace xaifBoosterControlFlowReversal {
   class CallGraphAlg : public CallGraphAlgBase {
   public:
     
-    CallGraphAlg(const CallGraph& theContaining);
+    CallGraphAlg(CallGraph& theContaining);
                                                                                 
     ~CallGraphAlg();
 
@@ -58,11 +58,11 @@ namespace xaifBoosterControlFlowReversal {
     static std::string myAlgorithmSignature;
                                                                                 
     /**
-     * References to symbols for push and pop routines
+     * Pointers to symbols for push and pop routines
      * all live in global scope
      */
-    Symbol& myPushIntegerSymbol_r;
-    Symbol& myPopIntegerSymbol_r;
+    Symbol* myPushIntegerSymbol_p;
+    Symbol* myPopIntegerSymbol_p;
 
   };  // end of class
 

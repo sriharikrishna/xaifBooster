@@ -20,7 +20,7 @@ namespace xaifBoosterControlFlowReversal {
                                                                                 
     ~ControlFlowGraphVertexAlg();
 
-    enum ControlFlowGraphVertexKind_E {UNDEF,ENTRY,EXIT,IF,FORLOOP,PRELOOP,BASICBLOCK,ENDLOOP,ENDBRANCH};
+    enum ControlFlowGraphVertexKind_E {UNDEF,ENTRY,EXIT,IF,FORLOOP,PRELOOP,BASICBLOCK,ENDLOOP,ENDBRANCH,BRANCH,LABEL,GOTO};
 
     virtual ControlFlowGraphVertexKind_E getKind() const { return UNDEF; };
 
