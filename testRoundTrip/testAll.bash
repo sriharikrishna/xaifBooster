@@ -49,7 +49,7 @@ then
     export REVERSE_MODE=y
     mode="adm"
     submode="split"
-    echo -n "use submode [split]/joint"
+    echo -n "use submode [split]/joint "
     read answer
     if [ "$answer" == "joint" ]
     then
@@ -96,10 +96,10 @@ do
   then 
     echo "ERROR in: ${MAKE} for all_globals_mod"; exit -1;
   fi
-  ${CP}  all_globals_mod.prh.xb.x2w.w2f.urh.pp.f all_globals_mod.f
+  ${CP}  all_globals_mod.xb.x2w.w2f.pp.f all_globals_mod.f
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: ${CP}  all_globals_mod.prh.xb.x2w.w2f.urh.pp.f all_globals_mod.f"; exit -1;
+    echo "ERROR in: ${CP}  all_globals_mod.xb.x2w.w2f.pp.f all_globals_mod.f"; exit -1;
   fi
   export TARGET=head
   ${MAKE}
@@ -110,8 +110,8 @@ do
 ### this is temporary until we got rid of the RETURNs
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    sed 's/RETURN//' head.prh.xb.x2w.w2f.urh.pp.f >| head.prh.xb.x2w.w2f.urh.pp.f.1
-    mv head.prh.xb.x2w.w2f.urh.pp.f.1 head.prh.xb.x2w.w2f.urh.pp.f
+    sed 's/RETURN//' head.xb.x2w.w2f.pp.f >| head.xb.x2w.w2f.pp.f.1
+    mv head.xb.x2w.w2f.pp.f.1 head.xb.x2w.w2f.pp.f
   fi
 ### end of temporary fix
   export TARGET_DRIVER=driver
