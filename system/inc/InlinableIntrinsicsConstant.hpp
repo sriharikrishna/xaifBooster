@@ -1,8 +1,8 @@
 #ifndef _INLINABLEINTRINSICSCONSTANT_INCLUDE_
 #define _INLINABLEINTRINSICSCONSTANT_INCLUDE_
 
-#include "system/inc/InlinableIntrinsicsExpressionVertex.hpp"
-#include "system/inc/BaseConstant.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsExpressionVertex.hpp"
+#include "xaifBooster/system/inc/BaseConstant.hpp"
 
 namespace xaifBooster { 
 

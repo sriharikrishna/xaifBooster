@@ -1,9 +1,9 @@
 #ifndef _SCOPECONTAINMENT_INCLUDE_
 #define _SCOPECONTAINMENT_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "utils/inc/ObjectWithId.hpp"
-#include "system/inc/EdgeTraversable.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/EdgeTraversable.hpp"
 
 namespace xaifBooster { 
 

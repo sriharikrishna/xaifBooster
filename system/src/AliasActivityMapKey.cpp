@@ -1,5 +1,5 @@
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/AliasActivityMapKey.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/AliasActivityMapKey.hpp"
 
 namespace xaifBooster { 
 

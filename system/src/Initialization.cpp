@@ -1,6 +1,6 @@
 #include <sstream>
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/Initialization.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/Initialization.hpp"
 
 namespace xaifBooster { 
 

@@ -2,7 +2,7 @@
 #define _POSITIONSET_INCLUDE_
 
 #include <list>
-#include "utils/inc/Debuggable.hpp"
+#include "xaifBooster/utils/inc/Debuggable.hpp"
 
 namespace xaifBooster{ 
 

@@ -1,9 +1,9 @@
 #ifndef _BASICBLOCKELEMENT_INCLUDE_
 #define _BASICBLOCKELEMENT_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "utils/inc/ObjectWithId.hpp"
-#include "utils/inc/GenericTraverseInvoke.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 
 namespace xaifBooster { 
 

@@ -1,8 +1,8 @@
 #ifndef _BASICBLOCKALGFACTORY_INCLUDE_
 #define _BASICBLOCKALGFACTORY_INCLUDE_
 
-#include "system/inc/AlgFactory.hpp"
-#include "system/inc/BasicBlockAlgBase.hpp"
+#include "xaifBooster/system/inc/AlgFactory.hpp"
+#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
 
 namespace xaifBooster {  
 

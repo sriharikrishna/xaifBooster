@@ -3,9 +3,9 @@
 
 #include <string>
 #include "xercesc/parsers/XercesDOMParser.hpp"
-#include "system/inc/CallGraph.hpp"
-#include "utils/inc/XMLParserHelper.hpp"
-#include "utils/inc/HashTable.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/utils/inc/XMLParserHelper.hpp"
+#include "xaifBooster/utils/inc/HashTable.hpp"
 
 namespace xaifBooster {
 

@@ -3,14 +3,14 @@
 
 #include <list>
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
-#include "system/inc/ObjectWithAnnotation.hpp"
-#include "system/inc/GraphWrapperTraversable.hpp"
-#include "system/inc/ControlFlowGraphVertex.hpp"
-#include "system/inc/ControlFlowGraphEdge.hpp"
-#include "system/inc/ArgumentSymbolReference.hpp"
+#include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
+#include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphEdge.hpp"
+#include "xaifBooster/system/inc/ArgumentSymbolReference.hpp"
 
 namespace xaifBooster { 
 

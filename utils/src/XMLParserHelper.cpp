@@ -1,5 +1,5 @@
-#include "utils/inc/XMLParserHelper.hpp"
-#include "utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/XMLParserHelper.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 namespace xaifBooster { 
 

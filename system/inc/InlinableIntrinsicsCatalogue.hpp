@@ -1,8 +1,8 @@
 #ifndef _INLINABLEINTRINSICSCATALOGUE_INCLUDE_
 #define _INLINABLEINTRINSICSCATALOGUE_INCLUDE_
 
-#include "system/inc/InlinableIntrinsicsCatalogueItem.hpp"
-#include "utils/inc/HashTable.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
+#include "xaifBooster/utils/inc/HashTable.hpp"
 
 namespace xaifBooster { 
   

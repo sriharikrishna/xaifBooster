@@ -1,7 +1,7 @@
 #ifndef _COMMANDLINEPARSER_INCLUDE_
 #define _COMMANDLINEPARSER_INCLUDE_
 
-#include "utils/inc/CommandLineArguments.hpp"
+#include "xaifBooster/utils/inc/CommandLineArguments.hpp"
 
 namespace xaifBooster { 
 

@@ -1,8 +1,8 @@
-#include "utils/inc/LogicException.hpp"
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/AliasActivityMap.hpp"
-#include "system/inc/AliasActivityMapKey.hpp"
-#include "system/inc/AliasActivity.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/AliasActivityMap.hpp"
+#include "xaifBooster/system/inc/AliasActivityMapKey.hpp"
+#include "xaifBooster/system/inc/AliasActivity.hpp"
 
 namespace xaifBooster { 
 

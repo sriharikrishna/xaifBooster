@@ -1,8 +1,8 @@
 #ifndef _ALIASACTIVITY_INCLUDE_
 #define _ALIASACTIVITY_INCLUDE_
 
-#include "system/inc/AliasSet.hpp"
-#include "utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/AliasSet.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 
 namespace xaifBooster{ 

@@ -1,7 +1,7 @@
 #include <sstream>
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/BaseVariableReference.hpp"
-#include "system/inc/BaseVariableSymbolReference.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/system/inc/BaseVariableSymbolReference.hpp"
 
 namespace xaifBooster { 
 

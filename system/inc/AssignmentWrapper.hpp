@@ -1,9 +1,9 @@
 #ifndef _ASSIGNMENTWRAPPER_INCLUDE_
 #define _ASSIGNMENTWRAPPER_INCLUDE_
 
-#include "system/inc/BasicBlockElement.hpp"
-#include "system/inc/Expression.hpp"
-#include "system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/system/inc/BasicBlockElement.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/BaseVariableReference.hpp"
 
 namespace xaifBooster { 
 

@@ -1,8 +1,8 @@
 #ifndef _EXPRESSIONALGFACTORY_INCLUDE_
 #define _EXPRESSIONALGFACTORY_INCLUDE_
 
-#include "system/inc/AlgFactory.hpp"
-#include "system/inc/ExpressionAlgBase.hpp"
+#include "xaifBooster/system/inc/AlgFactory.hpp"
+#include "xaifBooster/system/inc/ExpressionAlgBase.hpp"
 
 namespace xaifBooster {  
 

@@ -1,7 +1,7 @@
 #ifndef _INLINABLEINTRINSICSARGUMENTREFERENCE_INCLUDE_
 #define _INLINABLEINTRINSICSARGUMENTREFERENCE_INCLUDE_
 
-#include "system/inc/InlinableIntrinsicsExpressionVertex.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsExpressionVertex.hpp"
 
 namespace xaifBooster { 
 

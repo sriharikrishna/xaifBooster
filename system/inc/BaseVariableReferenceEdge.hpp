@@ -1,8 +1,8 @@
 #ifndef _BASEVARIABLEREFERENCEEDGE_INCLUDE_
 #define _BASEVARIABLEREFERENCEEDGE_INCLUDE_
 
-#include "system/inc/EdgeTraversable.hpp"
-#include "utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/EdgeTraversable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include <sstream>
 
 namespace xaifBooster { 

@@ -1,7 +1,7 @@
 #ifndef _ALIASSINGLE_INCLUDE_
 #define _ALIASSINGLE_INCLUDE_
 
-#include "system/inc/BaseAlias.hpp"
+#include "xaifBooster/system/inc/BaseAlias.hpp"
 
 namespace xaifBooster{ 
 

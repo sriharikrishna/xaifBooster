@@ -3,9 +3,9 @@
 
 #include <string>
 #include "xercesc/parsers/XercesDOMParser.hpp"
-#include "system/inc/InlinableIntrinsicsCatalogue.hpp"
-#include "system/inc/InlinableIntrinsicsParserHelper.hpp"
-#include "utils/inc/HashTable.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsParserHelper.hpp"
+#include "xaifBooster/utils/inc/HashTable.hpp"
 
 namespace xaifBooster {
 

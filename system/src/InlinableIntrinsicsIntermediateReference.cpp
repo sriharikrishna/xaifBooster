@@ -1,4 +1,4 @@
-#include "system/inc/InlinableIntrinsicsIntermediateReference.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsIntermediateReference.hpp"
 
 namespace xaifBooster { 
 

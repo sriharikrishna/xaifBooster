@@ -1,12 +1,12 @@
 #include <sstream>
 
-#include "utils/inc/DbgLoggerManager.hpp"
-#include "utils/inc/LogicException.hpp"
-#include "utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
 
-#include "system/inc/Expression.hpp"
-#include "system/inc/ExpressionEdge.hpp"
-#include "system/inc/ExpressionEdgeAlgFactory.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/ExpressionEdge.hpp"
+#include "xaifBooster/system/inc/ExpressionEdgeAlgFactory.hpp"
 
 namespace xaifBooster { 
 

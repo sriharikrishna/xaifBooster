@@ -1,16 +1,16 @@
 #include <sstream>
 
-#include "utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
-#include "system/inc/Assignment.hpp"
-#include "system/inc/AssignmentAlgBase.hpp"
-#include "system/inc/AssignmentAlgFactory.hpp"
-#include "system/inc/Variable.hpp"
-#include "system/inc/GraphVizDisplay.hpp"
-#include "system/inc/AliasActivityMap.hpp"
-#include "system/inc/ConceptuallyStaticInstances.hpp"
-#include "system/inc/CallGraph.hpp"
-#include "system/inc/BaseVariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
+#include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
+#include "xaifBooster/system/inc/AliasActivityMap.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/BaseVariableSymbolReference.hpp"
 
 namespace xaifBooster { 
 

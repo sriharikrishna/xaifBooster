@@ -1,9 +1,9 @@
 #ifndef _BASECONSTANT_INCLUDE_
 #define _BASECONSTANT_INCLUDE_
 
-#include "system/inc/ExpressionVertex.hpp"
-#include "system/inc/SymbolType.hpp"
-#include "utils/inc/Debuggable.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/SymbolType.hpp"
+#include "xaifBooster/utils/inc/Debuggable.hpp"
 
 namespace xaifBooster { 
 

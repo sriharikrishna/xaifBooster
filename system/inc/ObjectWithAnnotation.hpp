@@ -1,7 +1,7 @@
 #ifndef _OBJECTWITHANNOTATION_INCLUDE_
 #define _OBJECTWITHANNOTATION_INCLUDE_
 
-#include "utils/inc/Debuggable.hpp"
+#include "xaifBooster/utils/inc/Debuggable.hpp"
 #include <string>
 
 namespace xaifBooster { 

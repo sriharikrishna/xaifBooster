@@ -1,8 +1,8 @@
 #ifndef _INLINABLEINTRINSICSCATALOGUEITEM_INCLUDE_
 #define _INLINABLEINTRINSICSCATALOGUEITEM_INCLUDE_
 
-#include "system/inc/InlinableIntrinsicsExpression.hpp"
-#include "system/inc/PartialDerivativeKind.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsExpression.hpp"
+#include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
 #include <vector>
 
 namespace xaifBooster { 

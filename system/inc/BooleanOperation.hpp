@@ -1,8 +1,8 @@
 #ifndef _BOOLEANOPERATION_INCLUDE_
 #define _BOOLEANOPERATION_INCLUDE_
 
-#include "system/inc/ExpressionVertex.hpp"
-#include "system/inc/BooleanOperationType.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/BooleanOperationType.hpp"
 
 namespace xaifBooster { 
 

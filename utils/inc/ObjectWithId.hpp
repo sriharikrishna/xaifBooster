@@ -1,7 +1,7 @@
 #ifndef _OBJECTWITHID_INCLUDE_
 #define _OBJECTWITHID_INCLUDE_
 
-#include "utils/inc/Debuggable.hpp"
+#include "xaifBooster/utils/inc/Debuggable.hpp"
 #include <string>
 
 namespace xaifBooster { 

@@ -1,8 +1,8 @@
 #ifndef _CONTROLFLOWGRAPHEDGE_INCLUDE_
 #define _CONTROLFLOWGRAPHEDGE_INCLUDE_
 
-#include "utils/inc/ObjectWithId.hpp"
-#include "system/inc/EdgeTraversable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/EdgeTraversable.hpp"
 
 namespace xaifBooster { 
   

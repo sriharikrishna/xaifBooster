@@ -1,7 +1,7 @@
 #ifndef _EXIT_INCLUDE_
 #define _EXIT_INCLUDE_
 
-#include "system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 
 namespace xaifBooster { 
 

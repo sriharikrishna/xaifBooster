@@ -1,8 +1,8 @@
 #ifndef _ALGBASE_INCLUDE_
 #define _ALGBASE_INCLUDE_
 
-#include "utils/inc/XMLPrintable.hpp"
-#include "utils/inc/GenericTraverseInvoke.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 
 namespace xaifBooster {  
 
@@ -73,6 +73,6 @@ namespace xaifBooster {
 
 } // end of namespace 
 
-#include "system/inc/TemplateImpl/AlgBase.cpp"
+#include "xaifBooster/system/inc/TemplateImpl/AlgBase.cpp"
 
 #endif

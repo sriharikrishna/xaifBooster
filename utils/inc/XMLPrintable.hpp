@@ -1,7 +1,7 @@
 #ifndef _XMLPRINTABLE_INCLUDE_
 #define _XMLPRINTABLE_INCLUDE_
 
-#include "utils/inc/Debuggable.hpp"
+#include "xaifBooster/utils/inc/Debuggable.hpp"
 
 namespace xaifBooster { 
 

@@ -1,5 +1,5 @@
 #include "sstream"
-#include "system/inc/PositionSet.hpp"
+#include "xaifBooster/system/inc/PositionSet.hpp"
 
 namespace xaifBooster { 
 

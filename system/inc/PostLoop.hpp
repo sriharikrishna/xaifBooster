@@ -1,8 +1,8 @@
 #ifndef _POSTLOOP_INCLUDE_
 #define _POSTLOOP_INCLUDE_
 
-#include "system/inc/Condition.hpp"
-#include "system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/Condition.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 
 namespace xaifBooster { 
 

@@ -1,9 +1,9 @@
 #ifndef _ARGUMENTSYMBOLREFERENCE_INCLUDE_
 #define _ARGUMENTSYMBOLREFERENCE_INCLUDE_
 
-#include "system/inc/SymbolReference.hpp"
-#include "utils/inc/XMLPrintable.hpp"
-#include "system/inc/IntentType.hpp"
+#include "xaifBooster/system/inc/SymbolReference.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/IntentType.hpp"
 
 namespace xaifBooster { 
   class ArgumentSymbolReference: public SymbolReference, XMLPrintable { 

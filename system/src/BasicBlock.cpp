@@ -1,9 +1,9 @@
 #include <sstream>
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/BasicBlock.hpp"
-#include "system/inc/BasicBlockAlgBase.hpp"
-#include "system/inc/BasicBlockAlgFactory.hpp"
-#include "system/inc/BasicBlockElement.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
+#include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/system/inc/BasicBlockElement.hpp"
 
 namespace xaifBooster { 
 

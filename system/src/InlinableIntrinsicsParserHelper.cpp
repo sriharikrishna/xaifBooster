@@ -1,5 +1,5 @@
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/InlinableIntrinsicsParserHelper.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsParserHelper.hpp"
 
 namespace xaifBooster { 
 

@@ -1,7 +1,7 @@
 #ifndef _GENERICTRAVERSEINVOKE_INCLUDE_
 #define _GENERICTRAVERSEINVOKE_INCLUDE_
 
-#include "utils/inc/GenericAction.hpp"
+#include "xaifBooster/utils/inc/GenericAction.hpp"
 
 namespace xaifBooster { 
 

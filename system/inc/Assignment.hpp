@@ -1,8 +1,8 @@
 #ifndef _ASSIGNMENT_INCLUDE_
 #define _ASSIGNMENT_INCLUDE_
 
-#include "system/inc/PlainAssignment.hpp"
-#include "system/inc/AssignmentAlgBase.hpp"
+#include "xaifBooster/system/inc/PlainAssignment.hpp"
+#include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
 
 namespace xaifBooster { 
 

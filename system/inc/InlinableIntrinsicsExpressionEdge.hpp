@@ -1,8 +1,8 @@
 #ifndef _INLINABLEINTRINSICSEXPRESSIONEDGE_INCLUDE_
 #define _INLINABLEINTRINSICSEXPRESSIONEDGE_INCLUDE_
 
-#include "system/inc/Edge.hpp"
-#include "utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/Edge.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
 namespace xaifBooster { 
 

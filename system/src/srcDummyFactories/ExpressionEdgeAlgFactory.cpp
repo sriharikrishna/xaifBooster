@@ -1,6 +1,6 @@
-#include "system/inc/ExpressionEdgeAlgFactory.hpp"
-#include "system/inc/ExpressionEdgeAlgBase.hpp"
-#include "system/inc/ExpressionEdge.hpp"
+#include "xaifBooster/system/inc/ExpressionEdgeAlgFactory.hpp"
+#include "xaifBooster/system/inc/ExpressionEdgeAlgBase.hpp"
+#include "xaifBooster/system/inc/ExpressionEdge.hpp"
 
 namespace xaifBooster {  
 

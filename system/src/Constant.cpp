@@ -1,6 +1,6 @@
-#include "utils/inc/LogicException.hpp"
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/Constant.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
 
 namespace xaifBooster { 
 

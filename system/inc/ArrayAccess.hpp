@@ -2,8 +2,8 @@
 #define _ARRAYACCESS_INCLUDE_
 
 #include <list>
-#include "system/inc/BaseVariableReferenceVertex.hpp"
-#include "system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/BaseVariableReferenceVertex.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
 
 namespace xaifBooster { 
 

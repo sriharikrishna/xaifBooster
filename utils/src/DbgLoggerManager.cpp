@@ -1,6 +1,6 @@
-#include "utils/inc/DbgLoggerManager.hpp"
-#include "utils/inc/LogicException.hpp"
-#include "utils/inc/Thread.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/Thread.hpp"
 #include <cerrno>
 
 namespace xaifBooster { 

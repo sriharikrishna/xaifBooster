@@ -1,8 +1,8 @@
-#include "utils/inc/LogicException.hpp"
-#include "utils/inc/PrintManager.hpp"
-#include "system/inc/SymbolTable.hpp"
-#include "system/inc/ConceptuallyStaticInstances.hpp"
-#include "system/inc/CallGraph.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/SymbolTable.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
 
 namespace xaifBooster { 
 

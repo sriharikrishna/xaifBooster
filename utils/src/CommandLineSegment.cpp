@@ -1,6 +1,6 @@
-#include "utils/inc/CommandLineSegment.hpp"
-#include "utils/inc/CommandLineArguments.hpp"
-#include "utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/CommandLineSegment.hpp"
+#include "xaifBooster/utils/inc/CommandLineArguments.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 namespace xaifBooster { 
 

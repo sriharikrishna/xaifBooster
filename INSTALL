@@ -1,0 +1,24 @@
+install requires the following environment variables to be set: 
+
+XERCESCROOT       the path to the xerces install e.g. XERCESCROOT=/sandbox/xerces-c-src_2_3_0
+BOOSTROOT         the path to the boost install e.g.  BOOSTROOT=/sandbox/boost_1_29_0
+XAIFBOOSTERROOT   the path to the xaifBooster install, i.e. the parent of the xaifBooster directory, 
+		  e.g. XAIFBOOSTERROOT=/sandbox/xaifBooster_current
+
+and for the test driver that uses the ANGEL library: 
+ANGELROOT         the path to the ANGEL isnatll, e.g. ANGELROOT=/sandbox/CVS/angel
+
+before any make do: 
+
+	cd ${XAIFBOOSTERROOT}/xaifBooster
+
+to make all object files and libraries: 
+	make 
+
+to make all test drivers: 
+	make test
+
+to create doxygen html files: 
+	make doc
+
+

@@ -1,5 +1,5 @@
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/SymbolType.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/SymbolType.hpp"
 
 namespace xaifBooster { 
   

@@ -1,8 +1,8 @@
 #ifndef  _GRAPHWRAPPER_INCLUDE_
-#include "system/inc/GraphWrapper.hpp"
+#include "xaifBooster/system/inc/GraphWrapper.hpp"
 #endif
 
-#include "utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 namespace xaifBooster { 
 

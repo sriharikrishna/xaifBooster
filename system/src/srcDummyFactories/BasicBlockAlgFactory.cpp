@@ -1,6 +1,6 @@
-#include "system/inc/BasicBlockAlgFactory.hpp"
-#include "system/inc/BasicBlockAlgBase.hpp"
-#include "system/inc/BasicBlock.hpp"
+#include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
+#include "xaifBooster/system/inc/BasicBlock.hpp"
 
 namespace xaifBooster {  
 

@@ -1,8 +1,8 @@
 #ifndef _BASICBLOCK_INCLUDE_
 #define _BASICBLOCK_INCLUDE_
 
-#include "system/inc/PlainBasicBlock.hpp"
-#include "system/inc/BasicBlockAlgBase.hpp"
+#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
+#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
 
 namespace xaifBooster { 
 

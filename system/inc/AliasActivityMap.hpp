@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <list>
-#include "utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 namespace xaifBooster { 
 

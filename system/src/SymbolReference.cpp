@@ -1,7 +1,7 @@
 #include <sstream>
-#include "utils/inc/PrintManager.hpp"
-#include "utils/inc/LogicException.hpp"
-#include "system/inc/SymbolReference.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/SymbolReference.hpp"
 
 namespace xaifBooster { 
 

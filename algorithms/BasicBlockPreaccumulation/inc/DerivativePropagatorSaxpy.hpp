@@ -1,10 +1,10 @@
 #ifndef _DERIVATIVEPROPAGATORSAXPY_INCLUDE_
 #define _DERIVATIVEPROPAGATORSAXPY_INCLUDE_
 
-#include "system/inc/DerivativePropagatorEntry.hpp"
-#include "system/inc/BaseVariableReference.hpp"
-#include "system/inc/Constant.hpp"
-#include "system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/DerivativePropagatorEntry.hpp"
+#include "xaifBooster/system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
 #include <list>
 
 namespace xaifBooster { 

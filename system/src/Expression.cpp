@@ -1,17 +1,17 @@
 #include <iostream>
 #include <sstream>
 
-#include "utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
-#include "system/inc/Expression.hpp"
-#include "system/inc/ExpressionAlgBase.hpp"
-#include "system/inc/ExpressionAlgFactory.hpp"
-#include "system/inc/InlinableIntrinsicsCatalogueItem.hpp"
-#include "system/inc/ConceptuallyStaticInstances.hpp"
-#include "system/inc/Variable.hpp"
-#include "system/inc/Assignment.hpp"
-#include "system/inc/CallGraph.hpp"
-#include "system/inc/BaseVariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/ExpressionAlgBase.hpp"
+#include "xaifBooster/system/inc/ExpressionAlgFactory.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/BaseVariableSymbolReference.hpp"
 
 
 namespace xaifBooster { 

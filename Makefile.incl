@@ -15,6 +15,8 @@ ifneq ($(UNDEF_ENV_VARS),"")
 export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1
 endif	
 
+export ROOTDIR=xaifBooster
+
 export FLIST=$(basename $(wildcard *.cpp))
 
 export XERCESC_LIB=-lxerces-c
@@ -23,14 +25,14 @@ export XERCESC_INCLUDE_DIR=$(XERCESCROOT)/include
 
 export BOOST_INCLUDE_DIR=$(BOOSTROOT)
 
-export DUMMY_FACTORY_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/system/src/srcDummyFactories/obj/*.o)
+export DUMMY_FACTORY_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src/srcDummyFactories/obj/*.o)
 
-export SYSTEM_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/system/src/obj/*.o)
+export SYSTEM_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src/obj/*.o)
 
 export SYSTEM_INC_DIR=$(XAIFBOOSTERROOT)
 export UTILS_LIB_NAME=xaifboosterutils
 export UTILS_LIB=-l$(UTILS_LIB_NAME)
-export UTILS_LIB_DIR=$(XAIFBOOSTERROOT)/utils/lib
+export UTILS_LIB_DIR=$(XAIFBOOSTERROOT)/$(ROOTDIR)/utils/lib
 
 export CC=g++
 export CCFLAGS=-g -Wall -Winline -Wredundant-decls

@@ -1,10 +1,10 @@
 #ifndef  _GRAPHWRAPPER_INCLUDE_
 #define  _GRAPHWRAPPER_INCLUDE_
 
-#include "system/inc/WrapperTypeDefs.hpp"
-#include "system/inc/BoostVertexContentType.hpp"
-#include "system/inc/BoostEdgeContentType.hpp"
-#include "system/inc/IteratorWrapper.hpp"
+#include "xaifBooster/system/inc/WrapperTypeDefs.hpp"
+#include "xaifBooster/system/inc/BoostVertexContentType.hpp"
+#include "xaifBooster/system/inc/BoostEdgeContentType.hpp"
+#include "xaifBooster/system/inc/IteratorWrapper.hpp"
 
 
 namespace xaifBooster { 
@@ -268,6 +268,6 @@ namespace xaifBooster {
   
 } // end of namespace
 
-#include "system/inc/TemplateImpl/GraphWrapper.cpp"
+#include "xaifBooster/system/inc/TemplateImpl/GraphWrapper.cpp"
                                                                      
 #endif

@@ -1,7 +1,7 @@
 #ifndef _DBGLOGGER_INCLUDE_
 #define _DBGLOGGER_INCLUDE_
 
-#include "utils/inc/BaseLogger.hpp"
+#include "xaifBooster/utils/inc/BaseLogger.hpp"
 
 namespace xaifBooster { 
 

@@ -1,11 +1,11 @@
 #ifndef _INLINABLEINTRINSICSEXPRESSION_INCLUDE_
 #define _INLINABLEINTRINSICSEXPRESSION_INCLUDE_
 
-#include "system/inc/GraphWrapper.hpp"
-#include "system/inc/InlinableIntrinsicsExpressionVertex.hpp"
-#include "system/inc/InlinableIntrinsicsExpressionEdge.hpp"
-#include "system/inc/PartialDerivativeKind.hpp"
-#include "system/inc/PositionSet.hpp"
+#include "xaifBooster/system/inc/GraphWrapper.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsExpressionVertex.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsExpressionEdge.hpp"
+#include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
+#include "xaifBooster/system/inc/PositionSet.hpp"
 
 namespace xaifBooster { 
   

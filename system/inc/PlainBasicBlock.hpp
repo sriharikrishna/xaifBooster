@@ -1,7 +1,7 @@
 #ifndef _PLAINBASICBLOCK_INCLUDE_
 #define _PLAINBASICBLOCK_INCLUDE_
 
-#include "system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include <list>
 
 namespace xaifBooster { 

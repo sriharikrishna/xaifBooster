@@ -1,8 +1,8 @@
 #include <sstream>
 #include "xercesc/sax/SAXParseException.hpp"
-#include "utils/inc/XMLParserErrorHandler.hpp"
-#include "utils/inc/XMLParserMessage.hpp"
-#include "utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/XMLParserErrorHandler.hpp"
+#include "xaifBooster/utils/inc/XMLParserMessage.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 namespace xaifBooster { 
 
