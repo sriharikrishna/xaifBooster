@@ -4,13 +4,12 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
-
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
-    CallGraphVertexAlgBase(theContaining), 
+    xaifBoosterControlFlowReversal::CallGraphVertexAlg(theContaining), 
     // JU: this is iffy. Ideally I don't want to get into accessing theContaining 
     // here since it opens the door to ordering problems between the ctors.
     myReplacementList(theContaining.getControlFlowGraph().getSymbolReference().getSymbol(),
@@ -41,12 +40,15 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     // this should be the original code
     xaifBoosterCodeReplacement::Replacement& theReplacement1(myReplacementList.addReplacement(1));
     theReplacement1.setControlFlowGraphBase(getContaining().getControlFlowGraph());
+    theReplacement1.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ORIGINAL);
     // this should be the tape
     xaifBoosterCodeReplacement::Replacement& theReplacement2(myReplacementList.addReplacement(2));
     theReplacement2.setControlFlowGraphBase(getContaining().getControlFlowGraph());
+    theReplacement2.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::AUGMENTED);
     // this should be the tape adjoint
     xaifBoosterCodeReplacement::Replacement& theReplacement3(myReplacementList.addReplacement(3));
     theReplacement3.setControlFlowGraphBase(getContaining().getControlFlowGraph());
+    theReplacement3.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
   } 
 
 } // end of namespace 
