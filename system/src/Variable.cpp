@@ -2,6 +2,7 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/ArrayAccess.hpp"
 
 namespace xaifBooster { 
 
@@ -183,7 +184,62 @@ namespace xaifBooster {
 	} // end catch
       } 
     }
-    THROW_LOGICEXCEPTION_MACRO("Variable::getVariableSymbolReference: no symbol reference availabel");
+    THROW_LOGICEXCEPTION_MACRO("Variable::getVariableSymbolReference: no symbol reference available");
+  } 
+
+  const ArrayAccess& Variable::getArrayAccess() const { 
+    Variable::ConstVertexIteratorPair p(vertices());
+    Variable::ConstVertexIterator it(p.first),endIt(p.second);
+    for (;it!=endIt ;++it) {
+      if (!(*it).isSymbol()) { 
+	try { 
+	  return dynamic_cast<const ArrayAccess&>(*it);
+	}
+	catch(std::bad_cast& e) { 
+	  THROW_LOGICEXCEPTION_MACRO("Variable::getArrayAccess: invalid cast of "
+				     << (*it).debug().c_str() 
+				     << " into a ArrayAccess");
+	} // end catch
+      } 
+    }
+    THROW_LOGICEXCEPTION_MACRO("Variable::getArrayAccess: nothing there");
+  } 
+
+  ArrayAccess& Variable::getArrayAccess() { 
+    Variable::VertexIteratorPair p(vertices());
+    Variable::VertexIterator it(p.first),endIt(p.second);
+    for (;it!=endIt ;++it) {
+      if (!(*it).isSymbol()) { 
+	try { 
+	  return dynamic_cast<ArrayAccess&>(*it);
+	}
+	catch(std::bad_cast& e) { 
+	  THROW_LOGICEXCEPTION_MACRO("Variable::getArrayAccess: invalid cast of "
+				     << (*it).debug().c_str() 
+				     << " into a ArrayAccess");
+	} // end catch
+      } 
+    }
+    THROW_LOGICEXCEPTION_MACRO("Variable::getArrayAccess: nothing there");
+  } 
+
+  bool Variable::hasArrayAccess() const { 
+    Variable::ConstVertexIteratorPair p(vertices());
+    Variable::ConstVertexIterator it(p.first),endIt(p.second);
+    for (;it!=endIt ;++it) {
+      if (!(*it).isSymbol()) { 
+	try { 
+	  dynamic_cast<const ArrayAccess&>(*it);
+	  return true;
+	}
+	catch(std::bad_cast& e) { 
+	  THROW_LOGICEXCEPTION_MACRO("Variable::getArrayAccess: invalid cast of "
+				     << (*it).debug().c_str() 
+				     << " into a ArrayAccess");
+	} // end catch
+      } 
+    }
+    return false;
   } 
 
   void Variable::setDerivFlag() { 

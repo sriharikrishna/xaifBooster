@@ -12,10 +12,7 @@ namespace xaifBoosterDerivativePropagator {
 
   const std::string DerivativePropagatorZeroDeriv::ourXAIFName("xaif:ZeroDeriv");
 
-  DerivativePropagatorZeroDeriv::DerivativePropagatorZeroDeriv(const Variable& theTarget) { 
-    theTarget.copyMyselfInto(myTarget);
-    myTarget.setId(1);
-    myTarget.setDerivFlag();
+  DerivativePropagatorZeroDeriv::DerivativePropagatorZeroDeriv(const Variable& theTarget) : DerivativePropagatorEntry(theTarget) { 
   }
 
   void
@@ -43,7 +40,7 @@ namespace xaifBoosterDerivativePropagator {
   std::string DerivativePropagatorZeroDeriv::debug () const { 
     std::ostringstream out;
     out << "DerivativePropagatorZeroDeriv[" << this 
-	<< ", myTarget=" << myTarget.debug()
+	<< DerivativePropagatorEntry::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of DerivativePropagatorZeroDeriv::debug
@@ -52,10 +49,6 @@ namespace xaifBoosterDerivativePropagator {
     Factor aFactor;
     aFactor.setZero();
     theFactorList.push_back(aFactor);
-  } 
-
-  const Variable& DerivativePropagatorZeroDeriv::getTarget() const { 
-    return myTarget;
   } 
 
 } // end of namespace 

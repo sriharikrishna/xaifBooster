@@ -97,13 +97,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * pointer to printer for DerivativePropagator
      */
     typedef void (*PrintDerivativePropagator_fp)(std::ostream& os,
+						 const BasicBlockAlgBase& aBasicBlockAlg, 
 						 const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator);
 
     void printXMLHierarchyImpl(std::ostream& os,
 			       PrintDerivativePropagator_fp aPrintDerivativePropagator_fp) const;
 
   private:
-    
+
     /** 
      * no def
      */
@@ -245,6 +246,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
 
   private: 
+    
+    /** 
+     * this is just a helper to accomodate 
+     * the additional BasicBlockAlgBase&
+     * in the signature of PrintDerivativePropagator_fp
+     */
+    static void printerWrapper(std::ostream& os,
+			       const BasicBlockAlgBase&, 
+			       const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) {
+      xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
+    }; 
     
     /** 
      * this list owns all the Sequence instances

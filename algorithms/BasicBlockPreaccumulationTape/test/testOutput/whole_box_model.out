@@ -1093,6 +1093,7 @@
         <xaif:SymbolTable>
           <xaif:Symbol symbol_id="I_1" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#1}" active="0" temp="0"/>
           <xaif:Symbol symbol_id="J_5" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#5}" active="0" temp="0"/>
+          <xaif:Symbol symbol_id="OpenAD_Symbol_570" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="L_6" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#6}" active="0" temp="0"/>
           <xaif:Symbol symbol_id="ILOOP_3" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#3}" active="0" temp="0"/>
           <xaif:Symbol symbol_id="IKEY_2" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#2}" active="0" temp="0"/>
@@ -1102,6 +1103,7 @@
         <xaif:SymbolTable>
           <xaif:Symbol symbol_id="I_1" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#1}" active="0" temp="0"/>
           <xaif:Symbol symbol_id="J_5" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#5}" active="0" temp="0"/>
+          <xaif:Symbol symbol_id="OpenAD_Symbol_571" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="L_6" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#6}" active="0" temp="0"/>
           <xaif:Symbol symbol_id="ILOOP_3" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#3}" active="0" temp="0"/>
           <xaif:Symbol symbol_id="IKEY_2" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#2}" active="0" temp="0"/>
@@ -1396,6 +1398,11 @@
             <xaif:Constant vertex_id="1" type="real" value="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="23" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_12" scope_id="2"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="7" annotation="{WHIRL_Id#}"/>
       <xaif:EndLoop vertex_id="11" annotation="{WHIRL_Id#}"/>
@@ -1659,9 +1666,24 @@
             <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="7"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="7"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_284" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="7"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
@@ -1669,14 +1691,29 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_286" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="7"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_288" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="7"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_290" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="7"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -5520,9 +5557,34 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_423" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
@@ -5530,9 +5592,19 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_426" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_429" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
@@ -5540,9 +5612,19 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_432" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_434" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="9"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -5624,6 +5706,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="2" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_625" scope_id="1"/>
@@ -5650,6 +5742,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="3" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SOLD_615" scope_id="1"/>
@@ -5676,6 +5778,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="4" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_614" scope_id="1"/>
@@ -5702,6 +5814,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="10"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="8" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="6" annotation="{WHIRL_Id#596}" scope_id="10">
@@ -5771,6 +5893,11 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="5" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="12" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="6" annotation="{WHIRL_Id#}" scope_id="3">
@@ -5835,6 +5962,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="14" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="14" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="2" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TSVEC_173" scope_id="1"/>
@@ -5865,6 +6002,30 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="14" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:Assignment statement_id="index_expression_assignment_for_taping" active="0">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_570" scope_id="3"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
+            <xaif:VariableReference vertex_id="2" active="false" du_ud="14" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="3"/>
+            </xaif:VariableReference>
+            <xaif:Constant vertex_id="3" type="integer" value="3"/>
+            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_570" scope_id="3"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="13" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="10" annotation="{WHIRL_Id#654}" scope_id="3">
@@ -6459,6 +6620,11 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="30" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="16" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="6" annotation="{WHIRL_Id#}" scope_id="4">
@@ -6573,14 +6739,34 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="39" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="39" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_447" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="39" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_449" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="39" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="2" active="1">
@@ -6663,14 +6849,48 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:Assignment statement_id="index_expression_assignment_for_taping" active="0">
+          <xaif:AssignmentLHS active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_571" scope_id="4"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
+            <xaif:VariableReference vertex_id="2" active="false" du_ud="39" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+            </xaif:VariableReference>
+            <xaif:Constant vertex_id="3" type="integer" value="3"/>
+            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_571" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="39" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_451" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="39" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_453" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="39" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -6737,6 +6957,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="2" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SNEW_235" scope_id="1"/>
@@ -6763,6 +6993,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="3" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TOLD_248" scope_id="1"/>
@@ -6789,6 +7029,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="4" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SOLD_237" scope_id="1"/>
@@ -6815,6 +7065,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="5" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_247" scope_id="1"/>
@@ -6841,6 +7101,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="6" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_236" scope_id="1"/>
@@ -6867,6 +7137,16 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="4"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="18" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="14" annotation="{WHIRL_Id#912:914}" scope_id="4">
@@ -9652,9 +9932,19 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_541" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
@@ -9662,9 +9952,19 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_543" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_545" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="51" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -9748,6 +10048,16 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="62" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="62" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="11" annotation="{WHIRL_Id#}"/>
       <xaif:EndLoop vertex_id="36" annotation="{WHIRL_Id#}"/>
@@ -9784,6 +10094,16 @@
             <xaif:Constant vertex_id="1" type="real" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="65" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="65" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="13" annotation="{WHIRL_Id#}" scope_id="5">
       </xaif:BasicBlock>
@@ -9927,14 +10247,34 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="75" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="75" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_547" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="75" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_549" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="75" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:Assignment statement_id="replacement for 2" active="1">
@@ -10043,14 +10383,34 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="75" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="75" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_551" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="75" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_553" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="75" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="5"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -10321,14 +10681,44 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="98" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="97" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_555" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="97" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="98" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_557" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="97" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="98" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -10491,14 +10881,44 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="115" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="114" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_559" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="115" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="114" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_561" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="115" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="I_1" scope_id="5"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="114" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="J_5" scope_id="5"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -10990,9 +11410,24 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="11"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="11"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_564" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="11"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
@@ -11000,9 +11435,19 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_566" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="11"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_568" scope_id="1"/>
+          </xaif:ArgumentSubstitute>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="inline_push_i">
+          <xaif:ArgumentSubstitute position="1" active="false" du_ud="6" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="11"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>

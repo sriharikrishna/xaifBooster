@@ -5,8 +5,9 @@
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
+#include "xaifBooster/system/inc/Variable.hpp"
+
 namespace xaifBooster { 
-  class Variable; 
   class Constant; 
 }
 
@@ -16,18 +17,24 @@ namespace xaifBoosterDerivativePropagator {
 
   /** 
    * class representing different 
-   * shortcuts for y+=[a*x]
+   * versions for y+=[a*x]
+   * \todo: The problem with this class is that 
+   * it should probably be a union rather than 
+   * a base class for the other versions, since 
+   * we need to recollect all the information at some 
+   * point. The Factor class sort of represents it already.
    */
   class DerivativePropagatorEntry : public XMLPrintable {
   public:
 
-    DerivativePropagatorEntry(){};
+    DerivativePropagatorEntry(const Variable& theTarget);
+
     ~DerivativePropagatorEntry(){};
 
     typedef std::list<const Variable*> VariablePList;
 
     /** 
-     * Factors a in a*x
+     * Elements 'a' and 'x' in a*x
      */
     class Factor { 
     public: 
@@ -43,29 +50,60 @@ namespace xaifBoosterDerivativePropagator {
 
       Factor() : 
 	myFactorKind(NOT_SET),
-	mySource_p(0) {};
+	mySource_p(0) {
+      };
+
+      /** 
+       * fix it to ZERO_FACTOR
+       */
       void setZero(); 
+ 
+      /** 
+       * fix it to UNIT_FACTOR
+       */
       void setUnit(); 
+
+      /** 
+       * fix it to CONSTANT_FACTOR
+       */
       void setConstant(const Constant& theConstant); 
+
+      /** 
+       * fix it to VARIABLE_FACTOR
+       */
       void setVariable(const Variable& theVariable); 
+
       FactorKind_E getKind() const;
       const Variable& getVariable() const;
       const Constant& getConstant() const;
       void  setSource(const Variable& theVariable);
       const Variable& getSource() const;
+
     private: 
+      /**
+       * this represents the factor 'a'
+       * which can be either variable or constant
+       */
       union { 
 	const Variable* myVariable_p;
 	const Constant* myConstant_p;
       } myFactor;
+      
+      /** 
+       * used also as discriminator for myFactor
+       */
       FactorKind_E myFactorKind;
+      
+      /** 
+       * this represents the source 'x'
+       */
       const Variable* mySource_p;
     };
 
     typedef std::list<Factor> FactorList;
 
     /**
-     * the kind of all factors a 
+     * fill in the list of all a*x 
      * in y+=a*x
      */
     virtual void getFactors(FactorList& theFactorList) const =0; 
@@ -73,11 +111,18 @@ namespace xaifBoosterDerivativePropagator {
     /**
      * returns y from y+=a*x
      */
-    virtual const Variable& getTarget() const =0;
+    const Variable& getTarget() const;
 
     virtual bool isIncremental() { return false;}; 
 
+    std::string debug() const;
+
   private:
+
+    /**
+     * no def
+     */
+    DerivativePropagatorEntry ();
 
     /**
      * no def
@@ -88,6 +133,15 @@ namespace xaifBoosterDerivativePropagator {
      * no def
      */
     DerivativePropagatorEntry operator=(const DerivativePropagatorEntry&);
+
+  protected: 
+
+    /**
+     * all versions have a single target
+     * but we need this to be a copy
+     * \todo: does it really need to be a copy?
+     */
+    Variable myTarget;
 
   }; // end of class DerivativePropagatorEntry
  
