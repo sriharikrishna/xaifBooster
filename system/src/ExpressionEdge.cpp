@@ -1,0 +1,129 @@
+#include <sstream>
+
+#include "utils/inc/DbgLoggerManager.hpp"
+#include "utils/inc/LogicException.hpp"
+#include "utils/inc/PrintManager.hpp"
+
+#include "system/inc/Expression.hpp"
+#include "system/inc/ExpressionEdge.hpp"
+#include "system/inc/ExpressionEdgeAlgFactory.hpp"
+
+namespace xaifBooster { 
+
+  const std::string ExpressionEdge::ourXAIFName("xaif:ExpressionEdge");
+  const std::string ExpressionEdge::our_myId_XAIFName("edge_id");
+  const std::string ExpressionEdge::our_source_XAIFName("source");
+  const std::string ExpressionEdge::our_target_XAIFName("target");
+  const std::string ExpressionEdge::our_myPosition_XAIFName("position");
+
+  ExpressionEdge::ExpressionEdge(bool hasAlgorithm): 
+    myPosition(0) {
+    myExpressionEdgeAlgBase_p=0;
+    if (hasAlgorithm)
+      myExpressionEdgeAlgBase_p=ExpressionEdgeAlgFactory::instance()->makeNewAlg(*this);
+  }; 
+
+  ExpressionEdge::~ExpressionEdge(){
+    if (myExpressionEdgeAlgBase_p) delete myExpressionEdgeAlgBase_p;
+  };
+
+  /*
+   * if there is an algorithm, then let it decide what to print;
+   * otherwise call the local implementation
+   */
+  void
+  ExpressionEdge::printXMLHierarchy(std::ostream& os,
+		  const Expression& theExpression) const { 
+    if (myExpressionEdgeAlgBase_p)
+      myExpressionEdgeAlgBase_p->printXMLHierarchy(os,theExpression);
+    else
+      printXMLHierarchyImpl(os,theExpression);
+  } // end of printXMLHierarchy
+
+  void 
+  ExpressionEdge::printXMLHierarchyImpl(std::ostream& os, 
+		  const Expression& theExpression) const { 
+    PrintManager& pm=PrintManager::getInstance(); 
+    os << pm.indent() 
+       << "<" 
+       << ourXAIFName 
+       << " " 
+       << our_myId_XAIFName 
+       << "=\"" 
+       << getId().c_str() 
+       << "\" " 
+       << our_source_XAIFName 
+       << "=\"" 
+       << theExpression.getSourceOf(*this).getId().c_str() 
+       << "\" " 
+       << our_target_XAIFName 
+       << "=\"" 
+       << theExpression.getTargetOf(*this).getId().c_str() 
+       << "\" " 
+       << our_myPosition_XAIFName 
+       << "=\"" 
+       << myPosition 
+       << "\"/>" 
+       << std::endl; 
+    pm.releaseInstance();
+  } // end printXMLHierarchyImpl
+
+  std::string ExpressionEdge::debug () const { 
+    std::ostringstream out;
+    out << "ExpressionEdge[" << this << "]" << std::ends;  
+    return out.str();
+  } // end debug
+
+  void 
+  ExpressionEdge::setPosition(const std::string& i) {
+    if (myPosition)                              
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdge::setPosition: already set");
+    myPosition=atoi(i.c_str());
+  } 
+
+  void 
+  ExpressionEdge::setPosition(unsigned int i) { 
+    if (myPosition)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdge::setPosition: already set");
+    myPosition=i;
+  } 
+
+  unsigned int 
+  ExpressionEdge::getPosition() const { 
+    if (!myPosition)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdge::getPosition: not set");
+    return myPosition;
+  }     
+
+  void ExpressionEdge::copyMyselfInto(ExpressionEdge& theCopy) const {
+    theCopy.myPosition=myPosition;
+    theCopy.setId(getId());
+  } // end copyMyselfInto
+
+  ExpressionEdge& ExpressionEdge::createCopyOfMyself(bool withAlgorithm) const {
+    ExpressionEdge* theCopy;
+    theCopy=new ExpressionEdge(withAlgorithm);
+    theCopy->myPosition=myPosition;
+    theCopy->setId(getId());
+    return *theCopy;
+  } // end createCopyOfMyself
+
+  ExpressionEdgeAlgBase&
+  ExpressionEdge::getExpressionEdgeAlgBase() {
+    if (!myExpressionEdgeAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdge::getExpressionEdgeAlgBase: not set");
+    return *myExpressionEdgeAlgBase_p;
+  } // end getExpressionEdgeAlgBase
+
+  const ExpressionEdgeAlgBase&
+  ExpressionEdge::getExpressionEdgeAlgBase() const {
+    if (!myExpressionEdgeAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdge::getExpressionEdgeAlgBase: not set");
+    return *myExpressionEdgeAlgBase_p;
+  } // end getExpressionEdgeAlgBase
+
+  void ExpressionEdge::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {        
+    getExpressionEdgeAlgBase().genericTraversal(anAction_c);
+  } // end traversalToChildren 
+
+} // end of namespace xaifBooster 
