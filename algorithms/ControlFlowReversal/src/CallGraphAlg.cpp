@@ -24,16 +24,6 @@ namespace xaifBoosterControlFlowReversal {
     return myAlgorithmSignature;
   }
 
-  const Symbol&
-  CallGraphAlg::getPushIntegerSymbol() const {
-    return *myPushIntegerSymbol_p;
-  }
-   
-  const Symbol&
-  CallGraphAlg::getPopIntegerSymbol() const {
-    return *myPopIntegerSymbol_p;
-  }
-
   class CallGraphVertexLabelWriter {
   public:
     CallGraphVertexLabelWriter(const CallGraph& g) : myG(g) {};
@@ -50,10 +40,6 @@ namespace xaifBoosterControlFlowReversal {
     DBG_MACRO(DbgGroup::CALLSTACK,
               "xaifBoosterControlFlowReversal::CallGraphAlg::algorithm_action_4(reverse control flow) called for: "
               << debug().c_str());
-    myPushIntegerSymbol_p=&ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope().getSymbolTable().addSymbol(std::string(myAlgorithmSignature+"push_integer"),SymbolKind::SUBROUTINE,SymbolType::VOID_STYPE,SymbolShape::SCALAR,false,true);
-    myPopIntegerSymbol_p=&ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope().getSymbolTable().addSymbol(std::string(myAlgorithmSignature+"pop_integer"),SymbolKind::SUBROUTINE,SymbolType::VOID_STYPE,SymbolShape::SCALAR,false,true);
-    myPushIntegerSymbol_p->setAnnotation(myAlgorithmSignature);
-    myPopIntegerSymbol_p->setAnnotation(myAlgorithmSignature);
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
       GraphVizDisplay::show(getContaining(),"call_graph",
       CallGraphVertexLabelWriter(getContaining()));
