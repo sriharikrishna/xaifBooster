@@ -91,7 +91,7 @@ namespace xaifBoosterControlFlowReversal {
   std::string 
   ReversibleControlFlowGraph::makeUniqueEdgeId() {
     std::ostringstream oss;
-    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature().c_str() << "new_edge_" << getNextEdgeId() << std::ends;
+    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature().c_str() << "e_" << getNextEdgeId() << std::ends;
     return (oss.str());
   }
 
@@ -103,30 +103,29 @@ namespace xaifBoosterControlFlowReversal {
 // myOriginalGraph_r does not have a scope yet since nobody sets it
 // use the global scope for the time being
 //    aNewReversibleControlFlowGraphVertex->myNewVertex_p=new BasicBlock(myOriginalGraph_r.getScope());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    BasicBlock* theNewBasicBlock=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+    aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
-    aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
-    aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
+    aNewReversibleControlFlowGraphInEdge_p->getNewEdge().setId(makeUniqueEdgeId());
     if (replacedEdge_r.original) {
-      aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->set_has_condition_value(replacedEdge_r.myOriginalEdge_p->has_condition_value());
-      aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->set_condition_value(replacedEdge_r.myOriginalEdge_p->get_condition_value());
+      aNewReversibleControlFlowGraphInEdge_p->getNewEdge().set_has_condition_value(replacedEdge_r.getOriginalEdge().has_condition_value());
+      aNewReversibleControlFlowGraphInEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getOriginalEdge().get_condition_value());
     }
     else {
-      aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->set_has_condition_value(replacedEdge_r.myNewEdge_p->has_condition_value());
-      aNewReversibleControlFlowGraphInEdge_p->myNewEdge_p->set_condition_value(replacedEdge_r.myNewEdge_p->get_condition_value());
+      aNewReversibleControlFlowGraphInEdge_p->getNewEdge().set_has_condition_value(replacedEdge_r.getNewEdge().has_condition_value());
+      aNewReversibleControlFlowGraphInEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getNewEdge().get_condition_value());
     }
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphOutEdge_p=new ReversibleControlFlowGraphEdge();
-    aNewReversibleControlFlowGraphOutEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
-    aNewReversibleControlFlowGraphOutEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
+    aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().setId(makeUniqueEdgeId());
     if (replacedEdge_r.original) {
-      aNewReversibleControlFlowGraphOutEdge_p->myNewEdge_p->set_has_condition_value(replacedEdge_r.myOriginalEdge_p->has_condition_value());
-      aNewReversibleControlFlowGraphOutEdge_p->myNewEdge_p->set_condition_value(replacedEdge_r.myOriginalEdge_p->get_condition_value());
+      aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().set_has_condition_value(replacedEdge_r.getOriginalEdge().has_condition_value());
+      aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getOriginalEdge().get_condition_value());
     }
     else {
-      aNewReversibleControlFlowGraphOutEdge_p->myNewEdge_p->set_has_condition_value(replacedEdge_r.myNewEdge_p->has_condition_value());
-      aNewReversibleControlFlowGraphOutEdge_p->myNewEdge_p->set_condition_value(replacedEdge_r.myNewEdge_p->get_condition_value());
+      aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().set_has_condition_value(replacedEdge_r.getNewEdge().has_condition_value());
+      aNewReversibleControlFlowGraphOutEdge_p->getNewEdge().set_condition_value(replacedEdge_r.getNewEdge().get_condition_value());
     }
 
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphInEdge_p,after,*aNewReversibleControlFlowGraphVertex_p);
@@ -143,8 +142,8 @@ namespace xaifBoosterControlFlowReversal {
 // use the global scope for the time being
 //    aNewReversibleControlFlowGraphVertex->myNewVertex_p=new BasicBlock(myOriginalGraph_r.getScope());
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -154,8 +153,8 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new Entry();
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -165,8 +164,8 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new Exit();
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -176,8 +175,8 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new Branch();
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -187,8 +186,8 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new IfStatement();
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -198,8 +197,8 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new ForLoop();
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -209,8 +208,8 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new EndBranch();
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -220,8 +219,8 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new EndLoop();
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setId(makeUniqueVertexId());
-    aNewReversibleControlFlowGraphVertex_p->myNewVertex_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
@@ -660,8 +659,7 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraphEdge&
   ReversibleControlFlowGraph::insertAdjointControlFlowGraphEdge(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r, const ReversibleControlFlowGraphVertex& theAdjointSource_cr, const ReversibleControlFlowGraphVertex& theAdjointTarget_cr) {
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
-    aNewReversibleControlFlowGraphEdge_p->myNewEdge_p = new ControlFlowGraphEdge();
-    aNewReversibleControlFlowGraphEdge_p->myNewEdge_p->setId(makeUniqueEdgeId());
+    aNewReversibleControlFlowGraphEdge_p->getNewEdge().setId(theAdjointControlFlowGraph_r.makeUniqueEdgeId());
     theAdjointControlFlowGraph_r.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,theAdjointSource_cr,theAdjointTarget_cr);
     return *aNewReversibleControlFlowGraphEdge_p;
   }
@@ -893,7 +891,7 @@ namespace xaifBoosterControlFlowReversal {
           InEdgeIteratorPair theEndLoop_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
           ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(addAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,*(theEndLoop_ieitp.first),theVertexCorrespondence_ppl));
           // set condition value to true because this is a loop body entry edge
-          theNewReversibleControlFlowGraphEdge_r.myNewEdge_p->set_has_condition_value(true);
+          theNewReversibleControlFlowGraphEdge_r.getNewEdge().set_has_condition_value(true);
 
           // insert edge from current adjoint node to adjoint of the
           // predecessor of the LOOP node that matches the original

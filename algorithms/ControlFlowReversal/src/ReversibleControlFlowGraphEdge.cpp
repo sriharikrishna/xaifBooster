@@ -10,13 +10,11 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : toLoopBody(false), original(false), myOriginalEdge_p(NULL), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : toLoopBody(false), original(false), myOriginalEdge_p(NULL) {}
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : toLoopBody(false), original(true), myOriginalEdge_p(theOriginal), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : toLoopBody(false), original(true), myOriginalEdge_p(theOriginal) {}
 
-  ReversibleControlFlowGraphEdge::~ReversibleControlFlowGraphEdge() { 
-    if (!original) delete myNewEdge_p;
-  }
+  ReversibleControlFlowGraphEdge::~ReversibleControlFlowGraphEdge() {}
 
   bool
   ReversibleControlFlowGraphEdge::isBackEdge(const ReversibleControlFlowGraph& theGraph) const {
@@ -36,40 +34,28 @@ namespace xaifBoosterControlFlowReversal {
 
   const ControlFlowGraphEdge& 
   ReversibleControlFlowGraphEdge::getNewEdge() const {
-    return *myNewEdge_p;
+    return myNewEdge;
   }
 
   ControlFlowGraphEdge& 
   ReversibleControlFlowGraphEdge::getNewEdge() {
-    return *myNewEdge_p;
+    return myNewEdge;
   }
 
   bool ReversibleControlFlowGraphEdge::has_condition_value() const {
-    if (original)
-      return myOriginalEdge_p->has_condition_value();
-    else
-      return myNewEdge_p->has_condition_value();
+      return myNewEdge.has_condition_value();
   }
+
   void ReversibleControlFlowGraphEdge::set_has_condition_value(bool hcv) {
-    if (original)
-      myOriginalEdge_p->set_has_condition_value(hcv);
-    else
-      myNewEdge_p->set_has_condition_value(hcv);
-      
+      myNewEdge.set_has_condition_value(hcv);
   }
                                                                                 
   void ReversibleControlFlowGraphEdge::set_condition_value(int cv) {
-    if (original)
-      myOriginalEdge_p->set_condition_value(cv);
-    else
-      myNewEdge_p->set_condition_value(cv);
+      myNewEdge.set_condition_value(cv);
   }
 
   const int& ReversibleControlFlowGraphEdge::get_condition_value() const {
-    if (original)
-      return myOriginalEdge_p->get_condition_value();
-    else
-      return myNewEdge_p->get_condition_value();
+      return myNewEdge.get_condition_value();
   }
 
   void
@@ -110,33 +96,33 @@ namespace xaifBoosterControlFlowReversal {
     else {
       os << pm.indent()
        << "<"
-       << myNewEdge_p->ourXAIFName
+       << myNewEdge.ourXAIFName
        << " "
-       << myNewEdge_p->our_myId_XAIFName
+       << myNewEdge.our_myId_XAIFName
        << "=\""
-       << myNewEdge_p->getId().c_str()
+       << myNewEdge.getId().c_str()
        << "\" "
-       << myNewEdge_p->our_source_XAIFName
+       << myNewEdge.our_source_XAIFName
        << "=\"";
       const ReversibleControlFlowGraphVertex& src=theGraph.getSourceOf(*this);
       if (src.original)
         os << src.myOriginalVertex_p->getId().c_str();
       else
         os << src.myNewVertex_p->getId().c_str();
-      os << "\" " << myNewEdge_p->our_target_XAIFName << "=\"";
+      os << "\" " << myNewEdge.our_target_XAIFName << "=\"";
       const ReversibleControlFlowGraphVertex& tgt = theGraph.getTargetOf(*this);
       if (tgt.original)
         os << tgt.myOriginalVertex_p->getId().c_str();
       else
         os << tgt.myNewVertex_p->getId().c_str();
       os << "\" "
-         << myNewEdge_p->our_has_condition_value_XAIFName
+         << myNewEdge.our_has_condition_value_XAIFName
          << "=\""
-         << myNewEdge_p->has_condition_value()
+         << myNewEdge.has_condition_value()
          << "\" "
-         << myNewEdge_p->our_condition_value_XAIFName
+         << myNewEdge.our_condition_value_XAIFName
          << "=\""
-         << myNewEdge_p->get_condition_value()
+         << myNewEdge.get_condition_value()
          << "\"/>" << std::endl;
     }
     pm.releaseInstance();

@@ -87,7 +87,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * pointer to new ControlFlowGraphEdge
      */
-    ControlFlowGraphEdge* myNewEdge_p;
+    ControlFlowGraphEdge myNewEdge;
 
   };  // end of class
 
