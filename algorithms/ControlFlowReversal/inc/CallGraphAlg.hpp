@@ -31,8 +31,6 @@ namespace xaifBoosterControlFlowReversal {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     const std::string& getAlgorithmSignature() const;
-    const Symbol& getPushIntegerSymbol() const;
-    const Symbol& getPopIntegerSymbol() const;
 
   private:
     
@@ -57,13 +55,6 @@ namespace xaifBoosterControlFlowReversal {
      */
     static std::string myAlgorithmSignature;
                                                                                 
-    /**
-     * Pointers to symbols for push and pop routines
-     * all live in global scope
-     */
-    Symbol* myPushIntegerSymbol_p;
-    Symbol* myPopIntegerSymbol_p;
-
   };  // end of class
 
 } // end of namespace 
