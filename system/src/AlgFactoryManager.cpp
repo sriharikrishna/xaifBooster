@@ -10,6 +10,9 @@
 #include "xaifBooster/system/inc/ExpressionEdgeAlgFactory.hpp"
 #include "xaifBooster/system/inc/IntrinsicAlgFactory.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertexAlgFactory.hpp"
+#include "xaifBooster/system/inc/IfStatementAlgFactory.hpp"
+#include "xaifBooster/system/inc/PreLoopAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -45,7 +48,11 @@ namespace xaifBooster {
     ourExpressionAlgFactory_p(0),
     ourExpressionEdgeAlgFactory_p(0),
     ourIntrinsicAlgFactory_p(0), 
-    ourControlFlowGraphAlgFactory_p(0) {
+    ourControlFlowGraphAlgFactory_p(0), 
+    ourControlFlowGraphVertexAlgFactory_p(0), 
+    ourIfStatementAlgFactory_p(0), 
+    ourPreLoopAlgFactory_p(0) 
+  {
   }
 
   AlgFactoryManager::~AlgFactoryManager() {
@@ -67,6 +74,12 @@ namespace xaifBooster {
       delete ourIntrinsicAlgFactory_p;
     if (ourControlFlowGraphAlgFactory_p)
       delete ourControlFlowGraphAlgFactory_p;
+    if (ourControlFlowGraphVertexAlgFactory_p)
+      delete ourControlFlowGraphVertexAlgFactory_p;
+    if (ourIfStatementAlgFactory_p)
+      delete ourIfStatementAlgFactory_p;
+    if (ourPreLoopAlgFactory_p)
+      delete ourPreLoopAlgFactory_p;
   } // end of AlgFactoryManager::~AlgFactoryManager
 
   void AlgFactoryManager::init() {
@@ -79,6 +92,9 @@ namespace xaifBooster {
     resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
     resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
     resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
+    resetControlFlowGraphVertexAlgFactory(new ControlFlowGraphVertexAlgFactory());
+    resetIfStatementAlgFactory(new IfStatementAlgFactory());
+    resetPreLoopAlgFactory(new PreLoopAlgFactory());
   }
 
   void AlgFactoryManager::resetArgumentAlgFactory(ArgumentAlgFactory* anotherArgumentAlgFactory_p){ 
@@ -135,6 +151,24 @@ namespace xaifBooster {
     ourControlFlowGraphAlgFactory_p=anotherControlFlowGraphAlgFactory_p;
   }
 
+  void AlgFactoryManager::resetControlFlowGraphVertexAlgFactory(ControlFlowGraphVertexAlgFactory* anotherControlFlowGraphVertexAlgFactory_p){ 
+    if(ourControlFlowGraphVertexAlgFactory_p) 
+      delete ourControlFlowGraphVertexAlgFactory_p;
+    ourControlFlowGraphVertexAlgFactory_p=anotherControlFlowGraphVertexAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetIfStatementAlgFactory(IfStatementAlgFactory* anotherIfStatementAlgFactory_p){ 
+    if(ourIfStatementAlgFactory_p) 
+      delete ourIfStatementAlgFactory_p;
+    ourIfStatementAlgFactory_p=anotherIfStatementAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetPreLoopAlgFactory(PreLoopAlgFactory* anotherPreLoopAlgFactory_p){ 
+    if(ourPreLoopAlgFactory_p) 
+      delete ourPreLoopAlgFactory_p;
+    ourPreLoopAlgFactory_p=anotherPreLoopAlgFactory_p;
+  }
+
   ArgumentAlgFactory* AlgFactoryManager::getArgumentAlgFactory() const { 
     if (!ourArgumentAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getArgumentAlgFactory: not set");
@@ -187,6 +221,24 @@ namespace xaifBooster {
     if (!ourControlFlowGraphAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getControlFlowGraphAlgFactory: not set");
     return ourControlFlowGraphAlgFactory_p;
+  }
+
+  ControlFlowGraphVertexAlgFactory* AlgFactoryManager::getControlFlowGraphVertexAlgFactory() const { 
+    if (!ourControlFlowGraphVertexAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getControlFlowGraphVertexAlgFactory: not set");
+    return ourControlFlowGraphVertexAlgFactory_p;
+  }
+
+  IfStatementAlgFactory* AlgFactoryManager::getIfStatementAlgFactory() const { 
+    if (!ourIfStatementAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getIfStatementAlgFactory: not set");
+    return ourIfStatementAlgFactory_p;
+  }
+
+  PreLoopAlgFactory* AlgFactoryManager::getPreLoopAlgFactory() const { 
+    if (!ourPreLoopAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getPreLoopAlgFactory: not set");
+    return ourPreLoopAlgFactory_p;
   }
 
 }

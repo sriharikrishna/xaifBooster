@@ -2,6 +2,7 @@
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -30,6 +31,7 @@ namespace xaifBoosterControlFlowReversal {
   void AlgFactoryManager::init() {
     xaifBooster::AlgFactoryManager::init();
     resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
+    resetControlFlowGraphVertexAlgFactory(new ControlFlowGraphVertexAlgFactory());
   }
 
 }

@@ -1,11 +1,21 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/IfStatement.hpp"
+#include "xaifBooster/system/inc/IfStatementAlgFactory.hpp"
 
 namespace xaifBooster { 
 
   const std::string IfStatement::ourXAIFName("xaif:If");
   const std::string IfStatement::our_myId_XAIFName("vertex_id");
+
+  IfStatement::IfStatement() {
+    myIfStatementAlgBase_p=IfStatementAlgFactory::instance()->makeNewAlg(*this);
+  }
+
+  IfStatement::~IfStatement() {
+    delete myIfStatementAlgBase_p;
+  }
+
 
   void
   IfStatement::printXMLHierarchy(std::ostream& os) const { 
@@ -46,5 +56,20 @@ namespace xaifBooster {
   const Condition& IfStatement::getCondition() const { 
     return myCondition;
   } 
+
+  IfStatementAlgBase&
+  IfStatement::getIfStatementAlgBase() {
+    if (!myIfStatementAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("IfStatement::getIfStatementAlgBase: not set");
+    return *myIfStatementAlgBase_p;
+  }
+                                                                                 
+  const IfStatementAlgBase&
+  IfStatement::getIfStatementAlgBase() const {
+    if (!myIfStatementAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("IfStatement::getIfStatementAlgBase: not set");
+    return *myIfStatementAlgBase_p;
+  }
+ 
 
 } // end of namespace xaifBooster 

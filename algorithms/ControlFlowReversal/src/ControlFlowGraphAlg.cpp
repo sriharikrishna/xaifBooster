@@ -58,6 +58,7 @@ namespace xaifBoosterControlFlowReversal {
               "xaifBoosterControlFlowReversal::ControlFlowGraphAlg::algorithm_action_4(reverse control flow) called for: "
               << debug().c_str());
       myTransformedControlFlowGraph=new ReversibleControlFlowGraph(getContaining());
+      myTransformedControlFlowGraph->storeControlFlow();
       GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg");
   } // end AssignmentAlg::algorithm_action_4() 
 
