@@ -35,7 +35,7 @@ $(TARGET).xaif : $(TARGET).B whirl2xaif
 $(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaifBooster
 	$(COMPLAIN)
 #	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif -g 15
-	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
+	./xaifBooster -i $(TARGET).xaif -g 16 -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
 
 $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
 	./xaif2whirl $(TARGET).B $(TARGET).xb.xaif
@@ -70,7 +70,7 @@ whirl2f whirl2f_be:
 
 xaifBooster:
 	$(COMPLAIN)
-	$(LN) ${XAIFBOOSTERROOT}/xaifBooster/algorithms/ControlFlowReversal/test/t  $@
+	$(LN) ${XAIFBOOSTERROOT}/xaifBooster/algorithms/ControlFlowReversal/test/t $@ 
 
 # make the $TARGETDRIVER)
 $(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o 

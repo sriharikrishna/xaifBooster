@@ -20,6 +20,8 @@ class PreLoopAlgFactory;
 class ForLoopAlgFactory;
 class EntryAlgFactory;
 class ExitAlgFactory;
+class EndLoopAlgFactory;
+class EndBranchAlgFactory;
 class CallGraphVertexAlgFactory;
 
   /** 
@@ -55,6 +57,8 @@ class CallGraphVertexAlgFactory;
     ForLoopAlgFactory* getForLoopAlgFactory() const ;
     EntryAlgFactory* getEntryAlgFactory() const ;
     ExitAlgFactory* getExitAlgFactory() const ;
+    EndLoopAlgFactory* getEndLoopAlgFactory() const ;
+    EndBranchAlgFactory* getEndBranchAlgFactory() const ;
     CallGraphVertexAlgFactory* getCallGraphVertexAlgFactory() const ;
 
   protected: 
@@ -74,6 +78,8 @@ class CallGraphVertexAlgFactory;
     void resetForLoopAlgFactory(ForLoopAlgFactory*);
     void resetEntryAlgFactory(EntryAlgFactory*);
     void resetExitAlgFactory(ExitAlgFactory*);
+    void resetEndLoopAlgFactory(EndLoopAlgFactory*);
+    void resetEndBranchAlgFactory(EndBranchAlgFactory*);
     void resetCallGraphVertexAlgFactory(CallGraphVertexAlgFactory*);
     
     AlgFactoryManager();
@@ -104,6 +110,8 @@ class CallGraphVertexAlgFactory;
     ForLoopAlgFactory* ourForLoopAlgFactory_p;
     EntryAlgFactory* ourEntryAlgFactory_p;
     ExitAlgFactory* ourExitAlgFactory_p;
+    EndLoopAlgFactory* ourEndLoopAlgFactory_p;
+    EndBranchAlgFactory* ourEndBranchAlgFactory_p;
     CallGraphVertexAlgFactory* ourCallGraphVertexAlgFactory_p;
 
     /**

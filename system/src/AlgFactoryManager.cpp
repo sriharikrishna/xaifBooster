@@ -16,6 +16,8 @@
 #include "xaifBooster/system/inc/ForLoopAlgFactory.hpp"
 #include "xaifBooster/system/inc/EntryAlgFactory.hpp"
 #include "xaifBooster/system/inc/ExitAlgFactory.hpp"
+#include "xaifBooster/system/inc/EndLoopAlgFactory.hpp"
+#include "xaifBooster/system/inc/EndBranchAlgFactory.hpp"
 #include "xaifBooster/system/inc/CallGraphVertexAlgFactory.hpp"
 
 namespace xaifBooster { 
@@ -59,6 +61,8 @@ namespace xaifBooster {
     ourForLoopAlgFactory_p(0), 
     ourEntryAlgFactory_p(0), 
     ourExitAlgFactory_p(0), 
+    ourEndLoopAlgFactory_p(0), 
+    ourEndBranchAlgFactory_p(0), 
     ourCallGraphVertexAlgFactory_p(0) 
   {
   }
@@ -94,6 +98,10 @@ namespace xaifBooster {
       delete ourEntryAlgFactory_p;
     if (ourExitAlgFactory_p)
       delete ourExitAlgFactory_p;
+    if (ourEndLoopAlgFactory_p)
+      delete ourEndLoopAlgFactory_p;
+    if (ourEndBranchAlgFactory_p)
+      delete ourEndBranchAlgFactory_p;
     if (ourCallGraphVertexAlgFactory_p)
       delete ourCallGraphVertexAlgFactory_p;
   } // end of AlgFactoryManager::~AlgFactoryManager
@@ -114,6 +122,8 @@ namespace xaifBooster {
     resetForLoopAlgFactory(new ForLoopAlgFactory());
     resetEntryAlgFactory(new EntryAlgFactory());
     resetExitAlgFactory(new ExitAlgFactory());
+    resetEndLoopAlgFactory(new EndLoopAlgFactory());
+    resetEndBranchAlgFactory(new EndBranchAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
   }
 
@@ -206,6 +216,7 @@ namespace xaifBooster {
       delete ourExitAlgFactory_p;
     ourExitAlgFactory_p=anotherExitAlgFactory_p;
   }
+
 
   void AlgFactoryManager::resetCallGraphVertexAlgFactory(CallGraphVertexAlgFactory* anotherCallGraphVertexAlgFactory_p){ 
     if(ourCallGraphVertexAlgFactory_p) 
@@ -309,5 +320,28 @@ namespace xaifBooster {
     return ourCallGraphVertexAlgFactory_p;
   }
 
+  void AlgFactoryManager::resetEndLoopAlgFactory(EndLoopAlgFactory* anotherEndLoopAlgFactory_p){ 
+    if(ourEndLoopAlgFactory_p) 
+      delete ourEndLoopAlgFactory_p;
+    ourEndLoopAlgFactory_p=anotherEndLoopAlgFactory_p;
+  }
+
+  EndLoopAlgFactory* AlgFactoryManager::getEndLoopAlgFactory() const { 
+    if (!ourEndLoopAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getEndLoopAlgFactory: not set");
+    return ourEndLoopAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetEndBranchAlgFactory(EndBranchAlgFactory* anotherEndBranchAlgFactory_p){ 
+    if(ourEndBranchAlgFactory_p) 
+      delete ourEndBranchAlgFactory_p;
+    ourEndBranchAlgFactory_p=anotherEndBranchAlgFactory_p;
+  }
+
+  EndBranchAlgFactory* AlgFactoryManager::getEndBranchAlgFactory() const { 
+    if (!ourEndBranchAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getEndBranchAlgFactory: not set");
+    return ourEndBranchAlgFactory_p;
+  }
 }
 

@@ -9,6 +9,8 @@
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/Entry.hpp"
 #include "xaifBooster/system/inc/Exit.hpp"
+#include "xaifBooster/system/inc/EndLoop.hpp"
+#include "xaifBooster/system/inc/EndBranch.hpp"
 #include "xaifBooster/system/inc/IfStatement.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/Marker.hpp"

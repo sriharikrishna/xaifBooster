@@ -4,6 +4,7 @@
 
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/system/inc/Scope.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
@@ -73,22 +74,13 @@ namespace xaifBoosterControlFlowReversal {
       theCurrentVertex.setVisited(true); 
      
       if (numInEdgesOf(theCurrentVertex)>1) {
-
-        // BEGIN canonicalize loops to have two indeges
-        // this is already the case in whirl2xaif output
         if ((theCurrentVertex.getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP)||(theCurrentVertex.getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP)) {
-          if (numInEdgesOf(theCurrentVertex)>2) {
-            ReversibleControlFlowGraph::InEdgeIteratorPair pie(getInEdgesOf(theCurrentVertex));
-            ReversibleControlFlowGraph::InEdgeIterator beginItie(pie.first),endItie(pie.second);
-            // find all inedges that are not a back-edge
-            std::list<ReversibleControlFlowGraph::InEdgeIterator> iel;
-            for (;beginItie!=endItie ;++beginItie) {
-              if (!(*beginItie).isBackEdge(*this)) iel.push_back(beginItie);
-            } 
-            // ... to be continued
-          }
+          // insert counter initialization before this node
+          // insert counter increment in front of enddo
+          // insert push of counter at q
+
+
         }
-        // END canonicalize loops to have two indeges
         else {
           // merge point should be strictly forward, that
           // is no back edges
@@ -100,10 +92,11 @@ namespace xaifBoosterControlFlowReversal {
           for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
           std::list<ReversibleControlFlowGraph::InEdgeIterator>::iterator ieilit;
           for (ieilit=ieil.begin();ieilit!=ieil.end();++ieilit) {
+            // push edge_id
             ReversibleControlFlowGraphVertex* aNewVertex=new ReversibleControlFlowGraphVertex();
             supplyAndAddVertexInstance(*aNewVertex);
-            Scope& theScope(myOriginalGraph_r.getScope());
-            aNewVertex->myNewVertex_p=new BasicBlock(theScope);
+            // Scope& theScope(myOriginalGraph_r.getScope());
+            // aNewVertex->myNewVertex_p=new BasicBlock(*theScope);
             ReversibleControlFlowGraphEdge* aNewInEdge=new ReversibleControlFlowGraphEdge();
             ReversibleControlFlowGraphEdge* aNewOutEdge=new ReversibleControlFlowGraphEdge();
 

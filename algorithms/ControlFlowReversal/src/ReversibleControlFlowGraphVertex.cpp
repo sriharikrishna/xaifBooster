@@ -23,14 +23,14 @@ namespace xaifBoosterControlFlowReversal {
 
   void
   ReversibleControlFlowGraphVertex::printXMLHierarchy(std::ostream& os) const {
-    if (!original)
-      myNewVertex_p->printXMLHierarchy(os);
-    else {
+  //  if (!original)
+  //    myNewVertex_p->printXMLHierarchy(os);
+  //  else {
       if (adjoint)
         myOriginalVertex_p->printXMLHierarchy(os);
       else
         myOriginalVertex_p->printXMLHierarchy(os);
-    }
+  //  }
   }
 
   std::string
