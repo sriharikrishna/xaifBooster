@@ -18,7 +18,7 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
     </xaif:AliasSetList>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" annotation="" active="1">
+    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="2" symbol_id="x" scope_id="2" active="1" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="3" symbol_id="y" scope_id="2" active="1" annotation="" intent="inout"/>
@@ -66,7 +66,7 @@
             <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="_cfr_push">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_2" scope_id="1"/>
           </xaif:ArgumentSubstitute>
@@ -110,14 +110,14 @@
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="_adj__cfr_v_4" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="_adj__cfr_v_5" annotation="_cfr_" scope_id="1">
-        <xaif:InlinableSubroutineCall subroutine_name="pop" statement_id="_cfr_pop">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="_cfr_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="_adj__cfr_v_6" annotation="_cfr_" scope_id="1">
-        <xaif:InlinableSubroutineCall subroutine_name="pop" statement_id="_cfr_pop">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="_cfr_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_1" scope_id="1"/>
           </xaif:ArgumentSubstitute>

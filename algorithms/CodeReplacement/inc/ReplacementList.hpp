@@ -22,6 +22,7 @@ namespace xaifBoosterCodeReplacement {
      */
     ReplacementList(const Symbol& theSymbol,
 		    const Scope& theScope,
+		    const Scope& theCFGScope,
 		    const std::string& aTemplateName,
 		    const ArgumentList& anArgumentList);
 
