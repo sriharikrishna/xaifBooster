@@ -77,27 +77,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myAliasMapKeyList.push_back(&(theVariable.getAliasMapKey()));
   } 
 
-  void VertexIdentificationListActive::replaceOrAddElement(const Variable& theVariable,
-							   PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p) { 
-    IdentificationResult idResult(canIdentify(theVariable));
-    if (idResult.getAnswer()==NOT_IDENTIFIED) 
-      addElement(theVariable,
-		 thePrivateLinearizedComputationalGraphVertex_p);
-    else if (idResult.getAnswer()==UNIQUELY_IDENTIFIED) { 
-      for (ListItemPList::iterator aListIterator=myList.begin();
-	   aListIterator!=myList.end(); 
-	   ++aListIterator) {
-	ListItem& theItem(dynamic_cast<ListItem&>(**aListIterator));
-	if (theItem.myPrivateLinearizedComputationalGraphVertex_p==idResult.getVertexP()) { 
-	  theItem.myPrivateLinearizedComputationalGraphVertex_p=thePrivateLinearizedComputationalGraphVertex_p;
-	  break;
-	} // end if 
-      } // end for
-    } // end else if
-    else  
-      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::addElement: ambiguous identification, we should not be here");
-  } 
-
   void VertexIdentificationListActive::removeIfIdentifiable(const Variable& theVariable) { 
     IdentificationResult idResult(canIdentify(theVariable));
     while(idResult.getAnswer()!=NOT_IDENTIFIED) { 

@@ -52,6 +52,8 @@ namespace xaifBooster {
     void addAX(const Constant& theA,
 	       const Variable& theX);
     
+    virtual void  getVariables(VariablePList& theVariablePList) const ; 
+
   private:
 
     /**
