@@ -56,8 +56,6 @@ namespace xaifBoosterDerivativePropagator {
     void addAX(const Constant& theA,
 	       const Variable& theX);
     
-    virtual void  getSources(VariablePList& theVariablePList) const ; 
-
     virtual void  getFactors(FactorList& theFactorList) const ; 
 
     const Variable& getTarget() const;

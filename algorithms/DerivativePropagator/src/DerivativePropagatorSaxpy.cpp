@@ -189,13 +189,6 @@ namespace xaifBoosterDerivativePropagator {
     return out.str();
   } // end of DerivativePropagatorSaxpy::debug
 
-  void DerivativePropagatorSaxpy::getSources(VariablePList& theVariablePList) const { 
-    for (AXPList::const_iterator i=myAXPList.begin();
-	 i!=myAXPList.end();
-	 ++i)
-      theVariablePList.push_back(&(*i)->myX);
-  }
-
   void  DerivativePropagatorSaxpy::getFactors(FactorList& theFactorList) const { 
     for (AXPList::const_iterator i=myAXPList.begin();
 	 i!=myAXPList.end();
@@ -205,14 +198,14 @@ namespace xaifBoosterDerivativePropagator {
       if(theA.numVertices()!=1) 
 	THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorSaxpy::getVariables: not defined for factor expressions");
       const ExpressionVertex& theVertex(*(theA.vertices().first));
+      Factor aFactor;
+      aFactor.setSource((*i)->myX);
       if (theVertex.isArgument()) { 
-	Factor aFactor;
 	aFactor.setVariable(dynamic_cast<const Argument&>(theVertex).getVariable());
 	theFactorList.push_back(aFactor);
       }
       else { 
 	// This cast shouldn't fail or something else is seriously wrong
-	Factor aFactor;
 	aFactor.setConstant(dynamic_cast<const Constant&>(theVertex));
 	theFactorList.push_back(aFactor);
       } 
