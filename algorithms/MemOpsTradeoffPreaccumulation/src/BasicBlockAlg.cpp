@@ -9,7 +9,7 @@
 
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 
-enum Heuristic {FORWARD, REVERSE, MARKOWITZ, SIBLING, SUCCPRED};
+enum Heuristic {FORWARD, REVERSE, MARKOWITZ, SIBLING, SIBLING2, SUCCPRED};
 
 using namespace xaifBooster;
 
@@ -95,6 +95,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
     
     std::list<Heuristic> heuristicEnumSequence;
+    heuristicEnumSequence.push_back(SIBLING2);
     heuristicEnumSequence.push_back(MARKOWITZ);
     heuristicEnumSequence.push_back(REVERSE);
 
@@ -119,6 +120,9 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	break;
       case SIBLING:
 	heuristicSequence.push_back(&BasicBlockAlg::siblingMode);
+	break;
+      case SIBLING2:
+	heuristicSequence.push_back(&BasicBlockAlg::sibling2Mode);
 	break;
       case SUCCPRED:
 	heuristicSequence.push_back(&BasicBlockAlg::succPredMode);
@@ -164,7 +168,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       }// end if
 
       else{
-	//throw exception
+	THROW_LOGICEXCEPTION_MACRO("More than one vertex in list of possible eliminations");
       }// end else
 
 
@@ -230,10 +234,10 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
 
     MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList theNewList;
-    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator bi = theOldList.begin(), be = theOldList.end();
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator bi=theOldList.begin(), be=theOldList.end();
     theNewList.push_back(*bi);
     bi++;
-    for (; bi != be; bi++) {
+    for(; bi != be; bi++) {
       	if(((theCopy.numInEdgesOf(**bi))*(theCopy.numOutEdgesOf(**bi))) <
 	   ((theCopy.numInEdgesOf(*theNewList.front()))*(theCopy.numOutEdgesOf(*theNewList.front())))){
 	  theNewList.clear();
@@ -253,7 +257,103 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
 
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList theNewList;
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator predi=thePredList.begin(), prede=thePredList.end();
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator succi=theSuccList.begin(), succe=theSuccList.end();
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator bi = theOldList.begin(), be = theOldList.end();
+    for(; bi != be; bi++) {
+      bool predMatch = false;
+      bool succMatch = false;
+
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (theCopy.getInEdgesOf(**bi));
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::InEdgeIterator ie=inedges.first, iend=inedges.second;
+      for(; ie != iend; ++ie){
+	for(predi=thePredList.begin(); predi != prede; predi++) {
+	  if(&theCopy.getSourceOf(*ie) == *predi){
+	    predMatch = true;
+	    break;
+	  }// end if
+	}// end for pred list
+	if(predMatch){
+	  break;
+	}// end if
+      }// end for candidate inedges
+	
+      if(predMatch){
+	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**bi));
+	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::OutEdgeIterator oe=outedges.first, oend=outedges.second;
+	for(; oe != oend; ++oe){
+	  for(succi=theSuccList.begin(); succi != succe; succi++) {
+	    if(&theCopy.getTargetOf(*oe) == *succi){
+	      succMatch = true;
+	      break;
+	    }// end if
+	  }//end for succ list
+	  if(succMatch){
+	    break;
+	  }// end if
+	}// end for candidate outedges
+      }// end if
+
+      if(predMatch && succMatch){
+	theNewList.push_back(*bi);
+      }// end if
+    }// end for each in old list
+    if(theNewList.size() > 0){
+      theOldList = theNewList;
+    }// end if
   }// end siblingMode
+
+  void BasicBlockAlg::sibling2Mode(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
+
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList theNewList;
+    unsigned int highestdegree = 0;
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator predi=thePredList.begin(), prede=thePredList.end();
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator succi=theSuccList.begin(), succe=theSuccList.end();
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator bi = theOldList.begin(), be = theOldList.end();
+    for(; bi != be; bi++) {
+      unsigned int predMatch = 0;
+      unsigned int succMatch = 0;
+
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::InEdgeIteratorPair inedges (theCopy.getInEdgesOf(**bi));
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::InEdgeIterator ie=inedges.first, iend=inedges.second;
+      for(; ie != iend; ++ie){
+	for(predi=thePredList.begin(); predi != prede; predi++) {
+	  if(&theCopy.getSourceOf(*ie) == *predi){
+	    predMatch++;
+	  }// end if
+	}// end for pred list
+      }// end for candidate inedges
+	
+      if(predMatch){
+	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::OutEdgeIteratorPair outedges (theCopy.getOutEdgesOf(**bi));
+	MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::OutEdgeIterator oe=outedges.first, oend=outedges.second;
+	for(; oe != oend; ++oe){
+	  for(succi=theSuccList.begin(); succi != succe; succi++) {
+	    if(&theCopy.getTargetOf(*oe) == *succi){
+	      succMatch++;
+	    }// end if
+	  }//end for succ list
+	}// end for candidate outedges
+      }// end if
+
+      if(predMatch*succMatch > highestdegree){
+	highestdegree = predMatch*succMatch;
+	theNewList.push_back(*bi);
+      }// end if
+      else if((predMatch*succMatch == highestdegree) && (highestdegree > 0)){
+	theNewList.push_back(*bi);
+      }// end else if
+    }// end for each in old list
+
+    if(theNewList.size() > 0){
+      theOldList = theNewList;
+    }// end if
+  }// end sibling2Mode
 
   void BasicBlockAlg::succPredMode(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
@@ -261,6 +361,35 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
 
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList theNewList;
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator predi=thePredList.begin(), prede=thePredList.end();
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator succi=theSuccList.begin(), succe=theSuccList.end();
+    MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList::iterator bi = theOldList.begin(), be = theOldList.end();
+    for(; bi != be; bi++) {
+      bool isMatch = false;
+    
+      for(predi=thePredList.begin(); predi != prede; predi++) {
+	if(*bi == *predi){
+	  isMatch = true;
+	  break;
+	}// end if
+      }// end for pred list
+	
+      for(succi=theSuccList.begin(); succi != succe; succi++) {
+	if(*bi == *succi){
+	  isMatch = true;
+	  break;
+        }// end if
+      }//end for succ list
+ 
+      if(isMatch){
+	theNewList.push_back(*bi);
+      }// end if
+    }// end for each in old list
+
+    if(theNewList.size() > 0){
+      theOldList = theNewList;
+    }// end if
   }// end succPredMode
 
   void BasicBlockAlg::elim_vertex(

@@ -71,6 +71,12 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
 
+    static void sibling2Mode(
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
+
     static void succPredMode(
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy& theCopy,
       MemOpsTradeoffPreaccumulation::LinearizedComputationalGraphCopy::VertexPointerList& theOldList,
