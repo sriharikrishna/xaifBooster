@@ -16,8 +16,8 @@
           ! initialization does not work for active variables
           ! inside of common block, such as in boxmodel
           ! initialization is required for correct adjoint
-          ! double precision :: d=0.0
-          double precision :: d
+          double precision :: d=0.0
+          ! double precision :: d
         end type active
 
         interface saxpy
