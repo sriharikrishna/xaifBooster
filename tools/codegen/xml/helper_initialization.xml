@@ -86,7 +86,7 @@
 -->
   </CodeGen:RepeatableCode>
 <!-- last entry is not succeeded by a comma -->
-  <CodeGen:NonRepeatableCodeOrLineBreak text="myUpdate_p(0)"/>
+  <CodeGen:NonRepeatableCodeOrLineBreak text="myArgumentList_p(0)"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
 
 </CodeGen:Document>
