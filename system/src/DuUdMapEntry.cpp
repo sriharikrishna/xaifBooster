@@ -45,7 +45,7 @@ namespace xaifBooster {
 	 << "=\""
 	 << (*it).c_str()
 	 << "\""
-	 << ">"
+	 << "/>"
 	 << std::endl; 
     } 
     os << pm.indent() 
