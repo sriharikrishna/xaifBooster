@@ -1,7 +1,5 @@
-	subroutine head(x,y) 
-	  double precision, dimension(2), intent(in) :: x
-	  double precision, dimension(2), intent(out) :: y
-	  double precision t1,t2,x1,x2,x1,y2
+	subroutine head(x1,x2,y1,y2) 
+	  double precision t1,t2,x1,x2,y1,y2
 
 	  t1=x1*x2
 	  t2=x1*sin(t1)
