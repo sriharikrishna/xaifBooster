@@ -24,13 +24,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 						   int mode,
 						   xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
 
-    //readme
-
-    //run QuickRegression.bash at /home/lyonsam/Argonne/xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/test
-    // and make sure the results are correct.  then push, they will be the standard from then on 
-
-    GraphVizDisplay::show(theOriginal,"flattened");
-
     if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)){
       GraphVizDisplay::show(theOriginal,"flattened");
     }
@@ -41,7 +34,9 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
     std::ifstream hfile("HeuristicList.txt");
     if(!hfile){
-      std::cout << "Error opening heuristic file, using default mode and heuristics" << std::endl;
+      if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	std::cout << "Error opening heuristic file, using default mode and heuristics" << std::endl;
+      }
       usable = false;
     }
 
@@ -53,75 +48,97 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  if(heuristicEnumSequence.empty()){heuristicEnumSequence.push_back(VERTEX);}
 	  else{
 	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
 	  }
 	}// end if VERTEX
 	else if(theline == "EDGE"){
 	  if(heuristicEnumSequence.empty()){heuristicEnumSequence.push_back(EDGE);}
 	  else{
 	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
 	  }
 	}// end if EDGE
 	else if(theline == "FACE"){
 	  if(heuristicEnumSequence.empty()){heuristicEnumSequence.push_back(FACE);}
 	  else{
 	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
 	  }
 	}// end if FACE
 	else if(theline == "FORWARD"){
 	  if(heuristicEnumSequence.empty()){
 	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
 	  }
 	  else{heuristicEnumSequence.push_back(FORWARD);}
 	}// end if FORWARD
 	else if(theline == "REVERSE"){
 	  if(heuristicEnumSequence.empty()){
 	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
 	  }
 	  else{heuristicEnumSequence.push_back(REVERSE);}
 	}// end if REVERSE
 	else if(theline == "MARKOWITZ"){
 	  if(heuristicEnumSequence.empty()){
 	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
 	  }
 	  else{heuristicEnumSequence.push_back(MARKOWITZ);}
 	}// end if MARKOWITZ
 	else if(theline == "SIBLING"){
 	  if(heuristicEnumSequence.empty()){
 	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
 	  }
 	  else{heuristicEnumSequence.push_back(SIBLING);}
 	}// end if SIBLING
 	else if(theline == "SIBLING2"){
 	  if(heuristicEnumSequence.empty()){
 	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
 	  }
 	  else{heuristicEnumSequence.push_back(SIBLING2);}
 	}// end if SIBLING2
 	else if(theline == "SUCCPRED"){
 	  if(heuristicEnumSequence.empty()){
 	    usable = false;
-	    std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic order, using default mode and heuristics" << std::endl;
+	    }
 	  }
 	  else{heuristicEnumSequence.push_back(SUCCPRED);}
 	}// end if SUCCPRED
 	else{
  	  usable = false;
- 	  std::cout << "Error reading heuristic file, using default mode and heuristics";
+	  if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic file, using default mode and heuristics" << std::endl;
+	    }
         }// end else
 	if(!usable){break;}
       }// end while
       
       if(heuristicEnumSequence.empty()){
 	usable = false;
- 	std::cout << "Error reading heuristic file, using default mode and heuristics";
+	if(DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)){
+	      std::cout << "Error with heuristic file, using default mode and heuristics" << std::endl;
+	}
       }// end if empty
 
     }// end else
