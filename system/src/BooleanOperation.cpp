@@ -19,6 +19,7 @@ namespace xaifBooster {
 
   ExpressionVertex& BooleanOperation::createCopyOfMyself(bool withAlgorithm) const { 
     BooleanOperation* aNewBooleanOperation_p=new BooleanOperation(myType);
+    aNewBooleanOperation_p->setId(getId());
     //     aNewBooleanOperation_p->setId(getId());
     //     if (!isActive())
     //       aNewBooleanOperation_p->passivate();
