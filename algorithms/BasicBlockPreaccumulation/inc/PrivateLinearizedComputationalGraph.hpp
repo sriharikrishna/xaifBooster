@@ -20,17 +20,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					      public virtual Debuggable {
 
   public:
+
+    PrivateLinearizedComputationalGraph(); 
+
+    virtual ~PrivateLinearizedComputationalGraph(){};
     
     /**
      * \todo JU implementation incomplete
      */
     std::string debug() const { return std::string("PrivateLinearizedComputationalGraph");};
 
-    VertexIdentificationList& getVertexIdentificationList() { 
-      return myVertexIdentificationList;
+    VertexIdentificationList& getVertexRHSIdentificationList() { 
+      return myVertexRHSIdentificationList;
+    };    
+
+    VertexIdentificationList& getVertexLHSIdentificationList() { 
+      return myVertexLHSIdentificationList;
     };    
 
   private: 
+
     /**
      * we need to track the relation 
      * between Variables and 
@@ -38,12 +47,32 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * in particular to find the connection 
      * points for new Expressions to be added 
      * to the flattened graph. 
+     * RHS identification serves the purpose 
+     * of identifying RHSs within or accross RHSs
+     * myVertexRHSIdentificationList and myVertexLHSIdentificationList
+     * are disjoint
+     * RHS identification doesn't preclude 
+     * aliased vertices in the list 
+     * this list doesn't own any elements
+     */
+    VertexIdentificationList myVertexRHSIdentificationList; 
+
+    /**
+     * we need to track the relation 
+     * between Variables and 
+     * vertices in the linearized graph
+     * in particular to find the connection 
+     * points for new Expressions to be added 
+     * to the flattened graph. 
+     * LHS identification serves the purpose 
+     * of identifying a RHS vertex with a preceding LHS
      * The Vertex for a given Variable
      * will change from v_old to v_new when the respective variable 
      * is overwritten by vertex v_new
+     * LHS identification does not allow aliased vertices in the list
      * this list doesn't own any elements
      */
-    VertexIdentificationList myVertexIdentificationList; 
+    VertexIdentificationList myVertexLHSIdentificationList; 
 
   }; // end of class PrivateLinearizedComputationalGraph 
 

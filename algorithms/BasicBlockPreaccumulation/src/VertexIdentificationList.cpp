@@ -6,6 +6,9 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
+  VertexIdentificationList::VertexIdentificationList() { 
+  } 
+
   VertexIdentificationList::IdentificationResult::IdentificationResult(IdentificationResult_E anAnswer,
 								       const PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p) : 
     myAnswer(anAnswer),
@@ -19,9 +22,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   const PrivateLinearizedComputationalGraphVertex*
   VertexIdentificationList::IdentificationResult::getVertexP() const { 
-    if (myAnswer!=UNIQUELY_IDENTIFIED ||
+    if (myAnswer==NOT_IDENTIFIED ||
 	!myPrivateLinearizedComputationalGraphVertex_p) 
-      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationList::addElement: vertex not uniquely identified");
+      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationList::getVertexP: vertex not uniquely identified");
     return myPrivateLinearizedComputationalGraphVertex_p;
   } 
 
@@ -39,17 +42,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // here is the block dealing with alias info
     AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getAliasMap());
-    if (theAliasMap.isAliased(theVariable.getAliasMapKey(),
-			      myAliasMapKeyList)) {
+    if (theAliasMap.mayAlias(theVariable.getAliasMapKey(),
+			     myAliasMapKeyList)) {
       // so there is potential 
       // try to find an exact match: 
-      ListType::const_iterator aListIterator=myList.begin();
-      for (;aListIterator!=myList.end(); ++aListIterator) { 
+      for (ListType::const_iterator aListIterator=myList.begin();
+	   aListIterator!=myList.end(); 
+	   ++aListIterator) { 
 	if (theAliasMap.mustAlias(theVariable.getAliasMapKey(),
 				  *((*aListIterator).myAliasMapKey_p))) 
 	  return IdentificationResult(UNIQUELY_IDENTIFIED,(*aListIterator).myPrivateLinearizedComputationalGraphVertex_p);
+	if (theAliasMap.mayAlias(theVariable.getAliasMapKey(),
+				 *((*aListIterator).myAliasMapKey_p))) 
+	  return IdentificationResult(POSSIBLY_ALIASED,(*aListIterator).myPrivateLinearizedComputationalGraphVertex_p);
       } // end for 
-      return IdentificationResult(POSSIBLY_ALIASED,0);
     } // end if aliased
     return IdentificationResult(NOT_IDENTIFIED,0);
   } 
@@ -82,8 +88,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       addElement(theVariable,
 		 thePrivateLinearizedComputationalGraphVertex_p);
     else if (idResult.getAnswer()==UNIQUELY_IDENTIFIED) { 
-      ListType::iterator aListIterator=myList.begin();
-      for (;aListIterator!=myList.end(); ++aListIterator) { 
+      for (ListType::iterator aListIterator=myList.begin();
+	   aListIterator!=myList.end(); 
+	   ++aListIterator) { 
 	if ((*aListIterator).myPrivateLinearizedComputationalGraphVertex_p==idResult.getVertexP()) { 
 	  (*aListIterator).myPrivateLinearizedComputationalGraphVertex_p=thePrivateLinearizedComputationalGraphVertex_p;
 	  break;
@@ -93,6 +100,46 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     else  
       THROW_LOGICEXCEPTION_MACRO("VertexIdentificationList::addElement: ambiguous identification, we should not be here");
   } 
+
+  void VertexIdentificationList::removeIfAliased(const Variable& theVariable) { 
+    // add a block dealing with ud info
+    // *******************************
+    // TODO: JU incomplete
+    // *******************************
+    // here is the block dealing with alias info
+    IdentificationResult idResult(canIdentify(theVariable));
+    while(idResult.getAnswer()!=NOT_IDENTIFIED) { 
+      for (ListType::iterator aListIterator=myList.begin();
+	   aListIterator!=myList.end(); 
+	   ++aListIterator) { 
+	if ((*aListIterator).myPrivateLinearizedComputationalGraphVertex_p==idResult.getVertexP()) { 
+	  myList.erase(aListIterator);
+	  break;
+	} // end if 
+      } // end for
+      idResult=canIdentify(theVariable);
+    } // end while 
+  } 
+
+  std::string VertexIdentificationList::debug () const { 
+    std::ostringstream out;
+    out << "VertexIdentificationList[" << this 
+	<< ",myList=";  
+    for (ListType::const_iterator aListIterator=myList.begin();
+	 aListIterator!=myList.end(); 
+	 ++aListIterator) { 
+      out << "("
+	  << (*aListIterator).myPrivateLinearizedComputationalGraphVertex_p
+	  << ",";
+      if ((*aListIterator).myAliasMapKey_p)
+	out << (*aListIterator).myAliasMapKey_p->debug().c_str();
+      else 
+	out << "0";
+      out << ")";
+    } // end for 
+    out << std::ends;
+    return out.str();
+  } // end of Symbol::debug
 
 } // end of namespace 
 
