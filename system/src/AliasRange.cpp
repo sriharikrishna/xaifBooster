@@ -6,16 +6,16 @@
 namespace xaifBooster { 
   
   const std::string AliasRange::ourXAIFName("xaif:AliasRange");
-  
   const std::string AliasRange::our_myLowerAddress_XAIFName("from_virtual_address");
   const std::string AliasRange::our_myUpperAddress_XAIFName("to_virtual_address");
-  const std::string AliasRange::our_Single_XAIFName("xaif:Alias");
-  const std::string AliasRange::our_Single_myAddress_XAIFName("virtual_address");
+  const std::string AliasRange::our_myPartial_XAIFName("partial");
 
   AliasRange::AliasRange(unsigned int lower,
-			 unsigned int upper): 
+			 unsigned int upper,
+			 bool aPartial): 
     myLowerAddress(lower),
-    myUpperAddress(upper) {
+    myUpperAddress(upper),
+    myPartial(aPartial){
     // JU: fix this, don't like excception in ctor
     if (lower>upper)
       THROW_LOGICEXCEPTION_MACRO("AliasRange::AliasRange: lower larger than upper");
@@ -26,41 +26,32 @@ namespace xaifBooster {
     out << "AliasRange[" << this 
 	<< ", myLowerAddress=" << myLowerAddress
 	<< ", myUpperAddress=" << myUpperAddress
+	<< ", myPartial=" << myPartial
 	<< "]" << std::ends; 
     return out.str();
   }; // end of AliasRange::debug
   
   void AliasRange::printXMLHierarchy(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();
-    if (myLowerAddress==myUpperAddress) { 
-      os << pm.indent() 
-	 << "<" 
-	 << our_Single_XAIFName.c_str() 
-	 << " " 
-	 << our_Single_myAddress_XAIFName
-	 << "=\""
-	 << myLowerAddress
-	 << "\"/>" 
-	 << std::endl;
-    } 
-    else { 
-      os << pm.indent() 
-	 << "<" 
-	 << ourXAIFName 
-	 << " " 
-	 << our_myLowerAddress_XAIFName
-	 << "=\""
-	 << myLowerAddress
-	 << "\" " 
-	 << our_myUpperAddress_XAIFName
-	 << "=\""
-	 << myUpperAddress
-	 << "\"/>" 
-	 << std::endl;
-    }
+    os << pm.indent() 
+       << "<" 
+       << ourXAIFName.c_str() 
+       << " " 
+       << our_myLowerAddress_XAIFName.c_str()
+       << "=\""
+       << myLowerAddress
+       << "\" " 
+       << our_myUpperAddress_XAIFName.c_str()
+       << "=\""
+       << myUpperAddress
+       << "\" " 
+       << our_myPartial_XAIFName.c_str()
+       << "=\""
+       << myPartial
+       << "\"/>" 
+       << std::endl;
     pm.releaseInstance();
   }; 
-
 
   unsigned int AliasRange::max() const { 
     return myUpperAddress;
@@ -81,6 +72,16 @@ namespace xaifBooster {
       THROW_LOGICEXCEPTION_MACRO("AliasRange::min: raising of min not permitted");
     myLowerAddress=newLower;
   }
+
+  bool AliasRange::sameAs(const AliasRange& theOther) const { 
+    if (min()==theOther.min() && 
+	max()==theOther.max()) { 
+      if (isPartial()!=theOther.isPartial())
+	THROW_LOGICEXCEPTION_MACRO("AliasRange::sameAs: identical ranges with different partial settings");
+      return true;
+    }
+    return false;
+  } // end of AliasRange::sameAs
 
   bool AliasRange::isGreaterThan(const AliasRange& theOther) const { 
     return (max()<theOther.min() ? true:false);
@@ -115,5 +116,9 @@ namespace xaifBooster {
     if (theOther.max()>max())
       max(theOther.max());
   } // end of AliasRange::absorb
+
+  bool AliasRange::isPartial()const { 
+    return myPartial;
+  }
 
 }

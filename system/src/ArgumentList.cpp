@@ -88,7 +88,6 @@ namespace xaifBooster {
       ArgumentSymbolReference* theNewArgumentSymbolReference_p(new ArgumentSymbolReference((*anArgumentSymbolReferencePListI)->getSymbol(),
 											   (*anArgumentSymbolReferencePListI)->getScope(),
 											   (*anArgumentSymbolReferencePListI)->getPosition(),
-											   (*anArgumentSymbolReferencePListI)->getActiveFlag(),
 											   (*anArgumentSymbolReferencePListI)->getIntent(),
 											   makeAlgorithm));
       theArgumentList.myArgumentSymbolReferencePList.push_back(theNewArgumentSymbolReference_p);

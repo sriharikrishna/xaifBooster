@@ -150,7 +150,8 @@ namespace xaifBooster {
 	   anAliasRangePListI!=theAliasRangePList.end();
 	   ++anAliasRangePListI) {
 	aTemporaryUnionAliasSet.addAlias((*anAliasRangePListI)->min(),
-					 (*anAliasRangePListI)->max());
+					 (*anAliasRangePListI)->max(),
+					 true);
       }
     }
     // now check this union against the addreses in theKey

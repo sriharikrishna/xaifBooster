@@ -11,18 +11,15 @@ namespace xaifBooster {
   const std::string ArgumentSymbolReference::our_myPosition_XAIFName("position");
   const std::string ArgumentSymbolReference::our_symbolId_XAIFName("symbol_id");
   const std::string ArgumentSymbolReference::our_scopeId_XAIFName("scope_id");
-  const std::string ArgumentSymbolReference::our_myActiveFlag_XAIFName("active");
   const std::string ArgumentSymbolReference::our_myIntent_XAIFName("intent");
 
   ArgumentSymbolReference::ArgumentSymbolReference (const Symbol& theSymbol,
 						    const Scope& theScope,
 						    unsigned int thePosition,
-						    bool theActiveFlag,
 						    IntentType::IntentType_E theIntent,
 						    bool makeAlgorithm) :
     SymbolReference(theSymbol,theScope),
     myPosition(thePosition),
-    myActiveFlag(theActiveFlag),
     myIntent(theIntent) {
     if (makeAlgorithm)
       myArgumentSymbolReferenceAlgBase_p=
@@ -69,10 +66,6 @@ namespace xaifBooster {
        << "=\"" 
        << myScope_r.getId().c_str()
        << "\" " 
-       << our_myActiveFlag_XAIFName.c_str() 
-       << "=\"" 
-       << myActiveFlag
-       << "\" " 
        << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str() 
        << "=\""
        << getAnnotation().c_str()
@@ -101,10 +94,6 @@ namespace xaifBooster {
     return myPosition;
   } 
     
-  bool ArgumentSymbolReference::getActiveFlag() const { 
-    return myActiveFlag;
-  } 
-
   IntentType::IntentType_E ArgumentSymbolReference::getIntent() const { 
     return myIntent;
   } 

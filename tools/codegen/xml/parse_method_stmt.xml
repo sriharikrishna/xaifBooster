@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="2" nr_templates="2" outfile="parse_method_stmt.inc">
 
-  <CodeGen:RepeatableCode nr_versions="52">
+  <CodeGen:RepeatableCode nr_versions="51">
     <CodeGen:CodeTemplate nr_entries="9">
       <CodeGen:StaticCode text="ourActionCatalogue.addElement("/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -32,11 +32,6 @@
       <CodeGen:DynamicCode hook_ref="1" text="AliasRange"/>
       <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="AliasRange"/>
-    </CodeGen:CodeVersion>
-    <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="AliasRange"/>
-      <CodeGen:DynamicCode hook_ref="2" text="our_Single_XAIFName"/>
-      <CodeGen:DynamicCode hook_ref="3" text="AliasSingle"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="ArgumentSymbolReference"/>

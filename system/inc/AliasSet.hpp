@@ -23,10 +23,9 @@ namespace xaifBooster{
 
     void printXMLHierarchy(std::ostream& os) const; 
 
-    void addAlias(unsigned int address);
-
     void addAlias(unsigned int lower,
-		  unsigned int upper);
+		  unsigned int upper,
+		  bool isPartial);
 
     bool sharesAliasWith(const AliasSet& anotherSet) const;
 

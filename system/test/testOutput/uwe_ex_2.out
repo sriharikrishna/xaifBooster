@@ -18,7 +18,7 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
       <xaif:AliasSet key="0">
-        <xaif:Alias virtual_address="1"/>
+        <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="1"/>
       </xaif:AliasSet>
     </xaif:AliasSetList>
     <xaif:DUUDSetList>
@@ -27,11 +27,11 @@
     </xaif:DUUDSetList>
     <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" active="1">
       <xaif:ArgumentList>
-        <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" annotation="" intent="inout"/>
-        <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" annotation="" intent="inout"/>
+        <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" annotation="" intent="inout"/>
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation=""/>
-      <xaif:ForLoop vertex_id="2" annotation="">
+      <xaif:ForLoop vertex_id="2" annotation="" reversal="anonymous">
         <xaif:Initialization>
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
@@ -65,7 +65,7 @@
         </xaif:Update>
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
-        <xaif:Assignment statement_id="sage_1" active="1">
+        <xaif:Assignment statement_id="sage_1">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
@@ -83,7 +83,7 @@
             <xaif:ExpressionEdge edge_id="3" source="3" target="4" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="sage_2" active="1">
+        <xaif:Assignment statement_id="sage_2">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
@@ -105,7 +105,7 @@
             <xaif:ExpressionEdge edge_id="4" source="4" target="5" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="sage_3" active="1">
+        <xaif:Assignment statement_id="sage_3">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>

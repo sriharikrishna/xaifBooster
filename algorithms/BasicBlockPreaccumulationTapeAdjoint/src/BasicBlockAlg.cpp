@@ -79,10 +79,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   SubroutineCall& 
   BasicBlockAlg::addSubroutineCall(const Symbol& aSubroutineNameSymbol,
 				   const Scope& aSubroutineNameScope,
-				   bool anActiveFlag) { 
+				   ActiveUseType::ActiveUseType_E anActiveUse) { 
     SubroutineCall* aNewCall_p(new SubroutineCall(aSubroutineNameSymbol,
 						  aSubroutineNameScope,
-						  anActiveFlag,
+						  anActiveUse,
 						  false));
     aNewCall_p->setId("reverse_call");
     myBasicBlockElementList.push_back(aNewCall_p);
@@ -91,7 +91,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   const Assignment& 
   BasicBlockAlg::addConstantAssignment(const BaseConstant& theConstant) { 
-    Assignment* theNewAssignment_p(new Assignment(false,false));
+    Assignment* theNewAssignment_p(new Assignment(false));
     theNewAssignment_p->setId("tape_adjoint_constant_assignment");
     myBasicBlockElementList.push_back(theNewAssignment_p);
     Constant* theConstantRHS_p(new Constant(theConstant.getType(),false));

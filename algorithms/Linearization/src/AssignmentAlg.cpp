@@ -23,7 +23,8 @@ namespace xaifBoosterLinearization {
     AssignmentAlgBase(theContainingAssignment),
     myHaveLinearizedRightHandSide(false),
     myDelayedLHSAssignment_p(0),
-    myActiveFlag(theContainingAssignment.getActiveFlag()) { 
+    myActiveFlag(true), // note: delayed initialization
+    myActiveFlagInit(false) { 
   }
 
   std::string AssignmentAlg::debug() const { 
@@ -499,6 +500,10 @@ namespace xaifBoosterLinearization {
   } // end of AssignmentAlg::haveLinearizedRightHandSide
 
   bool AssignmentAlg::getActiveFlag() const { 
+    if (!myActiveFlagInit) { 
+      myActiveFlag=getContainingAssignment().getLHS().getActiveFlag();
+      myActiveFlagInit=true;
+    }
     return myActiveFlag;
   } 
 

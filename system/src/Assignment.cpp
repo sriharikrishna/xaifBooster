@@ -18,12 +18,9 @@ namespace xaifBooster {
   const std::string Assignment::our_myRHS_XAIFName("xaif:AssignmentRHS");
   const std::string Assignment::ourXAIFName("xaif:Assignment");
   const std::string Assignment::our_myId_XAIFName("statement_id");
-  const std::string Assignment::our_myActiveFlag_XAIFName("active");
 
-  Assignment::Assignment(bool theActiveFlag,
-			 bool makeAlgorithm) : 
-    myRHS(makeAlgorithm),
-    myActiveFlag(theActiveFlag) {
+  Assignment::Assignment(bool makeAlgorithm) : 
+    myRHS(makeAlgorithm) {
     if (makeAlgorithm)
       myBasicBlockElementAlgBase_p=AssignmentAlgFactory::instance()->makeNewAlg(*this); 
   } 
@@ -58,11 +55,6 @@ namespace xaifBooster {
        << our_myId_XAIFName.c_str() 
        << "=\"" 
        << getId().c_str()
-       << "\""
-       << " " 
-       << our_myActiveFlag_XAIFName.c_str() 
-       << "=\"" 
-       << myActiveFlag
        << "\""
        << ">" 
        << std::endl;
@@ -137,9 +129,6 @@ namespace xaifBooster {
     out << "Assignment[" 
 	<< this 
 	<< BasicBlockElement::debug().c_str()
-	<< "myActiveFlag"
-	<< "="
-	<< myActiveFlag
 	<< "]" << std::ends;  
     return out.str();
   } // end of Assignment::debug
@@ -148,10 +137,6 @@ namespace xaifBooster {
     getAssignmentAlgBase().genericTraversal(anAction_c);
     myRHS.genericTraversal(anAction_c);
     myLHS.genericTraversal(anAction_c);
-  } 
-
-  bool Assignment::getActiveFlag() const { 
-    return myActiveFlag;
   } 
 
 } // end of namespace xaifBooster 

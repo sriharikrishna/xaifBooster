@@ -34,6 +34,10 @@ namespace xaifBooster {
        << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str() 
        << "=\""
        << getAnnotation().c_str()
+       << "\" " 
+       << ForLoopReversalType::our_attribute_XAIFName.c_str() 
+       << "=\""
+       << ForLoopReversalType::toString(myReversalType).c_str()
        << "\">" 
        << std::endl;
     myInitialization.printXMLHierarchy(os);

@@ -5,6 +5,7 @@
 #include "xaifBooster/system/inc/SymbolReference.hpp"
 #include "xaifBooster/system/inc/ConcreteArgument.hpp"
 #include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
+#include "xaifBooster/system/inc/ActiveUseType.hpp"
 
 namespace xaifBooster { 
 
@@ -15,13 +16,12 @@ namespace xaifBooster {
   class SubroutineCall : public BasicBlockElement {
   public:
     /** 
-     * \param theActiveFlag initializes myActiveFlag
      * \param makeAlgorithm  news up an algorithm object if required
      * this is also carried through for the respective members
      */
     SubroutineCall (const Symbol& theSymbol,
 		    const Scope& theScope,
-		    const bool activeFlag,
+		    const ActiveUseType::ActiveUseType_E activeUseType,
 		    bool makeAlgorithm=true);
 
     ~SubroutineCall();
@@ -66,11 +66,6 @@ namespace xaifBooster {
      */
     static const std::string our_scopeId_XAIFName;
 
-    /**
-     * name for member myActiveFlag as represented in XAIF schema
-     */
-    static const std::string our_myActiveFlag_XAIFName;
-
     typedef std::list<ConcreteArgument*> ConcreteArgumentPList;
 
     ConcreteArgumentPList& getConcreteArgumentPList();
@@ -79,8 +74,30 @@ namespace xaifBooster {
 
     const SymbolReference& getSymbolReference() const;
 
+    /**
+     * get the data type active flag from the SymbolReference
+     */
+    bool getActiveType() const;
+
+    /** 
+     * get the active use of this Subroutine
+     * if UNDEFINED we go by the type specified in 
+     * the SymbolTable for this subroutine
+     */
     bool getActiveFlag() const;
     
+    /** 
+     * set myActiveUse once
+     */
+    void setActiveUse(ActiveUseType::ActiveUseType_E anActiveUse); 
+
+    /** 
+     * returns the active use as currently set including 
+     * an UNDEFINEDUSE setting.
+     * for determining activity prefer getActiveFlag
+     */
+    ActiveUseType::ActiveUseType_E getActiveUse() const; 
+
   private: 
     
     /**
@@ -94,9 +111,12 @@ namespace xaifBooster {
     const SymbolReference mySymbolReference;
 
     /**
-     * the flag indicating that this statement is active or passive
+     * indicating that this call makes active or passive
+     * use of a subroutine
      */
-    const bool myActiveFlag;
+    mutable ActiveUseType::ActiveUseType_E myActiveUse;
+
+    mutable bool myActiveUseSetFlag;
 
     /** 
      * the list of concrete arguments for this call
