@@ -57,6 +57,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     static void elim_face(
       DualGraph& theDual,
       DualGraphEdge& theFace,
+      const DualGraph::VertexPointerList& thePredList,
+      const DualGraph::VertexPointerList& theSuccList,
       xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
 
   };  // end of class

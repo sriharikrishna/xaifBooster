@@ -24,10 +24,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 						   int mode,
 						   xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
 
-    if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)){
-      GraphVizDisplay::show(theOriginal,"flattened");
-    }
-
     //input from file to construct heuristic sequence
     std::list<Heuristic> heuristicEnumSequence;
     bool usable = true;
@@ -157,7 +153,9 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       DualGraph theDual (theOriginal);
 
       //display the dual graph
-      GraphVizDisplay::show(theDual,"Dual");
+      if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	GraphVizDisplay::show(theDual,"Dual");
+      }
 
       typedef void(*faceHeuristicFunc) (const DualGraph&,
 					DualGraph::FacePointerList&,
@@ -205,7 +203,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
       while(!theElimList.empty()){
 
-	std::cout << "about to apply heuristics" << std::endl;
+	std::cout << "elimlist has " << theElimList.size() << " elements.  about to apply heuristics" << std::endl;
 
  	//this loop runs the list through each heuristic
  	for(fhiter=faceHeuristicSequence.begin(); fhiter!=faceHeuristicSequence.end(); fhiter++){
@@ -215,12 +213,27 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	
  	//if(theElimList.size() == 1){//if the heuristics have decided on one single face
 
- 	  //populate succlist and predlist
+	//the predlist and thesucclist hold the predecessors and successors respectively of the face about to be eliminated.
+	//this information is stored in case one of the heuristics needs to use it to make its determinations.
+	thePredList.clear();
+	theSuccList.clear();
+	DualGraph::InEdgeIteratorPair newpreds (theDual.getInEdgesOf(theDual.getSourceOf(*theElimList.front())));
+	DualGraph::InEdgeIterator newpredi (newpreds.first), newprede (newpreds.second);
+	//go through predecessors and add them to the list of predecessors
+	for(; newpredi != newprede; ++newpredi){
+	  thePredList.push_back(&theDual.getSourceOf(*newpredi));
+	}// end for
+	DualGraph::OutEdgeIteratorPair newsuccs (theDual.getOutEdgesOf(theDual.getTargetOf(*theElimList.front())));
+	DualGraph::OutEdgeIterator newsucci (newsuccs.first), newsucce (newsuccs.second);
+	//go through successors and add them to the list of successors
+	for(; newsucci != newsucce; ++newsucci){
+	  theSuccList.push_back(&theDual.getTargetOf(*newsucci));
+	}// end for
 
-	std::cout << "about to eliminate the face" << std::endl;
+	std::cout << "succ list and pred list built, about to eliminate a face" << std::endl;
 
  	  //eliminate the face
- 	  FaceElim::elim_face(theDual, *theElimList.front(), theJacobianAccumulationExpressionList);
+ 	  FaceElim::elim_face(theDual, *theElimList.front(), thePredList, theSuccList, theJacobianAccumulationExpressionList);
 	  //}
 	  //else{
  	  //THROW_LOGICEXCEPTION_MACRO("Error: Heuristics could not decide on a single face");

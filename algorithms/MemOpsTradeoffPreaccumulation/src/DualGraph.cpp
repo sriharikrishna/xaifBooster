@@ -168,28 +168,16 @@ namespace MemOpsTradeoffPreaccumulation {
     EdgeIteratorPair deip (edges());
     EdgeIterator dei (deip.first), de_end (deip.second);
     for(; dei != de_end; ++dei){
-
       //if the face is an intermediate and has no path conflicts
       if((numInEdgesOf(getSourceOf(*dei))*numOutEdgesOf(getTargetOf(*dei)) > 0) && (isFinal(*dei))){
-
-	std::cout << "final intermediate edge added to elim list" << std::endl;
-
 	myElimList.push_back(&*dei);
       }// end if
-      else{
-	
-	std::cout << "edge not added to elim list" << std::endl;
-
-      }// end else
-
     }// end for edges
 
     return myElimList;
   }// end populateElimlist
 
   bool DualGraph::isFinal(DualGraphEdge& theFace) const {
-
-    std::cout << "inside isFinal.  source = " << &getSourceOf(theFace) << " target = " << &getTargetOf(theFace) << std::endl;
 
     VertexPointerList vertexReach;
 
@@ -200,135 +188,95 @@ namespace MemOpsTradeoffPreaccumulation {
     DualGraphPath::Path::reverse_iterator svertexr;
     DualGraph::VertexPointerList::iterator reachi;
 
-    //check for alternate paths from source
-    //built list of reachable from target
-    for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-
-      std::cout << "entering new path" << std::endl;
-
-      //for each vertex in the path
-      for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
-
-	std::cout << "trying new vertex" << std::endl;
-
-	//if the path contains the target vertex
-	if(*svertex == &getTargetOf(theFace)){
-
-	  std::cout << "target found" << std::endl;
-
-	  //iterate through the remaining vertices and add them to vertexReach
-	  svertex++;
-	  for(; svertex != ((**spath).myPath).end(); svertex++){
-
-	    std::cout << "adding subsequent vertex to reachlist" << std::endl;
-
-	    vertexReach.push_back(*svertex);
-	  }//end for remaining vertices
-	  svertex--;
-	}// end if source is in path
-      }// end for vertices
-    }// end for paths
-
-    std::cout << "reachable from target built" << std::endl;
-
-    //go through list again, find paths that contain source
-    for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-
-      std::cout << "checking new path" << std::endl;
-
-      //for each vertex in the path
-      for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
-	if(*svertex == &getSourceOf(theFace)){
-	  svertex++;
-	  //if the path contains the face
+    if(numOutEdgesOf(getSourceOf(theFace)) > 1){
+      //check for alternate paths from source
+      //built list of reachable from target
+      for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+	//for each vertex in the path
+	for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
+	  //if the path contains the target vertex
 	  if(*svertex == &getTargetOf(theFace)){
-
-	    std::cout << "path contains the face" << std::endl;
-
-	    //leave this path
-	    break;
-	  }
-	  //if path doesnt have source->target it doesnt have face
-	  else{
-	    //for each remaining vertex in the path
+	    //iterate through the remaining vertices and add them to vertexReach
+	    svertex++;
 	    for(; svertex != ((**spath).myPath).end(); svertex++){
-	      
-	      for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
-		if(*svertex == *reachi){
-
-		  std::cout << "reachable from target conflict found, isfinal returned false" << std::endl;
-
-		  return false;
-		
-		}// end if reachi = svertex
-	      }// end for all vertexReach
+	      vertexReach.push_back(*svertex);
 	    }//end for remaining vertices
-
 	    svertex--;
-	    
-	  }// end else
-	}//end if path contains source
-      }//end for each vertex in the path
-    }//end for all paths
+	  }// end if source is in path
+	}// end for vertices
+      }// end for paths
 
-    vertexReach.clear();
+      //go through list again, find paths that contain source
+      for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+	//for each vertex in the path
+	for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
+	  if(*svertex == &getSourceOf(theFace)){
+	    svertex++;
+	    //if the path contains the face
+	    if(*svertex == &getTargetOf(theFace)){break;}//leave this path
+	    //if path doesnt have source->target it doesnt have face
+	    else{
+	      //for each remaining vertex in the path
+	      for(; svertex != ((**spath).myPath).end(); svertex++){
+	      
+		for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
+		  if(*svertex == *reachi){
+		    return false;
+		  }// end if reachi = svertex
+		}// end for all vertexReach
+	      }//end for remaining vertices
+	      svertex--;
+	    }// end else
+	  }//end if path contains source
+	}//end for each vertex in the path
+      }//end for all paths
 
-      
-    std::cout << "found no conflicts, building reachable to source" << std::endl;
-
-    //check for alternate paths to target
-    //built list of reachable to source
-    for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-      //for each vertex in the path
-      for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
-	//if the path contains the source vertex
-	if(*svertexr == &getSourceOf(theFace)){
-	  //iterate through the previous vertices and add them to vertexReach
-	  svertexr++;
-	  for(; svertexr != ((**spath).myPath).rend(); svertexr++){
-	    vertexReach.push_back(*svertexr);
-	  }//end for remaining vertices
-	  svertexr--;
-	}// end if source is in path
-      }// end for vertices
-    }// end for paths
-
-    std::cout << "reachable to source built" << std::endl;
-
-    //go through list again, find paths that contain target
-    for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-      //for each vertex in the path
-      for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
-	//if the path contains the target
-	if(*svertexr == &getTargetOf(theFace)){
-	  svertexr++;
-	  //if the path contains the face
+      vertexReach.clear();
+    }// end if
+  
+    if(numInEdgesOf(getTargetOf(theFace)) > 1){
+      //check for alternate paths to target
+      //built list of reachable to source
+      for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+	//for each vertex in the path
+	for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
+	  //if the path contains the source vertex
 	  if(*svertexr == &getSourceOf(theFace)){
-	    //leave this path
-	    break;
-	  }
-	  //if path doesnt have source->target it doesnt have face
-	  else{
-	    //for each remaining vertex in the path
+	    //iterate through the previous vertices and add them to vertexReach
+	    svertexr++;
 	    for(; svertexr != ((**spath).myPath).rend(); svertexr++){
-
-	      for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
-		if(*svertex == *reachi){
-
-		  std::cout << "reachable to source conflict found, isfinal returned false" << std::endl;
-
-		  return false;
-		}// end if reachi = svertex
-	      }// end for all vertexReach
+	      vertexReach.push_back(*svertexr);
 	    }//end for remaining vertices
-
 	    svertexr--;
+	  }// end if source is in path
+	}// end for vertices
+      }// end for paths
 
-	  }// end else
-	}//end if path contains source
-      }//end for each vertex in the path
-    }//end for all paths
-
+      //go through list again, find paths that contain target
+      for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
+	//for each vertex in the path
+	for(svertexr = ((**spath).myPath).rbegin(); svertexr != ((**spath).myPath).rend(); svertexr++){
+	  //if the path contains the target
+	  if(*svertexr == &getTargetOf(theFace)){
+	    svertexr++;
+	    //if the path contains the face
+	    if(*svertexr == &getSourceOf(theFace)){break;}//leave this path
+	    //if path doesnt have source->target it doesnt have face
+	    else{
+	      //for each remaining vertex in the path
+	      for(; svertexr != ((**spath).myPath).rend(); svertexr++){
+		for(reachi = vertexReach.begin(); reachi != vertexReach.end(); reachi++){
+		  if(*svertex == *reachi){
+		    return false;
+		  }// end if reachi = svertex
+		}// end for all vertexReach
+	      }//end for remaining vertices
+	      svertexr--;
+	    }// end else
+	  }//end if path contains source
+	}//end for each vertex in the path
+      }//end for all paths
+    }// end if
 
     return true;
   }// end isFinal
