@@ -22,7 +22,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
    * the DerivativePropagator instances as 
    * taping operations
    */
-  class BasicBlockAlg : public xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg {
+  class BasicBlockAlg : virtual public xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg {
   public:
     
     BasicBlockAlg(BasicBlock& theContaining);

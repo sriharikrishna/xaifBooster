@@ -28,9 +28,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     return ourInstance_p;
   } // end of AlgFactoryManager::instance
 
+  void AlgFactoryManager::resets() {
+    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+  }
+
   void AlgFactoryManager::init() {
     xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::init();
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resets();
   }
 
 }

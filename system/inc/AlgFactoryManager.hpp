@@ -40,12 +40,19 @@ class CallGraphVertexAlgFactory;
     static AlgFactoryManager* instance();
 
     /** 
+     * uses reset and the proper 
+     * settings from the respective 
+     * parent manager(s)
+     */
+    virtual void init(); 
+
+    /** 
      * set a selection 
      * of factories 
      * overwriting earlier settings 
      * using the reset methods. 
      */
-    virtual void init(); 
+    virtual void resets(); 
 
     ArgumentAlgFactory* getArgumentAlgFactory() const ;
     AssignmentAlgFactory* getAssignmentAlgFactory() const ;

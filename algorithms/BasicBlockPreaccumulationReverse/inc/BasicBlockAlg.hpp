@@ -16,9 +16,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
    * and the augmented and reversed call graph
    * we just need to reimplement printing
    */
-  class BasicBlockAlg : public virtual xaifBoosterControlFlowReversal::BasicBlockAlg, 
-			public virtual xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg,
-			public virtual xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg {
+  class BasicBlockAlg : public xaifBoosterControlFlowReversal::BasicBlockAlg, 
+			public xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg,
+			public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg {
 
   public:
     
@@ -31,7 +31,22 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-    
+
+    /**
+     * refering to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2
+     */
+    virtual void algorithm_action_2();
+
+    /**
+     * refering to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3
+     */
+    virtual void algorithm_action_3();
+
+    /**
+     * refering to xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4
+     */
+    virtual void algorithm_action_4();
+
   private:
 
     /** 

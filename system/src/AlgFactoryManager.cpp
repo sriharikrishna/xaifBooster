@@ -122,7 +122,7 @@ namespace xaifBooster {
       delete ourCallGraphVertexAlgFactory_p;
   } // end of AlgFactoryManager::~AlgFactoryManager
 
-  void AlgFactoryManager::init() {
+  void AlgFactoryManager::resets() {
     resetArgumentAlgFactory(new ArgumentAlgFactory());
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
@@ -145,6 +145,10 @@ namespace xaifBooster {
     resetLabelAlgFactory(new LabelAlgFactory());
     resetGotoAlgFactory(new GotoAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
+  }
+
+  void AlgFactoryManager::init() {
+    xaifBooster::AlgFactoryManager::resets();
   }
 
   void AlgFactoryManager::resetArgumentAlgFactory(ArgumentAlgFactory* anotherArgumentAlgFactory_p){ 

@@ -11,6 +11,7 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationTape { 
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
+    xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) { 
   }
 

@@ -8,6 +8,8 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
+    xaifBooster::BasicBlockAlgBase::BasicBlockAlgBase(theContaining),
+    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining),
     xaifBoosterControlFlowReversal::BasicBlockAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg(theContaining){ 
@@ -42,5 +44,17 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
+
+  void BasicBlockAlg::algorithm_action_2() { 
+    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2();
+  }
+
+  void BasicBlockAlg::algorithm_action_3() { 
+    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3();
+  }
+
+  void BasicBlockAlg::algorithm_action_4() { 
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4();
+  }
 
 } // end of namespace

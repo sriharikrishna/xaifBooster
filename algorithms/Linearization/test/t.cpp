@@ -45,6 +45,9 @@ int main(int argc,char** argv) {
   } // end catch 
   try {   
     xaifBoosterLinearization::AlgFactoryManager::instance()->init();
+    DBG_MACRO(DbgGroup::TEMPORARY,
+	      "t.cpp: " 
+	      << xaifBoosterLinearization::AlgFactoryManager::instance()->debug().c_str());
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     ip.parse(intrinsicsFileName);

@@ -27,9 +27,13 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     return ourInstance_p;
   } // end of AlgFactoryManager::instance
 
+  void AlgFactoryManager::resets() {
+    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+  }
+
   void AlgFactoryManager::init() {
     xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::init();
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+    xaifBoosterMemOpsTradeoffPreaccumulation::AlgFactoryManager::resets();
   }
 
 }
