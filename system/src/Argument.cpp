@@ -87,4 +87,8 @@ namespace xaifBooster {
     getArgumentAlgBase().genericTraversal(anAction_c);
   } // end traversalToChildren 
 
+  bool Argument::isArgument() const { 
+    return true;
+  } // end Argument::isArgument 
+
 } // end of namespace xaifBooster 

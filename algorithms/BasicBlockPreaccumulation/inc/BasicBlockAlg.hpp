@@ -61,6 +61,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     PrivateLinearizedComputationalGraph& getFlattenedSequence(const Assignment& theAssignment);
 
     /** 
+     * signals a necessary split in the sequence due to an 
+     * ambiguity
+     */
+    void splitFlattenedSequence(const Assignment& theAssignment);
+
+    /** 
      * returns the DerivativePropagtor 
      * to be used by theAssignment
      * this expects to be called only after 
@@ -127,7 +133,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * set in getFlattenedSequence
        * used in printXMLHierarchy
        */
-      const BasicBlockElement* myFirstElement;
+      const BasicBlockElement* myFirstElement_p;
 
       /**
        * last original BasicBlockElement 
@@ -135,7 +141,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * set in getFlattenedSequence
        * used in printXMLHierarchy
        */
-      const BasicBlockElement* myLastElement;
+      const BasicBlockElement* myLastElement_p;
 
       /** 
        * create a new Assignment instance

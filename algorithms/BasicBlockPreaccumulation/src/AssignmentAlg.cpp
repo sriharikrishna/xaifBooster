@@ -65,63 +65,76 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
       typedef std::pair<ExpressionVertex*,PrivateLinearizedComputationalGraphVertex*> VertexPointerPair;
       std::list<VertexPointerPair> theIntermediateVertexTrackList;
-      PrivateLinearizedComputationalGraph::VariableTrackList& theVariableTrackList(theFlattenedSequence.getVariableTrackList());
+
+      // keep track of all the vertices we add with this statement in case we need to split and 
+      // remove them
+      std::list<PrivateLinearizedComputationalGraphVertex*> theUndoThenSplitList;
+
+      VertexIdentificationList& theVertexIdentificationList(theFlattenedSequence.getVertexIdentificationList());
       PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p=0; // LHS representation
-      for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) { 
-	if (theVariableTrackList.hasElement((*ExpressionVertexI).equivalenceSignature())) { 
+      for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
+	VertexIdentificationList::IdentificationResult_E theIdResult(VertexIdentificationList::NOT_IDENTIFIED);
+	if ((*ExpressionVertexI).isArgument()) 
+	  theIdResult=theVertexIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable()).getAnswer();
+	if (theIdResult==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
 	  // we have the vertex already in theFlattenedSequence
-	  // and since it is in theVariableTrackList
-	  // it must be a Variable
-	  if (theExpression.numOutEdgesOf(*ExpressionVertexI)>0){ 
-	    // and this vertex is not maximal in the RHS
-	    // we don't need to do anything
-	  } // end if ,there is no else here, i.e. cannot happen
+	  // nothing to do here
 	} // end if 
-	else { // the vertex is not in theVariableTrackList
-	  // we need to add this vertex
-	  PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
-	  theFlattenedSequence.supplyAndAddVertexInstance(*theLCGVertex_p);
-	  DBG_MACRO(DbgGroup::DATA,
-		    "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
-		    << theLCGVertex_p->debug().c_str());
-	  if (theExpression.numInEdgesOf(*ExpressionVertexI)==0) {
-	    // JU: this should be a Variable
-	    // JU: it cannot be a Constant since the Constants 
-	    // JU: are supposed to be removed by the linerarization which has to happen
-	    // JU: before the flattening, so eventually this will operate on a copy of 
-	    // JU: this assignment
-	    // JU: check this statement made above on Constant removal
-	    theVariableTrackList.addElement((*ExpressionVertexI).equivalenceSignature(),
-					    theLCGVertex_p);
-	    // JU: this cast will fail if Constants are not removed:
-	    try { 
-	      theLCGVertex_p->setRHSVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	else { // the vertex cannot be uniquely identified
+	  if (theIdResult==VertexIdentificationList::NOT_IDENTIFIED) { 
+	    // we need to add this vertex
+	    PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
+	    theUndoThenSplitList.push_back(theLCGVertex_p);
+	    theFlattenedSequence.supplyAndAddVertexInstance(*theLCGVertex_p);
+	    DBG_MACRO(DbgGroup::DATA,
+		      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
+		      << theLCGVertex_p->debug().c_str());
+	    if ((*ExpressionVertexI).isArgument()) {
+	      theVertexIdentificationList.addElement(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable(),
+						     theLCGVertex_p);
+	      try { 
+		theLCGVertex_p->setRHSVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	      } 
+	      catch(std::bad_cast& e) { 
+		THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2: invalid cast of "
+					   << (*ExpressionVertexI).debug().c_str() 
+					   << " into a Variable for "
+					   << getContaining().debug().c_str());
+	      } // end catch
+	    } // end if 
+	    else { // number of in edges is > 0
+	      // this must be a vertex that is some intermediate
+	      // i.e. an intrinsic
+	      theIntermediateVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),theLCGVertex_p));
+	    } // end else 
+	    if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
+	      if (theLHSLCGVertex_p)
+		THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
+	      // the maximal vertex in the RHS is the  
+	      // representation of the LHS
+	      theLHSLCGVertex_p=theLCGVertex_p;
+	    }
+	  } // end if NOT_IDENTIFIED
+	  else { // there is an ambiquity
+	    // we need to undo all additions of vertices of this assignment
+	    // edges have not been added yet
+	    std::list<PrivateLinearizedComputationalGraphVertex*>::iterator theUndoThenSplitListI=theUndoThenSplitList.begin();
+	    for (; theUndoThenSplitListI!=theUndoThenSplitList.end(); ++theUndoThenSplitListI) { 
+	      theFlattenedSequence.removeAndDeleteVertex(**theUndoThenSplitListI);
 	    } 
-	    catch(std::bad_cast& e) { 
-	      THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2: invalid cast of "
-					 << (*ExpressionVertexI).debug().c_str() 
-					 << " into a Variable for "
-					 << getContaining().debug().c_str());
-	    } // end catch
-	  } // end if 
-	  else { // number of in edges is > 0
-	    // this must be a vertex that is some intermediate
-	    // i.e. an intrinsic
-	    theIntermediateVertexTrackList.push_back(VertexPointerPair(&(*ExpressionVertexI),theLCGVertex_p));
-	  } // end else 
-	  if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
-	    if (theLHSLCGVertex_p)
-	      THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
-	    // the maximal vertex in the RHS is the  
-	    // representation of the LHS
-	    theLHSLCGVertex_p=theLCGVertex_p;
-	  }
+	    // now do the split
+	    BasicBlockAlgParameter::get().splitFlattenedSequence(getContaining());
+	    // redo everything for this assignment
+	    algorithm_action_2();
+	    // and leave
+	    return;
+	  } // end else (ambiguity)
 	} // end else
       } // end for 
       Expression::EdgeIteratorPair pe=theExpression.edges();
       Expression::EdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second);
       for (; ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) { 
-	PrivateLinearizedComputationalGraphVertex *theLCGSource_p(0), *theLCGTarget_p(0);
+	const PrivateLinearizedComputationalGraphVertex *theLCGSource_p(0), *theLCGTarget_p(0);
 	ExpressionVertex& theSource(theExpression.getSourceOf(*ExpressionEdgeI));
 	ExpressionVertex& theTarget(theExpression.getTargetOf(*ExpressionEdgeI));
 	std::list<VertexPointerPair>::const_iterator listIt;
@@ -143,12 +156,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	if (!theLCGTarget_p) 
 	  THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): cannot find edge target");
 	if (!theLCGSource_p) 
+	  if(!theSource.isArgument())
+	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): edge source must be an Argument");
 	  // we would have to have found the target 
 	  // already (always intermediate) but the 
 	  // source can be a variable reference
 	  // the following call will throw an exception on 
 	  // its own if the source cannot be found. 
-	  theLCGSource_p=theVariableTrackList.getElement(theSource.equivalenceSignature());
+	  theLCGSource_p=theVertexIdentificationList.canIdentify(dynamic_cast<Argument&>(theSource).getVariable()).getVertexP();
 	// filter out parallel edges:
 	PrivateLinearizedComputationalGraph::OutEdgeIteratorPair 
 	  anOutEdgeItPair(theFlattenedSequence.getOutEdgesOf(*theLCGSource_p));
@@ -177,12 +192,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		  <<  theLCGTarget_p->debug().c_str());
       } // end for 
       const Variable& theLHS(getContaining().getLHS());
-      if (theVariableTrackList.hasElement(theLHS.equivalenceSignature()))  
-	theVariableTrackList.removeElement(theLHS.equivalenceSignature());
       if (!theLHSLCGVertex_p)
 	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): don't have a maximal vertex");
-      theVariableTrackList.addElement(theLHS.equivalenceSignature(),
-				      theLHSLCGVertex_p);
+      theVertexIdentificationList.replaceOrAddElement(theLHS,
+						      theLHSLCGVertex_p);
       theLHSLCGVertex_p->setLHSVariable(theLHS);
       // JU: this is a temporary measure, add all LHSs to the 
       // JU: list of dependent variables

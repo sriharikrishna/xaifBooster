@@ -133,7 +133,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (aSequence_p) { 
 	// we have a sequence.
 	// Is it the first element?
-	if (*li==aSequence_p->myFirstElement) { 
+	if (*li==aSequence_p->myFirstElement_p) { 
 	  // print all the stuff before the first element
 	  const Sequence::AssignmentPList& theFrontList(aSequence_p->getFrontAssignmentList());
 	  for(Sequence::AssignmentPList::const_iterator fli=theFrontList.begin();
@@ -144,7 +144,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// print the element 
 	(*(li))->printXMLHierarchy(os);
 	// Is it the last element?
-	if (*li==aSequence_p->myFirstElement) { 
+	if (*li==aSequence_p->myFirstElement_p) { 
 	  // print all the stuff after the last element
 	  const Sequence::AssignmentPList& theEndList(aSequence_p->getEndAssignmentList());
 	  for(Sequence::AssignmentPList::const_iterator fli=theEndList.begin();
@@ -554,29 +554,22 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      // nothing assigned yet which means this is not an 
 	      // assignment unless we call this out of order
 	      theSequence_p=new Sequence;
-	      theSequence_p->myFirstElement=theSequence_p->myLastElement=&theAssignment;
+	      theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	      myUniqueSequencePList.push_back(theSequence_p);
 	    } 
 	    else { 
-	      // TEMPORARY CHANGE: 
-	      // 	      // have something assigned which means this 
-	      // 	      // assignment is directly following its predecessor
-	      // 	      // so we use the same triple
-	      // 	      theSequence_p=(*i).second;
-	      //              theSequence_p->myLastElement=&theAssignment;
-	      // we give one to every assignment
-	      // BEGIN TEMP CODE
-	      theSequence_p=new Sequence;
-	      theSequence_p->myFirstElement=theSequence_p->myLastElement=&theAssignment;
-	      myUniqueSequencePList.push_back(theSequence_p);
-	      // END TEMP CODE
+ 	      // have something assigned which means this 
+ 	      // assignment is directly following its predecessor
+ 	      // so we use the same triple
+ 	      theSequence_p=(*i).second;
+              theSequence_p->myLastElement_p=&theAssignment;
 	    }
 	    // go back to the requesting assignment: 
 	    ++i;
 	  } 
 	  else { // have no predecessor
 	    theSequence_p=new Sequence;
-	    theSequence_p->myFirstElement=theSequence_p->myLastElement=&theAssignment;
+	    theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	    myUniqueSequencePList.push_back(theSequence_p);
 	  }
 	  (*i).second=theSequence_p;
@@ -590,6 +583,34 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 << theAssignment.debug().c_str());
     return theSequence_p->myFlattenedSequence;
   } // end of BasicBlockAlg::getFlattenedSequence
+
+  void BasicBlockAlg::splitFlattenedSequence(const Assignment& theAssignment) { 
+    if(!myBasicBlockElementSequencePPairList.size()) { 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitFlattenedSequence: must be initialized unless called out of order");
+    }
+    for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
+	 i!=myBasicBlockElementSequencePPairList.end();
+	 ++i) { 
+      if ((*i).first==&theAssignment) { 
+	if((*i).second) { // this should always be true
+	  // reset the current sequence's last element
+	  // which must be by definition the direct predecessor
+	  --i;
+	  BasicBlockElement* thePredecessorAssignment_p=(*i).first;
+	  //reset iterator
+	  ++i;
+	  (*i).second->myLastElement_p=thePredecessorAssignment_p;
+	}
+	// now make a new one for this assignment
+	(*i).second=new Sequence;
+	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
+	myUniqueSequencePList.push_back((*i).second);
+      } 
+      return; 
+    } // end if 
+    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitFlattenedSequence: couldn't find"
+			       << theAssignment.debug().c_str());
+  } // end of BasicBlockAlg::splitFlattenedSequence
 
   DerivativePropagator& 
   BasicBlockAlg::getDerivativePropagator(const Assignment& theAssignment) { 
@@ -605,6 +626,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getDerivativeAccumulator: no Sequence exists for element "
 				 << theAssignment.debug().c_str());
     return theSequence_p->myDerivativePropagator;
-  } // end of BasicBlockAlg::getFlattenedSequence
+  } // end of BasicBlockAlg::getDerivativePropagator
 
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

@@ -47,6 +47,11 @@ namespace xaifBooster {
 
     void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    /**
+     * returns true
+     */
+    virtual bool isArgument() const;
+
   private: 
 
     /**

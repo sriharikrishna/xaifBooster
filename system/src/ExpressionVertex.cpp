@@ -31,4 +31,8 @@ namespace xaifBooster {
     return *(new InlinableIntrinsicsCatalogueItem(1));
   } 
 
+  bool ExpressionVertex::isArgument() const { 
+    return false;
+  } // end ExpressionVertex::isArgument
+
 } // end of namespace xaifBooster 

@@ -47,4 +47,8 @@ namespace xaifBooster {
     return (!myAliasSet.sharesAliasWith(theOtherAliastActivity.myAliasSet));
   } 
 
+  bool AliasMapEntry::mustAlias(const AliasMapEntry& theOtherAliastActivity) const { 
+    return (!myAliasSet.mustAlias(theOtherAliastActivity.myAliasSet));
+  } 
+
 } 
