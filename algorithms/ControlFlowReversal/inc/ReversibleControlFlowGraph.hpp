@@ -63,6 +63,11 @@ namespace xaifBoosterControlFlowReversal {
      */
     void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&); 
 
+    /** 
+     * reference to original cfg
+     */
+    const ControlFlowGraph& myOriginalGraph_r;
+
   };  // end of class
 
 } // end of namespace 

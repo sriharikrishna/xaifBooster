@@ -3,6 +3,7 @@
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
+#include "xaifBooster/system/inc/BasicBlock.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
@@ -11,7 +12,7 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal) {
+  ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal) : myOriginalGraph_r(theOriginal) {
     std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > vertexCopyList;
     ControlFlowGraph::ConstVertexIteratorPair p(theOriginal.vertices());
     ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
@@ -70,14 +71,60 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraph::augmentControlFlowGraphRecursively(ReversibleControlFlowGraphVertex& theCurrentVertex) {
     if (!theCurrentVertex.getVisited()) {
       theCurrentVertex.setVisited(true); 
+     
       if (numInEdgesOf(theCurrentVertex)>1) {
+
+        // BEGIN canonicalize loops to have two indeges
+        // this is already the case in whirl2xaif output
+        if ((theCurrentVertex.getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP)||(theCurrentVertex.getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP)) {
+          if (numInEdgesOf(theCurrentVertex)>2) {
+            ReversibleControlFlowGraph::InEdgeIteratorPair pie(getInEdgesOf(theCurrentVertex));
+            ReversibleControlFlowGraph::InEdgeIterator beginItie(pie.first),endItie(pie.second);
+            // find all inedges that are not a back-edge
+            std::list<ReversibleControlFlowGraph::InEdgeIterator> iel;
+            for (;beginItie!=endItie ;++beginItie) {
+              if (!(*beginItie).isBackEdge(*this)) iel.push_back(beginItie);
+            } 
+            // ... to be continued
+          }
+        }
+        // END canonicalize loops to have two indeges
+        else {
+          // merge point should be strictly forward, that
+          // is no back edges
+          ReversibleControlFlowGraph::InEdgeIteratorPair pie(getInEdgesOf(theCurrentVertex));
+          ReversibleControlFlowGraph::InEdgeIterator beginItie(pie.first),endItie(pie.second);
+          std::list<ReversibleControlFlowGraph::InEdgeIterator> ieil;
+          // for all inedges: insert a basic block to store index of
+          // branch that was taken
+          for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
+          std::list<ReversibleControlFlowGraph::InEdgeIterator>::iterator ieilit;
+          for (ieilit=ieil.begin();ieilit!=ieil.end();++ieilit) {
+            ReversibleControlFlowGraphVertex* aNewVertex=new ReversibleControlFlowGraphVertex();
+            supplyAndAddVertexInstance(*aNewVertex);
+            Scope& theScope(myOriginalGraph_r.getScope());
+            aNewVertex->myNewVertex_p=new BasicBlock(theScope);
+            ReversibleControlFlowGraphEdge* aNewInEdge=new ReversibleControlFlowGraphEdge();
+            ReversibleControlFlowGraphEdge* aNewOutEdge=new ReversibleControlFlowGraphEdge();
+
+            supplyAndAddEdgeInstance(*aNewInEdge,getSourceOf(*(*ieilit)),*aNewVertex);
+            supplyAndAddEdgeInstance(*aNewOutEdge,*aNewVertex,getTargetOf(*(*ieilit)));
+
+            augmentControlFlowGraphRecursively(getSourceOf(*(*ieilit))); 
+
+            removeAndDeleteEdge(*(*ieilit));
+          }
+          
+        }
+
         std::cout << "Control flow merges: Predecessors " << numInEdgesOf(theCurrentVertex) << std::endl;
       }
-      ReversibleControlFlowGraph::InEdgeIteratorPair pie(getInEdgesOf(theCurrentVertex));
-      ReversibleControlFlowGraph::InEdgeIterator beginItie(pie.first),endItie(pie.second);
-      for (;beginItie!=endItie ;++beginItie) {
-        augmentControlFlowGraphRecursively(getSourceOf(*beginItie)); 
-      }
+      else {
+        ReversibleControlFlowGraph::InEdgeIteratorPair pie(getInEdgesOf(theCurrentVertex));
+        ReversibleControlFlowGraph::InEdgeIterator beginItie(pie.first),endItie(pie.second);
+        for (;beginItie!=endItie ;++beginItie) 
+          augmentControlFlowGraphRecursively(getSourceOf(*beginItie)); 
+      } 
     }
   }
 
@@ -118,6 +165,7 @@ namespace xaifBoosterControlFlowReversal {
 
   void 
   ReversibleControlFlowGraph::storeControlFlow() {
+    initVisit();
     augmentControlFlowGraphRecursively(getExit());
 
 /*
