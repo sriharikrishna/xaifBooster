@@ -99,7 +99,7 @@ xaifBooster:
 	./pickAlgorithm.bash
 
 # make the $TARGETDRIVER)
-$(TARGETDRIVER): w2f__types.o active_module.o $(REVERSE_MODULES) $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
+$(TARGETDRIVER): w2f__types.o active_module.o $(REVERSE_MODULES) $(TARGETDRIVER).o $(TARGET).prh.xb.x2w.w2f.urh.pp.o 
 	$(F95) $^ -o $@
 
 run: params.conf tmpOutput $(TARGETDRIVER)
@@ -110,8 +110,8 @@ w2f__types.o : w2f__types.f
 	$(F95) -c $<
 
 # this is not free form fortran either
-$(TARGET).xb.x2w.w2f.pp.o : $(REVERSE_MODULES) $(TARGET).xb.x2w.w2f.pp.f 
-	$(F95) -c $(TARGET).xb.x2w.w2f.pp.f
+$(TARGET).prh.xb.x2w.w2f.urh.pp.o : $(REVERSE_MODULES) $(TARGET).prh.xb.x2w.w2f.urh.pp.f 
+	$(F95) -c $(TARGET).prh.xb.x2w.w2f.urh.pp.f
 
 %.o:%.f
 	$(F95) -free -c $<
@@ -135,7 +135,7 @@ tmpOutput:
 	mkdir -p $@
 
 testclean:
-	$(RM) $(TARGET).B $(TARGET).x* $(TARGETDRIVER) $(TARGETDRIVER).o 
+	$(RM) $(TARGET).B $(TARGET).prh* $(TARGETDRIVER) $(TARGETDRIVER).o 
 	$(RM) -rf tmpOutput 
 
 testAllclean: testclean
