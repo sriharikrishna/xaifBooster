@@ -15,10 +15,10 @@
 ! ACTS code
 !
         print*, "Jacobian (computed by split adjoint)"
+	call tape_init()
         do i=1,2*kdim
           call box_ini_params
           call box_ini_fields
-          call taping_mode()
           call box_model_body
           do j=1,kdim
             call zero_deriv(tnew(j))
@@ -37,7 +37,13 @@
               end if
             end do
           end if
-          call adjoint_mode()
+          our_rev_mode%arg_store=.FALSE.
+          our_rev_mode%arg_restore=.FALSE.
+          our_rev_mode%res_store=.FALSE.
+          our_rev_mode%res_restore=.FALSE.
+          our_rev_mode%plain=.FALSE.
+          our_rev_mode%tape=.TRUE.
+          our_rev_mode%adjoint=.TRUE.
           call box_model_body
           do j=1,2*kdim
             write(*,'(F6.4,"  ")',ADVANCE='NO') xx(j)%d
@@ -46,6 +52,3 @@
         end do
 
 	end program boxmodel_adm_driver
-
-
-

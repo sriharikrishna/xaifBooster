@@ -31,7 +31,7 @@ endif
 
 LN=ln -sf
 
-F95=f95 -g
+F95=f95 -g -C=all
 
 CC=gcc
 

@@ -16,7 +16,7 @@ module OpenAD_dct
   end type dct_node_child
 
   type dct_node
-    character* subroutine_name
+    character(80) :: subroutine_name
     integer :: dble_tape_base=1
     integer :: dble_argcp_base=1
     integer :: dble_rescp_base=1
