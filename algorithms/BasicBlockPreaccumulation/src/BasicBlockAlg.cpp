@@ -22,7 +22,9 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
-
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdgeAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertexAlgFactory.hpp"
 /** 
  * the call to the ANGEL library
  */
@@ -36,6 +38,14 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
+  PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
+  PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
+  PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
+
+  BasicBlockAlg::Sequence::Sequence() {
+    myFlattenedSequence_p=ourPrivateLinearizedComputationalGraphAlgFactory_p->makeNewPrivateLinearizedComputationalGraph();
+  }
+  
   BasicBlockAlg::Sequence::~Sequence() { 
     for (AssignmentPList::iterator i=myFrontAssignmentList.begin();
 	 i!=myFrontAssignmentList.end();
@@ -47,6 +57,27 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 ++i) 
       if (*i)
 	delete *i;
+    if (myFlattenedSequence_p)
+      delete myFlattenedSequence_p;
+  }
+
+  PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::getPrivateLinearizedComputationalGraphAlgFactory() {
+    return ourPrivateLinearizedComputationalGraphAlgFactory_p; 
+  }
+  PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory() {
+    return ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p; 
+  }
+  PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory() {
+    return ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;  
+  }
+  void  BasicBlockAlg::setPrivateLinearizedComputationalGraphAlgFactory(PrivateLinearizedComputationalGraphAlgFactory* thePrivateLinearizedComputationalGraphAlgFactory) {
+    ourPrivateLinearizedComputationalGraphAlgFactory_p=thePrivateLinearizedComputationalGraphAlgFactory;  
+  }
+  void  BasicBlockAlg::setPrivateLinearizedComputationalGraphEdgeAlgFactory( PrivateLinearizedComputationalGraphEdgeAlgFactory *thePrivateLinearizedComputationalGraphEdgeAlgFactory) {
+    ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p = thePrivateLinearizedComputationalGraphEdgeAlgFactory;  
+  }
+  void  BasicBlockAlg::setPrivateLinearizedComputationalGraphVertexAlgFactory(PrivateLinearizedComputationalGraphVertexAlgFactory *thePrivateLinearizedComputationalGraphVertexAlgFactory) {
+    ourPrivateLinearizedComputationalGraphVertexAlgFactory_p = thePrivateLinearizedComputationalGraphVertexAlgFactory; 
   }
 
   Assignment& BasicBlockAlg::Sequence::appendFrontAssignment() { 
@@ -231,7 +262,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     for (SequencePList::iterator i=myUniqueSequencePList.begin();
 	 i!=myUniqueSequencePList.end();
 	 ++i) { // outer loop over all items in myUniqueSequencePList
-      PrivateLinearizedComputationalGraph& theFlattenedSequence=(*i)->myFlattenedSequence;
+      PrivateLinearizedComputationalGraph& theFlattenedSequence=*((*i)->myFlattenedSequence_p);
       PrivateLinearizedComputationalGraph::VertexIteratorPair p(theFlattenedSequence.vertices());
       PrivateLinearizedComputationalGraph::VertexIterator it(p.first),endIt(p.second);
       for (;it!=endIt;++it) { 
@@ -651,7 +682,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 << theAssignment.debug().c_str());
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::getFlattenedSequence leaving with "
 	      << debug().c_str());
-    return theSequence_p->myFlattenedSequence;
+    return *(theSequence_p->myFlattenedSequence_p);
   } // end of BasicBlockAlg::getFlattenedSequence
 
   void BasicBlockAlg::splitFlattenedSequence(const Assignment& theAssignment) { 
