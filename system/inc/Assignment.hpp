@@ -15,12 +15,10 @@ namespace xaifBooster {
   public:
     
     /** 
-     * \param theActiveFlag initializes myActiveFlag
      * \param makeAlgorithm  news up an algorithm object if required
      * this is also carried through for the respective members
      */
-    Assignment (bool theActiveFlag,
-		bool makeAlgorithm=true);
+    Assignment (bool makeAlgorithm=true);
 
     ~Assignment();
 
@@ -64,18 +62,10 @@ namespace xaifBooster {
     static const std::string our_myId_XAIFName;
     static const std::string our_myLHS_XAIFName;
     static const std::string our_myRHS_XAIFName;
-    static const std::string our_myActiveFlag_XAIFName;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    bool getActiveFlag() const;
-
   private: 
-
-    /**
-     * no def
-     */
-    Assignment ();
 
     /**
      * no def
@@ -96,11 +86,6 @@ namespace xaifBooster {
      * right hand side
      */
     Expression myRHS;
-
-    /** 
-     * this determines if the assignment is active or not
-     */
-    const bool myActiveFlag;
 
   }; // end of class Assignment
  

@@ -12,6 +12,8 @@ c     **********
       double precision temp1, temp2
       double precision v(11), y(11)
 
+c$openad INDEPENDENT(x)
+
       v(1)=4.0d0
       v(2)=2.0d0
       v(3)=1.0d0
@@ -40,5 +42,5 @@ c     **********
          temp2 = v(i)*(v(i)+x(3)) + x(4)
          fvec(i) = y(i) - x(1)*temp1/temp2
       end do
-
+c$openad DEPENDENT(fvec)
       end subroutine

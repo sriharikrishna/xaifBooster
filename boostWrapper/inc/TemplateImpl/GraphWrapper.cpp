@@ -281,6 +281,50 @@ namespace xaifBooster {
   } // end of GraphWrapper<Vertex,Edge>::getTargetOf
 
   template <class Vertex, class Edge>
+  Vertex&
+  GraphWrapper<Vertex,Edge>::getMaxVertex() { 
+    std::pair < 
+      InternalBoostVertexIteratorType,
+      InternalBoostVertexIteratorType 
+      > 
+      theVertexEnds=boost::vertices(myBoostGraph);
+    InternalBoostVertexIteratorType vi_begin(theVertexEnds.first),
+      vi_end(theVertexEnds.second);
+    for (;vi_begin!=vi_end;++vi_begin) {
+      if (!boost::out_degree(*vi_begin,
+			     myBoostGraph))
+	break;
+    }
+    if (vi_begin==vi_end) 
+      THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: no maximal vertex found");
+    return *(boost::get(boost::get(BoostVertexContentType(),
+				   myBoostGraph), // get the Vertex property map
+			*(vi_begin))); // get the descriptor
+  }; // end of GraphWrapper<Vertex,Edge>::getMaxVertex
+
+  template <class Vertex, class Edge>
+  const Vertex&
+  GraphWrapper<Vertex,Edge>::getMaxVertex() const  { 
+    std::pair < 
+      InternalBoostVertexIteratorType,
+      InternalBoostVertexIteratorType 
+      > 
+      theVertexEnds=boost::vertices(myBoostGraph);
+    InternalBoostVertexIteratorType vi_begin(theVertexEnds.first),
+      vi_end(theVertexEnds.second);
+    for (;vi_begin!=vi_end;++vi_begin) {
+      if (!boost::out_degree(*vi_begin,
+			     myBoostGraph))
+	break;
+    }
+    if (vi_begin==vi_end) 
+      THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: no maximal vertex found");
+    return *(boost::get(boost::get(BoostVertexContentType(),
+				   myBoostGraph), // get the Vertex property map
+			*(vi_begin))); // get the descriptor
+  }; // end of GraphWrapper<Vertex,Edge>::getMaxVertex
+
+  template <class Vertex, class Edge>
   void
   GraphWrapper<Vertex,Edge>::clear() { 
     // delete all the edges
@@ -321,7 +365,7 @@ namespace xaifBooster {
       boost::remove_vertex(*(vi_begin), 
 			   myBoostGraph);
     }
-  } // end of GraphWrapper<Vertex,Edge>::getTargetOf
+  } // end of GraphWrapper<Vertex,Edge>::clear
 
   template <class Vertex, class Edge>
   typename GraphWrapper<Vertex,Edge>::OutEdgeIteratorPair

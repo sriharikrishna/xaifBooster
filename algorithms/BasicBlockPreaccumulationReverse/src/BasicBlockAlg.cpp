@@ -63,5 +63,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4();
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4();
   }
+  
+  ForLoopReversalType::ForLoopReversalType_E BasicBlockAlg::getReversalType() const { 
+    return xaifBoosterControlFlowReversal::BasicBlockAlg::getReversalType();
+  }
 
 } // end of namespace

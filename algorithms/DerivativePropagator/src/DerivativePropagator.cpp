@@ -66,6 +66,16 @@ namespace xaifBoosterDerivativePropagator {
     return *theDPSD_p;
   } 
 
+  const DerivativePropagatorSetDeriv& 
+  DerivativePropagator::addSetDerivToEntryPList(const Variable& theTarget,
+						const Variable& theSource,
+						EntryPList::iterator& insertBefore) { 
+    DerivativePropagatorSetDeriv* theDPSD_p= new DerivativePropagatorSetDeriv(theTarget,
+									      theSource);
+    myEntryPList.insert(insertBefore,theDPSD_p);
+    return *theDPSD_p;
+  } 
+
   DerivativePropagatorSaxpy& DerivativePropagator::addSaxpyToEntryPList(const Variable& thePartial,
 									const Variable& theDependent,
 									const Variable& theIndependent) { 
@@ -91,6 +101,10 @@ namespace xaifBoosterDerivativePropagator {
   } 
 
   const DerivativePropagator::EntryPList& DerivativePropagator::getEntryPList() const { 
+    return myEntryPList;
+  }
+
+  DerivativePropagator::EntryPList& DerivativePropagator::getEntryPList() { 
     return myEntryPList;
   }
 

@@ -1,6 +1,8 @@
 #ifndef _VERTEXIDENTIFICATIONLISTACTIVELHS_INCLUDE_
 #define _VERTEXIDENTIFICATIONLISTACTIVELHS_INCLUDE_
 
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActive.hpp"
 
@@ -9,24 +11,35 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
   /**
-   * this is for the identification fo active variables
-   * RHS <-> LHS
-   * in the presence of ud information
+   * this is for the identification of active variables
+   * RHS <-> preceding LHS
+   * in the presence of alias or ud information
+   * the behavior changes based on the presence or absence of duud information
    */
   class VertexIdentificationListActiveLHS : public VertexIdentificationListActive {
 
   public:
 
+    /** 
+     * in case of duud information present this has only 
+     * a meaningfull invocation for "theVariable" being 
+     * a RHS Argument
+     * in case of duud information absent this can also 
+     * be invoked between LHS variables.
+     */
     IdentificationResult canIdentify(const Variable& theVariable) const;
 
     /** 
+     * in case of duud information present we keep adding 
+     * variables, 
+     * in case of duud information absent we have to maintain 
+     * uniqueness, i.e. 
      * this will only work if canIdentify returns
      * NOT_IDENTIFIED 
      */
-    virtual void addElement(const Variable& theVariable,
-			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
-
-    virtual void removeIfIdentifiable(const Variable& theVariable); 
+    void addElement(const Variable& theVariable,
+		    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
+		    const ObjectWithId::Id& aStatementId);
 
     virtual std::string debug() const;
 
@@ -39,25 +52,25 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       ListItem(const AliasMapKey& anAliasMapKey,
 	       const DuUdMapKey& aDuUdMapKey,
 	       PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p,
-	       DuUdMap::StatementId aStatementId);
+	       const ObjectWithId::Id& aStatementId);
 
       virtual std::string debug() const;
 
       /**
-       * if set, it is the statement id of the assignment in which this 
-       * vertex represents the LHS, i.e. this is usefull only in the 
-       * presence of ud-chain information
+       * this is the statement id of the assignment in which this 
+       * vertex represents the LHS, i.e. it is the statementID of 
+       * the single entry in the ud chain or alternatively the 
+       * result of looking at the alias map,
+       * this must be set or this ListItem instance is useless
        */
-      DuUdMap::StatementId myStatementId;
+      const ObjectWithId::Id& myStatementId;
 
     };
     
     /** 
-     * just for convenience we keep a list of 
-     * all statementIds in ListItem  for use with 
-     * DuUdMap methods
+     * retrieve the list of statement IDs collected in myList
      */
-    DuUdMap::StatementIdList myStatementIdList;
+    void getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const;
 
   }; // end of class VertexIdentificationListActiveLHS  
    

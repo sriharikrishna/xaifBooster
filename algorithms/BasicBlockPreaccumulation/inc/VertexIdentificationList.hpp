@@ -31,9 +31,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 AMBIGUOUSLY_IDENTIFIED,
 				 UNIQUELY_IDENTIFIED };
 
-  // JU: I don't believe ListItem should have to be 
-  // public but SUN CC 5.6 insists. Moved protected down
-  //  protected:
+    // JU: I don't believe ListItem should have to be 
+    // public but SUN CC 5.6 insists. Moved protected down
+    //  protected:
 
     /** 
      * an entry in the list 
@@ -78,13 +78,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
    protected: 
  
     /** 
-     * just for convenience we keep a list of 
-     * all keys in ListItem for use with 
-     * AliasMap methods
+     * retrieves the alias keys found in myList
      */
-    AliasMap::AliasMapKeyList myAliasMapKeyList;
+    void getAliasMapKeyPList(AliasMap::AliasMapKeyPList& anAliasMapKeyPList) const;
 
-   
     /**
      * defining this here requires us
      * to do dynamic casts unless we
@@ -96,6 +93,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * this list owns all the items in it
      */
     ListItemPList myList;
+
+    /** 
+     * lock down list behavior to be based on 
+     * DuUdMap
+     * once it is locked down we cannot change back
+     */
+    void baseOnDuUdMap()const; 
+
+    bool isDuUdMapBased()const;
+
+  private:
+
+    /** 
+     * track if this list is DuUdMap based or not
+     * behavior changes based on this flag
+     */
+    mutable bool myBasedOnDuUdMapFlag;
 
   }; // end of class VertexIdentificationList  
    

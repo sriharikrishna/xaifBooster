@@ -23,8 +23,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } 
 
   BasicBlockAlg::ReinterpretedDerivativePropagator::~ReinterpretedDerivativePropagator() { 
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementList.begin();
-         li!=myBasicBlockElementList.end();
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementListAnonymousReversal.begin();
+         li!=myBasicBlockElementListAnonymousReversal.end();
+         li++) { 
+      if (*li)
+	delete *li;
+    } 
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementListAnonymousReversal.begin();
+         li!=myBasicBlockElementListExplicitReversal.end();
          li++) { 
       if (*li)
 	delete *li;
@@ -37,14 +43,38 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }  
 
   void 
-  BasicBlockAlg::ReinterpretedDerivativePropagator::supplyAndAddBasicBlockElementInstance(BasicBlockElement& theBasicBlockElement) { 
-    myBasicBlockElementList.push_back(&theBasicBlockElement);
+  BasicBlockAlg::ReinterpretedDerivativePropagator::supplyAndAddBasicBlockElementInstance(BasicBlockElement& theBasicBlockElement,
+											  const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
+    switch(aReversalType) { 
+    case ForLoopReversalType::ANONYMOUS : 
+      myBasicBlockElementListAnonymousReversal.push_back(&theBasicBlockElement);
+      break;
+    case ForLoopReversalType::EXPLICIT : 
+      myBasicBlockElementListExplicitReversal.push_back(&theBasicBlockElement);
+      break;
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::supplyAndAddBasicBlockElementInstance: unknown reversal type "
+				 << ForLoopReversalType::toString(aReversalType).c_str());
+      break;
+    }      
   } 
 
-
   const PlainBasicBlock::BasicBlockElementList& 
-  BasicBlockAlg::ReinterpretedDerivativePropagator::getBasicBlockElementList() const { 
-    return myBasicBlockElementList;
+  BasicBlockAlg::ReinterpretedDerivativePropagator::getBasicBlockElementList(const ForLoopReversalType::ForLoopReversalType_E& aReversalType) const { 
+    switch(aReversalType) { 
+    case ForLoopReversalType::ANONYMOUS : 
+      return myBasicBlockElementListAnonymousReversal;
+      break;
+    case ForLoopReversalType::EXPLICIT : 
+      return myBasicBlockElementListExplicitReversal;
+      break;
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getBasicBlockElementList: unknown reversal type "
+				 << ForLoopReversalType::toString(aReversalType).c_str());
+      break;
+    }      
+    // to make the compiler happy:
+    return myBasicBlockElementListAnonymousReversal;
   }  
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
@@ -79,9 +109,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	// this is the right one: 
 	found=true;
 	for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI=
-	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList().begin();
+	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList(ourAlgorithm.getReversalType()).begin();
 	     aBasicBlockElementListI!=
-	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList().end();
+	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList(ourAlgorithm.getReversalType()).end();
 	     ++aBasicBlockElementListI)
 	  (*(aBasicBlockElementListI))->printXMLHierarchy(os);
 	break; 
@@ -122,11 +152,20 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  // take care of the value
 	  if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) { 
 	    // make the subroutine call
+	    // ANONYMOUS version
 	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push"));
-	    // save it in the list
-	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p);
 	    theSubroutineCall_p->setId("inline_push");
 	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addArgumentSubstitute(1).getVariable());
+	    // save it in the list
+	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
+											ForLoopReversalType::ANONYMOUS);
+	    // EXPLICIT version
+	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
+	    theSubroutineCall_p->setId("inline_push");
+	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addArgumentSubstitute(1).getVariable());
+	    // save it in the list
+	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
+											ForLoopReversalType::EXPLICIT);
 	  }
 	  // take care of source the addresses if needed: 
 	  if ((*aFactorListI).getKind()!=xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) { 
@@ -168,16 +207,18 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  // make it
 	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
 	  // save it in the list
-	  aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p);
+	  aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+										   ForLoopReversalType::ANONYMOUS);
 	  theSubroutineCall_p->setId("inline_push_i");
 	  dynamic_cast<const Argument&>(*(p.first)).getVariable().copyMyselfInto(theSubroutineCall_p->addArgumentSubstitute(1).getVariable());
 	}
       } // has one vertex 
       else {  // has more then one vertex
 	// make it
-	Assignment* theIndexExpressionAssignment_p(new Assignment(false,false));
+	Assignment* theIndexExpressionAssignment_p(new Assignment(false));
 	// save it in the list
-	aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theIndexExpressionAssignment_p);
+	aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theIndexExpressionAssignment_p,
+										 ForLoopReversalType::ANONYMOUS);
 	theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
 	// create a new symbol and add a new VariableSymbolReference in the Variable
 	VariableSymbolReference* theNewVariableSymbolReference_p=
@@ -199,7 +240,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	// make the subroutine call: 
 	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
 	// save it in the list
-	aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p);
+	aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
+										 ForLoopReversalType::ANONYMOUS);
 	theSubroutineCall_p->setId("inline_push_i");
 	theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addArgumentSubstitute(1).getVariable());
       }  // end else has more then one vertex   
@@ -214,6 +256,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } // end of BasicBlockAlg::debug
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+  } 
+
+  ForLoopReversalType::ForLoopReversalType_E BasicBlockAlg::getReversalType() const { 
+    return ForLoopReversalType::ANONYMOUS;
   } 
 
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

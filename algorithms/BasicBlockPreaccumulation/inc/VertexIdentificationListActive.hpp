@@ -54,27 +54,32 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       IdentificationResult_E myAnswer;
 
       /**
-       * this will be valid only if myAnswer!=NOT_IDENTIFIED
+       * this is valid only if myAnswer!=NOT_IDENTIFIED
        */
       PrivateLinearizedComputationalGraphVertex* myPrivateLinearizedComputationalGraphVertex_p;
 
     };
 
+    /**
+     * this is a fall back method utilizing only alias information 
+     * as opposed to the overwriting methods which look at DuUd information 
+     * this method should not ever be invoked for duud based lists
+     * it is overwritten in the derived classes
+     */
     virtual IdentificationResult canIdentify(const Variable& theVariable) const;
 
     /** 
-     * this will only work if canIdentify returns
-     * NOT_IDENTIFIED 
+     * in case of duud information present we do nothing
+     * in case of duud information absent we have use canIdentify to 
+     * check and remove all list elements may aliased to theVariable
      */
-    virtual void addElement(const Variable& theVariable,
-			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
-
     virtual void removeIfIdentifiable(const Variable& theVariable); 
 
-  // JU: I don't believe ListItem should have to be
-  // public but SUN CC 5.6 insists. 
-  //  protected:
-
+    // JU: I don't believe ListItem should have to be
+    // public (as opposed to be protected) but SUN CC 5.6 insists. 
+    // this may have something to do with 2 stage lookup.
+    //  protected:
+    
     /** 
      * an entry in the list 
      */

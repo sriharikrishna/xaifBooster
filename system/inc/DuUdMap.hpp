@@ -4,6 +4,9 @@
 #include <vector>
 #include <list>
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
+#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
+#include "xaifBooster/system/inc/DuUdMapEntry.hpp"
 
 namespace xaifBooster { 
 
@@ -12,7 +15,6 @@ namespace xaifBooster {
 
   /**
    * map to hold DuUdMapEntry information 
-   * \todo is incomplete
    */
   class DuUdMap {
 
@@ -22,46 +24,39 @@ namespace xaifBooster {
 
     ~DuUdMap();
 
-    enum DuUdMapDefinition_E { UNIQUE_INSIDE,
-			       UNIQUE_OUTSIDE,
-			       AMBIGUOUS_INSIDE,
-			       AMBIGUOUS_OUTSIDE,
-			       AMBIGUOUS_BOTHSIDES,
-			       DONT_KNOW };
+    static const std::string ourXAIFName;
+
+    std::string debug() const ; 
+
+    void printXMLHierarchy(std::ostream& os) const; 
+
+    typedef std::vector<DuUdMapEntry*> DuUdMapEntryPVector;
+
+    DuUdMapEntry& addDuUdMapEntry(unsigned int theKey); 
 
     /** 
-     * \todo change this once we figure out how to represent it
-     */
-    typedef unsigned int StatementId;
-
-    typedef std::list<StatementId> StatementIdList;
-
-    class DuUdMapDefinitionResult {
-
-    public: 
-      DuUdMapDefinitionResult() :
-	myAnswer(DONT_KNOW),
-	myStatementId(0) { 
-      };
-
-      ~DuUdMapDefinitionResult(){};
-      
-      DuUdMapDefinition_E myAnswer;
-
-      StatementId myStatementId;
-      
-    };
-
-    /** 
-     * \todo incomplete
+     * aKey is the key of a right-hand-side variable
+     * which is to be checked for definitions in
+     * statements listed in anIdList
      */
     const DuUdMapDefinitionResult definition(const DuUdMapKey& aKey,
-					     StatementIdList anIdList) const;
+					     const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
 
     /** 
+     * aKey is the key of a left-hand-side variable
+     * which is to be checked for uses in
+     * statements listed in anIdList
+     */
+    const DuUdMapUseResult use(const DuUdMapKey& aKey,
+			       const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
+    
+    /** 
      * this returns true if the use-def chains for both 
-     * keys are provably identical and false otherwise
-     * \todo incomplete
+     * keys are provably identical and false otherwise;
+     * the keys have to come from the same ControlFlowGraph
+     * as we don't require global uniqueness of statement ids
+     * Note: sameDefinition returning false does not 
+     * imply the definitions are disjoint
      */
     bool sameDefinition(const DuUdMapKey& aKey,
 			const DuUdMapKey& anotherKey) const;
@@ -69,8 +64,11 @@ namespace xaifBooster {
 
     /** 
      * this returns true if the use-def chains for both 
-     * keys are provably disjoint and false otherwise
-     * \todo incomplete
+     * keys are provably disjoint and false otherwise;
+     * the keys have to come from the same ControlFlowGraph
+     * as we don't require global uniqueness of statement ids
+     * Note: disjointDefinition returning false does not 
+     * imply the definitions are the same
      */
     bool disjointDefinition(const DuUdMapKey& aKey,
 			    const DuUdMapKey& anotherKey) const;
@@ -86,6 +84,11 @@ namespace xaifBooster {
      * no def
      */
     DuUdMap operator=(const DuUdMap&);
+
+    /** 
+     * the vector containing all the entries
+     */
+    DuUdMapEntryPVector myDuUdMapEntryPVector;
 
   }; // end of class DuUdMap
 

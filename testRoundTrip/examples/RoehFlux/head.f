@@ -82,7 +82,17 @@
       double precision:: mu                                                 
       double precision:: dss1, dss2, dss3, dss4, dss5                       
       double precision:: uhatl                                              
-                                                                        
+
+c$openad INDEPENDENT(nrm)
+c$openad INDEPENDENT(priml)
+c$openad INDEPENDENT(primr)
+c$openad INDEPENDENT(gamma)
+c$openad INDEPENDENT(gm1)
+c$openad INDEPENDENT(gm1inv)
+c$openad INDEPENDENT(nlefix)
+c$openad INDEPENDENT(lefix)
+c$openad INDEPENDENT(mcheps)
+
 !     CODE                                                              
                                                                         
 !     set normal quantities                                             
@@ -226,5 +236,5 @@
       flux (3) = nsize * (rul * uhatl + nxhat * priml (1) + dss3)        
       flux (4) = nsize * (rvl * uhatl + nyhat * priml (1) + dss4)        
       flux (5) = nsize * (rwl * uhatl + nzhat * priml (1) + dss5)        
-                                                                        
+c$openad DEPENDENT(flux)                                                                        
       END SUBROUTINE ad_roehf5

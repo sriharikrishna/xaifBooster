@@ -46,10 +46,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   VertexIdentificationListActive::IdentificationResult 
   VertexIdentificationListActive::canIdentify(const Variable& theVariable) const { 
+    if (isDuUdMapBased())
+      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::canIdentify: should ot be invoked for DuUd map based lists");
     AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getAliasMap());
+    AliasMap::AliasMapKeyPList anAliasMapKeyPList;
+    getAliasMapKeyPList(anAliasMapKeyPList);
     if (theAliasMap.mayAlias(theVariable.getAliasMapKey(),
-			     myAliasMapKeyList)) {
+			     anAliasMapKeyPList)) {
       // so there is potential 
       // try to find an exact match: 
       for (ListItemPList::const_iterator aListIterator=myList.begin();
@@ -67,27 +71,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return IdentificationResult(NOT_IDENTIFIED,0);
   } 
 
-  void VertexIdentificationListActive::addElement(const Variable& theVariable,
-						  PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p) { 
-    if (canIdentify(theVariable).getAnswer()!=NOT_IDENTIFIED) 
-      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::addElement: new element must have a unique address");
-    myList.push_back(new ListItem(theVariable.getAliasMapKey(),
-				  theVariable.getDuUdMapKey(),
-				  thePrivateLinearizedComputationalGraphVertex_p));
-    myAliasMapKeyList.push_back(&(theVariable.getAliasMapKey()));
-  } 
-
   void VertexIdentificationListActive::removeIfIdentifiable(const Variable& theVariable) { 
+    if (myList.empty())
+      return;
+    if (isDuUdMapBased())
+      return;
     IdentificationResult idResult(canIdentify(theVariable));
     while(idResult.getAnswer()!=NOT_IDENTIFIED) { 
       ListItemPList::iterator aListIterator=myList.begin();
-      AliasMap::AliasMapKeyList::iterator aKeyListIterator=myAliasMapKeyList.begin();
       for (;
 	   aListIterator!=myList.end(); 
-	   ++aListIterator,
-	     ++aKeyListIterator) { 
+	   ++aListIterator) { 
 	if (dynamic_cast<ListItem&>(**aListIterator).myPrivateLinearizedComputationalGraphVertex_p==idResult.getVertexP()) { 
-	  myAliasMapKeyList.erase(aKeyListIterator);
 	  myList.erase(aListIterator);
 	  break;
 	} // end if 

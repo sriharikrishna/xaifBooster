@@ -68,6 +68,7 @@ namespace xaifBooster {
        << std::endl; 
     myScopeTree.printXMLHierarchy(os);
     myAliasMap.printXMLHierarchy(os);
+    myDuUdMap.printXMLHierarchy(os);
     CallGraph::ConstVertexIteratorPair p(vertices());
     CallGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt)
