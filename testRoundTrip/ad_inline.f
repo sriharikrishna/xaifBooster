@@ -115,8 +115,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision :: x
 C $OpenAD$ END DECLS
-          theResStackoffset=theResStackoffset+1
-          theResStack(theResStackoffset)=x%v
+          theResFStackoffset=theResFStackoffset+1
+          theResFStack(theResFStackoffset)=x%v
         end subroutine 
 
 
@@ -125,8 +125,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision :: x
 C $OpenAD$ END DECLS
-          x%v=theResStack(theResStackoffset)
-          theResStackoffset=theResStackoffset-1
+          x%v=theResFStack(theResFStackoffset)
+          theResFStackoffset=theResFStackoffset-1
         end subroutine 
 
 
@@ -160,8 +160,8 @@ C $OpenAD$ INLINE DECLS
           double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-             theResStackoffset=theResStackoffset+1
-             theResStack(theResStackoffset)=x(cp_loop_variable_1)%v
+             theResFStackoffset=theResFStackoffset+1
+             theResFStack(theResFStackoffset)=x(cp_loop_variable_1)%v
           end do
         end subroutine 
 
@@ -172,8 +172,8 @@ C $OpenAD$ INLINE DECLS
           double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
-             x(cp_loop_variable_1)%v=theResStack(theResStackoffset)
-             theResStackoffset=theResStackoffset-1
+             x(cp_loop_variable_1)%v=theResFStack(theResFStackoffset)
+             theResFStackoffset=theResFStackoffset-1
           end do
         end subroutine 
 
@@ -213,8 +213,8 @@ C $OpenAD$ INLINE DECLS
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
-                theResStackoffset=theResStackoffset+1
-                theResStack(theResStackoffset)=x(cp_loop_variable_1,cp_loop_variable_2)%v
+                theResFStackoffset=theResFStackoffset+1
+                theResFStack(theResFStackoffset)=x(cp_loop_variable_1,cp_loop_variable_2)%v
              end do
           end do
         end subroutine 
@@ -227,8 +227,8 @@ C $OpenAD$ INLINE DECLS
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
              do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
-                x(cp_loop_variable_1,cp_loop_variable_2)%v=theResStack(theResStackoffset)
-                theResStackoffset=theResStackoffset-1
+                x(cp_loop_variable_1,cp_loop_variable_2)%v=theResFStack(theResFStackoffset)
+                theResFStackoffset=theResFStackoffset-1
              end do
           end do
         end subroutine 
@@ -279,8 +279,8 @@ C $OpenAD$ END DECLS
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
                 do cp_loop_variable_3=lbound(x,3),ubound(x,3)
                    do cp_loop_variable_4=lbound(x,4),ubound(x,4)
-                      theResStackoffset=theResStackoffset+1
-                      theResStack(theResStackoffset)=x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)%v
+                      theResFStackoffset=theResFStackoffset+1
+                      theResFStack(theResFStackoffset)=x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)%v
                    end do
                 end do
              end do
@@ -297,8 +297,8 @@ C $OpenAD$ END DECLS
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
                 do cp_loop_variable_3=ubound(x,3),lbound(x,3),-1
                    do cp_loop_variable_4=ubound(x,4),lbound(x,4),-1
-                      x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)%v=theResStack(theResStackoffset)
-                      theResStackoffset=theResStackoffset-1
+                      x(cp_loop_variable_1,cp_loop_variable_2,cp_loop_variable_3,cp_loop_variable_4)%v=theResFStack(theResFStackoffset)
+                      theResFStackoffset=theResFStackoffset-1
                    end do
                 end do
              end do
