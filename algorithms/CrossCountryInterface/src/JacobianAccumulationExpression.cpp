@@ -1,6 +1,6 @@
-#include "JacobianAccumulationExpression.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpression.hpp"
 
-namespace xaifBooster { 
+namespace xaifBoosterCrossCountryInterface { 
 
   JacobianAccumulationExpression::JacobianAccumulationExpression() : 
     myDependent_p(0),

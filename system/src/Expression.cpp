@@ -8,10 +8,9 @@
 #include "xaifBooster/system/inc/ExpressionAlgFactory.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
-#include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
-#include "xaifBooster/system/inc/BaseVariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 
 namespace xaifBooster { 

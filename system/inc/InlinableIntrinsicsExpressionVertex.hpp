@@ -1,7 +1,7 @@
 #ifndef _INLINABLEINTRINSICSEXPRESSIONVERTEX_INCLUDE_
 #define _INLINABLEINTRINSICSEXPRESSIONVERTEX_INCLUDE_
 
-#include "xaifBooster/system/inc/Vertex.hpp"
+#include "xaifBooster/boostWrapper/inc/Vertex.hpp"
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
 namespace xaifBooster { 

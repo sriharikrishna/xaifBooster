@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtproject id="org.eclipse.cdt.make.core.make">
+    <extension id="org.eclipse.cdt.make.core.MakeScannerProvider" point="org.eclipse.cdt.core.ScannerInfoProvider"/>
+    <data>
+        <item id="org.eclipse.cdt.make.core.makeScannerInfo">
+            <includePath path="/sandbox/BitKeep"/>
+            <includePath path="/sandbox/xerces-c-src_2_3_0/include"/>
+            <includePath path="/sandbox/boost_1_29_0"/>
+        </item>
+    </data>
+</cdtproject>

@@ -1,9 +1,11 @@
 #ifndef _LINEARIZEDCOMPUTATIONALGRAPHVERTEX_INCLUDE_
 #define _LINEARIZEDCOMPUTATIONALGRAPHVERTEX_INCLUDE_
 
-#include "xaifBooster/system/inc/Vertex.hpp"
+#include "xaifBooster/boostWrapper/inc/Vertex.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterCrossCountryInterface { 
 
   class LinearizedComputationalGraphVertex : public Vertex {
   public:
@@ -14,6 +16,6 @@ namespace xaifBooster {
  
   }; // end of class LinearizedComputationalGraphVertex
  
-} // end of namespace xaifBooster
+} 
                                                                      
 #endif

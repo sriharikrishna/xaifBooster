@@ -1,7 +1,7 @@
-#include "JacobianAccumulationExpressionVertex.hpp"
-#include "LogicException.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionVertex.hpp"
 
-namespace xaifBooster { 
+namespace xaifBoosterCrossCountryInterface {
 
   JacobianAccumulationExpressionVertex::JacobianAccumulationExpressionVertex() : 
     myReferenceUnionType(NOTHING) { 

@@ -1,11 +1,13 @@
 #ifndef _JACOBIANACCUMULATIONEXPRESSIONLIST_INCLUDE_
 #define _JACOBIANACCUMULATIONEXPRESSIONLIST_INCLUDE_
 
-#include "JacobianAccumulationExpression.hpp" 
 #include <list>
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpression.hpp" 
 
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterCrossCountryInterface { 
 
   /**
    * this class is the container for the 

@@ -1,11 +1,11 @@
 #ifndef _PRIVATELINEARIZEDCOMPUTATIONALGRAPHVERTEX_INCLUDE_
 #define _PRIVATELINEARIZEDCOMPUTATIONALGRAPHVERTEX_INCLUDE_
 
-#include "LinearizedComputationalGraphVertex.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 
 namespace xaifBooster { 
   
-  class BaseVariableReference;
+  class Variable;
 
   class PrivateLinearizedComputationalGraphVertex : public LinearizedComputationalGraphVertex {
   public:
@@ -14,40 +14,40 @@ namespace xaifBooster {
 
     ~PrivateLinearizedComputationalGraphVertex(){};
 
-    void setRHSBaseVariableReference(const BaseVariableReference& aBaseVariableReference);
+    void setRHSVariable(const Variable& aVariable);
 
-    void setLHSBaseVariableReference(const BaseVariableReference& aBaseVariableReference);
+    void setLHSVariable(const Variable& aVariable);
     
-    const BaseVariableReference& getRHSBaseVariableReference() const;
+    const Variable& getRHSVariable() const;
 
-    const BaseVariableReference& getLHSBaseVariableReference() const;
+    const Variable& getLHSVariable() const;
 
     std::string debug() const ;
     
   private:
     
     /**
-     * this refers to some BaseVariableReference in
+     * this refers to some Variable in
      * right hand side of an assignment in a 
      * basic block for independent variables
-     * or a BaseVariableReference as the LHS of an Assignment
+     * or a Variable as the LHS of an Assignment
      * for a dependent variable
-     * this class doesn't own the BaseVariableReference pointed 
-     * to by myRHSBaseVariableReference_p
+     * this class doesn't own the Variable pointed 
+     * to by myRHSVariable_p
      */
-    const BaseVariableReference* myRHSBaseVariableReference_p;
+    const Variable* myRHSVariable_p;
 
     /**
-     * this refers to the BaseVariableReference in
+     * this refers to the Variable in
      * the left hand side of an Assignment 
      * The distinction has to be made in order to 
      * allow two references to be assigned for 
      * something like y=x where this vertex needs to 
      * keep a reference to both y and x 
-     * this class doesn't own the BaseVariableReference pointed 
-     * to by myLHSBaseVariableReference_p
+     * this class doesn't own the Variable pointed 
+     * to by myLHSVariable_p
      */
-    const BaseVariableReference* myLHSBaseVariableReference_p;
+    const Variable* myLHSVariable_p;
  
   }; // end of class PrivateLinearizedComputationalGraphVertex
  

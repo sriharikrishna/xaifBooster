@@ -1,8 +1,8 @@
 #ifndef _PRIVATELINEARIZEDCOMPUTATIONALGRAPH_INCLUDE_
 #define _PRIVATELINEARIZEDCOMPUTATIONALGRAPH_INCLUDE_
 
-#include "LinearizedComputationalGraph.hpp"
-#include "HashTable.hpp"
+#include "xaifBooster/utils/inc/HashTable.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 
 namespace xaifBooster { 
 
@@ -33,10 +33,10 @@ namespace xaifBooster {
      * in particular to find the connection 
      * points for new Expressions to be added 
      * to the flattened graph. 
-     * The Vertex for a given BaseVariableReference
+     * The Vertex for a given Variable
      * will change from v_old to v_new when the respective variable 
      * is overwritten by vertex v_new
-     * Key is the equivalenceSignature of BaseVariableReference
+     * Key is the equivalenceSignature of Variable
      * this list doesn't own any elements
      */
     HashTable<PrivateLinearizedComputationalGraphVertex*> myVariableReferenceTrackList; 

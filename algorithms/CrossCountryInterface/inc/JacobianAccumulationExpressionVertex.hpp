@@ -1,10 +1,12 @@
 #ifndef _JACOBIANACCUMULATIONEXPRESSIONVERTEX_INCLUDE_
 #define _JACOBIANACCUMULATIONEXPRESSIONVERTEX_INCLUDE_
 
-#include "Vertex.hpp" 
-#include "LinearizedComputationalGraphEdge.hpp"
+#include "xaifBooster/boostWrapper/inc/Vertex.hpp" 
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterCrossCountryInterface { 
 
   class JacobianAccumulationExpressionVertex : public Vertex { 
     

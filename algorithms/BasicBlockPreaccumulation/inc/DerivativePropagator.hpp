@@ -1,13 +1,13 @@
 #ifndef _DERIVATIVEPROPAGATOR_INCLUDE_
 #define _DERIVATIVEPROPAGATOR_INCLUDE_
 
-#include "xaifBooster/utils/inc/XMLPrintable.hpp"
-#include "DerivativePropagatorEntry.hpp"
 #include <list>
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorEntry.hpp"
 
 namespace xaifBooster { 
 
-  class BaseVariableReference;
+  class Variable;
   class Constant;
   class DerivativePropagatorSaxpy;
   class DerivativePropagatorSetDeriv;
@@ -30,18 +30,18 @@ namespace xaifBooster {
     
     typedef std::list<DerivativePropagatorEntry*> EntryList;
 
-    const DerivativePropagatorSetDeriv& addSetDerivToEntryList(const BaseVariableReference& theTarget,
-							       const BaseVariableReference& theSource);
+    const DerivativePropagatorSetDeriv& addSetDerivToEntryList(const Variable& theTarget,
+							       const Variable& theSource);
 
     DerivativePropagatorSaxpy& addSaxpyToEntryList(const Constant& thePartial,
-						   const BaseVariableReference& theDependent,
-						   const BaseVariableReference& theIndependent);
+						   const Variable& theDependent,
+						   const Variable& theIndependent);
 
-    DerivativePropagatorSaxpy& addSaxpyToEntryList(const BaseVariableReference& thePartial,
-						   const BaseVariableReference& theDependent,
-						   const BaseVariableReference& theIndependent);
+    DerivativePropagatorSaxpy& addSaxpyToEntryList(const Variable& thePartial,
+						   const Variable& theDependent,
+						   const Variable& theIndependent);
 
-    void addZeroDerivToEntryList(const BaseVariableReference& theTarget);
+    void addZeroDerivToEntryList(const Variable& theTarget);
 
     const EntryList& getEntryList() const;
 

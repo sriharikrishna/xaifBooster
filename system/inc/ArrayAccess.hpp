@@ -2,7 +2,7 @@
 #define _ARRAYACCESS_INCLUDE_
 
 #include <list>
-#include "xaifBooster/system/inc/BaseVariableReferenceVertex.hpp"
+#include "xaifBooster/system/inc/VariableVertex.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
 
 namespace xaifBooster { 
@@ -13,7 +13,7 @@ namespace xaifBooster {
    * as a graph defined as BaseVariableRerefence
    * used on LHS of assignments and in expressions
    */
-  class ArrayAccess : public BaseVariableReferenceVertex {
+  class ArrayAccess : public VariableVertex {
   public:
 
     ArrayAccess (){};
@@ -39,7 +39,7 @@ namespace xaifBooster {
     static const std::string our_myIndex_XAIFName;
     static const std::string our_myId_XAIFName;
 
-    virtual BaseVariableReferenceVertex& createCopyOfMyself() const ;
+    virtual VariableVertex& createCopyOfMyself() const ;
 
     typedef std::list<Expression*> IndexListType;
 

@@ -9,7 +9,7 @@ namespace xaifBooster{
 
   /**
    * class to hold alias sets and activity 
-   * information referred to by a BaseVariableReference
+   * information referred to by a Variable
    * through AliasActivityMap
    * For the time being we assume that there is not 
    * a big difference in the quality of the alias and the 
@@ -59,7 +59,7 @@ namespace xaifBooster{
   private:
 
     /** 
-     * set of aliases for this BaseVariableReference
+     * set of aliases for this Variable
      */
     AliasSet myAliasSet;
 

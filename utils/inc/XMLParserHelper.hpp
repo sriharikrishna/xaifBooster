@@ -22,8 +22,8 @@ namespace xaifBooster {
   class AliasActivityMap;
   class ArrayAccess;
   class Assignment;
-  class BaseVariableReference;
-  class BaseVariableReferenceEdge;
+  class Variable;
+  class VariableEdge;
   class BasicBlock;
   class CallGraph;
   class Condition;
@@ -59,8 +59,8 @@ namespace xaifBooster {
     HELPER_DECLARATION(AliasActivityMap)
     HELPER_DECLARATION(ArrayAccess)
     HELPER_DECLARATION(Assignment)
-    HELPER_DECLARATION(BaseVariableReference)
-    HELPER_DECLARATION(BaseVariableReferenceEdge)
+    HELPER_DECLARATION(Variable)
+    HELPER_DECLARATION(VariableEdge)
     HELPER_DECLARATION(BasicBlock)
     HELPER_DECLARATION(CallGraph)
     HELPER_DECLARATION(Condition)

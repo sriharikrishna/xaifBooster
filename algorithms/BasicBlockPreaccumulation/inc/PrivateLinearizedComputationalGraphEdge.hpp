@@ -1,7 +1,7 @@
 #ifndef _PRIVATELINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
 #define _PRIVATELINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
 
-#include "LinearizedComputationalGraphEdge.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
 
 namespace xaifBooster { 
   

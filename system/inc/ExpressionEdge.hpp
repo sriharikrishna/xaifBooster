@@ -1,22 +1,23 @@
 #ifndef _EXPRESSIONEDGE_INCLUDE_
 #define _EXPRESSIONEDGE_INCLUDE_
 
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include "xaifBooster/system/inc/EdgeTraversable.hpp"
 #include "xaifBooster/system/inc/ExpressionEdgeAlgBase.hpp"
-#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
 namespace xaifBooster { 
 
   class Expression;
 
-  class ExpressionEdge : public EdgeTraversable, public ObjectWithId { 
+  class ExpressionEdge : public EdgeTraversable,
+			 public ObjectWithId { 
+
   public:
 
     /**
      * ctor sets pointer to dynamically allocated algorithm
-     * object is hasAlgorithm==true
      */
-    ExpressionEdge(bool hasAlgorithm=true);
+    ExpressionEdge(bool makeAlgorithm=true);
 
     /**
      * dtor deallocates the algorithm object if present
@@ -47,6 +48,10 @@ namespace xaifBooster {
      * always invoked by the graph
      */
     void printXMLHierarchyImpl(std::ostream& os, const Expression& theExpression) const;
+
+    /** 
+     * this is for vertices, nothing implemented
+     */
     void printXMLHierarchyImpl(std::ostream& os) const {};
 
     /**
@@ -74,10 +79,9 @@ namespace xaifBooster {
     ExpressionEdge& createCopyOfMyself(bool withAlgorithm=false) const;
 
     /**
-     * routines for accessing the algorithm
+     * access the algorithm
      */
-    ExpressionEdgeAlgBase& getExpressionEdgeAlgBase();
-    const ExpressionEdgeAlgBase& getExpressionEdgeAlgBase() const;
+    ExpressionEdgeAlgBase& getExpressionEdgeAlgBase() const;
 
     /**
      * used by generic traversal

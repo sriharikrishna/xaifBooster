@@ -1,6 +1,6 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
-// UN: add later #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/IntrinsicAlgFactory.hpp"
 
@@ -42,12 +42,10 @@ namespace xaifBooster {
     return std::string(oss.str());
   }
 
-/* UN: add later
   const InlinableIntrinsicsCatalogueItem&
   Intrinsic::getInlinableIntrinsicsCatalogueItem() const { 
     return ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement(myName);
   } 
-*/
 
   /*
    * if there is an algorithm, then let it decide what to print;

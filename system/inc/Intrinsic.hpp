@@ -32,9 +32,7 @@ namespace xaifBooster {
      */
     std::string equivalenceSignature() const;
 
-/* UN: add later
     virtual const InlinableIntrinsicsCatalogueItem& getInlinableIntrinsicsCatalogueItem() const;
-*/
 
     /**
      * copy into provided object

@@ -1,9 +1,11 @@
 #ifndef _LINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
 #define _LINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
 
-#include "Edge.hpp"
+#include "xaifBooster/boostWrapper/inc/Edge.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterCrossCountryInterface { 
 
   class LinearizedComputationalGraphEdge : public Edge {
   public:
@@ -14,6 +16,6 @@ namespace xaifBooster {
  
   }; // end of class LinearizedComputationalGraphEdge
  
-} // end of namespace xaifBooster
+} 
                                                                      
 #endif

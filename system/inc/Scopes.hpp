@@ -2,7 +2,7 @@
 #define _SCOPES_INCLUDE_
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
-#include "xaifBooster/system/inc/GraphWrapper.hpp"
+#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
 #include "xaifBooster/system/inc/Scope.hpp"
 #include "xaifBooster/system/inc/ScopeContainment.hpp"
 

@@ -1,13 +1,15 @@
 #ifndef _JACOBIANACCUMULATIONEXPRESSION_INCLUDE_
 #define _JACOBIANACCUMULATIONEXPRESSION_INCLUDE_
 
-#include "GraphWrapper.hpp" 
-#include "JacobianAccumulationExpressionVertex.hpp" 
-#include "LinearizedComputationalGraphVertex.hpp" 
-#include "Edge.hpp" 
+#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp" 
+#include "xaifBooster/boostWrapper/inc/Edge.hpp" 
 
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionVertex.hpp" 
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp" 
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterCrossCountryInterface { 
 
   class JacobianAccumulationExpression : public GraphWrapper<JacobianAccumulationExpressionVertex,
 					 Edge> { 

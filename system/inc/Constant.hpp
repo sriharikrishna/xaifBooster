@@ -10,7 +10,8 @@ namespace xaifBooster {
 		   public BaseConstant {
   public:
 
-    Constant(const SymbolType::SymbolType_E aType);
+    Constant(const SymbolType::SymbolType_E aType,
+	     bool makeAlgorithm=true);
 
     ~Constant(){};
 
@@ -48,6 +49,14 @@ namespace xaifBooster {
      * no def
      */
     Constant ();
+    /**
+     * no def
+     */
+    Constant (const Constant&);
+    /**
+     * no def
+     */
+    Constant& operator=(const Constant&);
 
   }; // end of class Constant
  
