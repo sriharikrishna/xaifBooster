@@ -1,7 +1,11 @@
+#include <sstream>
+
+#include "xaifBooster/utils/inc/XMLParserMessage.hpp"
+
 #include "xaifBooster/system/inc/XAIFBaseParserHandlers.hpp"
 #include "xaifBooster/system/inc/XMLParser.hpp"
-#include "xaifBooster/utils/inc/XMLParserMessage.hpp"
-#include <sstream>
+#include "xaifBooster/system/inc/DuUd.hpp"
+
 
 namespace xaifBooster {
   
@@ -70,49 +74,36 @@ namespace xaifBooster {
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
 			  getScopeById(XMLParser::getAttributeValueByName(ControlFlowGraph::our_scopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
-			    getElement(XMLParser::getAttributeValueByName(
-							       ControlFlowGraph::our_symbolId_XAIFName)));
+			    getElement(XMLParser::getAttributeValueByName(ControlFlowGraph::our_symbolId_XAIFName)));
     CallGraphVertex* theCallGraphVertex_p=new CallGraphVertex(theSymbol,
 							      theScope,
-							      XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(
-												       ControlFlowGraph::our_myActiveFlag_XAIFName)));
+							      XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ControlFlowGraph::our_myActiveFlag_XAIFName)));
     ConceptuallyStaticInstances::instance()->
       getCallGraph().supplyAndAddVertexInstance(*theCallGraphVertex_p);
     passingOut.setControlFlowGraph(theCallGraphVertex_p->getControlFlowGraph());
-    theCallGraphVertex_p->getControlFlowGraph().setId(XMLParser::getAttributeValueByName(
-									      ControlFlowGraph::our_myId_XAIFName));
-    theCallGraphVertex_p->getControlFlowGraph().setAnnotation(XMLParser::getAttributeValueByName(
-										      ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    theCallGraphVertex_p->getControlFlowGraph().setId(XMLParser::getAttributeValueByName(ControlFlowGraph::our_myId_XAIFName));
+    theCallGraphVertex_p->getControlFlowGraph().setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   };
 
   void 
   XAIFBaseParserHandlers::onSymbol(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onSymbol" ); 
     SymbolTable& theSymbolTable(passingIn.getSymbolTable());
-    Symbol& theNewSymbol(theSymbolTable.addSymbol(XMLParser::getAttributeValueByName(
-									  Symbol::our_myId_XAIFName),
-						  SymbolKind::fromString(XMLParser::getAttributeValueByName(
-												 SymbolKind::our_attribute_XAIFName)),
-						  SymbolType::fromString(XMLParser::getAttributeValueByName(
-												 SymbolType::our_attribute_XAIFName)),	
-						  SymbolShape::fromString(XMLParser::getAttributeValueByName(
-												  SymbolShape::our_attribute_XAIFName)),
-						  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(
-											   Symbol::our_myActiveTypeFlag_XAIFName)),
-						  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(
-											   Symbol::our_myTempFlag_XAIFName))));
-    theNewSymbol.setAnnotation(XMLParser::getAttributeValueByName(
-						       ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    Symbol& theNewSymbol(theSymbolTable.addSymbol(XMLParser::getAttributeValueByName(Symbol::our_myId_XAIFName),
+						  SymbolKind::fromString(XMLParser::getAttributeValueByName(SymbolKind::our_attribute_XAIFName)),
+						  SymbolType::fromString(XMLParser::getAttributeValueByName(SymbolType::our_attribute_XAIFName)),	
+						  SymbolShape::fromString(XMLParser::getAttributeValueByName(SymbolShape::our_attribute_XAIFName)),
+						  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Symbol::our_myActiveTypeFlag_XAIFName)),
+						  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Symbol::our_myTempFlag_XAIFName))));
+    theNewSymbol.setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   };
 
   void 
   XAIFBaseParserHandlers::onScopeContainment(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onScopeContainment" ); 
     Scopes& theScopes(passingIn.getScopes());
-    std::string sourceId=XMLParser::getAttributeValueByName(
-						 ScopeContainment::our_source_XAIFName);
-    std::string targetId=XMLParser::getAttributeValueByName(
-						 ScopeContainment::our_target_XAIFName);
+    std::string sourceId=XMLParser::getAttributeValueByName(ScopeContainment::our_source_XAIFName);
+    std::string targetId=XMLParser::getAttributeValueByName(ScopeContainment::our_target_XAIFName);
     Scopes::VertexIteratorPair p=theScopes.vertices();
     Scopes::VertexIterator beginIt(p.first),endIt(p.second);
     Scope *theSource_p(0), *theTarget_p(0);
@@ -132,8 +123,7 @@ namespace xaifBooster {
 				 << targetId.c_str());
     ScopeContainment& theScopeContainment(theScopes.addEdge(*theSource_p,
 							    *theTarget_p));
-    theScopeContainment.setId(XMLParser::getAttributeValueByName(
-						      ScopeContainment::our_myId_XAIFName));
+    theScopeContainment.setId(XMLParser::getAttributeValueByName(ScopeContainment::our_myId_XAIFName));
   };
 
   void 
@@ -149,11 +139,9 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onScope" ); 
     Scopes& theScopes(passingIn.getScopes());
     Scope& theScope(theScopes.addVertex());
-    theScope.setId(XMLParser::getAttributeValueByName(
-					   Scope::our_myId_XAIFName));
+    theScope.setId(XMLParser::getAttributeValueByName(Scope::our_myId_XAIFName));
     passingOut.setScope(theScope);
-    theScope.setAnnotation(XMLParser::getAttributeValueByName(
-						   ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    theScope.setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   };
 
   void 
@@ -168,8 +156,7 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasMapEntry" ); 
     AliasMap& theAliasMap(passingIn.getAliasMap());
     AliasMapEntry& theAliasMapEntry=theAliasMap.
-      addAliasMapEntry(XMLParser::getAttributeValueByName(
-					       AliasMapEntry::our_myKey_XAIFName));
+      addAliasMapEntry(XMLParser::getAttributeValueByName(AliasMapEntry::our_myKey_XAIFName));
     passingOut.setAliasMapEntry(theAliasMapEntry);
   };
 
@@ -177,18 +164,15 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onAliasSingle(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasSingle" ); 
     AliasSet& theAliasSet(passingIn.getAliasMapEntry().getAliasSet());
-    theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(
-						      AliasSingle::our_myAddress_XAIFName).c_str()));
+    theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(AliasSingle::our_myAddress_XAIFName).c_str()));
   };
 
   void 
   XAIFBaseParserHandlers::onAliasRange(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasRange" ); 
     AliasSet& theAliasSet(passingIn.getAliasMapEntry().getAliasSet());
-    theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(
-						      AliasRange::our_myLowerAddress_XAIFName).c_str()),
-			 atoi(XMLParser::getAttributeValueByName(
-						      AliasRange::our_myUpperAddress_XAIFName).c_str()));
+    theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(AliasRange::our_myLowerAddress_XAIFName).c_str()),
+			 atoi(XMLParser::getAttributeValueByName(AliasRange::our_myUpperAddress_XAIFName).c_str()));
   };
 
   void 
@@ -202,17 +186,12 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onCallGraph(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onCallGraph" ); 
     ConceptuallyStaticInstances::instance()->
-      createCallGraph(XMLParser::getAttributeValueByName(
-					      CallGraph::our_mySchemaInstance_XAIFName),
-		      XMLParser::getAttributeValueByName(
-					      CallGraph::our_myXAIFInstance_XAIFName),
-		      XMLParser::getAttributeValueByName(
-					      CallGraph::our_mySchemaLocation_XAIFName),
-		      XMLParser::getAttributeValueByName(
-					      CallGraph::our_myPrefix_XAIFName));
+      createCallGraph(XMLParser::getAttributeValueByName(CallGraph::our_mySchemaInstance_XAIFName),
+		      XMLParser::getAttributeValueByName(CallGraph::our_myXAIFInstance_XAIFName),
+		      XMLParser::getAttributeValueByName(CallGraph::our_mySchemaLocation_XAIFName),
+		      XMLParser::getAttributeValueByName(CallGraph::our_myPrefix_XAIFName));
     CallGraph& theCallGraph=ConceptuallyStaticInstances::instance()->getCallGraph();
-    theCallGraph.setProgramName(XMLParser::getAttributeValueByName(
-							CallGraph::our_myProgramName_XAIFName));
+    theCallGraph.setProgramName(XMLParser::getAttributeValueByName(CallGraph::our_myProgramName_XAIFName));
     passingOut.setScopes(theCallGraph.getScopeTree());
     passingOut.setAliasMap(theCallGraph.getAliasMap());
   };
@@ -221,10 +200,8 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onAssignment(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAssignment" ); 
     BasicBlock& theBasicBlock(passingIn.getBasicBlock());
-    Assignment* theAssignment_p=new Assignment(XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(
-											Assignment::our_myActiveFlag_XAIFName)));
-    theAssignment_p->setId(XMLParser::getAttributeValueByName(
-						   Assignment::our_myId_XAIFName));
+    Assignment* theAssignment_p=new Assignment(XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Assignment::our_myActiveFlag_XAIFName)));
+    theAssignment_p->setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theAssignment_p);
     passingOut.setAssignment(*theAssignment_p);
   };
@@ -234,10 +211,10 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAssignmentLHS" ); 
     Assignment& theAssignment(passingIn.getAssignment());
     theAssignment.getLHS().getAliasMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(
-						Variable::our_myKey_XAIFName).c_str()));
+      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myKey_XAIFName).c_str()));
     passingOut.setVariable(theAssignment.getLHS());
-
+    theAssignment.getLHS().getDuUd().
+      setReference(atoi(XMLParser::getAttributeValueByName(DuUd::our_myDuUdReference_XAIFName).c_str()));
     theAssignment.getLHS().
       setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
   };
@@ -253,12 +230,9 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onConstant(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onConstant" ); 
     Expression& theExpression(passingIn.getExpression());
-    Constant* theConstant_p=new Constant(SymbolType::fromString(XMLParser::getAttributeValueByName(
-											Constant::our_myType_XAIFName)));
-    theConstant_p->setId(XMLParser::getAttributeValueByName(
-						 Constant::our_myId_XAIFName));
-    theConstant_p->setFromString(XMLParser::getAttributeValueByName(
-							 Constant::our_myValue_XAIFName));
+    Constant* theConstant_p=new Constant(SymbolType::fromString(XMLParser::getAttributeValueByName(Constant::our_myType_XAIFName)));
+    theConstant_p->setId(XMLParser::getAttributeValueByName(Constant::our_myId_XAIFName));
+    theConstant_p->setFromString(XMLParser::getAttributeValueByName(Constant::our_myValue_XAIFName));
     // constants are always passive
     // theConstant_p->passivate();
     theExpression.supplyAndAddVertexInstance(*theConstant_p);
@@ -269,26 +243,24 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onBooleanOperation" ); 
     Expression& theExpression(passingIn.getExpression());
     BooleanOperation* theBooleanOperation_p=
-      new BooleanOperation(BooleanOperationType::fromString(XMLParser::getAttributeValueByName(
-										    BooleanOperation::our_myType_XAIFName)));
-    theBooleanOperation_p->setId(XMLParser::getAttributeValueByName(
-							 BooleanOperation::our_myId_XAIFName));
+      new BooleanOperation(BooleanOperationType::fromString(XMLParser::getAttributeValueByName(BooleanOperation::our_myType_XAIFName)));
+    theBooleanOperation_p->setId(XMLParser::getAttributeValueByName(BooleanOperation::our_myId_XAIFName));
     theExpression.supplyAndAddVertexInstance(*theBooleanOperation_p);
   };
 
   void 
-  XAIFBaseParserHandlers::onVariable(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onVariable" ); 
+  XAIFBaseParserHandlers::onArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onArgument" ); 
     Expression& theExpression(passingIn.getExpression());
     Argument* theArgument_p=new Argument();
-    theArgument_p->setId(XMLParser::getAttributeValueByName(
-							  Argument::our_myId_XAIFName));
+    theArgument_p->setId(XMLParser::getAttributeValueByName(Argument::our_myId_XAIFName));
     theExpression.supplyAndAddVertexInstance(*theArgument_p);
     theArgument_p->getVariable().getAliasMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(
-						Variable::our_myKey_XAIFName).c_str()));
+      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myKey_XAIFName).c_str()));
     theArgument_p->getVariable().
       setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
+    theArgument_p->getVariable().getDuUd().
+      setReference(atoi(XMLParser::getAttributeValueByName(DuUd::our_myDuUdReference_XAIFName).c_str()));
     passingOut.setVariable(theArgument_p->getVariable());
   };
 
@@ -296,10 +268,8 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onVariableEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onVariableEdge" ); 
     Variable& theVariable(passingIn.getVariable());
-    std::string sourceId=XMLParser::getAttributeValueByName(
-						 VariableEdge::our_source_XAIFName);
-    std::string targetId=XMLParser::getAttributeValueByName(
-						 VariableEdge::our_target_XAIFName);
+    std::string sourceId=XMLParser::getAttributeValueByName(VariableEdge::our_source_XAIFName);
+    std::string targetId=XMLParser::getAttributeValueByName(VariableEdge::our_target_XAIFName);
     Variable::VertexIteratorPair p=theVariable.vertices();
     Variable::VertexIterator beginIt(p.first),endIt(p.second);
     VariableVertex *theSource_p(0), *theTarget_p(0);
@@ -318,18 +288,15 @@ namespace xaifBooster {
 				 << " or target "
 				 << targetId.c_str());
     VariableEdge& theVariableEdge(theVariable.addEdge(*theSource_p, *theTarget_p));
-    theVariableEdge.setId(XMLParser::getAttributeValueByName(
-							       VariableEdge::our_myId_XAIFName));
+    theVariableEdge.setId(XMLParser::getAttributeValueByName(VariableEdge::our_myId_XAIFName));
   };
 
   void 
   XAIFBaseParserHandlers::onIntrinsic(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onIntrinsic" ); 
     Expression& theExpression(passingIn.getExpression());
-    Intrinsic* theIntrinsic_p=new Intrinsic(XMLParser::getAttributeValueByName(
-								    Intrinsic::our_myName_XAIFName));
-    theIntrinsic_p->setId(XMLParser::getAttributeValueByName(
-						  Intrinsic::our_myId_XAIFName));
+    Intrinsic* theIntrinsic_p=new Intrinsic(XMLParser::getAttributeValueByName(Intrinsic::our_myName_XAIFName));
+    theIntrinsic_p->setId(XMLParser::getAttributeValueByName(Intrinsic::our_myId_XAIFName));
     theExpression.supplyAndAddVertexInstance(*theIntrinsic_p);
   };
 
@@ -337,10 +304,8 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onExpressionEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onExpressionEdge" ); 
     Expression& theExpression(passingIn.getExpression());
-    std::string sourceId=XMLParser::getAttributeValueByName(
-						 ExpressionEdge::our_source_XAIFName);
-    std::string targetId=XMLParser::getAttributeValueByName(
-						 ExpressionEdge::our_target_XAIFName);
+    std::string sourceId=XMLParser::getAttributeValueByName(ExpressionEdge::our_source_XAIFName);
+    std::string targetId=XMLParser::getAttributeValueByName(ExpressionEdge::our_target_XAIFName);
     Expression::VertexIteratorPair p=theExpression.vertices();
     Expression::VertexIterator beginIt(p.first),endIt(p.second);
     ExpressionVertex *theSource_p(0), *theTarget_p(0);
@@ -360,20 +325,16 @@ namespace xaifBooster {
 				 << targetId.c_str());
     ExpressionEdge& theExpressionEdge(theExpression.addEdge(*theSource_p,
 							    *theTarget_p));
-    theExpressionEdge.setId(XMLParser::getAttributeValueByName(
-						    ExpressionEdge::our_myId_XAIFName));
-    theExpressionEdge.setPosition(XMLParser::getAttributeValueByName(
-							  ExpressionEdge::our_myPosition_XAIFName));
+    theExpressionEdge.setId(XMLParser::getAttributeValueByName(ExpressionEdge::our_myId_XAIFName));
+    theExpressionEdge.setPosition(XMLParser::getAttributeValueByName(ExpressionEdge::our_myPosition_XAIFName));
   };
 
   void 
   XAIFBaseParserHandlers::onControlFlowGraphEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onControlFlowGraphEdge" ); 
     ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
-    std::string sourceId=XMLParser::getAttributeValueByName(
-						 ControlFlowGraphEdge::our_source_XAIFName);
-    std::string targetId=XMLParser::getAttributeValueByName(
-						 ControlFlowGraphEdge::our_target_XAIFName);
+    std::string sourceId=XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_source_XAIFName);
+    std::string targetId=XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_target_XAIFName);
     ControlFlowGraph::VertexIteratorPair p=theControlFlowGraph.vertices();
     ControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
     ControlFlowGraphVertex *theSource_p(0), *theTarget_p(0);
@@ -393,17 +354,14 @@ namespace xaifBooster {
 				 << targetId.c_str());
     ControlFlowGraphEdge& theControlFlowGraphEdge(theControlFlowGraph.addEdge(*theSource_p,
 									      *theTarget_p));
-    theControlFlowGraphEdge.setId(XMLParser::getAttributeValueByName(
-							  ControlFlowGraphEdge::our_myId_XAIFName));
+    theControlFlowGraphEdge.setId(XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_myId_XAIFName));
   };
 
   void 
   XAIFBaseParserHandlers::onCallGraphEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onCallGraphEdge" ); 
-    std::string sourceId=XMLParser::getAttributeValueByName(
-						 CallGraphEdge::our_source_XAIFName);
-    std::string targetId=XMLParser::getAttributeValueByName(
-						 CallGraphEdge::our_target_XAIFName);
+    std::string sourceId=XMLParser::getAttributeValueByName(CallGraphEdge::our_source_XAIFName);
+    std::string targetId=XMLParser::getAttributeValueByName(CallGraphEdge::our_target_XAIFName);
     CallGraph& theCallGraph=ConceptuallyStaticInstances::instance()->getCallGraph();
     CallGraph::VertexIteratorPair p=theCallGraph.vertices();
     CallGraph::VertexIterator beginIt(p.first),endIt(p.second);
@@ -424,8 +382,7 @@ namespace xaifBooster {
 				 << targetId.c_str());
     CallGraphEdge& theCallGraphEdge(theCallGraph.addEdge(*theSource_p,
 							 *theTarget_p));
-    theCallGraphEdge.setId(XMLParser::getAttributeValueByName(
-						   CallGraphEdge::our_myId_XAIFName));
+    theCallGraphEdge.setId(XMLParser::getAttributeValueByName(CallGraphEdge::our_myId_XAIFName));
   };
 
   void 
@@ -433,16 +390,13 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onSymbolReference" ); 
     Variable& theVariable(passingIn.getVariable());
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
-			  getScopeById(XMLParser::getAttributeValueByName(
-							       VariableSymbolReference::our_scopeId_XAIFName)));
+			  getScopeById(XMLParser::getAttributeValueByName(VariableSymbolReference::our_scopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
-			    getElement(XMLParser::getAttributeValueByName(
-							       Symbol::our_myId_XAIFName)));
+			    getElement(XMLParser::getAttributeValueByName(Symbol::our_myId_XAIFName)));
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(theSymbol,
-												  theScope);
+										      theScope);
     theVariable.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-    theVariableSymbolReference_p->setId(XMLParser::getAttributeValueByName(
-								    VariableSymbolReference::our_myId_XAIFName));
+    theVariableSymbolReference_p->setId(XMLParser::getAttributeValueByName(VariableSymbolReference::our_myId_XAIFName));
   };
 
   void 
@@ -451,7 +405,7 @@ namespace xaifBooster {
     Variable& theVariable(passingIn.getVariable());
     ArrayAccess* theNewArrayAccess_p = new ArrayAccess();
     theVariable.supplyAndAddVertexInstance(*theNewArrayAccess_p);
-    theNewArrayAccess_p->setId(XMLParser::getAttributeValueByName( ArrayAccess::our_myId_XAIFName));
+    theNewArrayAccess_p->setId(XMLParser::getAttributeValueByName(ArrayAccess::our_myId_XAIFName));
     passingOut.setArrayAccess(*theNewArrayAccess_p);
   };
 
@@ -469,10 +423,8 @@ namespace xaifBooster {
     ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
     Entry* theNewEntry_p=new Entry();
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewEntry_p);
-    theNewEntry_p->setId(XMLParser::getAttributeValueByName(
-						 Entry::our_myId_XAIFName));
-    theNewEntry_p->setAnnotation(XMLParser::getAttributeValueByName(
-							 ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    theNewEntry_p->setId(XMLParser::getAttributeValueByName(Entry::our_myId_XAIFName));
+    theNewEntry_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   };
 
   void 
@@ -481,10 +433,8 @@ namespace xaifBooster {
     ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
     Exit* theNewExit_p=new Exit();
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewExit_p);
-    theNewExit_p->setId(XMLParser::getAttributeValueByName(
-						Exit::our_myId_XAIFName));
-    theNewExit_p->setAnnotation(XMLParser::getAttributeValueByName(
-							ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    theNewExit_p->setId(XMLParser::getAttributeValueByName(Exit::our_myId_XAIFName));
+    theNewExit_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   };
 
   void 
@@ -492,19 +442,15 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onSubroutineCall" ); 
     BasicBlock& theBasicBlock(passingIn.getBasicBlock());
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
-			  getScopeById(XMLParser::getAttributeValueByName(
-							       SubroutineCall::our_scopeId_XAIFName)));
+			  getScopeById(XMLParser::getAttributeValueByName(SubroutineCall::our_scopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
-			    getElement(XMLParser::getAttributeValueByName(
-							       SubroutineCall::our_symbolId_XAIFName)));
+			    getElement(XMLParser::getAttributeValueByName(SubroutineCall::our_symbolId_XAIFName)));
     SubroutineCall* theNewSubroutineCall_p=
       new SubroutineCall(theSymbol,
 			 theScope,
-			 XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(
-								  SubroutineCall::our_myActiveFlag_XAIFName)));
+			 XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(SubroutineCall::our_myActiveFlag_XAIFName)));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theNewSubroutineCall_p);
-    theNewSubroutineCall_p->setId(XMLParser::getAttributeValueByName(
-							  SubroutineCall::our_myId_XAIFName));
+    theNewSubroutineCall_p->setId(XMLParser::getAttributeValueByName(SubroutineCall::our_myId_XAIFName));
     passingOut.setSubroutineCall(*theNewSubroutineCall_p);
   };
 
@@ -513,20 +459,17 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onMarker" ); 
     BasicBlock& theBasicBlock(passingIn.getBasicBlock());
     Marker* theMarker_p=new Marker();
-    theMarker_p->setId(XMLParser::getAttributeValueByName(
-					       Marker::our_myId_XAIFName));
-    theMarker_p->setAnnotation(XMLParser::getAttributeValueByName(
-						       Marker::our_myAnnotation_XAIFName));
+    theMarker_p->setId(XMLParser::getAttributeValueByName(Marker::our_myId_XAIFName));
+    theMarker_p->setAnnotation(XMLParser::getAttributeValueByName(Marker::our_myAnnotation_XAIFName));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theMarker_p);
   };
 
   void 
-  XAIFBaseParserHandlers::onArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+  XAIFBaseParserHandlers::onConcreteArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onArgument" ); 
     SubroutineCall& theSubroutineCall(passingIn.getSubroutineCall());
     ConcreteArgument* theNewConcreteArgument_p=
-      new ConcreteArgument(atoi(XMLParser::getAttributeValueByName(
-							ConcreteArgument::our_myPosition_XAIFName).c_str()));
+      new ConcreteArgument(atoi(XMLParser::getAttributeValueByName(ConcreteArgument::our_myPosition_XAIFName).c_str()));
     theSubroutineCall.getArgumentList().push_back(theNewConcreteArgument_p);
     passingOut.setVariable(theNewConcreteArgument_p->getVariable());
   };
@@ -544,21 +487,16 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onArgumentSymbolReference"); 
     ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
-			  getScopeById(XMLParser::getAttributeValueByName(
-							       ArgumentSymbolReference::our_scopeId_XAIFName)));
+			  getScopeById(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_scopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
-			    getElement(XMLParser::getAttributeValueByName(
-							       ArgumentSymbolReference::our_symbolId_XAIFName)));
+			    getElement(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_symbolId_XAIFName)));
     // this will be deleted in the dtor of theControlFlowGraph
     ArgumentSymbolReference* theNewArgumentSymbolReference_p=
       new ArgumentSymbolReference(theSymbol,
 				  theScope,
-				  atoi(XMLParser::getAttributeValueByName(
-							       ArgumentSymbolReference::our_myPosition_XAIFName).c_str()),
-				  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(
-									   ArgumentSymbolReference::our_myActiveFlag_XAIFName)),
-				  IntentType::fromString(XMLParser::getAttributeValueByName(
-										 ArgumentSymbolReference::our_myIntent_XAIFName)));
+				  atoi(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myPosition_XAIFName).c_str()),
+				  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myActiveFlag_XAIFName)),
+				  IntentType::fromString(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myIntent_XAIFName)));
     theControlFlowGraph.getArgumentList().push_back(theNewArgumentSymbolReference_p);
   };
 
@@ -578,6 +516,33 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onUpdate(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onUpdate"); 
     passingOut.setAssignment(passingIn.getUpdate().getAssignment());;
+  };
+
+  void 
+  XAIFBaseParserHandlers::onInOutList(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onInOutList"); 
+    passingOut=passingIn;
+    return;
+  };
+
+  void 
+  XAIFBaseParserHandlers::onInput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onInput"); 
+    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
+    Variable* theNewInput=new Variable();
+    InOutList& theInOutList=theControlFlowGraph.getInOutList();
+    theInOutList.getInList().push_back(theNewInput);
+    passingOut.setVariable(*theNewInput);
+  };
+
+  void 
+  XAIFBaseParserHandlers::onOutput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onOutput"); 
+    ControlFlowGraph& theControlFlowGraph(passingIn.getControlFlowGraph());
+    Variable* theNewOutput=new Variable();
+    InOutList& theInOutList=theControlFlowGraph.getInOutList();
+    theInOutList.getOutList().push_back(theNewOutput);
+    passingOut.setVariable(*theNewOutput);
   };
 
   void 

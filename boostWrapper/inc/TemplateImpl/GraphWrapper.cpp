@@ -170,8 +170,10 @@ namespace xaifBooster {
       theInEdgeEnds=boost::in_edges(aVertex_cr.getDescriptor(),
 				    myBoostGraph);
     InternalBoostInEdgeIteratorType iei_begin(theInEdgeEnds.first), 
+      iei_next(theInEdgeEnds.first),
       iei_end(theInEdgeEnds.second);
-    for (;iei_begin!=iei_end;++iei_begin) { 
+    for (;iei_begin!=iei_end;iei_begin=iei_next) { 
+      ++iei_next;
       DBG_MACRO(DbgGroup::TEMPORARY, "GraphWrapper<Vertex,Edge>::removeAndDeleteVertex : found an in_edge ");
       Edge* anEdge_p=boost::get(boost::get(BoostEdgeContentType(),
 					   myBoostGraph), // get the Edge property map

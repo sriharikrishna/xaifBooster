@@ -2,7 +2,7 @@ void onAliasMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper
 void onAliasMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onAliasRange(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onAliasSingle(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
-void onArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onConcreteArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onArgumentList(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onArgumentSymbolReference(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onArrayAccess(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
@@ -36,6 +36,9 @@ void onSymbolReference(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelp
 void onSymbol(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSymbolTable(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onUpdate(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
-void onVariable(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onVariableEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onInOutList(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onInput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onOutput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onDummy(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
