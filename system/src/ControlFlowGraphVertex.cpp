@@ -23,7 +23,9 @@ namespace xaifBooster {
   std::string ControlFlowGraphVertex::debug () const { 
     std::ostringstream out;
     out << "ControlFlowGraphVertex[" << this 
-	<< Vertex::debug()
+	<< Vertex::debug().c_str()
+	<< ObjectWithId::debug().c_str()
+	<< ObjectWithAnnotation::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of ControlFlowGraphVertex::debug
