@@ -70,24 +70,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
 
-    /**
-     * front_elim_edge receives an edge to be front eliminated.  the edge is eliminated, the corresponding
-     * new edges are created, and the relevant accumulation expressions are constructed and added to the list.
-     */
-    static void front_elim_edge(
-      LinearizedComputationalGraphCopy& theCopy,
-      LinearizedComputationalGraphCopyEdge& theEdge,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
-
-    /**
-     * back_elim_edge receives an edge to be back eliminated.  the edge is eliminated, the corresponding
-     * new edges are created, and the relevant accumulation expressions are constructed and added to the list.
-     */
-    static void back_elim_edge(
-      LinearizedComputationalGraphCopy& theCopy,
-      LinearizedComputationalGraphCopyEdge& theEdge,
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
-
   };  // end of class
 
 } // end of namespace 
