@@ -9,6 +9,7 @@
 #include "xaifBooster/system/inc/ExpressionAlgFactory.hpp"
 #include "xaifBooster/system/inc/ExpressionEdgeAlgFactory.hpp"
 #include "xaifBooster/system/inc/IntrinsicAlgFactory.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -43,7 +44,8 @@ namespace xaifBooster {
     ourConstantAlgFactory_p(0),
     ourExpressionAlgFactory_p(0),
     ourExpressionEdgeAlgFactory_p(0),
-    ourIntrinsicAlgFactory_p(0) {
+    ourIntrinsicAlgFactory_p(0) 
+    ourControlFlowGraphAlgFactory_p(0) {
   }
 
   AlgFactoryManager::~AlgFactoryManager() {
@@ -63,6 +65,8 @@ namespace xaifBooster {
       delete ourExpressionEdgeAlgFactory_p;
     if (ourIntrinsicAlgFactory_p)
       delete ourIntrinsicAlgFactory_p;
+    if (ourControlFlowGraphAlgFactory_p)
+      delete ourControlFlowGraphAlgFactory_p;
   } // end of AlgFactoryManager::~AlgFactoryManager
 
   void AlgFactoryManager::init() {
@@ -74,6 +78,7 @@ namespace xaifBooster {
     resetExpressionAlgFactory(new ExpressionAlgFactory());
     resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
     resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
+    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
   }
 
   void AlgFactoryManager::resetArgumentAlgFactory(ArgumentAlgFactory* anotherArgumentAlgFactory_p){ 
@@ -124,6 +129,12 @@ namespace xaifBooster {
     ourIntrinsicAlgFactory_p=anotherIntrinsicAlgFactory_p;
   }
 
+  void AlgFactoryManager::resetControlFlowGraphAlgFactory(ControlFlowGraphAlgFactory* anotherControlFlowGraphAlgFactory_p){ 
+    if(ourControlFlowGraphAlgFactory_p) 
+      delete ourControlFlowGraphAlgFactory_p;
+    ourControlFlowGraphAlgFactory_p=anotherControlFlowGraphAlgFactory_p;
+  }
+
   ArgumentAlgFactory* AlgFactoryManager::getArgumentAlgFactory() const { 
     if (!ourArgumentAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getArgumentAlgFactory: not set");
@@ -170,6 +181,12 @@ namespace xaifBooster {
     if (!ourIntrinsicAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getIntrinsicAlgFactory: not set");
     return ourIntrinsicAlgFactory_p;
+  }
+
+  ControlFlowGraphAlgFactory* AlgFactoryManager::getControlFlowGraphAlgFactory() const { 
+    if (!ourControlFlowGraphAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getControlFlowGraphAlgFactory: not set");
+    return ourControlFlowGraphAlgFactory_p;
   }
 
 }
