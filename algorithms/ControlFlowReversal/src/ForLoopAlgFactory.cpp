@@ -4,7 +4,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ForLoopAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(ForLoop,xaifBoosterControlFlowReversal);
+  DERIVED_ALG_FACTORY_DEF_MACRO(ForLoop,xaifBoosterControlFlowReversal)
 
 
 

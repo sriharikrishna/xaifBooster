@@ -41,7 +41,7 @@ namespace xaifBoosterControlFlowReversal {
 
   class ControlFlowGraphVertexLabelWriter {
   public:
-    ControlFlowGraphVertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
+    ControlFlowGraphVertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {}
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
       ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
@@ -59,11 +59,11 @@ namespace xaifBoosterControlFlowReversal {
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
     }
     const ReversibleControlFlowGraph& myG;
-  };
+  }
 
   class ControlFlowGraphEdgeLabelWriter {
   public:
-    ControlFlowGraphEdgeLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {};
+    ControlFlowGraphEdgeLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {}
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
@@ -78,7 +78,7 @@ namespace xaifBoosterControlFlowReversal {
       if (theReversibleControlFlowGraphEdge_p->has_condition_value()) out << "[label=\"1\"]";
     }
     const ReversibleControlFlowGraph& myG;
-  };
+  }
 
   void CallGraphVertexAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,

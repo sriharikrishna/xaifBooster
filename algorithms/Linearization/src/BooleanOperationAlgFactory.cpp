@@ -4,5 +4,5 @@
 #include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(BooleanOperation,xaifBoosterLinearization);
+  DERIVED_ALG_FACTORY_DEF_MACRO(BooleanOperation,xaifBoosterLinearization)
 

@@ -4,6 +4,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/MarkerAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(Marker,xaifBoosterBasicBlockPreaccumulationTapeAdjoint);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Marker,xaifBoosterBasicBlockPreaccumulationTapeAdjoint)
 
 

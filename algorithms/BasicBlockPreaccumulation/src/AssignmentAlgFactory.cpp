@@ -4,7 +4,7 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulation);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulation)
 
 
 

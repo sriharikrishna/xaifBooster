@@ -4,11 +4,12 @@
 namespace xaifBooster { 
 
   ExpressionVertex::ExpressionVertex() : 
-    myExpressionVertexAlgBase_p(0)  {} 
+    myExpressionVertexAlgBase_p(0)  {
+  } 
 
   ExpressionVertex::~ExpressionVertex(){
     if (myExpressionVertexAlgBase_p) delete myExpressionVertexAlgBase_p;
-  };
+  }
   
   ExpressionVertexAlgBase&
   ExpressionVertex::getExpressionVertexAlgBase() const {

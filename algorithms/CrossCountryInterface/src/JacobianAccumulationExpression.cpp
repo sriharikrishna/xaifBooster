@@ -6,7 +6,7 @@ namespace xaifBoosterCrossCountryInterface {
     myDependent_p(0),
     myIndependent_p(0),
     myJacobianPairFlag(false) { 
-  }; 
+  } 
 
   void
   JacobianAccumulationExpression::setJacobianEntry(const LinearizedComputationalGraphVertex& theDependent,
@@ -17,7 +17,7 @@ namespace xaifBoosterCrossCountryInterface {
     // conceptually constant
     myDependent_p=&theDependent;
     myIndependent_p=&theIndependent;
-  }; 
+  } 
 
   const LinearizedComputationalGraphVertex& 
   JacobianAccumulationExpression::getDependent() const { 
@@ -37,6 +37,6 @@ namespace xaifBoosterCrossCountryInterface {
   bool 
   JacobianAccumulationExpression::isJacobianEntry() const {
     return myJacobianPairFlag;
-  };
+  }
 
 } 

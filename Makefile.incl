@@ -40,7 +40,7 @@ export UTILS_LIB=-l$(UTILS_LIB_NAME)
 export UTILS_LIB_DIR=$(XAIFBOOSTERROOT)/$(ROOTDIR)/utils/lib
 
 export CC=g++
-export CCFLAGS=-g -Wall -Winline -Wredundant-decls
+export CCFLAGS=-g -pedantic -ansi -Wall -Winline -Wredundant-decls
 
 export IPATH= \
 -I$(SYSTEM_INC_DIR) \

@@ -4,7 +4,7 @@
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 
 namespace xaifBooster { 
-  class Variable;;
+  class Variable;
 }
 
 using namespace xaifBooster; 
@@ -16,9 +16,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   public:
 
-    PrivateLinearizedComputationalGraphVertex(); 
+    PrivateLinearizedComputationalGraphVertex();
 
-    ~PrivateLinearizedComputationalGraphVertex(){};
+    ~PrivateLinearizedComputationalGraphVertex(){}
 
     void setRHSVariable(const Variable& aVariable);
 

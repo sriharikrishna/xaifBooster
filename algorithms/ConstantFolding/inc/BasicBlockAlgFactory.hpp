@@ -5,7 +5,7 @@
 #include "xaifBooster/algorithms/ConstantFolding/inc/AlgFactoryManager.hpp"
 
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgFactory,xaifBoosterConstantFolding);
+  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgFactory,xaifBoosterConstantFolding)
 
 
 #endif

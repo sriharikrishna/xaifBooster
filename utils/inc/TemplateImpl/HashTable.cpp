@@ -16,7 +16,7 @@ namespace xaifBooster {
 	  << ",#items=" << myHashMap.size() 
 	  << "]" << std::ends; 
       return out.str();
-  }; // end of HashTable::debug
+  } // end of HashTable::debug
 
   template <class HashTableElement> 
   const HashTableElement&
@@ -27,7 +27,7 @@ namespace xaifBooster {
       THROW_LOGICEXCEPTION_MACRO("HashTable.getElement: no element with key >" 
 			   << aKey.c_str() << "<");
     return (*theFinder).second;
-  };
+  }
 
   template <class HashTableElement> 
   HashTableElement&
@@ -38,7 +38,7 @@ namespace xaifBooster {
       THROW_LOGICEXCEPTION_MACRO("HashTable.getElement: no element with key >" 
 			   << aKey.c_str() << "<");
     return (*theFinder).second;
-  };
+  }
 
   template <class HashTableElement> 
   bool
@@ -46,7 +46,7 @@ namespace xaifBooster {
     typename InternalHashMapType::const_iterator theFinder=
       myHashMap.find(aKey);
     return (theFinder!=myHashMap.end());
-  };
+  }
 
   template <class HashTableElement> 
   void
@@ -60,7 +60,7 @@ namespace xaifBooster {
       THROW_LOGICEXCEPTION_MACRO("HashTable::addElement key >" 
 			   << theKey.c_str()
 			   << "< already exists");
-  }; // end of HashTable<HashTableElement>::addElement
+  } // end of HashTable<HashTableElement>::addElement
 
   template <class HashTableElement> 
   void 

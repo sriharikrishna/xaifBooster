@@ -64,7 +64,7 @@ namespace xaifBooster {
 	<< "," << HashTable<Symbol>::debug() 
 	<< "]" << std::ends; 
     return out.str();
-  }; // end of SymbolTable::debug
+  } // end of SymbolTable::debug
   
   void SymbolTable::printXMLHierarchy(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();
@@ -82,6 +82,6 @@ namespace xaifBooster {
        << ourXAIFName
        << ">" << std::endl;
     pm.releaseInstance();
-  }; 
+  } 
 
 } 

@@ -68,16 +68,16 @@ namespace xaifBooster {
   Variable& 
   Argument::getVariable() { 
     return myVariable;
-  };
+  }
 
   const Variable& 
   Argument::getVariable() const { 
     return myVariable;
-  };
+  }
 
   std::string Argument::equivalenceSignature() const { 
     return myVariable.equivalenceSignature();
-  } ;
+  }
 
   ArgumentAlgBase&
   Argument::getArgumentAlgBase() const {

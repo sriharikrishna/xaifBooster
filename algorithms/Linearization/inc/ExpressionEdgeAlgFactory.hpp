@@ -5,7 +5,7 @@
 #include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
 
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(ExpressionEdge,xaifBooster::ExpressionEdgeAlgFactory,xaifBoosterLinearization);
+  DERIVED_ALG_FACTORY_DECL_MACRO(ExpressionEdge,xaifBooster::ExpressionEdgeAlgFactory,xaifBoosterLinearization)
 
 
 #endif

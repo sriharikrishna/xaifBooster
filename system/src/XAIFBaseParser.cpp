@@ -42,7 +42,7 @@ namespace xaifBooster {
     void XAIFBaseParser::setDocumentLocator(const XERCES_CPP_NAMESPACE::Locator* const locator)
     {
       myLocator_p=locator;
-    };
+    }
 
   /*
    * UN: Implementation of startElement handler

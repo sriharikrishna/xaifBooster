@@ -7,18 +7,18 @@ namespace xaifBooster {
   CommandLineParser* CommandLineParser::ourClassInstance_p=NULL;
 
   CommandLineParser::CommandLineParser() {
-  }; 
+  } 
 
   CommandLineParser::~CommandLineParser() {
     ourClassInstance_p=NULL;
-  }; 
+  } 
   
   CommandLineParser*
   CommandLineParser::instance(){
     if (! ourClassInstance_p)
       ourClassInstance_p=new CommandLineParser();
     return ourClassInstance_p; 
-  } ; 
+  } 
 
   void
   CommandLineParser::initialize(const std::string& switches, 
@@ -38,7 +38,7 @@ namespace xaifBooster {
   void
   CommandLineParser::displayArguments() const {
     myCommandLineArguments.dump();
-  } ;// end CommandLineParser::displayArguments
+  }
 
   const std::string& 
   CommandLineParser::argAsString(char theSwitch) const {

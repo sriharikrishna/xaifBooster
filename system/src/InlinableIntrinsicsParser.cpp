@@ -16,7 +16,7 @@ namespace xaifBooster {
 
   InlinableIntrinsicsParser::InlinableIntrinsicsParser(InlinableIntrinsicsCatalogue& theInlinableIntrinsicsCatalogue_r) : 
     myInlinableIntrinsicsCatalogue(theInlinableIntrinsicsCatalogue_r){
-  };
+  }
   
   void InlinableIntrinsicsParser::initialize() { 
     try { 

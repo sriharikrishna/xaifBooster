@@ -25,7 +25,7 @@ namespace xaifBoosterInlinableXMLRepresentation {
 	 ++i)
       if (*i)
 	delete *i;
-  };
+  }
 
   void
   InlinableSubroutineCall::printXMLHierarchy(std::ostream& os) const { 

@@ -10,7 +10,7 @@ namespace xaifBooster {
 
   BasicBlockElement::~BasicBlockElement(){
     if (myBasicBlockElementAlgBase_p) delete myBasicBlockElementAlgBase_p;
-  };
+  }
   
   BasicBlockElementAlgBase&
   BasicBlockElement::getBasicBlockElementAlgBase() const {

@@ -4,7 +4,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/IfStatementAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(IfStatement,xaifBoosterControlFlowReversal);
+  DERIVED_ALG_FACTORY_DEF_MACRO(IfStatement,xaifBoosterControlFlowReversal)
 
 
 

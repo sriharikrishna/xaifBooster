@@ -6,11 +6,11 @@ namespace xaifBooster {
 
   InlinableIntrinsicsCatalogue::InlinableIntrinsicsCatalogue(){
     
-  };
+  }
 
   InlinableIntrinsicsCatalogue::~InlinableIntrinsicsCatalogue(){
     // JU need to implement the deletion
-  };
+  }
 
   InlinableIntrinsicsCatalogueItem& 
   InlinableIntrinsicsCatalogue::addCatalogueItem(const std::string& theKey,
@@ -20,7 +20,7 @@ namespace xaifBooster {
     myHashTable.addElement(theKey,
 			   theItem_p);
     return *theItem_p;
-  } ;
+  }
 
   const InlinableIntrinsicsCatalogueItem& 
   InlinableIntrinsicsCatalogue::getElement(const std::string& theKey) const { 

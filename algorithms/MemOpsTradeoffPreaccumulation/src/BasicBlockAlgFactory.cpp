@@ -4,5 +4,5 @@
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/BasicBlockAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(BasicBlock,xaifBoosterMemOpsTradeoffPreaccumulation);
+  DERIVED_ALG_FACTORY_DEF_MACRO(BasicBlock,xaifBoosterMemOpsTradeoffPreaccumulation)
 

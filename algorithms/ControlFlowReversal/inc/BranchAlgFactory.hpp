@@ -5,7 +5,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(Branch,xaifBooster::BranchAlgFactory,xaifBoosterControlFlowReversal);
+  DERIVED_ALG_FACTORY_DECL_MACRO(Branch,xaifBooster::BranchAlgFactory,xaifBoosterControlFlowReversal)
 
 
 #endif

@@ -28,7 +28,7 @@ namespace xaifBoosterControlFlowReversal {
 
   class CallGraphVertexLabelWriter {
   public:
-    CallGraphVertexLabelWriter(const CallGraph& g) : myG(g) {};
+    CallGraphVertexLabelWriter(const CallGraph& g) : myG(g) {}
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(),
@@ -36,7 +36,7 @@ namespace xaifBoosterControlFlowReversal {
                                        v)->getSubroutineName() << "\"]";
     }
     const CallGraph& myG;
-  };
+  }
 
   void CallGraphAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,

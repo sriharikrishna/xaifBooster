@@ -2,5 +2,5 @@
 #include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
 
-  BASE_ALG_FACTORY_DEF_MACRO(SubroutineCall);
+  BASE_ALG_FACTORY_DEF_MACRO(SubroutineCall)
 

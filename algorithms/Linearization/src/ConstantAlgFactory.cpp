@@ -4,5 +4,5 @@
 #include "xaifBooster/algorithms/Linearization/inc/ConstantAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(Constant,xaifBoosterLinearization);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Constant,xaifBoosterLinearization)
 

@@ -17,7 +17,7 @@ namespace xaifBooster {
     // JU: fix this, don't like excception in ctor
     if (lower>upper)
       THROW_LOGICEXCEPTION_MACRO("AliasRange::AliasRange: lower larger than upper");
-  }; 
+  } 
  
   std::string AliasRange::debug() const {
     std::ostringstream out;
@@ -26,7 +26,7 @@ namespace xaifBooster {
 	<< ", myUpperAddress=" << myUpperAddress
 	<< "]" << std::ends; 
     return out.str();
-  }; // end of AliasRange::debug
+  } // end of AliasRange::debug
   
   void AliasRange::printXMLHierarchy(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();
@@ -44,7 +44,7 @@ namespace xaifBooster {
        << "\"/>" 
        << std::endl;
     pm.releaseInstance();
-  }; 
+  } 
 
 
   unsigned int AliasRange::max() const { 

@@ -41,13 +41,15 @@
 namespace xaifBooster {
 
   class XAIFBaseParserHandlers {
-  protected:
-    XAIFBaseParserHandlers(){};
-    ~XAIFBaseParserHandlers(){};
+  public: 
 
     // Here are all the parsing methods: 
 
 #include "xaifBooster/tools/codegen/code/parse_method_decl.inc"
+
+  protected:
+    XAIFBaseParserHandlers(){};
+    ~XAIFBaseParserHandlers(){};
 
   }; // end of class XMLParser
 

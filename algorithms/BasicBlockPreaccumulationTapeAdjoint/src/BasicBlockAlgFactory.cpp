@@ -4,6 +4,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(BasicBlock,xaifBoosterBasicBlockPreaccumulationTapeAdjoint);
+  DERIVED_ALG_FACTORY_DEF_MACRO(BasicBlock,xaifBoosterBasicBlockPreaccumulationTapeAdjoint)
 
 

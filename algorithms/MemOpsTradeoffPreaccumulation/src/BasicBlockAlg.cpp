@@ -169,7 +169,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* original;
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* copy;
 	bool topsorted;
-      };
+      }
       //copymap maps the copy vertices to the original graph vertices
       vertexMap* copymap=new vertexMap[theOriginal.numVertices()];
       unsigned int i = 0, s = 0, t = 0;

@@ -32,7 +32,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void addElement(const Variable& theVariable);
 
-    void VertexIdentificationListPassive::removeIfIdentifiable(const Variable& theVariable); 
+    void removeIfIdentifiable(const Variable& theVariable); 
 
   }; // end of class VertexIdentificationListPassive  
    

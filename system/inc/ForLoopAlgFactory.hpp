@@ -4,6 +4,6 @@
 #include "xaifBooster/system/inc/AlgFactory.hpp"
 #include "xaifBooster/system/inc/ForLoopAlgBase.hpp"
 
-  BASE_ALG_FACTORY_DECL_MACRO(ForLoop);
+  BASE_ALG_FACTORY_DECL_MACRO(ForLoop)
 
 #endif

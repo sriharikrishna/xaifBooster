@@ -2,4 +2,4 @@
 #include "xaifBooster/system/inc/BooleanOperationAlgBase.hpp"
 #include "xaifBooster/system/inc/BooleanOperation.hpp"
 
-  BASE_ALG_FACTORY_DEF_MACRO(BooleanOperation);
+  BASE_ALG_FACTORY_DEF_MACRO(BooleanOperation)

@@ -4,5 +4,5 @@
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(Assignment,xaifBoosterLinearization);
+  DERIVED_ALG_FACTORY_DEF_MACRO(Assignment,xaifBoosterLinearization)
 
