@@ -1,3 +1,10 @@
+
+# Test for Cygwin
+BUILD_OS = $(shell uname -s)
+ifeq ($(findstring CYGWIN, $(BUILD_OS)),CYGWIN)
+  BUILD_OS_CYGWIN = 1
+endif
+
 export UNDEF_ENV_VARS=""
 ifndef XERCESCROOT
 UNDEF_ENV_VARS+=" XERCESCROOT "
@@ -45,8 +52,18 @@ export MAKEDEPEND=$(CC) $(IPATH) -M
 export AR=ar
 export ARFLAGS=-ruv
 
-export LFLAGS=
-export LIBS= $(XERCESC_LIB) $(UTILS_LIB) 
+# NOTE: Using VPATH to find xercesc will not work on Cygwin. Therefore,
+# the library should be included in LFLAGS and not LIBS (prerequisites).
+LFLAGS=
+LIBS= $(UTILS_LIB)
+ifdef BUILD_OS_CYGWIN
+  LFLAGS += -L$(XERCESC_LIB_DIR) $(XERCESC_LIB)
+else
+  LIBS += $(XERCESC_LIB)
+endif
+export LFLAGS
+export LIBS
+
 # replaced by using LIBS as prerequisiste together with VPATH
 # export LPATH= -L$(XERCESC_LIB_DIR) -L$(UTILS_LIB_DIR)
 export VPATH= $(XERCESC_LIB_DIR):$(UTILS_LIB_DIR)
