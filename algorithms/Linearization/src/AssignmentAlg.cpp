@@ -465,6 +465,10 @@ namespace xaifBoosterLinearization {
     return myLinearizedRightHandSide;
   } // end of AssignmentAlg::getLinearizedRightHandSide
 
+  bool AssignmentAlg::haveLinearizedRightHandSide() const { 
+    return myHaveLinearizedRightHandSide;
+  } // end of AssignmentAlg::haveLinearizedRightHandSide
+
   void AssignmentAlg::passiveReduction() { 
     // find the maximal vertex: 
     Expression::VertexIteratorPair pV(myLinearizedRightHandSide.vertices());
