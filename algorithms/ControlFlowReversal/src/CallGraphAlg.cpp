@@ -34,9 +34,9 @@ namespace xaifBoosterControlFlowReversal {
     return *myPopIntegerSymbol_p;
   }
 
-  class VertexLabelWriter {
+  class CallGraphVertexLabelWriter {
   public:
-    VertexLabelWriter(const CallGraph& g) : myG(g) {};
+    CallGraphVertexLabelWriter(const CallGraph& g) : myG(g) {};
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(),
@@ -56,7 +56,7 @@ namespace xaifBoosterControlFlowReversal {
     myPopIntegerSymbol_p->setAnnotation(myAlgorithmSignature);
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
       GraphVizDisplay::show(getContaining(),"call_graph",
-      VertexLabelWriter(getContaining()));
+      CallGraphVertexLabelWriter(getContaining()));
     }
   } // end CallGraphAlg::algorithm_action_4() 
 

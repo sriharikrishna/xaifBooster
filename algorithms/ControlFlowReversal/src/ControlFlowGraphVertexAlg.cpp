@@ -20,6 +20,9 @@ namespace xaifBoosterControlFlowReversal {
       case IF : { return std::string("IF"); }
       case PRELOOP : { return std::string("PRELOOP"); }
       case FORLOOP : { return std::string("FORLOOP"); }
+      case BRANCH : { return std::string("BRANCH"); }
+      case LABEL : { return std::string("LABEL"); }
+      case GOTO : { return std::string("GOTO"); }
       default : { break; }
     }
     return std::string("UNDEF"); 
