@@ -35,6 +35,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   } 
 
   void CallGraphVertexAlg::algorithm_action_4() { 
+    xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(); 
     myReplacementList.setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
     myReplacementList.setId(getContaining().getControlFlowGraph().getId());
     // this should be the original code
@@ -43,11 +44,11 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     theReplacement1.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ORIGINAL);
     // this should be the tape
     xaifBoosterCodeReplacement::Replacement& theReplacement2(myReplacementList.addReplacement(2));
-    theReplacement2.setControlFlowGraphBase(getContaining().getControlFlowGraph());
+    theReplacement2.setReversibleControlFlowGraph(getTapingControlFlowGraph());
     theReplacement2.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::AUGMENTED);
     // this should be the tape adjoint
     xaifBoosterCodeReplacement::Replacement& theReplacement3(myReplacementList.addReplacement(3));
-    theReplacement3.setControlFlowGraphBase(getContaining().getControlFlowGraph());
+    theReplacement3.setReversibleControlFlowGraph(getAdjointControlFlowGraph());
     theReplacement3.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
   } 
 

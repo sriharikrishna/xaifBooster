@@ -92,31 +92,45 @@
         </xaif:Condition>
       </xaif:Branch>
       <xaif:EndBranch vertex_id="_cfr_v_3" annotation="_cfr_"/>
-      <xaif:BasicBlock vertex_id="_cfr_v_4" annotation="_cfr_" scope_id="1">
+      <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
+        <xaif:Assignment statement_id="1" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+            </xaif:VariableReference>
+            <xaif:Constant vertex_id="2" type="integer" value="1"/>
+            <xaif:Intrinsic vertex_id="3" name="add_scal_scal"/>
+            <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
       </xaif:BasicBlock>
-      <xaif:Exit vertex_id="_cfr_v_5" annotation="_cfr_"/>
-      <xaif:BasicBlock vertex_id="_cfr_v_6" annotation="_cfr_" scope_id="1">
+      <xaif:Exit vertex_id="_cfr_v_4" annotation="_cfr_"/>
+      <xaif:BasicBlock vertex_id="_cfr_v_5" annotation="_cfr_" scope_id="1">
         <xaif:InlinableSubroutineCall subroutine_name="pop" statement_id="_cfr_pop">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
-      <xaif:BasicBlock vertex_id="_cfr_v_7" annotation="_cfr_" scope_id="1">
+      <xaif:BasicBlock vertex_id="_cfr_v_6" annotation="_cfr_" scope_id="1">
         <xaif:InlinableSubroutineCall subroutine_name="pop" statement_id="_cfr_pop">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_1" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="_cfr_v_1" target="_cfr_v_6" has_condition_value="0" condition_value="1"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="_cfr_v_1" target="_cfr_v_5" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="_cfr_e_4" source="_cfr_v_2" target="_cfr_v_3" has_condition_value="0" condition_value="1"/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_5" source="_cfr_v_6" target="_cfr_v_7" has_condition_value="0" condition_value="1"/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_6" source="_cfr_v_7" target="_cfr_v_2" has_condition_value="0" condition_value="1"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_5" source="_cfr_v_5" target="_cfr_v_6" has_condition_value="0" condition_value="1"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_6" source="_cfr_v_6" target="_cfr_v_2" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="_cfr_e_7" source="_cfr_v_2" target="_cfr_v_3" has_condition_value="1" condition_value="1"/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_8" source="_cfr_v_3" target="_cfr_v_4" has_condition_value="0" condition_value="1"/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_9" source="_cfr_v_4" target="_cfr_v_4" has_condition_value="0" condition_value="1"/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_10" source="_cfr_v_4" target="_cfr_v_5" has_condition_value="0" condition_value="1"/>
-      <xaif:ControlFlowEdge edge_id="_cfr_e_11" source="_cfr_v_4" target="_cfr_v_2" has_condition_value="0" condition_value="1"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_8" source="_cfr_v_3" target="3" has_condition_value="0" condition_value="1"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_9" source="3" target="3" has_condition_value="0" condition_value="1"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_10" source="3" target="_cfr_v_4" has_condition_value="0" condition_value="1"/>
+      <xaif:ControlFlowEdge edge_id="_cfr_e_11" source="3" target="_cfr_v_2" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
   </xaif:CallGraph>
