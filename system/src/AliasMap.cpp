@@ -113,9 +113,8 @@ namespace xaifBooster {
     if (theOtherKey.getKind()!=AliasMapKey::NO_INFO) {
 	// shortcut by commenting out the following line: 
 	//	if (myAAVector[theKey.getKey()]->disjointFrom(*myAAVector[theOtherKey.getKey()]))
-      if (theKey.getKey()!=theOtherKey.getKey()) { 
-	  return false;
-      }
+        // for now always return true or it won't work
+	  return true;
     } 
     return true;
   } 
