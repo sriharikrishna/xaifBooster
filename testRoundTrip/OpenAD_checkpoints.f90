@@ -8,7 +8,8 @@ module OpenAD_checkpoints
 
   integer, parameter :: store_increase=20000
 
-  public ::  cp_store_real_scalar, cp_store_real_vector, cp_store_int_scalar, cp_store_int_vector, cp_store_string_scalar, cp_store_bool_scalar
+  public ::  cp_store_real_scalar, cp_store_real_vector, cp_store_int_scalar, cp_store_int_vector, cp_store_string_scalar,&
+& cp_store_bool_scalar
 
   interface cp_store_real_scalar
      module procedure cp_store_real_scalar_impl
@@ -40,7 +41,7 @@ contains
     ! store x in stack s of allocated size a in current position c
     implicit none
     double precision, intent(in) :: x
-    integer :: c,a,i
+    integer :: c,a
     double precision, dimension(:), allocatable :: s
     ! temp array for potential reallocation
     double precision, dimension(:), allocatable :: temp
@@ -68,7 +69,7 @@ contains
     type(active), dimension(:), intent(in) :: x
     integer, intent(in) :: n
     integer :: c,a,i
-    double precision, dimension(:), allocatable :: s
+    double precision,dimension(:), allocatable :: s
     ! temp array for potential reallocation
     double precision, dimension(:), allocatable :: temp
     if(a<c+n) then 
@@ -95,7 +96,7 @@ contains
     ! store x in stack s of allocated size a in current position c
     implicit none
     integer, intent(in) :: x
-    integer :: c,a,i
+    integer :: c,a
     integer, dimension(:), allocatable :: s
     ! temp array for potential reallocation
     integer, dimension(:), allocatable :: temp
@@ -122,7 +123,7 @@ contains
     implicit none
     integer, dimension(:), intent(in) :: x
     integer, intent(in) :: n
-    integer :: c,a,i
+    integer :: c,a
     integer, dimension(:), allocatable :: s
     ! temp array for potential reallocation
     integer, dimension(:), allocatable :: temp
@@ -147,7 +148,7 @@ contains
     ! store x in stack s of allocated size a in current position c
     implicit none
     character(80), intent(in) :: x
-    integer :: c,a,i
+    integer :: c,a
     character(80), dimension(:), allocatable :: s
     ! temp array for potential reallocation
     character(80), dimension(:), allocatable :: temp
@@ -172,7 +173,7 @@ contains
     ! store x in stack s of allocated size a in current position c
     implicit none
     logical, intent(in) :: x
-    integer :: c,a,i
+    integer :: c,a
     logical, dimension(:), allocatable :: s
     ! temp array for potential reallocation
     logical, dimension(:), allocatable :: temp

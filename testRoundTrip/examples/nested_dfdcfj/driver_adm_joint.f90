@@ -82,9 +82,9 @@ program driver
         res_dd(k,i)=(yph(k)%v-y(k)%v)/h
      end do
   end do
-  do i=1,m   
-     print *, "f y(",i,")=",y(i)%v
-  end do
+!  do i=1,m   
+!     print *, "f y(",i,")=",y(i)%v
+!  end do
   do k=1,n
      do i=1,m   
         write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",i,",",k,")=",res_dd(i,k)
@@ -115,9 +115,9 @@ program driver
      our_rev_mode%tape=.TRUE.
      our_rev_mode%adjoint=.TRUE.
      call head(nx1,nx2,x,y,r)
-  do j=1,m   
-     print *, i, ":y(",j,")=",y(j)%v
-  end do
+!  do j=1,m   
+!     print *, i, ":y(",j,")=",y(j)%v
+!  end do
      do k=1,n
         res_ad(i,k)=x(k)%d
      end do
