@@ -101,4 +101,23 @@ namespace xaifBooster {
   ControlFlowGraph::getActiveFlag() const { 
     return myActiveFlag;
   } 
+
+  ArgumentList& 
+  ControlFlowGraph::getArgumentList() { 
+    return myArgumentList;
+  } 
+  
+  const ArgumentList& 
+  ControlFlowGraph::getArgumentList() const { 
+    return myArgumentList;
+  } 
+  
+  const Scope& ControlFlowGraph::getScope() const { 
+    return myArgumentList.getScope();
+  }
+
+  Scope& ControlFlowGraph::getScope() { 
+    return myArgumentList.getScope();
+  }
+
 } // end of namespace xaifBooster 

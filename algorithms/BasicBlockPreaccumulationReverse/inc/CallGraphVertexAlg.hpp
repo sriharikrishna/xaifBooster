@@ -7,12 +7,6 @@
 
 #include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
 
-namespace xaifBooster { 
-  class ExpressionVertex;
-  class Assignment;
-  class BasicBlockElement;
-}
-
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse {  
@@ -26,7 +20,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);
 
-    virtual ~CallGraphVertexAlg();
+    virtual ~CallGraphVertexAlg(){};
 
     virtual void printXMLHierarchy(std::ostream& os) const;
 
@@ -34,16 +28,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    /**
-     * flatten the Assignment level graphs found here into a graph held by 
-     * myFlattenedSequence per sequence of consecutive Assignment instances
-     */
-    virtual void algorithm_action_2();
-
-    /**
-     * generate code for the elimination sequence returned by Angel
-     */
-    virtual void algorithm_action_3();
+    virtual void algorithm_action_4();
 
   private:
     
