@@ -1675,16 +1675,6 @@
             <xaif:Constant vertex_id="1" type="real" value="365"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_30" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
-            </xaif:VariableReference>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:Assignment statement_id="21: delayed LHS assignment for correct partials">
           <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="YEAR_67" scope_id="1"/>
@@ -1741,16 +1731,6 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
           <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_36" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="SV_59" scope_id="1"/>
-            </xaif:VariableReference>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_33" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
@@ -1759,25 +1739,6 @@
             <xaif:Constant vertex_id="3" type="real" value="0.0004"/>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_34" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="4" type="real" value="0.0004"/>
-            <xaif:VariableReference vertex_id="5">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_32" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="2"/>
-            <xaif:ExpressionEdge edge_id="3" source="5" target="2" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="3" target="2" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="23: delayed LHS assignment for correct partials">
@@ -1844,34 +1805,10 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
           <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_39" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="integer" value="1"/>
-            <xaif:VariableReference vertex_id="3">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_38" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_41" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="real" value="300"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_42" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
-            </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
@@ -1971,20 +1908,6 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
           <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_45" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="div_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="integer" value="1"/>
-            <xaif:VariableReference vertex_id="3">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_44" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_51" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
@@ -1993,31 +1916,6 @@
             <xaif:Constant vertex_id="3" type="real" value="5000"/>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_52" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="4" type="real" value="5000"/>
-            <xaif:VariableReference vertex_id="5">
-              <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_26" scope_id="1"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                </xaif:Index>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="2"/>
-            <xaif:ExpressionEdge edge_id="3" source="5" target="2" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="3" target="2" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
@@ -2119,16 +2017,6 @@
             <xaif:Constant vertex_id="1" type="real" value="15"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_57" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
-            </xaif:VariableReference>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:Assignment statement_id="30: delayed LHS assignment for correct partials">
           <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="NOISE_CORRELATION_TIME_47" scope_id="1"/>
@@ -2159,16 +2047,6 @@
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="real" value="5"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_60" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
-            </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="31: delayed LHS assignment for correct partials">
@@ -2205,16 +2083,6 @@
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="real" value="50"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_63" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="YEAR_67" scope_id="1"/>
-            </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="36: delayed LHS assignment for correct partials">
@@ -2285,25 +2153,6 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_66" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="4" type="real" value="0.03268"/>
-            <xaif:VariableReference vertex_id="5">
-              <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="2"/>
-            <xaif:ExpressionEdge edge_id="3" source="5" target="2" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="3" target="2" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:Assignment statement_id="47: delayed LHS assignment for correct partials">
           <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="Y_66" scope_id="1"/>
@@ -2344,25 +2193,6 @@
             <xaif:Constant vertex_id="3" type="real" value="0.00794"/>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_69" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="4" type="real" value="0.00794"/>
-            <xaif:VariableReference vertex_id="5">
-              <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="2"/>
-            <xaif:ExpressionEdge edge_id="3" source="5" target="2" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="3" target="2" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="48: delayed LHS assignment for correct partials">
@@ -2407,25 +2237,6 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_72" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="4" type="real" value="0.0014"/>
-            <xaif:VariableReference vertex_id="5">
-              <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="2"/>
-            <xaif:ExpressionEdge edge_id="3" source="5" target="2" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="3" target="2" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:Assignment statement_id="49: delayed LHS assignment for correct partials">
           <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="Y_66" scope_id="1"/>
@@ -2466,25 +2277,6 @@
             <xaif:Constant vertex_id="3" type="real" value="0.1417"/>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_75" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="4" type="real" value="0.1417"/>
-            <xaif:VariableReference vertex_id="5">
-              <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="2"/>
-            <xaif:ExpressionEdge edge_id="3" source="5" target="2" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="3" target="2" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="50: delayed LHS assignment for correct partials">
@@ -2529,25 +2321,6 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_78" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="4" type="real" value="0.1286"/>
-            <xaif:VariableReference vertex_id="5">
-              <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="2"/>
-            <xaif:ExpressionEdge edge_id="3" source="5" target="2" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="3" target="2" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:Assignment statement_id="51: delayed LHS assignment for correct partials">
           <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="Y_66" scope_id="1"/>
@@ -2588,25 +2361,6 @@
             <xaif:Constant vertex_id="3" type="real" value="0.0878"/>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_81" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="minus_scal"/>
-            <xaif:Intrinsic vertex_id="2" name="div_scal_scal"/>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="4" type="real" value="0.0878"/>
-            <xaif:VariableReference vertex_id="5">
-              <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="2"/>
-            <xaif:ExpressionEdge edge_id="3" source="5" target="2" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="3" target="2" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="52: delayed LHS assignment for correct partials">
@@ -2741,14 +2495,6 @@
             <xaif:VariableReference vertex_id="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_87" scope_id="1"/>
             </xaif:VariableReference>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_90" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
@@ -2903,14 +2649,6 @@
             <xaif:VariableReference vertex_id="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_98" scope_id="1"/>
             </xaif:VariableReference>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_101" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
@@ -4064,16 +3802,6 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
           <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_126" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_124" scope_id="1"/>
-            </xaif:VariableReference>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_123" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
@@ -4212,16 +3940,6 @@
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="real" value="20"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_132" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="SV_160" scope_id="1"/>
-            </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="16: delayed LHS assignment for correct partials">
@@ -5095,14 +4813,6 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
           <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_158" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="integer" value="1"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_159" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
@@ -5353,24 +5063,6 @@
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="real" value="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_171" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_1" scope_id="6"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:VariableReference vertex_id="1">
-                    <xaif:SymbolReference vertex_id="1" symbol_id="L_9" scope_id="6"/>
-                  </xaif:VariableReference>
-                </xaif:Index>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
@@ -7395,16 +7087,6 @@
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="real" value="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="elementary_partial">
-          <xaif:AssignmentLHS active="1" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_282" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DELTA_T_417" scope_id="1"/>
-            </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="elementary_partial">
