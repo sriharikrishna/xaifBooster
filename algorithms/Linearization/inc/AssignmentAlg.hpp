@@ -26,17 +26,23 @@ namespace xaifBoosterLinearization {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     /** 
-     * linearize
+     * copy/activity analysis 
      */
     virtual void algorithm_action_1();
 
-
-    /**
-     * create replacement assignments that use the 
-     * auxilliary variables for SSA
+    /** 
+     * code generation
      */
-    void makeSSACodeList();
-    
+    virtual void algorithm_action_2();
+
+    /** 
+     * statement local activity analysis
+     * can be rerun once the right hand side is copied
+     * Note: if this discovers that an assignment is passive 
+     * it may remove the copy and any associated code created.
+     */
+    void activityAnalysis();
+
     Expression& getLinearizedRightHandSide();
 
     const Expression& getLinearizedRightHandSide() const;
@@ -108,7 +114,8 @@ namespace xaifBoosterLinearization {
      * \todo JU revisit actual reinsertion of the 
      * \todo replacement assignments mentioned in the statement above
      */
-    std::list<Assignment*> mySSAReplacementAssignmentList;
+    typedef std::list<Assignment*> AssignmentPList;
+    AssignmentPList mySSAReplacementAssignmentList;
 
     /** 
      * This is used by the linerization process. 
@@ -153,6 +160,8 @@ namespace xaifBoosterLinearization {
 
     /**
      * remove passive vertices and edges
+     * on the linearized right hand side which 
+     * must have been created before
      */
     void passiveReduction();
     
@@ -166,6 +175,12 @@ namespace xaifBoosterLinearization {
      */
     void passiveReductionTopDownPass(const ExpressionVertex& theVertex);
 
+    /**
+     * create replacement assignments that use the 
+     * auxilliary variables for SSA
+     */
+    void makeSSACodeList();
+    
   }; // end of class Assignment
  
 } 
