@@ -18,6 +18,7 @@ namespace xaifBooster {
 
     void initialize();
     void parse(std::string theXMLFileName);
+    void setExternalSchemaLocation(std::string theSchemaLocation);
     
     /**
      * converts an XML boolean string
