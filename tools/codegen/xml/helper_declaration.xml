@@ -24,10 +24,10 @@
       <CodeGen:LineBreak/>
     </CodeGen:CodeTemplate>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="AliasActivity"/>
+      <CodeGen:DynamicCode hook_ref="1" text="AliasMapEntry"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="AliasActivityMap"/>
+      <CodeGen:DynamicCode hook_ref="1" text="AliasMap"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="ArrayAccess"/>

@@ -1,5 +1,5 @@
-void onAliasActivity(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
-void onAliasActivityMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onAliasMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onAliasMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onAliasRange(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onAliasSingle(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

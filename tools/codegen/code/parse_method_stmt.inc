@@ -1,5 +1,5 @@
-ourActionCatalogue.addElement(AliasActivity::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasActivity));
-ourActionCatalogue.addElement(AliasActivityMap::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasActivityMap));
+ourActionCatalogue.addElement(AliasMapEntry::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasMapEntry));
+ourActionCatalogue.addElement(AliasMap::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasMap));
 ourActionCatalogue.addElement(AliasRange::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasRange));
 ourActionCatalogue.addElement(AliasSingle::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAliasSingle));
 ourActionCatalogue.addElement(ArgumentSymbolReference::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onArgumentSymbolReference));

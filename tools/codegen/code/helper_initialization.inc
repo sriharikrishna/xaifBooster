@@ -1,5 +1,5 @@
-myAliasActivity_p(0),
-myAliasActivityMap_p(0),
+myAliasMapEntry_p(0),
+myAliasMap_p(0),
 myArrayAccess_p(0),
 myAssignment_p(0),
 myVariable_p(0),

@@ -4,7 +4,7 @@
 
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
-#include "xaifBooster/system/inc/AliasActivityMap.hpp"
+#include "xaifBooster/system/inc/AliasMap.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
@@ -131,14 +131,14 @@ namespace xaifBoosterLinearization {
     // correctness of partial calculations: 
     ExpressionAlg& theExpressionAlg(dynamic_cast<ExpressionAlg&>(theExpression.getExpressionAlgBase()));
     const ExpressionAlg::ArgumentPList& thePartialUsageList(theExpressionAlg.getPartialUsageList());
-    AliasActivityMap::AliasActivityMapKeyList theUsedArgumentsKeyList;
+    AliasMap::AliasMapKeyList theUsedArgumentsKeyList;
     for(ExpressionAlg::ArgumentPList::const_iterator uLI=thePartialUsageList.begin();
 	uLI!=thePartialUsageList.end();
 	++uLI)
-      theUsedArgumentsKeyList.push_back(&((*uLI)->getVariable().getAliasActivityMapKey()));
+      theUsedArgumentsKeyList.push_back(&((*uLI)->getVariable().getAliasMapKey()));
     if (ConceptuallyStaticInstances::instance()->
-	getCallGraph().getAliasActivityMap().
-	isAliased(getContaining().getLHS().getAliasActivityMapKey(),
+	getCallGraph().getAliasMap().
+	isAliased(getContaining().getLHS().getAliasMapKey(),
 		  theUsedArgumentsKeyList)) 
       // the top level node may not require replacement 
       // itself but needs to be replaced if any subexpression is replaced: 
@@ -166,7 +166,7 @@ namespace xaifBoosterLinearization {
 	// add it to the RHS of the temp assignment
 	myDelayedLHSAssignment_p->getRHS().supplyAndAddVertexInstance(*theDelayVertex_p);
 	// set the alias key to temporary: 
-	theDelayVertex_p->getVariable().getAliasActivityMapKey().setTemporary();
+	theDelayVertex_p->getVariable().getAliasMapKey().setTemporary();
 	// get the global scope
 	Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
 			      getCallGraph().getScopeTree().getGlobalScope());

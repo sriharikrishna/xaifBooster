@@ -51,11 +51,11 @@ namespace xaifBooster {
 					      *theCopyTarget_p));
       theEdge.setId((*beginIte).getId());
     } // end for 
-    if (myAliasActivityMapKey.getKind()==AliasActivityMapKey::NOT_SET)
-      THROW_LOGICEXCEPTION_MACRO("Variable::copyMyselfInto: myAliasActivityMapKey not initialized for " 
+    if (myAliasMapKey.getKind()==AliasMapKey::NOT_SET)
+      THROW_LOGICEXCEPTION_MACRO("Variable::copyMyselfInto: myAliasMapKey not initialized for " 
 				 << debug().c_str());
     // just use the default assignment which should be good enough
-    theTarget.myAliasActivityMapKey=myAliasActivityMapKey;
+    theTarget.myAliasMapKey=myAliasMapKey;
   } // end of Variable::copyMyselfInto
 
   bool 
@@ -96,13 +96,13 @@ namespace xaifBooster {
        << "=\"" 
        << ActiveUseType::toString(getActiveUseType()).c_str()
        << "\"";
-    if (getAliasActivityMapKey().getKind()==AliasActivityMapKey::SET) { 
+    if (getAliasMapKey().getKind()==AliasMapKey::SET) { 
       os << " "
 	 << our_myKey_XAIFName
 	 << "=\""
-	 << getAliasActivityMapKey().getKey()
+	 << getAliasMapKey().getKey()
 	 << "\"";
-      }
+    }
     os << " " 
        << our_myDerivFlag_XAIFName.c_str() 
        << "=\"" 
@@ -131,12 +131,12 @@ namespace xaifBooster {
     return out.str();
   } // end of Variable::debug
 
-  AliasActivityMapKey& Variable::getAliasActivityMapKey() { 
-    return myAliasActivityMapKey;
+  AliasMapKey& Variable::getAliasMapKey() { 
+    return myAliasMapKey;
   } 
 
-  const AliasActivityMapKey& Variable::getAliasActivityMapKey() const { 
-    return myAliasActivityMapKey;
+  const AliasMapKey& Variable::getAliasMapKey() const { 
+    return myAliasMapKey;
   }
 
   const SymbolType::SymbolType_E& Variable::getType() const { 

@@ -285,7 +285,7 @@ namespace xaifBoosterLinearization {
 	// if we create vector assignments as auxilliary variables...
 	theVariableSymbolReference_p->setId("1");
 	theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-	theLHS.getAliasActivityMapKey().setTemporary();
+	theLHS.getAliasMapKey().setTemporary();
       } // end for
     } // end for 
   } // end of ExpressionAlg::createPartialExpressions

@@ -6,7 +6,7 @@
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/CallGraphEdge.hpp"
 #include "xaifBooster/system/inc/Scopes.hpp"
-#include "xaifBooster/system/inc/AliasActivityMap.hpp"
+#include "xaifBooster/system/inc/AliasMap.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 namespace xaifBooster { 
@@ -66,14 +66,14 @@ namespace xaifBooster {
     Scopes& getScopeTree();
 
     /**
-     * get the AliasActivityMap
+     * get the AliasMap
      */
-    AliasActivityMap& getAliasActivityMap();
+    AliasMap& getAliasMap();
 
     /**
-     * get the AliasActivityMap
+     * get the AliasMap
      */
-    const AliasActivityMap& getAliasActivityMap() const;
+    const AliasMap& getAliasMap() const;
 
     void setProgramName(const std::string& aProgramName);
 
@@ -116,9 +116,9 @@ namespace xaifBooster {
 
     /**
      * the CallGraph owns the map for 
-     * alias and activity information
+     * alias information
      */
-    AliasActivityMap myAliasActivityMap;
+    AliasMap myAliasMap;
 
     /**
      * the schema instance 

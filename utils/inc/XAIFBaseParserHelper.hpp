@@ -5,8 +5,8 @@
 
 namespace xaifBooster { 
 
-  class AliasActivity;
-  class AliasActivityMap;
+  class AliasMapEntry;
+  class AliasMap;
   class ArrayAccess;
   class Assignment;
   class Variable;

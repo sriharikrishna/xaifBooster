@@ -19,14 +19,14 @@
       <CodeGen:LineBreak/>
     </CodeGen:CodeTemplate>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="AliasActivity"/>
+      <CodeGen:DynamicCode hook_ref="1" text="AliasMapEntry"/>
       <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
-      <CodeGen:DynamicCode hook_ref="3" text="AliasActivity"/>
+      <CodeGen:DynamicCode hook_ref="3" text="AliasMapEntry"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="AliasActivityMap"/>
+      <CodeGen:DynamicCode hook_ref="1" text="AliasMap"/>
       <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
-      <CodeGen:DynamicCode hook_ref="3" text="AliasActivityMap"/>
+      <CodeGen:DynamicCode hook_ref="3" text="AliasMap"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="AliasRange"/>
