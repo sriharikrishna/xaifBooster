@@ -81,27 +81,26 @@ namespace xaifBoosterControlFlowReversal {
               << debug().c_str());
       myTransformedControlFlowGraph=new ReversibleControlFlowGraph(getContaining());
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg",
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
 			      VertexLabelWriter(*myTransformedControlFlowGraph));
       }
       myTransformedControlFlowGraph->topologicalSort();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_2",
+			      VertexLabelWriter(*myTransformedControlFlowGraph));
+      }
+      myTransformedControlFlowGraph->storeControlFlow();
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_3",
 			      VertexLabelWriter(*myTransformedControlFlowGraph));
       }
 /*
-      myTransformedControlFlowGraph->storeControlFlow();
-      myTransformedControlFlowGraph->topologicalNumbering();
+      myTransformedControlFlowGraph->reverseControlFlow();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_4",
 			      VertexLabelWriter(*myTransformedControlFlowGraph));
       }
 */
-      myTransformedControlFlowGraph->topologicalSortReverse();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_1",
-			      VertexLabelWriter(*myTransformedControlFlowGraph));
-      }
   } // end AssignmentAlg::algorithm_action_4() 
 
   void

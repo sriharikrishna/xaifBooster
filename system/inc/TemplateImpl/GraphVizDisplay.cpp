@@ -47,7 +47,7 @@ namespace xaifBooster {
     // which dot cannot interpret as a hex number so we need to make it a 'name' 
     // pre prepending HEX
     std::string commandString(" sed \"s/0x/HEX/g\" " + theFileName + " >| " + theFileName + ".1;" +
-                              " dot -Tgif " + theFileName + ".1 >| " + theFileName + ".gif ; xv -geometry +0+0 " + theFileName + ".gif" );
+                              " dot -Tps " + theFileName + ".1 >| " + theFileName + ".ps ; gv " + theFileName + ".ps" );
     system(commandString.c_str());
   } 
 } 

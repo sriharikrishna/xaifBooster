@@ -34,9 +34,7 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphVertex& getExit(); 
 
     void markLoopBodyEntryEdges();
-    void topologicalNumbering();
     void topologicalSort();
-    void topologicalSortReverse();
     void storeControlFlow();
     void reverseControlFlow();
  
@@ -85,24 +83,9 @@ namespace xaifBoosterControlFlowReversal {
     void storeControlFlowGraphRecursively(ReversibleControlFlowGraphVertex&,std::stack<const Symbol*>&);
 
     /** 
-     * bottom-up generation of reversed cfg
-     */
-    void reverseControlFlowGraphRecursively(ReversibleControlFlowGraphVertex&);
-
-    /** 
-     * top-down topologically sorted numbering
-     */
-    void topologicalNumberingRecursively(ReversibleControlFlowGraphVertex&, int&); 
-
-    /** 
      * top-down topologically sorted vertex list
      */
-    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&,std::vector<const ReversibleControlFlowGraphVertex*>&);
-
-    /** 
-     * bottom-up topologically sorted vertex list
-     */
-    void topologicalSortReverseRecursively(ReversibleControlFlowGraphVertex&, int&,std::vector<const ReversibleControlFlowGraphVertex*>&);
+    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&,std::vector<ReversibleControlFlowGraphVertex*>&);
 
     /** 
      * top down topological sort
@@ -115,28 +98,29 @@ namespace xaifBoosterControlFlowReversal {
     BasicBlock& insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before);
 
     /** 
-     * insert a new if-statement, connect it with its single predecessor and 
-     * with its successors, and return it
+     * make a new basic block
      */
-    IfStatement* insert_if(const ReversibleControlFlowGraphVertex& pred_r, std::list<const ReversibleControlFlowGraphVertex*> succ_l);
+    ReversibleControlFlowGraphVertex* new_basic_block();
 
     /** 
-     * insert a new endbranch, connect it with its predecessors and 
-     * with its single successor, and return it
+     * make a new if-statement
      */
-    EndBranch* insert_endbranch(std::list<const ReversibleControlFlowGraphVertex*> pred_l, const ReversibleControlFlowGraphVertex& succ_r);
+    ReversibleControlFlowGraphVertex* new_if();
 
     /** 
-     * insert a new forloop, connect it with its predecessors and 
-     * with its successors, and return it
+     * make a new endbranch
      */
-    ForLoop* insert_forloop(std::list<const ReversibleControlFlowGraphVertex*> pred_l, std::list<const ReversibleControlFlowGraphVertex*> succ_l);
+    ReversibleControlFlowGraphVertex* new_endbranch();
 
     /** 
-     * insert a new endloop, connect it with its single predecessor and 
-     * with its single successor, and return it
+     * make a new forloop
      */
-    EndLoop* insert_endloop(const ReversibleControlFlowGraphVertex& pred_r, const ReversibleControlFlowGraphVertex& succ_r);
+    ReversibleControlFlowGraphVertex* new_forloop();
+
+    /** 
+     * make a new endloop
+     */
+    ReversibleControlFlowGraphVertex* new_endloop();
 
     /** 
      * append "i=i+1" to theBasicBlock_r
@@ -161,7 +145,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * vertex list for generating various topological sorts
      */
-    std::list<const ReversibleControlFlowGraphVertex*> mySortedVertices_cp_l;
+    std::list<ReversibleControlFlowGraphVertex*> mySortedVertices_p_l;
 
     /** 
      * list of correspondences between original vertices

@@ -26,6 +26,9 @@ namespace xaifBoosterControlFlowReversal {
     const ControlFlowGraphVertexAlg&
     getOriginalControlFlowGraphVertexAlg() const;
 
+    const ControlFlowGraphVertexAlg&
+    getNewControlFlowGraphVertexAlg() const;
+
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
     virtual std::string debug() const ;
