@@ -43,6 +43,12 @@ namespace xaifBoosterControlFlowReversal {
      */ 
     bool leadsToLoopBody() const;
 
+    bool hasRevConditionValue() const;
+
+    void setRevConditionValue(int);
+
+    int getRevConditionValue() const;
+    
   private:
 
     /** 
@@ -54,20 +60,23 @@ namespace xaifBoosterControlFlowReversal {
      * no def
      */
     ReversibleControlFlowGraphEdge operator=(const ReversibleControlFlowGraphEdge&);
-
-    /**
-     * if myOriginalFlag is false this can be set
-     * otherwise it has the value of the original edge
-     * indicates if edge has a condition value
-     */
+    
     bool myConditionValueFlag;
     
     /**
-     * if myOriginalFlag is false this can be set
+     * if myConditionValueFlag is false this can be set
      * otherwise it has the value of the original edge
      * holds the condition value
      */
     int myConditionValue;
+
+    bool myRevConditionValueFlag;
+    
+    /**
+     * if myRevConditionValueFlag is false this can be set
+     * it holds the marker value to be pushed and popped
+     */
+    int myRevConditionValue;
 
     /** 
      * pointer to original ControlFlowGraphEdge

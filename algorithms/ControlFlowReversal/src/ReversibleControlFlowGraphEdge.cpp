@@ -13,12 +13,16 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() :
     myConditionValueFlag(false),
     myConditionValue(0),
+    myRevConditionValueFlag(false),
+    myRevConditionValue(0),
     myOriginalEdge_p(0) {
   }
 
   ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : 
     myConditionValueFlag(false),
     myConditionValue(0),
+    myRevConditionValueFlag(false),
+    myRevConditionValue(0),
     myOriginalEdge_p(theOriginal) {
     if (theOriginal->hasConditionValue())
       setConditionValue(theOriginal->getConditionValue());
@@ -63,6 +67,23 @@ namespace xaifBoosterControlFlowReversal {
     if (!myConditionValueFlag)
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphEdge::getConditionValue: not set");
     return myConditionValue;
+  }
+
+  bool ReversibleControlFlowGraphEdge::hasRevConditionValue() const {
+    return myRevConditionValueFlag;
+  }
+
+  void ReversibleControlFlowGraphEdge::setRevConditionValue(int cv) {
+    if (myRevConditionValueFlag)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphEdge::setRevConditionValue: already set");
+    myRevConditionValue=cv;
+    myRevConditionValueFlag=true;
+  }
+
+  int ReversibleControlFlowGraphEdge::getRevConditionValue() const {
+    if (!myRevConditionValueFlag)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphEdge::getRevConditionValue: not set");
+    return myRevConditionValue;
   }
 
   void ReversibleControlFlowGraphEdge::printXMLHierarchy(std::ostream& os, 

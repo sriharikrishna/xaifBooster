@@ -72,7 +72,15 @@ namespace xaifBoosterControlFlowReversal {
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       ReversibleControlFlowGraphEdge* theReversibleControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
-      if (theReversibleControlFlowGraphEdge_p->hasConditionValue()) out << "[label=\"1\"]";
+      if (theReversibleControlFlowGraphEdge_p->hasConditionValue() ||
+	  theReversibleControlFlowGraphEdge_p->hasRevConditionValue()) { 
+	out << "[label=\"";
+	if (theReversibleControlFlowGraphEdge_p->hasConditionValue())
+	  out << theReversibleControlFlowGraphEdge_p->getConditionValue();
+	if (theReversibleControlFlowGraphEdge_p->hasRevConditionValue())
+	  out << "r" << theReversibleControlFlowGraphEdge_p->getRevConditionValue();
+	out << "\"]";
+      }
     }
     const ReversibleControlFlowGraph& myG;
   };
@@ -92,16 +100,17 @@ namespace xaifBoosterControlFlowReversal {
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
     }
-    // buildAdjointControlFlowGraph() should always be based on the
-    // original CFG, that is, it should precede the call to 
-    // storeControlFlow()
-    myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph));
-    }
     myTapingControlFlowGraph->markBranchExitEdges();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+    }
+    // buildAdjointControlFlowGraph() should always be based on the
+    // original CFG, that is, it should precede the call to 
+    // storeControlFlow()
+    // but we should have found out how to label branch edges...
+    myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph));
     }
     myTapingControlFlowGraph->storeControlFlow();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
