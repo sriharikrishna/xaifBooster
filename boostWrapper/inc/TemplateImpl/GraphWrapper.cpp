@@ -289,8 +289,11 @@ namespace xaifBooster {
       InternalBoostEdgeIteratorType 
       > 
       theEdgeEnds=boost::edges(myBoostGraph);
-    InternalBoostEdgeIteratorType ei_begin(theEdgeEnds.first), ei_end(theEdgeEnds.second);
-    for (;ei_begin!=ei_end;++ei_begin) { 
+    InternalBoostEdgeIteratorType ei_begin(theEdgeEnds.first), 
+      ei_next(theEdgeEnds.first),
+      ei_end(theEdgeEnds.second);
+    for (;ei_begin!=ei_end;ei_begin=ei_next) { 
+      ++ei_next;
       Edge* anEdge_p=boost::get(boost::get(BoostEdgeContentType(),
 					   myBoostGraph), // get the Edge property map
 				*(ei_begin)); // get the descriptor
@@ -305,8 +308,11 @@ namespace xaifBooster {
       InternalBoostVertexIteratorType 
       > 
       theVertexEnds=boost::vertices(myBoostGraph);
-    InternalBoostVertexIteratorType vi_begin(theVertexEnds.first), vi_end(theVertexEnds.second);
-    for (;vi_begin!=vi_end;++vi_begin) { 
+    InternalBoostVertexIteratorType vi_begin(theVertexEnds.first),
+      vi_next(theVertexEnds.first),
+      vi_end(theVertexEnds.second);
+    for (;vi_begin!=vi_end;vi_begin=vi_next) {
+      ++vi_next;
       Vertex* aVertex_p=boost::get(boost::get(BoostVertexContentType(),
 					      myBoostGraph), // get the Vertex property map
 				   *(vi_begin)); // get the descriptor

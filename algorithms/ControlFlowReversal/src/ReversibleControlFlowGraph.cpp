@@ -110,7 +110,7 @@ namespace xaifBoosterControlFlowReversal {
 //    aNewReversibleControlFlowGraphVertex->myNewVertex_p=new BasicBlock(myOriginalGraph_r.getScope());
     BasicBlock* theNewBasicBlock=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
     aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+//    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
     aNewReversibleControlFlowGraphInEdge_p->getNewEdge().setId(makeUniqueEdgeId());
@@ -152,7 +152,7 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new Entry();
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+//    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
@@ -163,7 +163,7 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new Exit();
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+//    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
@@ -174,7 +174,7 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new Branch();
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+//    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
@@ -185,7 +185,7 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new IfStatement();
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+//    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
@@ -196,7 +196,7 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new ForLoop();
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+//    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
@@ -207,7 +207,7 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new EndBranch();
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+//    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
@@ -218,7 +218,7 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     aNewReversibleControlFlowGraphVertex_p->myNewVertex_p=new EndLoop();
-    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+ //   aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
@@ -371,6 +371,7 @@ namespace xaifBoosterControlFlowReversal {
           for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt) {
             if (!((*(*ieilIt)).isBackEdge(*this))) {
               BasicBlock& theBasicBlock_r(insert_basic_block(getSourceOf(*(*ieilIt)),getTargetOf(*(*ieilIt)),(*(*ieilIt))));
+              theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
               theLoopCounterSymbol_p=insert_init_integer(0,theBasicBlock_r);
               theLoopCounterSymbolStack_r.push(theLoopCounterSymbol_p);
               removeAndDeleteEdge(*(*ieilIt));
@@ -392,6 +393,7 @@ namespace xaifBoosterControlFlowReversal {
           for (oeilIt=oeil.begin();oeilIt!=oeil.end();++oeilIt) 
             if (getTargetOf(*(*oeilIt)).getIndex()>endLoopIndex) {
                 BasicBlock& theBasicBlock_r(insert_basic_block(getSourceOf(*(*oeilIt)),getTargetOf(*(*oeilIt)),(*(*oeilIt))));
+                theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
                 insert_push_integer(theLoopCounterSymbol_p,theBasicBlock_r);
                 removeAndDeleteEdge(*(*oeilIt));
                 break;
@@ -404,6 +406,7 @@ namespace xaifBoosterControlFlowReversal {
           InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
           InEdgeIterator beginItie(pie.first);
           BasicBlock& theBasicBlock_r(insert_basic_block(getSourceOf((*beginItie)),getTargetOf((*beginItie)),(*beginItie)));
+          theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
           insert_increment_integer(theLoopCounterSymbolStack_r.top(),theBasicBlock_r);
           theLoopCounterSymbolStack_r.pop();
           removeAndDeleteEdge((*beginItie));
@@ -436,6 +439,7 @@ namespace xaifBoosterControlFlowReversal {
           for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt,--branch_idx) {
             ReversibleControlFlowGraphVertex& theSource_r(getSourceOf(*(*ieilIt)));
             BasicBlock& theBasicBlock_r(insert_basic_block(theSource_r,getTargetOf(*(*ieilIt)),(*(*ieilIt))));
+            theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
             const Symbol* theLhsSymbol;
             if (ieil.size()==2) {
               if ((*(*ieilIt)).has_condition_value())
@@ -704,14 +708,17 @@ namespace xaifBoosterControlFlowReversal {
       switch ((*the_mySortedVertices_p_l_rit)->getOriginalControlFlowGraphVertexAlg().getKind()) {
         case ControlFlowGraphVertexAlg::EXIT : {
           theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_entry();
+          theReversibleControlFlowGraphVertex_p->getNewVertex().setId(std::string("_adj_")+makeUniqueVertexId());
           break;
         }
         case ControlFlowGraphVertexAlg::ENTRY : {
           theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_exit();
+          theReversibleControlFlowGraphVertex_p->getNewVertex().setId(std::string("_adj_")+makeUniqueVertexId());
           break;
         }
         case ControlFlowGraphVertexAlg::BRANCH : {
           theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_endbranch();
+          theReversibleControlFlowGraphVertex_p->getNewVertex().setId(std::string("_adj_")+makeUniqueVertexId());
           break;
         }
         case ControlFlowGraphVertexAlg::BASICBLOCK : {
@@ -722,15 +729,18 @@ namespace xaifBoosterControlFlowReversal {
         }
         case ControlFlowGraphVertexAlg::ENDBRANCH : {
           theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_branch();
+          theReversibleControlFlowGraphVertex_p->getNewVertex().setId(std::string("_adj_")+makeUniqueVertexId());
           break;
         }
         case ControlFlowGraphVertexAlg::PRELOOP : 
         case ControlFlowGraphVertexAlg::FORLOOP : {
           theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_endloop();
+          theReversibleControlFlowGraphVertex_p->getNewVertex().setId(std::string("_adj_")+makeUniqueVertexId());
           break;
         }
         case ControlFlowGraphVertexAlg::ENDLOOP : {
           theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_forloop();
+          theReversibleControlFlowGraphVertex_p->getNewVertex().setId(std::string("_adj_")+makeUniqueVertexId());
           break;
         }
         default: break;
@@ -754,6 +764,7 @@ namespace xaifBoosterControlFlowReversal {
           // insert pop() in front
           InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).second)));
           BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first)));
+          theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
           removeAndDeleteEdge(*(singleInEdge_ieitp.first));
           const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
 
@@ -778,6 +789,7 @@ namespace xaifBoosterControlFlowReversal {
           // insert pop() in front
           InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).second)));
           BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first)));
+          theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
           removeAndDeleteEdge(*(singleInEdge_ieitp.first));
           const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
 
