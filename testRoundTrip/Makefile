@@ -81,7 +81,7 @@ xaifBooster:
 	./pickAlgorithm.bash
 
 # make the $TARGETDRIVER)
-$(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o $(REVERSE_MODULES)
+$(TARGETDRIVER): w2f__types.o active_module.o $(REVERSE_MODULES) $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
 	$(F95) $^ -o $@
 
 run: params.conf tmpOutput $(TARGETDRIVER)
@@ -92,8 +92,8 @@ w2f__types.o : w2f__types.f
 	$(F95) -c $<
 
 # this is not free form fortran either
-$(TARGET).xb.x2w.w2f.pp.o : $(TARGET).xb.x2w.w2f.pp.f $(REVERSE_MODULES)
-	$(F95) -c $<
+$(TARGET).xb.x2w.w2f.pp.o : $(REVERSE_MODULES) $(TARGET).xb.x2w.w2f.pp.f 
+	$(F95) -c $(TARGET).xb.x2w.w2f.pp.f
 
 %.o:%.f
 	$(F95) -free -c $<
