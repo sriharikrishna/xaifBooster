@@ -15,12 +15,13 @@
 
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSetDeriv.hpp"
 
 /** 
  * the call to the ANGEL library
@@ -109,7 +110,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
     printXMLHierarchyImpl(os,
-			  DerivativePropagator::printXMLHierarchyImpl);
+			  xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl);
   }
 
   void BasicBlockAlg::printXMLHierarchyImpl(std::ostream& os,
@@ -346,9 +347,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // instead of original independent
 	    const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
 					 (theExpression.getDependent()).getLHSVariable());
-	    DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryList(theLHS,
-												 *theIndepVariableContainer_cp,
-												 theDependent));
+	    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryList(theLHS,
+																  *theIndepVariableContainer_cp,
+																  theDependent));
 	    bool found=false;
 	    for (VariablePList::iterator i=theListOfAlreadyAssignedDependents.begin();
 		 i!=theListOfAlreadyAssignedDependents.end();
@@ -662,7 +663,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       << theAssignment.debug().c_str());
   } // end of BasicBlockAlg::splitFlattenedSequence
 
-  DerivativePropagator& 
+  xaifBoosterDerivativePropagator::DerivativePropagator& 
   BasicBlockAlg::getDerivativePropagator(const Assignment& theAssignment) { 
     Sequence* theSequence_p=0;
     for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
@@ -673,7 +674,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theSequence_p=(*i).second;
       } // end if 
     if (!theSequence_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getDerivativeAccumulator: no Sequence exists for element "
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getDerivativePropagator: no Sequence exists for element "
 				 << theAssignment.debug().c_str());
     return theSequence_p->myDerivativePropagator;
   } // end of BasicBlockAlg::getDerivativePropagator

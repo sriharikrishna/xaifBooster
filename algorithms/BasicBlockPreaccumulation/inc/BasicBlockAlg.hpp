@@ -8,7 +8,7 @@
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagator.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 
 
 namespace xaifBooster { 
@@ -83,7 +83,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * theAssignment through a call to 
      * getFlattenedSequence
      */
-    DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
+    xaifBoosterDerivativePropagator::DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
 
     /**
      * access container
@@ -97,7 +97,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * pointer to printer for DerivativePropagator
      */
     typedef void (*PrintDerivativePropagator_fp)(std::ostream& os,
-						 const DerivativePropagator& aPropagator);
+						 const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator);
 
     void printXMLHierarchyImpl(std::ostream& os,
 			       PrintDerivativePropagator_fp aPrintDerivativePropagator_fp) const;
@@ -152,7 +152,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       /** 
        * the derivative accumulator for this sequence
        */
-      DerivativePropagator myDerivativePropagator;      
+      xaifBoosterDerivativePropagator::DerivativePropagator myDerivativePropagator;      
 
       /**
        * first original BasicBlockElement 

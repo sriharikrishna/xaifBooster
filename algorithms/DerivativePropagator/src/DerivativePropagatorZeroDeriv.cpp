@@ -4,9 +4,11 @@
 
 #include "xaifBooster/system/inc/Variable.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorZeroDeriv.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorZeroDeriv.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterDerivativePropagator { 
 
   const std::string DerivativePropagatorZeroDeriv::ourXAIFName("xaif:ZeroDeriv");
 
@@ -46,4 +48,4 @@ namespace xaifBooster {
     return out.str();
   } // end of DerivativePropagatorZeroDeriv::debug
 
-} // end of namespace xaifBooster 
+} // end of namespace 

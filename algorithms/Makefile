@@ -1,5 +1,6 @@
 obj test doc clean:
 	cd CrossCountryInterface && $(MAKE) $@
+	cd DerivativePropagator && $(MAKE) $@
 	cd InlinableXMLRepresentation && $(MAKE) $@
 	cd CodeReplacement && $(MAKE) $@
 	cd Linearization && $(MAKE) $@

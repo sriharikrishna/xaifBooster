@@ -31,11 +31,11 @@ ifndef ANGELROOT
 UNDEF_ENV_VARS+=" ANGELROOT "
 endif
 
-ANGEL_LIB=-langel
-ANGEL_LIB_DIR=$(ANGELROOT)/lib 
+VPATH+=$(ANGELROOT)/lib
+LIBS+=-langel
 
-VPATH+=$(ANGEL_LIB_DIR) 
-LIBS+=$(ANGEL_LIB)
+VPATH+=../../DerivativePropagator/lib
+LIBS+=-lxaifBoosterDerivativePropagator
 
 ifneq ($(UNDEF_ENV_VARS),"")
 export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1

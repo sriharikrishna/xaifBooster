@@ -1,10 +1,13 @@
-#ifndef _DERIVATIVEPROPAGATORZERODERIV_INCLUDE_
-#define _DERIVATIVEPROPAGATORZERODERIV_INCLUDE_
+#ifndef _XAIFBOOSTERDERIVATIVEPROPAGATORZERODERIV_INCLUDE_
+#define _XAIFBOOSTERDERIVATIVEPROPAGATORZERODERIV_INCLUDE_
 
 #include "xaifBooster/system/inc/Variable.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorEntry.hpp"
 
-namespace xaifBooster { 
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
+
+using namespace xaifBooster;
+
+namespace xaifBoosterDerivativePropagator { 
 
   /**
    * an active Variable
@@ -48,6 +51,6 @@ namespace xaifBooster {
 
   }; // end of class DerivativePropagatorZeroDeriv
  
-} // end of namespace xaifBooster
+} // end of namespace 
                                                                      
 #endif

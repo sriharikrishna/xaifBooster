@@ -5,11 +5,11 @@
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+namespace xaifBoosterDerivativePropagator { 
 
   const std::string DerivativePropagatorSaxpy::ourXAIFName("xaif:Saxpy");
   const std::string DerivativePropagatorSaxpy::our_SAX_XAIFName("xaif:Sax");
@@ -202,4 +202,4 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
   }
 
-}
+} // end of namespace 
