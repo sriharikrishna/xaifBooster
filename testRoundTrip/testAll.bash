@@ -68,6 +68,10 @@ else
 fi
 for i in `echo ${TESTFILES}`
 do 
+  if [ ! -d "examples/$i" ] 
+  then 
+    echo "ERROR: no such test : $i "; exit -1;
+  fi
   export TARGET=head
   ${MAKE} testAllclean
   if [ $? -ne 0 ] 

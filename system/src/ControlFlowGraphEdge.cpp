@@ -9,21 +9,24 @@ namespace xaifBooster {
   const std::string ControlFlowGraphEdge::our_myId_XAIFName("edge_id");
   const std::string ControlFlowGraphEdge::our_source_XAIFName("source");
   const std::string ControlFlowGraphEdge::our_target_XAIFName("target");
-  const std::string ControlFlowGraphEdge::our_has_condition_value_XAIFName("has_condition_value");
-  const std::string ControlFlowGraphEdge::our_condition_value_XAIFName("condition_value");
+  const std::string ControlFlowGraphEdge::our_myConditionValueFlag_XAIFName("has_condition_value");
+  const std::string ControlFlowGraphEdge::our_myConditionValue_XAIFName("condition_value");
 
-  bool ControlFlowGraphEdge::has_condition_value() const {
-    return my_has_condition_value;
-  }
-  void ControlFlowGraphEdge::set_has_condition_value(bool hcv) {
-    my_has_condition_value=hcv;
+  bool ControlFlowGraphEdge::hasConditionValue() const {
+    return myConditionValueFlag;
   }
                                                                                 
-  void ControlFlowGraphEdge::set_condition_value(int cv) {
-    my_condition_value=cv;
+  void ControlFlowGraphEdge::setConditionValue(int cv) {
+    if (myConditionValueFlag)
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphEdge::setConditionValue: already set");
+    myConditionValue=cv;
+    myConditionValueFlag=true;
   }
-  const int& ControlFlowGraphEdge::get_condition_value() const {
-    return my_condition_value;
+
+  int ControlFlowGraphEdge::getConditionValue() const {
+    if (!myConditionValueFlag)
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphEdge::getConditionValue: not set");
+    return myConditionValue;
   }
 
   void
@@ -32,28 +35,32 @@ namespace xaifBooster {
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent()
        << "<"
-       << ourXAIFName 
+       << ourXAIFName.c_str() 
        << " " 
-       << our_myId_XAIFName 
+       << our_myId_XAIFName.c_str()
        << "=\"" 
        << getId().c_str()
        << "\" " 
-       << our_source_XAIFName 
+       << our_source_XAIFName.c_str()
        << "=\"" 
        << theGraph.getSourceOf(*this).getId().c_str()
        << "\" " 
-       << our_target_XAIFName 
+       << our_target_XAIFName.c_str() 
        << "=\"" 
        << theGraph.getTargetOf(*this).getId().c_str()
        << "\" " 
-       << our_has_condition_value_XAIFName 
+       << our_myConditionValueFlag_XAIFName.c_str() 
        << "=\"" 
-       << has_condition_value()
-       << "\" " 
-       << our_condition_value_XAIFName 
-       << "=\"" 
-       << get_condition_value()
-       << "\"/>" 
+       << hasConditionValue()
+       << "\"";
+    if (hasConditionValue()) {
+      os << " "
+	 << our_myConditionValue_XAIFName.c_str() 
+	 << "=\"" 
+	 << getConditionValue()
+	 << "\"";
+    }
+    os << "/>" 
        << std::endl; 
     pm.releaseInstance();
   } // end of ControlFlowGraphEdge::printXMLHierarchy

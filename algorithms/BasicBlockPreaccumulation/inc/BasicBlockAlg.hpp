@@ -102,7 +102,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     const BasicBlock& getContaining() const;
     
+    /** 
+     * we can decide to restrict the 
+     * preaccumulation to the level of single statements 
+     * effectively precluding the flattening
+     */
+    static void limitToStatementLevel();
     
+    static bool hasLimitToStatementLevel();
+
+    static unsigned int getAssignmentCounter();
+
+    static unsigned int getSequenceCounter();
+
+    const DuUdMapDefinitionResult::StatementIdList& getAssignmentIdList()const;
+
+    void addMyselfToAssignmentIdList(const Assignment&);
+
   protected: 
 
     /**
@@ -303,13 +319,35 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   Assignment& theNewAssignment,
 							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
 							   VertexPairList& theVertexPairList);
+    typedef std::list<const Variable*> VariableCPList;
 
     /** 
      * determines variables in IN and OUT
      */
     bool isAliased(const Variable& theIndepVariable,
-		   const PrivateLinearizedComputationalGraph& theFlattenedSequence);
+		   const VariableCPList& theDependentList);
     
+    /** 
+     * if this flag is true each FlattenedSequence 
+     * consists of exactly one assignment
+     */ 
+    static bool ourLimitToStatementLevelFlag;
+
+    /** 
+     * counting all assignments
+     */
+    static unsigned int ourAssignmentCounter;
+
+    /** 
+     * counting all Sequence instances
+     */
+    static unsigned int ourSequenceCounter;
+
+    /** 
+     * the list of all Assignment statement Ids
+     */ 
+    DuUdMapDefinitionResult::StatementIdList ourAssignmentIdList;
+
   };
  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms

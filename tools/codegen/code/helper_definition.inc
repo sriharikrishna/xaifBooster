@@ -218,6 +218,17 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Scopes" << " 
 return *myScopes_p;
 }
 
+void XAIFBaseParserHelper::setSideEffectList(SideEffectList& whatToSet) {
+if (mySideEffectList_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "SideEffectList" << " item already set");
+mySideEffectList_p=&whatToSet;
+}
+SideEffectList& XAIFBaseParserHelper::getSideEffectList() const {
+if (!mySideEffectList_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "SideEffectList" << " item not set");
+return *mySideEffectList_p;
+}
+
 void XAIFBaseParserHelper::setSubroutineCall(SubroutineCall& whatToSet) {
 if (mySubroutineCall_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "SubroutineCall" << " item already set");
@@ -282,5 +293,27 @@ Label& XAIFBaseParserHelper::getLabel() const {
 if (!myLabel_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Label" << " item not set");
 return *myLabel_p;
+}
+
+void XAIFBaseParserHelper::setDuUdMapEntry(DuUdMapEntry& whatToSet) {
+if (myDuUdMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMapEntry" << " item already set");
+myDuUdMapEntry_p=&whatToSet;
+}
+DuUdMapEntry& XAIFBaseParserHelper::getDuUdMapEntry() const {
+if (!myDuUdMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DuUdMapEntry" << " item not set");
+return *myDuUdMapEntry_p;
+}
+
+void XAIFBaseParserHelper::setDuUdMap(DuUdMap& whatToSet) {
+if (myDuUdMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMap" << " item already set");
+myDuUdMap_p=&whatToSet;
+}
+DuUdMap& XAIFBaseParserHelper::getDuUdMap() const {
+if (!myDuUdMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DuUdMap" << " item not set");
+return *myDuUdMap_p;
 }
 

@@ -10,11 +10,8 @@ namespace xaifBoosterControlFlowReversal {
 
   class ReversibleControlFlowGraph;
 
-  /** 
-   * class to implement edges that are used in
-   * ControlFlowGraphAlg::myTransformedControlFlowGraph
-   */
-  class ReversibleControlFlowGraphEdge : public EdgeTraversable {
+  class ReversibleControlFlowGraphEdge : public EdgeTraversable, 
+					 public ObjectWithId {
 
   public:
     
@@ -31,20 +28,29 @@ namespace xaifBoosterControlFlowReversal {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     bool isOriginal() const;
+
     const ControlFlowGraphEdge& getOriginalEdge() const;
-    const ControlFlowGraphEdge& getNewEdge() const;
-    ControlFlowGraphEdge& getNewEdge();
 
-    bool has_condition_value() const;
-    void set_has_condition_value(bool hcv);
-                                                                                
-    void set_condition_value(int cv);
-    const int& get_condition_value() const;
+    bool hasConditionValue() const;
 
+    void setConditionValue(int);
+
+    int getConditionValue() const;
+    
+    /** 
+     * if the edge has a condition 
+     * value of '1'
+     */ 
+    bool leadsToLoopBody() const;
+
+    bool hasRevConditionValue() const;
+
+    void setRevConditionValue(int);
+
+    int getRevConditionValue() const;
+    
   private:
 
-    friend class ReversibleControlFlowGraph;
-    
     /** 
      * no def
      */
@@ -54,39 +60,29 @@ namespace xaifBoosterControlFlowReversal {
      * no def
      */
     ReversibleControlFlowGraphEdge operator=(const ReversibleControlFlowGraphEdge&);
-
-    /**
-     * indicates if edges has condition value
-     */
-    bool my_has_condition_value;
-
+    
+    bool myConditionValueFlag;
     
     /**
-     * condition value
+     * if myConditionValueFlag is false this can be set
+     * otherwise it has the value of the original edge
+     * holds the condition value
      */
-    int my_condition_value;
+    int myConditionValue;
 
-    /** 
-     * indicates if as an outedge of a loop vertex
-     * this edges leads into the loop body
+    bool myRevConditionValueFlag;
+    
+    /**
+     * if myRevConditionValueFlag is false this can be set
+     * it holds the marker value to be pushed and popped
      */
-    bool toLoopBody;
-
-    /** 
-     * indicates if this is a reference to an original ControlFlowGraphEdge
-     * or if it got created as a new ControlFlowGraphEdge
-     */
-    bool original;
+    int myRevConditionValue;
 
     /** 
      * pointer to original ControlFlowGraphEdge
+     * the edge is owned by the original ControlFlowGraph
      */
     const ControlFlowGraphEdge* myOriginalEdge_p;
-
-    /** 
-     * pointer to new ControlFlowGraphEdge
-     */
-    ControlFlowGraphEdge myNewEdge;
 
   };  // end of class
 

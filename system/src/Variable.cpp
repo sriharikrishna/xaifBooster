@@ -279,6 +279,7 @@ namespace xaifBooster {
 	  myActiveUseType=ActiveUseType::ACTIVEUSE;
 	else 
 	  myActiveUseType=ActiveUseType::PASSIVEUSE;
+	myActiveUseTypeSetFlag=true;
 	break;
       }
     default: 

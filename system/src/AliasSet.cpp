@@ -3,7 +3,6 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
 #include "xaifBooster/system/inc/AliasSet.hpp"
-#include "xaifBooster/system/inc/AliasSingle.hpp"
 #include "xaifBooster/system/inc/AliasRange.hpp"
 
 namespace xaifBooster { 
@@ -12,8 +11,8 @@ namespace xaifBooster {
   }
 
   AliasSet::~AliasSet() { 
-    for (AliasList::const_iterator it=myAliasList.begin();
-	 it==myAliasList.end();
+    for (AliasRangePList::const_iterator it=myAliasRangePList.begin();
+	 it==myAliasRangePList.end();
 	 ++it)
       delete (*it);       
   }
@@ -26,90 +25,76 @@ namespace xaifBooster {
   } // end of AliasSet::debug
   
   void AliasSet::printXMLHierarchy(std::ostream& os) const {
-    for (AliasList::const_iterator it=myAliasList.begin();
-	 it!=myAliasList.end();
+    for (AliasRangePList::const_iterator it=myAliasRangePList.begin();
+	 it!=myAliasRangePList.end();
 	 ++it)
       (*it)->printXMLHierarchy(os);       
   } 
 
-  void AliasSet::addAlias(unsigned int address) { 
-    AliasSingle *anAlias_p=new AliasSingle(address);
-    addAlias(anAlias_p);
-  } 
-
   void AliasSet::addAlias(unsigned int lower,
-			  unsigned int upper) { 
-    AliasRange *anAlias_p=new AliasRange(lower,upper);
-    addAlias(anAlias_p);
-  }
-
-  void AliasSet::addAlias(BaseAlias* anAlias_p) { 
-    if (myAliasList.empty()) { 
-      myAliasList.push_back(anAlias_p);
+			  unsigned int upper,
+			  bool isPartial) { 
+    if (myAliasRangePList.empty()) { 
+      myAliasRangePList.push_back(new AliasRange(lower,upper,isPartial));
       return;
     }
-    AliasList::iterator it=myAliasList.end();
+    AliasRange theNewRange(lower,upper,isPartial);
+    AliasRangePList::iterator it=myAliasRangePList.end();
     --it; // start at the end and point to the last
     while (true) { 
-      if (anAlias_p->isGreaterThan(**it)) { 
+      if (theNewRange.sameAs(**it))
+	return;
+      if (theNewRange.isGreaterThan(**it)) { 
 	// the first one for which it is greater
-	++it; 
-	// increment one
-	myAliasList.insert(it,anAlias_p); 
-	// insert before it
-	return;
+	if (theNewRange.overlapsWith(**it)
+	    || 
+	    theNewRange.isContainedIn(**it)) { 
+	  if (!(*it)->isPartial() 
+	      ||
+	      !theNewRange.isPartial())
+	    THROW_LOGICEXCEPTION_MACRO("AliasSet::addAlias: overlapping full reference ranges, fix the code");
+	  (*it)->absorb(theNewRange);
+	  return;
+	}
+	else if (theNewRange.bordersWith(**it) 
+		 &&
+		 theNewRange.isPartial() 
+		 &&
+		 (*it)->isPartial()) { 
+	  (*it)->absorb(theNewRange);
+	  return;
+	}
+	else { 
+	  // increment iterator by one
+	  ++it; 
+	  // and insert before it
+	  myAliasRangePList.insert(it,new AliasRange(lower,upper,isPartial)); 
+	  return;
+	}
       }
-      else if (anAlias_p->overlapsWith(**it)) { 
-	DBG_MACRO(DbgGroup::ERROR,
-		  "AliasSet::addAlias :  "
-		  << anAlias_p->debug().c_str() 
-		  << " overlaps with "
-		  << (*it)->debug().c_str());
-	(*it)->add(*anAlias_p);
-	delete anAlias_p;
-	return;
-      }
-      else if (anAlias_p->isContainedIn(**it)) { 
-	DBG_MACRO(DbgGroup::ERROR,
-		  "AliasSet::addAlias :  "
-		  << anAlias_p->debug().c_str() 
-		  << " contained in "
-		  << (*it)->debug().c_str());
-	delete anAlias_p;
-	return;
-      }
-      else if ((*it)->isContainedIn(*anAlias_p)) { 
-	DBG_MACRO(DbgGroup::ERROR,
-		  "AliasSet::addAlias :  "
-		  << (*it)->debug().c_str()
-		  << " contained in "
-		  << anAlias_p->debug().c_str());
-	delete *it;
-	*it=anAlias_p;
-	return;
-      }
-      else  // *anAlias_p must be less than **it
-	if (it==myAliasList.begin()) { 
-	  myAliasList.insert(it,anAlias_p); 
+      else {
+	// *theNewRange must be less than **it
+	if (it==myAliasRangePList.begin()) { 
+	  myAliasRangePList.insert(it,new AliasRange(lower,upper,isPartial)); 
 	  // insert before it
 	  return;
 	}
-      --it;
+	--it;
+      }
     } 
     // if we haven't returned yet then we are in trouble
-    delete anAlias_p;
     THROW_LOGICEXCEPTION_MACRO("AliasSet::addAlias: problem with insertion");
   } 
 
   bool AliasSet::sharesAliasWith(const AliasSet& anotherSet) const {
-    if (myAliasList.empty() || anotherSet.myAliasList.empty()) { 
+    if (myAliasRangePList.empty() || anotherSet.myAliasRangePList.empty()) { 
       return false;
     }
-    AliasList::const_iterator myI=myAliasList.begin();
-    AliasList::const_iterator theOtherI=anotherSet.myAliasList.begin();
-    while (myI!=myAliasList.end()
+    AliasRangePList::const_iterator myI=myAliasRangePList.begin();
+    AliasRangePList::const_iterator theOtherI=anotherSet.myAliasRangePList.begin();
+    while (myI!=myAliasRangePList.end()
 	   &&
-	   theOtherI!=anotherSet.myAliasList.end()) { 
+	   theOtherI!=anotherSet.myAliasRangePList.end()) { 
       // both sets are ordered
       if ((*myI)->isGreaterThan(**theOtherI)) { 
 	++theOtherI; 
@@ -128,13 +113,13 @@ namespace xaifBooster {
   } 
 
   bool AliasSet::mustAlias(const AliasSet& anotherSet) const {
-    if (myAliasList.size()!=1 
+    if (myAliasRangePList.size()!=1 
 	|| 
-	anotherSet.myAliasList.size()!=1) { 
+	anotherSet.myAliasRangePList.size()!=1) { 
       return false;
     }
-    AliasList::const_iterator myI=myAliasList.begin();
-    AliasList::const_iterator theOtherI=anotherSet.myAliasList.begin();
+    AliasRangePList::const_iterator myI=myAliasRangePList.begin();
+    AliasRangePList::const_iterator theOtherI=anotherSet.myAliasRangePList.begin();
     if ((*myI)->isContainedIn(**theOtherI)
 	&&
 	(*theOtherI)->isContainedIn(**myI)) { 
@@ -142,5 +127,42 @@ namespace xaifBooster {
     }
     return false;
   } 
+  
+  bool AliasSet::subSetOf(const AliasSet& anotherSet) const { 
+    // some obvious things first:
+    if (myAliasRangePList.empty()) { 
+      return true;
+    }
+    if (anotherSet.myAliasRangePList.empty() 
+	&& 
+	!myAliasRangePList.empty()) { 
+      return false;
+    }
+    // go through both sets:
+    AliasRangePList::const_iterator myI=myAliasRangePList.begin();
+    AliasRangePList::const_iterator theOtherI=anotherSet.myAliasRangePList.begin();
+    while (myI!=myAliasRangePList.end()
+	   &&
+	   theOtherI!=anotherSet.myAliasRangePList.end()) { 
+      // both sets are ordered
+      if ((*myI)->isGreaterThan(**theOtherI)) { 
+	++theOtherI; 
+      }
+      else { 
+	if ((*myI)->isContainedIn(**theOtherI)){ 
+	  ++myI;
+	} 
+	else { 
+	  return false;
+	}
+      } 
+    }
+    return (myI==myAliasRangePList.end());
+  }
 
-}
+  const AliasSet::AliasRangePList& AliasSet::getAliasRangePList() const { 
+    return myAliasRangePList;
+  } 
+
+
+} // end of namespace

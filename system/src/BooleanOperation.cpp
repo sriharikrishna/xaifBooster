@@ -19,6 +19,7 @@ namespace xaifBooster {
 
   ExpressionVertex& BooleanOperation::createCopyOfMyself(bool withAlgorithm) const { 
     BooleanOperation* aNewBooleanOperation_p=new BooleanOperation(myType);
+    aNewBooleanOperation_p->setId(getId());
     //     aNewBooleanOperation_p->setId(getId());
     //     if (!isActive())
     //       aNewBooleanOperation_p->passivate();
@@ -79,6 +80,10 @@ namespace xaifBooster {
 
   void BooleanOperation::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
     getBooleanOperationAlgBase().genericTraversal(anAction_c);
+  } 
+
+  BooleanOperationType::BooleanOperationType_E BooleanOperation::getType() const { 
+    return myType;
   } 
 
 } // end of namespace 

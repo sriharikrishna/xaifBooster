@@ -205,7 +205,7 @@ namespace xaifBoosterDerivativePropagator {
     }
   } 
 
-  bool DerivativePropagatorSaxpy::isIncremental() { 
+  bool DerivativePropagatorSaxpy::isIncremental()const { 
     return !useAsSaxFlag;
   }  
 

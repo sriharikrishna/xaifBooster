@@ -21,7 +21,7 @@ c-- local variables:
       double precision vol(3)
       double precision delta_t
       double precision dFldDt(3)
-
+c$openad INDEPENDENT(fldnow)
 c -- initialization
       vol(1)=10.
       vol(2)=12.
@@ -57,5 +57,5 @@ c-- routine body
       do l = 1, 3
          fldNew(l) = fldOld(l) + 2.D0*delta_t*dFldDt(l)
       enddo
-
+c$openad DEPENDENT(fldnew)
       end

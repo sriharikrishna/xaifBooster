@@ -98,6 +98,13 @@ namespace xaifBooster {
     const Vertex& getTargetOf(const Edge& anEdge) const;
 
     /** 
+     * get a maximal vertex of the graph if it exists
+     */
+    Vertex& getMaxVertex();
+
+    const Vertex& getMaxVertex() const;
+
+    /** 
      * remove all edges and vertices from a graph
      */
     void clear();
