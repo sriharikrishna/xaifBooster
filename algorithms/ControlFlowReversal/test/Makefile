@@ -23,7 +23,7 @@ ifneq ($(UNDEF_ENV_VARS),"")
 export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1
 endif
 
-$(MAIN): $(OBJS) $(ALG_OBJ_SET) $(LIBS)
+$(MAIN): $(OBJS) $(ALG_OBJ_SET)  $(SYSTEM_OBJ_SET) $(LIBS)
 	$(COMPLAIN)
 	$(CC) $^ $(LFLAGS) -o $@
 
