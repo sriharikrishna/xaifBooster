@@ -3,6 +3,7 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
 #include "xaifBooster/algorithms/CodeReplacement/inc/Replacement.hpp"
+#include "xaifBooster/algorithms/CodeReplacement/inc/ConceptuallyStaticInstances.hpp"
 
 namespace xaifBoosterCodeReplacement { 
 
@@ -12,7 +13,8 @@ namespace xaifBoosterCodeReplacement {
   Replacement::Replacement (unsigned aPlaceHolder) : 
     myPlaceHolder(aPlaceHolder),
     myControlFlowGraphBaseOwnerFlag(false), 
-    myControlFlowGraphBase_p(0) { 
+    myControlFlowGraphBase_p(0),
+    myPrintVersion(PrintVersion::ORIGINAL) { 
   } 
 
   Replacement::~Replacement(){
@@ -44,6 +46,7 @@ namespace xaifBoosterCodeReplacement {
 
   void
   Replacement::printXMLHierarchy(std::ostream& os) const { 
+    ConceptuallyStaticInstances::instance()->setPrintVersion(getPrintVersion());
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
@@ -70,6 +73,7 @@ namespace xaifBoosterCodeReplacement {
        << ">"
        << std::endl;
     pm.releaseInstance();
+    ConceptuallyStaticInstances::instance()->setPrintVersion(PrintVersion::ORIGINAL);
   } // end of Replacement::printXMLHierarchy
 
   std::string Replacement::debug () const { 
@@ -81,6 +85,14 @@ namespace xaifBoosterCodeReplacement {
 
   const unsigned int Replacement::getPlaceHolder() const {
     return myPlaceHolder; 
+  }
+
+  void Replacement::setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion) { 
+    myPrintVersion=aPrintVersion;
+  } 
+
+  PrintVersion::PrintVersion_E Replacement::getPrintVersion() const { 
+    return myPrintVersion;
   }
 
 } 
