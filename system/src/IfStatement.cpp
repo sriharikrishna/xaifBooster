@@ -9,11 +9,11 @@ namespace xaifBooster {
   const std::string IfStatement::our_myId_XAIFName("vertex_id");
 
   IfStatement::IfStatement() {
-    myIfStatementAlgBase_p=IfStatementAlgFactory::instance()->makeNewAlg(*this);
+    myControlFlowGraphVertexAlgBase_p=IfStatementAlgFactory::instance()->makeNewAlg(*this);
   }
 
   IfStatement::~IfStatement() {
-    delete myIfStatementAlgBase_p;
+    if (myControlFlowGraphVertexAlgBase_p) delete myControlFlowGraphVertexAlgBase_p;
   }
 
 
@@ -58,18 +58,10 @@ namespace xaifBooster {
   } 
 
   IfStatementAlgBase&
-  IfStatement::getIfStatementAlgBase() {
-    if (!myIfStatementAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("IfStatement::getIfStatementAlgBase: not set");
-    return *myIfStatementAlgBase_p;
-  }
-                                                                                 
-  const IfStatementAlgBase&
   IfStatement::getIfStatementAlgBase() const {
-    if (!myIfStatementAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("IfStatement::getIfStatementAlgBase: not set");
-    return *myIfStatementAlgBase_p;
+    if (!myControlFlowGraphVertexAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("IfStatement::getControlFlowGraphVertexAlgBase: not set");
+    return dynamic_cast<IfStatementAlgBase&>(*myControlFlowGraphVertexAlgBase_p);
   }
- 
 
 } // end of namespace xaifBooster 

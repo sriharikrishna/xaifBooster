@@ -152,6 +152,7 @@ namespace xaifBooster {
 
   void ControlFlowGraph::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
     getControlFlowGraphAlgBase().genericTraversal(anAction_c);
+    GraphWrapperTraversable<ControlFlowGraphVertex,ControlFlowGraphEdge>::traverseToChildren(anAction_c);
   }
   
 } // end of namespace xaifBooster 

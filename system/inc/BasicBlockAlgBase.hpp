@@ -1,13 +1,38 @@
 #ifndef _BASICBLOCKALGBASE_INCLUDE_
 #define _BASICBLOCKALGBASE_INCLUDE_
 
-#include "xaifBooster/system/inc/AlgBase.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertexAlgBase.hpp"
 
 namespace xaifBooster {  
-
+  
   class BasicBlock;
 
-  typedef AlgBase<BasicBlock> BasicBlockAlgBase;
+  class BasicBlockAlgBase: public ControlFlowGraphVertexAlgBase { 
+
+  public: 
+
+    BasicBlockAlgBase(const BasicBlock& theContaining);
+
+    virtual ~BasicBlockAlgBase();
+
+  private: 
+
+    /** 
+     * not defined
+     */
+    BasicBlockAlgBase();
+
+    /** 
+     * not defined
+     */
+    BasicBlockAlgBase(const BasicBlockAlgBase&);
+
+    /** 
+     * not defined
+     */
+    BasicBlockAlgBase& operator=(const BasicBlockAlgBase&);
+
+  }; 
 
 } // end of namespace 
 

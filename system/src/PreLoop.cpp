@@ -9,11 +9,11 @@ namespace xaifBooster {
   const std::string PreLoop::our_myId_XAIFName("vertex_id");
 
   PreLoop::PreLoop() {
-    myPreLoopAlgBase_p=PreLoopAlgFactory::instance()->makeNewAlg(*this);
+   myControlFlowGraphVertexAlgBase_p=PreLoopAlgFactory::instance()->makeNewAlg(*this);
   }
  
   PreLoop::~PreLoop() {
-    delete myPreLoopAlgBase_p;
+    if (myControlFlowGraphVertexAlgBase_p) delete myControlFlowGraphVertexAlgBase_p;
   }
 
   void
@@ -57,18 +57,10 @@ namespace xaifBooster {
   } 
 
   PreLoopAlgBase&
-  PreLoop::getPreLoopAlgBase() {
-    if (!myPreLoopAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("PreLoop::getPreLoopAlgBase: not set");
-    return *myPreLoopAlgBase_p;
-  }
-                                                                                 
-  const PreLoopAlgBase&
   PreLoop::getPreLoopAlgBase() const {
-    if (!myPreLoopAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("PreLoop::getPreLoopAlgBase: not set");
-    return *myPreLoopAlgBase_p;
+    if (!myControlFlowGraphVertexAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("PreLoop::getControlFlowGraphVertexAlgBase: not set");
+    return dynamic_cast<PreLoopAlgBase&>(*myControlFlowGraphVertexAlgBase_p);
   }
- 
 
 } // end of namespace xaifBooster 

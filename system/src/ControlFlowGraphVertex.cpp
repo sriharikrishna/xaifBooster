@@ -5,12 +5,10 @@
 
 namespace xaifBooster { 
 
-  ControlFlowGraphVertex::ControlFlowGraphVertex() {
-    myControlFlowGraphVertexAlgBase_p=ControlFlowGraphVertexAlgFactory::instance()->makeNewAlg(*this);
-  }
+  ControlFlowGraphVertex::ControlFlowGraphVertex() : myControlFlowGraphVertexAlgBase_p(0) {}
 
   ControlFlowGraphVertex::~ControlFlowGraphVertex() {
-    delete myControlFlowGraphVertexAlgBase_p;
+    if (myControlFlowGraphVertexAlgBase_p) delete myControlFlowGraphVertexAlgBase_p;
   }
 
 

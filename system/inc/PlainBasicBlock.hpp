@@ -1,7 +1,7 @@
 #ifndef _PLAINBASICBLOCK_INCLUDE_
 #define _PLAINBASICBLOCK_INCLUDE_
 
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+//UN #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include <list>
 
 namespace xaifBooster { 
@@ -13,7 +13,8 @@ namespace xaifBooster {
    * class PlainBasicBlock describes a block of statements.
    * I.e. think of statements within {}
    */
-  class PlainBasicBlock : public ControlFlowGraphVertex {
+  // UNclass PlainBasicBlock : public ControlFlowGraphVertex {
+  class PlainBasicBlock {
   public:
     
     PlainBasicBlock (Scope& theScope);
