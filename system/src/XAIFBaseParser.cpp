@@ -103,7 +103,7 @@ namespace xaifBooster {
     catch (LogicException& e) { 
       DBG_MACRO(DbgGroup::ERROR,
 		"XMLParser::actionInvocation: caught: " 
-		<< e.getReason().c_str() << " at line " << myLocator_p->getLineNumber()); 
+		<< e.getReason().c_str() << " at line " << myLocator_p->getLineNumber() << " in the input XML file"); 
       throw e;
     } 
   } // end of XAIFBaseParser::actionInvocation
