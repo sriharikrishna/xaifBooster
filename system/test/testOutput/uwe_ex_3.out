@@ -26,6 +26,8 @@
       <xaif:ScopeEdge edge_id="2" source="3" target="1"/>
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
+      <xaif:AliasSet key="0">
+      </xaif:AliasSet>
     </xaif:AliasSetList>
     <xaif:DUUDSetList>
       <xaif:DUUDSet>

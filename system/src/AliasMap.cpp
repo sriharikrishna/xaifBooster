@@ -19,8 +19,6 @@ namespace xaifBooster {
   AliasMapEntry& 
   AliasMap::addAliasMapEntry(const std::string& aKey) { 
     unsigned int intKey = atoi(aKey.c_str());
-    if (!intKey)
-      THROW_LOGICEXCEPTION_MACRO("AliasMap::addAliasMapEntry: cannot add key >" << aKey.c_str() << "<");
     if (intKey>=myAAVector.size())
       // resize and initialize to 0
       myAAVector.resize(intKey>myAAVector.size()+256?intKey:myAAVector.size()+256,0);
