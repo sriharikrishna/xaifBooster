@@ -1,15 +1,16 @@
-#ifndef _INLINABLESUBROUTINECALL_INCLUDE_
-#define _INLINABLESUBROUTINECALL_INCLUDE_
+#ifndef _XAIFBOOSTERINLINABLEXMLREPRESENTATION_INLINABLESUBROUTINECALL_INCLUDE_
+#define _XAIFBOOSTERINLINABLEXMLREPRESENTATION_INLINABLESUBROUTINECALL_INCLUDE_
 
 #include <list>
-#include "xaifBooster/utils/inc/ObjectWithId.hpp"
-#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/BasicBlockElement.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterInlinableXMLRepresentation { 
 
   class ArgumentSubstitute;
 
-  class InlinableSubroutineCall : public XMLPrintable, public ObjectWithId {
+  class InlinableSubroutineCall : public BasicBlockElement {
   public:
 
     InlinableSubroutineCall(const std::string& aSubroutineName);
@@ -31,6 +32,8 @@ namespace xaifBooster {
 
     ArgumentSubstitute& addArgumentSubstitute(unsigned int aPosition);
 
+    virtual void traverseToChildren(GenericAction::GenericAction_E){};
+
   private: 
     
     /** 
@@ -46,6 +49,6 @@ namespace xaifBooster {
     
   }; // end of class InlinableSubroutineCall
  
-} // end of namespace xaifBooster
+} // end of namespace
                                                                      
 #endif

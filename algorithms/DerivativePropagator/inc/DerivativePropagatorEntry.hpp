@@ -26,14 +26,6 @@ namespace xaifBoosterDerivativePropagator {
 
     typedef std::list<const Variable*> VariablePList;
 
-    /**
-     * the Variable pointers returned in the VariablePList 
-     * are owned by the DerivativePropagatorSaxpy
-     * and are therefore not to be deleted by the caller
-     * returns the list of the x in a*x
-     */
-    virtual void getSources(VariablePList& theVariablePList) const ; 
-
     /** 
      * Factors a in a*x
      */
@@ -49,7 +41,9 @@ namespace xaifBoosterDerivativePropagator {
 			   VARIABLE_FACTOR, 
 			   NOT_SET};
 
-      Factor() : myFactorKind(NOT_SET) {};
+      Factor() : 
+	myFactorKind(NOT_SET),
+	mySource_p(0) {};
       void setZero(); 
       void setUnit(); 
       void setConstant(const Constant& theConstant); 
@@ -57,12 +51,15 @@ namespace xaifBoosterDerivativePropagator {
       FactorKind_E getKind() const;
       const Variable& getVariable() const;
       const Constant& getConstant() const;
+      void  setSource(const Variable& theVariable);
+      const Variable& getSource() const;
     private: 
       union { 
 	const Variable* myVariable_p;
 	const Constant* myConstant_p;
       } myFactor;
       FactorKind_E myFactorKind;
+      const Variable* mySource_p;
     };
 
     typedef std::list<Factor> FactorList;

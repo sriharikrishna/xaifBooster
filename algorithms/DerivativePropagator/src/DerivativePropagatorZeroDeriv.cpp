@@ -48,9 +48,6 @@ namespace xaifBoosterDerivativePropagator {
     return out.str();
   } // end of DerivativePropagatorZeroDeriv::debug
 
-  void DerivativePropagatorZeroDeriv::getSources(VariablePList& theVariablePList) const { 
-  }
-
   void  DerivativePropagatorZeroDeriv::getFactors(FactorList& theFactorList) const { 
     Factor aFactor;
     aFactor.setZero();
