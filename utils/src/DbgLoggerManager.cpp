@@ -1,7 +1,10 @@
+#include <sys/time.h>
+#include <iomanip>
+#include <cerrno>
+
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/Thread.hpp"
-#include <cerrno>
 
 namespace xaifBooster { 
 
@@ -89,7 +92,9 @@ namespace xaifBooster {
   DbgLoggerManager::DbgLoggerManager() : 
     myLogger_p(NULL), 
     myDebugOutPutFileName(""),
-    mySelector(0) { 
+    mySelector(0),
+    myPreviousS(0),
+    myPreviousMS(0) { 
   } // end of DbgLoggerManager::DbgLoggerManager
   
   DbgLoggerManager::~DbgLoggerManager() { 
@@ -123,6 +128,24 @@ namespace xaifBooster {
 	      << ":"
 	      << DbgGroup::toString(aGroup_c)
 	      << ":";
+      if (aGroup_c && DbgGroup::TIMING) {
+	timeval aTimeVal;
+	gettimeofday(&aTimeVal,0);
+	message << std::setw(10)
+		<< aTimeVal.tv_sec
+		<< "."
+		<< std::setw(6)
+		<< aTimeVal.tv_usec
+		<< ":"
+		<< std::setw(10)
+		<< ((aTimeVal.tv_usec<myPreviousMS)?aTimeVal.tv_sec-myPreviousS-1:aTimeVal.tv_sec-myPreviousS)
+		<< "."
+		<< std::setw(6)
+		<< ((aTimeVal.tv_usec<myPreviousMS)?myPreviousMS-aTimeVal.tv_usec:aTimeVal.tv_usec-myPreviousMS)
+		<< ":"; 
+	myPreviousS=aTimeVal.tv_sec;
+	myPreviousMS=aTimeVal.tv_usec;
+      } 
       message << aMessage_r.str().c_str();
       if (myLogger_p) { 
 	myLogger_p->logMessage(message);
