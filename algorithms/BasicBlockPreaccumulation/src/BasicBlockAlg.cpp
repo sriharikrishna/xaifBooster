@@ -341,10 +341,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // and remove the ones not needed as indicated by 
       // the duud information:
       const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(theFlattenedSequence.getDependentList());
+      // we need a complete copy to ensure correctness in case of overwritten (local) independents
+      VariableCPList theDepVertexPListCopyWithoutRemovals;
       for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
 	   aDepVertexPListI!=theDepVertexPList.end();) { 
 	// cast it first
 	const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
+	// copy it
+	theDepVertexPListCopyWithoutRemovals.push_back(&(myPrivateVertex.getLHSVariable()));
 	// advance the iterator before we delete anything:
 	++aDepVertexPListI;
 	// all the dependent ones should have the LHS set
@@ -372,7 +376,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
 	}
       } 
+      // UN: this is used to keep track of those independent variables
+      // that were already assigned to temporary variables to ensure correctness
+      // of the Jacobian accumulation code.
+      HashTable<const Variable*> theListOfAlreadyAssignedIndependents;
+      InternalReferenceConcretizationList theInternalReferenceConcretizationList;
       // filter out singleton vertices
+      xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator aDPBeginI((*i)->myDerivativePropagator.getEntryPList().begin());
       bool findNext=true;
       while (findNext) {
 	// try to find a singleton vertex
@@ -385,9 +395,64 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // remove this vertex in the dependent/independent lists
 	    theFlattenedSequence.removeFromDependentList(*it);
 	    theFlattenedSequence.removeFromIndependentList(*it);
-	    // make the direct assignment instaed.
+	    // this is the independent:
+	    const Variable& theIndepVariable(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getRHSVariable());
+	    // now figure out if the independent may be overwritten:
+	    const Variable* theIndepVariableContainer_cp=0;
+	    if (isAliased(theIndepVariable,
+			  theDepVertexPListCopyWithoutRemovals)) { 
+	      // make a Variable (container) for use in the setDeriv
+	      Variable* theIndepVariableContainer_p = new Variable;
+	      myNewIndependentsPList.push_back(theIndepVariableContainer_p);
+	      // was this actual indepenent already assigned?
+	      // Note, that at this point they should indeed all be syntactically distinct 
+	      if (!(theListOfAlreadyAssignedIndependents.hasElement(theIndepVariable.equivalenceSignature()))) {
+		// no, we have to make a new assignment
+		// this will be the lhs:
+		Variable theTarget;
+		Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+				      getCallGraph().getScopeTree().getGlobalScope());
+		VariableSymbolReference* theTemporaryVariableReference_p=
+		  new VariableSymbolReference(theGlobalScope.getSymbolTable().
+					      addUniqueAuxSymbol(SymbolKind::VARIABLE,
+								 SymbolType::REAL_STYPE,
+								 SymbolShape::SCALAR,
+								 true),
+					      theGlobalScope);
+		theTemporaryVariableReference_p->setId("1");
+		theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
+		theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
+		theTarget.getAliasMapKey().setTemporary();
+		theTarget.getDuUdMapKey().setTemporary();
+		// copy the new temporary into the container
+		theTarget.copyMyselfInto(*theIndepVariableContainer_p);
+		// "theTarget" is only local but the DerivativePropagatorSetDeriv 
+		// ctor performs a deep copy and owns the new instance so we are fine
+		// the theListOfAlreadyAssignedIndependents needs to contain the 
+		// address of the copy.
+		theListOfAlreadyAssignedIndependents.
+		  addElement(theIndepVariable.equivalenceSignature(),
+			     &((*i)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+										    theIndepVariable).getTarget()));
+	      } // end if (wasn't assigned efore  
+	      else {
+		// yes, it was assigned before
+		// copy the previously created temporary into the container
+		(theListOfAlreadyAssignedIndependents.getElement(theIndepVariable.equivalenceSignature()))->
+		  copyMyselfInto(*theIndepVariableContainer_p); 
+	      }
+	      // point to the new or previously created temporary
+	      theIndepVariableContainer_cp=theIndepVariableContainer_p;
+	    } // end if isAliased
+	    else { // not aliased
+	      // point to the original independent
+	      theIndepVariableContainer_cp=&theIndepVariable;
+	    }
+
+	    // make the direct assignment instead.
 	    (*i)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getLHSVariable(),
-								 dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getRHSVariable());
+								 *theIndepVariableContainer_cp,
+								 aDPBeginI);
 	    // remove it from the graph
 	    theFlattenedSequence.removeAndDeleteVertex(*it);
 	    // need to break out here because we removed the vertex
@@ -449,12 +514,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	catch(...) { 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
 	}
-	// UN: this is used to keep track of those independent variables
-	// that were already assigned to temporary variables to ensure correctness
-	// of the Jacobian accumulation code.
-	HashTable<const Variable*> theListOfAlreadyAssignedIndependents;
-	
-	InternalReferenceConcretizationList theInternalReferenceConcretizationList;
 	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
 	      (*i)->myJacobianAccumulationExpressionList.getGraphList().begin();
 	    it!=(*i)->myJacobianAccumulationExpressionList.getGraphList().end();
@@ -493,7 +552,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       (theExpression.getIndependent()).getRHSVariable());
 	    const Variable* theIndepVariableContainer_cp=0;
 	    if (isAliased(theIndepVariable,
-			  theFlattenedSequence)) { 
+			  theDepVertexPListCopyWithoutRemovals)) { 
 	      // make a Variable (container) for use in the saxpys:
 	      Variable* theIndepVariableContainer_p = new Variable;
 	      myNewIndependentsPList.push_back(theIndepVariableContainer_p);
@@ -872,16 +931,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end of BasicBlockAlg::getDerivativePropagator
 
   bool BasicBlockAlg::isAliased(const Variable& theIndepVariable,
-				const PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& 
-      theDependentList(theFlattenedSequence.getDependentList());
+				const BasicBlockAlg::VariableCPList& theDependentList) { 
     AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getAliasMap());
-    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator li=theDependentList.begin();
+    for (VariableCPList::const_iterator li=theDependentList.begin();
 	 li!=theDependentList.end();
 	 ++li) { 
       if (theAliasMap.mayAlias(theIndepVariable.getAliasMapKey(),
-			       dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**li).getLHSVariable().getAliasMapKey()))
+			       (*li)->getAliasMapKey()))
 	return true;
     } // end for 
     return false;

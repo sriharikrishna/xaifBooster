@@ -2,6 +2,7 @@
 
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 #include "xaifBooster/system/inc/DuUdMapEntry.hpp"
 
@@ -63,6 +64,19 @@ namespace xaifBooster {
   void DuUdMapEntry::appendToStatementIdList(const std::string& anId) { 
     myStatementIdList.push_back(anId);
   } 
+
+  const DuUdMapUseResult DuUdMapEntry::use(const DuUdMapDefinitionResult::StatementIdList& anIdList) const { 
+    DuUdMapUseResult theResult;
+    if (myStatementIdList.empty()) { 
+      DBG_MACRO(DbgGroup::ERROR,"DuUdMapEntry::use: an empty StatementIdList implies dead code, the subsequent transformations may fail");
+      return theResult;
+    }
+    // for now the same logic:
+    DuUdMapDefinitionResult theDefResult(definition(anIdList));
+    theResult.myAnswer=theDefResult.myAnswer;
+    theResult.myStatementId=theDefResult.myStatementId;
+    return theResult;
+  }
 
   const DuUdMapDefinitionResult DuUdMapEntry::definition(const DuUdMapDefinitionResult::StatementIdList& anIdList) const { 
     if (myStatementIdList.empty()) 

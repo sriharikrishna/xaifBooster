@@ -7,6 +7,7 @@
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 #include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
+#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
 
 namespace xaifBooster{ 
 
@@ -44,6 +45,14 @@ namespace xaifBooster{
      * we are looking for a definition
      */
     const DuUdMapDefinitionResult definition(const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
+
+    /** 
+     * anIdList contains the Ids of all statements 
+     * in the scope of question so far
+     * this applies only to DU chains and for this definition 
+     * we are looking for uses
+     */
+    const DuUdMapUseResult use(const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
 
     /** 
      * the name says it all

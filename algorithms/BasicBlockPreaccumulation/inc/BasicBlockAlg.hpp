@@ -303,12 +303,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   Assignment& theNewAssignment,
 							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
 							   VertexPairList& theVertexPairList);
+    typedef std::list<const Variable*> VariableCPList;
 
     /** 
      * determines variables in IN and OUT
      */
     bool isAliased(const Variable& theIndepVariable,
-		   const PrivateLinearizedComputationalGraph& theFlattenedSequence);
+		   const VariableCPList& theDependentList);
     
   };
  
