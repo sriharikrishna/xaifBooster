@@ -25,8 +25,6 @@ export XERCESC_INCLUDE_DIR=$(XERCESCROOT)/include
 
 export BOOST_INCLUDE_DIR=$(BOOSTROOT)
 
-export DUMMY_FACTORY_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src/srcFactories/obj/*.o)
-
 export SYSTEM_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src/obj/*.o)
 
 export SYSTEM_INC_DIR=$(XAIFBOOSTERROOT)

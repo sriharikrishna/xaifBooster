@@ -8,7 +8,7 @@ namespace xaifBooster {
 
   class Argument;
 
-  ALG_FACTORY_DECL_MACRO(Argument,ArgumentAlgBase,ArgumentAlgBase);
+  BASE_ALG_FACTORY_DECL_MACRO(Argument,ArgumentAlgBase);
 
 } // end of namespace 
 
