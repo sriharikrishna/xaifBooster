@@ -10,14 +10,20 @@
 	  type(active), dimension(:), allocatable :: x, xph
 	  type(active), dimension(:), allocatable :: y, yph
           real h
-          integer n,m
+          integer n,m,nx1,nx2
           integer i,j,k
+	  double precision  hx1,hx2,xx2,xx1,r
+	  double precision zero,one,two,three,four
+	  parameter(zero=0.0d0,one=1.0d0,two=2.0d0,three=3.0d0,four=4.0d0)
 
-          open(2,action='read',file='params.conf')
-          read(2,'(I5,/,I5,/,F8.1)') n, m, h
-          close(2)
-
-          
+	  nx1=5
+	  nx2=5
+!	  n should nx1*nx2 
+	  n=25
+	  m=25
+	  h=0.00001
+	  r=10.0
+	  
           allocate(x0(n))
           allocate(res_dd(m))
           allocate(res_ad(m))
@@ -26,13 +32,25 @@
           allocate(y(m))
           allocate(yph(m))
 
-          x0(1) = 2.5d-1
-          x0(2) = 3.9d-1
-          x0(3) = 4.15d-1
-          x0(4) = 3.9d-1
+!         initial value 
 
-          open(2,file='tmpOutput/dd.out')
-          write(2,*) "DD"
+	  hx1 = one/dble(nx1 + 1)
+	  hx2 = one/dble(nx2 + 1)
+
+	  xx2 = hx2
+	  do i = 1, nx2
+	     xx1 = hx1
+	     do j = 1, nx1
+		k = (i - 1)*nx1 + j
+		x0(k) = - xx1*(one - xx1)*xx2*(one - xx2)
+		xx1 = xx1 + hx1
+	     end do
+	     xx1 = hx1
+	     xx2 = xx2 + hx2
+	  end do
+	  
+	  open(2,file='tmpOutput/dd.out')
+	  write(2,*) "DD"
 	  do i=1,n   
 	    do j=1,n   
               x(j)%v=x0(j)
@@ -41,8 +59,8 @@
               else
                 xph(j)%v=x0(j)
               end if
-	      call head(xph,yph)
-	      call head(x,y)
+	      call head(nx1,nx2,xph,yph,r)
+	      call head(nx1,nx2,x,y,r)
               do k=1,m
                 res_dd(k)=(yph(k)%v-y(k)%v)/h
               end do
@@ -51,6 +69,14 @@
           end do
           close(2)
 
+	  call head(nx1,nx2,x,y,r)
+	  do i=1,n
+	     write(*,*) "x(",i,")= ",x(i)%v
+	  end do
+	  do i=1,n
+	     write(*,*) "y(",i,")= ",y(i)%v
+	  end do
+	 
           open(2,file='tmpOutput/ad.out')
           write(2,*) "AD"
 	  do i=1,n   
@@ -62,7 +88,7 @@
                 x(j)%d=0.0
               end if
             end do
-	    call head(x,y)
+	    call head(nx1,nx2,x,y,r)
             do k=1,m
               res_ad(k)=y(k)%d
             end do
