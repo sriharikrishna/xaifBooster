@@ -112,5 +112,15 @@ namespace xaifBooster {
   ControlFlowGraph::getArgumentList() const { 
     return myArgumentList;
   } 
+
+  InOutList& 
+  ControlFlowGraph::getInOutList() { 
+    return myInOutList;
+  } 
+  
+  const InOutList& 
+  ControlFlowGraph::getInOutList() const { 
+    return myInOutList;
+  } 
   
 } // end of namespace xaifBooster 

@@ -13,7 +13,7 @@ ourActionCatalogue.addElement(BasicBlock::ourXAIFName, ActionItem(&XAIFBaseParse
 ourActionCatalogue.addElement(BooleanOperation::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onBooleanOperation));
 ourActionCatalogue.addElement(CallGraph::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onCallGraph));
 ourActionCatalogue.addElement(CallGraphEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onCallGraphEdge));
-ourActionCatalogue.addElement(ConcreteArgument::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onArgument));
+ourActionCatalogue.addElement(ConcreteArgument::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onConcreteArgument));
 ourActionCatalogue.addElement(Condition::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onCondition));
 ourActionCatalogue.addElement(Constant::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onConstant));
 ourActionCatalogue.addElement(ControlFlowGraph::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onControlFlowGraph));
@@ -36,8 +36,12 @@ ourActionCatalogue.addElement(SubroutineCall::ourXAIFName, ActionItem(&XAIFBaseP
 ourActionCatalogue.addElement(Symbol::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSymbol));
 ourActionCatalogue.addElement(SymbolTable::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSymbolTable));
 ourActionCatalogue.addElement(Update::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onUpdate));
-ourActionCatalogue.addElement(Argument::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onVariable));
+ourActionCatalogue.addElement(Argument::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onArgument));
 ourActionCatalogue.addElement(VariableEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onVariableEdge));
+ourActionCatalogue.addElement(InOutList::our_OutList_XAIFName, ActionItem(&XAIFBaseParserHandlers::onInOutList));
+ourActionCatalogue.addElement(InOutList::our_InList_XAIFName, ActionItem(&XAIFBaseParserHandlers::onInOutList));
+ourActionCatalogue.addElement(InOutList::our_Output_XAIFName, ActionItem(&XAIFBaseParserHandlers::onOutput));
+ourActionCatalogue.addElement(InOutList::our_Input_XAIFName, ActionItem(&XAIFBaseParserHandlers::onInput));
 ourActionCatalogue.addElement("#comment", ActionItem(&XAIFBaseParserHandlers::onDummy));
 ourActionCatalogue.addElement("#document", ActionItem(&XAIFBaseParserHandlers::onDummy));
 ourActionCatalogue.addElement("#text", ActionItem(&XAIFBaseParserHandlers::onDummy));

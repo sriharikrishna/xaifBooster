@@ -9,6 +9,7 @@
 #include "xaifBooster/system/inc/AliasMapKey.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
+#include "xaifBooster/system/inc/DuUd.hpp"
 
 namespace xaifBooster { 
 
@@ -113,6 +114,10 @@ namespace xaifBooster {
      */
     void setActiveUseType(ActiveUseType::ActiveUseType_E anActiveUseType); 
 
+    DuUd& getDuUd(); 
+
+    const DuUd& getDuUd() const; 
+
   private: 
     
     /** 
@@ -140,6 +145,11 @@ namespace xaifBooster {
     mutable ActiveUseType::ActiveUseType_E myActiveUseType;
 
     bool myactiveUseTypeSetFlag;
+
+    /** 
+     * this contains duud information 
+     */
+    DuUd myDuUd;
 
   }; // end of class Variable
 
