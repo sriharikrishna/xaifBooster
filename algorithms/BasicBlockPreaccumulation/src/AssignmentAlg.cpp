@@ -160,7 +160,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // already added to the track list
 	} // end if 
 	else { // the vertex cannot be uniquely identified
-	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
+	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED
+	      && 
+	      dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) {
+	    // passive bits have not been removed yet since we potentially 
+	    // need them for some partial code generation but vertices may 
+	    // been marked as passive during the previous analysis.
 	    // the RHS identification doesn't really matter since we cannot 
 	    // uniquely identify within the RHSs it is only important that we don't 
 	    // alias a preceding LHS
@@ -188,8 +193,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    }
 	  } // end if NOT_IDENTIFIED
 	  else { // there is an ambiquity
-	    // we need to undo all additions of vertices of this assignment
-	    // edges have not been added yet
+	    // but we should have detected this earlier
 	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): should not find an ambiguity at this point");
 	  } // end else (ambiguity)
 	} // end else
