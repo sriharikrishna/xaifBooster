@@ -99,8 +99,11 @@ namespace xaifBoosterLinearization {
     for (;ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI)
       printEdgeAnnotationsBottomUp(*ExpressionEdgeI,
 				   theExpression,
-				   os); 
-    if (dynamic_cast<ExpressionEdgeAlg&>(theEdge.getExpressionEdgeAlgBase()).hasConcretePartialAssignment()) { 
+				   os);
+    ExpressionEdgeAlg& theExpressionEdgeAlg(dynamic_cast<ExpressionEdgeAlg&>(theEdge.getExpressionEdgeAlgBase())); 
+    if (theExpressionEdgeAlg.hasConcretePartialAssignment()
+	&& 
+	theExpressionEdgeAlg.getPartialDerivativeKind()!=PartialDerivativeKind::PASSIVE) { 
       DBG_MACRO(DbgGroup::CALLSTACK,
 		"xaifBoosterLinearization::AssignmentAlg::printEdgeAnnotationsBottomUp: printing for " 
 		<< theEdge.debug().c_str() 
