@@ -11,7 +11,6 @@ namespace xaifBooster {
 
   class XAIFBaseParser :  public XERCES_CPP_NAMESPACE::DefaultHandler, public XMLParser, public XAIFBaseParserHandlers {
   public:
-
     void initialize();
 
     /**
@@ -24,6 +23,8 @@ namespace xaifBooster {
 
   private:
 
+    const XERCES_CPP_NAMESPACE::Locator * myLocator_p;
+    void setDocumentLocator(const XERCES_CPP_NAMESPACE::Locator* const locator); 
     /**
      * action held in ourActionCatalogue
      * keyed by node specs
