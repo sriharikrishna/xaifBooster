@@ -36,7 +36,7 @@ CC=gcc
 RM=rm -f
 
 $(TARGET).B: $(TARGET).f mfef90
-	./mfef90 $(TARGET).f
+	./mfef90 -F -N80 $(TARGET).f
 
 $(TARGET).xaif : $(TARGET).B whirl2xaif
 	./whirl2xaif -o $(TARGET).xaif $(TARGET).B
