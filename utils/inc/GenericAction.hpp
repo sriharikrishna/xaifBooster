@@ -18,7 +18,11 @@ public:
 			  ALGORITHM_ACTION_1,
 			  ALGORITHM_ACTION_2,
 			  ALGORITHM_ACTION_3,
-			  ALGORITHM_ACTION_4};
+			  ALGORITHM_ACTION_4,
+			  ALGORITHM_ACTION_5,
+			  ALGORITHM_ACTION_6,
+			  ALGORITHM_ACTION_7,
+			  ALGORITHM_ACTION_8};
 
     static std::string toString(const GenericAction_E& anAction) throw (PrintingIntException);
 
