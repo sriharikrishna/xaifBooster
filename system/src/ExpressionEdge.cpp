@@ -16,10 +16,10 @@ namespace xaifBooster {
   const std::string ExpressionEdge::our_target_XAIFName("target");
   const std::string ExpressionEdge::our_myPosition_XAIFName("position");
 
-  ExpressionEdge::ExpressionEdge(bool hasAlgorithm): 
+  ExpressionEdge::ExpressionEdge(bool makeAlgorithm): 
     myPosition(0) {
     myExpressionEdgeAlgBase_p=0;
-    if (hasAlgorithm)
+    if (makeAlgorithm)
       myExpressionEdgeAlgBase_p=ExpressionEdgeAlgFactory::instance()->makeNewAlg(*this);
   }; 
 
@@ -33,7 +33,7 @@ namespace xaifBooster {
    */
   void
   ExpressionEdge::printXMLHierarchy(std::ostream& os,
-		  const Expression& theExpression) const { 
+				    const Expression& theExpression) const { 
     if (myExpressionEdgeAlgBase_p)
       myExpressionEdgeAlgBase_p->printXMLHierarchy(os,theExpression);
     else
@@ -42,7 +42,7 @@ namespace xaifBooster {
 
   void 
   ExpressionEdge::printXMLHierarchyImpl(std::ostream& os, 
-		  const Expression& theExpression) const { 
+					const Expression& theExpression) const { 
     PrintManager& pm=PrintManager::getInstance(); 
     os << pm.indent() 
        << "<" 
@@ -109,13 +109,6 @@ namespace xaifBooster {
   } // end createCopyOfMyself
 
   ExpressionEdgeAlgBase&
-  ExpressionEdge::getExpressionEdgeAlgBase() {
-    if (!myExpressionEdgeAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("ExpressionEdge::getExpressionEdgeAlgBase: not set");
-    return *myExpressionEdgeAlgBase_p;
-  } // end getExpressionEdgeAlgBase
-
-  const ExpressionEdgeAlgBase&
   ExpressionEdge::getExpressionEdgeAlgBase() const {
     if (!myExpressionEdgeAlgBase_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionEdge::getExpressionEdgeAlgBase: not set");

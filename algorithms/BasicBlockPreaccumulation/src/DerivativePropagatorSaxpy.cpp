@@ -1,9 +1,12 @@
-#include "DerivativePropagatorSaxpy.hpp"
-#include "PrintManager.hpp"
-#include "Variable.hpp"
 #include <sstream>
 
-namespace xaifBooster { 
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+
+#include "xaifBooster/system/inc/Variable.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
+
+namespace xaifBoosterBasicBlockPreaccumulation { 
 
   const std::string DerivativePropagatorSaxpy::ourXAIFName("xaif:Saxpy");
   const std::string DerivativePropagatorSaxpy::our_SAX_XAIFName("xaif:Sax");
@@ -12,16 +15,16 @@ namespace xaifBooster {
   const std::string DerivativePropagatorSaxpy::our_myY_XAIFName("xaif:Y");
   const std::string DerivativePropagatorSaxpy::our_myAX_XAIFName("xaif:AX");
 
-  DerivativePropagatorSaxpy::DerivativePropagatorSaxpy(const BaseVariableReference& theA,
-						       const BaseVariableReference& theX,
-						       const BaseVariableReference& theY) : 
+  DerivativePropagatorSaxpy::DerivativePropagatorSaxpy(const Variable& theA,
+						       const Variable& theX,
+						       const Variable& theY) : 
     useAsSaxFlag(false) { 
     AX* theAX_p=new AX();
     myAXPList.push_back(theAX_p);
     Variable* theVariable_p=new Variable();
     theVariable_p->setId(1);
     theAX_p->myA.supplyAndAddVertexInstance(*theVariable_p);
-    theA.copyMyselfInto(theVariable_p->getBaseVariableReference());
+    theA.copyMyselfInto(theVariable_p->getVariable());
     theX.copyMyselfInto(theAX_p->myX);
     theAX_p->myX.setId(1);
     theAX_p->myX.setDerivFlag();
@@ -30,22 +33,22 @@ namespace xaifBooster {
     myY.setDerivFlag();
   }
 
-  void DerivativePropagatorSaxpy::addAX(const BaseVariableReference& theA,
-					const BaseVariableReference& theX) { 
+  void DerivativePropagatorSaxpy::addAX(const Variable& theA,
+					const Variable& theX) { 
     AX* theAX_p=new AX();
     myAXPList.push_back(theAX_p);
     Variable* theVariable_p=new Variable();
     theVariable_p->setId(1);
     theAX_p->myA.supplyAndAddVertexInstance(*theVariable_p);
-    theA.copyMyselfInto(theVariable_p->getBaseVariableReference());
+    theA.copyMyselfInto(theVariable_p->getVariable());
     theX.copyMyselfInto(theAX_p->myX);
     theAX_p->myX.setId(1);
     theAX_p->myX.setDerivFlag();
   } 
 
   DerivativePropagatorSaxpy::DerivativePropagatorSaxpy(const Constant& theA,
-						       const BaseVariableReference& theX,
-						       const BaseVariableReference& theY) : 
+						       const Variable& theX,
+						       const Variable& theY) : 
     useAsSaxFlag(false) { 
     AX* theAX_p=new AX();
     myAXPList.push_back(theAX_p);
@@ -61,7 +64,7 @@ namespace xaifBooster {
 
 
   void DerivativePropagatorSaxpy::addAX(const Constant& theA,
-					const BaseVariableReference& theX) { 
+					const Variable& theX) { 
     AX* theAX_p=new AX();
     myAXPList.push_back(theAX_p);
     ExpressionVertex& theConstant(theA.createCopyOfMyself());
@@ -130,7 +133,7 @@ namespace xaifBooster {
   } // end of DerivativePropagatorSaxpy::printXMLHierarchy
 
   void
-  DerivativePropagatorSaxpy::printMemberXMLHierarchy(const BaseVariableReference& theBaseVariableReference,
+  DerivativePropagatorSaxpy::printMemberXMLHierarchy(const Variable& theVariable,
 						     const std::string& aName,
 						     std::ostream& os) const { 
     PrintManager& pm=PrintManager::getInstance();
@@ -138,13 +141,13 @@ namespace xaifBooster {
        << "<"
        << aName.c_str() 
        << " "
-       << BaseVariableReference::our_myDerivFlag_XAIFName.c_str()
+       << Variable::our_myDerivFlag_XAIFName.c_str()
        << "=\""
-       << theBaseVariableReference.getDerivFlag()
+       << theVariable.getDerivFlag()
        << "\""
        << ">" 
        << std::endl; 
-    theBaseVariableReference.printXMLHierarchy(os);
+    theVariable.printXMLHierarchy(os);
     os << pm.indent() 
        << "</"
        << aName.c_str()
@@ -182,4 +185,4 @@ namespace xaifBooster {
     return out.str();
   } // end of DerivativePropagatorSaxpy::debug
 
-} // end of namespace xaifBooster 
+}

@@ -2,26 +2,49 @@
 #define _EXPRESSIONVERTEX_INCLUDE_
 
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
 #include "xaifBooster/system/inc/VertexTraversable.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
 
 namespace xaifBooster { 
 
   /**
    * base class for various vertex types inside of expressions
    */
-  class ExpressionVertex : public VertexTraversable, public ObjectWithId {
+  class ExpressionVertex : public VertexTraversable, 
+			   public ObjectWithId {
+
   public:
 
     ExpressionVertex();
 
-    ~ExpressionVertex();
+    /**
+     * dtor deallocates the algorithm object if present
+     */
+    virtual ~ExpressionVertex();
 
     /**
      * invoked by Expression
      */
     virtual void printXMLHierarchy(std::ostream& os) const=0;
 
+    /** 
+     * nothing implemented. this is for edges
+     */
+    void printXMLHierarchyImpl(std::ostream& os, const Expression& theExpression) const {};
+
+    /**
+     * actual implementation for printing xaif
+     * always invoked by the graph
+     */
+    void printXMLHierarchyImpl(std::ostream& os) const {};
+
     std::string debug() const ;
+
+    /**
+     * access the algorithm
+     */
+    ExpressionVertexAlgBase& getExpressionVertexAlgBase() const;
 
     /**
      * leaf objects that are derived from this class
@@ -36,7 +59,26 @@ namespace xaifBooster {
      */
     virtual ExpressionVertex& createCopyOfMyself(bool withAlgorithm=false) const=0;
 
+    virtual const InlinableIntrinsicsCatalogueItem& getInlinableIntrinsicsCatalogueItem() const;
+
   private: 
+
+    /** 
+     * no def 
+     */ 
+    ExpressionVertex(const ExpressionVertex&); 
+
+    /** 
+     * no def 
+     */ 
+    ExpressionVertex& operator=(const ExpressionVertex&); 
+
+  protected:
+    /**
+     * if required then an algorithm object is allocated dynamically
+     * by the factory and the pointer is set
+     */
+    ExpressionVertexAlgBase* myExpressionVertexAlgBase_p;
 
   }; // end of class ExpressionVertex
  

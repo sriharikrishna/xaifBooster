@@ -1,6 +1,8 @@
-#include "PrivateLinearizedComputationalGraphEdge.hpp"
-#include "LogicException.hpp"
 #include <sstream>
+
+#include "xaifBooster/utils/inc/LogicException.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 
 namespace xaifBooster { 
 

@@ -16,8 +16,8 @@
 #include "xaifBooster/system/inc/IfStatement.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/Marker.hpp"
-#include "xaifBooster/system/inc/BaseVariableSymbolReference.hpp"
-#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/ExpressionEdge.hpp"
@@ -456,7 +456,7 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XMLParser::onAssignment" ); 
     BasicBlock& theBasicBlock(passingIn.getBasicBlock());
     Assignment* theAssignment_p=new Assignment(convertToBoolean(getAttributeValueByName(theNode_p,
-											PlainAssignment::our_myActiveFlag_XAIFName)));
+											Assignment::our_myActiveFlag_XAIFName)));
     theAssignment_p->setId(getAttributeValueByName(theNode_p,
 						   Assignment::our_myId_XAIFName));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theAssignment_p);
@@ -471,13 +471,11 @@ namespace xaifBooster {
     Assignment& theAssignment(passingIn.getAssignment());
     theAssignment.getLHS().getAliasActivityMapKey().
       setReference(atoi(getAttributeValueByName(theNode_p,
-						BaseVariableReference::our_myKey_XAIFName).c_str()));
-    passingOut.setBaseVariableReference(theAssignment.getLHS());
+						Variable::our_myKey_XAIFName).c_str()));
+    passingOut.setVariable(theAssignment.getLHS());
     
-    // JU todo: remove this ugly hack.
-    if (!convertToBoolean(getAttributeValueByName(theNode_p,
-						  PlainAssignment::our_myActiveFlag_XAIFName))) 
-      theAssignment.passivate();
+    theAssignment.setLHSActiveFlag(convertToBoolean(getAttributeValueByName(theNode_p,
+									    Assignment::our_myActiveFlag_XAIFName))); 
   };
 
   void 
@@ -526,21 +524,21 @@ namespace xaifBooster {
 				 XMLParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XMLParser::onVariableReference" ); 
     Expression& theExpression(passingIn.getExpression());
-    Variable* theVariable_p=new Variable();
-    theVariable_p->setId(getAttributeValueByName(theNode_p,
-						 Variable::our_myId_XAIFName));
-    theExpression.supplyAndAddVertexInstance(*theVariable_p);
-    theVariable_p->getBaseVariableReference().getAliasActivityMapKey().
+    Argument* theArgument_p=new Argument();
+    theArgument_p->setId(getAttributeValueByName(theNode_p,
+						 Argument::our_myId_XAIFName));
+    theExpression.supplyAndAddVertexInstance(*theArgument_p);
+    theArgument_p->getVariable().getAliasActivityMapKey().
       setReference(atoi(getAttributeValueByName(theNode_p,
-						BaseVariableReference::our_myKey_XAIFName).c_str()));
+						Variable::our_myKey_XAIFName).c_str()));
     if (! ConceptuallyStaticInstances::instance()->getCallGraph().
 	getAliasActivityMap().
-	isActive(theVariable_p->getBaseVariableReference().
+	isActive(theArgument_p->getVariable().
 		 getAliasActivityMapKey())) { 
       // it is marked as passive in the AliasActivityMap:
-      //      theVariable_p->passivate();
+      //      theArgument_p->passivate();
     } 
-    passingOut.setBaseVariableReference(theVariable_p->getBaseVariableReference());
+    passingOut.setVariable(theArgument_p->getVariable());
   };
 
   void 
@@ -548,14 +546,14 @@ namespace xaifBooster {
 				     const XMLParserHelper& passingIn,
 				     XMLParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XMLParser::onVariableReferenceEdge" ); 
-    BaseVariableReference& theBaseVariableReference(passingIn.getBaseVariableReference());
+    Variable& theVariable(passingIn.getVariable());
     std::string sourceId=getAttributeValueByName(theNode_p,
-						 BaseVariableReferenceEdge::our_source_XAIFName);
+						 VariableEdge::our_source_XAIFName);
     std::string targetId=getAttributeValueByName(theNode_p,
-						 BaseVariableReferenceEdge::our_target_XAIFName);
-    BaseVariableReference::VertexIteratorPair p=theBaseVariableReference.vertices();
-    BaseVariableReference::VertexIterator beginIt(p.first),endIt(p.second);
-    BaseVariableReferenceVertex *theSource_p(0), *theTarget_p(0);
+						 VariableEdge::our_target_XAIFName);
+    Variable::VertexIteratorPair p=theVariable.vertices();
+    Variable::VertexIterator beginIt(p.first),endIt(p.second);
+    VariableVertex *theSource_p(0), *theTarget_p(0);
     for (; (beginIt!=endIt)
 	   && !(theSource_p && theTarget_p)
 	   ;++beginIt) { 
@@ -566,13 +564,13 @@ namespace xaifBooster {
     }
     if (!theTarget_p || 
 	!theSource_p)
-      THROW_LOGICEXCEPTION_MACRO("XMLParser::onBaseVariableReferenceEdge: can't find source  " 
+      THROW_LOGICEXCEPTION_MACRO("XMLParser::onVariableEdge: can't find source  " 
 				 << sourceId.c_str()
 				 << " or target "
 				 << targetId.c_str());
-    BaseVariableReferenceEdge& theBaseVariableReferenceEdge(theBaseVariableReference.addEdge(*theSource_p, *theTarget_p));
-    theBaseVariableReferenceEdge.setId(getAttributeValueByName(theNode_p,
-							       BaseVariableReferenceEdge::our_myId_XAIFName));
+    VariableEdge& theVariableEdge(theVariable.addEdge(*theSource_p, *theTarget_p));
+    theVariableEdge.setId(getAttributeValueByName(theNode_p,
+							       VariableEdge::our_myId_XAIFName));
   };
 
   void 
@@ -694,18 +692,18 @@ namespace xaifBooster {
 			       const XMLParserHelper& passingIn,
 			       XMLParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XMLParser::onSymbolReference" ); 
-    BaseVariableReference& theBaseVariableReference(passingIn.getBaseVariableReference());
+    Variable& theVariable(passingIn.getVariable());
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
 			  getScopeById(getAttributeValueByName(theNode_p,
-							       BaseVariableSymbolReference::our_scopeId_XAIFName)));
+							       VariableSymbolReference::our_scopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
 			    getElement(getAttributeValueByName(theNode_p,
 							       Symbol::our_myId_XAIFName)));
-    BaseVariableSymbolReference* theBaseVariableSymbolReference_p=new BaseVariableSymbolReference(theSymbol,
+    VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(theSymbol,
 												  theScope);
-    theBaseVariableReference.supplyAndAddVertexInstance(*theBaseVariableSymbolReference_p);
-    theBaseVariableSymbolReference_p->setId(getAttributeValueByName(theNode_p,
-								    BaseVariableSymbolReference::our_myId_XAIFName));
+    theVariable.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+    theVariableSymbolReference_p->setId(getAttributeValueByName(theNode_p,
+								    VariableSymbolReference::our_myId_XAIFName));
   };
 
   void 
@@ -713,9 +711,9 @@ namespace xaifBooster {
 			   const XMLParserHelper& passingIn,
 			   XMLParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XMLParser::onArrayAccess" ); 
-    BaseVariableReference& theBaseVariableReference(passingIn.getBaseVariableReference());
+    Variable& theVariable(passingIn.getVariable());
     ArrayAccess* theNewArrayAccess_p = new ArrayAccess();
-    theBaseVariableReference.supplyAndAddVertexInstance(*theNewArrayAccess_p);
+    theVariable.supplyAndAddVertexInstance(*theNewArrayAccess_p);
     theNewArrayAccess_p->setId(getAttributeValueByName(theNode_p, ArrayAccess::our_myId_XAIFName));
     passingOut.setArrayAccess(*theNewArrayAccess_p);
   };
@@ -805,7 +803,7 @@ namespace xaifBooster {
       new ConcreteArgument(atoi(getAttributeValueByName(theNode_p,
 							ConcreteArgument::our_myPosition_XAIFName).c_str()));
     theSubroutineCall.getArgumentList().push_back(theNewConcreteArgument_p);
-    passingOut.setBaseVariableReference(theNewConcreteArgument_p->getBaseVariableReference());
+    passingOut.setVariable(theNewConcreteArgument_p->getVariable());
   };
 
   void 
@@ -900,9 +898,9 @@ namespace xaifBooster {
     PARSE_METHOD_STMT(ArrayAccess::ourXAIFName,onArrayAccess);
     PARSE_METHOD_STMT(ArrayAccess::our_myIndex_XAIFName,onArrayIndex);
     PARSE_METHOD_STMT(Assignment::ourXAIFName,onAssignment);
-    PARSE_METHOD_STMT(Assignment::our_myLhs_XAIFName,onAssignmentLHS);
-    PARSE_METHOD_STMT(Assignment::our_myRhs_XAIFName,onAssignmentRHS);
-    PARSE_METHOD_STMT(BaseVariableSymbolReference::ourXAIFName,onSymbolReference);
+    PARSE_METHOD_STMT(Assignment::our_myLHS_XAIFName,onAssignmentLHS);
+    PARSE_METHOD_STMT(Assignment::our_myRHS_XAIFName,onAssignmentRHS);
+    PARSE_METHOD_STMT(VariableSymbolReference::ourXAIFName,onSymbolReference);
     PARSE_METHOD_STMT(BasicBlock::ourXAIFName,onBasicBlock);
     PARSE_METHOD_STMT(BooleanOperation::ourXAIFName,onBooleanOperation);
     PARSE_METHOD_STMT(CallGraph::ourXAIFName,onCallGraph);
@@ -930,8 +928,8 @@ namespace xaifBooster {
     PARSE_METHOD_STMT(Symbol::ourXAIFName,onSymbol);
     PARSE_METHOD_STMT(SymbolTable::ourXAIFName,onSymbolTable);
     PARSE_METHOD_STMT(Update::ourXAIFName,onUpdate);
-    PARSE_METHOD_STMT(Variable::ourXAIFName,onVariableReference);
-    PARSE_METHOD_STMT(BaseVariableReferenceEdge::ourXAIFName,onVariableReferenceEdge);
+    PARSE_METHOD_STMT(Argument::ourXAIFName,onVariableReference);
+    PARSE_METHOD_STMT(VariableEdge::ourXAIFName,onVariableReferenceEdge);
 
     // dummy elements
     PARSE_METHOD_STMT("#comment",onDummy);

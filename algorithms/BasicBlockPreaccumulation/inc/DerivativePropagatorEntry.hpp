@@ -1,7 +1,7 @@
 #ifndef _DERIVATIVEPROPAGATORENTRY_INCLUDE_
 #define _DERIVATIVEPROPAGATORENTRY_INCLUDE_
 
-#include "XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 namespace xaifBooster { 
 

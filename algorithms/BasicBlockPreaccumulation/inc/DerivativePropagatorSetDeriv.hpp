@@ -1,22 +1,22 @@
 #ifndef _DERIVATIVEPROPAGATORSETDERIV_INCLUDE_
 #define _DERIVATIVEPROPAGATORSETDERIV_INCLUDE_
 
-#include "xaifBooster/system/inc/DerivativePropagatorEntry.hpp"
-#include "xaifBooster/system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorEntry.hpp"
 
 namespace xaifBooster { 
 
   class DerivativePropagatorSetDeriv : public DerivativePropagatorEntry {
   public:
 
-    DerivativePropagatorSetDeriv(const BaseVariableReference& theTarget,
-				 const BaseVariableReference& theSource);
+    DerivativePropagatorSetDeriv(const Variable& theTarget,
+				 const Variable& theSource);
 
     ~DerivativePropagatorSetDeriv(){};
 
     void printXMLHierarchy(std::ostream& os) const;
 
-    void printMemberXMLHierarchy(const BaseVariableReference& theBaseVariableReference,
+    void printMemberXMLHierarchy(const Variable& theVariable,
 				 const std::string& aName,
 				 std::ostream& os) const;
 
@@ -31,7 +31,7 @@ namespace xaifBooster {
 
     static const std::string our_mySource_XAIFName;
 
-    const BaseVariableReference& getTarget() const;
+    const Variable& getTarget() const;
 
   private:
 
@@ -50,8 +50,8 @@ namespace xaifBooster {
      */
     DerivativePropagatorSetDeriv operator=(const DerivativePropagatorSetDeriv&);
 
-    BaseVariableReference myTarget;
-    BaseVariableReference mySource;
+    Variable myTarget;
+    Variable mySource;
 
   }; // end of class DerivativePropagatorSetDeriv
  

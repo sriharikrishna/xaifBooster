@@ -23,7 +23,7 @@ namespace xaifBooster {
        << myPosition
        << "\">" 
        << std::endl; 
-    myBaseVariableReference.printXMLHierarchy(os);
+    myVariable.printXMLHierarchy(os);
     os << pm.indent()
        << "</"
        << ourXAIFName.c_str()
@@ -43,14 +43,14 @@ namespace xaifBooster {
     return myPosition;
   } 
     
-  BaseVariableReference& 
-  ConcreteArgument::getBaseVariableReference() { 
-    return myBaseVariableReference;
+  Variable& 
+  ConcreteArgument::getVariable() { 
+    return myVariable;
   } 
 
-  const BaseVariableReference& 
-  ConcreteArgument::getBaseVariableReference() const { 
-    return myBaseVariableReference;
+  const Variable& 
+  ConcreteArgument::getVariable() const { 
+    return myVariable;
   } 
 
 } // end of namespace xaifBooster 

@@ -1,12 +1,16 @@
 #ifndef _LINEARIZEDCOMPUTATIONALGRAPH_INCLUDE_
 #define _LINEARIZEDCOMPUTATIONALGRAPH_INCLUDE_
 
-#include "GraphWrapper.hpp"
-#include "LinearizedComputationalGraphVertex.hpp"
-#include "LinearizedComputationalGraphEdge.hpp"
 #include <list>
 
-namespace xaifBooster { 
+#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
+
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
+
+using namespace xaifBooster;
+
+namespace xaifBoosterCrossCountryInterface { 
 
   /**
    * the default representation for LinearizedComputationalGraph
@@ -28,6 +32,6 @@ namespace xaifBooster {
 
   }; // end of class LinearizedComputationalGraph 
 
-} // end of namespace xaifBooster
+} 
                                                                      
 #endif

@@ -1,7 +1,10 @@
-#include "DerivativePropagatorSetDeriv.hpp"
-#include "PrintManager.hpp"
-#include "Variable.hpp"
 #include <sstream>
+
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+
+#include "xaifBooster/system/inc/Variable.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSetDeriv.hpp"
 
 namespace xaifBooster { 
 
@@ -9,8 +12,8 @@ namespace xaifBooster {
   const std::string DerivativePropagatorSetDeriv::our_myTarget_XAIFName("xaif:Tgt");
   const std::string DerivativePropagatorSetDeriv::our_mySource_XAIFName("xaif:Src");
 
-  DerivativePropagatorSetDeriv::DerivativePropagatorSetDeriv(const BaseVariableReference& theTarget,
-							     const BaseVariableReference& theSource) { 
+  DerivativePropagatorSetDeriv::DerivativePropagatorSetDeriv(const Variable& theTarget,
+							     const Variable& theSource) { 
     theTarget.copyMyselfInto(myTarget);
     myTarget.setId(1);
     myTarget.setDerivFlag();
@@ -38,7 +41,7 @@ namespace xaifBooster {
   } // end of DerivativePropagatorSetDeriv::printXMLHierarchy
 
   void
-  DerivativePropagatorSetDeriv::printMemberXMLHierarchy(const BaseVariableReference& theBaseVariableReference,
+  DerivativePropagatorSetDeriv::printMemberXMLHierarchy(const Variable& theVariable,
 							const std::string& aName,
 							std::ostream& os) const { 
     PrintManager& pm=PrintManager::getInstance();
@@ -46,13 +49,13 @@ namespace xaifBooster {
        << "<"
        << aName.c_str() 
        << " "
-       << BaseVariableReference::our_myDerivFlag_XAIFName.c_str()
+       << Variable::our_myDerivFlag_XAIFName.c_str()
        << "=\""
-       << theBaseVariableReference.getDerivFlag()
+       << theVariable.getDerivFlag()
        << "\""
        << ">" 
        << std::endl; 
-    theBaseVariableReference.printXMLHierarchy(os);
+    theVariable.printXMLHierarchy(os);
     os << pm.indent() 
        << "</"
        << aName.c_str()
@@ -70,7 +73,7 @@ namespace xaifBooster {
     return out.str();
   } // end of DerivativePropagatorSetDeriv::debug
 
-  const BaseVariableReference& 
+  const Variable& 
   DerivativePropagatorSetDeriv::getTarget() const {
     return myTarget;
   }

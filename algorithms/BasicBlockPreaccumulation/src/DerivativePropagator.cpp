@@ -1,9 +1,11 @@
-#include "DerivativePropagator.hpp"
-#include "DerivativePropagatorSaxpy.hpp"
-#include "DerivativePropagatorSetDeriv.hpp"
-#include "DerivativePropagatorZeroDeriv.hpp"
-#include "PrintManager.hpp"
 #include <sstream>
+
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagator.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSaxpy.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorSetDeriv.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorZeroDeriv.hpp"
 
 namespace xaifBooster { 
 
@@ -48,17 +50,17 @@ namespace xaifBooster {
   } // end of DerivativePropagator::debug
 
   const DerivativePropagatorSetDeriv& 
-  DerivativePropagator::addSetDerivToEntryList(const BaseVariableReference& theTarget,
-					       const BaseVariableReference& theSource) { 
+  DerivativePropagator::addSetDerivToEntryList(const Variable& theTarget,
+					       const Variable& theSource) { 
     DerivativePropagatorSetDeriv* theDPSD_p= new DerivativePropagatorSetDeriv(theTarget,
 									      theSource);
     myEntryList.push_front(theDPSD_p);
     return *theDPSD_p;
   } 
 
-  DerivativePropagatorSaxpy& DerivativePropagator::addSaxpyToEntryList(const BaseVariableReference& thePartial,
-								  const BaseVariableReference& theDependent,
-								  const BaseVariableReference& theIndependent) { 
+  DerivativePropagatorSaxpy& DerivativePropagator::addSaxpyToEntryList(const Variable& thePartial,
+								  const Variable& theDependent,
+								  const Variable& theIndependent) { 
     DerivativePropagatorSaxpy* aSaxpy_p=new DerivativePropagatorSaxpy(thePartial,
 								      theDependent,
 								      theIndependent);
@@ -67,8 +69,8 @@ namespace xaifBooster {
   } 
 
   DerivativePropagatorSaxpy& DerivativePropagator::addSaxpyToEntryList(const Constant& thePartial,
-								  const BaseVariableReference& theDependent,
-								  const BaseVariableReference& theIndependent) { 
+								  const Variable& theDependent,
+								  const Variable& theIndependent) { 
     DerivativePropagatorSaxpy* aSaxpy_p=new DerivativePropagatorSaxpy(thePartial,
 								      theDependent,
 								      theIndependent);
@@ -76,7 +78,7 @@ namespace xaifBooster {
     return *aSaxpy_p;
   } 
 
-  void DerivativePropagator::addZeroDerivToEntryList(const BaseVariableReference& theTarget) { 
+  void DerivativePropagator::addZeroDerivToEntryList(const Variable& theTarget) { 
     myEntryList.push_back(new DerivativePropagatorZeroDeriv(theTarget));
   } 
 

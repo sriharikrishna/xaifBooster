@@ -1,6 +1,6 @@
-#include "JacobianAccumulationExpressionList.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 
-namespace xaifBooster { 
+namespace xaifBoosterCrossCountryInterface {
 
   JacobianAccumulationExpressionList::~JacobianAccumulationExpressionList() {
     for (GraphList::iterator it=myGraphList.begin();

@@ -1,6 +1,6 @@
-#include "LinearizedComputationalGraph.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 
-namespace xaifBooster { 
+namespace xaifBoosterCrossCountryInterface {
 
   const LinearizedComputationalGraph::VertexPointerList&
   LinearizedComputationalGraph::getIndependentList() const { 

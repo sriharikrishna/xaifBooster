@@ -1,6 +1,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/system/inc/ConstantAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -9,8 +10,11 @@ namespace xaifBooster {
   const std::string Constant::our_myValue_XAIFName("value");
   const std::string Constant::our_myId_XAIFName("vertex_id");
 
-  Constant::Constant(const SymbolType::SymbolType_E aType) : 
+  Constant::Constant(const SymbolType::SymbolType_E aType, 
+		     bool makeAlgorithm) : 
     BaseConstant(aType) {
+    if (makeAlgorithm)
+      myExpressionVertexAlgBase_p=ConstantAlgFactory::instance()->makeNewAlg(*this); 
   };
 
   std::string Constant::debug () const { 

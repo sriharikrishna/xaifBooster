@@ -3,14 +3,32 @@
 
 namespace xaifBooster { 
 
-  ExpressionVertex::ExpressionVertex(){}; 
+  ExpressionVertex::ExpressionVertex() : 
+    myExpressionVertexAlgBase_p(0)  {} 
 
-  ExpressionVertex::~ExpressionVertex(){};
+  ExpressionVertex::~ExpressionVertex(){
+    if (myExpressionVertexAlgBase_p) delete myExpressionVertexAlgBase_p;
+  };
   
+  ExpressionVertexAlgBase&
+  ExpressionVertex::getExpressionVertexAlgBase() const {
+    if (!myExpressionVertexAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertex::getExpressionVertexAlgBase: not set");
+    return *myExpressionVertexAlgBase_p;
+  } // end getExpressionVertexAlgBase
+
   std::string ExpressionVertex::debug () const { 
     std::ostringstream out;
     out << "ExpressionVertex[" << this << "]" << std::ends;  
     return out.str();
   } // end debug
+
+  const InlinableIntrinsicsCatalogueItem& 
+  ExpressionVertex::getInlinableIntrinsicsCatalogueItem() const { 
+    THROW_LOGICEXCEPTION_MACRO("ExpressionVertex::getInlinableIntrinsicsCatalogueItem: is not valid for this instance");
+    // make up a dummy to satisfy the compiler
+    // we never reach this, so...
+    return *(new InlinableIntrinsicsCatalogueItem(1));
+  } 
 
 } // end of namespace xaifBooster 

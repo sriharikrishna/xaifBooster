@@ -1,13 +1,16 @@
-#include "DerivativePropagatorZeroDeriv.hpp"
-#include "PrintManager.hpp"
-#include "Variable.hpp"
 #include <sstream>
+
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+
+#include "xaifBooster/system/inc/Variable.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorZeroDeriv.hpp"
 
 namespace xaifBooster { 
 
   const std::string DerivativePropagatorZeroDeriv::ourXAIFName("xaif:ZeroDeriv");
 
-  DerivativePropagatorZeroDeriv::DerivativePropagatorZeroDeriv(const BaseVariableReference& theTarget) { 
+  DerivativePropagatorZeroDeriv::DerivativePropagatorZeroDeriv(const Variable& theTarget) { 
     theTarget.copyMyselfInto(myTarget);
     myTarget.setId(1);
     myTarget.setDerivFlag();
@@ -20,7 +23,7 @@ namespace xaifBooster {
        << "<"
        << ourXAIFName
        << " "
-       << BaseVariableReference::our_myDerivFlag_XAIFName.c_str()
+       << Variable::our_myDerivFlag_XAIFName.c_str()
        << "=\""
        << myTarget.getDerivFlag()
        << "\""

@@ -1,7 +1,7 @@
 #ifndef  _EDGETRAVERSABLE_INCLUDE_
 #define  _EDGETRAVERSABLE_INCLUDE_
 
-#include "xaifBooster/system/inc/Edge.hpp"
+#include "xaifBooster/boostWrapper/inc/Edge.hpp"
 #include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 
 namespace xaifBooster { 

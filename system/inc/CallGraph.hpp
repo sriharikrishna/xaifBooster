@@ -2,7 +2,7 @@
 #define _CALLGRAPH_INCLUDE_
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
-#include "xaifBooster/system/inc/GraphWrapper.hpp"
+#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/CallGraphEdge.hpp"
 #include "xaifBooster/system/inc/Scopes.hpp"

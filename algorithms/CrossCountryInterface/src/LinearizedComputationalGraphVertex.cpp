@@ -1,5 +1,5 @@
-#include "LinearizedComputationalGraphVertex.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 
-namespace xaifBooster { 
+namespace xaifBoosterCrossCountryInterface {
 
 } 

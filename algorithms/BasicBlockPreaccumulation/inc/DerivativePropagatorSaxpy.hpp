@@ -1,24 +1,24 @@
 #ifndef _DERIVATIVEPROPAGATORSAXPY_INCLUDE_
 #define _DERIVATIVEPROPAGATORSAXPY_INCLUDE_
 
-#include "xaifBooster/system/inc/DerivativePropagatorEntry.hpp"
-#include "xaifBooster/system/inc/BaseVariableReference.hpp"
+#include <list>
+#include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
-#include <list>
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorEntry.hpp"
 
 namespace xaifBooster { 
 
   class DerivativePropagatorSaxpy : public DerivativePropagatorEntry {
   public:
 
-    DerivativePropagatorSaxpy(const BaseVariableReference& theA,
-			      const BaseVariableReference& theX,
-			      const BaseVariableReference& theY);
+    DerivativePropagatorSaxpy(const Variable& theA,
+			      const Variable& theX,
+			      const Variable& theY);
 
     DerivativePropagatorSaxpy(const Constant& theA,
-			      const BaseVariableReference& theX,
-			      const BaseVariableReference& theY);
+			      const Variable& theX,
+			      const Variable& theY);
 
     ~DerivativePropagatorSaxpy();
 
@@ -46,11 +46,11 @@ namespace xaifBooster {
 
     static const std::string our_myAX_XAIFName;
 
-    void addAX(const BaseVariableReference& theA,
-	       const BaseVariableReference& theX);
+    void addAX(const Variable& theA,
+	       const Variable& theX);
 
     void addAX(const Constant& theA,
-	       const BaseVariableReference& theX);
+	       const Variable& theX);
     
   private:
 
@@ -71,17 +71,17 @@ namespace xaifBooster {
 
     struct AX { 
       Expression myA;
-      BaseVariableReference myX;
+      Variable myX;
     }; 
     typedef std::list <AX*> AXPList;
 
     AXPList myAXPList;
 
-    BaseVariableReference myY;
+    Variable myY;
 
     bool useAsSaxFlag;
 
-    void printMemberXMLHierarchy(const BaseVariableReference& theBaseVariableReference,
+    void printMemberXMLHierarchy(const Variable& theVariable,
 				 const std::string& aName,
 				 std::ostream& os) const;
 

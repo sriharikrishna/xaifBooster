@@ -1,7 +1,7 @@
 #ifndef  _VERTEXTRAVERSABLE_INCLUDE_
 #define  _VERTEXTRAVERSABLE_INCLUDE_
 
-#include "xaifBooster/system/inc/Vertex.hpp" 
+#include "xaifBooster/boostWrapper/inc/Vertex.hpp" 
 #include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 
 namespace xaifBooster { 

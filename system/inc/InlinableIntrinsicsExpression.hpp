@@ -1,7 +1,7 @@
 #ifndef _INLINABLEINTRINSICSEXPRESSION_INCLUDE_
 #define _INLINABLEINTRINSICSEXPRESSION_INCLUDE_
 
-#include "xaifBooster/system/inc/GraphWrapper.hpp"
+#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpressionVertex.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpressionEdge.hpp"
 #include "xaifBooster/system/inc/PartialDerivativeKind.hpp"

@@ -3,7 +3,7 @@
 
 namespace xaifBooster { 
 
-  BaseVariableReferenceVertex& 
+  VariableVertex& 
   ArrayAccess::createCopyOfMyself() const { 
     ArrayAccess* theCopy_p=new ArrayAccess();
     for (IndexListType::const_iterator i=myIndexList.begin();

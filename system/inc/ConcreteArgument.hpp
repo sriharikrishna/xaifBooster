@@ -1,7 +1,7 @@
 #ifndef _CONCRETEARGUMENT_INCLUDE_
 #define _CONCRETEARGUMENT_INCLUDE_
 
-#include "xaifBooster/system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
 namespace xaifBooster { 
@@ -38,9 +38,9 @@ namespace xaifBooster {
 
     unsigned int getPosition() const;
     
-    BaseVariableReference& getBaseVariableReference();
+    Variable& getVariable();
 
-    const BaseVariableReference& getBaseVariableReference() const ;
+    const Variable& getVariable() const ;
 
   private:
     
@@ -58,7 +58,7 @@ namespace xaifBooster {
     /**
      * the actual concrete argument
      */
-    BaseVariableReference myBaseVariableReference;
+    Variable myVariable;
 
   }; // end of class ConcreteArgument
 

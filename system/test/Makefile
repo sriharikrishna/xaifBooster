@@ -3,9 +3,10 @@ MAIN=t
 test: $(MAIN)
 
 clean:
-	rm -f obj/*.o obj/*.d $(MAIN)
+	rm -f obj/*.o obj/*.d $(MAIN) 
+	rm -rf tmp
 
-obj doc: ;
+oabj doc: ;
 
 .PHONY: obj test doc clean
 

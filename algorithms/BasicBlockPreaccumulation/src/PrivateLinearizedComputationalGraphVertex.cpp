@@ -1,12 +1,12 @@
-#include "PrivateLinearizedComputationalGraphVertex.hpp"
-#include "LogicException.hpp"
-#include "BaseVariableReference.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 namespace xaifBooster { 
 
   PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() : 
-    myRHSBaseVariableReference_p(0), 
-    myLHSBaseVariableReference_p(0) {
+    myRHSVariable_p(0), 
+    myLHSVariable_p(0) {
   }
 
   std::string PrivateLinearizedComputationalGraphVertex::debug() const { 
@@ -16,36 +16,36 @@ namespace xaifBooster {
     return out.str();
   } 
 
-  void PrivateLinearizedComputationalGraphVertex::setRHSBaseVariableReference(const BaseVariableReference& aRHSBaseVariableReference) {
-    if (myRHSBaseVariableReference_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setRHSBaseVariableReference: already set to "
-				 << myRHSBaseVariableReference_p->debug().c_str()
+  void PrivateLinearizedComputationalGraphVertex::setRHSVariable(const Variable& aRHSVariable) {
+    if (myRHSVariable_p) 
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setRHSVariable: already set to "
+				 << myRHSVariable_p->debug().c_str()
 				 << " while trying to set for " 
-				 << aRHSBaseVariableReference.debug().c_str());
-    myRHSBaseVariableReference_p=&aRHSBaseVariableReference;
+				 << aRHSVariable.debug().c_str());
+    myRHSVariable_p=&aRHSVariable;
   }
 
-  const BaseVariableReference& 
-  PrivateLinearizedComputationalGraphVertex::getRHSBaseVariableReference() const { 
-    if (!myRHSBaseVariableReference_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getRHSBaseVariableReference: not set");
-    return *myRHSBaseVariableReference_p;
+  const Variable& 
+  PrivateLinearizedComputationalGraphVertex::getRHSVariable() const { 
+    if (!myRHSVariable_p) 
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getRHSVariable: not set");
+    return *myRHSVariable_p;
   } 
 
-  void PrivateLinearizedComputationalGraphVertex::setLHSBaseVariableReference(const BaseVariableReference& aLHSBaseVariableReference) {
-    if (myLHSBaseVariableReference_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setLHSBaseVariableReference: already set to "
-				 << myLHSBaseVariableReference_p->debug().c_str()
+  void PrivateLinearizedComputationalGraphVertex::setLHSVariable(const Variable& aLHSVariable) {
+    if (myLHSVariable_p) 
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setLHSVariable: already set to "
+				 << myLHSVariable_p->debug().c_str()
 				 << " while trying to set for " 
-				 << aLHSBaseVariableReference.debug().c_str());
-    myLHSBaseVariableReference_p=&aLHSBaseVariableReference;
+				 << aLHSVariable.debug().c_str());
+    myLHSVariable_p=&aLHSVariable;
   }
 
-  const BaseVariableReference& 
-  PrivateLinearizedComputationalGraphVertex::getLHSBaseVariableReference() const { 
-    if (!myLHSBaseVariableReference_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getLHSBaseVariableReference: not set");
-    return *myLHSBaseVariableReference_p;
+  const Variable& 
+  PrivateLinearizedComputationalGraphVertex::getLHSVariable() const { 
+    if (!myLHSVariable_p) 
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getLHSVariable: not set");
+    return *myLHSVariable_p;
   } 
 
 } 

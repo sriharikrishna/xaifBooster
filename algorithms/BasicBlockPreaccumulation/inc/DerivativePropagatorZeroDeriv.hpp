@@ -1,20 +1,20 @@
 #ifndef _DERIVATIVEPROPAGATORZERODERIV_INCLUDE_
 #define _DERIVATIVEPROPAGATORZERODERIV_INCLUDE_
 
-#include "xaifBooster/system/inc/DerivativePropagatorEntry.hpp"
-#include "xaifBooster/system/inc/BaseVariableReference.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/DerivativePropagatorEntry.hpp"
 
 namespace xaifBooster { 
 
   /**
-   * an active BaseVariableReference
+   * an active Variable
    * whose deriv component is to be set to zero
    */
 
   class DerivativePropagatorZeroDeriv : public DerivativePropagatorEntry {
   public:
 
-    DerivativePropagatorZeroDeriv(const BaseVariableReference& theTarget);
+    DerivativePropagatorZeroDeriv(const Variable& theTarget);
 
     ~DerivativePropagatorZeroDeriv(){};
 
@@ -44,7 +44,7 @@ namespace xaifBooster {
      */
     DerivativePropagatorZeroDeriv operator=(const DerivativePropagatorZeroDeriv&);
 
-    BaseVariableReference myTarget;
+    Variable myTarget;
 
   }; // end of class DerivativePropagatorZeroDeriv
  

@@ -1,7 +1,7 @@
 #ifndef  _GRAPHWRAPPERTRAVERSABLE_INCLUDE_
 #define  _GRAPHWRAPPERTRAVERSABLE_INCLUDE_
 
-#include "xaifBooster/system/inc/GraphWrapper.hpp"
+#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
 #include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 
 namespace xaifBooster { 
