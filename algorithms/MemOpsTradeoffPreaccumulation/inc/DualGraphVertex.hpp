@@ -22,13 +22,18 @@ namespace MemOpsTradeoffPreaccumulation {
      * constructor sets the jacobianref to null, so that when the destructor executes, jacobianref will
      * only be deleted if it has been set in the first place.
      */
-    DualGraphVertex():jacobianRef(NULL) {};
+    DualGraphVertex(){
+      final = false;
+      jacobianRef = NULL;
+    };
 
     ~DualGraphVertex(){
       if(jacobianRef){
 	delete jacobianRef;
       }
     };
+
+    bool final;
 
     enum DualVertexRefType { TO_ORIGINAL_EDGE,
 			     TO_ASSUMED_INEDGE,

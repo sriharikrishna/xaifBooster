@@ -47,60 +47,56 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 			      const DualGraph::VertexPointerList& theSuccList,
 			      DualGraphVertex* newOrAbsorb){
 
-   //  DualGraph::FacePointerList theNewFaceList;
+    DualGraph::FacePointerList theNewFaceList;
 
-//     //spath iterates through each path in the list
-//     DualGraph::PathList::const_iterator spath;
-//     //svertex iterates through each vertex in the path
-//     DualGraphPath::Path::iterator svertex;
-//     DualGraph::facePointerList::iterator sface;
+    //spath iterates through each path in the list
+    DualGraph::PathList::const_iterator spath;
+    //svertex iterates through each vertex in the path
+    DualGraphPath::Path::iterator svertex;
+    DualGraph::FacePointerList::iterator sface;
 
-//     for(sface = theOldFaceList.begin(); sface != theOldFaceList.end(); sface++){
+    for(sface = theOldFaceList.begin(); sface != theOldFaceList.end(); sface++){
 
-//       DualGraph::InEdgeIteratorPair die (theDual.getInEdgesOf(theDual.getSourceOf(**sface)));
-//       DualGraph::InEdgeIterator diei (die.first), die_end (die.second);
-//       DualGraph::OutEdgeIteratorPair doe (theDual.getOutEdgesOf(theDual.getTargetOf(**sface)));
-//       DualGraph::OutEdgeIterator doei (doe.first), doe_end (doe.second);
+      DualGraph::ConstInEdgeIteratorPair die (theDual.getInEdgesOf(theDual.getSourceOf(**sface)));
+      DualGraph::ConstInEdgeIterator diei (die.first), die_end (die.second);
+      DualGraph::ConstOutEdgeIteratorPair doe (theDual.getOutEdgesOf(theDual.getTargetOf(**sface)));
+      DualGraph::ConstOutEdgeIterator doei (doe.first), doe_end (doe.second);
+      bool loopcheck = true;
 
-//       for(; diei != die_end; ++diei){
-// 	for(; doei != doe_end; ++doei){
-// 	  if((numOutEdgesOf(getSourceOf(*diei)) > 1) && (numInEdgesOf(getTargetOf(*doei)) > 1)){
+      for(; (diei != die_end) && loopcheck; ++diei){
+	if(theDual.numOutEdgesOf(theDual.getSourceOf(*diei)) > 1){
+	  for(; (doei != doe_end) && loopcheck; ++doei){
+	    if(theDual.numInEdgesOf(theDual.getTargetOf(*doei)) > 1){
 
-// 	    for(spath = myPathList.begin(); spath != myPathList.end(); spath++){
-// 	      for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
-// 		if(*svertex == &getSourceOf(*diei)){
-// 		  //if path contains the vertex, go to next path
-// 		  svertex++;
-// 		  if(*svertex == &theVertex){break;}
-// 		  svertex++;
-// 		  svertex++;
+	      for(spath = (theDual.myPathList).begin(); (spath != (theDual.myPathList).end()) && loopcheck; spath++){
+		for(svertex = ((**spath).myPath).begin(); svertex != ((**spath).myPath).end(); svertex++){
+		  if(*svertex == &theDual.getSourceOf(*diei)){
+		    //if path contains the vertex, go to next vertex in the path
+		    svertex++;
+		    //if the next vertex is the source of the face, go to the next path
+		    if(*svertex == &theDual.getSourceOf(**sface)){break;}
+		    svertex++;
+		    if(*svertex == &theDual.getTargetOf(*doei)){
+		      theNewFaceList.push_back(*sface);
+		      loopcheck = false;
+		      break;
+		    }// end if succ matches
+		  
+		    break;
+		  }// end if vertex is the pred
+		}// end for each vertex in the path
+	      }// end for all paths
 
-// 		  for(; svertex != ((**spath).myPath).end(); svertex++){
-// 		    if(*svertex == &getTargetOf(*doei)){
-// 		      return false;
-// 		    }// end if we find 
-// 		  }// end for all vertices after the pred
+	    }// end if succ has alternate paths
+	  }// end for all out edges
+	}// end if pred has alternate path
+      }// end for all inedges
 
-// 		  //if we dont find the succ, go to next path
-// 		  break;
+    }// end for each face in the old list
 
-// 		}// end if vertex is the pred
-// 	      }// end for each vertex in the path
-// 	    }// end for all paths
-
-// 	  }// end if pred and succ have alternate paths
-// 	}// end for all out edges
-//       }// end for all inedges
-
-
-
-
-
-//     }// end for each face in the old list
-
-//     if(!theNewFaceList.empty()){
-//       theOldFaceList = theNewFaceList;
-//     }// end if
+    if(!theNewFaceList.empty()){
+      theOldFaceList = theNewFaceList;
+    }// end if
 
   }// end absorbMode_f
 
