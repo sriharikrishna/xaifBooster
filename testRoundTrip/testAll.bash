@@ -1,8 +1,24 @@
 #!/bin/bash
-if [ -f .REVERSE_MODE ] 
-then 
-    rm -f .REVERSE_MODE
-fi 
+CP="cp -f"
+
+function copyDefaultBeforeExample { 
+  exampleDir=$1
+  fileName=$2
+  ${CP} simple.$fileName $fileName 
+  if [ $? -ne 0 ] 
+    then 
+      echo "ERROR in: ${CP} simple.$fileName $fileName"; exit -1;
+    fi
+  if [ -f $exampleDir/$fileName ] 
+  then 
+    ${CP} $exampleDir/$fileName .
+    if [ $? -ne 0 ] 
+    then 
+      echo "ERROR in: ${CP} $exampleDir/$fileName"; exit -1;
+    fi
+  fi
+} 
+
 echo -n "use reverse mode y/[n]"
 read answer
 if [ "$answer" == "y" ]
@@ -21,6 +37,7 @@ else
 fi
 for i in `echo ${TESTFILES}`
 do 
+  export TARGET=head
   make testAllclean
   if [ $? -ne 0 ] 
   then 
@@ -34,31 +51,26 @@ do
     DRIVER_NAME=driver
   fi
   exdir=examples/$i
-  if [ -f $exdir/$DRIVER_NAME.f ] 
-  then 
-    ln -sf $exdir/$DRIVER_NAME.f .
-    if [ $? -ne 0 ] 
-    then 
-      echo "ERROR in: ln -sf $exdir/$DRIVER_NAME.f ."; exit -1;
-    fi
-  fi
-  ln -sf $exdir/head.f .
-  if [ $? -ne 0 ] 
-  then 
-    echo "ERROR in: ln -sf $exdir/head.f ."; exit -1;
-  fi
-  if [ -f $exdir/params.conf ]
-  then  
-    ln -sf $exdir/params.conf .
-    if [ $? -ne 0 ] 
-    then 
-      echo "ERROR in: ln -sf $exdir/params.conf ."; exit -1;
-    fi
-  fi
+  copyDefaultBeforeExample $exdir ${DRIVER_NAME}.f90
+  copyDefaultBeforeExample $exdir params.conf
+  copyDefaultBeforeExample $exdir all_globals_mod.f
+  copyDefaultBeforeExample $exdir head.f
+  export TARGET=all_globals_mod
   make
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: make"; exit -1;
+    echo "ERROR in: make for all_globals_mod"; exit -1;
+  fi
+  ${CP}  all_globals_mod.prh.xb.x2w.w2f.urh.pp.f all_globals_mod.f
+  if [ $? -ne 0 ] 
+  then 
+    echo "ERROR in: ${CP}  all_globals_mod.prh.xb.x2w.w2f.urh.pp.f all_globals_mod.f"; exit -1;
+  fi
+  export TARGET=head
+  make
+  if [ $? -ne 0 ] 
+  then 
+    echo "ERROR in: make for head"; exit -1;
   fi
 ### this is temporary until we got rid of the RETURNs
   if [ "$REVERSE_MODE" == "y" ] 
@@ -101,3 +113,4 @@ do
     echo "no diffs"
   fi
 done
+
