@@ -58,13 +58,13 @@ namespace xaifBoosterControlFlowReversal {
     /**
      * indicates if edges has condition value
      */
-    bool my_has_condition_value;
+    // bool my_has_condition_value;
 
     
     /**
      * condition value
      */
-    int my_condition_value;
+    // int my_condition_value;
                                                                                 
 
     /** 

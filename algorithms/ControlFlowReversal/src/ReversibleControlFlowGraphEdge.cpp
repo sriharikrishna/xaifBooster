@@ -10,9 +10,9 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : my_has_condition_value(false), my_condition_value(1), toLoopBody(false), original(false), myOriginalEdge_p(NULL), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge() : toLoopBody(false), original(false), myOriginalEdge_p(NULL), myNewEdge_p(NULL) {}
 
-  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : my_has_condition_value(false), my_condition_value(1), toLoopBody(false), original(true), myOriginalEdge_p(theOriginal), myNewEdge_p(NULL) {}
+  ReversibleControlFlowGraphEdge::ReversibleControlFlowGraphEdge(const ControlFlowGraphEdge* theOriginal) : toLoopBody(false), original(true), myOriginalEdge_p(theOriginal), myNewEdge_p(NULL) {}
 
   ReversibleControlFlowGraphEdge::~ReversibleControlFlowGraphEdge() { 
     if (!original) delete myNewEdge_p;
@@ -45,19 +45,32 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   bool ReversibleControlFlowGraphEdge::has_condition_value() const {
-    return my_has_condition_value;
+    if (original)
+      return myOriginalEdge_p->has_condition_value();
+    else
+      return myNewEdge_p->has_condition_value();
   }
   void ReversibleControlFlowGraphEdge::set_has_condition_value(bool hcv) {
-    my_has_condition_value=hcv;
+    if (original)
+      myOriginalEdge_p->set_has_condition_value(hcv);
+    else
+      myNewEdge_p->set_has_condition_value(hcv);
+      
   }
                                                                                 
   void ReversibleControlFlowGraphEdge::set_condition_value(int cv) {
-    my_condition_value=cv;
-  }
-  const int& ReversibleControlFlowGraphEdge::get_condition_value() const {
-    return my_condition_value;
+    if (original)
+      myOriginalEdge_p->set_condition_value(cv);
+    else
+      myNewEdge_p->set_condition_value(cv);
   }
 
+  const int& ReversibleControlFlowGraphEdge::get_condition_value() const {
+    if (original)
+      return myOriginalEdge_p->get_condition_value();
+    else
+      return myNewEdge_p->get_condition_value();
+  }
 
   void
   ReversibleControlFlowGraphEdge::printXMLHierarchy(std::ostream& os, const ReversibleControlFlowGraph& theGraph) const {
