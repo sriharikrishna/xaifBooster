@@ -1,7 +1,7 @@
 #include <sstream>
 //#include <iostream.h>
-//#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
-#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+//#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/ConstantFolding/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/ConstantFolding/inc/EnhancedPrivateLinearizedComputationalGraph.hpp"
