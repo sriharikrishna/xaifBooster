@@ -3,7 +3,7 @@
 
 #include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphVertex.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
 
 using namespace xaifBooster;
 
@@ -18,7 +18,7 @@ namespace xaifBoosterControlFlowReversal {
     
     ControlFlowGraphAlg(ControlFlowGraph& theContaining);
                                                                                 
-    virtual ~ControlFlowGraphAlg() {};
+    ~ControlFlowGraphAlg();
 
     /**
      * control flow reversal
@@ -31,11 +31,8 @@ namespace xaifBoosterControlFlowReversal {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    typedef GraphWrapperTraversable<ReversibleControlFlowGraphVertex,EdgeTraversable> AugmentedControlFlowGraphType;
-
-    void initTransformedControlFlowGraph();
-    AugmentedControlFlowGraphType& getTransformedControlFlowGraph();
-    const AugmentedControlFlowGraphType& getTransformedControlFlowGraph() const;
+    ReversibleControlFlowGraph& getTransformedControlFlowGraph();
+    const ReversibleControlFlowGraph& getTransformedControlFlowGraph() const;
 
     const ControlFlowGraphVertex& getOriginalEntry() const;
     const ControlFlowGraphVertex& getOriginalExit() const;
@@ -60,7 +57,7 @@ namespace xaifBoosterControlFlowReversal {
     /**
      * transformed copy of the control flow graph
      */
-    AugmentedControlFlowGraphType myTransformedControlFlowGraph;
+    ReversibleControlFlowGraph* myTransformedControlFlowGraph;
 
   };  // end of class
 

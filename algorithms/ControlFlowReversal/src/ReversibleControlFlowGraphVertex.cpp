@@ -8,9 +8,9 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex() : original(false), myOriginalVertex_p(NULL), myNewVertex_p(NULL) {}
+  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex() : original(false), adjoint(false), myOriginalVertex_p(NULL), myNewVertex_p(NULL) {}
 
-  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : original(true), myOriginalVertex_p(theOriginal), myNewVertex_p(NULL) {}
+  ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : original(true), adjoint(false), myOriginalVertex_p(theOriginal), myNewVertex_p(NULL) {}
 
   ReversibleControlFlowGraphVertex::~ReversibleControlFlowGraphVertex() { 
     if (!original) delete myNewVertex_p;
@@ -18,10 +18,14 @@ namespace xaifBoosterControlFlowReversal {
 
   void
   ReversibleControlFlowGraphVertex::printXMLHierarchy(std::ostream& os) const {
-    if (myNewVertex_p)
+    if (!original)
       myNewVertex_p->printXMLHierarchy(os);
-    else
-      myOriginalVertex_p->printXMLHierarchy(os);
+    else {
+      if (adjoint)
+        myOriginalVertex_p->printXMLHierarchy(os);
+      else
+        myOriginalVertex_p->printXMLHierarchy(os);
+    }
   }
 
   std::string
