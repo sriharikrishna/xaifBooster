@@ -285,6 +285,7 @@ namespace xaifBoosterLinearization {
 	// JU: this assignment of the vertex Id might have to change 
 	// if we create vector assignments as auxilliary variables...
 	theVariableSymbolReference_p->setId("1");
+	theVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
 	theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	theLHS.getAliasMapKey().setTemporary();
 	theLHS.getDuUdMapKey().setTemporary();
