@@ -20,6 +20,12 @@ namespace xaifBoosterControlFlowReversal {
                                                                                 
     ~ControlFlowGraphVertexAlg();
 
+    enum ControlFlowGraphVertexKind_E {UNDEF,IF,PRELOOP};
+
+    virtual ControlFlowGraphVertexKind_E getKind() {
+      return UNDEF;
+    };
+
   private:
     
     /** 
