@@ -2,9 +2,11 @@
 #define _XAIFBOOSTERCONTROLFLOWREVERSAL_REVERSIBLECONTROLFLOWGRAPHVERTEX_INCLUDE_
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
-#include "xaifBooster/system/inc/VertexTraversable.hpp"
 
+#include "xaifBooster/system/inc/VertexTraversable.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/ForLoopReversalType.hpp"
+
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
@@ -56,13 +58,22 @@ namespace xaifBoosterControlFlowReversal {
       return *myNewVertex_p; 
     }
 
+    const ControlFlowGraphVertex& getNewVertex() const { 
+      return *myNewVertex_p; 
+    }
+
     void supplyAndAddNewVertex(ControlFlowGraphVertex& theNewVertex);
+
+    void setReversalType(ForLoopReversalType::ForLoopReversalType_E aReversalType); 
+
+    ForLoopReversalType::ForLoopReversalType_E getReversalType() const; 
+
+    void setCounterPart(ReversibleControlFlowGraphVertex& theCounterPart);
+
+    ReversibleControlFlowGraphVertex& getCounterPart();
 
   private:
 
-    friend class ReversibleControlFlowGraph;
-    friend class ReversibleControlFlowGraphEdge;
-    
     /** 
      * no def
      */
@@ -92,6 +103,8 @@ namespace xaifBoosterControlFlowReversal {
 
     /** 
      * pointer to new ControlFlowGraphVertex
+     * these vertices are never added to any graph 
+     * themselves, we own them so we need to delete them
      */
     ControlFlowGraphVertex* myNewVertex_p;
 
@@ -105,6 +118,20 @@ namespace xaifBoosterControlFlowReversal {
      */
     int myIndex;
 
+    /** 
+     * reversal type that applies to all 
+     * nodes under a top forloop which 
+     * is designated for explicit reversal
+     */
+    ForLoopReversalType::ForLoopReversalType_E myReversalType;
+
+    /** 
+     * pointer to corresponding vertex for 
+     * LOOP-ENDLOOP and BRANCH-ENDBRANCH pairs
+     * is initialized during the topological sort
+     */
+    ReversibleControlFlowGraphVertex* myCounterPart_p;
+   
   };  // end of class
 
 } // end of namespace 

@@ -124,8 +124,6 @@ private:
     * true and a corresponding integer get_condition_value() this information is
     * projected onto the branch entry edges.
     */
-
-
     void markBranchEntryEdges();
 
     /** 
@@ -137,7 +135,8 @@ private:
     /** 
      * top-down topologically sorted vertex list
      */
-    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&,std::stack<ReversibleControlFlowGraphVertex*>&);
+    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&,std::stack<ReversibleControlFlowGraphVertex*>&,
+				    ForLoopReversalType::ForLoopReversalType_E aReversalType);
 
     /** 
      * top down topological sort
@@ -182,7 +181,7 @@ private:
     /** 
      * make a new forloop
      */
-    ReversibleControlFlowGraphVertex* new_forloop();
+    ReversibleControlFlowGraphVertex* new_forloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType);
 
     /** 
      * make a new endloop
@@ -224,6 +223,18 @@ private:
      * and new ones in the reversed cfg
      */
     std::list<std::pair<const ReversibleControlFlowGraphVertex*,const ReversibleControlFlowGraphVertex*> > myVertexMap;
+
+    void makeLoopExplicitReversalInitialization(const ForLoop& theOldForLoop,
+						ForLoop& theNewForLoop,
+						bool countUp); 
+
+    void makeLoopExplicitReversalCondition(const ForLoop& theOldForLoop,
+					   ForLoop& theNewForLoop,
+					   bool countUp); 
+
+    void makeLoopExplicitReversalUpdate(const ForLoop& theOldForLoop,
+					ForLoop& theNewForLoop,
+					bool countUp); 
 
   };  // end of class
 

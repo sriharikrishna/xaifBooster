@@ -81,4 +81,8 @@ namespace xaifBooster {
     getBooleanOperationAlgBase().genericTraversal(anAction_c);
   } 
 
+  BooleanOperationType::BooleanOperationType_E BooleanOperation::getType() const { 
+    return myType;
+  } 
+
 } // end of namespace 
