@@ -359,6 +359,19 @@ namespace xaifBoosterLinearization {
     } // end if 
   } // end of AssignmentAlg::localRHSExtractionInner
 
+  // local writer definition: 
+  class VertexLabelWriter {
+  public:
+    VertexLabelWriter(const Expression& e) : myE(e) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      out << "[label=\"" << dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
+														  myE.getInternalBoostGraph()),
+												       v))).getExpressionVertexAlgBase()).isActive() << "\"]";
+    };
+    const Expression& myE;
+  };
+
   void AssignmentAlg::algorithm_action_1() { 
     DBG_MACRO(DbgGroup::CALLSTACK, 
 	      "xaifBoosterLinearization::AssignmentAlg::algorithm_action_1(analyze/copy) called for: "
@@ -375,8 +388,12 @@ namespace xaifBoosterLinearization {
       return;
     }
 
+//     GraphVizDisplay::show(getContainingAssignment().getRHS(),"originalBefore",
+// 			  VertexLabelWriter(getContainingAssignment().getRHS()));
     // perform the activity analysis on the original right hand side
     dynamic_cast<ExpressionAlg&>(getContainingAssignment().getRHS().getExpressionAlgBase()).activityAnalysis(); 
+//     GraphVizDisplay::show(getContainingAssignment().getRHS(),"originalAfter",
+// 			  VertexLabelWriter(getContainingAssignment().getRHS()));
 
     // has the maximal node become passive?
     Expression::ConstVertexIteratorPair pV(getContainingAssignment().getRHS().vertices());
@@ -402,19 +419,6 @@ namespace xaifBoosterLinearization {
     // the activityAnalysis once on the copy instead.
     dynamic_cast<ExpressionAlg&>(myLinearizedRightHandSide.getExpressionAlgBase()).activityAnalysis(); 
   } // end of AssignmentAlg::algorithm_action_1(analyze/copy)
-
-  // local writer definition: 
-  class VertexLabelWriter {
-  public:
-    VertexLabelWriter(const Expression& e) : myE(e) {};
-    template <class BoostIntenalVertexDescriptor>
-    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
-      out << "[label=\"" << dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
-														  myE.getInternalBoostGraph()),
-												       v))).getExpressionVertexAlgBase()).isActive() << "\"]";
-    };
-    const Expression& myE;
-  };
 
   void AssignmentAlg::activityAnalysis() {
     if (!myActiveFlag)

@@ -84,6 +84,11 @@ namespace xaifBoosterLinearization {
      */
     void activityAnalysisBottomUpPass(const ExpressionEdge& theEdge);
 
+    /**
+     * mark theVertex and all outgoing edges bottom up
+     */
+    void activityAnalysisBottomUpPass(const ExpressionVertex& theVertex);
+
   };
  
 } 
