@@ -1,6 +1,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Marker.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 namespace xaifBooster { 
 

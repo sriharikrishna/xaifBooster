@@ -30,7 +30,7 @@ namespace xaifBooster {
      * \todo add printing DuUd Map
      */
     virtual void printXMLHierarchy(std::ostream& os) const;
-    virtual void printXMLHierarchyImpl(std::ostream& os) const;
+    void printXMLHierarchyImpl(std::ostream& os) const;
 
     /**
      * print debug information

@@ -29,7 +29,9 @@ namespace xaifBooster {
 
   void
   CallGraph::printXMLHierarchy(std::ostream& os) const {
-    if (myCallGraphAlgBase_p)
+    if (myCallGraphAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getCallGraphAlgBase().printXMLHierarchy(os);
     else
       printXMLHierarchyImpl(os);

@@ -1,5 +1,6 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/BooleanOperation.hpp"
 #include "xaifBooster/system/inc/BooleanOperationAlgFactory.hpp"
 
@@ -43,7 +44,9 @@ namespace xaifBooster {
 
   void
   BooleanOperation::printXMLHierarchy(std::ostream& os) const {
-    if (myExpressionVertexAlgBase_p)
+    if (myExpressionVertexAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getBooleanOperationAlgBase().printXMLHierarchy(os);
     else
       printXMLHierarchyImpl(os);

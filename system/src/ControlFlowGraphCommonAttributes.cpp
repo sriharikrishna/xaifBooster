@@ -34,7 +34,7 @@ namespace xaifBooster {
        << "=\""
        << getAnnotation().c_str()
        << "\""; 
-  } // end of ControlFlowGraphCommonAttributes::printXMLHierarchyImpl
+  } // end of ControlFlowGraphCommonAttributes::printAttributes
 
   std::string ControlFlowGraphCommonAttributes::debug () const { 
     std::ostringstream out;
@@ -47,10 +47,5 @@ namespace xaifBooster {
   ControlFlowGraphCommonAttributes::getSymbolReference() const { 
     return mySymbolReference;
   } 
-
-
-
-
-
 
 } // end of namespace xaifBooster 

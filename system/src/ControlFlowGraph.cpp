@@ -1,5 +1,6 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
 
@@ -23,7 +24,9 @@ namespace xaifBooster {
 
   void
   ControlFlowGraph::printXMLHierarchy(std::ostream& os) const { 
-    if (myControlFlowGraphAlgBase_p)
+    if (myControlFlowGraphAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getControlFlowGraphAlgBase().printXMLHierarchy(os);
     else
       printXMLHierarchyImpl(os);
