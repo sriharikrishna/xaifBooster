@@ -80,4 +80,19 @@ namespace xaifBooster {
     }
   } 
 
+  void ArgumentList::copyMyselfInto(ArgumentList& theArgumentList,
+				    bool makeAlgorithm) const { 
+    for (ArgumentSymbolReferencePList::const_iterator anArgumentSymbolReferencePListI=myArgumentSymbolReferencePList.begin();
+	 anArgumentSymbolReferencePListI!=myArgumentSymbolReferencePList.end();
+	 ++anArgumentSymbolReferencePListI) { 
+      ArgumentSymbolReference* theNewArgumentSymbolReference_p(new ArgumentSymbolReference((*anArgumentSymbolReferencePListI)->getSymbol(),
+											   (*anArgumentSymbolReferencePListI)->getScope(),
+											   (*anArgumentSymbolReferencePListI)->getPosition(),
+											   (*anArgumentSymbolReferencePListI)->getActiveFlag(),
+											   (*anArgumentSymbolReferencePListI)->getIntent(),
+											   makeAlgorithm));
+      theArgumentList.myArgumentSymbolReferencePList.push_back(theNewArgumentSymbolReference_p);
+    }
+  } 
+
 } // end of namespace xaifBooster 

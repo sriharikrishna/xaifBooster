@@ -30,6 +30,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    virtual void insertYourself(const BasicBlock& theBasicBlock);
+
   private: 
 
     /** 

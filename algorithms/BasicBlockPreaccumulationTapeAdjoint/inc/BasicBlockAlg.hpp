@@ -9,6 +9,8 @@ using namespace xaifBooster;
 namespace xaifBooster { 
   class Assignment;
   class BaseConstant;
+  class SubroutineCall;
+  class Symbol;
 }
 
 namespace xaifBoosterInlinableXMLRepresentation { 
@@ -38,6 +40,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& addInlinableSubroutineCall(const std::string& aSubroutineName);
 
     const Assignment& addConstantAssignment(const BaseConstant& aConstant);
+
+    SubroutineCall& addSubroutineCall(const Symbol& aSubroutineNameSymbol,
+				      const Scope& aSubroutineNameScope,
+				      bool anActiveFlag);
 
     virtual void algorithm_action_4();
 

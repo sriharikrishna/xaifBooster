@@ -71,12 +71,16 @@ namespace xaifBooster {
      */
     static const std::string our_myActiveFlag_XAIFName;
 
-    typedef std::list<ConcreteArgument*> ArgumentList;
+    typedef std::list<ConcreteArgument*> ConcreteArgumentPList;
 
-    ArgumentList& getArgumentList();
+    ConcreteArgumentPList& getConcreteArgumentPList();
 
-    const ArgumentList& getArgumentList() const;
+    const ConcreteArgumentPList& getConcreteArgumentPList() const;
 
+    const SymbolReference& getSymbolReference() const;
+
+    bool getActiveFlag() const;
+    
   private: 
     
     /**
@@ -100,7 +104,7 @@ namespace xaifBooster {
      * will be deleted in the dtor 
      * of SubroutineCall
      */
-    ArgumentList myArgumentList;
+    ConcreteArgumentPList myConcreteArgumentPList;
 
   };
  

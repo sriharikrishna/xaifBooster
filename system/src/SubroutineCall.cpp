@@ -24,8 +24,8 @@ namespace xaifBooster {
   } 
 
   SubroutineCall::~SubroutineCall() { 
-    for (ArgumentList::iterator i=myArgumentList.begin();
-	 i!=myArgumentList.end();
+    for (ConcreteArgumentPList::iterator i=myConcreteArgumentPList.begin();
+	 i!=myConcreteArgumentPList.end();
 	 ++i) { 
       if (*i)
 	delete *i;
@@ -73,8 +73,8 @@ namespace xaifBooster {
        << myActiveFlag
        << "\">" 
        << std::endl;
-    for (ArgumentList::const_iterator i=myArgumentList.begin();
-	 i!=myArgumentList.end();
+    for (ConcreteArgumentPList::const_iterator i=myConcreteArgumentPList.begin();
+	 i!=myConcreteArgumentPList.end();
 	 ++i)
       (*i)->printXMLHierarchy(os);
     os << pm.indent() 
@@ -101,14 +101,23 @@ namespace xaifBooster {
     getSubroutineCallAlgBase().genericTraversal(anAction_c);
   } 
 
-  SubroutineCall::ArgumentList& 
-  SubroutineCall::getArgumentList() { 
-    return myArgumentList;
+  SubroutineCall::ConcreteArgumentPList& 
+  SubroutineCall::getConcreteArgumentPList() { 
+    return myConcreteArgumentPList;
   } 
   
-  const SubroutineCall::ArgumentList& 
-  SubroutineCall::getArgumentList() const { 
-    return myArgumentList;
+  const SubroutineCall::ConcreteArgumentPList& 
+  SubroutineCall::getConcreteArgumentPList() const { 
+    return myConcreteArgumentPList;
+  } 
+  
+  const SymbolReference& 
+  SubroutineCall::getSymbolReference() const { 
+    return mySymbolReference;
+  } 
+
+  bool SubroutineCall::getActiveFlag() const { 
+    return myActiveFlag;
   } 
   
 } // end of namespace xaifBooster 

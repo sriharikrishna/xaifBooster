@@ -56,6 +56,12 @@ namespace xaifBooster {
      */ 
     Scope& getScope() const;
 
+    /* 
+     * 
+     */
+    void copyMyselfInto(ArgumentList& theArgumentList,
+			bool makeAlgorithm=false) const;
+
   private: 
     
     /**
