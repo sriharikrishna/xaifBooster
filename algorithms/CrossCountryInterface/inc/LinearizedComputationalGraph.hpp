@@ -22,6 +22,8 @@ namespace xaifBoosterCrossCountryInterface {
     typedef std::list<const LinearizedComputationalGraphVertex*> VertexPointerList;
     const VertexPointerList& getIndependentList() const;
     const VertexPointerList& getDependentList() const;
+    VertexPointerList& getIndependentList();
+    VertexPointerList& getDependentList();
     void addToIndependentList(const LinearizedComputationalGraphVertex& theIndepdentVertex);
     void addToDependentList(const LinearizedComputationalGraphVertex& theDepdentVertex);
 

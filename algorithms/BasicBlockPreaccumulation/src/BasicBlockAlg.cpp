@@ -257,10 +257,33 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	GraphVizDisplay::show(theFlattenedSequence,"flattened");
       } 
+      // filter out singleton vertices
+      bool findNext=true;
+      while (findNext) {
+	// try to find a singleton vertex
+	PrivateLinearizedComputationalGraph::VertexIteratorPair p(theFlattenedSequence.vertices());
+	PrivateLinearizedComputationalGraph::VertexIterator it(p.first),endIt(p.second);
+	findNext=false;
+	for (;it!=endIt;++it) {
+	  if (!(theFlattenedSequence.numOutEdgesOf(*it)+theFlattenedSequence.numInEdgesOf(*it))) { // a singleton
+	    findNext=true;
+	    // remove this vertex in the dependent/independent lists
+	    theFlattenedSequence.getDependentList().remove(&(*it));
+	    theFlattenedSequence.getIndependentList().remove(&(*it));
+	    // make the direct assignment instaed.
+	    (*i)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getLHSVariable(),
+								 dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getRHSVariable());
+	    // removit it from the graph
+	    theFlattenedSequence.removeAndDeleteVertex(*it);
+	    // need to break out here because we removed the vertex
+	    break;
+	  } // end if 
+	} // end for 
+      } // end while 
       // the list to distinguish SAX from SAXPY: 
       typedef std::list<const Variable*> VariablePList;
       VariablePList theListOfAlreadyAssignedDependents;
-      if (theFlattenedSequence.numVertices()>1) { 
+      if (theFlattenedSequence.numVertices()) {
 	// call Angel which fills myJacobianAccumulationExpressionList
 	try { 
 	  if (!ourCompute_elimination_sequence_fp) { 
@@ -436,10 +459,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
 	} // end for 
       } // end if have flattened graph with more than one vertex
-      else if (theFlattenedSequence.numVertices()==1) { // we have only one vertex, i.e. an assignment y=x: 
-	(*i)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getDependentList().begin()))->getLHSVariable(),
-							     dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(*(theFlattenedSequence.getIndependentList().begin()))->getRHSVariable());
-      } // end else if
       else { 
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
       }
