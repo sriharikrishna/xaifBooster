@@ -16,11 +16,12 @@ namespace MemOpsTradeoffPreaccumulation {
       if((*dvi).getRefType() == DualGraphVertex::TO_ORIGINAL_EDGE){
 	if(&(*dvi).getOriginalRef() == &theEdge){
 	  return *dvi;
+	  break;
 	}
       }
     }
 
-    THROW_LOGICEXCEPTION_MACRO("attempt to determine corresponding dual vertex for original edge which does not have one"); 
+    THROW_LOGICEXCEPTION_MACRO("ERROR: Attempt to determine corresponding dual vertex for an edge which does not have one"); 
 
   }// end getDualVertex
 
@@ -53,7 +54,7 @@ namespace MemOpsTradeoffPreaccumulation {
 	  }// end if
 	}// end for outedges
 	if(doei != doe_end){
-	  THROW_LOGICEXCEPTION_MACRO("Error: no untraveled successor found");
+	  THROW_LOGICEXCEPTION_MACRO("Error: No untraveled successor found");
 	}// end if
 	((**pathi).myPath).push_back(&getTargetOf(*doei));
 	if(numOutEdgesOf(getTargetOf(*doei)) == 0) {

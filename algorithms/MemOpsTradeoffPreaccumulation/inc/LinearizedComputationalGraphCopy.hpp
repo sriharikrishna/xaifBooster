@@ -42,6 +42,8 @@ namespace MemOpsTradeoffPreaccumulation {
     const ConstVertexPointerList& getIndependentList() const;
     const ConstVertexPointerList& getDependentList() const;
 
+    bool isDep(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theVertex) const;
+
     /**
      * these functions return the number of independent and dependent vertices, respectively
      */
