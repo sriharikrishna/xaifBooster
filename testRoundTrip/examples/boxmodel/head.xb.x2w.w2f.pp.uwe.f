@@ -162,13 +162,13 @@ C
 
           if (our_rev_mode%arg_store) then 
 ! store arguments
-C!! requested inline of 'cp_arg_store_i' has no defn
-      CALL cp_arg_store_i(ILEV1)
+          theArgIStackoffset = theArgIStackoffset+1
+          theArgIStack(theArgIStackoffset) = ILEV1
           end if 
           if (our_rev_mode%arg_restore) then
 ! restore arguments
-C!! requested inline of 'cp_arg_restore_i' has no defn
-      CALL cp_arg_restore_i(ILEV1)
+          ILEV1 = theArgIStack(theArgIStackoffset)
+          theArgIStackoffset = theArgIStackoffset-1
           end if
           if (our_rev_mode%plain) then
 ! original function
@@ -219,13 +219,13 @@ C!! requested inline of 'cp_arg_restore_i' has no defn
           end if 
           if (our_rev_mode%res_store) then
 ! store results
-C!! requested inline of 'cp_res_store_i' has no defn
-      CALL cp_res_store_i(ILEV1)
+          theResIStackoffset = theResIStackoffset+1
+          theResIStack(theResIStackoffset) = ILEV1
           end if 
           if (our_rev_mode%res_restore) then
 ! restore results
-C!! requested inline of 'cp_res_restore_i' has no defn
-      CALL cp_res_restore_i(ILEV1)
+          ILEV1 = theResIStack(theResIStackoffset)
+          theResIStackoffset = theResIStackoffset-1
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
