@@ -799,12 +799,12 @@
           <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_428" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_383" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_378" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
-          <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_434" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
+          <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_434" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_429" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_384" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_379" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_440" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
-          <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_435" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
+          <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_435" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_390" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1"/>
           <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_385" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1"/>
           <xaif:Symbol symbol_id="T_378" kind="variable" type="real" shape="vector" annotation="{Sym_Id#378}" active="1" temp="0"/>
@@ -1217,17 +1217,6 @@
             <xaif:Constant vertex_id="1" type="real" value="5e+08"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="BLENGTH_27" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="4" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="BLENGTH_27" scope_id="1"/>
@@ -1243,6 +1232,15 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="BLENGTH_27" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
           <xaif:ZeroDeriv deriv="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="BLENGTH_27" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -1275,6 +1273,34 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:Assignment statement_id="6" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_26" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="100000"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="7" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_26" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="3"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="400000"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
@@ -1296,22 +1322,6 @@
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="6" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_26" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="100000"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
           <xaif:ZeroDeriv deriv="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_26" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -1321,22 +1331,6 @@
             </xaif:ArrayElementReference>
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="7" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_26" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="3"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="400000"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
           <xaif:ZeroDeriv deriv="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="BHEIGHT_26" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -1606,6 +1600,14 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:Assignment statement_id="10" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="BWIDTH_28" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="4e+08"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_288" scope_id="1"/>
@@ -1691,6 +1693,9 @@
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="BWIDTH_28" scope_id="1"/>
+          </xaif:ZeroDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -1736,19 +1741,6 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="DELTA_33" scope_id="1"/>
             </xaif:Y>
           </xaif:Saxpy>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="10" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="BWIDTH_28" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="4e+08"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="BWIDTH_28" scope_id="1"/>
-          </xaif:ZeroDeriv>
         </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="replacement for 11" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
@@ -2701,6 +2693,38 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:Assignment statement_id="17" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="ROBERT_FILTER_COEFF_56" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="0.25"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="18" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="HUNDRED_41" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="100"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="19" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="1000"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="20" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="86400"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_316" scope_id="1"/>
@@ -2750,6 +2774,18 @@
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="ROBERT_FILTER_COEFF_56" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="HUNDRED_41" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
+          </xaif:ZeroDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -2793,58 +2829,6 @@
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="17" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="ROBERT_FILTER_COEFF_56" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="0.25"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="ROBERT_FILTER_COEFF_56" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="18" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="HUNDRED_41" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="100"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="HUNDRED_41" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="19" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="1000"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="THOUSAND_60" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="20" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="86400"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="replacement for 21" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_31" scope_id="1"/>
@@ -2877,6 +2861,14 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:Assignment statement_id="22" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="SV_59" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="1e+12"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_320" scope_id="1"/>
@@ -2896,6 +2888,9 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
             </xaif:Src>
           </xaif:SetDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="SV_59" scope_id="1"/>
+          </xaif:ZeroDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -2911,19 +2906,6 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="YEAR_67" scope_id="1"/>
             </xaif:Y>
           </xaif:Sax>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="22" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SV_59" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="1e+12"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SV_59" scope_id="1"/>
-          </xaif:ZeroDeriv>
         </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="replacement for 23" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
@@ -2983,6 +2965,30 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:Assignment statement_id="24" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="ALPHA_22" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="0.0001668"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="25" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="BETA_25" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="0.000781"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="26" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="DAYS_PER_50M_MIXED_LAYER_31" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="50"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_322" scope_id="1"/>
@@ -3008,6 +3014,15 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="SV_59" scope_id="1"/>
             </xaif:Src>
           </xaif:SetDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="ALPHA_22" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="BETA_25" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="DAYS_PER_50M_MIXED_LAYER_31" scope_id="1"/>
+          </xaif:ZeroDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -3023,45 +3038,6 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="U0_61" scope_id="1"/>
             </xaif:Y>
           </xaif:Sax>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="24" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="ALPHA_22" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="0.0001668"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="ALPHA_22" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="25" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="BETA_25" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="0.000781"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="BETA_25" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="26" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="DAYS_PER_50M_MIXED_LAYER_31" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="50"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="DAYS_PER_50M_MIXED_LAYER_31" scope_id="1"/>
-          </xaif:ZeroDeriv>
         </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="replacement for 27" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
@@ -3316,6 +3292,14 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:Assignment statement_id="29" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="EPSILON_IC_36" scope_id="1"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="-1e-04"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_326" scope_id="1"/>
@@ -3427,6 +3411,9 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="DAY_30" scope_id="1"/>
             </xaif:Src>
           </xaif:SetDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="EPSILON_IC_36" scope_id="1"/>
+          </xaif:ZeroDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -3472,19 +3459,6 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_S_39" scope_id="1"/>
             </xaif:Y>
           </xaif:Saxpy>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="29" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="EPSILON_IC_36" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="-1e-04"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="EPSILON_IC_36" scope_id="1"/>
-          </xaif:ZeroDeriv>
         </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="replacement for 30" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
@@ -5330,19 +5304,6 @@
             <xaif:Constant vertex_id="1" type="real" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_T_52" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="2"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="2" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_S_51" scope_id="1"/>
@@ -5360,6 +5321,17 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_T_52" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+                  <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="2"/>
+                </xaif:VariableReference>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
           <xaif:ZeroDeriv deriv="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_S_51" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -5390,19 +5362,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_T_52" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="2"/>
-                </xaif:VariableReference>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="2" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_S_51" scope_id="1"/>
@@ -5420,6 +5379,17 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_T_52" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+                  <xaif:SymbolReference vertex_id="1" symbol_id="L_6" scope_id="2"/>
+                </xaif:VariableReference>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
           <xaif:ZeroDeriv deriv="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="PROJ_S_51" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -5861,17 +5831,6 @@
             <xaif:Constant vertex_id="1" type="real" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="2" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
@@ -5886,17 +5845,6 @@
             <xaif:Constant vertex_id="1" type="real" value="-1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="2"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="3" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
@@ -5911,17 +5859,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="3"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="4" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
@@ -5936,17 +5873,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="4"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="5" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
@@ -5961,17 +5887,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="5"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="6" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
@@ -5987,6 +5902,51 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="2"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="3"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="4"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="5"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
           <xaif:ZeroDeriv deriv="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="R1_54" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -6582,11 +6542,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="THC_TOT_165" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="3" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="THC_T_164" scope_id="1"/>
@@ -6595,11 +6550,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="THC_T_164" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="4" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="THC_S_163" scope_id="1"/>
@@ -6608,11 +6558,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="THC_S_163" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="5" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="METRIC1_136" scope_id="1"/>
@@ -6621,11 +6566,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="METRIC1_136" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="6" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="METRIC2_137" scope_id="1"/>
@@ -6634,11 +6574,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="METRIC2_137" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="7" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="METRIC_134" scope_id="1"/>
@@ -6647,11 +6582,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="METRIC_134" scope_id="1"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="8" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="NULLFORCE_139" scope_id="1"/>
@@ -6666,17 +6596,6 @@
             <xaif:Constant vertex_id="1" type="real" value="0"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="NULLFORCE_139" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="9" active="1">
           <xaif:AssignmentLHS active="true" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="NULLFORCE_139" scope_id="1"/>
@@ -6692,6 +6611,33 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="THC_TOT_165" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="THC_T_164" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="THC_S_163" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="METRIC1_136" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="METRIC2_137" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="METRIC_134" scope_id="1"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="NULLFORCE_139" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
           <xaif:ZeroDeriv deriv="1">
             <xaif:SymbolReference vertex_id="1" symbol_id="NULLFORCE_139" scope_id="1"/>
             <xaif:ArrayElementReference vertex_id="2">
@@ -7024,6 +6970,62 @@
             <xaif:Constant vertex_id="1" type="integer" value="-1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:Assignment statement_id="12" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="TSTAR_170" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="22"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="13" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="TSTAR_170" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="2"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="0"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="14" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="SSTAR_159" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="36"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="15" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="SSTAR_159" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="2"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="34"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_400" scope_id="1"/>
@@ -7049,6 +7051,42 @@
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="TSTAR_170" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="TSTAR_170" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="2"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="SSTAR_159" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="SSTAR_159" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="2"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -7070,106 +7108,6 @@
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:Y>
           </xaif:Sax>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="12" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TSTAR_170" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="22"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TSTAR_170" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="13" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TSTAR_170" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="2"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="0"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="TSTAR_170" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="2"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="14" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SSTAR_159" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="36"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SSTAR_159" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="15" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SSTAR_159" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="2"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="34"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="SSTAR_159" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="2"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
         </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="replacement for 16" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
@@ -7203,6 +7141,90 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
+        <xaif:Assignment statement_id="17" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="20"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="18" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="2"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="1"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="19" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="3"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="1"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="20" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="35.5"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="21" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="2"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="34.5"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
+        <xaif:Assignment statement_id="22" active="1">
+          <xaif:AssignmentLHS active="true" deriv="0">
+            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="3"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:AssignmentLHS>
+          <xaif:AssignmentRHS>
+            <xaif:Constant vertex_id="1" type="real" value="34.5"/>
+          </xaif:AssignmentRHS>
+        </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_402" scope_id="1"/>
@@ -7222,6 +7244,60 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="SV_160" scope_id="1"/>
             </xaif:Src>
           </xaif:SetDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="2"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="3"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="2"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
+          <xaif:ZeroDeriv deriv="1">
+            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
+            <xaif:ArrayElementReference vertex_id="2">
+              <xaif:Index>
+                <xaif:Constant vertex_id="1" type="integer" value="3"/>
+              </xaif:Index>
+            </xaif:ArrayElementReference>
+            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+          </xaif:ZeroDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -7237,156 +7313,6 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="UBAR_174" scope_id="1"/>
             </xaif:Y>
           </xaif:Sax>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="17" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="20"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="18" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="2"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="1"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="2"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="19" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="3"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="1"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="T_161" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="3"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="20" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="35.5"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="21" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="2"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="34.5"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="2"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
-        </xaif:DerivativePropagator>
-        <xaif:Assignment statement_id="22" active="1">
-          <xaif:AssignmentLHS active="true" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="3"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Constant vertex_id="1" type="real" value="34.5"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:DerivativePropagator>
-          <xaif:ZeroDeriv deriv="1">
-            <xaif:SymbolReference vertex_id="1" symbol_id="S_154" scope_id="1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="3"/>
-              </xaif:Index>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:ZeroDeriv>
         </xaif:DerivativePropagator>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="34" annotation="{WHIRL_Id#753}">
@@ -8990,30 +8916,24 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation" active="1">
           <xaif:AssignmentLHS active="false" deriv="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_434" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_435" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_433" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_159" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0">
+            <xaif:VariableReference vertex_id="2" active="false" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_430" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
-            <xaif:Intrinsic vertex_id="5" name="add_scal_scal"/>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="4" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="4" position="2"/>
-            <xaif:ExpressionEdge edge_id="3" source="1" target="5" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="4" target="5" position="2"/>
+            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_435" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_434" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="DELTA_249" scope_id="1"/>
@@ -9133,11 +9053,26 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_434" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_433" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_435" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_434" scope_id="1"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_2" scope_id="5"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:VariableReference vertex_id="1" active="false" deriv="0">
+                  <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_435" scope_id="1"/>
+                </xaif:VariableReference>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_434" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">

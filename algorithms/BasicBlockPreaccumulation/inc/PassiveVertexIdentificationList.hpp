@@ -12,6 +12,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   /**
    * this is for the identification fo Passive variables   
+   * in difference to active identification we allow here 
+   * a set of variables that can alias each other
    */
   class PassiveVertexIdentificationList : public VertexIdentificationList {
 
@@ -29,16 +31,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     IdentificationResult_E canIdentify(const Variable& theVariable) const;
 
     /** 
-     * this will only work if canIdentify returns
-     * NOT_IDENTIFIED 
      * \todo JU incomplete, no handling for du info
      */
     void addElement(const Variable& theVariable);
-
-    /** 
-     * \todo JU incomplete, no handling for du info
-     */
-    void replaceOrAddElement(const Variable& theVariable);
 
     void PassiveVertexIdentificationList::removeIfAliased(const Variable& theVariable); 
 

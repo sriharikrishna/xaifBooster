@@ -408,6 +408,9 @@ namespace xaifBoosterLinearization {
       createPartialExpressions();
     // create ssa code
     makeSSACodeList();
+    // we need to wait with the reduction until after the code 
+    // generation since we need to know e.g. constant values for the 
+    // partials. Have to consider constant folding as a subsequent step.
     passiveReduction();
   } // end of AssignmentAlg::algorithm_action_2(code generation)
 

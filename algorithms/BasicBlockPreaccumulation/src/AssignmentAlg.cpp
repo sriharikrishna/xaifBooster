@@ -42,14 +42,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   AssignmentAlg::algorithm_action_1() { 
-    //     xaifBoosterLinearization::AssignmentAlg::algorithm_action_1();
-    // we don't invoke this here. 
-    // rather it becomes a part of 
+    xaifBoosterLinearization::AssignmentAlg::algorithm_action_1();
   }
   
   bool 
   AssignmentAlg::vertexIdentification(VertexPPairList& theVertexTrackList,
 				      PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
+    if (!getActiveFlag()) 
+      // nothing to do here 
+      return true; 
     Expression& theExpression(getLinearizedRightHandSide());
     ActiveVertexIdentificationList& theVertexLHSIdentificationList(theFlattenedSequence.getVertexLHSIdentificationList());
     ActiveVertexIdentificationList& theVertexRHSIdentificationList(theFlattenedSequence.getVertexRHSIdentificationList());
@@ -79,7 +80,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).passivate();
       } // end if 
       else { // the vertex cannot be uniquely identified
-	if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
+	if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED && 
+	    thePassiveIdResult==VertexIdentificationList::NOT_IDENTIFIED) {
 	  // the RHS identification doesn't really matter since we cannot 
 	  // uniquely identify within the RHSs it is only important that we don't 
 	  // alias a preceding LHS
@@ -114,12 +116,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     PrivateLinearizedComputationalGraph& theFlattenedSequence=
       BasicBlockAlgParameter::get().getFlattenedSequence(getContaining());
     VertexPPairList theVertexTrackList;
-    vertexIdentification(theVertexTrackList,
-			 theFlattenedSequence);
+    if (!vertexIdentification(theVertexTrackList,
+			      theFlattenedSequence)) { 
+      // there is an ambiguity, do the split
+      BasicBlockAlgParameter::get().splitFlattenedSequence(getContaining());
+      // redo everything for this assignment
+      algorithm_action_2();
+      // and leave
+      return;
+    } 
+    // now redo the activity analysis
+    xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
+    // and the second part of the linearization
+    xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
     PassiveVertexIdentificationList& thePassiveVertexIdentificationList(theFlattenedSequence.getPassiveVertexIdentificationList());
     if (!getActiveFlag()) { 
       if (getContaining().getLHS().getActiveType()) {   // but the LHS has active type
-	thePassiveVertexIdentificationList.replaceOrAddElement(getContaining().getLHS());
+	thePassiveVertexIdentificationList.addElement(getContaining().getLHS());
 	if (getContaining().getActiveFlag()) // this means the assignment has been passivated 
 	  BasicBlockAlgParameter::get().getDerivativePropagator(getContaining()).
 	    addZeroDerivToEntryList(getContaining().getLHS());
@@ -131,7 +144,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
       // keep track of all the vertices we add with this statement in case we need to split and 
       // remove them
-      std::list<PrivateLinearizedComputationalGraphVertex*> theUndoThenSplitList;
       ActiveVertexIdentificationList& theVertexLHSIdentificationList(theFlattenedSequence.getVertexLHSIdentificationList());
       ActiveVertexIdentificationList& theVertexRHSIdentificationList(theFlattenedSequence.getVertexRHSIdentificationList());
       PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p=0; // LHS representation
@@ -142,12 +154,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theLHSIdResult=theVertexLHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	  theRHSIdResult=theVertexRHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	} 
-	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED)  
-	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
-						   theLHSIdResult.getVertexP()));
-	else if (theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
-	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
-						   theRHSIdResult.getVertexP()));
+	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED
+	    ||
+	    theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
+	  // already added to the track list
 	} // end if 
 	else { // the vertex cannot be uniquely identified
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
@@ -156,7 +166,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // alias a preceding LHS
 	    // we need to add this vertex
 	    PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=new PrivateLinearizedComputationalGraphVertex;
-	    theUndoThenSplitList.push_back(theLCGVertex_p);
 	    theFlattenedSequence.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA,
 		      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
@@ -181,16 +190,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  else { // there is an ambiquity
 	    // we need to undo all additions of vertices of this assignment
 	    // edges have not been added yet
-	    std::list<PrivateLinearizedComputationalGraphVertex*>::iterator theUndoThenSplitListI=theUndoThenSplitList.begin();
-	    for (; theUndoThenSplitListI!=theUndoThenSplitList.end(); ++theUndoThenSplitListI) { 
-	      theFlattenedSequence.removeAndDeleteVertex(**theUndoThenSplitListI);
-	    } 
-	    // now do the split
-	    BasicBlockAlgParameter::get().splitFlattenedSequence(getContaining());
-	    // redo everything for this assignment
-	    algorithm_action_2();
-	    // and leave
-	    return;
+	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): should not find an ambiguity at this point");
 	  } // end else (ambiguity)
 	} // end else
       } // end for 
@@ -248,7 +248,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       const Variable& theLHS(getContaining().getLHS());
       if (!theLHSLCGVertex_p)
 	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): don't have a maximal vertex");
+      // we need to keep the lists mutually exclusive
+      // a left hand side cannot occur in the right hand side list
       theVertexRHSIdentificationList.removeIfAliased(theLHS);
+      // a known active lhs cannot have a passive idenitification
+      thePassiveVertexIdentificationList.removeIfAliased(theLHS);
+      // an overwritten LHS needs to refer to the respective last definition
       theVertexLHSIdentificationList.replaceOrAddElement(theLHS,
 							 theLHSLCGVertex_p);
       theLHSLCGVertex_p->setLHSVariable(theLHS);

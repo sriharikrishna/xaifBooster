@@ -239,6 +239,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
 							   VertexPairList& theVertexPairList);
 
+    /** 
+     * determines variables in IN and OUT
+     */
+    bool isAliased(const Variable& theIndepVariable,
+		   const PrivateLinearizedComputationalGraph& theFlattenedSequence);
+    
   };
  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms
