@@ -97,8 +97,28 @@ namespace xaifBooster {
     if (aKey.getKind()!=DuUdMapKey::NO_INFO
 	&&
 	anotherKey.getKind()!=DuUdMapKey::NO_INFO) { 
-      // here comes the shortcut: 
-      return (aKey.getKey()==anotherKey.getKey())?true:false;
+      if (aKey.getKey()<0 
+	  || 
+	  aKey.getKey()>=myDuUdMapEntryPVector.size()
+	  ||
+	  anotherKey.getKey()<0 
+	  || 
+	  anotherKey.getKey()>=myDuUdMapEntryPVector.size()) { 
+	THROW_LOGICEXCEPTION_MACRO("DuUdMap::sameDefinition: key >" 
+				   << aKey.getKey() 
+				   << "< or key >"
+				   << anotherKey.getKey()
+				   << "< out of range");
+      }
+      if (!myDuUdMapEntryPVector[aKey.getKey()] && 
+	  !myDuUdMapEntryPVector[anotherKey.getKey()]) { 
+	THROW_LOGICEXCEPTION_MACRO("DuUdMap::sameDefinition: key >" 
+				   << aKey.getKey() 
+				   << "< or key >"
+				   << anotherKey.getKey()
+				   << "< have null pointer map entry");
+      }
+      return (myDuUdMapEntryPVector[aKey.getKey()]->sameDefinitionAs(*(myDuUdMapEntryPVector[anotherKey.getKey()])));
     }
     return false;
   } 
@@ -112,8 +132,28 @@ namespace xaifBooster {
     if (aKey.getKind()!=DuUdMapKey::NO_INFO
 	&&
 	anotherKey.getKind()!=DuUdMapKey::NO_INFO) { 
-      // here comes the shortcut: 
-      return (aKey.getKey()==anotherKey.getKey())?false:true;
+      if (aKey.getKey()<0 
+	  || 
+	  aKey.getKey()>=myDuUdMapEntryPVector.size()
+	  ||
+	  anotherKey.getKey()<0 
+	  || 
+	  anotherKey.getKey()>=myDuUdMapEntryPVector.size()) { 
+	THROW_LOGICEXCEPTION_MACRO("DuUdMap::sameDefinition: key >" 
+				   << aKey.getKey() 
+				   << "< or key >"
+				   << anotherKey.getKey()
+				   << "< out of range");
+      }
+      if (!myDuUdMapEntryPVector[aKey.getKey()] && 
+	  !myDuUdMapEntryPVector[anotherKey.getKey()]) { 
+	THROW_LOGICEXCEPTION_MACRO("DuUdMap::sameDefinition: key >" 
+				   << aKey.getKey() 
+				   << "< or key >"
+				   << anotherKey.getKey()
+				   << "< have null pointer map entry");
+      }
+      return (myDuUdMapEntryPVector[aKey.getKey()]->disjointDefinitionFrom(*(myDuUdMapEntryPVector[anotherKey.getKey()])));
     }
     return false;
   } 

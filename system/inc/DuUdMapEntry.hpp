@@ -45,6 +45,16 @@ namespace xaifBooster{
      */
     const DuUdMapDefinitionResult definition(const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
 
+    /** 
+     * the name says it all
+     */
+    bool sameDefinitionAs(const DuUdMapEntry& anotherEntry) const;
+
+    /** 
+     * the name says it all
+     */
+    bool disjointDefinitionFrom(const DuUdMapEntry& anotherEntry) const;
+
   private:
 
     /**

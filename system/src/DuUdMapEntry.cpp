@@ -65,29 +65,29 @@ namespace xaifBooster {
     DuUdMapDefinitionResult theResult;
     unsigned int matchNumber=0;
     bool hasOutOfScope=false;
-    for(DuUdMapDefinitionResult::StatementIdList::const_iterator itChain=myStatementIdList.begin();
-	itChain!=myStatementIdList.end();
-	itChain++) {
+    for(DuUdMapDefinitionResult::StatementIdList::const_iterator aStatementIdListI=myStatementIdList.begin();
+	aStatementIdListI!=myStatementIdList.end();
+	++aStatementIdListI) {
       for(DuUdMapDefinitionResult::StatementIdList::const_iterator it=anIdList.begin();
 	  it!=anIdList.end();
-	  it++) { 
+	  ++it) { 
 	if (*it=="")
 	  THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::definition: all StatementIds in anIdList are supposed to be for regular statements and therefore cannot be empty");
-	if (*it==*itChain)
+	if (*it==*aStatementIdListI)
 	  matchNumber++;
 	if (matchNumber==1)
-	  theResult.myStatementId=*itChain;
+	  theResult.myStatementId=*aStatementIdListI;
       }
-      if (*itChain=="") 
+      if (*aStatementIdListI=="") 
 	hasOutOfScope=true;
     }
     if ((matchNumber==0 
 	 &&
-	 hasOutOfScope)
-	|| 
-	(!hasOutOfScope 
-	 && 
-	 myStatementIdList.size()>1))
+	 (hasOutOfScope
+	  || 
+	  (!hasOutOfScope 
+	   && 
+	   myStatementIdList.size()>1))))
       theResult.myAnswer=DuUdMapDefinitionResult::AMBIGUOUS_OUTSIDE;
     else if (matchNumber==0 
 	     && 
@@ -112,6 +112,38 @@ namespace xaifBooster {
     else 
       THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::definition: missing case");
     return theResult;
+  } 
+
+  bool DuUdMapEntry::sameDefinitionAs(const DuUdMapEntry& anotherEntry) const { 
+    unsigned int aSize(myStatementIdList.size());
+    unsigned int anotherSize(anotherEntry.myStatementIdList.size());
+    if (!aSize 
+	||
+	!anotherSize) { 
+      THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::sameDefinitionAs: empty chain(s)");
+    }
+    return (aSize==1 && anotherSize==1 && 
+	    *(myStatementIdList.begin())==*(anotherEntry.myStatementIdList.begin()));
+  } 
+
+  bool DuUdMapEntry::disjointDefinitionFrom(const DuUdMapEntry& anotherEntry) const { 
+    if (myStatementIdList.empty()
+	||
+	anotherEntry.myStatementIdList.empty()) { 
+      THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::disjointDefinitionFrom: empty chain(s)");
+    }
+    for(DuUdMapDefinitionResult::StatementIdList::const_iterator aStatementIdListI=myStatementIdList.begin();
+	aStatementIdListI!=myStatementIdList.end();
+	++aStatementIdListI) {
+      for(DuUdMapDefinitionResult::StatementIdList::const_iterator anotherStatementIdListI=anotherEntry.myStatementIdList.begin();
+	  anotherStatementIdListI!=anotherEntry.myStatementIdList.end();
+	  ++anotherStatementIdListI) {
+	if (*anotherStatementIdListI==*aStatementIdListI) { 
+	  return false; 
+	}
+      }
+    }
+    return true;
   } 
 
 } // end of namespace  
