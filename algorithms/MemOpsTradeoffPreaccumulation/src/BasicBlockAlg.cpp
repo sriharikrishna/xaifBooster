@@ -65,7 +65,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	HeuristicSequence.pop_front();
       }// end while
 
-      //the face list holds all the faces that are candidates for elimination
       faceHeuristicFunc func_pt;
       std::list<faceHeuristicFunc>::iterator fhiter;
       DualGraph::VertexPointerList thePredList, theSuccList;
@@ -86,7 +85,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
  	//if(theElimList.size() == 1){//if the heuristics have decided on one single face
 
 	//the predlist and thesucclist hold the predecessors and successors respectively of the face about to be eliminated.
-	//this information is stored in case one of the heuristics needs to use it to make its determinations.
+	//this information is stored in case one of the heuristics needs to use it to make it's determinations.
 	thePredList.clear();
 	theSuccList.clear();
 	DualGraph::InEdgeIteratorPair newpreds (theDual.getInEdgesOf(theDual.getSourceOf(*theElimList.back())));
@@ -102,12 +101,12 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  theSuccList.push_back(&theDual.getTargetOf(*newsucci));
 	}// end for
 
- 	  //eliminate the face
- 	  newOrAbsorb = theDual.elim_face(*theElimList.back(), thePredList, theSuccList, theJacobianAccumulationExpressionList);
-	  //}
-	  //else{
- 	  //THROW_LOGICEXCEPTION_MACRO("Error: Heuristics could not decide on a single face");
-	  //}
+	//eliminate the face
+	newOrAbsorb = theDual.elim_face(*theElimList.back(), thePredList, theSuccList, theJacobianAccumulationExpressionList);
+	//}
+	//else{
+	//THROW_LOGICEXCEPTION_MACRO("Error: Heuristics could not decide on a single face");
+	//}
 
 	if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
 	  GraphVizDisplay::show(theDual,"intermediate");
@@ -177,7 +176,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       //declaration of iterators
       const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& originalIndependents = theOriginal.getIndependentList();
       const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& originalDependents = theOriginal.getDependentList();
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator oIndeps, odeps;
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator oIndeps, oDeps;
 
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair vip (theOriginal.vertices());
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator vi (vip.first), v_end (vip.second);
@@ -197,8 +196,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	}// end for original indep list
       
 	//go through deps, if its in the dep list, add to the copy dep list
-	for(odeps=originalDependents.begin(); odeps != originalDependents.end(); odeps++) {
-	  if(copymap[i].original == *odeps){
+	for(oDeps=originalDependents.begin(); oDeps != originalDependents.end(); oDeps++) {
+	  if(copymap[i].original == *oDeps){
 	    theCopy.addToDependentList(*copymap[i].copy);
 	    break;
 	  }// end if
@@ -317,7 +316,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  LinearizedComputationalGraphCopy::VertexIteratorPair cvip (theCopy.vertices());
 	  LinearizedComputationalGraphCopy::VertexIterator cvi (cvip.first), cv_end (cvip.second);
 	  for(; cvi != cv_end; ++cvi){
-	    if(theCopy.numInEdgesOf(*cvi)*theCopy.numOutEdgesOf(*cvi) == 0){
+	    if((theCopy.numInEdgesOf(*cvi) == 0) || (theCopy.numOutEdgesOf(*cvi) == 0)){
 	      theVertexList.remove(&*cvi);
 	    }// end if
 	  }// end for
@@ -488,10 +487,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	}// end if TEMPORARY
 
       }// end else if
-
-      else{
-	THROW_LOGICEXCEPTION_MACRO("Error: Must specify either vertex or edge elimination");
-      }// end else
 
       //iterate through remaining edges and set corresponding expressions as jacobian entries
       LinearizedComputationalGraphCopy::EdgeIteratorPair jeip (theCopy.edges());
