@@ -102,7 +102,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="0">
+            <xaif:VariableReference vertex_id="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
@@ -112,7 +112,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_12" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="0">
+            <xaif:VariableReference vertex_id="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
@@ -244,9 +244,9 @@
             <xaif:VariableReference vertex_id="2">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="0" name="mul_scal_scal"/>
-            <xaif:ExpressionEdge edge_id="1" source="1" target="0" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="2" target="0" position="2"/>
+            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation">
@@ -260,9 +260,9 @@
             <xaif:VariableReference vertex_id="2">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="0" name="mul_scal_scal"/>
-            <xaif:ExpressionEdge edge_id="1" source="1" target="0" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="2" target="0" position="2"/>
+            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
+            <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="jacobian_accumulation">
@@ -270,7 +270,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_18" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="0">
+            <xaif:VariableReference vertex_id="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
@@ -383,7 +383,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_20" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="0">
+            <xaif:VariableReference vertex_id="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
@@ -393,7 +393,7 @@
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_22" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="0">
+            <xaif:VariableReference vertex_id="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" scope_id="1"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>

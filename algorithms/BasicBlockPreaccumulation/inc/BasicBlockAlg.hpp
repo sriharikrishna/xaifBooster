@@ -230,7 +230,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,
 							   Assignment& theNewAssignment,
 							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
-							   int& theCounter,
 							   VertexPairList& theVertexPairList);
 
   };

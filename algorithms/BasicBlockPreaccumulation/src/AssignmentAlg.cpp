@@ -10,6 +10,7 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
@@ -148,6 +149,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // the following call will throw an exception on 
 	  // its own if the source cannot be found. 
 	  theLCGSource_p=theVariableTrackList.getElement(theSource.equivalenceSignature());
+	// filter out parallel edges:
+	PrivateLinearizedComputationalGraph::OutEdgeIteratorPair 
+	  anOutEdgeItPair(theFlattenedSequence.getOutEdgesOf(*theLCGSource_p));
+	PrivateLinearizedComputationalGraph::OutEdgeIterator 
+	  aPrivLinCompGEdgeI(anOutEdgeItPair.first),
+	  aPrivLinCompGEdgeIEnd(anOutEdgeItPair.second);
+	for (;aPrivLinCompGEdgeI!=aPrivLinCompGEdgeIEnd;++aPrivLinCompGEdgeI) { 
+	  if (theLCGTarget_p==&(theFlattenedSequence.getTargetOf(*aPrivLinCompGEdgeI)))
+	    break; // already have such an edge in here
+	} // end for 
+	if (aPrivLinCompGEdgeI!=aPrivLinCompGEdgeIEnd) {  // this is an edge parallel to an existing  edge
+	  dynamic_cast<PrivateLinearizedComputationalGraphEdge&>(*aPrivLinCompGEdgeI).addParallel(*ExpressionEdgeI);
+	  continue; // we can skip the rest
+	}
 	PrivateLinearizedComputationalGraphEdge* theEdge_p=new PrivateLinearizedComputationalGraphEdge();
 	// set the back reference
 	theEdge_p->setLinearizedExpressionEdge(*ExpressionEdgeI);
