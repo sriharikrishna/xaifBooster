@@ -86,6 +86,8 @@ namespace MemOpsTradeoffPreaccumulation {
       }
     }
 
+    std::cout << "DG 89" << std::endl;
+
     THROW_LOGICEXCEPTION_MACRO("ERROR: Attempt to determine corresponding dual vertex for an edge which does not have one"); 
 
   }// end getDualVertex
@@ -126,6 +128,7 @@ namespace MemOpsTradeoffPreaccumulation {
 	  i++;
 	}// end for outedges
 	if(doei == doe_end){
+	  std::cout << "BBA 131" << std::endl;
 	  THROW_LOGICEXCEPTION_MACRO("Error: No match between pathnum and out edge num could be found");
 	}// end if
 	((**pathi).myPath).push_back(&getTargetOf(*doei));

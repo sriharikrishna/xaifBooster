@@ -60,6 +60,8 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	    faceHeuristicSequence.push_back(&FaceElim::absorbMode_f);
 	    break;
 	  default:
+
+	    std::cout << "BBA 64" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: unknown face heuristic passed");
 	}// end switch HeuristicSequence
 	HeuristicSequence.pop_front();
@@ -291,6 +293,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	    vertexHeuristicSequence.push_back(&VertexElim::succPredMode_v);
 	    break;
 	  default:
+	    std::cout << "BBA 296" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: unknown heuristic passed");
 	  }// end switch HeuristicSequence
 	  HeuristicSequence.pop_front();
@@ -361,6 +364,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
 	  }// end if
 	  else if(theVertexList.size() > 1){
+	    std::cout << "BBA 366" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: More than one vertex in list of possible eliminations");
 	  }// end else
 
@@ -398,6 +402,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	    edgeHeuristicSequence.push_back(&EdgeElim::sibling2Mode_e);
 	    break;
 	  default:
+	    std::cout << "BBA 404" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: Unknown heuristic passed");
 	  }// end switch HeuristicSequence
 	  HeuristicSequence.pop_front();
@@ -464,6 +469,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	      theCopy.back_elim_edge(*(theEdgeList.front().edge_p), theJacobianAccumulationExpressionList);
 	    }// end else if
 	    else{
+	      std::cout << "BBA 471" << std::endl;
 	      THROW_LOGICEXCEPTION_MACRO("Error: Edge has no elimination direction specified");
 	    }
 	
@@ -473,6 +479,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
 	  }// end if
 	  else{
+	    std::cout << "BBA 481" << std::endl;
 	    THROW_LOGICEXCEPTION_MACRO("Error: More than one edge in list of possible eliminations");
 	  }// end else
 
