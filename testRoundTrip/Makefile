@@ -36,7 +36,7 @@ $(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrins
 $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
 	./xaif2whirl $(TARGET).B $(TARGET).xb.xaif
 
-$(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f
+$(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
 	$(COMPLAIN)
 	export LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:$LD_LIBRARY_PATH; ./whirl2f $(TARGET).xb.x2w.B
 
