@@ -47,3 +47,6 @@ void onInOutList(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& pa
 void onInput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onOutput(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onDummy(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onDuUdMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onDuUdMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onStatementId(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

@@ -1,8 +1,8 @@
 #ifndef _OBJECTWITHID_INCLUDE_
 #define _OBJECTWITHID_INCLUDE_
 
-#include "xaifBooster/utils/inc/Debuggable.hpp"
 #include <string>
+#include "xaifBooster/utils/inc/Debuggable.hpp"
 
 namespace xaifBooster { 
 
@@ -18,26 +18,28 @@ namespace xaifBooster {
     ObjectWithId();
 
     virtual ~ObjectWithId() {};
-    
+
+    typedef std::string Id;
+
     /**
      * Debug routine
      */    
-    virtual std::string debug() const;
+    virtual Id debug() const;
 
     /**
      * Get id if set
      */    
-    const std::string& getId() const;
+    const Id& getId() const;
     
     /**
      * set Id once
      */
-    void setId(const std::string& anId);
+    void setId(const Id& anId);
 
     /**
      * set Id once
      */
-    void setId(int Id);
+    void setId(int anId);
     
     /** 
      * when copying vertices from 
@@ -46,7 +48,7 @@ namespace xaifBooster {
      * E.g. the boost edges rely on internal descriptors 
      * but the XAIF edges rely on this Id
      */
-    void overWriteId(const std::string& anId);
+    void overWriteId(const Id& anId);
 
     /** 
      * when copying vertices from 
@@ -62,7 +64,7 @@ namespace xaifBooster {
     /**
      * the Id
      */
-    std::string myId;
+    Id myId;
     
     /**
      * prevent Id from changing once it is set

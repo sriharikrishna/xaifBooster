@@ -31,6 +31,8 @@ namespace xaifBooster {
   class ArgumentList;
   class Label;
   class Goto;
+  class DuUdMapEntry;
+  class DuUdMap;
   
   class XAIFBaseParserHelper : public XMLParserHelper { 
   public: 

@@ -47,6 +47,9 @@ ourActionCatalogue.addElement(InOutList::our_OutList_XAIFName, ActionItem(&XAIFB
 ourActionCatalogue.addElement(InOutList::our_InList_XAIFName, ActionItem(&XAIFBaseParserHandlers::onInOutList));
 ourActionCatalogue.addElement(InOutList::our_Output_XAIFName, ActionItem(&XAIFBaseParserHandlers::onOutput));
 ourActionCatalogue.addElement(InOutList::our_Input_XAIFName, ActionItem(&XAIFBaseParserHandlers::onInput));
+ourActionCatalogue.addElement(DuUdMapEntry::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onDuUdMapEntry));
+ourActionCatalogue.addElement(DuUdMap::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onDuUdMap));
+ourActionCatalogue.addElement(DuUdMapEntry::our_StatementId_XAIFName, ActionItem(&XAIFBaseParserHandlers::onStatementId));
 ourActionCatalogue.addElement("#comment", ActionItem(&XAIFBaseParserHandlers::onDummy));
 ourActionCatalogue.addElement("#document", ActionItem(&XAIFBaseParserHandlers::onDummy));
 ourActionCatalogue.addElement("#text", ActionItem(&XAIFBaseParserHandlers::onDummy));

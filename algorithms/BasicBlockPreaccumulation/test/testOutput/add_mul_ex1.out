@@ -31,6 +31,10 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
     </xaif:AliasSetList>
+    <xaif:DUUDSetList>
+      <xaif:DUUDSet>
+      </xaif:DUUDSet>
+    </xaif:DUUDSetList>
     <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" annotation="" intent="inout"/>
