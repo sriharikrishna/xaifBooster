@@ -1,7 +1,7 @@
-#ifndef _ASSIGNMENTALG_INCLUDE_
-#define _ASSIGNMENTALG_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_ASSIGNMENTALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_ASSIGNMENTALG_INCLUDE_
 
-#include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 
 using namespace xaifBooster;
@@ -12,7 +12,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
    * class to implement algorithms relevant for the 
    * angel interface
    */
-  class AssignmentAlg : public AssignmentAlgBase {
+  class AssignmentAlg : public xaifBoosterLinearization::AssignmentAlg {
   public:
     
     AssignmentAlg(Assignment& theContainingAssignment);
@@ -26,9 +26,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     /** 
-     * flatten
+     * linearize
      */
     virtual void algorithm_action_1();
+
+    /** 
+     * flatten
+     */
+    virtual void algorithm_action_2();
 
   private: 
 

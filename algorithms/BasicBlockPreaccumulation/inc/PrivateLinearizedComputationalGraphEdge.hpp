@@ -4,10 +4,16 @@
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
 
 namespace xaifBooster { 
-  
   class ExpressionEdge;
+}
+
+using namespace xaifBooster; 
+
+namespace xaifBoosterBasicBlockPreaccumulation { 
   
-  class PrivateLinearizedComputationalGraphEdge : public LinearizedComputationalGraphEdge {
+  class PrivateLinearizedComputationalGraphEdge : 
+    public xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge {
+
   public:
 
     PrivateLinearizedComputationalGraphEdge() : 
@@ -36,6 +42,6 @@ namespace xaifBooster {
 
   }; // end of class LinearizedComputationalGraphEdge
  
-} // end of namespace xaifBooster
+} 
                                                                      
 #endif

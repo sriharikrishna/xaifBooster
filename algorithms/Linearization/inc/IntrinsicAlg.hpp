@@ -1,5 +1,5 @@
-#ifndef _INTRINSICALG_INCLUDE_
-#define _INTRINSICALG_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_INTRINSICALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_INTRINSICALG_INCLUDE_
 
 #include "xaifBooster/system/inc/IntrinsicAlgBase.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"

@@ -6,7 +6,7 @@
 
 using namespace xaifBooster;
 
-namespace xaifBoosterAngelInterfaceAlgorithms {  
+namespace xaifBoosterBasicBlockPreaccumulation {  
   
   typedef SingletonParameterPerThread<BasicBlockAlg> BasicBlockAlgParameter;
 

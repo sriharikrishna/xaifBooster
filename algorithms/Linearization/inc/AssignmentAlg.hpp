@@ -1,5 +1,5 @@
-#ifndef _ASSIGNMENTALG_INCLUDE_
-#define _ASSIGNMENTALG_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_ASSIGNMENTALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_ASSIGNMENTALG_INCLUDE_
 
 #include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
 
@@ -40,6 +40,10 @@ namespace xaifBoosterLinearization {
     Expression& getLinearizedRightHandSide();
 
     const Expression& getLinearizedRightHandSide() const;
+
+    bool getActiveFlag() const; 
+
+    bool getLHSActiveFlag() const;
 
   private: 
 

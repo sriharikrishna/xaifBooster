@@ -1,5 +1,5 @@
-#ifndef _EXPRESSIONEDGEALG_INCLUDE_
-#define _EXPRESSIONEDGEALG_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_EXPRESSIONEDGEALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_EXPRESSIONEDGEALG_INCLUDE_
 
 #include "xaifBooster/system/inc/ExpressionEdgeAlgBase.hpp"
 #include "xaifBooster/system/inc/PartialDerivativeKind.hpp"

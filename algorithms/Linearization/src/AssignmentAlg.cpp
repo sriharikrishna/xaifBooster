@@ -403,4 +403,12 @@ namespace xaifBoosterLinearization {
     myLinearizedRightHandSide.removeAndDeleteVertex(theVertex);
   } // end of AssignmentAlg::passiveReductionTopDownPass()
 
+  bool AssignmentAlg::getActiveFlag() const { 
+    return myActiveFlag;
+  } 
+
+  bool AssignmentAlg::getLHSActiveFlag() const { 
+    return myLHSActiveFlag;
+  } 
+
 }

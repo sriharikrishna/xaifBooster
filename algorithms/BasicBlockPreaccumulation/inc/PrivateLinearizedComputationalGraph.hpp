@@ -4,7 +4,9 @@
 #include "xaifBooster/utils/inc/HashTable.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
+
+namespace xaifBoosterBasicBlockPreaccumulation { 
 
   class PrivateLinearizedComputationalGraphVertex;
 
@@ -13,22 +15,26 @@ namespace xaifBooster {
    * the edges/vertices will be instances of subclasses of 
    * LinearizedComputationalGraphVertex / LinearizedComputationalGraphEdge
    */
-  class PrivateLinearizedComputationalGraph : public LinearizedComputationalGraph,
+  class PrivateLinearizedComputationalGraph : public xaifBoosterCrossCountryInterface::LinearizedComputationalGraph,
 					      public virtual Debuggable {
+
   public:
-    
     
     /**
      * \todo JU implementation incomplete
      */
     std::string debug() const { return std::string("PrivateLinearizedComputationalGraph");};
 
-    HashTable<PrivateLinearizedComputationalGraphVertex*>& getVariableReferenceTrackList() { return myVariableReferenceTrackList;};    
+    typedef HashTable<PrivateLinearizedComputationalGraphVertex*> VariableTrackList;
+
+    VariableTrackList& getVariableTrackList() { 
+      return myVariableTrackList;
+    };    
 
   private: 
     /**
      * we need to track the relation 
-     * between VariableReferences and 
+     * between Variables and 
      * vertices in the linearized graph
      * in particular to find the connection 
      * points for new Expressions to be added 
@@ -36,14 +42,12 @@ namespace xaifBooster {
      * The Vertex for a given Variable
      * will change from v_old to v_new when the respective variable 
      * is overwritten by vertex v_new
-     * Key is the equivalenceSignature of Variable
      * this list doesn't own any elements
      */
-    HashTable<PrivateLinearizedComputationalGraphVertex*> myVariableReferenceTrackList; 
-
+    VariableTrackList myVariableTrackList; 
 
   }; // end of class PrivateLinearizedComputationalGraph 
 
-} // end of namespace xaifBooster
+} 
                                                                      
 #endif

@@ -1,5 +1,5 @@
-#ifndef _EXPRESSIONALG_INCLUDE_
-#define _EXPRESSIONALG_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_EXPRESSIONALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_EXPRESSIONALG_INCLUDE_
 
 #include "xaifBooster/system/inc/ExpressionAlgBase.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"

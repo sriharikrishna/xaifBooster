@@ -73,6 +73,10 @@ namespace xaifBooster {
      */
     void passivateLHS();
 
+    bool getActiveFlag() const;
+
+    bool getLHSActiveFlag() const;
+
   private: 
 
     /**
