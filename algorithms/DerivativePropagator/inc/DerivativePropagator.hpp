@@ -41,11 +41,11 @@ namespace xaifBoosterDerivativePropagator {
      */
     static const std::string ourXAIFName;
     
-    typedef std::list<DerivativePropagatorEntry*> EntryList;
+    typedef std::list<DerivativePropagatorEntry*> EntryPList;
 
     /**
      * we add entries to the DerivativePropagator as
-     * addZeroDerivToEntryList in AssignmentAlg::algorithm_action_2
+     * addZeroDerivToEntryPList in AssignmentAlg::algorithm_action_2
      * and as Saxpy/SetDeriv in 
      * BasicBlockAlg::algorihm_action_3
      * For SetDeriv we either add as a temporary for variables that are 
@@ -67,28 +67,28 @@ namespace xaifBoosterDerivativePropagator {
      * point and the ZeroDeriv remains with the previous flatten in the correct order.
      * Therefore we can always do a push_front for SetDeriv.
      */
-    const DerivativePropagatorSetDeriv& addSetDerivToEntryList(const Variable& theTarget,
-							       const Variable& theSource);
+    const DerivativePropagatorSetDeriv& addSetDerivToEntryPList(const Variable& theTarget,
+								const Variable& theSource);
 
-    DerivativePropagatorSaxpy& addSaxpyToEntryList(const Constant& thePartial,
-						   const Variable& theDependent,
-						   const Variable& theIndependent);
+    DerivativePropagatorSaxpy& addSaxpyToEntryPList(const Constant& thePartial,
+						    const Variable& theDependent,
+						    const Variable& theIndependent);
 
-    DerivativePropagatorSaxpy& addSaxpyToEntryList(const Variable& thePartial,
-						   const Variable& theDependent,
-						   const Variable& theIndependent);
+    DerivativePropagatorSaxpy& addSaxpyToEntryPList(const Variable& thePartial,
+						    const Variable& theDependent,
+						    const Variable& theIndependent);
 
-    void addZeroDerivToEntryList(const Variable& theTarget);
+    void addZeroDerivToEntryPList(const Variable& theTarget);
 
-    const EntryList& getEntryList() const;
+    const EntryPList& getEntryPList() const;
 
   private:
 
     /**
      * this class owns the DerivativePropagatorEntry
-     * instances pointed to in myEntryList
+     * instances pointed to in myEntryPList
      */
-    EntryList myEntryList;
+    EntryPList myEntryPList;
 
   }; // end of class DerivativePropagator
  

@@ -17,16 +17,20 @@ include ../../../Makefile.incl
 -include $(DEPINCL)
 
 # pick up all algorith specific obj files
-ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) 
+ALG_OBJ_SET= \
+$(wildcard ../src/obj/*.o) \
+$(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) \
+$(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) \
+$(wildcard ../../Linearization/src/obj/*.o) 
 
-VPATH+=../../InlinableXMLRepresentation/lib
-LIBS+=-lxaifBoosterInlinableXMLRepresentation
+VPATH+=../../CrossCountryInterface/lib
+LIBS+=-lxaifBoosterCrossCountryInterface
 
 VPATH+=../../DerivativePropagator/lib
 LIBS+=-lxaifBoosterDerivativePropagator
 
-VPATH+=../../CrossCountryInterface/lib
-LIBS+=-lxaifBoosterCrossCountryInterface
+VPATH+=../../InlinableXMLRepresentation/lib
+LIBS+=-lxaifBoosterInlinableXMLRepresentation
 
 # setup for ANGEL
 UNDEF_ENV_VARS=""
