@@ -47,6 +47,8 @@ namespace xaifBoosterLinearization {
 
     const Expression& getLinearizedRightHandSide() const;
 
+    bool haveLinearizedRightHandSide() const;
+
     bool getActiveFlag() const; 
 
   private: 
