@@ -34,7 +34,7 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
     </xaif:AliasSetList>
-    <xaif:ReplacementList vertex_id="1" symbol_id="head" scope_id="1" annotation="" template_name="reverse_subroutine_template">
+    <xaif:ReplacementList vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" template_name="reverse_subroutine_template">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" active="1" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" active="1" annotation="" intent="inout"/>
@@ -321,17 +321,17 @@
         <xaif:Entry vertex_id="1" annotation="cp_entry"/>
         <xaif:Exit vertex_id="2" annotation="cp_exit"/>
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="2">
-          <xaif:InlinableSubroutineCall subroutine_name="cp_store" statement_id="cp_store">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_arg_store" statement_id="cp_arg_store">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="cp_store" statement_id="cp_store">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_arg_store" statement_id="cp_arg_store">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="cp_store" statement_id="cp_store">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_arg_store" statement_id="cp_arg_store">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
@@ -344,17 +344,17 @@
         <xaif:Entry vertex_id="1" annotation="cp_entry"/>
         <xaif:Exit vertex_id="2" annotation="cp_exit"/>
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="2">
-          <xaif:InlinableSubroutineCall subroutine_name="cp_store" statement_id="cp_store">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_res_store" statement_id="cp_res_store">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="cp_store" statement_id="cp_store">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_res_store" statement_id="cp_res_store">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="cp_store" statement_id="cp_store">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_res_store" statement_id="cp_res_store">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
@@ -367,19 +367,19 @@
         <xaif:Entry vertex_id="1" annotation="cp_entry"/>
         <xaif:Exit vertex_id="2" annotation="cp_exit"/>
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="2">
-          <xaif:InlinableSubroutineCall subroutine_name="cp_restore" statement_id="cp_restore">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_arg_restore" statement_id="cp_arg_restore">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="cp_restore" statement_id="cp_restore">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_arg_restore" statement_id="cp_arg_restore">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="cp_restore" statement_id="cp_restore">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_arg_restore" statement_id="cp_arg_restore">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
         </xaif:BasicBlock>
@@ -390,19 +390,19 @@
         <xaif:Entry vertex_id="1" annotation="cp_entry"/>
         <xaif:Exit vertex_id="2" annotation="cp_exit"/>
         <xaif:BasicBlock vertex_id="3" annotation="cp_basicblock" scope_id="2">
-          <xaif:InlinableSubroutineCall subroutine_name="cp_restore" statement_id="cp_restore">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore" statement_id="cp_res_restore">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="cp_restore" statement_id="cp_restore">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore" statement_id="cp_res_restore">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="cp_restore" statement_id="cp_restore">
+          <xaif:InlinableSubroutineCall subroutine_name="cp_res_restore" statement_id="cp_res_restore">
             <xaif:ArgumentSubstitute position="1" active="true" deriv="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="z" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
             </xaif:ArgumentSubstitute>
           </xaif:InlinableSubroutineCall>
         </xaif:BasicBlock>

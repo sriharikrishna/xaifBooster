@@ -65,11 +65,11 @@ mfef90:
 
 whirl2xaif xaif2whirl: 
 	$(COMPLAIN)
-	$(LN) ${RICETOOLROOT}/whirl2xaif/obj/i686-Linux/obj/$@ .
+	$(LN) ${RICETOOLROOT}/OpenADFortTk/obj/i686-Linux/obj/$@ .
 
 pp.pl: 
 	$(COMPLAIN)
-	$(LN) ${RICETOOLROOT}/whirl2xaif/postprocess/$@ .
+	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
 
 whirl2f whirl2f_be:
 	$(COMPLAIN)

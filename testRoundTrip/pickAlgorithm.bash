@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "pick one of the following algorithms"
 count=1
-for i in `echo ../algorithms/*/test/t`
+for i in `echo ../algorithms/*/test/t | sort`
 do 
   name=${i##../algorithms/}  
   echo $count : ${name%%/test/t}
@@ -10,7 +10,7 @@ done
 echo -n "pick a number: "
 read answer
 count=1
-for i in `echo ../algorithms/*/test/t`
+for i in `echo ../algorithms/*/test/t | sort`
 do
   if [ $count -eq $answer ] 
   then 

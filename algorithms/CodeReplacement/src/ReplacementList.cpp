@@ -12,9 +12,10 @@ namespace xaifBoosterCodeReplacement {
 
   ReplacementList::ReplacementList (const Symbol& theSymbol,
 				    const Scope& theScope,
+				    const Scope& theCFGScope,
 				    const std::string& aTemplateName,
 				    const ArgumentList& anArgumentList) : 
-    ControlFlowGraphCommonAttributes(theSymbol, theScope),
+    ControlFlowGraphCommonAttributes(theSymbol, theScope, theCFGScope),
     myTemplateName(aTemplateName),
     myArgumentList(anArgumentList) { 
   } 

@@ -650,7 +650,7 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetList>
     </xaif:AliasSetList>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="box_forward__20" scope_id="1" annotation="{PU_Id#1}" active="1">
+    <xaif:ControlFlowGraph vertex_id="1" symbol_id="box_forward__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="ILEV1_1" scope_id="2" active="1" annotation="" intent="inout"/>
       </xaif:ArgumentList>
@@ -847,7 +847,7 @@
       <xaif:ControlFlowEdge edge_id="10" source="9" target="10" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="11" source="11" target="3" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="2" symbol_id="box_density__29" scope_id="1" annotation="{PU_Id#6}" active="1">
+    <xaif:ControlFlowGraph vertex_id="2" symbol_id="box_density__29" scope_id="1" controlflowgraph_scope_id="7" annotation="{PU_Id#6}" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="TLOC_1" scope_id="7" active="1" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="SLOC_2" scope_id="7" active="1" annotation="" intent="inout"/>
@@ -957,7 +957,7 @@
       <xaif:ControlFlowEdge edge_id="6" source="6" target="7" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="7" source="8" target="3" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="3" symbol_id="box_transport__32" scope_id="1" annotation="{PU_Id#7}" active="1">
+    <xaif:ControlFlowGraph vertex_id="3" symbol_id="box_transport__32" scope_id="1" controlflowgraph_scope_id="8" annotation="{PU_Id#7}" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="RHOLOC_1" scope_id="8" active="1" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="UVELLOC_2" scope_id="8" active="1" annotation="" intent="inout"/>
@@ -1035,7 +1035,7 @@
       <xaif:ControlFlowEdge edge_id="1" source="1" target="2" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="2" source="2" target="3" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="4" symbol_id="box_timestep__31" scope_id="1" annotation="{PU_Id#11}" active="1">
+    <xaif:ControlFlowGraph vertex_id="4" symbol_id="box_timestep__31" scope_id="1" controlflowgraph_scope_id="12" annotation="{PU_Id#11}" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="GAMMALOC_1" scope_id="12" active="1" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="FLDSTAR_2" scope_id="12" active="1" annotation="" intent="inout"/>
@@ -1619,7 +1619,7 @@
       <xaif:ControlFlowEdge edge_id="7" source="7" target="4" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="8" source="8" target="6" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="5" symbol_id="box_robert_filter__30" scope_id="1" annotation="{PU_Id#8}" active="1">
+    <xaif:ControlFlowGraph vertex_id="5" symbol_id="box_robert_filter__30" scope_id="1" controlflowgraph_scope_id="9" annotation="{PU_Id#8}" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="FLDNOW_1" scope_id="9" active="1" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="FLDOLD_2" scope_id="9" active="1" annotation="" intent="inout"/>
@@ -1755,7 +1755,7 @@
       <xaif:ControlFlowEdge edge_id="6" source="6" target="7" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="7" source="8" target="3" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="6" symbol_id="box_cycle_fields__28" scope_id="1" annotation="{PU_Id#9}" active="1">
+    <xaif:ControlFlowGraph vertex_id="6" symbol_id="box_cycle_fields__28" scope_id="1" controlflowgraph_scope_id="10" annotation="{PU_Id#9}" active="1">
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#543}" scope_id="10">
         <xaif:Marker statement_id="1" annotation="{WHIRL_Id#543} [pragma]"/>
@@ -1912,7 +1912,7 @@
       <xaif:ControlFlowEdge edge_id="6" source="6" target="7" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="7" source="8" target="3" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="7" symbol_id="box_final_state__109" scope_id="1" annotation="{PU_Id#2}" active="1">
+    <xaif:ControlFlowGraph vertex_id="7" symbol_id="box_final_state__109" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" active="1">
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#601}" scope_id="3">
         <xaif:Marker statement_id="1" annotation="{WHIRL_Id#601} [pragma]"/>
@@ -2080,7 +2080,7 @@
       <xaif:ControlFlowEdge edge_id="11" source="12" target="3" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="12" source="13" target="7" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="8" symbol_id="box_ini_fields__187" scope_id="1" annotation="{PU_Id#3}" active="1">
+    <xaif:ControlFlowGraph vertex_id="8" symbol_id="box_ini_fields__187" scope_id="1" controlflowgraph_scope_id="4" annotation="{PU_Id#3}" active="1">
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#659:660:662:664:666:668:670:672:678:684:701:712:718:724:730:736:740:746:752:758:764:770}" scope_id="4">
         <xaif:Marker statement_id="1" annotation="{WHIRL_Id#659} [pragma]"/>
@@ -2777,7 +2777,7 @@
       <xaif:ControlFlowEdge edge_id="16" source="17" target="7" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="17" source="18" target="11" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="9" symbol_id="box_ini_params__273" scope_id="1" annotation="{PU_Id#4}" active="1">
+    <xaif:ControlFlowGraph vertex_id="9" symbol_id="box_ini_params__273" scope_id="1" controlflowgraph_scope_id="5" annotation="{PU_Id#4}" active="1">
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#919:920:922:928:934:944:950:956:972:991:993:1005:1017:1029:1045:1068:1084:1086:1088:1090:1092:1096:1098:1104:1106:1108:1110:1116:1133:1135:1139:1143:1144:1145:1161:1162:1166:1167:1168:1184:1185:1191:1192:1193:1209:1210:1212:1220:1228:1236:1244:1252:1260:1268:1275:1286:1295:1301}" scope_id="5">
         <xaif:Marker statement_id="1" annotation="{WHIRL_Id#919} [pragma]"/>
@@ -4319,7 +4319,7 @@
       <xaif:ControlFlowEdge edge_id="38" source="38" target="20" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="39" source="39" target="28" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="10" symbol_id="box_model_body__354" scope_id="1" annotation="{PU_Id#5}" active="1">
+    <xaif:ControlFlowGraph vertex_id="10" symbol_id="box_model_body__354" scope_id="1" controlflowgraph_scope_id="6" annotation="{PU_Id#5}" active="1">
       <xaif:Entry vertex_id="1" annotation="{WHIRL_Id#}"/>
       <xaif:BasicBlock vertex_id="2" annotation="{WHIRL_Id#1550:1551:1552:1553:1566:1567:1568}" scope_id="6">
         <xaif:Marker statement_id="1" annotation="{WHIRL_Id#1550} [pragma]"/>
@@ -4537,7 +4537,7 @@
       <xaif:ControlFlowEdge edge_id="24" source="22" target="6" has_condition_value="0" condition_value="1"/>
       <xaif:ControlFlowEdge edge_id="25" source="23" target="9" has_condition_value="0" condition_value="1"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="12" symbol_id="box_update__642" scope_id="1" annotation="{PU_Id#10}" active="1">
+    <xaif:ControlFlowGraph vertex_id="12" symbol_id="box_update__642" scope_id="1" controlflowgraph_scope_id="11" annotation="{PU_Id#10}" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="FLDNEW_1" scope_id="11" active="1" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="FLDOLD_2" scope_id="11" active="1" annotation="" intent="inout"/>
