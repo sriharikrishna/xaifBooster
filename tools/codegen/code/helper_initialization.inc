@@ -1,5 +1,7 @@
 myAliasMapEntry_p(0),
 myAliasMap_p(0),
+myDuUdMapEntry_p(0),
+myDuUdMap_p(0),
 myArrayAccess_p(0),
 myAssignment_p(0),
 myVariable_p(0),

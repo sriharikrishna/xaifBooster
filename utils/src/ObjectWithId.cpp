@@ -16,7 +16,7 @@ namespace xaifBooster {
   } // end of ObjectWithId::debug
 
   void
-  ObjectWithId::setId(const std::string& anId) { 
+  ObjectWithId::setId(const ObjectWithId::Id& anId) { 
     if (myIdFlag)
       THROW_LOGICEXCEPTION_MACRO("ObjectWithId::setId can't reset myId for "
 				 << debug().c_str());
@@ -36,7 +36,7 @@ namespace xaifBooster {
   } // end of ObjectWithId::ObjectWithId
 
   void
-  ObjectWithId::overWriteId(const std::string& anId) { 
+  ObjectWithId::overWriteId(const ObjectWithId::Id& anId) { 
     myIdFlag=true;
     myId=anId;
   } // end of ObjectWithId::ObjectWithId
@@ -49,7 +49,7 @@ namespace xaifBooster {
     myId=out.str();
   } // end of ObjectWithId::ObjectWithId
 
-  const std::string&
+  const ObjectWithId::Id&
   ObjectWithId::getId() const { 
     if (!myIdFlag)
       THROW_LOGICEXCEPTION_MACRO("ObjectWithId::getId myId not set for "

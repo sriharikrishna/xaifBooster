@@ -189,6 +189,29 @@ namespace xaifBooster {
   };
 
   void 
+  XAIFBaseParserHandlers::onDuUdMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onDuUdMap" ); 
+    DuUdMap& theDuUdMap(passingIn.getDuUdMap());
+    passingOut.setDuUdMap(theDuUdMap);
+  };
+
+  void 
+  XAIFBaseParserHandlers::onDuUdMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onDuUdMapEntry" ); 
+    DuUdMap& theDuUdMap(passingIn.getDuUdMap());
+    DuUdMapEntry& theDuUdMapEntry=theDuUdMap.
+      addDuUdMapEntry(atoi(XMLParser::getAttributeValueByName(DuUdMapEntry::our_myKey_XAIFName).c_str()));
+    passingOut.setDuUdMapEntry(theDuUdMapEntry);
+  };
+
+  void 
+  XAIFBaseParserHandlers::onStatementId(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onStatementId" ); 
+    DuUdMapEntry& theDuUdMapEntry(passingIn.getDuUdMapEntry());
+    theDuUdMapEntry.appendToStatementIdList(XMLParser::getAttributeValueByName(DuUdMapEntry::our_IdRef_XAIFName));
+  };
+
+  void 
   XAIFBaseParserHandlers::onScopes(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onScopes" ); 
     Scopes& theScopes(passingIn.getScopes());
@@ -207,6 +230,7 @@ namespace xaifBooster {
     theCallGraph.setProgramName(XMLParser::getAttributeValueByName(CallGraph::our_myProgramName_XAIFName));
     passingOut.setScopes(theCallGraph.getScopeTree());
     passingOut.setAliasMap(theCallGraph.getAliasMap());
+    passingOut.setDuUdMap(theCallGraph.getDuUdMap());
   };
 
   void 
