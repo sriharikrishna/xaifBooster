@@ -24,11 +24,12 @@ namespace xaifBoosterControlFlowReversal {
   /** 
    * class to implement a reversible control flow graph
    */
-  class ReversibleControlFlowGraph : public GraphWrapperTraversable<ReversibleControlFlowGraphVertex,ReversibleControlFlowGraphEdge> {
+  class ReversibleControlFlowGraph : public GraphWrapperTraversable<ReversibleControlFlowGraphVertex, ReversibleControlFlowGraphEdge> {
 
   public:
     
     ReversibleControlFlowGraph(const ControlFlowGraph&);
+
     void makeThisACopyOfOriginalControlFlowGraph();
 
     std::string makeUniqueVertexId();
@@ -46,6 +47,13 @@ namespace xaifBoosterControlFlowReversal {
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+   /**
+    * The branch entry edges are marked by has_condition_value()==true and
+    * a corresponding integer get_condition_value().
+    * This information is projected onto the branch exit edges.
+    */
+    void markBranchExitEdges();
 
   private:
 
@@ -79,7 +87,14 @@ namespace xaifBoosterControlFlowReversal {
     * Return reference to the newly created ReversibleControlFlowGraphEdge.
     */
     ReversibleControlFlowGraphEdge&
-    insertAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, const ReversibleControlFlowGraphVertex& theAdjointSource_cr, const ReversibleControlFlowGraphVertex& theAdjointTarget_cr);
+    insertAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, 
+				      const ReversibleControlFlowGraphVertex& theAdjointSource_cr,
+				      const ReversibleControlFlowGraphVertex& theAdjointTarget_cr);
+
+    void removeAdjointControlFlowGraphEdge(ReversibleControlFlowGraphEdge& theAdjointControlFlowGraphEdge_r);
+
+    typedef std::list<std::pair<const ReversibleControlFlowGraphVertex*,
+				const ReversibleControlFlowGraphVertex*> > ReversibleControlFlowGraphVertexPOrigReversePairList;
 
    /**
     * For a given edge in the original control flow, build its adjoint.
@@ -93,61 +108,59 @@ namespace xaifBoosterControlFlowReversal {
     * Otherwise, find the matching original ENDLOOP node and add edge
     * from theSource_p to the ENDLOOP node's adjoint (a FORLOOP) node.
    */
-
     ReversibleControlFlowGraphEdge&
-    addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, const std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl);
+    addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, 
+				   const ReversibleControlFlowGraphEdge& theOriginalEdge_cr, 
+				   const ReversibleControlFlowGraphVertexPOrigReversePairList& theVertexCorrespondence_ppl);
 
     /** 
      * find branch entry edge that corresponds to theCurrentEdge_r
      */
     const ReversibleControlFlowGraphEdge&
-    find_corresponding_branch_entry_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
-
-                                                   
-   /**
-    * The branch entry edges are marked by has_condition_value()==true and
-    * a corresponding integer get_condition_value().
-    * This information is projected onto the branch exit edges.
-    */
-public:
-    void markBranchExitEdges();
-private:
+    find_corresponding_branch_entry_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, 
+					     int& nesting_depth) const;
 
     /** 
      * a find branch exit edge that corresponds to theCurrentEdge_r
      */
     const ReversibleControlFlowGraphEdge&
-    find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, int& nesting_depth) const;
+    find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, 
+					    int& nesting_depth) const;
 
    /**
     * Assuming that the branch exit edges are marked by has_condition_value()==
     * true and a corresponding integer get_condition_value() this information is
     * projected onto the branch entry edges.
     */
-
-
     void markBranchEntryEdges();
 
     /** 
      * bottom-up augmentation of the cfg by statements that store
      * the flow of control
      */
-    void storeControlFlowGraphRecursively(ReversibleControlFlowGraphVertex&,std::stack<const Symbol*>&);
+    void storeControlFlowGraphRecursively(ReversibleControlFlowGraphVertex&,
+					  std::stack<const Symbol*>&);
 
     /** 
      * top-down topologically sorted vertex list
      */
-    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&,std::stack<ReversibleControlFlowGraphVertex*>&);
+    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, 
+				    int&,
+				    std::stack<ReversibleControlFlowGraphVertex*>&);
 
     /** 
      * top down topological sort
      */
-    const Symbol* makeAuxilliaryIntegerLHS(Assignment& theAssignment, BasicBlock& theBasicBlock); 
+    const Symbol* makeAuxilliaryIntegerLHS(Assignment& theAssignment, 
+					   BasicBlock& theBasicBlock); 
 
     /** 
      * insert a new basic block between after and before and return it
      */
-    BasicBlock& insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before, const ReversibleControlFlowGraphEdge& replacedEdge_r, bool direction);
+    BasicBlock& insert_basic_block(const ReversibleControlFlowGraphVertex& after, 
+				   const ReversibleControlFlowGraphVertex& before, 
+				   const ReversibleControlFlowGraphEdge& replacedEdge_r, 
+				   bool direction);
 
     /** 
      * make a new entry node
@@ -192,17 +205,20 @@ private:
     /** 
      * append "i=i+1" to theBasicBlock_r
      */
-    void insert_increment_integer(const Symbol* theIntegerSymbol_p, BasicBlock& theBasicBlock_r);
+    void insert_increment_integer(const Symbol* theIntegerSymbol_p, 
+				  BasicBlock& theBasicBlock_r);
 
     /** 
      * append "i=value" to theBasicBlock_r and return "i"
      */
-    const Symbol* insert_init_integer(int value, BasicBlock& theBasicBlock_r);
+    const Symbol* insert_init_integer(int value, 
+				      BasicBlock& theBasicBlock_r);
 
     /** 
      * append "push_cfg(i)" to theBasicBlock_r
      */
-    void insert_push_integer(const Symbol* theSymbol_p, BasicBlock& theBasicBlock_r);
+    void insert_push_integer(const Symbol* theSymbol_p, 
+			     BasicBlock& theBasicBlock_r);
 
     /** 
      * append "pop_cfg(i)" to theBasicBlock_r
@@ -214,16 +230,12 @@ private:
      */
     const ControlFlowGraph& myOriginalGraph_r;
 
+    typedef std::list<ReversibleControlFlowGraphVertex*> ReversibleControlFlowGraphVertexPList;
+
     /** 
      * vertex list for generating various topological sorts
      */
-    std::list<ReversibleControlFlowGraphVertex*> mySortedVertices_p_l;
-
-    /** 
-     * list of correspondences between original vertices
-     * and new ones in the reversed cfg
-     */
-    std::list<std::pair<const ReversibleControlFlowGraphVertex*,const ReversibleControlFlowGraphVertex*> > myVertexMap;
+    ReversibleControlFlowGraphVertexPList mySortedVerticesPList;
 
   };  // end of class
 

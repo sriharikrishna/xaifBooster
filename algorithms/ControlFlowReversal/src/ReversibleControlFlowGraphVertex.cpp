@@ -55,7 +55,15 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraphVertex::debug() const {
      std::ostringstream out;
      out << "xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex["
-        << this
+	 << this
+	 << ",original="
+	 << original
+	 << ",adjoint="
+	 << adjoint
+	 << ",myIndex="
+	 << myIndex
+	 << ",getKind():"
+	 << getKind()
         << "]" << std::ends;
     return out.str();
   }
