@@ -46,8 +46,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
   
   bool 
-  AssignmentAlg::vertexIdentification(VertexPPairList& theVertexTrackList,
-				      PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
+  AssignmentAlg::vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
     if (!getActiveFlag()) 
       // nothing to do here 
       return true; 
@@ -66,12 +65,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	theRHSIdResult=theVertexRHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	thePassiveIdResult=thePassiveVertexIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
       } 
-      if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED)  
-	theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
-						 theLHSIdResult.getVertexP()));
-      else if (theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
-	theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
-						 theRHSIdResult.getVertexP()));
+      if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED
+	  || 
+	  theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
+	// do nothing, 
+	// push later
       } // end if 
       else if (thePassiveIdResult==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
 	// note, this isn't the exact question to ask here but it is 
@@ -129,8 +127,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     PrivateLinearizedComputationalGraph& theFlattenedSequence=
       BasicBlockAlgParameter::get().getFlattenedSequence(getContaining());
     VertexPPairList theVertexTrackList;
-    if (!vertexIdentification(theVertexTrackList,
-			      theFlattenedSequence)) { 
+    if (!vertexIdentification(theFlattenedSequence)) { 
       // there is an ambiguity, do the split
       BasicBlockAlgParameter::get().splitFlattenedSequence(getContaining());
       // redo everything for this assignment
@@ -175,10 +172,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theLHSIdResult=theVertexLHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	  theRHSIdResult=theVertexRHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	} 
-	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED
-	    ||
-	    theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
-	  // already added to the track list
+	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED)  
+	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
+						   theLHSIdResult.getVertexP()));
+	else if (theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
+	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
+						   theRHSIdResult.getVertexP()));
 	} // end if 
 	else { // the vertex cannot be uniquely identified
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED
