@@ -5,9 +5,9 @@ namespace xaifBooster {
   DuUdMapDefinitionResult::DuUdMapDefinitionResult() :
     myAnswer(DONT_KNOW),
     myStatementId("") { 
-  };
+  }
 
   DuUdMapDefinitionResult::~DuUdMapDefinitionResult(){
-  };
+  }
     
 } // end of namespace  

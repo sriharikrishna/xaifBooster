@@ -300,7 +300,7 @@ namespace xaifBooster {
     return *(boost::get(boost::get(BoostVertexContentType(),
 				   myBoostGraph), // get the Vertex property map
 			*(vi_begin))); // get the descriptor
-  }; // end of GraphWrapper<Vertex,Edge>::getMaxVertex
+  } // end of GraphWrapper<Vertex,Edge>::getMaxVertex
 
   template <class Vertex, class Edge>
   const Vertex&
@@ -322,7 +322,7 @@ namespace xaifBooster {
     return *(boost::get(boost::get(BoostVertexContentType(),
 				   myBoostGraph), // get the Vertex property map
 			*(vi_begin))); // get the descriptor
-  }; // end of GraphWrapper<Vertex,Edge>::getMaxVertex
+  } // end of GraphWrapper<Vertex,Edge>::getMaxVertex
 
   template <class Vertex, class Edge>
   void

@@ -37,7 +37,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void addElement(const Variable& theVariable,
 		    const ObjectWithId::Id& aStatementId);
 
-    void VertexIdentificationListPassive::removeIfIdentifiable(const Variable& theVariable); 
+    void removeIfIdentifiable(const Variable& theVariable); 
 
   private:
 

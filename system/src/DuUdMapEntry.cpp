@@ -17,16 +17,16 @@ namespace xaifBooster {
   const std::string DuUdMapEntry::our_IdRef_XAIFName("idRef");
 
   DuUdMapEntry::DuUdMapEntry(unsigned int theKey) : 
-    myKey(theKey) {}; 
+    myKey(theKey) {} 
  
-  DuUdMapEntry::~DuUdMapEntry(){};
+  DuUdMapEntry::~DuUdMapEntry(){}
 
   std::string DuUdMapEntry::debug() const {
     std::ostringstream out;
     out << "DuUdMapEntry[" << this 
 	<< "]" << std::ends; 
     return out.str();
-  }; 
+  } 
   
   void DuUdMapEntry::printXMLHierarchy(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();
