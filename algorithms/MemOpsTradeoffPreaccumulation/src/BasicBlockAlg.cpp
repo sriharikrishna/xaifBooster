@@ -221,10 +221,10 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       }// end while
 
       //the face list holds all the faces that are candidates for elimination
-      faceHeuristicFunc func_pt;
-      std::list<faceHeuristicFunc>::iterator fhiter;
-      DualGraph::VertexPointerList thePredList, theSuccList;
-      DualGraph::FacePointerList theFaceList;
+//       faceHeuristicFunc func_pt;
+//       std::list<faceHeuristicFunc>::iterator fhiter;
+//       DualGraph::VertexPointerList thePredList, theSuccList;
+//       DualGraph::FacePointerList theFaceList;
 
 
 
@@ -529,13 +529,10 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	LinearizedComputationalGraphCopy::EdgeIteratorPair edgelist (theCopy.edges());
 	LinearizedComputationalGraphCopy::EdgeIterator eli (edgelist.first), ele (edgelist.second);
 	for(; eli != ele; ++eli){
-	  if(theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0){
+	  if((theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0) && (!theCopy.isDep(theCopy.getTargetOf(*eli)))){
 	    // if the target of the edge is not a dependent and has inedges
-	    const LinearizedComputationalGraphCopy::ConstVertexPointerList& depCheck = theCopy.getDependentList();
-	    if(find(depCheck.begin(), depCheck.end(), &theCopy.getTargetOf(*eli)) == depCheck.end()){//can be front eliminated
-	      theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
-	    }// end if target is not dependent
-	  }// end if target has outedges
+	    theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
+	  }// end if 
 
 	  //if the source has inedges
 	  if(theCopy.numInEdgesOf(theCopy.getSourceOf(*eli)) > 0){//can be back eliminated
@@ -606,13 +603,10 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  LinearizedComputationalGraphCopy::EdgeIteratorPair edgelist (theCopy.edges());
 	  LinearizedComputationalGraphCopy::EdgeIterator eli (edgelist.first), ele (edgelist.second);
 	  for(; eli != ele; ++eli){
-	    if(theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0){
-	      // if the target of the edge is not a dependent and has inedges
-	      const LinearizedComputationalGraphCopy::ConstVertexPointerList& depCheck = theCopy.getDependentList();
-	      if(find(depCheck.begin(), depCheck.end(), &theCopy.getTargetOf(*eli)) == depCheck.end()){//can be front eliminated
-		theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
-	      }// end if target is not dependent
-	    }// end if target has outedges
+	    if((theCopy.numOutEdgesOf(theCopy.getTargetOf(*eli)) > 0) && (!theCopy.isDep(theCopy.getTargetOf(*eli)))){
+	      // if the target of the edge is not a dependent and has outedges
+	      theCopy.addToEdgeList(theCopy, *eli, LinearizedComputationalGraphCopy::FRONT);
+   	    }// end if target has outedges
 
 	    //if the source has inedges
 	    if(theCopy.numInEdgesOf(theCopy.getSourceOf(*eli)) > 0){//can be back eliminated
