@@ -12,14 +12,14 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 			       const DualGraph::VertexPointerList& thePredList,
 			       const DualGraph::VertexPointerList& theSuccList){
     
-  }// end forwardMode
+  }// end forwardMode_f
 
   void FaceElim::reverseMode_f(const DualGraph& theDual,
 			       DualGraph::FacePointerList& theOldFaceList,
 			       const DualGraph::VertexPointerList& thePredList,
 			       const DualGraph::VertexPointerList& theSuccList){
     
-  }// end reverseMode
+  }// end reverseMode_f
 
   void FaceElim::markowitzMode_f(const DualGraph& theDual,
 				 DualGraph::FacePointerList& theOldFaceList,
@@ -27,7 +27,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 				 const DualGraph::VertexPointerList& theSuccList){
 
     
-  }// end markowitzMode
+  }// end markowitzMode_f
 
   void FaceElim::siblingMode_f(const DualGraph& theDual,
 			       DualGraph::FacePointerList& theOldFaceList,
@@ -35,16 +35,21 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 			       const DualGraph::VertexPointerList& theSuccList){
 
    
-  }// end siblingMode_e
+  }// end siblingMode_f
 
   void FaceElim::elim_face(DualGraph& theDual,
 			   DualGraphEdge& theFace,
 			   xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
 
+
+
+
+
+
+
+
+
     
-  }// end front_elim_edge
-
-
- 
+  }// end elim_face
 
 } // end of namespace
