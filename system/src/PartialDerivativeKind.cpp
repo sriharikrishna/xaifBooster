@@ -50,5 +50,79 @@ namespace xaifBooster {
 				 << aName.c_str() << "<");
     return returnValue;
   } // end of std::string PartialDerivativeKind::fromString
+
+  PartialDerivativeKind::PartialDerivativeKind_E 
+  PartialDerivativeKind::leastDependent(PartialDerivativeKind::PartialDerivativeKind_E aKind,
+					PartialDerivativeKind::PartialDerivativeKind_E anotherKind) { 
+    PartialDerivativeKind_E theResult;
+    switch (aKind) { 
+    case PASSIVE:
+      theResult=PASSIVE;
+    case LINEAR_ONE: 
+      switch (anotherKind) { 
+      case PASSIVE:
+	theResult=PASSIVE;
+      case LINEAR_MINUS_ONE: 
+	THROW_LOGICEXCEPTION_MACRO("PartialDerivativeKind::leastDependent: cannot compare " 
+				   << toString(LINEAR_ONE).c_str()
+				   << " and " 
+				   << toString(LINEAR_MINUS_ONE).c_str());
+	break;
+      case LINEAR_ONE: 
+      case LINEAR: 
+      case NONLINEAR: 
+	theResult=LINEAR_ONE;
+	break;
+      default: 
+	throw PrintingIntException("PartialDerivativeKind::leastDependent: unknown value",anotherKind);
+	break;
+      } 
+      break;
+    case LINEAR_MINUS_ONE: 
+      switch (anotherKind) { 
+      case PASSIVE:
+	theResult=PASSIVE;
+      case LINEAR_ONE: 
+	THROW_LOGICEXCEPTION_MACRO("PartialDerivativeKind::leastDependent: cannot compare " 
+				   << toString(LINEAR_ONE).c_str()
+				   << " and " 
+				   << toString(LINEAR_MINUS_ONE).c_str());
+	break;
+      case LINEAR_MINUS_ONE: 
+      case LINEAR: 
+      case NONLINEAR: 
+	theResult=LINEAR_MINUS_ONE;
+	break;
+      default: 
+	throw PrintingIntException("PartialDerivativeKind::leastDependent: unknown value",anotherKind);
+	break;
+      } 
+      break;
+    case LINEAR: 
+      switch (anotherKind) { 
+      case PASSIVE:
+      case LINEAR_ONE: 
+      case LINEAR_MINUS_ONE: 
+	theResult=anotherKind;
+	break;
+      case LINEAR: 
+      case NONLINEAR: 
+	theResult=LINEAR;
+	break;
+      default: 
+	throw PrintingIntException("PartialDerivativeKind::leastDependent: unknown value",anotherKind);
+	break;
+      } 
+      break;
+    case NONLINEAR: 
+      theResult=anotherKind;
+      break;
+    default: 
+      throw PrintingIntException("PartialDerivativeKind::toString: unknown value",aKind);
+      break;
+    } 
+    return theResult;
+  } 
+
   
 } // end of namespace xaifBooster
