@@ -112,12 +112,14 @@ namespace xaifBooster {
     return myArgumentList;
   } 
   
-  const Scope& ControlFlowGraph::getScope() const { 
+  // non-const return is a temporary hack
+  Scope& ControlFlowGraph::getScope() const { 
     return myArgumentList.getScope();
   }
 
-  Scope& ControlFlowGraph::getScope() { 
-    return myArgumentList.getScope();
-  }
+  // uncomment this when the above is fixed
+  // Scope& ControlFlowGraph::getScope() { 
+  //   return myArgumentList.getScope();
+  // }
 
 } // end of namespace xaifBooster 

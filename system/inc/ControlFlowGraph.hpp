@@ -70,13 +70,15 @@ namespace xaifBooster {
 
     /** 
      * this is the scope of the ArgumentList
+     * \todo returning a non-const Scope is a hack, fix this
      */ 
-    const Scope& getScope() const; 
+    Scope& getScope() const; 
 
     /** 
      * this is the scope of the ArgumentList
+     * \todo reintroduce this when the above problem is fixed
      */ 
-    Scope& getScope(); 
+    // Scope& getScope(); 
 
   private: 
     
