@@ -1,0 +1,85 @@
+export UNDEF_ENV_VARS=""
+ifndef XERCESCROOT
+UNDEF_ENV_VARS+=" XERCESCROOT "
+endif
+
+ifndef BOOSTROOT
+UNDEF_ENV_VARS+=" BOOSTROOT "
+endif
+
+ifndef XAIFBOOSTERROOT
+UNDEF_ENV_VARS+=" XAIFBOOSTERROOT "
+endif
+
+ifneq ($(UNDEF_ENV_VARS),"")
+export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1
+endif	
+
+export FLIST=$(basename $(wildcard *.cpp))
+
+export XERCESC_LIB=-lxerces-c
+export XERCESC_LIB_DIR=$(XERCESCROOT)/lib 
+export XERCESC_INCLUDE_DIR=$(XERCESCROOT)/include
+
+export BOOST_INCLUDE_DIR=$(BOOSTROOT)
+
+export DUMMY_FACTORY_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/system/src/srcDummyFactories/obj/*.o)
+
+export SYSTEM_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/system/src/obj/*.o)
+
+export SYSTEM_INC_DIR=$(XAIFBOOSTERROOT)
+export UTILS_LIB_NAME=xaifboosterutils
+export UTILS_LIB=-l$(UTILS_LIB_NAME)
+export UTILS_LIB_DIR=$(XAIFBOOSTERROOT)/utils/lib
+
+export CC=g++
+export CCFLAGS=-g -Wall -Winline -Wredundant-decls
+
+export IPATH= \
+-I$(SYSTEM_INC_DIR) \
+-I$(XERCESC_INCLUDE_DIR) \
+-I$(BOOST_INCLUDE_DIR)
+
+export MAKEDEPEND=$(CC) $(IPATH) -M
+
+export AR=ar
+export ARFLAGS=-ruv
+
+export LFLAGS=
+export LIBS= $(XERCESC_LIB) $(UTILS_LIB) 
+# replaced by using LIBS as prerequisiste together with VPATH
+# export LPATH= -L$(XERCESC_LIB_DIR) -L$(UTILS_LIB_DIR)
+export VPATH= $(XERCESC_LIB_DIR):$(UTILS_LIB_DIR)
+
+export OBJS=$(addprefix obj/, $(addsuffix .o, $(FLIST)))
+
+# include the dependency information 
+export DEPINCL = $(addprefix obj/, $(addsuffix .d, $(FLIST)))
+
+# compile the objects
+# as part of this we create dependency information 
+# 1: echo complaint about any undefined variable
+# 2: invoke compiler to create raw dependencies with processId attached
+# 3: replace target by prepending the 'obj' subdirectory and adding the dependency file itself
+# 4: copy the resulting file back
+# appending to the dependencies:
+# 5: all lines with the original targets removed
+# 6: the line continuation removed
+# 7: all empty lines removed
+# 8: the remaining lines ended with ':'
+# in order to represent all prerequisites as targets to deal with 
+# removed prerequisites
+obj/%.o: %.cpp
+	$(COMPLAIN)
+	@set -e; rm -f $*.d; \
+	   $(MAKEDEPEND) $< > obj/$*.d.$$$$; \
+	   sed -e 's,\($*\)\.o[ :]*,obj/\1.o obj/\1.d : ,g' < obj/$*.d.$$$$ > obj/$*.d; \
+           cp obj/$*.d obj/$*.d.$$$$; \
+           sed -e 's,^[^:]*: *,,' \
+	       -e 's, *\\$$,,' \
+	       -e '/^$$/ d' \
+	       -e 's,$$, :,' < obj/$*.d.$$$$ >> obj/$*.d; \
+	   rm -f obj/$*.d.$$$$
+	$(CC) $(CCFLAGS) $(IPATH) -c $< -o $@
+
+export DOXYGEN = doxygen
