@@ -1,11 +1,20 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/PreLoop.hpp"
+#include "xaifBooster/system/inc/PreLoopAlgFactory.hpp"
 
 namespace xaifBooster { 
 
   const std::string PreLoop::ourXAIFName("xaif:PreLoop");
   const std::string PreLoop::our_myId_XAIFName("vertex_id");
+
+  PreLoop::PreLoop() {
+   myControlFlowGraphVertexAlgBase_p=PreLoopAlgFactory::instance()->makeNewAlg(*this);
+  }
+ 
+  PreLoop::~PreLoop() {
+    if (myControlFlowGraphVertexAlgBase_p) delete myControlFlowGraphVertexAlgBase_p;
+  }
 
   void
   PreLoop::printXMLHierarchy(std::ostream& os) const { 
@@ -46,5 +55,12 @@ namespace xaifBooster {
   const Condition& PreLoop::getCondition() const { 
     return myCondition;
   } 
+
+  PreLoopAlgBase&
+  PreLoop::getPreLoopAlgBase() const {
+    if (!myControlFlowGraphVertexAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("PreLoop::getControlFlowGraphVertexAlgBase: not set");
+    return dynamic_cast<PreLoopAlgBase&>(*myControlFlowGraphVertexAlgBase_p);
+  }
 
 } // end of namespace xaifBooster 

@@ -711,4 +711,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return false;
   } // end of BasicBlockAlg::isAliased
 
+  const BasicBlock&
+  BasicBlockAlg::getContaining() const {
+    return dynamic_cast<const BasicBlock&>(myContaining);
+  }
+
+
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 
