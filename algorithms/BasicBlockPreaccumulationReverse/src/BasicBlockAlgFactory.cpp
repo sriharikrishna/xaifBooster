@@ -22,7 +22,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	<< std::ends; 
     return out.str(); 
   } 
-};
+}
 
 // because of the extra cast in makeNewAlg needed to resolve base class ambiguity 
 // we cannot use the following macro:
