@@ -103,6 +103,7 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraph::insert_basic_block(const ReversibleControlFlowGraphVertex& after, const ReversibleControlFlowGraphVertex& before, const ReversibleControlFlowGraphEdge& replacedEdge_r) {
     ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
+    aNewReversibleControlFlowGraphVertex_p->setIndex(numVertices()+1);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
 // myOriginalGraph_r does not have a scope yet since nobody sets it
 // use the global scope for the time being
