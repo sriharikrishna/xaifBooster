@@ -243,6 +243,7 @@ namespace xaifBoosterControlFlowReversal {
     const Symbol& theLhsSymbol_r(theBasicBlock_r.getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,SymbolType::INTEGER_STYPE,SymbolShape::SCALAR,false));
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(theLhsSymbol_r,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1"); 
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxilliaryIntegerLHS"); 
     theAssignment.getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theAssignment.getLHS().getAliasMapKey().setTemporary();
     theAssignment.getLHS().getDuUdMapKey().setTemporary();
@@ -260,6 +261,7 @@ namespace xaifBoosterControlFlowReversal {
 
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theIntegerSymbol_p,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_increment_integer(lhs)");
     theAssignment_p->getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theAssignment_p->getLHS().getAliasMapKey().setTemporary();
     theAssignment_p->getLHS().getDuUdMapKey().setTemporary();
@@ -271,6 +273,7 @@ namespace xaifBoosterControlFlowReversal {
     theUse_p->setId("2");
     theVariableSymbolReference_p=new VariableSymbolReference(*theIntegerSymbol_p,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_increment_integer(counter)");
     theUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theUse_p->getVariable().getAliasMapKey().setTemporary();
     theUse_p->getVariable().getDuUdMapKey().setTemporary();
@@ -322,6 +325,7 @@ namespace xaifBoosterControlFlowReversal {
     Variable theSubstitutionArgument;
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theIntegerSymbol_p,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer");
     theSubstitutionArgument.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theSubstitutionArgument.getAliasMapKey().setTemporary();
     theSubstitutionArgument.getDuUdMapKey().setTemporary();
@@ -337,6 +341,7 @@ namespace xaifBoosterControlFlowReversal {
     Symbol* theIntegerSymbol_p= new Symbol(theBasicBlock_r.getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,SymbolType::INTEGER_STYPE,SymbolShape::SCALAR,false));
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theIntegerSymbol_p,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_pop_integer");
     theSubstitutionArgument.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theSubstitutionArgument.getAliasMapKey().setTemporary();
     theSubstitutionArgument.getDuUdMapKey().setTemporary();
@@ -794,6 +799,7 @@ namespace xaifBoosterControlFlowReversal {
           VariableSymbolReference* theSelectVariableSymbolReference_p=new VariableSymbolReference(thePoppedIntegerSymbol_cr,theNewBasicBlock_r.getScope());
           theArgument_p->getVariable().supplyAndAddVertexInstance(*theSelectVariableSymbolReference_p);
           theSelectVariableSymbolReference_p->setId("1");
+	  theSelectVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(BRANCH)");
           
           // insert adjoint edges
           InEdgeIteratorPair ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).first)));
@@ -828,6 +834,7 @@ namespace xaifBoosterControlFlowReversal {
           theLoopCounterUse_p->setId("2");
           VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
           theVariableSymbolReference_p->setId("1");
+	  theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/COUNTER)");
           theLoopCounterUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
           theLoopCounterUse_p->getVariable().getAliasMapKey().setTemporary();
           theLoopCounterUse_p->getVariable().getDuUdMapKey().setTemporary();
@@ -837,6 +844,7 @@ namespace xaifBoosterControlFlowReversal {
           thePoppedIntegerUse_p->setId("3");
           theVariableSymbolReference_p=new VariableSymbolReference(thePoppedIntegerSymbol_cr,theNewBasicBlock_r.getScope());
           theVariableSymbolReference_p->setId("1");
+	  theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/POP_INTEGER)");
           thePoppedIntegerUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
           thePoppedIntegerUse_p->getVariable().getAliasMapKey().setTemporary();
           thePoppedIntegerUse_p->getVariable().getDuUdMapKey().setTemporary();
@@ -857,6 +865,7 @@ namespace xaifBoosterControlFlowReversal {
           // set lhs
           theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
           theVariableSymbolReference_p->setId("1");
+	  theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/LHS)");
           theForLoop_r.getUpdate().getAssignment().getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
           theForLoop_r.getUpdate().getAssignment().getLHS().getAliasMapKey().setTemporary();
           theForLoop_r.getUpdate().getAssignment().getLHS().getDuUdMapKey().setTemporary();
@@ -867,6 +876,7 @@ namespace xaifBoosterControlFlowReversal {
           theUse_p->setId("2");
           theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
           theVariableSymbolReference_p->setId("1");
+	  theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/RHS)");
           theUse_p->getVariable().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
           theUse_p->getVariable().getAliasMapKey().setTemporary();
           theUse_p->getVariable().getDuUdMapKey().setTemporary();

@@ -307,6 +307,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // JU: this assignment of the vertex Id might have to change 
 	  // if we create vector assignments as auxilliary variables...
 	  theVariableSymbolReference_p->setId("1");
+	  theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
 	  theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	  theLHS.getAliasMapKey().setTemporary();
 	  theLHS.getDuUdMapKey().setTemporary();
@@ -342,6 +343,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 								 true),
 					      theGlobalScope);
 		theTemporaryVariableReference_p->setId("1");
+		theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
 		theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
 		theTarget.getAliasMapKey().setTemporary();
 		theTarget.getDuUdMapKey().setTemporary();

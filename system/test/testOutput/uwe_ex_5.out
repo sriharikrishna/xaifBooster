@@ -38,15 +38,15 @@
       <xaif:BasicBlock vertex_id="2" annotation="" scope_id="2">
         <xaif:Assignment statement_id="sage_1" active="1">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="true" alias="3" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="2" annotation="" name="sin_scal"/>
             <xaif:VariableReference vertex_id="3" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="4" annotation="" name="mul_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="2" position="1"/>
@@ -56,18 +56,18 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="sage_2" active="1">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="4" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="i" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="5" annotation="" name="add_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
@@ -78,14 +78,14 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="sage_3" active="1">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t1" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t2" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>

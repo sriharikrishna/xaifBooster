@@ -28,11 +28,11 @@
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
         <xaif:Assignment statement_id="1" active="1">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="2" type="integer" value="1"/>
             <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
@@ -45,10 +45,10 @@
         <xaif:Condition>
           <xaif:BooleanOperation vertex_id="1" name="less_than"/>
           <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
           </xaif:VariableReference>
           <xaif:VariableReference vertex_id="3" active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
           </xaif:VariableReference>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
@@ -60,7 +60,7 @@
       <xaif:BasicBlock vertex_id="_aug__cfr_v_7" annotation="_cfr_" scope_id="1">
         <xaif:Assignment statement_id="_cfr_init" active="0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_2" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_2" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxilliaryIntegerLHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="integer" value="1"/>
@@ -68,7 +68,7 @@
         </xaif:Assignment>
         <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_2" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_2" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
@@ -84,10 +84,10 @@
       <xaif:Branch vertex_id="_adj__cfr_v_2" annotation="_cfr_">
         <xaif:Condition>
           <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(BRANCH)" scope_id="1"/>
           </xaif:VariableReference>
           <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_1" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_1" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(BRANCH)" scope_id="1"/>
           </xaif:VariableReference>
         </xaif:Condition>
       </xaif:Branch>
@@ -95,11 +95,11 @@
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
         <xaif:Assignment statement_id="1" active="1">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="y" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:Constant vertex_id="2" type="integer" value="1"/>
             <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
@@ -112,14 +112,14 @@
       <xaif:BasicBlock vertex_id="_adj__cfr_v_5" annotation="_cfr_" scope_id="1">
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="_cfr_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_pop_integer" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="_adj__cfr_v_6" annotation="_cfr_" scope_id="1">
         <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="_cfr_pop_i">
           <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_1" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_1" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_pop_integer" scope_id="1"/>
           </xaif:ArgumentSubstitute>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>

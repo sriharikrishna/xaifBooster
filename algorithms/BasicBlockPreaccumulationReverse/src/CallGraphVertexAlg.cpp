@@ -222,6 +222,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     VariableSymbolReference& theNewVariableSymbolReference(*(new VariableSymbolReference(theSymbol,
 											 theScope)));
     theNewVariableSymbolReference.setId("1");
+    theNewVariableSymbolReference.setAnnotation("xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall");
     // pass it on to the variable and relinquish ownership
     theInlineVariable.supplyAndAddVertexInstance(theNewVariableSymbolReference);
     theInlineVariable.getAliasMapKey().setTemporary();
