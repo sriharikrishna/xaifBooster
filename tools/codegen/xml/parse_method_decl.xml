@@ -26,7 +26,7 @@
       <CodeGen:DynamicCode hook_ref="3" text="AliasSingle"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="3" text="Argument"/>
+      <CodeGen:DynamicCode hook_ref="3" text="ConcreteArgument"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="3" text="ArgumentList"/>
@@ -128,7 +128,7 @@
       <CodeGen:DynamicCode hook_ref="3" text="Update"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="3" text="Variable"/>
+      <CodeGen:DynamicCode hook_ref="3" text="Argument"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="3" text="VariableEdge"/>

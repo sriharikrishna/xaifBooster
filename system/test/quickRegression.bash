@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ -z "${XAIFSCHEMAROOT}" ] 
 then 
-  echo XAIFSCHEMAROOT needs to be set, e.g. sandbox/BitKeep/xaif-1.0
+  echo XAIFSCHEMAROOT needs to be set, e.g. /sandbox/BitKeep/xaif-1.0
   exit -1 
 fi
 rm -rf tmp
@@ -21,7 +21,7 @@ for i in `echo ${TESTFILES}`
     then 
 	echo "debug messages:"
 	cat tmp/${i}.dbg
-	exit
+	exit -2
     else
 	echo "no debug messages"
     fi
@@ -30,7 +30,10 @@ for i in `echo ${TESTFILES}`
     then 
 	echo "diffs base (<) vs. current (>):"
 	diff testOutput/${i}.out tmp/${i}.out
-	exit
+	if [ -z "$DONT_STOP" ] 
+	then
+	  exit -3
+	fi
     else 
 	echo "no diffs"
     fi

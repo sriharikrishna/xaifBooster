@@ -108,6 +108,11 @@ namespace xaifBooster {
        << "=\"" 
        << getDerivFlag()
        << "\"";
+    os << " " 
+       << DuUd::our_myDuUdReference_XAIFName.c_str() 
+       << "=\"" 
+       << myDuUd.getReference()
+       << "\"";
   } 
 
   void
@@ -210,5 +215,13 @@ namespace xaifBooster {
     getActiveFlag(); // update it if needed
     return myActiveUseType;
   } 
+
+  DuUd& Variable::getDuUd() { 
+    return myDuUd;
+  }
+
+  const DuUd& Variable::getDuUd() const { 
+    return myDuUd;
+  }
 
 } // end of namespace xaifBooster 
