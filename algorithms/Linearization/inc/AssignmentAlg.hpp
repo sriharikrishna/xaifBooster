@@ -43,8 +43,6 @@ namespace xaifBoosterLinearization {
 
     bool getActiveFlag() const; 
 
-    bool getLHSActiveFlag() const;
-
   private: 
 
     /** 
@@ -152,12 +150,6 @@ namespace xaifBoosterLinearization {
      * it is a modifiable copy of the same flag in Assignment
      */
     bool myActiveFlag;
-
-    /** 
-     * this determines if the assignment is active or not
-     * it is a modifiable copy of the same flag in Assignment
-     */
-    bool myLHSActiveFlag;
 
     /**
      * remove passive vertices and edges
