@@ -48,6 +48,8 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
+  bool BasicBlockAlg::ourLimitToStatementLevelFlag=false;
+
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
@@ -846,9 +848,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  if(i!=myBasicBlockElementSequencePPairList.begin()) { 
 	    // have a predecessor: 
 	    --i;
-	    if(!(*i).second) { 
-	      // nothing assigned yet which means this is not an 
-	      // assignment unless we call this out of order
+	    if(!(*i).second ||
+	       hasLimitToStatementLevel()) { 
+	      // either nothing assigned yet which means this is not an 
+	      // assignment (unless we call this out of order) this is how 
+	      // we handle splits for subroutine calls
+	      // OR
+	      // we intend to not flatten at all and keep one assignment per sequence
+	      // while leaving the rest of the code unchanged
 	      theSequence_p=new Sequence;
 	      theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	      myUniqueSequencePList.push_back(theSequence_p);
@@ -949,4 +956,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return dynamic_cast<const BasicBlock&>(myContaining);
   }
 
+  void BasicBlockAlg::limitToStatementLevel() { 
+    ourLimitToStatementLevelFlag=true;
+  }
+  
+  bool BasicBlockAlg::hasLimitToStatementLevel() { 
+    return ourLimitToStatementLevelFlag;
+  }
+  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

@@ -354,5 +354,5 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
-  
+
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

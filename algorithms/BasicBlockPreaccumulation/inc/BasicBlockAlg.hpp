@@ -102,6 +102,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     const BasicBlock& getContaining() const;
     
+    /** 
+     * we can decide to restrict the 
+     * preaccumulation to the level of single statements 
+     * effectively precluding the flattening
+     */
+    static void limitToStatementLevel();
+    
+    static bool hasLimitToStatementLevel();
     
   protected: 
 
@@ -311,6 +319,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     bool isAliased(const Variable& theIndepVariable,
 		   const VariableCPList& theDependentList);
     
+    /** 
+     * if this flag is true each FlattenedSequence 
+     * consists of exactly one assignment
+     */ 
+    static bool ourLimitToStatementLevelFlag;
+
+
   };
  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms
