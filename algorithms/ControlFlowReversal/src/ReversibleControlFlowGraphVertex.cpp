@@ -46,6 +46,11 @@ namespace xaifBoosterControlFlowReversal {
     return dynamic_cast<const ControlFlowGraphVertexAlg&>(myOriginalVertex_p->getControlFlowGraphVertexAlgBase());
   }
 
+  ControlFlowGraphVertexAlg&
+  ReversibleControlFlowGraphVertex::getOriginalControlFlowGraphVertexAlg() {
+    return dynamic_cast<ControlFlowGraphVertexAlg&>(myOriginalVertex_p->getControlFlowGraphVertexAlgBase());
+  }
+
   const ControlFlowGraphVertexAlg&
   ReversibleControlFlowGraphVertex::getNewControlFlowGraphVertexAlg() const {
     if (!myNewVertex_p)

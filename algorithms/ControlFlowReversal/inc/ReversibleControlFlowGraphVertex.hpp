@@ -28,6 +28,9 @@ namespace xaifBoosterControlFlowReversal {
     const ControlFlowGraphVertexAlg&
     getOriginalControlFlowGraphVertexAlg() const;
 
+    ControlFlowGraphVertexAlg&
+    getOriginalControlFlowGraphVertexAlg();
+
     const ControlFlowGraphVertexAlg&
     getNewControlFlowGraphVertexAlg() const;
 

@@ -113,7 +113,7 @@ namespace xaifBoosterDerivativePropagator {
      */
     const Variable& getTarget() const;
 
-    virtual bool isIncremental() { return false;}; 
+    virtual bool isIncremental() const { return false;}; 
 
     std::string debug() const;
 
