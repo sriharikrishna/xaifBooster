@@ -1,4 +1,18 @@
 #!/bin/bash
+if [ -f .REVERSE_MODE ] 
+then 
+    rm -f .REVERSE_MODE
+fi 
+echo -n "use reverse mode y/[n]"
+read answer
+if [ "$answer" == "y" ]
+then
+    export REVERSE_MODE=y
+    echo "using reverse mode"
+else
+    export REVERSE_MODE=
+    echo "using plain drivers"
+fi
 if [ $# -gt 0 ]
 then
     TESTFILES=$@
@@ -13,13 +27,19 @@ do
     echo "ERROR in: make testAllclean"; exit -1;
   fi
   echo "** running $i *************************************************"
-  exdir=examples/$i
-  if [ -f $exdir/driver.f ] 
+  if [ "$REVERSE_MODE" == "y" ] 
   then 
-    ln -sf $exdir/driver.f .
+    DRIVER_NAME=driver_adm
+  else
+    DRIVER_NAME=driver
+  fi
+  exdir=examples/$i
+  if [ -f $exdir/$DRIVER_NAME.f ] 
+  then 
+    ln -sf $exdir/$DRIVER_NAME.f .
     if [ $? -ne 0 ] 
     then 
-      echo "ERROR in: ln -sf $exdir/driver.f ."; exit -1;
+      echo "ERROR in: ln -sf $exdir/$DRIVER_NAME.f ."; exit -1;
     fi
   fi
   ln -sf $exdir/head.f .
@@ -40,7 +60,14 @@ do
   then 
     echo "ERROR in: make"; exit -1;
   fi
-  make driver
+### this is temporary until we got rid of the RETURNs
+  if [ "$REVERSE_MODE" == "y" ] 
+  then 
+    sed 's/RETURN//' head.xb.x2w.w2f.pp.f >| head.xb.x2w.w2f.pp.f.1
+    mv head.xb.x2w.w2f.pp.f.1 head.xb.x2w.w2f.pp.f
+  fi
+### end of temporary fix
+  make $DRIVER_NAME
   if [ $? -ne 0 ] 
   then 
     echo "ERROR in: make driver"; exit -1;
@@ -62,9 +89,9 @@ do
   fi
   if [ -n "$hasDiffAD" -o -n "$hasDiffDD" ] 
   then	 
-    echo "diffs base (<) vs. current (>) AD:"
+    echo "diffs current test (<) vs. reference (>) AD:"
     diff tmpOutput/ad.out $exdir/refOutput/ad.out 
-    echo "diffs base (<) vs. current (>) DD:"
+    echo "diffs current test (<) vs. reference (>) DD:"
     diff tmpOutput/dd.out $exdir/refOutput/dd.out 
     if [ -z "$DONT_STOP" ] 
     then

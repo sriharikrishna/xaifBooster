@@ -4,6 +4,7 @@
 #include <list>
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 #include "xaifBooster/system/inc/ArgumentSymbolReference.hpp"
 
 namespace xaifBooster { 
@@ -13,7 +14,8 @@ namespace xaifBooster {
    * the control flow for a subroutine
    * it is a member of a CallGraphVertex
    */
-  class ArgumentList : public XMLPrintable {
+  class ArgumentList : public XMLPrintable,
+		       public GenericTraverseInvoke {
 
   public:
 
@@ -22,6 +24,8 @@ namespace xaifBooster {
     ~ArgumentList();
 
     void printXMLHierarchy(std::ostream& os) const;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     std::string debug() const ;
     
@@ -47,13 +51,10 @@ namespace xaifBooster {
     const ArgumentSymbolReferencePList& getArgumentSymbolReferencePList() const;
 
     /**
-     * \todo cleanup
+     * \todo cleanup see const casts in the code
+     * \see myScope_p
      */ 
-    // Scope& getScope();
-    // const Scope& getScope() const;
     Scope& getScope() const;
-
-    void setScope(Scope& aScope);
 
   private: 
     
@@ -67,8 +68,11 @@ namespace xaifBooster {
     /** 
      * this is pointer for setting the scope 
      * which we don't know at construction time
+     * it is not explicitly given but taken 
+     * from the first element in myArgumentSymbolReferencePList
+     * in getScope or an exception is thrown.
      */
-    Scope* myScope_p;
+    mutable Scope* myScope_p;
 
   }; // end of class ArgumentList
 

@@ -60,6 +60,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   }
 
   void BasicBlockAlg::algorithm_action_4() { 
+    xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4();
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4();
   }
 

@@ -14,6 +14,7 @@
 namespace xaifBooster { 
 
   class VariableSymbolReference;
+  class ArrayAccess;
 
   /**
    * the default representation for VariableReferences as a graph
@@ -125,6 +126,21 @@ namespace xaifBooster {
      * set myActiveUseType once
      */
     void setActiveUseType(ActiveUseType::ActiveUseType_E anActiveUseType); 
+
+    /** 
+     * returns the first VariableVertex that is an ArrayAccess
+     * \todo this is a bit of a hack because we might 
+     * conceivably have something with more than one such vertex
+     */
+    const ArrayAccess& getArrayAccess() const;
+    ArrayAccess& getArrayAccess();
+
+    /** 
+     * returns true if this has a VariableVertex that is an ArrayAccess
+     * \todo see also getArrayAccess 
+     */
+    bool hasArrayAccess() const;
+
   private: 
     
     /** 
@@ -144,6 +160,11 @@ namespace xaifBooster {
      */
     bool myDerivFlag;
 
+    /** 
+     * returns the first VariableVertex that is a VariableSymbolReference
+     * \todo: this is a bit of a hack because we might 
+     * conceivably have something with more than one such vertex
+     */
     const VariableSymbolReference& getVariableSymbolReference() const;
 
     /** 

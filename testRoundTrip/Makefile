@@ -1,5 +1,12 @@
 TARGET=head
+
+ifdef REVERSE_MODE
+REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_tape.o
+TARGETDRIVER=driver_adm
+else
 TARGETDRIVER=driver
+PP_FLAGS=-f
+endif
 
 all: $(TARGET).xb.x2w.w2f.pp.f
 
@@ -22,7 +29,7 @@ endif
 
 LN=ln -sf
 
-F95=f95
+F95=f95 -g
 
 RM=rm -f
 
@@ -35,7 +42,7 @@ $(TARGET).xaif : $(TARGET).B whirl2xaif
 $(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
 	$(COMPLAIN)
 #	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif -g 15
-	./xaifBooster -i $(TARGET).xaif -g 16 -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
+	./xaifBooster -i $(TARGET).xaif -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $(TARGET).xb.xaif
 
 $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
 	./xaif2whirl --structured $(TARGET).B $(TARGET).xb.xaif
@@ -45,7 +52,7 @@ $(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
 	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/be:${LD_LIBRARY_PATH}; ./whirl2f $(TARGET).xb.x2w.B
 
 $(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
-	perl pp.pl $(TARGET).xb.x2w.w2f.f
+	perl pp.pl $(PP_FLAGS) $(TARGET).xb.x2w.w2f.f
 
 # setup some links
 %.xsd:
@@ -58,11 +65,11 @@ mfef90:
 
 whirl2xaif xaif2whirl: 
 	$(COMPLAIN)
-	$(LN) ${RICETOOLROOT}/whirl2xaif/obj/i686-Linux/obj/$@ .
+	$(LN) ${RICETOOLROOT}/OpenADFortTk/obj/i686-Linux/obj/$@ .
 
 pp.pl: 
 	$(COMPLAIN)
-	$(LN) ${RICETOOLROOT}/whirl2xaif/postprocess/$@ .
+	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
 
 whirl2f whirl2f_be:
 	$(COMPLAIN)
@@ -72,26 +79,29 @@ xaifBooster:
 	./pickAlgorithm.bash
 
 # make the $TARGETDRIVER)
-$(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
+$(TARGETDRIVER): w2f__types.o active_module.o $(TARGETDRIVER).o $(TARGET).xb.x2w.w2f.pp.o $(REVERSE_MODULES)
 	$(F95) $^ -o $@
 
-run: params.conf tmpOutput
-	./driver
+run: params.conf tmpOutput $(TARGETDRIVER)
+	./$(TARGETDRIVER)
 
 # this is not free form fortran
 w2f__types.o : w2f__types.f
 	$(F95) -c $<
 
 # this is not free form fortran either
-$(TARGET).xb.x2w.w2f.pp.o : $(TARGET).xb.x2w.w2f.pp.f
+$(TARGET).xb.x2w.w2f.pp.o : $(TARGET).xb.x2w.w2f.pp.f $(REVERSE_MODULES)
 	$(F95) -c $<
 
 %.o:%.f
 	$(F95) -free -c $<
 
+%.o:%.f95
+	$(F95) -c $<
+
 # link the sample files if necessary
 $(TARGETDRIVER).f : 
-	ln -s simpleDriver.f $(TARGETDRIVER).f
+	ln -s simple.$(TARGETDRIVER).f $(TARGETDRIVER).f
 
 # link the sample files if necessary
 $(TARGET).f : 
@@ -116,7 +126,7 @@ testAllclean: testclean
 clean: testAllclean
 	$(RM) *.xsd 
 	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f pp.pl xaifBooster 
-	$(RM) w2f__types.o active_module.o w2f__types.mod active_module.mod 
+	$(RM) *.mod *.o
 
 obj test doc: 
 

@@ -12,8 +12,9 @@ namespace xaifBooster {
 
   ControlFlowGraph::ControlFlowGraph (const Symbol& theSymbol,
 				      const Scope& theScope,
+				      const Scope& theCFGScope,
 				      const bool activeFlag) :
-    ControlFlowGraphCommonAttributes(theSymbol,theScope),
+    ControlFlowGraphCommonAttributes(theSymbol,theScope,theCFGScope),
     myActiveFlag(activeFlag) { 
     myControlFlowGraphAlgBase_p=ControlFlowGraphAlgFactory::instance()->makeNewAlg(*this);
   } 
@@ -97,6 +98,7 @@ namespace xaifBooster {
 
   void ControlFlowGraph::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
     getControlFlowGraphAlgBase().genericTraversal(anAction_c);
+    myArgumentList.genericTraversal(anAction_c);
     GraphWrapperTraversable<ControlFlowGraphVertex,ControlFlowGraphEdge>::traverseToChildren(anAction_c);
   }
   
@@ -117,7 +119,7 @@ namespace xaifBooster {
   
   // non-const return is a temporary hack
   Scope& ControlFlowGraph::getScope() const { 
-    return myArgumentList.getScope();
+    return const_cast<Scope&>(myScope);
   }
 
   // uncomment this when the above is fixed

@@ -2,7 +2,6 @@
 
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
-#include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 
@@ -16,12 +15,13 @@ namespace xaifBoosterDerivativePropagator {
   const std::string DerivativePropagatorSaxpy::our_SAX_XAIFName("xaif:Sax");
   const std::string DerivativePropagatorSaxpy::our_myA_XAIFName("xaif:A");
   const std::string DerivativePropagatorSaxpy::our_myX_XAIFName("xaif:X");
-  const std::string DerivativePropagatorSaxpy::our_myY_XAIFName("xaif:Y");
+  const std::string DerivativePropagatorSaxpy::our_myTarget_XAIFName("xaif:Y");
   const std::string DerivativePropagatorSaxpy::our_myAX_XAIFName("xaif:AX");
 
   DerivativePropagatorSaxpy::DerivativePropagatorSaxpy(const Variable& theA,
 						       const Variable& theX,
 						       const Variable& theY) : 
+    DerivativePropagatorEntry(theY),
     useAsSaxFlag(false) { 
     AX* theAX_p=new AX();
     myAXPList.push_back(theAX_p);
@@ -32,9 +32,6 @@ namespace xaifBoosterDerivativePropagator {
     theX.copyMyselfInto(theAX_p->myX);
     theAX_p->myX.setId(1);
     theAX_p->myX.setDerivFlag();
-    theY.copyMyselfInto(myY);
-    myY.setId(1);
-    myY.setDerivFlag();
   }
 
   void DerivativePropagatorSaxpy::addAX(const Variable& theA,
@@ -53,6 +50,7 @@ namespace xaifBoosterDerivativePropagator {
   DerivativePropagatorSaxpy::DerivativePropagatorSaxpy(const Constant& theA,
 						       const Variable& theX,
 						       const Variable& theY) : 
+    DerivativePropagatorEntry(theY),
     useAsSaxFlag(false) { 
     AX* theAX_p=new AX();
     myAXPList.push_back(theAX_p);
@@ -61,9 +59,6 @@ namespace xaifBoosterDerivativePropagator {
     theX.copyMyselfInto(theAX_p->myX);
     theAX_p->myX.setId(1);
     theAX_p->myX.setDerivFlag();
-    theY.copyMyselfInto(myY);
-    myY.setId(1);
-    myY.setDerivFlag();
   }
 
 
@@ -105,7 +100,7 @@ namespace xaifBoosterDerivativePropagator {
 	 i!=myAXPList.end();
 	 ++i) 
       printAXMemberXMLHierarchy(**i,os);
-    printMemberXMLHierarchy(myY,our_myY_XAIFName,os);
+    printMemberXMLHierarchy(myTarget,our_myTarget_XAIFName,os);
     os << pm.indent() 
        << "</";
     if (useAsSaxFlag) 
@@ -182,9 +177,7 @@ namespace xaifBoosterDerivativePropagator {
   std::string DerivativePropagatorSaxpy::debug () const { 
     std::ostringstream out;
     out << "DerivativePropagatorSaxpy[" << this 
-      // 	<< ", myA=" << myA.debug()
-      // 	<< ", myX=" << myX.debug()
-	<< ", myY=" << myY.debug()
+	<< DerivativePropagatorEntry::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of DerivativePropagatorSaxpy::debug
@@ -210,10 +203,6 @@ namespace xaifBoosterDerivativePropagator {
 	theFactorList.push_back(aFactor);
       } 
     }
-  } 
-
-  const Variable& DerivativePropagatorSaxpy::getTarget() const { 
-    return myY;
   } 
 
   bool DerivativePropagatorSaxpy::isIncremental() { 

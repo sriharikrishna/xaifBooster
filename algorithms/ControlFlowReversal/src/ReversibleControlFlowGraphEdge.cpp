@@ -43,19 +43,31 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   bool ReversibleControlFlowGraphEdge::has_condition_value() const {
-      return myNewEdge.has_condition_value();
+      if (original)
+        return my_has_condition_value;
+      else
+        return myNewEdge.has_condition_value();
   }
 
   void ReversibleControlFlowGraphEdge::set_has_condition_value(bool hcv) {
-      myNewEdge.set_has_condition_value(hcv);
+      if (original)
+        my_has_condition_value=hcv;
+      else 
+        myNewEdge.set_has_condition_value(hcv);
   }
                                                                                 
   void ReversibleControlFlowGraphEdge::set_condition_value(int cv) {
-      myNewEdge.set_condition_value(cv);
+      if (original)
+        my_condition_value=cv;
+      else
+        myNewEdge.set_condition_value(cv);
   }
 
   const int& ReversibleControlFlowGraphEdge::get_condition_value() const {
-      return myNewEdge.get_condition_value();
+      if (original)
+        return my_condition_value;
+      else
+        return myNewEdge.get_condition_value();
   }
 
   void
@@ -86,11 +98,11 @@ namespace xaifBoosterControlFlowReversal {
       os << "\" "
          << myOriginalEdge_p->our_has_condition_value_XAIFName
          << "=\""
-         << myOriginalEdge_p->has_condition_value()
+         << my_has_condition_value
          << "\" "
          << myOriginalEdge_p->our_condition_value_XAIFName
          << "=\""
-         << myOriginalEdge_p->get_condition_value()
+         << my_condition_value
          << "\"/>" << std::endl;
     } 
     else {
