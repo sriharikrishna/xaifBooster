@@ -10,7 +10,7 @@
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
-  std::string CallGraphAlg::myAlgorithmSignature(std::string("__control_flow_reversal_"));
+  std::string CallGraphAlg::myAlgorithmSignature(std::string("_cfr_"));
 
 
   CallGraphAlg::CallGraphAlg(CallGraph& theContaining) : CallGraphAlgBase(theContaining) {
