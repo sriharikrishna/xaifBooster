@@ -60,14 +60,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     };
 
-    virtual IdentificationResult canIdentify(const Variable& theVariable) const;
-
-    /** 
-     * this will only work if canIdentify returns
-     * NOT_IDENTIFIED 
+    /**
+     * this is a fall back method utilizing only alias information 
+     * as opposed to the overwriting methods which look at DuUd information 
      */
-    virtual void addElement(const Variable& theVariable,
-			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p);
+    virtual IdentificationResult canIdentify(const Variable& theVariable) const;
 
     virtual void removeIfIdentifiable(const Variable& theVariable); 
 

@@ -3,6 +3,7 @@
 #include "xaifBooster/system/inc/AliasMap.hpp"
 #include "xaifBooster/system/inc/AliasMapKey.hpp"
 #include "xaifBooster/system/inc/AliasMapEntry.hpp"
+#include "xaifBooster/system/inc/AliasRange.hpp"
 
 namespace xaifBooster { 
 
@@ -54,24 +55,27 @@ namespace xaifBooster {
   } // end of  AliasMap::printXMLHierarchy
 
   bool AliasMap::mayAlias(const AliasMapKey& theKey, 
-			  const AliasMap::AliasMapKeyList& theList) const { 
+			  const AliasMap::AliasMapKeyPList& theList) const { 
     // some obvious things first
-    if (!theList.size()) 
+    // nothing to do if theList is empty
+    if (theList.empty()) 
       return false; 
+    // if the list isn't empty but we have no info
+    if (theKey.getKind()==AliasMapKey::NO_INFO)
+      return true; 
+    // if the list isn't empty and it is a temporary variable
     if (theKey.getKind()==AliasMapKey::TEMP_VAR)
       // by agreed usage patterns, i.e. a single 
       // relevant assignment within a given scope
       return false; 
-    if (theKey.getKind()!=AliasMapKey::NO_INFO) {
-      AliasMapKeyList::const_iterator i=theList.begin();
-      for (;i!=theList.end();
-	   ++i)
-	if (haveNonEmptyIntersection(theKey,**i))
-	  break;
-      if(i==theList.end())
-	return false;
+    // else
+    AliasMapKeyPList::const_iterator i=theList.begin();
+    for (;i!=theList.end();
+	 ++i) { 
+      if (haveNonEmptyIntersection(theKey,**i))
+	break;
     } 
-    return true;
+    return (i!=theList.end());
   }
 
   bool AliasMap::mayAlias(const AliasMapKey& theKey, 
@@ -113,6 +117,50 @@ namespace xaifBooster {
     if (myAAVector[theKey.getKey()]->mustAlias(*myAAVector[theOtherKey.getKey()]))
       return true;
     return false;
+  }
+
+  bool AliasMap::subSet(const AliasMapKey& theKey, 
+			const AliasMap::AliasMapKeyPList& theList) const { 
+    // some obvious things first
+    // nothing to do if theList is empty
+    // or we have no info
+    if (theList.empty() 
+	||
+	theKey.getKind()==AliasMapKey::NO_INFO) 
+      return false; 
+    // if the list isn't empty and it is a temporary variable
+    if (theKey.getKind()==AliasMapKey::TEMP_VAR)
+      // by agreed usage patterns, we should never ask 
+      // this question
+      THROW_LOGICEXCEPTION_MACRO("AliasMap::subSet: theKey has kind TEMP_VAR");
+    // else
+    // make a temporary union of all AliasSets in theList
+    AliasSet aTemporaryUnionAliasSet;
+    for (AliasMapKeyPList::const_iterator anAliasMapKeyPListI=theList.begin();
+	 anAliasMapKeyPListI!=theList.end();
+	 ++anAliasMapKeyPListI) {
+      if ((*anAliasMapKeyPListI)->getKey()<0 
+	  || 
+	  (*anAliasMapKeyPListI)->getKey()>=myAAVector.size())
+	THROW_LOGICEXCEPTION_MACRO("AliasMap::subSet: key from theList >" 
+				     << (*anAliasMapKeyPListI)->getKey() 
+				     << "< is out of range");
+      const AliasSet::AliasRangePList& theAliasRangePList(myAAVector[(*anAliasMapKeyPListI)->getKey()]->getAliasSet().getAliasRangePList());
+      for (AliasSet::AliasRangePList::const_iterator anAliasRangePListI=theAliasRangePList.begin();
+	   anAliasRangePListI!=theAliasRangePList.end();
+	   ++anAliasRangePListI) {
+	aTemporaryUnionAliasSet.addAlias((*anAliasRangePListI)->min(),
+					 (*anAliasRangePListI)->max());
+      }
+    }
+    // now check this union against the addreses in theKey
+    if (theKey.getKey()<0 
+	|| 
+	theKey.getKey()>=myAAVector.size())
+      THROW_LOGICEXCEPTION_MACRO("AliasMap::subSet: theKey >" 
+				 << theKey.getKey() 
+				 << "< is out of range");
+    return myAAVector[theKey.getKey()]->getAliasSet().subSetOf(aTemporaryUnionAliasSet);
   }
 
   bool AliasMap::haveNonEmptyIntersection(const AliasMapKey& theKey,

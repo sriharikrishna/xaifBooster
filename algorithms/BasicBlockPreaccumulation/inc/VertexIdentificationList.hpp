@@ -78,13 +78,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
    protected: 
  
     /** 
-     * just for convenience we keep a list of 
-     * all keys in ListItem for use with 
-     * AliasMap methods
+     * retrieves the alias keys found in myList
      */
-    AliasMap::AliasMapKeyList myAliasMapKeyList;
+    void getAliasMapKeyPList(AliasMap::AliasMapKeyPList& anAliasMapKeyPList) const;
 
-   
     /**
      * defining this here requires us
      * to do dynamic casts unless we

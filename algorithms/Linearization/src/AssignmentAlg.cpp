@@ -136,16 +136,16 @@ namespace xaifBoosterLinearization {
     // correctness of partial calculations: 
     ExpressionAlg& theExpressionAlg(dynamic_cast<ExpressionAlg&>(theExpression.getExpressionAlgBase()));
     const ExpressionAlg::ArgumentPList& thePartialUsageList(theExpressionAlg.getPartialUsageList());
-    AliasMap::AliasMapKeyList theUsedArgumentsKeyList;
+    AliasMap::AliasMapKeyPList theUsedArgumentsKeyPList;
     const Assignment& theContainingAssignment(dynamic_cast<const Assignment&>(getContaining()));
     for(ExpressionAlg::ArgumentPList::const_iterator uLI=thePartialUsageList.begin();
 	uLI!=thePartialUsageList.end();
 	++uLI)
-      theUsedArgumentsKeyList.push_back(&((*uLI)->getVariable().getAliasMapKey()));
+      theUsedArgumentsKeyPList.push_back(&((*uLI)->getVariable().getAliasMapKey()));
     if (ConceptuallyStaticInstances::instance()->
 	getCallGraph().getAliasMap().
 	mayAlias(theContainingAssignment.getLHS().getAliasMapKey(),
-		 theUsedArgumentsKeyList)) 
+		 theUsedArgumentsKeyPList)) 
       // The current final execution sequence is: 
       //   the assignment or all replacement assignments in a block 
       //   followed by the all partials pertaining to this assignment in a block

@@ -9,6 +9,8 @@ namespace xaifBooster {
   
   const std::string AliasRange::our_myLowerAddress_XAIFName("from_virtual_address");
   const std::string AliasRange::our_myUpperAddress_XAIFName("to_virtual_address");
+  const std::string AliasRange::our_Single_XAIFName("xaif:Alias");
+  const std::string AliasRange::our_Single_myAddress_XAIFName("virtual_address");
 
   AliasRange::AliasRange(unsigned int lower,
 			 unsigned int upper): 
@@ -30,19 +32,32 @@ namespace xaifBooster {
   
   void AliasRange::printXMLHierarchy(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();
-    os << pm.indent() 
-       << "<" 
-       << ourXAIFName 
-       << " " 
-       << our_myLowerAddress_XAIFName
-       << "=\""
-       << myLowerAddress
-       << "\" " 
-       << our_myUpperAddress_XAIFName
-       << "=\""
-       << myUpperAddress
-       << "\"/>" 
-       << std::endl;
+    if (myLowerAddress==myUpperAddress) { 
+      os << pm.indent() 
+	 << "<" 
+	 << our_Single_XAIFName.c_str() 
+	 << " " 
+	 << our_Single_myAddress_XAIFName
+	 << "=\""
+	 << myLowerAddress
+	 << "\"/>" 
+	 << std::endl;
+    } 
+    else { 
+      os << pm.indent() 
+	 << "<" 
+	 << ourXAIFName 
+	 << " " 
+	 << our_myLowerAddress_XAIFName
+	 << "=\""
+	 << myLowerAddress
+	 << "\" " 
+	 << our_myUpperAddress_XAIFName
+	 << "=\""
+	 << myUpperAddress
+	 << "\"/>" 
+	 << std::endl;
+    }
     pm.releaseInstance();
   }; 
 
@@ -66,5 +81,39 @@ namespace xaifBooster {
       THROW_LOGICEXCEPTION_MACRO("AliasRange::min: raising of min not permitted");
     myLowerAddress=newLower;
   }
+
+  bool AliasRange::isGreaterThan(const AliasRange& theOther) const { 
+    return (max()<theOther.min() ? true:false);
+  } // end of AliasRange::isGreaterThan
+
+  bool AliasRange::isContainedIn(const AliasRange& theOther) const { 
+    return (max()<=theOther.max() && min()>=theOther.min() ?
+	    true:false);
+  } // end of AliasRange::isGreaterThan
+
+  bool AliasRange::overlapsWith(const AliasRange& theOther) const { 
+    if (((min()<=theOther.max() && max()>theOther.max())
+	 || 
+	 (max()>=theOther.min() && min()<theOther.min())) 
+	&&
+	min()!=max())
+      return true;
+    return false;
+  } // end of AliasRange::overlapsWith
+
+  bool AliasRange::bordersWith(const AliasRange& theOther) const { 
+    if (min()==theOther.max()+1
+	|| 
+	max()+1==theOther.min())
+      return true;
+    return false;
+  } // end of AliasRange::bordersWith
+
+  void AliasRange::absorb(const AliasRange& theOther) { 
+    if (theOther.min()<min())
+      min(theOther.min());
+    if (theOther.max()>max())
+      max(theOther.max());
+  } // end of AliasRange::absorb
 
 }

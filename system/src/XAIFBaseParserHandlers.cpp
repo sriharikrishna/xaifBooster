@@ -177,7 +177,7 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onAliasSingle(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasSingle" ); 
     AliasSet& theAliasSet(passingIn.getAliasMapEntry().getAliasSet());
-    theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(AliasSingle::our_myAddress_XAIFName).c_str()));
+    theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(AliasRange::our_Single_myAddress_XAIFName).c_str()));
   };
 
   void 

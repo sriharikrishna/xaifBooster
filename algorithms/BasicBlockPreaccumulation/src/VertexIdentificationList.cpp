@@ -31,7 +31,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     out << "]" 
 	<< std::ends;
     return out.str();
-  } // end of Symbol::debug
+  } 
 
   VertexIdentificationList::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
 					       const DuUdMapKey& aDuUdMapKey) : 
@@ -62,5 +62,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   }
 
-} // end of namespace 
+  void VertexIdentificationList::getAliasMapKeyPList(AliasMap::AliasMapKeyPList& anAliasMapKeyPList) const { 
+    for (ListItemPList::const_iterator aListIterator=myList.begin();
+	 aListIterator!=myList.end(); 
+	 ++aListIterator) { 
+      anAliasMapKeyPList.push_back(&((*aListIterator)->getAliasMapKey()));
+    } 
+  } 
 
+} // end of namespace 
