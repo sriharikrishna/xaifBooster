@@ -106,17 +106,17 @@ namespace xaifBoosterControlFlowReversal {
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_2",
 			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
-/*
-      myTransformedControlFlowGraph->storeControlFlow();
-      myTransformedControlFlowGraph->markBranchExitEdges();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_3",
-			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
-      }
-*/
+      // buildAdjointControlFlowGraph() should always be based on the
+      // original CFG, that is, it should preceed the call to 
+      // storeControlFlow()
       myTransformedControlFlowGraph->buildAdjointControlFlowGraph();
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
 	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_4",
+			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
+      }
+      myTransformedControlFlowGraph->storeControlFlow();
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+	GraphVizDisplay::show(*myTransformedControlFlowGraph,"transformed_cfg_3",
 			      ControlFlowGraphVertexLabelWriter(*myTransformedControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTransformedControlFlowGraph));
       }
   } // end AssignmentAlg::algorithm_action_4() 
