@@ -97,6 +97,10 @@ int main(int argc,char** argv) {
 	      "caught exception: " << e.getReason());
     return -1;
   } // end catch 
+  DBG_MACRO(DbgGroup::METRIC,"total number of assignments: "
+	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getAssignmentCounter()
+	    << " total number of Sequences: "
+	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getSequenceCounter());
   return 0;
 }
   

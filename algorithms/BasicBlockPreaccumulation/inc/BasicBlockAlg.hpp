@@ -110,7 +110,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static void limitToStatementLevel();
     
     static bool hasLimitToStatementLevel();
-    
+
+    static unsigned int getAssignmentCounter();
+
+    static unsigned int getSequenceCounter();
+
   protected: 
 
     /**
@@ -325,6 +329,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */ 
     static bool ourLimitToStatementLevelFlag;
 
+    /** 
+     * counting all assignments
+     */
+    static unsigned int ourAssignmentCounter;
+
+    /** 
+     * counting all Sequence instances
+     */
+    static unsigned int ourSequenceCounter;
 
   };
  
