@@ -51,19 +51,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // nothing to do here 
       return true; 
     Expression& theExpression(getLinearizedRightHandSide());
-    ActiveVertexIdentificationList& theVertexLHSIdentificationList(theFlattenedSequence.getVertexLHSIdentificationList());
-    ActiveVertexIdentificationList& theVertexRHSIdentificationList(theFlattenedSequence.getVertexRHSIdentificationList());
-    PassiveVertexIdentificationList& thePassiveVertexIdentificationList(theFlattenedSequence.getPassiveVertexIdentificationList());
+    VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theFlattenedSequence.getVertexIdentificationListActiveLHS());
+    VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theFlattenedSequence.getVertexIdentificationListActiveRHS());
+    VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
     Expression::VertexIteratorPair p=theExpression.vertices();
     Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
     for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
-      ActiveVertexIdentificationList::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
+      VertexIdentificationListActive::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
 	theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
       VertexIdentificationList::IdentificationResult_E thePassiveIdResult(VertexIdentificationList::NOT_IDENTIFIED);
       if ((*ExpressionVertexI).isArgument()) { 
-	theLHSIdResult=theVertexLHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
-	theRHSIdResult=theVertexRHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
-	thePassiveIdResult=thePassiveVertexIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	theRHSIdResult=theVertexIdentificationListActiveRHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	thePassiveIdResult=theVertexIdentificationListPassive.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
       } 
       if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED
 	  || 
@@ -126,10 +126,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
     // and the second part of the linearization
     xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
-    PassiveVertexIdentificationList& thePassiveVertexIdentificationList(theFlattenedSequence.getPassiveVertexIdentificationList());
+    VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
     if (!getActiveFlag()) { 
       if (getContaining().getLHS().getActiveType()) {   // but the LHS has active type
-	thePassiveVertexIdentificationList.addElement(getContaining().getLHS());
+	theVertexIdentificationListPassive.addElement(getContaining().getLHS());
 	if (getContaining().getActiveFlag()) // this means the assignment has been passivated 
 	  BasicBlockAlgParameter::get().getDerivativePropagator(getContaining()).
 	    addZeroDerivToEntryList(getContaining().getLHS());
@@ -141,16 +141,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
       // keep track of all the vertices we add with this statement in case we need to split and 
       // remove them
-      ActiveVertexIdentificationList& theVertexLHSIdentificationList(theFlattenedSequence.getVertexLHSIdentificationList());
-      ActiveVertexIdentificationList& theVertexRHSIdentificationList(theFlattenedSequence.getVertexRHSIdentificationList());
+      VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theFlattenedSequence.getVertexIdentificationListActiveLHS());
+      VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theFlattenedSequence.getVertexIdentificationListActiveRHS());
+      DBG_MACRO(DbgGroup::DATA,
+		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "
+		<< theVertexIdentificationListPassive.debug().c_str()
+		<< " LHS "
+		<< theVertexIdentificationListActiveLHS.debug().c_str()
+		<< " RHS " 
+		<< theVertexIdentificationListActiveRHS.debug().c_str());
       PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p=0; // LHS representation
       for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
-	ActiveVertexIdentificationList::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
+	VertexIdentificationListActive::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
 	  theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
 	PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=0;
 	if ((*ExpressionVertexI).isArgument()) { 
-	  theLHSIdResult=theVertexLHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
-	  theRHSIdResult=theVertexRHSIdentificationList.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	  theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	  theRHSIdResult=theVertexIdentificationListActiveRHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	} 
 	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
 	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
@@ -181,7 +188,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    if ((*ExpressionVertexI).isArgument()) {
 	      Variable& theVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	      if (theRHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED)
-		theVertexRHSIdentificationList.addElement(theVariable,
+		theVertexIdentificationListActiveRHS.addElement(theVariable,
 							  theLCGVertex_p);
 	      theLCGVertex_p->setRHSVariable(theVariable);
 	    } // end if 
@@ -284,16 +291,24 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end if 
       // we need to keep the lists mutually exclusive
       // a left hand side cannot occur in the right hand side list
-      theVertexRHSIdentificationList.removeIfAliased(theLHS);
+      theVertexIdentificationListActiveRHS.removeIfIdentifiable(theLHS);
       // a known active lhs cannot have a passive idenitification
-      thePassiveVertexIdentificationList.removeIfAliased(theLHS);
+      theVertexIdentificationListPassive.removeIfIdentifiable(theLHS);
       // an overwritten LHS needs to refer to the respective last definition
-      theVertexLHSIdentificationList.replaceOrAddElement(theLHS,
+      theVertexIdentificationListActiveLHS.replaceOrAddElement(theLHS,
 							 theLHSLCGVertex_p);
       theLHSLCGVertex_p->setLHSVariable(theLHS);
       // JU: this is a temporary measure, add all LHSs to the 
       // JU: list of dependent variables
       theFlattenedSequence.addToDependentList(*theLHSLCGVertex_p);
+      DBG_MACRO(DbgGroup::DATA,
+		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "
+		<< theVertexIdentificationListPassive.debug().c_str()
+		<< " LHS "
+		<< theVertexIdentificationListActiveLHS.debug().c_str()
+		<< " RHS " 
+		<< theVertexIdentificationListActiveRHS.debug().c_str());
+
     } // end else 
   } 
 

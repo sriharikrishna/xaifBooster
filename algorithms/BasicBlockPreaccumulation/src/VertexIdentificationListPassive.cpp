@@ -1,16 +1,16 @@
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PassiveVertexIdentificationList.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListPassive.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  PassiveVertexIdentificationList::PassiveVertexIdentificationList() { 
+  VertexIdentificationListPassive::VertexIdentificationListPassive() { 
   } 
 
   VertexIdentificationList::IdentificationResult_E 
-  PassiveVertexIdentificationList::canIdentify(const Variable& theVariable) const { 
+  VertexIdentificationListPassive::canIdentify(const Variable& theVariable) const { 
     IdentificationResult_E result=NOT_IDENTIFIED;
     // add a block dealing with ud info
     // *******************************
@@ -23,22 +23,22 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			     myAliasMapKeyList)) {
       // so there is potential 
       // try to find an exact match: 
-      for (ListType::const_iterator aListIterator=myList.begin();
+      for (ListItemPList::const_iterator aListIterator=myList.begin();
 	   aListIterator!=myList.end(); 
 	   ++aListIterator) { 
 	if (theAliasMap.mustAlias(theVariable.getAliasMapKey(),
-				  *((*aListIterator).myAliasMapKey_p))) 
+				  (*aListIterator)->getAliasMapKey())) 
           if (result==NOT_IDENTIFIED)
 	    result=UNIQUELY_IDENTIFIED;
 	if (theAliasMap.mayAlias(theVariable.getAliasMapKey(),
-				 *((*aListIterator).myAliasMapKey_p))) 
-	  result=POSSIBLY_ALIASED;
+				 (*aListIterator)->getAliasMapKey())) 
+	  result=AMBIGUOUSLY_IDENTIFIED;
       } // end for 
     } // end if aliased
     return result;
   } 
 
-  void PassiveVertexIdentificationList::addElement(const Variable& theVariable) { 
+  void VertexIdentificationListPassive::addElement(const Variable& theVariable) { 
     // add a block dealing with ud info
     // *******************************
     // TODO: JU incomplete
@@ -47,13 +47,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (canIdentify(theVariable)==UNIQUELY_IDENTIFIED) 
       // nothing to do 
       return; 
-    ListItem theItem;
-    theItem.myAliasMapKey_p=&(theVariable.getAliasMapKey());
-    myList.push_back(theItem);
+    myList.push_back(new ListItem(theVariable.getAliasMapKey(),
+				  theVariable.getDuUdMapKey()));
     myAliasMapKeyList.push_back(&(theVariable.getAliasMapKey()));
   } 
 
-  void PassiveVertexIdentificationList::removeIfAliased(const Variable& theVariable) { 
+  void VertexIdentificationListPassive::removeIfIdentifiable(const Variable& theVariable) { 
     // add a block dealing with ud info
     // *******************************
     // TODO: JU incomplete
@@ -63,14 +62,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			  getCallGraph().getAliasMap());
     IdentificationResult_E idResult(canIdentify(theVariable));
     while(idResult!=NOT_IDENTIFIED) { 
-      ListType::iterator aListIterator(myList.begin());
+      ListItemPList::iterator aListIterator(myList.begin());
       AliasMap::AliasMapKeyList::iterator aKeyListIterator(myAliasMapKeyList.begin());
       for (;
 	   aListIterator!=myList.end(); 
 	   ++aListIterator,
 	     ++aKeyListIterator) { 
 	if (theAliasMap.mayAlias(theVariable.getAliasMapKey(),
-				 *((*aListIterator).myAliasMapKey_p))) { 
+				 (*aListIterator)->getAliasMapKey())) { 
 	  myAliasMapKeyList.erase(aKeyListIterator);
 	  myList.erase(aListIterator);
 	  break;
@@ -80,18 +79,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end while 
   } 
 
-  std::string PassiveVertexIdentificationList::debug () const { 
+  std::string VertexIdentificationListPassive::debug () const { 
     std::ostringstream out;
-    out << "PassiveVertexIdentificationList[" << this 
+    out << "VertexIdentificationListPassive[" << this 
 	<< ",myList=";  
-    for (ListType::const_iterator aListIterator=myList.begin();
+    for (ListItemPList::const_iterator aListIterator=myList.begin();
 	 aListIterator!=myList.end(); 
 	 ++aListIterator) { 
-      if ((*aListIterator).myAliasMapKey_p)
-	out << (*aListIterator).myAliasMapKey_p->debug().c_str();
-      else 
-	out << "0";
-      out << ",";
+      out << (*aListIterator)->getAliasMapKey().debug().c_str()
+	  << ",";
     } // end for 
     out << std::ends;
     return out.str();

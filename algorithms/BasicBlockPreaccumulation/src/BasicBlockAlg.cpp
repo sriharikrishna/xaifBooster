@@ -291,6 +291,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theVariableSymbolReference_p->setId("1");
 	  theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	  theLHS.getAliasMapKey().setTemporary();
+	  theLHS.getDuUdMapKey().setTemporary();
 	  const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression(*(*it));
 	  if (theExpression.isJacobianEntry()) { 
 	    // UN: assign independent to temporary if aliased by some
@@ -325,6 +326,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		theTemporaryVariableReference_p->setId("1");
 		theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
 		theTarget.getAliasMapKey().setTemporary();
+		theTarget.getDuUdMapKey().setTemporary();
 		// copy the new temporary into the container
 		theTarget.copyMyselfInto(*theIndepVariableContainer_p);
 		// "theTarget" is only local but the DerivativePropagatorSetDeriv 

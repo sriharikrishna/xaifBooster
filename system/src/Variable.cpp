@@ -5,7 +5,8 @@
 
 namespace xaifBooster { 
 
-  const std::string Variable::our_myKey_XAIFName("alias");
+  const std::string Variable::our_myAliasMapKey_XAIFName("alias");
+  const std::string Variable::our_myDuUdMapKey_XAIFName("du_ud");
   const std::string Variable::our_myDerivFlag_XAIFName("deriv");
 
   Variable::Variable() : 
@@ -56,6 +57,11 @@ namespace xaifBooster {
 				 << debug().c_str());
     // just use the default assignment which should be good enough
     theTarget.myAliasMapKey=myAliasMapKey;
+    if (myDuUdMapKey.getKind()==DuUdMapKey::NOT_SET)
+      THROW_LOGICEXCEPTION_MACRO("Variable::copyMyselfInto: myDuUdMapKey not initialized for " 
+				 << debug().c_str());
+    // just use the default assignment which should be good enough
+    theTarget.myDuUdMapKey=myDuUdMapKey;
   } // end of Variable::copyMyselfInto
 
   bool 
@@ -98,20 +104,22 @@ namespace xaifBooster {
        << "\"";
     if (getAliasMapKey().getKind()==AliasMapKey::SET) { 
       os << " "
-	 << our_myKey_XAIFName
+	 << our_myAliasMapKey_XAIFName.c_str()
 	 << "=\""
 	 << getAliasMapKey().getKey()
+	 << "\"";
+    }
+    if (getDuUdMapKey().getKind()==DuUdMapKey::SET) { 
+      os << " "
+	 << our_myDuUdMapKey_XAIFName.c_str()
+	 << "=\""
+	 << getDuUdMapKey().getKey()
 	 << "\"";
     }
     os << " " 
        << our_myDerivFlag_XAIFName.c_str() 
        << "=\"" 
        << getDerivFlag()
-       << "\"";
-    os << " " 
-       << DuUd::our_myDuUdReference_XAIFName.c_str() 
-       << "=\"" 
-       << myDuUd.getReference()
        << "\"";
   } 
 
@@ -142,6 +150,14 @@ namespace xaifBooster {
 
   const AliasMapKey& Variable::getAliasMapKey() const { 
     return myAliasMapKey;
+  }
+
+  DuUdMapKey& Variable::getDuUdMapKey() { 
+    return myDuUdMapKey;
+  } 
+
+  const DuUdMapKey& Variable::getDuUdMapKey() const { 
+    return myDuUdMapKey;
   }
 
   const SymbolType::SymbolType_E& Variable::getType() const { 
@@ -215,13 +231,5 @@ namespace xaifBooster {
     getActiveFlag(); // update it if needed
     return myActiveUseType;
   } 
-
-  DuUd& Variable::getDuUd() { 
-    return myDuUd;
-  }
-
-  const DuUd& Variable::getDuUd() const { 
-    return myDuUd;
-  }
 
 } // end of namespace xaifBooster 
