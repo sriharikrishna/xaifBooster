@@ -62,9 +62,9 @@ do
   fi
   if [ -n "$hasDiffAD" -o -n "$hasDiffDD" ] 
   then	 
-    echo "diffs base (<) vs. current (>) AD:"
+    echo "diffs current test (<) vs. reference (>) AD:"
     diff tmpOutput/ad.out $exdir/refOutput/ad.out 
-    echo "diffs base (<) vs. current (>) DD:"
+    echo "diffs current test (<) vs. reference (>) DD:"
     diff tmpOutput/dd.out $exdir/refOutput/dd.out 
     if [ -z "$DONT_STOP" ] 
     then
