@@ -5,6 +5,8 @@
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 
+#include "xaifBooster/system/inc/BasicBlockElementAlgBase.hpp"
+
 namespace xaifBooster { 
 
   /**
@@ -15,11 +17,29 @@ namespace xaifBooster {
 			    public GenericTraverseInvoke {
   public:
     
-    BasicBlockElement (){};
+    BasicBlockElement ();
 
-    ~BasicBlockElement(){};
+    ~BasicBlockElement();
 
     std::string debug() const ;
+
+    /**
+     * access the algorithm
+     */
+    BasicBlockElementAlgBase& getBasicBlockElementAlgBase() const;
+
+    /**
+     * actual implementation for printing xaif
+     * always invoked by the graph
+     */
+    virtual void printXMLHierarchyImpl(std::ostream& os) const {};
+
+  protected:
+    /**
+     * if required then an algorithm object is allocated dynamically
+     * by the factory and the pointer is set
+     */
+    BasicBlockElementAlgBase* myBasicBlockElementAlgBase_p;
 
   }; // end of class BasicBlockElement
  

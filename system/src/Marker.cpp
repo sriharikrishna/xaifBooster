@@ -1,6 +1,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Marker.hpp"
+#include "xaifBooster/system/inc/MarkerAlgFactory.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 namespace xaifBooster { 
@@ -9,12 +10,26 @@ namespace xaifBooster {
   const std::string Marker::our_myId_XAIFName("statement_id");
   const std::string Marker::our_myAnnotation_XAIFName("annotation");
 
-  Marker::Marker() : myAnnotationFlag(false) { 
+  Marker::Marker(bool makeAlgorithm) : myAnnotationFlag(false) { 
+    if (makeAlgorithm)
+      myBasicBlockElementAlgBase_p=MarkerAlgFactory::instance()->makeNewAlg(*this); 
   } // end of Marker::Marker
+
+  Marker::~Marker() { 
+  } 
+
+  MarkerAlgBase& 
+  Marker::getMarkerAlgBase() const { 
+    if (!myBasicBlockElementAlgBase_p)
+      THROW_LOGICEXCEPTION_MACRO("Marker::getMarkerAlgBase: not set");
+    return dynamic_cast<MarkerAlgBase&>(*myBasicBlockElementAlgBase_p);
+  }
 
   std::string Marker::debug () const { 
     std::ostringstream out;
-    out << "Marker[" << this 
+    out << "Marker[" 
+	<< this 
+	<< BasicBlockElement::debug().c_str()
 	<< ",myAnnotation=" << myAnnotation.c_str() 
 	<< ",myAnnotationFlag=" << myAnnotationFlag
 	<< "]" << std::ends;  
@@ -37,7 +52,12 @@ namespace xaifBooster {
   } // end of Marker::getAnnotation
 
   void Marker::printXMLHierarchy(std::ostream& os) const {
-    printXMLHierarchyImpl(os);
+    if (myBasicBlockElementAlgBase_p
+	&& 
+	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
+      getMarkerAlgBase().printXMLHierarchy(os);
+    else 
+      printXMLHierarchyImpl(os);
   }
 
   void
@@ -56,7 +76,7 @@ namespace xaifBooster {
        << getAnnotation() 
        << "\"/>" 
        << std::endl;
-       pm.releaseInstance(); 
+    pm.releaseInstance(); 
   } // end of Marker::printXMLHierarchyImpl
 
 } 

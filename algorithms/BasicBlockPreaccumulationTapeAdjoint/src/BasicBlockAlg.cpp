@@ -3,6 +3,7 @@
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/Scope.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
@@ -13,6 +14,7 @@
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -68,6 +70,19 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
   BasicBlockAlg::addInlinableSubroutineCall(const std::string& aSubroutineName) { 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* aNewCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+    myBasicBlockElementList.push_back(aNewCall_p);
+    return *aNewCall_p;									     
+  } 
+
+  SubroutineCall& 
+  BasicBlockAlg::addSubroutineCall(const Symbol& aSubroutineNameSymbol,
+				   const Scope& aSubroutineNameScope,
+				   bool anActiveFlag) { 
+    SubroutineCall* aNewCall_p(new SubroutineCall(aSubroutineNameSymbol,
+						  aSubroutineNameScope,
+						  anActiveFlag,
+						  false));
+    aNewCall_p->setId("reverse_call");
     myBasicBlockElementList.push_back(aNewCall_p);
     return *aNewCall_p;									     
   } 
@@ -153,108 +168,145 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   } 
 
   void BasicBlockAlg::algorithm_action_4() { // adjoin the DerivativePropagators
-    for(SequencePList::const_reverse_iterator aSequencePListI=getUniqueSequencePList().rbegin();
-	aSequencePListI!=getUniqueSequencePList().rend();
-	++aSequencePListI) { 
-      const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator((*aSequencePListI)->myDerivativePropagator);
-      for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_reverse_iterator entryPListI=
-	    aDerivativePropagator.getEntryPList().rbegin();
-	  entryPListI!= aDerivativePropagator.getEntryPList().rend();
-	  ++entryPListI) {
-	// retrieve stored index values if needed starting with the target: 
-	// take care of target address if needed: 
-	const Variable& theOriginalTarget((*entryPListI)->getTarget());
-	// this is either the original target
-	// or it is the replaced target in case of ArrayAccesses
-	Variable theActualTarget;
-	reinterpretArrayAccess(theOriginalTarget,theActualTarget); 
-	xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList aFactorList;
-	(*entryPListI)->getFactors(aFactorList);
-	for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::reverse_iterator aFactorListI=aFactorList.rbegin();
-	     aFactorListI!=aFactorList.rend();
-	     ++aFactorListI) { 
-	  if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) { 
-	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSubroutineCall(addInlinableSubroutineCall("ZeroDeriv"));
-	    theSubroutineCall.setId("inline_zeroderiv");
-	    theActualTarget.copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
-	    break; 
-	  } // ZERO_FACTOR
-	  else { 
-	    const Variable& theOriginalSource((*aFactorListI).getSource());
-	    // this is either the original source
-	    // or it is the replaced target in case of ArrayAccesses
-	    Variable theActualSource;
-	    reinterpretArrayAccess(theOriginalSource,theActualSource); 
-	    // deal with the other cases: 
-	    switch((*aFactorListI).getKind()) { 
-	    case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::UNIT_FACTOR: // the SetDeriv in tlm
-	      { 
-		/** 
-		 * The inlinable call incDeriv(y,x) is supposed to do x.d+=y.d
-		 */
-		xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv"));
-		theSetDerivCall.setId("inline_IncDeriv");
-		theActualTarget.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(1).getVariable());
-		theActualSource.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(2).getVariable());
-		xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv"));
-		theZeroDerivCall.setId("inline_zeroderiv");
-		theActualTarget.copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
-		break; 
-	      } 
-	    case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::CONSTANT_FACTOR: 
-	    case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR: // both represent some saxpy or sax 
-	      { 
-		const Variable* theFactorVariable_p=0; // here is where we keep the factor variable
-		if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::CONSTANT_FACTOR) { 
-		  const Assignment& theConstantAssignment(addConstantAssignment((*aFactorListI).getConstant()));
-		  theFactorVariable_p=&theConstantAssignment.getLHS();
-		} 
-		else { 
-		  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("Pop"));
-		  theZeroDerivCall.setId("inline_pop");
-		  Variable* theInlineVariable_p(&(theZeroDerivCall.addArgumentSubstitute(1).getVariable()));
-		  // give it a name etc.
-		  // create a new symbol and add a new VariableSymbolReference in the Variable
-		  VariableSymbolReference* theNewVariableSymbolReference_p=
-		    new VariableSymbolReference(getContaining().getScope().
-						getSymbolTable().
-						addUniqueAuxSymbol(SymbolKind::VARIABLE,
-								   SymbolType::REAL_STYPE,
-								   SymbolShape::SCALAR,
-								   false),
-						getContaining().getScope());
-		  theNewVariableSymbolReference_p->setId("1");
-		  // pass it on to the variable and relinquish ownership
-		  theInlineVariable_p->supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-		  theInlineVariable_p->getAliasMapKey().setTemporary();
-		  theInlineVariable_p->getDuUdMapKey().setTemporary();
-		  theFactorVariable_p=theInlineVariable_p;
-		} 
-		/** 
-		 * The inlinable call saxpy(a,x,y) is supposed to do y.d=y.d+a*x.d which in reverse means
-		 * we have to switch arguments properly
-		 */
-		xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall(addInlinableSubroutineCall("Saxpy"));
-		theSaxpyCall.setId("inline_saxpy");
-		theFactorVariable_p->copyMyselfInto(theSaxpyCall.addArgumentSubstitute(1).getVariable());
-		theActualTarget.copyMyselfInto(theSaxpyCall.addArgumentSubstitute(2).getVariable());
-		theActualSource.copyMyselfInto(theSaxpyCall.addArgumentSubstitute(3).getVariable());
-		if (!(*entryPListI)->isIncremental()) { 
+    if (getContaining().getBasicBlockElementList().empty())
+      return;
+    // mesh the BasicBlockElements with the Sequences
+    PlainBasicBlock::BasicBlockElementList::const_reverse_iterator aBasicBlockElementListRI=getContaining().getBasicBlockElementList().rbegin();
+    SequencePList::const_reverse_iterator aSequencePListRI=getUniqueSequencePList().rbegin();
+    bool noSequence=false;
+    if (aSequencePListRI==getUniqueSequencePList().rend())
+      // we don't have any sequence left, meaning there is either no sequence at all 
+      // or we are at the end where there is a bit left without a sequence
+      noSequence=true;
+    bool done=false; // are we all done?
+    while (!done) { 
+      // deal with the bit outside the current Sequence
+      while (noSequence ||
+	     (*aSequencePListRI)->myLastElement_p!=(*aBasicBlockElementListRI)) { 
+	// let the stuff outside the sequence insert itself 
+	dynamic_cast<BasicBlockElementAlg&>((**aBasicBlockElementListRI).getBasicBlockElementAlgBase()).insertYourself(getContaining());
+	++aBasicBlockElementListRI;
+	if (aBasicBlockElementListRI==getContaining().getBasicBlockElementList().rend()) { 
+	  done=true;
+	  break;
+	}
+      } // end while
+      // now we are done or (*aSequencePListRI)->myLastElement_p==(*aBasicBlockElementListRI))
+      while (!done  // this implies noSequence=false
+	     && 
+	     (*aSequencePListRI)->myFirstElement_p!=(*aBasicBlockElementListRI)) { 
+	// this should bring us to the begin of the sequence
+	++aBasicBlockElementListRI;
+	if (aBasicBlockElementListRI==getContaining().getBasicBlockElementList().rend()) { 
+	  done=true;
+	  break;
+	}
+      }
+      if (!done) { 
+	const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator((*aSequencePListRI)->myDerivativePropagator);
+	for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_reverse_iterator entryPListI=
+	      aDerivativePropagator.getEntryPList().rbegin();
+	    entryPListI!= aDerivativePropagator.getEntryPList().rend();
+	    ++entryPListI) {
+	  // retrieve stored index values if needed starting with the target: 
+	  // take care of target address if needed: 
+	  const Variable& theOriginalTarget((*entryPListI)->getTarget());
+	  // this is either the original target
+	  // or it is the replaced target in case of ArrayAccesses
+	  Variable theActualTarget;
+	  reinterpretArrayAccess(theOriginalTarget,theActualTarget); 
+	  xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList aFactorList;
+	  (*entryPListI)->getFactors(aFactorList);
+	  for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::reverse_iterator aFactorListI=aFactorList.rbegin();
+	       aFactorListI!=aFactorList.rend();
+	       ++aFactorListI) { 
+	    if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) { 
+	      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSubroutineCall(addInlinableSubroutineCall("ZeroDeriv"));
+	      theSubroutineCall.setId("inline_zeroderiv");
+	      theActualTarget.copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
+	      break; 
+	    } // ZERO_FACTOR
+	    else { 
+	      const Variable& theOriginalSource((*aFactorListI).getSource());
+	      // this is either the original source
+	      // or it is the replaced target in case of ArrayAccesses
+	      Variable theActualSource;
+	      reinterpretArrayAccess(theOriginalSource,theActualSource); 
+	      // deal with the other cases: 
+	      switch((*aFactorListI).getKind()) { 
+	      case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::UNIT_FACTOR: // the SetDeriv in tlm
+		{ 
+		  /** 
+		   * The inlinable call incDeriv(y,x) is supposed to do x.d+=y.d
+		   */
+		  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv"));
+		  theSetDerivCall.setId("inline_IncDeriv");
+		  theActualTarget.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(1).getVariable());
+		  theActualSource.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(2).getVariable());
 		  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv"));
 		  theZeroDerivCall.setId("inline_zeroderiv");
 		  theActualTarget.copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
-		}
+		  break; 
+		} 
+	      case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::CONSTANT_FACTOR: 
+	      case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR: // both represent some saxpy or sax 
+		{ 
+		  const Variable* theFactorVariable_p=0; // here is where we keep the factor variable
+		  if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::CONSTANT_FACTOR) { 
+		    const Assignment& theConstantAssignment(addConstantAssignment((*aFactorListI).getConstant()));
+		    theFactorVariable_p=&theConstantAssignment.getLHS();
+		  } 
+		  else { 
+		    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("Pop"));
+		    theZeroDerivCall.setId("inline_pop");
+		    Variable* theInlineVariable_p(&(theZeroDerivCall.addArgumentSubstitute(1).getVariable()));
+		    // give it a name etc.
+		    // create a new symbol and add a new VariableSymbolReference in the Variable
+		    VariableSymbolReference* theNewVariableSymbolReference_p=
+		      new VariableSymbolReference(getContaining().getScope().
+						  getSymbolTable().
+						  addUniqueAuxSymbol(SymbolKind::VARIABLE,
+								     SymbolType::REAL_STYPE,
+								     SymbolShape::SCALAR,
+								     false),
+						  getContaining().getScope());
+		    theNewVariableSymbolReference_p->setId("1");
+		    // pass it on to the variable and relinquish ownership
+		    theInlineVariable_p->supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+		    theInlineVariable_p->getAliasMapKey().setTemporary();
+		    theInlineVariable_p->getDuUdMapKey().setTemporary();
+		    theFactorVariable_p=theInlineVariable_p;
+		  } 
+		  /** 
+		   * The inlinable call saxpy(a,x,y) is supposed to do y.d=y.d+a*x.d which in reverse means
+		   * we have to switch arguments properly
+		   */
+		  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall(addInlinableSubroutineCall("Saxpy"));
+		  theSaxpyCall.setId("inline_saxpy");
+		  theFactorVariable_p->copyMyselfInto(theSaxpyCall.addArgumentSubstitute(1).getVariable());
+		  theActualTarget.copyMyselfInto(theSaxpyCall.addArgumentSubstitute(2).getVariable());
+		  theActualSource.copyMyselfInto(theSaxpyCall.addArgumentSubstitute(3).getVariable());
+		  if (!(*entryPListI)->isIncremental()) { 
+		    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv"));
+		    theZeroDerivCall.setId("inline_zeroderiv");
+		    theActualTarget.copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
+		  }
+		  break; 
+		} 
+	      default: 
+		THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_4: cannot handle factor kind " 
+					   << (*aFactorListI).getKind()); 
 		break; 
-	      } 
-	    default: 
-	      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_4: cannot handle factor kind " 
-					 << (*aFactorListI).getKind()); 
-	      break; 
-	    } // end switch 
-	  } // end else (other versions)
-	} // end for FactorList
-      } // end for DerivativePropagatorEntry list
-    } // end for SeqyencePList 
+	      } // end switch 
+	    } // end else (other versions)
+	  } // end for FactorList
+	} // end for DerivativePropagatorEntry list
+	++aSequencePListRI;
+	if (aSequencePListRI==getUniqueSequencePList().rend())
+	  // there is no sequence left
+	  noSequence=true;
+      } // end of if (!done)
+    } // end while (!done)
   } // end of algorithm_action_4 
   
 } // end of namespace

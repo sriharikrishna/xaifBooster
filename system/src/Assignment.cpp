@@ -23,27 +23,24 @@ namespace xaifBooster {
   Assignment::Assignment(bool theActiveFlag,
 			 bool makeAlgorithm) : 
     myRHS(makeAlgorithm),
-    myAssignmentAlgBase_p(0),
     myActiveFlag(theActiveFlag) {
     if (makeAlgorithm)
-      myAssignmentAlgBase_p=AssignmentAlgFactory::instance()->makeNewAlg(*this); 
+      myBasicBlockElementAlgBase_p=AssignmentAlgFactory::instance()->makeNewAlg(*this); 
   } 
 
   Assignment::~Assignment() {
-    if (myAssignmentAlgBase_p)
-      delete myAssignmentAlgBase_p;
   } 
 
   AssignmentAlgBase& 
   Assignment::getAssignmentAlgBase() const { 
-    if (!myAssignmentAlgBase_p)
+    if (!myBasicBlockElementAlgBase_p)
       THROW_LOGICEXCEPTION_MACRO("Assignment::getAssignmentAlgBase: not set");
-    return *myAssignmentAlgBase_p;
+    return dynamic_cast<AssignmentAlgBase&>(*myBasicBlockElementAlgBase_p);
   }
 
   void
   Assignment::printXMLHierarchy(std::ostream& os) const { 
-    if (myAssignmentAlgBase_p
+    if (myBasicBlockElementAlgBase_p
 	&& 
 	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getAssignmentAlgBase().printXMLHierarchy(os);
@@ -139,15 +136,10 @@ namespace xaifBooster {
     std::ostringstream out;
     out << "Assignment[" 
 	<< this 
-	<< ","
-	<< "myAssignmentAlgBase_p"
-	<< "="
-	<< myAssignmentAlgBase_p
-	<< ","
+	<< BasicBlockElement::debug().c_str()
 	<< "myActiveFlag"
 	<< "="
 	<< myActiveFlag
-	<< BasicBlockElement::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of Assignment::debug

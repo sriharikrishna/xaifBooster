@@ -132,13 +132,14 @@ namespace xaifBoosterLinearization {
     ExpressionAlg& theExpressionAlg(dynamic_cast<ExpressionAlg&>(theExpression.getExpressionAlgBase()));
     const ExpressionAlg::ArgumentPList& thePartialUsageList(theExpressionAlg.getPartialUsageList());
     AliasMap::AliasMapKeyList theUsedArgumentsKeyList;
+    const Assignment& theContainingAssignment(dynamic_cast<const Assignment&>(getContaining()));
     for(ExpressionAlg::ArgumentPList::const_iterator uLI=thePartialUsageList.begin();
 	  uLI!=thePartialUsageList.end();
 	++uLI)
       theUsedArgumentsKeyList.push_back(&((*uLI)->getVariable().getAliasMapKey()));
     if (ConceptuallyStaticInstances::instance()->
 	  getCallGraph().getAliasMap().
-	mayAlias(getContaining().getLHS().getAliasMapKey(),
+	mayAlias(theContainingAssignment.getLHS().getAliasMapKey(),
 		 theUsedArgumentsKeyList)) 
       // The current final execution sequence is: 
       //   the assignment or all replacement assignments in a block 
@@ -167,7 +168,7 @@ namespace xaifBoosterLinearization {
 	Assignment& theReplacementAssignment(dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).
 									getExpressionVertexAlgBase()).
 				     makeReplacementAssignment());
-	theReplacementAssignment.setId("replacement for " + getContaining().getId());
+	theReplacementAssignment.setId("replacement for " + theContainingAssignment.getId());
 	// now we add a copy of the  target vertex  to the replacement assignment
 	ExpressionVertex& theReplacementTargetVertex((*ExpressionVertexI).createCopyOfMyself());
 	theReplacementAssignment.getRHS().supplyAndAddVertexInstance(theReplacementTargetVertex);
@@ -178,7 +179,7 @@ namespace xaifBoosterLinearization {
 	if (needDelay) { // we create a new LHS which is the right hand side of the delay 
 	  // need the extra temporary assignment: 
 	  myDelayedLHSAssignment_p=new Assignment(true);
-	  myDelayedLHSAssignment_p->setId(getContaining().getId()+ ": delayed LHS assignment for correct partials");
+	  myDelayedLHSAssignment_p->setId(theContainingAssignment.getId()+ ": delayed LHS assignment for correct partials");
 	// make a temporary Variable on the RHS:
 	  Argument* theDelayVertex_p=new Argument();
 	  theDelayVertex_p->setId(1);
@@ -203,12 +204,12 @@ namespace xaifBoosterLinearization {
 	  theDelayVertex_p->getVariable().
 	    supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
 	  // set the new LHS to the original LHS
-	  getContaining().getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
+	  theContainingAssignment.getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
 	  // make the temporary the LHS of theReplacementAssignment 
 	  theDelayVertex_p->getVariable().copyMyselfInto(theReplacementAssignment.getLHS());
 	} // end if 
 	else // no extra temporary needed, we use the original LHS
-	  getContaining().getLHS().copyMyselfInto(theReplacementAssignment.getLHS());
+	  theContainingAssignment.getLHS().copyMyselfInto(theReplacementAssignment.getLHS());
 	// create the top level replacement
 	// we iterate through all the in edges
 	Expression::InEdgeIteratorPair pInner(theExpression.getInEdgesOf((*ExpressionVertexI)));
@@ -227,7 +228,7 @@ namespace xaifBoosterLinearization {
 	// but the difference is now that the RHS of the delay assignment is the LHS 
 	// of the top level replacement.
 	myDelayedLHSAssignment_p=new Assignment(true);
-	myDelayedLHSAssignment_p->setId(getContaining().getId()+ ": delayed LHS assignment for top level replacement");
+	myDelayedLHSAssignment_p->setId(theContainingAssignment.getId()+ ": delayed LHS assignment for top level replacement");
 	// make a the replacement the RHS:
 	Argument* theDelayVertex_p=new Argument();
 	theDelayVertex_p->setId(1);
@@ -237,7 +238,7 @@ namespace xaifBoosterLinearization {
 	dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).
 	  getReplacementAssignment().getLHS().copyMyselfInto(theDelayVertex_p->getVariable());
 	// set the new LHS to the original LHS
-	getContaining().getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
+	theContainingAssignment.getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
       } // end else (case A)
     } // end if  
   } // end of AssignmentAlg::makeSSACodeList
@@ -364,7 +365,7 @@ namespace xaifBoosterLinearization {
 	      << debug().c_str());
     if (myHaveLinearizedRightHandSide)
       THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::algorithm_action_1(analyze/copy): cannot be called twice");
-    if (!getContaining().getLHS().getActiveType()) { 
+    if (!getContainingAssignment().getLHS().getActiveType()) { 
       // the LHS is an inactive type
       // passivate the entire statement.
       // note that the 'active'=true may just 
@@ -375,13 +376,13 @@ namespace xaifBoosterLinearization {
     }
 
     // perform the activity analysis on the original right hand side
-    dynamic_cast<ExpressionAlg&>(getContaining().getRHS().getExpressionAlgBase()).activityAnalysis(); 
+    dynamic_cast<ExpressionAlg&>(getContainingAssignment().getRHS().getExpressionAlgBase()).activityAnalysis(); 
 
     // has the maximal node become passive?
-    Expression::ConstVertexIteratorPair pV(getContaining().getRHS().vertices());
+    Expression::ConstVertexIteratorPair pV(getContainingAssignment().getRHS().vertices());
     Expression::ConstVertexIterator iV(pV.first),iVe(pV.second);
     for (;iV!=iVe ;++iV)
-      if (!getContaining().getRHS().numOutEdgesOf(*iV))
+      if (!getContainingAssignment().getRHS().numOutEdgesOf(*iV))
 	break;
     if (!dynamic_cast<ExpressionVertexAlg&>((*iV).getExpressionVertexAlgBase()).isActive()) { 
       // make the entire assignment passive
@@ -391,7 +392,7 @@ namespace xaifBoosterLinearization {
       return;
 
     // copy the right hand side: 
-    getContaining().getRHS().
+    getContainingAssignment().getRHS().
       copyMyselfInto(myLinearizedRightHandSide,
 		     true); // make algorithm objects in the copy
     // set the flag
