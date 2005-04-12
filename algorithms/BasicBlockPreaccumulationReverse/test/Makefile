@@ -38,23 +38,14 @@ VPATH+=../../CodeReplacement/lib
 LIBS+=-lxaifBoosterCodeReplacement
 
 # setup for ANGEL
-UNDEF_ENV_VARS=""
 ifndef ANGELROOT
-UNDEF_ENV_VARS+=" ANGELROOT "
+  $(error "Error:  environment variable ANGELROOT not defined!")
 endif
 
-ANGEL_LIB=-langel
-ANGEL_LIB_DIR=$(ANGELROOT)/lib 
-
-VPATH+=$(ANGEL_LIB_DIR) 
-LIBS+=$(ANGEL_LIB)
-
-ifneq ($(UNDEF_ENV_VARS),"")
-export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1
-endif
+VPATH+=$(ANGELROOT)/lib
+LIBS+=-langel
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
-	$(COMPLAIN)
 	$(CC) $^ $(LFLAGS) -o $@
 
 

@@ -20,7 +20,6 @@ include ../../../Makefile.incl
 ALG_OBJ_SET=$(wildcard ../src/obj/*.o)
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
-	$(COMPLAIN)
 	$(CC) $^ $(LFLAGS) -o $@
 
 

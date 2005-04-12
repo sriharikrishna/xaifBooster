@@ -9,7 +9,6 @@ MAIN=$(UTILS_LIB_DIR)/lib$(UTILS_LIB_NAME).a
 obj: $(MAIN)
 
 $(MAIN): $(OBJS)
-	$(COMPLAIN)
 	$(AR) $(ARFLAGS) $@ $^
 
 clean:

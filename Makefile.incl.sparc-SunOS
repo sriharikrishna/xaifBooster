@@ -1,0 +1,6 @@
+export CC = CC 
+export CCFLAGS=-g 
+export MAKEDEPEND=$(CC) $(IPATH) -xM1
+export AR = $(CC) 
+export ARFLAGS=-xar -o
+

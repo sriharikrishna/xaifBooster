@@ -14,22 +14,17 @@ endif
 
 all: $(TARGET).xb.x2w.w2f.pp.f
 
-export UNDEF_ENV_VARS=""
 ifndef RICETOOLROOT
-UNDEF_ENV_VARS+=" RICETOOLROOT "
+  $(error "Error:  environment variable RICETOOLROOT not defined!")
 endif
 
 ifndef XAIFSCHEMAROOT
-UNDEF_ENV_VARS+=" XAIFSCHEMAROOT "
+  $(error "Error:  environment variable XAIFSCHEMAROOT not defined!")
 endif
 
 ifndef XAIFBOOSTERROOT
-UNDEF_ENV_VARS+=" XAIFBOOSTERROOT "
+  $(error "Error:  environment variable XAIFBOOSTERROOT not defined!")
 endif
-
-ifneq ($(UNDEF_ENV_VARS),"")
-export COMPLAIN=@echo "***detect undefined environment variables: "$(UNDEF_ENV_VARS); exit 1
-endif	
 
 LN=ln -sf
 
@@ -47,7 +42,6 @@ $(TARGET).xaif : $(TARGET).B whirl2xaif
 	./whirl2xaif -o $@ $<
 
 $(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
-	$(COMPLAIN)
 #	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ -g 15
 	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@
 
@@ -55,7 +49,6 @@ $(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
 	./xaif2whirl --structured $(TARGET).B $<
 
 $(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
-	$(COMPLAIN)
 	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f:${LD_LIBRARY_PATH}; ./whirl2f -openad $<
 
 $(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
@@ -63,23 +56,18 @@ $(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
 
 # setup some links
 %.xsd:
-	$(COMPLAIN)
 	$(LN) ${XAIFSCHEMAROOT}/schema/$@ .
 
 mfef90: 
-	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/crayf90/sgi/mfef90 .
 
 whirl2xaif xaif2whirl: 
-	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/OpenADFortTk/obj/i686-Linux/obj/$@ .
 
 %.pl: 
-	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
 
 whirl2f whirl2f_be:
-	$(COMPLAIN)
 	$(LN) ${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
 
 xaifBooster:
