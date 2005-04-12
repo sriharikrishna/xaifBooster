@@ -11,7 +11,6 @@ MAIN=../lib/lib$(LIB_NAME).a
 obj: $(MAIN)
 
 $(MAIN): $(OBJS)
-	$(COMPLAIN)
 	$(AR) $(ARFLAGS) $@ $^
 
 clean:
