@@ -1,18 +1,24 @@
-ifndef TARGET
-TARGET=head
-endif
-
-ifndef TARGET_DRIVER
-TARGET_DRIVER=driver
-endif
-
 ifdef REVERSE_MODE
-REVERSE_MODULES=OpenAD_checkpoints.o OpenAD_dct.o OpenAD_rev.o OpenAD_tape.o iaddr.o all_globals_cp_mod.o 
+MODULES=                        \
+w2f__types.o                    \
+active_module.o                 \
+OpenAD_checkpoints.o            \
+OpenAD_dct.o                    \
+OpenAD_rev.o                    \
+OpenAD_tape.o                   \
+iaddr.o                         \
+all_globals_mod.xb.x2w.w2f.pp.o \
+all_globals_cp_mod.o 
+PP_FLAGS=
 else
+MODULES=                        \
+w2f__types.o                    \
+active_module.o                 \
+all_globals_mod.xb.x2w.w2f.pp.o 
 PP_FLAGS=-f
 endif
 
-all: $(TARGET).xb.x2w.w2f.pp.f
+all: head.xb.x2w.w2f.pp.f
 
 ifndef RICETOOLROOT
   $(error "Error:  environment variable RICETOOLROOT not defined!")
@@ -28,31 +34,56 @@ endif
 
 LN=ln -sf
 
-#F95=ifort -g  -fpe0
-F95=f95 -g
-
-CC=icc
+#F95=ifort -g  -fpe0 -e90
+#CC=icc
+F95=f95 -g -w=unused
+CC=gcc
 
 RM=rm -rf
 
-$(TARGET).B: $(TARGET).f mfef90
+
+######################################################
+# transformation
+######################################################
+
+# paste the globals module into the head file 
+# so we can do the single file transformation
+head_sf.f : all_globals_mod.f head.f 
+	cat $^ > $@
+
+# F -> WHIRL
+head_sf.B: head_sf.f mfef90
 	./mfef90 -F -N132 $<
 
-$(TARGET).xaif : $(TARGET).B whirl2xaif
+# WHIRL -> XAIF
+head_sf.xaif : head_sf.B whirl2xaif
 	./whirl2xaif -o $@ $<
 
-$(TARGET).xb.xaif : $(TARGET).xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
+# XAIF -> XAIF'
+head_sf.xb.xaif : head_sf.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
 #	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ -g 15
 	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@
 
-$(TARGET).xb.x2w.B : $(TARGET).xb.xaif xaif2whirl
-	./xaif2whirl --structured $(TARGET).B $<
+# XAIF' -> WHIRL'
+head_sf.xb.x2w.B : head_sf.xb.xaif xaif2whirl
+	./xaif2whirl --structured head_sf.B $<
 
-$(TARGET).xb.x2w.w2f.f: $(TARGET).xb.x2w.B whirl2f whirl2f_be
-	LD_LIBRARY_PATH=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f:${LD_LIBRARY_PATH}; ./whirl2f -openad $<
+# WHIRL' -> F'
+head_sf.xb.x2w.w2f.f: head_sf.xb.x2w.B whirl2f whirl2f_be
+	./whirl2f -openad $<
 
-$(TARGET).xb.x2w.w2f.pp.f: $(TARGET).xb.x2w.w2f.f pp.pl
+# postprocess F'
+head_sf.xb.x2w.w2f.pp.f: head_sf.xb.x2w.w2f.f pp.pl
 	perl pp.pl $(PP_FLAGS) $<
+
+# extract the transformed globals module so we the right order of 
+# compilation with respect to the globals checkpoint module
+all_globals_mod.xb.x2w.w2f.pp.f: head_sf.xb.x2w.w2f.pp.f
+	cat $< | sed -n '/MODULE all_globals_mod/,/END MODULE/p' > $@
+
+# remove the transformed globals module from the transformed head file
+head.xb.x2w.w2f.pp.f: head_sf.xb.x2w.w2f.pp.f
+	cat $< | sed '/MODULE all_globals_mod/,/END MODULE/d' > $@
 
 # setup some links
 %.xsd:
@@ -73,12 +104,16 @@ whirl2f whirl2f_be:
 xaifBooster:
 	./pickAlgorithm.bash
 
-# make the $TARGET_DRIVER)
-$(TARGET_DRIVER): w2f__types.o active_module.o all_globals_mod.o $(REVERSE_MODULES) $(TARGET_DRIVER).o $(TARGET).xb.x2w.w2f.pp.o 
+######################################################
+# compilation
+######################################################
+
+# make the driver
+driver: $(MODULES) head.xb.x2w.w2f.pp.o driver.o 
 	$(F95) $^ -o $@ 
 
-run: params.conf tmpOutput $(TARGET_DRIVER)
-	./$(TARGET_DRIVER)
+run: params.conf tmpOutput driver
+	./driver
 
 %.o:%.f
 	$(F95) -fixed -c $<
@@ -86,11 +121,15 @@ run: params.conf tmpOutput $(TARGET_DRIVER)
 %.o:%.f90
 	$(F95) -free -c $<
 
+######################################################
+# miscellaneous
+######################################################
+
 tmpOutput: 
 	mkdir -p $@
 
 testAllclean:
-	$(RM) $(TARGET).* $(TARGET_DRIVER)* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput
+	$(RM) head_sf.* head.* driver* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput
 
 clean: testAllclean
 	$(RM) *.xsd 

@@ -10,8 +10,7 @@
 
 	double precision, dimension(:), allocatable :: x0
 	double precision, dimension(:,:), allocatable :: res_adj
-	type(active), dimension(:), allocatable :: x, xph
-	type(active), dimension(:), allocatable :: y, yph
+	type(active), dimension(:), allocatable :: x, y, y0
 	real h
 	integer n,m
 	integer i,j,k
@@ -21,11 +20,10 @@
 	close(2)
 
 	
-	allocate(x0(n))
 	allocate(x(n))
-	allocate(xph(n))
+	allocate(x0(n))
 	allocate(y(m))
-	allocate(yph(m))
+	allocate(y0(m))
 	allocate(res_adj(m,n))
 
 	do i=1,n   
@@ -41,19 +39,20 @@
         our_rev_mode%plain=.TRUE.
         our_rev_mode%tape=.FALSE.
         our_rev_mode%adjoint=.FALSE.
+        do j=1,n   
+           x(j)%v=x0(j)
+        end do
+        call head(x,y0)
 	do i=1,n   
 	   do j=1,n   
               x(j)%v=x0(j)
               if (i==j) then 
-		 xph(j)%v=x0(j)+h
-              else
-		 xph(j)%v=x0(j)
+		 x(j)%v=x0(j)+h
               end if
 	   end do 
-	   call head(xph,yph)
 	   call head(x,y)
 	   do k=1,m
-	      write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",k,",",i,")=",(yph(k)%v-y(k)%v)/h
+	      write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",k,",",i,")=",(y(k)%v-y0(k)%v)/h
 	   end do
 	end do
 	close(2)
@@ -64,7 +63,7 @@
 
 	do i=1,m   
 	   do j=1,m   
-              x(j)%v=x0(j)
+	      y(j)%v=0.0
               if (i==j) then 
 		 y(j)%d=1.0
               else
@@ -73,9 +72,7 @@
 	   end do
 	   do k=1,n
              x(k)%d=0.0
-	   end do
-           do j=1,m   
-              x(j)%v=x0(j)
+             x(k)%v=x0(k)
 	   end do
            our_rev_mode%arg_store=.FALSE.
            our_rev_mode%arg_restore=.FALSE.
@@ -106,11 +103,10 @@
 
 	close(2)
 
-	deallocate(x0)
 	deallocate(x)
-	deallocate(xph)
+	deallocate(x0)
 	deallocate(y)
-	deallocate(yph)
+	deallocate(y0)
 	deallocate(res_adj)
 
         end
