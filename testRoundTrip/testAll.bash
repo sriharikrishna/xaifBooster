@@ -101,32 +101,23 @@ do
     copyDefaultBeforeExample $exdir all_globals_cp_mod.f90 all_globals_cp_mod.f90
     copyDefaultBeforeExample $exdir ad_template_${submode}.f ad_template.f
   fi  
-  export TARGET=all_globals_mod
-  ${MAKE}
+    
+### transform head_sf
+  ${MAKE} 
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: ${MAKE} for all_globals_mod"; exit -1;
-  fi
-  ${CP}  all_globals_mod.xb.x2w.w2f.pp.f all_globals_mod.f
-  if [ $? -ne 0 ] 
-  then 
-    echo "ERROR in: ${CP}  all_globals_mod.xb.x2w.w2f.pp.f all_globals_mod.f"; exit -1;
-  fi
-  export TARGET=head
-  ${MAKE}
-  if [ $? -ne 0 ] 
-  then 
-    echo "ERROR in: ${MAKE} for head"; exit -1;
+    echo "ERROR in: ${MAKE} for head_sf"; exit -1;
   fi
 ### this is temporary until we got rid of the RETURNs
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    sed 's/RETURN//' head.xb.x2w.w2f.pp.f >| head.xb.x2w.w2f.pp.f.1
-    mv head.xb.x2w.w2f.pp.f.1 head.xb.x2w.w2f.pp.f
+    sed 's/RETURN//' head_sf.xb.x2w.w2f.pp.f >| head_sf.xb.x2w.w2f.pp.f.1
+    mv head_sf.xb.x2w.w2f.pp.f.1 head_sf.xb.x2w.w2f.pp.f
   fi
 ### end of temporary fix
-  export TARGET_DRIVER=driver
-  ${MAKE} $TARGET_DRIVER
+
+### now we compile all the transformed bits 
+  ${MAKE} driver
   if [ $? -ne 0 ] 
   then 
     echo "ERROR in: ${MAKE} driver"; exit -1;
