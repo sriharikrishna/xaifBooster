@@ -1,6 +1,9 @@
 	program driver
 
 	  use active_module
+          use OpenAD_rev
+          use OpenAD_tape
+
           implicit none 
 
           external ad_roehf5
@@ -19,6 +22,7 @@
           type(active) flux_ph(5)
           
 	  double precision, dimension(19) :: x0
+	  double precision, dimension(5,19) :: res_adj
           real :: h=0.00001
           integer, parameter :: n=19, m=5
           integer i,j,k
@@ -29,6 +33,13 @@
 
           open(2,file='tmpOutput/dd.out')
           write(2,*) "DD"
+          our_rev_mode%arg_store=.FALSE.
+          our_rev_mode%arg_restore=.FALSE.
+          our_rev_mode%res_store=.FALSE.
+          our_rev_mode%res_restore=.FALSE.
+          our_rev_mode%plain=.TRUE.
+          our_rev_mode%tape=.FALSE.
+          our_rev_mode%adjoint=.FALSE.
           nrm(1)%v=x0(1)
           nrm(2)%v=x0(2)
           nrm(3)%v=x0(3)
@@ -101,70 +112,89 @@
 
           open(2,file='tmpOutput/ad.out')
           write(2,*) "AD"
-	  do i=1,n   
-              nrm(1)%v=x0(1)
-              nrm(2)%v=x0(2)
-              nrm(3)%v=x0(3)
-              priml(1)%v=x0(4)
-              priml(2)%v=x0(5)
-              priml(3)%v=x0(6)
-              priml(4)%v=x0(7)
-              priml(5)%v=x0(8)
-              primr(1)%v=x0(9)
-              primr(2)%v=x0(10)
-              primr(3)%v=x0(11)
-              primr(4)%v=x0(12)
-              primr(5)%v=x0(13)
-              gamma%v=x0(14) 
-              gm1%v=x0(15) 
-              gm1inv%v=x0(16) 
-              nlefix%v=x0(17)
-              lefix%v=x0(18)
-              mcheps%v=x0(19)
+          do i=1,m   
+             do j=1,m   
+                flux(j)%v=0.0
+                if (i==j) then 
+                   flux(j)%d=1.0
+                else
+                   flux(j)%d=0.0
+                end if
+             end do
+             nrm(1)%v=x0(1)
+             nrm(2)%v=x0(2)
+             nrm(3)%v=x0(3)
+             priml(1)%v=x0(4)
+             priml(2)%v=x0(5)
+             priml(3)%v=x0(6)
+             priml(4)%v=x0(7)
+             priml(5)%v=x0(8)
+             primr(1)%v=x0(9)
+             primr(2)%v=x0(10)
+             primr(3)%v=x0(11)
+             primr(4)%v=x0(12)
+             primr(5)%v=x0(13)
+             gamma%v=x0(14) 
+             gm1%v=x0(15) 
+             gm1inv%v=x0(16) 
+             nlefix%v=x0(17)
+             lefix%v=x0(18)
+             mcheps%v=x0(19)
 
-              nrm(1)%d=0.
-              nrm(2)%d=0.
-              nrm(3)%d=0.
-              priml(1)%d=0.
-              priml(2)%d=0.
-              priml(3)%d=0.
-              priml(4)%d=0.
-              priml(5)%d=0.
-              primr(1)%d=0.
-              primr(2)%d=0.
-              primr(3)%d=0.
-              primr(4)%d=0.
-              primr(5)%d=0.
-              gamma%d=0.
-              gm1%d=0.
-              gm1inv%d=0.
-              nlefix%d=0.
-              lefix%d=0.
-              mcheps%d=0.
-                if (i==1) nrm(1)%d=1.
-                if (i==2) nrm(2)%d=1.
-                if (i==3) nrm(3)%d=1.
-                if (i==4) priml(1)%d=1.
-                if (i==5) priml(2)%d=1.
-                if (i==6) priml(3)%d=1.
-                if (i==7) priml(4)%d=1.
-                if (i==8) priml(5)%d=1.
-                if (i==9) primr(1)%d=1.
-                if (i==10) primr(2)%d=1.
-                if (i==11) primr(3)%d=1.
-                if (i==12) primr(4)%d=1.
-                if (i==13) primr(5)%d=1.
-                if (i==14) gamma%d=1.
-                if (i==15) gm1%d=1.
-                if (i==16) gm1inv%d=1.
-                if (i==17) nlefix%d=1.
-                if (i==18) lefix%d=1.
-                if (i==19) mcheps%d=1.
-            call ad_roehf5 (nrm, priml, primr, gamma, gm1, gm1inv, nlefix, lefix, mcheps, flux)
-            do k=1,m
-              write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",k,",",i,")=",flux(k)%d
-            end do
+             nrm(1)%d=0.
+             nrm(2)%d=0.
+             nrm(3)%d=0.
+             priml(1)%d=0.
+             priml(2)%d=0.
+             priml(3)%d=0.
+             priml(4)%d=0.
+             priml(5)%d=0.
+             primr(1)%d=0.
+             primr(2)%d=0.
+             primr(3)%d=0.
+             primr(4)%d=0.
+             primr(5)%d=0.
+             gamma%d=0.
+             gm1%d=0.
+             gm1inv%d=0.
+             nlefix%d=0.
+             lefix%d=0.
+             mcheps%d=0.
+             our_rev_mode%arg_store=.FALSE.
+             our_rev_mode%arg_restore=.FALSE.
+             our_rev_mode%res_store=.FALSE.
+             our_rev_mode%res_restore=.FALSE.
+             our_rev_mode%plain=.FALSE.
+             our_rev_mode%tape=.TRUE.
+             our_rev_mode%adjoint=.TRUE.
+             call ad_roehf5 (nrm, priml, primr, gamma, gm1, gm1inv, nlefix, lefix, mcheps, flux)
+             do k=1,n
+                if (k==1)  res_adj(i,k)=nrm(1)%d
+                if (k==2)  res_adj(i,k)=nrm(2)%d
+                if (k==3)  res_adj(i,k)=nrm(3)%d
+                if (k==4)  res_adj(i,k)=priml(1)%d
+                if (k==5)  res_adj(i,k)=priml(2)%d
+                if (k==6)  res_adj(i,k)=priml(3)%d
+                if (k==7)  res_adj(i,k)=priml(4)%d
+                if (k==8)  res_adj(i,k)=priml(5)%d
+                if (k==9)  res_adj(i,k)=primr(1)%d
+                if (k==10) res_adj(i,k)=primr(2)%d
+                if (k==11) res_adj(i,k)=primr(3)%d
+                if (k==12) res_adj(i,k)=primr(4)%d
+                if (k==13) res_adj(i,k)=primr(5)%d
+                if (k==14) res_adj(i,k)=gamma%d
+                if (k==15) res_adj(i,k)=gm1%d
+                if (k==16) res_adj(i,k)=gm1inv%d
+                if (k==17) res_adj(i,k)=nlefix%d
+                if (k==18) res_adj(i,k)=lefix%d
+                if (k==19) res_adj(i,k)=mcheps%d
+             end do
+          end do
+          do k=1,n
+             do i=1,m   
+                write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",i,",",k,")=",res_adj(i,k)
+             end do
           end do
           close(2)
-
-        end
+          
+        end program driver
