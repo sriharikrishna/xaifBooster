@@ -37,6 +37,7 @@ then
   read answer
   if [ "$answer" == "n" ]
   then
+    ${MAKE} clean 
     askAll="y"
   else 
     if [ "$mode" == "adm" ] 
@@ -106,13 +107,13 @@ do
   ${MAKE} 
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: ${MAKE} for head_sf"; exit -1;
+    echo "ERROR in: ${MAKE} "; exit -1;
   fi
 ### this is temporary until we got rid of the RETURNs
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    sed 's/RETURN//' head_sf.xb.x2w.w2f.pp.f >| head_sf.xb.x2w.w2f.pp.f.1
-    mv head_sf.xb.x2w.w2f.pp.f.1 head_sf.xb.x2w.w2f.pp.f
+    sed 's/RETURN//' head.xb.x2w.w2f.pp.f >| head.xb.x2w.w2f.pp.f.1
+    mv head.xb.x2w.w2f.pp.f.1 head.xb.x2w.w2f.pp.f
   fi
 ### end of temporary fix
 
