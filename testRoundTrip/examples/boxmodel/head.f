@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_forward ( ilev1 )
 c-----------------------------------------------------------------------
@@ -69,6 +70,7 @@ c$openad DEPENDENT(tnew)
 c$openad DEPENDENT(snew)
       end
 
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_final_state
 c-----------------------------------------------------------------------
@@ -127,7 +129,7 @@ cph      print *, 'ph-check uvel ', uvel
 
 
 
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_ini_fields
 c-----------------------------------------------------------------------
