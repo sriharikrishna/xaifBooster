@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
 	subroutine head(x,obj)
 	  implicit none
 	  double precision, dimension(1) :: obj

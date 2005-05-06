@@ -214,8 +214,12 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName)));
     // add it to the basic block
     theBasicBlock.supplyAndAddBasicBlockElementInstance(aNewCall);
-    // give it an ID
-    aNewCall.setId(aSubroutineName);
+    // give it the onstrcuted name as an ID extended by 
+    // a suffix indicating an active argument
+    if (theSymbol.getActiveTypeFlag())
+      aNewCall.setId(aSubroutineName+"_a");
+    else
+      aNewCall.setId(aSubroutineName);
     // get the empty Variable
     Variable& theInlineVariable(aNewCall.addArgumentSubstitute(1).getVariable());
     // make a reference and give it the argument name etc.

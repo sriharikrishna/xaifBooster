@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
       subroutine head(x,fvec)
       double precision x(4), fvec(11)
 c     **********

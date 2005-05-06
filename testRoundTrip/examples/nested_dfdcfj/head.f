@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
       subroutine head(nx,ny,x,fvec,r)
       integer nx,ny
       double precision r
@@ -76,7 +77,7 @@ c     Scale the Result.  This is not desired if preconditioning.
 c$openad DEPENDENT(fvec)
       end
 
-
+c$openad XXX Template ad_template.f
       subroutine foo(nx,ny,x,fvec,r,n,hx,hy,hy2,hx2)
       integer nx,ny
       double precision r
@@ -168,6 +169,7 @@ c           Laplacians at each point in the 5 point stencil.
       end
 
 
+c$openad XXX Template ad_template.f
       subroutine bar(pbb,pbl,pb,pbr,pll,pl,p,pr,prr,ptl,pt,ptr,ptt,
      +hy2,hx2,plap,pblap,pllap,prlap,ptlap)
       double precision pbb,pbl,pb,pbr,pll,pl,p,pr,prr,ptl,pt,ptr,ptt,
