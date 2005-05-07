@@ -29,16 +29,17 @@ function copyDefaultBeforeExample {
 } 
 askAll="n"
 mode="none"
-submode="none"
+SUB_MODE="none"
 if [ -f .lastRun ] 
 then 
-  read mode submode < .lastRun 
-  echo -n "reuse last settings (${mode} ${submode})? [y]/n "
+  read mode SUB_MODE < .lastRun 
+  echo -n "reuse last settings (${mode} ${SUB_MODE})? [y]/n "
   read answer
   if [ "$answer" == "n" ]
   then
     ${MAKE} clean 
     askAll="y"
+    SUB_MODE="none"
   else 
     if [ "$mode" == "adm" ] 
     then 
@@ -56,18 +57,20 @@ then
   then
     export REVERSE_MODE=y
     mode="adm"
-    submode="split"
-    echo -n "use submode [split]/joint "
+    SUB_MODE="split"
+    echo -n "use SUB_MODE [split]/joint "
     read answer
     if [ "$answer" == "joint" ]
     then
-	submode="$answer"
+	SUB_MODE="$answer"
     fi
   else
     mode="tlm"
   fi
 fi 
-echo $mode $submode > .lastRun
+allOkSoFar="true"
+echo $mode $SUB_MODE > .lastRun
+export SUB_MODE
 if [ $# -gt 0 ]
 then
     TESTFILES=$@
@@ -76,21 +79,27 @@ else
 fi
 for i in `echo ${TESTFILES}`
 do 
+  if [ "$allOkSoFar" == "false" ] 
+  then
+    echo -n "QUESTION: There was problem with the last example, kill the script or hit enter to continue with $i ?" 
+    read answer
+    allOkSoFar="true"
+  fi
   if [ ! -d "examples/$i" ] 
   then 
-    echo "ERROR: no such test : $i "; exit -1;
+    echo "ERROR: no such test : $i "; allOkSoFar="false"; continue;
   fi
   export TARGET=head
   ${MAKE} testAllclean
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: ${MAKE} testAllclean"; exit -1;
+    echo "ERROR in: ${MAKE} testAllclean"; allOkSoFar="false"; continue;
   fi
   echo "** running $i *************************************************"
   TARGET_DRIVER=driver_${mode}
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    TARGET_DRIVER=${TARGET_DRIVER}_${submode}
+    TARGET_DRIVER=${TARGET_DRIVER}_${SUB_MODE}
   fi
   exdir=examples/$i
   copyDefaultBeforeExample $exdir ${TARGET_DRIVER}.f90 driver.f90
@@ -100,14 +109,14 @@ do
   if [ "$REVERSE_MODE" == "y" ] 
   then 
     copyDefaultBeforeExample $exdir all_globals_cp_mod.f90 all_globals_cp_mod.f90
-    copyDefaultBeforeExample $exdir ad_template_${submode}.f ad_template.f
+    copyDefaultBeforeExample $exdir ad_template_${SUB_MODE}.f ad_template.f
   fi  
     
 ### transform head_sf
   ${MAKE} 
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: ${MAKE} "; exit -1;
+    echo "ERROR in: ${MAKE} "; allOkSoFar="false"; continue;
   fi
 ### this is temporary until we got rid of the RETURNs
   if [ "$REVERSE_MODE" == "y" ] 
@@ -121,22 +130,22 @@ do
   ${MAKE} driver
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: ${MAKE} driver"; exit -1;
+    echo "ERROR in: ${MAKE} driver"; allOkSoFar="false"; continue;
   fi
   ${MAKE} run
   if [ $? -ne 0 ] 
   then 
-    echo "ERROR in: ${MAKE} run"; exit -1;
+    echo "ERROR in: ${MAKE} run"; allOkSoFar="false"; continue;
   fi
   hasDiffAD=$(diff tmpOutput/ad.out $exdir/refOutput/ad.out)
   if [ $? -eq 2 ] 
   then 
-    echo "ERROR in: diff tmpOutput/ad.out $exdir/refOutput/ad.out"; exit -1;
+    echo "ERROR in: diff tmpOutput/ad.out $exdir/refOutput/ad.out"; allOkSoFar="false"; continue;
   fi
   hasDiffDD=$(diff tmpOutput/dd.out $exdir/refOutput/dd.out)
   if [ $? -eq 2 ] 
   then 
-    echo "ERROR in: diff tmpOutput/dd.out $exdir/refOutput/dd.out"; exit -1;
+    echo "ERROR in: diff tmpOutput/dd.out $exdir/refOutput/dd.out"; allOkSoFar="false"; continue;
   fi
   if [ -n "$hasDiffAD" -o -n "$hasDiffDD" ] 
   then	 
@@ -146,7 +155,7 @@ do
     diff tmpOutput/dd.out $exdir/refOutput/dd.out 
     if [ -z "$DONT_STOP" ] 
     then
-      exit -3
+      allOkSoFar="false"; continue;
     fi
   else 
     echo "no diffs"

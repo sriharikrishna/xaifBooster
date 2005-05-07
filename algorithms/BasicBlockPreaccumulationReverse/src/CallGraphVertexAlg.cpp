@@ -210,16 +210,16 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 								   BasicBlock& theBasicBlock,
 								   const Symbol& theSymbol,
 								   const Scope& theScope) { 
+    std::string  theName(aSubroutineName);
+    // a suffix indicating an active argument
+    if (theSymbol.getActiveTypeFlag())
+      theName.append("_a");
     // make the new call 
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName)));
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(theName)));
     // add it to the basic block
     theBasicBlock.supplyAndAddBasicBlockElementInstance(aNewCall);
     // give it the onstrcuted name as an ID extended by 
-    // a suffix indicating an active argument
-    if (theSymbol.getActiveTypeFlag())
-      aNewCall.setId(aSubroutineName+"_a");
-    else
-      aNewCall.setId(aSubroutineName);
+    aNewCall.setId(theName);
     // get the empty Variable
     Variable& theInlineVariable(aNewCall.addArgumentSubstitute(1).getVariable());
     // make a reference and give it the argument name etc.
