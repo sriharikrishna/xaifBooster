@@ -29,7 +29,6 @@ c-- local variables:
 
       integer ilev1
 
-c$openad INDEPENDENT(xx)
 
 c-- routine body
 
@@ -66,8 +65,6 @@ CADJ STORE tNow = comlev1, key = ikey, byte = isbyte
                if ( tNow(l) .LT. -2. )  tNow(l) = 2.
             end do
 
-c$openad DEPENDENT(tnew)
-c$openad DEPENDENT(snew)
       end
 
 c$openad XXX Template ad_template.f
@@ -424,6 +421,8 @@ c-- local variables:
 
 c-- routine body
 
+c$openad INDEPENDENT(xx)
+
 c-- inititialise this before loop to avoid additional forward run!
 CADJ INIT tapelev2    = USER
 CADJ INIT comlevfinal = COMMON, 1
@@ -479,6 +478,9 @@ cph      call box_metric
 cph)
 
       endif 
+
+c$openad DEPENDENT(tnew)
+c$openad DEPENDENT(snew)
 
       end
 
