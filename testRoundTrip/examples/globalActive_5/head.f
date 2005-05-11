@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
        subroutine head() 
 
          use all_globals_mod

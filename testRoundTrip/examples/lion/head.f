@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
 	subroutine head(x,y) 
 	  double precision, dimension(2), intent(inout) :: x
 	  double precision, dimension(4), intent(inout) :: y

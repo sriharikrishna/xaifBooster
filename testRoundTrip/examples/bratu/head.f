@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
       subroutine head(x,F)
           double precision :: x(9)
           double precision :: F(7)
