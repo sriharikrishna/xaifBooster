@@ -85,11 +85,13 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ORIGINAL);
 	break;
       case ReplacementId::TAPING:
-	theReplacement.setReversibleControlFlowGraph(getTapingControlFlowGraph());
+	if (hasTapingControlFlowGraph())
+	  theReplacement.setReversibleControlFlowGraph(getTapingControlFlowGraph());
 	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::AUGMENTED);
 	break;
       case ReplacementId::ADJOINT:
-	theReplacement.setReversibleControlFlowGraph(getAdjointControlFlowGraph());
+	if (hasAdjointControlFlowGraph())
+	  theReplacement.setReversibleControlFlowGraph(getAdjointControlFlowGraph());
 	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
 	break;
       case ReplacementId::STOREARGUMENT: 

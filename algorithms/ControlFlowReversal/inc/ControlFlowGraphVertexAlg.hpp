@@ -26,6 +26,8 @@ namespace xaifBoosterControlFlowReversal {
 
     std::string kindToString() const;
 
+    static std::string kindToString(ControlFlowGraphVertexKind_E aKind);
+
   private:
     
     /** 

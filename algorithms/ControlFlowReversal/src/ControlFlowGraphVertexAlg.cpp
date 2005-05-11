@@ -13,9 +13,8 @@ namespace xaifBoosterControlFlowReversal {
   ControlFlowGraphVertexAlg::~ControlFlowGraphVertexAlg() {
   }
 
-  std::string
-  ControlFlowGraphVertexAlg::kindToString() const {
-    switch(getKind()) {
+  std::string ControlFlowGraphVertexAlg::kindToString(ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E aKind) { 
+    switch(aKind) {
       case ENTRY : { return std::string("ENTRY"); }
       case EXIT : { return std::string("EXIT"); }
       case BASICBLOCK : { return std::string("BASICBLOCK"); }
@@ -30,6 +29,11 @@ namespace xaifBoosterControlFlowReversal {
       default : { break; }
     }
     return std::string("UNDEF"); 
+  } 
+
+  std::string
+  ControlFlowGraphVertexAlg::kindToString() const {
+    return kindToString(getKind());
   }
 
 } // end of namespace

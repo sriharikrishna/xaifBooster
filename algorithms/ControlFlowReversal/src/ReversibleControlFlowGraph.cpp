@@ -826,7 +826,7 @@ namespace xaifBoosterControlFlowReversal {
       }
       default: 
 	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: missing logic to handle ControlFlowGraphVertex of kind "
-				   << (*the_mySortedVertices_p_l_rit)->getOriginalControlFlowGraphVertexAlg().getKind());
+				   << ControlFlowGraphVertexAlg::kindToString((*the_mySortedVertices_p_l_rit)->getOriginalControlFlowGraphVertexAlg().getKind()).c_str());
 	break;
       }
       theVertexCorrespondence_ppl.push_back(std::make_pair(*the_mySortedVertices_p_l_rit,theReversibleControlFlowGraphVertex_p)); 
@@ -1091,7 +1091,7 @@ namespace xaifBoosterControlFlowReversal {
 	break;
       default: 
 	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: missing logic to handle ControlFlowGraphVertex of kind "
-				   << (*theVertexCorrespondence_ppl_cit).second->getKind());
+				   << ControlFlowGraphVertexAlg::kindToString((*theVertexCorrespondence_ppl_cit).second->getKind()).c_str());
 	break; 
       }
     }
