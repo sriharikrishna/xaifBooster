@@ -31,9 +31,11 @@ namespace xaifBoosterControlFlowReversal {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    bool hasTapingControlFlowGraph() const;
     ReversibleControlFlowGraph& getTapingControlFlowGraph();
     const ReversibleControlFlowGraph& getTapingControlFlowGraph() const;
-
+ 
+    bool hasAdjointControlFlowGraph() const;
     ReversibleControlFlowGraph& getAdjointControlFlowGraph();
     const ReversibleControlFlowGraph& getAdjointControlFlowGraph() const;
 
@@ -57,8 +59,8 @@ namespace xaifBoosterControlFlowReversal {
     /**
      * transformed copy of the control flow graph
      */
-    ReversibleControlFlowGraph* myTapingControlFlowGraph;
-    ReversibleControlFlowGraph* myAdjointControlFlowGraph;
+    ReversibleControlFlowGraph* myTapingControlFlowGraph_p;
+    ReversibleControlFlowGraph* myAdjointControlFlowGraph_p;
 
 
   };  // end of class

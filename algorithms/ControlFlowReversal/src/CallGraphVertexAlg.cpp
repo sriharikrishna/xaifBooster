@@ -11,32 +11,51 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : CallGraphVertexAlgBase(theContaining), myTapingControlFlowGraph(NULL), myAdjointControlFlowGraph(NULL) {
+  CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
+    CallGraphVertexAlgBase(theContaining), 
+    myTapingControlFlowGraph_p(NULL), 
+    myAdjointControlFlowGraph_p(NULL) {
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() {
-    if (myTapingControlFlowGraph) delete myTapingControlFlowGraph;
-    if (myAdjointControlFlowGraph) delete myAdjointControlFlowGraph;
+    if (myTapingControlFlowGraph_p) delete myTapingControlFlowGraph_p;
+    if (myAdjointControlFlowGraph_p) delete myAdjointControlFlowGraph_p;
   }
 
+  bool CallGraphVertexAlg::hasTapingControlFlowGraph() const { 
+    return (myTapingControlFlowGraph_p?true:false);
+  }
+  
   ReversibleControlFlowGraph&
   CallGraphVertexAlg::getTapingControlFlowGraph() {
-    return *myTapingControlFlowGraph;
+    if (!myTapingControlFlowGraph_p) 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getTapingControlFlowGraph: not set");
+    return *myTapingControlFlowGraph_p;
   }
                                                                                 
   const ReversibleControlFlowGraph&
   CallGraphVertexAlg::getTapingControlFlowGraph() const {
-    return *myTapingControlFlowGraph;
+    if (!myTapingControlFlowGraph_p) 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getTapingControlFlowGraph: not set");
+    return *myTapingControlFlowGraph_p;
+  }
+
+  bool CallGraphVertexAlg::hasAdjointControlFlowGraph() const { 
+    return (myAdjointControlFlowGraph_p?true:false);
   }
 
   ReversibleControlFlowGraph&
   CallGraphVertexAlg::getAdjointControlFlowGraph() {
-    return *myAdjointControlFlowGraph;
+    if (!myAdjointControlFlowGraph_p) 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getAdjointControlFlowGraph: not set");
+    return *myAdjointControlFlowGraph_p;
   }
                                                                                 
   const ReversibleControlFlowGraph&
   CallGraphVertexAlg::getAdjointControlFlowGraph() const {
-    return *myAdjointControlFlowGraph;
+    if (!myAdjointControlFlowGraph_p) 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getAdjointControlFlowGraph: not set");
+    return *myAdjointControlFlowGraph_p;
   }
 
   class ControlFlowGraphVertexLabelWriter {
@@ -92,29 +111,29 @@ namespace xaifBoosterControlFlowReversal {
     if (!getContaining().getControlFlowGraph().numVertices())
       // for instance modules may have an empty CallGraph
       return; 
-    myTapingControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
-    myAdjointControlFlowGraph=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
-    myTapingControlFlowGraph->makeThisACopyOfOriginalControlFlowGraph();
-    //	GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
-    myTapingControlFlowGraph->topologicalSort();
+    myTapingControlFlowGraph_p=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
+    myAdjointControlFlowGraph_p=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
+    myTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
+    //	GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
+    myTapingControlFlowGraph_p->topologicalSort();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+      GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
-    myTapingControlFlowGraph->markBranchExitEdges();
+    myTapingControlFlowGraph_p->markBranchExitEdges();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+      GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
     // buildAdjointControlFlowGraph() should always be based on the
     // original CFG, that is, it should precede the call to 
     // storeControlFlow()
     // but we should have found out how to label branch edges...
-    myTapingControlFlowGraph->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph);
+    myTapingControlFlowGraph_p->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph_p);
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*myAdjointControlFlowGraph,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph));
+      GraphVizDisplay::show(*myAdjointControlFlowGraph_p,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph_p));
     }
-    myTapingControlFlowGraph->storeControlFlow();
+    myTapingControlFlowGraph_p->storeControlFlow();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*myTapingControlFlowGraph,"cfg_taping", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph));
+      GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_taping", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
   } // end CallGraphVertexAlg::algorithm_action_4() 
 
@@ -133,10 +152,15 @@ namespace xaifBoosterControlFlowReversal {
        << "\">"
        << std::endl;
     getContaining().getControlFlowGraph().getArgumentList().printXMLHierarchy(os);
-                                                                                
-    myTapingControlFlowGraph->printXMLHierarchy(os);
-    // short cut: has 2 ENTRIES and EXITS in one cfg
-    myAdjointControlFlowGraph->printXMLHierarchy(os);
+
+    // This is for testing purposes only,
+    // if the following graphs have been created we have multiple ENTRIES and EXITS in one cfg                              
+    // they may not have been created for empty graphs as e.g. possible for modules
+    if (myTapingControlFlowGraph_p)
+      myTapingControlFlowGraph_p->printXMLHierarchy(os);
+
+    if (myAdjointControlFlowGraph_p)
+      myAdjointControlFlowGraph_p->printXMLHierarchy(os);
                                                                                 
     os << pm.indent()
        << "</"
