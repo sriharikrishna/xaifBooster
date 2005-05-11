@@ -65,16 +65,72 @@ namespace xaifBooster {
     myStatementIdList.push_back(anId);
   } 
 
-  const DuUdMapUseResult DuUdMapEntry::use(const DuUdMapDefinitionResult::StatementIdList& anIdList) const { 
+  const DuUdMapUseResult DuUdMapEntry::use(const DuUdMapUseResult::StatementIdLists& idLists) const { 
     DuUdMapUseResult theResult;
     if (myStatementIdList.empty()) { 
       DBG_MACRO(DbgGroup::ERROR,"DuUdMapEntry::use: an empty StatementIdList implies dead code, the subsequent transformations may fail");
       return theResult;
     }
-    // for now the same logic:
-    DuUdMapDefinitionResult theDefResult(definition(anIdList));
-    theResult.myAnswer=theDefResult.myAnswer;
-    theResult.myStatementId=theDefResult.myStatementId;
+    unsigned int matchNumber=0;
+    bool hasOutOfScope=false;
+    for(DuUdMapDefinitionResult::StatementIdList::const_iterator chainI=myStatementIdList.begin();
+	chainI!=myStatementIdList.end();
+	++chainI) {
+      // first test against the active statements
+      for(DuUdMapDefinitionResult::StatementIdList::const_iterator dependentStatementIdListI=idLists.myDependentStatementIdList.begin();
+	  dependentStatementIdListI!=idLists.myDependentStatementIdList.end();
+	  ++dependentStatementIdListI) { 
+	if (*dependentStatementIdListI=="")
+	  THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: StatementIds in the active statement id list cannot be empty");
+	if (*dependentStatementIdListI==*chainI)
+	  matchNumber++;
+	if (matchNumber==1)
+	  theResult.myStatementId=*chainI;
+      }
+      // second test against the passive statements
+      for(DuUdMapDefinitionResult::StatementIdList::const_iterator passiveStatementIdListI=idLists.myPassiveStatementIdList.begin();
+	  passiveStatementIdListI!=idLists.myPassiveStatementIdList.end();
+	  ++passiveStatementIdListI) { 
+	if (*passiveStatementIdListI=="")
+	  THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: StatementIds in the passive statement id list cannot be empty");
+	if (*passiveStatementIdListI==*chainI)
+	  matchNumber++;
+	if (matchNumber==1)
+	  theResult.myStatementId=*chainI;
+      }
+      if (*chainI=="") 
+	hasOutOfScope=true;
+    }
+    if ((matchNumber==0 
+	 &&
+	 (hasOutOfScope
+	  || 
+	  (!hasOutOfScope 
+	   && 
+	   myStatementIdList.size()>1))))
+      theResult.myAnswer=DuUdMapDefinitionResult::AMBIGUOUS_OUTSIDE;
+    else if (matchNumber==0 
+	     && 
+	     !hasOutOfScope
+	     && 
+	     myStatementIdList.size()==1)
+      theResult.myAnswer=DuUdMapDefinitionResult::UNIQUE_OUTSIDE;
+    else if (matchNumber>0 
+	     && 
+	     (hasOutOfScope
+	      || 
+	      myStatementIdList.size()>matchNumber))
+      theResult.myAnswer=DuUdMapDefinitionResult::AMBIGUOUS_BOTHSIDES;
+    else if (matchNumber==1 
+	     && 
+	     myStatementIdList.size()==1)
+      theResult.myAnswer=DuUdMapDefinitionResult::UNIQUE_INSIDE;
+    else if (matchNumber>1 
+	     && 
+	     myStatementIdList.size()==matchNumber)
+      theResult.myAnswer=DuUdMapDefinitionResult::AMBIGUOUS_INSIDE;
+    else 
+      THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: missing case");
     return theResult;
   }
 
@@ -84,20 +140,20 @@ namespace xaifBooster {
     DuUdMapDefinitionResult theResult;
     unsigned int matchNumber=0;
     bool hasOutOfScope=false;
-    for(DuUdMapDefinitionResult::StatementIdList::const_iterator aStatementIdListI=myStatementIdList.begin();
-	aStatementIdListI!=myStatementIdList.end();
-	++aStatementIdListI) {
+    for(DuUdMapDefinitionResult::StatementIdList::const_iterator chainI=myStatementIdList.begin();
+	chainI!=myStatementIdList.end();
+	++chainI) {
       for(DuUdMapDefinitionResult::StatementIdList::const_iterator it=anIdList.begin();
 	  it!=anIdList.end();
 	  ++it) { 
 	if (*it=="")
 	  THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::definition: all StatementIds in anIdList are supposed to be for regular statements and therefore cannot be empty");
-	if (*it==*aStatementIdListI)
+	if (*it==*chainI)
 	  matchNumber++;
 	if (matchNumber==1)
-	  theResult.myStatementId=*aStatementIdListI;
+	  theResult.myStatementId=*chainI;
       }
-      if (*aStatementIdListI=="") 
+      if (*chainI=="") 
 	hasOutOfScope=true;
     }
     if ((matchNumber==0 
@@ -153,13 +209,13 @@ namespace xaifBooster {
 	anotherEntry.myStatementIdList.empty()) { 
       THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::disjointDefinitionFrom: empty chain(s)");
     }
-    for(DuUdMapDefinitionResult::StatementIdList::const_iterator aStatementIdListI=myStatementIdList.begin();
-	aStatementIdListI!=myStatementIdList.end();
-	++aStatementIdListI) {
-      for(DuUdMapDefinitionResult::StatementIdList::const_iterator anotherStatementIdListI=anotherEntry.myStatementIdList.begin();
-	  anotherStatementIdListI!=anotherEntry.myStatementIdList.end();
-	  ++anotherStatementIdListI) {
-	if (*anotherStatementIdListI==*aStatementIdListI) { 
+    for(DuUdMapDefinitionResult::StatementIdList::const_iterator chainI=myStatementIdList.begin();
+	chainI!=myStatementIdList.end();
+	++chainI) {
+      for(DuUdMapDefinitionResult::StatementIdList::const_iterator anotherChainI=anotherEntry.myStatementIdList.begin();
+	  anotherChainI!=anotherEntry.myStatementIdList.end();
+	  ++anotherChainI) {
+	if (*anotherChainI==*chainI) { 
 	  return false; 
 	}
       }

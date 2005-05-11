@@ -1,8 +1,8 @@
-
 #ifndef _PRIVATELINEARIZEDCOMPUTATIONALGRAPH_INCLUDE_
 #define _PRIVATELINEARIZEDCOMPUTATIONALGRAPH_INCLUDE_
 
 #include "xaifBooster/utils/inc/HashTable.hpp"
+#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveLHS.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveRHS.hpp"
@@ -54,7 +54,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     void removeFromDependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theDependentVertex);
 
-    const DuUdMapDefinitionResult::StatementIdList& getDependentStatementIdList()const;
+    const DuUdMapUseResult::StatementIdLists getStatementIdLists()const;
+
+    void addToPassiveStatementIdList(const ObjectWithId::Id& aStatementId);
 
   private: 
 
@@ -102,10 +104,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     VertexIdentificationListPassive myVertexIdentificationListPassive; 
 
     /** 
-     * this is the list of statementIds for the statements in which  
+     * this is the list of statementIds for the active statements in which  
      * the resp. dependent is the right hand side
+     * myDependentStatementIdList and myPassiveStatementIdList are supposed to be disjoint
      */
     DuUdMapDefinitionResult::StatementIdList myDependentStatementIdList;
+    
+    /** 
+     * this is the list of statementIds for the passive statements 
+     * we need this for determination of dependents with du chains
+     * since a variable may be used in a statement determined to be passive
+     * and therefore not show up in myDependentStatementIdList
+     * myDependentStatementIdList and myPassiveStatementIdList are supposed to be disjoint
+     */
+    DuUdMapDefinitionResult::StatementIdList myPassiveStatementIdList;
     
   }; // end of class PrivateLinearizedComputationalGraph 
 

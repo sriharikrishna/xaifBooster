@@ -365,7 +365,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	}
 	DuUdMapUseResult theDuUdMapUseResult(ConceptuallyStaticInstances::instance()->
 					     getCallGraph().getDuUdMap().use(aDuUdMapKey,
-									     theFlattenedSequence.getDependentStatementIdList()));
+									     theFlattenedSequence.getStatementIdLists()));
 	if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
 	    || 
 	    theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
@@ -377,9 +377,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				       << aDuUdMapKey.debug().c_str()
 				       << " from the dependent list");
 	  // we only use it in the scope of this flattened sequence, therefore remove it
+	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::algorithm_action_3: removing dependent " 
+		    << myPrivateVertex.getLHSVariable().debug().c_str()
+		    << " list size: " << theDepVertexPList.size()); 
 	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
+	  continue;
 	}
-      } 
+	if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
+	  if (theFlattenedSequence.numOutEdgesOf(myPrivateVertex)) { 
+	    DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::algorithm_action_3: non-maximal dependent " 
+		      << myPrivateVertex.getLHSVariable().debug().c_str()); 
+	  }
+	  else { 
+	    DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::algorithm_action_3: keeping regular dependent " 
+		      << myPrivateVertex.getLHSVariable().debug().c_str()); 
+	  }
+	} 
+      }
       // UN: this is used to keep track of those independent variables
       // that were already assigned to temporary variables to ensure correctness
       // of the Jacobian accumulation code.

@@ -49,8 +49,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
   }
 
-  const DuUdMapDefinitionResult::StatementIdList& PrivateLinearizedComputationalGraph::getDependentStatementIdList()const { 
-    return myDependentStatementIdList;
+  const DuUdMapUseResult::StatementIdLists PrivateLinearizedComputationalGraph::getStatementIdLists()const { 
+    return DuUdMapUseResult::StatementIdLists(myDependentStatementIdList, myPassiveStatementIdList);
   }
+
+  void PrivateLinearizedComputationalGraph::addToPassiveStatementIdList(const ObjectWithId::Id& aStatementId) { 
+    myPassiveStatementIdList.push_back(aStatementId);
+  } 
 
 } // end of namespace 

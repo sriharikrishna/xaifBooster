@@ -149,6 +149,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
     if (!getActiveFlag()) { 
+      theFlattenedSequence.addToPassiveStatementIdList(getContainingAssignment().getId());
       if (getContainingAssignment().getLHS().getActiveType()) {   // but the LHS has active type
 	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS(),
 						      getContainingAssignment().getId());

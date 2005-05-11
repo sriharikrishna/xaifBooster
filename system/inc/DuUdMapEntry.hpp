@@ -47,12 +47,12 @@ namespace xaifBooster{
     const DuUdMapDefinitionResult definition(const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
 
     /** 
-     * anIdList contains the Ids of all statements 
+     * idList contains the Ids of all statements (active and passive) 
      * in the scope of question so far
      * this applies only to DU chains and for this definition 
      * we are looking for uses
      */
-    const DuUdMapUseResult use(const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
+    const DuUdMapUseResult use(const DuUdMapUseResult::StatementIdLists& idLists) const;
 
     /** 
      * the name says it all

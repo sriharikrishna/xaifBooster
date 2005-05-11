@@ -69,9 +69,9 @@
       double precision:: uave, vave, wave, have, cave                       
       double precision:: uhat, thtave                                       
       double precision:: utilde, vtilde, wtilde                             
-      double precision:: delta, delta2                                      
+!      double precision:: delta, delta2                                      
       double precision:: lamcm, lamcp, lamu                                 
-      double precision:: lam2                                               
+!      double precision:: lam2                                               
       double precision:: alamcm, alamcp, alamu                              
       double precision:: el, rul, rvl, rwl                                  
       double precision:: er, rur, rvr, rwr                                  
@@ -141,10 +141,10 @@ c$openad INDEPENDENT(mcheps)
 !     harten's entropy fix                                              
 !     nonlinear waves                                                   
 ! UN changed     delta = nlefix * (abs (uhat) + cave)                       
-      delta = nlefix * (uhat + cave)                       
-      delta2 = delta**2                                         
+!      delta = nlefix * (uhat + cave)                       
+!      delta2 = delta**2                                         
                                                                         
-      lam2 = lamcm**2                                          
+!      lam2 = lamcm**2                                          
 !      IF (lam2.gt.delta2) then                                 
 ! UN changed                alamcm = abs (lamcm)                           
                 alamcm = lamcm                           
@@ -152,7 +152,7 @@ c$openad INDEPENDENT(mcheps)
 !                alamcm = half * (lam2 + delta2) / delta2       
 !      ENDIF                                                    
                                                                         
-      lam2 = lamcp**2                                         
+!      lam2 = lamcp**2                                         
 !      IF (lam2.gt.delta2) then                                
 ! UN changed                alamcp = abs (lamcp)                          
                 alamcp = lamcp                          
@@ -162,10 +162,10 @@ c$openad INDEPENDENT(mcheps)
                                                                         
 !     linear waves                                                      
 ! UN changed      delta = lefix * (abs (uhat) + cave)                    
-      delta = lefix * (uhat + cave)                    
-      delta2 = delta * delta                                
+!      delta = lefix * (uhat + cave)                    
+!      delta2 = delta * delta                                
                                                                         
-      lam2 = lamu**2                                       
+!      lam2 = lamu**2                                       
 !      IF (lam2.gt.delta2) then                           
 ! UN changed                alamu = abs (lamu)                       
                 alamu = lamu                       
