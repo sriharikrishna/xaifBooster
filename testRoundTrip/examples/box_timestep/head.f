@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_timestep (
      & gammaLoc, fldStar, extForLoc,
