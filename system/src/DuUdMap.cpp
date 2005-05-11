@@ -79,7 +79,7 @@ namespace xaifBooster {
   } 
 
   const DuUdMapUseResult DuUdMap::use(const DuUdMapKey& aKey,
-				      const DuUdMapUseResult::StatementIdList& anIdList) const {
+				      const DuUdMapUseResult::StatementIdLists& idLists) const {
     DuUdMapUseResult theResult;
     if (aKey.getKind()==DuUdMapKey::TEMP_VAR)
       // obviously because the map doesn't contain any info on temporaries, 
@@ -96,7 +96,7 @@ namespace xaifBooster {
 				   << aKey.getKey() 
 				   << "< out of range");
       if (myDuUdMapEntryPVector[aKey.getKey()])
-	return myDuUdMapEntryPVector[aKey.getKey()]->use(anIdList);
+	return myDuUdMapEntryPVector[aKey.getKey()]->use(idLists);
       else 
 	THROW_LOGICEXCEPTION_MACRO("DuUdMap::use: key >" 
 				   << aKey.getKey() 

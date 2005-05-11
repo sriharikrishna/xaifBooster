@@ -45,10 +45,10 @@ namespace xaifBooster {
     /** 
      * aKey is the key of a left-hand-side variable
      * which is to be checked for uses in
-     * statements listed in anIdList
+     * statements listed in the idLists
      */
     const DuUdMapUseResult use(const DuUdMapKey& aKey,
-			       const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
+			       const DuUdMapUseResult::StatementIdLists& idLists) const;
     
     /** 
      * this returns true if the use-def chains for both 
