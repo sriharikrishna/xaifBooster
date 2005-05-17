@@ -27,52 +27,52 @@ contains
 
     call cp_store_int_scalar(n_max,si,ci,ai)
 
-    call cp_store_real_vector(blength,ndim,sd,cd,ad)
-    call cp_store_real_vector(bheight,ndim,sd,cd,ad)
-    call cp_store_real_scalar(bwidth%v,sd,cd,ad)
-    call cp_store_real_vector(area,ndim,sd,cd,ad)
-    call cp_store_real_vector(vol,ndim,sd,cd,ad)
-    call cp_store_real_vector(y,2*ndim,sd,cd,ad)
-    call cp_store_real_vector(r,2*ndim,sd,cd,ad)
-    call cp_store_real_vector(r1,2*ndim,sd,cd,ad)
-    call cp_store_real_vector(r_t,2*ndim,sd,cd,ad)
-    call cp_store_real_vector(r_s,2*ndim,sd,cd,ad)
-    call cp_store_real_vector(proj_t,2*ndim,sd,cd,ad)
-    call cp_store_real_vector(proj_s,2*ndim,sd,cd,ad)
+    call cp_store_p_real_vector(blength,ndim,sd,cd,ad)
+    call cp_store_p_real_vector(bheight,ndim,sd,cd,ad)
+    call cp_store_real_scalar(bwidth,sd,cd,ad)
+    call cp_store_p_real_vector(area,ndim,sd,cd,ad)
+    call cp_store_p_real_vector(vol,ndim,sd,cd,ad)
+    call cp_store_p_real_vector(y,2*ndim,sd,cd,ad)
+    call cp_store_p_real_vector(r,2*ndim,sd,cd,ad)
+    call cp_store_p_real_vector(r1,2*ndim,sd,cd,ad)
+    call cp_store_p_real_vector(r_t,2*ndim,sd,cd,ad)
+    call cp_store_p_real_vector(r_s,2*ndim,sd,cd,ad)
+    call cp_store_p_real_vector(proj_t,2*ndim,sd,cd,ad)
+    call cp_store_p_real_vector(proj_s,2*ndim,sd,cd,ad)
 
     do i=lbound(x,1),ubound(x,1)
-       call cp_store_real_vector(x(i,:),size(x(i,:)),sd,cd,ad)
+       call cp_store_p_real_vector(x(i,:),size(x(i,:)),sd,cd,ad)
     end do
 
-    call cp_store_real_scalar(alpha%v,sd,cd,ad)
-    call cp_store_real_scalar(beta%v,sd,cd,ad)
+    call cp_store_real_scalar(alpha,sd,cd,ad)
+    call cp_store_real_scalar(beta,sd,cd,ad)
 
-    call cp_store_real_scalar(u0%v,sd,cd,ad)
-    call cp_store_real_scalar(delta%v,sd,cd,ad)
+    call cp_store_real_scalar(u0,sd,cd,ad)
+    call cp_store_real_scalar(delta,sd,cd,ad)
 
-    call cp_store_real_scalar(robert_filter_coeff%v,sd,cd,ad)
+    call cp_store_real_scalar(robert_filter_coeff,sd,cd,ad)
 
-    call cp_store_real_scalar(delta_t%v,sd,cd,ad)
+    call cp_store_real_scalar(delta_t,sd,cd,ad)
 
-    call cp_store_real_scalar(hundred%v,sd,cd,ad)
-    call cp_store_real_scalar(thousand%v,sd,cd,ad)
-    call cp_store_real_scalar(day%v,sd,cd,ad)
-    call cp_store_real_scalar(year%v,sd,cd,ad)
-    call cp_store_real_scalar(Sv%v,sd,cd,ad)
-    call cp_store_real_scalar(days_per_50m_mixed_layer%v,sd,cd,ad)
-    call cp_store_real_scalar(gamma_T%v,sd,cd,ad)
-    call cp_store_real_scalar(gamma_S%v,sd,cd,ad)
-    call cp_store_real_scalar(epsilon_ic%v,sd,cd,ad)
-    call cp_store_real_scalar(noise_correlation_time%v,sd,cd,ad)
-    call cp_store_real_scalar(integration_time%v,sd,cd,ad)
-    call cp_store_real_scalar(epsilon_regularize%v,sd,cd,ad)
-    call cp_store_real_scalar(fdeps%v,sd,cd,ad)
+    call cp_store_real_scalar(hundred,sd,cd,ad)
+    call cp_store_real_scalar(thousand,sd,cd,ad)
+    call cp_store_real_scalar(day,sd,cd,ad)
+    call cp_store_real_scalar(year,sd,cd,ad)
+    call cp_store_real_scalar(Sv,sd,cd,ad)
+    call cp_store_real_scalar(days_per_50m_mixed_layer,sd,cd,ad)
+    call cp_store_real_scalar(gamma_T,sd,cd,ad)
+    call cp_store_real_scalar(gamma_S,sd,cd,ad)
+    call cp_store_real_scalar(epsilon_ic,sd,cd,ad)
+    call cp_store_real_scalar(noise_correlation_time,sd,cd,ad)
+    call cp_store_real_scalar(integration_time,sd,cd,ad)
+    call cp_store_real_scalar(epsilon_regularize,sd,cd,ad)
+    call cp_store_real_scalar(fdeps,sd,cd,ad)
 
     call cp_store_bool_scalar(verbmode,sb,cb,ab)
 
-    call cp_store_real_scalar(thc_tot%v,sd,cd,ad)
-    call cp_store_real_scalar(thc_t%v,sd,cd,ad)
-    call cp_store_real_scalar(thc_s%v,sd,cd,ad)
+    call cp_store_real_scalar(thc_tot,sd,cd,ad)
+    call cp_store_real_scalar(thc_t,sd,cd,ad)
+    call cp_store_real_scalar(thc_s,sd,cd,ad)
 
     call cp_store_real_vector(told,ndim,sd,cd,ad)
     call cp_store_real_vector(tnow,ndim,sd,cd,ad)
@@ -85,22 +85,22 @@ contains
 
     call cp_store_real_vector(rho,ndim,sd,cd,ad)
 
-    call cp_store_real_vector(nullForce,ndim-1,sd,cd,ad)
-    call cp_store_real_vector(fw,ndim-1,sd,cd,ad)
-    call cp_store_real_vector(tStar,ndim-1,sd,cd,ad)
-    call cp_store_real_vector(sStar,ndim-1,sd,cd,ad)
+    call cp_store_p_real_vector(nullForce,ndim-1,sd,cd,ad)
+    call cp_store_p_real_vector(fw,ndim-1,sd,cd,ad)
+    call cp_store_p_real_vector(tStar,ndim-1,sd,cd,ad)
+    call cp_store_p_real_vector(sStar,ndim-1,sd,cd,ad)
 
-    call cp_store_real_scalar(ubar%v,sd,cd,ad)
+    call cp_store_real_scalar(ubar,sd,cd,ad)
 
     call cp_store_real_vector(t,ndim,sd,cd,ad)
     call cp_store_real_vector(s,ndim,sd,cd,ad)
 
-    call cp_store_real_scalar(metric1%v,sd,cd,ad)
-    call cp_store_real_scalar(metric2%v,sd,cd,ad)
-    call cp_store_real_scalar(metric%v,sd,cd,ad)
+    call cp_store_real_scalar(metric1,sd,cd,ad)
+    call cp_store_real_scalar(metric2,sd,cd,ad)
+    call cp_store_real_scalar(metric,sd,cd,ad)
 
     call cp_store_real_vector(xx,2*ndim,sd,cd,ad)
-    call cp_store_real_vector(tsvec,2*ndim,sd,cd,ad)
+    call cp_store_p_real_vector(tsvec,2*ndim,sd,cd,ad)
 
   end subroutine cp_store_globals_impl
 
@@ -114,15 +114,15 @@ contains
     integer i,j
 
     do i=ubound(tsvec,1),lbound(tsvec,1),-1
-       tsvec(i)%v=sd(cd); cd=cd-1
+       tsvec(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(xx,1),lbound(xx,1),-1
        xx(i)%v=sd(cd); cd=cd-1
     end do
 
-    metric%v=sd(cd); cd=cd-1
-    metric2%v=sd(cd); cd=cd-1
-    metric1%v=sd(cd); cd=cd-1
+    metric=sd(cd); cd=cd-1
+    metric2=sd(cd); cd=cd-1
+    metric1=sd(cd); cd=cd-1
 
     do i=ubound(s,1),lbound(s,1),-1
        s(i)%v=sd(cd); cd=cd-1
@@ -131,19 +131,19 @@ contains
        t(i)%v=sd(cd); cd=cd-1
     end do
 
-    ubar%v=sd(cd); cd=cd-1
+    ubar=sd(cd); cd=cd-1
 
     do i=ubound(sStar,1),lbound(sStar,1),-1
-       sStar(i)%v=sd(cd); cd=cd-1
+       sStar(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(tStar,1),lbound(tStar,1),-1
-       tStar(i)%v=sd(cd); cd=cd-1
+       tStar(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(fw,1),lbound(fw,1),-1
-       fw(i)%v=sd(cd); cd=cd-1
+       fw(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(nullForce,1),lbound(nullForce,1),-1
-       nullForce(i)%v=sd(cd); cd=cd-1
+       nullForce(i)=sd(cd); cd=cd-1
     end do
 
     do i=ubound(rho,1),lbound(rho,1),-1
@@ -171,79 +171,79 @@ contains
        told(i)%v=sd(cd); cd=cd-1
     end do
 
-    thc_s%v=sd(cd); cd=cd-1
-    thc_t%v=sd(cd); cd=cd-1
-    thc_tot%v=sd(cd); cd=cd-1
+    thc_s=sd(cd); cd=cd-1
+    thc_t=sd(cd); cd=cd-1
+    thc_tot=sd(cd); cd=cd-1
 
     verbmode=sb(cb); cb=cb-1
 
-    fdeps%v=sd(cd); cd=cd-1
-    epsilon_regularize%v=sd(cd); cd=cd-1
-    integration_time%v=sd(cd); cd=cd-1
-    noise_correlation_time%v=sd(cd); cd=cd-1
-    epsilon_ic%v=sd(cd); cd=cd-1
-    gamma_S%v=sd(cd); cd=cd-1
-    gamma_T%v=sd(cd); cd=cd-1
-    days_per_50m_mixed_layer%v=sd(cd); cd=cd-1
-    Sv%v=sd(cd); cd=cd-1
-    year%v=sd(cd); cd=cd-1
-    day%v=sd(cd); cd=cd-1
-    thousand%v=sd(cd); cd=cd-1
-    hundred%v=sd(cd); cd=cd-1
+    fdeps=sd(cd); cd=cd-1
+    epsilon_regularize=sd(cd); cd=cd-1
+    integration_time=sd(cd); cd=cd-1
+    noise_correlation_time=sd(cd); cd=cd-1
+    epsilon_ic=sd(cd); cd=cd-1
+    gamma_S=sd(cd); cd=cd-1
+    gamma_T=sd(cd); cd=cd-1
+    days_per_50m_mixed_layer=sd(cd); cd=cd-1
+    Sv=sd(cd); cd=cd-1
+    year=sd(cd); cd=cd-1
+    day=sd(cd); cd=cd-1
+    thousand=sd(cd); cd=cd-1
+    hundred=sd(cd); cd=cd-1
 
-    delta_t%v=sd(cd); cd=cd-1
+    delta_t=sd(cd); cd=cd-1
 
-    robert_filter_coeff%v=sd(cd); cd=cd-1
+    robert_filter_coeff=sd(cd); cd=cd-1
 
-    delta%v=sd(cd); cd=cd-1
-    u0%v=sd(cd); cd=cd-1
+    delta=sd(cd); cd=cd-1
+    u0=sd(cd); cd=cd-1
 
-    beta%v=sd(cd); cd=cd-1
-    alpha%v=sd(cd); cd=cd-1
+    beta=sd(cd); cd=cd-1
+    alpha=sd(cd); cd=cd-1
 
     do i=ubound(x,1),lbound(x,1),-1
        do j=ubound(x,2),lbound(x,2),-1
-          x(i,j)%v=sd(cd); cd=cd-1
+          x(i,j)=sd(cd); cd=cd-1
        end do
     end do
 
     do i=ubound(proj_s,1),lbound(proj_s,1),-1
-       proj_s(i)%v=sd(cd); cd=cd-1
+       proj_s(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(proj_t,1),lbound(proj_t,1),-1
-       proj_t(i)%v=sd(cd); cd=cd-1
+       proj_t(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(r_s,1),lbound(r_s,1),-1
-       r_s(i)%v=sd(cd); cd=cd-1
+       r_s(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(r_t,1),lbound(r_t,1),-1
-       r_t(i)%v=sd(cd); cd=cd-1
+       r_t(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(r1,1),lbound(r1,1),-1
-       r1(i)%v=sd(cd); cd=cd-1
+       r1(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(r,1),lbound(r,1),-1
-       r(i)%v=sd(cd); cd=cd-1
+       r(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(y,1),lbound(y,1),-1
-       y(i)%v=sd(cd); cd=cd-1
+       y(i)=sd(cd); cd=cd-1
     end do
 
     do i=ubound(vol,1),lbound(vol,1),-1
-       vol(i)%v=sd(cd); cd=cd-1
+       vol(i)=sd(cd); cd=cd-1
     end do
 
     do i=ubound(area,1),lbound(area,1),-1
-       area(i)%v=sd(cd); cd=cd-1
+       area(i)=sd(cd); cd=cd-1
     end do
 
-    bwidth%v=sd(cd); cd=cd-1
+    bwidth=sd(cd); cd=cd-1
 
     do i=ubound(bheight,1),lbound(bheight,1),-1
-       bheight(i)%v=sd(cd); cd=cd-1
+       bheight(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(blength,1),lbound(blength,1),-1
-       blength(i)%v=sd(cd); cd=cd-1
+       blength(i)=sd(cd); cd=cd-1
     end do
 
     n_max=si(ci); ci=ci-1

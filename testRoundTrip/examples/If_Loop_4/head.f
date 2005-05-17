@@ -9,6 +9,8 @@ c$openad INDEPENDENT(x)
           do i=1,9
             if (i>5) then
               y(i)=pi*sin(x(i))
+c	      print *, 'x(',i,')=',x(i)
+c	      print *, 'y(',i,')=',y(i)
             else
               y(i)=pi+cos(x(i))
             end if 

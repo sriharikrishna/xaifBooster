@@ -375,7 +375,7 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
-          call cp_store_real_vector(x,size(x),
+          call cp_store_p_real_vector(x,size(x),
      +theArgFStack,theArgFStackoffset,
      +theArgFStackSize)
         end subroutine 
@@ -400,7 +400,7 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
-          call cp_store_real_vector(x,size(x),
+          call cp_store_p_real_vector(x,size(x),
      +theResFStack,theResFStackoffset,
      +theResFStackSize)
         end subroutine 
@@ -425,7 +425,7 @@ C $OpenAD$ INLINE DECLS
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-          call cp_store_real_vector(x(cp_loop_variable_1),
+          call cp_store_p_real_vector(x(cp_loop_variable_1),
      +size(x(cp_loop_variable_1)),theArgFStack,theArgFStackoffset,
      +theArgFStackSize)
           end do
@@ -455,7 +455,7 @@ C $OpenAD$ INLINE DECLS
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-          call cp_store_real_vector(x(cp_loop_variable_1),
+          call cp_store_p_real_vector(x(cp_loop_variable_1),
      +size(x(cp_loop_variable_1)),theResFStack,theResFStackoffset,
      +theResFStackSize)
           end do
@@ -487,7 +487,7 @@ C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
                 do cp_loop_variable_3=lbound(x,3),ubound(x,3)
-          call cp_store_real_vector(x(cp_loop_variable_1,
+          call cp_store_p_real_vector(x(cp_loop_variable_1,
      +cp_loop_variable_2, cp_loop_variable_3),
      +size(x(cp_loop_variable_1,cp_loop_variable_2, cp_loop_variable_3)),
      +theArgFStack,
@@ -529,7 +529,7 @@ C $OpenAD$ END DECLS
           do cp_loop_variable_1=lbound(x,1),ubound(x,1)
              do cp_loop_variable_2=lbound(x,2),ubound(x,2)
                 do cp_loop_variable_3=lbound(x,3),ubound(x,3)
-          call cp_store_real_vector(x(cp_loop_variable_1,
+          call cp_store_p_real_vector(x(cp_loop_variable_1,
      +cp_loop_variable_2, cp_loop_variable_3),
      +size(x(cp_loop_variable_1,cp_loop_variable_2, cp_loop_variable_3)),
      +theResFStack,
