@@ -118,14 +118,6 @@ cph      print *, 'ph-check uvel ', uvel
 
       end
 
-
-
-
-
-
-
-
-
 c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_ini_fields
@@ -212,14 +204,7 @@ c-- map onto model state
 
       end
 
-
-
-
-
-
-
-
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_ini_params
 c-----------------------------------------------------------------------
@@ -386,8 +371,7 @@ c-- **************
 
       end
 
-
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_model_body
 c-----------------------------------------------------------------------
@@ -484,6 +468,7 @@ c$openad DEPENDENT(snew)
 
       end
 
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_density ( tLoc, sLoc, rhoLoc )
 c-----------------------------------------------------------------------
@@ -522,8 +507,7 @@ c-- linear equation of state
 
       end
 
-
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_transport ( rhoLoc, uVelLoc )
 c-----------------------------------------------------------------------
@@ -558,8 +542,7 @@ c-- local variables:
 
       end
 
-
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_robert_filter ( 
      &     fldNow, fldOld, fldNew )
@@ -599,6 +582,7 @@ c-- routine body
 
       end
 
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_cycle_fields
 c-----------------------------------------------------------------------
@@ -636,7 +620,7 @@ c-- routine body
 
       end
 
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_update ( fldNew, fldOld, dFldDt )
 c-----------------------------------------------------------------------
@@ -676,6 +660,7 @@ c-- routine body
 
       end
 
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_timestep ( 
      &     gammaLoc, fldStar, extForLoc, 

@@ -8,8 +8,9 @@ module OpenAD_checkpoints
 
   integer, parameter :: store_increase=20000
 
-  public ::  cp_store_real_scalar, cp_store_real_vector, cp_store_int_scalar, cp_store_int_vector, cp_store_string_scalar,&
-& cp_store_bool_scalar , cp_store_p_real_vector
+  public ::  cp_store_real_scalar, cp_store_real_vector, &
+& cp_store_int_scalar, cp_store_int_vector, &
+& cp_store_string_scalar, cp_store_bool_scalar , cp_store_p_real_vector
 
   interface cp_store_real_scalar
      module procedure cp_store_real_scalar_impl
