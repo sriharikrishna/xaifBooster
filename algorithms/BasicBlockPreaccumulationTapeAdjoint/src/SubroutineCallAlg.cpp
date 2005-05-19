@@ -11,7 +11,7 @@
 namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
 
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
-    SubroutineCallAlgBase(theContainingSubroutineCall),
+    xaifBoosterLinearization::SubroutineCallAlg(theContainingSubroutineCall),
     BasicBlockElementAlg(theContainingSubroutineCall) { 
   }
 
@@ -50,6 +50,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       theNewConcreteArgumentPList.push_back(theNewConcreteArgument_p);
       (*theOldConcreteArgumentPListI)->getVariable().copyMyselfInto(theNewConcreteArgument_p->getVariable());
     } // end for
+    // reapply any argument conversions we may need
+    dynamic_cast<xaifBoosterLinearization::SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()).xaifBoosterLinearization::SubroutineCallAlg::algorithm_action_1();
 //    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theRestoreModeCall(theBasicBlockAlg.addInlinableSubroutineCall("restore_mode"));
 //    theRestoreModeCall.setId("inline_restore_mode");
   } 

@@ -19,6 +19,7 @@ void onCondition(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& pa
 void onConstant(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onControlFlowGraph(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onControlFlowGraphEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onDimensionBounds(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onDummy(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onDuUdMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onDuUdMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

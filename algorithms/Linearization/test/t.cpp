@@ -73,9 +73,9 @@ int main(int argc,char** argv) {
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     if (schemaPath.size())
-      newLocation.append(" "+schemaPath+"/xaif.xsd");
+      newLocation.append(" "+schemaPath+"/xaif_output.xsd");
     else 
-      newLocation.append(" xaif.xsd");
+      newLocation.append(" xaif_output.xsd");
     Cg.resetSchemaLocation(newLocation);
     if (CommandLineParser::instance()->isSet('o')) { 
       std::ofstream theOutFile(CommandLineParser::instance()->argAsString('o').c_str(),

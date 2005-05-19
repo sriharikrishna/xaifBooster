@@ -1,6 +1,7 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Scopes.hpp"
+#include "xaifBooster/system/inc/SymbolReference.hpp"
 
 namespace xaifBooster { 
 
@@ -100,4 +101,9 @@ namespace xaifBooster {
     return *(beginIt);
   } 
 
+  bool Scopes::isSameSymbol(const SymbolReference& first,
+			    const SymbolReference& second) const { 
+    return (( &(first.getScope())==&(second.getScope()) && &(first.getSymbol())==&(second.getSymbol())) ? true : false );
+  } 
+  
 } // end of namespace xaifBooster 

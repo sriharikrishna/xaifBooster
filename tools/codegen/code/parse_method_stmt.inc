@@ -19,6 +19,7 @@ ourActionCatalogue.addElement(Condition::ourXAIFName, ActionItem(&XAIFBaseParser
 ourActionCatalogue.addElement(Constant::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onConstant));
 ourActionCatalogue.addElement(ControlFlowGraph::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onControlFlowGraph));
 ourActionCatalogue.addElement(ControlFlowGraphEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onControlFlowGraphEdge));
+ourActionCatalogue.addElement(DimensionBounds::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onDimensionBounds));
 ourActionCatalogue.addElement(DuUdMap::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onDuUdMap));
 ourActionCatalogue.addElement(DuUdMapEntry::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onDuUdMapEntry));
 ourActionCatalogue.addElement(EndBranch::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEndBranch));

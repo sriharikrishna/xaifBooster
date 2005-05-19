@@ -21,4 +21,13 @@ namespace xaifBooster {
     return myScope_r;
   } // end of SymbolReference::getScope
 
+  std::string SymbolReference::debug () const { 
+    std::ostringstream out;
+    out << "SymbolReference[" << this 
+	<< ",mySymbol_r=" << mySymbol_r.debug().c_str()
+	<< ",myScope_r=" << myScope_r.debug().c_str()
+	<< "]" << std::ends;  
+    return out.str();
+  } // end of Symbol::debug
+
 } // end of namespace xaifBooster 

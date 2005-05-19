@@ -11,6 +11,7 @@ parse_method_stmt.inc
 all: $(TARGETS)
 
 %.inc : $(XMLDIR)/%.xml
+	$(COMPLAIN)
 	java -cp $(CLASSPATH) CodeGenerator $<
 
 .PHONY: all 

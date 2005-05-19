@@ -4,10 +4,12 @@
 #include "xaifBooster/algorithms/Linearization/inc/ArgumentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlgFactory.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ConstantAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlgFactory.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -37,10 +39,12 @@ namespace xaifBoosterLinearization {
     resetArgumentAlgFactory(new ArgumentAlgFactory());
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
     resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
+    resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
     resetConstantAlgFactory(new ConstantAlgFactory());
     resetExpressionAlgFactory(new ExpressionAlgFactory());
     resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
     resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
+    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
   }
 
   void AlgFactoryManager::init() {

@@ -10,7 +10,7 @@ if [ $# -gt 0 ]
 then  
     TESTFILES=$@
 else
-    TESTFILES='add_mul_ex1 add_mul_ex2 add_mul_ex_duud_lineUp add_mul_ex_no_duud add_mul_ex uwe_ex_1 uwe_ex_2 uwe_ex_2_explicit uwe_ex_3 uwe_ex_4 uwe_ex_5 whole_box_model select_case goto_label_1 loop_continue loop_exit'
+    TESTFILES='add_mul_ex1 add_mul_ex2 add_mul_ex_duud_lineUp add_mul_ex_no_duud add_mul_ex uwe_ex_1 uwe_ex_2 uwe_ex_2_explicit uwe_ex_3 uwe_ex_4 uwe_ex_5 vecref_ex whole_box_model select_case goto_label_1 loop_continue loop_exit'
 fi
 for i in `echo ${TESTFILES}`
     do
@@ -18,17 +18,16 @@ for i in `echo ${TESTFILES}`
     ./t -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg
     if [ $? -ne 0 ] 
     then 
-	echo "ERROR during execution!"; exit -1;
+	echo "ERROR during execution!"; 
     fi
     debugLines=`wc -l tmp/${i}.dbg | awk '{ print $1}'`
     if [ $debugLines -gt 0 ] 
     then 
 	echo "debug messages:"
 	cat tmp/${i}.dbg
-	if [ -z "$DONT_STOP" ] 
-        then
-	  exit -2
-        fi
+        echo -n "QUESTION: there was a problem - hit <enter> to continue "
+	read answer
+	continue
     fi
     diffs=`diff testOutput/${i}.out tmp/${i}.out`
     if [ $? -eq 2 ] 
@@ -39,10 +38,19 @@ for i in `echo ${TESTFILES}`
     then 
 	echo "diffs base (<) vs. current (>):"
 	diff testOutput/${i}.out tmp/${i}.out
-	if [ -z "$DONT_STOP" ] 
-	then
-	  exit -3
-	fi
+	echo -n "QUESTION: there was a difference - checkin y/[n] : "
+ 	read answer
+	if [ "${answer}" == "y" ] 
+	then 
+	  if [ -f testOutput/${i}.out ] 
+	  then 
+  	    bk edit testOutput/${i}.out
+	  fi
+	  cp tmp/${i}.out testOutput/${i}.out
+	else
+          echo -n "QUESTION: there was a problem - hit <enter> to continue "
+ 	  read answer
+        fi
     fi
     echo ""
 done

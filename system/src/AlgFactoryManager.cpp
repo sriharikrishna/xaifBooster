@@ -10,6 +10,7 @@
 #include "xaifBooster/system/inc/BranchAlgFactory.hpp"
 #include "xaifBooster/system/inc/CallGraphAlgFactory.hpp"
 #include "xaifBooster/system/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/system/inc/ConcreteArgumentAlgFactory.hpp"
 #include "xaifBooster/system/inc/ConstantAlgFactory.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphVertexAlgFactory.hpp"
@@ -62,6 +63,7 @@ namespace xaifBooster {
     ourBranchAlgFactory_p(0), 
     ourCallGraphAlgFactory_p(0), 
     ourCallGraphVertexAlgFactory_p(0), 
+    ourConcreteArgumentAlgFactory_p(0),
     ourConstantAlgFactory_p(0),
     ourControlFlowGraphAlgFactory_p(0), 
     ourControlFlowGraphVertexAlgFactory_p(0), 
@@ -91,6 +93,7 @@ namespace xaifBooster {
     if (ourBranchAlgFactory_p) delete ourBranchAlgFactory_p;
     if (ourCallGraphAlgFactory_p) delete ourCallGraphAlgFactory_p;
     if (ourCallGraphVertexAlgFactory_p) delete ourCallGraphVertexAlgFactory_p;
+    if (ourConcreteArgumentAlgFactory_p) delete ourConcreteArgumentAlgFactory_p;
     if (ourConstantAlgFactory_p) delete ourConstantAlgFactory_p;
     if (ourControlFlowGraphAlgFactory_p) delete ourControlFlowGraphAlgFactory_p;
     if (ourControlFlowGraphVertexAlgFactory_p) delete ourControlFlowGraphVertexAlgFactory_p;
@@ -119,6 +122,7 @@ namespace xaifBooster {
     resetBranchAlgFactory(new BranchAlgFactory());
     resetCallGraphAlgFactory(new CallGraphAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
+    resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
     resetConstantAlgFactory(new ConstantAlgFactory());
     resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
     resetControlFlowGraphVertexAlgFactory(new ControlFlowGraphVertexAlgFactory());
@@ -236,6 +240,18 @@ namespace xaifBooster {
     if (!ourCallGraphVertexAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getCallGraphVertexAlgFactory: not set");
     return ourCallGraphVertexAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetConcreteArgumentAlgFactory(ConcreteArgumentAlgFactory* anotherConcreteArgumentAlgFactory_p){ 
+    if(ourConcreteArgumentAlgFactory_p)
+      delete ourConcreteArgumentAlgFactory_p;
+    ourConcreteArgumentAlgFactory_p=anotherConcreteArgumentAlgFactory_p;
+  }
+ 
+  ConcreteArgumentAlgFactory* AlgFactoryManager::getConcreteArgumentAlgFactory() const { 
+    if (!ourConcreteArgumentAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getConcreteArgumentAlgFactory: not set");
+    return ourConcreteArgumentAlgFactory_p;
   }
 
   void AlgFactoryManager::resetConstantAlgFactory(ConstantAlgFactory* anotherConstantAlgFactory_p){ 
@@ -455,6 +471,7 @@ namespace xaifBooster {
     if (ourBranchAlgFactory_p) out << "ourBranchAlgFactory_p=" << ourBranchAlgFactory_p->debug().c_str() << ",";
     if (ourCallGraphAlgFactory_p) out << "ourCallGraphAlgFactory_p=" << ourCallGraphAlgFactory_p->debug().c_str() << ",";
     if (ourCallGraphVertexAlgFactory_p) out << "ourCallGraphVertexAlgFactory_p=" << ourCallGraphVertexAlgFactory_p->debug().c_str() << ",";
+    if (ourConcreteArgumentAlgFactory_p) out << "ourConcreteArgumentAlgFactory_p=" << ourConcreteArgumentAlgFactory_p->debug().c_str() << ",";
     if (ourConstantAlgFactory_p) out << "ourConstantAlgFactory_p=" << ourConstantAlgFactory_p->debug().c_str() << ",";
     if (ourControlFlowGraphAlgFactory_p) out << "ourControlFlowGraphAlgFactory_p=" << ourControlFlowGraphAlgFactory_p->debug().c_str() << ",";
     if (ourControlFlowGraphVertexAlgFactory_p) out << "ourControlFlowGraphVertexAlgFactory_p=" << ourControlFlowGraphVertexAlgFactory_p->debug().c_str() << ",";

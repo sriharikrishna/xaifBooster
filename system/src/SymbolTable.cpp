@@ -41,7 +41,7 @@ namespace xaifBooster {
     return (*(thePair.first)).second;
   } // end of SymbolTable::addSymbol
 
-  const Symbol&  
+  Symbol&  
   SymbolTable::addUniqueAuxSymbol(const SymbolKind::SymbolKind_E& aKind,
 				  const SymbolType::SymbolType_E& aType,
 				  const SymbolShape::SymbolShape_E& aShape,
