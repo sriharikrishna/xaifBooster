@@ -101,7 +101,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     SubroutineCall* aNewCall_p(new SubroutineCall(aSubroutineNameSymbol,
 						  aSubroutineNameScope,
 						  anActiveUse,
-						  false));
+						  true));
     aNewCall_p->setId("reverse_call");
     getBasicBlockElementList(aReversalType).push_back(aNewCall_p);
     return *aNewCall_p;									     

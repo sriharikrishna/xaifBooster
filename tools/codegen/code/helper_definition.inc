@@ -20,6 +20,17 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "AliasMap" << 
 return *myAliasMap_p;
 }
 
+void XAIFBaseParserHelper::setArgumentList(ArgumentList& whatToSet) {
+if (myArgumentList_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "ArgumentList" << " item already set");
+myArgumentList_p=&whatToSet;
+}
+ArgumentList& XAIFBaseParserHelper::getArgumentList() const {
+if (!myArgumentList_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "ArgumentList" << " item not set");
+return *myArgumentList_p;
+}
+
 void XAIFBaseParserHelper::setArrayAccess(ArrayAccess& whatToSet) {
 if (myArrayAccess_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "ArrayAccess" << " item already set");
@@ -42,28 +53,6 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Assignment" <
 return *myAssignment_p;
 }
 
-void XAIFBaseParserHelper::setVariable(Variable& whatToSet) {
-if (myVariable_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Variable" << " item already set");
-myVariable_p=&whatToSet;
-}
-Variable& XAIFBaseParserHelper::getVariable() const {
-if (!myVariable_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Variable" << " item not set");
-return *myVariable_p;
-}
-
-void XAIFBaseParserHelper::setVariableEdge(VariableEdge& whatToSet) {
-if (myVariableEdge_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "VariableEdge" << " item already set");
-myVariableEdge_p=&whatToSet;
-}
-VariableEdge& XAIFBaseParserHelper::getVariableEdge() const {
-if (!myVariableEdge_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "VariableEdge" << " item not set");
-return *myVariableEdge_p;
-}
-
 void XAIFBaseParserHelper::setBasicBlock(BasicBlock& whatToSet) {
 if (myBasicBlock_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "BasicBlock" << " item already set");
@@ -73,6 +62,17 @@ BasicBlock& XAIFBaseParserHelper::getBasicBlock() const {
 if (!myBasicBlock_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "BasicBlock" << " item not set");
 return *myBasicBlock_p;
+}
+
+void XAIFBaseParserHelper::setBranch(Branch& whatToSet) {
+if (myBranch_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Branch" << " item already set");
+myBranch_p=&whatToSet;
+}
+Branch& XAIFBaseParserHelper::getBranch() const {
+if (!myBranch_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Branch" << " item not set");
+return *myBranch_p;
 }
 
 void XAIFBaseParserHelper::setCallGraph(CallGraph& whatToSet) {
@@ -108,6 +108,28 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "ControlFlowGr
 return *myControlFlowGraph_p;
 }
 
+void XAIFBaseParserHelper::setDuUdMap(DuUdMap& whatToSet) {
+if (myDuUdMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMap" << " item already set");
+myDuUdMap_p=&whatToSet;
+}
+DuUdMap& XAIFBaseParserHelper::getDuUdMap() const {
+if (!myDuUdMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DuUdMap" << " item not set");
+return *myDuUdMap_p;
+}
+
+void XAIFBaseParserHelper::setDuUdMapEntry(DuUdMapEntry& whatToSet) {
+if (myDuUdMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMapEntry" << " item already set");
+myDuUdMapEntry_p=&whatToSet;
+}
+DuUdMapEntry& XAIFBaseParserHelper::getDuUdMapEntry() const {
+if (!myDuUdMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DuUdMapEntry" << " item not set");
+return *myDuUdMapEntry_p;
+}
+
 void XAIFBaseParserHelper::setExpression(Expression& whatToSet) {
 if (myExpression_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Expression" << " item already set");
@@ -141,6 +163,17 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "ForLoop" << "
 return *myForLoop_p;
 }
 
+void XAIFBaseParserHelper::setGoto(Goto& whatToSet) {
+if (myGoto_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Goto" << " item already set");
+myGoto_p=&whatToSet;
+}
+Goto& XAIFBaseParserHelper::getGoto() const {
+if (!myGoto_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Goto" << " item not set");
+return *myGoto_p;
+}
+
 void XAIFBaseParserHelper::setIfStatement(IfStatement& whatToSet) {
 if (myIfStatement_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "IfStatement" << " item already set");
@@ -152,17 +185,6 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "IfStatement" 
 return *myIfStatement_p;
 }
 
-void XAIFBaseParserHelper::setBranch(Branch& whatToSet) {
-if (myBranch_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Branch" << " item already set");
-myBranch_p=&whatToSet;
-}
-Branch& XAIFBaseParserHelper::getBranch() const {
-if (!myBranch_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Branch" << " item not set");
-return *myBranch_p;
-}
-
 void XAIFBaseParserHelper::setInitialization(Initialization& whatToSet) {
 if (myInitialization_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Initialization" << " item already set");
@@ -172,6 +194,17 @@ Initialization& XAIFBaseParserHelper::getInitialization() const {
 if (!myInitialization_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Initialization" << " item not set");
 return *myInitialization_p;
+}
+
+void XAIFBaseParserHelper::setLabel(Label& whatToSet) {
+if (myLabel_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Label" << " item already set");
+myLabel_p=&whatToSet;
+}
+Label& XAIFBaseParserHelper::getLabel() const {
+if (!myLabel_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Label" << " item not set");
+return *myLabel_p;
 }
 
 void XAIFBaseParserHelper::setPostLoop(PostLoop& whatToSet) {
@@ -240,6 +273,17 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "SubroutineCal
 return *mySubroutineCall_p;
 }
 
+void XAIFBaseParserHelper::setSymbol(Symbol& whatToSet) {
+if (mySymbol_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Symbol" << " item already set");
+mySymbol_p=&whatToSet;
+}
+Symbol& XAIFBaseParserHelper::getSymbol() const {
+if (!mySymbol_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Symbol" << " item not set");
+return *mySymbol_p;
+}
+
 void XAIFBaseParserHelper::setSymbolTable(SymbolTable& whatToSet) {
 if (mySymbolTable_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "SymbolTable" << " item already set");
@@ -262,58 +306,25 @@ THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Update" << " 
 return *myUpdate_p;
 }
 
-void XAIFBaseParserHelper::setArgumentList(ArgumentList& whatToSet) {
-if (myArgumentList_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "ArgumentList" << " item already set");
-myArgumentList_p=&whatToSet;
+void XAIFBaseParserHelper::setVariable(Variable& whatToSet) {
+if (myVariable_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Variable" << " item already set");
+myVariable_p=&whatToSet;
 }
-ArgumentList& XAIFBaseParserHelper::getArgumentList() const {
-if (!myArgumentList_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "ArgumentList" << " item not set");
-return *myArgumentList_p;
-}
-
-void XAIFBaseParserHelper::setGoto(Goto& whatToSet) {
-if (myGoto_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Goto" << " item already set");
-myGoto_p=&whatToSet;
-}
-Goto& XAIFBaseParserHelper::getGoto() const {
-if (!myGoto_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Goto" << " item not set");
-return *myGoto_p;
+Variable& XAIFBaseParserHelper::getVariable() const {
+if (!myVariable_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Variable" << " item not set");
+return *myVariable_p;
 }
 
-void XAIFBaseParserHelper::setLabel(Label& whatToSet) {
-if (myLabel_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Label" << " item already set");
-myLabel_p=&whatToSet;
+void XAIFBaseParserHelper::setVariableEdge(VariableEdge& whatToSet) {
+if (myVariableEdge_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "VariableEdge" << " item already set");
+myVariableEdge_p=&whatToSet;
 }
-Label& XAIFBaseParserHelper::getLabel() const {
-if (!myLabel_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "Label" << " item not set");
-return *myLabel_p;
-}
-
-void XAIFBaseParserHelper::setDuUdMapEntry(DuUdMapEntry& whatToSet) {
-if (myDuUdMapEntry_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMapEntry" << " item already set");
-myDuUdMapEntry_p=&whatToSet;
-}
-DuUdMapEntry& XAIFBaseParserHelper::getDuUdMapEntry() const {
-if (!myDuUdMapEntry_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DuUdMapEntry" << " item not set");
-return *myDuUdMapEntry_p;
-}
-
-void XAIFBaseParserHelper::setDuUdMap(DuUdMap& whatToSet) {
-if (myDuUdMap_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMap" << " item already set");
-myDuUdMap_p=&whatToSet;
-}
-DuUdMap& XAIFBaseParserHelper::getDuUdMap() const {
-if (!myDuUdMap_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DuUdMap" << " item not set");
-return *myDuUdMap_p;
+VariableEdge& XAIFBaseParserHelper::getVariableEdge() const {
+if (!myVariableEdge_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "VariableEdge" << " item not set");
+return *myVariableEdge_p;
 }
 
