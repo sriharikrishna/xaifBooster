@@ -8,7 +8,7 @@ c$openad XXX Template ad_template.f
 c$openad XXX Template ad_template.f
 	subroutine head(x,y) 
 	  double precision, dimension(2) :: x, px
-	  double precision, dimension(1) :: y, py
+	  double precision y, py
 c$openad INDEPENDENT(x)
 	  px(1)=1.0
 	  px(2)=2.0
