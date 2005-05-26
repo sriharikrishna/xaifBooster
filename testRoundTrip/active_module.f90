@@ -3,7 +3,8 @@
         use w2f__types
         implicit none
         private
-        public :: active, saxpy, sax, setderiv, zero_deriv
+        public :: active, saxpy, sax, setderiv, zero_deriv, convert_p2a_scalar, &
+&convert_a2p_scalar, convert_p2a_vector, convert_a2p_vector
 
         
         !
@@ -35,7 +36,20 @@
         interface sax
           module procedure sax_d_a_a, sax_i_a_a
         end interface
-        
+
+        interface convert_p2a_scalar
+          module procedure convert_p2a_scalar_impl
+        end interface
+        interface convert_a2p_scalar
+          module procedure convert_a2p_scalar_impl
+        end interface
+        interface convert_p2a_vector
+          module procedure convert_p2a_vector_impl
+        end interface
+        interface convert_a2p_vector
+          module procedure convert_a2p_vector_impl
+        end interface
+
         contains
         
         !
@@ -94,6 +108,36 @@
 
           x%d=0.0d0
         end subroutine zero_deriv_a
+
+        subroutine convert_a2p_scalar_impl(convertTo, convertFrom)
+          double precision, intent(out) :: convertTo
+          type(active), intent(in) :: convertFrom
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_p2a_scalar_impl(convertTo, convertFrom)
+          double precision, intent(in) :: convertFrom
+          type(active), intent(out) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine 
+
+        subroutine convert_a2p_vector_impl(convertTo, convertFrom)
+          type(active), dimension(:), intent(in) :: convertFrom
+          double precision, dimension(:), intent(out) :: convertTo
+          integer i
+          do i=lbound(convertFrom,1),ubound(convertFrom,1)
+             convertTo(i)=convertFrom(i)%v
+          end do
+        end subroutine
+
+        subroutine convert_p2a_vector_impl(convertTo, convertFrom)
+          double precision, dimension(:), intent(in) :: convertFrom
+          type(active), dimension(:), intent(out) :: convertTo
+          integer i
+          do i=lbound(convertFrom,1),ubound(convertFrom,1)
+             convertTo(i)%v=convertFrom(i)
+          end do
+        end subroutine
         
         end module
 
