@@ -33,6 +33,7 @@ namespace xaifBoosterLinearization {
 
     /** 
      * adjust for active/passive type mismatches 
+     * \todo fix handling for external calls which should all be passive!
      */
     virtual void algorithm_action_1();
 
