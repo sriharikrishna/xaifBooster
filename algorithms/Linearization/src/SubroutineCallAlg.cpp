@@ -48,34 +48,42 @@ namespace xaifBoosterLinearization {
   } 
 
   void SubroutineCallAlg::algorithm_action_1() { 
-    // get the formal argument list; 
-    const ArgumentList::ArgumentSymbolReferencePList& 
-      theArgumentSymbolReferencePList(ConceptuallyStaticInstances::instance()->
-				     getCallGraph().
-				     getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).
-				     getArgumentList().
-				     getArgumentSymbolReferencePList());
-    ArgumentList::ArgumentSymbolReferencePList::const_iterator formalArgumentPI=theArgumentSymbolReferencePList.begin();
-    SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=getContainingSubroutineCall().getConcreteArgumentPList().begin();
-    for (;;++concreteArgumentPI,++formalArgumentPI) { 
-      if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  && 
-	 formalArgumentPI==theArgumentSymbolReferencePList.end() ) 
-	break;
-      if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  ||
-	 formalArgumentPI==theArgumentSymbolReferencePList.end() ) 
-	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch ("
-				   << theArgumentSymbolReferencePList.size() 
-				   << " formal vs. "
-				   << getContainingSubroutineCall().getConcreteArgumentPList().size()
-				   << " concrete ) for "
-				   << getContainingSubroutineCall().getSymbolReference().debug().c_str());
-      bool concreteArgumentActive=(*concreteArgumentPI)->getVariable().getActiveType();
-      bool formalArgumentActive=(*formalArgumentPI)->getSymbol().getActiveTypeFlag();
-      if (concreteArgumentActive!=formalArgumentActive) { 
-	addConversion(**concreteArgumentPI,
-		      **formalArgumentPI);
-      } 
-    }// end for 
+    try { 
+      // get the formal argument list; 
+      const ArgumentList::ArgumentSymbolReferencePList& 
+	theArgumentSymbolReferencePList(ConceptuallyStaticInstances::instance()->
+					getCallGraph().
+					getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).
+					getArgumentList().
+					getArgumentSymbolReferencePList());
+      ArgumentList::ArgumentSymbolReferencePList::const_iterator formalArgumentPI=theArgumentSymbolReferencePList.begin();
+      SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=getContainingSubroutineCall().getConcreteArgumentPList().begin();
+      for (;;++concreteArgumentPI,++formalArgumentPI) { 
+	if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  && 
+	   formalArgumentPI==theArgumentSymbolReferencePList.end() ) 
+	  break;
+	if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  ||
+	   formalArgumentPI==theArgumentSymbolReferencePList.end() ) 
+	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch ("
+				     << theArgumentSymbolReferencePList.size() 
+				     << " formal vs. "
+				     << getContainingSubroutineCall().getConcreteArgumentPList().size()
+				     << " concrete ) for "
+				     << getContainingSubroutineCall().getSymbolReference().debug().c_str());
+	bool concreteArgumentActive=(*concreteArgumentPI)->getVariable().getActiveType();
+	bool formalArgumentActive=(*formalArgumentPI)->getSymbol().getActiveTypeFlag();
+	if (concreteArgumentActive!=formalArgumentActive) { 
+	  addConversion(**concreteArgumentPI,
+			**formalArgumentPI);
+	} 
+      }// end for 
+    } 
+    catch (const  LogicException& e) { 
+      DBG_MACRO(DbgGroup::ERROR,
+		"SubroutineCallAlg::algorithm_action_1: " 
+		<< e.getReason().c_str() 
+		<< " but this may be an external call, we continue");
+    }
   }
 
   std::string SubroutineCallAlg::giveCallName(bool concreteArgumentActive,

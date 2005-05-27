@@ -25,7 +25,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual ~SubroutineCallAlg(){};
 
-    virtual void printXMLHierarchy(std::ostream& os) const;
+    //    virtual void printXMLHierarchy(std::ostream& os) const;
 
     virtual std::string debug() const ;
 

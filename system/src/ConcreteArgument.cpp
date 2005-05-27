@@ -34,8 +34,9 @@ namespace xaifBooster {
   void
   ConcreteArgument::printXMLHierarchy(std::ostream& os) const { 
     if (myConcreteArgumentAlgBase_p
-	&& 
-	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
+// 	&& 
+// 	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY
+	)
       getConcreteArgumentAlgBase().printXMLHierarchy(os);
     else 
       printXMLHierarchyImpl(os);
