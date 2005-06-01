@@ -1,2 +1,2 @@
-povray -Ititle_r.pov -H581 -W557 +d
+povray -Ititle_r.pov -W640 -H630 +d
 
