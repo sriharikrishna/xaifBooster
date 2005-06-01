@@ -13,23 +13,22 @@
 #include "woods.inc"
 
 camera{
-  location <1, 10,1>
-  look_at <1,0,1>
+  orthographic
+location <.5,1.1,.5>
+  look_at <.5,0,.5>
 }
 
 height_field {
   tga "title.tga"
-  water_level 0.35
+  water_level 0.15
   smooth
   texture { 
     pigment { P_Silver1 }
-    finish { F_MetalB }
+    finish { F_MetalC }
   }  	
-  translate <-.43, -.5, -.40>
-//  scale <3, 0.15, 3>
-    scale <12.8, 0.15, 9.5>
+  scale <1, 0.04, 1>
 }
 
-light_source{ <10,40,-10>  color red .8 green .8 blue 0.6 }
-light_source{ <-10,30,10> color red .8 green .8 blue .6}
+light_source{ <-10,20,+10>  color red .8 green .8 blue 0.6 }
+light_source{ <10,20,-10> color red .8 green .8 blue .6}
 
