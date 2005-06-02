@@ -1,8 +1,8 @@
 program driver
 
   use active_module
-
-
+  use OpenAD_rev
+  use OpenAD_tape
 
   implicit none
 
@@ -29,6 +29,13 @@ program driver
 
   open(2,file='tmpOutput/dd.out')
   write(2,*) "DD"
+  our_rev_mode%arg_store=.FALSE.
+  our_rev_mode%arg_restore=.FALSE.
+  our_rev_mode%res_store=.FALSE.
+  our_rev_mode%res_restore=.FALSE.
+  our_rev_mode%plain=.TRUE.
+  our_rev_mode%tape=.FALSE.
+  our_rev_mode%adjoint=.FALSE.
   do i=1,kdim
      gamma_t=active(1,0)
      nullforce=(/active(1,0),active(1,0)/)
@@ -59,25 +66,42 @@ program driver
   end do
   close(2)
 
+  call tape_init()
   open(2,file='tmpOutput/ad.out')
   write(2,*) "AD"
-  do i=1,kdim
+  do i=1,kdim   
+     do j=1,kdim   
+        tnew(j)%v=0.0
+        if (i==j) then 
+           tnew(j)%d=1.0
+        else
+           tnew(j)%d=0.0
+        end if
+     end do
      gamma_t=active(1,0)
      nullforce=(/active(1,0),active(1,0)/)
      tstar=(/active(1,0),active(1,0)/)
      told=(/active(1,0),active(1,0),active(1,0)/)
      tnow=(/active(1,0),active(1,0),active(1,0)/)
-     tnew=(/active(0,0),active(0,0),active(0,0)/)
      uvel=active(1,0)
+     our_rev_mode%arg_store=.FALSE.
+     our_rev_mode%arg_restore=.FALSE.
+     our_rev_mode%res_store=.FALSE.
+     our_rev_mode%res_restore=.FALSE.
+     our_rev_mode%plain=.FALSE.
+     our_rev_mode%tape=.TRUE.
+     our_rev_mode%adjoint=.FALSE.
+     call box_timestep(gamma_t,tStar,nullforce,uvel,tnow,told,tnew)
+     our_rev_mode%arg_store=.FALSE.
+     our_rev_mode%arg_restore=.FALSE.
+     our_rev_mode%res_store=.FALSE.
+     our_rev_mode%res_restore=.FALSE.
+     our_rev_mode%plain=.FALSE.
+     our_rev_mode%tape=.FALSE.
+     our_rev_mode%adjoint=.TRUE.
+     call box_timestep(gamma_t,tStar,nullforce,uvel,tnow,told,tnew)
      do j=1,kdim
-        if (j==i) then
-           tnow(i)%d=1.
-        endif
-     end do
-     call box_timestep(gamma_t,tStar,nullforce,uvel, &
-          & tnow,told,tnew)
-     do j=1,kdim
-        jac(j,i)=tnew(j)%d
+        jac(i,j)=tnow(j)%d
      end do
   end do
   do i=1,kdim

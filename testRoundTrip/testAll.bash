@@ -152,8 +152,8 @@ do
   then	 
     echo "diffs current test (<) vs. reference (>) AD:"
     diff tmpOutput/ad.out $exdir/refOutput/ad.out 
-    echo "diffs current test (<) vs. reference (>) DD:"
-    diff tmpOutput/dd.out $exdir/refOutput/dd.out 
+#    echo "diffs current test (<) vs. reference (>) DD:"
+#    diff tmpOutput/dd.out $exdir/refOutput/dd.out 
     if [ -z "$DONT_STOP" ] 
     then
       allOkSoFar="false"; continue;
