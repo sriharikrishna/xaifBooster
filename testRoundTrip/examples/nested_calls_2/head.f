@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
       subroutine head(x,y)
       double precision x(4),y(4)
 c$openad INDEPENDENT(x)
@@ -9,6 +10,7 @@ c$openad INDEPENDENT(x)
 c$openad DEPENDENT(y)
       end subroutine head
 
+c$openad XXX Template ad_template.f
       subroutine foo(a,b,c) 
       double precision a,b,c
 
@@ -17,6 +19,7 @@ c$openad DEPENDENT(y)
 
       end subroutine
 
+c$openad XXX Template ad_template.f
       subroutine bar(a)
       double precision a
 

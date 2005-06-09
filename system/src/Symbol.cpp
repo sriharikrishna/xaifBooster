@@ -59,7 +59,16 @@ namespace xaifBooster {
        << our_myTempFlag_XAIFName.c_str() 
        << "=\""
        << myTempFlag
-       << "\"/>" 
+       << "\">" 
+       << std::endl; 
+    for (DimensionBoundsPList::const_iterator li=myDimensionBoundsPList.begin();
+	 li!=myDimensionBoundsPList.end();
+	 ++li)
+      (*li)->printXMLHierarchy(os);
+    os << pm.indent() 
+       << "</"
+       << ourXAIFName.c_str() 
+       << ">" 
        << std::endl; 
     pm.releaseInstance();
   } // end if Symbol::printXMLHierarchy
@@ -92,5 +101,20 @@ namespace xaifBooster {
   bool Symbol::getActiveTypeFlag() const { 
     return myActiveTypeFlag;
   }
+
+  void Symbol::addDimensionBounds(int aLower, 
+				  int anUpper) { 
+    myDimensionBoundsPList.push_back(new DimensionBounds(aLower,anUpper));
+  }
+
+  const Symbol::DimensionBoundsPList& Symbol::getDimensionBoundsPList() const { 
+    if (myShape==SymbolShape::SCALAR)
+      THROW_LOGICEXCEPTION_MACRO("Symbol::getDimensionBoundsPList: no dimensions for scalar symbols");
+    return myDimensionBoundsPList;
+  } 
+
+  bool Symbol::hasDimensionBounds()const { 
+    return ((myShape!=SymbolShape::SCALAR) && !myDimensionBoundsPList.empty() ? true:false);
+  } 
 
 } // end of namespace xaifBooster 

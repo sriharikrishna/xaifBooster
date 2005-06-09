@@ -109,6 +109,15 @@ namespace xaifBooster {
 						  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Symbol::our_myActiveTypeFlag_XAIFName)),
 						  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Symbol::our_myTempFlag_XAIFName))));
     theNewSymbol.setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    passingOut.setSymbol(theNewSymbol);
+  }
+
+  void 
+  XAIFBaseParserHandlers::onDimensionBounds(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onDimensionBounds" ); 
+    Symbol& theSymbol(passingIn.getSymbol());
+    theSymbol.addDimensionBounds(atoi(XMLParser::getAttributeValueByName(DimensionBounds::our_myLower_XAIFName).c_str()),
+				 atoi(XMLParser::getAttributeValueByName(DimensionBounds::our_myUpper_XAIFName).c_str()));
   }
 
   void 

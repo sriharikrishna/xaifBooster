@@ -7,6 +7,8 @@
 #include "xaifBooster/system/inc/ScopeContainment.hpp"
 
 namespace xaifBooster { 
+ 
+  class SymbolReference;
 
   /**
    * scopes is the graph (tree) of scopes 
@@ -33,6 +35,9 @@ namespace xaifBooster {
     const Scope& getScopeById(const std::string& theScopeId) const;
 
     Scope& getScopeById(const std::string& theScopeId);
+
+    bool isSameSymbol(const SymbolReference& first,
+		      const SymbolReference& second) const;
 
   private:
     

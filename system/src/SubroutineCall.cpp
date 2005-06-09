@@ -42,8 +42,9 @@ namespace xaifBooster {
   void
   SubroutineCall::printXMLHierarchy(std::ostream& os) const { 
     if (myBasicBlockElementAlgBase_p
-	&& 
-	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
+// 	&& 
+// 	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY
+	)
       getSubroutineCallAlgBase().printXMLHierarchy(os);
     else 
       printXMLHierarchyImpl(os);

@@ -1,8 +1,9 @@
 #ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPEADJOINT_SUBROUTINECALLALG_INCLUDE_
 #define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPEADJOINT_SUBROUTINECALLALG_INCLUDE_
 
-#include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
+
 
 using namespace xaifBooster;
 
@@ -15,7 +16,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   /** 
    * class to implement reversal of BasicBlockElements
    */
-  class SubroutineCallAlg : public SubroutineCallAlgBase,
+  class SubroutineCallAlg : public xaifBoosterLinearization::SubroutineCallAlg,
 			    public BasicBlockElementAlg {
 
   public:
@@ -24,7 +25,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual ~SubroutineCallAlg(){};
 
-    virtual void printXMLHierarchy(std::ostream& os) const;
+    //    virtual void printXMLHierarchy(std::ostream& os) const;
 
     virtual std::string debug() const ;
 

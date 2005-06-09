@@ -9,7 +9,7 @@
   <CodeGen:NonRepeatableCodeOrLineBreak text="public:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="29">
+  <CodeGen:RepeatableCode nr_versions="30">
     <CodeGen:CodeTemplate nr_entries="11">
       <CodeGen:StaticCode text="void set"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -99,6 +99,9 @@
       <CodeGen:DynamicCode hook_ref="1" text="SubroutineCall"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="Symbol"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="SymbolTable"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -114,7 +117,7 @@
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak text="private:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="29" use_versions="3">
+  <CodeGen:RepeatableCode nr_versions="30" use_versions="3">
     <CodeGen:CodeTemplate nr_entries="5">
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="* my"/>

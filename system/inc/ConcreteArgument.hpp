@@ -3,6 +3,7 @@
 
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/ConcreteArgumentAlgBase.hpp"
 
 namespace xaifBooster { 
 
@@ -18,11 +19,13 @@ namespace xaifBooster {
   class ConcreteArgument: XMLPrintable { 
   public:
     
-    ConcreteArgument (unsigned int thePosition);
+    ConcreteArgument (unsigned int thePosition,
+		      bool makeAlgorithm=true);
 
-    ~ConcreteArgument(){};
+    ~ConcreteArgument();
 
-    void printXMLHierarchy(std::ostream& os) const;
+    virtual void printXMLHierarchy(std::ostream& os) const;
+    void printXMLHierarchyImpl(std::ostream& os) const;
 
     std::string debug() const ;
 
@@ -36,6 +39,11 @@ namespace xaifBooster {
      */
     static const std::string our_myPosition_XAIFName;
 
+    /**
+     * get algorithm
+     */
+    ConcreteArgumentAlgBase& getConcreteArgumentAlgBase() const;
+                                                                                
     unsigned int getPosition() const;
     
     Variable& getVariable();
@@ -59,6 +67,13 @@ namespace xaifBooster {
      * the actual concrete argument
      */
     Variable myVariable;
+
+    /**
+     * this will be set to point a dynamically instance
+     * during construction and deleted during
+     * destruction
+     */
+    ConcreteArgumentAlgBase* myConcreteArgumentAlgBase_p;
 
   }; // end of class ConcreteArgument
 

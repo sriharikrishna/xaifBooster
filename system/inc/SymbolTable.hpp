@@ -26,10 +26,10 @@ namespace xaifBooster {
 		       bool anActiveTypeFlag,
 		       bool aTempFlag);
 
-    const Symbol&  addUniqueAuxSymbol(const SymbolKind::SymbolKind_E& aKind,
-				      const SymbolType::SymbolType_E& aType,
-				      const SymbolShape::SymbolShape_E& aShape,
-				      bool anActiveTypeFlag);
+    Symbol&  addUniqueAuxSymbol(const SymbolKind::SymbolKind_E& aKind,
+				const SymbolType::SymbolType_E& aType,
+				const SymbolShape::SymbolShape_E& aShape,
+				bool anActiveTypeFlag);
 
     std::string debug() const ; 
 

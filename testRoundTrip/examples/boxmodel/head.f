@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_forward ( ilev1 )
 c-----------------------------------------------------------------------
@@ -28,7 +29,6 @@ c-- local variables:
 
       integer ilev1
 
-c$openad INDEPENDENT(xx)
 
 c-- routine body
 
@@ -65,10 +65,9 @@ CADJ STORE tNow = comlev1, key = ikey, byte = isbyte
                if ( tNow(l) .LT. -2. )  tNow(l) = 2.
             end do
 
-c$openad DEPENDENT(tnew)
-c$openad DEPENDENT(snew)
       end
 
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_final_state
 c-----------------------------------------------------------------------
@@ -119,15 +118,7 @@ cph      print *, 'ph-check uvel ', uvel
 
       end
 
-
-
-
-
-
-
-
-
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_ini_fields
 c-----------------------------------------------------------------------
@@ -213,14 +204,7 @@ c-- map onto model state
 
       end
 
-
-
-
-
-
-
-
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_ini_params
 c-----------------------------------------------------------------------
@@ -387,8 +371,7 @@ c-- **************
 
       end
 
-
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_model_body
 c-----------------------------------------------------------------------
@@ -421,6 +404,8 @@ c-- local variables:
       integer maxlev2
 
 c-- routine body
+
+c$openad INDEPENDENT(xx)
 
 c-- inititialise this before loop to avoid additional forward run!
 CADJ INIT tapelev2    = USER
@@ -478,8 +463,12 @@ cph)
 
       endif 
 
+c$openad DEPENDENT(tnew)
+c$openad DEPENDENT(snew)
+
       end
 
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_density ( tLoc, sLoc, rhoLoc )
 c-----------------------------------------------------------------------
@@ -518,8 +507,7 @@ c-- linear equation of state
 
       end
 
-
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_transport ( rhoLoc, uVelLoc )
 c-----------------------------------------------------------------------
@@ -554,8 +542,7 @@ c-- local variables:
 
       end
 
-
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_robert_filter ( 
      &     fldNow, fldOld, fldNew )
@@ -595,6 +582,7 @@ c-- routine body
 
       end
 
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_cycle_fields
 c-----------------------------------------------------------------------
@@ -632,7 +620,7 @@ c-- routine body
 
       end
 
-
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_update ( fldNew, fldOld, dFldDt )
 c-----------------------------------------------------------------------
@@ -672,6 +660,7 @@ c-- routine body
 
       end
 
+c$openad XXX Template ad_template.f
 c-----------------------------------------------------------------------
       subroutine box_timestep ( 
      &     gammaLoc, fldStar, extForLoc, 

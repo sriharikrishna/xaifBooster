@@ -47,7 +47,7 @@
           type(modeType) :: our_orig_mode
 
 	  ! call external C function used in inlined code
-	  integer iaddr
+          integer iaddr
           external iaddr
 
 C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')

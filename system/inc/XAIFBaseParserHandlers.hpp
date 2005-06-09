@@ -36,6 +36,7 @@
 #include "xaifBooster/system/inc/ArgumentList.hpp"
 #include "xaifBooster/system/inc/Goto.hpp"
 #include "xaifBooster/system/inc/Label.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
 
 namespace xaifBooster {
 

@@ -112,6 +112,8 @@ namespace xaifBooster {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    const ControlFlowGraph& getSubroutineBySymbolReference(const SymbolReference& aSymbolReference) const;
+
   private:
 
     /**

@@ -1,4 +1,4 @@
-  <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif_derivative_propagator.xsd" program_name="Example" prefix="test_prefix">
+  <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif_output.xsd" program_name="Example" prefix="test_prefix">
     <xaif:ScopeHierarchy>
       <xaif:Scope vertex_id="1" annotation="">
         <xaif:SymbolTable>
