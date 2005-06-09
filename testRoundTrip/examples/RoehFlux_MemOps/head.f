@@ -1,5 +1,7 @@
-      SUBROUTINE ad_roehf5 (nrm, priml, primr, gamma, gm1, gm1inv, 
-     &nlefix, lefix, mcheps, flux) 
+      SUBROUTINE ad_roehf5 (nrm1, nrm2, nrm3, priml1, priml2, priml3,
+     &priml4, priml5, primr1, primr2, primr3, primr4, primr5, gamma,
+     &gm1, gm1inv, nlefix, lefix, mcheps, flux1, flux2, flux3, flux4,
+     &flux5) 
 !     !*****************************************************************
 !     !  SUBROUTINE: AD_ROE_HARTEN_FLUX5_EXP                            
 !     !      AUTHOR: Shaun Forth                                        
@@ -17,8 +19,9 @@
 !     nrm    : cell face normal                                         
 !     priml  : primitive variables left of cell face                    
 !     primr  : primitive variables right of cell face                   
-      double precision,intent(in):: nrm (3)
-      double precision,intent(in):: priml (5), primr (5)                      
+      double precision,intent(in):: nrm1, nrm2, nrm3
+      double precision,intent(in):: priml1, priml2, priml3, priml4,
+     &priml5, primr1, primr2, primr3, primr4, primr5
 !     gamma  : ratio of specific heats                                  
 !     gm1    : gamma - 1                                                
 !     gm1inv : 1/gm1                                                    
@@ -31,11 +34,11 @@
                                                                         
 !     AUGUMENTS(out):                                                   
 !     flux  : inviscid flux                                             
-      double precision,intent(out):: flux (5)                                
+      double precision,intent(out):: flux1, flux2, flux3, flux4, flux5
                                                                         
 !     PARAMETERS                                                        
       real:: one, half, zero                                    
-      PARAMETER (one = 1.0d0, half = 0.5d0, zero = 0.0d0)       
+      PARAMETER (one = 1.0d0, half = 0.5d0, zero = 0.0d0)
                                                                         
 !     LOCAL VARIABLES                                                   
 !     independent of flow variables                                     
@@ -83,9 +86,19 @@
       double precision:: dss1, dss2, dss3, dss4, dss5                       
       double precision:: uhatl                                              
 
-c$openad INDEPENDENT(nrm)
-c$openad INDEPENDENT(priml)
-c$openad INDEPENDENT(primr)
+c$openad INDEPENDENT(nrm1)
+c$openad INDEPENDENT(nrm2)
+c$openad INDEPENDENT(nrm3)
+c$openad INDEPENDENT(priml1)
+c$openad INDEPENDENT(priml2)
+c$openad INDEPENDENT(priml3)
+c$openad INDEPENDENT(priml4)
+c$openad INDEPENDENT(priml5)
+c$openad INDEPENDENT(primr1)
+c$openad INDEPENDENT(primr2)
+c$openad INDEPENDENT(primr3)
+c$openad INDEPENDENT(primr4)
+c$openad INDEPENDENT(primr5)
 c$openad INDEPENDENT(gamma)
 c$openad INDEPENDENT(gm1)
 c$openad INDEPENDENT(gm1inv)
@@ -97,31 +110,31 @@ c$openad INDEPENDENT(mcheps)
                                                                         
 !     set normal quantities                                             
 ! UN changed      nsize = sqrt (nrm (1) **2 + nrm (2) **2 + nrm (3) **2)   
-      nsize = sin (nrm (1) **2 + nrm (2) **2 + nrm (3) **2)   
+      nsize = sin (nrm1 **2 + nrm2 **2 + nrm3 **2)   
 !      IF (nsize.gt.mcheps) then                               
                 nsizei = one / nsize                         
 !      ELSE                                                  
 !                nsizei = zero                              
 !      ENDIF                                               
-      nxhat = nrm (1) * nsizei                           
-      nyhat = nrm (2) * nsizei                         
-      nzhat = nrm (3) * nsizei                        
+      nxhat = nrm1 * nsizei                           
+      nyhat = nrm2 * nsizei                         
+      nzhat = nrm3 * nsizei                        
                                                                         
 !     Roe weights                                                       
 ! UN changed      roel = one / (one+sqrt (primr (2) / priml (2) ) )  
-      roel = one / (one+sin (primr (2) / priml (2) ) )  
+      roel = one / (one+sin (primr2 / priml2 ) )  
       roer = one-roel                                   
                                                                         
 !     enthalpies                                                        
-      thetal = half * (priml (3) **2 + priml (4) **2 + priml (5) **2) 
-      thetar = half * (primr (3) **2 + primr (4) **2 + primr (5) **2) 
-      hl = (gamma * gm1inv) * priml (1) / priml (2) + thetal          
-      hr = (gamma * gm1inv) * primr (1) / primr (2) + thetar          
+      thetal = half * (priml3 **2 + priml4 **2 + priml5 **2) 
+      thetar = half * (primr3 **2 + primr4 **2 + primr5 **2) 
+      hl = (gamma * gm1inv) * priml1 / priml2 + thetal          
+      hr = (gamma * gm1inv) * primr1 / primr2 + thetar          
                                                                         
 !     Roe average                                                       
-      uave = roel * priml (3) + roer * primr (3)                      
-      vave = roel * priml (4) + roer * primr (4)                      
-      wave = roel * priml (5) + roer * primr (5)                      
+      uave = roel * priml3 + roer * primr3                      
+      vave = roel * priml4 + roer * primr4                      
+      wave = roel * priml5 + roer * primr5                      
       have = roel * hl + roer * hr                                    
       thtave = half * (uave**2 + vave**2 + wave**2)                   
       cave = gm1 * (have-thtave)                                      
@@ -179,18 +192,18 @@ c$openad INDEPENDENT(mcheps)
       alamu = 0.5d0 * (lamu - alamu)                                
                                                                         
 !     conservative variables                                            
-      el = priml (1) * gm1inv + priml (2) * thetal                 
-      rul = priml (2) * priml (3)                                  
-      rvl = priml (2) * priml (4)                                  
-      rwl = priml (2) * priml (5)                                  
-      er = primr (1) * gm1inv + primr (2) * thetar                 
-      rur = primr (2) * primr (3)                                
-      rvr = primr (2) * primr (4)                                  
-      rwr = primr (2) * primr (5)                                 
+      el = priml1 * gm1inv + priml2 * thetal                 
+      rul = priml2 * priml3                                  
+      rvl = priml2 * priml4                                  
+      rwl = priml2 * priml5                                  
+      er = primr1 * gm1inv + primr2 * thetar                 
+      rur = primr2 * primr3                              
+      rvr = primr2 * primr4                                  
+      rwr = primr2 * primr5                                 
                                                                         
 !     change in conservative variables                                  
       de = er - el                                                       
-      dr = primr (2) - priml (2)                                         
+      dr = primr2 - priml2                                         
       dru = rur - rul                                                    
       drv = rvr - rvl                                                    
       drw = rwr - rwl                                                    
@@ -229,12 +242,16 @@ c$openad INDEPENDENT(mcheps)
       dss5 = mu * wave-nzhat * alp15m + nyhat * alp2 - nxhat * alp3      
                                                                         
 !     form flux                                                         
-      uhatl = nxhat * priml (3) + nyhat * priml (4) + nzhat * priml (5)  
+      uhatl = nxhat * priml3 + nyhat * priml4 + nzhat * priml5  
                                                                         
-      flux (1) = nsize * ( (el + priml (1) ) * uhatl + dss1)             
-      flux (2) = nsize * (priml (2) * uhatl + dss2)                      
-      flux (3) = nsize * (rul * uhatl + nxhat * priml (1) + dss3)        
-      flux (4) = nsize * (rvl * uhatl + nyhat * priml (1) + dss4)        
-      flux (5) = nsize * (rwl * uhatl + nzhat * priml (1) + dss5)        
-c$openad DEPENDENT(flux)                                                                        
+      flux1 = nsize * ( (el + priml1 ) * uhatl + dss1)             
+      flux2 = nsize * (priml2 * uhatl + dss2)                      
+      flux3 = nsize * (rul * uhatl + nxhat * priml1 + dss3)        
+      flux4 = nsize * (rvl * uhatl + nyhat * priml1 + dss4)        
+      flux5 = nsize * (rwl * uhatl + nzhat * priml1 + dss5)        
+c$openad DEPENDENT(flux1)
+c$openad DEPENDENT(flux2)
+c$openad DEPENDENT(flux3)
+c$openad DEPENDENT(flux4)
+c$openad DEPENDENT(flux5)                                                                        
       END SUBROUTINE ad_roehf5
