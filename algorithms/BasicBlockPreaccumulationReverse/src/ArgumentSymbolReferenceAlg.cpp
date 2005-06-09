@@ -9,6 +9,8 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
+  bool ArgumentSymbolReferenceAlg::ourChangeIntentForCheckPointsFlag=false;
+
   ArgumentSymbolReferenceAlg::ArgumentSymbolReferenceAlg(ArgumentSymbolReference& theContaining):
     ArgumentSymbolReferenceAlgBase(theContaining) { 
   }
@@ -56,9 +58,15 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   void ArgumentSymbolReferenceAlg::algorithm_action_1() {
     myIntent=getContaining().getIntent();
-    if (getContaining().getSymbol().getActiveTypeFlag())
+    if (getContaining().getSymbol().getActiveTypeFlag()
+	|| 
+	ourChangeIntentForCheckPointsFlag)
       // all active parameters should become inout
       myIntent=IntentType::INOUT_ITYPE;
+  }
+
+  void ArgumentSymbolReferenceAlg::changeIntentForCheckPoints() { 
+    ourChangeIntentForCheckPointsFlag=true;
   }
 
 } // end of namespace

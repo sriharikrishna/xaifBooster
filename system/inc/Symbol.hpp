@@ -1,6 +1,8 @@
 #ifndef _SYMBOL_INCLUDE_
 #define _SYMBOL_INCLUDE_
 
+#include <list>
+
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
@@ -8,6 +10,7 @@
 #include "xaifBooster/system/inc/SymbolKind.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/SymbolShape.hpp"
+#include "xaifBooster/system/inc/DimensionBounds.hpp"
 
 namespace xaifBooster { 
 
@@ -56,6 +59,15 @@ namespace xaifBooster {
      */    
     ~Symbol() {};
 
+    typedef std::list<DimensionBounds*> DimensionBoundsPList;
+
+    void addDimensionBounds(int aLower, 
+			    int anUpper);
+
+    const DimensionBoundsPList& getDimensionBoundsPList() const;
+
+    bool hasDimensionBounds()const;
+
   private:
 
     friend class SymbolTable;
@@ -85,6 +97,13 @@ namespace xaifBooster {
      * is this a temporary variable created by xaifBooster?
      */
     bool myTempFlag;
+
+    /** 
+     * optionally empty list of dimension bounds
+     * as a tentative rule: we either know all or no dimension bounds
+     * we own the items in the list
+     */
+    DimensionBoundsPList myDimensionBoundsPList;
     
   };
  

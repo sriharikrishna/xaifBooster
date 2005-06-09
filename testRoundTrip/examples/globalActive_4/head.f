@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
        subroutine foo() 
 
          use all_globals_mod 
@@ -6,6 +7,7 @@
 
        end subroutine
 
+c$openad XXX Template ad_template.f
        subroutine head() 
 
          use all_globals_mod

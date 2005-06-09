@@ -147,6 +147,18 @@ namespace xaifBooster {
     getCallGraphAlgBase().genericTraversal(anAction_c);
     GraphWrapperTraversable<CallGraphVertex,CallGraphEdge>::traverseToChildren(anAction_c);
   }
-
+  
+  const ControlFlowGraph& CallGraph::getSubroutineBySymbolReference(const SymbolReference& aSymbolReference) const { 
+    CallGraph::ConstVertexIteratorPair p(vertices());
+    CallGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
+    for (;beginIt!=endIt ;++beginIt)
+      if(myScopeTree.isSameSymbol((*beginIt).getControlFlowGraph().getSymbolReference(),
+				  aSymbolReference)) 
+	return (*beginIt).getControlFlowGraph();
+    THROW_LOGICEXCEPTION_MACRO("CallGraph::getSubroutineBySymbolReference: no subroutine defined for "
+			       << aSymbolReference.debug().c_str());
+    // to appease the compiler
+    return (*beginIt).getControlFlowGraph();
+  }
 
 } // end of namespace xaifBooster 

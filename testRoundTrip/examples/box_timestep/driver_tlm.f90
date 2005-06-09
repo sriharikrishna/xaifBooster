@@ -1,7 +1,9 @@
 program driver
-  ! TLM driver
 
   use active_module
+
+
+
   implicit none
 
   integer, parameter :: kdim=3
@@ -9,26 +11,22 @@ program driver
   double precision :: h=0.0001
   double precision jac(kdim,kdim)
 
-  !     from box_ini_fields
-
-  ! passive in
   type(active) :: gamma_t
   type(active) :: nullforce(1 : 2)
   type(active) :: tstar(1 : 2)
 
 
-  ! active in
   type(active) :: told(1 : 3)
   type(active) :: tnow(1 : 3)
   type(active) :: tnow_ph(1 : 3)
   type(active) :: uvel
-  ! active out
+
   type(active) :: tnew(1 : 3)
   type(active) :: tnew_ph(1 : 3)
 
   external box_timestep
 
-  ! DD
+
   open(2,file='tmpOutput/dd.out')
   write(2,*) "DD"
   do i=1,kdim
@@ -47,9 +45,9 @@ program driver
         endif
      end do
      call box_timestep(gamma_t,tStar,nullforce,uvel, &
-          & tnow,told,tnew)
+& tnow,told,tnew)
      call box_timestep(gamma_t,tStar,nullforce,uvel, &
-          & tnow_ph,told,tnew_ph)
+& tnow_ph,told,tnew_ph)
      do j=1,kdim
         jac(j,i)=(tnew_ph(j)%v-tnew(j)%v)/h
      end do
@@ -61,7 +59,6 @@ program driver
   end do
   close(2)
 
-  ! TLM
   open(2,file='tmpOutput/ad.out')
   write(2,*) "AD"
   do i=1,kdim

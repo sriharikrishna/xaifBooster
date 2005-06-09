@@ -1,3 +1,13 @@
+######################################################
+# pick your compiler
+######################################################
+#F95=ifort -g  -fpe0 -e90
+#CC=icc
+
+F95=f95 -g -w=unused
+CC=gcc
+######################################################
+
 ifdef REVERSE_MODE
 MODULES=                        \
 w2f__types.o                    \
@@ -10,6 +20,11 @@ iaddr.o                         \
 all_globals_mod.xb.x2w.w2f.pp.o \
 all_globals_cp_mod.o 
 PP_FLAGS=
+ifeq ($(SUB_MODE),joint)
+CP_FLAG=-I
+else
+CP_FLAG=
+endif
 else
 MODULES=                        \
 w2f__types.o                    \
@@ -34,13 +49,7 @@ endif
 
 LN=ln -sf
 
-#F95=ifort -g  -fpe0 -e90
-#CC=icc
-F95=f95 -g -w=unused
-CC=gcc
-
 RM=rm -rf
-
 
 ######################################################
 # transformation
@@ -61,8 +70,7 @@ head_sf.xaif : head_sf.B whirl2xaif
 
 # XAIF -> XAIF'
 head_sf.xb.xaif : head_sf.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
-#	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ -g 15
-	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@
+	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG)
 
 # XAIF' -> WHIRL'
 head_sf.xb.x2w.B : head_sf.xb.xaif xaif2whirl

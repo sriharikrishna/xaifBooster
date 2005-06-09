@@ -1,0 +1,9 @@
+#ifndef _XAIFBOOSTERLINEARIZATION_SUBROUTINECALLALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_SUBROUTINECALLALGFACTORY_INCLUDE_
+
+#include "xaifBooster/system/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
+
+  DERIVED_ALG_FACTORY_DECL_MACRO(SubroutineCall,xaifBooster::SubroutineCallAlgFactory,xaifBoosterLinearization)
+
+#endif
