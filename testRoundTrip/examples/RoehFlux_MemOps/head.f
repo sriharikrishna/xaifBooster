@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
       SUBROUTINE ad_roehf5 (nrm1, nrm2, nrm3, priml1, priml2, priml3,
      &priml4, priml5, primr1, primr2, primr3, primr4, primr5, gamma,
      &gm1, gm1inv, nlefix, lefix, mcheps, flux1, flux2, flux3, flux4,
