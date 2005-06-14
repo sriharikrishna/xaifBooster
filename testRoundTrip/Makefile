@@ -81,8 +81,8 @@ head_sf.xb.x2w.w2f.f: head_sf.xb.x2w.B whirl2f whirl2f_be
 	./whirl2f -openad $<
 
 # postprocess F'
-head_sf.xb.x2w.w2f.pp.f: head_sf.xb.x2w.w2f.f pp.pl
-	perl pp.pl $(PP_FLAGS) $<
+head_sf.xb.x2w.w2f.pp.f: head_sf.xb.x2w.w2f.f multi-pp.pl
+	perl multi-pp.pl $(PP_FLAGS) $<
 
 # extract the transformed globals module so we the right order of 
 # compilation with respect to the globals checkpoint module
@@ -101,10 +101,10 @@ mfef90:
 	$(LN) ${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/crayf90/sgi/mfef90 .
 
 whirl2xaif xaif2whirl: 
-	$(LN) ${RICETOOLROOT}/OpenADFortTk/obj/i686-Linux/obj/$@ .
+	$(LN) ${RICETOOLROOT}/OpenADFortTk/OpenADFortTk-i686-Linux/bin/$@ .
 
 %.pl: 
-	$(LN) ${RICETOOLROOT}/OpenADFortTk/postprocess/$@ .
+	$(LN) ${RICETOOLROOT}/OpenADFortTk/OpenADFortTk-i686-Linux/bin/$@ .
 
 whirl2f whirl2f_be:
 	$(LN) ${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
