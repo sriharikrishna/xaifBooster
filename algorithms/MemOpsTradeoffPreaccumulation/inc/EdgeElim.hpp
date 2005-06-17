@@ -70,6 +70,16 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
       const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
       const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
 
+    /**
+     * succpredmode chooses front edge eliminations whose target is in the predecessor set, and back
+     * eliminations whose source is in the successor set.
+     */
+    static void succPredMode_e(
+      LinearizedComputationalGraphCopy& theCopy,
+      LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
+      const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+      const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList);
+
   };  // end of class
 
 } // end of namespace 

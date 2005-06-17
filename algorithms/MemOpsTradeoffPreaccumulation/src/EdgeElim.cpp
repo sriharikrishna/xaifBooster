@@ -215,4 +215,43 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     }// end if
   }// end sibling2Mode_e
 
+  void EdgeElim::succPredMode_e(LinearizedComputationalGraphCopy& theCopy,
+				LinearizedComputationalGraphCopy::EdgePointerList& theOldEdgeList,
+				const LinearizedComputationalGraphCopy::VertexPointerList& thePredList,
+				const LinearizedComputationalGraphCopy::VertexPointerList& theSuccList){
+
+    LinearizedComputationalGraphCopy::EdgePointerList theNewList;
+    LinearizedComputationalGraphCopy::VertexPointerList::const_iterator predi, succi;
+    LinearizedComputationalGraphCopy::EdgePointerList::iterator ei;
+
+    //iterate through the list of elimination candidates
+    for(ei = theOldEdgeList.begin(); ei != theOldEdgeList.end(); ei++){
+      if((*ei).direction == LinearizedComputationalGraphCopy::FRONT){
+        //for front eliminations, check to see if the target is in predlist
+        for(predi=thePredList.begin(); predi != thePredList.end(); predi++) {
+	  if(&theCopy.getTargetOf(*(*ei).edge_p) == *predi){
+	    theNewList.push_back(*ei);
+	    break;
+	  } // end if found
+        } // end for pred list
+      } // end if front
+      else{
+	  //for back eliminations, check to see if the source is in succlist
+	for(succi=theSuccList.begin(); succi != theSuccList.end(); succi++) {
+	  if(&theCopy.getSourceOf(*(*ei).edge_p) == *succi){
+	    theNewList.push_back(*ei);
+	    break;
+          } // end if found
+        }//end for succ list
+      } // end if back      
+    }// end for each in old list
+
+    if(theNewList.size() > 0){
+      std::cout << theNewList.size() << " succpreds were found!";
+      theOldEdgeList = theNewList;
+    }// end if
+    else std::cout << "no succpreds found :-(";
+
+  }// end succpredMode_e
+
 } // end of namespace
