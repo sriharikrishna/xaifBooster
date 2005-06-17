@@ -403,6 +403,9 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	  case ConceptuallyStaticInstances::SIBLING2:
 	    edgeHeuristicSequence.push_back(&EdgeElim::sibling2Mode_e);
 	    break;
+	  case ConceptuallyStaticInstances::SUCCPRED:
+	    edgeHeuristicSequence.push_back(&EdgeElim::succPredMode_e);
+	    break;
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("Error: Unknown heuristic passed");
 	  }// end switch HeuristicSequence
@@ -421,7 +424,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 	//populate a list of edge eliminations
 	LinearizedComputationalGraphCopy::EdgePointerList theEdgeList = theCopy.populateEdgeList();
 
-	//this is the elimination loop, it eliminates one vertex per iteration
+	//this is the elimination loop, it eliminates one edge per iteration
 	while(!theEdgeList.empty()){
 	
 	  //send theEdgeList to each heuristic
