@@ -20,8 +20,8 @@ void Usage(char** argv) {
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
-	    << "             [-S] force statement level preaccumulation" << std::endl;
-
+	    << "             [-S] force statement level preaccumulation" << std::endl
+	    << "             [-n] allow n-ary sax operations" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -31,9 +31,9 @@ int main(int argc,char** argv) {
   std::string inFileName, outFileName, intrinsicsFileName, schemaPath;
   // to contain the namespace url in case of -s having a schema location
   std::string aUrl;
-  bool forceStatementLevel=false;
+  bool forceStatementLevel=false, allowNarySaxOps=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsS",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSn",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -46,6 +46,8 @@ int main(int argc,char** argv) {
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
     if (CommandLineParser::instance()->isSet('S')) 
       forceStatementLevel=true;
+    if (CommandLineParser::instance()->isSet('n')) 
+      allowNarySaxOps=true;
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -57,6 +59,8 @@ int main(int argc,char** argv) {
     xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::instance()->init();
     if (forceStatementLevel)
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
+    if (allowNarySaxOps)
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     if (schemaPath.size()) { 

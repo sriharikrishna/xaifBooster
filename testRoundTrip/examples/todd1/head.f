@@ -21,10 +21,22 @@ c$openad XXX Template ad_template.f
       double precision ab,twosqrt3,third,two3rd,four3rd
       double precision a,b,sqrt3,tsqrt3,bm1
 
+c$openad INDEPENDENT(x0)
+c$openad INDEPENDENT(x1)
+c$openad INDEPENDENT(x2)
+c$openad INDEPENDENT(x3)
+c$openad INDEPENDENT(x4)
+c$openad INDEPENDENT(x5)
+
       a=5.00000000000000000000000000000e-01
       b=-1.00000000000000000000000000000e-00
+      ab=a*b
       sqrt3=5.77350269189625797959429519858e-01
       tsqrt3=1.15470053837925159591885903972e+00
+      twosqrt3=1.15470053837925159591885903972e+00
+      third=.33333333333333333333333e+00
+      two3rd=.66666666666666666666666e+00
+      four3rd=1.33333333333333333333333e+00
       bm1=-2.00000000000000000000000000000e-00
  
       matr0=x1-x0
@@ -81,6 +93,7 @@ c$openad XXX Template ad_template.f
       m01=matr0*matr1
       m02=matr0*matr2
       m12=matr1*matr2
+      m13=matr1*matr3
       m23=matr2*matr3
       d01=loc2*(m02+m13)
 
@@ -130,5 +143,34 @@ c$openad XXX Template ad_template.f
       f=sqrt3*(r03-r12)
       h_obj9=g-f	
       h_obj7=g+f	
+
+c$openad DEPENDENT(obj)
+c$openad DEPENDENT(g_obj0)
+c$openad DEPENDENT(g_obj1)
+c$openad DEPENDENT(g_obj2)
+c$openad DEPENDENT(g_obj3)
+c$openad DEPENDENT(g_obj4)
+c$openad DEPENDENT(g_obj5)
+c$openad DEPENDENT(h_obj0)
+c$openad DEPENDENT(h_obj1)
+c$openad DEPENDENT(h_obj2)
+c$openad DEPENDENT(h_obj3)
+c$openad DEPENDENT(h_obj4)
+c$openad DEPENDENT(h_obj5)
+c$openad DEPENDENT(h_obj6)
+c$openad DEPENDENT(h_obj7)
+c$openad DEPENDENT(h_obj8)
+c$openad DEPENDENT(h_obj9)
+c$openad DEPENDENT(h_obj10)
+c$openad DEPENDENT(h_obj11)
+c$openad DEPENDENT(h_obj12)
+c$openad DEPENDENT(h_obj13)
+c$openad DEPENDENT(h_obj14)
+c$openad DEPENDENT(h_obj15)
+c$openad DEPENDENT(h_obj16)
+c$openad DEPENDENT(h_obj17)
+c$openad DEPENDENT(h_obj18)
+c$openad DEPENDENT(h_obj19)
+c$openad DEPENDENT(h_obj20)
   
       end subroutine

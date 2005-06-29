@@ -49,6 +49,7 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
   bool BasicBlockAlg::ourLimitToStatementLevelFlag=false;
+  bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   unsigned int BasicBlockAlg::ourAssignmentCounter=0;
   unsigned int BasicBlockAlg::ourSequenceCounter=0;
 
@@ -328,10 +329,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::algorithm_action_3() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
 	      << debug().c_str());
-    for (SequencePList::iterator i=myUniqueSequencePList.begin();
-	 i!=myUniqueSequencePList.end();
-	 ++i) { // outer loop over all items in myUniqueSequencePList
-      PrivateLinearizedComputationalGraph& theFlattenedSequence=*((*i)->myFlattenedSequence_p);
+    for (SequencePList::iterator aSequencePListI=myUniqueSequencePList.begin();
+	 aSequencePListI!=myUniqueSequencePList.end();
+	 ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
+      PrivateLinearizedComputationalGraph& theFlattenedSequence=*((*aSequencePListI)->myFlattenedSequence_p);
       PrivateLinearizedComputationalGraph::VertexIteratorPair p(theFlattenedSequence.vertices());
       PrivateLinearizedComputationalGraph::VertexIterator it(p.first),endIt(p.second);
       for (;it!=endIt;++it) { 
@@ -400,7 +401,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       HashTable<const Variable*> theListOfAlreadyAssignedIndependents;
       InternalReferenceConcretizationList theInternalReferenceConcretizationList;
       // filter out singleton vertices
-      xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator aDPBeginI((*i)->myDerivativePropagator.getEntryPList().begin());
+      xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator aDPBeginI((*aSequencePListI)->myDerivativePropagator.getEntryPList().begin());
       bool findNext=true;
       while (findNext) {
 	// try to find a singleton vertex
@@ -450,7 +451,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		// address of the copy.
 		theListOfAlreadyAssignedIndependents.
 		  addElement(theIndepVariable.equivalenceSignature(),
-			     &((*i)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+			     &((*aSequencePListI)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
 										    theIndepVariable).getTarget()));
 	      } // end if (wasn't assigned efore  
 	      else {
@@ -468,7 +469,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    }
 
 	    // make the direct assignment instead.
-	    (*i)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getLHSVariable(),
+	    (*aSequencePListI)->myDerivativePropagator.addSetDerivToEntryPList(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*it).getLHSVariable(),
 								 *theIndepVariableContainer_cp,
 								 aDPBeginI);
 	    // remove it from the graph
@@ -478,9 +479,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  } // end if 
 	} // end for 
       } // end while 
-      // the list to distinguish SAX from SAXPY: 
-      typedef std::list<const Variable*> VariablePList;
-      VariablePList theListOfAlreadyAssignedDependents;
+      // the list to distinguish SAX from SAXPY or alternatively collect into n-ary SAX: 
+      typedef std::pair<const Variable*,
+	xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
+      typedef std::list<VarDevPropPPair> VarDevPropPPairList;
+      VarDevPropPPairList theListOfAlreadyAssignedDependents;
       if (theFlattenedSequence.numVertices()) {
 	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	  GraphVizDisplay::show(theFlattenedSequence,
@@ -527,17 +530,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      std::cout << "chosen gamma is : " << ourGamma << std::endl; 
 	    }
 	  }
-	  (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, (*i)->myJacobianAccumulationExpressionList);
+	  (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, (*aSequencePListI)->myJacobianAccumulationExpressionList);
 	} 
 	catch(...) { 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
 	}
 	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
-	      (*i)->myJacobianAccumulationExpressionList.getGraphList().begin();
-	    it!=(*i)->myJacobianAccumulationExpressionList.getGraphList().end();
+	      (*aSequencePListI)->myJacobianAccumulationExpressionList.getGraphList().begin();
+	    it!=(*aSequencePListI)->myJacobianAccumulationExpressionList.getGraphList().end();
 	    ++it) { 
 	  // make a new assignment: 
-	  Assignment& aNewAssignment=(*i)->appendEndAssignment();
+	  Assignment& aNewAssignment=(*aSequencePListI)->appendEndAssignment();
 	  // JU should we get away with this setting of "jacobian_accumulation" for the Id
 	  aNewAssignment.setId("jacobian_accumulation");
 	  // make a new LHS: 
@@ -602,9 +605,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		// address of the copy.
 		theListOfAlreadyAssignedIndependents.
 		  addElement(theIndepVariable.equivalenceSignature(),
-			     &((*i)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+			     &((*aSequencePListI)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
 										    theIndepVariable).getTarget()));
-	      } // end if (wasn't assigned efore  
+	      } // end if (wasn't assigned before)  
 	      else {
 		// yes, it was assigned before
 		// copy the previously created temporary into the container
@@ -623,21 +626,35 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // instead of original independent
 	    const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
 					 (theExpression.getDependent()).getLHSVariable());
-	    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& theSaxpy((*i)->myDerivativePropagator.addSaxpyToEntryPList(theLHS,
-																   *theIndepVariableContainer_cp,
-																   theDependent));
 	    bool found=false;
-	    for (VariablePList::iterator i=theListOfAlreadyAssignedDependents.begin();
-		 i!=theListOfAlreadyAssignedDependents.end();
-		 ++i) { 
-	      if (*i==&theDependent){ 
+	    VarDevPropPPairList::iterator aVarDevPropPPairListI=theListOfAlreadyAssignedDependents.begin();
+	    for (; 
+		 aVarDevPropPPairListI!=theListOfAlreadyAssignedDependents.end(); 
+		 ++aVarDevPropPPairListI) { 
+	      if ((*aVarDevPropPPairListI).first==&theDependent){ 
 		found=true;
 		break;
 	      } 
 	    }
+	    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* theSaxpy_p(0);
+	    if (!found 
+		||
+		(found && !doesPermitNarySax())) { 
+	      theSaxpy_p=&((*aSequencePListI)->myDerivativePropagator.
+			   addSaxpyToEntryPList(theLHS,
+						*theIndepVariableContainer_cp,
+						theDependent));
+	    }
+	    else { 
+	      theSaxpy_p=(*aVarDevPropPPairListI).second;
+	      theSaxpy_p->addAX(theLHS,
+				*theIndepVariableContainer_cp);
+	    } 
 	    if (!found) { 
-	      theSaxpy.useAsSax();
-	      theListOfAlreadyAssignedDependents.push_back(&theDependent);
+	      theSaxpy_p->useAsSax();
+	      theListOfAlreadyAssignedDependents.
+		push_back(VarDevPropPPair(&theDependent,
+					  theSaxpy_p));
 	    }
 	  } // end if is JacobianEntry
 	  // iterate through all vertices bottom up
@@ -866,7 +883,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // have a predecessor: 
 	    --i;
 	    if(!(*i).second ||
-	       hasLimitToStatementLevel()) { 
+	       doesLimitToStatementLevel()) { 
 	      // either nothing assigned yet which means this is not an 
 	      // assignment (unless we call this out of order) this is how 
 	      // we handle splits for subroutine calls
@@ -980,8 +997,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     ourLimitToStatementLevelFlag=true;
   }
   
-  bool BasicBlockAlg::hasLimitToStatementLevel() { 
+  bool BasicBlockAlg::doesLimitToStatementLevel() { 
     return ourLimitToStatementLevelFlag;
+  }
+
+  void BasicBlockAlg::permitNarySax() { 
+    ourPermitNarySaxFlag=true;
+  }
+  
+  bool BasicBlockAlg::doesPermitNarySax() { 
+    return ourPermitNarySaxFlag;
   }
 
   unsigned int BasicBlockAlg::getAssignmentCounter() { 

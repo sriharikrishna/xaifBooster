@@ -109,7 +109,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static void limitToStatementLevel();
     
-    static bool hasLimitToStatementLevel();
+    static bool doesLimitToStatementLevel();
+
+    /** 
+     * we can allow to have all 'ax' factors collected 
+     * into one DerivativePropagator per 'y'
+     */
+    static void permitNarySax();
+    
+    static bool doesPermitNarySax();
 
     static unsigned int getAssignmentCounter();
 
@@ -332,6 +340,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * consists of exactly one assignment
      */ 
     static bool ourLimitToStatementLevelFlag;
+
+    /** 
+     * if this flag is true we attempt to collect 
+     * all 'ax' factors ordered by 'y'
+     */ 
+    static bool ourPermitNarySaxFlag;
 
     /** 
      * counting all assignments
