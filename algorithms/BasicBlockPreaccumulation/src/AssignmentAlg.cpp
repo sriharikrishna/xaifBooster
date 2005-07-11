@@ -109,9 +109,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     VertexLabelWriter(const Expression& e) : myE(e) {};
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
-      out << "[label=\"" << dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
-														  myE.getInternalBoostGraph()),
-												       v))).getExpressionVertexAlgBase()).isActive() << "\"]";
+      xaifBoosterLinearization::ExpressionVertexAlg& va(dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
+																	      myE.getInternalBoostGraph()),
+																   v))).getExpressionVertexAlgBase()));
+      out << "[label=\"" << va.isActive() << "\"]";
     }
     const Expression& myE;
   };

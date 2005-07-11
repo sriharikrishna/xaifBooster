@@ -14,6 +14,8 @@ namespace xaifBooster {
 
   public: 
 
+    virtual ~GenericTraverseInvoke(){};
+
     /**
      * to be called in traverseToChildren 
      */
