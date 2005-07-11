@@ -1,4 +1,3 @@
-
 #include <sstream>
 
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
@@ -373,9 +372,10 @@ namespace xaifBoosterLinearization {
     VertexLabelWriter(const Expression& e) : myE(e) {};
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
-      out << "[label=\"" << dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
-														  myE.getInternalBoostGraph()),
-												       v))).getExpressionVertexAlgBase()).isActive() << "\"]";
+      ExpressionVertexAlg& va(dynamic_cast<ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
+											myE.getInternalBoostGraph()),
+									       v))).getExpressionVertexAlgBase()));
+      out << "[label=\"" << va.isActive() << "\"]";
     }
     const Expression& myE;
   };
