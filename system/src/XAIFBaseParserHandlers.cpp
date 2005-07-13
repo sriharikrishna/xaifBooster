@@ -271,13 +271,19 @@ namespace xaifBooster {
   void 
   XAIFBaseParserHandlers::onConstant(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onConstant" ); 
-    Expression& theExpression(passingIn.getExpression());
-    Constant* theConstant_p=new Constant(SymbolType::fromString(XMLParser::getAttributeValueByName(Constant::our_myType_XAIFName)));
-    theConstant_p->setId(XMLParser::getAttributeValueByName(Constant::our_myId_XAIFName));
-    theConstant_p->setFromString(XMLParser::getAttributeValueByName(Constant::our_myValue_XAIFName));
-    // constants are always passive
-    // theConstant_p->passivate();
-    theExpression.supplyAndAddVertexInstance(*theConstant_p);
+    if (passingIn.hasExpression()) { // comes from an expression
+      Expression& theExpression(passingIn.getExpression());
+      Constant* theConstant_p=new Constant(SymbolType::fromString(XMLParser::getAttributeValueByName(Constant::our_myType_XAIFName)));
+      theConstant_p->setId(XMLParser::getAttributeValueByName(Constant::our_myId_XAIFName));
+      theConstant_p->setFromString(XMLParser::getAttributeValueByName(Constant::our_myValue_XAIFName));
+      theExpression.supplyAndAddVertexInstance(*theConstant_p);
+    }
+    else { // comes from a ConcreteArgument
+      ConcreteArgument& theConcreteArgument(passingIn.getConcreteArgument());
+      Constant& theConstant=theConcreteArgument.makeConstant(SymbolType::fromString(XMLParser::getAttributeValueByName(Constant::our_myType_XAIFName)));
+      theConstant.setId(XMLParser::getAttributeValueByName(Constant::our_myId_XAIFName));
+      theConstant.setFromString(XMLParser::getAttributeValueByName(Constant::our_myValue_XAIFName));
+    }
   }
 
   void 
@@ -293,19 +299,29 @@ namespace xaifBooster {
   void 
   XAIFBaseParserHandlers::onArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onArgument" ); 
-    Expression& theExpression(passingIn.getExpression());
-    Argument* theArgument_p=new Argument();
+    Argument* theArgument_p(0);
+    Variable* theNewVariable_p(0);
+    if (passingIn.hasExpression()) { // comes from an expression
+      Expression& theExpression(passingIn.getExpression());
+      theArgument_p=new Argument();
+      theExpression.supplyAndAddVertexInstance(*theArgument_p);
+      theNewVariable_p=&(theArgument_p->getVariable());
+    }
+    else { // comes from a ConcreteArgument
+      ConcreteArgument& theConcreteArgument(passingIn.getConcreteArgument());
+      theArgument_p=&(theConcreteArgument.getArgument());
+      theNewVariable_p=&(theArgument_p->getVariable());
+    }
     theArgument_p->setId(XMLParser::getAttributeValueByName(Argument::our_myId_XAIFName));
-    theExpression.supplyAndAddVertexInstance(*theArgument_p);
-    theArgument_p->getVariable().getAliasMapKey().
+    theNewVariable_p->getAliasMapKey().
       setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName).c_str()));
-    theArgument_p->getVariable().getDuUdMapKey().
+    theNewVariable_p->getDuUdMapKey().
       setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName).c_str()));
-    theArgument_p->getVariable().
+    theNewVariable_p->
       setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
     if (XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Variable::our_myConstantUseFlag_XAIFName)))
-      theArgument_p->getVariable().setConstantUseFlag();
-    passingOut.setVariable(theArgument_p->getVariable());
+      theNewVariable_p->setConstantUseFlag();
+    passingOut.setVariable(*theNewVariable_p);
   }
 
   void 
@@ -534,16 +550,12 @@ namespace xaifBooster {
 
   void 
   XAIFBaseParserHandlers::onConcreteArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onArgument" ); 
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onConcreteArgument" ); 
     SubroutineCall& theSubroutineCall(passingIn.getSubroutineCall());
     ConcreteArgument* theNewConcreteArgument_p=
       new ConcreteArgument(atoi(XMLParser::getAttributeValueByName(ConcreteArgument::our_myPosition_XAIFName).c_str()));
     theSubroutineCall.getConcreteArgumentPList().push_back(theNewConcreteArgument_p);
-    theNewConcreteArgument_p->getVariable().getAliasMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName).c_str()));
-    theNewConcreteArgument_p->getVariable().getDuUdMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName).c_str()));
-    passingOut.setVariable(theNewConcreteArgument_p->getVariable());
+    passingOut.setConcreteArgument(*theNewConcreteArgument_p);
   }
 
   void 

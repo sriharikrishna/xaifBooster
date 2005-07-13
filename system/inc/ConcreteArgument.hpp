@@ -1,20 +1,22 @@
 #ifndef _CONCRETEARGUMENT_INCLUDE_
 #define _CONCRETEARGUMENT_INCLUDE_
 
-#include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+
+#include "xaifBooster/system/inc/Argument.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/ConcreteArgumentAlgBase.hpp"
 
 namespace xaifBooster { 
 
   /**
    * this class represents a concrete 
-   * argument in a SubroutineCall
+   * argument in a SubroutineCall.
    * Note the restriction that 
    * concrete arguments are always 
-   * lvalues. This saves the distinction 
-   * between any kind of rvalue and lvalues 
-   * for calls being made.
+   * lvalues or literal constants.
+   * The front-end achieves this through 
+   * canonicalization.
    */
   class ConcreteArgument: XMLPrintable { 
   public:
@@ -46,9 +48,19 @@ namespace xaifBooster {
                                                                                 
     unsigned int getPosition() const;
     
-    Variable& getVariable();
+    bool isArgument() const;
 
-    const Variable& getVariable() const ;
+    Argument& getArgument();
+
+    const Argument& getArgument() const ;
+
+    bool isConstant() const;
+
+    Constant& getConstant();
+
+    const Constant& getConstant() const ;
+
+    Constant& makeConstant(const SymbolType::SymbolType_E aType);
 
   private:
     
@@ -63,10 +75,27 @@ namespace xaifBooster {
      */
     unsigned int myPosition;
 
-    /**
-     * the actual concrete argument
+    enum ConcreteArgumentKind_E{ UNDEFINED_KIND=0,
+				 VARIABLE_KIND=1,
+				 CONSTANT_KIND=2 };
+
+    /** 
+     * the kind of this argument
+     * determined by the first call 
+     * to the non-const version of 
+     * getArgument or getConstant
      */
-    Variable myVariable;
+    ConcreteArgumentKind_E myKind;
+
+    /**
+     * the actual concrete argument is a variable
+     */
+    Argument* myArgument_p;
+
+    /**
+     * the actual concrete argument is a constant
+     */
+    Constant* myConstant_p;
 
     /**
      * this will be set to point a dynamically instance

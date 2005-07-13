@@ -12,7 +12,10 @@ namespace xaifBooster {
 
   ConcreteArgument::ConcreteArgument (unsigned int thePosition,
 				      bool makeAlgorithm) :
-    myPosition(thePosition) {
+    myPosition(thePosition),
+    myKind(UNDEFINED_KIND),
+    myArgument_p(0),
+    myConstant_p(0) {
     if (makeAlgorithm)
       myConcreteArgumentAlgBase_p=ConcreteArgumentAlgFactory::instance()->makeNewAlg(*this); 
     else 
@@ -20,6 +23,10 @@ namespace xaifBooster {
   }
 
   ConcreteArgument::~ConcreteArgument(){
+    if (myArgument_p)
+      delete myArgument_p;
+    if (myConstant_p)
+      delete myConstant_p;
     if (myConcreteArgumentAlgBase_p)
       delete myConcreteArgumentAlgBase_p;
   }
@@ -53,7 +60,13 @@ namespace xaifBooster {
        << myPosition
        << "\">" 
        << std::endl; 
-    myVariable.printXMLHierarchy(os);
+    if (isArgument())
+      myArgument_p->printXMLHierarchy(os);
+    else if (isConstant())
+      myConstant_p->printXMLHierarchy(os);
+    else { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::printXMLHierarchyImpl: is not initialized");
+    } 
     os << pm.indent()
        << "</"
        << ourXAIFName.c_str()
@@ -65,7 +78,16 @@ namespace xaifBooster {
   std::string ConcreteArgument::debug () const { 
     std::ostringstream out;
     out << "ConcreteArgument[" << this 
-	<< "]" << std::ends;  
+	<< ",myKind=" << myKind;
+    if (myArgument_p)
+      out << ",myArgument_p=" << myArgument_p->debug();
+    else 
+      out << ",myArgument_p=0";
+    if (myConstant_p)
+      out << ",myConstant_p=" << myConstant_p->debug();
+    else 
+      out << ",myConstant_p=0";
+    out << "]" << std::ends;  
     return out.str();
   } // end of ConcreteArgument::debug
 
@@ -73,14 +95,75 @@ namespace xaifBooster {
     return myPosition;
   } 
     
-  Variable& 
-  ConcreteArgument::getVariable() { 
-    return myVariable;
+  Argument& 
+  ConcreteArgument::getArgument() { 
+    if (myKind==UNDEFINED_KIND) { 
+      myArgument_p=new Argument(false);
+      myKind=VARIABLE_KIND;
+    }
+    else if (myKind==CONSTANT_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::getArgument is a Constant");
+    }
+    return *myArgument_p;
   } 
 
-  const Variable& 
-  ConcreteArgument::getVariable() const { 
-    return myVariable;
+  bool ConcreteArgument::isArgument() const {
+    if (myKind==UNDEFINED_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::isArgument: is not initialized");
+    }
+    return  (myKind==VARIABLE_KIND)? true:false;
+  } 
+
+  const Argument& 
+  ConcreteArgument::getArgument() const { 
+    if (myKind==UNDEFINED_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::getArgument: is not initialized");
+    }
+    else if (myKind==CONSTANT_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::getArgument: is a Constant");
+    }
+    return *myArgument_p;
+  } 
+
+  Constant& 
+  ConcreteArgument::makeConstant(const SymbolType::SymbolType_E aType) { 
+    if (myKind==UNDEFINED_KIND) { 
+      myConstant_p=new Constant(aType,false);
+      myKind=CONSTANT_KIND;
+    }
+    else if (myKind==VARIABLE_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::getConstant is an Argument");
+    }
+    return *myConstant_p;
+  } 
+
+  Constant& 
+  ConcreteArgument::getConstant() { 
+    if (myKind==UNDEFINED_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::getConstant: is not initialized");
+    }
+    else if (myKind==VARIABLE_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::getConstant: is an Argument");
+    }
+    return *myConstant_p;
+  } 
+
+  bool ConcreteArgument::isConstant() const {
+    if (myKind==UNDEFINED_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::isConstant: is not initialized");
+    }
+    return  (myKind==CONSTANT_KIND)? true:false;
+  } 
+
+  const Constant& 
+  ConcreteArgument::getConstant() const { 
+    if (myKind==UNDEFINED_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::getConstant: is not initialized");
+    }
+    else if (myKind==VARIABLE_KIND) { 
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgument::getConstant: is an Argument");
+    }
+    return *myConstant_p;
   } 
 
 } // end of namespace xaifBooster 

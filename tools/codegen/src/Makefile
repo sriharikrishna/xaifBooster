@@ -1,6 +1,7 @@
 include ../Makefile.incl
 
 all: CodeGenerator.java
+	$(COMPLAIN)
 	javac CodeGenerator.java 
 	mv *.class ../classes
 

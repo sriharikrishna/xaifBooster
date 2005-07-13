@@ -41,7 +41,8 @@ namespace xaifBoosterLinearization {
     if(myReplacement_p)
       THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::makeReplacement : already have a replacement");
     myReplacement_p=new ConcreteArgument(getContaining().getPosition());
-    aVariable.copyMyselfInto(myReplacement_p->getVariable());
+    aVariable.copyMyselfInto(myReplacement_p->getArgument().getVariable());
+    myReplacement_p->getArgument().setId(1);
   }
   
 } // end of namespace 
