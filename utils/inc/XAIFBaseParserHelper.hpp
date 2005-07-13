@@ -13,6 +13,7 @@ namespace xaifBooster {
   class BasicBlock;
   class Branch;
   class CallGraph;
+  class ConcreteArgument;
   class Condition;
   class ControlFlowGraph;
   class DuUdMap;

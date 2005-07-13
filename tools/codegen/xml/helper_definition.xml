@@ -14,8 +14,8 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="1" nr_templates="1" outfile="helper_definition.inc">
 
-  <CodeGen:RepeatableCode nr_versions="30">
-    <CodeGen:CodeTemplate nr_entries="70">
+  <CodeGen:RepeatableCode nr_versions="31">
+    <CodeGen:CodeTemplate nr_entries="83">
       <CodeGen:StaticCode text="void "/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="::set"/>
@@ -85,6 +85,18 @@
       <CodeGen:LineBreak/>
       <CodeGen:StaticCode text="}"/>
       <CodeGen:LineBreak/>
+      <CodeGen:StaticCode text="bool "/>
+      <CodeGen:DynamicCodePlaceholder hook="1"/>
+      <CodeGen:StaticCode text="::has"/>
+      <CodeGen:DynamicCodePlaceholder hook="2"/>
+      <CodeGen:StaticCode text="() const {"/>
+      <CodeGen:LineBreak/>
+      <CodeGen:StaticCode text="return (my"/>
+      <CodeGen:DynamicCodePlaceholder hook="2"/>
+      <CodeGen:StaticCode text="_p!=0);"/>
+      <CodeGen:LineBreak/>
+      <CodeGen:StaticCode text="}"/>
+      <CodeGen:LineBreak/>
       <CodeGen:LineBreak/>
     </CodeGen:CodeTemplate>
     <CodeGen:CodeVersion>
@@ -118,6 +130,10 @@
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
       <CodeGen:DynamicCode hook_ref="2" text="CallGraph"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ConcreteArgument"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>

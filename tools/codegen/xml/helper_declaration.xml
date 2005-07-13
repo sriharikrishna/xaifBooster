@@ -9,8 +9,8 @@
   <CodeGen:NonRepeatableCodeOrLineBreak text="public:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="30">
-    <CodeGen:CodeTemplate nr_entries="11">
+  <CodeGen:RepeatableCode nr_versions="31">
+    <CodeGen:CodeTemplate nr_entries="15">
       <CodeGen:StaticCode text="void set"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="("/>
@@ -19,6 +19,10 @@
       <CodeGen:LineBreak/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="&amp; get"/>
+      <CodeGen:DynamicCodePlaceholder hook="1"/>
+      <CodeGen:StaticCode text="() const;"/>
+      <CodeGen:LineBreak/>
+      <CodeGen:StaticCode text="bool has"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="() const;"/>
       <CodeGen:LineBreak/>
@@ -46,6 +50,9 @@
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="CallGraph"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="ConcreteArgument"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Condition"/>
@@ -117,7 +124,7 @@
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak text="private:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="30" use_versions="3">
+  <CodeGen:RepeatableCode nr_versions="31" use_versions="3">
     <CodeGen:CodeTemplate nr_entries="5">
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="* my"/>

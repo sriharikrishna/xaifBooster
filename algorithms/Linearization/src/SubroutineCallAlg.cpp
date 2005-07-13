@@ -48,42 +48,44 @@ namespace xaifBoosterLinearization {
   } 
 
   void SubroutineCallAlg::algorithm_action_1() { 
+    const ArgumentList::ArgumentSymbolReferencePList* anArgumentSymbolReferencePList_p(0); 
     try { 
       // get the formal argument list; 
-      const ArgumentList::ArgumentSymbolReferencePList& 
-	theArgumentSymbolReferencePList(ConceptuallyStaticInstances::instance()->
-					getCallGraph().
-					getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).
-					getArgumentList().
-					getArgumentSymbolReferencePList());
-      ArgumentList::ArgumentSymbolReferencePList::const_iterator formalArgumentPI=theArgumentSymbolReferencePList.begin();
-      SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=getContainingSubroutineCall().getConcreteArgumentPList().begin();
-      for (;;++concreteArgumentPI,++formalArgumentPI) { 
-	if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  && 
-	   formalArgumentPI==theArgumentSymbolReferencePList.end() ) 
-	  break;
-	if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  ||
-	   formalArgumentPI==theArgumentSymbolReferencePList.end() ) 
-	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch ("
-				     << theArgumentSymbolReferencePList.size() 
-				     << " formal vs. "
-				     << getContainingSubroutineCall().getConcreteArgumentPList().size()
-				     << " concrete ) for "
-				     << getContainingSubroutineCall().getSymbolReference().debug().c_str());
-	bool concreteArgumentActive=(*concreteArgumentPI)->getVariable().getActiveType();
-	bool formalArgumentActive=(*formalArgumentPI)->getSymbol().getActiveTypeFlag();
-	if (concreteArgumentActive!=formalArgumentActive) { 
-	  addConversion(**concreteArgumentPI,
-			**formalArgumentPI);
-	} 
-      }// end for 
+      anArgumentSymbolReferencePList_p=
+	&(ConceptuallyStaticInstances::instance()->
+	  getCallGraph().
+	  getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).
+	  getArgumentList().
+	  getArgumentSymbolReferencePList());
     } 
     catch (const  LogicException& e) { 
       DBG_MACRO(DbgGroup::ERROR,
 		"SubroutineCallAlg::algorithm_action_1: " 
 		<< e.getReason().c_str() 
 		<< " but this may be an external call, we continue");
+      return;
     }
+    ArgumentList::ArgumentSymbolReferencePList::const_iterator formalArgumentPI=anArgumentSymbolReferencePList_p->begin();
+    SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=getContainingSubroutineCall().getConcreteArgumentPList().begin();
+    for (;;++concreteArgumentPI,++formalArgumentPI) { 
+      if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  && 
+	 formalArgumentPI==anArgumentSymbolReferencePList_p->end() ) 
+	break;
+      if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  ||
+	 formalArgumentPI==anArgumentSymbolReferencePList_p->end() ) 
+	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch ("
+				   << anArgumentSymbolReferencePList_p->size() 
+				   << " formal vs. "
+				   << getContainingSubroutineCall().getConcreteArgumentPList().size()
+				   << " concrete ) for "
+				   << getContainingSubroutineCall().getSymbolReference().debug().c_str());
+      bool concreteArgumentActive=((*concreteArgumentPI)->isArgument())?(*concreteArgumentPI)->getArgument().getVariable().getActiveType():false;
+      bool formalArgumentActive=(*formalArgumentPI)->getSymbol().getActiveTypeFlag();
+      if (concreteArgumentActive!=formalArgumentActive) { 
+	addConversion(**concreteArgumentPI,
+		      **formalArgumentPI);
+      } 
+    }// end for 
   }
 
   std::string SubroutineCallAlg::giveCallName(bool concreteArgumentActive,
@@ -102,7 +104,9 @@ namespace xaifBoosterLinearization {
 
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
 					const ArgumentSymbolReference& aFormalArgumentSymbolReference) { 
-    std::string aSubroutineName(giveCallName(theConcreteArgument.getVariable().getActiveType(),aFormalArgumentSymbolReference,true));
+    std::string aSubroutineName(giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
+					     aFormalArgumentSymbolReference,
+					     true));
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
       thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
     myPriorAdjustmentsList.push_back(thePriorCall_p);
@@ -114,17 +118,17 @@ namespace xaifBoosterLinearization {
 		   aFormalArgumentSymbolReference.getScope(),
 		   theTempVar);
     Variable& theInlineVariablePriorArg(thePriorCall_p->addArgumentSubstitute(2).getVariable());
-    theConcreteArgument.getVariable().copyMyselfInto(theInlineVariablePriorArg);
+    theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePriorArg);
 
     dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()).makeReplacement(theTempVar);
 
-    aSubroutineName=giveCallName(theConcreteArgument.getVariable().getActiveType(),aFormalArgumentSymbolReference,false);
+    aSubroutineName=giveCallName(theConcreteArgument.getArgument().getVariable().getActiveType(),aFormalArgumentSymbolReference,false);
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
       thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
     myPostAdjustmentsList.push_back(thePostCall_p);
     thePostCall_p->setId("SubroutineCallAlg::addConversion post");
     Variable& theInlineVariablePostRes(thePostCall_p->addArgumentSubstitute(1).getVariable());
-    theConcreteArgument.getVariable().copyMyselfInto(theInlineVariablePostRes);
+    theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes);
     Variable& theInlineVariablePostArg(thePostCall_p->addArgumentSubstitute(2).getVariable());
     theTempVar.copyMyselfInto(theInlineVariablePostArg);
   } 
@@ -147,6 +151,7 @@ namespace xaifBoosterLinearization {
 								  theGlobalScope));
     // preserve dimension information from the concrete argument if any:
     const Symbol& theConcreteArgumentSymbol(theConcreteArgument.
+					    getArgument().
 					    getVariable().
 					    getVariableSymbolReference().
 					    getSymbol());
