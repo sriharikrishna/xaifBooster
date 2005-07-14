@@ -104,26 +104,26 @@
         ! set derivative components to 0.0
         !
         subroutine zero_deriv_a(x)
-          type(active), intent(out) :: x
+          type(active), intent(inout) :: x
 
           x%d=0.0d0
         end subroutine zero_deriv_a
 
         subroutine convert_a2p_scalar_impl(convertTo, convertFrom)
-          double precision, intent(out) :: convertTo
+          double precision, intent(inout) :: convertTo
           type(active), intent(in) :: convertFrom
           convertTo=convertFrom%v
         end subroutine
 
         subroutine convert_p2a_scalar_impl(convertTo, convertFrom)
           double precision, intent(in) :: convertFrom
-          type(active), intent(out) :: convertTo
+          type(active), intent(inout) :: convertTo
           convertTo%v=convertFrom
         end subroutine 
 
         subroutine convert_a2p_vector_impl(convertTo, convertFrom)
           type(active), dimension(:), intent(in) :: convertFrom
-          double precision, dimension(:), intent(out) :: convertTo
+          double precision, dimension(:), intent(inout) :: convertTo
           integer i
           do i=lbound(convertFrom,1),ubound(convertFrom,1)
              convertTo(i)=convertFrom(i)%v
@@ -132,7 +132,7 @@
 
         subroutine convert_p2a_vector_impl(convertTo, convertFrom)
           double precision, dimension(:), intent(in) :: convertFrom
-          type(active), dimension(:), intent(out) :: convertTo
+          type(active), dimension(:), intent(inout) :: convertTo
           integer i
           do i=lbound(convertFrom,1),ubound(convertFrom,1)
              convertTo(i)%v=convertFrom(i)
