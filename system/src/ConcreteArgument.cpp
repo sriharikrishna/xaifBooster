@@ -99,6 +99,8 @@ namespace xaifBooster {
   ConcreteArgument::getArgument() { 
     if (myKind==UNDEFINED_KIND) { 
       myArgument_p=new Argument(false);
+      // there will always be only one
+      myArgument_p->setId(1);
       myKind=VARIABLE_KIND;
     }
     else if (myKind==CONSTANT_KIND) { 
@@ -129,6 +131,8 @@ namespace xaifBooster {
   ConcreteArgument::makeConstant(const SymbolType::SymbolType_E aType) { 
     if (myKind==UNDEFINED_KIND) { 
       myConstant_p=new Constant(aType,false);
+      // there will always be only one
+      myConstant_p->setId(1);
       myKind=CONSTANT_KIND;
     }
     else if (myKind==VARIABLE_KIND) { 

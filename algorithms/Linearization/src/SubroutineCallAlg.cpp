@@ -8,7 +8,6 @@
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlg.hpp"
@@ -104,33 +103,44 @@ namespace xaifBoosterLinearization {
 
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
 					const ArgumentSymbolReference& aFormalArgumentSymbolReference) { 
-    std::string aSubroutineName(giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
-					     aFormalArgumentSymbolReference,
-					     true));
+    // prior call
+    std::string 
+      aSubroutineName(giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
+				   aFormalArgumentSymbolReference,
+				   true));
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
       thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
     myPriorAdjustmentsList.push_back(thePriorCall_p);
     thePriorCall_p->setId("SubroutineCallAlg::addConversion prior");
     // this is the extra temporary that replaces the original argument
-    Variable& theTempVar(thePriorCall_p->addArgumentSubstitute(1).getVariable());
+    Variable& theTempVar(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
     makeTempSymbol(theConcreteArgument,
 		   aFormalArgumentSymbolReference.getSymbol(),
 		   aFormalArgumentSymbolReference.getScope(),
 		   theTempVar);
-    Variable& theInlineVariablePriorArg(thePriorCall_p->addArgumentSubstitute(2).getVariable());
-    theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePriorArg);
-
+    if (theConcreteArgument.isArgument()) { 
+      Variable& theInlineVariablePriorArg(thePriorCall_p->addConcreteArgument(2).getArgument().getVariable());
+      theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePriorArg);
+    }
+    else { 
+      Constant& theConstantArg(thePriorCall_p->addConcreteArgument(2).makeConstant(theConcreteArgument.getConstant().getType()));
+      theConstantArg.setFromString(theConcreteArgument.getConstant().toString());
+    } 
     dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()).makeReplacement(theTempVar);
-
-    aSubroutineName=giveCallName(theConcreteArgument.getArgument().getVariable().getActiveType(),aFormalArgumentSymbolReference,false);
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
-      thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
-    myPostAdjustmentsList.push_back(thePostCall_p);
-    thePostCall_p->setId("SubroutineCallAlg::addConversion post");
-    Variable& theInlineVariablePostRes(thePostCall_p->addArgumentSubstitute(1).getVariable());
-    theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes);
-    Variable& theInlineVariablePostArg(thePostCall_p->addArgumentSubstitute(2).getVariable());
-    theTempVar.copyMyselfInto(theInlineVariablePostArg);
+    if (theConcreteArgument.isArgument()) { // no point in copying a constant back.
+      // post call:
+      aSubroutineName=giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
+				   aFormalArgumentSymbolReference,
+				   false);
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
+	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+      myPostAdjustmentsList.push_back(thePostCall_p);
+      thePostCall_p->setId("SubroutineCallAlg::addConversion post");
+      Variable& theInlineVariablePostRes(thePostCall_p->addConcreteArgument(1).getArgument().getVariable());
+      theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes);
+      Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
+      theTempVar.copyMyselfInto(theInlineVariablePostArg);
+    }
   } 
   
   void SubroutineCallAlg::makeTempSymbol(const ConcreteArgument& theConcreteArgument,
@@ -149,19 +159,21 @@ namespace xaifBoosterLinearization {
     VariableSymbolReference* 
       theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
 								  theGlobalScope));
-    // preserve dimension information from the concrete argument if any:
-    const Symbol& theConcreteArgumentSymbol(theConcreteArgument.
-					    getArgument().
-					    getVariable().
-					    getVariableSymbolReference().
+    if (theConcreteArgument.isArgument()){ 
+      // preserve dimension information from the concrete argument if any:
+      const Symbol& theConcreteArgumentSymbol(theConcreteArgument.
+					      getArgument().
+					      getVariable().
+					      getVariableSymbolReference().
 					    getSymbol());
-    if (theConcreteArgumentSymbol.hasDimensionBounds()) { 
-      const Symbol::DimensionBoundsPList& aDimensionBoundsPList(theConcreteArgumentSymbol.getDimensionBoundsPList());
-      for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
-	   li!=aDimensionBoundsPList.end();
-	   ++li) { 
-	theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
-						(*li)->getUpper());
+      if (theConcreteArgumentSymbol.hasDimensionBounds()) { 
+	const Symbol::DimensionBoundsPList& aDimensionBoundsPList(theConcreteArgumentSymbol.getDimensionBoundsPList());
+	for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
+	     li!=aDimensionBoundsPList.end();
+	     ++li) { 
+	  theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
+						  (*li)->getUpper());
+	}
       }
     }
     theNewVariableSymbolReference_p->setId("1");

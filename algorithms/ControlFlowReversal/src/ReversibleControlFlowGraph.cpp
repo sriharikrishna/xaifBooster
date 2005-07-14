@@ -19,8 +19,6 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/BasicBlockAlg.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
-
 
 using namespace xaifBooster;
 
@@ -305,7 +303,7 @@ namespace xaifBoosterControlFlowReversal {
     theSubstitutionArgument.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theSubstitutionArgument.getAliasMapKey().setTemporary();
     theSubstitutionArgument.getDuUdMapKey().setTemporary();
-    theSubstitutionArgument.copyMyselfInto(theInlinableSubroutineCall_p->addArgumentSubstitute(1).getVariable());
+    theSubstitutionArgument.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
   }
 
@@ -322,7 +320,7 @@ namespace xaifBoosterControlFlowReversal {
     theSubstitutionArgument.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theSubstitutionArgument.getAliasMapKey().setTemporary();
     theSubstitutionArgument.getDuUdMapKey().setTemporary();
-    theSubstitutionArgument.copyMyselfInto(theInlinableSubroutineCall_p->addArgumentSubstitute(1).getVariable());
+    theSubstitutionArgument.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
     return *theIntegerSymbol_p;
   }

@@ -13,7 +13,6 @@
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
@@ -168,7 +167,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& thePopCall(addInlinableSubroutineCall("pop_i",
 													    aReversalType));
       thePopCall.setId("inline_pop_i");
-      Variable& theInlineVariable(thePopCall.addArgumentSubstitute(1).getVariable());
+      Variable& theInlineVariable(thePopCall.addConcreteArgument(1).getArgument().getVariable());
       // give it a name etc.
       // create a new symbol and add a new VariableSymbolReference in the Variable
       VariableSymbolReference* theNewVariableSymbolReference_p=
@@ -250,7 +249,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSubroutineCall(addInlinableSubroutineCall("ZeroDeriv",
 														 aReversalType));
     theSubroutineCall.setId("inline_zeroderiv");
-    theTarget.copyMyselfInto(theSubroutineCall.addArgumentSubstitute(1).getVariable());
+    theTarget.copyMyselfInto(theSubroutineCall.addConcreteArgument(1).getArgument().getVariable());
   } 
 
   void BasicBlockAlg::addUnitFactor(Variable& theSource,
@@ -267,19 +266,19 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("CondIncZeroDeriv",
 														 aReversalType));
       theSetDerivCall.setId("inline_CondIncZeroDeriv");
-      theTarget.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(1).getVariable());
-      theSource.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(2).getVariable());
+      theTarget.copyMyselfInto(theSetDerivCall.addConcreteArgument(1).getArgument().getVariable());
+      theSource.copyMyselfInto(theSetDerivCall.addConcreteArgument(2).getArgument().getVariable());
     }
     else { 
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv",
 														 aReversalType));
       theSetDerivCall.setId("inline_IncDeriv");
-      theTarget.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(1).getVariable());
-      theSource.copyMyselfInto(theSetDerivCall.addArgumentSubstitute(2).getVariable());
+      theTarget.copyMyselfInto(theSetDerivCall.addConcreteArgument(1).getArgument().getVariable());
+      theSource.copyMyselfInto(theSetDerivCall.addConcreteArgument(2).getArgument().getVariable());
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
 														  aReversalType));
       theZeroDerivCall.setId("inline_zeroderiv");
-      theTarget.copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
+      theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
     }
   } 
 
@@ -289,7 +288,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("Pop",
 														aReversalType));
     theZeroDerivCall.setId("inline_pop");
-    Variable& theInlineVariable(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
+    Variable& theInlineVariable(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
     // give it a name etc.
     // create a new symbol and add a new VariableSymbolReference in the Variable
     VariableSymbolReference* theNewVariableSymbolReference_p=
@@ -312,14 +311,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall(addInlinableSubroutineCall("Saxpy",
 													    aReversalType));
     theSaxpyCall.setId("inline_saxpy");
-    theFactor.copyMyselfInto(theSaxpyCall.addArgumentSubstitute(1).getVariable());
-    theTarget.copyMyselfInto(theSaxpyCall.addArgumentSubstitute(2).getVariable());
-    theSource.copyMyselfInto(theSaxpyCall.addArgumentSubstitute(3).getVariable());
+    theFactor.copyMyselfInto(theSaxpyCall.addConcreteArgument(1).getArgument().getVariable());
+    theTarget.copyMyselfInto(theSaxpyCall.addConcreteArgument(2).getArgument().getVariable());
+    theSource.copyMyselfInto(theSaxpyCall.addConcreteArgument(3).getArgument().getVariable());
     if (!aDerivativePropagatorEntry.isIncremental()) { 
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
 														  aReversalType));
       theZeroDerivCall.setId("inline_zeroderiv");
-      theTarget.copyMyselfInto(theZeroDerivCall.addArgumentSubstitute(1).getVariable());
+      theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
     }
   }
 
