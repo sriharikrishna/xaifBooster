@@ -60,16 +60,16 @@ program driver
         else
            xph(j)%v=x0(j)
         end if
-        call head(nx1,nx2,xph,yph,r)
-        call head(nx1,nx2,x,y,r)
-        do k=1,m
-           res_dd(k,i)=(yph(k)%v-y(k)%v)/h
-        end do
+     end do
+     call head(nx1,nx2,xph,yph,r)
+     call head(nx1,nx2,x,y,r)
+     do k=1,m
+        res_dd(k,i)=(yph(k)%v-y(k)%v)/h
      end do
   end do
   do k=1,n
      do i=1,m   
-        write(2,*) "F(",i,",",k,")=",res_dd(i,k)
+        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",i,",",k,")=",res_dd(i,k)
      end do
   end do
   close(2)
@@ -90,12 +90,12 @@ program driver
         res_ad(k,i)=y(k)%d
      end do
   end do
-  !	   do i=1,m   
-  !	      print *, "y(",i,")=",y(i)%v
-  !	   end do
+!  do i=1,m   
+!     print *, "y(",i,")=",y(i)%v
+!  end do
   do k=1,n
      do i=1,m   
-        write(2,*) "F(",i,",",k,")=",res_ad(i,k)
+        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",i,",",k,")=",res_ad(i,k)
      end do
   end do
   close(2)
