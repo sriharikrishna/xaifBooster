@@ -3,7 +3,6 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
 using namespace xaifBooster;
 
@@ -20,8 +19,8 @@ namespace xaifBoosterInlinableXMLRepresentation {
   } 
 
   InlinableSubroutineCall::~InlinableSubroutineCall(){
-    for (ArgumentSubstitutePList::iterator i=myArgumentSubstitutePList.begin();
-	 i!=myArgumentSubstitutePList.end();
+    for (SubroutineCall::ConcreteArgumentPList::iterator i=myConcreteArgumentPList.begin();
+	 i!=myConcreteArgumentPList.end();
 	 ++i)
       if (*i)
 	delete *i;
@@ -45,8 +44,8 @@ namespace xaifBoosterInlinableXMLRepresentation {
        << "\""
        << ">"
        << std::endl;
-    for (ArgumentSubstitutePList::const_iterator i=myArgumentSubstitutePList.begin();
-	 i!=myArgumentSubstitutePList.end();
+    for (SubroutineCall::ConcreteArgumentPList::const_iterator i=myConcreteArgumentPList.begin();
+	 i!=myConcreteArgumentPList.end();
 	 ++i)
       (*i)->printXMLHierarchy(os);
     os << pm.indent()
@@ -64,17 +63,17 @@ namespace xaifBoosterInlinableXMLRepresentation {
     return out.str();
   } // end of InlinableSubroutineCall::debug
 
-  ArgumentSubstitute& InlinableSubroutineCall::addArgumentSubstitute(unsigned int aPosition) { 
-    for (ArgumentSubstitutePList::iterator i=myArgumentSubstitutePList.begin();
-	 i!=myArgumentSubstitutePList.end();
+  ConcreteArgument& InlinableSubroutineCall::addConcreteArgument(unsigned int aPosition) { 
+    for (SubroutineCall::ConcreteArgumentPList::iterator i=myConcreteArgumentPList.begin();
+	 i!=myConcreteArgumentPList.end();
 	 ++i)
       if ((*i)->getPosition()==aPosition)
-	THROW_LOGICEXCEPTION_MACRO("InlinableSubroutineCall::addArgumentSubstitute: position " 
+	THROW_LOGICEXCEPTION_MACRO("InlinableSubroutineCall::addConcreteArgument: position " 
 				   << aPosition
 				   << " already in use");
-    ArgumentSubstitute* newSubstitute_p=new ArgumentSubstitute(aPosition);
-    myArgumentSubstitutePList.push_back(newSubstitute_p);
-    return * newSubstitute_p;
+    ConcreteArgument* newConcreteArgument_p=new ConcreteArgument(aPosition);
+    myConcreteArgumentPList.push_back(newConcreteArgument_p);
+    return * newConcreteArgument_p;
   } 
 
 } 

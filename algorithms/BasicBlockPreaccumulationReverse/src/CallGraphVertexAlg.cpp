@@ -3,8 +3,8 @@
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/CodeReplacement/inc/Replacement.hpp"
+
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
@@ -223,7 +223,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     // give it the onstrcuted name as an ID extended by 
     aNewCall.setId(theName);
     // get the empty Variable
-    Variable& theInlineVariable(aNewCall.addArgumentSubstitute(1).getVariable());
+    Variable& theInlineVariable(aNewCall.addConcreteArgument(1).getArgument().getVariable());
     // make a reference and give it the argument name etc.
     VariableSymbolReference& theNewVariableSymbolReference(*(new VariableSymbolReference(theSymbol,
 											 theScope)));

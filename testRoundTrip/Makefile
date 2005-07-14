@@ -1,11 +1,11 @@
 ######################################################
 # pick your compiler
 ######################################################
-#F95=ifort -g  -fpe0 -e90
-#CC=icc
+F95=ifort -g -fpe0 -O0
+CC=icc
 
-F95=f95 -g -w=unused
-CC=gcc
+#F95=f95 -g -w=unused
+#CC=gcc
 ######################################################
 
 ifdef REVERSE_MODE
@@ -35,8 +35,8 @@ endif
 
 all: head.xb.x2w.w2f.pp.f
 
-ifndef RICETOOLROOT
-  $(error "Error:  environment variable RICETOOLROOT not defined!")
+ifndef OPENADROOT
+  $(error "Error:  environment variable OPENADROOT not defined!")
 endif
 
 ifndef XAIFSCHEMAROOT
@@ -98,16 +98,16 @@ head.xb.x2w.w2f.pp.f: head_sf.xb.x2w.w2f.pp.f
 	$(LN) ${XAIFSCHEMAROOT}/schema/$@ .
 
 mfef90: 
-	$(LN) ${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/crayf90/sgi/mfef90 .
+	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/crayf90/sgi/mfef90 .
 
 whirl2xaif xaif2whirl: 
-	$(LN) ${RICETOOLROOT}/OpenADFortTk/OpenADFortTk-i686-Linux/bin/$@ .
+	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-i686-Linux/bin/$@ .
 
 %.pl: 
-	$(LN) ${RICETOOLROOT}/OpenADFortTk/OpenADFortTk-i686-Linux/bin/$@ .
+	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-i686-Linux/bin/$@ .
 
 whirl2f whirl2f_be:
-	$(LN) ${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
+	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
 
 xaifBooster:
 	./pickAlgorithm.bash

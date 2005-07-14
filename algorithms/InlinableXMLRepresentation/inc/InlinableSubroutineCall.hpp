@@ -3,12 +3,11 @@
 
 #include <list>
 #include "xaifBooster/system/inc/BasicBlockElement.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterInlinableXMLRepresentation { 
-
-  class ArgumentSubstitute;
 
   class InlinableSubroutineCall : public BasicBlockElement {
   public:
@@ -30,7 +29,7 @@ namespace xaifBoosterInlinableXMLRepresentation {
 
     static const std::string our_myId_XAIFName;
 
-    ArgumentSubstitute& addArgumentSubstitute(unsigned int aPosition);
+    ConcreteArgument& addConcreteArgument(unsigned int aPosition);
 
     virtual void traverseToChildren(GenericAction::GenericAction_E){};
 
@@ -41,9 +40,12 @@ namespace xaifBoosterInlinableXMLRepresentation {
      */ 
     InlinableSubroutineCall();
 
-    typedef std::list<ArgumentSubstitute*> ArgumentSubstitutePList;
-
-    ArgumentSubstitutePList myArgumentSubstitutePList;
+    /** 
+     * the list of concrete arguments for this call
+     * these are owned by this instance and 
+     * will be deleted in the dtor 
+     */
+    SubroutineCall::ConcreteArgumentPList myConcreteArgumentPList;
 
     const std::string mySubroutineName;
     

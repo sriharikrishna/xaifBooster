@@ -9,7 +9,6 @@
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/ArgumentSubstitute.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 
@@ -155,14 +154,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	    // ANONYMOUS version
 	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push"));
 	    theSubroutineCall_p->setId("inline_push");
-	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addArgumentSubstitute(1).getVariable());
+	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
 	    // save it in the list
 	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
 											ForLoopReversalType::ANONYMOUS);
 	    // EXPLICIT version
 	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
 	    theSubroutineCall_p->setId("inline_push");
-	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addArgumentSubstitute(1).getVariable());
+	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
 	    // save it in the list
 	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
 											ForLoopReversalType::EXPLICIT);
@@ -210,7 +209,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
 										   ForLoopReversalType::ANONYMOUS);
 	  theSubroutineCall_p->setId("inline_push_i");
-	  dynamic_cast<const Argument&>(*(p.first)).getVariable().copyMyselfInto(theSubroutineCall_p->addArgumentSubstitute(1).getVariable());
+	  dynamic_cast<const Argument&>(*(p.first)).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
 	}
       } // has one vertex 
       else {  // has more then one vertex
@@ -243,7 +242,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
 										 ForLoopReversalType::ANONYMOUS);
 	theSubroutineCall_p->setId("inline_push_i");
-	theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addArgumentSubstitute(1).getVariable());
+	theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
       }  // end else has more then one vertex   
     } // end for i
   } // end of BasicBlockAlg::reinterpretArrayAccess
