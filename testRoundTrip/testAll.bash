@@ -3,7 +3,7 @@ CP="cp -f"
 MAKE="gmake"
 
 # extend the lib path 
-pathExt=${RICETOOLROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f
+pathExt=${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f
 libInPath=$(echo ${LD_LIBRARY_PATH} | grep ${pathExt} )
 if [ -z "${libInPath}" ]
 then
