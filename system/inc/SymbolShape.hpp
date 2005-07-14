@@ -12,7 +12,8 @@ public:
 	    VECTOR,
 	    MATRIX,
 	    THREE_TENSOR,
-	    FOUR_TENSOR};
+	    FOUR_TENSOR,
+	    FIVE_TENSOR};
     
     static std::string toString(const SymbolShape_E& aShape) throw (PrintingIntException);
 
