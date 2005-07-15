@@ -1,3 +1,8 @@
+
+C -------------------------------------------------------
+C NOTE: THIS EXAMPLE SEGVS IN REVERSE BECAUSE OF BUG #78
+C -------------------------------------------------------
+
 c$openad XXX Template ad_template.f
 	subroutine head(x,y)
 	  double precision, dimension(3), intent(in) :: x

@@ -26,15 +26,10 @@ program driver
   allocate(y0(m))
   allocate(res_adj(m,n))
 
-  x0(1) = 1.72
-  x0(2) = 3.45
-  x0(3) = 4.16
-  x0(4) = 4.87
-  x0(5) = 4.16
-  x0(6) = 3.45
-  x0(7) = 1.72
-  x0(8) = 1.3
-  x0(9) = 0.245828 
+  x0(1) = 2.5d-1
+  x0(2) = 3.9d-1
+  x0(3) = 4.15d-1
+  x0(4) = 3.9d-1
 
   open(2,file='tmpOutput/dd.out')
   write(2,*) "DD"

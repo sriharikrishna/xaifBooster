@@ -1,3 +1,4 @@
+c$openad XXX Template ad_template.f
       subroutine head(nx,ny,x,fvec,r)
       integer nx,ny
       double precision r

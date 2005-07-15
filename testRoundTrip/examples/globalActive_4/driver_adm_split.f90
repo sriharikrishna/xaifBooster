@@ -1,6 +1,7 @@
 program driver
 
   use active_module
+  use all_globals_mod
   use OpenAD_rev
   use OpenAD_tape
 
@@ -8,33 +9,23 @@ program driver
 
   external head
 
-  double precision, dimension(:), allocatable :: x0
+  double precision, dimension(:), allocatable :: x0,y0
   double precision, dimension(:,:), allocatable :: res_adj
-  type(active), dimension(:), allocatable :: x, y, y0
   real h
   integer n,m
   integer i,j,k
 
-  open(2,action='read',file='params.conf')
-  read(2,'(I5,/,I5,/,F8.1)') n, m, h
-  close(2)
+  n=2
+  m=1
+  h=0.00001
 
-
-  allocate(x(n))
   allocate(x0(n))
-  allocate(y(m))
   allocate(y0(m))
   allocate(res_adj(m,n))
 
-  x0(1) = 1.72
-  x0(2) = 3.45
-  x0(3) = 4.16
-  x0(4) = 4.87
-  x0(5) = 4.16
-  x0(6) = 3.45
-  x0(7) = 1.72
-  x0(8) = 1.3
-  x0(9) = 0.245828 
+  do i=1,n   
+     x0(i)=i/2.
+  end do
 
   open(2,file='tmpOutput/dd.out')
   write(2,*) "DD"
@@ -48,7 +39,10 @@ program driver
   do j=1,n   
      x(j)%v=x0(j)
   end do
-  call head(x,y0)
+  call head()
+  do k=1,m
+     y0(k)=y(k)%v
+  end do
   do i=1,n   
      do j=1,n   
         x(j)%v=x0(j)
@@ -56,9 +50,9 @@ program driver
            x(j)%v=x0(j)+h
         end if
      end do
-     call head(x,y)
+     call head()
      do k=1,m
-        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",k,",",i,")=",(y(k)%v-y0(k)%v)/h
+        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",k,",",i,")=",(y(k)%v-y0(k))/h
      end do
   end do
   close(2)
@@ -87,7 +81,7 @@ program driver
      our_rev_mode%plain=.FALSE.
      our_rev_mode%tape=.TRUE.
      our_rev_mode%adjoint=.FALSE.
-     call head(x,y)
+     call head()
      our_rev_mode%arg_store=.FALSE.
      our_rev_mode%arg_restore=.FALSE.
      our_rev_mode%res_store=.FALSE.
@@ -95,7 +89,7 @@ program driver
      our_rev_mode%plain=.FALSE.
      our_rev_mode%tape=.FALSE.
      our_rev_mode%adjoint=.TRUE.
-     call head(x,y)
+     call head()
      do k=1,n
         res_adj(i,k)=x(k)%d
      end do
@@ -109,9 +103,7 @@ program driver
 
   close(2)
 
-  deallocate(x)
   deallocate(x0)
-  deallocate(y)
   deallocate(y0)
   deallocate(res_adj)
 

@@ -48,7 +48,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	 ++theOldConcreteArgumentPListI) { 
       ConcreteArgument* theNewConcreteArgument_p(new ConcreteArgument((*theOldConcreteArgumentPListI)->getPosition()));
       theNewConcreteArgumentPList.push_back(theNewConcreteArgument_p);
-      (*theOldConcreteArgumentPListI)->getArgument().getVariable().copyMyselfInto(theNewConcreteArgument_p->getArgument().getVariable());
+      (*theOldConcreteArgumentPListI)->copyMyselfInto(*theNewConcreteArgument_p);
     } // end for
     // reapply any argument conversions we may need
     dynamic_cast<xaifBoosterLinearization::SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()).xaifBoosterLinearization::SubroutineCallAlg::algorithm_action_1();

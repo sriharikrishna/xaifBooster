@@ -48,7 +48,7 @@ program boxmodel_tl_driver
   ! ACTS code
   !
   open(2,file='tmpOutput/ad.out')
-  write(2,*) "AD (tlm)"
+  write(2,*) "AD"
   do i=1,2*kdim
      call box_ini_params
      call box_ini_fields
