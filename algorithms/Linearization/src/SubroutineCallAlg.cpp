@@ -118,14 +118,8 @@ namespace xaifBoosterLinearization {
 		   aFormalArgumentSymbolReference.getSymbol(),
 		   aFormalArgumentSymbolReference.getScope(),
 		   theTempVar);
-    if (theConcreteArgument.isArgument()) { 
-      Variable& theInlineVariablePriorArg(thePriorCall_p->addConcreteArgument(2).getArgument().getVariable());
-      theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePriorArg);
-    }
-    else { 
-      Constant& theConstantArg(thePriorCall_p->addConcreteArgument(2).makeConstant(theConcreteArgument.getConstant().getType()));
-      theConstantArg.setFromString(theConcreteArgument.getConstant().toString());
-    } 
+    ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
+    theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
     dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()).makeReplacement(theTempVar);
     if (theConcreteArgument.isArgument()) { // no point in copying a constant back.
       // post call:

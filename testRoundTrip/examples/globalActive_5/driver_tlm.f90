@@ -8,7 +8,6 @@ program driver
   external head
 
   double precision, dimension(:), allocatable :: x0,y0
-  double precision, dimension(:,:), allocatable :: res_dd, res_ad
   real h
   integer n,m
   integer i,j,k
@@ -19,9 +18,6 @@ program driver
 
   allocate(x0(n))
   allocate(y0(m))
-  allocate(res_dd(m,n))
-  allocate(res_ad(m,n))
-
 
   do i=1,n   
      x0(i)=i/2.
@@ -45,12 +41,7 @@ program driver
      end do
      call head()
      do k=1,m
-        res_dd(k,i)=(y(k)%v-y0(k))/h
-     end do
-  end do
-  do k=1,n
-     do i=1,m   
-        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",i,",",k,")=",res_dd(i,k)
+        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",k,",",i,")=",(y(k)%v-y0(k))/h
      end do
   end do
   close(2)
@@ -68,20 +59,13 @@ program driver
      end do
      call head()
      do k=1,m
-        res_ad(k,i)=y(k)%d
-     end do
-  end do
-  do k=1,n
-     do i=1,m   
-        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",i,",",k,")=",res_ad(i,k)
+        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",k,",",i,")=",y(k)%d
      end do
   end do
   close(2)
 
   deallocate(x0)
   deallocate(y0)
-  deallocate(res_dd)
-  deallocate(res_ad)
 
 end program driver
 

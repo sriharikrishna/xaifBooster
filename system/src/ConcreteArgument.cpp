@@ -170,4 +170,14 @@ namespace xaifBooster {
     return *myConstant_p;
   } 
 
+  void ConcreteArgument::copyMyselfInto(ConcreteArgument& theTarget) const { 
+    if (isArgument()) { 
+      getArgument().getVariable().copyMyselfInto(theTarget.getArgument().getVariable());
+    } 
+    else { 
+      Constant& theConstantArg(theTarget.makeConstant(getConstant().getType()));
+      theConstantArg.setFromString(getConstant().toString());
+    } 
+  } 
+
 } // end of namespace xaifBooster 

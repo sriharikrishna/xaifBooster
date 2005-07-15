@@ -1,6 +1,9 @@
 program driver
 
   use active_module
+  use OpenAD_rev
+  use OpenAD_tape
+
   implicit none 
 
   external head
@@ -19,7 +22,8 @@ program driver
        &h_obj15ph,h_obj16ph,&
        &h_obj17ph,h_obj18ph,h_obj19ph,h_obj20ph
 
-  double precision, dimension(:), allocatable :: res_dd, res_ad
+  double precision, dimension(:), allocatable :: res_dd
+  double precision, dimension(:,:), allocatable :: res_adj
   real h
   integer n,m
   integer i,k
@@ -28,12 +32,18 @@ program driver
   read(2,'(I5,/,I5,/,F8.1)') n, m, h
   close(2)
 
-
+  allocate(res_adj(m,n))
   allocate(res_dd(m))
-  allocate(res_ad(m))
 
   open(2,file='tmpOutput/dd.out')
   write(2,*) "DD"
+  our_rev_mode%arg_store=.FALSE.
+  our_rev_mode%arg_restore=.FALSE.
+  our_rev_mode%res_store=.FALSE.
+  our_rev_mode%res_restore=.FALSE.
+  our_rev_mode%plain=.TRUE.
+  our_rev_mode%tape=.FALSE.
+  our_rev_mode%adjoint=.FALSE.
   ! equilateral triangle coordinates (x1,x2,x3,y1,y2,y3)
   x1%v=0.
   x2%v=.5
@@ -107,69 +117,121 @@ program driver
   end do
   close(2)
 
+  call tape_init()
   open(2,file='tmpOutput/ad.out')
   write(2,*) "AD"
-  do i=1,n   
+  do i=1,m   
+     x1%v=0.
+     x2%v=.5
+     x3%v=1.
+     x4%v=0.
+     x5%v=0.523598776
+     x6%v=0.
      x1%d=0.
      x2%d=0.
      x3%d=0.
      x4%d=0.
      x5%d=0.
      x6%d=0.
-     if (i==1) then 
-        x1%d=1.
-     else if (i==2) then 
-        x2%d=1.
-     else if (i==3) then 
-        x3%d=1.
-     else if (i==4) then 
-        x4%d=1.
-     else if (i==5) then 
-        x5%d=1.
-     else if (i==6) then 
-        x6%d=1.
-     end if
+     obj%d=0.0
+     g_obj0%d=0.0
+     g_obj1%d=0.0
+     g_obj2%d=0.0
+     g_obj3%d=0.0
+     g_obj4%d=0.0
+     g_obj5%d=0.0
+     h_obj0%d=0.0
+     h_obj1%d=0.0
+     h_obj2%d=0.0
+     h_obj3%d=0.0
+     h_obj4%d=0.0
+     h_obj5%d=0.0
+     h_obj6%d=0.0
+     h_obj7%d=0.0
+     h_obj8%d=0.0
+     h_obj9%d=0.0
+     h_obj10%d=0.0
+     h_obj11%d=0.0
+     h_obj12%d=0.0
+     h_obj13%d=0.0
+     h_obj14%d=0.0
+     h_obj15%d=0.0
+     h_obj16%d=0.0
+     h_obj17%d=0.0
+     h_obj18%d=0.0
+     h_obj19%d=0.0
+     h_obj20%d=0.0
+     if (i==1) obj%d=1.0
+     if (i==2) g_obj0%d=1.0
+     if (i==3) g_obj1%d=1.0
+     if (i==4) g_obj2%d=1.0
+     if (i==5) g_obj3%d=1.0
+     if (i==6) g_obj4%d=1.0
+     if (i==7) g_obj5%d=1.0
+     if (i==8) h_obj0%d=1.0
+     if (i==9) h_obj1%d=1.0
+     if (i==10) h_obj2%d=1.0
+     if (i==11) h_obj3%d=1.0
+     if (i==12) h_obj4%d=1.0
+     if (i==13) h_obj5%d=1.0
+     if (i==14) h_obj6%d=1.0
+     if (i==15) h_obj7%d=1.0
+     if (i==16) h_obj8%d=1.0
+     if (i==17) h_obj9%d=1.0
+     if (i==18) h_obj10%d=1.0
+     if (i==19) h_obj11%d=1.0
+     if (i==20) h_obj12%d=1.0
+     if (i==21) h_obj13%d=1.0
+     if (i==22) h_obj14%d=1.0
+     if (i==23) h_obj15%d=1.0
+     if (i==24) h_obj16%d=1.0
+     if (i==25) h_obj17%d=1.0
+     if (i==26) h_obj18%d=1.0
+     if (i==27) h_obj19%d=1.0
+     if (i==28) h_obj20%d=1.0
+     our_rev_mode%arg_store=.FALSE.
+     our_rev_mode%arg_restore=.FALSE.
+     our_rev_mode%res_store=.FALSE.
+     our_rev_mode%res_restore=.FALSE.
+     our_rev_mode%plain=.FALSE.
+     our_rev_mode%tape=.TRUE.
+     our_rev_mode%adjoint=.FALSE.
      call head(obj,g_obj0,g_obj1,g_obj2,g_obj3,&
           &g_obj4,g_obj5,x1,x2,x3,x4,x5,x6,&
           &h_obj0,h_obj1,h_obj2,h_obj3,h_obj4,h_obj5,h_obj6,h_obj7,h_obj8,&
           &h_obj9,h_obj10,h_obj11,h_obj12,h_obj13,h_obj14,h_obj15,h_obj16,&
           &h_obj17,h_obj18,h_obj19,h_obj20)
-     res_ad(1) =obj%d
-     res_ad(2) =g_obj0%d
-     res_ad(3) =g_obj1%d
-     res_ad(4) =g_obj2%d
-     res_ad(5) =g_obj3%d
-     res_ad(6) =g_obj4%d
-     res_ad(7) =g_obj5%d
-     res_ad(8) =h_obj0%d
-     res_ad(9)=h_obj1%d
-     res_ad(10)=h_obj2%d
-     res_ad(11)=h_obj3%d
-     res_ad(12)=h_obj4%d
-     res_ad(13)=h_obj5%d
-     res_ad(14)=h_obj6%d
-     res_ad(15)=h_obj7%d
-     res_ad(16)=h_obj8%d
-     res_ad(17)=h_obj9%d
-     res_ad(18)=h_obj10%d
-     res_ad(19)=h_obj11%d
-     res_ad(20)=h_obj12%d
-     res_ad(21)=h_obj13%d
-     res_ad(22)=h_obj14%d
-     res_ad(23)=h_obj15%d
-     res_ad(24)=h_obj16%d
-     res_ad(25)=h_obj17%d
-     res_ad(26)=h_obj18%d
-     res_ad(27)=h_obj19%d
-     res_ad(28)=h_obj20%d
-     do k=1,m
-        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",k,",",i,")=",res_ad(k)
+     our_rev_mode%arg_store=.FALSE.
+     our_rev_mode%arg_restore=.FALSE.
+     our_rev_mode%res_store=.FALSE.
+     our_rev_mode%res_restore=.FALSE.
+     our_rev_mode%plain=.FALSE.
+     our_rev_mode%tape=.FALSE.
+     our_rev_mode%adjoint=.TRUE.
+     call head(obj,g_obj0,g_obj1,g_obj2,g_obj3,&
+          &g_obj4,g_obj5,x1,x2,x3,x4,x5,x6,&
+          &h_obj0,h_obj1,h_obj2,h_obj3,h_obj4,h_obj5,h_obj6,h_obj7,h_obj8,&
+          &h_obj9,h_obj10,h_obj11,h_obj12,h_obj13,h_obj14,h_obj15,h_obj16,&
+          &h_obj17,h_obj18,h_obj19,h_obj20)
+     do k=1,n
+        if (k==1) res_adj(i,k)=x1%d
+        if (k==2) res_adj(i,k)=x2%d
+        if (k==3) res_adj(i,k)=x3%d
+        if (k==4) res_adj(i,k)=x4%d
+        if (k==5) res_adj(i,k)=x5%d
+        if (k==6) res_adj(i,k)=x6%d
      end do
   end do
+  do k=1,n
+     do i=1,m   
+        write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",i,",",k,")=",res_adj(i,k)
+     end do
+  end do
+
   close(2)
 
   deallocate(res_dd)
-  deallocate(res_ad)
+  deallocate(res_adj)
 
 end program driver
 

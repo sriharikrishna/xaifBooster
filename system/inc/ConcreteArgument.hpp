@@ -62,6 +62,11 @@ namespace xaifBooster {
 
     Constant& makeConstant(const SymbolType::SymbolType_E aType);
 
+    /** 
+     * deep copy
+     */
+    void copyMyselfInto(ConcreteArgument& theTarget) const;
+
   private:
     
     /**

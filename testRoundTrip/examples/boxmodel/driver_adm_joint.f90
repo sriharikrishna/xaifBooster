@@ -57,7 +57,7 @@ program boxmodel_adm_driver
   ! ACTS code
   !
   open(2,file='tmpOutput/ad.out')
-  write(2,*) "AD (adm joint)"
+  write(2,*) "AD"
   call tape_init()
   do i=1,2*kdim
      do j=1,2*kdim

@@ -60,8 +60,8 @@ contains
     call cp_store_real_scalar(year,sd,cd,ad)
     call cp_store_real_scalar(Sv,sd,cd,ad)
     call cp_store_real_scalar(days_per_50m_mixed_layer,sd,cd,ad)
-    call cp_store_real_scalar(gamma_T%v,sd,cd,ad)
-    call cp_store_real_scalar(gamma_S%v,sd,cd,ad)
+    call cp_store_real_scalar(gamma_T,sd,cd,ad)
+    call cp_store_real_scalar(gamma_S,sd,cd,ad)
     call cp_store_real_scalar(epsilon_ic,sd,cd,ad)
     call cp_store_real_scalar(noise_correlation_time,sd,cd,ad)
     call cp_store_real_scalar(integration_time,sd,cd,ad)
@@ -85,10 +85,10 @@ contains
 
     call cp_store_real_vector(rho,ndim,sd,cd,ad)
 
-    call cp_store_real_vector(nullForce,ndim-1,sd,cd,ad)
-    call cp_store_real_vector(fw,ndim-1,sd,cd,ad)
-    call cp_store_real_vector(tStar,ndim-1,sd,cd,ad)
-    call cp_store_real_vector(sStar,ndim-1,sd,cd,ad)
+    call cp_store_p_real_vector(nullForce,ndim-1,sd,cd,ad)
+    call cp_store_p_real_vector(fw,ndim-1,sd,cd,ad)
+    call cp_store_p_real_vector(tStar,ndim-1,sd,cd,ad)
+    call cp_store_p_real_vector(sStar,ndim-1,sd,cd,ad)
 
     call cp_store_real_scalar(ubar,sd,cd,ad)
 
@@ -134,16 +134,16 @@ contains
     ubar=sd(cd); cd=cd-1
 
     do i=ubound(sStar,1),lbound(sStar,1),-1
-       sStar(i)%v=sd(cd); cd=cd-1
+       sStar(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(tStar,1),lbound(tStar,1),-1
-       tStar(i)%v=sd(cd); cd=cd-1
+       tStar(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(fw,1),lbound(fw,1),-1
-       fw(i)%v=sd(cd); cd=cd-1
+       fw(i)=sd(cd); cd=cd-1
     end do
     do i=ubound(nullForce,1),lbound(nullForce,1),-1
-       nullForce(i)%v=sd(cd); cd=cd-1
+       nullForce(i)=sd(cd); cd=cd-1
     end do
 
     do i=ubound(rho,1),lbound(rho,1),-1
@@ -182,8 +182,8 @@ contains
     integration_time=sd(cd); cd=cd-1
     noise_correlation_time=sd(cd); cd=cd-1
     epsilon_ic=sd(cd); cd=cd-1
-    gamma_S%v=sd(cd); cd=cd-1
-    gamma_T%v=sd(cd); cd=cd-1
+    gamma_S=sd(cd); cd=cd-1
+    gamma_T=sd(cd); cd=cd-1
     days_per_50m_mixed_layer=sd(cd); cd=cd-1
     Sv=sd(cd); cd=cd-1
     year=sd(cd); cd=cd-1
