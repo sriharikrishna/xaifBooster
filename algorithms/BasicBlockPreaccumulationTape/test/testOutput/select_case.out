@@ -98,9 +98,11 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_6" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
-          </xaif:ArgumentSubstitute>
+          <xaif:Argument position="1">
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_6" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
+            </xaif:VariableReference>
+          </xaif:Argument>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="4" annotation="" scope_id="2">
@@ -137,9 +139,11 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_8" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
-          </xaif:ArgumentSubstitute>
+          <xaif:Argument position="1">
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_8" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
+            </xaif:VariableReference>
+          </xaif:Argument>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="5" annotation="" scope_id="2">
@@ -176,9 +180,11 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
-          <xaif:ArgumentSubstitute position="1" active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
-          </xaif:ArgumentSubstitute>
+          <xaif:Argument position="1">
+            <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
+            </xaif:VariableReference>
+          </xaif:Argument>
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="6" annotation=""/>
