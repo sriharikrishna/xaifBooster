@@ -44,17 +44,20 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     //  getContaining().CallGraphVertex::printXMLHierarchyImpl(os);
   } // end of CallGraphVertexAlg::printXMLHierarchy
   
-  std::string CallGraphVertexAlg::debug () const { 
+  std::string 
+  CallGraphVertexAlg::debug () const { 
     std::ostringstream out;
     out << "xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg[" << this
  	<< "]" << std::ends;  
     return out.str();
   } // end of CallGraphVertexAlg::debug
 
-  void CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+  void 
+  CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
-  void CallGraphVertexAlg::algorithm_action_4() { 
+  void 
+  CallGraphVertexAlg::algorithm_action_4() { 
     xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(); 
     myReplacementList.setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
     myReplacementList.setId(getContaining().getControlFlowGraph().getId());
@@ -97,28 +100,30 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       case ReplacementId::STOREARGUMENT: 
 	theReplacement.setControlFlowGraphBase(*myCFGStoreArguments_p);
 	handleCheckPointing("cp_arg_store",
-			    IntentType::OUT_ITYPE,
+			    SideEffectListType::READ_LIST,
 			    *myCFGStoreArguments_p,
 			    false);
 	break;
       case ReplacementId::STORERESULT: 
 	theReplacement.setControlFlowGraphBase(*myCFGStoreResults_p);
+	// JU: result checkpoints can't be stored on a stack
 	handleCheckPointing("cp_res_store",
-			    IntentType::IN_ITYPE,
+			    SideEffectListType::MOD_LIST,
 			    *myCFGStoreResults_p, 
 			    false);
 	break;
       case ReplacementId::RESTOREARGUMENT: 
 	theReplacement.setControlFlowGraphBase(*myCFGRestoreArguments_p);
 	handleCheckPointing("cp_arg_restore",
-			    IntentType::OUT_ITYPE,
+			    SideEffectListType::READ_LIST,
 			    *myCFGRestoreArguments_p,
 			    true);
 	break;
       case ReplacementId::RESTORERESULT: 
 	theReplacement.setControlFlowGraphBase(*myCFGRestoreResults_p);
+	// JU: result checkpoints can't be stored on a stack
 	handleCheckPointing("cp_res_restore",
-			    IntentType::IN_ITYPE,
+			    SideEffectListType::MOD_LIST,
 			    *myCFGRestoreResults_p,
 			    false);
 	break;
@@ -130,7 +135,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     } // end for 	
   } 
 
-  BasicBlock& CallGraphVertexAlg::initCheckPointCFG(ControlFlowGraph& aCheckPointCFG) { 
+  BasicBlock& 
+  CallGraphVertexAlg::initCheckPointCFG(ControlFlowGraph& aCheckPointCFG) { 
     // make an Entry
     Entry& theEntry(*(new Entry));
     aCheckPointCFG.supplyAndAddVertexInstance(theEntry);
@@ -155,63 +161,62 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     aCheckPointCFG.supplyAndAddVertexInstance(theBasicBlock);
     theBasicBlock.setId(aCheckPointCFG.getNextVertexId());
     theBasicBlock.setAnnotation("cp_basicblock");
-
     theBasicBlock.getId();
-
     // connect them:
     aCheckPointCFG.addEdge(theEntry,theBasicBlock).setId(aCheckPointCFG.getNextEdgeId());
     aCheckPointCFG.addEdge(theBasicBlock,theExit).setId(aCheckPointCFG.getNextEdgeId());
     return theBasicBlock;
   } 
 
-  void CallGraphVertexAlg::handleCheckPointing(const std::string& aSubroutineNameBase,
-					       IntentType::IntentType_E theExcludedIntent,
-					       ControlFlowGraph& theCFG,
-					       bool reverse) { 
+  void 
+  CallGraphVertexAlg::handleCheckPointing(const std::string& aSubroutineNameBase,
+					  SideEffectListType::SideEffectListType_E aSideEffectListType,
+					  ControlFlowGraph& theCFG,
+					  bool reverse) { 
     // initialize
     BasicBlock& theBasicBlock(initCheckPointCFG(theCFG));
-    const ArgumentList::ArgumentSymbolReferencePList& theArgumentSymbolReferenceList(getContaining().getControlFlowGraph().getArgumentList().getArgumentSymbolReferencePList());
+    const SideEffectList::VariablePList& 
+      theVariablePList(getContaining().
+		       getControlFlowGraph().
+		       getSideEffectList(aSideEffectListType).
+		       getVariablePList());
     if (reverse) { 
-      for (ArgumentList::ArgumentSymbolReferencePList::const_reverse_iterator i=theArgumentSymbolReferenceList.rbegin();
-	   i!=theArgumentSymbolReferenceList.rend();
+      for (SideEffectList::VariablePList::const_reverse_iterator i=theVariablePList.rbegin();
+	   i!=theVariablePList.rend();
 	   ++i) { 
 	handleCheckPoint(aSubroutineNameBase,
-			 theExcludedIntent,
 			 theBasicBlock,
 			 **i);
       } // end for 
     }
     else { 
-      for (ArgumentList::ArgumentSymbolReferencePList::const_iterator i=theArgumentSymbolReferenceList.begin();
-	   i!=theArgumentSymbolReferenceList.end();
+      for (SideEffectList::VariablePList::const_iterator i=theVariablePList.begin();
+	   i!=theVariablePList.end();
 	   ++i) { 
 	handleCheckPoint(aSubroutineNameBase,
-			 theExcludedIntent,
 			 theBasicBlock,
 			 **i);
       } // end for 
     }
   } 
 
-  void CallGraphVertexAlg::handleCheckPoint(const std::string& aSubroutineNameBase,
-					    IntentType::IntentType_E theExcludedIntent,
-					    BasicBlock& theBasicBlock,
-					    const ArgumentSymbolReference& theArgumentSymbolReference) { 
-    if (theArgumentSymbolReference.getIntent()!=theExcludedIntent) { 
-      // all non-out parameters will be stored:
-      addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+"_"+
-					      SymbolType::toString(theArgumentSymbolReference.getSymbol().getSymbolType())+"_"+
-					      SymbolShape::toString(theArgumentSymbolReference.getSymbol().getSymbolShape()),
-					      theBasicBlock,
-					      theArgumentSymbolReference.getSymbol(),
-					      theArgumentSymbolReference.getScope());
-    } // end if 
+  void 
+  CallGraphVertexAlg::handleCheckPoint(const std::string& aSubroutineNameBase,
+				       BasicBlock& theBasicBlock,
+				       const Variable& aVariable) { 
+    addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+"_"+
+					    SymbolType::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolType())+"_"+
+					    SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()),
+					    theBasicBlock,
+					    aVariable.getVariableSymbolReference().getSymbol(),
+					    aVariable.getVariableSymbolReference().getScope());
   }
 
-  void CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall(const std::string& aSubroutineName,
-								   BasicBlock& theBasicBlock,
-								   const Symbol& theSymbol,
-								   const Scope& theScope) { 
+  void 
+  CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall(const std::string& aSubroutineName,
+							      BasicBlock& theBasicBlock,
+							      const Symbol& theSymbol,
+							      const Scope& theScope) { 
     std::string  theName(aSubroutineName);
     // a suffix indicating an active argument
     if (theSymbol.getActiveTypeFlag())
