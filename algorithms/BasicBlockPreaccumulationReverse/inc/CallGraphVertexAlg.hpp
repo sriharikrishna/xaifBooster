@@ -3,6 +3,8 @@
 
 #include <list>
 
+//#include "xaifBooster/system/inc/SideEffectType.hpp"
+
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 
 #include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
@@ -84,7 +86,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * and the ControlFlowGraph is the one we are adding to
      */
     void handleCheckPointing(const std::string& aSubroutineNameBase,
-			     IntentType::IntentType_E theExcludedIntent,
+			     SideEffectListType::SideEffectListType_E theSideEffectListType,
 			     ControlFlowGraph& theCFG,
 			     bool reverse);
 
@@ -92,9 +94,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * called by handleCheckPointing to deal with one argument
      */
     void handleCheckPoint(const std::string& aSubroutineNameBase,
-			  IntentType::IntentType_E theExcludedIntent,
 			  BasicBlock& theBasicBlock,
-			  const ArgumentSymbolReference& theArgumentSymbolReference); 
+			  const Variable& theVariable); 
     /** 
      * add the InlinableSubroutineCall with name  aSubroutineName
      * to theBasicBlock which pushes or pops to/from a Variable 
