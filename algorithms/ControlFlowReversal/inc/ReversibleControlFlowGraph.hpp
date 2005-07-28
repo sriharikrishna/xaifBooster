@@ -55,12 +55,18 @@ namespace xaifBoosterControlFlowReversal {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-   /**
-    * The branch entry edges are marked by has_condition_value()==true and
-    * a corresponding integer get_condition_value().
-    * This information is projected onto the branch exit edges.
-    */
+    /**
+     * The branch entry edges are marked by has_condition_value()==true and
+     * a corresponding integer get_condition_value().
+     * This information is projected onto the branch exit edges.
+     */
     void markBranchExitEdges();
+
+    typedef std::list<std::pair<ReversibleControlFlowGraphVertex*, ReversibleControlFlowGraphVertex*> > VertexPPairList;
+
+    VertexPPairList& getOriginalReverseVertexPPairList();
+
+    const VertexPPairList& getOriginalReverseVertexPPairList() const;
 
   private:
 
@@ -89,36 +95,36 @@ namespace xaifBoosterControlFlowReversal {
      */
     void clearIndeces(); 
 
-   /**
-    * Insert edge from theAdjointSource_cr to theAdjointTarget_cr as specfied by 
-    * source and target;
-    * Return reference to the newly created ReversibleControlFlowGraphEdge.
-    */
+    /**
+     * Insert edge from theAdjointSource_cr to theAdjointTarget_cr as specfied by 
+     * source and target;
+     * Return reference to the newly created ReversibleControlFlowGraphEdge.
+     */
     ReversibleControlFlowGraphEdge&
     insertAdjointControlFlowGraphEdge(ReversibleControlFlowGraph&, 
 				      const ReversibleControlFlowGraphVertex& theAdjointSource_cr, 
 				      const ReversibleControlFlowGraphVertex& theAdjointTarget_cr);
 
-   /**
-    * For a given edge in the original control flow as represented by the initial copy of the CFG, 
-    * build the adjoint edge.
-    * For a given edge in the original control flow as represented by the initial copy of the CFG, 
-    * build the adjoint edge.
-    * The correspondence between original and adjoint vertices is recorded in
-    * theVertexCorrespondence_ppl where the first entry of each pair is the
-    * original vertex and the second entry is the adjoint vertex.
-    *
-    * Add edge from the adjoint of the target to the adjoint of the source
-    * if the source it is not a LOOP node and the target is not the first node
-    * of the loop body, that is, its inedge.
-    * Otherwise, find the matching original ENDLOOP node and add edge
-    * from theSource_p to the ENDLOOP node's adjoint (a FORLOOP) node.
-   */
+
+    /**
+     * For a given edge in the original control flow as represented by the initial copy of the CFG, 
+     * build the adjoint edge.
+     * For a given edge in the original control flow as represented by the initial copy of the CFG, 
+     * build the adjoint edge.
+     * The correspondence between original and adjoint vertices is recorded in
+     * theVertexCorrespondence_ppl where the first entry of each pair is the
+     * original vertex and the second entry is the adjoint vertex.
+     *
+     * Add edge from the adjoint of the target to the adjoint of the source
+     * if the source it is not a LOOP node and the target is not the first node
+     * of the loop body, that is, its inedge.
+     * Otherwise, find the matching original ENDLOOP node and add edge
+     * from theSource_p to the ENDLOOP node's adjoint (a FORLOOP) node.
+     */
     ReversibleControlFlowGraphEdge&
     addAdjointControlFlowGraphEdge(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r, 
 				   const ReversibleControlFlowGraphEdge& theOriginalEdge_cr,
-				   const std::list<std::pair<ReversibleControlFlowGraphVertex*,
-				   ReversibleControlFlowGraphVertex*> >& theVertexCorrespondence_ppl);
+				   const VertexPPairList& theVertexCorrespondence_ppl);
 
     /** 
      * find branch entry edge that corresponds to theCurrentEdge_r
@@ -134,13 +140,6 @@ namespace xaifBoosterControlFlowReversal {
     find_corresponding_branch_exit_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, 
 					    int& nesting_depth) const;
 
-//    /**
-//     * Assuming that the branch exit edges are marked by has_condition_value()==
-//     * true and a corresponding integer get_condition_value() this information is
-//     * projected onto the branch entry edges.
-//     */
-//     void markBranchEntryEdges();
-
     /** 
      * bottom-up augmentation of the cfg by statements that store
      * the flow of control
@@ -151,8 +150,11 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * top-down topologically sorted vertex list
      */
-    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, int&,std::stack<ReversibleControlFlowGraphVertex*>&,
-				    ForLoopReversalType::ForLoopReversalType_E aReversalType);
+    void topologicalSortRecursively(ReversibleControlFlowGraphVertex&, 
+				    int&,
+				    std::stack<ReversibleControlFlowGraphVertex*>&,
+				    ForLoopReversalType::ForLoopReversalType_E aReversalType,
+				    ReversibleControlFlowGraphVertex* aTopExplicitLoopVertex_p);
 
     /** 
      * top down topological sort
@@ -163,10 +165,10 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * insert a new basic block between after and before and return it
      */
-    BasicBlock& insert_basic_block(const ReversibleControlFlowGraphVertex& after, 
-				   const ReversibleControlFlowGraphVertex& before, 
-				   const ReversibleControlFlowGraphEdge& replacedEdge_r, 
-				   bool direction);
+    ReversibleControlFlowGraphVertex& insertBasicBlock(const ReversibleControlFlowGraphVertex& after, 
+						       const ReversibleControlFlowGraphVertex& before, 
+						       const ReversibleControlFlowGraphEdge& replacedEdge_r, 
+						       bool direction);
 
     /** 
      * make a new entry node
@@ -246,8 +248,11 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * list of correspondences between original vertices
      * and new ones in the reversed cfg
+     * NOTE: this is populated only in the eventually augmented version,
+     * not in the adjoint version! 
+     * \todo JU: refactor this 
      */
-    std::list<std::pair<const ReversibleControlFlowGraphVertex*,const ReversibleControlFlowGraphVertex*> > myVertexMap;
+    VertexPPairList myOriginalReverseVertexPPairList;
 
     void makeLoopExplicitReversalInitialization(const ForLoop& theOldForLoop,
 						ForLoop& theNewForLoop,
@@ -260,6 +265,14 @@ namespace xaifBoosterControlFlowReversal {
     void makeLoopExplicitReversalUpdate(const ForLoop& theOldForLoop,
 					ForLoop& theNewForLoop,
 					bool countUp); 
+
+    /** 
+     * for certain vertex types we find the 'parent' vertex among 
+     * the sources of theCurrentVertex_r  in-edges and 
+     * let the current vertex inherit the loop variables from there
+     */
+    void inheritLoopVariables(ForLoopReversalType::ForLoopReversalType_E aReversalType,
+ 			      ReversibleControlFlowGraphVertex& theCurrentVertex_r);
 
   };  // end of class
 

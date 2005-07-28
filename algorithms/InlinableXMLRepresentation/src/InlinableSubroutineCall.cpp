@@ -76,4 +76,14 @@ namespace xaifBoosterInlinableXMLRepresentation {
     return * newConcreteArgument_p;
   } 
 
+  const SubroutineCall::ConcreteArgumentPList&  
+  InlinableSubroutineCall::getArgumentList() const { 
+    return myConcreteArgumentPList;
+  } 
+
+  const std::string& 
+  InlinableSubroutineCall::getSubroutineName() const { 
+    return mySubroutineName;
+  }
+
 } 
