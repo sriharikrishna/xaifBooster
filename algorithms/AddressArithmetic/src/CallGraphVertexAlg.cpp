@@ -26,9 +26,9 @@ namespace xaifBoosterAddressArithmetic {
   }
 
   void
-  CallGraphVertexAlg::findUnknownVariables(const Expression& anExpression,
-					   const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-					   xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables) {
+  CallGraphVertexAlg::findUnknownVariablesInExpression(const Expression& anExpression,
+						       const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+						       xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables) {
     Expression::ConstVertexIteratorPair aConstVertexIteratorPair(anExpression.vertices());
     Expression::ConstVertexIterator 
       anExpressionVertexI(aConstVertexIteratorPair.first),
@@ -96,9 +96,10 @@ namespace xaifBoosterAddressArithmetic {
 	      for (ArrayAccess::IndexListType::const_iterator anIndexListI=anIndexList.begin();
 		   anIndexListI!=anIndexList.end();
 		   ++anIndexListI) { 
-		findUnknownVariables(*anIndexListI,
-				     theKnownVariables,
-				     theUnknownVariables);
+		DBG_MACRO(DbgGroup::DATA, "looking at " << (*anIndexListI)->debug().c_str());
+		findUnknownVariablesInExpression(**anIndexListI,
+						 theKnownVariables,
+						 theUnknownVariables);
 	      }
 	    } 
 	  }
@@ -110,9 +111,9 @@ namespace xaifBoosterAddressArithmetic {
 	  for (ArrayAccess::IndexListType::const_iterator anIndexListI=anIndexList.begin();
 	       anIndexListI!=anIndexList.end();
 	       ++anIndexListI) { 
-	    findUnknownVariables(*anIndexListI,
-				 theKnownVariables,
-				 theUnknownVariables);
+	    findUnknownVariablesInExpression(**anIndexListI,
+					     theKnownVariables,
+					     theUnknownVariables);
 	  }
 	} 
       } 
@@ -120,9 +121,9 @@ namespace xaifBoosterAddressArithmetic {
   } 
 
   void
-  CallGraphVertexAlg::findUnknownVariables(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aReversibleControlFlowGraphVertex,
-					   const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-					   xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables) { 
+  CallGraphVertexAlg::findUnknownVariablesInReversibleControlFlowGraphVertex(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aReversibleControlFlowGraphVertex,
+									     const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+									     xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables) { 
     switch (aReversibleControlFlowGraphVertex.getKind()) { 
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::BASICBLOCK:{ 
       const BasicBlock& theOriginalBasicBlock(dynamic_cast<const BasicBlock&>(aReversibleControlFlowGraphVertex.getOriginalVertex()));
@@ -134,25 +135,38 @@ namespace xaifBoosterAddressArithmetic {
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::FORLOOP: { 
       const ForLoop& theOriginalForLoop(dynamic_cast<const ForLoop&>(aReversibleControlFlowGraphVertex.getOriginalVertex()));
       // figure this out for the init
-      CallGraphVertexAlg::findUnknownVariables(theOriginalForLoop.getInitialization().getAssignment().getRHS(),
-					       theKnownVariables,
-					       theUnknownVariables);
+      CallGraphVertexAlg::findUnknownVariablesInExpression(theOriginalForLoop.getInitialization().getAssignment().getRHS(),
+							   theKnownVariables,
+							   theUnknownVariables);
       // the condition
-      CallGraphVertexAlg::findUnknownVariables(theOriginalForLoop.getCondition().getExpression(),
-					       theKnownVariables,
-					       theUnknownVariables);
+      CallGraphVertexAlg::findUnknownVariablesInExpression(theOriginalForLoop.getCondition().getExpression(),
+							   theKnownVariables,
+							   theUnknownVariables);
       // and the update
-      CallGraphVertexAlg::findUnknownVariables(theOriginalForLoop.getUpdate().getAssignment().getRHS(),
-					       theKnownVariables,
-					       theUnknownVariables);
+      CallGraphVertexAlg::findUnknownVariablesInExpression(theOriginalForLoop.getUpdate().getAssignment().getRHS(),
+							   theKnownVariables,
+							   theUnknownVariables);
       break;
     }
+    case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::BRANCH: { 
+      const Branch& theOriginalBranch(dynamic_cast<const Branch&>(aReversibleControlFlowGraphVertex.getOriginalVertex()));
+      // figure this out for
+      // the condition
+      CallGraphVertexAlg::findUnknownVariablesInExpression(theOriginalBranch.getCondition().getExpression(),
+							   theKnownVariables,
+							   theUnknownVariables);
+      break;
+    }
+    case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::ENDLOOP: 
+    case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::ENDBRANCH: 
+      // do nutzing
+      break;
     default:
-      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_5: don't know what to do with " 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInReversibleControlFlowGraphVertex: don't know what to do with " 
 				 << xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::kindToString(aReversibleControlFlowGraphVertex.getKind()));
+      break;
     } 
   } 
-
   
   void 
   CallGraphVertexAlg::pushUnknownVariable(const Variable& anUnknownVariable,
@@ -236,12 +250,15 @@ namespace xaifBoosterAddressArithmetic {
 	if ((*aReversibleControlFlowGraphVertexI).getReversalType()==ForLoopReversalType::EXPLICIT) { 
 	  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList theUnknownVariables;
 	  const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables((*aReversibleControlFlowGraphVertexI).getKnownLoopVariables());
-	  findUnknownVariables(*aReversibleControlFlowGraphVertexI,
-			       theKnownVariables,
-			       theUnknownVariables);
+	  findUnknownVariablesInReversibleControlFlowGraphVertex(*aReversibleControlFlowGraphVertexI,
+								 theKnownVariables,
+								 theUnknownVariables);
 	  if (!theUnknownVariables.empty()) { 
 	    // get the taping point
-	    BasicBlock& aBasicBlock(dynamic_cast<BasicBlock&>((*aReversibleControlFlowGraphVertexI).getTopExplicitLoopAddressArithmetic().getNewVertex()));
+	    BasicBlock& aBasicBlock(dynamic_cast<BasicBlock&>((*aReversibleControlFlowGraphVertexI).
+							      getTopExplicitLoop().
+							      getTopExplicitLoopAddressArithmetic().
+							      getNewVertex()));
 	    // tape the unknown variables
 	    pushUnknownVariables(theUnknownVariables,aBasicBlock);
 	  } 
@@ -257,14 +274,29 @@ namespace xaifBoosterAddressArithmetic {
 	    && 
 	    (*aVertexPPairListI).first==&((*aVertexPPairListI).first->getTopExplicitLoop())) { 
 	  // this is a top explicit loop
-	  BasicBlock& aPushBasicBlock(dynamic_cast<BasicBlock&>((*aReversibleControlFlowGraphVertexI).getTopExplicitLoopAddressArithmetic()));
+	  BasicBlock& aPushBasicBlock(dynamic_cast<BasicBlock&>((*aVertexPPairListI).first->
+								getTopExplicitLoopAddressArithmetic().
+								getNewVertex()));
 	  // find the counterpart in the adjoint graph:
 	  // this is a loop, its counterpart is an ENDLOOP which is the original to the adjoint FORLOOP;
-	  // it also works the other way round, the adjoint to this is an ENDLOOP whose counterpart is the 
-	  // reverse FORLOOP:
-	  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theReverseLoop((*aVertexPPairListI).second->getCounterPart());
+	  // BTW it doesn't work the other way round since we don't set up counterpart in the adjoint graph
+	  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theEndLoopCounterPart((*aVertexPPairListI).first->getCounterPart());
+	  xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList::iterator anInnerVertexPPairListI=theOriginalReverseVertexPPairList.begin();
+	  for (;
+	       anInnerVertexPPairListI!=theOriginalReverseVertexPPairList.end();
+	       ++anInnerVertexPPairListI) { 
+	    if ((*anInnerVertexPPairListI).first==&theEndLoopCounterPart)
+	      break;
+	  }
+	  if (anInnerVertexPPairListI==theOriginalReverseVertexPPairList.end())
+	    THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_5: ENDLOOP " 
+				       << theEndLoopCounterPart.getOriginalVertex().debug().c_str()
+				       << " not in the vertex pair list");
+	  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theReverseLoop(*(*anInnerVertexPPairListI).second);
 	  // this one has a corresponding BasicBlock for the address arithmetic variables: 
-	  BasicBlock& aPopBasicBlock(dynamic_cast<BasicBlock&>(theReverseLoop.getTopExplicitLoopAddressArithmetic()));
+	  BasicBlock& aPopBasicBlock(dynamic_cast<BasicBlock&>(theReverseLoop.
+							       getTopExplicitLoopAddressArithmetic().
+							       getNewVertex()));
 	  BasicBlock::BasicBlockElementList::const_reverse_iterator pushIteratorEnd=aPushBasicBlock.getBasicBlockElementList().rend();
 	  for (BasicBlock::BasicBlockElementList::const_reverse_iterator pushIterator=aPushBasicBlock.getBasicBlockElementList().rbegin();
 	       pushIterator!=pushIteratorEnd;

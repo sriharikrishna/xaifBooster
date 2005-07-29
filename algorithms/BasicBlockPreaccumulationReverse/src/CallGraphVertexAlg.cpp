@@ -13,7 +13,7 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
-    xaifBoosterControlFlowReversal::CallGraphVertexAlg(theContaining), 
+    xaifBoosterAddressArithmetic::CallGraphVertexAlg(theContaining), 
     // JU: this is iffy. Ideally I don't want to get into accessing theContaining 
     // here since it opens the door to ordering problems between the ctors.
     myReplacementList(theContaining.getControlFlowGraph().getSymbolReference().getSymbol(),

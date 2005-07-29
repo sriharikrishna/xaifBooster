@@ -58,9 +58,9 @@ namespace xaifBoosterAddressArithmetic {
      * do not occur in theKnownVariables and 
      * put them in the theUnknownVariables
      */
-    void findUnknownVariables(const Expression& anExpression,
-			      const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-			      xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables);
+    void findUnknownVariablesInExpression(const Expression& anExpression,
+					  const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+					  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables);
 
     /** 
      * find variables used in index expressions
@@ -74,9 +74,9 @@ namespace xaifBoosterAddressArithmetic {
     /** 
      * find variables used in aReversibleControlFlowGraphVertex 
      */
-    void findUnknownVariables(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aReversibleControlFlowGraphVertex,
-			      const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-			      xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables);
+    void findUnknownVariablesInReversibleControlFlowGraphVertex(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aReversibleControlFlowGraphVertex,
+								const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+								xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables);
 
     /** 
      * push anUnknownVariable

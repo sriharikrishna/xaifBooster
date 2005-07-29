@@ -84,6 +84,7 @@ int main(int argc,char** argv) {
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // flatten
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // fix up the addresses in simple loops
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     if (schemaPath.size())
