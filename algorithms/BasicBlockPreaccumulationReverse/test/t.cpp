@@ -58,9 +58,9 @@ int main(int argc,char** argv) {
   } // end catch 
   try {   
     xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->init();
-    DBG_MACRO(DbgGroup::TEMPORARY,
-	      "t.cpp: " 
-	      << xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->debug().c_str());
+//     DBG_MACRO(DbgGroup::TEMPORARY,
+// 	      "t.cpp: " 
+// 	      << xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->debug().c_str());
     if (forceStatementLevel)
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
     if (intentChange)

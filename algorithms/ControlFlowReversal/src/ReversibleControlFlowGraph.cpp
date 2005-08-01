@@ -471,7 +471,7 @@ namespace xaifBoosterControlFlowReversal {
 												   (*(*ieilIt)),
 												   false));
 	      BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>((*the_mySortedVertices_p_l_it)->getTopExplicitLoopAddressArithmetic().getNewVertex()));
-	      theBasicBlock_r.setId(std::string("_aug_addressArithmetic_")+makeUniqueVertexId());
+	      theBasicBlock_r.setId(std::string("_aug_AddressArithmetic_")+makeUniqueVertexId());
 	      removeAndDeleteEdge(*(*ieilIt));
 	    }  
 	  }
@@ -600,13 +600,13 @@ namespace xaifBoosterControlFlowReversal {
 	       theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::PRELOOP)
 	      && 
 	      getSourceOf(*anInEdgeI).getKind()!=ControlFlowGraphVertexAlg::ENDLOOP) { 
-	    theCurrentVertex_r.inheritLoopVariables(getSourceOf(*anInEdgeI).getKnownLoopVariables());
+	    theCurrentVertex_r.inheritLoopVariables(getSourceOf(*anInEdgeI));
 	    break;
 	  } 
 	  else { 
 	    // all others that we allow after the switch above should have a single in-edge 
 	    // always assuming structured graphs
-	    theCurrentVertex_r.inheritLoopVariables(getSourceOf(*anInEdgeI).getKnownLoopVariables());
+	    theCurrentVertex_r.inheritLoopVariables(getSourceOf(*anInEdgeI));
 	  }
 	}
       } 
@@ -654,7 +654,7 @@ namespace xaifBoosterControlFlowReversal {
       ReversibleControlFlowGraphVertex& theCounterPart(getTargetOf(*(getOutEdgesOf(theCurrentVertex_r).first)));
       theCounterPart.setCounterPart(theCurrentVertex_r);
       theCurrentVertex_r.setCounterPart(theCounterPart);
-      theCurrentVertex_r.inheritLoopVariables(theCounterPart.getKnownLoopVariables());
+      theCurrentVertex_r.inheritLoopVariables(theCounterPart);
       return;
     }
     inheritLoopVariables(aReversalType,theCurrentVertex_r);
@@ -669,15 +669,17 @@ namespace xaifBoosterControlFlowReversal {
 	  dynamic_cast<const ForLoop&>(theCurrentVertex_r.getOriginalVertex()).getReversalType()==ForLoopReversalType::EXPLICIT) { 
 	aNewReversalType=ForLoopReversalType::EXPLICIT;
 	aNewTopExplicitLoopVertex_p=&theCurrentVertex_r;
-	theCurrentVertex_r.addLoopVariable(dynamic_cast<const ForLoop&>(theCurrentVertex_r.getOriginalVertex()).
-					   getInitialization().
-					   getAssignment().
-					   getLHS());
       }
       // reset the reversal type
       theCurrentVertex_r.setReversalType(aNewReversalType);
       if (aNewTopExplicitLoopVertex_p)
 	theCurrentVertex_r.setTopExplicitLoop(*aNewTopExplicitLoopVertex_p);
+      if (aNewReversalType==ForLoopReversalType::EXPLICIT) { 
+	theCurrentVertex_r.addLoopVariable(dynamic_cast<const ForLoop&>(theCurrentVertex_r.getOriginalVertex()).
+					   getInitialization().
+					   getAssignment().
+					   getLHS());
+      }
       OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(theCurrentVertex_r));
       // sort loop body
       OutEdgeIterator begin_oei_toLoopBody(theCurrentVertex_oeip.first),end_oei_toLoopBody(theCurrentVertex_oeip.second);
@@ -715,7 +717,7 @@ namespace xaifBoosterControlFlowReversal {
       the_endBranch_p->setIndex(idx++);
       the_endBranch_p->setReversalType(aReversalType);
       the_endBranch_p->setCounterPart(theCurrentVertex_r);
-      the_endBranch_p->inheritLoopVariables(theCurrentVertex_r.getKnownLoopVariables());
+      the_endBranch_p->inheritLoopVariables(theCurrentVertex_r);
       theCurrentVertex_r.setCounterPart(*the_endBranch_p);
       mySortedVertices_p_l.push_back(the_endBranch_p);
       // sort successor  

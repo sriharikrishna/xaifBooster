@@ -96,7 +96,6 @@ namespace xaifBoosterAddressArithmetic {
 	      for (ArrayAccess::IndexListType::const_iterator anIndexListI=anIndexList.begin();
 		   anIndexListI!=anIndexList.end();
 		   ++anIndexListI) { 
-		DBG_MACRO(DbgGroup::DATA, "looking at " << (*anIndexListI)->debug().c_str());
 		findUnknownVariablesInExpression(**anIndexListI,
 						 theKnownVariables,
 						 theUnknownVariables);
@@ -183,6 +182,10 @@ namespace xaifBoosterAddressArithmetic {
       } 
     }
     if (!alreadyPushed) { 
+      DBG_MACRO(DbgGroup::TEMPORARY, 
+		"CallGraphVertexAlg::pushUnknownVariable:" 
+		<< anUnknownVariable.debug().c_str()
+		<< " for address arithmetic");
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p(0);
       switch(anUnknownVariable.getType()) { 
       case SymbolType::INTEGER_STYPE:
@@ -254,6 +257,18 @@ namespace xaifBoosterAddressArithmetic {
 								 theKnownVariables,
 								 theUnknownVariables);
 	  if (!theUnknownVariables.empty()) { 
+	    if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) {
+	      DBG_MACRO(DbgGroup::DATA,
+			"xaifBoosterAddressArithmetic::CallGraphVertexAlg::algorithm_action_5(fix address arithmetic): "
+			<< (*aReversibleControlFlowGraphVertexI).debug().c_str());
+	      std::cout << "unknownList: " ; 
+	      for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList::const_iterator anUnknownListI=theUnknownVariables.begin();
+		   anUnknownListI!=theUnknownVariables.end();
+		   ++anUnknownListI) { 
+		std::cout << (*anUnknownListI)->debug().c_str();
+	      } 
+	      std::cout << std::endl;
+	    }
 	    // get the taping point
 	    BasicBlock& aBasicBlock(dynamic_cast<BasicBlock&>((*aReversibleControlFlowGraphVertexI).
 							      getTopExplicitLoop().

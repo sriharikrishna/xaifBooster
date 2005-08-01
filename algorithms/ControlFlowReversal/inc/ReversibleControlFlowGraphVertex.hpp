@@ -79,7 +79,7 @@ namespace xaifBoosterControlFlowReversal {
 
     const VariablePList& getKnownLoopVariables()const;
     
-    void inheritLoopVariables(const VariablePList& aParentsList);
+    void inheritLoopVariables(const ReversibleControlFlowGraphVertex& aParent);
 
     void addLoopVariable(const Variable& aLoopVariable);
 
