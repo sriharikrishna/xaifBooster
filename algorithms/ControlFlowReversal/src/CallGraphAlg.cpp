@@ -43,10 +43,10 @@ namespace xaifBoosterControlFlowReversal {
     DBG_MACRO(DbgGroup::CALLSTACK,
               "xaifBoosterControlFlowReversal::CallGraphAlg::algorithm_action_4(reverse control flow) called for: "
               << debug().c_str());
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
-      GraphVizDisplay::show(getContaining(),"call_graph",
-			    CallGraphVertexLabelWriter(getContaining()));
-    }
+//     if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) {     
+//       GraphVizDisplay::show(getContaining(),"call_graph",
+// 			    CallGraphVertexLabelWriter(getContaining()));
+//     }
   } // end CallGraphAlg::algorithm_action_4() 
 
   void

@@ -93,16 +93,31 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraphVertex::debug() const {
     std::ostringstream out;
     out << "xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex["
-	 << this
-	 << ",original="
-	 << original
-	 << ",adjoint="
-	 << adjoint
-	 << ",myIndex="
-	 << myIndex
-	 << ",getKind():"
-	 << getKind()
-        << "]" << std::ends;
+	<< this
+	<< ",original="
+	<< original
+	<< ",adjoint="
+	<< adjoint
+	<< ",myIndex="
+	<< myIndex
+	<< ",getKind():"
+	<< getKind()
+	<< ",myReversalType="
+	<< ForLoopReversalType::toString(myReversalType).c_str()
+	<< ",myCounterPart_p="
+	<< myCounterPart_p
+	<< ",myTopExplicitLoop_p="
+	<< myTopExplicitLoop_p
+	<< ",myTopExplicitLoopAddressArithmetic_p="
+	<< myTopExplicitLoopAddressArithmetic_p
+	<< ",myKnownLoopVariables[";
+      for (VariablePList::const_iterator knownListI= myKnownLoopVariables.begin();
+	   knownListI!= myKnownLoopVariables.end();
+	   ++knownListI) { 
+	out << (*knownListI)->debug().c_str();
+      }
+      out << "]"
+	  << "]" << std::ends;
     return out.str();
   }
 
@@ -163,11 +178,12 @@ namespace xaifBoosterControlFlowReversal {
   } 
     
   void 
-  ReversibleControlFlowGraphVertex::inheritLoopVariables(const ReversibleControlFlowGraphVertex::VariablePList& aParentsList) {
+  ReversibleControlFlowGraphVertex::inheritLoopVariables(const ReversibleControlFlowGraphVertex& aParent) {
+    const ReversibleControlFlowGraphVertex::VariablePList& aParentList(aParent.getKnownLoopVariables());
     if (myKnownLoopVariables.size())
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::inheritLoopVariables: already inherited once");
-    for(VariablePList::const_iterator i=myKnownLoopVariables.begin();
-	i!=myKnownLoopVariables.end();
+    for(VariablePList::const_iterator i=aParentList.begin();
+	i!=aParentList.end();
 	++i) { 
       myKnownLoopVariables.push_back(*i);
     }
