@@ -424,9 +424,9 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-          call cp_store_p_real_vector(x(cp_loop_variable_1),
-     +size(x(cp_loop_variable_1)),theArgFStack,theArgFStackoffset,
+          do cp_loop_variable_2=lbound(x,2),ubound(x,2)
+          call cp_store_p_real_vector(x(:,cp_loop_variable_2),
+     +size(x(:,cp_loop_variable_2)),theArgFStack,theArgFStackoffset,
      +theArgFStackSize)
           end do
         end subroutine 
@@ -438,8 +438,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
-             do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
+          do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
+             do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
                 x(cp_loop_variable_1,cp_loop_variable_2)=
      +theArgFStack(theArgFStackoffset)
                 theArgFStackoffset=theArgFStackoffset-1
@@ -454,9 +454,9 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-          call cp_store_p_real_vector(x(cp_loop_variable_1),
-     +size(x(cp_loop_variable_1)),theResFStack,theResFStackoffset,
+          do cp_loop_variable_2=lbound(x,2),ubound(x,2)
+          call cp_store_p_real_vector(x(:,cp_loop_variable_2),
+     +size(x(:,cp_loop_variable_2)),theResFStack,theResFStackoffset,
      +theResFStackSize)
           end do
         end subroutine 
@@ -468,8 +468,8 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=lbound(x,1),ubound(x,2),1
-             do cp_loop_variable_2=lbound(x,2),ubound(x,2),1
+          do cp_loop_variable_2=lbound(x,2),ubound(x,2),1
+             do cp_loop_variable_1=lbound(x,1),ubound(x,1),1
                 x(cp_loop_variable_1,cp_loop_variable_2)=
      +theResFStack(theResFStackoffset)
                 theResFStackoffset=theResFStackoffset+1
@@ -484,12 +484,12 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-             do cp_loop_variable_2=lbound(x,2),ubound(x,2)
-                do cp_loop_variable_3=lbound(x,3),ubound(x,3)
-          call cp_store_p_real_vector(x(cp_loop_variable_1,
-     +cp_loop_variable_2, cp_loop_variable_3),
-     +size(x(cp_loop_variable_1,cp_loop_variable_2, cp_loop_variable_3)),
+          do cp_loop_variable_4=lbound(x,4),ubound(x,4)
+             do cp_loop_variable_3=lbound(x,3),ubound(x,3)
+                do cp_loop_variable_2=lbound(x,2),ubound(x,2)
+          call cp_store_p_real_vector(x(:,cp_loop_variable_2,
+     +cp_loop_variable_3, cp_loop_variable_4),
+     +size(x(:,cp_loop_variable_2,cp_loop_variable_3, cp_loop_variable_4)),
      +theArgFStack,
      +theArgFStackoffset,
      +theArgFStackSize)
@@ -505,10 +505,10 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
-             do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
-                do cp_loop_variable_3=ubound(x,3),lbound(x,3),-1
-                   do cp_loop_variable_4=ubound(x,4),lbound(x,4),-1
+          do cp_loop_variable_4=ubound(x,4),lbound(x,4),-1
+             do cp_loop_variable_3=ubound(x,3),lbound(x,3),-1
+                do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
+                   do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
                       x(cp_loop_variable_1,cp_loop_variable_2,
      +cp_loop_variable_3,cp_loop_variable_4)=
      +theArgFStack(theArgFStackoffset)
@@ -526,12 +526,12 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(::) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-             do cp_loop_variable_2=lbound(x,2),ubound(x,2)
-                do cp_loop_variable_3=lbound(x,3),ubound(x,3)
-          call cp_store_p_real_vector(x(cp_loop_variable_1,
-     +cp_loop_variable_2, cp_loop_variable_3),
-     +size(x(cp_loop_variable_1,cp_loop_variable_2, cp_loop_variable_3)),
+          do cp_loop_variable_4=lbound(x,4),ubound(x,4)
+             do cp_loop_variable_3=lbound(x,3),ubound(x,3)
+                do cp_loop_variable_2=lbound(x,2),ubound(x,2)
+          call cp_store_p_real_vector(x(:,cp_loop_variable_2,
+     +cp_loop_variable_3, cp_loop_variable_4),
+     +size(x(:,cp_loop_variable_2,cp_loop_variable_3, cp_loop_variable_4)),
      +theResFStack,
      +theResFStackoffset,
      +theResFStackSize)
@@ -547,10 +547,10 @@ C $OpenAD$ INLINE DECLS
           implicit none
           double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
-          do cp_loop_variable_1=lbound(x,1),ubound(x,1)
-             do cp_loop_variable_2=lbound(x,2),ubound(x,2)
-                do cp_loop_variable_3=lbound(x,3),ubound(x,3)
-                   do cp_loop_variable_4=lbound(x,4),ubound(x,4)
+          do cp_loop_variable_4=lbound(x,4),ubound(x,4)
+             do cp_loop_variable_3=lbound(x,3),ubound(x,3)
+                do cp_loop_variable_2=lbound(x,2),ubound(x,2)
+                   do cp_loop_variable_1=lbound(x,1),ubound(x,1)
                       x(cp_loop_variable_1,cp_loop_variable_2,
      +cp_loop_variable_3,cp_loop_variable_4)=
      +theResFStack(theResFStackoffset)
@@ -671,7 +671,7 @@ C $OpenAD$ INLINE DECLS
           implicit none
           logical :: b
 C $OpenAD$ END DECLS
-          call cp_store_bool_scalar(s,theResBStack,
+          call cp_store_bool_scalar(b,theResBStack,
      +theResBStackoffset, theResBStackSize)
         end subroutine 
 
