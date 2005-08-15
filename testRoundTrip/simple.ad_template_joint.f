@@ -3,7 +3,6 @@
           use OpenAD_tape
           use OpenAD_rev
           use OpenAD_checkpoints
-          use all_globals_cp_mod
 
           ! original arguments get inserted before version
           ! and declared here together with all local variables
@@ -59,12 +58,6 @@ C     +" DT:",double_tape_pointer,
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
-      call cp_store_globals(
-     + theArgFStack,theArgFStackoffset,theArgFStackSize,
-     + theArgIStack,theArgIStackoffset,theArgIStackSize,
-     + theArgSStack,theArgSStackoffset,theArgSStackSize,
-     + theArgBStack,theArgBStackoffset,theArgBStackSize)
-
 C store arguments
 !$PLACEHOLDER_PRAGMA$ id=4
           end if 
@@ -72,11 +65,6 @@ C store arguments
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
 !$PLACEHOLDER_PRAGMA$ id=6
-      call cp_restore_globals(
-     + theArgFStack,theArgFStackoffset,
-     + theArgIStack,theArgIStackoffset,
-     + theArgSStack,theArgSStackoffset,
-     + theArgBStack,theArgBStackoffset)
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode

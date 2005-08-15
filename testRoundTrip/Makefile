@@ -17,8 +17,7 @@ OpenAD_dct.o                    \
 OpenAD_rev.o                    \
 OpenAD_tape.o                   \
 iaddr.o                         \
-all_globals_mod.xb.x2w.w2f.pp.o \
-all_globals_cp_mod.o 
+all_globals_mod.xb.x2w.w2f.pp.o 
 PP_FLAGS=
 ifeq ($(SUB_MODE),joint)
 CP_FLAG=-I
