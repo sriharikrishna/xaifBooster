@@ -109,7 +109,6 @@ do
   copyDefaultBeforeExample $exdir all_globals_mod.f all_globals_mod.f
   if [ "$REVERSE_MODE" == "y" ] 
   then 
-    copyDefaultBeforeExample $exdir all_globals_cp_mod.f90 all_globals_cp_mod.f90
     copyDefaultBeforeExample $exdir ad_template_${SUB_MODE}.f ad_template.f
   fi  
     
