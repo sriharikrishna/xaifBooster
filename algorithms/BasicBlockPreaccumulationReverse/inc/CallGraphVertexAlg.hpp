@@ -3,9 +3,7 @@
 
 #include <list>
 
-//#include "xaifBooster/system/inc/SideEffectType.hpp"
-
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 
 #include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
 
@@ -19,7 +17,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
    * class to implement algorithms relevant for the 
    * angel interface
    */
-  class CallGraphVertexAlg : public xaifBoosterControlFlowReversal::CallGraphVertexAlg {
+  class CallGraphVertexAlg : public xaifBoosterAddressArithmetic::CallGraphVertexAlg {
   public:
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);

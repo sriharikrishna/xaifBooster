@@ -1,17 +1,12 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlgFactory.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationReverse { 
+namespace xaifBoosterAddressArithmetic { 
 
   xaifBooster::AlgFactoryManager* 
   AlgFactoryManager::instance() { 
@@ -20,7 +15,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     ourInstanceMutex.lock();
     try { 
       if (!ourInstance_p)
-	ourInstance_p=dynamic_cast<xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager*>(new AlgFactoryManager());
+	ourInstance_p=new AlgFactoryManager();
       if (!ourInstance_p) { 
 	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
       } // end if 
@@ -35,9 +30,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   void AlgFactoryManager::resets() {
     // we have to pick a path
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resetArgumentSymbolReferenceAlgFactory(new ArgumentSymbolReferenceAlgFactory());
-    resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
   }
 
   void AlgFactoryManager::init() {
@@ -49,7 +42,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resets();
     xaifBoosterControlFlowReversal::AlgFactoryManager::resets();
     xaifBoosterAddressArithmetic::AlgFactoryManager::resets();
-    xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::resets();
   }
 
 }
