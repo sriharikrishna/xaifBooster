@@ -19,7 +19,9 @@ namespace xaifBoosterControlFlowReversal {
     myVisitedFlag(false), 
     myIndex(0), 
     myReversalType(ForLoopReversalType::ANONYMOUS), 
-    myCounterPart_p(0) {
+    myCounterPart_p(0),
+    myTopExplicitLoop_p(0),
+    myTopExplicitLoopAddressArithmetic_p(0) {
   }
 
   ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : 
@@ -30,7 +32,9 @@ namespace xaifBoosterControlFlowReversal {
     myVisitedFlag(false),
     myIndex(0),
     myReversalType(ForLoopReversalType::ANONYMOUS), 
-    myCounterPart_p(0) {
+    myCounterPart_p(0),
+    myTopExplicitLoop_p(0),
+    myTopExplicitLoopAddressArithmetic_p(0) {
     ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theOriginal->getControlFlowGraphVertexAlgBase()).getKind();
     if (theKind==ControlFlowGraphVertexAlg::FORLOOP)
       myReversalType=dynamic_cast<const ForLoop*>(theOriginal)->getReversalType();
@@ -89,16 +93,31 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraphVertex::debug() const {
     std::ostringstream out;
     out << "xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex["
-	 << this
-	 << ",original="
-	 << original
-	 << ",adjoint="
-	 << adjoint
-	 << ",myIndex="
-	 << myIndex
-	 << ",getKind():"
-	 << getKind()
-        << "]" << std::ends;
+	<< this
+	<< ",original="
+	<< original
+	<< ",adjoint="
+	<< adjoint
+	<< ",myIndex="
+	<< myIndex
+	<< ",getKind():"
+	<< getKind()
+	<< ",myReversalType="
+	<< ForLoopReversalType::toString(myReversalType).c_str()
+	<< ",myCounterPart_p="
+	<< myCounterPart_p
+	<< ",myTopExplicitLoop_p="
+	<< myTopExplicitLoop_p
+	<< ",myTopExplicitLoopAddressArithmetic_p="
+	<< myTopExplicitLoopAddressArithmetic_p
+	<< ",myKnownLoopVariables[";
+      for (VariablePList::const_iterator knownListI= myKnownLoopVariables.begin();
+	   knownListI!= myKnownLoopVariables.end();
+	   ++knownListI) { 
+	out << (*knownListI)->debug().c_str();
+      }
+      out << "]"
+	  << "]" << std::ends;
     return out.str();
   }
 
@@ -149,9 +168,68 @@ namespace xaifBoosterControlFlowReversal {
       
   ReversibleControlFlowGraphVertex& ReversibleControlFlowGraphVertex::getCounterPart() { 
     if (!myCounterPart_p)
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertexAlg::setCounterPart: not set");
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertexAlg::getCounterPart: not set");
     return *myCounterPart_p;
   }
+
+  const ReversibleControlFlowGraphVertex::VariablePList& 
+  ReversibleControlFlowGraphVertex::getKnownLoopVariables()const { 
+    return myKnownLoopVariables;
+  } 
+    
+  void 
+  ReversibleControlFlowGraphVertex::inheritLoopVariables(const ReversibleControlFlowGraphVertex& aParent) {
+    const ReversibleControlFlowGraphVertex::VariablePList& aParentList(aParent.getKnownLoopVariables());
+    if (myKnownLoopVariables.size())
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::inheritLoopVariables: already inherited once");
+    for(VariablePList::const_iterator i=aParentList.begin();
+	i!=aParentList.end();
+	++i) { 
+      myKnownLoopVariables.push_back(*i);
+    }
+  } 
+
+  void 
+  ReversibleControlFlowGraphVertex::addLoopVariable(const Variable& aLoopVariable) { 
+    myKnownLoopVariables.push_back(&aLoopVariable);
+  }
+
+
+  ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getTopExplicitLoop() { 
+    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
+    } 
+    if (!myTopExplicitLoop_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: not set");
+    return *myTopExplicitLoop_p;
+  } 
+
+  void 
+  ReversibleControlFlowGraphVertex::setTopExplicitLoop(ReversibleControlFlowGraphVertex& theTopExplicitLoop) { 
+    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setTopExplicitLoop: the vertex is not explicit");
+    } 
+    if (myTopExplicitLoop_p && myTopExplicitLoop_p!=&theTopExplicitLoop )
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setTopExplicitLoop: already set "
+				 << myOriginalVertex_p->debug().c_str());
+    myTopExplicitLoop_p=&theTopExplicitLoop;
+  } 
+
+  ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getTopExplicitLoopAddressArithmetic() { 
+    if (!myTopExplicitLoopAddressArithmetic_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoopAddressArithmetic: not set for "
+				 << myOriginalVertex_p->debug().c_str());
+    return *myTopExplicitLoopAddressArithmetic_p;
+  } 
+
+  void 
+  ReversibleControlFlowGraphVertex::setTopExplicitLoopAddressArithmetic(ReversibleControlFlowGraphVertex& theTopExplicitLoopAddressArithmetic) { 
+    if (myTopExplicitLoopAddressArithmetic_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setTopExplicitLoopAddressArithmetic: already set");
+    myTopExplicitLoopAddressArithmetic_p=&theTopExplicitLoopAddressArithmetic;
+  } 
 
 } // end of namespace
 

@@ -127,8 +127,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     void addMyselfToAssignmentIdList(const Assignment&);
 
-  protected: 
-
     /**
      * pointer to printer for DerivativePropagator
      */
@@ -280,8 +278,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * Assignment will have a 0 pointer. 
      */
     BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
-
-  protected: 
+    
+  public: 
 
     typedef std::list<Sequence*> SequencePList;
 

@@ -58,7 +58,7 @@ namespace xaifBoosterControlFlowReversal {
     resetBranchAlgFactory(new BranchAlgFactory());
     resetGotoAlgFactory(new GotoAlgFactory());
     resetLabelAlgFactory(new LabelAlgFactory());
-    DBG_MACRO(DbgGroup::TEMPORARY,
+    DBG_MACRO(DbgGroup::CALLSTACK,
 	      "in CFR reset: " 
 	      << debug().c_str());
   }

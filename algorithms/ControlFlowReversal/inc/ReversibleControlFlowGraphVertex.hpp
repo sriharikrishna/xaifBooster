@@ -75,6 +75,22 @@ namespace xaifBoosterControlFlowReversal {
 
     ReversibleControlFlowGraphVertex& getCounterPart();
 
+    typedef std::list<const Variable*> VariablePList;
+
+    const VariablePList& getKnownLoopVariables()const;
+    
+    void inheritLoopVariables(const ReversibleControlFlowGraphVertex& aParent);
+
+    void addLoopVariable(const Variable& aLoopVariable);
+
+    ReversibleControlFlowGraphVertex& getTopExplicitLoop();
+
+    void setTopExplicitLoop(ReversibleControlFlowGraphVertex& theTopExplicitLoop);
+
+    ReversibleControlFlowGraphVertex& getTopExplicitLoopAddressArithmetic();
+
+    void setTopExplicitLoopAddressArithmetic(ReversibleControlFlowGraphVertex& theTopExplicitLoop);
+
   private:
 
     /** 
@@ -134,7 +150,33 @@ namespace xaifBoosterControlFlowReversal {
      * is initialized during the topological sort
      */
     ReversibleControlFlowGraphVertex* myCounterPart_p;
-   
+
+    /** 
+     * list of variable known to be loop variables
+     * in loops for explicit reversal collected from 
+     * the respective top loop down
+     * we don't own the Variables we are pointing to
+     */ 
+    VariablePList myKnownLoopVariables; 
+
+    /** 
+     * pointer to the top level 
+     * explicit loop for explicit reversals
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */
+    ReversibleControlFlowGraphVertex* myTopExplicitLoop_p;
+
+    /** 
+     * pointer to the top level 
+     * explicit loop's basic block that holds pushes/pops of
+     * variables needed to fix address computations in simple 
+     * loop constructs
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */
+    ReversibleControlFlowGraphVertex* myTopExplicitLoopAddressArithmetic_p;
+
   };  // end of class
 
 } // end of namespace 

@@ -1,13 +1,16 @@
 #include <iostream>
 #include <utility>
+
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 #include "xaifBooster/utils/inc/CommandLineParser.hpp"
+
 #include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
 
 using namespace xaifBooster;
 
@@ -21,8 +24,7 @@ void Usage(char** argv) {
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
-	    << "             [-S] force statement level preaccumulation" << std::endl
-	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl;
+	    << "             [-S] force statement level preaccumulation" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -48,8 +50,6 @@ int main(int argc,char** argv) {
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
     if (CommandLineParser::instance()->isSet('S')) 
       forceStatementLevel=true;
-    if (CommandLineParser::instance()->isSet('I')) 
-      intentChange=true;
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -57,14 +57,12 @@ int main(int argc,char** argv) {
     return -1;
   } // end catch 
   try {   
-    xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->init();
-//     DBG_MACRO(DbgGroup::TEMPORARY,
-// 	      "t.cpp: " 
-// 	      << xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->debug().c_str());
+    xaifBoosterAddressArithmetic::AlgFactoryManager::instance()->init();
+    DBG_MACRO(DbgGroup::TEMPORARY,
+	      "t.cpp: " 
+	      << xaifBoosterAddressArithmetic::AlgFactoryManager::instance()->debug().c_str());
     if (forceStatementLevel)
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
-    if (intentChange)
-      xaifBoosterBasicBlockPreaccumulationReverse::ArgumentSymbolReferenceAlg::changeIntentForCheckPoints();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     if (schemaPath.size()) { 
@@ -83,8 +81,8 @@ int main(int argc,char** argv) {
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // flatten
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
-    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
-    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // fix up the addresses in simple loops
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // control flow reversal
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // address arithmetic fix
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     if (schemaPath.size())
