@@ -132,7 +132,7 @@ int main(int argc,char** argv) {
     ip.parse(intrinsicsFileName);
     XAIFBaseParser p;
     DBG_MACRO(DbgGroup::TIMING,"before input XAIF parsing");
-    p.initialize(true);
+    p.initialize(validateAgainstSchema);
     if (schemaPath.size()) { 
       aUrl="http://www.mcs.anl.gov/XAIF ";
       p.setExternalSchemaLocation(aUrl+schemaPath+"/xaif.xsd");
