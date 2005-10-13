@@ -63,7 +63,7 @@ namespace xaifBooster {
 
   class XAIFBaseParser :  public XERCES_CPP_NAMESPACE::DefaultHandler, public XMLParser, public XAIFBaseParserHandlers {
   public:
-    void initialize();
+    void initialize(bool validateAgainstSchema);
 
     /**
      * UN: main handler routines for SAX2 parsing

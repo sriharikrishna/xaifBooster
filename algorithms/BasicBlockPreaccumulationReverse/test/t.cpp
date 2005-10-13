@@ -74,7 +74,8 @@ void Usage(char** argv) {
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
 	    << "             [-S] force statement level preaccumulation" << std::endl
-	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl;
+	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
+	    << "             [-v] validate <inputFile> against the schema" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -86,8 +87,9 @@ int main(int argc,char** argv) {
   std::string aUrl;
   bool forceStatementLevel=false;
   bool intentChange=false;
+  bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSI",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIv",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -102,6 +104,8 @@ int main(int argc,char** argv) {
       forceStatementLevel=true;
     if (CommandLineParser::instance()->isSet('I')) 
       intentChange=true;
+    if (CommandLineParser::instance()->isSet('v')) 
+      validateAgainstSchema=true;
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -109,6 +113,7 @@ int main(int argc,char** argv) {
     return -1;
   } // end catch 
   try {   
+    DBG_MACRO(DbgGroup::TIMING,"before initialization");
     xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->init();
     DBG_MACRO(DbgGroup::TEMPORARY,
 	      "t.cpp: " 
@@ -123,19 +128,26 @@ int main(int argc,char** argv) {
       aUrl="http://www.mcs.anl.gov/XAIFInlinableIntrinsics ";
       ip.setExternalSchemaLocation(aUrl+schemaPath+"/xaif_inlinable_intrinsics.xsd");
     } 
+    DBG_MACRO(DbgGroup::TIMING,"before intrinsics XAIF parsing");
     ip.parse(intrinsicsFileName);
     XAIFBaseParser p;
-    p.initialize();
+    DBG_MACRO(DbgGroup::TIMING,"before input XAIF parsing");
+    p.initialize(true);
     if (schemaPath.size()) { 
       aUrl="http://www.mcs.anl.gov/XAIF ";
       p.setExternalSchemaLocation(aUrl+schemaPath+"/xaif.xsd");
     } 
     p.parse(inFileName);
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    DBG_MACRO(DbgGroup::TIMING,"before linearize");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
+    DBG_MACRO(DbgGroup::TIMING,"before flatten");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // flatten
+    DBG_MACRO(DbgGroup::TIMING,"before Jacobian accumulation");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
+    DBG_MACRO(DbgGroup::TIMING,"before reversal");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
+    DBG_MACRO(DbgGroup::TIMING,"before unparse");
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     if (schemaPath.size())

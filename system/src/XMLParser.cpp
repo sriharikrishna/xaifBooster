@@ -69,7 +69,7 @@ namespace xaifBooster {
    * configuration of the XMLReader
    */
 
-  void XMLParser::initialize() { 
+  void XMLParser::initialize(bool validateAgainstSchema) { 
     DBG_MACRO(DbgGroup::CALLSTACK, "in XMLParser::initialize" );
     try { 
 
@@ -77,12 +77,12 @@ namespace xaifBooster {
       XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
       
       myParser_p = XERCES_CPP_NAMESPACE::XMLReaderFactory::createXMLReader();
-      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgSAX2CoreValidation, true);
-      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgXercesDynamic, false);
-      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgSAX2CoreNameSpaces, true);
-      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgXercesSchema,true);
-      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgXercesSchemaFullChecking,true);
-      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgSAX2CoreNameSpacePrefixes,true); 
+      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgSAX2CoreValidation,validateAgainstSchema);
+      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgXercesDynamic,validateAgainstSchema);
+      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgSAX2CoreNameSpaces,validateAgainstSchema);
+      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgXercesSchema,validateAgainstSchema);
+      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgXercesSchemaFullChecking,validateAgainstSchema);
+      myParser_p->setFeature(XERCES_CPP_NAMESPACE::XMLUni::fgSAX2CoreNameSpacePrefixes,validateAgainstSchema); 
 
     } catch (const XERCES_CPP_NAMESPACE::XMLException& e) {
       THROW_LOGICEXCEPTION_MACRO("XMLParser::initialize: XMLException: "

@@ -75,7 +75,7 @@ namespace xaifBooster {
 
       if (!ourStaticInitFlag)
 	staticInitialize();
-      XMLParser::initialize();
+      XMLParser::initialize(true);
       myParser_p->setContentHandler(this);
       static XMLParserErrorHandler anErrorHandler;
       myParser_p->setErrorHandler(&anErrorHandler);

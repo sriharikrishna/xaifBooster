@@ -68,7 +68,7 @@ namespace xaifBooster {
     XMLParser(){};
     ~XMLParser(){};
 
-    void initialize();
+    void initialize(bool validateAgainstSchema);
     void parse(std::string theXMLFileName);
     void setExternalSchemaLocation(std::string theSchemaLocation);
     

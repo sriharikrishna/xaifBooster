@@ -67,10 +67,10 @@ namespace xaifBooster {
   HashTable<XAIFBaseParser::ActionItem> XAIFBaseParser::ourActionCatalogue;
 
   void 
-  XAIFBaseParser::initialize() {
+  XAIFBaseParser::initialize(bool validateAgainstSchema) {
     try {
       if (!ourStaticInitFlag) staticInitialize();
-      XMLParser::initialize();
+      XMLParser::initialize(validateAgainstSchema);
       myParser_p->setContentHandler(this);
       static XMLParserErrorHandler anErrorHandler;
       myParser_p->setErrorHandler(&anErrorHandler);

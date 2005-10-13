@@ -1,6 +1,6 @@
 c$openad XXX Template ad_template.f
 	subroutine head(x,y)
-	  double precision, dimension(2), intent(in) :: x
+	  double precision, dimension(2), intent(inout) :: x
 	  double precision, dimension(2), intent(out) :: y
           integer i
 c$openad INDEPENDENT(x)
@@ -10,6 +10,7 @@ c$openad INDEPENDENT(x)
             else
               y(i)=x(i)+x(i)
             end if
+            x(i)=0.0
           end do
 c$openad DEPENDENT(y)
 	end subroutine
