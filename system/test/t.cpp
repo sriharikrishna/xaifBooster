@@ -110,7 +110,7 @@ int main(int argc,char** argv) {
     } 
     ip.parse(intrinsicsFileName);
     XAIFBaseParser p;
-    p.initialize();
+    p.initialize(true);
     if (schemaPath.size()) { 
       aUrl="http://www.mcs.anl.gov/XAIF ";
       p.setExternalSchemaLocation(aUrl+schemaPath+"/xaif.xsd");
