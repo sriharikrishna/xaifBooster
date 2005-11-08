@@ -21,6 +21,8 @@ namespace xaifBooster {
     const Symbol& getSymbol() const;
 
     const Scope& getScope() const;
+    
+    bool refersToSameSymbolAs(const SymbolReference& anotherSymbolReference) const;
 
   protected:
     

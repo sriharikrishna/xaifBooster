@@ -2,6 +2,7 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/CallGraphAlgFactory.hpp"
+#include "xaifBooster/system/inc/UndefinedSubroutineException.hpp"
 
 namespace xaifBooster { 
 
@@ -149,14 +150,32 @@ namespace xaifBooster {
   }
   
   const ControlFlowGraph& CallGraph::getSubroutineBySymbolReference(const SymbolReference& aSymbolReference) const { 
+    typedef std::list<const SymbolReference*> SymbolReferencePList;
+    static SymbolReferencePList undefinedSubroutineList; // for reporting purposes
     CallGraph::ConstVertexIteratorPair p(vertices());
     CallGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
-    for (;beginIt!=endIt ;++beginIt)
-      if(myScopeTree.isSameSymbol((*beginIt).getControlFlowGraph().getSymbolReference(),
-				  aSymbolReference)) 
+    for (;beginIt!=endIt ;++beginIt) { 
+      if ((*beginIt).getControlFlowGraph().getSymbolReference().refersToSameSymbolAs(aSymbolReference)) { 
 	return (*beginIt).getControlFlowGraph();
-    THROW_LOGICEXCEPTION_MACRO("CallGraph::getSubroutineBySymbolReference: no subroutine defined for "
-			       << aSymbolReference.debug().c_str());
+      }
+    }
+    SymbolReferencePList::iterator undefinedSubroutineListI=undefinedSubroutineList.begin();
+    for (; undefinedSubroutineListI!=undefinedSubroutineList.end();
+	 ++undefinedSubroutineListI) { 
+      if((*undefinedSubroutineListI)->refersToSameSymbolAs(aSymbolReference)) 
+	break;
+    }
+    if (undefinedSubroutineListI==undefinedSubroutineList.end()) { 
+      undefinedSubroutineList.push_back(&aSymbolReference);
+      DBG_MACRO(DbgGroup::WARNING,
+		"CallGraph::getSubroutineBySymbolReference: " 
+		<< aSymbolReference.getSymbol().getId().c_str() 
+		<< " is not defined (reported once per symbol)");
+    }
+    std::ostringstream errorMsg;
+    errorMsg << "CallGraph::getSubroutineBySymbolReference: no subroutine defined for "
+	     << aSymbolReference.debug().c_str() << std::ends;
+    throw UndefinedSubroutineException(__FILE__,__LINE__,errorMsg.str());
     // to appease the compiler
     return (*beginIt).getControlFlowGraph();
   }

@@ -100,10 +100,5 @@ namespace xaifBooster {
 				 << "< not found");
     return *(beginIt);
   } 
-
-  bool Scopes::isSameSymbol(const SymbolReference& first,
-			    const SymbolReference& second) const { 
-    return (( &(first.getScope())==&(second.getScope()) && &(first.getSymbol())==&(second.getSymbol())) ? true : false );
-  } 
   
 } // end of namespace xaifBooster 

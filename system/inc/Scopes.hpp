@@ -36,9 +36,6 @@ namespace xaifBooster {
 
     Scope& getScopeById(const std::string& theScopeId);
 
-    bool isSameSymbol(const SymbolReference& first,
-		      const SymbolReference& second) const;
-
   private:
     
     /**

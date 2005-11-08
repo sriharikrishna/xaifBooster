@@ -182,7 +182,7 @@ namespace xaifBoosterAddressArithmetic {
       } 
     }
     if (!alreadyPushed) { 
-      DBG_MACRO(DbgGroup::TEMPORARY, 
+      DBG_MACRO(DbgGroup::WARNING, 
 		"CallGraphVertexAlg::pushUnknownVariable:" 
 		<< anUnknownVariable.debug().c_str()
 		<< " for address arithmetic");
@@ -193,6 +193,9 @@ namespace xaifBoosterAddressArithmetic {
 	break;
       case SymbolType::REAL_STYPE:
 	theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
+	break;
+      case SymbolType::BOOL_STYPE:
+	theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_b");
 	break;
       default:
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::pushUnknownVariables: don't know what to do with variable of type " 
@@ -227,6 +230,9 @@ namespace xaifBoosterAddressArithmetic {
       break;
     case SymbolType::REAL_STYPE:
       theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop");
+      break;
+    case SymbolType::BOOL_STYPE:
+      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_b");
       break;
     default:
       THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::createPopFromPush: don't know what to do with variable of type " 
