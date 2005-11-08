@@ -718,6 +718,9 @@ namespace xaifBoosterControlFlowReversal {
       the_endBranch_p->setReversalType(aReversalType);
       the_endBranch_p->setCounterPart(theCurrentVertex_r);
       the_endBranch_p->inheritLoopVariables(theCurrentVertex_r);
+      if (aReversalType==ForLoopReversalType::EXPLICIT) { 
+	the_endBranch_p->setTopExplicitLoop(theCurrentVertex_r.getTopExplicitLoop());
+      }
       theCurrentVertex_r.setCounterPart(*the_endBranch_p);
       mySortedVertices_p_l.push_back(the_endBranch_p);
       // sort successor  

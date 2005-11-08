@@ -6,6 +6,7 @@
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/UndefinedSubroutineException.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
@@ -57,11 +58,7 @@ namespace xaifBoosterLinearization {
 	  getArgumentList().
 	  getArgumentSymbolReferencePList());
     } 
-    catch (const  LogicException& e) { 
-      DBG_MACRO(DbgGroup::ERROR,
-		"SubroutineCallAlg::algorithm_action_1: " 
-		<< e.getReason().c_str() 
-		<< " but this may be an external call, we continue");
+    catch (const  UndefinedSubroutineException&) { 
       return;
     }
     ArgumentList::ArgumentSymbolReferencePList::const_iterator formalArgumentPI=anArgumentSymbolReferencePList_p->begin();

@@ -201,7 +201,8 @@ namespace xaifBoosterControlFlowReversal {
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
     } 
     if (!myTopExplicitLoop_p)
-      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: not set");
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: not set for "
+				 << myOriginalVertex_p->debug().c_str());
     return *myTopExplicitLoop_p;
   } 
 
