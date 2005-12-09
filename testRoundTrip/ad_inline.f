@@ -703,7 +703,7 @@ C $OpenAD$ INLINE DECLS
           implicit none
           logical :: b
 C $OpenAD$ END DECLS
-          call cp_store_bool_scalar(s,theArgBStack,
+          call cp_store_bool_scalar(b,theArgBStack,
      +theArgBStackoffset, theArgBStackSize)
         end subroutine 
 
