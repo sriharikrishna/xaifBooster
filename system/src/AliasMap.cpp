@@ -52,6 +52,7 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/StringConversions.hpp"
 #include "xaifBooster/system/inc/AliasMap.hpp"
 #include "xaifBooster/system/inc/AliasMapKey.hpp"
 #include "xaifBooster/system/inc/AliasMapEntry.hpp"
@@ -71,7 +72,7 @@ namespace xaifBooster {
 
   AliasMapEntry& 
   AliasMap::addAliasMapEntry(const std::string& aKey) { 
-    unsigned int intKey = atoi(aKey.c_str());
+    unsigned int intKey(StringConversions::convertToUInt(aKey));
     if (intKey>=myAAVector.size())
       // resize and initialize to 0
       myAAVector.resize(intKey>myAAVector.size()+256?intKey:myAAVector.size()+256,0);

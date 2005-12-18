@@ -51,6 +51,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/StringConversions.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpressionEdge.hpp"
 
 namespace xaifBooster { 
@@ -65,7 +66,7 @@ namespace xaifBooster {
   void
   InlinableIntrinsicsExpressionEdge::setPosition(const std::string& i) {
     if (myPosition) THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsExpressionEdge::setPosition: already set");
-    myPosition=atoi(i.c_str());
+    myPosition=StringConversions::convertToUInt(i);
   }
 
   unsigned int

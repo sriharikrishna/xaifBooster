@@ -87,7 +87,7 @@ namespace xaifBooster {
 	aNewConstant_p->setint(getint());
 	break;
     case SymbolType::REAL_STYPE : 
-	aNewConstant_p->setfloat(getfloat());
+	aNewConstant_p->setdouble(getdouble());
 	break;
     case SymbolType::BOOL_STYPE : 
 	aNewConstant_p->setbool(getbool());

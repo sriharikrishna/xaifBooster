@@ -69,7 +69,7 @@ namespace xaifBooster {
 	aNewConstant_p->setint(getint());
 	break;
     case SymbolType::REAL_STYPE : 
-	aNewConstant_p->setfloat(getfloat());
+	aNewConstant_p->setdouble(getdouble());
 	break;
     default: 
       THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsConstant::createCopyOfMyself: cannot handle " <<

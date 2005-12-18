@@ -50,7 +50,9 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <iomanip>
 #include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/StringConversions.hpp"
 #include "xaifBooster/system/inc/BaseConstant.hpp"
 
 namespace xaifBooster { 
@@ -67,16 +69,16 @@ namespace xaifBooster {
     return out.str();
   } // end of ExpressionVertex::debug
 
-  float BaseConstant::getfloat()const { 
+  double BaseConstant::getdouble()const { 
     if (myType!=SymbolType::REAL_STYPE)
-      THROW_LOGICEXCEPTION_MACRO("BaseConstant::getfloat typs is " + 
+      THROW_LOGICEXCEPTION_MACRO("BaseConstant::getdouble typs is " + 
 				 SymbolType::toString(myType));
     return myValue.f;
   } 
 
-  void BaseConstant::setfloat(float f) { 
+  void BaseConstant::setdouble(double f) { 
     if (myType!=SymbolType::REAL_STYPE)
-      THROW_LOGICEXCEPTION_MACRO("BaseConstant::setfloat typs is " + 
+      THROW_LOGICEXCEPTION_MACRO("BaseConstant::setdouble typs is " + 
 				 SymbolType::toString(myType));
     myValue.f=f;
   } 
@@ -128,17 +130,11 @@ namespace xaifBooster {
     myOriginalStringRep=aValue;
     switch(myType) { 
     case SymbolType::INTEGER_STYPE : 
-      { 
-	int i=atoi(aValue.c_str());
-	setint(i);
-	break;
-      }
+      setint(StringConversions::convertToInt(aValue.c_str()));
+      break;
     case SymbolType::REAL_STYPE : 
-      { 
-	float f=atof(aValue.c_str());
-	setfloat(f);
-	break;
-      }
+      setdouble(StringConversions::convertToDouble(aValue.c_str()));
+      break;
     case SymbolType::BOOL_STYPE : 
       { 
 	if (aValue==ourBooleanTrueString) 
@@ -174,7 +170,7 @@ namespace xaifBooster {
       oss << getint();
       break;
     case SymbolType::REAL_STYPE : 
-      oss << getfloat();
+      oss << std::scientific << std::setprecision(20) << getdouble();
       break;
     case SymbolType::BOOL_STYPE : 
       if (myValue.b)

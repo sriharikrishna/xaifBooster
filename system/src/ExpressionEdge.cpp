@@ -55,6 +55,7 @@
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/StringConversions.hpp"
 
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
@@ -133,7 +134,7 @@ namespace xaifBooster {
   ExpressionEdge::setPosition(const std::string& i) {
     if (myPosition)                              
       THROW_LOGICEXCEPTION_MACRO("ExpressionEdge::setPosition: already set");
-    myPosition=atoi(i.c_str());
+    myPosition=StringConversions::convertToUInt(i);
   } 
 
   void 
