@@ -53,6 +53,7 @@
 #include <sstream>
 
 #include "xaifBooster/utils/inc/XMLParserMessage.hpp"
+#include "xaifBooster/utils/inc/StringConversions.hpp"
 
 #include "xaifBooster/system/inc/XAIFBaseParserHandlers.hpp"
 #include "xaifBooster/system/inc/XMLParser.hpp"
@@ -168,8 +169,8 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onDimensionBounds(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onDimensionBounds" ); 
     Symbol& theSymbol(passingIn.getSymbol());
-    theSymbol.addDimensionBounds(atoi(XMLParser::getAttributeValueByName(DimensionBounds::our_myLower_XAIFName).c_str()),
-				 atoi(XMLParser::getAttributeValueByName(DimensionBounds::our_myUpper_XAIFName).c_str()));
+    theSymbol.addDimensionBounds(StringConversions::convertToInt(XMLParser::getAttributeValueByName(DimensionBounds::our_myLower_XAIFName)),
+				 StringConversions::convertToInt(XMLParser::getAttributeValueByName(DimensionBounds::our_myUpper_XAIFName)));
   }
 
   void 
@@ -238,8 +239,8 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onAliasRange(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAliasRange" ); 
     AliasSet& theAliasSet(passingIn.getAliasMapEntry().getAliasSet());
-    theAliasSet.addAlias(atoi(XMLParser::getAttributeValueByName(AliasRange::our_myLowerAddress_XAIFName).c_str()),
-			 atoi(XMLParser::getAttributeValueByName(AliasRange::our_myUpperAddress_XAIFName).c_str()),
+    theAliasSet.addAlias(StringConversions::convertToInt(XMLParser::getAttributeValueByName(AliasRange::our_myLowerAddress_XAIFName)),
+			 StringConversions::convertToInt(XMLParser::getAttributeValueByName(AliasRange::our_myUpperAddress_XAIFName)),
 			 XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(AliasRange::our_myPartial_XAIFName)));
   }
 
@@ -255,7 +256,7 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onDuUdMapEntry" ); 
     DuUdMap& theDuUdMap(passingIn.getDuUdMap());
     DuUdMapEntry& theDuUdMapEntry=theDuUdMap.
-      addDuUdMapEntry(atoi(XMLParser::getAttributeValueByName(DuUdMapEntry::our_myKey_XAIFName).c_str()));
+      addDuUdMapEntry(StringConversions::convertToInt(XMLParser::getAttributeValueByName(DuUdMapEntry::our_myKey_XAIFName)));
     passingOut.setDuUdMapEntry(theDuUdMapEntry);
   }
 
@@ -303,9 +304,9 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onAssignmentLHS" ); 
     Assignment& theAssignment(passingIn.getAssignment());
     theAssignment.getLHS().getAliasMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName).c_str()));
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName)));
     theAssignment.getLHS().getDuUdMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName).c_str()));
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName)));
     theAssignment.getLHS().
       setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
     if (XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Variable::our_myConstantUseFlag_XAIFName)))
@@ -363,9 +364,9 @@ namespace xaifBooster {
       theNewVariable_p=&(theConcreteArgument.getArgument().getVariable());
     }
     theNewVariable_p->getAliasMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName).c_str()));
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName)));
     theNewVariable_p->getDuUdMapKey().
-      setReference(atoi(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName).c_str()));
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName)));
     theNewVariable_p->
       setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
     if (XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Variable::our_myConstantUseFlag_XAIFName)))
@@ -466,7 +467,7 @@ namespace xaifBooster {
 									      *theTarget_p));
     theControlFlowGraphEdge.setId(XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_myId_XAIFName));
     if (XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_myConditionValueFlag_XAIFName))) 
-      theControlFlowGraphEdge.setConditionValue(atoi(XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_myConditionValue_XAIFName).c_str()));
+      theControlFlowGraphEdge.setConditionValue(StringConversions::convertToInt(XMLParser::getAttributeValueByName(ControlFlowGraphEdge::our_myConditionValue_XAIFName)));
   }
 
   void 
@@ -602,7 +603,7 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onConcreteArgument" ); 
     SubroutineCall& theSubroutineCall(passingIn.getSubroutineCall());
     ConcreteArgument* theNewConcreteArgument_p=
-      new ConcreteArgument(atoi(XMLParser::getAttributeValueByName(ConcreteArgument::our_myPosition_XAIFName).c_str()));
+      new ConcreteArgument(StringConversions::convertToInt(XMLParser::getAttributeValueByName(ConcreteArgument::our_myPosition_XAIFName)));
     theSubroutineCall.getConcreteArgumentPList().push_back(theNewConcreteArgument_p);
     passingOut.setConcreteArgument(*theNewConcreteArgument_p);
   }
@@ -627,7 +628,7 @@ namespace xaifBooster {
     ArgumentSymbolReference* theNewArgumentSymbolReference_p=
       new ArgumentSymbolReference(theSymbol,
 				  theScope,
-				  atoi(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myPosition_XAIFName).c_str()),
+				  StringConversions::convertToInt(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myPosition_XAIFName)),
 				  IntentType::fromString(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_myIntent_XAIFName)));
     theNewArgumentSymbolReference_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
     theControlFlowGraph.getArgumentList().getArgumentSymbolReferencePList().push_back(theNewArgumentSymbolReference_p);

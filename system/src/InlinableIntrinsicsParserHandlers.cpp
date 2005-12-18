@@ -50,9 +50,10 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include "xaifBooster/utils/inc/XMLParserMessage.hpp"
+#include "xaifBooster/utils/inc/StringConversions.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParserHandlers.hpp"
 #include "xaifBooster/system/inc/XMLParser.hpp"
-#include "xaifBooster/utils/inc/XMLParserMessage.hpp"
 #include <sstream>
 
 namespace xaifBooster {
@@ -96,9 +97,9 @@ namespace xaifBooster {
 							  InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsPartial" ); 
     InlinableIntrinsicsCatalogueItem& theItem_r(passingIn.getInlinableIntrinsicsCatalogueItem());
-    int id=atoi(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myPartialId_XAIFName).c_str());
     PartialDerivativeKind::PartialDerivativeKind_E pdk_e(PartialDerivativeKind::fromString(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myPartialType_XAIFName)));
-    InlinableIntrinsicsExpression& thePartial_r(theItem_r.addPartial(id,pdk_e));
+    InlinableIntrinsicsExpression& thePartial_r(theItem_r.addPartial(StringConversions::convertToInt(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myPartialId_XAIFName)),
+								     pdk_e));
     passingOut.setInlinableIntrinsicsExpression(thePartial_r);
   }
 
@@ -108,7 +109,7 @@ namespace xaifBooster {
 								    InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onArgumentReference" ); 
     InlinableIntrinsicsExpression& theExpression_r(passingIn.getInlinableIntrinsicsExpression());
-    int argref=atoi(XMLParser::getAttributeValueByName(InlinableIntrinsicsArgumentReference::our_myArgRef_XAIFName).c_str());
+    int argref(StringConversions::convertToInt(XMLParser::getAttributeValueByName(InlinableIntrinsicsArgumentReference::our_myArgRef_XAIFName)));
     InlinableIntrinsicsArgumentReference* aReference_p=new InlinableIntrinsicsArgumentReference(argref);
     aReference_p->setId(XMLParser::getAttributeValueByName(InlinableIntrinsicsArgumentReference::our_myId_XAIFName));
     theExpression_r.supplyAndAddVertexInstance(*aReference_p);

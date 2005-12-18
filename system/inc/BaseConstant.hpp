@@ -72,11 +72,11 @@ namespace xaifBooster {
 
     virtual std::string debug() const;
 
-    float getfloat()const;
+    double getdouble()const;
     int getint()const;
     bool getbool()const;
     char getchar()const;
-    void setfloat(float);
+    void setdouble(double);
     void setint(int);
     void setbool(bool);
     void setchar(char);
@@ -100,7 +100,7 @@ namespace xaifBooster {
      * string constants
      */
     union myValueUnion { 
-      float f;
+      double f;
       int i;
       bool b;
       char c;

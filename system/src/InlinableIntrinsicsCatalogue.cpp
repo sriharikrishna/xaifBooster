@@ -50,6 +50,7 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include "xaifBooster/utils/inc/StringConversions.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
 
 namespace xaifBooster { 
@@ -67,8 +68,8 @@ namespace xaifBooster {
   InlinableIntrinsicsCatalogueItem& 
   InlinableIntrinsicsCatalogue::addCatalogueItem(const std::string& theKey,
 						 const std::string& theNumberOfArguments) { 
-    unsigned int theArgNumber(atoi(theNumberOfArguments.c_str()));
-    InlinableIntrinsicsCatalogueItem* theItem_p=new InlinableIntrinsicsCatalogueItem(theArgNumber);
+    InlinableIntrinsicsCatalogueItem* theItem_p=
+      new InlinableIntrinsicsCatalogueItem(StringConversions::convertToUInt(theNumberOfArguments.c_str()));
     myHashTable.addElement(theKey,
 			   theItem_p);
     return *theItem_p;
