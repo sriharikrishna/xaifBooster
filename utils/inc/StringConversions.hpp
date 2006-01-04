@@ -1,5 +1,5 @@
-#ifndef _DUUDMAPUSERESULT_INCLUDE_
-#define _DUUDMAPUSERESULT_INCLUDE_
+#ifndef _STRINGCONVERSIONS_INCLUDE_
+#define _STRINGCONVERSIONS_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,49 +53,24 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
-#include "xaifBooster/system/inc/ActiveUseType.hpp"
+#include <string>
 
 namespace xaifBooster { 
 
-  class DuUdMapUseResult : public DuUdMapDefinitionResult {
+  class StringConversions { 
+
+  public:
     
-  public: 
+    static double convertToDouble(const std::string& aValue);
 
-    /** 
-     * helper container for use queries
-     */
-    class StatementIdLists { 
+    static float convertToFloat(const std::string& aValue);
 
-    public: 
- 
-     StatementIdLists(const StatementIdList& myDependentStatementIdList,
-		       const StatementIdList& myPassiveStatementIdList);
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myDependentStatementIdList
-       */
-      const StatementIdList& myDependentStatementIdList;
+    static int convertToInt(const std::string& aValue);
 
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myPassiveStatementIdList
-       */
-      const StatementIdList& myPassiveStatementIdList;
-
-    private:
-      /** 
-       * no def
-       */
-      StatementIdLists();
-    };
-
-    DuUdMapUseResult();
+    static unsigned int convertToUInt(const std::string& aValue);
     
-    ActiveUseType::ActiveUseType_E myActiveUse;
-
-  };
-
-} // end of namespace 
+  }; // end of class StringConversions
+  
+} // end of namespace xaifBooster
                                                                      
 #endif

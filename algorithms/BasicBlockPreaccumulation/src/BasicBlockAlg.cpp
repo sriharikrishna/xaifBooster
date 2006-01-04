@@ -55,6 +55,7 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
+#include "xaifBooster/system/inc/ActiveUseType.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
@@ -422,19 +423,28 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
 	    || 
 	    theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
-	  if (!theFlattenedSequence.numOutEdgesOf(myPrivateVertex)) 
-	    // we can't have this, it will confuse the termination criterion in the elimination algorithm
-	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: attempting to remove a maximal vertex "
-				       << myPrivateVertex.getLHSVariable().debug().c_str()
-				       << " key "
-				       << aDuUdMapKey.debug().c_str()
-				       << " from the dependent list");
-	  // we only use it in the scope of this flattened sequence, therefore remove it
-	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::algorithm_action_3: removing dependent " 
-		    << myPrivateVertex.getLHSVariable().debug().c_str()
-		    << " list size: " << theDepVertexPList.size()); 
-	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
-	  continue;
+	  if (!theFlattenedSequence.numOutEdgesOf(myPrivateVertex)) { 
+	    if (theDuUdMapUseResult.myActiveUse!=ActiveUseType::PASSIVEUSE) { 
+	      // if the use is no strictly passive then in case of UNIQUE_INSIDE this vertex 
+	      // should not be maximal and in case of AMBIGUOUS_INSIDE there should have 
+	      // been a split. 
+	      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: attempting to remove a maximal vertex "
+					 << myPrivateVertex.getLHSVariable().debug().c_str()
+					 << " key "
+					 << aDuUdMapKey.debug().c_str()
+					 << " from the dependent list");
+	    }
+	    // else do nothing, just leave it. This may indicate some inconsistency in 
+	    // the activity results
+	  }
+	  else { 
+	    // we only use it in the scope of this flattened sequence, therefore remove it
+	    DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::algorithm_action_3: removing dependent " 
+		      << myPrivateVertex.getLHSVariable().debug().c_str()
+		      << " list size: " << theDepVertexPList.size()); 
+	    theFlattenedSequence.removeFromDependentList(myPrivateVertex);
+	    continue;
+	  }
 	}
 	if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
 	  if (theFlattenedSequence.numOutEdgesOf(myPrivateVertex)) { 

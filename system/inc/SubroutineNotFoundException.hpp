@@ -1,5 +1,5 @@
-#ifndef _DUUDMAPUSERESULT_INCLUDE_
-#define _DUUDMAPUSERESULT_INCLUDE_
+#ifndef _SUBROUTINENOTFOUNDEXCEPTION_INCLUDE_
+#define _SUBROUTINENOTFOUNDEXCEPTION_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,49 +53,34 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
-#include "xaifBooster/system/inc/ActiveUseType.hpp"
+#include "xaifBooster/utils/inc/BaseException.hpp"
 
 namespace xaifBooster { 
 
-  class DuUdMapUseResult : public DuUdMapDefinitionResult {
-    
-  public: 
+  class SymbolReference;
 
-    /** 
-     * helper container for use queries
-     */
-    class StatementIdLists { 
+  /** 
+   * as the name says we have some problem finding 
+   * a certain subroutine 
+   * which may be a non-fatal error, hence the
+   * separate exception class 
+   */
+  class SubroutineNotFoundException : public BaseException { 
 
-    public: 
- 
-     StatementIdLists(const StatementIdList& myDependentStatementIdList,
-		       const StatementIdList& myPassiveStatementIdList);
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myDependentStatementIdList
-       */
-      const StatementIdList& myDependentStatementIdList;
+  public:
 
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myPassiveStatementIdList
-       */
-      const StatementIdList& myPassiveStatementIdList;
+    SubroutineNotFoundException(const SymbolReference& aSymbolReference);
 
-    private:
-      /** 
-       * no def
-       */
-      StatementIdLists();
-    };
+    ~SubroutineNotFoundException(){};
 
-    DuUdMapUseResult();
-    
-    ActiveUseType::ActiveUseType_E myActiveUse;
+    const SymbolReference& getSymbolReference()const;
 
-  };
+  private: 
 
-} // end of namespace 
+    const SymbolReference& mySymbolReference;
+
+  }; 
+  
+} // end of namespace xaifBooster
                                                                      
 #endif

@@ -136,8 +136,10 @@ namespace xaifBooster {
 	  THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: StatementIds in the active statement id list cannot be empty");
 	if (*dependentStatementIdListI==*chainI)
 	  matchNumber++;
-	if (matchNumber==1)
+	if (matchNumber==1) { 
 	  theResult.myStatementId=*chainI;
+	  theResult.myActiveUse=ActiveUseType::ACTIVEUSE;
+	}
       }
       // second test against the passive statements
       for(DuUdMapDefinitionResult::StatementIdList::const_iterator passiveStatementIdListI=idLists.myPassiveStatementIdList.begin();
@@ -145,10 +147,16 @@ namespace xaifBooster {
 	  ++passiveStatementIdListI) { 
 	if (*passiveStatementIdListI=="")
 	  THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: StatementIds in the passive statement id list cannot be empty");
-	if (*passiveStatementIdListI==*chainI)
+	if (*passiveStatementIdListI==*chainI) { 
 	  matchNumber++;
-	if (matchNumber==1)
+	  if (theResult.myActiveUse==ActiveUseType::ACTIVEUSE) { 
+	    theResult.myActiveUse=ActiveUseType::UNDEFINEDUSE;
+	  }
+	}
+	if (matchNumber==1) { 
 	  theResult.myStatementId=*chainI;
+	  theResult.myActiveUse=ActiveUseType::PASSIVEUSE;
+	}
       }
       if (*chainI=="") 
 	hasOutOfScope=true;

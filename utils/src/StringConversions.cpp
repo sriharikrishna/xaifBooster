@@ -1,5 +1,3 @@
-#ifndef _DUUDMAPUSERESULT_INCLUDE_
-#define _DUUDMAPUSERESULT_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,50 +50,74 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
-#include "xaifBooster/system/inc/ActiveUseType.hpp"
+#include <cerrno>
+#include "xaifBooster/utils/inc/StringConversions.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
 namespace xaifBooster { 
 
-  class DuUdMapUseResult : public DuUdMapDefinitionResult {
-    
-  public: 
+  double StringConversions::convertToDouble(const std::string& aValue) { 
+    double value;
+    char *remainder=NULL;
+    errno=0;
+    value=strtod(aValue.c_str(),&remainder);
+    if (errno) {
+      THROW_LOGICEXCEPTION_MACRO("StringConversions::convertToDouble: "  
+				 << "the string "
+				 << "\"" << aValue.c_str() << "\" " 
+				 << "cannot be converted to an double. "
+				 << "The error returned by strtod() is: " 
+				 << strerror(errno)); 
+    } 
+    return value;
+  } 
 
-    /** 
-     * helper container for use queries
-     */
-    class StatementIdLists { 
+  float StringConversions::convertToFloat(const std::string& aValue) { 
+    float value;
+    char *remainder=NULL;
+    errno=0;
+    value=strtof(aValue.c_str(),&remainder);
+    if (errno) {
+      THROW_LOGICEXCEPTION_MACRO("StringConversions::convertToFloat: "  
+				 << "the string "
+				 << "\"" << aValue.c_str() << "\" " 
+				 << "cannot be converted to a float. "
+				 << "The error returned by strtof() is: " 
+				 << strerror(errno)); 
+    } 
+    return value;
+  } 
 
-    public: 
- 
-     StatementIdLists(const StatementIdList& myDependentStatementIdList,
-		       const StatementIdList& myPassiveStatementIdList);
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myDependentStatementIdList
-       */
-      const StatementIdList& myDependentStatementIdList;
+  int StringConversions::convertToInt(const std::string& aValue) { 
+    int value;
+    char *remainder=NULL;
+    errno=0;
+    value=strtol(aValue.c_str(),&remainder,10);
+    if (errno) {
+      THROW_LOGICEXCEPTION_MACRO("StringConversions::convertToInt: "  
+				 << "the string "
+				 << "\"" << aValue.c_str() << "\" " 
+				 << "cannot be converted to an int. "
+				 << "The error returned by strtof() is: " 
+				 << strerror(errno)); 
+    } 
+    return value;
+  } 
 
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myPassiveStatementIdList
-       */
-      const StatementIdList& myPassiveStatementIdList;
+  unsigned int StringConversions::convertToUInt(const std::string& aValue) { 
+    int value;
+    char *remainder=NULL;
+    errno=0;
+    value=strtoul(aValue.c_str(),&remainder,10);
+    if (errno) {
+      THROW_LOGICEXCEPTION_MACRO("StringConversions::convertToUInt: "  
+				 << "the string "
+				 << "\"" << aValue.c_str() << "\" " 
+				 << "cannot be converted to an unsigned int. "
+				 << "The error returned by strtof() is: " 
+				 << strerror(errno)); 
+    } 
+    return value;
+  } 
 
-    private:
-      /** 
-       * no def
-       */
-      StatementIdLists();
-    };
-
-    DuUdMapUseResult();
-    
-    ActiveUseType::ActiveUseType_E myActiveUse;
-
-  };
-
-} // end of namespace 
-                                                                     
-#endif
+} // end of namespace xaifBooster

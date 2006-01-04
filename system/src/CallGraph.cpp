@@ -54,6 +54,7 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/CallGraphAlgFactory.hpp"
+#include "xaifBooster/system/inc/SubroutineNotFoundException.hpp"
 
 namespace xaifBooster { 
 
@@ -207,8 +208,7 @@ namespace xaifBooster {
       if(myScopeTree.isSameSymbol((*beginIt).getControlFlowGraph().getSymbolReference(),
 				  aSymbolReference)) 
 	return (*beginIt).getControlFlowGraph();
-    THROW_LOGICEXCEPTION_MACRO("CallGraph::getSubroutineBySymbolReference: no subroutine defined for "
-			       << aSymbolReference.debug().c_str());
+    throw SubroutineNotFoundException(aSymbolReference);
     // to appease the compiler
     return (*beginIt).getControlFlowGraph();
   }
