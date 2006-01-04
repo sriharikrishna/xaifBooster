@@ -59,5 +59,9 @@ namespace xaifBooster {
     myDependentStatementIdList(aDependentStatementIdList),
     myPassiveStatementIdList(aPassiveStatementIdList) {
   }
+
+  DuUdMapUseResult::DuUdMapUseResult() { 
+    myActiveUse=ActiveUseType::UNDEFINEDUSE;
+  }
     
 } // end of namespace  

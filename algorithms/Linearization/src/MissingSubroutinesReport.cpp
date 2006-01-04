@@ -1,5 +1,3 @@
-#ifndef _DUUDMAPUSERESULT_INCLUDE_
-#define _DUUDMAPUSERESULT_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,49 +51,30 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
-#include "xaifBooster/system/inc/ActiveUseType.hpp"
 
-namespace xaifBooster { 
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/system/inc/SymbolReference.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/MissingSubroutinesReport.hpp"
 
-  class DuUdMapUseResult : public DuUdMapDefinitionResult {
-    
-  public: 
+namespace xaifBoosterLinearization { 
 
-    /** 
-     * helper container for use queries
-     */
-    class StatementIdLists { 
+  MissingSubroutinesReport::SymbolReferencePList MissingSubroutinesReport::ourReportedList;
 
-    public: 
- 
-     StatementIdLists(const StatementIdList& myDependentStatementIdList,
-		       const StatementIdList& myPassiveStatementIdList);
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myDependentStatementIdList
-       */
-      const StatementIdList& myDependentStatementIdList;
+  void MissingSubroutinesReport::report(const  SubroutineNotFoundException& e) { 
+    const SymbolReference& s(e.getSymbolReference());
+    SymbolReferencePList::iterator i;
+    for (i=ourReportedList.begin();
+	 i!=ourReportedList.end();
+	 ++i) { 
+      if (&((*i)->getScope())==&(s.getScope()) && &((*i)->getSymbol())==&(s.getSymbol()))
+	break;
+    }
+    if (i==ourReportedList.end()) { 
+      ourReportedList.push_back(new SymbolReference(s.getSymbol(),
+						    s.getScope()));
+      DBG_MACRO(DbgGroup::ERROR, "cannot find subroutine " << s.getSymbol().getId().c_str() << " but this may be an external call, we continue");
+    }
+  } 
+  
+}
 
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myPassiveStatementIdList
-       */
-      const StatementIdList& myPassiveStatementIdList;
-
-    private:
-      /** 
-       * no def
-       */
-      StatementIdLists();
-    };
-
-    DuUdMapUseResult();
-    
-    ActiveUseType::ActiveUseType_E myActiveUse;
-
-  };
-
-} // end of namespace 
-                                                                     
-#endif

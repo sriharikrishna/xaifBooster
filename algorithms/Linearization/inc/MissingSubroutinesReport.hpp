@@ -1,5 +1,5 @@
-#ifndef _DUUDMAPUSERESULT_INCLUDE_
-#define _DUUDMAPUSERESULT_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_MISSINGSUBROUTINESREPORT_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_MISSINGSUBROUTINESREPORT_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,49 +53,28 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
-#include "xaifBooster/system/inc/ActiveUseType.hpp"
+#include <list>
 
-namespace xaifBooster { 
+#include "xaifBooster/system/inc/SubroutineNotFoundException.hpp"
 
-  class DuUdMapUseResult : public DuUdMapDefinitionResult {
-    
+using namespace xaifBooster; 
+
+namespace xaifBoosterLinearization { 
+
+  class MissingSubroutinesReport { 
+
   public: 
 
-    /** 
-     * helper container for use queries
-     */
-    class StatementIdLists { 
+    static void report(const  SubroutineNotFoundException& e);
 
-    public: 
- 
-     StatementIdLists(const StatementIdList& myDependentStatementIdList,
-		       const StatementIdList& myPassiveStatementIdList);
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myDependentStatementIdList
-       */
-      const StatementIdList& myDependentStatementIdList;
-
-      /** 
-       * this is to contain
-       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myPassiveStatementIdList
-       */
-      const StatementIdList& myPassiveStatementIdList;
-
-    private:
-      /** 
-       * no def
-       */
-      StatementIdLists();
-    };
-
-    DuUdMapUseResult();
+  private:
     
-    ActiveUseType::ActiveUseType_E myActiveUse;
+    typedef std::list<SymbolReference*> SymbolReferencePList;
 
-  };
+    static SymbolReferencePList ourReportedList;
 
-} // end of namespace 
-                                                                     
+  }; // end of class MissingSubroutinesReport
+
+}
+
 #endif
