@@ -956,6 +956,13 @@ namespace xaifBoosterControlFlowReversal {
 // 	  }
 	  // insert pop() in front
 	  InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*theVertexCorrespondence_ppl_cit).second)));
+	  if (singleInEdge_ieitp.first==singleInEdge_ieitp.second) { 
+	    THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: bad CFG (likely not well structured)");
+//  	    GraphVizDisplay::show(theAdjointControlFlowGraph_r,
+//  				  "adjoint_beforeEntryMark", 
+//  				  ReversibleControlFlowGraphVertexLabelWriter(theAdjointControlFlowGraph_r),
+//  				  ReversibleControlFlowGraphEdgeLabelWriter(theAdjointControlFlowGraph_r));
+	  }
 	  BasicBlock& theNewBasicBlock_r(theAdjointControlFlowGraph_r.insert_basic_block(getSourceOf(*(singleInEdge_ieitp.first)),*((*theVertexCorrespondence_ppl_cit).second),*(singleInEdge_ieitp.first),false));
 	  theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
 	  removeAndDeleteEdge(*(singleInEdge_ieitp.first));

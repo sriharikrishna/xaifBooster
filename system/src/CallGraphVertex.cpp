@@ -104,8 +104,9 @@ namespace xaifBooster {
   std::string CallGraphVertex::debug () const { 
     std::ostringstream out;
     out << "CallGraphVertex[" << this 
-	<< Vertex::debug()
-	<< ",myControlFlowGraph=" << myControlFlowGraph.debug()
+	<< Vertex::debug().c_str()
+	<< ",myControlFlowGraph=" 
+	<< myControlFlowGraph.debug().c_str()
 	<< ","
 	<< "myCallGraphVertexAlgBase_p"
 	<< "="

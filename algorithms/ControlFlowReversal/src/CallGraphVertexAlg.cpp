@@ -231,6 +231,8 @@ namespace xaifBoosterControlFlowReversal {
     std::ostringstream out;
     out << "xaifBoosterControlFlowReversal::CallGraphVertexAlg["
         << this
+	<< ", containing="
+	<< getContaining().debug().c_str()
         << "]" << std::ends;
     return out.str();
   }
