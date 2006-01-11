@@ -127,7 +127,10 @@ namespace xaifBooster {
 
   std::string ControlFlowGraph::debug () const { 
     std::ostringstream out;
-    out << "ControlFlowGraph[" << this 
+    out << "ControlFlowGraph[" 
+	<< this
+	<< ","
+	<< ControlFlowGraphCommonAttributes::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of ControlFlowGraph::debug
