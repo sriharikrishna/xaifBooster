@@ -39,6 +39,22 @@
         <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="3" symbol_id="z" scope_id="2" annotation="" intent="inout"/>
       </xaif:ArgumentList>
+      <xaif:Mod>
+        <xaif:SideEffectReference active="true" deriv="0" constant="0">
+          <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
+        </xaif:SideEffectReference>
+      </xaif:Mod>
+      <xaif:Read>
+        <xaif:SideEffectReference active="true" deriv="0" constant="0">
+          <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
+        </xaif:SideEffectReference>
+        <xaif:SideEffectReference active="true" deriv="0" constant="0">
+          <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
+        </xaif:SideEffectReference>
+        <xaif:SideEffectReference active="true" deriv="0" constant="0">
+          <xaif:SymbolReference vertex_id="1" symbol_id="z" annotation="" scope_id="2"/>
+        </xaif:SideEffectReference>
+      </xaif:Read>
       <xaif:Entry vertex_id="1" annotation=""/>
       <xaif:BasicBlock vertex_id="2" annotation="" scope_id="2">
         <xaif:Assignment statement_id="ass1">
