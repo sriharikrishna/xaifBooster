@@ -88,6 +88,7 @@
 #include "xaifBooster/system/inc/SideEffectList.hpp"
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
 #include "xaifBooster/system/inc/Symbol.hpp"
+#include "xaifBooster/system/inc/SymbolReferenceProperty.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 

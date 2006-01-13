@@ -137,7 +137,7 @@ namespace xaifBooster {
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
 			  getScopeById(XMLParser::getAttributeValueByName(ControlFlowGraphCommonAttributes::our_mySymbolReferenceScopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
-			    getElement(XMLParser::getAttributeValueByName(ControlFlowGraphCommonAttributes::our_mySymbolReferenceSymbolId_XAIFName)));
+			    getSymbol(XMLParser::getAttributeValueByName(ControlFlowGraphCommonAttributes::our_mySymbolReferenceSymbolId_XAIFName)));
     const Scope& theCFGScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
 			     getScopeById(XMLParser::getAttributeValueByName(ControlFlowGraphCommonAttributes::our_myScope_XAIFName)));
     CallGraphVertex* theCallGraphVertex_p=new CallGraphVertex(theSymbol,
@@ -163,6 +163,12 @@ namespace xaifBooster {
 						  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Symbol::our_myTempFlag_XAIFName))));
     theNewSymbol.setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
     passingOut.setSymbol(theNewSymbol);
+  }
+
+
+  void 
+  XAIFBaseParserHandlers::onSymbolReferenceProperty(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onSymbolReferenceProperty" ); 
   }
 
   void 
@@ -505,7 +511,7 @@ namespace xaifBooster {
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
 			  getScopeById(XMLParser::getAttributeValueByName(VariableSymbolReference::our_scopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
-			    getElement(XMLParser::getAttributeValueByName(Symbol::our_myId_XAIFName)));
+			    getSymbol(XMLParser::getAttributeValueByName(Symbol::our_myId_XAIFName)));
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(theSymbol,
 										      theScope);
     theVariable.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
@@ -578,7 +584,7 @@ namespace xaifBooster {
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
 			  getScopeById(XMLParser::getAttributeValueByName(SubroutineCall::our_scopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
-			    getElement(XMLParser::getAttributeValueByName(SubroutineCall::our_symbolId_XAIFName)));
+			    getSymbol(XMLParser::getAttributeValueByName(SubroutineCall::our_symbolId_XAIFName)));
     SubroutineCall* theNewSubroutineCall_p=
       new SubroutineCall(theSymbol,
 			 theScope,
@@ -623,7 +629,7 @@ namespace xaifBooster {
     const Scope& theScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().
 			  getScopeById(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_scopeId_XAIFName)));
     const Symbol& theSymbol(theScope.getSymbolTable().
-			    getElement(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_symbolId_XAIFName)));
+			    getSymbol(XMLParser::getAttributeValueByName(ArgumentSymbolReference::our_symbolId_XAIFName)));
     // this will be deleted in the dtor of theControlFlowGraph
     ArgumentSymbolReference* theNewArgumentSymbolReference_p=
       new ArgumentSymbolReference(theSymbol,

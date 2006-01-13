@@ -84,6 +84,7 @@ class LabelAlgFactory;
 class MarkerAlgFactory;
 class PreLoopAlgFactory;
 class SubroutineCallAlgFactory;
+class SymbolAlgFactory;
 
   /** 
    * the singleton class for 
@@ -136,6 +137,7 @@ class SubroutineCallAlgFactory;
     MarkerAlgFactory* getMarkerAlgFactory() const ;
     PreLoopAlgFactory* getPreLoopAlgFactory() const ;
     SubroutineCallAlgFactory* getSubroutineCallAlgFactory() const ;
+    SymbolAlgFactory* getSymbolAlgFactory() const ;
 
     virtual std::string debug() const; 
 
@@ -167,6 +169,7 @@ class SubroutineCallAlgFactory;
     void resetMarkerAlgFactory(MarkerAlgFactory*);
     void resetPreLoopAlgFactory(PreLoopAlgFactory*);
     void resetSubroutineCallAlgFactory(SubroutineCallAlgFactory*);
+    void resetSymbolAlgFactory(SymbolAlgFactory*);
     
     AlgFactoryManager();
 
@@ -207,6 +210,7 @@ class SubroutineCallAlgFactory;
     MarkerAlgFactory* ourMarkerAlgFactory_p;
     PreLoopAlgFactory* ourPreLoopAlgFactory_p;
     SubroutineCallAlgFactory* ourSubroutineCallAlgFactory_p;
+    SymbolAlgFactory* ourSymbolAlgFactory_p;
 
     /**
      * no def

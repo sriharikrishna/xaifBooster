@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="1" nr_templates="1" outfile="parse_method_decl.inc">
 
-  <CodeGen:RepeatableCode nr_versions="54">
+  <CodeGen:RepeatableCode nr_versions="55">
     <CodeGen:CodeTemplate nr_entries="4">
       <CodeGen:StaticCode text="void on"/>
       <CodeGen:DynamicCodePlaceholder hook="3"/>
@@ -165,6 +165,9 @@
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="3" text="SymbolReference"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="3" text="SymbolReferenceProperty"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="3" text="SymbolTable"/>

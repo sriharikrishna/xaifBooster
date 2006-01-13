@@ -363,18 +363,21 @@ namespace xaifBoosterControlFlowReversal {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i");
     theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().
 									  getCallGraphAlgBase()).getAlgorithmSignature() + "pop_i");
-    Variable theSubstitutionArgument;
-    Symbol* theIntegerSymbol_p= new Symbol(theBasicBlock_r.getScope().getSymbolTable().
-					   addUniqueAuxSymbol(SymbolKind::VARIABLE,SymbolType::INTEGER_STYPE,SymbolShape::SCALAR,false));
-    VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(*theIntegerSymbol_p,theBasicBlock_r.getScope());
+    const Symbol& theIntegerSymbol(theBasicBlock_r.getScope().getSymbolTable().
+				   addUniqueAuxSymbol(SymbolKind::VARIABLE,
+						      SymbolType::INTEGER_STYPE,
+						      SymbolShape::SCALAR,
+						      false));
+    VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(theIntegerSymbol,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1");
     theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_pop_integer");
+    Variable theSubstitutionArgument;
     theSubstitutionArgument.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theSubstitutionArgument.getAliasMapKey().setTemporary();
     theSubstitutionArgument.getDuUdMapKey().setTemporary();
     theSubstitutionArgument.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
-    return *theIntegerSymbol_p;
+    return theIntegerSymbol;
   }
 
   void 

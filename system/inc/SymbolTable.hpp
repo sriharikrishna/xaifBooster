@@ -60,13 +60,12 @@
 
 namespace xaifBooster { 
 
-  class SymbolTable : public HashTable<Symbol>,
-		      public XMLPrintable {
+  class SymbolTable : public XMLPrintable {
   public:
     
     SymbolTable();
 
-    ~SymbolTable() {};
+    ~SymbolTable();
 
     /**
      * adds the symbol to the table, 
@@ -83,6 +82,8 @@ namespace xaifBooster {
 				const SymbolShape::SymbolShape_E& aShape,
 				bool anActiveTypeFlag);
 
+    const Symbol& getSymbol(const std::string& aName) const;
+
     std::string debug() const ; 
 
     void printXMLHierarchy(std::ostream& os) const; 
@@ -91,6 +92,12 @@ namespace xaifBooster {
      * name as specified in XAIF schema
      */
     static const std::string ourXAIFName;
+
+  private: 
+    
+    typedef HashTable<Symbol*> HashTableSymbolP;
+
+    HashTableSymbolP myHashTableSymbolP;
 
   }; // end of class SymbolTable
 

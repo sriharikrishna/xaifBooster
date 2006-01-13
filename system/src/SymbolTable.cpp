@@ -63,6 +63,14 @@ namespace xaifBooster {
   SymbolTable::SymbolTable() { 
   } // end of SymbolTable::SymbolTable
 
+  SymbolTable::~SymbolTable() { 
+    for(HashTableSymbolP::InternalHashMapType::iterator myHashMap_iterator=
+	  myHashTableSymbolP.getInternalHashMap().begin();
+	myHashMap_iterator!=myHashTableSymbolP.getInternalHashMap().end();
+	myHashMap_iterator++)
+      delete((*myHashMap_iterator).second);
+  }
+
   Symbol& 
   SymbolTable::addSymbol(const std::string& aName, 
 			 const SymbolKind::SymbolKind_E& aKind,
@@ -70,27 +78,25 @@ namespace xaifBooster {
 			 const SymbolShape::SymbolShape_E& aShape,
 			 bool anActiveTypeFlag,
 			 bool aTempFlag) { 
-    std::pair<InternalHashMapType::iterator,bool> 
-      thePair(myHashMap.insert(std::make_pair(aName,Symbol(aName,
-							   aKind,
-							   aType,
-							   aShape,
-							   anActiveTypeFlag,
-							   aTempFlag))));
-
-    if (!thePair.second)
-      // JU: ?      if (myHashMap_iterator.second!=aSymbol)
-      // not sure about the use case here. 
-      THROW_LOGICEXCEPTION_MACRO(debug().c_str() << "::addSymbol new" << 
-			   Symbol(aName,
-				  aKind,
-				  aType,
-				  aShape,
-				  anActiveTypeFlag,
-				  aTempFlag).debug().c_str() << 
-			   " colliding with existing " <<
-			   (*(thePair.first)).second.debug().c_str());
-    return (*(thePair.first)).second;
+    if (myHashTableSymbolP.hasElement(aName)) 
+      THROW_LOGICEXCEPTION_MACRO(debug().c_str() 
+				 << "::addSymbol new" 
+				 << Symbol(aName,
+					   aKind,
+					   aType,
+					   aShape,
+					   anActiveTypeFlag,
+					   aTempFlag).debug().c_str() 
+				 << " colliding with existing " 
+				 << myHashTableSymbolP.getElement(aName)->debug().c_str());
+    Symbol* theNewSymbol_p(new Symbol(aName,
+				      aKind,
+				      aType,
+				      aShape,
+				      anActiveTypeFlag,
+				      aTempFlag));
+    myHashTableSymbolP.addElement(aName,theNewSymbol_p);
+    return *theNewSymbol_p;
   } // end of SymbolTable::addSymbol
 
   Symbol&  
@@ -113,7 +119,7 @@ namespace xaifBooster {
   std::string SymbolTable::debug() const {
     std::ostringstream out;
     out << "SymbolTable[" << this 
-	<< "," << HashTable<Symbol>::debug() 
+	<< "," << myHashTableSymbolP.debug() 
 	<< "]" << std::ends; 
     return out.str();
   } // end of SymbolTable::debug
@@ -125,15 +131,20 @@ namespace xaifBooster {
        << ourXAIFName 
        << ">" 
        << std::endl; 
-    for(InternalHashMapType::const_iterator myHashMap_iterator=myHashMap.begin();
-	myHashMap_iterator!=myHashMap.end();
+    for(HashTableSymbolP::InternalHashMapType::const_iterator myHashMap_iterator=
+	  myHashTableSymbolP.getInternalHashMap().begin();
+	myHashMap_iterator!=myHashTableSymbolP.getInternalHashMap().end();
 	myHashMap_iterator++)
-      (*myHashMap_iterator).second.printXMLHierarchy(os);       
+      (*myHashMap_iterator).second->printXMLHierarchy(os);       
     os << pm.indent() 
        << "</"
        << ourXAIFName
        << ">" << std::endl;
     pm.releaseInstance();
+  } 
+
+  const Symbol& SymbolTable::getSymbol(const std::string& aName) const { 
+    return *(myHashTableSymbolP.getElement(aName));
   } 
 
 } 

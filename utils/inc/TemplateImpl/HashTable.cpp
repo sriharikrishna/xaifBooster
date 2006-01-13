@@ -120,4 +120,16 @@ namespace xaifBooster {
     myHashMap.erase(theKey);
   } 
 
+  template <class HashTableElement> 
+  const typename HashTable<HashTableElement>::InternalHashMapType& 
+  HashTable<HashTableElement>::getInternalHashMap() const { 
+    return myHashMap;
+  } 
+
+  template <class HashTableElement> 
+  typename HashTable<HashTableElement>::InternalHashMapType& 
+  HashTable<HashTableElement>::getInternalHashMap() { 
+    return myHashMap;
+  } 
+
 } // end of namespace
