@@ -80,22 +80,33 @@ namespace xaifBooster {
 
     void removeElement(std::string theKey);
 
-  protected:
+    //  protected:
     
     struct myLtOp;
 
-    typedef
-    std::map<std::string, 
-	     HashTableElement, 
-	     myLtOp> InternalHashMapType;
-    InternalHashMapType myHashMap; 
-    
     struct myLtOp {
       bool operator()(const std::string s1, const std::string s2) const {
 	return (s1<s2);
       }
     };
 
+    //  public:
+
+    typedef
+    std::map<std::string, 
+	     HashTableElement, 
+	     myLtOp> InternalHashMapType;
+
+  protected:
+
+    InternalHashMapType myHashMap; 
+    
+  public:
+    
+    const InternalHashMapType& getInternalHashMap() const;
+
+    InternalHashMapType& getInternalHashMap();
+    
   }; // end of class HashTable
 
 } // end of namespace 

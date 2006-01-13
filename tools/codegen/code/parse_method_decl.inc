@@ -49,6 +49,7 @@ void onStatementId(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& 
 void onSubroutineCall(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSymbol(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSymbolReference(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onSymbolReferenceProperty(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSymbolTable(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onUpdate(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onVariableEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

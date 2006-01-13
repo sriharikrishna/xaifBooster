@@ -84,6 +84,7 @@ namespace xaifBooster {
   class SideEffectList;
   class SubroutineCall;
   class Symbol;
+  class SymbolReferenceProperty;
   class SymbolTable;
   class Update;
   class Variable;
