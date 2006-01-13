@@ -99,7 +99,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   std::string 
   CallGraphVertexAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg[" 
+	<< this
+	<< ", containing="
+	<< getContaining().debug().c_str()
  	<< "]" << std::ends;  
     return out.str();
   } // end of CallGraphVertexAlg::debug
@@ -149,36 +152,44 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	  theReplacement.setReversibleControlFlowGraph(getAdjointControlFlowGraph());
 	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
 	break;
-      case ReplacementId::STOREARGUMENT: 
+      case ReplacementId::STOREARGUMENT: { 
 	theReplacement.setControlFlowGraphBase(*myCFGStoreArguments_p);
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreArguments_p));
 	handleCheckPointing("cp_arg_store",
 			    SideEffectListType::READ_LIST,
-			    *myCFGStoreArguments_p,
+			    theBasicBlock,
 			    false);
 	break;
-      case ReplacementId::STORERESULT: 
+      }
+      case ReplacementId::STORERESULT: { 
+ 	// JU: result checkpoints can't be stored on a stack
 	theReplacement.setControlFlowGraphBase(*myCFGStoreResults_p);
-	// JU: result checkpoints can't be stored on a stack
-	handleCheckPointing("cp_res_store",
-			    SideEffectListType::MOD_LIST,
-			    *myCFGStoreResults_p, 
-			    false);
-	break;
-      case ReplacementId::RESTOREARGUMENT: 
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreResults_p));
+ 	handleCheckPointing("cp_res_store",
+ 			    SideEffectListType::MOD_LIST,
+ 			    theBasicBlock, 
+ 			    false);
+ 	break;
+      }
+      case ReplacementId::RESTOREARGUMENT: { 
 	theReplacement.setControlFlowGraphBase(*myCFGRestoreArguments_p);
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGRestoreArguments_p));
 	handleCheckPointing("cp_arg_restore",
 			    SideEffectListType::READ_LIST,
-			    *myCFGRestoreArguments_p,
+			    theBasicBlock,
 			    true);
+      }
 	break;
-      case ReplacementId::RESTORERESULT: 
-	theReplacement.setControlFlowGraphBase(*myCFGRestoreResults_p);
-	// JU: result checkpoints can't be stored on a stack
-	handleCheckPointing("cp_res_restore",
-			    SideEffectListType::MOD_LIST,
-			    *myCFGRestoreResults_p,
-			    false);
-	break;
+      case ReplacementId::RESTORERESULT: { 
+ 	theReplacement.setControlFlowGraphBase(*myCFGRestoreResults_p);
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGRestoreResults_p));
+ 	// JU: result checkpoints can't be stored on a stack
+ 	handleCheckPointing("cp_res_restore",
+ 			    SideEffectListType::MOD_LIST,
+ 			    theBasicBlock,
+ 			    false);
+ 	break;
+      }
       default: 
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_4: no handler for ReplacementID  "
 				   << ReplacementId::toString(*theId));
@@ -223,10 +234,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void 
   CallGraphVertexAlg::handleCheckPointing(const std::string& aSubroutineNameBase,
 					  SideEffectListType::SideEffectListType_E aSideEffectListType,
-					  ControlFlowGraph& theCFG,
+					  BasicBlock& theBasicBlock,
 					  bool reverse) { 
     // initialize
-    BasicBlock& theBasicBlock(initCheckPointCFG(theCFG));
     const SideEffectList::VariablePList& 
       theVariablePList(getContaining().
 		       getControlFlowGraph().
