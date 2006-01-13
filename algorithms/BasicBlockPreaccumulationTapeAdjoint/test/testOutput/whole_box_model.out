@@ -1899,7 +1899,7 @@
             </xaif:ArrayElementReference>
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="real" value="-2"/>
+          <xaif:Constant vertex_id="3" type="real" value="-2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:Condition>
@@ -2349,7 +2349,7 @@
           <xaif:VariableReference vertex_id="2" active="true" du_ud="2" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_4" annotation="" scope_id="13"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="real" value="0"/>
+          <xaif:Constant vertex_id="3" type="real" value="0.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:Condition>
