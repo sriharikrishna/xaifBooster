@@ -135,11 +135,11 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * e.g. '_<type_string>_<shape_string>';
      * with intent type to be excluded we filter out all 
      * non-applicable things (OUT for argument and IN for result)
-     * and the ControlFlowGraph is the one we are adding to
+     * and the BasicBlock is the one we are adding to
      */
     void handleCheckPointing(const std::string& aSubroutineNameBase,
 			     SideEffectListType::SideEffectListType_E theSideEffectListType,
-			     ControlFlowGraph& theCFG,
+			     BasicBlock& theBasicBlock,
 			     bool reverse);
 
     /** 
