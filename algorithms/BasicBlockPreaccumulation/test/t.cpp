@@ -57,6 +57,7 @@
 #include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
@@ -73,7 +74,9 @@ void Usage(char** argv) {
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
 	    << "             [-S] force statement level preaccumulation" << std::endl
-	    << "             [-n] allow n-ary sax operations" << std::endl;
+	    << "             [-n] allow n-ary sax operations" << std::endl
+	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
+            << "                 space separated list enclosed in double quotes" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -85,7 +88,7 @@ int main(int argc,char** argv) {
   std::string aUrl;
   bool forceStatementLevel=false, allowNarySaxOps=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSn",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSnw",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -100,6 +103,8 @@ int main(int argc,char** argv) {
       forceStatementLevel=true;
     if (CommandLineParser::instance()->isSet('n')) 
       allowNarySaxOps=true;
+    if (CommandLineParser::instance()->isSet('w')) 
+      xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());

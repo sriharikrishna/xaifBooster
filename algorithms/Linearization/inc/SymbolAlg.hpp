@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_SUBROUTINECALLALG_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_SUBROUTINECALLALG_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_SYMBOLALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_SYMBOLALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,119 +53,108 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include <string> 
-#include <list> 
-
-#include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
-#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
-
+#include "xaifBooster/system/inc/SymbolAlgBase.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ActivityPattern.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBooster { 
-  class SubroutineCall;
+  class Symbol;
+  class SymbolReference;
   class ArgumentSymbolReference;
 }
 
 namespace xaifBoosterLinearization {  
 
   /** 
-   * class to implement reversal of BasicBlockElements
+   * class to track external references
    */
-  class SubroutineCallAlg : public SubroutineCallAlgBase{
+  class SymbolAlg : public SymbolAlgBase{
 
   public:
     
-    SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall);
+    SymbolAlg(const Symbol& theContainingSymbol);
 
-    virtual ~SubroutineCallAlg(){};
+    virtual ~SymbolAlg();
 
     virtual void printXMLHierarchy(std::ostream& os) const;
-
-    void printXMLHierarchyImpl(std::ostream& os) const;
 
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    /** 
-     * adjust for active/passive type mismatches 
-     * \todo fix handling for external calls which should all be passive!
-     */
-    virtual void algorithm_action_1();
+    bool isExternal() const; 
 
-    static void addWrapperNames(const std::string& theSpaceSeparatedNames);
+    /**
+     * set the symbol to be 
+     * representing an external subroutine
+     */
+    void setExternal(); 
+
+    bool hasHandCodedWrapper() const;
+
+    /** 
+     * indicate that this symbol has 
+     * a handcoded wrapper
+     */
+    void setHandCodedWrapper(const SymbolReference& theOriginalSymbolReference);
+
+    /**    
+     * if this is not a hand-adjoined call 
+     * an exception is thrown. 
+     */
+    const ActivityPattern& getActivityPattern() const; 
+
+    /**    
+     * if this is not a hand-adjoined call 
+     * an exception is thrown. 
+     */
+    ActivityPattern& getActivityPattern(); 
+
+    const SymbolReference& getReplacementSymbolReference() const; 
 
   private: 
 
     /** 
      * no def
      */
-    SubroutineCallAlg();
+    SymbolAlg();
 
     /** 
      * no def
      */
-    SubroutineCallAlg(const SubroutineCallAlg&);
+    SymbolAlg(const SymbolAlg&);
 
     /** 
      * no def
      */
-    SubroutineCallAlg operator=(const SubroutineCallAlg&);
+    SymbolAlg operator=(const SymbolAlg&);
 
     /** 
-     * prior call argument adjustments
+     * true if this symbol refers to an 
+     * external subroutine
      */
-    PlainBasicBlock::BasicBlockElementList myPriorAdjustmentsList;
+    bool myIsExternalFlag;
 
     /** 
-     * post call argument adjustments
+     * true if this symbol's name 
+     * appears on the list of hand coded 
+     * wrappers 
+     * which for now is supplied on the command line
      */
-    PlainBasicBlock::BasicBlockElementList myPostAdjustmentsList;
+    bool myHasHandCodedWrapperFlag;
 
     /** 
-     * makes a temporary variable for a given formal argument symbol
+     * true if this symbol's name 
+     * appears on the list of hand coded 
+     * wrappers 
+     * which for now is supplied on the command line
      */
-    const Variable& makeTempVariable(const Symbol& formalArgument);
+    ActivityPattern myActivityPattern;
 
-    /** 
-     * the bit that creates the inlinable calls
-     */
-    void addConversion(const ConcreteArgument& theConcreteArgument,
-		       const ArgumentSymbolReference& aFormalArgumentSymbolReference);
-
-    std::string giveCallName(bool concreteArgumentActive,
-			     const SymbolReference &aTempSymbolReference,
-			     bool prior) const ;
-    /**
-     * if forcePassive then we create a passive type, 
-     * otherwise we create the type specified in the formalArgumentSymbol
-     */
-    void makeTempSymbol(const ConcreteArgument& theConcreteArgument,
-			const Symbol& formalArgumentSymbol,
-			const Scope& formalArgumentScope,
-			Variable& aVariable,
-			bool forcePassive); 
-
-    /** 
-     * the bit that creates the inlinable calls for such 
-     * external calls that don't have hand written adjoints
-     * i.e. we don't have a formal parameter list for these calls
-     */
-    void addExternalConversion(const ConcreteArgument& theConcreteArgument);
-
-    /** 
-     * the list of external subroutines that have hand
-     * written adjoints 
-     */
-    static std::list<std::string> ourWrapperSubRoutineNameList;
-
-    void initExternalCall(SymbolAlg& aSymbolAlg);
-
-    void handleExternalCall();
-
-  }; // end of class SubroutineCallAlg
+    SymbolReference* myHandCodeWrapperSymbolReferenceP; 
+     
+  }; // end of class SymbolAlg
  
 } 
                                                                      

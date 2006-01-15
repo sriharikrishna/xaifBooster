@@ -192,13 +192,6 @@ namespace xaifBooster {
   } 
 
   SymbolAlgBase&
-  Symbol::getSymbolAlgBase() {
-    if (!mySymbolAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("Symbol::getSymbolAlgBase: not set");
-    return *mySymbolAlgBase_p;
-  }
-                                                                                
-  const SymbolAlgBase&
   Symbol::getSymbolAlgBase() const {
     if (!mySymbolAlgBase_p)
       THROW_LOGICEXCEPTION_MACRO("Symbol::getSymbolAlgBase: not set");

@@ -60,6 +60,7 @@
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -72,7 +73,9 @@ void Usage(char** argv) {
 	    << "                 both default to cout" << std::endl
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
-	    << "                 default to 0(ERROR)" << std::endl;
+	    << "                 default to 0(ERROR)" << std::endl
+	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
+            << "                 space separated list enclosed in double quotes" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -83,7 +86,7 @@ int main(int argc,char** argv) {
   // to contain the namespace url in case of -s having a schema location
   std::string aUrl;
   try { 
-    CommandLineParser::instance()->initialize("iocdgs",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsw",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -94,6 +97,8 @@ int main(int argc,char** argv) {
       DbgLoggerManager::instance()->setFile(CommandLineParser::instance()->argAsString('d'));
     if (CommandLineParser::instance()->isSet('g')) 
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
+    if (CommandLineParser::instance()->isSet('w')) 
+      xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());

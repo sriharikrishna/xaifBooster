@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERLINEARIZATION_ACTIVITYPATTERN_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_ACTIVITYPATTERN_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,61 +52,46 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConstantAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlgFactory.hpp"
+#include <list>
 
-using namespace xaifBooster;
+using namespace xaifBooster; 
 
 namespace xaifBoosterLinearization { 
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  class ActivityPattern { 
 
-  void AlgFactoryManager::resets() {
-    resetArgumentAlgFactory(new ArgumentAlgFactory());
-    resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
-    resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
-    resetConstantAlgFactory(new ConstantAlgFactory());
-    resetExpressionAlgFactory(new ExpressionAlgFactory());
-    resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
-    resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
-    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
-    resetSymbolAlgFactory(new SymbolAlgFactory());
-  }
+  public: 
 
-  void AlgFactoryManager::init() {
-    xaifBooster::AlgFactoryManager::init();
-    xaifBoosterLinearization::AlgFactoryManager::resets();
-  }
+    ActivityPattern();
+
+    /** 
+     * indicate an active argument at 
+     * aPosition
+     * if size is not set or aPosition is 
+     * not in [1,mySize]
+     * an exception is thrown. 
+     */
+    void setActive(unsigned short aPosition);
+
+    void setSize(unsigned short aSize);
+
+    unsigned short getSize()const;
+
+    bool operator== (const ActivityPattern& anotherPattern) const;
+
+    bool operator!= (const ActivityPattern& anotherPattern) const;
+
+    std::string discrepancyPositions(const ActivityPattern& anotherPattern) const;
+
+  private:
+    
+    short mySize;
+
+    unsigned int myPattern;
+    
+  }; // end of class ActivityPattern
 
 }
 
+#endif
