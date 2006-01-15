@@ -57,9 +57,10 @@
 #include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -75,7 +76,9 @@ void Usage(char** argv) {
 	    << "                 default to 0(ERROR)" << std::endl
 	    << "             [-S] force statement level preaccumulation" << std::endl
 	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
-	    << "             [-v] validate <inputFile> against the schema" << std::endl;
+	    << "             [-v] validate <inputFile> against the schema" << std::endl
+	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
+            << "                 space separated list enclosed in double quotes" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -89,7 +92,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIv",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvw",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -106,6 +109,8 @@ int main(int argc,char** argv) {
       intentChange=true;
     if (CommandLineParser::instance()->isSet('v')) 
       validateAgainstSchema=true;
+    if (CommandLineParser::instance()->isSet('w')) 
+      xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
