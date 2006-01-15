@@ -128,12 +128,7 @@ namespace xaifBooster {
     /**
      * get algorithm
      */
-    SymbolAlgBase& getSymbolAlgBase();
-                                                                                
-    /**
-     * get algorithm
-     */
-    const SymbolAlgBase& getSymbolAlgBase() const;
+    SymbolAlgBase& getSymbolAlgBase() const;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 

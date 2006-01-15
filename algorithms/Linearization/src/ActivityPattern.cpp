@@ -50,61 +50,63 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConstantAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlgFactory.hpp"
 
-using namespace xaifBooster;
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/system/inc/SymbolReference.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ActivityPattern.hpp"
 
 namespace xaifBoosterLinearization { 
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  ActivityPattern::ActivityPattern() : mySize(-1), myPattern(0) {
+  } 
 
-  void AlgFactoryManager::resets() {
-    resetArgumentAlgFactory(new ArgumentAlgFactory());
-    resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
-    resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
-    resetConstantAlgFactory(new ConstantAlgFactory());
-    resetExpressionAlgFactory(new ExpressionAlgFactory());
-    resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
-    resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
-    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
-    resetSymbolAlgFactory(new SymbolAlgFactory());
+  void ActivityPattern::setActive(unsigned short aPosition) { 
+    if (aPosition<1 || aPosition>getSize())
+      	THROW_LOGICEXCEPTION_MACRO("ActivityPattern::setActive: aPosition "
+				   << aPosition
+				   << " is out of range [1,"
+				   << getSize()
+				   << "]");
+    myPattern &= 1<<aPosition-1;
   }
-
-  void AlgFactoryManager::init() {
-    xaifBooster::AlgFactoryManager::init();
-    xaifBoosterLinearization::AlgFactoryManager::resets();
+  
+  void ActivityPattern::setSize(unsigned short aSize) { 
+    if (aSize<1 || aSize>sizeof(myPattern)*8)
+      	THROW_LOGICEXCEPTION_MACRO("ActivityPattern::setSize: "
+				   << aSize
+				   << " is out of range [1,"
+				   << sizeof(myPattern)*8
+				   << "]");
+    mySize=aSize;
   }
+  
 
+  unsigned short ActivityPattern::getSize()const { 
+    if (mySize<1)
+      THROW_LOGICEXCEPTION_MACRO("ActivityPattern::getSize: not set ");
+    return mySize;
+  }
+  
+  bool ActivityPattern::operator == (const ActivityPattern& anotherPattern) const { 
+    return (myPattern==anotherPattern.myPattern);
+  } 
+  
+  bool ActivityPattern::operator != (const ActivityPattern& anotherPattern) const{ 
+    return (myPattern!=anotherPattern.myPattern);
+  } 
+
+  std::string ActivityPattern::discrepancyPositions(const ActivityPattern& anotherPattern) const { 
+    if (getSize()!=anotherPattern.getSize()) 
+      THROW_LOGICEXCEPTION_MACRO("ActivityPattern::discrepancyPositions: size mismatch ");
+    unsigned int theDiscrepancy(myPattern^anotherPattern.myPattern);
+    std::ostringstream out;
+    for (unsigned short i=0; i<mySize-1; ++i) { 
+      if (theDiscrepancy & 1<<i) 
+	out << i << " ";
+    }
+    return out.str();
+  } 
+  
 }
 
