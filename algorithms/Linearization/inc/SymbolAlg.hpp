@@ -99,6 +99,13 @@ namespace xaifBoosterLinearization {
      */
     void setHandCodedWrapper(const SymbolReference& theOriginalSymbolReference);
 
+    /** 
+     * rename subroutines that have a 
+     * definition within the representation 
+     * as opposed to external calls
+     */
+    void internalRename(const SymbolReference& theOriginalSymbolReference); 
+
     /**    
      * if this is not a hand-adjoined call 
      * an exception is thrown. 
@@ -112,6 +119,8 @@ namespace xaifBoosterLinearization {
     ActivityPattern& getActivityPattern(); 
 
     const SymbolReference& getReplacementSymbolReference() const; 
+
+    bool hasReplacementSymbolReference() const; 
 
   private: 
 
@@ -152,7 +161,9 @@ namespace xaifBoosterLinearization {
      */
     ActivityPattern myActivityPattern;
 
-    SymbolReference* myHandCodeWrapperSymbolReferenceP; 
+    SymbolReference* myHandCodeWrapperSymbolReference_p; 
+
+    void makeReplacementSymbol(const SymbolReference& theOriginalSymbolReference); 
      
   }; // end of class SymbolAlg
  

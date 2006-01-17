@@ -71,7 +71,10 @@ namespace xaifBooster {
 namespace xaifBoosterLinearization {  
 
   /** 
-   * class to implement reversal of BasicBlockElements
+   * class to implement conversion to avoid 
+   * type mismatches and potential renames 
+   * if indicated by wrappernames or 
+   * by the forced renames
    */
   class SubroutineCallAlg : public SubroutineCallAlgBase{
 
@@ -92,6 +95,9 @@ namespace xaifBoosterLinearization {
     /** 
      * adjust for active/passive type mismatches 
      * \todo fix handling for external calls which should all be passive!
+     * rename calls for all subroutines that are external and have 
+     * wrappers or all internally defined subroutines if this is 
+     * enforced, see CallGraphVertexAlg
      */
     virtual void algorithm_action_1();
 

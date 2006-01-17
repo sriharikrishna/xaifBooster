@@ -54,7 +54,11 @@
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
+
 #include "xaifBooster/algorithms/CodeReplacement/inc/Replacement.hpp"
+
+#include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
@@ -66,13 +70,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     xaifBoosterControlFlowReversal::CallGraphVertexAlg(theContaining), 
-    // JU: this is iffy. Ideally I don't want to get into accessing theContaining 
-    // here since it opens the door to ordering problems between the ctors.
-    myReplacementList(theContaining.getControlFlowGraph().getSymbolReference().getSymbol(),
-		      theContaining.getControlFlowGraph().getSymbolReference().getScope(),
-		      theContaining.getControlFlowGraph().getScope(),
-                      "reverse_subroutine_template",
-		      theContaining.getControlFlowGraph().getArgumentList()),
+    myReplacementList_p(0),
     myCFGStoreArguments_p(0),
     myCFGStoreResults_p(0),
     myCFGRestoreArguments_p(0),
@@ -80,6 +78,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() { 
+    if (myReplacementList_p)
+      delete myReplacementList_p;
     if (myCFGStoreArguments_p)
       delete myCFGStoreArguments_p;
     if (myCFGStoreResults_p)
@@ -92,8 +92,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   void
   CallGraphVertexAlg::printXMLHierarchy(std::ostream& os) const { 
-    myReplacementList.printXMLHierarchy(os);
-    //  getContaining().CallGraphVertex::printXMLHierarchyImpl(os);
+    if (!myReplacementList_p)
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::printXMLHierarchy: no replacement list ");
+    myReplacementList_p->printXMLHierarchy(os);
   } // end of CallGraphVertexAlg::printXMLHierarchy
   
   std::string 
@@ -114,8 +115,28 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void 
   CallGraphVertexAlg::algorithm_action_4() { 
     xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(); 
-    myReplacementList.setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
-    myReplacementList.setId(getContaining().getControlFlowGraph().getId());
+    // see if we have a replacement symbol for this one: 
+    const xaifBoosterLinearization::SymbolAlg& 
+      theSymbolAlg(dynamic_cast<const xaifBoosterLinearization::SymbolAlg&>(getContaining().
+									    getControlFlowGraph().
+									    getSymbolReference().
+									    getSymbol().
+									    getSymbolAlgBase()));
+    const SymbolReference* theSymbolReference_p;
+    if (theSymbolAlg.hasReplacementSymbolReference()) 
+      theSymbolReference_p=&(theSymbolAlg.getReplacementSymbolReference());
+    else
+      theSymbolReference_p=&(getContaining().getControlFlowGraph().getSymbolReference());
+    // make the replacement list
+    if (!myReplacementList_p) 
+      myReplacementList_p=
+	new xaifBoosterCodeReplacement::ReplacementList(theSymbolReference_p->getSymbol(),
+							theSymbolReference_p->getScope(),
+							getContaining().getControlFlowGraph().getScope(),
+							"reverse_subroutine_template",
+							getContaining().getControlFlowGraph().getArgumentList()),
+    myReplacementList_p->setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
+    myReplacementList_p->setId(getContaining().getControlFlowGraph().getId());
     myCFGStoreArguments_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
 					       getContaining().getControlFlowGraph().getSymbolReference().getScope(),
 					       getContaining().getControlFlowGraph().getScope(),
@@ -136,7 +157,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     for (theId.reset();
 	 !theId.atEnd();
 	 ++theId) { 
-      xaifBoosterCodeReplacement::Replacement& theReplacement(myReplacementList.addReplacement(*theId));
+      xaifBoosterCodeReplacement::Replacement& theReplacement(myReplacementList_p->addReplacement(*theId));
       switch(*theId) { 
       case ReplacementId::ORIGINAL: 
 	theReplacement.setControlFlowGraphBase(getContaining().getControlFlowGraph());

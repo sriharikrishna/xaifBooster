@@ -60,6 +60,7 @@
 #include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -76,7 +77,9 @@ void Usage(char** argv) {
 	    << "             [-S] force statement level preaccumulation" << std::endl
 	    << "             [-n] allow n-ary sax operations" << std::endl
 	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
-            << "                 space separated list enclosed in double quotes" << std::endl;
+            << "                 space separated list enclosed in double quotes" << std::endl
+	    << "             [-r] " << std::endl
+	    << "                 force renaming of all non-external routines" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -88,7 +91,7 @@ int main(int argc,char** argv) {
   std::string aUrl;
   bool forceStatementLevel=false, allowNarySaxOps=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSnw",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSnwr",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -105,6 +108,8 @@ int main(int argc,char** argv) {
       allowNarySaxOps=true;
     if (CommandLineParser::instance()->isSet('w')) 
       xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
+    if (CommandLineParser::instance()->isSet('r')) 
+      xaifBoosterLinearization::ControlFlowGraphAlg::setForceNonExternalRenames();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());

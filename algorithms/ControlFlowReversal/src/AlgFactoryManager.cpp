@@ -116,7 +116,8 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void AlgFactoryManager::init() {
-    xaifBooster::AlgFactoryManager::init();
+    xaifBoosterLinearization::AlgFactoryManager::init();
+    //    xaifBooster::AlgFactoryManager::init();
     xaifBoosterControlFlowReversal::AlgFactoryManager::resets();
   }
 

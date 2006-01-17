@@ -71,18 +71,19 @@ namespace xaifBooster {
   } 
 
   void
-  ControlFlowGraphCommonAttributes::printAttributes(std::ostream& os) const { 
+  ControlFlowGraphCommonAttributes::printAttributes(std::ostream& os,
+						    const SymbolReference& anAlternativeSymbolReference) const { 
     os << our_myId_XAIFName.c_str() 
        << "=\"" 
        << getId().c_str()
        << "\" " 
        << our_mySymbolReferenceSymbolId_XAIFName.c_str() 
        << "=\"" 
-       << mySymbolReference.getSymbol().getId().c_str()
+       << anAlternativeSymbolReference.getSymbol().getId().c_str()
        << "\" " 
        << our_mySymbolReferenceScopeId_XAIFName.c_str() 
        << "=\"" 
-       << mySymbolReference.getScope().getId().c_str()
+       << anAlternativeSymbolReference.getScope().getId().c_str()
        << "\" " 
        << our_myScope_XAIFName.c_str() 
        << "=\"" 

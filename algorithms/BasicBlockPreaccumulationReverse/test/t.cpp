@@ -58,6 +58,7 @@
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
@@ -78,7 +79,9 @@ void Usage(char** argv) {
 	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
 	    << "             [-v] validate <inputFile> against the schema" << std::endl
 	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
-            << "                 space separated list enclosed in double quotes" << std::endl;
+            << "                 space separated list enclosed in double quotes" << std::endl
+	    << "             [-r] " << std::endl
+	    << "                 force renaming of all non-external routines" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -92,7 +95,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvw",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwr",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -111,6 +114,8 @@ int main(int argc,char** argv) {
       validateAgainstSchema=true;
     if (CommandLineParser::instance()->isSet('w')) 
       xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
+    if (CommandLineParser::instance()->isSet('r')) 
+      xaifBoosterLinearization::ControlFlowGraphAlg::setForceNonExternalRenames();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());

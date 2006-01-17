@@ -66,12 +66,12 @@ namespace xaifBoosterLinearization {
     SymbolAlgBase(theContainingSymbol),
     myIsExternalFlag(false),
     myHasHandCodedWrapperFlag(false),
-    myHandCodeWrapperSymbolReferenceP(0) { 
+    myHandCodeWrapperSymbolReference_p(0) { 
   }
 
   SymbolAlg::~SymbolAlg() { 
-    if (myHandCodeWrapperSymbolReferenceP)
-      delete myHandCodeWrapperSymbolReferenceP;
+    if (myHandCodeWrapperSymbolReference_p)
+      delete myHandCodeWrapperSymbolReference_p;
   } 
 
   void SymbolAlg::printXMLHierarchy(std::ostream& os) const { 
@@ -102,18 +102,21 @@ namespace xaifBoosterLinearization {
     myIsExternalFlag=true;
   }
 
+  void SymbolAlg::internalRename(const SymbolReference& theOriginalSymbolReference) { 
+    if (myIsExternalFlag)
+      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::internalRename: set to external");
+    if (myHandCodeWrapperSymbolReference_p)
+      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::internalRename: already renamed");
+    makeReplacementSymbol(theOriginalSymbolReference);
+  }
+
   bool SymbolAlg::hasHandCodedWrapper() const { 
     if (!myIsExternalFlag)
       THROW_LOGICEXCEPTION_MACRO("SymbolAlg::hasHandCodedWrapper: is not external");
     return myHasHandCodedWrapperFlag;
   } 
 
-  void SymbolAlg::setHandCodedWrapper(const SymbolReference& theOriginalSymbolReference) { 
-    if (!myIsExternalFlag)
-      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::setHandCodedWrapper: is not external");
-    if (myHasHandCodedWrapperFlag)
-      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::setHandCodedWrapper: already set");
-    myHasHandCodedWrapperFlag=true;
+  void SymbolAlg::makeReplacementSymbol(const SymbolReference& theOriginalSymbolReference) { 
     // make the replacement symbol:
     const std::string theNewName(ConceptuallyStaticInstances::instance()->getCallGraph().getPrefix()+
 			   theOriginalSymbolReference.getSymbol().getId());
@@ -126,8 +129,17 @@ namespace xaifBoosterLinearization {
 				   theOriginalSymbolReference.getSymbol().getSymbolShape(),
 				   true,
 				   true));
-    theNewSymbol.setAnnotation("SymbolAlg::setHandCodedWrapper");
-    myHandCodeWrapperSymbolReferenceP=new SymbolReference(theNewSymbol,theOriginalSymbolReference.getScope());
+    theNewSymbol.setAnnotation("SymbolAlg::makeReplacementSymbol");
+    myHandCodeWrapperSymbolReference_p=new SymbolReference(theNewSymbol,theOriginalSymbolReference.getScope());
+  } 
+
+  void SymbolAlg::setHandCodedWrapper(const SymbolReference& theOriginalSymbolReference) { 
+    if (!myIsExternalFlag)
+      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::setHandCodedWrapper: is not external");
+    if (myHasHandCodedWrapperFlag)
+      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::setHandCodedWrapper: already set");
+    myHasHandCodedWrapperFlag=true;
+    makeReplacementSymbol(theOriginalSymbolReference);
   }
     
   const ActivityPattern& SymbolAlg::getActivityPattern() const { 
@@ -143,9 +155,13 @@ namespace xaifBoosterLinearization {
   } 
 
   const SymbolReference& SymbolAlg::getReplacementSymbolReference() const { 
-    if (!myHasHandCodedWrapperFlag)
-      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::getReplacementSymbolReference: has no hand coded wrapper");
-    return *myHandCodeWrapperSymbolReferenceP;
+    if (!myHandCodeWrapperSymbolReference_p)
+      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::getReplacementSymbolReference: has no replacement");
+    return *myHandCodeWrapperSymbolReference_p;
+  }
+
+  bool SymbolAlg::hasReplacementSymbolReference() const { 
+    return (myHandCodeWrapperSymbolReference_p)?true:false;
   }
     
 } // end of namespace 

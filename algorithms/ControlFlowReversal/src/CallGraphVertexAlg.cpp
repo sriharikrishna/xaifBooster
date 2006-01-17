@@ -55,9 +55,11 @@
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
-
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
+
+#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
+
 
 using namespace xaifBooster;
 
@@ -200,7 +202,19 @@ namespace xaifBoosterControlFlowReversal {
        << "<"
        << getContaining().getControlFlowGraph().ourXAIFName.c_str()
        << " ";
-    getContaining().getControlFlowGraph().printAttributes(os);
+    const xaifBoosterLinearization::SymbolAlg& 
+      theSymbolAlg(dynamic_cast<const xaifBoosterLinearization::SymbolAlg&>(getContaining().
+									    getControlFlowGraph().
+									    getSymbolReference().
+									    getSymbol().
+									    getSymbolAlgBase()));
+    if (theSymbolAlg.hasReplacementSymbolReference())
+      getContaining().getControlFlowGraph().printAttributes(os,theSymbolAlg.getReplacementSymbolReference());
+    else
+      getContaining().getControlFlowGraph().printAttributes(os,
+							    getContaining().
+							    getControlFlowGraph().
+							    getSymbolReference());
     os << " "
        << getContaining().getControlFlowGraph().our_myActiveFlag_XAIFName.c_str()
        << "=\""

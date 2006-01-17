@@ -87,12 +87,18 @@ namespace xaifBooster {
 
   void
   ControlFlowGraph::printXMLHierarchyImpl(std::ostream& os) const { 
+    printXMLHierarchyImpl(os,mySymbolReference);
+  }
+
+  void
+  ControlFlowGraph::printXMLHierarchyImpl(std::ostream& os,
+					  const SymbolReference& anAlternativeSymbolReference) const { 
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
        << ourXAIFName.c_str() 
        << " ";
-    printAttributes(os);
+    printAttributes(os,anAlternativeSymbolReference);
     os << " " 
        << our_myActiveFlag_XAIFName.c_str() 
        << "=\"" 

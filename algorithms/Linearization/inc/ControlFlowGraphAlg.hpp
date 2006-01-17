@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERLINEARIZATION_CONTROLFLOWGRAPHALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_CONTROLFLOWGRAPHALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,63 +52,62 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConstantAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlgFactory.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterLinearization { 
+namespace xaifBoosterLinearization {  
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  /** 
+   * class to implement renaming of subroutine definitions
+   * if enforced
+   */
+  class ControlFlowGraphAlg : public ControlFlowGraphAlgBase {
+  public:
+    
+    ControlFlowGraphAlg(const ControlFlowGraph& theContaining);
 
-  void AlgFactoryManager::resets() {
-    resetArgumentAlgFactory(new ArgumentAlgFactory());
-    resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
-    resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
-    resetConstantAlgFactory(new ConstantAlgFactory());
-    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
-    resetExpressionAlgFactory(new ExpressionAlgFactory());
-    resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
-    resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
-    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
-    resetSymbolAlgFactory(new SymbolAlgFactory());
-  }
+    virtual ~ControlFlowGraphAlg();
 
-  void AlgFactoryManager::init() {
-    xaifBooster::AlgFactoryManager::init();
-    xaifBoosterLinearization::AlgFactoryManager::resets();
-  }
+    virtual void printXMLHierarchy(std::ostream& os) const;
 
-}
+    virtual void algorithm_action_1();
+                                                                                
+    virtual std::string debug() const ;
 
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    static void setForceNonExternalRenames();
+    
+    bool forceNonExternalRenames() const;
+
+  private:
+    
+    /** 
+     * no def
+     */
+    ControlFlowGraphAlg();
+
+    /** 
+     * no def
+     */
+    ControlFlowGraphAlg(const ControlFlowGraphAlg&);
+
+    /** 
+     * no def
+     */
+    ControlFlowGraphAlg operator=(const ControlFlowGraphAlg&);
+
+    /** 
+     * force renames of all subroutine calls/definitions
+     * (non-external) 
+     */
+    static bool ourForceNonExternalRenamesFlag;
+
+  };  // end of class
+
+} // end of namespace 
+                                                                     
+#endif

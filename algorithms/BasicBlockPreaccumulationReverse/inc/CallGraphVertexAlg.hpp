@@ -103,7 +103,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      */
     CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
 
-    xaifBoosterCodeReplacement::ReplacementList myReplacementList;
+    xaifBoosterCodeReplacement::ReplacementList* myReplacementList_p;
 
     /** 
      * we own this

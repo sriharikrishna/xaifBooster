@@ -79,7 +79,13 @@ namespace xaifBooster {
 
     ~ControlFlowGraphCommonAttributes();
 
-    void printAttributes(std::ostream& os) const;
+    /** 
+     * pass in an alternative
+     * so we don't have to replicate 
+     * all the printing
+     */
+    void printAttributes(std::ostream& os,
+			 const SymbolReference& anAlternativeSymbolReference) const;
 
     std::string debug() const ;
     

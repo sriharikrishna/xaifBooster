@@ -87,7 +87,7 @@ namespace xaifBoosterCodeReplacement {
        << "<"
        << ourXAIFName.c_str()
        << " ";
-    printAttributes(os);
+    printAttributes(os,mySymbolReference);
     os << " "
        << our_myTemplateName_XAIFName.c_str() 
        << "=\"" 
