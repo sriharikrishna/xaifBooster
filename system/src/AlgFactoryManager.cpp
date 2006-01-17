@@ -1,3 +1,55 @@
+// ========== begin copyright notice ==============
+// This file is part of 
+// ---------------
+// xaifBooster
+// ---------------
+// Distributed under the BSD license as follows:
+// Copyright (c) 2005, The University of Chicago
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, 
+// with or without modification, are permitted provided that the following conditions are met:
+//
+//    - Redistributions of source code must retain the above copyright notice, 
+//      this list of conditions and the following disclaimer.
+//    - Redistributions in binary form must reproduce the above copyright notice, 
+//      this list of conditions and the following disclaimer in the documentation 
+//      and/or other materials provided with the distribution.
+//    - Neither the name of The University of Chicago nor the names of its contributors 
+//      may be used to endorse or promote products derived from this software without 
+//      specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
+// SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// 
+// General Information:
+// xaifBooster is intended for the transformation of 
+// numerical programs represented as xml files according 
+// to the XAIF schema. It is part of the OpenAD framework. 
+// The main application is automatic 
+// differentiation, i.e. the generation of code for 
+// the computation of derivatives. 
+// The following people are the principal authors of the 
+// current version: 
+// 	Uwe Naumann
+//	Jean Utke
+// Additional contributors are: 
+//	Andrew Lyons
+//	Peter Fine
+//
+// For more details about xaifBooster and its use in OpenAD please visit:
+//   http://www.mcs.anl.gov/openad
+//
+// This work is partially supported by:
+// 	NSF-ITR grant OCE-0205590
+// ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/system/inc/AlgFactoryManager.hpp"
@@ -28,6 +80,7 @@
 #include "xaifBooster/system/inc/MarkerAlgFactory.hpp"
 #include "xaifBooster/system/inc/PreLoopAlgFactory.hpp"
 #include "xaifBooster/system/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/system/inc/SymbolAlgFactory.hpp"
 
 namespace xaifBooster { 
 
@@ -80,7 +133,8 @@ namespace xaifBooster {
     ourLabelAlgFactory_p(0), 
     ourMarkerAlgFactory_p(0), 
     ourPreLoopAlgFactory_p(0), 
-    ourSubroutineCallAlgFactory_p(0) 
+    ourSubroutineCallAlgFactory_p(0),
+    ourSymbolAlgFactory_p(0) 
   {
   }
 
@@ -111,6 +165,7 @@ namespace xaifBooster {
     if (ourMarkerAlgFactory_p) delete ourMarkerAlgFactory_p;
     if (ourPreLoopAlgFactory_p) delete ourPreLoopAlgFactory_p;
     if (ourSubroutineCallAlgFactory_p) delete ourSubroutineCallAlgFactory_p;
+    if (ourSymbolAlgFactory_p) delete ourSymbolAlgFactory_p;
   } // end of AlgFactoryManager::~AlgFactoryManager
 
   void AlgFactoryManager::resets() {
@@ -140,6 +195,7 @@ namespace xaifBooster {
     resetMarkerAlgFactory(new MarkerAlgFactory());
     resetPreLoopAlgFactory(new PreLoopAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
+    resetSymbolAlgFactory(new SymbolAlgFactory());
   }
 
   void AlgFactoryManager::init() {
@@ -453,11 +509,22 @@ namespace xaifBooster {
     ourSubroutineCallAlgFactory_p=anotherSubroutineCallAlgFactory_p;
   }
 
-
   SubroutineCallAlgFactory* AlgFactoryManager::getSubroutineCallAlgFactory() const { 
     if (!ourSubroutineCallAlgFactory_p)
       THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getSubroutineCallAlgFactory: not set");
     return ourSubroutineCallAlgFactory_p;
+  }
+
+  void AlgFactoryManager::resetSymbolAlgFactory(SymbolAlgFactory* anotherSymbolAlgFactory_p){ 
+    if(ourSymbolAlgFactory_p) 
+      delete ourSymbolAlgFactory_p;
+    ourSymbolAlgFactory_p=anotherSymbolAlgFactory_p;
+  }
+
+  SymbolAlgFactory* AlgFactoryManager::getSymbolAlgFactory() const { 
+    if (!ourSymbolAlgFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getSymbolAlgFactory: not set");
+    return ourSymbolAlgFactory_p;
   }
 
   std::string AlgFactoryManager::debug() const {
@@ -489,6 +556,7 @@ namespace xaifBooster {
     if (ourMarkerAlgFactory_p) out << "ourMarkerAlgFactory_p=" << ourMarkerAlgFactory_p->debug().c_str() << ",";
     if (ourPreLoopAlgFactory_p) out << "ourPreLoopAlgFactory_p=" << ourPreLoopAlgFactory_p->debug().c_str() << ",";
     if (ourSubroutineCallAlgFactory_p) out << "ourSubroutineCallAlgFactory_p=" << ourSubroutineCallAlgFactory_p->debug().c_str() << ",";
+    if (ourSymbolAlgFactory_p) out << "ourSymbolAlgFactory_p=" << ourSymbolAlgFactory_p->debug().c_str() << ",";
     out << "]" << std::ends;  
     return out.str();
   } // end of AlgFactoryManager::~AlgFactoryManager
