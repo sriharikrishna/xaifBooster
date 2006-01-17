@@ -52,6 +52,7 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
@@ -95,7 +96,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void AlgFactoryManager::init() {
     // need to pick a path
     dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager*>(this)->xaifBooster::AlgFactoryManager::init();
-    xaifBoosterLinearization::AlgFactoryManager::resets();
+    dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager*>(this)->xaifBoosterLinearization::AlgFactoryManager::resets();
     xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
     xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::resets();
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resets();

@@ -53,14 +53,16 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlg.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphAlg.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
-  ControlFlowGraphAlg::ControlFlowGraphAlg(const ControlFlowGraph& theContaining) : ControlFlowGraphAlgBase(theContaining) {}
+  ControlFlowGraphAlg::ControlFlowGraphAlg(const ControlFlowGraph& theContaining) : 
+    xaifBoosterLinearization::ControlFlowGraphAlg(theContaining) {
+  }
 
   ControlFlowGraphAlg::~ControlFlowGraphAlg() {}
 

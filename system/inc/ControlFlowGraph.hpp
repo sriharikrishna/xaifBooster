@@ -82,7 +82,18 @@ namespace xaifBooster {
 
     void printXMLHierarchy(std::ostream& os) const;
 
+    /** 
+     * to keep the algorithm template happy
+     */
     void printXMLHierarchyImpl(std::ostream& os) const;
+
+    /** 
+     * pass in an alternative
+     * so we don't have to replicate 
+     * all the printing
+     */
+    void printXMLHierarchyImpl(std::ostream& os,
+			       const SymbolReference& anAlternativeSymbolReference) const;
 
     std::string debug() const ;
     

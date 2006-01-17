@@ -50,63 +50,71 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
+#include <sstream>
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConstantAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlgFactory.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterLinearization { 
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  bool ControlFlowGraphAlg::ourForceNonExternalRenamesFlag(false);
 
-  void AlgFactoryManager::resets() {
-    resetArgumentAlgFactory(new ArgumentAlgFactory());
-    resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
-    resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
-    resetConstantAlgFactory(new ConstantAlgFactory());
-    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
-    resetExpressionAlgFactory(new ExpressionAlgFactory());
-    resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
-    resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
-    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
-    resetSymbolAlgFactory(new SymbolAlgFactory());
+  ControlFlowGraphAlg::ControlFlowGraphAlg(const ControlFlowGraph& theContaining) : 
+    ControlFlowGraphAlgBase(theContaining){
   }
 
-  void AlgFactoryManager::init() {
-    xaifBooster::AlgFactoryManager::init();
-    xaifBoosterLinearization::AlgFactoryManager::resets();
+  ControlFlowGraphAlg::~ControlFlowGraphAlg() {
   }
 
-}
+  void
+  ControlFlowGraphAlg::printXMLHierarchy(std::ostream& os) const {
+    const SymbolAlg& theSymbolAlg(dynamic_cast<const SymbolAlg&>(getContaining().
+								 getSymbolReference().
+								 getSymbol().
+								 getSymbolAlgBase()));
+    if (theSymbolAlg.hasReplacementSymbolReference())
+      getContaining().printXMLHierarchyImpl(os,theSymbolAlg.getReplacementSymbolReference());
+    else 
+      getContaining().printXMLHierarchyImpl(os);
+  }
+
+  void 
+  ControlFlowGraphAlg::algorithm_action_1() { 
+    SymbolAlg& theSymbolAlg(dynamic_cast<SymbolAlg&>(getContaining().
+						     getSymbolReference().
+						     getSymbol().
+						     getSymbolAlgBase()));
+    if (forceNonExternalRenames() && !theSymbolAlg.hasReplacementSymbolReference())
+      theSymbolAlg.internalRename(getContaining().getSymbolReference());
+  }
+
+  std::string
+  ControlFlowGraphAlg::debug() const {
+    std::ostringstream out;
+    out << "xaifBoosterLinearization::ControlFlowGraphAlg["
+        << this
+	<< ", containing="
+	<< getContaining().debug().c_str()
+        << "]" << std::ends;
+    return out.str();
+  }
+
+  void ControlFlowGraphAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+  }
+
+  void ControlFlowGraphAlg::setForceNonExternalRenames() { 
+    if (ourForceNonExternalRenamesFlag)
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::setForceNonExternalRenames: already set");
+    ourForceNonExternalRenamesFlag=true;
+  } 
+  
+  bool ControlFlowGraphAlg::forceNonExternalRenames() const { 
+    return ourForceNonExternalRenamesFlag;
+  }
+
+} // end of namespace
 
