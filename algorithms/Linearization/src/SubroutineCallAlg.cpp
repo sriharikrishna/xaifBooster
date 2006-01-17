@@ -98,7 +98,7 @@ namespace xaifBoosterLinearization {
     const SymbolAlg& theSymbolAlg(dynamic_cast<const SymbolAlg&>(getContainingSubroutineCall().
 								 getSymbolReference().getSymbol().getSymbolAlgBase()));
     const SymbolReference* theSymbolReference_p;
-    if (theSymbolAlg.isExternal() && theSymbolAlg.hasHandCodedWrapper()) 
+    if (theSymbolAlg.hasReplacementSymbolReference()) 
       theSymbolReference_p=&(theSymbolAlg.getReplacementSymbolReference());
     else
       theSymbolReference_p=&(getContainingSubroutineCall().getSymbolReference());
