@@ -48,6 +48,7 @@ ourActionCatalogue.addElement(DuUdMapEntry::our_StatementId_XAIFName, ActionItem
 ourActionCatalogue.addElement(SubroutineCall::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSubroutineCall));
 ourActionCatalogue.addElement(Symbol::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSymbol));
 ourActionCatalogue.addElement(VariableSymbolReference::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSymbolReference));
+ourActionCatalogue.addElement(SymbolReferenceProperty::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSymbolReferenceProperty));
 ourActionCatalogue.addElement(SymbolTable::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSymbolTable));
 ourActionCatalogue.addElement(Update::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onUpdate));
 ourActionCatalogue.addElement(VariableEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onVariableEdge));

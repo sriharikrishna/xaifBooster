@@ -80,6 +80,10 @@ else
 fi
 for i in `echo ${TESTFILES}`
 do 
+  if [ ! -f examples/$i/head.f ] 
+  then 
+    continue
+  fi
   if [ "$allOkSoFar" == "false" ] 
   then
     echo -n "QUESTION: There was problem with the last example, kill the script or hit enter to continue with $i ?" 

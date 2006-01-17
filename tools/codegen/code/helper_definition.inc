@@ -376,6 +376,20 @@ bool XAIFBaseParserHelper::hasSymbol() const {
 return (mySymbol_p!=0);
 }
 
+void XAIFBaseParserHelper::setSymbolReferenceProperty(SymbolReferenceProperty& whatToSet) {
+if (mySymbolReferenceProperty_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "SymbolReferenceProperty" << " item already set");
+mySymbolReferenceProperty_p=&whatToSet;
+}
+SymbolReferenceProperty& XAIFBaseParserHelper::getSymbolReferenceProperty() const {
+if (!mySymbolReferenceProperty_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "SymbolReferenceProperty" << " item not set");
+return *mySymbolReferenceProperty_p;
+}
+bool XAIFBaseParserHelper::hasSymbolReferenceProperty() const {
+return (mySymbolReferenceProperty_p!=0);
+}
+
 void XAIFBaseParserHelper::setSymbolTable(SymbolTable& whatToSet) {
 if (mySymbolTable_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "SymbolTable" << " item already set");

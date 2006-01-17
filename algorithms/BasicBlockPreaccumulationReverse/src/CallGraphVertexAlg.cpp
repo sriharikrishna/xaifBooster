@@ -1,8 +1,64 @@
+// ========== begin copyright notice ==============
+// This file is part of 
+// ---------------
+// xaifBooster
+// ---------------
+// Distributed under the BSD license as follows:
+// Copyright (c) 2005, The University of Chicago
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, 
+// with or without modification, are permitted provided that the following conditions are met:
+//
+//    - Redistributions of source code must retain the above copyright notice, 
+//      this list of conditions and the following disclaimer.
+//    - Redistributions in binary form must reproduce the above copyright notice, 
+//      this list of conditions and the following disclaimer in the documentation 
+//      and/or other materials provided with the distribution.
+//    - Neither the name of The University of Chicago nor the names of its contributors 
+//      may be used to endorse or promote products derived from this software without 
+//      specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
+// SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// 
+// General Information:
+// xaifBooster is intended for the transformation of 
+// numerical programs represented as xml files according 
+// to the XAIF schema. It is part of the OpenAD framework. 
+// The main application is automatic 
+// differentiation, i.e. the generation of code for 
+// the computation of derivatives. 
+// The following people are the principal authors of the 
+// current version: 
+// 	Uwe Naumann
+//	Jean Utke
+// Additional contributors are: 
+//	Andrew Lyons
+//	Peter Fine
+//
+// For more details about xaifBooster and its use in OpenAD please visit:
+//   http://www.mcs.anl.gov/openad
+//
+// This work is partially supported by:
+// 	NSF-ITR grant OCE-0205590
+// ========== end copyright notice ==============
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
+
 #include "xaifBooster/algorithms/CodeReplacement/inc/Replacement.hpp"
+
+#include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
@@ -14,13 +70,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     xaifBoosterAddressArithmetic::CallGraphVertexAlg(theContaining), 
-    // JU: this is iffy. Ideally I don't want to get into accessing theContaining 
-    // here since it opens the door to ordering problems between the ctors.
-    myReplacementList(theContaining.getControlFlowGraph().getSymbolReference().getSymbol(),
-		      theContaining.getControlFlowGraph().getSymbolReference().getScope(),
-		      theContaining.getControlFlowGraph().getScope(),
-                      "reverse_subroutine_template",
-		      theContaining.getControlFlowGraph().getArgumentList()),
+    myReplacementList_p(0),
     myCFGStoreArguments_p(0),
     myCFGStoreResults_p(0),
     myCFGRestoreArguments_p(0),
@@ -28,6 +78,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() { 
+    if (myReplacementList_p)
+      delete myReplacementList_p;
     if (myCFGStoreArguments_p)
       delete myCFGStoreArguments_p;
     if (myCFGStoreResults_p)
@@ -40,14 +92,18 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   void
   CallGraphVertexAlg::printXMLHierarchy(std::ostream& os) const { 
-    myReplacementList.printXMLHierarchy(os);
-    //  getContaining().CallGraphVertex::printXMLHierarchyImpl(os);
+    if (!myReplacementList_p)
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::printXMLHierarchy: no replacement list ");
+    myReplacementList_p->printXMLHierarchy(os);
   } // end of CallGraphVertexAlg::printXMLHierarchy
   
   std::string 
   CallGraphVertexAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg[" 
+	<< this
+	<< ", containing="
+	<< getContaining().debug().c_str()
  	<< "]" << std::ends;  
     return out.str();
   } // end of CallGraphVertexAlg::debug
@@ -59,8 +115,28 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void 
   CallGraphVertexAlg::algorithm_action_4() { 
     xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(); 
-    myReplacementList.setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
-    myReplacementList.setId(getContaining().getControlFlowGraph().getId());
+    // see if we have a replacement symbol for this one: 
+    const xaifBoosterLinearization::SymbolAlg& 
+      theSymbolAlg(dynamic_cast<const xaifBoosterLinearization::SymbolAlg&>(getContaining().
+									    getControlFlowGraph().
+									    getSymbolReference().
+									    getSymbol().
+									    getSymbolAlgBase()));
+    const SymbolReference* theSymbolReference_p;
+    if (theSymbolAlg.hasReplacementSymbolReference()) 
+      theSymbolReference_p=&(theSymbolAlg.getReplacementSymbolReference());
+    else
+      theSymbolReference_p=&(getContaining().getControlFlowGraph().getSymbolReference());
+    // make the replacement list
+    if (!myReplacementList_p) 
+      myReplacementList_p=
+	new xaifBoosterCodeReplacement::ReplacementList(theSymbolReference_p->getSymbol(),
+							theSymbolReference_p->getScope(),
+							getContaining().getControlFlowGraph().getScope(),
+							"reverse_subroutine_template",
+							getContaining().getControlFlowGraph().getArgumentList()),
+    myReplacementList_p->setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
+    myReplacementList_p->setId(getContaining().getControlFlowGraph().getId());
     myCFGStoreArguments_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
 					       getContaining().getControlFlowGraph().getSymbolReference().getScope(),
 					       getContaining().getControlFlowGraph().getScope(),
@@ -81,7 +157,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     for (theId.reset();
 	 !theId.atEnd();
 	 ++theId) { 
-      xaifBoosterCodeReplacement::Replacement& theReplacement(myReplacementList.addReplacement(*theId));
+      xaifBoosterCodeReplacement::Replacement& theReplacement(myReplacementList_p->addReplacement(*theId));
       switch(*theId) { 
       case ReplacementId::ORIGINAL: 
 	theReplacement.setControlFlowGraphBase(getContaining().getControlFlowGraph());
@@ -97,36 +173,44 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	  theReplacement.setReversibleControlFlowGraph(getAdjointControlFlowGraph());
 	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
 	break;
-      case ReplacementId::STOREARGUMENT: 
+      case ReplacementId::STOREARGUMENT: { 
 	theReplacement.setControlFlowGraphBase(*myCFGStoreArguments_p);
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreArguments_p));
 	handleCheckPointing("cp_arg_store",
 			    SideEffectListType::READ_LIST,
-			    *myCFGStoreArguments_p,
+			    theBasicBlock,
 			    false);
 	break;
-      case ReplacementId::STORERESULT: 
+      }
+      case ReplacementId::STORERESULT: { 
+ 	// JU: result checkpoints can't be stored on a stack
 	theReplacement.setControlFlowGraphBase(*myCFGStoreResults_p);
-	// JU: result checkpoints can't be stored on a stack
-	handleCheckPointing("cp_res_store",
-			    SideEffectListType::MOD_LIST,
-			    *myCFGStoreResults_p, 
-			    false);
-	break;
-      case ReplacementId::RESTOREARGUMENT: 
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreResults_p));
+ 	handleCheckPointing("cp_res_store",
+ 			    SideEffectListType::MOD_LIST,
+ 			    theBasicBlock, 
+ 			    false);
+ 	break;
+      }
+      case ReplacementId::RESTOREARGUMENT: { 
 	theReplacement.setControlFlowGraphBase(*myCFGRestoreArguments_p);
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGRestoreArguments_p));
 	handleCheckPointing("cp_arg_restore",
 			    SideEffectListType::READ_LIST,
-			    *myCFGRestoreArguments_p,
+			    theBasicBlock,
 			    true);
+      }
 	break;
-      case ReplacementId::RESTORERESULT: 
-	theReplacement.setControlFlowGraphBase(*myCFGRestoreResults_p);
-	// JU: result checkpoints can't be stored on a stack
-	handleCheckPointing("cp_res_restore",
-			    SideEffectListType::MOD_LIST,
-			    *myCFGRestoreResults_p,
-			    false);
-	break;
+      case ReplacementId::RESTORERESULT: { 
+ 	theReplacement.setControlFlowGraphBase(*myCFGRestoreResults_p);
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGRestoreResults_p));
+ 	// JU: result checkpoints can't be stored on a stack
+ 	handleCheckPointing("cp_res_restore",
+ 			    SideEffectListType::MOD_LIST,
+ 			    theBasicBlock,
+ 			    false);
+ 	break;
+      }
       default: 
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_4: no handler for ReplacementID  "
 				   << ReplacementId::toString(*theId));
@@ -171,10 +255,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void 
   CallGraphVertexAlg::handleCheckPointing(const std::string& aSubroutineNameBase,
 					  SideEffectListType::SideEffectListType_E aSideEffectListType,
-					  ControlFlowGraph& theCFG,
+					  BasicBlock& theBasicBlock,
 					  bool reverse) { 
     // initialize
-    BasicBlock& theBasicBlock(initCheckPointCFG(theCFG));
     const SideEffectList::VariablePList& 
       theVariablePList(getContaining().
 		       getControlFlowGraph().

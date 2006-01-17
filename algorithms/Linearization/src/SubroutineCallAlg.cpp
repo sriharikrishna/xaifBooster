@@ -1,4 +1,60 @@
+// ========== begin copyright notice ==============
+// This file is part of 
+// ---------------
+// xaifBooster
+// ---------------
+// Distributed under the BSD license as follows:
+// Copyright (c) 2005, The University of Chicago
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, 
+// with or without modification, are permitted provided that the following conditions are met:
+//
+//    - Redistributions of source code must retain the above copyright notice, 
+//      this list of conditions and the following disclaimer.
+//    - Redistributions in binary form must reproduce the above copyright notice, 
+//      this list of conditions and the following disclaimer in the documentation 
+//      and/or other materials provided with the distribution.
+//    - Neither the name of The University of Chicago nor the names of its contributors 
+//      may be used to endorse or promote products derived from this software without 
+//      specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
+// SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// 
+// General Information:
+// xaifBooster is intended for the transformation of 
+// numerical programs represented as xml files according 
+// to the XAIF schema. It is part of the OpenAD framework. 
+// The main application is automatic 
+// differentiation, i.e. the generation of code for 
+// the computation of derivatives. 
+// The following people are the principal authors of the 
+// current version: 
+// 	Uwe Naumann
+//	Jean Utke
+// Additional contributors are: 
+//	Andrew Lyons
+//	Peter Fine
+//
+// For more details about xaifBooster and its use in OpenAD please visit:
+//   http://www.mcs.anl.gov/openad
+//
+// This work is partially supported by:
+// 	NSF-ITR grant OCE-0205590
+// ========== end copyright notice ==============
+#include <cctype>
+#include <algorithm>
+
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
 
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
@@ -6,14 +62,18 @@
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
-#include "xaifBooster/system/inc/UndefinedSubroutineException.hpp"
+#include "xaifBooster/system/inc/SubroutineNotFoundException.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/MissingSubroutinesReport.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
 
 namespace xaifBoosterLinearization {  
+
+  std::list<std::string> SubroutineCallAlg::ourWrapperSubRoutineNameList;
 
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
     SubroutineCallAlgBase(theContainingSubroutineCall) { 
@@ -25,13 +85,57 @@ namespace xaifBoosterLinearization {
 	 ++priorI) { 
       (*priorI)->printXMLHierarchy(os);
     } 
-    getContaining().printXMLHierarchyImpl(os);
+    printXMLHierarchyImpl(os);
     for (PlainBasicBlock::BasicBlockElementList::const_iterator postI=myPostAdjustmentsList.begin();
 	 postI!=myPostAdjustmentsList.end();
 	 ++postI) { 
       (*postI)->printXMLHierarchy(os);
     } 
   }
+
+  void SubroutineCallAlg::printXMLHierarchyImpl(std::ostream& os) const { 
+    // figure out the replacement symbol if needed
+    const SymbolAlg& theSymbolAlg(dynamic_cast<const SymbolAlg&>(getContainingSubroutineCall().
+								 getSymbolReference().getSymbol().getSymbolAlgBase()));
+    const SymbolReference* theSymbolReference_p;
+    if (theSymbolAlg.hasReplacementSymbolReference()) 
+      theSymbolReference_p=&(theSymbolAlg.getReplacementSymbolReference());
+    else
+      theSymbolReference_p=&(getContainingSubroutineCall().getSymbolReference());
+    PrintManager& pm=PrintManager::getInstance();
+    os << pm.indent() 
+       << "<"
+       << SubroutineCall::ourXAIFName.c_str() 
+       << " " 
+       << SubroutineCall::our_myId_XAIFName.c_str() 
+       << "=\"" 
+       << getContainingSubroutineCall().getId().c_str()
+       << "\" " 
+       << SubroutineCall::our_symbolId_XAIFName.c_str() 
+       << "=\"" 
+       << theSymbolReference_p->getSymbol().getId().c_str()
+       << "\" " 
+       << SubroutineCall::our_scopeId_XAIFName.c_str() 
+       << "=\"" 
+       << theSymbolReference_p->getScope().getId().c_str()
+       << "\" " 
+       << ActiveUseType::our_attribute_XAIFName.c_str() 
+       << "=\"" 
+       << ActiveUseType::toString(getContainingSubroutineCall().getActiveUse()).c_str()
+       << "\">" 
+       << std::endl;
+    for (SubroutineCall::ConcreteArgumentPList::const_iterator i=
+	   getContainingSubroutineCall().getConcreteArgumentPList().begin();
+	 i!=getContainingSubroutineCall().getConcreteArgumentPList().end();
+	 ++i)
+      (*i)->printXMLHierarchy(os);
+    os << pm.indent() 
+       << "</"
+       << SubroutineCall::ourXAIFName.c_str() 
+       << ">" 
+       << std::endl;
+    pm.releaseInstance();
+  } 
 
   std::string 
   SubroutineCallAlg::debug() const { 
@@ -47,6 +151,112 @@ namespace xaifBoosterLinearization {
   void SubroutineCallAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
+  void SubroutineCallAlg::initExternalCall(SymbolAlg& aSymbolAlg) {
+    // we need to set it all up 
+    aSymbolAlg.setExternal();
+    // now try to figure out if this has hand written wrappers:
+    for (std::list<std::string>::const_iterator aNameListI=ourWrapperSubRoutineNameList.begin();
+	 aNameListI!=ourWrapperSubRoutineNameList.end();
+	 ++aNameListI) { 
+      // we have 2 issues, 
+      // first case sensitivity
+      std::string anInputName(*aNameListI);
+      std::transform(anInputName.begin(),
+		     anInputName.end(), 
+		     anInputName.begin(), 
+		     tolower);
+      std::string aSymbolName(aSymbolAlg.getContaining().getId());
+      std::transform(aSymbolName.begin(),
+		     aSymbolName.end(), 
+		     aSymbolName.begin(), 
+		     tolower);
+      // second the appendices added by the 
+      // fortran front end.
+      if (aSymbolName.find(anInputName)!=0)
+	continue;
+      // the tail should just be empty or contain underscores followed by digits
+      std::string aSymbolNameTail(aSymbolName.substr(anInputName.size()));
+      unsigned int position=0;
+      while(position<aSymbolNameTail.size() && aSymbolNameTail[position]=='_')
+	position++;
+      while(position<aSymbolNameTail.size() && std::isdigit(aSymbolNameTail[position]))
+	position++;
+      if (position!=aSymbolNameTail.size())
+	// this doesn't have the proper appendix
+	continue;
+      // now we we know this has a handwritten wrapper.
+      aSymbolAlg.setHandCodedWrapper(getContainingSubroutineCall().getSymbolReference());
+      aSymbolAlg.getActivityPattern().setSize(getContainingSubroutineCall().
+						getConcreteArgumentPList().
+						size());
+      for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
+	     getContainingSubroutineCall().getConcreteArgumentPList().begin();
+	   concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
+	   ++concreteArgumentPI) { 
+	if (((*concreteArgumentPI)->isArgument())?
+	    (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
+	    false) { 
+	  aSymbolAlg.getActivityPattern().setActive((*concreteArgumentPI)->getPosition());
+	} 
+      }// end for iterating through all concrete arguments 
+    } // end for iterating through the list if hand written wrappers 
+  } 
+
+
+  void SubroutineCallAlg::handleExternalCall() { 
+    // get the symbol's algorithm object
+    SymbolAlg& theSymbolAlg(dynamic_cast<SymbolAlg&>(getContainingSubroutineCall().
+						     getSymbolReference().getSymbol().getSymbolAlgBase()));
+    if(!theSymbolAlg.isExternal()) { 
+      initExternalCall(theSymbolAlg);
+    } // end if - initial setup.
+    else { 
+      // this was initialized before
+      // we do a consistency check if this is a handwritten wrapper
+      if (theSymbolAlg.hasHandCodedWrapper()) { 
+	// make the ActivityPattern for this call
+	ActivityPattern aNewPattern;
+	aNewPattern.setSize(getContainingSubroutineCall().
+			    getConcreteArgumentPList().
+			    size());
+	if (aNewPattern.getSize()!=theSymbolAlg.getActivityPattern().getSize()) { 
+	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count inconsistent between calls for "
+				     << getContainingSubroutineCall().getSymbolReference().debug().c_str());
+	} 
+	for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
+	       getContainingSubroutineCall().getConcreteArgumentPList().begin();
+	     concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
+	     ++concreteArgumentPI) { 
+	  if (((*concreteArgumentPI)->isArgument())?
+	      (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
+	      false) { 
+	    aNewPattern.setActive((*concreteArgumentPI)->getPosition());
+	  } 
+	}// end for iterating through all concrete arguments 
+	if (aNewPattern!=theSymbolAlg.getActivityPattern()) { 
+	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleExternalCall: inconsistent activity patterns in position(s) "
+				     << aNewPattern.discrepancyPositions(theSymbolAlg.getActivityPattern()).c_str()
+				     << " for call to subroutine " 
+				     << getContainingSubroutineCall().getSymbolReference().debug().c_str());
+	}
+      }
+      else { 
+	// we may need to add conversion routines
+	for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
+	       getContainingSubroutineCall().getConcreteArgumentPList().begin();
+	     concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
+	     ++concreteArgumentPI) { 
+	  if (((*concreteArgumentPI)->isArgument())?
+	      (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
+	      false) {
+	    // we need conversion to passive
+	    addExternalConversion(**concreteArgumentPI);
+	  }
+	} 
+      }
+    }
+  }
+
   void SubroutineCallAlg::algorithm_action_1() { 
     const ArgumentList::ArgumentSymbolReferencePList* anArgumentSymbolReferencePList_p(0); 
     try { 
@@ -58,25 +268,39 @@ namespace xaifBoosterLinearization {
 	  getArgumentList().
 	  getArgumentSymbolReferencePList());
     } 
-    catch (const  UndefinedSubroutineException&) { 
+    catch (const SubroutineNotFoundException& e) {
+      MissingSubroutinesReport::report(e);
+      handleExternalCall();
       return;
-    }
-    ArgumentList::ArgumentSymbolReferencePList::const_iterator formalArgumentPI=anArgumentSymbolReferencePList_p->begin();
-    SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=getContainingSubroutineCall().getConcreteArgumentPList().begin();
-    for (;;++concreteArgumentPI,++formalArgumentPI) { 
-      if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  && 
-	 formalArgumentPI==anArgumentSymbolReferencePList_p->end() ) 
-	break;
-      if(concreteArgumentPI==getContainingSubroutineCall().getConcreteArgumentPList().end()  ||
-	 formalArgumentPI==anArgumentSymbolReferencePList_p->end() ) 
-	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch ("
-				   << anArgumentSymbolReferencePList_p->size() 
-				   << " formal vs. "
-				   << getContainingSubroutineCall().getConcreteArgumentPList().size()
-				   << " concrete ) for "
+    } // end catch
+    if (anArgumentSymbolReferencePList_p->size()!=getContainingSubroutineCall().getConcreteArgumentPList().size())
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch ("
+				 << anArgumentSymbolReferencePList_p->size() 
+				 << " formal vs. "
+				 << getContainingSubroutineCall().getConcreteArgumentPList().size()
+				 << " concrete ) for "
+				 << getContainingSubroutineCall().getSymbolReference().debug().c_str());
+    for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
+	   getContainingSubroutineCall().getConcreteArgumentPList().begin();
+	 concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
+	 ++concreteArgumentPI) { 
+      bool concreteArgumentActive=((*concreteArgumentPI)->isArgument())?
+	(*concreteArgumentPI)->getArgument().getVariable().getActiveType():false;
+      bool formalArgumentActive=false; 
+      ArgumentList::ArgumentSymbolReferencePList::const_iterator formalArgumentPI;
+      for (formalArgumentPI=anArgumentSymbolReferencePList_p->begin();
+	   formalArgumentPI!=anArgumentSymbolReferencePList_p->end();
+	   ++formalArgumentPI) { 
+	if((*concreteArgumentPI)->getPosition()==(*formalArgumentPI)->getPosition()) 
+	  break;
+      }
+      if (formalArgumentPI==anArgumentSymbolReferencePList_p->end()) { 
+	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: cannot find formal argument for position "
+				   << (*concreteArgumentPI)->getPosition()
+				   << " for "
 				   << getContainingSubroutineCall().getSymbolReference().debug().c_str());
-      bool concreteArgumentActive=((*concreteArgumentPI)->isArgument())?(*concreteArgumentPI)->getArgument().getVariable().getActiveType():false;
-      bool formalArgumentActive=(*formalArgumentPI)->getSymbol().getActiveTypeFlag();
+      }
+      formalArgumentActive=(*formalArgumentPI)->getSymbol().getActiveTypeFlag();
       if (concreteArgumentActive!=formalArgumentActive) { 
 	addConversion(**concreteArgumentPI,
 		      **formalArgumentPI);
@@ -114,7 +338,8 @@ namespace xaifBoosterLinearization {
     makeTempSymbol(theConcreteArgument,
 		   aFormalArgumentSymbolReference.getSymbol(),
 		   aFormalArgumentSymbolReference.getScope(),
-		   theTempVar);
+		   theTempVar,
+		   false);
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
     dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()).makeReplacement(theTempVar);
@@ -134,10 +359,50 @@ namespace xaifBoosterLinearization {
     }
   } 
   
+
+  void SubroutineCallAlg::addExternalConversion(const ConcreteArgument& theConcreteArgument) { 
+    const SymbolReference& theActualSymbolReference(theConcreteArgument.getArgument().getVariable().
+						    getVariableSymbolReference());
+    // prior call
+    std::string 
+      aSubroutineName(giveCallName(true, // the concrete parameter is implied to be active
+				   theActualSymbolReference, // we don't have a formal parameter here 
+				   true));
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
+      thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+    myPriorAdjustmentsList.push_back(thePriorCall_p);
+    thePriorCall_p->setId("SubroutineCallAlg::addConversion prior");
+    // this is the extra temporary that replaces the original argument
+    Variable& theTempVar(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
+    makeTempSymbol(theConcreteArgument,
+		   theActualSymbolReference.getSymbol(),
+		   theActualSymbolReference.getScope(),
+		   theTempVar,
+		   true);
+    ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
+    theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
+    dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()).makeReplacement(theTempVar);
+    if (theConcreteArgument.isArgument()) { // no point in copying a constant back.
+      // post call:
+      aSubroutineName=giveCallName(true, // the concrete parameter is implied to be active
+				   theActualSymbolReference, // we don't have a formal parameter here 
+				   false);
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
+	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+      myPostAdjustmentsList.push_back(thePostCall_p);
+      thePostCall_p->setId("SubroutineCallAlg::addConversion post");
+      Variable& theInlineVariablePostRes(thePostCall_p->addConcreteArgument(1).getArgument().getVariable());
+      theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes);
+      Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
+      theTempVar.copyMyselfInto(theInlineVariablePostArg);
+    }
+  } 
+  
   void SubroutineCallAlg::makeTempSymbol(const ConcreteArgument& theConcreteArgument,
 					 const Symbol& formalArgumentSymbol,
 					 const Scope&, // formalArgumentScope  when we finally get around it
-					 Variable& aVariable) { 
+					 Variable& aVariable,
+					 bool forcePassive) { 
     // create a new symbol and add a new VariableSymbolReference in the Variable
     Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getScopeTree().getGlobalScope());
@@ -146,7 +411,7 @@ namespace xaifBoosterLinearization {
 				 addUniqueAuxSymbol(SymbolKind::VARIABLE,
 						    formalArgumentSymbol.getSymbolType(),
 						    formalArgumentSymbol.getSymbolShape(),
-						    formalArgumentSymbol.getActiveTypeFlag()));
+						    (forcePassive)?false:formalArgumentSymbol.getActiveTypeFlag()));
     VariableSymbolReference* 
       theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
 								  theGlobalScope));
@@ -156,7 +421,7 @@ namespace xaifBoosterLinearization {
 					      getArgument().
 					      getVariable().
 					      getVariableSymbolReference().
-					    getSymbol());
+					      getSymbol());
       if (theConcreteArgumentSymbol.hasDimensionBounds()) { 
 	const Symbol::DimensionBoundsPList& aDimensionBoundsPList(theConcreteArgumentSymbol.getDimensionBoundsPList());
 	for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
@@ -173,5 +438,17 @@ namespace xaifBoosterLinearization {
     aVariable.getAliasMapKey().setTemporary();
     aVariable.getDuUdMapKey().setTemporary();
   } 
+
+  void SubroutineCallAlg::addWrapperNames(const std::string& theSpaceSeparatedNames) { 
+    std::string::size_type startPosition=0,endPosition=0;
+    std::string::size_type totalSize(theSpaceSeparatedNames.size());
+    while (startPosition<=totalSize && endPosition<=totalSize) { 
+      startPosition=theSpaceSeparatedNames.find_first_not_of(' ',startPosition);
+      endPosition=theSpaceSeparatedNames.find_first_of(' ',startPosition);
+      ourWrapperSubRoutineNameList.push_back(theSpaceSeparatedNames.substr(startPosition,
+									   endPosition));
+      startPosition=endPosition;
+    } 
+  }
 
 } // end of namespace 

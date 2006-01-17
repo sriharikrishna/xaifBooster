@@ -1,3 +1,55 @@
+// ========== begin copyright notice ==============
+// This file is part of 
+// ---------------
+// xaifBooster
+// ---------------
+// Distributed under the BSD license as follows:
+// Copyright (c) 2005, The University of Chicago
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, 
+// with or without modification, are permitted provided that the following conditions are met:
+//
+//    - Redistributions of source code must retain the above copyright notice, 
+//      this list of conditions and the following disclaimer.
+//    - Redistributions in binary form must reproduce the above copyright notice, 
+//      this list of conditions and the following disclaimer in the documentation 
+//      and/or other materials provided with the distribution.
+//    - Neither the name of The University of Chicago nor the names of its contributors 
+//      may be used to endorse or promote products derived from this software without 
+//      specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
+// SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// 
+// General Information:
+// xaifBooster is intended for the transformation of 
+// numerical programs represented as xml files according 
+// to the XAIF schema. It is part of the OpenAD framework. 
+// The main application is automatic 
+// differentiation, i.e. the generation of code for 
+// the computation of derivatives. 
+// The following people are the principal authors of the 
+// current version: 
+// 	Uwe Naumann
+//	Jean Utke
+// Additional contributors are: 
+//	Andrew Lyons
+//	Peter Fine
+//
+// For more details about xaifBooster and its use in OpenAD please visit:
+//   http://www.mcs.anl.gov/openad
+//
+// This work is partially supported by:
+// 	NSF-ITR grant OCE-0205590
+// ========== end copyright notice ==============
 #include <iostream>
 #include <utility>
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
@@ -5,8 +57,10 @@
 #include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -21,7 +75,11 @@ void Usage(char** argv) {
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
 	    << "             [-S] force statement level preaccumulation" << std::endl
-	    << "             [-n] allow n-ary sax operations" << std::endl;
+	    << "             [-n] allow n-ary sax operations" << std::endl
+	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
+            << "                 space separated list enclosed in double quotes" << std::endl
+	    << "             [-r] " << std::endl
+	    << "                 force renaming of all non-external routines" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -33,7 +91,7 @@ int main(int argc,char** argv) {
   std::string aUrl;
   bool forceStatementLevel=false, allowNarySaxOps=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSn",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSnwr",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -48,6 +106,10 @@ int main(int argc,char** argv) {
       forceStatementLevel=true;
     if (CommandLineParser::instance()->isSet('n')) 
       allowNarySaxOps=true;
+    if (CommandLineParser::instance()->isSet('w')) 
+      xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
+    if (CommandLineParser::instance()->isSet('r')) 
+      xaifBoosterLinearization::ControlFlowGraphAlg::setForceNonExternalRenames();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -69,7 +131,7 @@ int main(int argc,char** argv) {
     } 
     ip.parse(intrinsicsFileName);
     XAIFBaseParser p;
-    p.initialize();
+    p.initialize(true);
     if (schemaPath.size()) { 
       aUrl="http://www.mcs.anl.gov/XAIF ";
       p.setExternalSchemaLocation(aUrl+schemaPath+"/xaif.xsd");
