@@ -128,7 +128,7 @@ namespace xaifBooster {
       // block. We assume the current context of switches does not have 
       // arguments
       myContext=SWITCH_BLOCK;
-      return; 
+      // return; 
     } // endif 
     char* thisArg_p=myArgv[myArgvIndex];
     if (!thisArg_p) { 
