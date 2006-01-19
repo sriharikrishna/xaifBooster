@@ -240,18 +240,18 @@ namespace xaifBoosterLinearization {
 				     << getContainingSubroutineCall().getSymbolReference().debug().c_str());
 	}
       }
-      else { 
-	// we may need to add conversion routines
-	for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
-	       getContainingSubroutineCall().getConcreteArgumentPList().begin();
-	     concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
-	     ++concreteArgumentPI) { 
-	  if (((*concreteArgumentPI)->isArgument())?
-	      (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
-	      false) {
-	    // we need conversion to passive
-	    addExternalConversion(**concreteArgumentPI);
-	  }
+    }
+    if (!theSymbolAlg.hasHandCodedWrapper()) { 
+      // we may need to add conversion routines
+      for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
+	     getContainingSubroutineCall().getConcreteArgumentPList().begin();
+	   concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
+	   ++concreteArgumentPI) { 
+	if (((*concreteArgumentPI)->isArgument())?
+	    (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
+	    false) {
+	  // we need conversion to passive
+	  addExternalConversion(**concreteArgumentPI);
 	} 
       }
     }
