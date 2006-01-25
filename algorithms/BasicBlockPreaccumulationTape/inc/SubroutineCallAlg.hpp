@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPE_SUBROUTINECALLALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPE_SUBROUTINECALLALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,46 +52,84 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlgFactory.hpp"
-
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationTape { 
-
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
-
-  void AlgFactoryManager::resets() {
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
-  }
-
-  void AlgFactoryManager::init() {
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::resets();
-  }
-
+namespace xaifBooster { 
+  class SubroutineCall;
 }
 
+namespace xaifBoosterBasicBlockPreaccumulationTape {  
+
+  /** 
+   * class to implement taping array access in arguments
+   */
+  class SubroutineCallAlg : public xaifBoosterLinearization::SubroutineCallAlg {
+
+  public:
+    
+    SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall);
+
+    virtual ~SubroutineCallAlg();
+
+    //    virtual void printXMLHierarchy(std::ostream& os) const;
+
+    virtual std::string debug() const ;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    /**
+     * \todo : distinction between constant and non-constant index expressions is simplified
+     * or we have this fixed by a proper TBR analysis
+     */
+    virtual void algorithm_action_4();
+
+    void printXMLHierarchy(std::ostream& os) const;
+
+  private: 
+
+    /** 
+     * no def
+     */
+    SubroutineCallAlg();
+
+    /** 
+     * no def
+     */
+    SubroutineCallAlg(const SubroutineCallAlg&);
+
+    /** 
+     * no def
+     */
+    SubroutineCallAlg operator=(const SubroutineCallAlg&);
+
+    /** 
+     * for anonymous reversals we need to first assign 
+     * any array indices occuring in formal arguments
+     * to temporaries in case they get overwritten during 
+     * the call
+     */
+    PlainBasicBlock::BasicBlockElementList myPriorToCallIndexAssignments;
+
+    /** 
+     * for anonymous reversals we need to store 
+     * any array indices occuring in formal arguments,
+     * we had first assigned them and now after the call 
+     * is made we tape them so we can restore them 
+     * prior to the call in reverse mode.
+     */
+    PlainBasicBlock::BasicBlockElementList myAfterCallIndexPushes;
+
+    /** 
+     * inserts inlined stores for index values
+     */
+    void handleArrayAccessIndices(const ArrayAccess& theArrayAccess,
+				  Scope& theBasicBlockScope);
+    
+  }; // end of class SubroutineCallAlg
+ 
+} 
+                                                                     
+#endif

@@ -50,46 +50,36 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/SubroutineCallAlg.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlgFactory.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
-
-using namespace xaifBooster;
-
-namespace xaifBoosterBasicBlockPreaccumulationTape { 
-
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
-
-  void AlgFactoryManager::resets() {
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
+namespace xaifBoosterBasicBlockPreaccumulationReverse { 
+  SubroutineCallAlgBase* SubroutineCallAlgFactory::makeNewAlg(SubroutineCall& theContaining) { 
+    return dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>(new SubroutineCallAlg(theContaining)); 
   }
+ 
+  xaifBooster :: SubroutineCallAlgFactory* SubroutineCallAlgFactory::instance() { 
+    return AlgFactoryManager::instance()->getSubroutineCallAlgFactory(); 
+  } 
 
-  void AlgFactoryManager::init() {
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::resets();
-  }
-
+  std::string SubroutineCallAlgFactory::debug() const { 
+    std::ostringstream out; 
+    out << "xaifBoosterBasicBlockPreaccumulationReverse" 
+	<< "::" 
+	<< "SubroutineCall" 
+	<< "AlgFactory["
+	<< this 
+	<< "]" 
+	<< std::ends; 
+    return out.str(); 
+  } 
 }
+
+// because of the extra cast in makeNewAlg needed to resolve base class ambiguity 
+// we cannot use the following macro:
+//  DERIVED_ALG_FACTORY_DEF_MACRO(SubroutineCall,xaifBoosterBasicBlockPreaccumulationReverse);
+
 

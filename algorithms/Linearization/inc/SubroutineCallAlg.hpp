@@ -66,6 +66,9 @@ using namespace xaifBooster;
 namespace xaifBooster { 
   class SubroutineCall;
   class ArgumentSymbolReference;
+  class Variable;
+  class ConcreteArgument;
+  class ArrayAccess;
 }
 
 namespace xaifBoosterLinearization {  

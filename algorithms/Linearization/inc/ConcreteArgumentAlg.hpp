@@ -64,7 +64,11 @@ namespace xaifBooster {
 namespace xaifBoosterLinearization {  
 
   /** 
-   * class to implement reversal of BasicBlockElements
+   * class to hold a replaced argument for 
+   * cases of enforced conversions between active 
+   * and passive types when there is a mismatch 
+   * of types between the actual and the formal 
+   * argument
    */
   class ConcreteArgumentAlg : public ConcreteArgumentAlgBase {
 
@@ -79,6 +83,10 @@ namespace xaifBoosterLinearization {
     virtual std::string debug() const ;
 
     void makeReplacement(const Variable& aVariable);
+
+    bool hasReplacement() const;
+
+    ConcreteArgument& getReplacement();
 
   private: 
 
@@ -98,7 +106,7 @@ namespace xaifBoosterLinearization {
     ConcreteArgumentAlg operator=(const ConcreteArgumentAlg&);
 
     /** 
-     * my replacement
+     * my replacement, i.e. the converted argument.
      */
     ConcreteArgument* myReplacement_p;
 

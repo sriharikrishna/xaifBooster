@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_SUBROUTINECALLALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_SUBROUTINECALLALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,46 +52,64 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlgFactory.hpp"
-
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlg.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationTape { 
+namespace xaifBoosterBasicBlockPreaccumulationReverse {  
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  /** 
+   * class to pull together 
+   * the taping and the adjoining 
+   * view per SubroutineCall; 
+   * we just need to reimplement printing
+   */
+  class SubroutineCallAlg : public xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg,
+			    public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg {
 
-  void AlgFactoryManager::resets() {
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
-  }
+  public:
+    
+    SubroutineCallAlg(SubroutineCall& theContaining);
 
-  void AlgFactoryManager::init() {
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::resets();
-  }
+    virtual ~SubroutineCallAlg() {};
 
-}
+    virtual void printXMLHierarchy(std::ostream& os) const;
 
+    virtual std::string debug() const ;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    /**
+     * refering to xaifBoosterLinearization::SubroutineCallAlg::algorithm_action_1
+     */
+    virtual void algorithm_action_1();
+
+    /**
+     * refering to xaifBoosterBasicBlockPreaccumulationTape(Adjoint)::SubroutineCallAlg::algorithm_action_4
+     */
+    virtual void algorithm_action_4();
+
+  private:
+
+    /** 
+     * no def
+     */
+    SubroutineCallAlg();
+
+    /** 
+     * no def
+     */
+    SubroutineCallAlg(const SubroutineCallAlg&);
+
+    /** 
+     * no def
+     */
+    SubroutineCallAlg operator=(const SubroutineCallAlg&);
+
+  };
+ 
+} // end of namespace 
+                                                                     
+#endif
