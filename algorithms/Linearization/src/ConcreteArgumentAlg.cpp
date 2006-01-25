@@ -96,4 +96,14 @@ namespace xaifBoosterLinearization {
     aVariable.copyMyselfInto(myReplacement_p->getArgument().getVariable());
   }
   
+  bool ConcreteArgumentAlg::hasReplacement() const { 
+    return (myReplacement_p)?true:false;
+  } 
+  
+  ConcreteArgument& ConcreteArgumentAlg::getReplacement() { 
+    if(!myReplacement_p)
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::getReplacement : has no replacement");
+    return *myReplacement_p;
+  } 
+  
 } // end of namespace 

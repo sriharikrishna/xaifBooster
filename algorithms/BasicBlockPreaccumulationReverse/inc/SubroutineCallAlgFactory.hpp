@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_SUBROUTINECALLALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_SUBROUTINECALLALGFACTORY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,46 +52,16 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
 
-using namespace xaifBooster;
+  DERIVED_ALG_FACTORY_DECL_MACRO(SubroutineCall,
+				 xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlgFactory,
+				 xaifBoosterBasicBlockPreaccumulationReverse)
 
-namespace xaifBoosterBasicBlockPreaccumulationTape { 
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
-
-  void AlgFactoryManager::resets() {
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
-  }
-
-  void AlgFactoryManager::init() {
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::resets();
-  }
-
-}
-
+#endif

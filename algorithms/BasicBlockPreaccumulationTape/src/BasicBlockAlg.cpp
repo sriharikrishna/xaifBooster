@@ -62,6 +62,8 @@
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 
 
@@ -80,7 +82,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       if (*li)
 	delete *li;
     } 
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementListAnonymousReversal.begin();
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementListExplicitReversal.begin();
          li!=myBasicBlockElementListExplicitReversal.end();
          li++) { 
       if (*li)
@@ -174,6 +176,25 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }
 
   void BasicBlockAlg::algorithm_action_4() { 
+    static unsigned int recursionGuard=0;
+    try { 
+      recursionGuard++;
+      if (recursionGuard>1)
+	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulartionTape::BasicBlockAlg::algorithm_action_4: recursive invocation not allowed");
+      DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulartionTape::BasicBlockAlg::algorithm_action_4");
+      
+      // the BasicBlock instance will be used in SubroutineCallAlg::algorithm_action_4():
+      // because of virtual function use on the system structural level we cannot 
+      // invoke directly and need to rely on GenericTraverseInvoke
+      // In order to pass parameters through BasicBlockParameter
+      // we have to make sure that this method is never invoked recursively
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::set(*this);	
+    } 
+    catch (...) { 
+      recursionGuard--;
+      throw;
+    }
+    recursionGuard--;
     // for each propagator:
     // create an InlinableSubroutinecall for each Variable in each saxpy element in the propagator
     // and also one for each index of target or source vertices

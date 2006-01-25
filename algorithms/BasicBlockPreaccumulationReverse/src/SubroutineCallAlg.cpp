@@ -52,72 +52,65 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
+#include "xaifBooster/system/inc/BasicBlockElement.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/CodeReplacement/inc/ConceptuallyStaticInstances.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
-  BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
-    BasicBlockAlgBase(theContaining),
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining),
-    xaifBoosterControlFlowReversal::BasicBlockAlg(theContaining),
-    xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg(theContaining),
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg(theContaining){ 
+  SubroutineCallAlg::SubroutineCallAlg(SubroutineCall& theContaining) : 
+    //    SubroutineCallAlgBase(theContaining),
+    // xaifBoosterLinearization::SubroutineCallAlg(theContaining),
+    xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg(theContaining),
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg(theContaining){ 
   }
 
   void
-  BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
+  SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
     switch(xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->getPrintVersion()) { 
     case xaifBoosterCodeReplacement::PrintVersion::ORIGINAL: { 
       xaifBooster::PrintVersion::PrintVersion_E aPrintVersion(xaifBooster::ConceptuallyStaticInstances::instance()->
 							      getPrintVersion());
       xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBooster::PrintVersion::SYSTEM_ONLY);
-      xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::getContaining().printXMLHierarchyImpl(os);
+      xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::getContaining().printXMLHierarchyImpl(os);
       xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(aPrintVersion);
       break;
     }
     case xaifBoosterCodeReplacement::PrintVersion::AUGMENTED: 
-      xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::printXMLHierarchy(os);
+      xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::printXMLHierarchy(os);
       break;
     case xaifBoosterCodeReplacement::PrintVersion::ADJOINT: 
-      xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::printXMLHierarchy(os);
+      xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::printXMLHierarchy(os);
       break;
     default: 
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::printXMLHierarchy: cannot handle PrintVersion "
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::printXMLHierarchy: cannot handle PrintVersion "
 				 << xaifBoosterCodeReplacement::PrintVersion::toString(xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->
 							   getPrintVersion()).c_str());
       break;
     } // end switch
-  } // end of BasicBlockAlg::printXMLHierarchy
+  } // end of SubroutineCallAlg::printXMLHierarchy
   
-  std::string BasicBlockAlg::debug () const { 
+  std::string SubroutineCallAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationReverse::BasicBlockAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulationReverse::SubroutineCallAlg[" << this
  	<< "]" << std::ends;  
     return out.str();
-  } // end of BasicBlockAlg::debug
+  } // end of SubroutineCallAlg::debug
 
-  void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+  void SubroutineCallAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
-  void BasicBlockAlg::algorithm_action_2() { 
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2();
+  void SubroutineCallAlg::algorithm_action_1() { 
+    // pick a path
+    dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>(this)->xaifBoosterLinearization::SubroutineCallAlg::algorithm_action_1();
   }
 
-  void BasicBlockAlg::algorithm_action_3() { 
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3();
-  }
-
-  void BasicBlockAlg::algorithm_action_4() { 
-    xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4();
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4();
-  }
-  
-  ForLoopReversalType::ForLoopReversalType_E BasicBlockAlg::getReversalType() const { 
-    return xaifBoosterControlFlowReversal::BasicBlockAlg::getReversalType();
+  void SubroutineCallAlg::algorithm_action_4() { 
+    xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4();
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::algorithm_action_4();
   }
 
 } // end of namespace
