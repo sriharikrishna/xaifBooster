@@ -125,7 +125,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     /** 
      * inserts inlined stores for index values
      */
-    void handleArrayAccessIndices(const ArrayAccess& theArrayAccess,
+    void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
 				  Scope& theBasicBlockScope);
     
   }; // end of class SubroutineCallAlg
