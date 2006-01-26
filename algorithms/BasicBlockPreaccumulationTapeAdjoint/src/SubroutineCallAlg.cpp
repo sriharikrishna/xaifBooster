@@ -137,22 +137,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	 aConcreteArgumentPListI!=theNewConcreteArgumentPList.rend();
 	 ++aConcreteArgumentPListI) { 
       ConcreteArgument& theConcreteArgument(**aConcreteArgumentPListI);
-      if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
-	if (dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>((*aConcreteArgumentPListI)->
-									 getConcreteArgumentAlgBase()).
-	    hasReplacement()) { 
-	  // if we have a conversion for this, i.e. the concrete argument has a replacement in 
-	  // its algorithm object then stop here. If we have a case like this, 
-	  // things get a lot more complicated
-	  // because while we still have to potentially store the same indices 
-	  // we have to restore the indices for the call to the conversion routine and not for  
-	  // this subroutine call since it has already been replaced.
-	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::insertYourself: in "
-				     << debug().c_str()
-				     << " cannot handle concrete arguments with array indices "
-				     << (*aConcreteArgumentPListI)->debug().c_str()
-				     << " that also have conversion routines for type mismatches involved."); 
-	}
+      if (theConcreteArgument.isArgument() && theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
 	// if we have to restore index values we replace the ConcreteArgument in question
 	// using the associated ConcreteArgumentAlg instance
 	// and hold on to the pop operations in the alg object associated with this new call.
@@ -171,18 +156,48 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   
   void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
 						   Scope& theBasicBlockScope) { 
-    // in case of all constant indices this copy may remain identical 
-    // but anyway we start out with making an identical copy
+    // first figure out if we actually need to do anything: 
+    bool needReplacements=false;
+    const ArrayAccess::IndexListType& theIndexList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexList());
+    for (ArrayAccess::IndexListType::const_reverse_iterator anIndexListTypeCI=theIndexList.rbegin();
+	 !needReplacements && (anIndexListTypeCI!=theIndexList.rend());
+	 ++anIndexListTypeCI) { 
+      const Expression& theIndexExpression(**anIndexListTypeCI);
+      if (theIndexExpression.numVertices()==1
+	  && 
+	  !(*(theIndexExpression.vertices().first)).isArgument()) { 
+	// do nothing
+      }
+      else { 
+	needReplacements=true;
+      }
+    }
+    if (!needReplacements)
+      return;
+    // we start out with making an identical copy
     // get the algorithm instance
     xaifBoosterLinearization::ConcreteArgumentAlg& 
       theConcreteArgumentAlg(dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
+    // and check if we have a transformation conflict:
+    if (theConcreteArgumentAlg.hasReplacement()) { 
+      // if we have a conversion for this, i.e. the concrete argument has a replacement in 
+      // its algorithm object then stop here. If we have a case like this, 
+      // things get a lot more complicated
+      // because while we still have to potentially store the same indices 
+      // we have to restore the indices for the call to the conversion routine and not for  
+      // this subroutine call since it has already been replaced.
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: in "
+				 << debug().c_str()
+				 << " cannot handle concrete arguments with array indices "
+				 << theConcreteArgument.debug().c_str()
+				 << " that also have conversion routines for type mismatches involved."); 
+    }
     // make the copy
     theConcreteArgumentAlg.makeReplacement(theConcreteArgument.getArgument().getVariable());
     // get the replacement that is now an identical copy:
     ConcreteArgument& theReplacementConcreteArgument(theConcreteArgumentAlg.getReplacement());
     ArrayAccess::IndexListType& theReplacementIndexList(theReplacementConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexList());
     ArrayAccess::IndexListType::reverse_iterator theReplacementIndexListI=theReplacementIndexList.rbegin() ;
-    const ArrayAccess::IndexListType& theIndexList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexList());
     // reverse iterate in parallel through the original and replacement index list 
     for (ArrayAccess::IndexListType::const_reverse_iterator anIndexListTypeCI=theIndexList.rbegin();
 	 anIndexListTypeCI!=theIndexList.rend();

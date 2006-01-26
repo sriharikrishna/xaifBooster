@@ -139,33 +139,19 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	   getContainingSubroutineCall().getConcreteArgumentPList().begin();
 	 aConcreteArgumentPListI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
 	 ++aConcreteArgumentPListI) { 
-      const Variable& theArgumentVariable((*aConcreteArgumentPListI)->getArgument().getVariable());
-      if (theArgumentVariable.hasArrayAccess()) {
-	if (dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>((*aConcreteArgumentPListI)->
-									 getConcreteArgumentAlgBase()).
-	    hasReplacement()) { 
-	  // if we have a conversion for this, i.e. the concrete argument has a replacement in 
-	  // its algorithm object then stop here. If we have a case like this, 
-	  // things get a lot more complicated
-	  // because while we still have to potentially store the same indices 
-	  // we have to restore the indices for the call to the conversion routine and not for  
-	  // this subroutine call since it has already been replaced.
-	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_4: in "
-				     << debug().c_str()
-				     << " cannot handle concrete arguments with array indices "
-				     << (*aConcreteArgumentPListI)->debug().c_str()
-				     << " that also have conversion routines for type mismatches involved."); 
-	}
-	handleArrayAccessIndices(theArgumentVariable.getArrayAccess(),
+      if ((*aConcreteArgumentPListI)->isArgument()
+	  && 
+	  (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
+	handleArrayAccessIndices(**aConcreteArgumentPListI,
 				 // the following parameter was set in BasicBlockAlg::algorithm_action_4()
 				 xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::get().getContaining().getScope()); 
-      } 
+      }
     } // end for 
   } 
 
-  void SubroutineCallAlg::handleArrayAccessIndices(const ArrayAccess& theArrayAccess,
+  void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
 						   Scope& theBasicBlockScope) { 
-    const ArrayAccess::IndexListType& theIndexList(theArrayAccess.getIndexList());
+    const ArrayAccess::IndexListType& theIndexList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexList());
     for (ArrayAccess::IndexListType::const_iterator anIndexListTypeCI=theIndexList.begin();
 	 anIndexListTypeCI!=theIndexList.end();
 	 ++anIndexListTypeCI) { 
@@ -180,6 +166,21 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	// do nothing
       }
       else {  // is not a constant
+	if (dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.
+									 getConcreteArgumentAlgBase()).
+	    hasReplacement()) { 
+	  // if we have a conversion for this, i.e. the concrete argument has a replacement in 
+	  // its algorithm object then stop here. If we have a case like this, 
+	  // things get a lot more complicated
+	  // because while we still have to potentially store the same indices 
+	  // we have to restore the indices for the call to the conversion routine and not for  
+	  // this subroutine call since it has already been replaced.
+	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: in "
+				     << debug().c_str()
+				     << " cannot handle concrete arguments with array indices "
+				     << theConcreteArgument.debug().c_str()
+				     << " that also have conversion routines for type mismatches involved."); 
+	}
 	// make an assignment 
 	// because we cannot be sure that whatever variables 
 	// are involved in the index expression remain unchanged during this call
