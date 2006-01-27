@@ -66,7 +66,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   /** 
    * class to implement taping array access in arguments
    */
-  class SubroutineCallAlg : public xaifBoosterLinearization::SubroutineCallAlg {
+  class SubroutineCallAlg : virtual public xaifBoosterLinearization::SubroutineCallAlg {
 
   public:
     
