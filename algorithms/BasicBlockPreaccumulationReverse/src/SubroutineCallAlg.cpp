@@ -62,8 +62,8 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
   SubroutineCallAlg::SubroutineCallAlg(SubroutineCall& theContaining) : 
-    //    SubroutineCallAlgBase(theContaining),
-    // xaifBoosterLinearization::SubroutineCallAlg(theContaining),
+    // SubroutineCallAlgBase(theContaining),
+    xaifBoosterLinearization::SubroutineCallAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg(theContaining){ 
   }
@@ -72,11 +72,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
     switch(xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->getPrintVersion()) { 
     case xaifBoosterCodeReplacement::PrintVersion::ORIGINAL: { 
-      xaifBooster::PrintVersion::PrintVersion_E aPrintVersion(xaifBooster::ConceptuallyStaticInstances::instance()->
-							      getPrintVersion());
-      xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBooster::PrintVersion::SYSTEM_ONLY);
-      xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::getContaining().printXMLHierarchyImpl(os);
-      xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(aPrintVersion);
+      // pick a path:
+      dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>(this)->
+	xaifBoosterLinearization::SubroutineCallAlg::printXMLHierarchy(os);
       break;
     }
     case xaifBoosterCodeReplacement::PrintVersion::AUGMENTED: 

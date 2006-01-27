@@ -68,7 +68,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   /** 
    * class to implement reversal of BasicBlockElements
    */
-  class SubroutineCallAlg : public xaifBoosterLinearization::SubroutineCallAlg,
+  class SubroutineCallAlg : virtual public xaifBoosterLinearization::SubroutineCallAlg,
 			    public BasicBlockElementAlg {
 
   public:
