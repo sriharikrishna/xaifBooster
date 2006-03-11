@@ -124,7 +124,17 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * we own this
      */
     ControlFlowGraph* myCFGRestoreResults_p;
+
+    /** 
+     * we own this
+     */
+    ControlFlowGraph* myCFGTimeStepStoreArguments_p;
     
+    /** 
+     * we own this
+     */
+    ControlFlowGraph* myCFGTimeStepRestoreArguments_p;
+
     /**
      * make entry, exit and a basic block which is returned
      */
