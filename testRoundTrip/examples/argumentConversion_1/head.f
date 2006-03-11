@@ -14,6 +14,7 @@ c$openad INDEPENDENT(x)
 	  px(2)=2.0
 	  call foo(x,y)
 	  call foo(px,py)
+	  call foo(px,py)
 c$openad DEPENDENT(y)
 	end subroutine
 
