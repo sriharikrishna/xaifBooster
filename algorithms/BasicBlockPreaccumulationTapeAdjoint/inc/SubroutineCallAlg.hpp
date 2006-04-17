@@ -68,14 +68,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   /** 
    * class to implement reversal of BasicBlockElements
    */
-  class SubroutineCallAlg : public xaifBoosterLinearization::SubroutineCallAlg,
+  class SubroutineCallAlg : virtual public xaifBoosterLinearization::SubroutineCallAlg,
 			    public BasicBlockElementAlg {
 
   public:
     
     SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall);
 
-    virtual ~SubroutineCallAlg(){};
+    virtual ~SubroutineCallAlg();
 
     //    virtual void printXMLHierarchy(std::ostream& os) const;
 
@@ -83,7 +83,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    /**
+     * \todo : distinction between constant and non-constant index expressions is simplified
+     * or we have this fixed by a proper TBR analysis
+     */
+    virtual void algorithm_action_4();
+
     virtual void insertYourself(const BasicBlock& theBasicBlock);
+
+    void printXMLHierarchy(std::ostream& os) const;
 
   private: 
 
@@ -101,6 +109,20 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
      * no def
      */
     SubroutineCallAlg operator=(const SubroutineCallAlg&);
+
+    /** 
+     * for anonymous reversals we need to restore 
+     * any array indices occuring in formal arguments
+     * this has to happen to the the call
+     */
+    PlainBasicBlock::BasicBlockElementList myPops;
+
+    /** 
+     * inserts inlined restores for index values
+     */
+    void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
+				  Scope& theBasicBlockScope);
+
 
   }; // end of class SubroutineCallAlg
  

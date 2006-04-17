@@ -74,7 +74,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     myCFGStoreArguments_p(0),
     myCFGStoreResults_p(0),
     myCFGRestoreArguments_p(0),
-    myCFGRestoreResults_p(0) { 
+    myCFGRestoreResults_p(0),
+    myCFGTimeStepStoreArguments_p(0),
+    myCFGTimeStepRestoreArguments_p(0) { 
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() { 
@@ -88,6 +90,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       delete myCFGRestoreArguments_p;
     if (myCFGRestoreResults_p) 
       delete myCFGRestoreResults_p;
+    if (myCFGTimeStepStoreArguments_p)
+      delete myCFGTimeStepStoreArguments_p;
+    if (myCFGTimeStepRestoreArguments_p)
+      delete myCFGTimeStepRestoreArguments_p;
   } 
 
   void
@@ -135,7 +141,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 							getContaining().getControlFlowGraph().getScope(),
 							"reverse_subroutine_template",
 							getContaining().getControlFlowGraph().getArgumentList()),
-    myReplacementList_p->setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
+	myReplacementList_p->setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
     myReplacementList_p->setId(getContaining().getControlFlowGraph().getId());
     myCFGStoreArguments_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
 					       getContaining().getControlFlowGraph().getSymbolReference().getScope(),
@@ -153,6 +159,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 					       getContaining().getControlFlowGraph().getSymbolReference().getScope(),
 					       getContaining().getControlFlowGraph().getScope(),
 					       false);
+    myCFGTimeStepStoreArguments_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
+						       getContaining().getControlFlowGraph().getSymbolReference().getScope(),
+						       getContaining().getControlFlowGraph().getScope(),
+						       false);
+    myCFGTimeStepRestoreArguments_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
+							 getContaining().getControlFlowGraph().getSymbolReference().getScope(),
+							 getContaining().getControlFlowGraph().getScope(),
+							 false);
     ReplacementId theId;
     for (theId.reset();
 	 !theId.atEnd();
@@ -210,6 +224,32 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
  			    theBasicBlock,
  			    false);
  	break;
+      }
+      case ReplacementId::STORETIMESTEPARGUMENT: { 
+	theReplacement.setControlFlowGraphBase(*myCFGTimeStepStoreArguments_p);
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGTimeStepStoreArguments_p));
+	handleCheckPointing("cp_tsarg_store",
+			    SideEffectListType::MOD_LIST,
+			    theBasicBlock,
+			    false);
+	handleCheckPointing("cp_arg_store",
+			    SideEffectListType::READ_LOCAL_LIST,
+			    theBasicBlock,
+			    false);
+	break;
+      }
+      case ReplacementId::RESTORETIMESTEPARGUMENT: { 
+	theReplacement.setControlFlowGraphBase(*myCFGTimeStepRestoreArguments_p);
+	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGTimeStepRestoreArguments_p));
+	handleCheckPointing("cp_tsarg_restore",
+			    SideEffectListType::READ_LOCAL_LIST,
+			    theBasicBlock,
+			    true);
+	handleCheckPointing("cp_arg_restore",
+			    SideEffectListType::MOD_LIST,
+			    theBasicBlock,
+			    true);
+        break;
       }
       default: 
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_4: no handler for ReplacementID  "

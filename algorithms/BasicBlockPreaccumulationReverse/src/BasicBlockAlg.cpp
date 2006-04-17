@@ -95,7 +95,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   
   std::string BasicBlockAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulationReverse::BasicBlockAlg[" << this
  	<< "]" << std::ends;  
     return out.str();
   } // end of BasicBlockAlg::debug

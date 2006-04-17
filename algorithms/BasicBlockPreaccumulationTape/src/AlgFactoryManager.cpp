@@ -53,6 +53,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlgFactory.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
 
@@ -82,6 +83,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   void AlgFactoryManager::resets() {
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
   }
 
   void AlgFactoryManager::init() {

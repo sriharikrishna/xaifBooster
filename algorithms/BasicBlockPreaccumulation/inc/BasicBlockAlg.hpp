@@ -412,6 +412,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */ 
     DuUdMapDefinitionResult::StatementIdList ourAssignmentIdList;
 
+    typedef HashTable<const Variable*> VariableHashTable;
+
+    void handleCollapsedVertex(PrivateLinearizedComputationalGraphVertex& theCollapsedVertex,
+			       VariableCPList& theDepVertexPListCopyWithoutRemovals,
+			       VariableHashTable& theListOfAlreadyAssignedIndependents,
+			       BasicBlockAlg::Sequence& aSequence,
+			       xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI);
+
   };
  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms
