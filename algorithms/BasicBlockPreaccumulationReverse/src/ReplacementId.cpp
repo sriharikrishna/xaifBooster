@@ -78,6 +78,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       returnString="RESTOREARGUMENT";
     case RESTORERESULT: 
       returnString="RESTORERESULT";
+    case STORETIMESTEPARGUMENT: 
+      returnString="STORETIMESTEPARGUMENT";
+    case RESTORETIMESTEPARGUMENT: 
+      returnString="RESTORETIMESTEPARGUMENT";
       break;
     default: 
       throw PrintingIntException("ReplacementId::toString: unknown value",aKind);
@@ -103,6 +107,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       returnValue=RESTOREARGUMENT;
     else if (aName=="RESTORERESULT")
       returnValue=RESTORERESULT;
+    else if (aName=="STORETIMESTEPARGUMENT")
+      returnValue=STORETIMESTEPARGUMENT;
+    else if (aName=="RESTORETIMESTEPARGUMENT")
+      returnValue=RESTORETIMESTEPARGUMENT;
     else  
       THROW_LOGICEXCEPTION_MACRO("ReplacementId::fromString: unknown value >"
 			   << aName.c_str() << "<");
@@ -114,7 +122,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   } 
 
   bool ReplacementId::atEnd() {
-    return (myCurrent>RESTORERESULT);
+    return (myCurrent>RESTORETIMESTEPARGUMENT);
   } 
 
   ReplacementId::ReplacementId_E ReplacementId::operator*() const { 
