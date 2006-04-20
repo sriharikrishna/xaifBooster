@@ -513,21 +513,23 @@ namespace xaifBoosterControlFlowReversal {
 	if (&((*the_mySortedVertices_p_l_it)->getTopExplicitLoop())==(*the_mySortedVertices_p_l_it)) {
 	  // this is the top level loop:
 	  // we need to make a placeholder to push address arithmetic variables 
-	  InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
-	  InEdgeIterator beginItie(pie.first),endItie(pie.second);
+	  // but the placeholder needs to be inserted after the loop.
+	  OutEdgeIteratorPair poe(getOutEdgesOf(**the_mySortedVertices_p_l_it));
+	  OutEdgeIterator beginItoe(poe.first),endItoe(poe.second);
 	  // copy needed to avoid deletion issues:
-	  std::list<InEdgeIterator> ieil;
-	  for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
-	  std::list<InEdgeIterator>::iterator ieilIt;
-	  for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt) {
-	    if (!((*(*ieilIt)).isBackEdge(*this))) {
-	      (*the_mySortedVertices_p_l_it)->setTopExplicitLoopAddressArithmetic(insertBasicBlock(getSourceOf(*(*ieilIt)),
-												   getTargetOf(*(*ieilIt)),
-												   (*(*ieilIt)),
+	  std::list<OutEdgeIterator> oeil;
+	  for (;beginItoe!=endItoe ;++beginItoe) oeil.push_back(beginItoe);
+	  std::list<OutEdgeIterator>::iterator oeilIt;
+	  for (oeilIt=oeil.begin();oeilIt!=oeil.end();++oeilIt) {
+	    // after the loop is the out edge that doesn't lead to the loop body
+	    if (!((**oeilIt).leadsToLoopBody())) {
+	      (*the_mySortedVertices_p_l_it)->setTopExplicitLoopAddressArithmetic(insertBasicBlock(getSourceOf(*(*oeilIt)),
+												   getTargetOf(*(*oeilIt)),
+												   (*(*oeilIt)),
 												   false));
 	      BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>((*the_mySortedVertices_p_l_it)->getTopExplicitLoopAddressArithmetic().getNewVertex()));
 	      theBasicBlock_r.setId(std::string("_aug_AddressArithmetic_")+makeUniqueVertexId());
-	      removeAndDeleteEdge(*(*ieilIt));
+	      removeAndDeleteEdge(*(*oeilIt));
 	    }  
 	  }
 	} 

@@ -209,6 +209,8 @@ namespace xaifBooster {
     for (;beginIt!=endIt ;++beginIt) { 
       if ((*beginIt).getControlFlowGraph().getSymbolReference().refersToSameSymbolAs(aSymbolReference)) { 
 	return (*beginIt).getControlFlowGraph();
+      }
+    }
     throw SubroutineNotFoundException(aSymbolReference);
     // to appease the compiler
     return (*beginIt).getControlFlowGraph();
