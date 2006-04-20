@@ -53,24 +53,20 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse {  
 
   /** 
-   * class to pull together 
    * the taping and the adjoining 
    * view per basic block 
    * and the augmented and reversed call graph
+   * are already considered at the AddressArithmetic transformation
    * we just need to reimplement printing
    */
-  class BasicBlockAlg : public xaifBoosterControlFlowReversal::BasicBlockAlg, 
-			public xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg,
-			public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg {
+  class BasicBlockAlg : public xaifBoosterAddressArithmetic::BasicBlockAlg {
 
   public:
     
@@ -83,21 +79,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    /**
-     * refering to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2
-     */
-    virtual void algorithm_action_2();
-
-    /**
-     * refering to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3
-     */
-    virtual void algorithm_action_3();
-
-    /**
-     * refering to xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4
-     */
-    virtual void algorithm_action_4();
 
     virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
 

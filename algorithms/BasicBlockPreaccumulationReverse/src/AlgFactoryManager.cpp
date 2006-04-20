@@ -74,7 +74,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     ourInstanceMutex.lock();
     try { 
       if (!ourInstance_p)
-	ourInstance_p=dynamic_cast<xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager*>(new AlgFactoryManager());
+	ourInstance_p=new AlgFactoryManager();
       if (!ourInstance_p) { 
 	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
       } // end if 

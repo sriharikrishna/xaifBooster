@@ -263,8 +263,8 @@ namespace xaifBoosterAddressArithmetic {
 								 theKnownVariables,
 								 theUnknownVariables);
 	  if (!theUnknownVariables.empty()) { 
-	    if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) {
-	      DBG_MACRO(DbgGroup::DATA,
+	    if (DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)) {
+	      DBG_MACRO(DbgGroup::WARNING,
 			"xaifBoosterAddressArithmetic::CallGraphVertexAlg::algorithm_action_5(fix address arithmetic): "
 			<< (*aReversibleControlFlowGraphVertexI).debug().c_str());
 	      std::cout << "unknownList: " ; 

@@ -72,11 +72,19 @@ fi
 allOkSoFar="true"
 echo $mode $SUB_MODE > .lastRun
 export SUB_MODE
-if [ $# -gt 0 ]
-then
-    TESTFILES=$@
+if [ $# -eq 0 ] 
+then 
+  echo "pick from: "
+  ls examples
+  echo -n "enter one ore more here or 'all': " 
+  read TESTFILES
 else
+  if [ $# -eq 1 & "$1" = "all" ]
+  then 
     TESTFILES=`ls examples`
+  else 
+    TESTFILES=$@
+  fi
 fi
 for i in `echo ${TESTFILES}`
 do 
