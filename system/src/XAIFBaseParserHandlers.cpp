@@ -68,6 +68,7 @@ namespace xaifBooster {
     PreLoop* theNewPreLoop_p=new PreLoop();
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewPreLoop_p);
     theNewPreLoop_p->setId(XMLParser::getAttributeValueByName(PreLoop::our_myId_XAIFName));
+    theNewPreLoop_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
     passingOut.setCondition(theNewPreLoop_p->getCondition());
     theNewPreLoop_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   }
@@ -79,6 +80,7 @@ namespace xaifBooster {
     PostLoop* theNewPostLoop_p=new PostLoop();
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewPostLoop_p);
     theNewPostLoop_p->setId(XMLParser::getAttributeValueByName(PostLoop::our_myId_XAIFName));
+    theNewPostLoop_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
     passingOut.setCondition(theNewPostLoop_p->getCondition());
     theNewPostLoop_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   }
@@ -90,6 +92,7 @@ namespace xaifBooster {
     ForLoop* theNewForLoop_p=new ForLoop(ForLoopReversalType::fromString(XMLParser::getAttributeValueByName(ForLoopReversalType::our_attribute_XAIFName)));
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewForLoop_p);
     theNewForLoop_p->setId(XMLParser::getAttributeValueByName(ForLoop::our_myId_XAIFName));
+    theNewForLoop_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
     passingOut.setInitialization(theNewForLoop_p->getInitialization());
     passingOut.setCondition(theNewForLoop_p->getCondition());
     passingOut.setUpdate(theNewForLoop_p->getUpdate());
@@ -103,6 +106,7 @@ namespace xaifBooster {
     IfStatement* theNewIfStatement_p=new IfStatement();
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewIfStatement_p);
     theNewIfStatement_p->setId(XMLParser::getAttributeValueByName(IfStatement::our_myId_XAIFName));
+    theNewIfStatement_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
     passingOut.setCondition(theNewIfStatement_p->getCondition());
     theNewIfStatement_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   }
@@ -114,6 +118,7 @@ namespace xaifBooster {
     Branch* theNewBranch_p=new Branch();
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewBranch_p);
     theNewBranch_p->setId(XMLParser::getAttributeValueByName(Branch::our_myId_XAIFName));
+    theNewBranch_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
     passingOut.setCondition(theNewBranch_p->getCondition());
     theNewBranch_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
   }
@@ -301,6 +306,7 @@ namespace xaifBooster {
     BasicBlock& theBasicBlock(passingIn.getBasicBlock());
     Assignment* theAssignment_p=new Assignment;
     theAssignment_p->setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
+    theAssignment_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theAssignment_p);
     passingOut.setAssignment(*theAssignment_p);
   }
@@ -591,6 +597,7 @@ namespace xaifBooster {
 			 ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theNewSubroutineCall_p);
     theNewSubroutineCall_p->setId(XMLParser::getAttributeValueByName(SubroutineCall::our_myId_XAIFName));
+    theNewSubroutineCall_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
     passingOut.setSubroutineCall(*theNewSubroutineCall_p);
   }
 
