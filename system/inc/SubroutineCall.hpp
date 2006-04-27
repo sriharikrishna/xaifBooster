@@ -58,6 +58,7 @@
 #include "xaifBooster/system/inc/ConcreteArgument.hpp"
 #include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
+#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
 
 namespace xaifBooster { 
 
@@ -65,7 +66,8 @@ namespace xaifBooster {
    * class SubroutineCall describes a SubroutineCall within a 
    * ControlFlowGraph
    */
-  class SubroutineCall : public BasicBlockElement {
+  class SubroutineCall : public BasicBlockElement,
+			 public ObjectWithLineNumber {
   public:
     /** 
      * \param makeAlgorithm  news up an algorithm object if required
