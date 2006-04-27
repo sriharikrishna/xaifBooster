@@ -1,5 +1,3 @@
-#ifndef _BRANCH_INCLUDE_
-#define _BRANCH_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,61 +50,36 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
-#include "xaifBooster/system/inc/Condition.hpp"
-#include "xaifBooster/system/inc/BranchAlgBase.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
 
 namespace xaifBooster { 
 
-  /**
-   * this class describes 
-   * a preloop
-   */
-  class Branch : public ControlFlowGraphVertex,
-		 public ObjectWithLineNumber {
-  public:
+  const std::string ObjectWithLineNumber::our_myLineNumber_XAIFName("lineNumber");
 
-    Branch ();
+  ObjectWithLineNumber::ObjectWithLineNumber() : myLineNumber(0) { 
+  } // end of ObjectWithLineNumber::ObjectWithLineNumber
 
-    ~Branch();
+  std::string ObjectWithLineNumber::debug () const { 
+    std::ostringstream out;
+    out << "ObjectWithLineNumber[" << this 
+	<< ",myLineNumber=" << myLineNumber 
+	<< "]" << std::ends;  
+    return out.str();
+  } // end of ObjectWithLineNumber::debug
 
-    /**
-     * print XML hierarchy
-     */
-    void printXMLHierarchy(std::ostream& os) const;
+  bool ObjectWithLineNumber::lineNumberIsSet()const { 
+    return ((myLineNumber)?true:false);
+  }
 
-    /**
-     * print debug information
-     */
-    std::string debug() const ;
+  void ObjectWithLineNumber::setLineNumber(unsigned int aLineNumber) { 
+    if (myLineNumber) 
+      THROW_LOGICEXCEPTION_MACRO("ObjectWithLineNumber::setLineNumber: already set");
+    myLineNumber=aLineNumber;
+  }
 
-    /**
-     * name for this class as represented in XAIF schema
-     */
-    static const std::string ourXAIFName;
+  unsigned int ObjectWithLineNumber::getLineNumber() const { 
+    return myLineNumber;
+  }
 
-    static const std::string our_myId_XAIFName;
-    
-    Condition& getCondition();
-
-    const Condition& getCondition() const;
-
-    /**
-     * get algorithm
-     */
-    BranchAlgBase& getBranchAlgBase() const;
-
-  private:
-    
-    /** 
-     * the condition for the if statement
-     */
-    Condition myCondition;
-
-  };
- 
-} // end of namespace xaifBooster
-                                                                     
-#endif
+} 
