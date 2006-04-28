@@ -60,6 +60,7 @@
 #include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
 
@@ -80,8 +81,9 @@ void Usage(char** argv) {
 	    << "             [-v] validate <inputFile> against the schema" << std::endl
 	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
             << "                 space separated list enclosed in double quotes" << std::endl
-	    << "             [-r] " << std::endl
-	    << "                 force renaming of all non-external routines" << std::endl;
+	    << "             [-r] force renaming of all non-external routines" << std::endl
+	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
+	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -95,7 +97,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwr",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwruU",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -116,6 +118,10 @@ int main(int argc,char** argv) {
       xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
     if (CommandLineParser::instance()->isSet('r')) 
       xaifBoosterLinearization::ControlFlowGraphAlg::setForceNonExternalRenames();
+    if (CommandLineParser::instance()->isSet('u')) 
+      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setUserDecides();
+    if (CommandLineParser::instance()->isSet('U')) 
+      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
