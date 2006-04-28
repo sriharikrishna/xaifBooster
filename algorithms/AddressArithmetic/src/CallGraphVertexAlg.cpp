@@ -6,6 +6,7 @@
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
@@ -17,6 +18,18 @@
 using namespace xaifBooster;
 
 namespace xaifBoosterAddressArithmetic { 
+
+  bool CallGraphVertexAlg::ourUserDecidesFlag=false;
+
+  bool CallGraphVertexAlg::ourIgnoranceFlag=false;
+
+  void CallGraphVertexAlg::setUserDecides(){
+    ourUserDecidesFlag=true;
+  }
+  
+  void CallGraphVertexAlg::setIgnorance() {
+    ourIgnoranceFlag=true;
+  }
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     xaifBoosterControlFlowReversal::CallGraphVertexAlg(theContaining){
@@ -169,53 +182,118 @@ namespace xaifBoosterAddressArithmetic {
   
   void 
   CallGraphVertexAlg::pushUnknownVariable(const Variable& anUnknownVariable,
-					  BasicBlock& aBasicBlock_r) { 
+					  BasicBlock& aBasicBlock_r,
+					  unsigned int aTopLevelForLoopLineNumber) { 
+    static std::list<const Symbol*> ourPushAllSymbolPList;
+    static std::list<const Symbol*> ourIgnoreAllSymbolPList;
+    if (ourIgnoranceFlag) { 
+      return;
+    }
     // has it been pushed already?
-    bool alreadyPushed=false;
     for (BasicBlock::BasicBlockElementList::const_iterator pushIterator=aBasicBlock_r.getBasicBlockElementList().begin();
 	 pushIterator!=aBasicBlock_r.getBasicBlockElementList().end();
 	 ++pushIterator) { 
       if ((*(dynamic_cast<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&>(**pushIterator).getArgumentList().begin()))->getArgument().getVariable().equivalenceSignature()
 	  ==anUnknownVariable.equivalenceSignature()) { 
-	alreadyPushed=true;
-	break;
+	// already pushed, done
+	return;
       } 
     }
-    if (!alreadyPushed) { 
-      DBG_MACRO(DbgGroup::WARNING, 
-		"CallGraphVertexAlg::pushUnknownVariable:" 
-		<< anUnknownVariable.debug().c_str()
-		<< " for address arithmetic");
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p(0);
-      switch(anUnknownVariable.getType()) { 
-      case SymbolType::INTEGER_STYPE:
-	theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
-	break;
-      case SymbolType::REAL_STYPE:
-	theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
-	break;
-      case SymbolType::BOOL_STYPE:
-	theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_b");
-	break;
-      default:
-	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::pushUnknownVariables: don't know what to do with variable of type " 
-				   << SymbolType::toString(anUnknownVariable.getType()));
-	break;
-      } 
-      theInlinableSubroutineCall_p->setId("_addressArithmetic_" + theInlinableSubroutineCall_p->getSubroutineName());
-      anUnknownVariable.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-      aBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
+    // if the user doesn't decide we always do it
+    bool doIt=!ourUserDecidesFlag;
+    if(!doIt){ 
+      for (std::list<const Symbol*>::iterator i=ourPushAllSymbolPList.begin();
+	   i!=ourPushAllSymbolPList.end();
+	   ++i) {
+	if (&(anUnknownVariable.getVariableSymbolReference().getSymbol())==*i){ 
+	  doIt=true;
+	  break;
+	} 
+      }
     }
-  }      
+    bool skipAsking=false;
+    if(!doIt){ 
+      for (std::list<const Symbol*>::iterator i=ourIgnoreAllSymbolPList.begin();
+	   i!=ourIgnoreAllSymbolPList.end();
+	   ++i) {
+	if (&(anUnknownVariable.getVariableSymbolReference().getSymbol())==*i){ 
+	  skipAsking=true;
+	  doIt=false;
+	  break;
+	} 
+      }
+    }
+    if (!skipAsking && !doIt && ourUserDecidesFlag) {
+      std::string variableName(anUnknownVariable.getVariableSymbolReference().getSymbol().getId());
+      // strip the trailing _[0-9]* from the variableName
+      std::string variableNameStripped(variableName,0,variableName.find_last_of('_'));
+      std::cout << "Explicit loop reversal for top level loop line "
+		<< aTopLevelForLoopLineNumber
+		<< "push/pop non-loop variable "
+		<< variableNameStripped.c_str()
+		<< std::endl;
+      bool done=true;
+      do { 
+	std::cout << "Select (p)ush this instance, (P)ush all instances, (i)gnore this Instance, (I)gnore all instance: ? ";
+	char answer;
+	std::cin >> answer;
+	switch (answer) { 
+	case 'p': 
+	  doIt=true;
+	  done=true;
+	  break;
+	case 'P': 
+	  ourIgnoreAllSymbolPList.push_back(&anUnknownVariable.getVariableSymbolReference().getSymbol());
+	  doIt=true;
+	  done=true;
+	  break;
+	case 'i': 
+	  done=true;
+	  break;
+	case 'I': 
+	  ourIgnoreAllSymbolPList.push_back(&anUnknownVariable.getVariableSymbolReference().getSymbol());
+	  done=true;
+	  break;
+	default: 
+	  std::cout << "invalid input, try again" << std::endl;
+	  done=false;
+	  break;
+	}
+      } while (!done);
+    }
+    if (!doIt)
+      return;
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p(0);
+    switch(anUnknownVariable.getType()) { 
+    case SymbolType::INTEGER_STYPE:
+      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+      break;
+    case SymbolType::REAL_STYPE:
+      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
+      break;
+    case SymbolType::BOOL_STYPE:
+      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_b");
+      break;
+    default:
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::pushUnknownVariables: don't know what to do with variable of type " 
+				 << SymbolType::toString(anUnknownVariable.getType()));
+      break;
+    } 
+    theInlinableSubroutineCall_p->setId("_addressArithmetic_" + theInlinableSubroutineCall_p->getSubroutineName());
+    anUnknownVariable.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+    aBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
+  }
   
   void 
   CallGraphVertexAlg::pushUnknownVariables(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables,
-					   BasicBlock& aBasicBlock_r) { 
+					   BasicBlock& aBasicBlock_r,
+					   unsigned int aTopLevelForLoopLineNumber) { 
     for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList::const_iterator theUnknownVariables_cit=theUnknownVariables.begin();
 	 theUnknownVariables_cit!=theUnknownVariables.end();
 	 ++theUnknownVariables_cit) { 
       pushUnknownVariable(**theUnknownVariables_cit,
-			  aBasicBlock_r);
+			  aBasicBlock_r,
+			  aTopLevelForLoopLineNumber);
     } 
   } 
 
@@ -263,30 +341,20 @@ namespace xaifBoosterAddressArithmetic {
 								 theKnownVariables,
 								 theUnknownVariables);
 	  if (!theUnknownVariables.empty()) { 
-	    if (DbgLoggerManager::instance()->isSelected(DbgGroup::WARNING)) {
-	      DBG_MACRO(DbgGroup::WARNING,
-			"xaifBoosterAddressArithmetic::CallGraphVertexAlg::algorithm_action_5(fix address arithmetic): "
-			<< (*aReversibleControlFlowGraphVertexI).debug().c_str());
-	      std::cout << "unknownList: " ; 
-	      for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList::const_iterator anUnknownListI=theUnknownVariables.begin();
-		   anUnknownListI!=theUnknownVariables.end();
-		   ++anUnknownListI) { 
-		std::cout << (*anUnknownListI)->debug().c_str();
-	      } 
-	      std::cout << std::endl;
-	    }
 	    // get the taping point
 	    BasicBlock& aBasicBlock(dynamic_cast<BasicBlock&>((*aReversibleControlFlowGraphVertexI).
 							      getTopExplicitLoop().
 							      getTopExplicitLoopAddressArithmetic().
 							      getNewVertex()));
 	    // tape the unknown variables
-	    pushUnknownVariables(theUnknownVariables,aBasicBlock);
+	    pushUnknownVariables(theUnknownVariables,
+				 aBasicBlock,
+				 (dynamic_cast<const ForLoop&>((*aReversibleControlFlowGraphVertexI).getTopExplicitLoop().getOriginalVertex())).getLineNumber());
 	  } 
 	}
       }
       // we are done pushing everything 
-      // and new we can create the corresponding pops in reverse order:
+      // and now we can create the corresponding pops in reverse order:
       xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList& theOriginalReverseVertexPPairList(getTapingControlFlowGraph().getOriginalReverseVertexPPairList());
       for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList::iterator aVertexPPairListI=theOriginalReverseVertexPPairList.begin();
 	   aVertexPPairListI!=theOriginalReverseVertexPPairList.end();

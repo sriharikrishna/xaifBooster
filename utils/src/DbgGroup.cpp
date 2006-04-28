@@ -93,7 +93,17 @@ namespace xaifBooster {
 
   std::string 
   DbgGroup::printAll() throw (PrintingIntException) {
-    return std::string("ERROR=0, WARNING=1. CALLSTACK=2, DATA=4, GRAPHICS=8, TIMING=16, TEMPORARY=32, METRIC=64");
+    std::ostringstream os;
+    os << "ERROR=" << ERROR << ","
+       << "WARNING=" << WARNING << ","
+       << "CALLSTACK=" << CALLSTACK << ","
+       << "DATA=" << DATA << ","
+       << "GRAPHICS=" << GRAPHICS << ","
+       << "TIMING=" << TIMING << ","
+       << "TEMPORARY=" << TEMPORARY << ","
+       << "METRIC=" << METRIC 
+       << std::ends; 
+    return os.str();
   }
 
 } // end of namespace xaifBooster

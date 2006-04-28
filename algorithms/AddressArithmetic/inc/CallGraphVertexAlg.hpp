@@ -35,6 +35,10 @@ namespace xaifBoosterAddressArithmetic {
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+    
+    static void setUserDecides();
+    
+    static void setIgnorance();
 
   private:
     
@@ -83,14 +87,16 @@ namespace xaifBoosterAddressArithmetic {
      * with statement inserted into aBasicBlock_r
      */
     void pushUnknownVariable(const Variable& anUnknownVariable,
-			     BasicBlock& aBasicBlock_r);
+			     BasicBlock& aBasicBlock_r,
+			     unsigned int aTopLevelForLoopLineNumber);
 
     /** 
      * push all theUnknownVariables
      * with statements inserted into aBasicBlock_r
      */
     void pushUnknownVariables(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables,
-			      BasicBlock& aBasicBlock_r);
+			      BasicBlock& aBasicBlock_r,
+			      unsigned int aTopLevelForLoopLineNumber);
 
     /** 
      * there is aPushCall
@@ -100,6 +106,15 @@ namespace xaifBoosterAddressArithmetic {
     void createPopFromPush(const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aPushCall,
 			   BasicBlock& aBasicBlock_r);
     
+    /** 
+     * let the user decide individually, default false
+     */
+    static bool ourUserDecidesFlag;
+
+    /** 
+     * force ignorance (nothing gets pushed), default false
+     */
+    static bool ourIgnoranceFlag;
 
   };  // end of class
 

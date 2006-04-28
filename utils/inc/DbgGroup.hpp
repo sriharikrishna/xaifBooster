@@ -71,14 +71,14 @@ namespace xaifBooster {
      * for easy selection an combination of 
      * categories
      */
-    enum DbgGroup_E {ERROR=0, // anything having to do with exceptions
-		     WARNING=1, // some potentially dangerous step
-		     CALLSTACK=2, // any message relating to entering/exiting a method
-		     DATA=4, // any dumping of data
-		     GRAPHICS=8, // anything producing graphic output 
-		     TIMING=16, // anything producing a time stamp 
-		     TEMPORARY=32, // the rest of the messages that can be removed at any time
-		     METRIC=64};
+    enum DbgGroup_E {ERROR    = 0x000000000, // anything having to do with exceptions
+		     WARNING  = 0x000000001, // some potentially dangerous step
+		     CALLSTACK= 0x000000002, // any message relating to entering/exiting a method
+		     DATA     = 0x000000004, // any dumping of data
+		     GRAPHICS = 0x000000008, // anything producing graphic output 
+		     TIMING   = 0x000000010, // anything producing a time stamp 
+		     TEMPORARY= 0x000000020, // the rest of the messages that can be removed at any time
+		     METRIC   = 0x000000040 };
 
     static std::string toString(const DbgGroup_E& aKind) throw (PrintingIntException);
     
