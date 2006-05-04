@@ -56,6 +56,7 @@
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include "xaifBooster/system/inc/Condition.hpp"
 #include "xaifBooster/system/inc/PreLoopAlgBase.hpp"
+#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
 
 namespace xaifBooster { 
 
@@ -63,7 +64,8 @@ namespace xaifBooster {
    * this class describes 
    * a preloop
    */
-  class PreLoop : public ControlFlowGraphVertex {
+  class PreLoop : public ControlFlowGraphVertex,
+		  public ObjectWithLineNumber {
   public:
 
     PreLoop ();

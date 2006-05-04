@@ -56,6 +56,7 @@
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include "xaifBooster/system/inc/Condition.hpp"
 #include "xaifBooster/system/inc/IfStatementAlgBase.hpp"
+#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
 
 namespace xaifBooster { 
 
@@ -63,7 +64,8 @@ namespace xaifBooster {
    * this class describes 
    * a preloop
    */
-  class IfStatement : public ControlFlowGraphVertex {
+  class IfStatement : public ControlFlowGraphVertex,
+		      public ObjectWithLineNumber {
   public:
 
     IfStatement ();

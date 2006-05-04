@@ -59,6 +59,7 @@
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include "xaifBooster/system/inc/ForLoopAlgBase.hpp"
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
+#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
 
 namespace xaifBooster { 
 
@@ -66,7 +67,8 @@ namespace xaifBooster {
    * this class describes 
    * a for loop
    */
-  class ForLoop : public ControlFlowGraphVertex {
+  class ForLoop : public ControlFlowGraphVertex,
+		  public ObjectWithLineNumber {
   public:
 
     ForLoop(const ForLoopReversalType::ForLoopReversalType_E theReversalType);
