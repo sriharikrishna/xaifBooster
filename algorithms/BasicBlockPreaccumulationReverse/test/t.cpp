@@ -78,7 +78,9 @@ void Usage(char** argv) {
 	    << "             [-S] force statement level preaccumulation" << std::endl
 	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
 	    << "             [-v] validate <inputFile> against the schema" << std::endl
-	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
+	    << "             [-w \"<list of subroutines with wrappers>\" " << std::endl
+            << "                 space separated list enclosed in double quotes" << std::endl
+	    << "             [-p \"<list of symbols to forcibly passivate>\" " << std::endl
             << "                 space separated list enclosed in double quotes" << std::endl
 	    << "             [-r] " << std::endl
 	    << "                 force renaming of all non-external routines" << std::endl;
@@ -95,7 +97,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwr",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwpr",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -114,6 +116,8 @@ int main(int argc,char** argv) {
       validateAgainstSchema=true;
     if (CommandLineParser::instance()->isSet('w')) 
       xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
+    if (CommandLineParser::instance()->isSet('p')) 
+      Symbol::addSymbolNamesToPassivate(CommandLineParser::instance()->argAsString('p'));
     if (CommandLineParser::instance()->isSet('r')) 
       xaifBoosterLinearization::ControlFlowGraphAlg::setForceNonExternalRenames();
   } catch (BaseException& e) { 
@@ -149,6 +153,7 @@ int main(int argc,char** argv) {
     } 
     p.parse(inFileName);
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    Cg.getScopeTree().forcedPassivation();
     DBG_MACRO(DbgGroup::TIMING,"before linearize");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
     DBG_MACRO(DbgGroup::TIMING,"before flatten");

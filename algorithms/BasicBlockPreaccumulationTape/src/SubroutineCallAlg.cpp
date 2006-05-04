@@ -61,6 +61,7 @@
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
 
@@ -130,23 +131,29 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   
   void SubroutineCallAlg::algorithm_action_4() { 
-    // for each subroutinecall
-    // store the index value via 
-    // an InlinableSubroutinecall for each 
-    // nonconstant index of an argument that 
-    // has array indices
-    for (SubroutineCall::ConcreteArgumentPList::const_iterator aConcreteArgumentPListI=
-	   getContainingSubroutineCall().getConcreteArgumentPList().begin();
-	 aConcreteArgumentPListI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
-	 ++aConcreteArgumentPListI) { 
-      if ((*aConcreteArgumentPListI)->isArgument()
-	  && 
-	  (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
-	handleArrayAccessIndices(**aConcreteArgumentPListI,
-				 // the following parameter was set in BasicBlockAlg::algorithm_action_4()
-				 xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::get().getContaining().getScope()); 
-      }
-    } // end for 
+    xaifBoosterLinearization::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterLinearization::SymbolAlg&>
+						      (getContainingSubroutineCall().
+						       getSymbolReference().getSymbol().getSymbolAlgBase()));
+    // we don't do this for external calls: 
+    if(!theSymbolAlg.isExternal()) { 
+      // for each subroutinecall
+      // store the index value via 
+      // an InlinableSubroutinecall for each 
+      // nonconstant index of an argument that 
+      // has array indices
+      for (SubroutineCall::ConcreteArgumentPList::const_iterator aConcreteArgumentPListI=
+	     getContainingSubroutineCall().getConcreteArgumentPList().begin();
+	   aConcreteArgumentPListI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
+	   ++aConcreteArgumentPListI) { 
+	if ((*aConcreteArgumentPListI)->isArgument()
+	    && 
+	    (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
+	  handleArrayAccessIndices(**aConcreteArgumentPListI,
+				   // the following parameter was set in BasicBlockAlg::algorithm_action_4()
+				   xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::get().getContaining().getScope()); 
+	}
+      } // end for
+    } 
   } 
 
   void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,

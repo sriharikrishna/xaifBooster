@@ -147,4 +147,22 @@ namespace xaifBooster {
     return *(myHashTableSymbolP.getElement(aName));
   } 
 
+  void SymbolTable::forcedPassivation() { 
+    for(HashTableSymbolP::InternalHashMapType::iterator myHashMap_iterator=
+	  myHashTableSymbolP.getInternalHashMap().begin();
+	myHashMap_iterator!=myHashTableSymbolP.getInternalHashMap().end();
+	myHashMap_iterator++)
+      (*myHashMap_iterator).second->forcedPassivation();
+  } 
+
+  bool SymbolTable::hasElement(const Symbol& aSymbol) const { 
+    for(HashTableSymbolP::InternalHashMapType::const_iterator myHashMap_iterator=
+	  myHashTableSymbolP.getInternalHashMap().begin();
+	myHashMap_iterator!=myHashTableSymbolP.getInternalHashMap().end();
+	myHashMap_iterator++)
+      if ((*myHashMap_iterator).second==&aSymbol)
+	return true;
+    return false;
+  } 
+
 } 

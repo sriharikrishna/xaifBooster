@@ -157,5 +157,59 @@ namespace xaifBooster {
 			    const SymbolReference& second) const { 
     return (( &(first.getScope())==&(second.getScope()) && &(first.getSymbol())==&(second.getSymbol())) ? true : false );
   } 
-  
+
+  Scopes::PathRelation_E Scopes::onScopePath(const Symbol& firstSymbol,
+					     const Symbol& secondSymbol) const { 
+    const Scope& theGlobalScope(getGlobalScope());
+    bool foundFirst=false,foundSecond=false;
+    return onScopePath(theGlobalScope,
+		       firstSymbol,
+		       foundFirst,
+		       secondSymbol,
+		       foundSecond);
+  } 
+
+  Scopes::PathRelation_E Scopes::onScopePath(const Scope& aScope,
+					     const Symbol& firstSymbol,
+					     bool& foundFirst,
+					     const Symbol& secondSymbol,
+					     bool& foundSecond) const { 
+    if (!foundFirst && aScope.getSymbolTable().hasElement(firstSymbol)) { 
+      if (foundSecond)
+	return CHILD_PARENT;
+      foundFirst=true;
+    }
+    else if (!foundSecond && aScope.getSymbolTable().hasElement(secondSymbol)) { 
+      if (foundFirst)
+	return PARENT_CHILD;
+      foundSecond=true;
+    }
+    else if (!foundFirst 
+	     && 
+	     !foundSecond 
+	     &&
+	     aScope.getSymbolTable().hasElement(firstSymbol)
+	     &&
+	     aScope.getSymbolTable().hasElement(secondSymbol)) { 
+      return SAME_SCOPE;
+    }
+    PathRelation_E returnVal=NO_PATH;
+    ConstInEdgeIteratorPair p=getInEdgesOf(getGlobalScope());
+    ConstInEdgeIterator inEdgeIt(p.first),endIt(p.second);
+    for (; inEdgeIt!=endIt && !foundFirst && !foundSecond ;++inEdgeIt) 
+      returnVal=onScopePath(getSourceOf(*inEdgeIt),
+			    firstSymbol,
+			    foundFirst,
+			    secondSymbol,
+			    foundSecond);
+    return returnVal;
+  } 
+
+  void Scopes::forcedPassivation() {
+    VertexIteratorPair p=vertices();
+    VertexIterator anIt(p.first),endIt(p.second);
+    for (; anIt!=endIt ;++anIt) 
+      (*anIt).getSymbolTable().forcedPassivation();
+  } 
+
 } // end of namespace xaifBooster 
