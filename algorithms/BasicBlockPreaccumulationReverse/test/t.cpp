@@ -99,7 +99,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-andLineParser::instance()->initialize("iocdgsSIvwpruU",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwpruU",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
