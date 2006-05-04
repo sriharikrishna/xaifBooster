@@ -60,6 +60,7 @@
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
@@ -109,6 +110,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   } 
 
   void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock) { 
+    xaifBoosterLinearization::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterLinearization::SymbolAlg&>
+						      (getContainingSubroutineCall().
+						       getSymbolReference().getSymbol().getSymbolAlgBase()));
+    // we don't do this for external calls: 
+    if(theSymbolAlg.isExternal())
+      return;
     BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(theBasicBlock.getBasicBlockAlgBase()));
     SubroutineCall& theNewSubroutineCall(theBasicBlockAlg.addSubroutineCall(getContainingSubroutineCall().getSymbolReference().getSymbol(),
 									    getContainingSubroutineCall().getSymbolReference().getScope(),

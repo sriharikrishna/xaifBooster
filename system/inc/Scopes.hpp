@@ -61,6 +61,7 @@
 namespace xaifBooster { 
  
   class SymbolReference;
+  class Symbol;
 
   /**
    * scopes is the graph (tree) of scopes 
@@ -91,6 +92,24 @@ namespace xaifBooster {
     bool isSameSymbol(const SymbolReference& first,
 		      const SymbolReference& second) const;
 
+    enum PathRelation_E{ 
+      NO_PATH = 0 ,
+      PARENT_CHILD = 1, 
+      CHILD_PARENT = 2,
+      SAME_SCOPE= 3
+    };
+
+    PathRelation_E onScopePath(const Symbol& firstSymbol,
+			       const Symbol& secondSymbol) const;
+
+    /** 
+     * iterate through all SymbolTables 
+     * to find symbols requiring forced passivation
+     * this should happen AFTER all scopes are 
+     * initialized.
+     */
+    void forcedPassivation();
+    
   private:
     
     /**
@@ -102,6 +121,15 @@ namespace xaifBooster {
     Scope* myGlobalScope_p;
 
     void findGlobalScope(); 
+
+    /** 
+     * recursively invoked helper for the public onScopePath
+     */
+    PathRelation_E onScopePath(const Scope& aScope,
+			       const Symbol& firstSymbol,
+			       bool& foundFirst,
+			       const Symbol& secondSymbol,
+			       bool& foundSecond) const;
 
   }; // end of class Scopes
 

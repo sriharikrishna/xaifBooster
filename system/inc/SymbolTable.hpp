@@ -93,6 +93,18 @@ namespace xaifBooster {
      */
     static const std::string ourXAIFName;
 
+    /** 
+     * iterate through all Symbols 
+     * to find some requiring forced passivation
+     */
+    void forcedPassivation();
+
+    /** 
+     * this tests Symbol instance identity
+     * it does NOT test data equivalence
+     */
+    bool hasElement(const Symbol& aSymbol) const; 
+    
   private: 
     
     typedef HashTable<Symbol*> HashTableSymbolP;

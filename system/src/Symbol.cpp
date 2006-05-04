@@ -56,6 +56,7 @@
 #include "xaifBooster/system/inc/Symbol.hpp"
 #include "xaifBooster/system/inc/SymbolAlgFactory.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
 
 namespace xaifBooster { 
 
@@ -66,6 +67,8 @@ namespace xaifBooster {
   const std::string Symbol::our_myActiveTypeFlag_XAIFName("active");
 
   const std::string Symbol::our_myTempFlag_XAIFName("temp");
+
+  HashTable<Symbol::SymbolPassivation> Symbol::ourPassivatedSymbolHashTable;
 
   Symbol::Symbol(const std::string& aName, 
 		 const SymbolKind::SymbolKind_E& aKind,
@@ -200,6 +203,136 @@ namespace xaifBooster {
                                                                                 
   void Symbol::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
     getSymbolAlgBase().genericTraversal(anAction_c);
+  }
+
+  Symbol::SymbolPassivation::SymbolPassivation() :
+    mySymbolp(0),
+    myPassivateFlag(false),
+    myWarnedFlag(false) {
+  }
+
+  Symbol::SymbolPassivation::SymbolPassivation(const std::string& aCommandLineName) :
+    myCommandLineName(aCommandLineName),
+    mySymbolp(0),
+    myPassivateFlag(false),
+    myWarnedFlag(false) {
+  }
+
+  bool Symbol::SymbolPassivation::hasPassivatedSymbol() const { 
+    return ((mySymbolp)?true:false);
+  }
+
+  std::string Symbol::SymbolPassivation::getCommandLineName() const { 
+    return myCommandLineName;
+  }
+
+  Symbol& Symbol::SymbolPassivation::getSymbol() const {
+    if (!hasPassivatedSymbol()) 
+      THROW_LOGICEXCEPTION_MACRO("Symbol::SymbolPassivation::getSymbol: no symbol set");
+    return *mySymbolp;
+  }
+
+  void Symbol::SymbolPassivation::passivate(const std::string& anXaifName,
+					    Symbol& aSymbol) { 
+    if (hasPassivatedSymbol()) { 
+      // check if  the new symbol's scope encloses the old symbol's scope
+      switch(ConceptuallyStaticInstances::instance()->
+	     getCallGraph().getScopeTree().onScopePath(aSymbol,*mySymbolp)) { 
+      case Scopes::CHILD_PARENT:
+	// the old scope encloses the new one,
+	if (!myWarnedFlag) { 
+	  // issue a warning
+	  DBG_MACRO(DbgGroup::WARNING, "Symbol::SymbolPassivation::passivate: encountered sub scope with symbol "
+		    << myCommandLineName.c_str()
+		    << " which will not be passivated (warning once only)");
+	  myWarnedFlag=true;
+	}
+	break; 
+      case Scopes::PARENT_CHILD: 
+	// the new scope encloses the old one
+	// move up the reference
+	if (myPassivateFlag) 
+	  // the old reference was actually passivated, undo ot 
+	  mySymbolp->myActiveTypeFlag=true;
+	if (!myWarnedFlag) { 
+	  // issue a warning
+	  DBG_MACRO(DbgGroup::WARNING, "Symbol::SymbolPassivation::passivate: encountered sub scope with symbol "
+		    << myCommandLineName.c_str()
+		    << " which will not be passivated (warning once only)");
+	  myWarnedFlag=true;
+	}
+	break; 
+      case Scopes::NO_PATH:
+	THROW_LOGICEXCEPTION_MACRO("Symbol::SymbolPassivation::passivate: symbol "
+				   << myCommandLineName.c_str()
+				   << " occurs at least in two unrelated scopes");
+	break;
+      default: 
+	THROW_LOGICEXCEPTION_MACRO("Symbol::SymbolPassivation::passivate: no logic to handle Scopes::onPath return value "
+				   << ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().onScopePath(aSymbol,*mySymbolp));
+	break;
+      }
+    }
+    mySymbolp=&aSymbol;
+    myXaifName=anXaifName;
+    // note the passivation
+    myPassivateFlag=mySymbolp->myActiveTypeFlag;
+    // passivate
+    mySymbolp->myActiveTypeFlag=false;
+  }
+
+  void Symbol::forcedPassivation() { 
+    if (!ourPassivatedSymbolHashTable.getInternalHashMap().empty()) { 
+      // find a matching element
+      // we have 2 issues, 
+      // first case sensitivity
+      std::string anInputName(getId());
+      std::transform(anInputName.begin(),
+		     anInputName.end(), 
+		     anInputName.begin(), 
+		     toupper);
+      // second the appendices added by the 
+      // fortran front end.
+      // the tail should just be empty or contain underscores followed by digits
+      // strip the trailing _[0-9]* from the variableName
+      std::string anInputNameStripped(anInputName,0,anInputName.find_last_of('_'));
+      std::string anInputNameTail(anInputName,anInputName.find_last_of('_'),anInputName.size());
+      unsigned int position=0;
+      while(position<anInputNameTail.size() && anInputNameTail[position]=='_')
+	position++;
+      while(position<anInputNameTail.size() && std::isdigit(anInputNameTail[position]))
+	position++;
+      if (position!=anInputNameTail.size()) {
+	// this doesn't have the proper appendix
+	DBG_MACRO(DbgGroup::WARNING, "Symbol::Symbol: unexpected tail "
+		  << anInputNameTail.c_str() 
+		  << " in " 
+		  << anInputName.c_str());
+	anInputNameStripped=anInputName;
+      }
+      if (ourPassivatedSymbolHashTable.hasElement(anInputNameStripped))
+	ourPassivatedSymbolHashTable.getElement(anInputNameStripped).passivate(getId(), 
+									       *this);
+    } 
+  }
+
+  void Symbol::addSymbolNamesToPassivate(const std::string& theSymbolNamesSeparatedBySpaces) { 
+    std::string allUpperCase(theSymbolNamesSeparatedBySpaces);
+    std::transform(allUpperCase.begin(),
+		   allUpperCase.end(), 
+		   allUpperCase.begin(), 
+		   toupper);
+    std::string::size_type startPosition=0,endPosition=0;
+    std::string::size_type totalSize(allUpperCase.size());
+    while (startPosition<=totalSize && endPosition<=totalSize) { 
+      startPosition=allUpperCase.find_first_not_of(' ',startPosition);
+      endPosition=allUpperCase.find_first_of(' ',startPosition);
+      ourPassivatedSymbolHashTable.addElement(allUpperCase.substr(startPosition,
+								  endPosition),
+					      SymbolPassivation(allUpperCase.substr(startPosition,
+										    endPosition)));
+      startPosition=endPosition;
+    } 
   }
 
 } // end of namespace xaifBooster 

@@ -58,6 +58,7 @@
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
+#include "xaifBooster/utils/inc/HashTable.hpp"
 
 #include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/SymbolKind.hpp"
@@ -132,6 +133,16 @@ namespace xaifBooster {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    static void addSymbolNamesToPassivate(const std::string& theSymbolNamesSeparatedBySpaces);
+
+    /** 
+     * passivate according to the symbol names 
+     * passed into addSymbolNamesToPassivate
+     * this should happen AFTER all scopes are 
+     * initialized.
+     */
+    void forcedPassivation(); 
+
   private:
 
     friend class SymbolTable;
@@ -186,6 +197,71 @@ namespace xaifBooster {
      * destruction
      */
     SymbolAlgBase* mySymbolAlgBase_p;
+
+    /** 
+     * to keep track what has been passivated for which name
+     */
+    class SymbolPassivation { 
+    public:
+
+      SymbolPassivation();
+
+      SymbolPassivation(const std::string& aCommandLineName);
+
+      void passivate(const std::string& anXaifName,
+		     Symbol& aSymbol);
+
+      bool hasPassivatedSymbol() const; 
+
+      std::string getCommandLineName()const; 
+
+      Symbol& getSymbol()const; 
+
+    private: 
+
+      /**
+       * the plain name, with front-end suffix
+       */
+      std::string myCommandLineName;
+
+      /**
+       * the name with front-end suffix as found in xaif
+       */
+      std::string myXaifName;
+
+      /** 
+       * the symbol once we found a matching name
+       */
+      Symbol* mySymbolp;
+
+      /**
+       * did the xaif specify the symbol to be active?
+       * in case we need to move the reference up the scope
+       * hierarchy this flag allows resetting the activity 
+       * of the symbol we first found
+       */
+      bool myPassivateFlag;
+
+      /** 
+       * avoid duplcate warnings
+       */
+      bool myWarnedFlag; 
+    };
+      
+    
+    /** 
+     * list of symbols forced to be passive
+     * since we don't have a scope context
+     * only the top scope matching symbols are going to 
+     * be passivated.
+     * This is only a stop gap measure to overcome 
+     * certain overestimates in the activity analysis
+     * mostly for global module variables.
+     * the parser will issue warnings for symbols
+     * with lower level scope and errors for 
+     * ambiguous scopes.
+     */
+    static HashTable<SymbolPassivation> ourPassivatedSymbolHashTable;
 
   };
  
