@@ -111,7 +111,8 @@ namespace xaifBooster {
 
   std::string Expression::debug () const { 
     std::ostringstream out;
-    out << "Expression[" << this 
+    out << "Expression[" << this
+	<< ", numVertices=" << numVertices()
 	<< "]" << std::ends;  
     return out.str();
   } // end of Expression::debug
