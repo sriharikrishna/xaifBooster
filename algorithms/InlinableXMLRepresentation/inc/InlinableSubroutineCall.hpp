@@ -85,6 +85,10 @@ namespace xaifBoosterInlinableXMLRepresentation {
 
     virtual void traverseToChildren(GenericAction::GenericAction_E){};
 
+    const SubroutineCall::ConcreteArgumentPList&  getArgumentList() const;
+
+    const std::string& getSubroutineName() const;
+    
   private: 
     
     /** 

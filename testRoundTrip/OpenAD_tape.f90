@@ -56,13 +56,20 @@ module OpenAD_tape
   private
   public :: double_tape, double_tape_pointer, &
 &           integer_tape, integer_tape_pointer, &
+&           logical_tape, logical_tape_pointer, &
 &           tape_init, tape_dump
 
-  integer, parameter :: max_double_tape_size=10000000
-  integer, parameter :: max_integer_tape_size=10000000
-  double precision :: double_tape(max_double_tape_size)
-  integer :: integer_tape(max_integer_tape_size)
-  integer double_tape_pointer, integer_tape_pointer
+  integer, parameter :: max_double_tape_size  =10000000
+  integer, parameter :: max_integer_tape_size =10000000
+  integer, parameter :: max_logical_tape_size =10000
+
+  double precision   :: double_tape (max_double_tape_size)
+  integer            :: integer_tape(max_integer_tape_size)
+  logical            :: logical_tape(max_logical_tape_size)
+
+  integer double_tape_pointer, &
+&         integer_tape_pointer, &
+&         logical_tape_pointer
 
   interface tape_init
     module procedure init
@@ -75,8 +82,9 @@ module OpenAD_tape
 contains
 
   subroutine init
-    double_tape_pointer=1
-    integer_tape_pointer=1
+    double_tape_pointer  = 1
+    integer_tape_pointer = 1
+    logical_tape_pointer = 1
   end subroutine init
 
   subroutine dump
@@ -88,6 +96,10 @@ contains
     print*, "integer tape"
     do i=1,integer_tape_pointer-1
       print*, integer_tape(i)
+    enddo
+    print*, "logical tape"
+    do i=1,logical_tape_pointer-1
+      print*, logical_tape(i)
     enddo
   end subroutine dump
 
