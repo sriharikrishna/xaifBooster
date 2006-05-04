@@ -57,13 +57,15 @@
 #include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
+#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
 
 namespace xaifBooster { 
 
   /**
    * representation for an Assignment 
    */
-  class Assignment : public BasicBlockElement {
+  class Assignment : public BasicBlockElement,
+		     public ObjectWithLineNumber {
   public:
     
     /** 

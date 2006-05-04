@@ -55,6 +55,7 @@
 
 #include "xaifBooster/system/inc/Condition.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
 
 namespace xaifBooster { 
 
@@ -62,7 +63,8 @@ namespace xaifBooster {
    * this class describes 
    * a loop with a post condition 
    */
-  class PostLoop : public ControlFlowGraphVertex {
+  class PostLoop : public ControlFlowGraphVertex,
+		   public ObjectWithLineNumber {
   public:
 
     PostLoop (){};
