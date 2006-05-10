@@ -53,8 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
@@ -62,8 +61,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
    * the singleton class for 
    * setting algorithm factory pointers
    */
-  class AlgFactoryManager : public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager,
-			    public xaifBoosterControlFlowReversal::AlgFactoryManager { 
+  class AlgFactoryManager : public xaifBoosterAddressArithmetic::AlgFactoryManager { 
 
   public: 
 

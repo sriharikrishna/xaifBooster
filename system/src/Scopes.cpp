@@ -153,11 +153,6 @@ namespace xaifBooster {
     return *(beginIt);
   } 
 
-  bool Scopes::isSameSymbol(const SymbolReference& first,
-			    const SymbolReference& second) const { 
-    return (( &(first.getScope())==&(second.getScope()) && &(first.getSymbol())==&(second.getSymbol())) ? true : false );
-  } 
-
   Scopes::PathRelation_E Scopes::onScopePath(const Symbol& firstSymbol,
 					     const Symbol& secondSymbol) const { 
     const Scope& theGlobalScope(getGlobalScope());
