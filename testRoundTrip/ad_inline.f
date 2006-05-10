@@ -97,6 +97,29 @@ C $OpenAD$ END DECLS
         end subroutine
 
 
+
+        subroutine push_b(x)
+C $OpenAD$ INLINE DECLS
+          use OpenAD_tape
+          implicit none
+          logical :: x
+C $OpenAD$ END DECLS
+          logical_tape(logical_tape_pointer)=x
+          logical_tape_pointer=logical_tape_pointer+1
+        end subroutine 
+
+
+        subroutine pop_b(x)
+C $OpenAD$ INLINE DECLS
+          use OpenAD_tape
+          implicit none
+          logical :: x
+C $OpenAD$ END DECLS
+          logical_tape_pointer=logical_tape_pointer-1
+          x=logical_tape(logical_tape_pointer)
+        end subroutine
+
+
         subroutine saxpy(a,x,y)
 C $OpenAD$ INLINE DECLS
           double precision, intent(in) :: a

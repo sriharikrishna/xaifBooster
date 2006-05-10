@@ -69,7 +69,7 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
-    xaifBoosterControlFlowReversal::CallGraphVertexAlg(theContaining), 
+    xaifBoosterAddressArithmetic::CallGraphVertexAlg(theContaining), 
     myReplacementList_p(0),
     myCFGStoreArguments_p(0),
     myCFGStoreResults_p(0),
