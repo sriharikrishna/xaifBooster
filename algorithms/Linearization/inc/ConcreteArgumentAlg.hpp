@@ -88,6 +88,18 @@ namespace xaifBoosterLinearization {
 
     ConcreteArgument& getReplacement();
 
+    bool hasPriorConversionConcreteArgument() const;
+
+    ConcreteArgument& getPriorConversionConcreteArgument();
+
+    void setPriorConversionConcreteArgument(ConcreteArgument& aConcreteArgument);
+
+    bool hasPostConversionConcreteArgument() const;
+
+    ConcreteArgument& getPostConversionConcreteArgument();
+
+    void setPostConversionConcreteArgument(ConcreteArgument& aConcreteArgument);
+
   private: 
 
     /** 
@@ -110,6 +122,20 @@ namespace xaifBoosterLinearization {
      */
     ConcreteArgument* myReplacement_p;
 
+    /** 
+     * a reference to the old argument used in the prior conversion
+     * we want to keep track of those in case of a later need 
+     * to modify them, e.g. for storing/restoring indices
+     */
+    ConcreteArgument* myPriorConversionConcreteArgument_p;
+
+    /** 
+     * a reference to the old argument used in the post conversion
+     * we want to keep track of those in case of a later need 
+     * to modify them, e.g. for storing/restoring indices
+     */
+    ConcreteArgument* myPostConversionConcreteArgument_p;
+    
   }; // end of class ConcreteArgumentAlg
  
 } 

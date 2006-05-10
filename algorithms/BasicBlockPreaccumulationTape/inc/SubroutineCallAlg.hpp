@@ -106,14 +106,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     SubroutineCallAlg operator=(const SubroutineCallAlg&);
 
     /** 
-     * for anonymous reversals we need to first assign 
-     * any array indices occuring in formal arguments
-     * to temporaries in case they get overwritten during 
-     * the call
-     */
-    PlainBasicBlock::BasicBlockElementList myPriorToCallIndexAssignments;
-
-    /** 
      * for anonymous reversals we need to store 
      * any array indices occuring in formal arguments,
      * we had first assigned them and now after the call 
@@ -126,7 +118,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      * inserts inlined stores for index values
      */
     void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
-				  Scope& theBasicBlockScope);
+				  Scope& theBasicBlockScope,
+				  PlainBasicBlock::BasicBlockElementList::iterator& indexAssignmentListI);
     
   }; // end of class SubroutineCallAlg
  

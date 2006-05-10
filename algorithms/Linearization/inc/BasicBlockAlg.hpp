@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALGFACTORY_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALGFACTORY_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_BASICBLOCKALG_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_BASICBLOCKALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,9 +53,59 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
+#include <list>
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBoosterLinearization::BasicBlockAlgFactory,xaifBoosterBasicBlockPreaccumulation)
+#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
 
+using namespace xaifBooster;
+
+namespace xaifBoosterLinearization {  
+
+  /** 
+   * class to pass down scope information
+   */
+  class BasicBlockAlg : virtual public BasicBlockAlgBase {
+  public:
+    
+    BasicBlockAlg(BasicBlock& theContaining);
+
+    virtual ~BasicBlockAlg();
+
+    virtual void printXMLHierarchy(std::ostream& os) const;
+
+    virtual std::string debug() const ;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    /**
+     * pass down scope information
+     */
+    virtual void algorithm_action_1();
+
+    /**
+     * access container
+     */
+    const BasicBlock& getContaining() const;
+    
+  private:
+
+    /** 
+     * no def
+     */
+    BasicBlockAlg();
+
+    /** 
+     * no def
+     */
+    BasicBlockAlg(const BasicBlockAlg&);
+
+    /** 
+     * no def
+     */
+    BasicBlockAlg operator=(const BasicBlockAlg&);
+   
+  };
+ 
+} // end of namespace xaifBoosterAngelInterfaceAlgorithms
+                                                                     
 #endif
