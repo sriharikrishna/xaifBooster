@@ -63,7 +63,9 @@ namespace xaifBoosterLinearization {
 
   ConcreteArgumentAlg::ConcreteArgumentAlg(const ConcreteArgument& theContainingConcreteArgument) : 
     ConcreteArgumentAlgBase(theContainingConcreteArgument),
-    myReplacement_p(0) { 
+    myReplacement_p(0),
+    myPriorConversionConcreteArgument_p(0),
+    myPostConversionConcreteArgument_p(0) { 
   }
 
   ConcreteArgumentAlg::~ConcreteArgumentAlg() { 
@@ -104,6 +106,38 @@ namespace xaifBoosterLinearization {
     if(!myReplacement_p)
       THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::getReplacement : has no replacement");
     return *myReplacement_p;
+  } 
+
+  bool ConcreteArgumentAlg::hasPriorConversionConcreteArgument() const { 
+    return (myPriorConversionConcreteArgument_p)?true:false;
+  } 
+
+  ConcreteArgument& ConcreteArgumentAlg::getPriorConversionConcreteArgument() { 
+    if(!myPriorConversionConcreteArgument_p)
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::getPriorConversionConcreteArgument:  nothing there ");
+    return *myPriorConversionConcreteArgument_p;
+  } 
+
+  void ConcreteArgumentAlg::setPriorConversionConcreteArgument(ConcreteArgument& aConcreteArgument) { 
+    if(myPriorConversionConcreteArgument_p)
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::setPriorConversionConcreteArgument: already set");
+    myPriorConversionConcreteArgument_p=&aConcreteArgument;
+  } 
+  
+  bool ConcreteArgumentAlg::hasPostConversionConcreteArgument() const { 
+    return (myPostConversionConcreteArgument_p)?true:false;
+  } 
+
+  ConcreteArgument& ConcreteArgumentAlg::getPostConversionConcreteArgument() { 
+    if(!myPostConversionConcreteArgument_p)
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::getPostConversionConcreteArgument:  nothing there ");
+    return *myPostConversionConcreteArgument_p;
+  } 
+
+  void ConcreteArgumentAlg::setPostConversionConcreteArgument(ConcreteArgument& aConcreteArgument) { 
+    if(myPostConversionConcreteArgument_p)
+      THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::setPostConversionConcreteArgument: already set");
+    myPostConversionConcreteArgument_p=&aConcreteArgument;
   } 
   
 } // end of namespace 

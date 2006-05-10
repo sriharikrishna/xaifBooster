@@ -55,6 +55,7 @@
 #include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ArgumentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ConstantAlgFactory.hpp"
@@ -92,6 +93,7 @@ namespace xaifBoosterLinearization {
   void AlgFactoryManager::resets() {
     resetArgumentAlgFactory(new ArgumentAlgFactory());
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
+    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
     resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
     resetConstantAlgFactory(new ConstantAlgFactory());

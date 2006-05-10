@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALGFACTORY_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALGFACTORY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,10 +50,15 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include "xaifBooster/utils/inc/SingletonParameterPerThread.hpp"
+#include "xaifBooster/utils/inc/TemplateImpl/SingletonParameterPerThread.cpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlg.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBoosterLinearization::BasicBlockAlgFactory,xaifBoosterBasicBlockPreaccumulation)
+using namespace xaifBooster;
 
-#endif
+namespace xaifBoosterLinearization {  
+
+  template class SingletonParameterPerThread<BasicBlockAlg>;
+
+} // end of namespace 

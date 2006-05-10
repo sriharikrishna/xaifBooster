@@ -182,8 +182,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end of BasicBlockAlg::debug
 
 
-  BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
-    BasicBlockAlgBase(theContaining) { 
+  BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
+    xaifBooster::BasicBlockAlgBase(theContaining),
+    xaifBoosterLinearization::BasicBlockAlg(theContaining) { 
   }
 
   BasicBlockAlg::~BasicBlockAlg() {

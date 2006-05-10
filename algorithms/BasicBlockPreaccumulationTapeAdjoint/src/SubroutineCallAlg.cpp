@@ -92,7 +92,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	(*aBasicBlockElementListI)->printXMLHierarchy(os);
       } 
     }
-    xaifBoosterLinearization::SubroutineCallAlg::printXMLHierarchy(os);
+    // only print the adjustments (not the assignments)
+    xaifBoosterLinearization::SubroutineCallAlg::printXMLHierarchyImplWithAdjustments(os);
   } // end of BasicBlockAlg::printXMLHierarchy
 
   std::string 
@@ -181,71 +182,102 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     }
     if (!needReplacements)
       return;
-    // we start out with making an identical copy
     // get the algorithm instance
     xaifBoosterLinearization::ConcreteArgumentAlg& 
       theConcreteArgumentAlg(dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
-    // and check if we have a transformation conflict:
-    if (theConcreteArgumentAlg.hasReplacement()) { 
-      // if we have a conversion for this, i.e. the concrete argument has a replacement in 
-      // its algorithm object then stop here. If we have a case like this, 
-      // things get a lot more complicated
-      // because while we still have to potentially store the same indices 
-      // we have to restore the indices for the call to the conversion routine and not for  
-      // this subroutine call since it has already been replaced.
-      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: in "
-				 << debug().c_str()
-				 << " cannot handle concrete arguments with array indices "
-				 << theConcreteArgument.debug().c_str()
-				 << " that also have conversion routines for type mismatches involved."); 
+    // three different potential replacement spots:
+    ArrayAccess::IndexListType 
+      *theArgumentReplacementIndexListP=0, *thePriorReplacementIndexListP=0, *thePostReplacementIndexListP=0;
+    ArrayAccess::IndexListType::reverse_iterator theArgumentReplacementIndexListI,thePriorReplacementIndexListI,thePostReplacementIndexListI;
+    if (!theConcreteArgumentAlg.hasReplacement()) { 
+      // it already may have a replacement in case we got an activity mismatch
+      // make the identical copy
+      theConcreteArgumentAlg.makeReplacement(theConcreteArgument.getArgument().getVariable());
+      theArgumentReplacementIndexListP=&(theConcreteArgumentAlg.getReplacement().getArgument().getVariable().getArrayAccess().getIndexList());
+      theArgumentReplacementIndexListI=theArgumentReplacementIndexListP->rbegin();
+    } else { 
+      if (theConcreteArgumentAlg.hasPriorConversionConcreteArgument()) { 
+	thePriorReplacementIndexListP=&(theConcreteArgumentAlg.getPriorConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexList());
+	thePriorReplacementIndexListI=thePriorReplacementIndexListP->rbegin();
+      }
+      if (theConcreteArgumentAlg.hasPostConversionConcreteArgument()) { 
+	thePostReplacementIndexListP=&(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexList());
+	thePostReplacementIndexListI=thePostReplacementIndexListP->rbegin();
+      }	
     }
-    // make the copy
-    theConcreteArgumentAlg.makeReplacement(theConcreteArgument.getArgument().getVariable());
-    // get the replacement that is now an identical copy:
-    ConcreteArgument& theReplacementConcreteArgument(theConcreteArgumentAlg.getReplacement());
-    ArrayAccess::IndexListType& theReplacementIndexList(theReplacementConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexList());
-    ArrayAccess::IndexListType::reverse_iterator theReplacementIndexListI=theReplacementIndexList.rbegin() ;
-    // reverse iterate in parallel through the original and replacement index list 
+    // reverse iterate in parallel through the original and replacement index lists 
     for (ArrayAccess::IndexListType::const_reverse_iterator anIndexListTypeCI=theIndexList.rbegin();
 	 anIndexListTypeCI!=theIndexList.rend();
-	 ++anIndexListTypeCI, ++theReplacementIndexListI) { 
+	 ++anIndexListTypeCI) { 
       const Expression& theIndexExpression(**anIndexListTypeCI);
       if (theIndexExpression.numVertices()==1
 	  && 
 	  !(*(theIndexExpression.vertices().first)).isArgument()) { 
 	// do nothing
-	continue;
       }
-      // it is a variable or expression whose value we pushed and now want to pop
-      // and replace. First clear the old index expression that we copied into theReplacementConcreteArgument
-      (*theReplacementIndexListI)->clear();
-      // pop the index value  we had taped
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* thePopCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i"));
-      myPops.push_back(thePopCall_p);
-      thePopCall_p->setId("inline_pop_i");
-      Variable& theInlineVariable(thePopCall_p->addConcreteArgument(1).getArgument().getVariable());
-      // give it a name etc.
-      // create a new symbol and add a new VariableSymbolReference in the Variable
-      VariableSymbolReference* theInlineVariableSymbolReference_p=
-	new VariableSymbolReference(theBasicBlockScope.getSymbolTable().
-				    addUniqueAuxSymbol(SymbolKind::VARIABLE,
-						       SymbolType::INTEGER_STYPE,
-						       SymbolShape::SCALAR,
-						       false),
-				    theBasicBlockScope);
-      theInlineVariableSymbolReference_p->setId("1");
-      theInlineVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::handleArrayAccessIndices");
-      // pass it on to the variable and relinquish ownership
-      theInlineVariable.supplyAndAddVertexInstance(*theInlineVariableSymbolReference_p);
-      theInlineVariable.getAliasMapKey().setTemporary();
-      theInlineVariable.getDuUdMapKey().setTemporary();
-      // create a copy of the variable in the indexExpression: 
-      Argument& theIndexArgument(*new Argument);
-      // relinquish ownership and it to the index expression
-      // that we had previously cleared (see above)
-      (*theReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
-      theIndexArgument.setId(1);
-      theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
+      else { 
+	// it is a variable or expression whose value we pushed and now want to pop
+	// and replace. First clear the old index expressions where needed
+	if (theArgumentReplacementIndexListP)
+	  (*theArgumentReplacementIndexListI)->clear();
+	if (thePriorReplacementIndexListP)
+	  (*thePriorReplacementIndexListI)->clear();
+	if (thePostReplacementIndexListP)
+	  (*thePostReplacementIndexListI)->clear();
+	// pop the index value  we had taped
+	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* thePopCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i"));
+	myPops.push_back(thePopCall_p);
+	thePopCall_p->setId("inline_pop_i");
+	Variable& theInlineVariable(thePopCall_p->addConcreteArgument(1).getArgument().getVariable());
+	// give it a name etc.
+	// create a new symbol and add a new VariableSymbolReference in the Variable
+	VariableSymbolReference* theInlineVariableSymbolReference_p=
+	  new VariableSymbolReference(theBasicBlockScope.getSymbolTable().
+				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							 SymbolType::INTEGER_STYPE,
+							 SymbolShape::SCALAR,
+							 false),
+				      theBasicBlockScope);
+	theInlineVariableSymbolReference_p->setId("1");
+	theInlineVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::handleArrayAccessIndices");
+	// pass it on to the variable and relinquish ownership
+	theInlineVariable.supplyAndAddVertexInstance(*theInlineVariableSymbolReference_p);
+	theInlineVariable.getAliasMapKey().setTemporary();
+	theInlineVariable.getDuUdMapKey().setTemporary();
+	// create a copy of the variable in the indexExpression where needed
+	if (theArgumentReplacementIndexListP) {
+	  Argument& theIndexArgument(*new Argument);
+	  // relinquish ownership and it to the index expression
+	  // that we had previously cleared (see above)
+	  (*theArgumentReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
+	  theIndexArgument.setId(1);
+	  theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
+	}
+	if (thePriorReplacementIndexListP) {
+	  Argument& theIndexArgument(*new Argument);
+	  // relinquish ownership and it to the index expression
+	  // that we had previously cleared (see above)
+	  (*thePriorReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
+	  theIndexArgument.setId(1);
+	  theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
+	}
+	if (thePostReplacementIndexListP) {
+	  Argument& theIndexArgument(*new Argument);
+	  // relinquish ownership and it to the index expression
+	  // that we had previously cleared (see above)
+	  (*thePostReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
+	  theIndexArgument.setId(1);
+	  theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
+	}
+      }
+      // advance the other iterators as needed
+      if (theArgumentReplacementIndexListP)
+	++theArgumentReplacementIndexListI;
+      if (thePriorReplacementIndexListP)
+	++thePriorReplacementIndexListI;
+      if (thePostReplacementIndexListP)
+	++thePostReplacementIndexListI;
     } // end for iteration through indices
   } // end of SubroutineCallAlg::handleArrayAccessIndices
+
 } // end of namespace 

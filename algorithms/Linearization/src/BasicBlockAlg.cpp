@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALGFACTORY_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALGFACTORY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,10 +50,70 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <sstream>
 
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBoosterLinearization::BasicBlockAlgFactory,xaifBoosterBasicBlockPreaccumulation)
+#include "xaifBooster/system/inc/BasicBlock.hpp"
 
-#endif
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
+
+using namespace xaifBooster;
+
+namespace xaifBoosterLinearization { 
+
+  BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
+    BasicBlockAlgBase(theContaining) { 
+  }
+
+  BasicBlockAlg::~BasicBlockAlg() {
+  } // end of BasicBlockAlg::~BasicBlockAlg()
+
+  void
+  BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
+    getContaining().printXMLHierarchyImpl(os);
+  }
+
+  std::string BasicBlockAlg::debug () const { 
+    std::ostringstream out;
+    out << "xaifBoosterLinearization::BasicBlockAlg[" << this
+	<< ",myContaining="
+	<< getContaining().debug().c_str();
+    out << "]" << std::ends;  
+    return out.str();
+  } // end of BasicBlockAlg::debug
+
+  void
+  BasicBlockAlg::algorithm_action_1() {
+    static unsigned int recursionGuard=0;
+    try { 
+      recursionGuard++;
+      if (recursionGuard>1)
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_1: recursive invocation not allowed");
+      DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorithm_action_1(set parameter)");
+      
+      // the BasicBlock instance will be used in SubroutineCallAlg::algorithm_action_1:
+      // because of virtual function use on the system structural level we cannot 
+      // invoke directly and need to rely on GenericTraverseInvoke
+      // In order to pass parameters through BasicBlockParameter
+      // we have to make sure that this method is never invoked recursively
+      BasicBlockAlgParameter::set(*this);	
+    } 
+    catch (...) { 
+      recursionGuard--;
+      throw;
+    }
+    recursionGuard--;
+  }
+
+  void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+  } 
+
+  const BasicBlock&
+  BasicBlockAlg::getContaining() const {
+    return dynamic_cast<const BasicBlock&>(myContaining);
+  }
+  
+} // end of namespace xaifBoosterAngelInterfaceAlgorithms 

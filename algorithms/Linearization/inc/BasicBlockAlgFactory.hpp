@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALGFACTORY_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICBLOCKALGFACTORY_INCLUDE_
+#ifndef _XAIFBOOSTERLINEARIZATION_BASICBLOCKALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERLINEARIZATION_BASICBLOCKALGFACTORY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,9 +53,11 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBoosterLinearization::BasicBlockAlgFactory,xaifBoosterBasicBlockPreaccumulation)
+
+  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBooster::BasicBlockAlgFactory,xaifBoosterLinearization)
+
 
 #endif

@@ -59,6 +59,8 @@
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
 #include "xaifBooster/system/inc/ArgumentList.hpp"
+#include "xaifBooster/system/inc/ArrayAccess.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
@@ -67,6 +69,7 @@
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/MissingSubroutinesReport.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
@@ -79,7 +82,30 @@ namespace xaifBoosterLinearization {
     SubroutineCallAlgBase(theContainingSubroutineCall) { 
   }
 
+  SubroutineCallAlg::~SubroutineCallAlg() { 
+    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI=
+	   myPriorToCallIndexAssignments.begin();
+	 aBasicBlockElementListI!=myPriorToCallIndexAssignments.end();
+	 ++aBasicBlockElementListI) {
+      if (*aBasicBlockElementListI)
+	delete *aBasicBlockElementListI;
+    }
+  }
+
   void SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
+    // assignments prior to the call
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI
+	   =myPriorToCallIndexAssignments.begin();
+	 aBasicBlockElementListI!=myPriorToCallIndexAssignments.end();
+	 ++aBasicBlockElementListI) {
+      if (*aBasicBlockElementListI) { 
+	(*aBasicBlockElementListI)->printXMLHierarchy(os);
+      } 
+    }
+    printXMLHierarchyImplWithAdjustments(os);
+  }
+
+  void SubroutineCallAlg::printXMLHierarchyImplWithAdjustments(std::ostream& os) const { 
     for (PlainBasicBlock::BasicBlockElementList::const_iterator priorI=myPriorAdjustmentsList.begin();
 	 priorI!=myPriorAdjustmentsList.end();
 	 ++priorI) { 
@@ -201,7 +227,6 @@ namespace xaifBoosterLinearization {
       }// end for iterating through all concrete arguments 
     } // end for iterating through the list if hand written wrappers 
   } 
-
 
   void SubroutineCallAlg::handleExternalCall() { 
     // get the symbol's algorithm object
@@ -342,7 +367,9 @@ namespace xaifBoosterLinearization {
 		   false);
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
-    dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()).makeReplacement(theTempVar);
+    ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
+    theConcreteArgumentAlg.makeReplacement(theTempVar);
+    theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
     if (theConcreteArgument.isArgument()) { // no point in copying a constant back.
       // post call:
       aSubroutineName=giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
@@ -352,10 +379,17 @@ namespace xaifBoosterLinearization {
 	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
       myPostAdjustmentsList.push_back(thePostCall_p);
       thePostCall_p->setId("SubroutineCallAlg::addConversion post");
-      Variable& theInlineVariablePostRes(thePostCall_p->addConcreteArgument(1).getArgument().getVariable());
+      ConcreteArgument& theFirstPostConcreteArg(thePostCall_p->addConcreteArgument(1));
+      theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
+      Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
       theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes);
       Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
+      if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
+	handleArrayAccessIndices(theConcreteArgument,
+				 // the following parameter was set in BasicBlockAlg::algorithm_action_1()
+				 BasicBlockAlgParameter::get().getContaining().getScope());
+      }
     }
   } 
   
@@ -381,7 +415,9 @@ namespace xaifBoosterLinearization {
 		   true);
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
-    dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()).makeReplacement(theTempVar);
+    ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
+    theConcreteArgumentAlg.makeReplacement(theTempVar);
+    theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
     if (theConcreteArgument.isArgument()) { // no point in copying a constant back.
       // post call:
       aSubroutineName=giveCallName(true, // the concrete parameter is implied to be active
@@ -391,10 +427,17 @@ namespace xaifBoosterLinearization {
 	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
       myPostAdjustmentsList.push_back(thePostCall_p);
       thePostCall_p->setId("SubroutineCallAlg::addConversion post");
-      Variable& theInlineVariablePostRes(thePostCall_p->addConcreteArgument(1).getArgument().getVariable());
+      ConcreteArgument& theFirstPostConcreteArg(thePostCall_p->addConcreteArgument(1));
+      theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
+      Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
       theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes);
       Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
+      if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
+	handleArrayAccessIndices(theConcreteArgument,
+				 // the following parameter was set in BasicBlockAlg::algorithm_action_1()
+				 BasicBlockAlgParameter::get().getContaining().getScope());
+      }
     }
   } 
   
@@ -450,5 +493,74 @@ namespace xaifBoosterLinearization {
       startPosition=endPosition;
     } 
   }
+
+  void SubroutineCallAlg::handleArrayAccessIndices(const ConcreteArgument& theConcreteArgument,
+						   Scope& theBasicBlockScope) { 
+    // get the argument algorithm instance 
+    ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.
+										   getConcreteArgumentAlgBase()));
+    // one potential extra replacement spot:
+    ArrayAccess::IndexListType *thePostReplacementIndexListP=0;
+    ArrayAccess::IndexListType::iterator thePostReplacementIndexListI;
+    if (theConcreteArgumentAlg.hasPostConversionConcreteArgument()) { 
+      thePostReplacementIndexListP=&(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexList());
+      thePostReplacementIndexListI=thePostReplacementIndexListP->begin();
+    }
+    const ArrayAccess::IndexListType& theIndexList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexList());
+    for (ArrayAccess::IndexListType::const_iterator anIndexListTypeCI=theIndexList.begin();
+	 anIndexListTypeCI!=theIndexList.end();
+	 ++anIndexListTypeCI) { 
+      // now we have two cases, essentially the expression is a single vertex with a constant 
+      // (this discounts constant expressions, this is a todo which might be dealt with later or 
+      // it may be completelt superceded by a TBR analysis)
+      const Expression& theIndexExpression(**anIndexListTypeCI);
+      if (theIndexExpression.numVertices()==1
+	  && 
+	  (!(*(theIndexExpression.vertices().first)).isArgument())) { 
+	// this must be a constant
+	// do nothing
+      }
+      else {  // is not a constant
+	// clear out the old index expression
+	if (thePostReplacementIndexListP)
+	  (*thePostReplacementIndexListI)->clear();
+	// make an assignment 
+	// because we cannot be sure that whatever variables 
+	// are involved in the index expression remain unchanged during this call
+	// and we also do not allow expressions as arguments in general
+	Assignment* theIndexExpressionAssignment_p(new Assignment(false));
+	// save it in the list
+	myPriorToCallIndexAssignments.push_back(theIndexExpressionAssignment_p);
+	theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
+	// create a new symbol and add a new VariableSymbolReference in the Variable
+	VariableSymbolReference* theNewVariableSymbolReference_p=
+	  new VariableSymbolReference(theBasicBlockScope.getSymbolTable().
+				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							 SymbolType::INTEGER_STYPE,
+							 SymbolShape::SCALAR,
+							 false),
+				      theBasicBlockScope);
+	theNewVariableSymbolReference_p->setId("1");
+	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices");
+	// pass it on to the LHS and relinquish ownership
+	theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+	theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
+	theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
+	// set the RHS
+	theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
+	if (thePostReplacementIndexListP) {
+	  Argument& theIndexArgument(*new Argument);
+	  // relinquish ownership and it to the index expression
+	  // that we had previously cleared (see above)
+	  (*thePostReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
+	  theIndexArgument.setId(1);
+	  theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theIndexArgument.getVariable());
+	}
+      }  // end else has more then one vertex   
+      // advance the other iterator if needed
+      if (thePostReplacementIndexListP)
+	++thePostReplacementIndexListI;
+    } // end for index
+  } // end of SubroutineCallAlg::handleArrayAccessIndices
 
 } // end of namespace 

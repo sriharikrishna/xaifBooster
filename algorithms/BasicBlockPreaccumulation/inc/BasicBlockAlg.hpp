@@ -55,7 +55,7 @@
 
 #include <list>
 
-#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlg.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 
@@ -79,7 +79,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
    * class to implement algorithms relevant for the 
    * angel interface
    */
-  class BasicBlockAlg : virtual public BasicBlockAlgBase {
+  class BasicBlockAlg : public xaifBoosterLinearization::BasicBlockAlg {
   public:
     
     BasicBlockAlg(BasicBlock& theContaining);

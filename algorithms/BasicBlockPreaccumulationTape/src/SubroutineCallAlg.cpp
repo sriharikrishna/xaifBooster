@@ -76,13 +76,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
     for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI=
-	   myPriorToCallIndexAssignments.begin();
-	 aBasicBlockElementListI!=myPriorToCallIndexAssignments.end();
-	 ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI)
-	delete *aBasicBlockElementListI;
-    }
-    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI=
 	   myAfterCallIndexPushes.begin();
 	 aBasicBlockElementListI!=myAfterCallIndexPushes.end();
 	 ++aBasicBlockElementListI) {
@@ -93,15 +86,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   void
   SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
-    // assignments prior to the call
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI
-	   =myPriorToCallIndexAssignments.begin();
-	 aBasicBlockElementListI!=myPriorToCallIndexAssignments.end();
-	 ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI) { 
-	(*aBasicBlockElementListI)->printXMLHierarchy(os);
-      } 
-    }
     // the call
     xaifBoosterLinearization::SubroutineCallAlg::printXMLHierarchy(os);
     // pushes after the call
@@ -141,6 +125,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       // an InlinableSubroutinecall for each 
       // nonconstant index of an argument that 
       // has array indices
+      PlainBasicBlock::BasicBlockElementList::iterator indexAssignmentListI=myPriorToCallIndexAssignments.begin();
       for (SubroutineCall::ConcreteArgumentPList::const_iterator aConcreteArgumentPListI=
 	     getContainingSubroutineCall().getConcreteArgumentPList().begin();
 	   aConcreteArgumentPListI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
@@ -150,14 +135,26 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	    (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
 	  handleArrayAccessIndices(**aConcreteArgumentPListI,
 				   // the following parameter was set in BasicBlockAlg::algorithm_action_4()
-				   xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::get().getContaining().getScope()); 
+				   xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::get().getContaining().getScope(),
+				   indexAssignmentListI); 
 	}
       } // end for
     } 
   } 
 
   void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
-						   Scope& theBasicBlockScope) { 
+						   Scope& theBasicBlockScope,
+						   PlainBasicBlock::BasicBlockElementList::iterator& indexAssignmentListI) { 
+    // get the argument algorithm instance 
+    xaifBoosterLinearization::ConcreteArgumentAlg& 
+      theConcreteArgumentAlg(dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
+    // one potential extra replacement spots:
+    ArrayAccess::IndexListType *thePostReplacementIndexListP=0;
+    ArrayAccess::IndexListType::iterator thePostReplacementIndexListI;
+    if (theConcreteArgumentAlg.hasPostConversionConcreteArgument()) { 
+      thePostReplacementIndexListP=&(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexList());
+      thePostReplacementIndexListI=thePostReplacementIndexListP->begin();
+    }
     const ArrayAccess::IndexListType& theIndexList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexList());
     for (ArrayAccess::IndexListType::const_iterator anIndexListTypeCI=theIndexList.begin();
 	 anIndexListTypeCI!=theIndexList.end();
@@ -173,52 +170,60 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	// do nothing
       }
       else {  // is not a constant
-	if (dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.
-									 getConcreteArgumentAlgBase()).
-	    hasReplacement()) { 
-	  // if we have a conversion for this, i.e. the concrete argument has a replacement in 
-	  // its algorithm object then stop here. If we have a case like this, 
-	  // things get a lot more complicated
-	  // because while we still have to potentially store the same indices 
-	  // we have to restore the indices for the call to the conversion routine and not for  
-	  // this subroutine call since it has already been replaced.
-	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: in "
-				     << debug().c_str()
-				     << " cannot handle concrete arguments with array indices "
-				     << theConcreteArgument.debug().c_str()
-				     << " that also have conversion routines for type mismatches involved."); 
+	// clear out the old index expression
+	if (thePostReplacementIndexListP)
+	  (*thePostReplacementIndexListI)->clear();
+	xaifBoosterLinearization::ConcreteArgumentAlg& 
+	  theConcreteArgumentAlg(dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.
+											      getConcreteArgumentAlgBase()));
+	Assignment* theIndexExpressionAssignment_p(0);
+	if (!theConcreteArgumentAlg.hasReplacement()) { 
+	  theIndexExpressionAssignment_p=new Assignment(false);
+	  // save it in the list
+	  myPriorToCallIndexAssignments.push_back(theIndexExpressionAssignment_p);
+	  theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
+	  // create a new symbol and add a new VariableSymbolReference in the Variable
+	  VariableSymbolReference* theNewVariableSymbolReference_p=
+	    new VariableSymbolReference(theBasicBlockScope.getSymbolTable().
+					addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							   SymbolType::INTEGER_STYPE,
+							   SymbolShape::SCALAR,
+							   false),
+					theBasicBlockScope);
+	  theNewVariableSymbolReference_p->setId("1");
+	  theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices");
+	  // pass it on to the LHS and relinquish ownership
+	  theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+	  theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
+	  theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
+	  // set the RHS
+	  theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
 	}
-	// make an assignment 
-	// because we cannot be sure that whatever variables 
-	// are involved in the index expression remain unchanged during this call
-	// and we also do not allow expressions as arguments in general
-	Assignment* theIndexExpressionAssignment_p(new Assignment(false));
-	// save it in the list
-	myPriorToCallIndexAssignments.push_back(theIndexExpressionAssignment_p);
-	theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
-	// create a new symbol and add a new VariableSymbolReference in the Variable
-	VariableSymbolReference* theNewVariableSymbolReference_p=
-	  new VariableSymbolReference(theBasicBlockScope.getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::INTEGER_STYPE,
-							 SymbolShape::SCALAR,
-							 false),
-				      theBasicBlockScope);
-	theNewVariableSymbolReference_p->setId("1");
-	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices");
-	// pass it on to the LHS and relinquish ownership
-	theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-	theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
-	theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
-	// set the RHS
-	theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
+	else { 
+	  // get it from the list we already have
+	  theIndexExpressionAssignment_p=dynamic_cast<Assignment*>(*indexAssignmentListI);
+	  // advance in the list 
+	  ++indexAssignmentListI;
+	}
 	// make the subroutine call: 
 	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
 	// save it in the list
 	myAfterCallIndexPushes.push_back(theSubroutineCall_p);
 	theSubroutineCall_p->setId("inline_push_i");
-	theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+	const Variable& theIndexAssignmentLHS(theIndexExpressionAssignment_p->getLHS());
+	theIndexAssignmentLHS.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+	if (thePostReplacementIndexListP) {
+	  Argument& theIndexArgument(*new Argument);
+	  // relinquish ownership and it to the index expression
+	  // that we had previously cleared (see above)
+	  (*thePostReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
+	  theIndexArgument.setId(1);
+	  theIndexAssignmentLHS.copyMyselfInto(theIndexArgument.getVariable());
+	}
       }  // end else has more then one vertex   
+      // advance the other iterator if needed
+      if (thePostReplacementIndexListP)
+	++thePostReplacementIndexListI;
     } // end for index
   } // end of SubroutineCallAlg::handleArrayAccessIndices
   

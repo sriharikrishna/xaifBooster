@@ -85,11 +85,13 @@ namespace xaifBoosterLinearization {
     
     SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall);
 
-    virtual ~SubroutineCallAlg(){};
+    virtual ~SubroutineCallAlg();
 
     virtual void printXMLHierarchy(std::ostream& os) const;
 
     void printXMLHierarchyImpl(std::ostream& os) const;
+
+    void printXMLHierarchyImplWithAdjustments(std::ostream& os) const;
 
     virtual std::string debug() const ;
 
@@ -105,6 +107,16 @@ namespace xaifBoosterLinearization {
     virtual void algorithm_action_1();
 
     static void addWrapperNames(const std::string& theSpaceSeparatedNames);
+
+  protected:
+    
+    /** 
+     * for conversions we need to first assign 
+     * any array indices occuring in formal arguments
+     * to temporaries in case they get overwritten during 
+     * the call
+     */
+    PlainBasicBlock::BasicBlockElementList myPriorToCallIndexAssignments;
 
   private: 
 
@@ -173,6 +185,12 @@ namespace xaifBoosterLinearization {
     void initExternalCall(SymbolAlg& aSymbolAlg);
 
     void handleExternalCall();
+
+    /** 
+     * inserts assignments for index values
+     */
+    void handleArrayAccessIndices(const ConcreteArgument& theConcreteArgument,
+				  Scope& theBasicBlockScope);
 
   }; // end of class SubroutineCallAlg
  
