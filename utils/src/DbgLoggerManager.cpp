@@ -193,7 +193,7 @@ namespace xaifBooster {
 		<< ((aTimeVal.tv_usec<myPreviousMS)?aTimeVal.tv_sec-myPreviousS-1:aTimeVal.tv_sec-myPreviousS)
 		<< "."
 		<< std::setw(6)
-		<< ((aTimeVal.tv_usec<myPreviousMS)?myPreviousMS-aTimeVal.tv_usec:aTimeVal.tv_usec-myPreviousMS)
+		<< ((aTimeVal.tv_usec<myPreviousMS)?1000000-(myPreviousMS-aTimeVal.tv_usec):aTimeVal.tv_usec-myPreviousMS)
 		<< ":"; 
 	myPreviousS=aTimeVal.tv_sec;
 	myPreviousMS=aTimeVal.tv_usec;
