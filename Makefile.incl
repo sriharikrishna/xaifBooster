@@ -101,6 +101,9 @@ endif
 ifeq ($(PLATFORM),i686-Linux)
 include $(XAIFBOOSTERROOT)/$(ROOTDIR)/Makefile.incl.$(PLATFORM)
 endif
+ifeq ($(PLATFORM),x86-Linux)
+include $(XAIFBOOSTERROOT)/$(ROOTDIR)/Makefile.incl.i686-Linux
+endif
 ifeq ($(PLATFORM),sparc-SunOS)
 include $(XAIFBOOSTERROOT)/$(ROOTDIR)/Makefile.incl.$(PLATFORM)
 endif
