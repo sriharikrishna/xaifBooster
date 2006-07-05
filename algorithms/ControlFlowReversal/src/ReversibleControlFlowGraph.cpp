@@ -526,9 +526,9 @@ namespace xaifBoosterControlFlowReversal {
 	      (*the_mySortedVertices_p_l_it)->setTopExplicitLoopAddressArithmetic(insertBasicBlock(getSourceOf(*(*oeilIt)),
 												   getTargetOf(*(*oeilIt)),
 												   (*(*oeilIt)),
-												   false));
+												   true));
 	      BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>((*the_mySortedVertices_p_l_it)->getTopExplicitLoopAddressArithmetic().getNewVertex()));
-	      theBasicBlock_r.setId(std::string("_aug_AddressArithmetic_")+makeUniqueVertexId());
+	      theBasicBlock_r.setId(std::string("_aug__AddressArithmetic_")+makeUniqueVertexId());
 	      removeAndDeleteEdge(*(*oeilIt));
 	    }  
 	  }
@@ -1168,7 +1168,7 @@ namespace xaifBoosterControlFlowReversal {
 												*(singleInEdge_ieitp.first),
 												false));
 	    BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>((*myOriginalReverseVertexPPairList_cit).second->getTopExplicitLoopAddressArithmetic().getNewVertex()));
-	    theBasicBlock_r.setId(std::string("_adj_AddressArithmetic_")+makeUniqueVertexId());
+	    theBasicBlock_r.setId(std::string("_adj__AddressArithmetic_")+makeUniqueVertexId());
 	    removeAndDeleteEdge(*(singleInEdge_ieitp.first));
 	  }     
 	  // the old ForLoop is the counter part of the ENDLOOP that is the original to this vertex 
