@@ -60,6 +60,7 @@
 #include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
 
@@ -82,8 +83,9 @@ void Usage(char** argv) {
             << "                 space separated list enclosed in double quotes" << std::endl
 	    << "             [-p \"<list of symbols to forcibly passivate>\" " << std::endl
             << "                 space separated list enclosed in double quotes" << std::endl
-	    << "             [-r] " << std::endl
-	    << "                 force renaming of all non-external routines" << std::endl;
+	    << "             [-r] force renaming of all non-external routines" << std::endl
+	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
+	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl;
 } 
 
 int main(int argc,char** argv) { 
@@ -97,7 +99,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwpr",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwpruU",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -120,6 +122,10 @@ int main(int argc,char** argv) {
       Symbol::addSymbolNamesToPassivate(CommandLineParser::instance()->argAsString('p'));
     if (CommandLineParser::instance()->isSet('r')) 
       xaifBoosterLinearization::ControlFlowGraphAlg::setForceNonExternalRenames();
+    if (CommandLineParser::instance()->isSet('u')) 
+      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setUserDecides();
+    if (CommandLineParser::instance()->isSet('U')) 
+      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -129,9 +135,9 @@ int main(int argc,char** argv) {
   try {   
     DBG_MACRO(DbgGroup::TIMING,"before initialization");
     xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->init();
-    DBG_MACRO(DbgGroup::TEMPORARY,
-	      "t.cpp: " 
-	      << xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->debug().c_str());
+//     DBG_MACRO(DbgGroup::TEMPORARY,
+// 	      "t.cpp: " 
+// 	      << xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->debug().c_str());
     if (forceStatementLevel)
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
     if (intentChange)
@@ -163,6 +169,7 @@ int main(int argc,char** argv) {
     DBG_MACRO(DbgGroup::TIMING,"before reversal");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
     DBG_MACRO(DbgGroup::TIMING,"before unparse");
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // fix up the addresses in simple loops
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     if (schemaPath.size())

@@ -54,13 +54,13 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/system/inc/BasicBlock.hpp"
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 
 
   DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,
-				 xaifBoosterControlFlowReversal::BasicBlockAlgFactory,
+				 xaifBoosterAddressArithmetic::BasicBlockAlgFactory,
 				 xaifBoosterBasicBlockPreaccumulationReverse)
 
 
