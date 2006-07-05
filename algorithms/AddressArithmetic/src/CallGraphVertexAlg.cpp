@@ -229,12 +229,12 @@ namespace xaifBoosterAddressArithmetic {
       std::string variableNameStripped(variableName,0,variableName.find_last_of('_'));
       std::cout << "Explicit loop reversal for top level loop line "
 		<< aTopLevelForLoopLineNumber
-		<< "push/pop non-loop variable "
+		<< " push/pop non-loop variable "
 		<< variableNameStripped.c_str()
 		<< std::endl;
       bool done=true;
       do { 
-	std::cout << "Select (p)ush this instance, (P)ush all instances, (i)gnore this Instance, (I)gnore all instance: ? ";
+	std::cout << "Select (p)ush this instance, (P)ush all instances, (i)gnore this Instance, (I)gnore all instances: ? ";
 	char answer;
 	std::cin >> answer;
 	switch (answer) { 
