@@ -71,6 +71,7 @@ include ../../../Makefile.incl
 # pick up all algorith specific obj files
 ALG_OBJ_SET=  							   \
 $(wildcard ../src/obj/*.o) 					   \
+$(wildcard ../../AddressArithmetic/src/obj/*.o) 		   \
 $(wildcard ../../ControlFlowReversal/src/obj/*.o) 		   \
 $(wildcard ../../BasicBlockPreaccumulationTapeAdjoint/src/obj/*.o) \
 $(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) 	   \

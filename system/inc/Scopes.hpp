@@ -89,9 +89,6 @@ namespace xaifBooster {
 
     Scope& getScopeById(const std::string& theScopeId);
 
-    bool isSameSymbol(const SymbolReference& first,
-		      const SymbolReference& second) const;
-
     enum PathRelation_E{ 
       NO_PATH = 0 ,
       PARENT_CHILD = 1, 

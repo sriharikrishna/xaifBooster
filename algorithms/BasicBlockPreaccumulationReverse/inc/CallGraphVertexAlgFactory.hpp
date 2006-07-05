@@ -53,13 +53,13 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 
 
   DERIVED_ALG_FACTORY_DECL_MACRO(CallGraphVertex,
-				 xaifBoosterControlFlowReversal::CallGraphVertexAlgFactory,
+				 xaifBoosterAddressArithmetic::CallGraphVertexAlgFactory,
 				 xaifBoosterBasicBlockPreaccumulationReverse)
 
 

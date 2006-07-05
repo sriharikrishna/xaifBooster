@@ -72,18 +72,28 @@ fi
 allOkSoFar="true"
 echo $mode $SUB_MODE > .lastRun
 export SUB_MODE
-if [ $# -gt 0 ]
-then
-    TESTFILES=$@
-else
+if [ $# -eq 0 ] 
+then 
+  echo "pick from: "
+  ls examples
+  echo -n "enter one ore more here or 'all': " 
+  read answer
+  if [ "$answer" == "all" ] 
+  then 
     TESTFILES=`ls examples`
+  else 
+    TESTFILES=$answer
+  fi
+else
+  if [ $# -eq 1 -a "$1" == "all" ]
+  then 
+    TESTFILES=`ls examples`
+  else 
+    TESTFILES=$@
+  fi
 fi
 for i in `echo ${TESTFILES}`
 do 
-  if [ ! -f examples/$i/head.f ] 
-  then 
-    continue
-  fi
   if [ "$allOkSoFar" == "false" ] 
   then
     echo -n "QUESTION: There was problem with the last example, kill the script or hit enter to continue with $i ?" 
@@ -151,18 +161,27 @@ do
   then 
     echo "ERROR in: diff tmpOutput/dd.out $exdir/refOutput/dd.out"; allOkSoFar="false"; continue;
   fi
-  if [ -n "$hasDiffAD" -o -n "$hasDiffDD" ] 
+  if [ -n "$hasDiffAD" ] 
   then	 
     echo "diffs current test (<) vs. reference (>) AD:"
     diff tmpOutput/ad.out $exdir/refOutput/ad.out 
-#    echo "diffs current test (<) vs. reference (>) DD:"
-#    diff tmpOutput/dd.out $exdir/refOutput/dd.out 
     if [ -z "$DONT_STOP" ] 
     then
       allOkSoFar="false"; continue;
     fi
   else 
-    echo "no diffs"
+    if [ -n "$hasDiffDD" ] 
+    then	 
+      echo "diffs current test (<) vs. reference (>) DD:"
+      diff tmpOutput/dd.out $exdir/refOutput/dd.out 
+      echo "only differences in DD!"
+      if [ -z "$DONT_STOP" ] 
+      then
+        allOkSoFar="false"; continue;
+      fi
+    else 
+      echo "no diffs"
+    fi
   fi
 done
 

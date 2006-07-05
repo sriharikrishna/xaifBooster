@@ -202,12 +202,15 @@ namespace xaifBooster {
   }
   
   const ControlFlowGraph& CallGraph::getSubroutineBySymbolReference(const SymbolReference& aSymbolReference) const { 
+    typedef std::list<const SymbolReference*> SymbolReferencePList;
+    static SymbolReferencePList undefinedSubroutineList; // for reporting purposes
     CallGraph::ConstVertexIteratorPair p(vertices());
     CallGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
-    for (;beginIt!=endIt ;++beginIt)
-      if(myScopeTree.isSameSymbol((*beginIt).getControlFlowGraph().getSymbolReference(),
-				  aSymbolReference)) 
+    for (;beginIt!=endIt ;++beginIt) { 
+      if ((*beginIt).getControlFlowGraph().getSymbolReference().refersToSameSymbolAs(aSymbolReference)) { 
 	return (*beginIt).getControlFlowGraph();
+      }
+    }
     throw SubroutineNotFoundException(aSymbolReference);
     // to appease the compiler
     return (*beginIt).getControlFlowGraph();
