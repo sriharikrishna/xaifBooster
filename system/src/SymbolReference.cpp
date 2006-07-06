@@ -82,4 +82,11 @@ namespace xaifBooster {
     return out.str();
   } // end of Symbol::debug
 
+  bool SymbolReference::refersToSameSymbolAs(const SymbolReference& anotherSymbolReference) const { 
+    // we must point to the same scope instance and symbol within the scope. 
+    // in practice no Symbol instance is shared between scopes so it 
+    // should be sufficient to test for same symbol instance but anyway....
+    return (&(getScope())==&(anotherSymbolReference.getScope()) && &(getSymbol())==&(anotherSymbolReference.getSymbol()));
+  } 
+
 } // end of namespace xaifBooster 

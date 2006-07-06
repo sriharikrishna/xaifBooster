@@ -1,0 +1,11 @@
+#ifndef _XAIFBOOSTERADDRESSARITHMETIC_CALLGRAPHVERTEXALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERADDRESSARITHMETIC_CALLGRAPHVERTEXALGFACTORY_INCLUDE_
+
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
+
+
+  DERIVED_ALG_FACTORY_DECL_MACRO(CallGraphVertex,xaifBoosterControlFlowReversal::CallGraphVertexAlgFactory,xaifBoosterAddressArithmetic)
+
+
+#endif
