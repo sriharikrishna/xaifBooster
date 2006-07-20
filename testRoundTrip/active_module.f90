@@ -56,7 +56,7 @@
         implicit none
         private
         public :: active, saxpy, sax, setderiv, zero_deriv, convert_p2a_scalar, &
-&convert_a2p_scalar, convert_p2a_vector, convert_a2p_vector
+&convert_a2p_scalar, convert_p2a_vector, convert_a2p_vector, count_mult, count_add
 
         
         !
@@ -72,6 +72,10 @@
           double precision :: d=0.0
           ! double precision :: d
         end type active
+
+        integer :: count_mult = 0
+        integer :: count_add = 0
+        
 
         interface saxpy
           module procedure saxpy_a_a

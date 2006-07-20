@@ -61,6 +61,12 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
+#include "xaifBooster/utils/inc/Counter.hpp" //IK
+#include "xaifBooster/system/inc/PlainBasicBlock.hpp"//IK
+#include "xaifBooster/system/inc/ForLoopReversalType.hpp" //IK
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"//IK
+#include "xaifBooster/system/inc/SubroutineCall.hpp" //IK
+
 
 
 namespace xaifBooster { 
@@ -111,6 +117,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 						     double,
 						     xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
 						     );
+    /**
+     * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
+     */
+    void countOperations(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&, Counter&);
+
 
     static Compute_elimination_sequence_fp ourCompute_elimination_sequence_fp;
     static int ourIntParameter;
@@ -193,6 +204,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static PrivateLinearizedComputationalGraphAlgFactory* ourPrivateLinearizedComputationalGraphAlgFactory_p;
     static PrivateLinearizedComputationalGraphEdgeAlgFactory* ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p;
     static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;//IK
+    PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;//IK
+    
     /** 
      * no def
      */
