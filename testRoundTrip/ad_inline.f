@@ -50,6 +50,28 @@ C
 C This work is partially supported by:
 C 	NSF-ITR grant OCE-0205590
 C ========== end copyright notice ==============
+
+C Counter functions -------------------------------
+
+         subroutine countmult(x)
+C $OpenAD$ INLINE DECLS
+           implicit none
+           integer x
+C $OpenAD$ END DECLS
+           count_mult = count_mult + x
+         end subroutine
+
+         subroutine countadd(x)
+C $OpenAD$ INLINE DECLS
+           implicit none
+           integer x
+C $OpenAD$ END DECLS
+           count_add = count_add + x
+         end subroutine
+
+
+
+
 C taping --------------------------------------------
 
 

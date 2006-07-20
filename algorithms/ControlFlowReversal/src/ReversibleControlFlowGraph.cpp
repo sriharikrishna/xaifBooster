@@ -1445,8 +1445,8 @@ namespace xaifBoosterControlFlowReversal {
 	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: loop reversal count down and <= condition logic goof up");
       break;
     case BooleanOperationType::GREATER_OR_EQUAL_OTYPE: 
-      if (countUp)  
-	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: loop reversal count up and >= condition logic goof up");
+      //if (countUp)  
+//	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: loop reversal count up and >= condition logic goof up");
       break;
     default:
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: don't know what to do with operation "
@@ -1538,10 +1538,29 @@ namespace xaifBoosterControlFlowReversal {
 									 true,
 									 false));
     Intrinsic* theNewUpdateOp_p;
-    if(countUp)
+    const Expression& theOldConditionExpr(theOldForLoop.getCondition().getExpression());
+    const ExpressionVertex& theOldConditionMaxVertex(theOldConditionExpr.getMaxVertex());
+    const BooleanOperation* theOldConditionBooleanOperation_p(dynamic_cast<const BooleanOperation*>(&theOldConditionMaxVertex));
+    switch(theOldConditionBooleanOperation_p->getType())
+    {
+        case BooleanOperationType::LESS_THAN_OTYPE :
+        case BooleanOperationType::LESS_OR_EQUAL_OTYPE :
+                                                                theNewUpdateOp_p=new Intrinsic("sub_scal_scal",false);
+                                                              break;
+        case BooleanOperationType::GREATER_THAN_OTYPE :
+        case BooleanOperationType::GREATER_OR_EQUAL_OTYPE :
+                                                              theNewUpdateOp_p=new Intrinsic("add_scal_scal",false);
+             break;
+        default:
+           THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: don't know what to do with operation "
+                                 << BooleanOperationType::toString(theOldConditionBooleanOperation_p->getType()));
+             break;
+    }
+    
+    /*if(countUp)
       theNewUpdateOp_p=new Intrinsic("sub_scal_scal",false);
     else
-      theNewUpdateOp_p=new Intrinsic("add_scal_scal",false);
+      theNewUpdateOp_p=new Intrinsic("add_scal_scal",false);*/
     theNewUpdateOp_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
     theNewUpdateRHS.supplyAndAddVertexInstance(*theNewUpdateOp_p);
     ExpressionEdge* newEdge_p=new ExpressionEdge(false);
