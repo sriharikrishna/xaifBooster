@@ -600,8 +600,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         {
            best = &alg3Test; //If better store new algorithm results
            min = current;
-        }
-        allFlat = allFlat + min;*/ //add flattened sequences together
+        }*/
+        allFlat = allFlat + min; //add flattened sequences together
         current.reset(); //reset counter just in case
       }
 	
