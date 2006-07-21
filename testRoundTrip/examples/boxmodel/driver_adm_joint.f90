@@ -59,13 +59,17 @@ program boxmodel_adm_driver
   implicit none
 
   integer, parameter :: kdim=3
-  integer i,j
-  double precision :: h=.00001
+  integer i,j,n,m
+  double precision :: h
   double precision tnew_o(kdim), snew_o(kdim)
   double precision jac(2*kdim,2*kdim)
 
 
   external box_model_body
+
+  open(2,action='read',file='params.conf')
+  read(2,'(I5,/,I5,/,F8.1)') n, m, h
+  close(2)
 
   !
   ! DD code

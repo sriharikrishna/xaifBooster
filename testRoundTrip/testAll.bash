@@ -28,6 +28,56 @@ function copyDefaultBeforeExample {
     fi
   fi
 } 
+
+function fileCompare { 
+  fcexampleDir=$1
+  fcfileName=$2
+  fcmode=$3
+  ignoreString=$4
+###    echo "in fileCompare $1 $2 $3 $4"
+  referenceFile=${fcmode}${fcfileName}
+  if [ ! -f $fcexampleDir/refOutput/$referenceFile ] 
+  then 
+    echo -n "$fcexampleDir/refOutput/$referenceFile not available, copy and hg add it? [y]/n "
+    read answer
+    if [ "$answer" == "n" ]
+      then 
+    echo " cannot verify ${fcfileName}"; exit 0;
+    else
+      ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile
+      if [ $? -ne 0 ] 
+        then 
+        echo "ERROR in: ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile"; exit -1;
+      fi
+      hg add $fcexampleDir/refOutput/$referenceFile
+      if [ $? -ne 0 ] 
+        then 
+        echo "ERROR in: hg add $fcexampleDir/refOutput/$referenceFile"; exit -1;
+      fi
+    fi
+  fi
+  hasDiff=$(diff -I "$ignoreString" $fcfileName $fcexampleDir/refOutput/$referenceFile)
+  if [ $? -eq 2 ] 
+    then 
+    echo "ERROR in: $(diff -I "$ignoreString" $fcfileName $fcexampleDir/refOutput/$referenceFile)"; exit -1;
+  fi
+  if [ -n "$hasDiffAD" ] 
+    then 
+    echo  "Transformation difference in $fcfileName:"
+    diff -I $ignoreString $fcfileName $fcexampleDir/refOutput/$referenceFile
+    echo  "accept/copy new $fcfileName to $fcexampleDir/refOutput/$referenceFile ? y/[n] "
+    read answer
+    if [ "$answer" == "y" ] 
+      then 
+      ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile
+      if [ $? -ne 0 ] 
+        then 
+        echo "ERROR in: ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile"; exit -1;
+      fi
+    fi
+  fi
+} 
+
 askAll="n"
 mode="none"
 SUB_MODE="none"
@@ -146,42 +196,28 @@ do
   then 
     echo "ERROR in: ${MAKE} driver"; allOkSoFar="false"; continue;
   fi
+
+### compare all the transformation results:
+  for tfile in "head_sf.xaif" "head_sf.xb.xaif" "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f"
+  do 
+    fileCompare $exdir $tfile ${mode}${SUB_MODE} 'file translated from' 
+  done
+
   ${MAKE} run
   if [ $? -ne 0 ] 
   then 
     echo "ERROR in: ${MAKE} run"; allOkSoFar="false"; continue;
   fi
-  hasDiffAD=$(diff tmpOutput/ad.out $exdir/refOutput/ad.out)
-  if [ $? -eq 2 ] 
+
+  echo -n "numerical comparison ... "  
+  echo "\"tmpOutput/dd.out\" \"$exdir/refOutput/dd.out\" \"tmpOutput/ad.out\" \"$exdir/refOutput/ad.out\"" | ./numericalComparison
+
+  if [ $? -eq 0 ] 
   then 
-    echo "ERROR in: diff tmpOutput/ad.out $exdir/refOutput/ad.out"; allOkSoFar="false"; continue;
+    echo "no significant differences"
+  else
+    echo " ERROR in: ./numericalComparison for $i"; allOkSoFar="false"; continue;
   fi
-  hasDiffDD=$(diff tmpOutput/dd.out $exdir/refOutput/dd.out)
-  if [ $? -eq 2 ] 
-  then 
-    echo "ERROR in: diff tmpOutput/dd.out $exdir/refOutput/dd.out"; allOkSoFar="false"; continue;
-  fi
-  if [ -n "$hasDiffAD" ] 
-  then	 
-    echo "diffs current test (<) vs. reference (>) AD:"
-    diff tmpOutput/ad.out $exdir/refOutput/ad.out 
-    if [ -z "$DONT_STOP" ] 
-    then
-      allOkSoFar="false"; continue;
-    fi
-  else 
-    if [ -n "$hasDiffDD" ] 
-    then	 
-      echo "diffs current test (<) vs. reference (>) DD:"
-      diff tmpOutput/dd.out $exdir/refOutput/dd.out 
-      echo "only differences in DD!"
-      if [ -z "$DONT_STOP" ] 
-      then
-        allOkSoFar="false"; continue;
-      fi
-    else 
-      echo "no diffs"
-    fi
-  fi
+
 done
 

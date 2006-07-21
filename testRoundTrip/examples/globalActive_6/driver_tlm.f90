@@ -64,9 +64,9 @@ program driver
   integer n,m
   integer i,j,k
 
-  n=2
-  m=1
-  h=0.00001
+  open(2,action='read',file='params.conf')
+  read(2,'(I5,/,I5,/,F8.1)') n, m, h
+  close(2)
 
   allocate(x0(n))
   allocate(y0(m))

@@ -73,9 +73,13 @@ program driver
   type(active) flux_ph1, flux_ph2, flux_ph3, flux_ph4, flux_ph5
 
   double precision, dimension(19) :: x0
-  real :: h=0.00001
-  integer, parameter :: n=19, m=5
+  real :: h
+  integer:: n,m
   integer i,j,k
+
+  open(2,action='read',file='params.conf')
+  read(2,'(I5,/,I5,/,F8.1)') n, m, h
+  close(2)
 
   do i=1,n   
      x0(i)=sqrt(1.*i)

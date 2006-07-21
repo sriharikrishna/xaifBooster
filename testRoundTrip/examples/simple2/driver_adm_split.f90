@@ -64,9 +64,13 @@ program driver
   type(active) :: x1, x2, x1ph, x2ph
   type(active) :: y1, y2, y1ph, y2ph
   double precision res_adj(2,2)
-  real :: h=0.00001
+  real :: h
   integer n,m
   integer i,j,k
+
+  open(2,action='read',file='params.conf')
+  read(2,'(I5,/,I5,/,F8.1)') n, m, h
+  close(2)
 
   x0_1=1.0
   x0_2=2.0

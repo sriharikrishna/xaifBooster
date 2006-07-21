@@ -59,8 +59,8 @@ program driver
   implicit none
 
   integer, parameter :: kdim=3
-  integer i,j
-  double precision :: h=0.0001
+  integer i,j,n,m
+  double precision :: h
   double precision jac(kdim,kdim)
 
   type(active) :: gamma_t
@@ -78,6 +78,9 @@ program driver
 
   external box_timestep
 
+  open(2,action='read',file='params.conf')
+  read(2,'(I5,/,I5,/,F8.1)') n, m, h
+  close(2)
 
   open(2,file='tmpOutput/dd.out')
   write(2,*) "DD"
