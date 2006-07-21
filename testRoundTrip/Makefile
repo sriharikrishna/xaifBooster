@@ -171,7 +171,10 @@ xaifBooster:
 driver: $(MODULES) head.xb.x2w.w2f.pp.o driver.o 
 	$(F95) $^ -o $@ 
 
-run: params.conf tmpOutput driver
+numericalComparison: numericalComparison.o
+	$(F95) $^ -o $@ 
+
+run: params.conf tmpOutput driver numericalComparison 
 	./driver
 
 %.o:%.f
@@ -188,11 +191,11 @@ tmpOutput:
 	mkdir -p $@
 
 testAllclean:
-	$(RM) head_sf.* head.* driver* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput
+	$(RM) head_sf.* head.* driver* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput data.tmp
 
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f *.pl xaifBooster .lastRun
+	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
 	$(RM) *.mod *.o
 
 obj test doc: 

@@ -73,9 +73,11 @@ program driver
 
   nx1=5
   nx2=5
-  n=nx1*nx2
-  m=n
-  h=0.00001
+
+  open(2,action='read',file='params.conf')
+  read(2,'(I5,/,I5,/,F8.1)') n, m, h
+  close(2)
+
   r%v=10.0
 
   allocate(x0(n))
