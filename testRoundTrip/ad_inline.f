@@ -119,6 +119,34 @@ C $OpenAD$ END DECLS
           x=logical_tape(logical_tape_pointer)
         end subroutine
 
+        subroutine push_s(s)
+C $OpenAD$ INLINE DECLS
+          use OpenAD_tape
+          implicit none
+          character(*) :: s
+C $OpenAD$ END DECLS
+          stringlength_tape(stringlength_tape_pointer)=len(s)
+          stringlength_tape_pointer=stringlength_tape_pointer+1
+          character_tape(character_tape_pointer:
+     +character_tape_pointer+len(s))=s(1:len(s))
+          character_tape_pointer=character_tape_pointer+len(s)
+        end subroutine 
+
+
+        subroutine pop_s(s)
+C $OpenAD$ INLINE DECLS
+          use OpenAD_tape
+          implicit none
+          character(*) :: s
+C $OpenAD$ END DECLS
+          stringlength_tape_pointer=stringlength_tape_pointer-1
+          character_tape_pointer=character_tape_pointer-
+     +stringlength_tape(stringlength_tape_pointer)
+          s(1:len(s))=character_tape(character_tape_pointer:
+     +character_tape_pointer+
+     +stringlength_tape(stringlength_tape_pointer))
+        end subroutine
+
 
         subroutine saxpy(a,x,y)
 C $OpenAD$ INLINE DECLS
