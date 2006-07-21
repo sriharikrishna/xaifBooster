@@ -274,6 +274,9 @@ namespace xaifBoosterAddressArithmetic {
     case SymbolType::BOOL_STYPE:
       theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_b");
       break;
+    case SymbolType::STRING_STYPE:
+      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_s");
+      break;
     default:
       THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::pushUnknownVariables: don't know what to do with variable of type " 
 				 << SymbolType::toString(anUnknownVariable.getType()));
@@ -311,6 +314,9 @@ namespace xaifBoosterAddressArithmetic {
       break;
     case SymbolType::BOOL_STYPE:
       theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_b");
+      break;
+    case SymbolType::STRING_STYPE:
+      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_s");
       break;
     default:
       THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::createPopFromPush: don't know what to do with variable of type " 
