@@ -106,7 +106,8 @@ namespace xaifBooster {
   std::string ForLoop::debug () const { 
     std::ostringstream out;
     out << "ForLoop[" << this 
-	<< ControlFlowGraphVertex::debug()
+	<< ControlFlowGraphVertex::debug().c_str()
+	<< ObjectWithLineNumber::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of ForLoop::debug
