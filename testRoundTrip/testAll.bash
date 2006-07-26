@@ -34,7 +34,7 @@ function fileCompare {
   fcfileName=$2
   fcmode=$3
   ignoreString=$4
-###    echo "in fileCompare $1 $2 $3 $4"
+    #  echo "in fileCompare $1 $2 $3 $4"
   referenceFile=${fcmode}${fcfileName}
   if [ ! -f $fcexampleDir/refOutput/$referenceFile ] 
   then 
@@ -61,10 +61,10 @@ function fileCompare {
     then 
     echo "ERROR in: $(diff -I "$ignoreString" $fcfileName $fcexampleDir/refOutput/$referenceFile)"; exit -1;
   fi
-  if [ -n "$hasDiffAD" ] 
+  if [ -n "$hasDiff" ] 
     then 
     echo  "Transformation difference in $fcfileName:"
-    diff -I $ignoreString $fcfileName $fcexampleDir/refOutput/$referenceFile
+    diff -I "$ignoreString" $fcfileName $fcexampleDir/refOutput/$referenceFile
     echo  "accept/copy new $fcfileName to $fcexampleDir/refOutput/$referenceFile ? y/[n] "
     read answer
     if [ "$answer" == "y" ] 
