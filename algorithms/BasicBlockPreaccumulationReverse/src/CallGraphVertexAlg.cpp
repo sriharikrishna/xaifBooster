@@ -50,6 +50,9 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <string>
+#include "xaifBooster/utils/inc/MemCounter.hpp"
+
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
@@ -129,6 +132,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 									    getSymbol().
 									    getSymbolAlgBase()));
     const SymbolReference* theSymbolReference_p;
+    MemCounter myArg;
+    MemCounter myTsarg;
+    MemCounter myRes;
+    MemCounter count;
     if (theSymbolAlg.hasReplacementSymbolReference()) 
       theSymbolReference_p=&(theSymbolAlg.getReplacementSymbolReference());
     else
@@ -193,7 +200,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	handleCheckPointing("cp_arg_store",
 			    SideEffectListType::READ_LIST,
 			    theBasicBlock,
-			    false);
+			    false, count);
+	myArg = myArg + count;
+	count.reset();
 	break;
       }
       case ReplacementId::STORERESULT: { 
@@ -203,7 +212,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
  	handleCheckPointing("cp_res_store",
  			    SideEffectListType::MOD_LIST,
  			    theBasicBlock, 
- 			    false);
+ 			    false, count);
+	myRes = myRes + count;
+	count.reset();
  	break;
       }
       case ReplacementId::RESTOREARGUMENT: { 
@@ -212,7 +223,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	handleCheckPointing("cp_arg_restore",
 			    SideEffectListType::READ_LIST,
 			    theBasicBlock,
-			    true);
+			    true, count);
+	count.reset();
       }
 	break;
       case ReplacementId::RESTORERESULT: { 
@@ -222,7 +234,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
  	handleCheckPointing("cp_res_restore",
  			    SideEffectListType::MOD_LIST,
  			    theBasicBlock,
- 			    false);
+ 			    false, count);
+	count.reset();
  	break;
       }
       case ReplacementId::STORETIMESTEPARGUMENT: { 
@@ -231,11 +244,15 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	handleCheckPointing("cp_tsarg_store",
 			    SideEffectListType::MOD_LIST,
 			    theBasicBlock,
-			    false);
+			    false, count);
+	myTsarg = myTsarg + count;
+	count.reset();
 	handleCheckPointing("cp_arg_store",
 			    SideEffectListType::READ_LOCAL_LIST,
 			    theBasicBlock,
-			    false);
+			    false, count);
+	myArg = myArg + count;
+	count.reset();
 	break;
       }
       case ReplacementId::RESTORETIMESTEPARGUMENT: { 
@@ -244,11 +261,13 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	handleCheckPointing("cp_tsarg_restore",
 			    SideEffectListType::READ_LOCAL_LIST,
 			    theBasicBlock,
-			    true);
+			    true, count);
+	count.reset();
 	handleCheckPointing("cp_arg_restore",
 			    SideEffectListType::MOD_LIST,
 			    theBasicBlock,
-			    true);
+			    true, count);
+	count.reset();
         break;
       }
       default: 
@@ -256,7 +275,13 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 				   << ReplacementId::toString(*theId));
 	break;
       }// end switch
-    } // end for 	
+    } // end for 
+    std::cout << "Arg counters:" << std::endl;
+    myArg.print();
+    std::cout << "Tsarg counters:" << std::endl;
+    myTsarg.print();
+    std::cout << "Res counters:" << std::endl;
+    myRes.print();
   } 
 
   BasicBlock& 
@@ -296,7 +321,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   CallGraphVertexAlg::handleCheckPointing(const std::string& aSubroutineNameBase,
 					  SideEffectListType::SideEffectListType_E aSideEffectListType,
 					  BasicBlock& theBasicBlock,
-					  bool reverse) { 
+					  bool reverse, MemCounter &count) { 
     // initialize
     const SideEffectList::VariablePList& 
       theVariablePList(getContaining().
@@ -309,7 +334,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	   ++i) { 
 	handleCheckPoint(aSubroutineNameBase,
 			 theBasicBlock,
-			 **i);
+			 **i, count);
       } // end for 
     }
     else { 
@@ -318,7 +343,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	   ++i) { 
 	handleCheckPoint(aSubroutineNameBase,
 			 theBasicBlock,
-			 **i);
+			 **i, count);
       } // end for 
     }
   } 
@@ -326,13 +351,41 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void 
   CallGraphVertexAlg::handleCheckPoint(const std::string& aSubroutineNameBase,
 				       BasicBlock& theBasicBlock,
-				       const Variable& aVariable) { 
+				       const Variable& aVariable, MemCounter &count) { 
     addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+"_"+
 					    SymbolType::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolType())+"_"+
 					    SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()),
 					    theBasicBlock,
 					    aVariable.getVariableSymbolReference().getSymbol(),
 					    aVariable.getVariableSymbolReference().getScope());
+    //strcpy("real", test);
+    if(SymbolType::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolType()).compare("real") == 0)
+    {
+      if( SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()).compare("scalar") == 0)
+      {
+	  count.realScaInc();
+      }
+      else if( SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()).compare("vector") == 0)
+      {
+	  count.realVecInc();
+      }
+      else
+	  count.realMatInc();
+	      
+    //std::cout << SymbolType::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolType()) << std::endl;//type int or real
+    //std::cout << SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()) << std::endl;//scalar, vector or matrix
+    }
+    else if(SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()).compare("scalar") == 0)
+    {
+	count.intScaInc();
+    }
+    else if( SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()).compare("vector") == 0)
+      {
+          count.intVecInc();
+      }
+    else
+       count.intMatInc();
+
   }
 
   void 

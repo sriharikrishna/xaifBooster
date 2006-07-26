@@ -55,6 +55,8 @@
 
 #include <list>
 
+#include "xaifBooster/utils/inc/MemCounter.hpp"
+
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 
 #include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
@@ -148,14 +150,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     void handleCheckPointing(const std::string& aSubroutineNameBase,
 			     SideEffectListType::SideEffectListType_E theSideEffectListType,
 			     BasicBlock& theBasicBlock,
-			     bool reverse);
+			     bool reverse, MemCounter& count);
 
     /** 
      * called by handleCheckPointing to deal with one argument
      */
     void handleCheckPoint(const std::string& aSubroutineNameBase,
 			  BasicBlock& theBasicBlock,
-			  const Variable& theVariable); 
+			  const Variable& theVariable, MemCounter& count); 
     /** 
      * add the InlinableSubroutineCall with name  aSubroutineName
      * to theBasicBlock which pushes or pops to/from a Variable 

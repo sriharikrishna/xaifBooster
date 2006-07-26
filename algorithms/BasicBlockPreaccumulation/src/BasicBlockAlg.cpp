@@ -392,7 +392,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::algorithm_action_3() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
 	      << debug().c_str());
-  Counter allFlat;
+    Counter allFlat;
     for (SequencePList::iterator aSequencePListI=myUniqueSequencePList.begin();
 	 aSequencePListI!=myUniqueSequencePList.end();
 	 ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
@@ -560,8 +560,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg2Test;
         xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg3Test;
         //Counters for both count of best algorithm and current algorithm
-        Counter min;
-        Counter current;
+	Counter min;
+	Counter current;
         // call Angel which fills myJacobianAccumulationExpressionList and finds most efficient algorithm
 	try { 
         ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence; //Set algorithm
