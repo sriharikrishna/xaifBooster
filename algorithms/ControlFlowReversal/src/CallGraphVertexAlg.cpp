@@ -135,7 +135,42 @@ namespace xaifBoosterControlFlowReversal {
       }
       if (theReversibleControlFlowGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) { 
 	std::ostringstream temp;
-	temp << theXaifId.c_str() << ".e" << std::ends;
+	temp << theXaifId.c_str() 
+	     << ".e" 
+	     << theReversibleControlFlowGraphVertex_p->getTopExplicitLoop().getOriginalVertex().getId().c_str()
+	     << std::ends;
+	theXaifId=temp.str();
+      }
+      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
+    }
+    const ReversibleControlFlowGraph& myG;
+  };
+
+  class AdjointControlFlowGraphVertexLabelWriter {
+  public:
+    AdjointControlFlowGraphVertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {}
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
+      std::string theVertexKind;
+      std::string theXaifId;
+      if (theReversibleControlFlowGraphVertex_p->isOriginal()) {
+	const ControlFlowGraphVertexAlg& va(dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex().getControlFlowGraphVertexAlgBase()));
+        theVertexKind=va.kindToString();
+	const ControlFlowGraphVertex& v(dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex()));
+        theXaifId=v.getId();
+        
+      }
+      else {
+	const ControlFlowGraphVertexAlg& va(dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()));
+        theVertexKind=va.kindToString();
+	const ControlFlowGraphVertex& v(dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getNewVertex()));
+        theXaifId=v.getId();
+      }
+      if (theReversibleControlFlowGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) { 
+	std::ostringstream temp;
+	temp << theXaifId.c_str() << ".e";
+	temp << std::ends;
 	theXaifId=temp.str();
       }
       out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
@@ -187,7 +222,7 @@ namespace xaifBoosterControlFlowReversal {
     // but we should have found out how to label branch edges...
     myTapingControlFlowGraph_p->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph_p);
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*myAdjointControlFlowGraph_p,"cfg_adjoint", ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph_p));
+      GraphVizDisplay::show(*myAdjointControlFlowGraph_p,"cfg_adjoint", AdjointControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph_p));
     }
     myTapingControlFlowGraph_p->storeControlFlow();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
