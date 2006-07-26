@@ -63,9 +63,7 @@
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 #include "xaifBooster/utils/inc/Counter.hpp" //IK
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"//IK
-#include "xaifBooster/system/inc/ForLoopReversalType.hpp" //IK
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"//IK
-#include "xaifBooster/system/inc/SubroutineCall.hpp" //IK
 
 
 
