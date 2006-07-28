@@ -328,9 +328,9 @@ namespace xaifBooster {
       startPosition=allUpperCase.find_first_not_of(' ',startPosition);
       endPosition=allUpperCase.find_first_of(' ',startPosition);
       ourPassivatedSymbolHashTable.addElement(allUpperCase.substr(startPosition,
-								  endPosition),
+								  endPosition-startPosition),
 					      SymbolPassivation(allUpperCase.substr(startPosition,
-										    endPosition)));
+										    endPosition-startPosition)));
       startPosition=endPosition;
     } 
   }
