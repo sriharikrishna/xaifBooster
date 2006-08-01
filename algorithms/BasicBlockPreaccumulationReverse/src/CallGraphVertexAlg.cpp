@@ -216,11 +216,11 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 			    theBasicBlock,
 			    false, count);
 	
-	 xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("teststatic")));
+	 xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countcheckpoint")));
 	 //add it to the basic block
          theBasicBlock.supplyAndAddBasicBlockElementInstance(aNewCall);
 	// give it the onstrcuted name as an ID extended by
-	aNewCall.setId("teststatic");
+	aNewCall.setId("countcheckpoint");
 	                                                      
 
 	myArg = myArg + count;
@@ -273,16 +273,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 			    SideEffectListType::READ_LOCAL_LIST,
 			    theBasicBlock,
 			    false, count);
-    // make the new call
-//    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("teststatic")));
-    // add it to the basic block
-  //  theBasicBlock.supplyAndAddBasicBlockElementInstance(aNewCall);
-    // give it the onstrcuted name as an ID extended by
-    //aNewCall.setId("teststatic");
-
-        
-
-	
 	myArg = myArg + count;
 	count.reset();
 	break;
@@ -307,12 +297,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 				   << ReplacementId::toString(*theId));
 	break;
       }// end switch
-      //theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("teststatic");
-      //theSubroutineCall_p->setId("inline_teststatic");
-      //theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(0);
-      // save it in the list
-      //myBasicBlockElementList.push_back(theSubroutineCall_p);
-			      //         
     } // end for 
     std::cout << "Arg counters:" << std::endl;
     myArg.print();

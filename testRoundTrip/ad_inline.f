@@ -53,7 +53,7 @@ C ========== end copyright notice ==============
 
 C Checkpoint counter functions---------------------
 
-         subroutine teststatic()
+         subroutine countcheckpoint()
 C $OpenAD$ INLINE DECLS
            implicit none
 C $OpenAD$ END DECLS

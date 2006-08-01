@@ -55,6 +55,7 @@ C ========== end copyright notice ==============
           use OpenAD_tape
           use OpenAD_rev
           use OpenAD_checkpoints
+          use checkpoint_module
 
           ! original arguments get inserted before version
           ! and declared here together with all local variables
@@ -62,6 +63,10 @@ C ========== end copyright notice ==============
 
 !$TEMPLATE_PRAGMA_DECLARATIONS
 
+
+          !counters
+          integer, save :: theSwitch = 0
+          integer, save :: theSwitch2 = 0
 
           ! checkpointing stacks and offsets
           integer :: cp_loop_variable_1,cp_loop_variable_2,
@@ -144,6 +149,12 @@ C taping
             our_rev_mode%plain=.FALSE.
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
+            if(theSwitch2.eq.0) then
+              print *, "Doubles on tape", double_tape_pointer -1
+              print *, "Integers on tape", integer_tape_pointer -1
+              theSwitch2 = 1
+C                call diff tape storage only once flag
+            endif
           end if 
           if (our_rev_mode%res_restore) then
 C restore results

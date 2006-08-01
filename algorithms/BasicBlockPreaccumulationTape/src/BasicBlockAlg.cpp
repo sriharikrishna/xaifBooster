@@ -258,7 +258,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 				 theTarget.getArrayAccess()); 
 	} 
       } // end for (propagator entry list) 
-      std::cout << "count: " << count << std::endl;
+//      std::cout << "count: " << count << std::endl; //Basic block level taping output
     } // end for (sequence list) 
   } 
 
