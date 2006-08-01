@@ -51,7 +51,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 #include <string>
-#include "xaifBooster/utils/inc/MemCounter.hpp"
+#include "xaifBooster/utils/inc/MemCounter.hpp" //IK
 
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
@@ -100,10 +100,23 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   } 
 
   void
-  CallGraphVertexAlg::printXMLHierarchy(std::ostream& os) const { 
+  CallGraphVertexAlg::printXMLHierarchy(std::ostream& os) const {
+/*    for(PlainBasicBlock::BasicBlockElementList::const_iterator myBasicBlockElementListI = myBasicBlockElementList.begin();
+        myBasicBlockElementListI != myBasicBlockElementList.end();
+        ++myBasicBlockElementListI)
+    {
+      (*(myBasicBlockElementListI))->printXMLHierarchy(os);
+    }*/
+
     if (!myReplacementList_p)
       THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::printXMLHierarchy: no replacement list ");
     myReplacementList_p->printXMLHierarchy(os);
+/*  for(PlainBasicBlock::BasicBlockElementList::const_iterator myBasicBlockElementListI = myBasicBlockElementList.begin();
+        myBasicBlockElementListI != myBasicBlockElementList.end();
+        ++myBasicBlockElementListI)
+    {
+      (*(myBasicBlockElementListI))->printXMLHierarchy(os);
+    }*/
   } // end of CallGraphVertexAlg::printXMLHierarchy
   
   std::string 
@@ -197,10 +210,19 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       case ReplacementId::STOREARGUMENT: { 
 	theReplacement.setControlFlowGraphBase(*myCFGStoreArguments_p);
 	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreArguments_p));
+
 	handleCheckPointing("cp_arg_store",
 			    SideEffectListType::READ_LIST,
 			    theBasicBlock,
 			    false, count);
+	
+	 xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("teststatic")));
+	 //add it to the basic block
+         theBasicBlock.supplyAndAddBasicBlockElementInstance(aNewCall);
+	// give it the onstrcuted name as an ID extended by
+	aNewCall.setId("teststatic");
+	                                                      
+
 	myArg = myArg + count;
 	count.reset();
 	break;
@@ -251,6 +273,16 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 			    SideEffectListType::READ_LOCAL_LIST,
 			    theBasicBlock,
 			    false, count);
+    // make the new call
+//    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("teststatic")));
+    // add it to the basic block
+  //  theBasicBlock.supplyAndAddBasicBlockElementInstance(aNewCall);
+    // give it the onstrcuted name as an ID extended by
+    //aNewCall.setId("teststatic");
+
+        
+
+	
 	myArg = myArg + count;
 	count.reset();
 	break;
@@ -275,6 +307,12 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 				   << ReplacementId::toString(*theId));
 	break;
       }// end switch
+      //theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("teststatic");
+      //theSubroutineCall_p->setId("inline_teststatic");
+      //theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(0);
+      // save it in the list
+      //myBasicBlockElementList.push_back(theSubroutineCall_p);
+			      //         
     } // end for 
     std::cout << "Arg counters:" << std::endl;
     myArg.print();

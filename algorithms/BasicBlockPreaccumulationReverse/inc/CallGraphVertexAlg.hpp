@@ -139,6 +139,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * make entry, exit and a basic block which is returned
      */
     BasicBlock& initCheckPointCFG(ControlFlowGraph& aCheckPointCFG); 
+
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;//IK
+        PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;//IK
+
     
     /** 
      * give a name for the inlinable routine to which we append 
