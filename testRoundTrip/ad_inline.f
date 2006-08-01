@@ -51,6 +51,23 @@ C This work is partially supported by:
 C 	NSF-ITR grant OCE-0205590
 C ========== end copyright notice ==============
 
+C Checkpoint counter functions---------------------
+
+         subroutine teststatic()
+C $OpenAD$ INLINE DECLS
+           implicit none
+C $OpenAD$ END DECLS
+           if(theSwitch.eq.0) then
+             print *,"Checkpoint storage"
+             print *, "Floating point: ", theArgFStackoffset
+             print *, "Integer: ", theArgIStackoffset
+             print *, "Boolean: ", theArgBStackoffset
+             print *, "String: ", theArgSStackoffset
+             theSwitch = 1
+           end if
+         end subroutine
+          
+
 C Counter functions -------------------------------
 
          subroutine countmult(x)

@@ -771,6 +771,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
       }
     } // end for 
+	                 aNewCall.setId("teststatic");
   } // end of BasicBlockAlg::algorihm_action_3
 
    //Counts the number of add and multiply operations that are in a list passed in to it
