@@ -56,6 +56,7 @@ C ========== end copyright notice ==============
           use OpenAD_rev
           use OpenAD_checkpoints
           use checkpoint_module
+          use graph_module
 
           ! original arguments get inserted before version
           ! and declared here together with all local variables
@@ -102,9 +103,17 @@ C ========== end copyright notice ==============
 
           type(modeType) :: our_orig_mode
 
+         type (list), pointer :: prev => NULL()
+         integer :: ierror, five
+
+
 	  ! call external C function used in inlined code
-          integer iaddr
-          external iaddr
+          !integer iaddr
+          !external iaddr
+
+           ! call external Fortran function used in inlined code
+          external makelines
+          external graphabcprint2
 
 C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
@@ -113,6 +122,9 @@ C     +" RF:",theResFStackoffset,
 C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+          if (our_rev_mode%tape) then
+           Call makelinks('__SRNAME__', prev)
+          endif
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
@@ -191,4 +203,22 @@ C     +" RF:",theResFStackoffset,
 C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+         if (our_rev_mode%tape) then
+          if( associated(prev)) then
+             cur => prev
+           else  
+             if(tree%first%called%value .eq. cur%called%value) then
+           Open (Unit=10, File='temp.out', status='replace', 
+     + action='write', iostat=ierror)
+           write(10, *) 'digraph G {'
+            write(10, '(I12, A8, A10, A3)'), iaddr(tree), '[label="',
+     + tree%value, '"];'
+            Call graphprint(tree)
+            write(10, *) '}'
+            close(10)
+             !read *, five
+             endif
+             endif
+           endif                              
+
         end subroutine template
