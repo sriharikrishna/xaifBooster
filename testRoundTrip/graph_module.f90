@@ -59,6 +59,8 @@
         public
         type vertex
           character (len = 40) :: value = ''
+          integer :: doubles = 0
+          integer :: integers = 0
           type (list), pointer :: first => NULL()
         end type vertex
 
@@ -142,12 +144,19 @@
           type (vertex) :: invertex
           integer five
           type (list), pointer :: itr 
+          character (len = 20) itoa
+          character (len = 20) itoa2
           if(associated(invertex%first%next)) then
             itr => invertex%first
             do 100
-              write(10,'(I12,A9,A10,A3)')iaddr(itr%called), '[label="',&
-       itr%called%value,'"];'
-              write (10,'(I12, A2,I12, A2)') iaddr(invertex), '->',&
+              write(itoa, '(I)') tree%doubles
+              itoa = adjustl(itoa)
+              write(itoa2, '(I)') tree%integers
+              itoa2 = adjustl(itoa2)
+              write(10,'(I,A,A,A,A,A,A,A)')iaddr(itr%called),&
+              '[shape="box" height=.25 label="',&
+       trim(itr%called%value),' ', trim(itoa), ':', trim(itoa2), '"];'
+              write (10,'(I, A,I, A)') iaddr(invertex), '->',&
        iaddr(itr%called), ' ;' 
               call graphprint(itr%called)
               if(associated (itr%next)) then
@@ -158,9 +167,15 @@
             100 continue
           else
             if(associated(invertex%first%called)) then
-              write(10,'(I12,A9,A10,A3)')iaddr(invertex%first%called),&
-       ' [label="', invertex%first%called%value,'"];'
-              write (10,'(I12, A2,I12, A2)') iaddr(invertex), '->',&
+              write(itoa, '(I)') tree%doubles
+              itoa = adjustl(itoa)
+              write(itoa2, '(I)') tree%integers
+              itoa2 = adjustl(itoa2)
+              write(10,'(I,A,A,A,A,A,A,A)')iaddr(invertex%first%called),&
+       '[shape="box" height=.25 label="',&
+       trim(invertex%first%called%value), ' ', trim(itoa), ':',&
+       trim(itoa2), '"];'
+              write (10,'(I, A,I, A)') iaddr(invertex), '->',&
        iaddr(invertex%first%called), ' ;' 
                call graphprint(invertex%first%called)
             endif

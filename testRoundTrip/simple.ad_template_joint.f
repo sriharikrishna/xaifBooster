@@ -104,8 +104,10 @@ C ========== end copyright notice ==============
           type(modeType) :: our_orig_mode
 
          type (list), pointer :: prev => NULL()
-         integer :: ierror, five
-
+         integer :: ierror, counter, counter2, counter3
+         
+         character (len = 20) itoa 
+         character (len = 20) itoa2
 
 	  ! call external C function used in inlined code
           !integer iaddr
@@ -162,8 +164,13 @@ C taping
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
             if(theSwitch2.eq.0) then
-              print *, "Doubles on tape", double_tape_pointer -1
-              print *, "Integers on tape", integer_tape_pointer -1
+              if (.not. associated(prev)) then
+                tree%doubles = double_tape_pointer -1
+                tree%integers = integer_tape_pointer -1
+              else
+                prev%called%doubles = double_tape_pointer-1
+                prev%called%integers = integer_tape_pointer-1
+              endif
               theSwitch2 = 1
 C                call diff tape storage only once flag
             endif
@@ -211,9 +218,18 @@ C     +" IT:",integer_tape_pointer
            Open (Unit=10, File='temp.out', status='replace', 
      + action='write', iostat=ierror)
            write(10, *) 'digraph G {'
-            write(10, '(I12, A8, A10, A3)'), iaddr(tree), '[label="',
-     + tree%value, '"];'
+           write(10, *) 'nodesep=.05;'
+           write(10, *) 'ranksep=.05;'
+           write(itoa, '(I)') tree%doubles
+           itoa = adjustl(itoa)
+           write(itoa2, '(I)') tree%integers
+           itoa2 = adjustl(itoa2)
+           write(10, '(I, A, A, A, A, A, A, A)'), iaddr(tree),
+     + '[shape="box" height=.25 label="', trim(tree%value), ' ', 
+     + trim(itoa), ':', trim(itoa2), '"];'
             Call graphprint(tree)
+            write(10, *) '1[ height=.25 label="SubroutineName',
+     + ' double:integer"];'
             write(10, *) '}'
             close(10)
              !read *, five
