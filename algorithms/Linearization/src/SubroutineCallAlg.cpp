@@ -467,9 +467,19 @@ namespace xaifBoosterLinearization {
 					      getSymbol());
       if (theConcreteArgumentSymbol.hasDimensionBounds()) { 
 	const Symbol::DimensionBoundsPList& aDimensionBoundsPList(theConcreteArgumentSymbol.getDimensionBoundsPList());
+	int dimensionReduction=
+	  theConcreteArgument.
+	  getArgument().
+	  getVariable().
+	  getVariableSymbolReference().
+	  getSymbol().getSymbolShape()
+	  -
+	  formalArgumentSymbol.getSymbolShape();
+	// the difference in dimension e.g. between a three-tensor and a vector is 2
 	for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
-	     li!=aDimensionBoundsPList.end();
-	     ++li) { 
+	     (li!=aDimensionBoundsPList.end() && dimensionReduction<=0);
+	     // e.g. between the three-tensor vs vector we skip over the 2 leading dimensions.
+	     ++li,--dimensionReduction) { 
 	  theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
 						  (*li)->getUpper());
 	}

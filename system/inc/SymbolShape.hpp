@@ -60,12 +60,14 @@ namespace xaifBooster {
   class SymbolShape { 
 public:
     enum SymbolShape_E {
-	    SCALAR,
-	    VECTOR,
-	    MATRIX,
-	    THREE_TENSOR,
-	    FOUR_TENSOR,
-	    FIVE_TENSOR};
+      // keep these numbers in order so we can compute differences
+      // even though differences with enumerated names should normally be frowned upon. 
+	    SCALAR=0,
+	    VECTOR=1,
+	    MATRIX=2,
+	    THREE_TENSOR=3,
+	    FOUR_TENSOR=4,
+	    FIVE_TENSOR=5};
     
     static std::string toString(const SymbolShape_E& aShape) throw (PrintingIntException);
 
