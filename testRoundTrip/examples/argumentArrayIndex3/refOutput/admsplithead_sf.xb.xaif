@@ -41,10 +41,8 @@
           <xaif:Symbol symbol_id=".preg_return_val_19" kind="variable" type="opaque" shape="scalar" annotation="{Sym_Id#19}" active="0" temp="0">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_0" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1">
-            <xaif:DimensionBounds lower="1" upper="2"/>
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_10" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1">
-            <xaif:DimensionBounds lower="1" upper="2"/>
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_2" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
