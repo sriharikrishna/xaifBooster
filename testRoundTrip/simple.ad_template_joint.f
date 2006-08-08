@@ -115,7 +115,6 @@ C ========== end copyright notice ==============
 
            ! call external Fortran function used in inlined code
           external makelines
-          external graphabcprint2
 
 C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
@@ -125,7 +124,7 @@ C     +" RI:",theResIStackoffset,
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%tape) then
-           Call makelinks('__SRNAME__', prev)
+            Call makelinks('__SRNAME__', prev)
           endif
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
@@ -163,7 +162,6 @@ C taping
             our_rev_mode%plain=.FALSE.
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
-            if(theSwitch2.eq.0) then
               if (.not. associated(prev)) then
                 tree%doubles = double_tape_pointer -1
                 tree%integers = integer_tape_pointer -1
@@ -171,9 +169,7 @@ C taping
                 prev%called%doubles = double_tape_pointer-1
                 prev%called%integers = integer_tape_pointer-1
               endif
-              theSwitch2 = 1
 C                call diff tape storage only once flag
-            endif
           end if 
           if (our_rev_mode%res_restore) then
 C restore results
@@ -214,12 +210,16 @@ C     +" IT:",integer_tape_pointer
           if( associated(prev)) then
              cur => prev
            else  
-             if(tree%first%called%value .eq. cur%called%value) then
+             print *, 'here'
+             !if(tree%first%called%value .eq. cur%called%value) then
            Open (Unit=10, File='temp.out', status='replace', 
      + action='write', iostat=ierror)
            write(10, *) 'digraph G {'
            write(10, *) 'nodesep=.05;'
            write(10, *) 'ranksep=.05;'
+           graph%value = tree%value
+           graph%doubles = tree%doubles
+           graph%integers = tree%integers
            write(itoa, '(I)') tree%doubles
            itoa = adjustl(itoa)
            write(itoa2, '(I)') tree%integers
@@ -232,8 +232,18 @@ C     +" IT:",integer_tape_pointer
      + ' double:integer"];'
             write(10, *) '}'
             close(10)
+            Open (Unit=11, File='temp2.out', status='replace',
+     + action='write', iostat=ierror)
+            write(11, *) 'digraph G {'
+            write(11, *) 'nodesep=.05;'
+            write(11, *) 'ranksep=.05;'
+            call graph2print()
+            write(11, *) '1[ height=.25 label="SubroutineName',
+     + ' double:integer"];'
+            write(11, *) '}'
+            close(11)
              !read *, five
-             endif
+             !endif
              endif
            endif                              
 
