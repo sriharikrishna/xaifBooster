@@ -67,8 +67,9 @@ C ========== end copyright notice ==============
 
           !counters
           integer, save :: theSwitch = 0
-          integer, save :: theSwitch2 = 0
-
+          integer, save :: prevint = 1
+          integer, save :: prevdouble = 1
+          
           ! checkpointing stacks and offsets
           integer :: cp_loop_variable_1,cp_loop_variable_2,
      +cp_loop_variable_3,cp_loop_variable_4,cp_loop_variable_5
@@ -163,11 +164,15 @@ C taping
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
               if (.not. associated(prev)) then
-                tree%doubles = double_tape_pointer -1
-                tree%integers = integer_tape_pointer -1
+                tree%doubles = double_tape_pointer - prevdouble-1
+                tree%integers = integer_tape_pointer - prevint-1
+                prevdouble = integer_tape_pointer
+                prevint = double_tape_pointer
               else
-                prev%called%doubles = double_tape_pointer-1
-                prev%called%integers = integer_tape_pointer-1
+                prev%called%doubles = double_tape_pointer - prevdouble
+                prev%called%integers = integer_tape_pointer- prevint
+                prevdouble = integer_tape_pointer
+                prevint = double_tape_pointer
               endif
 C                call diff tape storage only once flag
           end if 
@@ -206,6 +211,8 @@ C     +" RF:",theResFStackoffset,
 C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+         prevint = integer_tape_pointer
+         prevdouble = double_tape_pointer
          if (our_rev_mode%tape) then
           if( associated(prev)) then
              cur => prev
