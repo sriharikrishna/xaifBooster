@@ -75,7 +75,7 @@ namespace xaifBooster {
      * Initializes the values of all counters to 0.
      */
     Counter();
-    
+
     /**
      * Retrieves values from the data structure as specified by the function name.
      */

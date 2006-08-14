@@ -144,6 +144,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory() {
     return ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;  
   }
+
+  
+  
   void  BasicBlockAlg::setPrivateLinearizedComputationalGraphAlgFactory(PrivateLinearizedComputationalGraphAlgFactory* thePrivateLinearizedComputationalGraphAlgFactory) {
     ourPrivateLinearizedComputationalGraphAlgFactory_p=thePrivateLinearizedComputationalGraphAlgFactory;  
   }
@@ -392,7 +395,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::algorithm_action_3() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
 	      << debug().c_str());
-    Counter allFlat;
     for (SequencePList::iterator aSequencePListI=myUniqueSequencePList.begin();
 	 aSequencePListI!=myUniqueSequencePList.end();
 	 ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
@@ -601,7 +603,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
            best = &alg3Test; //If better store new algorithm results
            min = current;
         }*/
-        allFlat = allFlat + min; //add flattened sequences together
+        basicBlockOperations = basicBlockOperations + min; //add flattened sequences together
         current.reset(); //reset counter just in case
       }
 	
@@ -762,9 +764,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
 	} // end for 
       //debuging print statements with results
-      std::cout << "allFlat" << std::endl;
-      allFlat.print();
-      allFlat.reset(); //Reset counter for next algorithm
+      std::cout << "basicBlockOperations" << std::endl;
+      basicBlockOperations.print();
+      //basicBlockOperations.reset(); //Reset counter for next algorithm
 
       } // end if have flattened graph with more than one vertex
       else { 
@@ -1207,6 +1209,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   
   unsigned int BasicBlockAlg::getSequenceCounter() { 
     return ourSequenceCounter;
+  }
+
+  Counter& BasicBlockAlg::getBasicBlockOperations(){
+    return basicBlockOperations;
   }
 
   const DuUdMapDefinitionResult::StatementIdList& BasicBlockAlg::getAssignmentIdList()const { 
