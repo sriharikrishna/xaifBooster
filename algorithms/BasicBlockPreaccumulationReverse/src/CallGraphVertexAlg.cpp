@@ -52,6 +52,7 @@
 // ========== end copyright notice ==============
 #include <string>
 #include "xaifBooster/utils/inc/MemCounter.hpp" //IK
+#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"//IK
 
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
@@ -67,6 +68,7 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp" //IK
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
@@ -149,6 +151,21 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     MemCounter myTsarg;
     MemCounter myRes;
     MemCounter count;
+    ControlFlowGraph::ConstVertexIteratorPair p(getContaining().getControlFlowGraph().vertices());
+    ControlFlowGraph::ConstVertexIterator itr(p.first), endIt(p.second);
+    for(; itr!= endIt;
+         ++itr)
+    {
+//	    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg* tester2;
+	    const BasicBlock* tester = dynamic_cast<const BasicBlock*>(&(*itr));
+	    if(tester != NULL)
+	    {
+    	      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg& tester2(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(tester->getBasicBlockAlgBase()));
+    	      subroutineOperations = subroutineOperations + tester2.getBasicBlockOperations();
+	    }
+    }
+    std::cout << "Subroutine Operations:" << std::endl;
+    subroutineOperations.print();
     if (theSymbolAlg.hasReplacementSymbolReference()) 
       theSymbolReference_p=&(theSymbolAlg.getReplacementSymbolReference());
     else
@@ -297,13 +314,19 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 				   << ReplacementId::toString(*theId));
 	break;
       }// end switch
-    } // end for 
-    std::cout << "Arg counters:" << std::endl;
-    myArg.print();
-    std::cout << "Tsarg counters:" << std::endl;
-    myTsarg.print();
-    std::cout << "Res counters:" << std::endl;
-    myRes.print();
+    } // end for
+    if(1)
+    {	    
+      std::cout << "Arg counters:" << std::endl;
+      myArg.print();
+      subroutineMemOperations = myArg;
+    }
+    else
+    {
+      std::cout << "Tsarg counters:" << std::endl;
+      myTsarg.print();
+      subroutineMemOperations = myTsarg;
+    }
   } 
 
   BasicBlock& 
@@ -370,7 +393,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     }
   } 
 
-  void 
+  void
   CallGraphVertexAlg::handleCheckPoint(const std::string& aSubroutineNameBase,
 				       BasicBlock& theBasicBlock,
 				       const Variable& aVariable, MemCounter &count) { 
@@ -380,6 +403,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 					    theBasicBlock,
 					    aVariable.getVariableSymbolReference().getSymbol(),
 					    aVariable.getVariableSymbolReference().getScope());
+
     //strcpy("real", test);
     if(SymbolType::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolType()).compare("real") == 0)
     {

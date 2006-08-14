@@ -217,7 +217,6 @@ C     +" IT:",integer_tape_pointer
           if( associated(prev)) then
              cur => prev
            else  
-             print *, 'here'
              !if(tree%first%called%value .eq. cur%called%value) then
            Open (Unit=10, File='temp.out', status='replace', 
      + action='write', iostat=ierror)

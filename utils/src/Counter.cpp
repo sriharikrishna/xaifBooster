@@ -59,7 +59,7 @@ namespace xaifBooster {
   : myJacobianEntry(0), myMultiply(0), myAdd(0)
   {
   }
-  
+
   int Counter::getJacValue() const {
     return myJacobianEntry;
   }

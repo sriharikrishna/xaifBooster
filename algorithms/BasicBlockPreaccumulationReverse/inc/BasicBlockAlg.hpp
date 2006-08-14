@@ -83,7 +83,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
 
   private:
-
+    
     /** 
      * no def
      */

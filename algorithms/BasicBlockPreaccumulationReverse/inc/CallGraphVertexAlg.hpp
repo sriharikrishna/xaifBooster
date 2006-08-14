@@ -56,6 +56,7 @@
 #include <list>
 
 #include "xaifBooster/utils/inc/MemCounter.hpp"
+#include "xaifBooster/utils/inc/Counter.hpp"
 
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 
@@ -134,6 +135,16 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * we own this
      */
     ControlFlowGraph* myCFGTimeStepRestoreArguments_p;
+
+    /**
+     * we own this counter
+     */
+    MemCounter subroutineMemOperations;
+
+    /**
+     * we own this counter
+     */
+    Counter subroutineOperations;
 
     /**
      * make entry, exit and a basic block which is returned
