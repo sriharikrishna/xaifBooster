@@ -121,6 +121,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void countOperations(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&, Counter&);
 
 
+    /**
+     * Sets flag to run all algorithms and choose the best one if a flag is set.
+     */
+    static void setAllAlgorithms();
+
+
     static Compute_elimination_sequence_fp ourCompute_elimination_sequence_fp;
     static int ourIntParameter;
     static double ourGamma;
@@ -204,6 +210,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static PrivateLinearizedComputationalGraphAlgFactory* ourPrivateLinearizedComputationalGraphAlgFactory_p;
     static PrivateLinearizedComputationalGraphEdgeAlgFactory* ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p;
     static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;
+    static bool chooseAlg; //IK
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;//IK
     PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;//IK
     
