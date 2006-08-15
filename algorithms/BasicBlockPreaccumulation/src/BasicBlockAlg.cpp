@@ -106,7 +106,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   unsigned int BasicBlockAlg::ourAssignmentCounter=0;
   unsigned int BasicBlockAlg::ourSequenceCounter=0;
-
+  bool BasicBlockAlg::chooseAlg=false;
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
@@ -576,33 +576,37 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         current.mulPrint();
         current.addPrint();
         current.reset(); //Reset counter for next algorithm
-        /*ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex; //Set algorithm
-        (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg2Test); //Run algorithm
-        countOperations(alg2Test, current); //Count algorithm
-        //Debuging output statements
-        std::cout << "second" << std::endl;
-        current.mulPrint();
-        current.addPrint();
-        //Was current algorithm better than old algorithm
-        if(current < min)
-        {
-           best = &alg2Test; //If better store new algrithms results
-           min = current;
-        }
-        current.reset(); //reset counter for next algorithm
-        ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_face; //Set algorithm
-        (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg3Test); //Run algorithm
-        countOperations(alg3Test, current); //Count algorithm
-        //debugging statements
-        std::cout << "third" << std::endl;
-        current.mulPrint();
-        current.addPrint();
-        //Was current algorithm better than old algorithm
-        if(current < min)
-        {
-           best = &alg3Test; //If better store new algorithm results
-           min = current;
-        }*/
+	
+        if(chooseAlg)
+	{
+	  ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex; //Set algorithm
+          (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg2Test); //Run algorithm
+          countOperations(alg2Test, current); //Count algorithm
+          //Debuging output statements
+          std::cout << "second" << std::endl;
+          current.mulPrint();
+          current.addPrint();
+          //Was current algorithm better than old algorithm
+          if(current < min)
+          {
+            best = &alg2Test; //If better store new algrithms results
+            min = current;
+          }
+          current.reset(); //reset counter for next algorithm
+          ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_face; //Set algorithm
+          (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg3Test); //Run algorithm
+          countOperations(alg3Test, current); //Count algorithm
+          //debugging statements
+          std::cout << "third" << std::endl;
+          current.mulPrint();
+          current.addPrint();
+          //Was current algorithm better than old algorithm
+          if(current < min)
+          {
+            best = &alg3Test; //If better store new algorithm results
+            min = current;
+          }
+	}
         basicBlockOperations = basicBlockOperations + min; //add flattened sequences together
         current.reset(); //reset counter just in case
       }
@@ -1221,6 +1225,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment) { 
     ourAssignmentIdList.push_back(anAssignment.getId());
-  } 
+  }
+
+  void BasicBlockAlg::setAllAlgorithms(){
+     chooseAlg = true;
+  }
   
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

@@ -69,6 +69,8 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp" //IK
+
+#include <fstream>
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 

@@ -50,6 +50,7 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <fstream>
 #include <iostream>
 #include <utility>
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
@@ -85,8 +86,24 @@ void Usage(char** argv) {
             << "                 space separated list enclosed in double quotes" << std::endl
 	    << "             [-r] force renaming of all non-external routines" << std::endl
 	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
-	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl;
+	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
+            << "             [-a] dynamically choose graph elimination algorithm" << std::endl;
 } 
+
+/*class VertexLabelWriter
+{
+  ofstream myFile;
+  myFile.open("compileTimeCallGraph.dot");
+
+  myFile.close();
+}
+
+class EdgeLabelWriter
+{
+	
+}*/
+
+
 
 int main(int argc,char** argv) { 
   DbgLoggerManager::instance()->setSelection(DbgGroup::ERROR 
@@ -99,7 +116,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwpruU",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwpruUa",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -126,6 +143,8 @@ int main(int argc,char** argv) {
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setUserDecides();
     if (CommandLineParser::instance()->isSet('U')) 
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
+    if (CommandLineParser::instance()->isSet('a'))
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -169,6 +188,9 @@ int main(int argc,char** argv) {
     DBG_MACRO(DbgGroup::TIMING,"before reversal");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
     DBG_MACRO(DbgGroup::TIMING,"before unparse");
+
+    
+    
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // fix up the addresses in simple loops
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
