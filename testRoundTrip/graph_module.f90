@@ -55,12 +55,15 @@
         
         use w2f__types
         implicit none
-        
+       !call tree nodes 
         public
         type vertex
           character (len = 40) :: value = ''
           integer :: doubles = 0
           integer :: integers = 0
+          integer :: argFloats = 0
+          integer :: argInts = 0
+          integer :: argBools = 0
           type (list), pointer :: first => NULL()
         end type vertex
 
@@ -69,10 +72,14 @@
           type (list), pointer :: next => NULL()
         end type list
 
+       !call graph nodes
         type vertexlist
           character (len = 40) :: value = ''
           integer :: doubles = 0
           integer :: integers = 0
+          integer :: argFloats = 0
+          integer :: argInts = 0
+          integer :: argBools = 0
           type (vertexlist), pointer :: next => NULL()
           type (edge), pointer :: calls => NULL()
         end type
@@ -156,7 +163,6 @@
                     newel%first => newli2
                     cur => newli2
 !                    print *,iaddr(cur%called), 'called'
-
 !                   print *,iaddr(cur), 'location of next list element'!%value
                     
               end if              
@@ -175,6 +181,9 @@
           type (vertexlist), pointer :: newver
           character (len = 20) itoa
           character (len = 20) itoa2
+          character (len = 20) itoa3
+          character (len = 20) itoa4
+          character (len = 20) itoa5
           character (len = 40) blankstr
           if(associated(invertex%first%next)) then
             itr => invertex%first
@@ -184,11 +193,18 @@
               itoa = adjustl(itoa)
               write(itoa2, '(I)') itr%called%integers
               itoa2 = adjustl(itoa2)
+              write(itoa3, '(I)') itr%called%argFloats
+              itoa3 = adjustl(itoa3)
+              write(itoa4, '(I)') itr%called%ArgInts
+              itoa4 = adjustl(itoa4)
+              write(itoa5, '(I)') itr%called%ArgBools
+              itoa5 = adjustl(itoa5)
               write(10,'(I,A,A,A,A,A,A,A)')iaddr(itr%called),&
               '[shape="box" height=.25 label="',&
        trim(itr%called%value),' ', trim(itoa), ':', trim(itoa2), '"];'
-              write (10,'(I, A,I, A)') iaddr(invertex), '->',&
-       iaddr(itr%called), ' ;' 
+            write (10,'(I, A,I, A,A,A,A,A,A,A)') iaddr(invertex), '->',&
+       iaddr(itr%called), '[label="', trim(itoa3), ':', trim(itoa4),&
+       ':', trim(itoa5), '"];' 
               call graphprint(itr%called)
               if(associated (itr%next)) then
                 itr => itr%next
@@ -205,12 +221,20 @@
               itoa = adjustl(itoa)
               write(itoa2, '(I)') invertex%first%called%integers
               itoa2 = adjustl(itoa2)
-              write(10,'(I,A,A,A,A,A,A,A)')iaddr(invertex%first%called),&
+              write(itoa3, '(I)') invertex%first%called%argFloats
+              itoa3 = adjustl(itoa3)
+              write(itoa4, '(I)') invertex%first%called%ArgInts
+              itoa4 = adjustl(itoa4)
+              write(itoa5, '(I)') invertex%first%called%ArgBools
+              itoa5 = adjustl(itoa5)
+            write(10,'(I,A,A,A,A,A,A,A)')iaddr(invertex%first%called),&
        '[shape="box" height=.25 label="',&
        trim(invertex%first%called%value), ' ', trim(itoa), ':',&
        trim(itoa2), '"];'
-              write (10,'(I, A,I, A)') iaddr(invertex), '->',&
-       iaddr(invertex%first%called), ' ;' 
+              write (10,'(I, A,I, A,A,A,A,A,A,A)') iaddr(invertex), '->',&
+       iaddr(invertex%first%called), '[label="', trim(itoa3), ':',&
+       trim(itoa4), ':', trim(itoa5), '"];'
+
                call graphprint(invertex%first%called)
             else
                call makevertex(invertex)
@@ -223,15 +247,25 @@
           type (edge), pointer :: itr2
           character (len = 20) :: itoa
           character (len = 20) :: itoa2
+          character (len = 20) :: itoa3
+          character (len = 20) :: itoa4
+          character (len = 20) :: itoa5          
           itr => graph
           do 130
             write(itoa, '(I)') itr%doubles
             itoa = adjustl(itoa)
             write(itoa2, '(I)') itr%integers
-            itoa2 = adjustl(itoa2)                                   
-            write(11, *) trim(itr%value),&
+            itoa2 = adjustl(itoa2)
+            write(itoa3, '(I)') itr%argInts
+            itoa3 = adjustl(itoa3)
+            write(itoa4, '(I)') itr%argFloats
+            itoa4 = adjustl(itoa4)
+            write(itoa5, '(I)') itr%argBools
+            itoa5 = adjustl(itoa5)
+            write(11, '(A,A,A,A,A,A,A,A,A,A,A,A,A,A)') trim(itr%value),&
        '[shape="box" height=.25 label="', trim(itr%value),&
-       ' ', trim(itoa), ':', trim(itoa2),'"];'
+       ' ', trim(itoa), ':', trim(itoa2), ' ', trim(itoa4), ':',&
+       trim(itoa3), ':', trim(itoa5),   '"];'
             if (associated(itr%next)) then
               itr => itr%next
             else
@@ -290,6 +324,9 @@
                     itr2%value = invertex%value
                     itr2%doubles = invertex%doubles
                     itr2%integers = invertex%integers
+                    itr2%argInts = invertex%argInts
+                    itr2%argFloats = invertex%argFloats
+                    itr2%argBools = invertex%argBools
                     exit
                   endif
                 endif
@@ -338,6 +375,9 @@
                     itr2%value = invertex%value
                     itr2%doubles = invertex%doubles
                     itr2%integers = invertex%integers
+                    itr2%argInts = invertex%argInts
+                    itr2%argFloats = invertex%argFloats
+                    itr2%argBools = invertex%argBools       
                     exit
                   endif
                 endif

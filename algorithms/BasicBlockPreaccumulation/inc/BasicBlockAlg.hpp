@@ -126,7 +126,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static void setAllAlgorithms();
 
-
+    /**
+     * Sets flag to insert runtime conuters into the code.
+     */
+    static void setRuntimeCounters();
+ 
     static Compute_elimination_sequence_fp ourCompute_elimination_sequence_fp;
     static int ourIntParameter;
     static double ourGamma;
@@ -211,6 +215,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static PrivateLinearizedComputationalGraphEdgeAlgFactory* ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p;
     static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;
     static bool chooseAlg; //IK
+    static bool runtimeCounters; //IK
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;//IK
     PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;//IK
     
