@@ -64,6 +64,7 @@
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -87,7 +88,8 @@ void Usage(char** argv) {
 	    << "             [-r] force renaming of all non-external routines" << std::endl
 	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
 	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
-            << "             [-a] dynamically choose graph elimination algorithm" << std::endl;
+            << "             [-a] dynamically choose graph elimination algorithm" << std::endl
+	    << "             [-C] turn on runtime counters"  << std::endl;
 } 
 
 /*class VertexLabelWriter
@@ -116,7 +118,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwpruUa",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwpruUaC",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -145,6 +147,11 @@ int main(int argc,char** argv) {
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
     if (CommandLineParser::instance()->isSet('a'))
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
+    if (CommandLineParser::instance()->isSet('C'))
+    {
+     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
+     xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::setRuntimeCounters();
+    }
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());

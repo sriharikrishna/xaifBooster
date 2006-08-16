@@ -87,6 +87,11 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
     virtual void algorithm_action_4();
 
+    /**
+     * Sets flag to insert runtime conuters into the code.
+     */
+    static void setRuntimeCounters();
+
   private:
     
     /** 
@@ -150,6 +155,11 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * make entry, exit and a basic block which is returned
      */
     BasicBlock& initCheckPointCFG(ControlFlowGraph& aCheckPointCFG); 
+
+    /**
+     * Says whether runtime counter information should be output
+     */
+    static bool runtimeCounters;
 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;//IK
         PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;//IK

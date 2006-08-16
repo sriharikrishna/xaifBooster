@@ -107,6 +107,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   unsigned int BasicBlockAlg::ourAssignmentCounter=0;
   unsigned int BasicBlockAlg::ourSequenceCounter=0;
   bool BasicBlockAlg::chooseAlg=false;
+  bool BasicBlockAlg::runtimeCounters=false;
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
@@ -241,12 +242,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        << getContaining().getScope().getId().c_str()
        << "\">" 
        << std::endl;
-    //Add macros for printing out counters
-    for(PlainBasicBlock::BasicBlockElementList::const_iterator myBasicBlockElementListI = myBasicBlockElementList.begin();
-        myBasicBlockElementListI != myBasicBlockElementList.end();
-        ++myBasicBlockElementListI)
+    if(runtimeCounters)
     {
-      (*(myBasicBlockElementListI))->printXMLHierarchy(os);
+      //Add macros for printing out counters
+      for(PlainBasicBlock::BasicBlockElementList::const_iterator myBasicBlockElementListI = myBasicBlockElementList.begin();
+          myBasicBlockElementListI != myBasicBlockElementList.end();
+          ++myBasicBlockElementListI)
+      {
+        (*(myBasicBlockElementListI))->printXMLHierarchy(os);
+      }
     }
     for (PlainBasicBlock::BasicBlockElementList::const_iterator li=getContaining().getBasicBlockElementList().begin();
 	 li!=getContaining().getBasicBlockElementList().end();
@@ -616,17 +620,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	}
         //Insert Macros into the code that will be expanded to count multiplications and additions
         //Multiplication counter
-        theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
-        theSubroutineCall_p->setId("inline_countmult");
-        theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getMulValue());
-        // save it in the list
-        myBasicBlockElementList.push_back(theSubroutineCall_p);
-        //Addition Counter
-        theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
-        theSubroutineCall_p->setId("inline_countadd");
-        theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getAddValue());
-        // save it in the list
-        myBasicBlockElementList.push_back(theSubroutineCall_p);
+	if(runtimeCounters)
+	{
+          theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
+          theSubroutineCall_p->setId("inline_countmult");
+          theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getMulValue());
+          // save it in the list
+          myBasicBlockElementList.push_back(theSubroutineCall_p);
+          //Addition Counter
+          theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
+          theSubroutineCall_p->setId("inline_countadd");
+          theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getAddValue());
+          // save it in the list
+          myBasicBlockElementList.push_back(theSubroutineCall_p);
+	}
 
 	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
 	      (*best).getGraphList().begin();
@@ -1229,6 +1236,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::setAllAlgorithms(){
      chooseAlg = true;
+  }
+
+  void BasicBlockAlg::setRuntimeCounters(){
+     runtimeCounters = true;
   }
   
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

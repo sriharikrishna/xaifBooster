@@ -69,6 +69,9 @@ C ========== end copyright notice ==============
           integer, save :: theSwitch = 0
           integer, save :: prevint = 1
           integer, save :: prevdouble = 1
+          integer, save :: prevBStack = 0
+          integer, save :: prevIStack = 0
+          integer, save :: prevFStack = 0
           
           ! checkpointing stacks and offsets
           integer :: cp_loop_variable_1,cp_loop_variable_2,
@@ -166,13 +169,25 @@ C taping
               if (.not. associated(prev)) then
                 tree%doubles = double_tape_pointer - prevdouble-1
                 tree%integers = integer_tape_pointer - prevint-1
+                tree%argInts = -1*(theArgIStackOffset - prevIStack)
+                tree%argFloats = -1*(theArgFStackOffset - prevFStack)
+                tree%argBools =  -1*(theArgBStackOffset - prevBStack)
                 prevdouble = integer_tape_pointer
                 prevint = double_tape_pointer
+                prevBStack = -1*theArgBStackOffset
+                prevIStack = -1*theArgIStackOffset
+                prevFStack = -1*theArgFStackOffset                
               else
                 prev%called%doubles = double_tape_pointer - prevdouble
                 prev%called%integers = integer_tape_pointer- prevint
+                prev%called%argInts =-1*(theArgIStackOffset-prevIStack)
+                prev%called%argFloats=-1*(theArgFStackOffset-prevFStack)
+                prev%called%argBools= -1*(theArgBStackOffset-prevBStack)
                 prevdouble = integer_tape_pointer
                 prevint = double_tape_pointer
+                prevBStack = -1*theArgBStackOffset
+                prevIStack = -1*theArgIStackOffset
+                prevFStack = -1*theArgFStackOffset
               endif
 C                call diff tape storage only once flag
           end if 
@@ -213,12 +228,15 @@ C     +" DT:",double_tape_pointer,
 C     +" IT:",integer_tape_pointer
          prevint = integer_tape_pointer
          prevdouble = double_tape_pointer
+         prevBStack = theArgBStackOffset
+         prevIStack = theArgIStackOffset
+         prevFStack = theArgFStackOffset
          if (our_rev_mode%tape) then
           if( associated(prev)) then
              cur => prev
            else  
              !if(tree%first%called%value .eq. cur%called%value) then
-           Open (Unit=10, File='temp.out', status='replace', 
+           Open (Unit=10, File='/tmp/calltree.out', status='replace', 
      + action='write', iostat=ierror)
            write(10, *) 'digraph G {'
            write(10, *) 'nodesep=.05;'
@@ -236,16 +254,18 @@ C     +" IT:",integer_tape_pointer
             Call graphprint(tree)
             write(10, *) '1[ height=.25 label="SubroutineName',
      + ' double:integer"];'
+            write(10, '(A,A)') '2[height=.25 label="Edge checkpoint',
+     + ' double:integer:boolean"];'
             write(10, *) '}'
             close(10)
-            Open (Unit=11, File='temp2.out', status='replace',
+            Open (Unit=11, File='/tmp/callgraph.out', status='replace',
      + action='write', iostat=ierror)
             write(11, *) 'digraph G {'
             write(11, *) 'nodesep=.05;'
             write(11, *) 'ranksep=.05;'
             call graph2print()
-            write(11, *) '1[ height=.25 label="SubroutineName',
-     + ' double:integer"];'
+            write(11, '(A,A)') '1[ height=.25 label="SubroutineName',
+     + ' tape double:integer checkpoint double:integer:boolean"];'
             write(11, *) '}'
             close(11)
              !read *, five

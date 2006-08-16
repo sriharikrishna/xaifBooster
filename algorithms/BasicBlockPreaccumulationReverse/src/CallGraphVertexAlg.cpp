@@ -75,6 +75,8 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
+  bool CallGraphVertexAlg::runtimeCounters=false;
+	
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     xaifBoosterAddressArithmetic::CallGraphVertexAlg(theContaining), 
     myReplacementList_p(0),
@@ -234,14 +236,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 			    SideEffectListType::READ_LIST,
 			    theBasicBlock,
 			    false, count);
-	
-	 xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countcheckpoint")));
-	 //add it to the basic block
-         theBasicBlock.supplyAndAddBasicBlockElementInstance(aNewCall);
-	// give it the onstrcuted name as an ID extended by
-	aNewCall.setId("countcheckpoint");
-	                                                      
-
+        if(runtimeCounters)	
+	{
+	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countcheckpoint")));
+	  //add it to the basic block
+          theBasicBlock.supplyAndAddBasicBlockElementInstance(aNewCall);
+	  // give it the onstrcuted name as an ID extended by
+	  aNewCall.setId("countcheckpoint");
+	}                                                    
 	myArg = myArg + count;
 	count.reset();
 	break;
@@ -317,7 +319,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	break;
       }// end switch
     } // end for
-    if(1)
+    if(0)
     {	    
       std::cout << "Arg counters:" << std::endl;
       myArg.print();
@@ -463,5 +465,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     theInlineVariable.getAliasMapKey().setTemporary();
     theInlineVariable.getDuUdMapKey().setTemporary();
   } 
+
+  void CallGraphVertexAlg::setRuntimeCounters() {
+    runtimeCounters = true;
+  }
 
 } // end of namespace 
