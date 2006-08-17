@@ -168,8 +168,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     	      subroutineOperations = subroutineOperations + tester2.getBasicBlockOperations();
 	    }
     }
-    std::cout << "Subroutine Operations:" << std::endl;
-    subroutineOperations.print();
+    DBG_MACRO(DbgGroup::METRIC, "Subroutine Operations "
+              << subroutineOperations.debug());
     if (theSymbolAlg.hasReplacementSymbolReference()) 
       theSymbolReference_p=&(theSymbolAlg.getReplacementSymbolReference());
     else
@@ -321,14 +321,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     } // end for
     if(0)
     {	    
-      std::cout << "Arg counters:" << std::endl;
-      myArg.print();
+      DBG_MACRO(DbgGroup::METRIC, "Arg "
+            << myArg.debug());
       subroutineMemOperations = myArg;
     }
     else
     {
-      std::cout << "Tsarg counters:" << std::endl;
-      myTsarg.print();
+      DBG_MACRO(DbgGroup::METRIC, "Tsarg "
+            << myTsarg.debug());
       subroutineMemOperations = myTsarg;
     }
   } 

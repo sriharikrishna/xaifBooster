@@ -52,6 +52,7 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/MemCounter.hpp"
 #include <iostream>
+#include <sstream>
 
 namespace xaifBooster { 
  
@@ -164,6 +165,19 @@ namespace xaifBooster {
   void MemCounter::realScaReset() {
     myRealScalar = 0;
   }
+
+  std::string MemCounter::debug () const {
+    std::ostringstream out;
+    out << "Ints Sca=" << myIntScalar
+        << " Vec=" << myIntVector
+        << " Mat=" << myIntMatrix
+        << " Reals Sca=" << myRealScalar
+        << " Vec=" << myRealVector
+        << " Mat=" << myRealMatrix
+        << "]" << std::ends;
+    return out.str();
+  } // end of Symbol::debug
+
 
   void MemCounter::print() const {
     intScaPrint(); 
