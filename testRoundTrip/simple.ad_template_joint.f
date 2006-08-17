@@ -67,6 +67,8 @@ C ========== end copyright notice ==============
 
           !counters
           integer, save :: theSwitch = 0
+
+          !Graph variables
           integer, save :: prevint = 1
           integer, save :: prevdouble = 1
           integer, save :: prevBStack = 0
@@ -107,11 +109,15 @@ C ========== end copyright notice ==============
 
           type(modeType) :: our_orig_mode
 
+          !Variables for making graphs
+
          type (list), pointer :: prev => NULL()
          integer :: ierror, counter, counter2, counter3
          
          character (len = 20) itoa 
          character (len = 20) itoa2
+
+         !end graph varibables
 
 	  ! call external C function used in inlined code
           !integer iaddr
@@ -127,9 +133,13 @@ C     +" RF:",theResFStackoffset,
 C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+
+!function to make graphs
           if (our_rev_mode%tape) then
             Call makelinks('__SRNAME__', prev)
           endif
+!end function to make graphs
+       
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
@@ -166,6 +176,8 @@ C taping
             our_rev_mode%plain=.FALSE.
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
+
+            !Part of making graphs
               if (.not. associated(prev)) then
                 tree%doubles = double_tape_pointer - prevdouble-1
                 tree%integers = integer_tape_pointer - prevint-1
@@ -189,6 +201,7 @@ C taping
                 prevIStack = -1*theArgIStackOffset
                 prevFStack = -1*theArgFStackOffset
               endif
+             !end Graph code
 C                call diff tape storage only once flag
           end if 
           if (our_rev_mode%res_restore) then
@@ -226,6 +239,8 @@ C     +" RF:",theResFStackoffset,
 C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+
+         !graph code
          prevint = integer_tape_pointer
          prevdouble = double_tape_pointer
          prevBStack = theArgBStackOffset
@@ -271,6 +286,7 @@ C     +" IT:",integer_tape_pointer
              !read *, five
              !endif
              endif
-           endif                              
+           endif    
+         !end graph code
 
         end subroutine template
