@@ -54,6 +54,7 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/utils/inc/Debuggable.hpp"
+#include <string>
 
 namespace xaifBooster { 
 
@@ -101,6 +102,12 @@ namespace xaifBooster {
     void addReset();
     void mulReset();
     void jacReset();
+
+    /**
+     * Prints all the counters values on a single line.
+     */
+    std::string debug() const ;
+    
 
     /**
      * Calls every counter's print function and the Total Print function.

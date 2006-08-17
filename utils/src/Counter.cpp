@@ -52,6 +52,7 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/Counter.hpp"
 #include <iostream>
+#include <sstream>
 
 namespace xaifBooster { 
  
@@ -101,6 +102,16 @@ namespace xaifBooster {
   void Counter::jacReset() {
     myJacobianEntry = 0;
   }
+  
+  std::string Counter::debug () const {
+    std::ostringstream out;
+    out << "Mults=" << myMultiply
+        << " Adds=" << myAdd
+        << " Jacs=" << myJacobianEntry
+        << "]" << std::ends;
+    return out.str();
+  } // end of Symbol::debug
+
   
   void Counter::print() const {
     jacPrint(); 

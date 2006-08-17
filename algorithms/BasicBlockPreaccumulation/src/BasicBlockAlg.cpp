@@ -576,9 +576,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         min = current; //since first this is min
         best = &alg1Test; //it is also best
         //debuging print statements with results
-        std::cout << "first" << std::endl;
-        current.mulPrint();
-        current.addPrint();
+	DBG_MACRO(DbgGroup::METRIC, "Default "
+			<< current.debug());
         current.reset(); //Reset counter for next algorithm
 	
         if(chooseAlg)
@@ -587,10 +586,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
           (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg2Test); //Run algorithm
           countOperations(alg2Test, current); //Count algorithm
           //Debuging output statements
-          std::cout << "second" << std::endl;
-          current.mulPrint();
-          current.addPrint();
-          //Was current algorithm better than old algorithm
+          DBG_MACRO(DbgGroup::METRIC, "Vertex "
+			<< current.debug());//Was current algorithm better than old algorithm
           if(current < min)
           {
             best = &alg2Test; //If better store new algrithms results
@@ -601,9 +598,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
           (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg3Test); //Run algorithm
           countOperations(alg3Test, current); //Count algorithm
           //debugging statements
-          std::cout << "third" << std::endl;
-          current.mulPrint();
-          current.addPrint();
+          DBG_MACRO(DbgGroup::METRIC, "Face "
+		        << current.debug());
           //Was current algorithm better than old algorithm
           if(current < min)
           {
@@ -775,10 +771,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
 	} // end for 
       //debuging print statements with results
-      std::cout << "basicBlockOperations" << std::endl;
-      basicBlockOperations.print();
-      //basicBlockOperations.reset(); //Reset counter for next algorithm
-
+      DBG_MACRO(DbgGroup::METRIC, "BasicBlockOperations "
+                  << basicBlockOperations.debug());
       } // end if have flattened graph with more than one vertex
       else { 
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
