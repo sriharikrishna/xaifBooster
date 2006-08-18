@@ -67,25 +67,7 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"//IK
 
-#include <sstream>
-#include "xaifBooster/utils/inc/PrintManager.hpp"
-#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-
-#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
-#include "xaifBooster/system/inc/CallGraph.hpp"
-
-#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
-#include "xaifBooster/system/inc/Argument.hpp"
-#include "xaifBooster/system/inc/Intrinsic.hpp"
-#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
-#include "xaifBooster/system/inc/Constant.hpp"
-#include "xaifBooster/system/inc/SubroutineCall.hpp"
-#include "xaifBooster/system/inc/BooleanOperation.hpp"
-
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlg.hpp"
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/BasicBlockAlg.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
