@@ -98,7 +98,7 @@ void Usage(char** argv) {
 	    << "             [-C] turn on runtime counters"  << std::endl;
 } 
 
-class CallGraphVertexLabelWriter
+/*class CallGraphVertexLabelWriter
 {
    public:
     CallGraphVertexLabelWriter(const CallGraph& g) : myG(g) {};
@@ -150,7 +150,7 @@ class CallGraphEdgeLabelWriter
     const CallGraph& myG;
 
 	
-};
+};*/
 
 
 
@@ -244,10 +244,10 @@ int main(int argc,char** argv) {
     DBG_MACRO(DbgGroup::TIMING,"before unparse");
 
       //  if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-           GraphVizDisplay::show(Cg,
+    /*GraphVizDisplay::show(Cg,
                           "StaticGraph",
                           CallGraphVertexLabelWriter(Cg),
-                          CallGraphEdgeLabelWriter(Cg));
+                          CallGraphEdgeLabelWriter(Cg));*/
       //   }
   
     

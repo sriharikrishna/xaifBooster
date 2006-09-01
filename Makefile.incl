@@ -155,6 +155,6 @@ obj/%.o: %.cpp
 	       -e '/^$$/ d' \
 	       -e 's,$$, :,' < obj/$*.d.$$$$ >> obj/$*.d; \
 	   rm -f obj/$*.d.$$$$
-	$(CC) $(CCFLAGS) $(IPATH) -c $< -o $@
+	$(CC) $(CCFLAGS) -o3 $(IPATH) -c $< -o $@
 
 export DOXYGEN = doxygen
