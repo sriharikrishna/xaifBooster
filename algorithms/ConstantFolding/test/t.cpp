@@ -62,6 +62,8 @@
 
 using namespace xaifBooster;
 
+#include "xaifBooster/algorithms/ConstantFolding/test/buildStamp.hpp"
+
 void Usage(char** argv) { 
   std::cout << "test driver: "
 	    << argv[0]
@@ -71,10 +73,12 @@ void Usage(char** argv) {
 	    << "                 both default to cout" << std::endl
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
-	    << "                 default to 0(ERROR)" << std::endl;
+	    << "                 default to 0(ERROR)" << std::endl
+	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
 
 int main(int argc,char** argv) { 
+  DbgLoggerManager::instance()->setBinaryBuildInfo(buildStamp);
   DbgLoggerManager::instance()->setSelection(DbgGroup::ERROR 
 					     //| DbgGroup::CALLSTACK | DbgGroup::TEMPORARY
 					     );

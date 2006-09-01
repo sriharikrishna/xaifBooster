@@ -52,10 +52,10 @@
 # ========== end copyright notice ==============
 MAIN=t
 
-test: $(MAIN) quickRegression.bash
+test: buildStamp.hpp $(MAIN) quickRegression.bash
 
 clean:
-	rm -f obj/*.o obj/*.d $(MAIN) quickRegression.bash 
+	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) quickRegression.bash 
 	rm -rf tmp
 
 obj doc: ;
