@@ -66,6 +66,8 @@
 
 using namespace xaifBooster;
 
+#include "xaifBooster/algorithms/AddressArithmetic/test/buildStamp.hpp"
+
 void Usage(char** argv) { 
   std::cout << "test driver: "
 	    << argv[0]
@@ -76,10 +78,12 @@ void Usage(char** argv) {
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
-	    << "             [-S] force statement level preaccumulation" << std::endl;
+	    << "             [-S] force statement level preaccumulation" << std::endl
+	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
 
 int main(int argc,char** argv) { 
+  DbgLoggerManager::instance()->setBinaryBuildInfo(buildStamp);
   DbgLoggerManager::instance()->setSelection(DbgGroup::ERROR 
 					     //| DbgGroup::CALLSTACK | DbgGroup::TEMPORARY
 					     );

@@ -66,6 +66,8 @@
 
 using namespace xaifBooster;
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/test/buildStamp.hpp"
+
 void Usage(char** argv) { 
   std::cout << "test driver: "
 	    << argv[0]
@@ -85,10 +87,12 @@ void Usage(char** argv) {
             << "                 space separated list enclosed in double quotes" << std::endl
 	    << "             [-r] force renaming of all non-external routines" << std::endl
 	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
-	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl;
+	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
+	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
 
 int main(int argc,char** argv) { 
+  DbgLoggerManager::instance()->setBinaryBuildInfo(buildStamp);
   DbgLoggerManager::instance()->setSelection(DbgGroup::ERROR 
 					     //| DbgGroup::CALLSTACK | DbgGroup::TEMPORARY
 					     );

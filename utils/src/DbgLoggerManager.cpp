@@ -131,6 +131,11 @@ namespace xaifBooster {
     ourInstanceMutex.unlock();
   } // end of DbgLoggerManager::setFile
 
+  void 
+  DbgLoggerManager::setBinaryBuildInfo(const std::string& aBuildInfo_c) { 
+    myBinaryBuildInfo=aBuildInfo_c;
+  } 
+
   unsigned int
   DbgLoggerManager::getSelection() const {
     return(mySelector);
@@ -227,7 +232,10 @@ namespace xaifBooster {
 	  else { 
 	    // startup message
 	    std::ostringstream startupMessage;
-	    startupMessage << "========================================== reset log"; 
+	    if (!myBinaryBuildInfo.empty())
+	      startupMessage << "=== " << myBinaryBuildInfo.c_str() << " === reset log";
+	    else
+	      startupMessage << "========================================== reset log"; 
 	    myLogger_p->logMessage(startupMessage);
 	  } // end else 
 	} // end if 

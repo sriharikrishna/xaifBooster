@@ -52,10 +52,10 @@
 # ========== end copyright notice ==============
 MAIN=t
 
-test: $(MAIN)
+test: buildStamp.hpp $(MAIN)
 
 clean:
-	rm -f obj/*.o obj/*.d $(MAIN) 
+	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) 
 	rm -rf tmp
 
 oabj doc: ;
@@ -65,5 +65,6 @@ oabj doc: ;
 include ../../Makefile.incl
 -include $(DEPINCL)
 
-$(MAIN): obj/$(MAIN).o $(SYSTEM_OBJ_SET) $(LIBS)
+$(MAIN): obj/$(MAIN).o $(SYSTEM_OBJ_SET) $(LIBS) 
 	$(CC) $^ $(LFLAGS) -o $@
+

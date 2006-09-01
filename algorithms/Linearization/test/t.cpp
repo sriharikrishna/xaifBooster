@@ -65,6 +65,8 @@
 
 using namespace xaifBooster;
 
+#include "xaifBooster/algorithms/Linearization/test/buildStamp.hpp"
+
 void Usage(char** argv) { 
   std::cout << "test driver: "
 	    << argv[0]
@@ -78,10 +80,12 @@ void Usage(char** argv) {
 	    << "             [-w \"<list of subroutines with wrappers\"]" << std::endl
             << "                 space separated list enclosed in double quotes" << std::endl
 	    << "             [-r] " << std::endl
-	    << "                 force renaming of all non-external routines" << std::endl;
+	    << "                 force renaming of all non-external routines" << std::endl
+	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
 
 int main(int argc,char** argv) { 
+  DbgLoggerManager::instance()->setBinaryBuildInfo(buildStamp);
   DbgLoggerManager::instance()->setSelection(DbgGroup::ERROR 
 					     //| DbgGroup::CALLSTACK | DbgGroup::TEMPORARY
 					     );

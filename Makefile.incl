@@ -157,4 +157,9 @@ obj/%.o: %.cpp
 	   rm -f obj/$*.d.$$$$
 	$(CC) $(CCFLAGS) $(IPATH) -c $< -o $@
 
+buildStamp.hpp: FORCE
+	$(XAIFBOOSTERROOT)/xaifBooster/createBuildStamp.sh
+
+FORCE:
+
 export DOXYGEN = doxygen

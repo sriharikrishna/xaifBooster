@@ -115,6 +115,11 @@ namespace xaifBooster {
      */
     void setFile(const std::string& aFileName_c);
 
+    /** 
+     * build info of the binary using this instance 
+     */
+    void setBinaryBuildInfo(const std::string& aBuildInfo_c);
+
     unsigned int getSelection() const ; 
 
     std::string getFileName() const ;
@@ -170,6 +175,12 @@ namespace xaifBooster {
      * may be empty
      */
     std::string myDebugOutPutFileName; 
+
+    /**
+     * the build info for the binary 
+     * the uses this instance
+     */
+    std::string myBinaryBuildInfo; 
 
     /**
      * the current selection
