@@ -54,6 +54,7 @@
 
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/Counter.hpp" //IK
 
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
@@ -105,7 +106,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   unsigned int BasicBlockAlg::ourAssignmentCounter=0;
   unsigned int BasicBlockAlg::ourSequenceCounter=0;
-
+  bool BasicBlockAlg::chooseAlg=false;
+  bool BasicBlockAlg::runtimeCounters=false;
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
@@ -114,9 +116,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myFlattenedSequence_p=ourPrivateLinearizedComputationalGraphAlgFactory_p->makeNewPrivateLinearizedComputationalGraph();
   }
   
-  BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence;
-  int BasicBlockAlg::ourIntParameter=1;
-  double BasicBlockAlg::ourGamma=0.0;
+  //BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence;
+  BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=0;
+  int BasicBlockAlg::ourIntParameter=5000;
+  double BasicBlockAlg::ourGamma=5.0;
 
   BasicBlockAlg::Sequence::~Sequence() { 
     for (AssignmentPList::iterator i=myFrontAssignmentList.begin();
@@ -142,6 +145,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory() {
     return ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;  
   }
+
+  
+  
   void  BasicBlockAlg::setPrivateLinearizedComputationalGraphAlgFactory(PrivateLinearizedComputationalGraphAlgFactory* thePrivateLinearizedComputationalGraphAlgFactory) {
     ourPrivateLinearizedComputationalGraphAlgFactory_p=thePrivateLinearizedComputationalGraphAlgFactory;  
   }
@@ -236,6 +242,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        << getContaining().getScope().getId().c_str()
        << "\">" 
        << std::endl;
+    if(runtimeCounters)
+    {
+      //Add macros for printing out counters
+      for(PlainBasicBlock::BasicBlockElementList::const_iterator myBasicBlockElementListI = myBasicBlockElementList.begin();
+          myBasicBlockElementListI != myBasicBlockElementList.end();
+          ++myBasicBlockElementListI)
+      {
+        (*(myBasicBlockElementListI))->printXMLHierarchy(os);
+      }
+    }
     for (PlainBasicBlock::BasicBlockElementList::const_iterator li=getContaining().getBasicBlockElementList().begin();
 	 li!=getContaining().getBasicBlockElementList().end();
 	 li++) { 
@@ -542,55 +558,82 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  GraphVizDisplay::show(theFlattenedSequence,
 				"flattened",
 				PrivateLinearizedComputationalGraphVertexLabelWriter(theFlattenedSequence));
-	} 
-	// call Angel which fills myJacobianAccumulationExpressionList
+	}
+        //Pointer for best list
+        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList *best;
+        //List variables to store algorithms results
+        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg1Test;
+        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg2Test;
+        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg3Test;
+        //Counters for both count of best algorithm and current algorithm
+	Counter min;
+	Counter current;
+        // call Angel which fills myJacobianAccumulationExpressionList and finds most efficient algorithm
 	try { 
-	  if (!ourCompute_elimination_sequence_fp) { 
-	    int interfaceNumber(0);
-	    bool done(false);
-	    while (!done) { 
-	      std::cout << std::endl; 
-	      std::cout << "Pick an ANGEL interface:" << std::endl
-			<< "1: compute_elimination_sequence" << std::endl
-			<< "2: compute_elimination_sequence_lsa_vertex" << std::endl
-			<< "3: compute_elimination_sequence_lsa_face" << std::endl;
-	      std::cin >> interfaceNumber;
-	      done=true;
-	      switch (interfaceNumber) { 
-	      case 1: 
-		ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence;
-		break;
-	      case 2: 
-		ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex;
-		break;
-	      case 3: 
-		ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_face;
-		break;
-	      default:
-		std::cout << interfaceNumber << " is not a valid choice" << std::endl; 
-		done=false;
-		break;
-	      }
-	    }
-	    if (interfaceNumber==1) 
-	      done=true;
-	    else { 
-	      std::cout << "choose the number of iterations: ";
-	      std::cin >> ourIntParameter;
-	      std::cout << "chosen number of iterations is : " << ourIntParameter << std::endl; 
-	      std::cout << "choose gamma: ";
-	      std::cin >> ourGamma;
-	      std::cout << "chosen gamma is : " << ourGamma << std::endl; 
-	    }
-	  }
-	  (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, (*aSequencePListI)->myJacobianAccumulationExpressionList);
-	} 
+        ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence; //Set algorithm
+          (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg1Test); //Run algorithm
+        countOperations(alg1Test, current); //Count algorithm
+        min = current; //since first this is min
+        best = &alg1Test; //it is also best
+        //debuging print statements with results
+	DBG_MACRO(DbgGroup::METRIC, "Default "
+			<< current.debug());
+        current.reset(); //Reset counter for next algorithm
+	
+        if(chooseAlg)
+	{
+	  ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex; //Set algorithm
+          (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg2Test); //Run algorithm
+          countOperations(alg2Test, current); //Count algorithm
+          //Debuging output statements
+          DBG_MACRO(DbgGroup::METRIC, "Vertex "
+			<< current.debug());//Was current algorithm better than old algorithm
+          if(current < min)
+          {
+            best = &alg2Test; //If better store new algrithms results
+            min = current;
+          }
+          current.reset(); //reset counter for next algorithm
+          ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_face; //Set algorithm
+          (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg3Test); //Run algorithm
+          countOperations(alg3Test, current); //Count algorithm
+          //debugging statements
+          DBG_MACRO(DbgGroup::METRIC, "Face "
+		        << current.debug());
+          //Was current algorithm better than old algorithm
+          if(current < min)
+          {
+            best = &alg3Test; //If better store new algorithm results
+            min = current;
+          }
+	}
+        basicBlockOperations = basicBlockOperations + min; //add flattened sequences together
+        current.reset(); //reset counter just in case
+      }
+	
 	catch(...) { 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
 	}
+        //Insert Macros into the code that will be expanded to count multiplications and additions
+        //Multiplication counter
+	if(runtimeCounters)
+	{
+          theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
+          theSubroutineCall_p->setId("inline_countmult");
+          theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getMulValue());
+          // save it in the list
+          myBasicBlockElementList.push_back(theSubroutineCall_p);
+          //Addition Counter
+          theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
+          theSubroutineCall_p->setId("inline_countadd");
+          theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getAddValue());
+          // save it in the list
+          myBasicBlockElementList.push_back(theSubroutineCall_p);
+	}
+
 	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
-	      (*aSequencePListI)->myJacobianAccumulationExpressionList.getGraphList().begin();
-	    it!=(*aSequencePListI)->myJacobianAccumulationExpressionList.getGraphList().end();
+	      (*best).getGraphList().begin();
+	    it!=(*best).getGraphList().end();
 	    ++it) { 
 	  // make a new assignment: 
 	  Assignment& aNewAssignment=(*aSequencePListI)->appendEndAssignment();
@@ -727,12 +770,50 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // add the LHS to the tracking list: 
 	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
 	} // end for 
+      //debuging print statements with results
+      DBG_MACRO(DbgGroup::METRIC, "BasicBlockOperations "
+                  << basicBlockOperations.debug());
       } // end if have flattened graph with more than one vertex
       else { 
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
       }
     } // end for 
   } // end of BasicBlockAlg::algorihm_action_3
+
+   //Counts the number of add and multiply operations that are in a list passed in to it
+   void BasicBlockAlg::countOperations(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList &list, Counter &ops)
+   {
+     //goes through each graph in the list
+     for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
+           list.getGraphList().begin();
+           it!=list.getGraphList().end();
+           ++it) {
+       const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression2(*(*it));
+       xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression2.vertices());
+       xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
+       if(theExpression2.isJacobianEntry())
+       {
+         ops.jacInc();
+       }
+       //goes through every vertex in each graph
+       for (;testVertexI!=testVertexIEnd; ++testVertexI) {
+       //if the vertex is an operation then figure out which one it is and increment the counter
+         if ((*testVertexI).getReferenceType() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION)
+         {
+           if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP)
+           {
+             ops.mulInc();
+           }
+           if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP)
+           {
+             ops.addInc();
+           }
+         }
+       } // end for
+     }
+     return;
+   }
+
 	
   void BasicBlockAlg::handleCollapsedVertex(PrivateLinearizedComputationalGraphVertex& theCollapsedVertex,
 					    VariableCPList& theDepVertexPListCopyWithoutRemovals,
@@ -1135,12 +1216,24 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return ourSequenceCounter;
   }
 
+  Counter& BasicBlockAlg::getBasicBlockOperations(){
+    return basicBlockOperations;
+  }
+
   const DuUdMapDefinitionResult::StatementIdList& BasicBlockAlg::getAssignmentIdList()const { 
     return ourAssignmentIdList;
   } 
 
   void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment) { 
     ourAssignmentIdList.push_back(anAssignment.getId());
-  } 
+  }
+
+  void BasicBlockAlg::setAllAlgorithms(){
+     chooseAlg = true;
+  }
+
+  void BasicBlockAlg::setRuntimeCounters(){
+     runtimeCounters = true;
+  }
   
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 
