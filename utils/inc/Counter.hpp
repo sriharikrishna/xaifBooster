@@ -67,10 +67,10 @@ namespace xaifBooster {
     int myJacobianEntry;
     int myMultiply;
     int myAdd;
-
-    Counter(const Counter&);
 	  
   public:
+
+    Counter(const Counter&);
 
     /**
      * Initializes the values of all counters to 0.
