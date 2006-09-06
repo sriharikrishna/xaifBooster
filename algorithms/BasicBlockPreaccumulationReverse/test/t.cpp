@@ -50,6 +50,7 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <fstream>
 #include <iostream>
 #include <utility>
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
@@ -63,6 +64,13 @@
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"//IK
+
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
+
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
 
 using namespace xaifBooster;
 
@@ -85,8 +93,66 @@ void Usage(char** argv) {
             << "                 space separated list enclosed in double quotes" << std::endl
 	    << "             [-r] force renaming of all non-external routines" << std::endl
 	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
-	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl;
+	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
+            << "             [-a] dynamically choose graph elimination algorithm" << std::endl
+	    << "             [-C] turn on runtime counters"  << std::endl;
 } 
+
+/*class CallGraphVertexLabelWriter
+{
+   public:
+    CallGraphVertexLabelWriter(const CallGraph& g) : myG(g) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      CallGraphVertex* theCallGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
+      std::string theVertexKind;
+      std::string theXaifId;
+      if (dynamic_cast<ControlFlowGraphVertex*>(theCallGraphVertex_p)->isOriginal()) {
+        const xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg& va(dynamic_cast<const xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg&>(theCallGraphVertex_p->getOriginalVertex().getCallGraphVertexAlgBase()));
+        theVertexKind=va.kindToString();
+        const CallGraphVertex& v(dynamic_cast<const CallGraphVertex&>(theCallGraphVertex_p->getOriginalVertex()));
+        theXaifId=v.getId();
+
+      }
+      else {
+        const xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg& va(dynamic_cast<const xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg&>(theCallGraphVertex_p->getNewVertex().getCallGraphVertexAlgBase()));
+        theVertexKind=va.kindToString();
+        const CallGraphVertex& v(dynamic_cast<const CallGraphVertex&>(theCallGraphVertex_p->getNewVertex()));
+        theXaifId=v.getId();
+      }
+      if (theCallGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) {
+        std::ostringstream temp;
+        temp << theXaifId.c_str() << ".e" << std::ends;
+        theXaifId=temp.str();
+      }
+      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
+    }
+    const CallGraph& myG;
+};
+
+class CallGraphEdgeLabelWriter
+{
+    public:
+    CallGraphEdgeLabelWriter(const CallGraph& g) : myG(g) {};
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
+      CallGraphEdge* theCallGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
+      if (theCallGraphEdge_p->hasConditionValue() ||
+          theCallGraphEdge_p->hasRevConditionValue()) {
+        out << "[label=\"";
+        if (theCallGraphEdge_p->hasConditionValue())
+          out << theCallGraphEdge_p->getConditionValue();
+        if (theCallGraphEdge_p->hasRevConditionValue())
+          out << "r" << theCallGraphEdge_p->getRevConditionValue();
+        out << "\"]";
+      }
+    }
+    const CallGraph& myG;
+
+	
+};*/
+
+
 
 int main(int argc,char** argv) { 
   DbgLoggerManager::instance()->setSelection(DbgGroup::ERROR 
@@ -99,7 +165,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwpruU",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwpruUaC",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -126,6 +192,13 @@ int main(int argc,char** argv) {
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setUserDecides();
     if (CommandLineParser::instance()->isSet('U')) 
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
+    if (CommandLineParser::instance()->isSet('a'))
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
+    if (CommandLineParser::instance()->isSet('C'))
+    {
+     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
+     xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::setRuntimeCounters();
+    }
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -169,6 +242,15 @@ int main(int argc,char** argv) {
     DBG_MACRO(DbgGroup::TIMING,"before reversal");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
     DBG_MACRO(DbgGroup::TIMING,"before unparse");
+
+      //  if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+    /*GraphVizDisplay::show(Cg,
+                          "StaticGraph",
+                          CallGraphVertexLabelWriter(Cg),
+                          CallGraphEdgeLabelWriter(Cg));*/
+      //   }
+  
+    
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // fix up the addresses in simple loops
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));

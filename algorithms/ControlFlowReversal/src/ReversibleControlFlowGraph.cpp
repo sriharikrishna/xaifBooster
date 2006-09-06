@@ -1545,11 +1545,11 @@ namespace xaifBoosterControlFlowReversal {
     switch(theOldConditionBooleanOperation_p->getType()) {
     case BooleanOperationType::LESS_THAN_OTYPE :
     case BooleanOperationType::LESS_OR_EQUAL_OTYPE :
-      theNewUpdateOp_p=new Intrinsic("sub_scal_scal",false);
+                                                                theNewUpdateOp_p=new Intrinsic("sub_scal_scal",false);
       break;
     case BooleanOperationType::GREATER_THAN_OTYPE :
     case BooleanOperationType::GREATER_OR_EQUAL_OTYPE :
-      theNewUpdateOp_p=new Intrinsic("add_scal_scal",false);
+                                                              theNewUpdateOp_p=new Intrinsic("add_scal_scal",false);
       break;
     default:
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalUpdate: don't know what to do with operation "
