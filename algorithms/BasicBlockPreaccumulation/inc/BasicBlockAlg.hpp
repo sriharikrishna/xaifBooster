@@ -305,17 +305,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   private: 
 
-    /**
-     * Variables representing the independent and 
-     * the dependent variables of the basic block. Owned by the
-     * algorithm, that is, needs to be deleted by it.
-     */
-    typedef std::list<Variable*> VariablePList;
-    VariablePList myNewIndependentsPList;
-    VariablePList myIndependentsPList;
-    VariablePList myDependentsPList;
-
-
     typedef std::pair<BasicBlockElement*,
 		      Sequence*> BasicBlockElementSequencePPair;
 
