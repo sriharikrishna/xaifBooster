@@ -193,21 +193,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	++i)
       if (*i) // should always be true
 	delete *i;
-    for(VariablePList::iterator i=myNewIndependentsPList.begin();
-	i!=myNewIndependentsPList.end();
-	++i)
-      if (*i) // should always be true
-	delete *i;
-    for(VariablePList::iterator i=myIndependentsPList.begin();
-	i!=myIndependentsPList.end();
-	++i)
-      if (*i) // should always be true
-	delete *i;
-    for(VariablePList::iterator i=myDependentsPList.begin();
-	i!=myDependentsPList.end();
-	++i)
-      if (*i) // should always be true
-	delete *i;
   } // end of BasicBlockAlg::~BasicBlockAlg()
 
   void
@@ -629,7 +614,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			  theDepVertexPListCopyWithoutRemovals)) { 
 	      // make a Variable (container) for use in the saxpys:
 	      Variable* theIndepVariableContainer_p = new Variable;
-	      myNewIndependentsPList.push_back(theIndepVariableContainer_p);
 	      // was this actual indepenent already assigned?
 	      // Note, that at this point they should indeed all be syntactically distinct 
 	      if (!(theListOfAlreadyAssignedIndependents.hasElement(theIndepVariable.equivalenceSignature()))) {
@@ -747,7 +731,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		  theDepVertexPListCopyWithoutRemovals)) { 
       // make a Variable (container) for use in the setDeriv
       Variable* theIndepVariableContainer_p = new Variable;
-      myNewIndependentsPList.push_back(theIndepVariableContainer_p);
       // was this actual indepenent already assigned?
       // Note, that at this point they should indeed all be syntactically distinct 
       if (!(theListOfAlreadyAssignedIndependents.hasElement(theIndepVariable.equivalenceSignature()))) {

@@ -63,7 +63,7 @@ function fileCompare {
   fi
   if [ -n "$hasDiff" ] 
     then 
-    echo  "Transformation difference in $fcfileName:"
+    echo  "Transformation difference in $fcfileName new(<) vs old(>) :"
     diff -I "$ignoreString" $fcfileName $fcexampleDir/refOutput/$referenceFile
     echo  "accept/copy new $fcfileName to $fcexampleDir/refOutput/$referenceFile ? y/[n] "
     read answer
