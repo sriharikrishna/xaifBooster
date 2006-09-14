@@ -26,7 +26,10 @@ for i in `echo ${TESTFILES}`
 	echo "debug messages:"
 	cat tmp/${i}.dbg
         echo -n "QUESTION: there was a problem - hit <enter> to continue "
-	read answer
+	if [ -z "$BATCHMODE" ] 
+          then 
+          read answer
+        fi
 	continue
     fi
     diffs=`diff testOutput/${i}.out tmp/${i}.out`
@@ -39,17 +42,19 @@ for i in `echo ${TESTFILES}`
 	echo "diffs base (<) vs. current (>):"
 	diff testOutput/${i}.out tmp/${i}.out
 	echo -n "QUESTION: there was a difference - checkin y/[n] : "
- 	read answer
-	if [ "${answer}" == "y" ] 
-	then 
-	  if [ -f testOutput/${i}.out ] 
+	if [ -z "$BATCHMODE" ] 
+          then 
+          read answer
+	  if [ "${answer}" == "y" ] 
 	  then 
-  	    bk edit testOutput/${i}.out
-	  fi
-	  cp tmp/${i}.out testOutput/${i}.out
-	else
-          echo -n "QUESTION: there was a problem - hit <enter> to continue "
- 	  read answer
+	    cp tmp/${i}.out testOutput/${i}.out
+	  else
+            echo -n "QUESTION: there was a problem - hit <enter> to continue "
+ 	    if [ -z "$BATCHMODE" ] 
+            then 
+              read answer
+            fi
+          fi
         fi
     fi
     echo ""

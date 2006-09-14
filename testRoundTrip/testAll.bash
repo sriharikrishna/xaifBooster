@@ -34,28 +34,31 @@ function fileCompare {
   fcfileName=$2
   fcmode=$3
   ignoreString=$4
-    #  echo "in fileCompare $1 $2 $3 $4"
+#  echo "in fileCompare $1 $2 $3 $4"
   referenceFile=${fcmode}${fcfileName}
-  if [ ! -f $fcexampleDir/refOutput/$referenceFile ] 
+  if [ -z "$BATCHMODE" ] 
   then 
-    echo -n "$fcexampleDir/refOutput/$referenceFile not available, copy and hg add it? [y]/n "
-    read answer
-    if [ "$answer" == "n" ]
-      then 
-    echo " cannot verify ${fcfileName}"; exit 0;
-    else
-      ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile
-      if [ $? -ne 0 ] 
+    if [ ! -f $fcexampleDir/refOutput/$referenceFile ] 
+    then 
+      echo -n "$fcexampleDir/refOutput/$referenceFile not available, copy and hg add it? [y]/n "
+      read answer
+      if [ "$answer" == "n" ]
         then 
-        echo "ERROR in: ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile"; exit -1;
-      fi
-      hg add $fcexampleDir/refOutput/$referenceFile
-      if [ $? -ne 0 ] 
-        then 
-        echo "ERROR in: hg add $fcexampleDir/refOutput/$referenceFile"; exit -1;
+      echo " cannot verify ${fcfileName}"; exit 0;
+      else
+        ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile
+        if [ $? -ne 0 ] 
+          then 
+          echo "ERROR in: ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile"; exit -1;
+        fi
+        hg add $fcexampleDir/refOutput/$referenceFile
+        if [ $? -ne 0 ] 
+          then 
+          echo "ERROR in: hg add $fcexampleDir/refOutput/$referenceFile"; exit -1;
+        fi
       fi
     fi
-  fi
+  fi 
   hasDiff=$(diff -I "$ignoreString" $fcfileName $fcexampleDir/refOutput/$referenceFile)
   if [ $? -eq 2 ] 
     then 
@@ -66,13 +69,16 @@ function fileCompare {
     echo  "Transformation difference in $fcfileName new(<) vs old(>) :"
     diff -I "$ignoreString" $fcfileName $fcexampleDir/refOutput/$referenceFile
     echo  "accept/copy new $fcfileName to $fcexampleDir/refOutput/$referenceFile ? y/[n] "
-    read answer
-    if [ "$answer" == "y" ] 
-      then 
-      ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile
-      if [ $? -ne 0 ] 
+    if [ -z "$BATCHMODE" ] 
+    then
+      read answer
+      if [ "$answer" == "y" ] 
         then 
-        echo "ERROR in: ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile"; exit -1;
+        ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile
+        if [ $? -ne 0 ] 
+          then 
+          echo "ERROR in: ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile"; exit -1;
+        fi
       fi
     fi
   fi
@@ -85,7 +91,10 @@ if [ -f .lastRun ]
 then 
   read mode SUB_MODE < .lastRun 
   echo -n "reuse last settings (${mode} ${SUB_MODE})? [y]/n "
-  read answer
+  if [ -z "$BATCHMODE" ] 
+  then
+    read answer
+  fi
   if [ "$answer" == "n" ]
   then
     ${MAKE} clean 
@@ -137,7 +146,7 @@ then
 else
   if [ $# -eq 1 -a "$1" == "all" ]
   then 
-    TESTFILES=`ls examples`
+    TESTFILES=`ls examples | grep -v CVS`
   else 
     TESTFILES=$@
   fi
@@ -147,7 +156,12 @@ do
   if [ "$allOkSoFar" == "false" ] 
   then
     echo -n "QUESTION: There was problem with the last example, kill the script or hit enter to continue with $i ?" 
-    read answer
+    if [ -z "$BATCHMODE" ] 
+    then
+      read answer
+    else 
+      echo ""
+    fi
     allOkSoFar="true"
   fi
   if [ ! -d "examples/$i" ] 
