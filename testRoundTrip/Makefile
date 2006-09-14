@@ -53,7 +53,7 @@
 ######################################################
 # pick your compiler
 ######################################################
-F95=ifort -g -fpe0 -O0  
+F95= ifort -g -fpe0 -O0  
 CC=icc
 
 #F95=f95 -g -w=unused
@@ -64,6 +64,8 @@ ifdef REVERSE_MODE
 MODULES=                        \
 w2f__types.o                    \
 active_module.o                 \
+checkpoint_module.o             \
+graph_module.o                  \
 OpenAD_checkpoints.o            \
 OpenAD_dct.o                    \
 OpenAD_rev.o                    \
@@ -121,7 +123,7 @@ head_sf.xaif : head_sf.B whirl2xaif
 
 # XAIF -> XAIF'
 head_sf.xb.xaif : head_sf.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
-	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG)
+	./xaifBooster -g 64 -a -C -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG)
 
 # XAIF' -> WHIRL'
 head_sf.xb.x2w.B : head_sf.xb.xaif xaif2whirl
