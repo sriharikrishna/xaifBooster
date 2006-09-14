@@ -69,8 +69,8 @@ namespace xaifBooster {
 
     public: 
  
-     StatementIdLists(const StatementIdList& myDependentStatementIdList,
-		       const StatementIdList& myPassiveStatementIdList);
+     StatementIdLists(const StatementIdList& aDependentStatementIdList,
+		      const StatementIdList& aPassiveStatementIdList);
       /** 
        * this is to contain
        * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myDependentStatementIdList
