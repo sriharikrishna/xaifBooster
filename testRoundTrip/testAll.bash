@@ -139,7 +139,7 @@ then
   read answer
   if [ "$answer" == "all" ] 
   then 
-    TESTFILES=`ls examples`
+    TESTFILES=`ls examples | grep -v CVS`
   else 
     TESTFILES=$answer
   fi
