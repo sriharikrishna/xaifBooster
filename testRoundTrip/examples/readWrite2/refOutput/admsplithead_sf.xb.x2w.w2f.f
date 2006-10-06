@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:21:44 2006
+C Fortran file translated from WHIRL Fri Oct  6 14:06:23 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -49,7 +49,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
 C     open(3,file='data.tmp')
       OPEN(UNIT = 3, FILE = 'data.tmp')
-      WRITE(3, '(EN26.16E3,EN26.16E3)') __value__(X)
+      WRITE(3, '(EN26.16E3,EN26.16E3)') X
 C     close(3)
       CLOSE(UNIT = 3)
 C     open(3,file='data.tmp')
@@ -65,7 +65,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
 C     open(3,file='data.tmp')
       OPEN(UNIT = 3, FILE = 'data.tmp')
-      WRITE(3, '(EN26.16E3,EN26.16E3)') __value__(X)
+      WRITE(3, '(EN26.16E3,EN26.16E3)') X
 C     close(3)
       CLOSE(UNIT = 3)
 C     open(3,file='data.tmp')

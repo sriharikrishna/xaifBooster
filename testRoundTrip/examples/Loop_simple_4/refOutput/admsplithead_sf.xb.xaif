@@ -259,7 +259,7 @@
             <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="I_4" annotation="" scope_id="3"/>
             </xaif:VariableReference>
-            <xaif:Constant vertex_id="3" type="integer" value="3"/>
+            <xaif:Constant vertex_id="3" type="integer" value="2"/>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
@@ -369,7 +369,7 @@
             <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="I_4" annotation="" scope_id="3"/>
             </xaif:VariableReference>
-            <xaif:Constant vertex_id="3" type="integer" value="3"/>
+            <xaif:Constant vertex_id="3" type="integer" value="2"/>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
@@ -608,7 +608,7 @@
               <xaif:Constant vertex_id="4" type="integer" value="1"/>
               <xaif:Intrinsic vertex_id="5" name="div_scal_scal"/>
               <xaif:Intrinsic vertex_id="6" name="sub_scal_scal"/>
-              <xaif:Constant vertex_id="7" type="integer" value="3"/>
+              <xaif:Constant vertex_id="7" type="integer" value="2"/>
               <xaif:ExpressionEdge edge_id="1" source="1" target="2" position="1"/>
               <xaif:ExpressionEdge edge_id="2" source="3" target="2" position="2"/>
               <xaif:ExpressionEdge edge_id="3" source="4" target="3" position="1"/>
