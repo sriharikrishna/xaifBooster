@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:38:20 2006
+C Fortran file translated from WHIRL Fri Oct  6 14:34:17 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -194,19 +194,19 @@ C$OPENAD XXX Template ad_template.f
       I = 1
       Y(1)%v = 2.0D00
       select_expr_temp_0 = I
-      IF ( select_expr_temp_0  .EQ.  1)  GO TO  6
-      IF ( select_expr_temp_0  .EQ.  2)  GO TO  1
-      GO TO 2
-2     CONTINUE
+      IF ( select_expr_temp_0  .EQ.  1)  GO TO  4
+      IF ( select_expr_temp_0  .EQ.  2)  GO TO  8
+      GO TO 9
+9     CONTINUE
       Y(1)%v = X(1)%v
-      GO TO 8
-6     CONTINUE
+      GO TO 6
+4     CONTINUE
       Y(1)%v = X(1)%v
-      GO TO 8
-1     CONTINUE
-      Y(1)%v = X(1)%v
-      GO TO 8
+      GO TO 6
 8     CONTINUE
+      Y(1)%v = X(1)%v
+      GO TO 6
+6     CONTINUE
       Y(1)%v = (Y(1)%v*Y(1)%v)
       RETURN
             our_rev_mode=our_orig_mode

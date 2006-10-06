@@ -5,7 +5,7 @@ c$openad XXX Template ad_template.f
           integer i,j,k
 	  j=k
 c$openad xxx simple loop
-          do i=1,3
+          do i=1,2
             y(j)=y(j)+x(i)*x(i)
           end do
 	end subroutine

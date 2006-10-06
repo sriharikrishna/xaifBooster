@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:34:56 2006
+C Fortran file translated from WHIRL Fri Oct  6 14:32:56 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -183,7 +183,7 @@ C original function
 C$OPENAD XXX Template ad_template.f
       J = K
 C$OPENAD XXX Simple loop
-      DO I = 1, 3, 1
+      DO I = 1, 2, 1
         Y(INT(J))%v = (Y(J)%v+X(I)%v*X(I)%v)
       END DO
       
@@ -202,7 +202,7 @@ C taping
 C$OPENAD XXX Template ad_template.f
       J = K
 C$OPENAD XXX Simple loop
-      DO I = 1, 3, 1
+      DO I = 1, 2, 1
         OpenAD_Symbol_4 = (Y(J)%v+X(I)%v*X(I)%v)
         OpenAD_Symbol_0 = 1_w2f__i8
         OpenAD_Symbol_2 = X(I)%v
@@ -249,7 +249,7 @@ C            print*, " adjoint    ", our_rev_mode
 C adjoint
           integer_tape_pointer = integer_tape_pointer-1
           J = integer_tape(integer_tape_pointer)
-      I = 1 + 1 *((3 - 1) / 1)
+      I = 1 + 1 *((2 - 1) / 1)
       DO WHILE(I .GE. 1)
           double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_12 = double_tape(double_tape_pointer)

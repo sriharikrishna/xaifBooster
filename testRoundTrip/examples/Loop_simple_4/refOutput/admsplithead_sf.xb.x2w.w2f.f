@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:20:35 2006
+C Fortran file translated from WHIRL Fri Oct  6 14:08:42 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -50,7 +50,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       J = K
 C$OPENAD XXX Simple loop
-      DO I = 1, 3, 1
+      DO I = 1, 2, 1
         __value__(Y(INT(J))) = (__value__(Y(J)) + __value__(X(I)) *
      >  __value__(X(I)))
       END DO
@@ -60,7 +60,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       J = K
 C$OPENAD XXX Simple loop
-      DO I = 1, 3, 1
+      DO I = 1, 2, 1
         OpenAD_Symbol_4 = (__value__(Y(J)) + __value__(X(I)) *
      >  __value__(X(I)))
         OpenAD_Symbol_0 = 1_w2f__i8
@@ -85,7 +85,7 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE pop_i(subst)
       CALL pop_i(J)
-      I = 1 + 1 *((3 - 1) / 1)
+      I = 1 + 1 *((2 - 1) / 1)
       DO WHILE(I .GE. 1)
 C       $OpenAD$ INLINE Pop(subst)
         CALL Pop(OpenAD_Symbol_12)

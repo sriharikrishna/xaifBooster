@@ -177,6 +177,7 @@ program driver
 
   open(2,file='tmpOutput/ad.out')
   write(2,*) "AD"
+  call tape_init()
   do i=1,m
      flux1%v=0.0
      if (i==1) flux1%d=1.0

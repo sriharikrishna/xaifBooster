@@ -218,7 +218,7 @@
           <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="I_4" annotation="" scope_id="3"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="integer" value="3"/>
+          <xaif:Constant vertex_id="3" type="integer" value="2"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:Condition>

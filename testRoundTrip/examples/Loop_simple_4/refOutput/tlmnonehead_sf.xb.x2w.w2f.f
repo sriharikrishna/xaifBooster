@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 15:52:55 2006
+C Fortran file translated from WHIRL Fri Oct  6 13:55:49 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -47,7 +47,7 @@ C
 C$OPENAD XXX Template ad_template.f
       J = K
 C$OPENAD XXX Simple loop
-      DO I = 1, 3, 1
+      DO I = 1, 2, 1
         OpenAD_Symbol_4 = (__value__(Y(J)) + __value__(X(I)) *
      >  __value__(X(I)))
         OpenAD_Symbol_0 = 1_w2f__i8

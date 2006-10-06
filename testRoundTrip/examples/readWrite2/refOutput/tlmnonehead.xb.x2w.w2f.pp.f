@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 16:32:38 2006
+C Fortran file translated from WHIRL Fri Oct  6 14:02:48 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -36,7 +36,7 @@ C
 C$OPENAD XXX Template ad_template.f
 C     open(3,file='data.tmp')
       OPEN(UNIT = 3, FILE = 'data.tmp')
-      WRITE(3,'(EN26.16E3,EN26.16E3)') X%v
+      WRITE(3, '(EN26.16E3,EN26.16E3)') X
 C     close(3)
       CLOSE(UNIT = 3)
 C     open(3,file='data.tmp')
