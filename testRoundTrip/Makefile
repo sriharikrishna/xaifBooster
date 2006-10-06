@@ -151,7 +151,7 @@ head.xb.x2w.w2f.pp.f: head_sf.xb.x2w.w2f.pp.f
 mfef90: 
 	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/crayf90/sgi/mfef90 .
 
-whirl2xaif xaif2whirl: 
+whirl2xaif xaif2whirl whirl2sexp sexp2whirl: 
 	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86-Linux/bin/$@ .
 
 %.pl: 
