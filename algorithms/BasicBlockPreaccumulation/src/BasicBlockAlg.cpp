@@ -194,7 +194,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
-    for(SequencePList::iterator i=myUniqueSequencePList.begin();
+    for(SequencePList::iterator i=.myUniqueSequencePList.begin();
 	i!=myUniqueSequencePList.end();
 	++i)
       if (*i) // should always be true
@@ -297,8 +297,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	<< ",myContaining="
 	<< getContaining().debug().c_str()
 	<< ",myUniqueSequencePList=";
-    for(SequencePList::const_iterator myUniqueSequencePListI=myUniqueSequencePList.begin();
-	myUniqueSequencePListI!=myUniqueSequencePList.end();
+	for(SequencePList::const_iterator myUniqueSequencePListI=myUniqueSequencePList.begin();
+	    myUniqueSequencePListI!=myUniqueSequencePList.end();
 	++myUniqueSequencePListI) 
       out << (*myUniqueSequencePListI)->debug().c_str();
     out << "]" << std::ends;  

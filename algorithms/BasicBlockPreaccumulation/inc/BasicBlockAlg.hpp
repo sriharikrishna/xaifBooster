@@ -336,6 +336,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
 
+  public: 
+
+    typedef std::list<Sequence*> SequencePList;
+
+
+    struct SequenceHolder{
+    /** 
+     * this list owns all the Sequence instances
+     * created by getFlattenedSequence and keeps them in order
+     * it is for convenient ordered traversal over all 
+     * Sequence instances. 
+     * The classes dtor will delete the instances held here
+     */
+    SequencePList myUniqueSequencePList;
     /** 
      * this list does not own the Sequence
      * instances it contains 
@@ -345,13 +359,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * Assignment will have a 0 pointer. 
      */
     BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
-    
-  public: 
-
-    typedef std::list<Sequence*> SequencePList;
+    /** 
+     * if this flag is true each FlattenedSequence 
+     * consists of exactly one assignment
+     */ 
+    static bool ourLimitToStatementLevelFlag;
 
     const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
+    };
 
+    SequenceHolder myFlatOn;
   private: 
     
     /** 
@@ -365,15 +382,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
     }; 
     
-    /** 
-     * this list owns all the Sequence instances
-     * created by getFlattenedSequence and keeps them in order
-     * it is for convenient ordered traversal over all 
-     * Sequence instances. 
-     * The classes dtor will delete the instances held here
-     */
-    SequencePList myUniqueSequencePList;
-
+    SequenceHolder myFlatOff;
+    
     typedef std::pair<const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex*,
 		      const Variable*> InternalReferenceConcretization; 
     typedef std::list<InternalReferenceConcretization> InternalReferenceConcretizationList;
@@ -400,12 +410,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     bool isAliased(const Variable& theIndepVariable,
 		   const VariableCPList& theDependentList);
     
-    /** 
-     * if this flag is true each FlattenedSequence 
-     * consists of exactly one assignment
-     */ 
-    static bool ourLimitToStatementLevelFlag;
-
     /** 
      * if this flag is true we attempt to collect 
      * all 'ax' factors ordered by 'y'
