@@ -87,6 +87,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual void algorithm_action_2();
 
+    virtual void buildSequence();
+
   private: 
 
     /** 

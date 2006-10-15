@@ -168,9 +168,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
     const Expression& myE;
   };
+  
+  void
+  AssignmentAlg::algorithm_action_2()
+  {
+    myFlatOn.buildSequence();
+    myFlatOff.buildSequence();
+  }
 
   void 
-  AssignmentAlg::algorithm_action_2() { 
+  AssignmentAlg::buildSequence() { 
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
