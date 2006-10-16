@@ -342,35 +342,35 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
 
     struct SequenceHolder{
-    /** 
-     * this list owns all the Sequence instances
-     * created by getFlattenedSequence and keeps them in order
-     * it is for convenient ordered traversal over all 
-     * Sequence instances. 
-     * The classes dtor will delete the instances held here
-     */
-    SequencePList myUniqueSequencePList;
-    /** 
-     * this list does not own the Sequence
-     * instances it contains 
-     * consecutive assignments may share 
-     * a Sequence
-     * BasicBlockElement instances that are not an 
-     * Assignment will have a 0 pointer. 
-     */
-    BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
-    /** 
-     * if this flag is true each FlattenedSequence 
-     * consists of exactly one assignment
-     */ 
-    bool ourLimitToStatementLevelFlag;
-    SequenceHolder(bool flatten) { setOurLimitToStatementLevelFlag(flatten);};
-    void setOurLimitToStatementLevelFlag(bool val) {ourLimitToStatementLevelFlag = val;};
-    const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
+      /** 
+       * this list owns all the Sequence instances
+       * created by getFlattenedSequence and keeps them in order
+       * it is for convenient ordered traversal over all 
+       * Sequence instances. 
+       * The classes dtor will delete the instances held here
+       */
+      SequencePList myUniqueSequencePList;
+      /** 
+       * this list does not own the Sequence
+       * instances it contains 
+       * consecutive assignments may share 
+       * a Sequence
+       * BasicBlockElement instances that are not an 
+       * Assignment will have a 0 pointer. 
+       */
+      BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
+      /** 
+       * if this flag is true each FlattenedSequence 
+       * consists of exactly one assignment
+       */ 
+      bool myLimitToStatementLevelFlag;
+      SequenceHolder(bool flatten) : myLimitToStatementLevelFlag(flatten){};
+      void setOurLimitToStatementLevelFlag(bool val) {myLimitToStatementLevelFlag = val;};
+      const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
     };
 
-    SequenceHolder myFlatOn(false);
-    SequenceHolder myFlatOff(true);
+    SequenceHolder myFlatOn;
+    SequenceHolder myFlatOff;
   private: 
     
     /** 
