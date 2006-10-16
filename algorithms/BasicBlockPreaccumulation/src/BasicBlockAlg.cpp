@@ -101,8 +101,8 @@ namespace angel {
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
-
-  bool BasicBlockAlg::ourLimitToStatementLevelFlag=false;
+  BasicBlockAlg::myFlatOn.ourLimitToStatementLevelFlag=false;
+  bool BasicBlockAlg::myFlatOff.setOurLimitToStatementLevelFlag(true);
   bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   unsigned int BasicBlockAlg::ourAssignmentCounter=0;
   unsigned int BasicBlockAlg::ourSequenceCounter=0;
@@ -194,7 +194,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
-    for(SequencePList::iterator i=.myUniqueSequencePList.begin();
+    for(SequencePList::iterator i=myUniqueSequencePList.begin();
 	i!=myUniqueSequencePList.end();
 	++i)
       if (*i) // should always be true

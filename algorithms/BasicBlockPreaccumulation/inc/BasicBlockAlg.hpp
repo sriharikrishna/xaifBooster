@@ -364,7 +364,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * consists of exactly one assignment
      */ 
     static bool ourLimitToStatementLevelFlag;
-
+    void setOurLimitToStatementLevelFlag(bool val) {ourLimitToStatementLevelFlag = val;}
     const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
     };
 

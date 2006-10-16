@@ -172,24 +172,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void
   AssignmentAlg::algorithm_action_2()
   {
-    myFlatOn.buildSequence();
-    myFlatOff.buildSequence();
+    PrivateLinearizedComputationalGraph& theFlattenedSequence=
+      BasicBlockAlgParameter::get().getFlattenedSequence(getContainingAssignment());
+    buildSequence(theFlattenedSequence);
   }
 
   void 
-  AssignmentAlg::buildSequence() { 
+  AssignmentAlg::buildSequence(PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
     // this was set in BasicBlockAlg::algorithm_action_2
-    PrivateLinearizedComputationalGraph& theFlattenedSequence=
-      BasicBlockAlgParameter::get().getFlattenedSequence(getContainingAssignment());
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theFlattenedSequence)) { 
       // there is an ambiguity, do the split
       BasicBlockAlgParameter::get().splitFlattenedSequence(getContainingAssignment());
       // redo everything for this assignment
-      algorithm_action_2();
+      buildSequence(theFlattenedSequence);
       // and leave
       return;
     } 
