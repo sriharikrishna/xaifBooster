@@ -363,12 +363,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * if this flag is true each FlattenedSequence 
      * consists of exactly one assignment
      */ 
-    static bool ourLimitToStatementLevelFlag;
-    void setOurLimitToStatementLevelFlag(bool val) {ourLimitToStatementLevelFlag = val;}
+    bool ourLimitToStatementLevelFlag;
+    SequenceHolder(bool flatten) { setOurLimitToStatementLevelFlag(flatten);};
+    void setOurLimitToStatementLevelFlag(bool val) {ourLimitToStatementLevelFlag = val;};
     const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
     };
 
-    SequenceHolder myFlatOn;
+    SequenceHolder myFlatOn(false);
+    SequenceHolder myFlatOff(true);
   private: 
     
     /** 
@@ -382,7 +384,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
     }; 
     
-    SequenceHolder myFlatOff;
     
     typedef std::pair<const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex*,
 		      const Variable*> InternalReferenceConcretization; 
