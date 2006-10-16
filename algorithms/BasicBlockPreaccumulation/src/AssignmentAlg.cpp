@@ -191,7 +191,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       buildSequence(theFlattenedSequence);
       // and leave
       return;
-    } 
+    }
+
     BasicBlockAlgParameter::get().addMyselfToAssignmentIdList(getContainingAssignment());
     const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(BasicBlockAlgParameter::get().getAssignmentIdList());
     // now redo the activity analysis

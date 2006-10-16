@@ -195,8 +195,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
-    for(SequencePList::iterator i=myUniqueSequencePList.begin();
-	i!=myUniqueSequencePList.end();
+    for(SequencePList::iterator i=myFlatOn.myUniqueSequencePList.begin();
+	i!=myFlatOn.myUniqueSequencePList.end();
+	++i)
+      if (*i) // should always be true
+	delete *i;
+    for(SequencePList::iterator i=myFlatOff.myUniqueSequencePList.begin();
+	i!=myFlatOff.myUniqueSequencePList.end();
 	++i)
       if (*i) // should always be true
 	delete *i;
@@ -244,8 +249,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // do we have a sequence for this element?
       Sequence* aSequence_p=0;
       for (BasicBlockElementSequencePPairList::const_iterator pli=
-	     myBasicBlockElementSequencePPairList.begin();
-	   pli!=myBasicBlockElementSequencePPairList.end();
+	     bestSeq->myBasicBlockElementSequencePPairList.begin();
+	   pli!=bestSeq->myBasicBlockElementSequencePPairList.end();
 	   pli++) { 
 	if((*pli).first==*li) { 
 	  if ((*pli).second) 
@@ -297,9 +302,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     out << "xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg[" << this
 	<< ",myContaining="
 	<< getContaining().debug().c_str()
-	<< ",myUniqueSequencePList=";
-	for(SequencePList::const_iterator myUniqueSequencePListI=myUniqueSequencePList.begin();
-	    myUniqueSequencePListI!=myUniqueSequencePList.end();
+	<< ",myFlatOn myUniqueSequencePList=";
+	for(SequencePList::const_iterator myUniqueSequencePListI=myFlatOn.myUniqueSequencePList.begin();
+	    myUniqueSequencePListI!=myFlatOn.myUniqueSequencePList.end();
+	++myUniqueSequencePListI) 
+    out << ",myFlatOff myUniqueSequencePList=";
+	for(SequencePList::const_iterator myUniqueSequencePListI=myFlatOff.myUniqueSequencePList.begin();
+	    myUniqueSequencePListI!=myFlatOff.myUniqueSequencePList.end();
 	++myUniqueSequencePListI) 
       out << (*myUniqueSequencePListI)->debug().c_str();
     out << "]" << std::ends;  
@@ -617,6 +626,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
           myBasicBlockElementList.push_back(theSubroutineCall_p);
 	}
 
+
 	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
 	      (*best).getGraphList().begin();
 	    it!=(*best).getGraphList().end();
@@ -762,7 +772,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       else { 
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
       }
-    } // end for 
+    } // end for
+    //put logic for determining best here
+    if(myFlatOn.basicBlockOperations.getJacValue() < myFlatOff.basicBlockOperations.getJacValue())
+    {
+      bestSeq = &myFlatOn;
+    }
+    else if(myFlatOff.basicBlockOperations.getJacValue() < myFlatOn.basicBlockOperations.getJacValue())
+    {
+      bestSeq = &myFlatOff;
+    }
+    else if(myFlatOff.basicBlockOperations < myFlatOn.basicBlockOperations)
+    {
+      bestSeq = &myFlatOff;
+    }
+    else
+    {
+      bestSeq = &myFlatOn;
+    }
+	    
+    
   } // end of BasicBlockAlg::algorihm_action_3
 
    //Counts the number of add and multiply operations that are in a list passed in to it
@@ -1176,9 +1205,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return dynamic_cast<const BasicBlock&>(myContaining);
   }
 
-  void BasicBlockAlg::limitToStatementLevel() { 
-    ourLimitToStatementLevelFlag=true;
-  }
+//  void BasicBlockAlg::limitToStatementLevel() { 
+//    ourLimitToStatementLevelFlag=true;
+//  }
   
   bool BasicBlockAlg::doesLimitToStatementLevel() { 
     return ourLimitToStatementLevelFlag;

@@ -364,11 +364,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * consists of exactly one assignment
        */ 
       bool myLimitToStatementLevelFlag;
+      /**
+       * counting all Operations within a basic block
+       */
+      Counter basicBlockOperations;
+    
       SequenceHolder(bool flatten) : myLimitToStatementLevelFlag(flatten){};
       void setOurLimitToStatementLevelFlag(bool val) {myLimitToStatementLevelFlag = val;};
       const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
     };
-
+    SequenceHolder* bestSeq;
     SequenceHolder myFlatOn;
     SequenceHolder myFlatOff;
   private: 
@@ -427,12 +432,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static unsigned int ourSequenceCounter;
 
-    /**
-     * counting all Operations within a basic block
-     */
-    Counter basicBlockOperations;
-    
-    /** 
+    /*
      * the list of all Assignment statement Ids
      */ 
     DuUdMapDefinitionResult::StatementIdList ourAssignmentIdList;
