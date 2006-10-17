@@ -391,9 +391,34 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   };
 
   void 
-  BasicBlockAlg::algorithm_action_3() { 
+  BasicBlockAlg::algorithm_action_3() {
+    limitOps(myFlatOn);
+    limitOps(myFlatOff);
+    if(myFlatOn.basicBlockOperations.getJacValue() < myFlatOff.basicBlockOperations.getJacValue())
+    {
+      bestSeq = &myFlatOn;
+    }
+    else if(myFlatOff.basicBlockOperations.getJacValue() < myFlatOn.basicBlockOperations.getJacValue())
+    {
+      bestSeq = &myFlatOff;
+    }
+    else if(myFlatOff.basicBlockOperations < myFlatOn.basicBlockOperations)
+    {
+      bestSeq = &myFlatOff;
+    }
+    else
+    {
+      bestSeq = &myFlatOn;
+    }
+  }
+
+  void 
+  BasicBlockAlg::limitOps(SequenceHolder inSequence) { 	  
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
 	      << debug().c_str());
+    myUniqueSequencePList = inSequence.myUniqueSequencePList;
+    myBasicBlockElementSequencePPairList = inSequence.myBasicBlockElementSequencePPairList;
+    basicBlockOpereations.reset();
     for (SequencePList::iterator aSequencePListI=myUniqueSequencePList.begin();
 	 aSequencePListI!=myUniqueSequencePList.end();
 	 ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
@@ -773,24 +798,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
       }
     } // end for
-    //put logic for determining best here
-    if(myFlatOn.basicBlockOperations.getJacValue() < myFlatOff.basicBlockOperations.getJacValue())
-    {
-      bestSeq = &myFlatOn;
-    }
-    else if(myFlatOff.basicBlockOperations.getJacValue() < myFlatOn.basicBlockOperations.getJacValue())
-    {
-      bestSeq = &myFlatOff;
-    }
-    else if(myFlatOff.basicBlockOperations < myFlatOn.basicBlockOperations)
-    {
-      bestSeq = &myFlatOff;
-    }
-    else
-    {
-      bestSeq = &myFlatOn;
-    }
-	    
+    inSequence.myUniqueSequencePList = myUniqueSequencePList;
+    inSequence.myBasicBlockElementSequencePPairList = myBasicBlockElementSequencePPairList;
+    inSequence.basicBlockOperations = basicBlockOperations;
     
   } // end of BasicBlockAlg::algorihm_action_3
 

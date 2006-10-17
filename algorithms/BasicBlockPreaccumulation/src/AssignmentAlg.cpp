@@ -172,23 +172,30 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void
   AssignmentAlg::algorithm_action_2()
   {
-    PrivateLinearizedComputationalGraph& theFlattenedSequence=
-      BasicBlockAlgParameter::get().getFlattenedSequence(getContainingAssignment());
-    buildSequence(theFlattenedSequence);
+    buildSequence(myFlatOn);
+    buildSequence(myFlatOff);
   }
 
   void 
-  AssignmentAlg::buildSequence(PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
+  AssignimentAlg::buildSequence(SequenceHolder inSequence) { 
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
+    myUniqueSequencePList = inSequence.myUniqueSequencePList;
+    myBasicBlockElementSequencePPairList = inSequence.myBasicBlockElementSequencePPairList;
+    ourLimitToStatementLevelFlag = inSequence.myLimitToStatementLevelFlag;
+    PrivateLinearizedComputationalGraph& theFlattenedSequence=
+    BasicBlockAlgParameter::get().getFlattenedSequence(getContainingAssignment());
     // this was set in BasicBlockAlg::algorithm_action_2
     VertexPPairList theVertexTrackList;
-    if (!vertexIdentification(theFlattenedSequence)) { 
+    if (!vertexIdentification(inSequence)) { 
       // there is an ambiguity, do the split
       BasicBlockAlgParameter::get().splitFlattenedSequence(getContainingAssignment());
       // redo everything for this assignment
-      buildSequence(theFlattenedSequence);
+      buildSequence(inSequence);
+      inSequence.myUniqueSequencePList = myUniqueSequencePList;
+      inSequence.myBasicBlockElementSequencePPairList = inSequence.myBasicBlockElementSequencePPairList;
+      inSequence.ourLimitToStatementLevelFlag = inSequence.myLimitToStatementLevelFlag;
       // and leave
       return;
     }
