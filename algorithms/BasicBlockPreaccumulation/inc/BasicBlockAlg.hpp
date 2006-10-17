@@ -76,9 +76,11 @@ namespace xaifBooster {
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
+
   class PrivateLinearizedComputationalGraphAlgFactory;
   class PrivateLinearizedComputationalGraphEdgeAlgFactory;
   class PrivateLinearizedComputationalGraphVertexAlgFactory;
+
   /** 
    * class to implement algorithms relevant for the 
    * angel interface
@@ -107,19 +109,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual void algorithm_action_3();
 
-    /*
-     * performs the core of algorithm_action_3();
-     */
-    virtual void limitOps(SequenceHolder);
-    
     /**
      * pointer to function for computing elimination sequence
      */
-     typedef void (*Compute_elimination_sequence_fp)(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
-						     int,
-						     double,
-						     xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
-						     );
+    typedef void (*Compute_elimination_sequence_fp)(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
+						    int,
+						    double,
+						    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
+						    );
     /**
      * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
      */
@@ -135,58 +132,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * Sets flag to insert runtime conuters into the code.
      */
     static void setRuntimeCounters();
- 
+
     static Compute_elimination_sequence_fp ourCompute_elimination_sequence_fp;
     static int ourIntParameter;
     static double ourGamma;
+
     static PrivateLinearizedComputationalGraphAlgFactory *getPrivateLinearizedComputationalGraphAlgFactory();
     static PrivateLinearizedComputationalGraphEdgeAlgFactory *getPrivateLinearizedComputationalGraphEdgeAlgFactory();
     static PrivateLinearizedComputationalGraphVertexAlgFactory *getPrivateLinearizedComputationalGraphVertexAlgFactory();
     static void setPrivateLinearizedComputationalGraphAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphAlgFactory*);
     static void setPrivateLinearizedComputationalGraphEdgeAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphEdgeAlgFactory*);
     static void setPrivateLinearizedComputationalGraphVertexAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertexAlgFactory*);
-    /** 
-     * returns the PrivateLinearizedComputationalGraph 
-     * to be used by theAssignment
-     * this expects to be called in the 
-     * sequence order of BasicBlockElements
-     * to work best as it creates the Sequence
-     * instances to be used by sequences of consecutive
-     * assignments. 
-     */
-
-    PrivateLinearizedComputationalGraph& getFlattenedSequence(const Assignment& theAssignment);
-
-    /** 
-     * signals a necessary split in the sequence due to an 
-     * ambiguity
-     */
-    void splitFlattenedSequence(const Assignment& theAssignment);
-
-    /** 
-     * returns the DerivativePropagtor 
-     * to be used by theAssignment
-     * this expects to be called only after 
-     * a Sequence has been associated with 
-     * theAssignment through a call to 
-     * getFlattenedSequence
-     */
-    xaifBoosterDerivativePropagator::DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
 
     /**
      * access container
      */
     const BasicBlock& getContaining() const;
     
-    /** 
-     * we can decide to restrict the 
-     * preaccumulation to the level of single statements 
-     * effectively precluding the flattening
-     */
-    static void limitToStatementLevel();
-    
-    static bool doesLimitToStatementLevel();
-
     /** 
      * we can allow to have all 'ax' factors collected 
      * into one DerivativePropagator per 'y'
@@ -195,11 +157,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     static bool doesPermitNarySax();
 
-    static unsigned int getAssignmentCounter();
-
-    static unsigned int getSequenceCounter();
-
-    Counter& getBasicBlockOperations();
+    const Counter& getBasicBlockOperations() const;
 
     const DuUdMapDefinitionResult::StatementIdList& getAssignmentIdList()const;
 
@@ -216,9 +174,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       PrintDerivativePropagator_fp aPrintDerivativePropagator_fp) const;
 
   private:
+
     static PrivateLinearizedComputationalGraphAlgFactory* ourPrivateLinearizedComputationalGraphAlgFactory_p;
     static PrivateLinearizedComputationalGraphEdgeAlgFactory* ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p;
     static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;
+
     static bool chooseAlg; //IK
     static bool runtimeCounters; //IK
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;//IK
@@ -240,6 +200,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     BasicBlockAlg operator=(const BasicBlockAlg&);
    
   protected: 
+
     /**
      * an instance of Sequence is held 
      * for every sequence of consecutive assignments 
@@ -252,6 +213,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
 
       Sequence();      
+
       ~Sequence();
 
       virtual std::string debug() const ;
@@ -329,7 +291,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * the end of this sequence
        */
       AssignmentPList myEndAssignmentList;
+
+      /** 
+       * no def
+       */
       Sequence(const Sequence&);
+
+      /** 
+       * no def
+       */
       Sequence& operator= (const Sequence&);
 
     }; // end of struct Sequence
@@ -339,14 +309,63 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     typedef std::pair<BasicBlockElement*,
 		      Sequence*> BasicBlockElementSequencePPair;
 
-    typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
-
   public: 
 
-    typedef std::list<Sequence*> SequencePList;
+    /** 
+     * we execute variants of sequences of assignments 
+     * flattened into graphs
+     * and need to keep the data for each variant
+     */
+    class SequenceHolder{
 
+    public: 
+      
+      SequenceHolder(bool flatten, bool aGlobalStatsFlag);
 
-    struct SequenceHolder{
+      ~SequenceHolder();
+
+      typedef std::list<Sequence*> SequencePList;
+      
+      SequencePList& getUniqueSequencePList();
+
+      /**
+       * counting all Operations within a basic block
+       */
+      Counter myBasicBlockOperations;
+
+      void incrementGlobalAssignmentCounter();
+
+      void incrementGlobalSequenceCounter();
+      
+      typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
+
+      BasicBlockElementSequencePPairList& getBasicBlockElementSequencePPairList();
+      const BasicBlockElementSequencePPairList& getBasicBlockElementSequencePPairList() const;
+
+      /** 
+       * returns the DerivativePropagtor 
+       * to be used by theAssignment
+       * this expects to be called only after 
+       * a Sequence has been associated with 
+       * theAssignment through a call to 
+       * getFlattenedSequence
+       */
+      xaifBoosterDerivativePropagator::DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
+      
+      bool doesLimitToStatementLevel() const;
+
+      /** 
+       * signals a necessary split in the sequence due to an 
+       * ambiguity
+       */
+      void splitFlattenedSequence(const Assignment& theAssignment);
+
+      static unsigned int getAssignmentCounter();
+      
+      static unsigned int getSequenceCounter();
+    
+    private: 
+
       /** 
        * this list owns all the Sequence instances
        * created by getFlattenedSequence and keeps them in order
@@ -355,6 +374,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * The classes dtor will delete the instances held here
        */
       SequencePList myUniqueSequencePList;
+
       /** 
        * this list does not own the Sequence
        * instances it contains 
@@ -364,52 +384,65 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * Assignment will have a 0 pointer. 
        */
       BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
+
       /** 
        * if this flag is true each FlattenedSequence 
        * consists of exactly one assignment
        */ 
       bool myLimitToStatementLevelFlag;
-      /**
-       * counting all Operations within a basic block
-       */
-      Counter basicBlockOperations;
-    
-      SequenceHolder(bool flatten) : myLimitToStatementLevelFlag(flatten){};
-      void setOurLimitToStatementLevelFlag(bool val) {myLimitToStatementLevelFlag = val;};
-      const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
-    };
-    SequenceHolder* bestSeq;
-    SequenceHolder myFlatOn;
-    SequenceHolder myFlatOff;
 
       /** 
-       * this list owns all the Sequence instances
-       * created by getFlattenedSequence and keeps them in order
-       * it is for convenient ordered traversal over all 
-       * Sequence instances. 
-       * The classes dtor will delete the instances held here
+       * decides if we should update the static counters
        */
-      SequencePList myUniqueSequencePList;
+      bool myGlobalStatsFlag;
+
       /** 
-       * this list does not own the Sequence
-       * instances it contains 
-       * consecutive assignments may share 
-       * a Sequence
-       * BasicBlockElement instances that are not an 
-       * Assignment will have a 0 pointer. 
+       * counting all assignments
        */
-      BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
+      static unsigned int ourAssignmentCounter;
+      
       /** 
-       * if this flag is true each FlattenedSequence 
-       * consists of exactly one assignment
-       */ 
-      static bool ourLimitToStatementLevelFlag;
-      /**
-       * counting all Operations within a basic block
+       * counting all Sequence instances
        */
-      Counter basicBlockOperations;
+      static unsigned int ourSequenceCounter;
+      
+    };
+
+    SequenceHolder& getSequenceHolder(bool flattenFlag);
+
+    /** 
+     * returns the PrivateLinearizedComputationalGraph 
+     * to be used by theAssignment
+     * this expects to be called in the 
+     * sequence order of BasicBlockElements
+     * to work best as it creates the Sequence
+     * instances to be used by sequences of consecutive
+       * assignments. 
+       */
+    PrivateLinearizedComputationalGraph& getFlattenedSequence(const Assignment& theAssignment,
+							      SequenceHolder& aSequenceHolder);
+    
   private: 
     
+    /** 
+     * the sequence that we deem best after applying some heuristic 
+     * as criterion to pick between myFlatOn and myFlatOff 
+     * no deletion in dtor
+     */
+    SequenceHolder* myBestSeq_p;
+
+    const SequenceHolder& getBestSequenceHolder() const;
+
+    /** 
+     * a sequence with flattening
+     */
+    SequenceHolder myFlatOn;
+
+    /** 
+     * a sequence without flattening
+     */
+    SequenceHolder myFlatOff;
+
     /** 
      * this is just a helper to accomodate 
      * the additional BasicBlockAlgBase&
@@ -454,16 +487,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */ 
     static bool ourPermitNarySaxFlag;
 
-    /** 
-     * counting all assignments
-     */
-    static unsigned int ourAssignmentCounter;
-
-    /** 
-     * counting all Sequence instances
-     */
-    static unsigned int ourSequenceCounter;
-
     /*
      * the list of all Assignment statement Ids
      */ 
@@ -476,6 +499,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       VariableHashTable& theListOfAlreadyAssignedIndependents,
 			       BasicBlockAlg::Sequence& aSequence,
 			       xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI);
+
+    /*
+     * performs the core of algorithm_action_3();
+     */
+    void algorithm_action_3_perSequence(SequenceHolder&);
+    
 
   };
  
