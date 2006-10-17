@@ -107,6 +107,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual void algorithm_action_3();
 
+    /*
+     * performs the core of algorithm_action_3();
+     */
+    virtual void limitOps(SequenceHolder);
+    
     /**
      * pointer to function for computing elimination sequence
      */
@@ -376,6 +381,33 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     SequenceHolder* bestSeq;
     SequenceHolder myFlatOn;
     SequenceHolder myFlatOff;
+
+      /** 
+       * this list owns all the Sequence instances
+       * created by getFlattenedSequence and keeps them in order
+       * it is for convenient ordered traversal over all 
+       * Sequence instances. 
+       * The classes dtor will delete the instances held here
+       */
+      SequencePList myUniqueSequencePList;
+      /** 
+       * this list does not own the Sequence
+       * instances it contains 
+       * consecutive assignments may share 
+       * a Sequence
+       * BasicBlockElement instances that are not an 
+       * Assignment will have a 0 pointer. 
+       */
+      BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
+      /** 
+       * if this flag is true each FlattenedSequence 
+       * consists of exactly one assignment
+       */ 
+      static bool ourLimitToStatementLevelFlag;
+      /**
+       * counting all Operations within a basic block
+       */
+      Counter basicBlockOperations;
   private: 
     
     /** 

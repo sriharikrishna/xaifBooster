@@ -87,7 +87,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual void algorithm_action_2();
 
-    virtual void buildSequence(PrivateLinearizedComputationalGraph&);
+    /**
+     * flaten wrapper
+     */
+    virtual void buildSequence(SequenceHolder);
 
   private: 
 
