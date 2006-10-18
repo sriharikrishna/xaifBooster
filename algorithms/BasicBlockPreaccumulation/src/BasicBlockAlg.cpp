@@ -54,7 +54,7 @@
 
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-#include "xaifBooster/utils/inc/Counter.hpp" //IK
+#include "xaifBooster/utils/inc/Counter.hpp" 
 
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
@@ -103,12 +103,14 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  unsigned int BasicBlockAlg::SequenceHolder::ourAssignmentCounter=0;
-  unsigned int BasicBlockAlg::SequenceHolder::ourSequenceCounter=0;
+  unsigned int BasicBlockAlg::ourAssignmentCounter=0;
+  unsigned int BasicBlockAlg::ourSequenceCounter=0;
 
   bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   bool BasicBlockAlg::chooseAlg=false;
   bool BasicBlockAlg::runtimeCounters=false;
+
+  PreaccumulationLevel::PreaccumulationLevel_E BasicBlockAlg::ourPreaccumulationLevel(PreaccumulationLevel::PICK_BEST);
 
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
@@ -169,9 +171,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } // end of BasicBlockAlg::debug
 
-  BasicBlockAlg::SequenceHolder::SequenceHolder(bool flatten, bool aGlobalStatsFlag) : 
-    myLimitToStatementLevelFlag(flatten),
-    myGlobalStatsFlag(aGlobalStatsFlag) {
+  BasicBlockAlg::SequenceHolder::SequenceHolder(bool flatten) : 
+    myLimitToStatementLevelFlag(flatten) {
   }
   
   BasicBlockAlg::SequenceHolder::~SequenceHolder() {
@@ -182,13 +183,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	delete *i;
   }
   
-  void BasicBlockAlg::SequenceHolder::incrementGlobalAssignmentCounter() { 
-    if (myGlobalStatsFlag)
+  bool BasicBlockAlg::isRepresentativeSequenceHolder(const SequenceHolder& aSequenceHolder) const { 
+    if(!myRepresentativeSequence_p) 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::isRepresentativeSequenceHolder:  no representative set");
+    return (myRepresentativeSequence_p==&aSequenceHolder);
+  }
+
+  void BasicBlockAlg::incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder) { 
+    if (isRepresentativeSequenceHolder(aSequenceHolder))
       ourAssignmentCounter++;
   } 
   
-  void BasicBlockAlg::SequenceHolder::incrementGlobalSequenceCounter() {
-    if (myGlobalStatsFlag)
+  void BasicBlockAlg::incrementGlobalSequenceCounter(const SequenceHolder& aSequenceHolder) {
+    if (isRepresentativeSequenceHolder(aSequenceHolder))
       ourSequenceCounter++;
   } 
 
@@ -270,8 +277,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterLinearization::BasicBlockAlg(theContaining),
     myBestSeq_p(0),
-    myFlatOn(false,true),
-    myFlatOff(true,false) { 
+    myFlatOn(false),
+    myFlatOff(true) {
+    // we must choose one SequenceHolder to do the things 
+    // that are common across all the variants,
+    // in particular the steps that can be done only once
+    // such as redoing the activity determination and the
+    // linearization. The latter items should be done 
+    // on the flattening version which is why we pick that one 
+    // as the representative. 
+    myRepresentativeSequence_p=&myFlatOn;
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
@@ -1184,7 +1199,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 ++i) 
       if ((*i).first==&theAssignment) { 
 	if(!(*i).second) { // nothing assigned yet
-	  aSequenceHolder.incrementGlobalAssignmentCounter();
+	  incrementGlobalAssignmentCounter(aSequenceHolder);
 	  if(i!=aSequenceHolder.getBasicBlockElementSequencePPairList().begin()) { 
 	    // have a predecessor: 
 	    --i;
@@ -1197,7 +1212,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      // we intend to not flatten at all and keep one assignment per sequence
 	      // while leaving the rest of the code unchanged
 	      theSequence_p=new Sequence;
-	      aSequenceHolder.incrementGlobalSequenceCounter();
+	      incrementGlobalSequenceCounter(aSequenceHolder);
 	      theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	      aSequenceHolder.getUniqueSequencePList().push_back(theSequence_p);
 	    } 
@@ -1213,7 +1228,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  } 
 	  else { // have no predecessor
 	    theSequence_p=new Sequence;
-	    aSequenceHolder.incrementGlobalSequenceCounter();
+	    incrementGlobalSequenceCounter(aSequenceHolder);
 	    theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	    aSequenceHolder.getUniqueSequencePList().push_back(theSequence_p);
 	  }
@@ -1266,8 +1281,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return ourAssignmentIdList;
   } 
 
-  void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment) { 
-    ourAssignmentIdList.push_back(anAssignment.getId());
+  void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment, const SequenceHolder& aSequenceHolder) {
+    if (isRepresentativeSequenceHolder(aSequenceHolder))
+      ourAssignmentIdList.push_back(anAssignment.getId());
   }
 
   void BasicBlockAlg::setAllAlgorithms(){
@@ -1287,5 +1303,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getBestSequenceHolder: not determined");
     return *myBestSeq_p;
   } 
-  
+
+  void BasicBlockAlg::forcePreaccumulationLevel(PreaccumulationLevel::PreaccumulationLevel_E aLevel) { 
+    PreaccumulationLevel::checkValid(aLevel);
+    ourPreaccumulationLevel=aLevel;
+  } 
+
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

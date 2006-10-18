@@ -61,11 +61,10 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
-#include "xaifBooster/utils/inc/Counter.hpp" //IK
-#include "xaifBooster/system/inc/PlainBasicBlock.hpp"//IK
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"//IK
-
-
+#include "xaifBooster/utils/inc/Counter.hpp" 
+#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationLevel.hpp"
 
 namespace xaifBooster { 
   class ExpressionVertex;
@@ -161,8 +160,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     const DuUdMapDefinitionResult::StatementIdList& getAssignmentIdList()const;
 
-    void addMyselfToAssignmentIdList(const Assignment&);
-
     /**
      * pointer to printer for DerivativePropagator
      */
@@ -179,10 +176,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static PrivateLinearizedComputationalGraphEdgeAlgFactory* ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p;
     static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;
 
-    static bool chooseAlg; //IK
-    static bool runtimeCounters; //IK
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;//IK
-    PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;//IK
+    static bool chooseAlg;
+    static bool runtimeCounters; 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
+    PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;
     
     /** 
      * no def
@@ -320,7 +317,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     public: 
       
-      SequenceHolder(bool flatten, bool aGlobalStatsFlag);
+      SequenceHolder(bool flatten);
 
       ~SequenceHolder();
 
@@ -333,10 +330,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        */
       Counter myBasicBlockOperations;
 
-      void incrementGlobalAssignmentCounter();
-
-      void incrementGlobalSequenceCounter();
-      
       typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
 
       BasicBlockElementSequencePPairList& getBasicBlockElementSequencePPairList();
@@ -391,21 +384,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        */ 
       bool myLimitToStatementLevelFlag;
 
-      /** 
-       * decides if we should update the static counters
-       */
-      bool myGlobalStatsFlag;
-
-      /** 
-       * counting all assignments
-       */
-      static unsigned int ourAssignmentCounter;
-      
-      /** 
-       * counting all Sequence instances
-       */
-      static unsigned int ourSequenceCounter;
-      
     };
 
     SequenceHolder& getSequenceHolder(bool flattenFlag);
@@ -417,10 +395,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * sequence order of BasicBlockElements
      * to work best as it creates the Sequence
      * instances to be used by sequences of consecutive
-       * assignments. 
-       */
+     * assignments. 
+     */
     PrivateLinearizedComputationalGraph& getFlattenedSequence(const Assignment& theAssignment,
 							      SequenceHolder& aSequenceHolder);
+    
+    void addMyselfToAssignmentIdList(const Assignment&, 
+				     const SequenceHolder& aSequenceHolder);
+
+    /** 
+     * determines if the given SequenceHolder is the 
+     * the representative one
+     */
+    bool isRepresentativeSequenceHolder(const SequenceHolder& aSequenceHolder) const;
+
+    static void forcePreaccumulationLevel(PreaccumulationLevel::PreaccumulationLevel_E aLevel); 
     
   private: 
     
@@ -505,6 +494,27 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void algorithm_action_3_perSequence(SequenceHolder&);
     
+    /** 
+     * counting all assignments
+     */
+    static unsigned int ourAssignmentCounter;
+      
+    /** 
+     * counting all Sequence instances
+     */
+    static unsigned int ourSequenceCounter;
+      
+    void incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder);
+    
+    void incrementGlobalSequenceCounter(const SequenceHolder& aSequenceHolder);
+      
+    /** 
+     * one of the SequenceHolder instances should be 
+     * the one for which we do the common tasks
+     */
+    SequenceHolder* myRepresentativeSequence_p;
+
+    static PreaccumulationLevel::PreaccumulationLevel_E ourPreaccumulationLevel;
 
   };
  

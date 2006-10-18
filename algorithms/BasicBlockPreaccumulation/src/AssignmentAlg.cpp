@@ -176,6 +176,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
     BasicBlockAlg& aBasicBlockAlg(BasicBlockAlgParameter::get());
+    // we need to do the representative sequence first because we only redo the activity analysis
+    // and linearization once.
     algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(true));
     algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(false));
   }
@@ -197,7 +199,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // and leave
       return;
     }
-    BasicBlockAlgParameter::get().addMyselfToAssignmentIdList(getContainingAssignment());
+    BasicBlockAlgParameter::get().addMyselfToAssignmentIdList(getContainingAssignment(),
+							      aSequenceHolder);
     const DuUdMapDefinitionResult::StatementIdList& 
       theKnownAssignments(BasicBlockAlgParameter::get().getAssignmentIdList());
     // now redo the activity analysis
@@ -205,13 +208,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
 //       GraphVizDisplay::show(getLinearizedRightHandSide(),"before",
 // 			    VertexLabelWriter(getLinearizedRightHandSide()));
-    xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
+    // here is why we need to do the representative SequenceHolder first:
+    if (aBasicBlockAlg.isRepresentativeSequenceHolder(aSequenceHolder)){ 
+      xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
 //     if (haveLinearizedRightHandSide() && 
 // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
 //       GraphVizDisplay::show(getLinearizedRightHandSide(),"after",
 // 			    VertexLabelWriter(getLinearizedRightHandSide()));
     // and the second part of the linearization
-    xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
+      xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
+    }
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
     if (!getActiveFlag()) { 
       theFlattenedSequence.addToPassiveStatementIdList(getContainingAssignment().getId());
