@@ -76,11 +76,13 @@ void Usage(char** argv) {
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
+	    << "             [-S <level>] force preaccumulation level (1: statement, 2 maximal graph), defaults to pick best" << std::endl
 	    << "             [-n] allow n-ary sax operations" << std::endl
 	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
             << "                 space separated list enclosed in double quotes" << std::endl
-	    << "             [-r] " << std::endl
-	    << "                 force renaming of all non-external routines" << std::endl
+	    << "             [-r] force renaming of all non-external routines" << std::endl
+            << "             [-a] dynamically choose graph elimination algorithm" << std::endl
+	    << "             [-C] turn on runtime counters"  << std::endl
 	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
 
@@ -92,9 +94,8 @@ int main(int argc,char** argv) {
   std::string inFileName, outFileName, intrinsicsFileName, schemaPath;
   // to contain the namespace url in case of -s having a schema location
   std::string aUrl;
-  bool allowNarySaxOps=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsnwr",argc,argv);
+    CommandLineParser::instance()->initialize("aiocCdgsSnwr",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -105,12 +106,19 @@ int main(int argc,char** argv) {
       DbgLoggerManager::instance()->setFile(CommandLineParser::instance()->argAsString('d'));
     if (CommandLineParser::instance()->isSet('g')) 
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
+    if (CommandLineParser::instance()->isSet('S')) 
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::forcePreaccumulationLevel(xaifBoosterBasicBlockPreaccumulation::PreaccumulationLevel::PreaccumulationLevel_E(CommandLineParser::instance()->argAsInt('S')));
     if (CommandLineParser::instance()->isSet('n')) 
-      allowNarySaxOps=true;
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
     if (CommandLineParser::instance()->isSet('w')) 
       xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
     if (CommandLineParser::instance()->isSet('r')) 
       xaifBoosterLinearization::ControlFlowGraphAlg::setForceNonExternalRenames();
+    if (CommandLineParser::instance()->isSet('a'))
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
+    if (CommandLineParser::instance()->isSet('C')) {
+     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
+    }
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -120,8 +128,6 @@ int main(int argc,char** argv) {
   try {   
     DBG_MACRO(DbgGroup::TIMING,"before XML parsing");
     xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::instance()->init();
-    if (allowNarySaxOps)
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     if (schemaPath.size()) { 
