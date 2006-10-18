@@ -410,7 +410,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     bool isRepresentativeSequenceHolder(const SequenceHolder& aSequenceHolder) const;
 
     static void forcePreaccumulationLevel(PreaccumulationLevel::PreaccumulationLevel_E aLevel); 
+
+    static PreaccumulationLevel::PreaccumulationLevel_E getPreaccumulationLevel();
     
+    const SequenceHolder& getBestSequenceHolder() const;
+
+    SequenceHolder& getBestSequenceHolder();
+
   private: 
     
     /** 
@@ -419,8 +425,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * no deletion in dtor
      */
     SequenceHolder* myBestSeq_p;
-
-    const SequenceHolder& getBestSequenceHolder() const;
 
     /** 
      * a sequence with flattening

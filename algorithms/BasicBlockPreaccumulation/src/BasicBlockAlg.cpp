@@ -286,7 +286,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // linearization. The latter items should be done 
     // on the flattening version which is why we pick that one 
     // as the representative. 
-    myRepresentativeSequence_p=&myFlatOn;
+    if (ourPreaccumulationLevel!=PreaccumulationLevel::STATEMENT)
+      myRepresentativeSequence_p=&myFlatOn;
+    else
+      myRepresentativeSequence_p=&myFlatOff;
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
@@ -500,25 +503,29 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::algorithm_action_3() {
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
 	      << debug().c_str());
-    algorithm_action_3_perSequence(myFlatOn);
-    algorithm_action_3_perSequence(myFlatOff);
-    // this is the heuristic to pick between the two sequences
-    if(myFlatOn.myBasicBlockOperations.getJacValue() < myFlatOff.myBasicBlockOperations.getJacValue())
-      {
-	myBestSeq_p = &myFlatOn;
-      }
-    else if(myFlatOff.myBasicBlockOperations.getJacValue() < myFlatOn.myBasicBlockOperations.getJacValue())
-      {
+    if (ourPreaccumulationLevel!=PreaccumulationLevel::STATEMENT)
+      algorithm_action_3_perSequence(myFlatOn);
+    if (ourPreaccumulationLevel!=PreaccumulationLevel::MAX_GRAPH)
+      algorithm_action_3_perSequence(myFlatOff);
+    switch(ourPreaccumulationLevel) { 
+    case PreaccumulationLevel::STATEMENT:
+      myBestSeq_p=&myFlatOff;
+      break;
+    case PreaccumulationLevel::MAX_GRAPH:
+      myBestSeq_p=&myFlatOn;
+      break;
+    default: 
+      // this is the heuristic to pick between the two sequences
+      if(myFlatOn.myBasicBlockOperations.getJacValue() < myFlatOff.myBasicBlockOperations.getJacValue())
+	  myBestSeq_p = &myFlatOn;
+      else if(myFlatOff.myBasicBlockOperations.getJacValue() < myFlatOn.myBasicBlockOperations.getJacValue())
 	myBestSeq_p = &myFlatOff;
-      }
-    else if(myFlatOff.myBasicBlockOperations < myFlatOn.myBasicBlockOperations)
-      {
+      else if(myFlatOff.myBasicBlockOperations < myFlatOn.myBasicBlockOperations)
 	myBestSeq_p = &myFlatOff;
-      }
-    else
-      {
+      else
 	myBestSeq_p = &myFlatOn;
-      }
+      break;
+    }
   }
 
   void 
@@ -1295,7 +1302,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   BasicBlockAlg::SequenceHolder& BasicBlockAlg::getSequenceHolder(bool flattenFlag) { 
-    return (flattenFlag?myFlatOn:myFlatOff);
+    if ((ourPreaccumulationLevel==PreaccumulationLevel::STATEMENT && flattenFlag)
+	||
+	(ourPreaccumulationLevel==PreaccumulationLevel::MAX_GRAPH && !flattenFlag))
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getSequenceHolder: under PreaccumulationLevel "
+				 << PreaccumulationLevel::toString(ourPreaccumulationLevel).c_str()
+				 << " we do not populate data for the SequenceHolder with flattenFlag value "
+				 << flattenFlag);
+      return (flattenFlag?myFlatOn:myFlatOff);
   }
 
   const BasicBlockAlg::SequenceHolder& BasicBlockAlg::getBestSequenceHolder() const { 
@@ -1304,9 +1318,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *myBestSeq_p;
   } 
 
+  BasicBlockAlg::SequenceHolder& BasicBlockAlg::getBestSequenceHolder() { 
+    if (!myBestSeq_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getBestSequenceHolder: not determined");
+    return *myBestSeq_p;
+  } 
+
   void BasicBlockAlg::forcePreaccumulationLevel(PreaccumulationLevel::PreaccumulationLevel_E aLevel) { 
     PreaccumulationLevel::checkValid(aLevel);
     ourPreaccumulationLevel=aLevel;
+  } 
+
+  PreaccumulationLevel::PreaccumulationLevel_E BasicBlockAlg::getPreaccumulationLevel() { 
+    return ourPreaccumulationLevel;
   } 
 
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

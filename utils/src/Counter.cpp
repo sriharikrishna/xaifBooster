@@ -195,7 +195,7 @@ namespace xaifBooster {
     }
   }
 
-  Counter Counter::operator+(Counter &b)
+  Counter Counter::operator+(const Counter &b)
   {
 	  Counter temp;
 	  temp.myAdd = myAdd + b.myAdd;
