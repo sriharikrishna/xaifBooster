@@ -178,8 +178,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     BasicBlockAlg& aBasicBlockAlg(BasicBlockAlgParameter::get());
     // we need to do the representative sequence first because we only redo the activity analysis
     // and linearization once.
-    algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(true));
-    algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(false));
+    if (BasicBlockAlg::getPreaccumulationLevel()!=PreaccumulationLevel::STATEMENT)
+      algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(true));
+    if (BasicBlockAlg::getPreaccumulationLevel()!=PreaccumulationLevel::MAX_GRAPH)
+      algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(false));
   }
 
   void 

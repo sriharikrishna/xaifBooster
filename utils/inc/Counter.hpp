@@ -156,7 +156,7 @@ namespace xaifBooster {
      * Overloads the + operator so that counter1 = counter2 + counter3. The add
      * and multiply values are summed up seperatly.
      */
-    Counter operator+(Counter &b);
+    Counter operator+(const Counter &b);
   }; 
 } // end of namespace xaifBooster
                                                                      

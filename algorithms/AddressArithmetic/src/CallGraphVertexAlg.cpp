@@ -84,9 +84,9 @@ namespace xaifBoosterAddressArithmetic {
 										 const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
 										 xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables) {
     // we get the sequences
-    const xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequencePList& aSequencePList(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(theOriginalBasicBlock.getBasicBlockAlgBase()).
-											     getUniqueSequencePList());
-    for (xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequencePList::const_iterator aSequencePListI=aSequencePList.begin();
+    const xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::SequencePList& aSequencePList(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(theOriginalBasicBlock.getBasicBlockAlgBase()).
+													     getBestSequenceHolder().getUniqueSequencePList());
+    for (xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::SequencePList::const_iterator aSequencePListI=aSequencePList.begin();
 	 aSequencePListI!=aSequencePList.end();
 	 ++aSequencePListI) { 
       // get the propagators
