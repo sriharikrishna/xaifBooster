@@ -9,7 +9,7 @@ c$openad INDEPENDENT(x)
           y(1)=x(1) 
 
 c$openad xxx simple loop
-          do i=1,3
+          do i=3,1,-1
             y(1)=y(1)*x(1)
           end do
           y(1)=y(1) 
