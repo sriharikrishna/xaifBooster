@@ -86,7 +86,7 @@ void Usage(char** argv) {
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
-	    << "             [-S] force statement level preaccumulation" << std::endl
+	    << "             [-S <level>] force preaccumulation level (1: statement, 2 maximal graph), defaults to pick best" << std::endl
 	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
 	    << "             [-v] validate <inputFile> against the schema" << std::endl
 	    << "             [-w \"<list of subroutines with wrappers>\" " << std::endl
@@ -165,8 +165,6 @@ int main(int argc,char** argv) {
   std::string inFileName, outFileName, intrinsicsFileName, schemaPath;
   // to contain the namespace url in case of -s having a schema location
   std::string aUrl;
-  bool forceStatementLevel=false;
-  bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
     CommandLineParser::instance()->initialize("iocdgsSIvwpruUaC",argc,argv);
@@ -181,9 +179,9 @@ int main(int argc,char** argv) {
     if (CommandLineParser::instance()->isSet('g')) 
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
     if (CommandLineParser::instance()->isSet('S')) 
-      forceStatementLevel=true;
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::forcePreaccumulationLevel(xaifBoosterBasicBlockPreaccumulation::PreaccumulationLevel::PreaccumulationLevel_E(CommandLineParser::instance()->argAsInt('S')));
     if (CommandLineParser::instance()->isSet('I')) 
-      intentChange=true;
+      xaifBoosterBasicBlockPreaccumulationReverse::ArgumentSymbolReferenceAlg::changeIntentForCheckPoints();
     if (CommandLineParser::instance()->isSet('v')) 
       validateAgainstSchema=true;
     if (CommandLineParser::instance()->isSet('w')) 
@@ -198,8 +196,7 @@ int main(int argc,char** argv) {
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
     if (CommandLineParser::instance()->isSet('a'))
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
-    if (CommandLineParser::instance()->isSet('C'))
-    {
+    if (CommandLineParser::instance()->isSet('C')) {
      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
      xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::setRuntimeCounters();
     }
@@ -215,10 +212,6 @@ int main(int argc,char** argv) {
 //     DBG_MACRO(DbgGroup::TEMPORARY,
 // 	      "t.cpp: " 
 // 	      << xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->debug().c_str());
-    if (forceStatementLevel)
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
-    if (intentChange)
-      xaifBoosterBasicBlockPreaccumulationReverse::ArgumentSymbolReferenceAlg::changeIntentForCheckPoints();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     if (schemaPath.size()) { 
@@ -277,9 +270,9 @@ int main(int argc,char** argv) {
     return -1;
   } // end catch 
   DBG_MACRO(DbgGroup::METRIC,"total number of assignments: "
-	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getAssignmentCounter()
+	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::getAssignmentCounter()
 	    << " total number of Sequences: "
-	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getSequenceCounter());
+	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::getSequenceCounter());
   return 0;
 }
   

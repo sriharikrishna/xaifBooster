@@ -54,7 +54,7 @@
 
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-#include "xaifBooster/utils/inc/Counter.hpp" //IK
+#include "xaifBooster/utils/inc/Counter.hpp" 
 
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
@@ -79,8 +79,9 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdgeAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertexAlgFactory.hpp"
+
 /** 
- * the call to the ANGEL library
+ * the various methods provided by the ANGEL library
  */
 namespace angel { 
   extern void compute_elimination_sequence (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
@@ -102,25 +103,30 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  bool BasicBlockAlg::ourLimitToStatementLevelFlag=false;
-  bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   unsigned int BasicBlockAlg::ourAssignmentCounter=0;
   unsigned int BasicBlockAlg::ourSequenceCounter=0;
+
+  bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   bool BasicBlockAlg::chooseAlg=false;
   bool BasicBlockAlg::runtimeCounters=false;
+
+  PreaccumulationLevel::PreaccumulationLevel_E BasicBlockAlg::ourPreaccumulationLevel(PreaccumulationLevel::PICK_BEST);
+
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
+
+
+  //BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence;
+  BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=0;
+
+  int BasicBlockAlg::ourIntParameter=5000;
+  double BasicBlockAlg::ourGamma=5.0;
 
   BasicBlockAlg::Sequence::Sequence() {
     myFlattenedSequence_p=ourPrivateLinearizedComputationalGraphAlgFactory_p->makeNewPrivateLinearizedComputationalGraph();
   }
   
-  //BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence;
-  BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=0;
-  int BasicBlockAlg::ourIntParameter=5000;
-  double BasicBlockAlg::ourGamma=5.0;
-
   BasicBlockAlg::Sequence::~Sequence() { 
     for (AssignmentPList::iterator i=myFrontAssignmentList.begin();
 	 i!=myFrontAssignmentList.end();
@@ -134,28 +140,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	delete *i;
     if (myFlattenedSequence_p)
       delete myFlattenedSequence_p;
-  }
-
-  PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::getPrivateLinearizedComputationalGraphAlgFactory() {
-    return ourPrivateLinearizedComputationalGraphAlgFactory_p; 
-  }
-  PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory() {
-    return ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p; 
-  }
-  PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory() {
-    return ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;  
-  }
-
-  
-  
-  void  BasicBlockAlg::setPrivateLinearizedComputationalGraphAlgFactory(PrivateLinearizedComputationalGraphAlgFactory* thePrivateLinearizedComputationalGraphAlgFactory) {
-    ourPrivateLinearizedComputationalGraphAlgFactory_p=thePrivateLinearizedComputationalGraphAlgFactory;  
-  }
-  void  BasicBlockAlg::setPrivateLinearizedComputationalGraphEdgeAlgFactory( PrivateLinearizedComputationalGraphEdgeAlgFactory *thePrivateLinearizedComputationalGraphEdgeAlgFactory) {
-    ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p = thePrivateLinearizedComputationalGraphEdgeAlgFactory;  
-  }
-  void  BasicBlockAlg::setPrivateLinearizedComputationalGraphVertexAlgFactory(PrivateLinearizedComputationalGraphVertexAlgFactory *thePrivateLinearizedComputationalGraphVertexAlgFactory) {
-    ourPrivateLinearizedComputationalGraphVertexAlgFactory_p = thePrivateLinearizedComputationalGraphVertexAlgFactory; 
   }
 
   Assignment& BasicBlockAlg::Sequence::appendFrontAssignment() { 
@@ -187,19 +171,159 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } // end of BasicBlockAlg::debug
 
-
-  BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
-    xaifBooster::BasicBlockAlgBase(theContaining),
-    xaifBoosterLinearization::BasicBlockAlg(theContaining) { 
+  BasicBlockAlg::SequenceHolder::SequenceHolder(bool flatten) : 
+    myLimitToStatementLevelFlag(flatten) {
   }
-
-  BasicBlockAlg::~BasicBlockAlg() {
+  
+  BasicBlockAlg::SequenceHolder::~SequenceHolder() {
     for(SequencePList::iterator i=myUniqueSequencePList.begin();
 	i!=myUniqueSequencePList.end();
 	++i)
       if (*i) // should always be true
 	delete *i;
+  }
+  
+  bool BasicBlockAlg::isRepresentativeSequenceHolder(const SequenceHolder& aSequenceHolder) const { 
+    if(!myRepresentativeSequence_p) 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::isRepresentativeSequenceHolder:  no representative set");
+    return (myRepresentativeSequence_p==&aSequenceHolder);
+  }
+
+  void BasicBlockAlg::incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder) { 
+    if (isRepresentativeSequenceHolder(aSequenceHolder))
+      ourAssignmentCounter++;
+  } 
+  
+  void BasicBlockAlg::incrementGlobalSequenceCounter(const SequenceHolder& aSequenceHolder) {
+    if (isRepresentativeSequenceHolder(aSequenceHolder))
+      ourSequenceCounter++;
+  } 
+
+  BasicBlockAlg::SequenceHolder::BasicBlockElementSequencePPairList& 
+  BasicBlockAlg::SequenceHolder::getBasicBlockElementSequencePPairList() { 
+    return myBasicBlockElementSequencePPairList;
+  } 
+
+  const BasicBlockAlg::SequenceHolder::BasicBlockElementSequencePPairList& 
+  BasicBlockAlg::SequenceHolder::getBasicBlockElementSequencePPairList() const { 
+    return myBasicBlockElementSequencePPairList;
+  } 
+
+  BasicBlockAlg::SequenceHolder::SequencePList& 
+  BasicBlockAlg::SequenceHolder::getUniqueSequencePList() { 
+    return myUniqueSequencePList;
+  } 
+
+  void BasicBlockAlg::SequenceHolder::splitFlattenedSequence(const Assignment& theAssignment) { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::splitFlattenedSequence entering");
+    if(!myBasicBlockElementSequencePPairList.size()) { 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::splitFlattenedSequence: must be initialized unless called out of order");
+    }
+    for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
+	 i!=myBasicBlockElementSequencePPairList.end();
+	 ++i) { 
+      if ((*i).first==&theAssignment) { 
+	if((*i).second) { // this should always be true
+	  // reset the current sequence's last element
+	  // which must be by definition the direct predecessor
+	  --i;
+	  BasicBlockElement* thePredecessorAssignment_p=(*i).first;
+	  //reset iterator
+	  ++i;
+	  (*i).second->myLastElement_p=thePredecessorAssignment_p;
+	}
+	// now make a new one for this assignment
+	(*i).second=new Sequence;
+	ourSequenceCounter++;
+	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
+	myUniqueSequencePList.push_back((*i).second);
+	DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::splitFlattenedSequence leaving");
+	return; 
+      } 
+    } // end if 
+    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitFlattenedSequence: couldn't find"
+			       << theAssignment.debug().c_str());
+  }
+
+  xaifBoosterDerivativePropagator::DerivativePropagator& 
+  BasicBlockAlg::SequenceHolder::getDerivativePropagator(const Assignment& theAssignment) { 
+    Sequence* theSequence_p=0;
+    for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
+	 i!=myBasicBlockElementSequencePPairList.end();
+	 ++i) 
+      if ((*i).first==&theAssignment) { 
+	if((*i).second)
+	  theSequence_p=(*i).second;
+      } // end if 
+    if (!theSequence_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getDerivativePropagator: no Sequence exists for element "
+				 << theAssignment.debug().c_str());
+    return theSequence_p->myDerivativePropagator;
+  }
+
+  bool BasicBlockAlg::SequenceHolder::doesLimitToStatementLevel() const { 
+    return myLimitToStatementLevelFlag;
+  }
+
+  unsigned int BasicBlockAlg::SequenceHolder::getAssignmentCounter() { 
+    return ourAssignmentCounter;
+  }
+  
+  unsigned int BasicBlockAlg::SequenceHolder::getSequenceCounter() { 
+    return ourSequenceCounter;
+  }
+
+  BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
+    xaifBooster::BasicBlockAlgBase(theContaining),
+    xaifBoosterLinearization::BasicBlockAlg(theContaining),
+    myBestSeq_p(0),
+    myFlatOn(false),
+    myFlatOff(true) {
+    // we must choose one SequenceHolder to do the things 
+    // that are common across all the variants,
+    // in particular the steps that can be done only once
+    // such as redoing the activity determination and the
+    // linearization. The latter items should be done 
+    // on the flattening version which is why we pick that one 
+    // as the representative. 
+    if (ourPreaccumulationLevel!=PreaccumulationLevel::STATEMENT)
+      myRepresentativeSequence_p=&myFlatOn;
+    else
+      myRepresentativeSequence_p=&myFlatOff;
+  }
+
+  BasicBlockAlg::~BasicBlockAlg() {
   } // end of BasicBlockAlg::~BasicBlockAlg()
+
+  PrivateLinearizedComputationalGraphAlgFactory* 
+  BasicBlockAlg::getPrivateLinearizedComputationalGraphAlgFactory() {
+    return ourPrivateLinearizedComputationalGraphAlgFactory_p; 
+  }
+
+  PrivateLinearizedComputationalGraphEdgeAlgFactory* 
+  BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory() {
+    return ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p; 
+  }
+
+  PrivateLinearizedComputationalGraphVertexAlgFactory* 
+  BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory() {
+    return ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;  
+  }
+
+  void  
+  BasicBlockAlg::setPrivateLinearizedComputationalGraphAlgFactory(PrivateLinearizedComputationalGraphAlgFactory* thePrivateLinearizedComputationalGraphAlgFactory) {
+    ourPrivateLinearizedComputationalGraphAlgFactory_p=thePrivateLinearizedComputationalGraphAlgFactory;  
+  }
+
+  void  
+  BasicBlockAlg::setPrivateLinearizedComputationalGraphEdgeAlgFactory( PrivateLinearizedComputationalGraphEdgeAlgFactory *thePrivateLinearizedComputationalGraphEdgeAlgFactory) {
+    ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p = thePrivateLinearizedComputationalGraphEdgeAlgFactory;  
+  }
+
+  void  
+  BasicBlockAlg::setPrivateLinearizedComputationalGraphVertexAlgFactory(PrivateLinearizedComputationalGraphVertexAlgFactory *thePrivateLinearizedComputationalGraphVertexAlgFactory) {
+    ourPrivateLinearizedComputationalGraphVertexAlgFactory_p = thePrivateLinearizedComputationalGraphVertexAlgFactory; 
+  }
 
   void
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
@@ -228,23 +352,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        << "\">" 
        << std::endl;
     if(runtimeCounters)
-    {
-      //Add macros for printing out counters
-      for(PlainBasicBlock::BasicBlockElementList::const_iterator myBasicBlockElementListI = myBasicBlockElementList.begin();
-          myBasicBlockElementListI != myBasicBlockElementList.end();
-          ++myBasicBlockElementListI)
       {
-        (*(myBasicBlockElementListI))->printXMLHierarchy(os);
+	//Add macros for printing out counters
+	for(PlainBasicBlock::BasicBlockElementList::const_iterator myBasicBlockElementListI = myBasicBlockElementList.begin();
+	    myBasicBlockElementListI != myBasicBlockElementList.end();
+	    ++myBasicBlockElementListI)
+	  {
+	    (*(myBasicBlockElementListI))->printXMLHierarchy(os);
+	  }
       }
-    }
     for (PlainBasicBlock::BasicBlockElementList::const_iterator li=getContaining().getBasicBlockElementList().begin();
 	 li!=getContaining().getBasicBlockElementList().end();
 	 li++) { 
       // do we have a sequence for this element?
       Sequence* aSequence_p=0;
-      for (BasicBlockElementSequencePPairList::const_iterator pli=
-	     myBasicBlockElementSequencePPairList.begin();
-	   pli!=myBasicBlockElementSequencePPairList.end();
+      for (SequenceHolder::BasicBlockElementSequencePPairList::const_iterator pli=
+	     getBestSequenceHolder().getBasicBlockElementSequencePPairList().begin();
+	   pli!=getBestSequenceHolder().getBasicBlockElementSequencePPairList().end();
 	   pli++) { 
 	if((*pli).first==*li) { 
 	  if ((*pli).second) 
@@ -295,12 +419,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     std::ostringstream out;
     out << "xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg[" << this
 	<< ",myContaining="
-	<< getContaining().debug().c_str()
-	<< ",myUniqueSequencePList=";
-    for(SequencePList::const_iterator myUniqueSequencePListI=myUniqueSequencePList.begin();
-	myUniqueSequencePListI!=myUniqueSequencePList.end();
-	++myUniqueSequencePListI) 
-      out << (*myUniqueSequencePListI)->debug().c_str();
+	<< getContaining().debug().c_str();
     out << "]" << std::ends;  
     return out.str();
   } // end of BasicBlockAlg::debug
@@ -381,11 +500,39 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   };
 
   void 
-  BasicBlockAlg::algorithm_action_3() { 
+  BasicBlockAlg::algorithm_action_3() {
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
 	      << debug().c_str());
-    for (SequencePList::iterator aSequencePListI=myUniqueSequencePList.begin();
-	 aSequencePListI!=myUniqueSequencePList.end();
+    if (ourPreaccumulationLevel!=PreaccumulationLevel::STATEMENT)
+      algorithm_action_3_perSequence(myFlatOn);
+    if (ourPreaccumulationLevel!=PreaccumulationLevel::MAX_GRAPH)
+      algorithm_action_3_perSequence(myFlatOff);
+    switch(ourPreaccumulationLevel) { 
+    case PreaccumulationLevel::STATEMENT:
+      myBestSeq_p=&myFlatOff;
+      break;
+    case PreaccumulationLevel::MAX_GRAPH:
+      myBestSeq_p=&myFlatOn;
+      break;
+    default: 
+      // this is the heuristic to pick between the two sequences
+      if(myFlatOn.myBasicBlockOperations.getJacValue() < myFlatOff.myBasicBlockOperations.getJacValue())
+	  myBestSeq_p = &myFlatOn;
+      else if(myFlatOff.myBasicBlockOperations.getJacValue() < myFlatOn.myBasicBlockOperations.getJacValue())
+	myBestSeq_p = &myFlatOff;
+      else if(myFlatOff.myBasicBlockOperations < myFlatOn.myBasicBlockOperations)
+	myBestSeq_p = &myFlatOff;
+      else
+	myBestSeq_p = &myFlatOn;
+      break;
+    }
+  }
+
+  void 
+  BasicBlockAlg::algorithm_action_3_perSequence(BasicBlockAlg::SequenceHolder& aSequenceHolder) { 	  
+    aSequenceHolder.myBasicBlockOperations.reset();
+    for (SequenceHolder::SequencePList::iterator aSequencePListI=aSequenceHolder.getUniqueSequencePList().begin();
+	 aSequencePListI!=aSequenceHolder.getUniqueSequencePList().end();
 	 ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
       PrivateLinearizedComputationalGraph& theFlattenedSequence=*((*aSequencePListI)->myFlattenedSequence_p);
       PrivateLinearizedComputationalGraph::VertexIteratorPair p(theFlattenedSequence.vertices());
@@ -555,67 +702,64 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	Counter current;
         // call Angel which fills myJacobianAccumulationExpressionList and finds most efficient algorithm
 	try { 
-        ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence; //Set algorithm
+	  ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence; //Set algorithm
           (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg1Test); //Run algorithm
-        countOperations(alg1Test, current); //Count algorithm
-        min = current; //since first this is min
-        best = &alg1Test; //it is also best
-        //debuging print statements with results
-	DBG_MACRO(DbgGroup::METRIC, "Default "
-			<< current.debug());
-        current.reset(); //Reset counter for next algorithm
-	
-        if(chooseAlg)
-	{
-	  ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex; //Set algorithm
-          (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg2Test); //Run algorithm
-          countOperations(alg2Test, current); //Count algorithm
-          //Debuging output statements
-          DBG_MACRO(DbgGroup::METRIC, "Vertex "
-			<< current.debug());//Was current algorithm better than old algorithm
-          if(current < min)
-          {
-            best = &alg2Test; //If better store new algrithms results
-            min = current;
-          }
-          current.reset(); //reset counter for next algorithm
-          ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_face; //Set algorithm
-          (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg3Test); //Run algorithm
-          countOperations(alg3Test, current); //Count algorithm
-          //debugging statements
-          DBG_MACRO(DbgGroup::METRIC, "Face "
-		        << current.debug());
-          //Was current algorithm better than old algorithm
-          if(current < min)
-          {
-            best = &alg3Test; //If better store new algorithm results
-            min = current;
-          }
+	  countOperations(alg1Test, current); //Count algorithm
+	  min = current; //since first this is min
+	  best = &alg1Test; //it is also best
+	  //debuging print statements with results
+	  DBG_MACRO(DbgGroup::METRIC, "Default "
+		    << current.debug());
+	  current.reset(); //Reset counter for next algorithm
+	  if(chooseAlg) {
+	    ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex; //Set algorithm
+	    (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg2Test); //Run algorithm
+	    countOperations(alg2Test, current); //Count algorithm
+	    //Debuging output statements
+	    DBG_MACRO(DbgGroup::METRIC, "Vertex "
+		      << current.debug());//Was current algorithm better than old algorithm
+	    if(current < min)
+	      {
+		best = &alg2Test; //If better store new algrithms results
+		min = current;
+	      }
+	    current.reset(); //reset counter for next algorithm
+	    ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_face; //Set algorithm
+	    (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg3Test); //Run algorithm
+	    countOperations(alg3Test, current); //Count algorithm
+	    //debugging statements
+	    DBG_MACRO(DbgGroup::METRIC, "Face "
+		      << current.debug());
+	    //Was current algorithm better than old algorithm
+	    if(current < min)
+	      {
+		best = &alg3Test; //If better store new algorithm results
+		min = current;
+	      }
+	  }
+	  //add flattened sequences together
+	  aSequenceHolder.myBasicBlockOperations = aSequenceHolder.myBasicBlockOperations + min; 
+	  current.reset(); //reset counter just in case
 	}
-        basicBlockOperations = basicBlockOperations + min; //add flattened sequences together
-        current.reset(); //reset counter just in case
-      }
-	
 	catch(...) { 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
 	}
         //Insert Macros into the code that will be expanded to count multiplications and additions
         //Multiplication counter
 	if(runtimeCounters)
-	{
-          theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
-          theSubroutineCall_p->setId("inline_countmult");
-          theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getMulValue());
-          // save it in the list
-          myBasicBlockElementList.push_back(theSubroutineCall_p);
-          //Addition Counter
-          theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
-          theSubroutineCall_p->setId("inline_countadd");
-          theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getAddValue());
-          // save it in the list
-          myBasicBlockElementList.push_back(theSubroutineCall_p);
-	}
-
+	  {
+	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
+	    theSubroutineCall_p->setId("inline_countmult");
+	    theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getMulValue());
+	    // save it in the list
+	    myBasicBlockElementList.push_back(theSubroutineCall_p);
+	    //Addition Counter
+	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
+	    theSubroutineCall_p->setId("inline_countadd");
+	    theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getAddValue());
+	    // save it in the list
+	    myBasicBlockElementList.push_back(theSubroutineCall_p);
+	  }
 	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
 	      (*best).getGraphList().begin();
 	    it!=(*best).getGraphList().end();
@@ -754,49 +898,49 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // add the LHS to the tracking list: 
 	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
 	} // end for 
-      //debuging print statements with results
-      DBG_MACRO(DbgGroup::METRIC, "BasicBlockOperations "
-                  << basicBlockOperations.debug());
+	//debuging print statements with results
+	DBG_MACRO(DbgGroup::METRIC, "BasicBlockOperations "
+                  << aSequenceHolder.myBasicBlockOperations.debug());
       } // end if have flattened graph with more than one vertex
       else { 
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
       }
-    } // end for 
-  } // end of BasicBlockAlg::algorihm_action_3
+    } // end for
+  } 
 
-   //Counts the number of add and multiply operations that are in a list passed in to it
-   void BasicBlockAlg::countOperations(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList &list, Counter &ops)
-   {
-     //goes through each graph in the list
-     for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
-           list.getGraphList().begin();
-           it!=list.getGraphList().end();
-           ++it) {
-       const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression2(*(*it));
-       xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression2.vertices());
-       xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
-       if(theExpression2.isJacobianEntry())
-       {
-         ops.jacInc();
-       }
-       //goes through every vertex in each graph
-       for (;testVertexI!=testVertexIEnd; ++testVertexI) {
-       //if the vertex is an operation then figure out which one it is and increment the counter
-         if ((*testVertexI).getReferenceType() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION)
-         {
-           if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP)
-           {
-             ops.mulInc();
-           }
-           if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP)
-           {
-             ops.addInc();
-           }
-         }
-       } // end for
-     }
-     return;
-   }
+  //Counts the number of add and multiply operations that are in a list passed in to it
+  void BasicBlockAlg::countOperations(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList &list, Counter &ops)
+  {
+    //goes through each graph in the list
+    for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
+	  list.getGraphList().begin();
+	it!=list.getGraphList().end();
+	++it) {
+      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression2(*(*it));
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression2.vertices());
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
+      if(theExpression2.isJacobianEntry())
+	{
+	  ops.jacInc();
+	}
+      //goes through every vertex in each graph
+      for (;testVertexI!=testVertexIEnd; ++testVertexI) {
+	//if the vertex is an operation then figure out which one it is and increment the counter
+	if ((*testVertexI).getReferenceType() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION)
+	  {
+	    if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP)
+	      {
+		ops.mulInc();
+	      }
+	    if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP)
+	      {
+		ops.addInc();
+	      }
+	  }
+      } // end for
+    }
+    return;
+  }
 
 	
   void BasicBlockAlg::handleCollapsedVertex(PrivateLinearizedComputationalGraphVertex& theCollapsedVertex,
@@ -1041,31 +1185,33 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
-  
+
   PrivateLinearizedComputationalGraph& 
-  BasicBlockAlg::getFlattenedSequence(const Assignment& theAssignment) { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::getFlattenedSequence entering with "
+  BasicBlockAlg::getFlattenedSequence(const Assignment& theAssignment,
+				      BasicBlockAlg::SequenceHolder& aSequenceHolder) { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::getFlattenedSequence entering with "
 	      << debug().c_str());
     Sequence* theSequence_p=0;
-    if(!myBasicBlockElementSequencePPairList.size()) { 
+    if(!aSequenceHolder.getBasicBlockElementSequencePPairList().size()) { 
       // not initialized
       for (PlainBasicBlock::BasicBlockElementList::const_iterator i=
 	     getContaining().getBasicBlockElementList().begin();
 	   i!=getContaining().getBasicBlockElementList().end();
 	   ++i)
-	myBasicBlockElementSequencePPairList.push_back(BasicBlockElementSequencePPair(*i,0));
+	aSequenceHolder.getBasicBlockElementSequencePPairList().push_back(BasicBlockElementSequencePPair(*i,0));
     }
-    for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
-	 i!=myBasicBlockElementSequencePPairList.end();
+    for (SequenceHolder::BasicBlockElementSequencePPairList::iterator i=
+	   aSequenceHolder.getBasicBlockElementSequencePPairList().begin();
+	 i!=aSequenceHolder.getBasicBlockElementSequencePPairList().end();
 	 ++i) 
       if ((*i).first==&theAssignment) { 
 	if(!(*i).second) { // nothing assigned yet
-	  ourAssignmentCounter++;
-	  if(i!=myBasicBlockElementSequencePPairList.begin()) { 
+	  incrementGlobalAssignmentCounter(aSequenceHolder);
+	  if(i!=aSequenceHolder.getBasicBlockElementSequencePPairList().begin()) { 
 	    // have a predecessor: 
 	    --i;
 	    if(!(*i).second ||
-	       doesLimitToStatementLevel()) { 
+	       aSequenceHolder.doesLimitToStatementLevel()) { 
 	      // either nothing assigned yet which means this is not an 
 	      // assignment (unless we call this out of order) this is how 
 	      // we handle splits for subroutine calls
@@ -1073,9 +1219,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      // we intend to not flatten at all and keep one assignment per sequence
 	      // while leaving the rest of the code unchanged
 	      theSequence_p=new Sequence;
-	      ourSequenceCounter++;
+	      incrementGlobalSequenceCounter(aSequenceHolder);
 	      theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
-	      myUniqueSequencePList.push_back(theSequence_p);
+	      aSequenceHolder.getUniqueSequencePList().push_back(theSequence_p);
 	    } 
 	    else { 
  	      // have something assigned which means this 
@@ -1089,9 +1235,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  } 
 	  else { // have no predecessor
 	    theSequence_p=new Sequence;
-	    ourSequenceCounter++;
+	    incrementGlobalSequenceCounter(aSequenceHolder);
 	    theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
-	    myUniqueSequencePList.push_back(theSequence_p);
+	    aSequenceHolder.getUniqueSequencePList().push_back(theSequence_p);
 	  }
 	  (*i).second=theSequence_p;
 	} // end if nothing assigned
@@ -1100,61 +1246,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	break;
       } // end if 
     if (!theSequence_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getFlattenedSequence: this basic block does not have element "
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getFlattenedSequence: this basic block does not have element "
 				 << theAssignment.debug().c_str());
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::getFlattenedSequence leaving with "
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::getFlattenedSequence leaving with "
 	      << debug().c_str());
     return *(theSequence_p->myFlattenedSequence_p);
-  } // end of BasicBlockAlg::getFlattenedSequence
-
-  void BasicBlockAlg::splitFlattenedSequence(const Assignment& theAssignment) { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::splitFlattenedSequence entering with "
-	      << debug().c_str());
-    if(!myBasicBlockElementSequencePPairList.size()) { 
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitFlattenedSequence: must be initialized unless called out of order");
-    }
-    for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
-	 i!=myBasicBlockElementSequencePPairList.end();
-	 ++i) { 
-      if ((*i).first==&theAssignment) { 
-	if((*i).second) { // this should always be true
-	  // reset the current sequence's last element
-	  // which must be by definition the direct predecessor
-	  --i;
-	  BasicBlockElement* thePredecessorAssignment_p=(*i).first;
-	  //reset iterator
-	  ++i;
-	  (*i).second->myLastElement_p=thePredecessorAssignment_p;
-	}
-	// now make a new one for this assignment
-	(*i).second=new Sequence;
-	ourSequenceCounter++;
-	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
-	myUniqueSequencePList.push_back((*i).second);
-	DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::splitFlattenedSequence leaving with "
-		  << debug().c_str());
-	return; 
-      } 
-    } // end if 
-    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitFlattenedSequence: couldn't find"
-			       << theAssignment.debug().c_str());
-  } // end of BasicBlockAlg::splitFlattenedSequence
-
-  xaifBoosterDerivativePropagator::DerivativePropagator& 
-  BasicBlockAlg::getDerivativePropagator(const Assignment& theAssignment) { 
-    Sequence* theSequence_p=0;
-    for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
-	 i!=myBasicBlockElementSequencePPairList.end();
-	 ++i) 
-      if ((*i).first==&theAssignment) { 
-	if((*i).second)
-	  theSequence_p=(*i).second;
-      } // end if 
-    if (!theSequence_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getDerivativePropagator: no Sequence exists for element "
-				 << theAssignment.debug().c_str());
-    return theSequence_p->myDerivativePropagator;
-  } // end of BasicBlockAlg::getDerivativePropagator
+  } 
 
   bool BasicBlockAlg::isAliased(const Variable& theIndepVariable,
 				const BasicBlockAlg::VariableCPList& theDependentList) { 
@@ -1175,14 +1272,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return dynamic_cast<const BasicBlock&>(myContaining);
   }
 
-  void BasicBlockAlg::limitToStatementLevel() { 
-    ourLimitToStatementLevelFlag=true;
-  }
-  
-  bool BasicBlockAlg::doesLimitToStatementLevel() { 
-    return ourLimitToStatementLevelFlag;
-  }
-
   void BasicBlockAlg::permitNarySax() { 
     ourPermitNarySaxFlag=true;
   }
@@ -1191,32 +1280,57 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return ourPermitNarySaxFlag;
   }
 
-  unsigned int BasicBlockAlg::getAssignmentCounter() { 
-    return ourAssignmentCounter;
-  }
-  
-  unsigned int BasicBlockAlg::getSequenceCounter() { 
-    return ourSequenceCounter;
-  }
-
-  Counter& BasicBlockAlg::getBasicBlockOperations(){
-    return basicBlockOperations;
+  const Counter& BasicBlockAlg::getBasicBlockOperations() const {
+    return getBestSequenceHolder().myBasicBlockOperations;
   }
 
   const DuUdMapDefinitionResult::StatementIdList& BasicBlockAlg::getAssignmentIdList()const { 
     return ourAssignmentIdList;
   } 
 
-  void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment) { 
-    ourAssignmentIdList.push_back(anAssignment.getId());
+  void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment, const SequenceHolder& aSequenceHolder) {
+    if (isRepresentativeSequenceHolder(aSequenceHolder))
+      ourAssignmentIdList.push_back(anAssignment.getId());
   }
 
   void BasicBlockAlg::setAllAlgorithms(){
-     chooseAlg = true;
+    chooseAlg = true;
   }
 
   void BasicBlockAlg::setRuntimeCounters(){
-     runtimeCounters = true;
+    runtimeCounters = true;
   }
-  
+
+  BasicBlockAlg::SequenceHolder& BasicBlockAlg::getSequenceHolder(bool flattenFlag) { 
+    if ((ourPreaccumulationLevel==PreaccumulationLevel::STATEMENT && flattenFlag)
+	||
+	(ourPreaccumulationLevel==PreaccumulationLevel::MAX_GRAPH && !flattenFlag))
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getSequenceHolder: under PreaccumulationLevel "
+				 << PreaccumulationLevel::toString(ourPreaccumulationLevel).c_str()
+				 << " we do not populate data for the SequenceHolder with flattenFlag value "
+				 << flattenFlag);
+      return (flattenFlag?myFlatOn:myFlatOff);
+  }
+
+  const BasicBlockAlg::SequenceHolder& BasicBlockAlg::getBestSequenceHolder() const { 
+    if (!myBestSeq_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getBestSequenceHolder: not determined");
+    return *myBestSeq_p;
+  } 
+
+  BasicBlockAlg::SequenceHolder& BasicBlockAlg::getBestSequenceHolder() { 
+    if (!myBestSeq_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getBestSequenceHolder: not determined");
+    return *myBestSeq_p;
+  } 
+
+  void BasicBlockAlg::forcePreaccumulationLevel(PreaccumulationLevel::PreaccumulationLevel_E aLevel) { 
+    PreaccumulationLevel::checkValid(aLevel);
+    ourPreaccumulationLevel=aLevel;
+  } 
+
+  PreaccumulationLevel::PreaccumulationLevel_E BasicBlockAlg::getPreaccumulationLevel() { 
+    return ourPreaccumulationLevel;
+  } 
+
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

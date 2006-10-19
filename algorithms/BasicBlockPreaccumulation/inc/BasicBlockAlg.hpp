@@ -61,11 +61,10 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
-#include "xaifBooster/utils/inc/Counter.hpp" //IK
-#include "xaifBooster/system/inc/PlainBasicBlock.hpp"//IK
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"//IK
-
-
+#include "xaifBooster/utils/inc/Counter.hpp" 
+#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationLevel.hpp"
 
 namespace xaifBooster { 
   class ExpressionVertex;
@@ -76,9 +75,11 @@ namespace xaifBooster {
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
+
   class PrivateLinearizedComputationalGraphAlgFactory;
   class PrivateLinearizedComputationalGraphEdgeAlgFactory;
   class PrivateLinearizedComputationalGraphVertexAlgFactory;
+
   /** 
    * class to implement algorithms relevant for the 
    * angel interface
@@ -110,11 +111,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /**
      * pointer to function for computing elimination sequence
      */
-     typedef void (*Compute_elimination_sequence_fp)(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
-						     int,
-						     double,
-						     xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
-						     );
+    typedef void (*Compute_elimination_sequence_fp)(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
+						    int,
+						    double,
+						    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&
+						    );
     /**
      * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
      */
@@ -130,58 +131,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * Sets flag to insert runtime conuters into the code.
      */
     static void setRuntimeCounters();
- 
+
     static Compute_elimination_sequence_fp ourCompute_elimination_sequence_fp;
     static int ourIntParameter;
     static double ourGamma;
+
     static PrivateLinearizedComputationalGraphAlgFactory *getPrivateLinearizedComputationalGraphAlgFactory();
     static PrivateLinearizedComputationalGraphEdgeAlgFactory *getPrivateLinearizedComputationalGraphEdgeAlgFactory();
     static PrivateLinearizedComputationalGraphVertexAlgFactory *getPrivateLinearizedComputationalGraphVertexAlgFactory();
     static void setPrivateLinearizedComputationalGraphAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphAlgFactory*);
     static void setPrivateLinearizedComputationalGraphEdgeAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphEdgeAlgFactory*);
     static void setPrivateLinearizedComputationalGraphVertexAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertexAlgFactory*);
-    /** 
-     * returns the PrivateLinearizedComputationalGraph 
-     * to be used by theAssignment
-     * this expects to be called in the 
-     * sequence order of BasicBlockElements
-     * to work best as it creates the Sequence
-     * instances to be used by sequences of consecutive
-     * assignments. 
-     */
-
-    PrivateLinearizedComputationalGraph& getFlattenedSequence(const Assignment& theAssignment);
-
-    /** 
-     * signals a necessary split in the sequence due to an 
-     * ambiguity
-     */
-    void splitFlattenedSequence(const Assignment& theAssignment);
-
-    /** 
-     * returns the DerivativePropagtor 
-     * to be used by theAssignment
-     * this expects to be called only after 
-     * a Sequence has been associated with 
-     * theAssignment through a call to 
-     * getFlattenedSequence
-     */
-    xaifBoosterDerivativePropagator::DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
 
     /**
      * access container
      */
     const BasicBlock& getContaining() const;
     
-    /** 
-     * we can decide to restrict the 
-     * preaccumulation to the level of single statements 
-     * effectively precluding the flattening
-     */
-    static void limitToStatementLevel();
-    
-    static bool doesLimitToStatementLevel();
-
     /** 
      * we can allow to have all 'ax' factors collected 
      * into one DerivativePropagator per 'y'
@@ -190,15 +156,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     static bool doesPermitNarySax();
 
-    static unsigned int getAssignmentCounter();
-
-    static unsigned int getSequenceCounter();
-
-    Counter& getBasicBlockOperations();
+    const Counter& getBasicBlockOperations() const;
 
     const DuUdMapDefinitionResult::StatementIdList& getAssignmentIdList()const;
-
-    void addMyselfToAssignmentIdList(const Assignment&);
 
     /**
      * pointer to printer for DerivativePropagator
@@ -211,13 +171,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       PrintDerivativePropagator_fp aPrintDerivativePropagator_fp) const;
 
   private:
+
     static PrivateLinearizedComputationalGraphAlgFactory* ourPrivateLinearizedComputationalGraphAlgFactory_p;
     static PrivateLinearizedComputationalGraphEdgeAlgFactory* ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p;
     static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;
-    static bool chooseAlg; //IK
-    static bool runtimeCounters; //IK
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;//IK
-    PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;//IK
+
+    static bool chooseAlg;
+    static bool runtimeCounters; 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
+    PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;
     
     /** 
      * no def
@@ -235,6 +197,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     BasicBlockAlg operator=(const BasicBlockAlg&);
    
   protected: 
+
     /**
      * an instance of Sequence is held 
      * for every sequence of consecutive assignments 
@@ -247,6 +210,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
 
       Sequence();      
+
       ~Sequence();
 
       virtual std::string debug() const ;
@@ -324,7 +288,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * the end of this sequence
        */
       AssignmentPList myEndAssignmentList;
+
+      /** 
+       * no def
+       */
       Sequence(const Sequence&);
+
+      /** 
+       * no def
+       */
       Sequence& operator= (const Sequence&);
 
     }; // end of struct Sequence
@@ -334,26 +306,136 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     typedef std::pair<BasicBlockElement*,
 		      Sequence*> BasicBlockElementSequencePPair;
 
-    typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
-
-    /** 
-     * this list does not own the Sequence
-     * instances it contains 
-     * consecutive assignments may share 
-     * a Sequence
-     * BasicBlockElement instances that are not an 
-     * Assignment will have a 0 pointer. 
-     */
-    BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
-    
   public: 
 
-    typedef std::list<Sequence*> SequencePList;
+    /** 
+     * we execute variants of sequences of assignments 
+     * flattened into graphs
+     * and need to keep the data for each variant
+     */
+    class SequenceHolder{
 
-    const SequencePList& getUniqueSequencePList() const { return myUniqueSequencePList;}; 
+    public: 
+      
+      SequenceHolder(bool flatten);
+
+      ~SequenceHolder();
+
+      typedef std::list<Sequence*> SequencePList;
+      
+      SequencePList& getUniqueSequencePList();
+
+      /**
+       * counting all Operations within a basic block
+       */
+      Counter myBasicBlockOperations;
+
+      typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
+
+      BasicBlockElementSequencePPairList& getBasicBlockElementSequencePPairList();
+      const BasicBlockElementSequencePPairList& getBasicBlockElementSequencePPairList() const;
+
+      /** 
+       * returns the DerivativePropagtor 
+       * to be used by theAssignment
+       * this expects to be called only after 
+       * a Sequence has been associated with 
+       * theAssignment through a call to 
+       * getFlattenedSequence
+       */
+      xaifBoosterDerivativePropagator::DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
+      
+      bool doesLimitToStatementLevel() const;
+
+      /** 
+       * signals a necessary split in the sequence due to an 
+       * ambiguity
+       */
+      void splitFlattenedSequence(const Assignment& theAssignment);
+
+      static unsigned int getAssignmentCounter();
+      
+      static unsigned int getSequenceCounter();
+    
+    private: 
+
+      /** 
+       * this list owns all the Sequence instances
+       * created by getFlattenedSequence and keeps them in order
+       * it is for convenient ordered traversal over all 
+       * Sequence instances. 
+       * The classes dtor will delete the instances held here
+       */
+      SequencePList myUniqueSequencePList;
+
+      /** 
+       * this list does not own the Sequence
+       * instances it contains 
+       * consecutive assignments may share 
+       * a Sequence
+       * BasicBlockElement instances that are not an 
+       * Assignment will have a 0 pointer. 
+       */
+      BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
+
+      /** 
+       * if this flag is true each FlattenedSequence 
+       * consists of exactly one assignment
+       */ 
+      bool myLimitToStatementLevelFlag;
+
+    };
+
+    SequenceHolder& getSequenceHolder(bool flattenFlag);
+
+    /** 
+     * returns the PrivateLinearizedComputationalGraph 
+     * to be used by theAssignment
+     * this expects to be called in the 
+     * sequence order of BasicBlockElements
+     * to work best as it creates the Sequence
+     * instances to be used by sequences of consecutive
+     * assignments. 
+     */
+    PrivateLinearizedComputationalGraph& getFlattenedSequence(const Assignment& theAssignment,
+							      SequenceHolder& aSequenceHolder);
+    
+    void addMyselfToAssignmentIdList(const Assignment&, 
+				     const SequenceHolder& aSequenceHolder);
+
+    /** 
+     * determines if the given SequenceHolder is the 
+     * the representative one
+     */
+    bool isRepresentativeSequenceHolder(const SequenceHolder& aSequenceHolder) const;
+
+    static void forcePreaccumulationLevel(PreaccumulationLevel::PreaccumulationLevel_E aLevel); 
+
+    static PreaccumulationLevel::PreaccumulationLevel_E getPreaccumulationLevel();
+    
+    const SequenceHolder& getBestSequenceHolder() const;
+
+    SequenceHolder& getBestSequenceHolder();
 
   private: 
     
+    /** 
+     * the sequence that we deem best after applying some heuristic 
+     * as criterion to pick between myFlatOn and myFlatOff 
+     * no deletion in dtor
+     */
+    SequenceHolder* myBestSeq_p;
+
+    /** 
+     * a sequence with flattening
+     */
+    SequenceHolder myFlatOn;
+
+    /** 
+     * a sequence without flattening
+     */
+    SequenceHolder myFlatOff;
+
     /** 
      * this is just a helper to accomodate 
      * the additional BasicBlockAlgBase&
@@ -365,15 +447,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
     }; 
     
-    /** 
-     * this list owns all the Sequence instances
-     * created by getFlattenedSequence and keeps them in order
-     * it is for convenient ordered traversal over all 
-     * Sequence instances. 
-     * The classes dtor will delete the instances held here
-     */
-    SequencePList myUniqueSequencePList;
-
+    
     typedef std::pair<const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex*,
 		      const Variable*> InternalReferenceConcretization; 
     typedef std::list<InternalReferenceConcretization> InternalReferenceConcretizationList;
@@ -401,33 +475,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		   const VariableCPList& theDependentList);
     
     /** 
-     * if this flag is true each FlattenedSequence 
-     * consists of exactly one assignment
-     */ 
-    static bool ourLimitToStatementLevelFlag;
-
-    /** 
      * if this flag is true we attempt to collect 
      * all 'ax' factors ordered by 'y'
      */ 
     static bool ourPermitNarySaxFlag;
 
-    /** 
-     * counting all assignments
-     */
-    static unsigned int ourAssignmentCounter;
-
-    /** 
-     * counting all Sequence instances
-     */
-    static unsigned int ourSequenceCounter;
-
-    /**
-     * counting all Operations within a basic block
-     */
-    Counter basicBlockOperations;
-    
-    /** 
+    /*
      * the list of all Assignment statement Ids
      */ 
     DuUdMapDefinitionResult::StatementIdList ourAssignmentIdList;
@@ -439,6 +492,33 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       VariableHashTable& theListOfAlreadyAssignedIndependents,
 			       BasicBlockAlg::Sequence& aSequence,
 			       xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI);
+
+    /*
+     * performs the core of algorithm_action_3();
+     */
+    void algorithm_action_3_perSequence(SequenceHolder&);
+    
+    /** 
+     * counting all assignments
+     */
+    static unsigned int ourAssignmentCounter;
+      
+    /** 
+     * counting all Sequence instances
+     */
+    static unsigned int ourSequenceCounter;
+      
+    void incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder);
+    
+    void incrementGlobalSequenceCounter(const SequenceHolder& aSequenceHolder);
+      
+    /** 
+     * one of the SequenceHolder instances should be 
+     * the one for which we do the common tasks
+     */
+    SequenceHolder* myRepresentativeSequence_p;
+
+    static PreaccumulationLevel::PreaccumulationLevel_E ourPreaccumulationLevel;
 
   };
  

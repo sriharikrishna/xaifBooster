@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_ASSIGNMENTALG_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_ASSIGNMENTALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,78 +50,44 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/algorithms/Linearization/inc/AssignmentAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationLevel.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation {  
+namespace xaifBoosterBasicBlockPreaccumulation { 
+  
+  std::string PreaccumulationLevel::toString(const PreaccumulationLevel_E& aPreaccumulationLevel)
+    throw (PrintingIntException) { 
+    std::string returnString;
+    switch(aPreaccumulationLevel) {
+    case PICK_BEST:
+      returnString="pick_best";
+      break;
+    case STATEMENT:
+      returnString="statement";
+      break;
+    case MAX_GRAPH:
+      returnString="max_graph";
+      break;
+    default: 
+      throw PrintingIntException("PreaccumulationLevel::toString: unknown value",aPreaccumulationLevel);
+      break;
+    } // end switch
+    return returnString;
+  } // end of std::string PreaccumulationLevel::toString
 
-  /** 
-   * class to implement algorithms relevant for the 
-   * angel interface and the flattening
-   */
-  class AssignmentAlg : public xaifBoosterLinearization::AssignmentAlg {
-  public:
-    
-    AssignmentAlg(Assignment& theContainingAssignment);
+  void PreaccumulationLevel::checkValid(const PreaccumulationLevel_E& aPreaccumulationLevel) { 
+    switch(aPreaccumulationLevel) {
+    case PICK_BEST:
+    case STATEMENT:
+    case MAX_GRAPH:
+      break;
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("PreaccumulationLevel::fromString: unknown value " 
+				 << aPreaccumulationLevel);
+      break;
+    } // end switch
+  } // end of std::string PreaccumulationLevel::toString
 
-    virtual ~AssignmentAlg(){};
-
-    virtual void printXMLHierarchy(std::ostream& os) const;
-
-    virtual std::string debug() const ;
-
-    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    /** 
-     * linearize
-     */
-    virtual void algorithm_action_1();
-
-    /** 
-     * flatten
-     */
-    virtual void algorithm_action_2();
-
-  private: 
-
-    /** 
-     * no def
-     */
-    AssignmentAlg();
-
-    /** 
-     * no def
-     */
-    AssignmentAlg(const AssignmentAlg&);
-
-    /** 
-     * no def
-     */
-    AssignmentAlg operator=(const AssignmentAlg&);
-
-    typedef std::pair<const ExpressionVertex*, 
-		      const PrivateLinearizedComputationalGraphVertex*> VertexPPair;
-    typedef std::list<VertexPPair> VertexPPairList;
-
-    /**
-     * method for vertex identification
-     * returning false in case of ambiguous identification
-     * and true otherwise
-     */
-    bool vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence);
-    
-    /**
-     * the logic for algorithm_action_2
-     */
-    void algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
-					BasicBlockAlg::SequenceHolder& aSequenceHolder);
-
-  }; // end of class AssignmentAlg
- 
-} 
-                                                                     
-#endif
+} // end of namespace 
