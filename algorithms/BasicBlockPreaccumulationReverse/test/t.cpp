@@ -86,7 +86,7 @@ void Usage(char** argv) {
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
-	    << "             [-S] force statement level preaccumulation" << std::endl
+	    << "             [-S <level>] force preaccumulation level (1: statement, 2 maximal graph), defaults to pick best" << std::endl
 	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
 	    << "             [-v] validate <inputFile> against the schema" << std::endl
 	    << "             [-w \"<list of subroutines with wrappers>\" " << std::endl
