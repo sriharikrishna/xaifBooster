@@ -1,5 +1,5 @@
-#ifndef _COUNTER_INCLUDE_
-#define _COUNTER_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONLEVEL_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONLEVEL_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,112 +53,26 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/utils/inc/Debuggable.hpp"
 #include <string>
+#include "xaifBooster/utils/inc/PrintingIntException.hpp"
 
-namespace xaifBooster { 
+using namespace xaifBooster;
 
-  class Counter  {
-    private:
-    /**
-     *  All counters are used to count the number of opperations of their type.
-     *  The operations being counted are defined by their name.
-     */
-    int myJacobianEntry;
-    int myMultiply;
-    int myAdd;
-	  
+namespace xaifBoosterBasicBlockPreaccumulation { 
+
+  class PreaccumulationLevel { 
   public:
+    enum PreaccumulationLevel_E {
+      PICK_BEST=0,
+      STATEMENT=1,
+      MAX_GRAPH=2};
 
-    Counter(const Counter&);
-
-    /**
-     * Initializes the values of all counters to 0.
-     */
-    Counter();
-
-    /**
-     * Retrieves values from the data structure as specified by the function name.
-     */
-    int getJacValue() const;
-    int getMulValue() const;
-    int getAddValue() const;
+    static void checkValid(const PreaccumulationLevel_E& aLevel);
     
-    /**
-     * Increments the value of the counter specified by 1.
-     */
-    void mulInc();
-    void jacInc();
-    void addInc();
+    static std::string toString(const PreaccumulationLevel_E& aLevel) throw (PrintingIntException);
 
-    /**
-     * Calls each counter specific reset function.
-     */
-    void reset();
+  }; // end of class PreaccumulationLevel
 
-    /**
-     * Resets the value of the specified counter to 0.
-     */
-    void addReset();
-    void mulReset();
-    void jacReset();
-
-    /**
-     * Prints all the counters values on a single line.
-     */
-    std::string debug() const ;
-    
-
-    /**
-     * Calls every counter's print function and the Total Print function.
-     */
-    void print() const;
-
-    /**
-     * Prints the value of the specified counter.
-     */
-    void jacPrint() const;
-    void mulPrint() const;
-    void addPrint() const;
-
-    /**
-     * Prints out the total number of operations which is the sum of the 
-     * number of multiplicatoin and addition operations.
-     */
-    void opPrint() const;
-
-    /**
-     * Prints out the sum total of all the counters.
-     */
-    void totalPrint() const;
-
-    /**
-     * Overloads the = operator so that two Counter types can be set equal to
-     * each other.
-     */
-    Counter& operator=(const Counter &p);
-
-     /**
-     * Overloads the > operator so that counter1 > counter2 if it has a greater
-     * multiply value.  If the nultiply values are equal then counter1 > counter2
-     * if it has more additions.
-     */
-    bool operator>(const Counter &b) const;
-    
-    /**
-     * Overloads the < operator so that counter1 < counter2 if it has a lesser
-     * multiply value.  If the nultiply values are equal then counter1 < counter2
-     * if it has fewer additions.
-     */
-    bool operator<(const Counter &b) const;
-
-    /**
-     * Overloads the + operator so that counter1 = counter2 + counter3. The add
-     * and multiply values are summed up seperatly.
-     */
-    Counter operator+(const Counter &b);
-  }; 
-} // end of namespace xaifBooster
+} 
                                                                      
 #endif
-

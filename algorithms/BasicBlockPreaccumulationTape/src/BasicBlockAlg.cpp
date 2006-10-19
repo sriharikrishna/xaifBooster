@@ -205,8 +205,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     //   - Source index value (if variable array index)
     // - Target index value (if variable array index) 
     // obviously this order has to be matched by the reverse sweep reading this tape.
-    for (SequencePList::const_iterator aSequencePListI=getUniqueSequencePList().begin();
-	 aSequencePListI!=getUniqueSequencePList().end();
+    for (SequenceHolder::SequencePList::const_iterator aSequencePListI=getBestSequenceHolder().getUniqueSequencePList().begin();
+	 aSequencePListI!=getBestSequenceHolder().getUniqueSequencePList().end();
 	 ++aSequencePListI) {
       // make a reinterpretation instance which refers back to the original one
       ReinterpretedDerivativePropagator* aReinterpretedDerivativePropagator_p(new ReinterpretedDerivativePropagator((*aSequencePListI)->myDerivativePropagator));
