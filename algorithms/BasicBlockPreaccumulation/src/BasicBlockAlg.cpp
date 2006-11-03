@@ -169,7 +169,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	<< ",myLastElement_p=" << myLastElement_p
 	<< "]" << std::ends;  
     return out.str();
-  } // end of BasicBlockAlg::debug
+  } 
 
   BasicBlockAlg::SequenceHolder::SequenceHolder(bool flatten) : 
     myLimitToStatementLevelFlag(flatten) {
@@ -183,6 +183,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	delete *i;
   }
   
+  std::string BasicBlockAlg::SequenceHolder::debug() const { 
+    std::ostringstream out;
+    out << "SequenceHolder[" << this 
+	<< ",myLimitToStatementLevelFlag=" << myLimitToStatementLevelFlag
+	<< "]" << std::ends;  
+    return out.str();
+  } 
+
   bool BasicBlockAlg::isRepresentativeSequenceHolder(const SequenceHolder& aSequenceHolder) const { 
     if(!myRepresentativeSequence_p) 
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::isRepresentativeSequenceHolder:  no representative set");
@@ -708,34 +716,30 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  min = current; //since first this is min
 	  best = &alg1Test; //it is also best
 	  //debuging print statements with results
-	  DBG_MACRO(DbgGroup::METRIC, "Default "
-		    << current.debug());
+	  DBG_MACRO(DbgGroup::METRIC, "Default elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
 	  current.reset(); //Reset counter for next algorithm
 	  if(chooseAlg) {
 	    ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex; //Set algorithm
 	    (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg2Test); //Run algorithm
 	    countOperations(alg2Test, current); //Count algorithm
 	    //Debuging output statements
-	    DBG_MACRO(DbgGroup::METRIC, "Vertex "
-		      << current.debug());//Was current algorithm better than old algorithm
-	    if(current < min)
-	      {
-		best = &alg2Test; //If better store new algrithms results
-		min = current;
-	      }
+	    DBG_MACRO(DbgGroup::METRIC, "LSA Vertex elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
+	    //Was current algorithm better than old algorithm
+	    if(current < min) {
+	      best = &alg2Test; //If better store new algrithms results
+	      min = current;
+	    }
 	    current.reset(); //reset counter for next algorithm
 	    ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_face; //Set algorithm
 	    (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg3Test); //Run algorithm
 	    countOperations(alg3Test, current); //Count algorithm
 	    //debugging statements
-	    DBG_MACRO(DbgGroup::METRIC, "Face "
-		      << current.debug());
+	    DBG_MACRO(DbgGroup::METRIC, "LSA Face elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
 	    //Was current algorithm better than old algorithm
-	    if(current < min)
-	      {
-		best = &alg3Test; //If better store new algorithm results
-		min = current;
-	      }
+	    if(current < min) {
+	      best = &alg3Test; //If better store new algorithm results
+	      min = current;
+	    }
 	  }
 	  //add flattened sequences together
 	  aSequenceHolder.myBasicBlockOperations = aSequenceHolder.myBasicBlockOperations + min; 
@@ -899,8 +903,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
 	} // end for 
 	//debuging print statements with results
-	DBG_MACRO(DbgGroup::METRIC, "BasicBlockOperations "
-                  << aSequenceHolder.myBasicBlockOperations.debug());
+	DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
       } // end if have flattened graph with more than one vertex
       else { 
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
