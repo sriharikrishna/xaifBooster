@@ -57,10 +57,9 @@
 namespace xaifBooster { 
  
   Counter::Counter()
-  : myJacobianEntry(0), myMultiply(0), myAdd(0)
-  {
+    : myJacobianEntry(0), myMultiply(0), myAdd(0) {
   }
-
+  
   int Counter::getJacValue() const {
     return myJacobianEntry;
   }
@@ -105,40 +104,14 @@ namespace xaifBooster {
   
   std::string Counter::debug () const {
     std::ostringstream out;
-    out << "Mults=" << myMultiply
-        << " Adds=" << myAdd
-        << " Jacs=" << myJacobianEntry
-        << "]" << std::ends;
+    out << "Counter["
+	<< this 
+	<< ",Mults=" << myMultiply
+	<< ",Adds=" << myAdd
+	<< ",Jacs=" << myJacobianEntry
+	<< "]" << std::ends;
     return out.str();
   } // end of Symbol::debug
-
-  
-  void Counter::print() const {
-    jacPrint(); 
-    addPrint(); 
-    mulPrint(); 
-    totalPrint();
-  }
-  
-  void Counter::jacPrint() const {
-    std::cout << "The number of jacobian entries was: " << myJacobianEntry << std::endl;
-  }
-  
-  void Counter::addPrint() const {
-    std::cout << "The number of add operations was: " << myAdd << std::endl;
-  }
-  
-  void Counter::mulPrint() const {
-    std::cout << "The number of multiply operations was: " << myMultiply << std::endl;
-  }
-  
-  void Counter::opPrint() const {
-    std::cout << "The number of operations was: " << myAdd + myMultiply << std::endl;
-  }
-  
-  void Counter::totalPrint() const {
-    std::cout << "The total number of events was: " << myAdd + myJacobianEntry + myMultiply << std::endl;
-  }
   
   Counter& Counter::operator=(const Counter &in) {
     myJacobianEntry = in.myJacobianEntry;
@@ -147,60 +120,46 @@ namespace xaifBooster {
     return *this;    // Return ref for multiple assignment
   }
 
-  
-
-  bool Counter::operator>(const Counter &b) const
-  { 
-    if(this->getMulValue() > b.getMulValue())//check if mults greater
-    {
+  bool Counter::operator>(const Counter &b) const { 
+    if(this->getMulValue() > b.getMulValue()) {
       return true;
     }
-    else if(this->getMulValue() < b.getMulValue()) //check if mults less
-    {
+    else if(this->getMulValue() < b.getMulValue()) {
       return false; 
     } 
-    else //mults equal
-    {
-      if(this->getAddValue() > b.getAddValue()) //check if adds greater
-      {
+    else  {
+      if(this->getAddValue() > b.getAddValue()) {
 	return true;
       }
-      else
-      {
+      else {
 	return false;
       }
     }
   }
   
-  bool Counter::operator<(const Counter &b) const
-  {
-    if(this->getMulValue() < b.getMulValue()) //check if mults less
-    {
+  bool Counter::operator<(const Counter &b) const {
+    if(this->getMulValue() < b.getMulValue()) {
       return true;
     }
-    else if(this->getMulValue() > b.getMulValue()) //check if mults greater
-    {
+    else if(this->getMulValue() > b.getMulValue()) {
       return false;
     }
-    else
-    {
-      if(this->getAddValue() < b.getAddValue()) //check if adds less
-      {
-        return true;
+    else {
+      if(this->getAddValue() < b.getAddValue()) {
+	return true;
       }
-      else
-      {
-        return false;
+      else {
+	return false;
       }
     }
   }
 
-  Counter Counter::operator+(const Counter &b)
-  {
-	  Counter temp;
-	  temp.myAdd = myAdd + b.myAdd;
-	  temp.myMultiply = myMultiply + b.myMultiply;
-	  temp.myJacobianEntry = myJacobianEntry + b.myJacobianEntry;
-	  return temp;
+  Counter Counter::operator+(const Counter &b) {
+    Counter temp;
+    temp.myAdd = myAdd + b.myAdd;
+    temp.myMultiply = myMultiply + b.myMultiply;
+    temp.myJacobianEntry = myJacobianEntry + b.myJacobianEntry;
+    return temp;
   }
+
 } 

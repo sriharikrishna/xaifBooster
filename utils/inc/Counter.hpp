@@ -108,30 +108,6 @@ namespace xaifBooster {
      */
     std::string debug() const ;
     
-
-    /**
-     * Calls every counter's print function and the Total Print function.
-     */
-    void print() const;
-
-    /**
-     * Prints the value of the specified counter.
-     */
-    void jacPrint() const;
-    void mulPrint() const;
-    void addPrint() const;
-
-    /**
-     * Prints out the total number of operations which is the sum of the 
-     * number of multiplicatoin and addition operations.
-     */
-    void opPrint() const;
-
-    /**
-     * Prints out the sum total of all the counters.
-     */
-    void totalPrint() const;
-
     /**
      * Overloads the = operator so that two Counter types can be set equal to
      * each other.
@@ -158,6 +134,7 @@ namespace xaifBooster {
      */
     Counter operator+(const Counter &b);
   }; 
+
 } // end of namespace xaifBooster
                                                                      
 #endif
