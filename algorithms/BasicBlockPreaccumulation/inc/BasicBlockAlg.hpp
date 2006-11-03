@@ -313,7 +313,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * flattened into graphs
      * and need to keep the data for each variant
      */
-    class SequenceHolder{
+    class SequenceHolder : public Debuggable {
 
     public: 
       
@@ -356,6 +356,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       static unsigned int getAssignmentCounter();
       
       static unsigned int getSequenceCounter();
+
+      virtual std::string debug()const; 
     
     private: 
 
