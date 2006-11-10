@@ -68,6 +68,8 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
+  bool CallGraphVertexAlg::ourCheckPointToFilesFlag=false;
+
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     xaifBoosterAddressArithmetic::CallGraphVertexAlg(theContaining), 
     myReplacementList_p(0),
@@ -212,7 +214,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	handleCheckPointing("cp_arg_restore",
 			    SideEffectListType::READ_LIST,
 			    theBasicBlock,
-			    true);
+			    // if we write checkpoints to files we want 
+			    // to read them in forward order
+			    !ourCheckPointToFilesFlag);
       }
 	break;
       case ReplacementId::RESTORERESULT: { 
@@ -228,7 +232,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       case ReplacementId::STORETIMESTEPARGUMENT: { 
 	theReplacement.setControlFlowGraphBase(*myCFGTimeStepStoreArguments_p);
 	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGTimeStepStoreArguments_p));
-	handleCheckPointing("cp_tsarg_store",
+	handleCheckPointing("cp_arg_store",
 			    SideEffectListType::MOD_LIST,
 			    theBasicBlock,
 			    false);
@@ -241,15 +245,27 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       case ReplacementId::RESTORETIMESTEPARGUMENT: { 
 	theReplacement.setControlFlowGraphBase(*myCFGTimeStepRestoreArguments_p);
 	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGTimeStepRestoreArguments_p));
-	handleCheckPointing("cp_tsarg_restore",
-			    SideEffectListType::READ_LOCAL_LIST,
-			    theBasicBlock,
-			    true);
-	handleCheckPointing("cp_arg_restore",
-			    SideEffectListType::MOD_LIST,
-			    theBasicBlock,
-			    true);
-        break;
+	if (ourCheckPointToFilesFlag) { 
+	  handleCheckPointing("cp_arg_restore",
+			      SideEffectListType::MOD_LIST,
+			      theBasicBlock,
+			      false);
+	  handleCheckPointing("cp_arg_restore",
+			      SideEffectListType::READ_LOCAL_LIST,
+			      theBasicBlock,
+			      false);
+	}
+	else { 
+	  handleCheckPointing("cp_arg_restore",
+			      SideEffectListType::READ_LOCAL_LIST,
+			      theBasicBlock,
+			      true);
+	  handleCheckPointing("cp_arg_restore",
+			      SideEffectListType::MOD_LIST,
+			      theBasicBlock,
+			      true);
+	}
+	break;
       }
       default: 
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_4: no handler for ReplacementID  "
@@ -362,5 +378,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     theInlineVariable.getAliasMapKey().setTemporary();
     theInlineVariable.getDuUdMapKey().setTemporary();
   } 
+
+  void
+  CallGraphVertexAlg::checkPointToFiles() { 
+    ourCheckPointToFilesFlag=true;
+  }
 
 } // end of namespace 

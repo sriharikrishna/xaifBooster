@@ -63,6 +63,7 @@
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -88,6 +89,7 @@ void Usage(char** argv) {
 	    << "             [-r] force renaming of all non-external routines" << std::endl
 	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
 	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
+	    << "             [-f] checkpoint write order for individual files instead of a memory stack" << std::endl
 	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
 
@@ -103,7 +105,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwpruU",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwpruUf",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -130,6 +132,8 @@ int main(int argc,char** argv) {
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setUserDecides();
     if (CommandLineParser::instance()->isSet('U')) 
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
+    if (CommandLineParser::instance()->isSet('f')) 
+      xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::checkPointToFiles();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
