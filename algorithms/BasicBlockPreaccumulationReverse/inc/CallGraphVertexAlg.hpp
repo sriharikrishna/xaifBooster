@@ -84,6 +84,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
     virtual void algorithm_action_4();
 
+    static void checkPointToFiles();
+ 
   private:
     
     /** 
@@ -166,6 +168,15 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 						 const Symbol& theSymbol,
 						 const Scope& theScope);
 
+    /** 
+     * used to control the read order for 
+     * checkpoints written to individual files, 
+     * in which case it is easiest to read in the same
+     * sequence as the data was written, as opposed 
+     * to the stack model
+     */
+    static bool ourCheckPointToFilesFlag;
+    
   };
  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms

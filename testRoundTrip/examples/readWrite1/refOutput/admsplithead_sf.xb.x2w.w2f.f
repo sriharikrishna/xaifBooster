@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Oct  6 14:06:17 2006
+C Fortran file translated from WHIRL Fri Nov 10 16:20:27 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -36,7 +36,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
 C     open(3,file='data.tmp')
       OPEN(UNIT = 3, FILE = 'data.tmp')
-      WRITE(3, '(EN26.16E3)') X(1)
+      WRITE(3, '(EN26.16E3)') __value__(X(1))
 C     close(3)
       CLOSE(UNIT = 3)
 C     open(3,file='data.tmp')
@@ -51,7 +51,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
 C     open(3,file='data.tmp')
       OPEN(UNIT = 3, FILE = 'data.tmp')
-      WRITE(3, '(EN26.16E3)') X(1)
+      WRITE(3, '(EN26.16E3)') __value__(X(1))
 C     close(3)
       CLOSE(UNIT = 3)
 C     open(3,file='data.tmp')
@@ -88,14 +88,14 @@ C     $OpenAD$ INLINE cp_res_restore_real_vector_a(subst)
       CALL cp_res_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
-C     $OpenAD$ INLINE cp_tsarg_store_real_vector_a(subst)
-      CALL cp_tsarg_store_real_vector_a(__deriv__(Y))
+C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
+      CALL cp_arg_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
-C     $OpenAD$ INLINE cp_tsarg_restore_real_vector_a(subst)
-      CALL cp_tsarg_restore_real_vector_a(__deriv__(X))
+C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
+      CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT

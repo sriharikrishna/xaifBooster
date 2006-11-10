@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:19:51 2006
+C Fortran file translated from WHIRL Fri Nov 10 15:56:28 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -88,17 +88,21 @@ C ========== end copyright notice ==============
 
       use w2f__types
       use active_module
+      use globals
+      use globals
       IMPLICIT NONE
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
+      REAL(w2f__8) OpenAD_Symbol_0
+      REAL(w2f__8) OpenAD_Symbol_1
+      REAL(w2f__8) OpenAD_Symbol_10
+      REAL(w2f__8) OpenAD_Symbol_11
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
+      REAL(w2f__8) OpenAD_Symbol_6
+      type(active) :: OpenAD_Symbol_7
+      REAL(w2f__8) OpenAD_Symbol_8
+      type(active) :: OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -107,8 +111,10 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_11
+      REAL(w2f__8) OpenAD_Symbol_15
+      REAL(w2f__8) OpenAD_Symbol_16
+      REAL(w2f__8) OpenAD_Symbol_17
+      REAL(w2f__8) OpenAD_Symbol_18
 C
 C     **** Statements ****
 C
@@ -119,37 +125,54 @@ C
          if (our_rev_mode%plain) then
 ! original function
 C$OPENAD XXX Template ad_template.f
-      Y%v = (X(1)%v*X(2)%v)
+      AGLOBAL%v = (X(1)%v*X(2)%v)
+      Y%v = AGLOBAL%v
       RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_4 = (X(1)%v*X(2)%v)
-      OpenAD_Symbol_2 = X(2)%v
-      OpenAD_Symbol_3 = X(1)%v
-      Y%v = OpenAD_Symbol_4
-      OpenAD_Symbol_5 = OpenAD_Symbol_2
-      OpenAD_Symbol_7 = OpenAD_Symbol_3
-          double_tape(double_tape_pointer) = OpenAD_Symbol_5
+      OpenAD_Symbol_2 = (X(1)%v*X(2)%v)
+      OpenAD_Symbol_0 = X(2)%v
+      OpenAD_Symbol_1 = X(1)%v
+      AGLOBAL%v = OpenAD_Symbol_2
+      Y%v = AGLOBAL%v
+      OpenAD_Symbol_6 = (OpenAD_Symbol_0 * INT(1_w2f__i8))
+      OpenAD_Symbol_8 = (OpenAD_Symbol_1 * INT(1_w2f__i8))
+      OpenAD_Symbol_10 = OpenAD_Symbol_0
+      OpenAD_Symbol_11 = OpenAD_Symbol_1
+          double_tape(double_tape_pointer) = OpenAD_Symbol_6
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_7
+          double_tape(double_tape_pointer) = OpenAD_Symbol_8
+          double_tape_pointer = double_tape_pointer+1
+          double_tape(double_tape_pointer) = OpenAD_Symbol_10
+          double_tape_pointer = double_tape_pointer+1
+          double_tape(double_tape_pointer) = OpenAD_Symbol_11
           double_tape_pointer = double_tape_pointer+1
       RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_10 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y%d*OpenAD_Symbol_10
+          OpenAD_Symbol_15 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_9%d = OpenAD_Symbol_9%d+AGLOBAL%d*OpenAD_Symbol_
+     +15
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_11 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y%d*OpenAD_Symbol_11
+          OpenAD_Symbol_16 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+AGLOBAL%d*OpenAD_Symbol_
+     +16
+          AGLOBAL%d = 0.0d0
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_17 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_9%d = OpenAD_Symbol_9%d+Y%d*OpenAD_Symbol_17
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_18 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y%d*OpenAD_Symbol_18
           Y%d = 0.0d0
-          X(1)%d = X(1)%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
-          X(2)%d = X(2)%d+OpenAD_Symbol_8%d
-          OpenAD_Symbol_8%d = 0.0d0
+          X(1)%d = X(1)%d+OpenAD_Symbol_7%d
+          OpenAD_Symbol_7%d = 0.0d0
+          X(2)%d = X(2)%d+OpenAD_Symbol_9%d
+          OpenAD_Symbol_9%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============
@@ -220,16 +243,18 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      type(active) :: OpenAD_Symbol_9
+      type(active) :: OpenAD_Symbol_12
 C
 C     **** Parameters and Result ****
 C
       type(active) :: X(1 : 2)
-      type(active) :: Y(1 : 1)
+      type(active) :: Y(1 : 2)
 C
 C     **** Local Variables and Functions ****
 C
+      EXTERNAL bar
       EXTERNAL foo
+      type(active) :: P
 C
 C     **** Top Level Pragmas ****
 C
@@ -245,26 +270,29 @@ C
          if (our_rev_mode%plain) then
 ! original function
 C$OPENAD XXX Template ad_template.f
-      CALL foo(X,AGLOBAL)
-      Y(1)%v = AGLOBAL%v
+      CALL foo(X,Y(1))
+      CALL bar(P)
+      Y(2)%v = P%v
       RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      CALL foo(X,AGLOBAL)
-      Y(1)%v = AGLOBAL%v
+      CALL foo(X,Y(1))
+      CALL bar(P)
+      Y(2)%v = P%v
       RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-          if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_9)) then
-            OpenAD_Symbol_9%d = OpenAD_Symbol_9%d+Y(1)%d
-            Y(1)%d = 0
+          if (iaddr(Y(2)) .ne. iaddr(OpenAD_Symbol_12)) then
+            OpenAD_Symbol_12%d = OpenAD_Symbol_12%d+Y(2)%d
+            Y(2)%d = 0
           end if
-          AGLOBAL%d = AGLOBAL%d+OpenAD_Symbol_9%d
-          OpenAD_Symbol_9%d = 0.0d0
-      CALL foo(X,AGLOBAL)
+          P%d = P%d+OpenAD_Symbol_12%d
+          OpenAD_Symbol_12%d = 0.0d0
+      CALL bar(P)
+      CALL foo(X,Y(1))
           end if 
         end subroutine head
 C ========== begin copyright notice ==============
@@ -319,7 +347,7 @@ C
 C This work is partially supported by:
 C 	NSF-ITR grant OCE-0205590
 C ========== end copyright notice ==============
-       subroutine bar(X,Y)
+       subroutine bar(AP)
           use OpenAD_tape
           use OpenAD_rev
 
@@ -329,23 +357,24 @@ C ========== end copyright notice ==============
 
       use w2f__types
       use active_module
+      use globals
+      use globals
       IMPLICIT NONE
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      type(active) :: OpenAD_Symbol_0(1 : 2)
-      type(active) :: OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_12(1 : 2)
-      type(active) :: OpenAD_Symbol_13
+      REAL(w2f__8) OpenAD_Symbol_13
+      type(active) :: OpenAD_Symbol_14
+      REAL(w2f__8) OpenAD_Symbol_3
+      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
-      REAL(w2f__8) X(1 : 2)
-      REAL(w2f__8) Y
+      type(active) :: AP
 C
 C     **** Local Variables and Functions ****
 C
-      EXTERNAL foo
+      REAL(w2f__8) OpenAD_Symbol_19
 C
 C     **** Statements ****
 C
@@ -356,41 +385,28 @@ C
          if (our_rev_mode%plain) then
 ! original function
 C$OPENAD XXX Template ad_template.f
-C!! requested inline of 'convert_p2a_vector' has no defn
-      CALL convert_p2a_vector(OpenAD_Symbol_0,X)
-C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_1,Y)
-      CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
-C!! requested inline of 'convert_a2p_vector' has no defn
-      CALL convert_a2p_vector(X,OpenAD_Symbol_0)
-C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(Y,OpenAD_Symbol_1)
+      AP%v = (AGLOBAL%v**INT(3 _w2f__i8))
       RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-C!! requested inline of 'convert_p2a_vector' has no defn
-      CALL convert_p2a_vector(OpenAD_Symbol_0,X)
-C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_1,Y)
-      CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
-C!! requested inline of 'convert_a2p_vector' has no defn
-      CALL convert_a2p_vector(X,OpenAD_Symbol_0)
-C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(Y,OpenAD_Symbol_1)
+      OpenAD_Symbol_5 = (AGLOBAL%v**INT(3 _w2f__i8))
+      OpenAD_Symbol_3 = (INT(3 _w2f__i8)*(AGLOBAL%v**(INT(3 _w2f__i8)-IN
+     +T(1 _w2f__i8))))
+      AP%v = OpenAD_Symbol_5
+      OpenAD_Symbol_13 = OpenAD_Symbol_3
+          double_tape(double_tape_pointer) = OpenAD_Symbol_13
+          double_tape_pointer = double_tape_pointer+1
       RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-C!! requested inline of 'convert_p2a_vector' has no defn
-      CALL convert_p2a_vector(OpenAD_Symbol_12,X)
-C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_13,Y)
-      CALL foo(OpenAD_Symbol_12,OpenAD_Symbol_13)
-C!! requested inline of 'convert_a2p_vector' has no defn
-      CALL convert_a2p_vector(X,OpenAD_Symbol_12)
-C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(Y,OpenAD_Symbol_13)
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_19 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_14%d = OpenAD_Symbol_14%d+AP%d*OpenAD_Symbol_19
+          AP%d = 0.0d0
+          AGLOBAL%d = AGLOBAL%d+OpenAD_Symbol_14%d
+          OpenAD_Symbol_14%d = 0.0d0
           end if 
         end subroutine bar
