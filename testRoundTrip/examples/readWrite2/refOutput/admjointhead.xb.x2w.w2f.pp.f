@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Oct  6 14:33:37 2006
+C Fortran file translated from WHIRL Fri Nov 10 16:37:57 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -169,7 +169,7 @@ C original function
 C$OPENAD XXX Template ad_template.f
 C     open(3,file='data.tmp')
       OPEN(UNIT = 3, FILE = 'data.tmp')
-      WRITE(3, '(EN26.16E3,EN26.16E3)') X
+      WRITE(3,'(EN26.16E3,EN26.16E3)') X%v
 C     close(3)
       CLOSE(UNIT = 3)
 C     open(3,file='data.tmp')
@@ -194,7 +194,7 @@ C taping
 C$OPENAD XXX Template ad_template.f
 C     open(3,file='data.tmp')
       OPEN(UNIT = 3, FILE = 'data.tmp')
-      WRITE(3, '(EN26.16E3,EN26.16E3)') X
+      WRITE(3,'(EN26.16E3,EN26.16E3)') X%v
 C     close(3)
       CLOSE(UNIT = 3)
 C     open(3,file='data.tmp')
