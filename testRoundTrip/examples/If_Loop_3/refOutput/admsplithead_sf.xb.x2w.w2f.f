@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:20:00 2006
+C Fortran file translated from WHIRL Fri Nov 10 15:57:19 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -282,18 +282,18 @@ C     $OpenAD$ INLINE cp_res_restore_real_vector_a(subst)
       CALL cp_res_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
-C     $OpenAD$ INLINE cp_tsarg_store_real_vector_a(subst)
-      CALL cp_tsarg_store_real_vector_a(__deriv__(Y))
+C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
+      CALL cp_arg_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
-C     $OpenAD$ INLINE cp_tsarg_restore_real_vector_a(subst)
-      CALL cp_tsarg_restore_real_vector_a(__deriv__(Y))
-C     $OpenAD$ INLINE cp_tsarg_restore_real_vector_a(subst)
-      CALL cp_tsarg_restore_real_vector_a(__deriv__(X))
+C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
+      CALL cp_arg_restore_real_vector_a(__deriv__(Y))
+C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
+      CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
