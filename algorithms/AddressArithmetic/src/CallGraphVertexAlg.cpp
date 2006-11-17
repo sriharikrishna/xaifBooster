@@ -85,7 +85,9 @@ namespace xaifBoosterAddressArithmetic {
 	    // and 
 	    // the variable needs to occur in the top-level's REF list (or else this has smaller scope)
 	    // and cannot be in the top-level's MOD list
-	    if (isOnlyUnderTopLevelRoutine() 
+	    if (haveTopLevelRoutineName()
+		&& 
+		isOnlyUnderTopLevelRoutine() 
 		&& 
 		getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST).
 		hasElement(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable())
@@ -310,7 +312,9 @@ namespace xaifBoosterAddressArithmetic {
 	anUnknownVariable.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR)
       THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::pushUnknownVariables: variable " 
 				 << anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
-				 << " is an array.");
+				 << " (plain name: "
+				 << anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
+				 << ") is an array.");
     theInlinableSubroutineCall_p->setId("_addressArithmetic_" + theInlinableSubroutineCall_p->getSubroutineName());
     anUnknownVariable.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     aBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
@@ -449,9 +453,13 @@ namespace xaifBoosterAddressArithmetic {
     ourTopLevelRoutineName=theName;
   } 
 
+  bool  CallGraphVertexAlg::haveTopLevelRoutineName() { 
+    return (!ourTopLevelRoutineName.empty());
+  } 
+
   const CallGraphVertex& CallGraphVertexAlg::getTopLevelRoutine() { 
     if (!ourTopLevelRoutine_p) { 
-      if (ourTopLevelRoutineName.empty())
+      if (!haveTopLevelRoutineName())
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getTopLevelRoutine: no top level routine specified");
       ourTopLevelRoutine_p=&(ConceptuallyStaticInstances::instance()->getCallGraph().getSubroutineByPlainName(ourTopLevelRoutineName));
     }
