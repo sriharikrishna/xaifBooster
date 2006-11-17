@@ -723,7 +723,9 @@ namespace xaifBoosterControlFlowReversal {
       // construct and have to hand it down to all sub graphs
       if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::FORLOOP 
 	  && 
-	  dynamic_cast<const ForLoop&>(theCurrentVertex_r.getOriginalVertex()).getReversalType()==ForLoopReversalType::EXPLICIT) { 
+	  dynamic_cast<const ForLoop&>(theCurrentVertex_r.getOriginalVertex()).getReversalType()==ForLoopReversalType::EXPLICIT
+	  && 
+	  !aNewTopExplicitLoopVertex_p) { 
 	aNewReversalType=ForLoopReversalType::EXPLICIT;
 	aNewTopExplicitLoopVertex_p=&theCurrentVertex_r;
       }

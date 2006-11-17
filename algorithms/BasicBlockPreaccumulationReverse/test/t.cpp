@@ -89,6 +89,7 @@ void Usage(char** argv) {
 	    << "             [-r] force renaming of all non-external routines" << std::endl
 	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
 	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
+	    << "             [-t <name> ] top level procedure checked for quasi-constant data " << std::endl
 	    << "             [-f] checkpoint write order for individual files instead of a memory stack" << std::endl
 	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
@@ -105,7 +106,7 @@ int main(int argc,char** argv) {
   bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwpruUf",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwpruUtf",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -132,6 +133,8 @@ int main(int argc,char** argv) {
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setUserDecides();
     if (CommandLineParser::instance()->isSet('U')) 
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
+    if (CommandLineParser::instance()->isSet('t')) 
+      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setTopLevelRoutine(CommandLineParser::instance()->argAsString('w'));
     if (CommandLineParser::instance()->isSet('f')) 
       xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::checkPointToFiles();
   } catch (BaseException& e) { 

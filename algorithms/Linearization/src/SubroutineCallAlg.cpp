@@ -290,6 +290,7 @@ namespace xaifBoosterLinearization {
 	&(ConceptuallyStaticInstances::instance()->
 	  getCallGraph().
 	  getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).
+	  getControlFlowGraph().
 	  getArgumentList().
 	  getArgumentSymbolReferencePList());
     } 

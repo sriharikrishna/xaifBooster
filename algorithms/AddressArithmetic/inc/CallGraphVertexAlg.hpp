@@ -40,6 +40,8 @@ namespace xaifBoosterAddressArithmetic {
     
     static void setIgnorance();
 
+    static void setTopLevelRoutine(const std::string& theName);
+
   private:
     
     /** 
@@ -115,6 +117,36 @@ namespace xaifBoosterAddressArithmetic {
      * force ignorance (nothing gets pushed), default false
      */
     static bool ourIgnoranceFlag;
+
+    /** 
+     * the name of the top level routine 
+     * which we refer to to test for quasi-constness of 
+     * variables used in simple loop constructs
+     */
+    static std::string ourTopLevelRoutineName;
+
+    /**
+     * we don't own the instance pointed to by
+     * this attribute
+     */
+    static const CallGraphVertex* ourTopLevelRoutine_p;
+    
+    /** 
+     * have we shown that this routine is called 
+     * only under the top level routine
+     */
+    bool myOnlyUnderTopLevelRoutineFlag;
+
+    /** 
+     * determines if a this routine is called 
+     * only under the top level routine
+     */
+    bool isOnlyUnderTopLevelRoutine(); 
+
+    /**
+     * gets the routine associated with ourTopLevelRoutineName
+     */
+    static const CallGraphVertex& getTopLevelRoutine();  
 
   };  // end of class
 

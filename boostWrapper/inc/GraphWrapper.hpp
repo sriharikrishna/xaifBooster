@@ -161,6 +161,13 @@ namespace xaifBooster {
      */
     void clear();
 
+    /** 
+     * tests if aDominatedVertex is indeed dominated 
+     * by aDominatorVertex
+     */
+    bool dominates(const Vertex& aDominatedVertex,
+		   const Vertex& aDominatorVertex) const;
+
   protected:
 
     /** 
@@ -332,6 +339,24 @@ namespace xaifBooster {
      * gets the next usable edge id
      */
     unsigned int getNextEdgeId();
+
+
+    /** 
+     * indicates if we perform a visitor algorithm on the graph
+     */
+    mutable bool myVisitInProgressFlag;
+
+    void initVisit() const;
+
+    void finishVisit() const;
+
+
+    /** 
+     * recursive test if aDominatedVertex is indeed dominated 
+     * by aDominatorVertex
+     */
+    bool dominates_r(const Vertex& aDominatedVertex,
+		     const Vertex& aDominatorVertex) const;
 
   }; // end of class GraphWrapper
   

@@ -164,7 +164,13 @@ namespace xaifBooster {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    const ControlFlowGraph& getSubroutineBySymbolReference(const SymbolReference& aSymbolReference) const;
+    const CallGraphVertex& getSubroutineBySymbolReference(const SymbolReference& aSymbolReference) const;
+
+    /** 
+     * gets the subroutine by the name in the program
+     * i.e. the plain name without front-end decorations
+     */
+    const CallGraphVertex& getSubroutineByPlainName(const std::string& aPlainName) const;
 
   private:
 

@@ -124,4 +124,14 @@ namespace xaifBooster {
     return *theVariable_p;
   } 
 
+  bool SideEffectList::hasElement(const Variable& aVariable) const { 
+    for (VariablePList::const_iterator i=myVariablePList.begin();
+	 i!=myVariablePList.end();
+	 ++i){ 
+      if ((*i)->equivalenceSignature()==aVariable.equivalenceSignature())
+	return true;
+    }
+    return false; 
+  } 
+
 } // end of namespace xaifBooster 

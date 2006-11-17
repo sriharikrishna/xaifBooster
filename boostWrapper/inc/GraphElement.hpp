@@ -104,6 +104,12 @@ namespace xaifBooster {
      * the friend declaration to be ignored
      */
     void init(const VertexOrEdgeDescriptor& aDescriptor);
+    
+    void setVisited() const; 
+
+    bool wasVisited() const; 
+
+    void resetVisited() const;
 
   protected:
 
@@ -131,7 +137,12 @@ namespace xaifBooster {
      * which is initialized by init();
      */
     VertexOrEdgeDescriptor myBoostDescriptor;
-    
+
+    /** 
+     * for visitor algorithms
+     */
+    mutable bool myVisitedFlag;
+
   }; // end of class GraphElement
 
 } // end of namespace xaifBooster
