@@ -86,6 +86,8 @@ namespace xaifBooster {
 
     Variable& addSideEffectReference();
 
+    bool hasElement(const Variable& aVariable) const;
+
   private:
 
     VariablePList myVariablePList; 

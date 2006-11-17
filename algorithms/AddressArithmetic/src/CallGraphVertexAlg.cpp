@@ -4,9 +4,11 @@
 
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
@@ -23,6 +25,10 @@ namespace xaifBoosterAddressArithmetic {
 
   bool CallGraphVertexAlg::ourIgnoranceFlag=false;
 
+  std::string CallGraphVertexAlg::ourTopLevelRoutineName;
+
+  const CallGraphVertex* CallGraphVertexAlg::ourTopLevelRoutine_p(0);
+
   void CallGraphVertexAlg::setUserDecides(){
     ourUserDecidesFlag=true;
   }
@@ -32,7 +38,8 @@ namespace xaifBoosterAddressArithmetic {
   }
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
-    xaifBoosterControlFlowReversal::CallGraphVertexAlg(theContaining){
+    xaifBoosterControlFlowReversal::CallGraphVertexAlg(theContaining),
+    myOnlyUnderTopLevelRoutineFlag(false) {
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() {
@@ -72,7 +79,25 @@ namespace xaifBoosterAddressArithmetic {
 	    }
 	  } 
 	  if (!foundIt) { 
-	    theUnknownVariables.push_back(&(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable()));
+	    // see if it is quasi-constant. 
+	    // for that we need to know that this procedure is 
+	    // called only under the top level routine
+	    // and 
+	    // the variable needs to occur in the top-level's REF list (or else this has smaller scope)
+	    // and cannot be in the top-level's MOD list
+	    if (isOnlyUnderTopLevelRoutine() 
+		&& 
+		getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST).
+		hasElement(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable())
+		&& 
+		!getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LIST).
+		hasElement(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable())) { 
+	      ;
+	      // nothing to be done here 
+	    }
+	    else { 
+	      theUnknownVariables.push_back(&(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable()));
+	    }
 	  }
 	} 
       } 
@@ -224,13 +249,11 @@ namespace xaifBoosterAddressArithmetic {
       }
     }
     if (!skipAsking && !doIt && ourUserDecidesFlag) {
-      std::string variableName(anUnknownVariable.getVariableSymbolReference().getSymbol().getId());
-      // strip the trailing _[0-9]* from the variableName
-      std::string variableNameStripped(variableName,0,variableName.find_last_of('_'));
+      std::string plainVariableName(anUnknownVariable.getVariableSymbolReference().getSymbol().plainName());
       std::cout << "Explicit loop reversal for top level loop line "
 		<< aTopLevelForLoopLineNumber
 		<< " push/pop non-loop variable "
-		<< variableNameStripped.c_str()
+		<< plainVariableName.c_str()
 		<< std::endl;
       bool done=true;
       do { 
@@ -282,6 +305,12 @@ namespace xaifBoosterAddressArithmetic {
 				 << SymbolType::toString(anUnknownVariable.getType()));
       break;
     } 
+    if (anUnknownVariable.hasArrayAccess() 
+	||  
+	anUnknownVariable.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR)
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::pushUnknownVariables: variable " 
+				 << anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
+				 << " is an array.");
     theInlinableSubroutineCall_p->setId("_addressArithmetic_" + theInlinableSubroutineCall_p->getSubroutineName());
     anUnknownVariable.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     aBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
@@ -415,6 +444,33 @@ namespace xaifBoosterAddressArithmetic {
 
   void CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
   }
+
+  void CallGraphVertexAlg::setTopLevelRoutine(const std::string& theName) { 
+    ourTopLevelRoutineName=theName;
+  } 
+
+  const CallGraphVertex& CallGraphVertexAlg::getTopLevelRoutine() { 
+    if (!ourTopLevelRoutine_p) { 
+      if (ourTopLevelRoutineName.empty())
+	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getTopLevelRoutine: no top level routine specified");
+      ourTopLevelRoutine_p=&(ConceptuallyStaticInstances::instance()->getCallGraph().getSubroutineByPlainName(ourTopLevelRoutineName));
+    }
+    return *ourTopLevelRoutine_p;
+  }
+
+  bool CallGraphVertexAlg::isOnlyUnderTopLevelRoutine() { 
+    if (!myOnlyUnderTopLevelRoutineFlag) {
+      if (ConceptuallyStaticInstances::instance()->getCallGraph().dominates(getContaining(),getTopLevelRoutine()))
+	myOnlyUnderTopLevelRoutineFlag=true;
+      else { 
+	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::isOnlyUnderTopLevelRoutine: routine " 
+				   << getContaining().getSubroutineName().c_str()
+				   << " is not exclusivly called under the top level routine "
+				   << ourTopLevelRoutineName.c_str());
+      }
+    }
+    return myOnlyUnderTopLevelRoutineFlag;
+  } 
 
 } // end of namespace
 

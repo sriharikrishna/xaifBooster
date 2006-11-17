@@ -497,4 +497,86 @@ namespace xaifBooster {
     return ++myNextEdgeId;
   } // end of GraphWrapper<Vertex,Edge>::getNextEdgeId 
 
+  template <class Vertex, class Edge>
+  void 
+  GraphWrapper<Vertex,Edge>::initVisit() const {
+    if (myVisitInProgressFlag)
+      THROW_LOGICEXCEPTION_MACRO("GraphWrapper::initVisit: visit already in progress");
+    myVisitInProgressFlag=true;
+    std::pair < 
+      InternalBoostEdgeIteratorType,
+      InternalBoostEdgeIteratorType 
+      > 
+      theEdgeEnds=boost::edges(myBoostGraph);
+    InternalBoostEdgeIteratorType ei_begin(theEdgeEnds.first), ei_end(theEdgeEnds.second);
+    for (;ei_begin!=ei_end;++ei_begin) { 
+      Edge* anEdge_p=boost::get(boost::get(BoostEdgeContentType(),
+					   myBoostGraph), // get the Edge property map
+				*(ei_begin)); // get the descriptor
+      if ( anEdge_p) // this should always be true
+	anEdge_p->resetVisited();
+    } // end for
+    // delete all the vertices
+    std::pair < 
+      InternalBoostVertexIteratorType,
+      InternalBoostVertexIteratorType 
+      > 
+      theVertexEnds=boost::vertices(myBoostGraph);
+    InternalBoostVertexIteratorType vi_begin(theVertexEnds.first), vi_end(theVertexEnds.second);
+    for (;vi_begin!=vi_end;++vi_begin) { 
+      Vertex* aVertex_p=boost::get(boost::get(BoostVertexContentType(),
+					      myBoostGraph), // get the Vertex property map
+				   *(vi_begin)); // get the descriptor
+      if ( aVertex_p) // this should always be true
+	aVertex_p->resetVisited();
+    }
+  }
+
+  template <class Vertex, class Edge>
+  void 
+  GraphWrapper<Vertex,Edge>::finishVisit() const {
+    myVisitInProgressFlag=false;
+  }
+  
+  template <class Vertex, class Edge>
+  bool 
+  GraphWrapper<Vertex,Edge>::dominates(const Vertex& aDominatedVertex_cr,
+				       const Vertex& aDominatorVertex_cr) const {
+    initVisit();
+    bool ret=dominates_r(aDominatedVertex_cr,aDominatorVertex_cr);
+    finishVisit();
+    return ret; 
+  }
+
+  template <class Vertex, class Edge>
+  bool 
+  GraphWrapper<Vertex,Edge>::dominates_r(const Vertex& aDominatedVertex_cr,
+					 const Vertex& aDominatorVertex_cr) const {
+    if (aDominatedVertex_cr.wasVisited())
+      return true;
+    aDominatedVertex_cr.setVisited();
+    std::pair < 
+      InternalBoostInEdgeIteratorType,
+      InternalBoostInEdgeIteratorType 
+      > 
+      theEnds=boost::in_edges(aDominatedVertex_cr.getDescriptor(),
+			      myBoostGraph);
+    InternalBoostInEdgeIteratorType ei_current(theEnds.first), ei_end(theEnds.second);
+    if (ei_current==ei_end)
+      // no in edges, not dominated
+      return false; 
+    for (;ei_current!=ei_end; ++ei_current) { 
+      const Vertex& sourceVertex(*(boost::get(boost::get(BoostVertexContentType(),
+							 myBoostGraph), // vertex map
+					      boost::source(*(ei_current),
+							    myBoostGraph)))); // vertex descr.
+      if (&sourceVertex!=&aDominatorVertex_cr) {
+	if (!dominates(sourceVertex,aDominatorVertex_cr))
+	  return false;
+      }
+    } // end for
+    // no  paths found that don't go through aDominatorVertex
+    return true; 
+  }
+
 } // end of namespace
