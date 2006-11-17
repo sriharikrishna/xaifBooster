@@ -126,11 +126,17 @@ namespace xaifBoosterAddressArithmetic {
     static std::string ourTopLevelRoutineName;
 
     /**
+     * has ourTopLevelRoutineName been set
+     */ 
+    bool static haveTopLevelRoutineName();
+
+    /**
+     * defined in getTopLevelRoutine ;
      * we don't own the instance pointed to by
      * this attribute
      */
     static const CallGraphVertex* ourTopLevelRoutine_p;
-    
+
     /** 
      * have we shown that this routine is called 
      * only under the top level routine
@@ -147,6 +153,7 @@ namespace xaifBoosterAddressArithmetic {
      * gets the routine associated with ourTopLevelRoutineName
      */
     static const CallGraphVertex& getTopLevelRoutine();  
+
 
   };  // end of class
 
