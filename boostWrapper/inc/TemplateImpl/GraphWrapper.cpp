@@ -61,7 +61,8 @@ namespace xaifBooster {
   template <class Vertex, class Edge>
   GraphWrapper<Vertex, Edge>::GraphWrapper() :
     myNextVertexId(0),
-    myNextEdgeId(0) {
+    myNextEdgeId(0),
+    myVisitInProgressFlag(false) {
   } 
 
   template <class Vertex, class Edge>
@@ -571,7 +572,7 @@ namespace xaifBooster {
 					      boost::source(*(ei_current),
 							    myBoostGraph)))); // vertex descr.
       if (&sourceVertex!=&aDominatorVertex_cr) {
-	if (!dominates(sourceVertex,aDominatorVertex_cr))
+	if (!dominates_r(sourceVertex,aDominatorVertex_cr))
 	  return false;
       }
     } // end for
