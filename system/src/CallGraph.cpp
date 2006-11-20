@@ -219,34 +219,47 @@ namespace xaifBooster {
   const CallGraphVertex& CallGraph::getSubroutineByPlainName(const std::string& aPlainName) const {
     Scopes::ConstVertexIteratorPair p=myScopeTree.vertices();
     Scopes::ConstVertexIterator anIt(p.first),endIt(p.second);
-    bool foundOne=false;
-    const Symbol* aSymbol_p(0);
-    const Scope* aScope_p(0);
+    const Symbol *aFirstSymbol_p(0),*aSecondSymbol_p(0);
+    const Scope *aFirstScope_p(0),*aSecondScope_p(0);
+    const CallGraphVertex *aFirstCallGraphVertex_p(0),*aSecondCallGraphVertex_p(0);
     for (; anIt!=endIt ;++anIt) { 
       if ((*anIt).getSymbolTable().hasSymbolWithPlainName(aPlainName)) { 
-	if (foundOne) { 
+	aSecondSymbol_p=&((*anIt).getSymbolTable().getSymbolWithPlainName(aPlainName));
+	aSecondScope_p=&(*anIt);
+	if (aSecondSymbol_p->getSymbolKind()==SymbolKind::SUBROUTINE) { 
+	  try { 
+	    aSecondCallGraphVertex_p=&(getSubroutineBySymbolReference(SymbolReference(*aSecondSymbol_p,* aSecondScope_p)));
+	  } 
+	  catch (SubroutineNotFoundException& e) { 
+	    // do nothing here, some symboltables just keep duplicate symbols (with different decorations)
+	    // but there is no actual subrotuine definition assoocated with them
+	  }
+	}
+	if (aFirstCallGraphVertex_p && aSecondCallGraphVertex_p) { 
 	  THROW_LOGICEXCEPTION_MACRO("CallGraph::getSubroutineByPlainName: name "
 				     << aPlainName.c_str()
 				     << " is ambiguously matched by "
-				     << aSymbol_p->getId().c_str()
+				     << aSecondSymbol_p->getId().c_str()
 				     << " and " 
-				     << (*anIt).getSymbolTable().getSymbolWithPlainName(aPlainName).getId().c_str());
+				     << aFirstSymbol_p->getId().c_str()
+				     << " plain names are "
+				     << aSecondSymbol_p->plainName().c_str()
+				     << " and "
+				     << aFirstSymbol_p->plainName().c_str()
+				     << " resp.");
 	} 
-	else { 
-	  foundOne=true;
-	  aSymbol_p=&((*anIt).getSymbolTable().getSymbolWithPlainName(aPlainName));
-	  aScope_p=&(*anIt);
-	}
+	if (aSecondCallGraphVertex_p) { 
+  	  aFirstSymbol_p=aSecondSymbol_p;
+	  aFirstScope_p=aSecondScope_p;
+          aFirstCallGraphVertex_p=aSecondCallGraphVertex_p;
+	  aSecondCallGraphVertex_p=0;
+        }
       }
     }
-    if (!foundOne)
+    if (!aFirstCallGraphVertex_p)
       THROW_LOGICEXCEPTION_MACRO("CallGraph::getSubroutineByPlainName: no subroutine named "
 				 << aPlainName.c_str());
-    if (aSymbol_p->getSymbolKind()!=SymbolKind::SUBROUTINE)
-      THROW_LOGICEXCEPTION_MACRO("CallGraph::getSubroutineByPlainName: symbol "
-				 << aPlainName.c_str()
-				 << " is not a subroutine");
-    return getSubroutineBySymbolReference(SymbolReference(*aSymbol_p,* aScope_p));
+    return *aFirstCallGraphVertex_p;
   } 
 
 } // end of namespace xaifBooster 

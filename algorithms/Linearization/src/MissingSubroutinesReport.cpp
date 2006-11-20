@@ -72,7 +72,12 @@ namespace xaifBoosterLinearization {
     if (i==ourReportedList.end()) { 
       ourReportedList.push_back(new SymbolReference(s.getSymbol(),
 						    s.getScope()));
-      DBG_MACRO(DbgGroup::ERROR, "cannot find subroutine " << s.getSymbol().getId().c_str() << " but this may be an external call, we continue");
+      DBG_MACRO(DbgGroup::ERROR, 
+		"cannot find subroutine " 
+		<< s.getSymbol().plainName().c_str() 
+		<< " (xaif name " 
+		<< s.getSymbol().getId().c_str() 
+		<< ") but this may be an external call, we continue");
     }
   } 
   

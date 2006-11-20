@@ -134,7 +134,7 @@ int main(int argc,char** argv) {
     if (CommandLineParser::instance()->isSet('U')) 
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
     if (CommandLineParser::instance()->isSet('t')) 
-      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setTopLevelRoutine(CommandLineParser::instance()->argAsString('w'));
+      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setTopLevelRoutine(CommandLineParser::instance()->argAsString('t'));
     if (CommandLineParser::instance()->isSet('f')) 
       xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::checkPointToFiles();
   } catch (BaseException& e) { 

@@ -284,7 +284,9 @@ namespace xaifBooster {
   }
 
   void Symbol::forcedPassivation() { 
-    if (!ourPassivatedSymbolHashTable.getInternalHashMap().empty()) { 
+    if (!myTempFlag
+	&& 
+	!ourPassivatedSymbolHashTable.getInternalHashMap().empty()) { 
       // find a matching element
       // we have 2 issues, 
       // first case sensitivity
@@ -296,7 +298,7 @@ namespace xaifBooster {
 		       toupper);
       // second the decorations added by the 
       // fortran front end.
-      std::string theSymbolNameStripped(stripFrontEndDecorations(theSymbolName));
+      std::string theSymbolNameStripped(stripFrontEndDecorations(theSymbolName,(getSymbolKind()==SymbolKind::SUBROUTINE)));
       if (ourPassivatedSymbolHashTable.hasElement(theSymbolNameStripped))
 	ourPassivatedSymbolHashTable.getElement(theSymbolNameStripped).passivate(getId(), 
 									       *this);
@@ -323,7 +325,8 @@ namespace xaifBooster {
     } 
   }
 
-  std::string Symbol::stripFrontEndDecorations(const std::string& aDecoratedName) { 
+  std::string Symbol::stripFrontEndDecorations(const std::string& aDecoratedName,
+					       bool isSubroutineName) { 
     // strip the trailing _[0-9]* appended by mfef90 from the variable Name
     std::string aPlainName(aDecoratedName,0,aDecoratedName.find_last_of('_'));
     std::string aDecoration(aDecoratedName,aDecoratedName.find_last_of('_'),aDecoratedName.size());
@@ -341,11 +344,17 @@ namespace xaifBooster {
 		<< " but we continue");
       return aDecoratedName;
     }
+    if (isSubroutineName && aPlainName[aPlainName.size()-1]=='_')
+      // only user defined subroutine have an extra _
+      aPlainName.erase(aPlainName.size()-1);
     return aPlainName;
   }
     
   std::string Symbol::plainName() const { 
-    return stripFrontEndDecorations(getId());
+    if (myTempFlag)
+      // temporaries have been created here, not by the front-end
+      return getId();
+    return stripFrontEndDecorations(getId(), (getSymbolKind()==SymbolKind::SUBROUTINE));
   }
 
   bool Symbol::samePlainName(const std::string& aPlainName) const { 
@@ -355,14 +364,13 @@ namespace xaifBooster {
 		     aPlainNameCaseified.end(), 
 		     aPlainNameCaseified.begin(), 
 		     toupper);
-    std::string theSymbolName(getId());
+    std::string theSymbolPlainName(plainName());
     if (!ourCaseSensitiveFlag)
-      std::transform(theSymbolName.begin(),
-		     theSymbolName.end(), 
-		     theSymbolName.begin(), 
+      std::transform(theSymbolPlainName.begin(),
+		     theSymbolPlainName.end(), 
+		     theSymbolPlainName.begin(), 
 		     toupper);
-    std::string theSymbolNameStripped(stripFrontEndDecorations(theSymbolName));
-    return (aPlainNameCaseified==theSymbolNameStripped);
+    return (aPlainNameCaseified.compare(theSymbolPlainName)==0);
   }
 
   void Symbol::setCaseSensitive() { 

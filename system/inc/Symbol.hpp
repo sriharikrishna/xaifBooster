@@ -152,7 +152,8 @@ namespace xaifBooster {
      * \todo: this method should be reimplemented for 
      * front-ends with different decorations
      */
-    static std::string stripFrontEndDecorations(const std::string& aDecoratedName);
+    static std::string stripFrontEndDecorations(const std::string& aDecoratedName,
+						bool isSubroutineName);
 
     static void setCaseSensitive();
 
