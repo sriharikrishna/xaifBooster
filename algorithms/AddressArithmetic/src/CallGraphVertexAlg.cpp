@@ -89,15 +89,37 @@ namespace xaifBoosterAddressArithmetic {
 		&& 
 		isOnlyUnderTopLevelRoutine() 
 		&& 
-		getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST).
+		getTopLevelRoutine().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST).
 		hasElement(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable())
 		&& 
-		!getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LIST).
+		!getTopLevelRoutine().getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LIST).
 		hasElement(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable())) { 
 	      ;
 	      // nothing to be done here 
 	    }
 	    else { 
+	      if (DbgLoggerManager::instance()->isSelected(DbgGroup::TEMPORARY)) { 
+		std::ostringstream dbg;
+		dbg << "CallGraphVertexAlg::findUnknownVariablesInExpression: checking for "
+		    << dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+		    << " in "
+		    << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
+		    << " and decide based on: ";
+		if (haveTopLevelRoutineName()) { 
+		  if (!isOnlyUnderTopLevelRoutine()) 
+		    dbg << "not exclusivly called under top level routine";
+		  else if (!getTopLevelRoutine().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST).
+			   hasElement(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable()))
+		    dbg << "not in top level routine READ list";
+		  else if (getTopLevelRoutine().getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LIST).
+			   hasElement(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable()))
+		    dbg << "in top level routine MOD list";
+		}
+		else 
+		  dbg << " no top level routine name";
+		dbg << std::ends; 
+		DBG_MACRO(DbgGroup::TEMPORARY,dbg.str().c_str());
+	      }
 	      theUnknownVariables.push_back(&(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable()));
 	    }
 	  }
@@ -252,7 +274,9 @@ namespace xaifBoosterAddressArithmetic {
     }
     if (!skipAsking && !doIt && ourUserDecidesFlag) {
       std::string plainVariableName(anUnknownVariable.getVariableSymbolReference().getSymbol().plainName());
-      std::cout << "Explicit loop reversal for top level loop line "
+      std::cout << "Explicit loop reversal in "
+		<< Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
+		<< " for top level loop line "
 		<< aTopLevelForLoopLineNumber
 		<< " push/pop non-loop variable "
 		<< plainVariableName.c_str()
@@ -310,7 +334,7 @@ namespace xaifBoosterAddressArithmetic {
     if (anUnknownVariable.hasArrayAccess() 
 	||  
 	anUnknownVariable.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR)
-      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::pushUnknownVariables: variable " 
+      DBG_MACRO(DbgGroup::ERROR,"CallGraphVertexAlg::pushUnknownVariables: variable " 
 				 << anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
 				 << " (plain name: "
 				 << anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
@@ -471,10 +495,10 @@ namespace xaifBoosterAddressArithmetic {
       if (ConceptuallyStaticInstances::instance()->getCallGraph().dominates(getContaining(),getTopLevelRoutine()))
 	myOnlyUnderTopLevelRoutineFlag=true;
       else { 
-	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::isOnlyUnderTopLevelRoutine: routine " 
-				   << getContaining().getSubroutineName().c_str()
-				   << " is not exclusivly called under the top level routine "
-				   << ourTopLevelRoutineName.c_str());
+	DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::isOnlyUnderTopLevelRoutine: routine " 
+		  << getContaining().getSubroutineName().c_str()
+		  << " is not exclusivly called under the top level routine "
+		  << ourTopLevelRoutineName.c_str());
       }
     }
     return myOnlyUnderTopLevelRoutineFlag;

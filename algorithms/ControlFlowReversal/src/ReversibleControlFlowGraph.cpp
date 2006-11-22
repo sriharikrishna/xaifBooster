@@ -1196,11 +1196,6 @@ namespace xaifBoosterControlFlowReversal {
 	    countUp=false;
 	  else
 	    THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: an explicit reversal loop update intrinsic does not match the form i+c or i-c");
-	  // initialization depends on the original condition which should be of the form i <operator> c with c as a constant
-	  const Expression& theOldCondition(theOldForLoop.getCondition().getExpression());
-	  // needs 3 vertices
-	  if (theOldCondition.numVertices()!=3) 
-	    THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: an explicit reversal loop condition should be of the form i <boolean operator> c");
 	  // the new ForLoop  
 	  ForLoop& theNewForLoop(dynamic_cast<ForLoop&>((*myOriginalReverseVertexPPairList_cit).second->getNewVertex()));
 	  makeLoopExplicitReversalInitialization(theOldForLoop,
@@ -1313,6 +1308,7 @@ namespace xaifBoosterControlFlowReversal {
   void ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization(const ForLoop& theOldForLoop,
 									  ForLoop& theNewForLoop,
 									  bool countUp) { 
+    // initialization depends on the original condition which should be of the form i <operator> e with e as a expression of known variables
     // some setup 
     const Expression& theOldUpdateRHS(theOldForLoop.getUpdate().getAssignment().getRHS());
     const Intrinsic* theOldUpdateIntrinsic_p(dynamic_cast<const Intrinsic*>(&(theOldUpdateRHS.getMaxVertex())));
