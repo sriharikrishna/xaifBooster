@@ -303,7 +303,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // invoke directly and need to rely on GenericTraverseInvoke
       // In order to pass parameters through BasicBlockParameter
       // we have to make sure that this method is never invoked recursively
-      BasicBlockAlgParameter::set(*this);	
+      BasicBlockAlgParameter::instance().set(*this);	
     } 
     catch (...) { 
       recursionGuard--;
