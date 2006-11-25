@@ -176,18 +176,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      << debug().c_str());
     // this was set in BasicBlockAlg::algorithm_action_2
     PrivateLinearizedComputationalGraph& theFlattenedSequence=
-      BasicBlockAlgParameter::get().getFlattenedSequence(getContainingAssignment());
+      BasicBlockAlgParameter::instance().get().getFlattenedSequence(getContainingAssignment());
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theFlattenedSequence)) { 
       // there is an ambiguity, do the split
-      BasicBlockAlgParameter::get().splitFlattenedSequence(getContainingAssignment());
+      BasicBlockAlgParameter::instance().get().splitFlattenedSequence(getContainingAssignment());
       // redo everything for this assignment
       algorithm_action_2();
       // and leave
       return;
     } 
-    BasicBlockAlgParameter::get().addMyselfToAssignmentIdList(getContainingAssignment());
-    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(BasicBlockAlgParameter::get().getAssignmentIdList());
+    BasicBlockAlgParameter::instance().get().addMyselfToAssignmentIdList(getContainingAssignment());
+    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(BasicBlockAlgParameter::instance().get().getAssignmentIdList());
     // now redo the activity analysis
 //     if (haveLinearizedRightHandSide() && 
 // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
@@ -207,7 +207,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS(),
 						      getContainingAssignment().getId());
 	if (getContainingAssignment().getLHS().getActiveFlag()) // this means the LHS has been passivated 
-	  BasicBlockAlgParameter::get().getDerivativePropagator(getContainingAssignment()).
+	  BasicBlockAlgParameter::instance().get().getDerivativePropagator(getContainingAssignment()).
 	    addZeroDerivToEntryPList(getContainingAssignment().getLHS());
       } // end if
     } // end if 

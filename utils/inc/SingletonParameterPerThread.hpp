@@ -65,9 +65,11 @@ namespace xaifBooster {
 
   public:
 
-    static ParameterType& get();
+    ParameterType& get();
 
-    static void set(ParameterType&);
+    void set(ParameterType&);
+
+    static SingletonParameterPerThread& instance();
 
   private:
 
@@ -75,9 +77,17 @@ namespace xaifBooster {
 
     ~SingletonParameterPerThread();
 
+    /** 
+     * no def 
+     */
     SingletonParameterPerThread(const SingletonParameterPerThread&);
-
+ 
+    /** 
+     * no def 
+     */
     SingletonParameterPerThread operator=(const SingletonParameterPerThread&);
+
+    ParameterType* myParameter_p;
 
     /**
      * static requires unique instance, 
@@ -86,10 +96,12 @@ namespace xaifBooster {
      * would have to be replace by a 
      * map keyed with the thread it ...
      */
-    static ParameterType* ourInstance_p;
+    static SingletonParameterPerThread* ourInstance_p;
 
   }; // end of class SingletonParameterPerThread
 
 } // end of namespace 
+
+#include "xaifBooster/utils/inc/TemplateImpl/SingletonParameterPerThread.cpp"
 
 #endif

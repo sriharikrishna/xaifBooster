@@ -58,26 +58,36 @@
 
 namespace xaifBooster {  
 
-  /**
-   * static requires unique instance, 
-   * hence no implied instantiation of the 
-   * implementation
-   */
   template <class ParameterType> 
-  ParameterType* SingletonParameterPerThread<ParameterType>::ourInstance_p=0;
+  SingletonParameterPerThread<ParameterType>* SingletonParameterPerThread<ParameterType>::ourInstance_p=0;
+
+  template <class ParameterType>
+  SingletonParameterPerThread<ParameterType>::SingletonParameterPerThread() : 
+    myParameter_p(0){ 
+  } 
+
+  template <class ParameterType>
+  SingletonParameterPerThread<ParameterType>::~SingletonParameterPerThread() {}
+
+  template <class ParameterType>
+  SingletonParameterPerThread<ParameterType>& SingletonParameterPerThread<ParameterType>::instance() { 
+    if (!ourInstance_p)
+      ourInstance_p=new SingletonParameterPerThread();
+    return *ourInstance_p;
+  } 
 
   template <class ParameterType>
   ParameterType& 
   SingletonParameterPerThread<ParameterType>::get() { 
-    if (!ourInstance_p)
+    if (!myParameter_p)
       THROW_LOGICEXCEPTION_MACRO("SingletonParameterPerThread<ParameterType>::get: not set");
-    return *ourInstance_p;
+    return *myParameter_p;
   } 
 
   template <class ParameterType>
   void
   SingletonParameterPerThread<ParameterType>::set(ParameterType& theParameter) { 
-    ourInstance_p=&theParameter;
+    myParameter_p=&theParameter;
   }
 
 }
