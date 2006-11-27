@@ -90,7 +90,7 @@ namespace xaifBoosterAddressArithmetic {
      */
     void pushUnknownVariable(const Variable& anUnknownVariable,
 			     BasicBlock& aBasicBlock_r,
-			     unsigned int aTopLevelForLoopLineNumber);
+			     const ForLoop& aTopLevelForLoop);
 
     /** 
      * push all theUnknownVariables
@@ -98,7 +98,7 @@ namespace xaifBoosterAddressArithmetic {
      */
     void pushUnknownVariables(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables,
 			      BasicBlock& aBasicBlock_r,
-			      unsigned int aTopLevelForLoopLineNumber);
+			      const ForLoop& aTopLevelForLoop);
 
     /** 
      * there is aPushCall

@@ -232,7 +232,7 @@ namespace xaifBoosterAddressArithmetic {
   void 
   CallGraphVertexAlg::pushUnknownVariable(const Variable& anUnknownVariable,
 					  BasicBlock& aBasicBlock_r,
-					  unsigned int aTopLevelForLoopLineNumber) { 
+					  const ForLoop& aTopLevelForLoop) { 
     static std::list<const Symbol*> ourPushAllSymbolPList;
     static std::list<const Symbol*> ourIgnoreAllSymbolPList;
     if (ourIgnoranceFlag) { 
@@ -277,7 +277,7 @@ namespace xaifBoosterAddressArithmetic {
       std::cout << "Explicit loop reversal in "
 		<< Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
 		<< " for top level loop line "
-		<< aTopLevelForLoopLineNumber
+		<< aTopLevelForLoop.getLineNumber()
 		<< " push/pop non-loop variable "
 		<< plainVariableName.c_str()
 		<< std::endl;
@@ -327,18 +327,34 @@ namespace xaifBoosterAddressArithmetic {
       theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_s");
       break;
     default:
-      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::pushUnknownVariables: don't know what to do with variable of type " 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::pushUnknownVariable: don't know what to do with variable of type " 
 				 << SymbolType::toString(anUnknownVariable.getType()));
       break;
     } 
     if (anUnknownVariable.hasArrayAccess() 
 	||  
 	anUnknownVariable.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR)
-      DBG_MACRO(DbgGroup::ERROR,"CallGraphVertexAlg::pushUnknownVariables: variable " 
-				 << anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
-				 << " (plain name: "
-				 << anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
-				 << ") is an array.");
+      DBG_MACRO(DbgGroup::ERROR,
+		"CallGraphVertexAlg::pushUnknownVariable: variable " 
+		<< anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
+		<< " (plain name: "
+		<< anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
+		<< ") is an array.");
+    // check all the definition locations:
+    const DuUdMapDefinitionResult::StatementIdList& defChain(ConceptuallyStaticInstances::instance()->
+							     getCallGraph().getDuUdMap().getEntry(anUnknownVariable.getDuUdMapKey()).getStatementIdList());
+    for(DuUdMapDefinitionResult::StatementIdList::const_iterator defChainI=defChain.begin();
+	defChainI!=defChain.end();
+	++defChainI) {
+      if (!getContaining().getControlFlowGraph().dominates(aTopLevelForLoop,
+							   getContaining().getControlFlowGraph().getContainingVertex(*defChainI)))
+	DBG_MACRO(DbgGroup::ERROR,
+		  "CallGraphVertexAlg::pushUnknownVariable: variable " 
+		  << anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
+		  << " (plain name: "
+		  << anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
+		  << ") is defined within the top level loop scope.");
+    }
     theInlinableSubroutineCall_p->setId("_addressArithmetic_" + theInlinableSubroutineCall_p->getSubroutineName());
     anUnknownVariable.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     aBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
@@ -347,13 +363,13 @@ namespace xaifBoosterAddressArithmetic {
   void 
   CallGraphVertexAlg::pushUnknownVariables(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables,
 					   BasicBlock& aBasicBlock_r,
-					   unsigned int aTopLevelForLoopLineNumber) { 
+					   const ForLoop& aTopLevelForLoop) { 
     for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList::const_iterator theUnknownVariables_cit=theUnknownVariables.begin();
 	 theUnknownVariables_cit!=theUnknownVariables.end();
 	 ++theUnknownVariables_cit) { 
       pushUnknownVariable(**theUnknownVariables_cit,
 			  aBasicBlock_r,
-			  aTopLevelForLoopLineNumber);
+			  aTopLevelForLoop);
     } 
   } 
 
@@ -412,7 +428,7 @@ namespace xaifBoosterAddressArithmetic {
 	    // tape the unknown variables
 	    pushUnknownVariables(theUnknownVariables,
 				 aBasicBlock,
-				 (dynamic_cast<const ForLoop&>((*aReversibleControlFlowGraphVertexI).getTopExplicitLoop().getOriginalVertex())).getLineNumber());
+				 dynamic_cast<const ForLoop&>((*aReversibleControlFlowGraphVertexI).getTopExplicitLoop().getOriginalVertex()));
 	  } 
 	}
       }

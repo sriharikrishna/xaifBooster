@@ -90,6 +90,8 @@ namespace xaifBooster {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c); 
 
+    virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
+
   }; // end of class BasicBlock
  
 } // end of namespace xaifBooster
