@@ -147,4 +147,17 @@ namespace xaifBooster {
     return myReversalType;
   }
 
+  bool 
+  ForLoop::hasStatement(const ObjectWithId::Id& aStatementId) const { 
+    bool found=false;
+    if (getInitialization().getAssignment().getId()==aStatementId)
+      found=true;
+    if (getUpdate().getAssignment().getId()==aStatementId) { 
+      if (found)
+	THROW_LOGICEXCEPTION_MACRO("ForLoop::hasStatement: duplicate id " << aStatementId.c_str() << " in loop with id " << getId().c_str());
+      found=true;
+    }
+    return found; 
+  } 
+
 } // end of namespace xaifBooster 

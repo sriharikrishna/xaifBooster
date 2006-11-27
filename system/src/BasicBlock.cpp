@@ -137,5 +137,15 @@ namespace xaifBooster {
     for (;li!=myElementList.end();li++)
       (*(li))->genericTraversal(anAction_c);
   } 
+
+  bool BasicBlock::hasStatement(const ObjectWithId::Id& aStatementId) const { 
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myElementList.begin();
+         li!=myElementList.end();
+         li++) { 
+      if ((*li)->getId()==aStatementId)
+	return true; 
+    }
+    return false; 
+  } 
   
 } // end of namespace xaifBooster 

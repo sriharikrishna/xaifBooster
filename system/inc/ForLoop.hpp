@@ -114,6 +114,8 @@ namespace xaifBooster {
 
     ForLoopReversalType::ForLoopReversalType_E getReversalType() const; 
 
+    virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
+
   private:
 
     /** 

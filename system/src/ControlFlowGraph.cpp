@@ -234,4 +234,19 @@ namespace xaifBooster {
     return  *aSideEffectList_p;
   }
 
+  const ControlFlowGraphVertex& ControlFlowGraph::getContainingVertex(const ObjectWithId::Id& aStatementId) const { 
+    ControlFlowGraph::ConstVertexIteratorPair p(vertices());
+    ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
+    const ControlFlowGraphVertex *aControlFlowGraphVertex_p(0);
+    for (;beginIt!=endIt ;++beginIt) { 
+      if ((*beginIt).hasStatement(aStatementId))
+	if (aControlFlowGraphVertex_p)
+	  THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getContainingVertex: ambiguous id " << aStatementId.c_str() << " in " <<  getSymbolReference().getSymbol().getId().c_str());
+	aControlFlowGraphVertex_p=&(*beginIt);
+    }
+    if (!aControlFlowGraphVertex_p)  
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getContainingVertex: no id " << aStatementId.c_str() << " in " <<  getSymbolReference().getSymbol().getId().c_str());
+    return *aControlFlowGraphVertex_p;
+  } 
+
 } // end of namespace xaifBooster 

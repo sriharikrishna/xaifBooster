@@ -98,6 +98,8 @@ namespace xaifBooster {
      * get algorithm
      */
     ControlFlowGraphVertexAlgBase& getControlFlowGraphVertexAlgBase() const;
+    
+    virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
 
     protected:
 
