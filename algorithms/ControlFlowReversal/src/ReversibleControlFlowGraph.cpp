@@ -259,8 +259,18 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
-    PreLoop* aNewPreLoop_p=new PreLoop();
-    aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*aNewPreLoop_p);
+    ForLoop* aNewForLoop_p=new ForLoop(aForLoopReversalType);
+    aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*aNewForLoop_p);
+    aNewForLoop_p->getInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
+							     +
+							     theOriginalPreLoop.getId()
+							     +
+							     "_init");
+    aNewForLoop_p->getUpdate().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
+						     +
+						     theOriginalPreLoop.getId()
+						     +
+						     "_init");
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
