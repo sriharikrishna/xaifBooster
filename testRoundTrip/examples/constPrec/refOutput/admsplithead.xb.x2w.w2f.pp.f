@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:17:41 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:54:33 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -71,7 +71,7 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      REAL(w2f__8) OpenAD_Symbol_2
+      REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       type(active) :: OpenAD_Symbol_6
@@ -103,18 +103,18 @@ C
          if (our_rev_mode%plain) then
 ! original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = COS(X(1)%v*1.74532925199432954744D-02)
+      Y(1)%v = COS(1.74532925199432954744D-02*X(1)%v)
       
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_0 = (X(1)%v*1.74532925199432954744D-02)
+      OpenAD_Symbol_0 = (1.74532925199432954744D-02*X(1)%v)
       OpenAD_Symbol_4 = COS(OpenAD_Symbol_0)
-      OpenAD_Symbol_2 = 1.74532925199432954744D-02
+      OpenAD_Symbol_3 = 1.74532925199432954744D-02
       OpenAD_Symbol_1 = (- SIN(OpenAD_Symbol_0))
       Y(1)%v = OpenAD_Symbol_4
-      OpenAD_Symbol_5 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
+      OpenAD_Symbol_5 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
           double_tape(double_tape_pointer) = OpenAD_Symbol_5
           double_tape_pointer = double_tape_pointer+1
       

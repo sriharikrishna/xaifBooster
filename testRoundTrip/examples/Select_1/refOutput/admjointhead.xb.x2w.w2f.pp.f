@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Oct  6 14:34:17 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:15:37 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -94,7 +94,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) select_expr_temp_0
       REAL(w2f__8) OpenAD_Symbol_14
       REAL(w2f__8) OpenAD_Symbol_15
 C
@@ -184,9 +183,8 @@ C original function
 C$OPENAD XXX Template ad_template.f
       I = 1
       Y(1)%v = 2.0D00
-      select_expr_temp_0 = I
-      IF ( select_expr_temp_0  .EQ.  1)  GO TO  4
-      IF ( select_expr_temp_0  .EQ.  2)  GO TO  8
+      IF ( I  .EQ.  1)  GO TO  4
+      IF ( I  .EQ.  2)  GO TO  8
       GO TO 9
 9     CONTINUE
       Y(1)%v = X(1)%v
@@ -215,9 +213,8 @@ C taping
 C$OPENAD XXX Template ad_template.f
       I = 1
       Y(1)%v = 2.0D00
-      select_expr_temp_0 = I
-      IF ( select_expr_temp_0  .EQ.  1)  GO TO  40
-      IF ( select_expr_temp_0  .EQ.  2)  GO TO  44
+      IF ( I  .EQ.  1)  GO TO  40
+      IF ( I  .EQ.  2)  GO TO  44
       GO TO 45
 45    CONTINUE
       Y(1)%v = X(1)%v

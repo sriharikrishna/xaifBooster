@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:21:33 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:00:06 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -95,14 +95,14 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y(1)%v = X(1)%v
-      I = INT(X(1)%v+(-1.0D00))+1
+      I = 1+INT(X(1)%v+(-1.0D00))
       
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
       Y(1)%v = X(1)%v
-      I = INT(X(1)%v+(-1.0D00))+1
+      I = 1+INT(X(1)%v+(-1.0D00))
       
           end if 
           if (our_rev_mode%adjoint) then

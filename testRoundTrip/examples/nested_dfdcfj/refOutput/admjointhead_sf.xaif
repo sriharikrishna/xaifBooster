@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Fri Jul 21 11:35:18 2006 -->
+<!-- XAIF file translated from WHIRL at Tue Nov 28 16:14:00 2006 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -441,65 +441,54 @@
       <xaif:StatementId idRef=""/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="3">
-      <xaif:StatementId idRef="17"/>
+      <xaif:StatementId idRef="34"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="4">
-      <xaif:StatementId idRef="31"/>
+      <xaif:StatementId idRef="39"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="5">
-      <xaif:StatementId idRef="36"/>
+      <xaif:StatementId idRef="47"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="6">
       <xaif:StatementId idRef="44"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="7">
-      <xaif:StatementId idRef="41"/>
+      <xaif:StatementId idRef="30"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="8">
-      <xaif:StatementId idRef="27"/>
+      <xaif:StatementId idRef="50"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="9">
-      <xaif:StatementId idRef="47"/>
+      <xaif:StatementId idRef="54"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="10">
-      <xaif:StatementId idRef="51"/>
+      <xaif:StatementId idRef=""/>
+      <xaif:StatementId idRef="58"/>
+      <xaif:StatementId idRef="81"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="11">
-      <xaif:StatementId idRef="22"/>
+      <xaif:StatementId idRef="54"/>
+      <xaif:StatementId idRef="58"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="12">
-      <xaif:StatementId idRef="55"/>
-      <xaif:StatementId idRef="78"/>
+      <xaif:StatementId idRef="50"/>
+      <xaif:StatementId idRef="58"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="13">
-      <xaif:StatementId idRef="51"/>
-      <xaif:StatementId idRef="55"/>
+      <xaif:StatementId idRef=""/>
+      <xaif:StatementId idRef="58"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="14">
-      <xaif:StatementId idRef="47"/>
-      <xaif:StatementId idRef="55"/>
+      <xaif:StatementId idRef="484"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="15">
-      <xaif:StatementId idRef=""/>
-      <xaif:StatementId idRef="55"/>
+      <xaif:StatementId idRef="464"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="16">
-      <xaif:StatementId idRef="20"/>
+      <xaif:StatementId idRef="474"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="17">
-      <xaif:StatementId idRef="376"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="18">
-      <xaif:StatementId idRef="356"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="19">
-      <xaif:StatementId idRef="366"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="20">
-      <xaif:StatementId idRef="25"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="21">
-      <xaif:StatementId idRef="417"/>
+      <xaif:StatementId idRef="525"/>
     </xaif:DUUDSet>
   </xaif:DUUDSetList>
 
@@ -569,10 +558,10 @@
       <xaif:Marker statement_id="15" annotation="{WHIRL_Id#15} [passive: OPR_XPRAGMA]"/>
       <xaif:Marker statement_id="17" annotation="{WHIRL_Id#17} [passive: OPR_STID]"/>
       <xaif:Marker statement_id="22" annotation="{WHIRL_Id#22} [passive: OPR_STID]"/>
-      <xaif:Marker statement_id="26" annotation="{WHIRL_Id#26} [passive: OPR_PRAGMA]"/>
-      <xaif:Marker statement_id="27" annotation="{WHIRL_Id#27} [passive: OPR_STID]"/>
-      <xaif:Assignment statement_id="31" lineNumber="117">
-        <xaif:AssignmentLHS du_ud="7">
+      <xaif:Marker statement_id="29" annotation="{WHIRL_Id#29} [passive: OPR_PRAGMA]"/>
+      <xaif:Marker statement_id="30" annotation="{WHIRL_Id#30} [passive: OPR_STID]"/>
+      <xaif:Assignment statement_id="34" lineNumber="117">
+        <xaif:AssignmentLHS du_ud="6">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="NXP1_16"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
@@ -585,8 +574,8 @@
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="36" lineNumber="118">
-        <xaif:AssignmentLHS du_ud="6">
+      <xaif:Assignment statement_id="39" lineNumber="118">
+        <xaif:AssignmentLHS du_ud="5">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="NYP1_17"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
@@ -599,67 +588,67 @@
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="41" lineNumber="119">
-        <xaif:AssignmentLHS du_ud="13">
+      <xaif:Assignment statement_id="44" lineNumber="119">
+        <xaif:AssignmentLHS du_ud="11">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HX_10"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="div_scal_scal" type="***"/>
           <xaif:Constant vertex_id="2" type="real" value="1.00000000000000000000e+00"/>
-          <xaif:VariableReference vertex_id="3" du_ud="4">
+          <xaif:VariableReference vertex_id="3" du_ud="3">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="NXP1_16"/>
           </xaif:VariableReference>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="44" lineNumber="120">
-        <xaif:AssignmentLHS du_ud="14">
+      <xaif:Assignment statement_id="47" lineNumber="120">
+        <xaif:AssignmentLHS du_ud="12">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HY_12"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="div_scal_scal" type="***"/>
           <xaif:Constant vertex_id="2" type="real" value="1.00000000000000000000e+00"/>
-          <xaif:VariableReference vertex_id="3" du_ud="5">
+          <xaif:VariableReference vertex_id="3" du_ud="4">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="NYP1_17"/>
           </xaif:VariableReference>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="47" lineNumber="121">
-        <xaif:AssignmentLHS du_ud="15">
+      <xaif:Assignment statement_id="50" lineNumber="121">
+        <xaif:AssignmentLHS du_ud="13">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HY2_13"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="2" du_ud="6">
+          <xaif:VariableReference vertex_id="2" du_ud="5">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HY_12"/>
           </xaif:VariableReference>
-          <xaif:VariableReference vertex_id="3" du_ud="6">
+          <xaif:VariableReference vertex_id="3" du_ud="5">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HY_12"/>
           </xaif:VariableReference>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="51" lineNumber="122">
-        <xaif:AssignmentLHS du_ud="15">
+      <xaif:Assignment statement_id="54" lineNumber="122">
+        <xaif:AssignmentLHS du_ud="13">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HX2_11"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="2" du_ud="7">
+          <xaif:VariableReference vertex_id="2" du_ud="6">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HX_10"/>
           </xaif:VariableReference>
-          <xaif:VariableReference vertex_id="3" du_ud="7">
+          <xaif:VariableReference vertex_id="3" du_ud="6">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HX_10"/>
           </xaif:VariableReference>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:SubroutineCall statement_id="55" scope_id="1" lineNumber="124" symbol_id="foo__22">
+      <xaif:SubroutineCall statement_id="58" scope_id="1" lineNumber="124" symbol_id="foo__22">
         <xaif:Argument position="1">
           <xaif:VariableReference vertex_id="1" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="NX_1"/>
@@ -686,36 +675,36 @@
           </xaif:VariableReference>
         </xaif:Argument>
         <xaif:Argument position="6">
-          <xaif:VariableReference vertex_id="6" du_ud="8">
+          <xaif:VariableReference vertex_id="6" du_ud="7">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="N_15"/>
           </xaif:VariableReference>
         </xaif:Argument>
         <xaif:Argument position="7">
-          <xaif:VariableReference vertex_id="7" du_ud="7">
+          <xaif:VariableReference vertex_id="7" du_ud="6">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HX_10"/>
           </xaif:VariableReference>
         </xaif:Argument>
         <xaif:Argument position="8">
-          <xaif:VariableReference vertex_id="8" du_ud="6">
+          <xaif:VariableReference vertex_id="8" du_ud="5">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HY_12"/>
           </xaif:VariableReference>
         </xaif:Argument>
         <xaif:Argument position="9">
-          <xaif:VariableReference vertex_id="9" du_ud="9">
+          <xaif:VariableReference vertex_id="9" du_ud="8">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HY2_13"/>
           </xaif:VariableReference>
         </xaif:Argument>
         <xaif:Argument position="10">
-          <xaif:VariableReference vertex_id="10" du_ud="10">
+          <xaif:VariableReference vertex_id="10" du_ud="9">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="HX2_11"/>
           </xaif:VariableReference>
         </xaif:Argument>
       </xaif:SubroutineCall>
-      <xaif:Marker statement_id="78" annotation="{WHIRL_Id#78} [passive: OPR_STID]"/>
+      <xaif:Marker statement_id="81" annotation="{WHIRL_Id#81} [passive: OPR_STID]"/>
     </xaif:BasicBlock>
 
     <xaif:ForLoop vertex_id="6" reversal="anonymous" lineNumber="128">
-      <xaif:Initialization>
+      <xaif:Initialization statement_id="85">
         <xaif:AssignmentLHS du_ud="1">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="K_14"/>
         </xaif:AssignmentLHS>
@@ -729,12 +718,12 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="K_14"/>
         </xaif:VariableReference>
         <xaif:VariableReference vertex_id="3" du_ud="2">
-          <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="t__3_22"/>
+          <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="N_15"/>
         </xaif:VariableReference>
         <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
         <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
       </xaif:Condition>
-      <xaif:Update>
+      <xaif:Update statement_id="90">
         <xaif:AssignmentLHS du_ud="1">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="K_14"/>
         </xaif:AssignmentLHS>
@@ -751,7 +740,7 @@
     </xaif:ForLoop>
 
     <xaif:BasicBlock vertex_id="7" scope_id="3">
-      <xaif:Assignment statement_id="92" lineNumber="129">
+      <xaif:Assignment statement_id="95" lineNumber="129">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="FVEC_6"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -792,13 +781,13 @@
     </xaif:BasicBlock>
 
     <xaif:BasicBlock vertex_id="8" scope_id="3">
-      <xaif:Marker statement_id="106" annotation="{WHIRL_Id#106}{StmtLabel#1}"/>
+      <xaif:Marker statement_id="119" annotation="{WHIRL_Id#119}{StmtLabel#1}"/>
     </xaif:BasicBlock>
 
     <xaif:EndLoop vertex_id="13"/>
 
     <xaif:BasicBlock vertex_id="10" scope_id="3">
-      <xaif:Marker statement_id="107" annotation="{WHIRL_Id#107} [passive: OPR_RETURN]"/>
+      <xaif:Marker statement_id="120" annotation="{WHIRL_Id#120} [passive: OPR_RETURN]"/>
     </xaif:BasicBlock>
 
     <xaif:Exit vertex_id="12"/>
@@ -898,12 +887,12 @@
       <xaif:Marker statement_id="18" annotation="{WHIRL_Id#18} [passive: OPR_XPRAGMA]"/>
       <xaif:Marker statement_id="20" annotation="{WHIRL_Id#20} [passive: OPR_STID]"/>
       <xaif:Marker statement_id="25" annotation="{WHIRL_Id#25} [passive: OPR_STID]"/>
-      <xaif:Marker statement_id="29" annotation="{WHIRL_Id#29} [passive: OPR_PRAGMA]"/>
-      <xaif:Marker statement_id="30" annotation="{WHIRL_Id#30} [passive: OPR_STID]"/>
+      <xaif:Marker statement_id="32" annotation="{WHIRL_Id#32} [passive: OPR_PRAGMA]"/>
+      <xaif:Marker statement_id="33" annotation="{WHIRL_Id#33} [passive: OPR_STID]"/>
     </xaif:BasicBlock>
 
     <xaif:ForLoop vertex_id="16" reversal="anonymous" lineNumber="145">
-      <xaif:Initialization>
+      <xaif:Initialization statement_id="37">
         <xaif:AssignmentLHS du_ud="1">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="I_17"/>
         </xaif:AssignmentLHS>
@@ -917,12 +906,12 @@
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="I_17"/>
         </xaif:VariableReference>
         <xaif:VariableReference vertex_id="3" du_ud="2">
-          <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="t__6_42"/>
+          <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="NY_2"/>
         </xaif:VariableReference>
         <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
         <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
       </xaif:Condition>
-      <xaif:Update>
+      <xaif:Update statement_id="42">
         <xaif:AssignmentLHS du_ud="1">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="I_17"/>
         </xaif:AssignmentLHS>
@@ -939,11 +928,11 @@
     </xaif:ForLoop>
 
     <xaif:BasicBlock vertex_id="17" scope_id="4">
-      <xaif:Marker statement_id="44" annotation="{WHIRL_Id#44} [passive: OPR_STID]"/>
+      <xaif:Marker statement_id="47" annotation="{WHIRL_Id#47} [passive: OPR_STID]"/>
     </xaif:BasicBlock>
 
     <xaif:ForLoop vertex_id="18" reversal="anonymous" lineNumber="146">
-      <xaif:Initialization>
+      <xaif:Initialization statement_id="51">
         <xaif:AssignmentLHS du_ud="1">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="J_18"/>
         </xaif:AssignmentLHS>
@@ -957,12 +946,12 @@
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="J_18"/>
         </xaif:VariableReference>
         <xaif:VariableReference vertex_id="3" du_ud="2">
-          <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="t__7_43"/>
+          <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="NX_1"/>
         </xaif:VariableReference>
         <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
         <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
       </xaif:Condition>
-      <xaif:Update>
+      <xaif:Update statement_id="56">
         <xaif:AssignmentLHS du_ud="1">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="J_18"/>
         </xaif:AssignmentLHS>
@@ -979,7 +968,7 @@
     </xaif:ForLoop>
 
     <xaif:BasicBlock vertex_id="19" scope_id="4">
-      <xaif:Marker statement_id="58" annotation="{WHIRL_Id#58} [passive: OPR_STID]"/>
+      <xaif:Marker statement_id="61" annotation="{WHIRL_Id#61} [passive: OPR_STID]"/>
     </xaif:BasicBlock>
 
     <xaif:Branch vertex_id="63" lineNumber="148">
@@ -1005,7 +994,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="20" scope_id="4">
-      <xaif:Assignment statement_id="75" lineNumber="149">
+      <xaif:Assignment statement_id="78" lineNumber="149">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBL_24"/>
         </xaif:AssignmentLHS>
@@ -1030,7 +1019,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="23" scope_id="4">
-      <xaif:Assignment statement_id="93" lineNumber="154">
+      <xaif:Assignment statement_id="101" lineNumber="154">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PB_22"/>
         </xaif:AssignmentLHS>
@@ -1038,7 +1027,7 @@
           <xaif:Constant vertex_id="1" type="real" value="0.00000000000000000000e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="95" lineNumber="155">
+      <xaif:Assignment statement_id="103" lineNumber="155">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBB_23"/>
         </xaif:AssignmentLHS>
@@ -1085,7 +1074,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="29" scope_id="4">
-      <xaif:Assignment statement_id="145" lineNumber="164">
+      <xaif:Assignment statement_id="173" lineNumber="164">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBR_26"/>
         </xaif:AssignmentLHS>
@@ -1110,7 +1099,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="32" scope_id="4">
-      <xaif:Assignment statement_id="163" lineNumber="169">
+      <xaif:Assignment statement_id="196" lineNumber="169">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PL_27"/>
         </xaif:AssignmentLHS>
@@ -1118,7 +1107,7 @@
           <xaif:Constant vertex_id="1" type="real" value="0.00000000000000000000e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="165" lineNumber="170">
+      <xaif:Assignment statement_id="198" lineNumber="170">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PLL_29"/>
         </xaif:AssignmentLHS>
@@ -1141,7 +1130,7 @@
     <xaif:EndBranch vertex_id="37"/>
 
     <xaif:BasicBlock vertex_id="71" scope_id="4">
-      <xaif:Assignment statement_id="204" lineNumber="178">
+      <xaif:Assignment statement_id="257" lineNumber="178">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="P_21"/>
         </xaif:AssignmentLHS>
@@ -1180,7 +1169,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="38" scope_id="4">
-      <xaif:Assignment statement_id="217" lineNumber="180">
+      <xaif:Assignment statement_id="275" lineNumber="180">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PR_31"/>
         </xaif:AssignmentLHS>
@@ -1202,7 +1191,7 @@
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="225" lineNumber="181">
+      <xaif:Assignment statement_id="288" lineNumber="181">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PRR_33"/>
         </xaif:AssignmentLHS>
@@ -1239,7 +1228,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="44" scope_id="4">
-      <xaif:Assignment statement_id="267" lineNumber="190">
+      <xaif:Assignment statement_id="345" lineNumber="190">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PTL_35"/>
         </xaif:AssignmentLHS>
@@ -1270,7 +1259,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="47" scope_id="4">
-      <xaif:Assignment statement_id="287" lineNumber="195">
+      <xaif:Assignment statement_id="370" lineNumber="195">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PT_34"/>
         </xaif:AssignmentLHS>
@@ -1294,7 +1283,7 @@
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="295" lineNumber="196">
+      <xaif:Assignment statement_id="383" lineNumber="196">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PTT_38"/>
         </xaif:AssignmentLHS>
@@ -1333,7 +1322,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="53" scope_id="4">
-      <xaif:Assignment statement_id="343" lineNumber="205">
+      <xaif:Assignment statement_id="446" lineNumber="205">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PTR_37"/>
         </xaif:AssignmentLHS>
@@ -1346,8 +1335,8 @@
     <xaif:EndBranch vertex_id="55"/>
 
     <xaif:BasicBlock vertex_id="72" scope_id="4">
-      <xaif:Assignment statement_id="356" lineNumber="210">
-        <xaif:AssignmentLHS du_ud="21">
+      <xaif:Assignment statement_id="464" lineNumber="210">
+        <xaif:AssignmentLHS du_ud="17">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="DPDY_15"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
@@ -1362,18 +1351,18 @@
           <xaif:ExpressionEdge edge_id="1" source="3" target="2" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="4" target="2" position="2"/>
           <xaif:Intrinsic vertex_id="5" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="6" du_ud="2">
+          <xaif:Constant vertex_id="6" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="7" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="HY_10"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="7" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
           <xaif:ExpressionEdge edge_id="4" source="7" target="5" position="2"/>
           <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="6" source="5" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="366" lineNumber="211">
-        <xaif:AssignmentLHS du_ud="21">
+      <xaif:Assignment statement_id="474" lineNumber="211">
+        <xaif:AssignmentLHS du_ud="17">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="DPDX_14"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
@@ -1388,17 +1377,17 @@
           <xaif:ExpressionEdge edge_id="1" source="3" target="2" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="4" target="2" position="2"/>
           <xaif:Intrinsic vertex_id="5" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="6" du_ud="2">
+          <xaif:Constant vertex_id="6" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="7" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="HX_9"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="7" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
           <xaif:ExpressionEdge edge_id="4" source="7" target="5" position="2"/>
           <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="6" source="5" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:SubroutineCall statement_id="376" scope_id="1" lineNumber="215" symbol_id="bar__29">
+      <xaif:SubroutineCall statement_id="484" scope_id="1" lineNumber="215" symbol_id="bar__29">
         <xaif:Argument position="1">
           <xaif:VariableReference vertex_id="1" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBB_23"/>
@@ -1500,7 +1489,7 @@
           </xaif:VariableReference>
         </xaif:Argument>
       </xaif:SubroutineCall>
-      <xaif:Assignment statement_id="417" lineNumber="218">
+      <xaif:Assignment statement_id="525" lineNumber="218">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="FVEC_6"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -1517,18 +1506,18 @@
           <xaif:Intrinsic vertex_id="2" name="add_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="3" name="div_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="4" name="add_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="5" du_ud="17">
+          <xaif:VariableReference vertex_id="5" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBLAP_25"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="6" name="sub_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="7" du_ud="17">
+          <xaif:VariableReference vertex_id="7" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PTLAP_36"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="8" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="9" du_ud="17">
+          <xaif:Constant vertex_id="9" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="10" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PLAP_28"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="10" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="9" target="8" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="10" target="8" position="2"/>
           <xaif:ExpressionEdge edge_id="3" source="7" target="6" position="1"/>
@@ -1542,18 +1531,18 @@
           <xaif:ExpressionEdge edge_id="8" source="11" target="3" position="2"/>
           <xaif:Intrinsic vertex_id="12" name="div_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="13" name="add_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="14" du_ud="17">
+          <xaif:VariableReference vertex_id="14" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PLLAP_30"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="15" name="sub_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="16" du_ud="17">
+          <xaif:VariableReference vertex_id="16" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PRLAP_32"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="17" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="18" du_ud="17">
+          <xaif:Constant vertex_id="18" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="19" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PLAP_28"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="19" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="9" source="18" target="17" position="1"/>
           <xaif:ExpressionEdge edge_id="10" source="19" target="17" position="2"/>
           <xaif:ExpressionEdge edge_id="11" source="16" target="15" position="1"/>
@@ -1574,14 +1563,14 @@
           <xaif:Intrinsic vertex_id="23" name="sub_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="24" name="div_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="25" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="26" du_ud="18">
+          <xaif:VariableReference vertex_id="26" du_ud="15">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="DPDY_15"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="27" name="sub_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="28" du_ud="17">
+          <xaif:VariableReference vertex_id="28" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PRLAP_32"/>
           </xaif:VariableReference>
-          <xaif:VariableReference vertex_id="29" du_ud="17">
+          <xaif:VariableReference vertex_id="29" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PLLAP_30"/>
           </xaif:VariableReference>
           <xaif:ExpressionEdge edge_id="19" source="28" target="27" position="1"/>
@@ -1589,24 +1578,24 @@
           <xaif:ExpressionEdge edge_id="21" source="26" target="25" position="1"/>
           <xaif:ExpressionEdge edge_id="22" source="27" target="25" position="2"/>
           <xaif:Intrinsic vertex_id="30" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="31" du_ud="2">
+          <xaif:Constant vertex_id="31" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="32" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="HX_9"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="32" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="23" source="31" target="30" position="1"/>
           <xaif:ExpressionEdge edge_id="24" source="32" target="30" position="2"/>
           <xaif:ExpressionEdge edge_id="25" source="25" target="24" position="1"/>
           <xaif:ExpressionEdge edge_id="26" source="30" target="24" position="2"/>
           <xaif:Intrinsic vertex_id="33" name="div_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="34" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="35" du_ud="19">
+          <xaif:VariableReference vertex_id="35" du_ud="16">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="DPDX_14"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="36" name="sub_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="37" du_ud="17">
+          <xaif:VariableReference vertex_id="37" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PTLAP_36"/>
           </xaif:VariableReference>
-          <xaif:VariableReference vertex_id="38" du_ud="17">
+          <xaif:VariableReference vertex_id="38" du_ud="14">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBLAP_25"/>
           </xaif:VariableReference>
           <xaif:ExpressionEdge edge_id="27" source="37" target="36" position="1"/>
@@ -1614,10 +1603,10 @@
           <xaif:ExpressionEdge edge_id="29" source="35" target="34" position="1"/>
           <xaif:ExpressionEdge edge_id="30" source="36" target="34" position="2"/>
           <xaif:Intrinsic vertex_id="39" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="40" du_ud="2">
+          <xaif:Constant vertex_id="40" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="41" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="HY_10"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="41" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="31" source="40" target="39" position="1"/>
           <xaif:ExpressionEdge edge_id="32" source="41" target="39" position="2"/>
           <xaif:ExpressionEdge edge_id="33" source="34" target="33" position="1"/>
@@ -1633,13 +1622,13 @@
     </xaif:BasicBlock>
 
     <xaif:BasicBlock vertex_id="56" scope_id="4">
-      <xaif:Marker statement_id="470" annotation="{WHIRL_Id#470}{StmtLabel#1}"/>
+      <xaif:Marker statement_id="583" annotation="{WHIRL_Id#583}{StmtLabel#1}"/>
     </xaif:BasicBlock>
 
     <xaif:EndLoop vertex_id="73"/>
 
     <xaif:BasicBlock vertex_id="54" scope_id="4">
-      <xaif:Assignment statement_id="346" lineNumber="207">
+      <xaif:Assignment statement_id="449" lineNumber="207">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PTR_37"/>
         </xaif:AssignmentLHS>
@@ -1684,7 +1673,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="49" scope_id="4">
-      <xaif:Assignment statement_id="303" lineNumber="198">
+      <xaif:Assignment statement_id="391" lineNumber="198">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PT_34"/>
         </xaif:AssignmentLHS>
@@ -1692,7 +1681,7 @@
           <xaif:Constant vertex_id="1" type="real" value="0.00000000000000000000e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="305" lineNumber="199">
+      <xaif:Assignment statement_id="393" lineNumber="199">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PTT_38"/>
         </xaif:AssignmentLHS>
@@ -1710,10 +1699,10 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="3" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="4" du_ud="2">
+          <xaif:Constant vertex_id="4" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="5" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="HY_10"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="5" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="5" target="3" position="2"/>
           <xaif:ExpressionEdge edge_id="3" source="2" target="1" position="1"/>
@@ -1725,7 +1714,7 @@
     <xaif:EndBranch vertex_id="51"/>
 
     <xaif:BasicBlock vertex_id="50" scope_id="4">
-      <xaif:Assignment statement_id="316" lineNumber="201">
+      <xaif:Assignment statement_id="409" lineNumber="201">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PT_34"/>
         </xaif:AssignmentLHS>
@@ -1749,7 +1738,7 @@
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="324" lineNumber="202">
+      <xaif:Assignment statement_id="422" lineNumber="202">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PTT_38"/>
         </xaif:AssignmentLHS>
@@ -1763,10 +1752,10 @@
                   <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="K_19"/>
                 </xaif:VariableReference>
                 <xaif:Intrinsic vertex_id="3" name="mul_scal_scal" type="***"/>
-                <xaif:VariableReference vertex_id="4" du_ud="0">
+                <xaif:Constant vertex_id="4" type="integer" value="2"/>
+                <xaif:VariableReference vertex_id="5" du_ud="2">
                   <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="NX_1"/>
                 </xaif:VariableReference>
-                <xaif:Constant vertex_id="5" type="integer" value="2"/>
                 <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
                 <xaif:ExpressionEdge edge_id="2" source="5" target="3" position="2"/>
                 <xaif:ExpressionEdge edge_id="3" source="2" target="1" position="1"/>
@@ -1780,7 +1769,7 @@
     </xaif:BasicBlock>
 
     <xaif:BasicBlock vertex_id="45" scope_id="4">
-      <xaif:Assignment statement_id="270" lineNumber="192">
+      <xaif:Assignment statement_id="348" lineNumber="192">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PTL_35"/>
         </xaif:AssignmentLHS>
@@ -1825,7 +1814,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="40" scope_id="4">
-      <xaif:Assignment statement_id="233" lineNumber="183">
+      <xaif:Assignment statement_id="296" lineNumber="183">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PR_31"/>
         </xaif:AssignmentLHS>
@@ -1833,7 +1822,7 @@
           <xaif:Constant vertex_id="1" type="real" value="0.00000000000000000000e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="235" lineNumber="184">
+      <xaif:Assignment statement_id="298" lineNumber="184">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PRR_33"/>
         </xaif:AssignmentLHS>
@@ -1856,7 +1845,7 @@
     <xaif:EndBranch vertex_id="42"/>
 
     <xaif:BasicBlock vertex_id="41" scope_id="4">
-      <xaif:Assignment statement_id="242" lineNumber="186">
+      <xaif:Assignment statement_id="310" lineNumber="186">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PR_31"/>
         </xaif:AssignmentLHS>
@@ -1878,7 +1867,7 @@
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="250" lineNumber="187">
+      <xaif:Assignment statement_id="323" lineNumber="187">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PRR_33"/>
         </xaif:AssignmentLHS>
@@ -1915,7 +1904,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="34" scope_id="4">
-      <xaif:Assignment statement_id="177" lineNumber="172">
+      <xaif:Assignment statement_id="215" lineNumber="172">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PL_27"/>
         </xaif:AssignmentLHS>
@@ -1937,7 +1926,7 @@
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="185" lineNumber="173">
+      <xaif:Assignment statement_id="228" lineNumber="173">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PLL_29"/>
         </xaif:AssignmentLHS>
@@ -1950,7 +1939,7 @@
     <xaif:EndBranch vertex_id="36"/>
 
     <xaif:BasicBlock vertex_id="35" scope_id="4">
-      <xaif:Assignment statement_id="188" lineNumber="175">
+      <xaif:Assignment statement_id="231" lineNumber="175">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PL_27"/>
         </xaif:AssignmentLHS>
@@ -1972,7 +1961,7 @@
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="196" lineNumber="176">
+      <xaif:Assignment statement_id="244" lineNumber="176">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PLL_29"/>
         </xaif:AssignmentLHS>
@@ -1997,7 +1986,7 @@
     </xaif:BasicBlock>
 
     <xaif:BasicBlock vertex_id="30" scope_id="4">
-      <xaif:Assignment statement_id="148" lineNumber="166">
+      <xaif:Assignment statement_id="176" lineNumber="166">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBR_26"/>
         </xaif:AssignmentLHS>
@@ -2040,7 +2029,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="25" scope_id="4">
-      <xaif:Assignment statement_id="107" lineNumber="157">
+      <xaif:Assignment statement_id="120" lineNumber="157">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PB_22"/>
         </xaif:AssignmentLHS>
@@ -2064,7 +2053,7 @@
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="115" lineNumber="158">
+      <xaif:Assignment statement_id="133" lineNumber="158">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBB_23"/>
         </xaif:AssignmentLHS>
@@ -2077,7 +2066,7 @@
     <xaif:EndBranch vertex_id="27"/>
 
     <xaif:BasicBlock vertex_id="26" scope_id="4">
-      <xaif:Assignment statement_id="118" lineNumber="160">
+      <xaif:Assignment statement_id="136" lineNumber="160">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PB_22"/>
         </xaif:AssignmentLHS>
@@ -2101,7 +2090,7 @@
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="126" lineNumber="161">
+      <xaif:Assignment statement_id="149" lineNumber="161">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBB_23"/>
         </xaif:AssignmentLHS>
@@ -2115,10 +2104,10 @@
                   <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="K_19"/>
                 </xaif:VariableReference>
                 <xaif:Intrinsic vertex_id="3" name="mul_scal_scal" type="***"/>
-                <xaif:VariableReference vertex_id="4" du_ud="0">
+                <xaif:Constant vertex_id="4" type="integer" value="2"/>
+                <xaif:VariableReference vertex_id="5" du_ud="2">
                   <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="NX_1"/>
                 </xaif:VariableReference>
-                <xaif:Constant vertex_id="5" type="integer" value="2"/>
                 <xaif:ExpressionEdge edge_id="1" source="4" target="3" position="1"/>
                 <xaif:ExpressionEdge edge_id="2" source="5" target="3" position="2"/>
                 <xaif:ExpressionEdge edge_id="3" source="2" target="1" position="1"/>
@@ -2132,7 +2121,7 @@
     </xaif:BasicBlock>
 
     <xaif:BasicBlock vertex_id="21" scope_id="4">
-      <xaif:Assignment statement_id="78" lineNumber="151">
+      <xaif:Assignment statement_id="81" lineNumber="151">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PBL_24"/>
         </xaif:AssignmentLHS>
@@ -2163,13 +2152,13 @@
     </xaif:BasicBlock>
 
     <xaif:BasicBlock vertex_id="58" scope_id="4">
-      <xaif:Marker statement_id="471" annotation="{WHIRL_Id#471}{StmtLabel#3}"/>
+      <xaif:Marker statement_id="584" annotation="{WHIRL_Id#584}{StmtLabel#3}"/>
     </xaif:BasicBlock>
 
     <xaif:EndLoop vertex_id="74"/>
 
     <xaif:BasicBlock vertex_id="60" scope_id="4">
-      <xaif:Marker statement_id="472" annotation="{WHIRL_Id#472} [passive: OPR_RETURN]"/>
+      <xaif:Marker statement_id="585" annotation="{WHIRL_Id#585} [passive: OPR_RETURN]"/>
     </xaif:BasicBlock>
 
     <xaif:Exit vertex_id="62"/>
@@ -2421,10 +2410,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="P_7"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="7" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="8" du_ud="2">
+          <xaif:Constant vertex_id="8" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="9" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PB_3"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="9" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="8" target="7" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="9" target="7" position="2"/>
           <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
@@ -2446,10 +2435,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PBR_4"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="16" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="17" du_ud="2">
+          <xaif:Constant vertex_id="17" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="18" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PB_3"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="18" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="9" source="17" target="16" position="1"/>
           <xaif:ExpressionEdge edge_id="10" source="18" target="16" position="2"/>
           <xaif:ExpressionEdge edge_id="11" source="15" target="14" position="1"/>
@@ -2481,10 +2470,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PTL_10"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="7" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="8" du_ud="2">
+          <xaif:Constant vertex_id="8" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="9" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PL_6"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="9" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="8" target="7" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="9" target="7" position="2"/>
           <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
@@ -2506,10 +2495,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="P_7"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="16" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="17" du_ud="2">
+          <xaif:Constant vertex_id="17" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="18" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PL_6"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="18" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="9" source="17" target="16" position="1"/>
           <xaif:ExpressionEdge edge_id="10" source="18" target="16" position="2"/>
           <xaif:ExpressionEdge edge_id="11" source="15" target="14" position="1"/>
@@ -2541,10 +2530,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PT_11"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="7" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="8" du_ud="2">
+          <xaif:Constant vertex_id="8" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="9" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="P_7"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="9" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="8" target="7" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="9" target="7" position="2"/>
           <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
@@ -2566,10 +2555,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PR_8"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="16" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="17" du_ud="2">
+          <xaif:Constant vertex_id="17" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="18" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="P_7"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="18" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="9" source="17" target="16" position="1"/>
           <xaif:ExpressionEdge edge_id="10" source="18" target="16" position="2"/>
           <xaif:ExpressionEdge edge_id="11" source="15" target="14" position="1"/>
@@ -2601,10 +2590,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PTR_12"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="7" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="8" du_ud="2">
+          <xaif:Constant vertex_id="8" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="9" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PR_8"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="9" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="8" target="7" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="9" target="7" position="2"/>
           <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
@@ -2626,10 +2615,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PRR_9"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="16" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="17" du_ud="2">
+          <xaif:Constant vertex_id="17" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="18" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PR_8"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="18" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="9" source="17" target="16" position="1"/>
           <xaif:ExpressionEdge edge_id="10" source="18" target="16" position="2"/>
           <xaif:ExpressionEdge edge_id="11" source="15" target="14" position="1"/>
@@ -2661,10 +2650,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PTT_13"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="7" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="8" du_ud="2">
+          <xaif:Constant vertex_id="8" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="9" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PT_11"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="9" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="8" target="7" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="9" target="7" position="2"/>
           <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
@@ -2686,10 +2675,10 @@
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PTR_12"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="16" name="mul_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="17" du_ud="2">
+          <xaif:Constant vertex_id="17" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:VariableReference vertex_id="18" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="5" symbol_id="PT_11"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="18" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="9" source="17" target="16" position="1"/>
           <xaif:ExpressionEdge edge_id="10" source="18" target="16" position="2"/>
           <xaif:ExpressionEdge edge_id="11" source="15" target="14" position="1"/>

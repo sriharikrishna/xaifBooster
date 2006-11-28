@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:21:53 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:00:30 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -258,7 +258,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_1157
       REAL(w2f__8) OpenAD_Symbol_1158
       type(active) :: OpenAD_Symbol_1159
-      REAL(w2f__8) OpenAD_Symbol_116
       REAL(w2f__8) OpenAD_Symbol_1160
       type(active) :: OpenAD_Symbol_1161
       REAL(w2f__8) OpenAD_Symbol_1162
@@ -269,6 +268,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_1167
       REAL(w2f__8) OpenAD_Symbol_1168
       REAL(w2f__8) OpenAD_Symbol_1169
+      REAL(w2f__8) OpenAD_Symbol_117
       REAL(w2f__8) OpenAD_Symbol_1170
       REAL(w2f__8) OpenAD_Symbol_1171
       REAL(w2f__8) OpenAD_Symbol_1172
@@ -1194,7 +1194,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_2007
       REAL(w2f__8) OpenAD_Symbol_2008
       type(active) :: OpenAD_Symbol_2009
-      REAL(w2f__8) OpenAD_Symbol_201
       REAL(w2f__8) OpenAD_Symbol_2010
       REAL(w2f__8) OpenAD_Symbol_2011
       REAL(w2f__8) OpenAD_Symbol_2012
@@ -1205,6 +1204,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_2017
       REAL(w2f__8) OpenAD_Symbol_2018
       REAL(w2f__8) OpenAD_Symbol_2019
+      REAL(w2f__8) OpenAD_Symbol_202
       REAL(w2f__8) OpenAD_Symbol_2020
       REAL(w2f__8) OpenAD_Symbol_2021
       REAL(w2f__8) OpenAD_Symbol_2022
@@ -1248,7 +1248,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_2057
       REAL(w2f__8) OpenAD_Symbol_2058
       REAL(w2f__8) OpenAD_Symbol_2059
-      REAL(w2f__8) OpenAD_Symbol_206
       type(active) :: OpenAD_Symbol_2060
       REAL(w2f__8) OpenAD_Symbol_2061
       REAL(w2f__8) OpenAD_Symbol_2062
@@ -1259,6 +1258,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_2067
       REAL(w2f__8) OpenAD_Symbol_2068
       REAL(w2f__8) OpenAD_Symbol_2069
+      REAL(w2f__8) OpenAD_Symbol_207
       REAL(w2f__8) OpenAD_Symbol_2070
       REAL(w2f__8) OpenAD_Symbol_2071
       type(active) :: OpenAD_Symbol_2072
@@ -1303,7 +1303,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_2107
       type(active) :: OpenAD_Symbol_2108
       REAL(w2f__8) OpenAD_Symbol_2109
-      REAL(w2f__8) OpenAD_Symbol_211
       REAL(w2f__8) OpenAD_Symbol_2110
       REAL(w2f__8) OpenAD_Symbol_2111
       REAL(w2f__8) OpenAD_Symbol_2112
@@ -1314,6 +1313,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_2117
       REAL(w2f__8) OpenAD_Symbol_2118
       REAL(w2f__8) OpenAD_Symbol_2119
+      REAL(w2f__8) OpenAD_Symbol_212
       type(active) :: OpenAD_Symbol_2120
       REAL(w2f__8) OpenAD_Symbol_2121
       REAL(w2f__8) OpenAD_Symbol_2122
@@ -1433,7 +1433,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_277
       REAL(w2f__8) OpenAD_Symbol_278
       REAL(w2f__8) OpenAD_Symbol_279
-      REAL(w2f__8) OpenAD_Symbol_28
       REAL(w2f__8) OpenAD_Symbol_280
       REAL(w2f__8) OpenAD_Symbol_281
       REAL(w2f__8) OpenAD_Symbol_282
@@ -1444,10 +1443,11 @@ C
       REAL(w2f__8) OpenAD_Symbol_287
       REAL(w2f__8) OpenAD_Symbol_288
       REAL(w2f__8) OpenAD_Symbol_289
+      REAL(w2f__8) OpenAD_Symbol_29
       REAL(w2f__8) OpenAD_Symbol_290
       REAL(w2f__8) OpenAD_Symbol_291
       REAL(w2f__8) OpenAD_Symbol_292
-      REAL(w2f__8) OpenAD_Symbol_293
+      REAL(w2f__8) OpenAD_Symbol_294
       REAL(w2f__8) OpenAD_Symbol_295
       REAL(w2f__8) OpenAD_Symbol_296
       REAL(w2f__8) OpenAD_Symbol_297
@@ -1529,8 +1529,8 @@ C
       REAL(w2f__8) OpenAD_Symbol_366
       REAL(w2f__8) OpenAD_Symbol_367
       REAL(w2f__8) OpenAD_Symbol_368
-      REAL(w2f__8) OpenAD_Symbol_369
       REAL(w2f__8) OpenAD_Symbol_37
+      REAL(w2f__8) OpenAD_Symbol_370
       REAL(w2f__8) OpenAD_Symbol_371
       REAL(w2f__8) OpenAD_Symbol_372
       REAL(w2f__8) OpenAD_Symbol_373
@@ -1540,7 +1540,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_377
       REAL(w2f__8) OpenAD_Symbol_378
       REAL(w2f__8) OpenAD_Symbol_379
-      REAL(w2f__8) OpenAD_Symbol_38
       REAL(w2f__8) OpenAD_Symbol_380
       REAL(w2f__8) OpenAD_Symbol_381
       REAL(w2f__8) OpenAD_Symbol_382
@@ -1551,6 +1550,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_387
       REAL(w2f__8) OpenAD_Symbol_388
       REAL(w2f__8) OpenAD_Symbol_389
+      REAL(w2f__8) OpenAD_Symbol_39
       REAL(w2f__8) OpenAD_Symbol_390
       REAL(w2f__8) OpenAD_Symbol_391
       REAL(w2f__8) OpenAD_Symbol_392
@@ -1692,7 +1692,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_517
       REAL(w2f__8) OpenAD_Symbol_518
       REAL(w2f__8) OpenAD_Symbol_519
-      REAL(w2f__8) OpenAD_Symbol_52
       REAL(w2f__8) OpenAD_Symbol_520
       REAL(w2f__8) OpenAD_Symbol_521
       REAL(w2f__8) OpenAD_Symbol_522
@@ -1703,6 +1702,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_527
       REAL(w2f__8) OpenAD_Symbol_528
       REAL(w2f__8) OpenAD_Symbol_529
+      REAL(w2f__8) OpenAD_Symbol_53
       REAL(w2f__8) OpenAD_Symbol_530
       REAL(w2f__8) OpenAD_Symbol_531
       REAL(w2f__8) OpenAD_Symbol_532
@@ -1728,7 +1728,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_550
       REAL(w2f__8) OpenAD_Symbol_551
       REAL(w2f__8) OpenAD_Symbol_552
-      REAL(w2f__8) OpenAD_Symbol_553
+      REAL(w2f__8) OpenAD_Symbol_554
       REAL(w2f__8) OpenAD_Symbol_555
       REAL(w2f__8) OpenAD_Symbol_556
       REAL(w2f__8) OpenAD_Symbol_557
@@ -1737,7 +1737,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_56
       REAL(w2f__8) OpenAD_Symbol_560
       REAL(w2f__8) OpenAD_Symbol_561
-      REAL(w2f__8) OpenAD_Symbol_562
+      REAL(w2f__8) OpenAD_Symbol_563
       REAL(w2f__8) OpenAD_Symbol_564
       REAL(w2f__8) OpenAD_Symbol_565
       REAL(w2f__8) OpenAD_Symbol_566
@@ -1746,7 +1746,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_569
       REAL(w2f__8) OpenAD_Symbol_57
       REAL(w2f__8) OpenAD_Symbol_570
-      REAL(w2f__8) OpenAD_Symbol_571
+      REAL(w2f__8) OpenAD_Symbol_572
       REAL(w2f__8) OpenAD_Symbol_573
       REAL(w2f__8) OpenAD_Symbol_574
       REAL(w2f__8) OpenAD_Symbol_575
@@ -2946,20 +2946,20 @@ C$OPENAD XXX Template ad_template.f
       NXHAT%v = (NRM(1)%v*NSIZEI%v)
       NYHAT%v = (NRM(2)%v*NSIZEI%v)
       NZHAT%v = (NRM(3)%v*NSIZEI%v)
-      ROEL%v = (1.0D00/(SIN(PRIMR(2)%v/PRIML(2)%v)+1.0D00))
+      ROEL%v = (1.0D00/(1.0D00+SIN(PRIMR(2)%v/PRIML(2)%v)))
       ROER%v = (1.0D00-ROEL%v)
-      THETAL%v = (((PRIML(3)%v**INT(2 _w2f__i8))+(PRIML(4)%v**INT(2 _w2f
-     +__i8))+(PRIML(5)%v**INT(2 _w2f__i8)))*5.0D-01)
-      THETAR%v = (((PRIMR(3)%v**INT(2 _w2f__i8))+(PRIMR(4)%v**INT(2 _w2f
-     +__i8))+(PRIMR(5)%v**INT(2 _w2f__i8)))*5.0D-01)
+      THETAL%v = (5.0D-01*((PRIML(3)%v**INT(2 _w2f__i8))+(PRIML(4)%v**IN
+     +T(2 _w2f__i8))+(PRIML(5)%v**INT(2 _w2f__i8))))
+      THETAR%v = (5.0D-01*((PRIMR(3)%v**INT(2 _w2f__i8))+(PRIMR(4)%v**IN
+     +T(2 _w2f__i8))+(PRIMR(5)%v**INT(2 _w2f__i8))))
       HL%v = (THETAL%v+((PRIML(1)%v*GAMMA%v*GM1INV%v)/PRIML(2)%v))
       HR%v = (THETAR%v+((PRIMR(1)%v*GAMMA%v*GM1INV%v)/PRIMR(2)%v))
       UAVE%v = (PRIML(3)%v*ROEL%v+PRIMR(3)%v*ROER%v)
       VAVE%v = (PRIML(4)%v*ROEL%v+PRIMR(4)%v*ROER%v)
       WAVE%v = (PRIML(5)%v*ROEL%v+PRIMR(5)%v*ROER%v)
       HAVE%v = (HL%v*ROEL%v+HR%v*ROER%v)
-      THTAVE%v = (((UAVE%v**INT(2 _w2f__i8))+(VAVE%v**INT(2 _w2f__i8))+(
-     +WAVE%v**INT(2 _w2f__i8)))*5.0D-01)
+      THTAVE%v = (5.0D-01*((UAVE%v**INT(2 _w2f__i8))+(VAVE%v**INT(2 _w2f
+     +__i8))+(WAVE%v**INT(2 _w2f__i8))))
       CAVE%v = (GM1%v*(HAVE%v-THTAVE%v))
       CAVE%v = SIN(CAVE%v)
       UHAT%v = (NXHAT%v*UAVE%v+NYHAT%v*VAVE%v+NZHAT%v*WAVE%v)
@@ -2975,13 +2975,13 @@ C$OPENAD XXX Template ad_template.f
       IF (DELTA2%v .LT. LAM2%v) THEN
         ALAMCM%v = LAMCM%v
       ELSE
-        ALAMCM%v = (((DELTA2%v+LAM2%v)*5.0D-01)/DELTA2%v)
+        ALAMCM%v = ((5.0D-01*(DELTA2%v+LAM2%v))/DELTA2%v)
       ENDIF
       LAM2%v = (LAMCP%v**INT(2 _w2f__i8))
       IF (DELTA2%v .LT. LAM2%v) THEN
         ALAMCP%v = LAMCP%v
       ELSE
-        ALAMCP%v = (((DELTA2%v+LAM2%v)*5.0D-01)/DELTA2%v)
+        ALAMCP%v = ((5.0D-01*(DELTA2%v+LAM2%v))/DELTA2%v)
       ENDIF
       DELTA%v = (LEFIX%v*(CAVE%v+UHAT%v))
       DELTA2%v = (DELTA%v*DELTA%v)
@@ -2989,11 +2989,11 @@ C$OPENAD XXX Template ad_template.f
       IF (DELTA2%v .LT. LAM2%v) THEN
         ALAMU%v = LAMU%v
       ELSE
-        ALAMU%v = (((DELTA2%v+LAM2%v)*5.0D-01)/DELTA2%v)
+        ALAMU%v = ((5.0D-01*(DELTA2%v+LAM2%v))/DELTA2%v)
       ENDIF
-      ALAMCM%v = ((LAMCM%v-ALAMCM%v)*5.0D-01)
-      ALAMCP%v = ((LAMCP%v-ALAMCP%v)*5.0D-01)
-      ALAMU%v = ((LAMU%v-ALAMU%v)*5.0D-01)
+      ALAMCM%v = (5.0D-01*(LAMCM%v-ALAMCM%v))
+      ALAMCP%v = (5.0D-01*(LAMCP%v-ALAMCP%v))
+      ALAMU%v = (5.0D-01*(LAMU%v-ALAMU%v))
       EL%v = (PRIML(1)%v*GM1INV%v+PRIML(2)%v*THETAL%v)
       RUL%v = (PRIML(2)%v*PRIML(3)%v)
       RVL%v = (PRIML(2)%v*PRIML(4)%v)
@@ -3010,14 +3010,14 @@ C$OPENAD XXX Template ad_template.f
       UDDRU%v = (DRU%v*UAVE%v+DRV%v*VAVE%v+DRW%v*WAVE%v)
       OMEGA%v = ((GM1%v/CAVE%v)*(DE%v+DR%v*THTAVE%v-UDDRU%v))
       NDDRU%v = (DRU%v*NXHAT%v+DRV%v*NYHAT%v+DRW%v*NZHAT%v)
-      ALP1%v = ((OMEGA%v+DR%v*UHAT%v-NDDRU%v)*5.0D-01)
+      ALP1%v = (5.0D-01*(OMEGA%v+DR%v*UHAT%v-NDDRU%v))
       ALP2%v = (DRW%v*NYHAT%v+DR%v*(CAVE%v*NXHAT%v-UTILDE%v)+OMEGA%v*(-N
      +XHAT%v)-DRV%v*NZHAT%v)
       ALP3%v = (DRU%v*NZHAT%v+DR%v*(CAVE%v*NYHAT%v-VTILDE%v)+OMEGA%v*(-N
      +YHAT%v)-DRW%v*NXHAT%v)
       ALP4%v = (DRV%v*NXHAT%v+DR%v*(CAVE%v*NZHAT%v-WTILDE%v)+OMEGA%v*(-N
      +ZHAT%v)-DRU%v*NYHAT%v)
-      ALP5%v = ((NDDRU%v+OMEGA%v-DR%v*UHAT%v)*5.0D-01)
+      ALP5%v = (5.0D-01*(NDDRU%v+OMEGA%v-DR%v*UHAT%v))
       ALP1%v = (ALAMCM%v*ALP1%v)
       ALP2%v = (ALAMU%v*ALP2%v)
       ALP3%v = (ALAMU%v*ALP3%v)
@@ -3105,12 +3105,12 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_23 = NRM(3)%v
       NZHAT%v = OpenAD_Symbol_24
       OpenAD_Symbol_30 = (PRIMR(2)%v/PRIML(2)%v)
-      OpenAD_Symbol_25 = (SIN(OpenAD_Symbol_30) + 1.0D00)
+      OpenAD_Symbol_25 = (1.0D00 + SIN(OpenAD_Symbol_30))
       OpenAD_Symbol_34 = (1.0D00 / OpenAD_Symbol_25)
       OpenAD_Symbol_32 = (INT(1 _w2f__i8)/PRIML(2)%v)
       OpenAD_Symbol_33 = (-(PRIMR(2)%v/(PRIML(2)%v*PRIML(2)%v)))
       OpenAD_Symbol_31 = COS(OpenAD_Symbol_30)
-      OpenAD_Symbol_28 = 1_w2f__i8
+      OpenAD_Symbol_29 = 1_w2f__i8
       OpenAD_Symbol_27 = (-(1.0D00 /(OpenAD_Symbol_25 *  OpenAD_Symbol_2
      +5)))
       ROEL%v = OpenAD_Symbol_34
@@ -3118,7 +3118,7 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_36 = (-1_w2f__i8)
       OpenAD_Symbol_37 = ((PRIML(3)%v**INT(2 _w2f__i8))+(PRIML(4)%v**INT
      +(2 _w2f__i8))+(PRIML(5)%v**INT(2 _w2f__i8)))
-      OpenAD_Symbol_50 = (OpenAD_Symbol_37 * 5.0D-01)
+      OpenAD_Symbol_50 = (5.0D-01 * OpenAD_Symbol_37)
       OpenAD_Symbol_44 = (INT(2 _w2f__i8)*(PRIML(3)%v**(INT(2 _w2f__i8)-
      +INT(1 _w2f__i8))))
       OpenAD_Symbol_42 = 1_w2f__i8
@@ -3129,11 +3129,11 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_48 = (INT(2 _w2f__i8)*(PRIML(5)%v**(INT(2 _w2f__i8)-
      +INT(1 _w2f__i8))))
       OpenAD_Symbol_41 = 1_w2f__i8
-      OpenAD_Symbol_38 = 5.0D-01
+      OpenAD_Symbol_39 = 5.0D-01
       THETAL%v = OpenAD_Symbol_50
       OpenAD_Symbol_51 = ((PRIMR(3)%v**INT(2 _w2f__i8))+(PRIMR(4)%v**INT
      +(2 _w2f__i8))+(PRIMR(5)%v**INT(2 _w2f__i8)))
-      OpenAD_Symbol_64 = (OpenAD_Symbol_51 * 5.0D-01)
+      OpenAD_Symbol_64 = (5.0D-01 * OpenAD_Symbol_51)
       OpenAD_Symbol_58 = (INT(2 _w2f__i8)*(PRIMR(3)%v**(INT(2 _w2f__i8)-
      +INT(1 _w2f__i8))))
       OpenAD_Symbol_56 = 1_w2f__i8
@@ -3144,7 +3144,7 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_62 = (INT(2 _w2f__i8)*(PRIMR(5)%v**(INT(2 _w2f__i8)-
      +INT(1 _w2f__i8))))
       OpenAD_Symbol_55 = 1_w2f__i8
-      OpenAD_Symbol_52 = 5.0D-01
+      OpenAD_Symbol_53 = 5.0D-01
       THETAR%v = OpenAD_Symbol_64
       OpenAD_Symbol_70 = (GAMMA%v*GM1INV%v)
       OpenAD_Symbol_67 = (PRIML(1)%v*OpenAD_Symbol_70)
@@ -3204,7 +3204,7 @@ C$OPENAD XXX Template ad_template.f
       HAVE%v = OpenAD_Symbol_114
       OpenAD_Symbol_115 = ((UAVE%v**INT(2 _w2f__i8))+(VAVE%v**INT(2 _w2f
      +__i8))+(WAVE%v**INT(2 _w2f__i8)))
-      OpenAD_Symbol_128 = (OpenAD_Symbol_115 * 5.0D-01)
+      OpenAD_Symbol_128 = (5.0D-01 * OpenAD_Symbol_115)
       OpenAD_Symbol_122 = (INT(2 _w2f__i8)*(UAVE%v**(INT(2 _w2f__i8)-INT
      +(1 _w2f__i8))))
       OpenAD_Symbol_120 = 1_w2f__i8
@@ -3215,7 +3215,7 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_126 = (INT(2 _w2f__i8)*(WAVE%v**(INT(2 _w2f__i8)-INT
      +(1 _w2f__i8))))
       OpenAD_Symbol_119 = 1_w2f__i8
-      OpenAD_Symbol_116 = 5.0D-01
+      OpenAD_Symbol_117 = 5.0D-01
       THTAVE%v = OpenAD_Symbol_128
       OpenAD_Symbol_129 = (HAVE%v-THTAVE%v)
       OpenAD_Symbol_134 = (GM1%v*OpenAD_Symbol_129)
@@ -3325,7 +3325,7 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_630 = (OpenAD_Symbol_126 * OpenAD_Symbol_119)
       OpenAD_Symbol_631 = (OpenAD_Symbol_124 * OpenAD_Symbol_121)
       OpenAD_Symbol_632 = (OpenAD_Symbol_122 * OpenAD_Symbol_120)
-      OpenAD_Symbol_633 = (OpenAD_Symbol_28 * OpenAD_Symbol_27)
+      OpenAD_Symbol_633 = (OpenAD_Symbol_29 * OpenAD_Symbol_27)
       OpenAD_Symbol_634 = (OpenAD_Symbol_31 * OpenAD_Symbol_633)
       OpenAD_Symbol_635 = (OpenAD_Symbol_62 * OpenAD_Symbol_55)
       OpenAD_Symbol_636 = (OpenAD_Symbol_60 * OpenAD_Symbol_57)
@@ -3335,8 +3335,8 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_640 = (OpenAD_Symbol_44 * OpenAD_Symbol_42)
       OpenAD_Symbol_641 = (OpenAD_Symbol_132 * OpenAD_Symbol_131)
       OpenAD_Symbol_642 = (OpenAD_Symbol_133 * OpenAD_Symbol_131)
-      OpenAD_Symbol_643 = (OpenAD_Symbol_118 * OpenAD_Symbol_116)
-      OpenAD_Symbol_644 = (OpenAD_Symbol_630 * OpenAD_Symbol_116)
+      OpenAD_Symbol_643 = (OpenAD_Symbol_118 * OpenAD_Symbol_117)
+      OpenAD_Symbol_644 = (OpenAD_Symbol_630 * OpenAD_Symbol_117)
       OpenAD_Symbol_645 = (OpenAD_Symbol_631 * OpenAD_Symbol_643)
       OpenAD_Symbol_646 = (OpenAD_Symbol_632 * OpenAD_Symbol_643)
       OpenAD_Symbol_647 = (OpenAD_Symbol_108 * OpenAD_Symbol_641)
@@ -3358,10 +3358,10 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_662 = (OpenAD_Symbol_80 * OpenAD_Symbol_658)
       OpenAD_Symbol_663 = (OpenAD_Symbol_68 * OpenAD_Symbol_660)
       OpenAD_Symbol_664 = (OpenAD_Symbol_69 * OpenAD_Symbol_660)
-      OpenAD_Symbol_665 = (OpenAD_Symbol_54 * OpenAD_Symbol_52)
-      OpenAD_Symbol_666 = (OpenAD_Symbol_635 * OpenAD_Symbol_52)
-      OpenAD_Symbol_668 = (OpenAD_Symbol_40 * OpenAD_Symbol_38)
-      OpenAD_Symbol_669 = (OpenAD_Symbol_638 * OpenAD_Symbol_38)
+      OpenAD_Symbol_665 = (OpenAD_Symbol_54 * OpenAD_Symbol_53)
+      OpenAD_Symbol_666 = (OpenAD_Symbol_635 * OpenAD_Symbol_53)
+      OpenAD_Symbol_668 = (OpenAD_Symbol_40 * OpenAD_Symbol_39)
+      OpenAD_Symbol_669 = (OpenAD_Symbol_638 * OpenAD_Symbol_39)
       OpenAD_Symbol_671 = (OpenAD_Symbol_82 * OpenAD_Symbol_661)
       OpenAD_Symbol_672 = (OpenAD_Symbol_83 * OpenAD_Symbol_661)
       OpenAD_Symbol_673 = (OpenAD_Symbol_71 * OpenAD_Symbol_663)
@@ -4206,15 +4206,15 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
       ELSE
         OpenAD_Symbol_570 = (DELTA2%v+LAM2%v)
-        OpenAD_Symbol_567 = (OpenAD_Symbol_570 * 5.0D-01)
+        OpenAD_Symbol_567 = (5.0D-01 * OpenAD_Symbol_570)
         OpenAD_Symbol_575 = (OpenAD_Symbol_567/DELTA2%v)
         OpenAD_Symbol_573 = 1_w2f__i8
         OpenAD_Symbol_574 = 1_w2f__i8
-        OpenAD_Symbol_571 = 5.0D-01
+        OpenAD_Symbol_572 = 5.0D-01
         OpenAD_Symbol_568 = (INT(1 _w2f__i8)/DELTA2%v)
         OpenAD_Symbol_569 = (-(OpenAD_Symbol_567/(DELTA2%v*DELTA2%v)))
         ALAMCM%v = OpenAD_Symbol_575
-        OpenAD_Symbol_2149 = (OpenAD_Symbol_571 * OpenAD_Symbol_568)
+        OpenAD_Symbol_2149 = (OpenAD_Symbol_572 * OpenAD_Symbol_568)
         OpenAD_Symbol_2150 = (OpenAD_Symbol_573 * OpenAD_Symbol_2149)
         OpenAD_Symbol_2152 = (OpenAD_Symbol_574 * OpenAD_Symbol_2149)
         OpenAD_Symbol_2154 = OpenAD_Symbol_569
@@ -4242,15 +4242,15 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
       ELSE
         OpenAD_Symbol_561 = (DELTA2%v+LAM2%v)
-        OpenAD_Symbol_558 = (OpenAD_Symbol_561 * 5.0D-01)
+        OpenAD_Symbol_558 = (5.0D-01 * OpenAD_Symbol_561)
         OpenAD_Symbol_566 = (OpenAD_Symbol_558/DELTA2%v)
         OpenAD_Symbol_564 = 1_w2f__i8
         OpenAD_Symbol_565 = 1_w2f__i8
-        OpenAD_Symbol_562 = 5.0D-01
+        OpenAD_Symbol_563 = 5.0D-01
         OpenAD_Symbol_559 = (INT(1 _w2f__i8)/DELTA2%v)
         OpenAD_Symbol_560 = (-(OpenAD_Symbol_558/(DELTA2%v*DELTA2%v)))
         ALAMCP%v = OpenAD_Symbol_566
-        OpenAD_Symbol_2143 = (OpenAD_Symbol_562 * OpenAD_Symbol_559)
+        OpenAD_Symbol_2143 = (OpenAD_Symbol_563 * OpenAD_Symbol_559)
         OpenAD_Symbol_2144 = (OpenAD_Symbol_564 * OpenAD_Symbol_2143)
         OpenAD_Symbol_2146 = (OpenAD_Symbol_565 * OpenAD_Symbol_2143)
         OpenAD_Symbol_2148 = OpenAD_Symbol_560
@@ -4301,15 +4301,15 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
       ELSE
         OpenAD_Symbol_552 = (DELTA2%v+LAM2%v)
-        OpenAD_Symbol_549 = (OpenAD_Symbol_552 * 5.0D-01)
+        OpenAD_Symbol_549 = (5.0D-01 * OpenAD_Symbol_552)
         OpenAD_Symbol_557 = (OpenAD_Symbol_549/DELTA2%v)
         OpenAD_Symbol_555 = 1_w2f__i8
         OpenAD_Symbol_556 = 1_w2f__i8
-        OpenAD_Symbol_553 = 5.0D-01
+        OpenAD_Symbol_554 = 5.0D-01
         OpenAD_Symbol_550 = (INT(1 _w2f__i8)/DELTA2%v)
         OpenAD_Symbol_551 = (-(OpenAD_Symbol_549/(DELTA2%v*DELTA2%v)))
         ALAMU%v = OpenAD_Symbol_557
-        OpenAD_Symbol_2137 = (OpenAD_Symbol_553 * OpenAD_Symbol_550)
+        OpenAD_Symbol_2137 = (OpenAD_Symbol_554 * OpenAD_Symbol_550)
         OpenAD_Symbol_2138 = (OpenAD_Symbol_555 * OpenAD_Symbol_2137)
         OpenAD_Symbol_2140 = (OpenAD_Symbol_556 * OpenAD_Symbol_2137)
         OpenAD_Symbol_2142 = OpenAD_Symbol_551
@@ -4324,20 +4324,20 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
       ENDIF
       OpenAD_Symbol_200 = (LAMCM%v-ALAMCM%v)
-      ALAMCM%v = (OpenAD_Symbol_200*5.0D-01)
+      ALAMCM%v = (5.0D-01*OpenAD_Symbol_200)
       OpenAD_Symbol_203 = 1_w2f__i8
       OpenAD_Symbol_204 = (-1_w2f__i8)
-      OpenAD_Symbol_201 = 5.0D-01
+      OpenAD_Symbol_202 = 5.0D-01
       OpenAD_Symbol_205 = (LAMCP%v-ALAMCP%v)
-      ALAMCP%v = (OpenAD_Symbol_205*5.0D-01)
+      ALAMCP%v = (5.0D-01*OpenAD_Symbol_205)
       OpenAD_Symbol_208 = 1_w2f__i8
       OpenAD_Symbol_209 = (-1_w2f__i8)
-      OpenAD_Symbol_206 = 5.0D-01
+      OpenAD_Symbol_207 = 5.0D-01
       OpenAD_Symbol_210 = (LAMU%v-ALAMU%v)
-      ALAMU%v = (OpenAD_Symbol_210*5.0D-01)
+      ALAMU%v = (5.0D-01*OpenAD_Symbol_210)
       OpenAD_Symbol_213 = 1_w2f__i8
       OpenAD_Symbol_214 = (-1_w2f__i8)
-      OpenAD_Symbol_211 = 5.0D-01
+      OpenAD_Symbol_212 = 5.0D-01
       OpenAD_Symbol_221 = (PRIML(1)%v*GM1INV%v+PRIML(2)%v*THETAL%v)
       OpenAD_Symbol_217 = GM1INV%v
       OpenAD_Symbol_218 = PRIML(1)%v
@@ -4432,14 +4432,14 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_282 = 1_w2f__i8
       NDDRU%v = OpenAD_Symbol_291
       OpenAD_Symbol_292 = (OMEGA%v+DR%v*UHAT%v-NDDRU%v)
-      OpenAD_Symbol_301 = (OpenAD_Symbol_292 * 5.0D-01)
+      OpenAD_Symbol_301 = (5.0D-01 * OpenAD_Symbol_292)
       OpenAD_Symbol_297 = 1_w2f__i8
       OpenAD_Symbol_299 = UHAT%v
       OpenAD_Symbol_300 = DR%v
       OpenAD_Symbol_298 = 1_w2f__i8
       OpenAD_Symbol_295 = 1_w2f__i8
       OpenAD_Symbol_296 = (-1_w2f__i8)
-      OpenAD_Symbol_293 = 5.0D-01
+      OpenAD_Symbol_294 = 5.0D-01
       ALP1%v = OpenAD_Symbol_301
       OpenAD_Symbol_310 = (CAVE%v*NXHAT%v-UTILDE%v)
       OpenAD_Symbol_317 = (-NXHAT%v)
@@ -4514,14 +4514,14 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_347 = 1_w2f__i8
       ALP4%v = OpenAD_Symbol_367
       OpenAD_Symbol_368 = (NDDRU%v+OMEGA%v-DR%v*UHAT%v)
-      OpenAD_Symbol_377 = (OpenAD_Symbol_368 * 5.0D-01)
+      OpenAD_Symbol_377 = (5.0D-01 * OpenAD_Symbol_368)
       OpenAD_Symbol_371 = 1_w2f__i8
       OpenAD_Symbol_373 = 1_w2f__i8
       OpenAD_Symbol_375 = UHAT%v
       OpenAD_Symbol_376 = DR%v
       OpenAD_Symbol_374 = (-1_w2f__i8)
       OpenAD_Symbol_372 = 1_w2f__i8
-      OpenAD_Symbol_369 = 5.0D-01
+      OpenAD_Symbol_370 = 5.0D-01
       ALP5%v = OpenAD_Symbol_377
       OpenAD_Symbol_380 = (ALAMCM%v*ALP1%v)
       OpenAD_Symbol_378 = ALP1%v
@@ -4832,10 +4832,10 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_1158 = (OpenAD_Symbol_427 * OpenAD_Symbol_1128)
       OpenAD_Symbol_1160 = (OpenAD_Symbol_428 * OpenAD_Symbol_1128)
       OpenAD_Symbol_1162 = (INT(1_w2f__i8) * OpenAD_Symbol_1078)
-      OpenAD_Symbol_1163 = (OpenAD_Symbol_369 * OpenAD_Symbol_391)
-      OpenAD_Symbol_1164 = (OpenAD_Symbol_293 * OpenAD_Symbol_379)
-      OpenAD_Symbol_1165 = (OpenAD_Symbol_206 * OpenAD_Symbol_390)
-      OpenAD_Symbol_1166 = (OpenAD_Symbol_201 * OpenAD_Symbol_378)
+      OpenAD_Symbol_1163 = (OpenAD_Symbol_370 * OpenAD_Symbol_391)
+      OpenAD_Symbol_1164 = (OpenAD_Symbol_294 * OpenAD_Symbol_379)
+      OpenAD_Symbol_1165 = (OpenAD_Symbol_207 * OpenAD_Symbol_390)
+      OpenAD_Symbol_1166 = (OpenAD_Symbol_202 * OpenAD_Symbol_378)
       OpenAD_Symbol_1167 = (OpenAD_Symbol_364 * OpenAD_Symbol_363)
       OpenAD_Symbol_1168 = (OpenAD_Symbol_342 * OpenAD_Symbol_341)
       OpenAD_Symbol_1169 = (OpenAD_Symbol_320 * OpenAD_Symbol_319)
@@ -4975,8 +4975,8 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_1303 = (OpenAD_Symbol_222 * OpenAD_Symbol_1139)
       OpenAD_Symbol_1304 = (OpenAD_Symbol_223 * OpenAD_Symbol_252)
       OpenAD_Symbol_1305 = (OpenAD_Symbol_223 * OpenAD_Symbol_1139)
-      OpenAD_Symbol_1306 = (OpenAD_Symbol_213 * OpenAD_Symbol_211)
-      OpenAD_Symbol_1307 = (OpenAD_Symbol_214 * OpenAD_Symbol_211)
+      OpenAD_Symbol_1306 = (OpenAD_Symbol_213 * OpenAD_Symbol_212)
+      OpenAD_Symbol_1307 = (OpenAD_Symbol_214 * OpenAD_Symbol_212)
       OpenAD_Symbol_1308 = (OpenAD_Symbol_244 * OpenAD_Symbol_255)
       OpenAD_Symbol_1309 = (OpenAD_Symbol_245 * OpenAD_Symbol_255)
       OpenAD_Symbol_1310 = (OpenAD_Symbol_1294 * OpenAD_Symbol_1226)

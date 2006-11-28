@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:19:02 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:55:32 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -69,7 +69,7 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_0
+      REAL(w2f__8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_10
       INTEGER(w2f__i8) OpenAD_Symbol_11
       INTEGER(w2f__i8) OpenAD_Symbol_12
@@ -112,7 +112,7 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
-        T(INT(I))%v = (X(I)%v*2.0D00)
+        T(INT(I))%v = (2.0D00*X(I)%v)
         Y(INT(I))%v = (T(I)%v*4.0D00)
       END DO
       
@@ -122,10 +122,10 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_12 = 0_w2f__i8
       DO I = 1, 2, 1
-        OpenAD_Symbol_2 = (X(I)%v*2.0D00)
-        OpenAD_Symbol_0 = 2.0D00
+        OpenAD_Symbol_2 = (2.0D00*X(I)%v)
+        OpenAD_Symbol_1 = 2.0D00
         T(INT(I))%v = OpenAD_Symbol_2
-        OpenAD_Symbol_6 = OpenAD_Symbol_0
+        OpenAD_Symbol_6 = OpenAD_Symbol_1
           integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_6

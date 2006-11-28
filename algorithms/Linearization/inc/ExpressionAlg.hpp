@@ -142,6 +142,11 @@ namespace xaifBoosterLinearization {
      */
     void activityAnalysisTopDownPass(const ExpressionVertex& theVertex);
 
+    /** 
+     * to satisfy schema uniqueness constraints
+     */
+    static std::string makeUniqueId(); 
+
   };
  
 } 

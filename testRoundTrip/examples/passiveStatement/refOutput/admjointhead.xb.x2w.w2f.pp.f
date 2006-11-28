@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:35:40 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:14:25 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -159,7 +159,7 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       Y(1)%v = X(1)%v
-      I = INT(X(1)%v+(-1.0D00))+1
+      I = 1+INT(X(1)%v+(-1.0D00))
       
             our_rev_mode=our_orig_mode
           end if 
@@ -175,7 +175,7 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
       Y(1)%v = X(1)%v
-      I = INT(X(1)%v+(-1.0D00))+1
+      I = 1+INT(X(1)%v+(-1.0D00))
       
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.

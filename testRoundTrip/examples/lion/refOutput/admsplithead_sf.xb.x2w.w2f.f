@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Nov 10 15:57:39 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:57:19 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -49,7 +49,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
+      REAL(w2f__8) OpenAD_Symbol_8
       REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
@@ -86,7 +86,7 @@ C$OPENAD XXX Template ad_template.f
       __value__(T1) = (__value__(X(1)) / __value__(X(2)))
       __value__(T2) = COS(__value__(T1))
       __value__(Y1) = EXP(__value__(T2))
-      __value__(Y2) = (__value__(T2) * 3.14000010490417480469D00)
+      __value__(Y2) = (3.14000010490417480469D00 * __value__(T2))
       __value__(Y3) = SIN(__value__(T2))
       __value__(Y4) = (__value__(T1) * __value__(T2))
       __value__(Y(1)) = __value__(Y1)
@@ -108,8 +108,8 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_6 = EXP(__value__(T2))
       OpenAD_Symbol_5 = EXP(__value__(T2))
       __value__(Y1) = OpenAD_Symbol_6
-      OpenAD_Symbol_9 = (__value__(T2) * 3.14000010490417480469D00)
-      OpenAD_Symbol_7 = 3.14000010490417480469D00
+      OpenAD_Symbol_9 = (3.14000010490417480469D00 * __value__(T2))
+      OpenAD_Symbol_8 = 3.14000010490417480469D00
       __value__(Y2) = OpenAD_Symbol_9
       OpenAD_Symbol_11 = SIN(__value__(T2))
       OpenAD_Symbol_10 = COS(__value__(T2))
@@ -125,7 +125,7 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_15 = (OpenAD_Symbol_12 * INT(1_w2f__i8))
       OpenAD_Symbol_16 = (OpenAD_Symbol_13 * INT(1_w2f__i8))
       OpenAD_Symbol_17 = (OpenAD_Symbol_10 * INT(1_w2f__i8))
-      OpenAD_Symbol_18 = (OpenAD_Symbol_7 * INT(1_w2f__i8))
+      OpenAD_Symbol_18 = (OpenAD_Symbol_8 * INT(1_w2f__i8))
       OpenAD_Symbol_19 = (OpenAD_Symbol_5 * INT(1_w2f__i8))
       OpenAD_Symbol_20 = (OpenAD_Symbol_15 + OpenAD_Symbol_3 *
      >  OpenAD_Symbol_16)

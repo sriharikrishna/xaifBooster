@@ -199,7 +199,7 @@
           <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_PRAGMA]"/>
         </xaif:BasicBlock>
         <xaif:ForLoop vertex_id="6" annotation="" reversal="anonymous">
-          <xaif:Initialization>
+          <xaif:Initialization statement_id="13">
             <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
             </xaif:AssignmentLHS>
@@ -216,7 +216,7 @@
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
-          <xaif:Update>
+          <xaif:Update statement_id="18">
             <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
             </xaif:AssignmentLHS>
@@ -234,7 +234,7 @@
         <xaif:BasicBlock vertex_id="7" annotation="" scope_id="3">
         </xaif:BasicBlock>
         <xaif:ForLoop vertex_id="8" annotation="" reversal="anonymous">
-          <xaif:Initialization>
+          <xaif:Initialization statement_id="25">
             <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="J_4" annotation="" scope_id="3"/>
             </xaif:AssignmentLHS>
@@ -251,7 +251,7 @@
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
-          <xaif:Update>
+          <xaif:Update statement_id="30">
             <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="J_4" annotation="" scope_id="3"/>
             </xaif:AssignmentLHS>
@@ -333,7 +333,7 @@
           <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_PRAGMA]"/>
         </xaif:BasicBlock>
         <xaif:ForLoop vertex_id="6" annotation="" reversal="anonymous">
-          <xaif:Initialization>
+          <xaif:Initialization statement_id="13">
             <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
             </xaif:AssignmentLHS>
@@ -350,7 +350,7 @@
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
-          <xaif:Update>
+          <xaif:Update statement_id="18">
             <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
             </xaif:AssignmentLHS>
@@ -368,7 +368,7 @@
         <xaif:BasicBlock vertex_id="7" annotation="" scope_id="3">
         </xaif:BasicBlock>
         <xaif:ForLoop vertex_id="8" annotation="" reversal="anonymous">
-          <xaif:Initialization>
+          <xaif:Initialization statement_id="25">
             <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="J_4" annotation="" scope_id="3"/>
             </xaif:AssignmentLHS>
@@ -385,7 +385,7 @@
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
-          <xaif:Update>
+          <xaif:Update statement_id="30">
             <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="J_4" annotation="" scope_id="3"/>
             </xaif:AssignmentLHS>
@@ -401,7 +401,7 @@
           </xaif:Update>
         </xaif:ForLoop>
         <xaif:BasicBlock vertex_id="9" annotation="" scope_id="3">
-          <xaif:Assignment statement_id="replacement for 35">
+          <xaif:Assignment statement_id="_replacement_1_for_35">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_2" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
             </xaif:AssignmentLHS>
@@ -433,7 +433,7 @@
               <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
-          <xaif:Assignment statement_id="elementary_partial">
+          <xaif:Assignment statement_id="_elementary_partial_0">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:AssignmentLHS>
@@ -451,7 +451,7 @@
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
-          <xaif:Assignment statement_id="elementary_partial">
+          <xaif:Assignment statement_id="_elementary_partial_1">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:AssignmentLHS>
@@ -487,7 +487,7 @@
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
-          <xaif:Assignment statement_id="jacobian_accumulation">
+          <xaif:Assignment statement_id="_jacobian_accumulation_0">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_3" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
             </xaif:AssignmentLHS>
@@ -497,7 +497,7 @@
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
-          <xaif:Assignment statement_id="jacobian_accumulation">
+          <xaif:Assignment statement_id="_jacobian_accumulation_1">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_5" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
             </xaif:AssignmentLHS>
@@ -649,7 +649,7 @@
         <xaif:BasicBlock vertex_id="13" annotation="" scope_id="3">
         </xaif:BasicBlock>
         <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
-          <xaif:Initialization>
+          <xaif:Initialization statement_id="_cfr_13">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_8" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxilliaryIntegerLHS" scope_id="1"/>
             </xaif:AssignmentLHS>
@@ -668,7 +668,7 @@
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
-          <xaif:Update>
+          <xaif:Update statement_id="_cfr_18">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_8" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/LHS)" scope_id="1"/>
             </xaif:AssignmentLHS>
@@ -684,7 +684,7 @@
           </xaif:Update>
         </xaif:ForLoop>
         <xaif:ForLoop vertex_id="_adj__cfr_v_3" annotation="_cfr_" reversal="anonymous">
-          <xaif:Initialization>
+          <xaif:Initialization statement_id="_cfr_25">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxilliaryIntegerLHS" scope_id="1"/>
             </xaif:AssignmentLHS>
@@ -703,7 +703,7 @@
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
-          <xaif:Update>
+          <xaif:Update statement_id="_cfr_30">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/LHS)" scope_id="1"/>
             </xaif:AssignmentLHS>

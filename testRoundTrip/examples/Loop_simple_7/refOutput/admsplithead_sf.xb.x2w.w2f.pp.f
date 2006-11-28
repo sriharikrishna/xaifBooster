@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 21 16:39:48 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:58:32 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -79,6 +79,9 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
+      INTEGER(w2f__i8) OpenAD_Symbol_1
+      INTEGER(w2f__i8) OpenAD_Symbol_2
+      INTEGER(w2f__i8) OpenAD_Symbol_3
 C
 C     **** Parameters and Result ****
 C
@@ -89,6 +92,8 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i8) OpenAD_Symbol_4
+      INTEGER(w2f__i8) OpenAD_Symbol_5
 C
 C     **** Statements ****
 C
@@ -109,26 +114,39 @@ C$OPENAD XXX Simple loop\t
 ! taping
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
+      OpenAD_Symbol_3 = 0_w2f__i8
       DO I = 1, K, 1
         Y(INT(I))%v = X(I)%v
+          integer_tape(integer_tape_pointer) = I
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = I
+          integer_tape_pointer = integer_tape_pointer+1
+        OpenAD_Symbol_3 = (INT(OpenAD_Symbol_3) + INT(1_w2f__i8))
       END DO
-          integer_tape(integer_tape_pointer) = K
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_3
           integer_tape_pointer = integer_tape_pointer+1
       RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          K = integer_tape(integer_tape_pointer)
-      I = 1 + 1 *((K - 1) / 1)
-      DO WHILE(I .GE. 1)
-          if (iaddr(Y(I)) .ne. iaddr(OpenAD_Symbol_0)) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(I)%d
-            Y(I)%d = 0
+          OpenAD_Symbol_1 = integer_tape(integer_tape_pointer)
+      OpenAD_Symbol_2 = 1
+      DO WHILE(INT(OpenAD_Symbol_2) .LE. INT(OpenAD_Symbol_1))
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_4 = integer_tape(integer_tape_pointer)
+          if (iaddr(Y(INT(OpenAD_Symbol_4))) .ne. iaddr(OpenAD_Symbol_0)
+     +) then
+            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(INT(OpenAD_Symbol_4)
+     +)%d
+            Y(INT(OpenAD_Symbol_4))%d = 0
           end if
-          X(I)%d = X(I)%d+OpenAD_Symbol_0%d
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_5 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_5))%d = X(INT(OpenAD_Symbol_5))%d+OpenAD_S
+     +ymbol_0%d
           OpenAD_Symbol_0%d = 0.0d0
-        I = I - 1
+        OpenAD_Symbol_2 = INT(OpenAD_Symbol_2) + 1
       END DO
           end if 
         end subroutine bar

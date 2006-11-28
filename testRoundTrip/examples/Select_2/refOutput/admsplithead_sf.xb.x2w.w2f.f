@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Nov 10 16:21:41 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:01:32 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -32,7 +32,7 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_19
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
+      REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
       TYPE (OpenADTy_active) OpenAD_Symbol_8
@@ -46,7 +46,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) select_expr_temp_0
       INTEGER(w2f__i8) OpenAD_Symbol_20
       REAL(w2f__8) OpenAD_Symbol_21
       INTEGER(w2f__i8) OpenAD_Symbol_22
@@ -67,12 +66,11 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 3, 1
-        select_expr_temp_0 = I
-        IF ( select_expr_temp_0  .EQ.  1)  GO TO  19
-        IF ( select_expr_temp_0  .EQ.  2)  GO TO  23
+        IF ( I  .EQ.  1)  GO TO  19
+        IF ( I  .EQ.  2)  GO TO  23
         GO TO 24
 24      CONTINUE
-        __value__(Y(INT(I))) = (__value__(X(I)) * 2.0D00)
+        __value__(Y(INT(I))) = (2.0D00 * __value__(X(I)))
         GO TO 21
 19      CONTINUE
         __value__(Y(INT(I))) = SIN(__value__(X(I)))
@@ -88,15 +86,14 @@ C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_16 = 0_w2f__i8
       DO I = 1, 3, 1
-        select_expr_temp_0 = I
-        IF ( select_expr_temp_0  .EQ.  1)  GO TO  98
-        IF ( select_expr_temp_0  .EQ.  2)  GO TO  93
-        GO TO 85
-85      CONTINUE
-        OpenAD_Symbol_6 = (__value__(X(I)) * 2.0D00)
-        OpenAD_Symbol_4 = 2.0D00
+        IF ( I  .EQ.  1)  GO TO  94
+        IF ( I  .EQ.  2)  GO TO  92
+        GO TO 93
+93      CONTINUE
+        OpenAD_Symbol_6 = (2.0D00 * __value__(X(I)))
+        OpenAD_Symbol_5 = 2.0D00
         __value__(Y(INT(I))) = OpenAD_Symbol_6
-        OpenAD_Symbol_11 = OpenAD_Symbol_4
+        OpenAD_Symbol_11 = OpenAD_Symbol_5
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(I)
 C       $OpenAD$ INLINE push(subst)
@@ -106,8 +103,8 @@ C       $OpenAD$ INLINE push_i(subst)
         OpenAD_Symbol_19 = 3_w2f__i8
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(OpenAD_Symbol_19)
-        GO TO 91
-98      CONTINUE
+        GO TO 99
+94      CONTINUE
         OpenAD_Symbol_1 = SIN(__value__(X(I)))
         OpenAD_Symbol_0 = COS(__value__(X(I)))
         __value__(Y(INT(I))) = OpenAD_Symbol_1
@@ -121,8 +118,8 @@ C       $OpenAD$ INLINE push_i(subst)
         OpenAD_Symbol_17 = 1_w2f__i8
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(OpenAD_Symbol_17)
-        GO TO 91
-93      CONTINUE
+        GO TO 99
+92      CONTINUE
         OpenAD_Symbol_3 = COS(__value__(X(I)))
         OpenAD_Symbol_2 = (- SIN(__value__(X(I))))
         __value__(Y(INT(I))) = OpenAD_Symbol_3
@@ -136,8 +133,8 @@ C       $OpenAD$ INLINE push_i(subst)
         OpenAD_Symbol_18 = 2_w2f__i8
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(OpenAD_Symbol_18)
-        GO TO 91
-91      CONTINUE
+        GO TO 99
+99      CONTINUE
         OpenAD_Symbol_16 = (INT(OpenAD_Symbol_16) + INT(1_w2f__i8))
       END DO
 C     $OpenAD$ INLINE push_i(subst)

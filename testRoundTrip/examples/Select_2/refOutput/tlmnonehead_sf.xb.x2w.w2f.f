@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 16:13:48 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:46:20 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -25,7 +25,7 @@ C
       TYPE (OpenADTy_active) OpenAD_Symbol_12
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
+      REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
       TYPE (OpenADTy_active) OpenAD_Symbol_8
@@ -41,7 +41,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) select_expr_temp_0
 C
 C     **** Top Level Pragmas ****
 C
@@ -52,15 +51,14 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 3, 1
-        select_expr_temp_0 = I
-        IF ( select_expr_temp_0  .EQ.  1)  GO TO  19
-        IF ( select_expr_temp_0  .EQ.  2)  GO TO  23
+        IF ( I  .EQ.  1)  GO TO  19
+        IF ( I  .EQ.  2)  GO TO  23
         GO TO 24
 24      CONTINUE
-        OpenAD_Symbol_6 = (__value__(X(I)) * 2.0D00)
-        OpenAD_Symbol_4 = 2.0D00
+        OpenAD_Symbol_6 = (2.0D00 * __value__(X(I)))
+        OpenAD_Symbol_5 = 2.0D00
         __value__(Y(INT(I))) = OpenAD_Symbol_6
-        OpenAD_Symbol_11 = OpenAD_Symbol_4
+        OpenAD_Symbol_11 = OpenAD_Symbol_5
         CALL setderiv(__deriv__(OpenAD_Symbol_12), __deriv__(X(I)))
         CALL sax(OpenAD_Symbol_11, __deriv__(OpenAD_Symbol_12),
      >  __deriv__(Y(I)))
