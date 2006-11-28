@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Nov 10 16:35:10 2006
+C Fortran file translated from WHIRL Tue Nov 28 17:14:45 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -48,7 +48,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      LOGICAL(w2f__i4) t__1
       REAL(w2f__8) OpenAD_Symbol_21
       REAL(w2f__8) OpenAD_Symbol_22
       REAL(w2f__8) OpenAD_Symbol_23
@@ -64,15 +63,13 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       I = 1
-      t__1 = I .LT. 3
-      DO WHILE(t__1)
+      DO WHILE(I .LT. INT(3_w2f__i8))
         IF(I .LT. INT(2_w2f__i8)) THEN
           __value__(Y(2)) = SIN(__value__(X(1)))
         ELSE
           __value__(Y(1)) = COS(__value__(X(2)))
         ENDIF
         I = I + 1
-        t__1 = I .LT. 3
       END DO
       __value__(Y(2)) = (__value__(Y(1)) * __value__(Y(2)))
       RETURN
@@ -80,9 +77,8 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       I = 1
-      t__1 = I .LT. 3
       OpenAD_Symbol_18 = 0_w2f__i8
-      DO WHILE(t__1)
+      DO WHILE(I .LT. INT(3_w2f__i8))
         IF(I .LT. INT(2_w2f__i8)) THEN
           OpenAD_Symbol_1 = SIN(__value__(X(1)))
           OpenAD_Symbol_0 = COS(__value__(X(1)))
@@ -105,7 +101,6 @@ C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(OpenAD_Symbol_20)
         ENDIF
         I = I + 1
-        t__1 = I .LT. 3
         OpenAD_Symbol_18 = (INT(OpenAD_Symbol_18) + INT(1_w2f__i8))
       END DO
 C     $OpenAD$ INLINE push_i(subst)
