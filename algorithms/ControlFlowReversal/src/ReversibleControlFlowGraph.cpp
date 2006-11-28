@@ -237,13 +237,30 @@ namespace xaifBoosterControlFlowReversal {
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
-  ReversibleControlFlowGraphVertex*
-  ReversibleControlFlowGraph::new_forloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType) {
+  ReversibleControlFlowGraphVertex* ReversibleControlFlowGraph::new_forloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType,
+									    const ForLoop& theOriginalForLoop) {
     ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
     aNewReversibleControlFlowGraphVertex_p->setVisited(true);
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
-    aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*(new ForLoop(aForLoopReversalType)));
-    //    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setId(makeUniqueVertexId());
+    ForLoop* aNewForLoop_p=new ForLoop(aForLoopReversalType);
+    aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*aNewForLoop_p);
+    aNewForLoop_p->getInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
+							     +
+							     theOriginalForLoop.getInitialization().getAssignment().getId());
+    aNewForLoop_p->getUpdate().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
+						     +
+						     theOriginalForLoop.getUpdate().getAssignment().getId());
+    aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    return aNewReversibleControlFlowGraphVertex_p;
+  }
+
+  ReversibleControlFlowGraphVertex* ReversibleControlFlowGraph::new_preloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType,
+									    const PreLoop& theOriginalPreLoop) {
+    ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
+    aNewReversibleControlFlowGraphVertex_p->setVisited(true);
+    supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
+    PreLoop* aNewPreLoop_p=new PreLoop();
+    aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*aNewPreLoop_p);
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     return aNewReversibleControlFlowGraphVertex_p;
   }
@@ -973,7 +990,22 @@ namespace xaifBoosterControlFlowReversal {
 	break;
       }
       case ControlFlowGraphVertexAlg::ENDLOOP : {
-	theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_forloop((*the_mySortedVertices_p_l_rit)->getReversalType());
+	switch ((*the_mySortedVertices_p_l_rit)->getCounterPart().getKind()) { 
+	case ControlFlowGraphVertexAlg::PRELOOP : { 
+	  theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_preloop((*the_mySortedVertices_p_l_rit)->getReversalType(),
+											 dynamic_cast<const PreLoop&>((*the_mySortedVertices_p_l_rit)->getCounterPart().getOriginalVertex()));
+	  break;
+	}
+	case ControlFlowGraphVertexAlg::FORLOOP : { 
+	  theReversibleControlFlowGraphVertex_p=theAdjointControlFlowGraph_r.new_forloop((*the_mySortedVertices_p_l_rit)->getReversalType(),
+											 dynamic_cast<const ForLoop&>((*the_mySortedVertices_p_l_rit)->getCounterPart().getOriginalVertex()));
+	  break; 
+	}
+	default: 	
+	  THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: missing logic to handle ENDLOOP counterpart ControlFlowGraphVertex of kind "
+				     << ControlFlowGraphVertexAlg::kindToString((*the_mySortedVertices_p_l_rit)->getCounterPart().getKind()).c_str());
+	  break; 
+	}
 	theReversibleControlFlowGraphVertex_p->getNewVertex().setId(std::string("_adj_")+makeUniqueVertexId());
 	break;
       }
@@ -1072,12 +1104,9 @@ namespace xaifBoosterControlFlowReversal {
 	  theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
 	  removeAndDeleteEdge(*(singleInEdge_ieitp.first));
 	  const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
-
 	  // fill ForLoop  
 	  ForLoop& theForLoop_r(dynamic_cast<ForLoop&>((*myOriginalReverseVertexPPairList_cit).second->getNewVertex()));
-
 	  // initialization
-	  theForLoop_r.getInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature() + "init");
 	  // set lhs
 	  const Symbol* theLoopCounterSymbol_p=makeAuxilliaryIntegerLHS(theForLoop_r.getInitialization().getAssignment(),theNewBasicBlock_r);
 	  // set rhs
@@ -1085,7 +1114,6 @@ namespace xaifBoosterControlFlowReversal {
 	  theOne->setint(1);
 	  theOne->setId("1");
 	  theForLoop_r.getInitialization().getAssignment().getRHS().supplyAndAddVertexInstance(*theOne);
-
 	  // condition
 	  // counter
 	  Argument* theLoopCounterUse_p=new Argument(false); // no algorithm
@@ -1118,7 +1146,6 @@ namespace xaifBoosterControlFlowReversal {
 	  ExpressionEdge& theSecondExpressionEdge(theForLoop_r.getCondition().getExpression().addEdge(*thePoppedIntegerUse_p,*theLessThanOrEqualOperator_p));
 	  theSecondExpressionEdge.setId(2);
 	  theSecondExpressionEdge.setPosition(2);
-          
 	  // update
 	  // set lhs
 	  theVariableSymbolReference_p=new VariableSymbolReference(*theLoopCounterSymbol_p,theNewBasicBlock_r.getScope());
@@ -1127,7 +1154,6 @@ namespace xaifBoosterControlFlowReversal {
 	  theForLoop_r.getUpdate().getAssignment().getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	  theForLoop_r.getUpdate().getAssignment().getLHS().getAliasMapKey().setTemporary();
 	  theForLoop_r.getUpdate().getAssignment().getLHS().getDuUdMapKey().setTemporary();
-
 	  // set rhs
 	  // counter
 	  Argument* theUse_p=new Argument(false); // no algorithm
@@ -1155,7 +1181,6 @@ namespace xaifBoosterControlFlowReversal {
 	  ExpressionEdge& theSecondUpdateEdge(theForLoop_r.getUpdate().getAssignment().getRHS().addEdge(*theOne_p,*theAddition_p));
 	  theSecondUpdateEdge.setId(2);
 	  theSecondUpdateEdge.setPosition(2);
-          
 	} 
 	else { // explicit reversal
 	  // the old ForLoop is the counter part of the ENDLOOP that is the original to this vertex 

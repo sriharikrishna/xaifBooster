@@ -224,7 +224,18 @@ namespace xaifBoosterLinearization {
      * auxilliary variables for SSA
      */
     void makeSSACodeList();
-    
+
+    /** 
+     * we count the replacements and use the counter 
+     * to make the statement ids unique
+     */
+    unsigned int myReplacementCounter;
+
+    /**
+     * to be used for replacement assignment Ids
+     */
+    std::string makeReplacementId(); 
+
   }; // end of class Assignment
  
 } 

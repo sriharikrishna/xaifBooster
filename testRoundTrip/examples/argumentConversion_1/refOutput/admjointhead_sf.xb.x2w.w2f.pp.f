@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:31:50 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:09:08 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -80,13 +80,13 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_3
+      type(active) :: OpenAD_Symbol_10
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
+      REAL(w2f__8) OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
       type(active) :: OpenAD_Symbol_8
+      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -95,8 +95,8 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_11
+      REAL(w2f__8) OpenAD_Symbol_12
 C
 C     **** Statements ****
 C
@@ -184,15 +184,15 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_4 = (X(1)%v*X(2)%v)
-      OpenAD_Symbol_2 = X(2)%v
-      OpenAD_Symbol_3 = X(1)%v
-      Y%v = OpenAD_Symbol_4
-      OpenAD_Symbol_5 = OpenAD_Symbol_2
-      OpenAD_Symbol_7 = OpenAD_Symbol_3
-          double_tape(double_tape_pointer) = OpenAD_Symbol_5
-          double_tape_pointer = double_tape_pointer+1
+      OpenAD_Symbol_6 = (X(1)%v*X(2)%v)
+      OpenAD_Symbol_4 = X(2)%v
+      OpenAD_Symbol_5 = X(1)%v
+      Y%v = OpenAD_Symbol_6
+      OpenAD_Symbol_7 = OpenAD_Symbol_4
+      OpenAD_Symbol_9 = OpenAD_Symbol_5
           double_tape(double_tape_pointer) = OpenAD_Symbol_7
+          double_tape_pointer = double_tape_pointer+1
+          double_tape(double_tape_pointer) = OpenAD_Symbol_9
           double_tape_pointer = double_tape_pointer+1
       RETURN
             our_rev_mode%arg_store=.FALSE.
@@ -220,16 +220,16 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_9 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y%d*OpenAD_Symbol_9
+          OpenAD_Symbol_11 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y%d*OpenAD_Symbol_11
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_10 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y%d*OpenAD_Symbol_10
+          OpenAD_Symbol_12 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y%d*OpenAD_Symbol_12
           Y%d = 0.0d0
-          X(1)%d = X(1)%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
-          X(2)%d = X(2)%d+OpenAD_Symbol_8%d
+          X(1)%d = X(1)%d+OpenAD_Symbol_8%d
           OpenAD_Symbol_8%d = 0.0d0
+          X(2)%d = X(2)%d+OpenAD_Symbol_10%d
+          OpenAD_Symbol_10%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.
@@ -320,10 +320,14 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      type(active) :: OpenAD_Symbol_0
+      type(active) :: OpenAD_Symbol_0(1 : 2)
       type(active) :: OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_11
-      type(active) :: OpenAD_Symbol_12
+      type(active) :: OpenAD_Symbol_13(1 : 2)
+      type(active) :: OpenAD_Symbol_14
+      type(active) :: OpenAD_Symbol_15(1 : 2)
+      type(active) :: OpenAD_Symbol_16
+      type(active) :: OpenAD_Symbol_2(1 : 2)
+      type(active) :: OpenAD_Symbol_3
 C
 C     **** Parameters and Result ****
 C
@@ -333,7 +337,7 @@ C
 C     **** Local Variables and Functions ****
 C
       EXTERNAL foo
-      type(active) :: PX(1 : 2)
+      REAL(w2f__8) PX(1 : 2)
       REAL(w2f__8) PY
 C
 C     **** Top Level Pragmas ****
@@ -417,19 +421,27 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      PX(1)%v = 1.0D00
-      PX(2)%v = 2.0D00
+      PX(1) = 1.0D00
+      PX(2) = 2.0D00
       CALL foo(X,Y)
-C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_0,PY)
-      CALL foo(PX,OpenAD_Symbol_0)
-C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(PY,OpenAD_Symbol_0)
+C!! requested inline of 'convert_p2a_vector' has no defn
+      CALL convert_p2a_vector(OpenAD_Symbol_0,PX)
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(OpenAD_Symbol_1,PY)
-      CALL foo(PX,OpenAD_Symbol_1)
+      CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
+C!! requested inline of 'convert_a2p_vector' has no defn
+      CALL convert_a2p_vector(PX,OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
+C!! requested inline of 'convert_p2a_vector' has no defn
+      CALL convert_p2a_vector(OpenAD_Symbol_2,PX)
+C!! requested inline of 'convert_p2a_scalar' has no defn
+      CALL convert_p2a_scalar(OpenAD_Symbol_3,PY)
+      CALL foo(OpenAD_Symbol_2,OpenAD_Symbol_3)
+C!! requested inline of 'convert_a2p_vector' has no defn
+      CALL convert_a2p_vector(PX,OpenAD_Symbol_2)
+C!! requested inline of 'convert_a2p_scalar' has no defn
+      CALL convert_a2p_scalar(PY,OpenAD_Symbol_3)
       RETURN
             our_rev_mode=our_orig_mode
           end if 
@@ -444,19 +456,27 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      PX(1)%v = 1.0D00
-      PX(2)%v = 2.0D00
+      PX(1) = 1.0D00
+      PX(2) = 2.0D00
       CALL foo(X,Y)
-C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_0,PY)
-      CALL foo(PX,OpenAD_Symbol_0)
-C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(PY,OpenAD_Symbol_0)
+C!! requested inline of 'convert_p2a_vector' has no defn
+      CALL convert_p2a_vector(OpenAD_Symbol_0,PX)
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(OpenAD_Symbol_1,PY)
-      CALL foo(PX,OpenAD_Symbol_1)
+      CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
+C!! requested inline of 'convert_a2p_vector' has no defn
+      CALL convert_a2p_vector(PX,OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
+C!! requested inline of 'convert_p2a_vector' has no defn
+      CALL convert_p2a_vector(OpenAD_Symbol_2,PX)
+C!! requested inline of 'convert_p2a_scalar' has no defn
+      CALL convert_p2a_scalar(OpenAD_Symbol_3,PY)
+      CALL foo(OpenAD_Symbol_2,OpenAD_Symbol_3)
+C!! requested inline of 'convert_a2p_vector' has no defn
+      CALL convert_a2p_vector(PX,OpenAD_Symbol_2)
+C!! requested inline of 'convert_a2p_scalar' has no defn
+      CALL convert_a2p_scalar(PY,OpenAD_Symbol_3)
       RETURN
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
@@ -482,19 +502,25 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
+C!! requested inline of 'convert_p2a_vector' has no defn
+      CALL convert_p2a_vector(OpenAD_Symbol_13,PX)
 C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_11,PY)
-      CALL foo(PX,OpenAD_Symbol_11)
+      CALL convert_p2a_scalar(OpenAD_Symbol_14,PY)
+      CALL foo(OpenAD_Symbol_13,OpenAD_Symbol_14)
+C!! requested inline of 'convert_a2p_vector' has no defn
+      CALL convert_a2p_vector(PX,OpenAD_Symbol_13)
 C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(PY,OpenAD_Symbol_11)
+      CALL convert_a2p_scalar(PY,OpenAD_Symbol_14)
+C!! requested inline of 'convert_p2a_vector' has no defn
+      CALL convert_p2a_vector(OpenAD_Symbol_15,PX)
 C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_12,PY)
-      CALL foo(PX,OpenAD_Symbol_12)
+      CALL convert_p2a_scalar(OpenAD_Symbol_16,PY)
+      CALL foo(OpenAD_Symbol_15,OpenAD_Symbol_16)
+C!! requested inline of 'convert_a2p_vector' has no defn
+      CALL convert_a2p_vector(PX,OpenAD_Symbol_15)
 C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(PY,OpenAD_Symbol_12)
+      CALL convert_a2p_scalar(PY,OpenAD_Symbol_16)
       CALL foo(X,Y)
-          PX(2)%d = 0.0d0
-          PX(1)%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.

@@ -579,8 +579,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    ++it) { 
 	  // make a new assignment: 
 	  Assignment& aNewAssignment=(*aSequencePListI)->appendEndAssignment();
-	  // JU should we get away with this setting of "jacobian_accumulation" for the Id
-	  aNewAssignment.setId("jacobian_accumulation");
+	  aNewAssignment.setId(makeUniqueId());
 	  // make a new LHS: 
 	  Variable& theLHS(aNewAssignment.getLHS());
 	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
@@ -1125,5 +1124,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment) { 
     ourAssignmentIdList.push_back(anAssignment.getId());
   } 
+
+  std::string BasicBlockAlg::makeUniqueId() { 
+    static unsigned anId=0;
+    std::ostringstream ostr;
+    ostr << "_jacobian_accumulation_" << anId++ << std::ends;
+    return ostr.str();
+  }
   
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

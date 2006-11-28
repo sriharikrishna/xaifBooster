@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:20:42 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:58:27 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -78,7 +78,7 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_0
+      REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -119,7 +119,7 @@ C$OPENAD XXX Simple loop\t
       ELSE
 C$OPENAD XXX Simple loop\t
         DO I = 1, 3, 1
-          Y(INT(I))%v = (X(I)%v*2.0D00)
+          Y(INT(I))%v = (2.0D00*X(I)%v)
         END DO
       ENDIF
       RETURN
@@ -138,10 +138,10 @@ C$OPENAD XXX Simple loop\t
       ELSE
 C$OPENAD XXX Simple loop\t
         DO I = 1, 3, 1
-          OpenAD_Symbol_2 = (X(I)%v*2.0D00)
-          OpenAD_Symbol_0 = 2.0D00
+          OpenAD_Symbol_2 = (2.0D00*X(I)%v)
+          OpenAD_Symbol_1 = 2.0D00
           Y(INT(I))%v = OpenAD_Symbol_2
-          OpenAD_Symbol_4 = OpenAD_Symbol_0
+          OpenAD_Symbol_4 = OpenAD_Symbol_1
           double_tape(double_tape_pointer) = OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer+1
         END DO

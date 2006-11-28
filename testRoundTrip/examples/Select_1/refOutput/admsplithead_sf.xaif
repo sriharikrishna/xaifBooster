@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Fri Jul 21 11:22:21 2006 -->
+<!-- XAIF file translated from WHIRL at Tue Nov 28 16:01:16 2006 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -86,6 +86,7 @@
       <xaif:StatementId idRef="11"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="4">
+      <xaif:StatementId idRef=""/>
       <xaif:StatementId idRef="19"/>
     </xaif:DUUDSet>
   </xaif:DUUDSetList>
@@ -153,7 +154,7 @@
     <xaif:Branch vertex_id="11" lineNumber="65">
       <xaif:Condition>
         <xaif:VariableReference vertex_id="1" du_ud="2">
-          <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="select_expr_temp_0_4"/>
+          <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="I_3"/>
         </xaif:VariableReference>
       </xaif:Condition>
     </xaif:Branch>

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Nov 10 16:31:41 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:11:59 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -1322,11 +1322,11 @@ C     $OpenAD$ END REPLACEMENT
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_138
+      REAL(w2f__8) OpenAD_Symbol_139
       REAL(w2f__8) OpenAD_Symbol_140
-      REAL(w2f__8) OpenAD_Symbol_141
+      REAL(w2f__8) OpenAD_Symbol_142
       REAL(w2f__8) OpenAD_Symbol_143
-      REAL(w2f__8) OpenAD_Symbol_144
+      REAL(w2f__8) OpenAD_Symbol_145
       REAL(w2f__8) OpenAD_Symbol_146
       REAL(w2f__8) OpenAD_Symbol_245
       TYPE (OpenADTy_active) OpenAD_Symbol_246
@@ -1410,15 +1410,15 @@ C$OPENAD XXX Template ad_template.f
       XCOUNT = 1
       DO I = 1, 2, 1
         DO J = 1, 2, 1
-          __value__(LOCPRES(INT(I), INT(J))) = (__value__(X(XCOUNT)) *
-     >  2.0D00)
+          __value__(LOCPRES(INT(I), INT(J))) = (2.0D00 * __value__(X(
+     > XCOUNT)))
           DO K = 1, 2, 1
             DO L = 1, 2, 1
               DO M = 1, 2, 1
                 __value__(TFLD(INT(I), INT(J), INT(K), INT(L), INT(M)))
-     >  = (__value__(X(XCOUNT)) * 3.0D00)
+     >  = (3.0D00 * __value__(X(XCOUNT)))
                 __value__(SFLD(INT(I), INT(J), INT(K), INT(L), INT(M)))
-     >  = (__value__(X(XCOUNT)) * 4.0D00)
+     >  = (4.0D00 * __value__(X(XCOUNT)))
                 XCOUNT = XCOUNT + 1
               END DO
             END DO
@@ -1442,10 +1442,10 @@ C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
         OpenAD_Symbol_365 = 0_w2f__i8
         DO J = 1, 2, 1
-          OpenAD_Symbol_140 = (__value__(X(XCOUNT)) * 2.0D00)
-          OpenAD_Symbol_138 = 2.0D00
+          OpenAD_Symbol_140 = (2.0D00 * __value__(X(XCOUNT)))
+          OpenAD_Symbol_139 = 2.0D00
           __value__(LOCPRES(INT(I), INT(J))) = OpenAD_Symbol_140
-          OpenAD_Symbol_245 = OpenAD_Symbol_138
+          OpenAD_Symbol_245 = OpenAD_Symbol_139
 C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(XCOUNT)
 C         $OpenAD$ INLINE push(subst)
@@ -1460,16 +1460,16 @@ C         $OpenAD$ INLINE push_i(subst)
             DO L = 1, 2, 1
               OpenAD_Symbol_368 = 0_w2f__i8
               DO M = 1, 2, 1
-                OpenAD_Symbol_143 = (__value__(X(XCOUNT)) * 3.0D00)
-                OpenAD_Symbol_141 = 3.0D00
+                OpenAD_Symbol_143 = (3.0D00 * __value__(X(XCOUNT)))
+                OpenAD_Symbol_142 = 3.0D00
                 __value__(TFLD(INT(I), INT(J), INT(K), INT(L), INT(M)))
      >  = OpenAD_Symbol_143
-                OpenAD_Symbol_146 = (__value__(X(XCOUNT)) * 4.0D00)
-                OpenAD_Symbol_144 = 4.0D00
+                OpenAD_Symbol_146 = (4.0D00 * __value__(X(XCOUNT)))
+                OpenAD_Symbol_145 = 4.0D00
                 __value__(SFLD(INT(I), INT(J), INT(K), INT(L), INT(M)))
      >  = OpenAD_Symbol_146
-                OpenAD_Symbol_247 = OpenAD_Symbol_141
-                OpenAD_Symbol_249 = OpenAD_Symbol_144
+                OpenAD_Symbol_247 = OpenAD_Symbol_142
+                OpenAD_Symbol_249 = OpenAD_Symbol_145
 C               $OpenAD$ INLINE push_i(subst)
                 CALL push_i(XCOUNT)
 C               $OpenAD$ INLINE push_i(subst)

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:18:59 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:55:25 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -162,7 +162,7 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_0
+      REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -195,7 +195,7 @@ C
 C$OPENAD XXX Template ad_template.f
       T%v = X(1)%v
       CALL foo()
-      Y%v = (T%v*2.0D00)
+      Y%v = (2.0D00*T%v)
       RETURN
           end if
           if (our_rev_mode%tape) then
@@ -203,10 +203,10 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Template ad_template.f
       T%v = X(1)%v
       CALL foo()
-      OpenAD_Symbol_2 = (T%v*2.0D00)
-      OpenAD_Symbol_0 = 2.0D00
+      OpenAD_Symbol_2 = (2.0D00*T%v)
+      OpenAD_Symbol_1 = 2.0D00
       Y%v = OpenAD_Symbol_2
-      OpenAD_Symbol_4 = OpenAD_Symbol_0
+      OpenAD_Symbol_4 = OpenAD_Symbol_1
           double_tape(double_tape_pointer) = OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer+1
       RETURN

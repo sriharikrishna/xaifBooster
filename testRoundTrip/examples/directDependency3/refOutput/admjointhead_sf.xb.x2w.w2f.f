@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Nov 10 16:31:02 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:11:43 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -48,7 +48,7 @@ C     $OpenAD$ END REPLACEMENT
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_0
+      REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       TYPE (OpenADTy_active) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -76,17 +76,17 @@ C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       __value__(T) = __value__(X(1))
       CALL foo()
-      __value__(Y) = (__value__(T) * 2.0D00)
+      __value__(Y) = (2.0D00 * __value__(T))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       __value__(T) = __value__(X(1))
       CALL foo()
-      OpenAD_Symbol_2 = (__value__(T) * 2.0D00)
-      OpenAD_Symbol_0 = 2.0D00
+      OpenAD_Symbol_2 = (2.0D00 * __value__(T))
+      OpenAD_Symbol_1 = 2.0D00
       __value__(Y) = OpenAD_Symbol_2
-      OpenAD_Symbol_4 = OpenAD_Symbol_0
+      OpenAD_Symbol_4 = OpenAD_Symbol_1
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_4)
       RETURN

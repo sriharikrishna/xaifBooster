@@ -283,4 +283,8 @@ namespace xaifBooster {
     return true;
   } 
 
+  const DuUdMapDefinitionResult::StatementIdList& DuUdMapEntry::getStatementIdList() const { 
+    return myStatementIdList;
+  } 
+
 } // end of namespace  

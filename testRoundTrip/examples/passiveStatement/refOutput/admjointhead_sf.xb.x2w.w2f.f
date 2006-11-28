@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Nov 10 16:37:40 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:18:42 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -39,13 +39,13 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       __value__(Y(1)) = __value__(X(1))
-      I = INT(__value__(X(1)) +(-1.0D00)) + 1
+      I = 1 + INT(__value__(X(1)) +(-1.0D00))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       __value__(Y(1)) = __value__(X(1))
-      I = INT(__value__(X(1)) +(-1.0D00)) + 1
+      I = 1 + INT(__value__(X(1)) +(-1.0D00))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3

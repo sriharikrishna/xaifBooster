@@ -650,6 +650,7 @@ namespace xaifBooster {
   void 
   XAIFBaseParserHandlers::onInitialization(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onInitialization"); 
+    passingIn.getInitialization().getAssignment().setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
     passingOut.setAssignment(passingIn.getInitialization().getAssignment());;
   }
 
@@ -662,6 +663,7 @@ namespace xaifBooster {
   void 
   XAIFBaseParserHandlers::onUpdate(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onUpdate"); 
+    passingIn.getUpdate().getAssignment().setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
     passingOut.setAssignment(passingIn.getUpdate().getAssignment());;
   }
 

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Nov 10 16:35:48 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:13:21 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -18,7 +18,7 @@ C
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_0
+      REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       TYPE (OpenADTy_active) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -48,7 +48,7 @@ C$OPENAD XXX Simple loop\t
         IF(I .eq. INT(2_w2f__i8)) THEN
           __value__(Y(INT(I))) = __value__(X(I))
         ELSE
-          __value__(Y(INT(I))) = (__value__(X(I)) * 2.0D00)
+          __value__(Y(INT(I))) = (2.0D00 * __value__(X(I)))
         ENDIF
       END DO
       RETURN
@@ -60,10 +60,10 @@ C$OPENAD XXX Simple loop\t
         IF(I .eq. INT(2_w2f__i8)) THEN
           __value__(Y(INT(I))) = __value__(X(I))
         ELSE
-          OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
-          OpenAD_Symbol_0 = 2.0D00
+          OpenAD_Symbol_2 = (2.0D00 * __value__(X(I)))
+          OpenAD_Symbol_1 = 2.0D00
           __value__(Y(INT(I))) = OpenAD_Symbol_2
-          OpenAD_Symbol_4 = OpenAD_Symbol_0
+          OpenAD_Symbol_4 = OpenAD_Symbol_1
 C         $OpenAD$ INLINE push(subst)
           CALL push(OpenAD_Symbol_4)
         ENDIF

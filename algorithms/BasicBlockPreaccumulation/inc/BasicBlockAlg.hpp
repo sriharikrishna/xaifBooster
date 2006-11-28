@@ -409,6 +409,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       BasicBlockAlg::Sequence& aSequence,
 			       xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI);
 
+    /** 
+     * to satisfy schema uniqueness constraints
+     */
+    static std::string makeUniqueId(); 
+
   };
  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms

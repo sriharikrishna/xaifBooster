@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 14:58:10 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:40:31 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -583,11 +583,11 @@ C$OPENAD XXX Template ad_template.f
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_138
+      REAL(w2f__8) OpenAD_Symbol_139
       REAL(w2f__8) OpenAD_Symbol_140
-      REAL(w2f__8) OpenAD_Symbol_141
+      REAL(w2f__8) OpenAD_Symbol_142
       REAL(w2f__8) OpenAD_Symbol_143
-      REAL(w2f__8) OpenAD_Symbol_144
+      REAL(w2f__8) OpenAD_Symbol_145
       REAL(w2f__8) OpenAD_Symbol_146
       REAL(w2f__8) OpenAD_Symbol_245
       type(active) :: OpenAD_Symbol_246
@@ -627,25 +627,25 @@ C$OPENAD XXX Template ad_template.f
       XCOUNT = 1
       DO I = 1, 2, 1
         DO J = 1, 2, 1
-          OpenAD_Symbol_140 = (X(XCOUNT)%v*2.0D00)
-          OpenAD_Symbol_138 = 2.0D00
+          OpenAD_Symbol_140 = (2.0D00*X(XCOUNT)%v)
+          OpenAD_Symbol_139 = 2.0D00
           LOCPRES(INT(I),INT(J))%v = OpenAD_Symbol_140
-          OpenAD_Symbol_245 = OpenAD_Symbol_138
+          OpenAD_Symbol_245 = OpenAD_Symbol_139
           CALL setderiv(OpenAD_Symbol_246,X(XCOUNT))
           CALL sax(OpenAD_Symbol_245,OpenAD_Symbol_246,LOCPRES(I,J))
           DO K = 1, 2, 1
             DO L = 1, 2, 1
               DO M = 1, 2, 1
-                OpenAD_Symbol_143 = (X(XCOUNT)%v*3.0D00)
-                OpenAD_Symbol_141 = 3.0D00
+                OpenAD_Symbol_143 = (3.0D00*X(XCOUNT)%v)
+                OpenAD_Symbol_142 = 3.0D00
                 TFLD(INT(I),INT(J),INT(K),INT(L),INT(M))%v = OpenAD_Symb
      +ol_143
-                OpenAD_Symbol_146 = (X(XCOUNT)%v*4.0D00)
-                OpenAD_Symbol_144 = 4.0D00
+                OpenAD_Symbol_146 = (4.0D00*X(XCOUNT)%v)
+                OpenAD_Symbol_145 = 4.0D00
                 SFLD(INT(I),INT(J),INT(K),INT(L),INT(M))%v = OpenAD_Symb
      +ol_146
-                OpenAD_Symbol_247 = OpenAD_Symbol_141
-                OpenAD_Symbol_249 = OpenAD_Symbol_144
+                OpenAD_Symbol_247 = OpenAD_Symbol_142
+                OpenAD_Symbol_249 = OpenAD_Symbol_145
                 CALL setderiv(OpenAD_Symbol_250,X(XCOUNT))
                 CALL setderiv(OpenAD_Symbol_248,X(XCOUNT))
                 CALL sax(OpenAD_Symbol_247,OpenAD_Symbol_248,TFLD(I,J,K,

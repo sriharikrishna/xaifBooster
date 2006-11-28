@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 14:55:41 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:39:05 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -21,7 +21,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
       TYPE (OpenADTy_active) OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_2
+      REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
@@ -51,13 +51,13 @@ C$OPENAD XXX Template ad_template.f
       __value__(T1) = (__value__(X(1)) + __value__(X(1)))
       OpenAD_Symbol_0 = 1_w2f__i8
       OpenAD_Symbol_1 = 1_w2f__i8
-      OpenAD_Symbol_4 = (__value__(T1) * 2.0D00)
-      OpenAD_Symbol_2 = 2.0D00
+      OpenAD_Symbol_4 = (2.0D00 * __value__(T1))
+      OpenAD_Symbol_3 = 2.0D00
       __value__(T2) = OpenAD_Symbol_4
       __value__(Y1) = __value__(T2)
       __value__(Y(1)) = __value__(Y1)
       OpenAD_Symbol_5 = (INT(1_w2f__i8) * INT(1_w2f__i8))
-      OpenAD_Symbol_6 = (OpenAD_Symbol_2 * OpenAD_Symbol_5)
+      OpenAD_Symbol_6 = (OpenAD_Symbol_3 * OpenAD_Symbol_5)
       OpenAD_Symbol_7 = (OpenAD_Symbol_0 * OpenAD_Symbol_6)
       OpenAD_Symbol_9 = (OpenAD_Symbol_1 * OpenAD_Symbol_6)
       CALL setderiv(__deriv__(OpenAD_Symbol_10), __deriv__(X(1)))

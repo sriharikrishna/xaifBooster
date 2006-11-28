@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 15:43:04 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:41:13 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -42,7 +42,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      LOGICAL(w2f__i4) t__1
 C
 C     **** Top Level Pragmas ****
 C
@@ -53,8 +52,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       I = 1
-      t__1 = I .LT. 3
-      DO WHILE(t__1)
+      DO WHILE(I .LT. INT(3_w2f__i8))
         IF(I .LT. INT(2_w2f__i8)) THEN
           OpenAD_Symbol_1 = SIN(__value__(X(1)))
           OpenAD_Symbol_0 = COS(__value__(X(1)))
@@ -73,7 +71,6 @@ C$OPENAD XXX Template ad_template.f
      >  __deriv__(Y(1)))
         ENDIF
         I = I + 1
-        t__1 = I .LT. 3
       END DO
       OpenAD_Symbol_6 = (__value__(Y(1)) * __value__(Y(2)))
       OpenAD_Symbol_4 = __value__(Y(2))

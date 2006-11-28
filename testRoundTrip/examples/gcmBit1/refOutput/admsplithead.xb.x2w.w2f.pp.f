@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:19:17 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:55:43 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -1309,11 +1309,11 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_138
+      REAL(w2f__8) OpenAD_Symbol_139
       REAL(w2f__8) OpenAD_Symbol_140
-      REAL(w2f__8) OpenAD_Symbol_141
+      REAL(w2f__8) OpenAD_Symbol_142
       REAL(w2f__8) OpenAD_Symbol_143
-      REAL(w2f__8) OpenAD_Symbol_144
+      REAL(w2f__8) OpenAD_Symbol_145
       REAL(w2f__8) OpenAD_Symbol_146
       REAL(w2f__8) OpenAD_Symbol_245
       type(active) :: OpenAD_Symbol_246
@@ -1402,14 +1402,14 @@ C$OPENAD XXX Template ad_template.f
       XCOUNT = 1
       DO I = 1, 2, 1
         DO J = 1, 2, 1
-          LOCPRES(INT(I),INT(J))%v = (X(XCOUNT)%v*2.0D00)
+          LOCPRES(INT(I),INT(J))%v = (2.0D00*X(XCOUNT)%v)
           DO K = 1, 2, 1
             DO L = 1, 2, 1
               DO M = 1, 2, 1
-                TFLD(INT(I),INT(J),INT(K),INT(L),INT(M))%v = (X(XCOUNT)%
-     +v*3.0D00)
-                SFLD(INT(I),INT(J),INT(K),INT(L),INT(M))%v = (X(XCOUNT)%
-     +v*4.0D00)
+                TFLD(INT(I),INT(J),INT(K),INT(L),INT(M))%v = (3.0D00*X(X
+     +COUNT)%v)
+                SFLD(INT(I),INT(J),INT(K),INT(L),INT(M))%v = (4.0D00*X(X
+     +COUNT)%v)
                 XCOUNT = XCOUNT + 1
               END DO
             END DO
@@ -1432,10 +1432,10 @@ C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
         OpenAD_Symbol_365 = 0_w2f__i8
         DO J = 1, 2, 1
-          OpenAD_Symbol_140 = (X(XCOUNT)%v*2.0D00)
-          OpenAD_Symbol_138 = 2.0D00
+          OpenAD_Symbol_140 = (2.0D00*X(XCOUNT)%v)
+          OpenAD_Symbol_139 = 2.0D00
           LOCPRES(INT(I),INT(J))%v = OpenAD_Symbol_140
-          OpenAD_Symbol_245 = OpenAD_Symbol_138
+          OpenAD_Symbol_245 = OpenAD_Symbol_139
           integer_tape(integer_tape_pointer) = XCOUNT
           integer_tape_pointer = integer_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_245
@@ -1450,16 +1450,16 @@ C$OPENAD XXX Template ad_template.f
             DO L = 1, 2, 1
               OpenAD_Symbol_368 = 0_w2f__i8
               DO M = 1, 2, 1
-                OpenAD_Symbol_143 = (X(XCOUNT)%v*3.0D00)
-                OpenAD_Symbol_141 = 3.0D00
+                OpenAD_Symbol_143 = (3.0D00*X(XCOUNT)%v)
+                OpenAD_Symbol_142 = 3.0D00
                 TFLD(INT(I),INT(J),INT(K),INT(L),INT(M))%v = OpenAD_Symb
      +ol_143
-                OpenAD_Symbol_146 = (X(XCOUNT)%v*4.0D00)
-                OpenAD_Symbol_144 = 4.0D00
+                OpenAD_Symbol_146 = (4.0D00*X(XCOUNT)%v)
+                OpenAD_Symbol_145 = 4.0D00
                 SFLD(INT(I),INT(J),INT(K),INT(L),INT(M))%v = OpenAD_Symb
      +ol_146
-                OpenAD_Symbol_247 = OpenAD_Symbol_141
-                OpenAD_Symbol_249 = OpenAD_Symbol_144
+                OpenAD_Symbol_247 = OpenAD_Symbol_142
+                OpenAD_Symbol_249 = OpenAD_Symbol_145
           integer_tape(integer_tape_pointer) = XCOUNT
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = XCOUNT

@@ -62,6 +62,7 @@
 #include "xaifBooster/system/inc/EndBranch.hpp"
 #include "xaifBooster/system/inc/EndLoop.hpp"
 #include "xaifBooster/system/inc/ForLoop.hpp"
+#include "xaifBooster/system/inc/PreLoop.hpp"
 #include "xaifBooster/system/inc/IfStatement.hpp"
 #include "xaifBooster/system/inc/Branch.hpp"
 #include "xaifBooster/system/inc/Entry.hpp"
@@ -255,7 +256,14 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * make a new forloop
      */
-    ReversibleControlFlowGraphVertex* new_forloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType);
+    ReversibleControlFlowGraphVertex* new_forloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType,
+						  const ForLoop& theOldForLoop);
+
+    /** 
+     * make a new preloop
+     */
+    ReversibleControlFlowGraphVertex* new_preloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType,
+						  const PreLoop& theOldPreLoop);
 
     /** 
      * make a new endloop
