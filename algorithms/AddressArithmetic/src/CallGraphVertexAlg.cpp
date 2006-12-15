@@ -341,19 +341,52 @@ namespace xaifBoosterAddressArithmetic {
 		<< anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
 		<< ") is an array.");
     // check all the definition locations:
-    const DuUdMapDefinitionResult::StatementIdList& defChain(ConceptuallyStaticInstances::instance()->
-							     getCallGraph().getDuUdMap().getEntry(anUnknownVariable.getDuUdMapKey()).getStatementIdList());
-    for(DuUdMapDefinitionResult::StatementIdList::const_iterator defChainI=defChain.begin();
-	defChainI!=defChain.end();
+    if (anUnknownVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::STRING_STYPE) { 
+      DBG_MACRO(DbgGroup::ERROR,
+		"CallGraphVertexAlg::pushUnknownVariable: (old OA) skipping definitions check for string variable " 
+		<< anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
+		<< " (plain name: "
+		<< anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
+		<< ") in routine "
+		<< Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
+    }
+    else if (anUnknownVariable.getDuUdMapKey().getKind()==DuUdMapKey::NO_INFO) { 
+      // this problem happens with the old OA because sometimes in multi-vertex index expressions (k+1 as opposed to just k)
+      // it does not return proper duud information. 
+      DBG_MACRO(DbgGroup::ERROR,
+		"CallGraphVertexAlg::pushUnknownVariable: (old OA) skipping definitions check since no duud key for  non-string variable " 
+		<< anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
+		<< " (plain name: "
+		<< anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
+		<< ") in routine "
+		<< Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
+    } 
+    else {
+      const DuUdMapDefinitionResult::StatementIdList& defChain(ConceptuallyStaticInstances::instance()->
+							       getCallGraph().getDuUdMap().getEntry(anUnknownVariable.getDuUdMapKey()).getStatementIdList());
+      int defCount=0;
+      for(DuUdMapDefinitionResult::StatementIdList::const_iterator defChainI=defChain.begin();
+	  defChainI!=defChain.end();
 	++defChainI) {
-      if (!getContaining().getControlFlowGraph().dominates(aTopLevelForLoop,
-							   getContaining().getControlFlowGraph().getContainingVertex(*defChainI)))
-	DBG_MACRO(DbgGroup::ERROR,
-		  "CallGraphVertexAlg::pushUnknownVariable: variable " 
-		  << anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
-		  << " (plain name: "
-		  << anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
-		  << ") is defined within the top level loop scope.");
+	if (!(*defChainI).empty()  // an empty id signifies an out-of-scope definition and consequently this requires the scope to be the CFG
+	    &&
+	    !getContaining().getControlFlowGraph().dominates(aTopLevelForLoop,
+							     getContaining().getControlFlowGraph().getContainingVertex(*defChainI))) { 
+	  defCount++;
+	  DBG_MACRO(DbgGroup::ERROR,
+		    "CallGraphVertexAlg::pushUnknownVariable: in  routine "
+		    << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
+		    << " variable " 
+		    << anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
+		    << " (plain name: "
+		    << anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
+		    << ") is defined "
+		    << (defCount>1?"more than once ":"")
+		    << "within the top level loop (line "
+		    << aTopLevelForLoop.getLineNumber()
+		    << ") scope.");
+	}
+      }
     }
     theInlinableSubroutineCall_p->setId("_addressArithmetic_" + theInlinableSubroutineCall_p->getSubroutineName());
     anUnknownVariable.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
