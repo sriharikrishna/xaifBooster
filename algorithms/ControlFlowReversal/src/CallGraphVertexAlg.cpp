@@ -68,12 +68,16 @@ namespace xaifBoosterControlFlowReversal {
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     CallGraphVertexAlgBase(theContaining), 
     myTapingControlFlowGraph_p(NULL), 
-    myAdjointControlFlowGraph_p(NULL) {
+    myAdjointControlFlowGraph_p(NULL),
+    myAnonymousTapingControlFlowGraph_p(NULL), 
+    myAnonymousAdjointControlFlowGraph_p(NULL) {
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() {
     if (myTapingControlFlowGraph_p) delete myTapingControlFlowGraph_p;
     if (myAdjointControlFlowGraph_p) delete myAdjointControlFlowGraph_p;
+    if (myAnonymousTapingControlFlowGraph_p) delete myAnonymousTapingControlFlowGraph_p;
+    if (myAnonymousAdjointControlFlowGraph_p) delete myAnonymousAdjointControlFlowGraph_p;
   }
 
   bool CallGraphVertexAlg::hasTapingControlFlowGraph() const { 

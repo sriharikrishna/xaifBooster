@@ -414,101 +414,120 @@ namespace xaifBoosterControlFlowReversal {
     for (the_mySortedVertices_p_l_it=mySortedVertices_p_l.begin(); 
 	 the_mySortedVertices_p_l_it!=mySortedVertices_p_l.end(); 
 	 ++the_mySortedVertices_p_l_it) {
-      if ((*the_mySortedVertices_p_l_it)->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
-	switch ((*the_mySortedVertices_p_l_it)->getOriginalControlFlowGraphVertexAlg().getKind()) {
-	  /*
-	    Both FORLOOP and PRELOOP are control flow merge points,
-	    that is they have two predecessors. One of the indeges is a
-	    back edge with source of kind ENDLOOP.
-	  */
-	case ControlFlowGraphVertexAlg::FORLOOP : 
-	case ControlFlowGraphVertexAlg::PRELOOP : {
-	  int endLoopIndex;
-	  // insert "counter=0" before theCurrentVertex_r
-	  // push counter symbol onto theLoopCounterSymbolStack_r
-	  InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
-	  InEdgeIterator beginItie(pie.first),endItie(pie.second);
-	  /*
-	    We need to work on a copy of the inedges because the
-	    InEdgeIterator gets messed up when deleting inedges inside
-	    of it.
-	  */
-	  std::list<InEdgeIterator> ieil;
-	  const Symbol* theLoopCounterSymbol_p;
-	  for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
-	  std::list<InEdgeIterator>::iterator ieilIt;
-	  for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt) {
-	    if (!((*(*ieilIt)).isBackEdge(*this))) {
-	      BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(insertBasicBlock(getSourceOf(*(*ieilIt)),
-										     getTargetOf(*(*ieilIt)),
-										     (*(*ieilIt)),
-										     false).getNewVertex()));
-	      theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
-	      theLoopCounterSymbol_p=insert_init_integer(0,theBasicBlock_r);
-	      theLoopCounterSymbolStack_r.push(theLoopCounterSymbol_p);
-	      removeAndDeleteEdge(*(*ieilIt));
-	    }  
-	    else {
-	      // store index of corresponding ENDLOOP node
-	      endLoopIndex=getSourceOf(*(*ieilIt)).getIndex();
-	    }
-	  }
-	  // insert "call push_cfg(counter)" after end of the loop
-	  // to find the correct outedge we check if the index is 
-	  // greater than the one of the corresponding ENDLOOP node for
-	  // all targets. 
-	  OutEdgeIteratorPair poe(getOutEdgesOf(*(*the_mySortedVertices_p_l_it)));
-	  OutEdgeIterator beginItoe(poe.first),endItoe(poe.second);
-	  std::list<OutEdgeIterator> oeil;
-	  for (;beginItoe!=endItoe ;++beginItoe) oeil.push_back(beginItoe);
-	  std::list<OutEdgeIterator>::iterator oeilIt;
-	  for (oeilIt=oeil.begin();oeilIt!=oeil.end();++oeilIt) 
-	    if (getTargetOf(*(*oeilIt)).getIndex()>endLoopIndex) {
-	      BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(insertBasicBlock(getSourceOf(*(*oeilIt)),
-										     getTargetOf(*(*oeilIt)),
-										     (*(*oeilIt)),
-										     true).getNewVertex()));
-	      theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
-	      insert_push_integer(theLoopCounterSymbol_p,theBasicBlock_r);
-	      removeAndDeleteEdge(*(*oeilIt));
-	      break;
-	    }
-	  break;
-	} 
-	case ControlFlowGraphVertexAlg::ENDLOOP : {
-	  // pop counter symbol from theLoopCounterSymbolStack_r
-	  // insert "counter=counter+1" before *(*the_mySortedVertices_p_l_it)
-	  InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
-	  InEdgeIterator beginItie(pie.first);
-	  BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(insertBasicBlock(getSourceOf((*beginItie)),
-										 getTargetOf((*beginItie)),
-										 (*beginItie),
-										 false).getNewVertex()));
-	  theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
-	  insert_increment_integer(theLoopCounterSymbolStack_r.top(),theBasicBlock_r);
-	  theLoopCounterSymbolStack_r.pop();
-	  removeAndDeleteEdge((*beginItie));
-	  break;
-	}
-	case ControlFlowGraphVertexAlg::ENDBRANCH : {
-	  InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
-	  InEdgeIterator beginItie(pie.first),endItie(pie.second);
-	  /*
-	    We need to work on a copy of the inedges because the
-	    InEdgeIterator gets messed up when deleting inedges inside
-	    of it.
-	  */
-	  std::list<InEdgeIterator> ieil;
-	  for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
-	  std::list<InEdgeIterator>::iterator ieilIt;
-	  int branch_idx=1;
-	  for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt,branch_idx++) {
-	    ReversibleControlFlowGraphVertex& theSource_r(getSourceOf(*(*ieilIt)));
-	    BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(insertBasicBlock(theSource_r,
+      switch ((*the_mySortedVertices_p_l_it)->getOriginalControlFlowGraphVertexAlg().getKind()) {
+	/*
+	  Both FORLOOP and PRELOOP are control flow merge points,
+	  that is they have two predecessors. One of the indeges is a
+	  back edge with source of kind ENDLOOP.
+	*/
+      case ControlFlowGraphVertexAlg::FORLOOP : 
+      case ControlFlowGraphVertexAlg::PRELOOP : {
+	int endLoopIndex;
+	// insert "counter=0" before theCurrentVertex_r
+	// push counter symbol onto theLoopCounterSymbolStack_r
+	InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
+	InEdgeIterator beginItie(pie.first),endItie(pie.second);
+	/*
+	  We need to work on a copy of the inedges because the
+	  InEdgeIterator gets messed up when deleting inedges inside
+	  of it.
+	*/
+	std::list<InEdgeIterator> ieil;
+	const Symbol* theLoopCounterSymbol_p;
+	for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
+	std::list<InEdgeIterator>::iterator ieilIt;
+	for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt) {
+	  if (!((*(*ieilIt)).isBackEdge(*this))) {
+	    BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(insertBasicBlock(getSourceOf(*(*ieilIt)),
 										   getTargetOf(*(*ieilIt)),
 										   (*(*ieilIt)),
-										   true).getNewVertex()));
+										   false).getNewVertex()));
+	    removeAndDeleteEdge(*(*ieilIt));
 	    theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
+	    if ((*the_mySortedVertices_p_l_it)->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
+	      theLoopCounterSymbol_p=insert_init_integer(0,theBasicBlock_r);
+	      theLoopCounterSymbolStack_r.push(theLoopCounterSymbol_p);
+	    }
+	  }  
+	  else {
+	    // store index of corresponding ENDLOOP node
+	    endLoopIndex=getSourceOf(*(*ieilIt)).getIndex();
+	  }
+	}
+	// insert "call push_cfg(counter)" after end of the loop
+	// to find the correct outedge we check if the index is 
+	// greater than the one of the corresponding ENDLOOP node for
+	// all targets. 
+	ReversibleControlFlowGraphVertex* thePushBlock_p=0;
+	OutEdgeIteratorPair poe(getOutEdgesOf(*(*the_mySortedVertices_p_l_it)));
+	OutEdgeIterator beginItoe(poe.first),endItoe(poe.second);
+	std::list<OutEdgeIterator> oeil;
+	for (;beginItoe!=endItoe ;++beginItoe) oeil.push_back(beginItoe);
+	std::list<OutEdgeIterator>::iterator oeilIt;
+	for (oeilIt=oeil.begin();oeilIt!=oeil.end();++oeilIt) { 
+	  if (getTargetOf(*(*oeilIt)).getIndex()>endLoopIndex) {
+	    thePushBlock_p=&(insertBasicBlock(getSourceOf(*(*oeilIt)),
+					      getTargetOf(*(*oeilIt)),
+					      (*(*oeilIt)),
+					      true));
+	    BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(thePushBlock_p->getNewVertex()));
+	    getSourceOf(*(*oeilIt)).setStorePlaceholder(*thePushBlock_p);
+	    removeAndDeleteEdge(*(*oeilIt));
+	    theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
+	    if ((*the_mySortedVertices_p_l_it)->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
+	      insert_push_integer(theLoopCounterSymbol_p,theBasicBlock_r);
+	    }
+	    break;
+	  }
+	}
+	if ((*the_mySortedVertices_p_l_it)->getReversalType()==ForLoopReversalType::EXPLICIT) { 
+	  if (&((*the_mySortedVertices_p_l_it)->getTopExplicitLoop())==(*the_mySortedVertices_p_l_it)) {
+	    // this is the top level loop:
+	    // associate the placeholder to push address arithmetic variables. 
+	    (*the_mySortedVertices_p_l_it)->setTopExplicitLoopAddressArithmetic(*thePushBlock_p);
+	  } 
+	}
+	break;
+      } 
+      case ControlFlowGraphVertexAlg::ENDLOOP : {
+	// pop counter symbol from theLoopCounterSymbolStack_r
+	// insert "counter=counter+1" before *(*the_mySortedVertices_p_l_it)
+	InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
+	InEdgeIterator beginItie(pie.first);
+	BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(insertBasicBlock(getSourceOf((*beginItie)),
+									       getTargetOf((*beginItie)),
+									       (*beginItie),
+									       false).getNewVertex()));
+	removeAndDeleteEdge((*beginItie));
+	theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
+	if ((*the_mySortedVertices_p_l_it)->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
+	  insert_increment_integer(theLoopCounterSymbolStack_r.top(),theBasicBlock_r);
+	  theLoopCounterSymbolStack_r.pop();
+	}
+	break;
+      }
+      case ControlFlowGraphVertexAlg::ENDBRANCH : {
+	InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
+	InEdgeIterator beginItie(pie.first),endItie(pie.second);
+	/*
+	  We need to work on a copy of the inedges because the
+	  InEdgeIterator gets messed up when deleting inedges inside
+	  of it.
+	*/
+	std::list<InEdgeIterator> ieil;
+	for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
+	std::list<InEdgeIterator>::iterator ieilIt;
+	int branch_idx=1;
+	for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt,branch_idx++) {
+	  ReversibleControlFlowGraphVertex& theSource_r(getSourceOf(*(*ieilIt)));
+	  ReversibleControlFlowGraphVertex& thePushBlock(insertBasicBlock(theSource_r,
+									  getTargetOf(*(*ieilIt)),
+									  (*(*ieilIt)),
+									  true));
+	  // postpone deleting the edge, we still need it
+	  BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(thePushBlock.getNewVertex()));
+	  theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
+	  if ((*the_mySortedVertices_p_l_it)->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
 	    const Symbol* theLhsSymbol;
 	    if (ieil.size()==2) {
 	      // this is a true if-then-else
@@ -525,42 +544,20 @@ namespace xaifBoosterControlFlowReversal {
 		THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::storeControlFlow: switch branch exit without condition value");
 	    }
 	    insert_push_integer(theLhsSymbol,theBasicBlock_r);
-	    removeAndDeleteEdge(*(*ieilIt));
 	  }
-	  break;
+	  // here comes the postponed delete of the edge
+	  removeAndDeleteEdge(*(*ieilIt));
 	}
-	default : break;
-	}
+	break;
       }
-      else { // this is an EXPLICIT vertex reversal
-	if ((*the_mySortedVertices_p_l_it)->getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BASICBLOCK) { 
-	  BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>((*the_mySortedVertices_p_l_it)->getOriginalControlFlowGraphVertexAlg()));
-	  aBasicBlockAlg.setReversalType((*the_mySortedVertices_p_l_it)->getReversalType());
-	} 
-	if (&((*the_mySortedVertices_p_l_it)->getTopExplicitLoop())==(*the_mySortedVertices_p_l_it)) {
-	  // this is the top level loop:
-	  // we need to make a placeholder to push address arithmetic variables 
-	  // but the placeholder needs to be inserted after the loop.
-	  OutEdgeIteratorPair poe(getOutEdgesOf(**the_mySortedVertices_p_l_it));
-	  OutEdgeIterator beginItoe(poe.first),endItoe(poe.second);
-	  // copy needed to avoid deletion issues:
-	  std::list<OutEdgeIterator> oeil;
-	  for (;beginItoe!=endItoe ;++beginItoe) oeil.push_back(beginItoe);
-	  std::list<OutEdgeIterator>::iterator oeilIt;
-	  for (oeilIt=oeil.begin();oeilIt!=oeil.end();++oeilIt) {
-	    // after the loop is the out edge that doesn't lead to the loop body
-	    if (!((**oeilIt).leadsToLoopBody())) {
-	      (*the_mySortedVertices_p_l_it)->setTopExplicitLoopAddressArithmetic(insertBasicBlock(getSourceOf(*(*oeilIt)),
-												   getTargetOf(*(*oeilIt)),
-												   (*(*oeilIt)),
-												   true));
-	      BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>((*the_mySortedVertices_p_l_it)->getTopExplicitLoopAddressArithmetic().getNewVertex()));
-	      theBasicBlock_r.setId(std::string("_aug__AddressArithmetic_")+makeUniqueVertexId());
-	      removeAndDeleteEdge(*(*oeilIt));
-	    }  
-	  }
-	} 
-      } 
+      case ControlFlowGraphVertexAlg::BASICBLOCK : {
+	BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>((*the_mySortedVertices_p_l_it)->getOriginalControlFlowGraphVertexAlg()));
+	aBasicBlockAlg.setReversalType((*the_mySortedVertices_p_l_it)->getReversalType());
+	break;
+      }
+      default : 
+	break;
+      }
     } 
   } 
 
@@ -1051,15 +1048,18 @@ namespace xaifBoosterControlFlowReversal {
 	break;
       }
       case ControlFlowGraphVertexAlg::BRANCH : {
+	// regardless of the reversal - insert a placeholder block
+	InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*myOriginalReverseVertexPPairList_cit).second)));
+	ReversibleControlFlowGraphVertex& thePopBlock(theAdjointControlFlowGraph_r.insertBasicBlock(getSourceOf(*(singleInEdge_ieitp.first)),
+												    *((*myOriginalReverseVertexPPairList_cit).second),
+												    *(singleInEdge_ieitp.first),
+												    false));
+	removeAndDeleteEdge(*(singleInEdge_ieitp.first));
+	(*((*myOriginalReverseVertexPPairList_cit).second)).setRestorePlaceholder(thePopBlock);
+	BasicBlock& theNewBasicBlock_r(dynamic_cast<BasicBlock&>(thePopBlock.getNewVertex()));
+	theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
 	if ((*myOriginalReverseVertexPPairList_cit).second->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
 	  // insert pop() in front
-	  InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*myOriginalReverseVertexPPairList_cit).second)));
-	  BasicBlock& theNewBasicBlock_r(dynamic_cast<BasicBlock&>(theAdjointControlFlowGraph_r.insertBasicBlock(getSourceOf(*(singleInEdge_ieitp.first)),
-														 *((*myOriginalReverseVertexPPairList_cit).second),
-														 *(singleInEdge_ieitp.first),
-														 false).getNewVertex()));
-	  theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
-	  removeAndDeleteEdge(*(singleInEdge_ieitp.first));
 	  const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
 	  // add thePoppedIntegerSymbol_cr to branch condition as select value
 	  Expression& theSelectExpression_r(dynamic_cast<Branch&>((*myOriginalReverseVertexPPairList_cit).second->getNewVertex()).getCondition().getExpression());
@@ -1091,6 +1091,19 @@ namespace xaifBoosterControlFlowReversal {
 	break;
       }
       case ControlFlowGraphVertexAlg::FORLOOP : {
+	// regardless of the reversal - insert a placeholder block
+	InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*myOriginalReverseVertexPPairList_cit).second)));
+	if (singleInEdge_ieitp.first==singleInEdge_ieitp.second) { 
+	  THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: bad CFG (likely not well structured)");
+	}
+	ReversibleControlFlowGraphVertex& thePopBlock(theAdjointControlFlowGraph_r.insertBasicBlock(getSourceOf(*(singleInEdge_ieitp.first)),
+												    *((*myOriginalReverseVertexPPairList_cit).second),
+												    *(singleInEdge_ieitp.first),
+												    false));
+	removeAndDeleteEdge(*(singleInEdge_ieitp.first));
+	(*((*myOriginalReverseVertexPPairList_cit).second)).setRestorePlaceholder(thePopBlock);
+	BasicBlock& theNewBasicBlock_r(dynamic_cast<BasicBlock&>(thePopBlock.getNewVertex()));
+	theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
 	if ((*myOriginalReverseVertexPPairList_cit).second->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
 	  // 	  if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
 	  // 	    GraphVizDisplay::show(theAdjointControlFlowGraph_r,
@@ -1099,20 +1112,6 @@ namespace xaifBoosterControlFlowReversal {
 	  // 				  ReversibleControlFlowGraphEdgeLabelWriter(theAdjointControlFlowGraph_r));
 	  // 	  }
 	  // insert pop() in front
-	  InEdgeIteratorPair singleInEdge_ieitp(getInEdgesOf(*((*myOriginalReverseVertexPPairList_cit).second)));
-	  if (singleInEdge_ieitp.first==singleInEdge_ieitp.second) { 
-	    THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: bad CFG (likely not well structured)");
-//  	    GraphVizDisplay::show(theAdjointControlFlowGraph_r,
-//  				  "adjoint_beforeEntryMark", 
-//  				  ReversibleControlFlowGraphVertexLabelWriter(theAdjointControlFlowGraph_r),
-//  				  ReversibleControlFlowGraphEdgeLabelWriter(theAdjointControlFlowGraph_r));
-	  }
-	  BasicBlock& theNewBasicBlock_r(dynamic_cast<BasicBlock&>(theAdjointControlFlowGraph_r.insertBasicBlock(getSourceOf(*(singleInEdge_ieitp.first)),
-														 *((*myOriginalReverseVertexPPairList_cit).second),
-														 *(singleInEdge_ieitp.first),
-														 false).getNewVertex()));
-	  theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
-	  removeAndDeleteEdge(*(singleInEdge_ieitp.first));
 	  const Symbol& thePoppedIntegerSymbol_cr(theAdjointControlFlowGraph_r.insert_pop_integer(theNewBasicBlock_r));
 	  // fill ForLoop  
 	  ForLoop& theForLoop_r(dynamic_cast<ForLoop&>((*myOriginalReverseVertexPPairList_cit).second->getNewVertex()));
