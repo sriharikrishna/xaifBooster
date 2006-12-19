@@ -174,7 +174,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
-    BasicBlockAlg& aBasicBlockAlg(BasicBlockAlgParameter::get());
+    BasicBlockAlg& aBasicBlockAlg(BasicBlockAlgParameter::instance().get());
     // we need to do the representative sequence first because we only redo the activity analysis
     // and linearization once.
     if (BasicBlockAlg::getPreaccumulationLevel()!=PreaccumulationLevel::STATEMENT)
@@ -193,7 +193,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theFlattenedSequence)) { 
       // there is an ambiguity, do the split
-      BasicBlockAlgParameter::instance().get().splitFlattenedSequence(getContainingAssignment());
+      aSequenceHolder.splitFlattenedSequence(getContainingAssignment());
       // redo everything for this assignment
       algorithm_action_2_perSequence(aBasicBlockAlg,
 				     aSequenceHolder);
@@ -225,7 +225,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS(),
 						      getContainingAssignment().getId());
 	if (getContainingAssignment().getLHS().getActiveFlag()) // this means the LHS has been passivated 
-	  BasicBlockAlgParameter::instance().get().getDerivativePropagator(getContainingAssignment()).
+	  aSequenceHolder.getDerivativePropagator(getContainingAssignment()).
 	    addZeroDerivToEntryPList(getContainingAssignment().getLHS());
       } // end if
     } // end if 
