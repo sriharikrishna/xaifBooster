@@ -64,6 +64,8 @@ ifdef REVERSE_MODE
 MODULES=                        \
 w2f__types.o                    \
 active_module.o                 \
+checkpoint_module.o             \
+graph_module.o                  \
 OpenAD_checkpoints.o            \
 OpenAD_dct.o                    \
 OpenAD_rev.o                    \

@@ -174,32 +174,50 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
-    // this was set in BasicBlockAlg::algorithm_action_2
+    BasicBlockAlg& aBasicBlockAlg(BasicBlockAlgParameter::get());
+    // we need to do the representative sequence first because we only redo the activity analysis
+    // and linearization once.
+    if (BasicBlockAlg::getPreaccumulationLevel()!=PreaccumulationLevel::STATEMENT)
+      algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(true));
+    if (BasicBlockAlg::getPreaccumulationLevel()!=PreaccumulationLevel::MAX_GRAPH)
+      algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(false));
+  }
+
+  void 
+  AssignmentAlg::algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
+						BasicBlockAlg::SequenceHolder& aSequenceHolder) { 
     PrivateLinearizedComputationalGraph& theFlattenedSequence=
-      BasicBlockAlgParameter::instance().get().getFlattenedSequence(getContainingAssignment());
+      BasicBlockAlgParameter::instance().get().getFlattenedSequence(getContainingAssignment(),
+					  aSequenceHolder);
+    // this was set in BasicBlockAlg::algorithm_action_2
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theFlattenedSequence)) { 
       // there is an ambiguity, do the split
       BasicBlockAlgParameter::instance().get().splitFlattenedSequence(getContainingAssignment());
       // redo everything for this assignment
-      algorithm_action_2();
+      algorithm_action_2_perSequence(aBasicBlockAlg,
+				     aSequenceHolder);
       // and leave
       return;
-    } 
-    BasicBlockAlgParameter::instance().get().addMyselfToAssignmentIdList(getContainingAssignment());
+    }
+    BasicBlockAlgParameter::instance().get().addMyselfToAssignmentIdList(getContainingAssignment(),
+                                                                         aSequenceHolder);
     const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(BasicBlockAlgParameter::instance().get().getAssignmentIdList());
     // now redo the activity analysis
 //     if (haveLinearizedRightHandSide() && 
 // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
 //       GraphVizDisplay::show(getLinearizedRightHandSide(),"before",
 // 			    VertexLabelWriter(getLinearizedRightHandSide()));
-    xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
+    // here is why we need to do the representative SequenceHolder first:
+    if (aBasicBlockAlg.isRepresentativeSequenceHolder(aSequenceHolder)){ 
+      xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
 //     if (haveLinearizedRightHandSide() && 
 // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
 //       GraphVizDisplay::show(getLinearizedRightHandSide(),"after",
 // 			    VertexLabelWriter(getLinearizedRightHandSide()));
     // and the second part of the linearization
-    xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
+      xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
+    }
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
     if (!getActiveFlag()) { 
       theFlattenedSequence.addToPassiveStatementIdList(getContainingAssignment().getId());

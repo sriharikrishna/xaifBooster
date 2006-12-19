@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_BASICBLOCKALG_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_BASICBLOCKALG_INCLUDE_
+#ifndef _COUNTER_INCLUDE_
+#define _COUNTER_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,54 +53,89 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/utils/inc/Debuggable.hpp"
+#include <string>
 
-using namespace xaifBooster;
+namespace xaifBooster { 
 
-namespace xaifBoosterBasicBlockPreaccumulationReverse {  
-
-  /** 
-   * the taping and the adjoining 
-   * view per basic block 
-   * and the augmented and reversed call graph
-   * are already considered at the AddressArithmetic transformation
-   * we just need to reimplement printing
-   */
-  class BasicBlockAlg : public xaifBoosterAddressArithmetic::BasicBlockAlg {
-
+  class Counter  {
+    private:
+    /**
+     *  All counters are used to count the number of opperations of their type.
+     *  The operations being counted are defined by their name.
+     */
+    int myJacobianEntry;
+    int myMultiply;
+    int myAdd;
+	  
   public:
+
+    Counter(const Counter&);
+
+    /**
+     * Initializes the values of all counters to 0.
+     */
+    Counter();
+
+    /**
+     * Retrieves values from the data structure as specified by the function name.
+     */
+    int getJacValue() const;
+    int getMulValue() const;
+    int getAddValue() const;
     
-    BasicBlockAlg(BasicBlock& theContaining);
+    /**
+     * Increments the value of the counter specified by 1.
+     */
+    void mulInc();
+    void jacInc();
+    void addInc();
 
-    virtual ~BasicBlockAlg() {};
+    /**
+     * Calls each counter specific reset function.
+     */
+    void reset();
 
-    virtual void printXMLHierarchy(std::ostream& os) const;
+    /**
+     * Resets the value of the specified counter to 0.
+     */
+    void addReset();
+    void mulReset();
+    void jacReset();
 
-    virtual std::string debug() const ;
-
-    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
-
-  private:
+    /**
+     * Prints all the counters values on a single line.
+     */
+    std::string debug() const ;
     
-    /** 
-     * no def
+    /**
+     * Overloads the = operator so that two Counter types can be set equal to
+     * each other.
      */
-    BasicBlockAlg();
+    Counter& operator=(const Counter &p);
 
-    /** 
-     * no def
+     /**
+     * Overloads the > operator so that counter1 > counter2 if it has a greater
+     * multiply value.  If the nultiply values are equal then counter1 > counter2
+     * if it has more additions.
      */
-    BasicBlockAlg(const BasicBlockAlg&);
-
-    /** 
-     * no def
+    bool operator>(const Counter &b) const;
+    
+    /**
+     * Overloads the < operator so that counter1 < counter2 if it has a lesser
+     * multiply value.  If the nultiply values are equal then counter1 < counter2
+     * if it has fewer additions.
      */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
+    bool operator<(const Counter &b) const;
 
-  };
- 
-} // end of namespace 
+    /**
+     * Overloads the + operator so that counter1 = counter2 + counter3. The add
+     * and multiply values are summed up seperatly.
+     */
+    Counter operator+(const Counter &b);
+  }; 
+
+} // end of namespace xaifBooster
                                                                      
 #endif
+
