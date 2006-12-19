@@ -136,12 +136,21 @@ namespace xaifBoosterControlFlowReversal {
     void addLoopVariable(const Variable& aLoopVariable);
 
     ReversibleControlFlowGraphVertex& getTopExplicitLoop();
+    const ReversibleControlFlowGraphVertex& getTopExplicitLoop() const;
 
     void setTopExplicitLoop(ReversibleControlFlowGraphVertex& theTopExplicitLoop);
 
     ReversibleControlFlowGraphVertex& getTopExplicitLoopAddressArithmetic();
 
     void setTopExplicitLoopAddressArithmetic(ReversibleControlFlowGraphVertex& theTopExplicitLoop);
+
+    ReversibleControlFlowGraphVertex& getStorePlaceholder();
+
+    void setStorePlaceholder(ReversibleControlFlowGraphVertex& theStorePlaceholder);
+
+    ReversibleControlFlowGraphVertex& getRestorePlaceholder();
+
+    void setRestorePlaceholder(ReversibleControlFlowGraphVertex& theRestorePlaceholder);
 
   private:
 
@@ -223,12 +232,31 @@ namespace xaifBoosterControlFlowReversal {
      * pointer to the top level 
      * explicit loop's basic block that holds pushes/pops of
      * variables needed to fix address computations in simple 
-     * loop constructs
+     * loop constructs for those variables NOT redefined within 
+     * the simple loop
      * this is just a reference not to be deleted by 
      * the dtor
      */
     ReversibleControlFlowGraphVertex* myTopExplicitLoopAddressArithmetic_p;
 
+    /** 
+     * pointer to the placeholder basic block 
+     * to store control flow related information
+     * for the variables that are redefined within the simple loop
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */ 
+    ReversibleControlFlowGraphVertex* myStorePlaceholder_p;
+
+    /** 
+     * pointer to the placeholder basic block 
+     * to restore control flow related information
+     * for the variables that are redefined within the simple loop
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */ 
+    ReversibleControlFlowGraphVertex* myRestorePlaceholder_p;
+   
   };  // end of class
 
 } // end of namespace 

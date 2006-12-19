@@ -165,8 +165,8 @@ namespace xaifBooster {
      * tests if aDominatedVertex is indeed dominated 
      * by aDominatorVertex
      */
-    bool dominates(const Vertex& aDominatedVertex,
-		   const Vertex& aDominatorVertex) const;
+    bool firstDominatedBySecond(const Vertex& aDominatedVertex,
+				const Vertex& aDominatorVertex) const;
 
   protected:
 

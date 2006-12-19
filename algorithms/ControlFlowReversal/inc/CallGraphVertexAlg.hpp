@@ -109,11 +109,28 @@ namespace xaifBoosterControlFlowReversal {
     CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
 
     /**
-     * transformed copy of the control flow graph
+     * CFG copy that tapes for partially explicit reversal
+     * the graph structure is the same as for strictly anonymous
+     * reversal but the contents of the basic blocks differ from the ones in 
+     * the strictly anonymous version
      */
     ReversibleControlFlowGraph* myTapingControlFlowGraph_p;
+    /**
+     * CFG copy that performs partially explicit reversal 
+     * the graph structure is the same as for strictly anonymous
+     * reversal but the contents of the basic blocks and the 
+     * adjoint control flow expressions differ from the ones in 
+     * the strictly anonymous version
+     */
     ReversibleControlFlowGraph* myAdjointControlFlowGraph_p;
-
+    /**
+     * CFG copy that tapes for strictly anonymous reversal 
+     */
+    ReversibleControlFlowGraph* myAnonymousTapingControlFlowGraph_p;
+    /**
+     * CFG copy that performs strictly anonymous reversal 
+     */
+    ReversibleControlFlowGraph* myAnonymousAdjointControlFlowGraph_p;
 
   };  // end of class
 

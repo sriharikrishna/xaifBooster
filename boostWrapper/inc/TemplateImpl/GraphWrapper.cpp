@@ -541,8 +541,8 @@ namespace xaifBooster {
   
   template <class Vertex, class Edge>
   bool 
-  GraphWrapper<Vertex,Edge>::dominates(const Vertex& aDominatedVertex_cr,
-				       const Vertex& aDominatorVertex_cr) const {
+  GraphWrapper<Vertex,Edge>::firstDominatedBySecond(const Vertex& aDominatedVertex_cr,
+						    const Vertex& aDominatorVertex_cr) const {
     initVisit();
     bool ret=dominates_r(aDominatedVertex_cr,aDominatorVertex_cr);
     finishVisit();

@@ -73,7 +73,9 @@ namespace xaifBoosterControlFlowReversal {
     myReversalType(ForLoopReversalType::ANONYMOUS), 
     myCounterPart_p(0),
     myTopExplicitLoop_p(0),
-    myTopExplicitLoopAddressArithmetic_p(0) {
+    myTopExplicitLoopAddressArithmetic_p(0),
+    myStorePlaceholder_p(0),
+    myRestorePlaceholder_p(0) {
   }
 
   ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : 
@@ -86,7 +88,9 @@ namespace xaifBoosterControlFlowReversal {
     myReversalType(ForLoopReversalType::ANONYMOUS), 
     myCounterPart_p(0),
     myTopExplicitLoop_p(0),
-    myTopExplicitLoopAddressArithmetic_p(0) {
+    myTopExplicitLoopAddressArithmetic_p(0),
+    myStorePlaceholder_p(0),
+    myRestorePlaceholder_p(0) {
     ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theOriginal->getControlFlowGraphVertexAlgBase()).getKind();
     if (theKind==ControlFlowGraphVertexAlg::FORLOOP)
       myReversalType=dynamic_cast<const ForLoop*>(theOriginal)->getReversalType();
@@ -246,9 +250,19 @@ namespace xaifBoosterControlFlowReversal {
     myKnownLoopVariables.push_back(&aLoopVariable);
   }
 
-
   ReversibleControlFlowGraphVertex& 
   ReversibleControlFlowGraphVertex::getTopExplicitLoop() { 
+    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
+    } 
+    if (!myTopExplicitLoop_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: not set for "
+				 << myOriginalVertex_p->debug().c_str());
+    return *myTopExplicitLoop_p;
+  } 
+
+  const ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getTopExplicitLoop() const { 
     if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
     } 
@@ -280,6 +294,37 @@ namespace xaifBoosterControlFlowReversal {
     if (myTopExplicitLoopAddressArithmetic_p)
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setTopExplicitLoopAddressArithmetic: already set");
     myTopExplicitLoopAddressArithmetic_p=&theTopExplicitLoopAddressArithmetic;
+  } 
+
+  ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getStorePlaceholder() { 
+    if (!myStorePlaceholder_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getStorePlaceholder: not set for "
+				 << myOriginalVertex_p->debug().c_str());
+    return *myStorePlaceholder_p;
+  } 
+
+  void 
+  ReversibleControlFlowGraphVertex::setStorePlaceholder(ReversibleControlFlowGraphVertex& theStorePlaceholder) { 
+    if (myStorePlaceholder_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setStorePlaceholder: already set")
+    myStorePlaceholder_p=&theStorePlaceholder;	
+  } 
+
+  ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getRestorePlaceholder() { 
+    if (!myRestorePlaceholder_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getRestorePlaceholder: not set for "
+				 << myOriginalVertex_p->debug().c_str());
+    return *myRestorePlaceholder_p;
+  } 
+
+  void 
+  ReversibleControlFlowGraphVertex::setRestorePlaceholder(ReversibleControlFlowGraphVertex& theRestorePlaceholder) { 
+    if (myRestorePlaceholder_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setRestorePlaceholder: already set")
+    if (!(myRestorePlaceholder_p && myRestorePlaceholder_p!=&theRestorePlaceholder) )
+      myRestorePlaceholder_p=&theRestorePlaceholder;	
   } 
 
 } // end of namespace
