@@ -69,10 +69,16 @@ namespace xaifBoosterAddressArithmetic {
        */
       const Variable * myVariable_p;
       /** 
-       * the control flow vertex in which we refer to myVariable_p, 
+       * the vertex in which we refer to myVariable_p, 
        * just a reference, do not delete
        */
-      const ControlFlowGraphVertex * myContainingVertex_p;
+      const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex * myContainingVertex_p;
+      /** 
+       * the vertex determining the taping point (either the top level loop 
+       * or a control flow vertex( not a basic block) under the top level loop
+       * just a reference, do not delete
+       */
+      xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex * myTapingVertex_p;
       /** 
        * is the reference to myVariable_p control flow related
        */
@@ -85,13 +91,16 @@ namespace xaifBoosterAddressArithmetic {
       UnknownVarInfo() : 
 	myVariable_p(0),
 	myContainingVertex_p(0),
+	myTapingVertex_p(0),
 	myCFDecisionFlag(false),
 	myRefCount(0) { };
       UnknownVarInfo(const Variable& theVariable,
-		     const ControlFlowGraphVertex& theContainingVertex,
+		     const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex,
+		     xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theTapingVertex,
 		     bool theCFDecisionFlag) : 
 	myVariable_p(&theVariable),
 	myContainingVertex_p(&theContainingVertex),
+	myTapingVertex_p(&theTapingVertex),
 	myCFDecisionFlag(theCFDecisionFlag),
 	myRefCount(0) { };
 
@@ -108,18 +117,16 @@ namespace xaifBoosterAddressArithmetic {
 					  const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
 					  UnknownVarInfoList& theUnknownVariables,
 					  bool thisIsCF,
-					  const ControlFlowGraphVertex& theContainingVertex,
-					  const ControlFlowGraphVertex& theTopExplicitLoop);
+					  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
 
     /** 
      * find variables used in index expressions
      * occuring in the DerivativePropagator 
      * instances for a given BasicBlock
      */
-    void findUnknownVariablesInDerivativePropagatorIndexExpressions(const BasicBlock& theOriginalBasicBlock,
+    void findUnknownVariablesInDerivativePropagatorIndexExpressions(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
 								    const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-								    UnknownVarInfoList& theUnknownVariables,
-								    const ControlFlowGraphVertex& aTopLevelLoop);
+								    UnknownVarInfoList& theUnknownVariables);
 
     /** 
      * find variables used in aReversibleControlFlowGraphVertex 
@@ -130,19 +137,17 @@ namespace xaifBoosterAddressArithmetic {
 
     /** 
      * push anUnknownVariable
-     * with statement inserted into aBasicBlock_r
+     * with statement inserted into the storeplaceholder 
+     * associated with aTapingVertex
      */
     void pushUnknownVariable(const Variable& anUnknownVariable,
-			     BasicBlock& aBasicBlock_r,
-			     const ForLoop& aTopLevelForLoop);
+			     xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aTapingVertex);
 
     /** 
      * push all theUnknownVariables
      * with statements inserted into aBasicBlock_r
      */
-    void pushUnknownVariables(const UnknownVarInfoList& theUnknownVariables,
-			      BasicBlock& aBasicBlock_r,
-			      const ForLoop& aTopLevelForLoop);
+    void pushUnknownVariables(const UnknownVarInfoList& theUnknownVariables);
 
     /** 
      * there is aPushCall

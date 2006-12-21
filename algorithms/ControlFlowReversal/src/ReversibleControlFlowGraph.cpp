@@ -507,27 +507,27 @@ namespace xaifBoosterControlFlowReversal {
 	break;
       }
       case ControlFlowGraphVertexAlg::ENDBRANCH : {
-	InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
-	InEdgeIterator beginItie(pie.first),endItie(pie.second);
-	/*
-	  We need to work on a copy of the inedges because the
-	  InEdgeIterator gets messed up when deleting inedges inside
-	  of it.
-	*/
-	std::list<InEdgeIterator> ieil;
-	for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
-	std::list<InEdgeIterator>::iterator ieilIt;
-	int branch_idx=1;
-	for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt,branch_idx++) {
-	  ReversibleControlFlowGraphVertex& theSource_r(getSourceOf(*(*ieilIt)));
-	  ReversibleControlFlowGraphVertex& thePushBlock(insertBasicBlock(theSource_r,
-									  getTargetOf(*(*ieilIt)),
-									  (*(*ieilIt)),
-									  true));
-	  // postpone deleting the edge, we still need it
-	  BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(thePushBlock.getNewVertex()));
-	  theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
-	  if ((*the_mySortedVertices_p_l_it)->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
+	if ((*the_mySortedVertices_p_l_it)->getReversalType()==ForLoopReversalType::ANONYMOUS) { 
+	  InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
+	  InEdgeIterator beginItie(pie.first),endItie(pie.second);
+	  /*
+	    We need to work on a copy of the inedges because the
+	    InEdgeIterator gets messed up when deleting inedges inside
+	    of it.
+	  */
+	  std::list<InEdgeIterator> ieil;
+	  for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
+	  std::list<InEdgeIterator>::iterator ieilIt;
+	  int branch_idx=1;
+	  for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt,branch_idx++) {
+	    ReversibleControlFlowGraphVertex& theSource_r(getSourceOf(*(*ieilIt)));
+	    ReversibleControlFlowGraphVertex& thePushBlock(insertBasicBlock(theSource_r,
+									    getTargetOf(*(*ieilIt)),
+									    (*(*ieilIt)),
+									    true));
+	    // postpone deleting the edge, we still need it
+	    BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(thePushBlock.getNewVertex()));
+	    theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
 	    const Symbol* theLhsSymbol;
 	    if (ieil.size()==2) {
 	      // this is a true if-then-else
@@ -544,10 +544,22 @@ namespace xaifBoosterControlFlowReversal {
 		THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::storeControlFlow: switch branch exit without condition value");
 	    }
 	    insert_push_integer(theLhsSymbol,theBasicBlock_r);
+	    // here comes the postponed delete of the edge
+	    removeAndDeleteEdge(*(*ieilIt));
 	  }
-	  // here comes the postponed delete of the edge
-	  removeAndDeleteEdge(*(*ieilIt));
 	}
+	// insert the placeholder for storing miscellaneous items
+	// get the one outedge of this vertex
+	ReversibleControlFlowGraphEdge& theOutEdge(*(getOutEdgesOf(*(*the_mySortedVertices_p_l_it)).first));
+	ReversibleControlFlowGraphVertex& thePushBlock(insertBasicBlock(*(*the_mySortedVertices_p_l_it),
+									getTargetOf(theOutEdge),
+									theOutEdge,
+									true));
+	// set the store placeholder in the forloop
+	(*the_mySortedVertices_p_l_it)->getCounterPart().setStorePlaceholder(thePushBlock);
+	BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(thePushBlock.getNewVertex()));
+	theBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
+	removeAndDeleteEdge(theOutEdge);
 	break;
       }
       case ControlFlowGraphVertexAlg::BASICBLOCK : {
@@ -1221,15 +1233,7 @@ namespace xaifBoosterControlFlowReversal {
 	    THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: could not find loop update intrinsic");
 	  }
 	  // what is it?
-	  bool countUp=true;
-	  if (&(theOldUpdateIntrinsic_p->getInlinableIntrinsicsCatalogueItem())==
-	      &(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement("add_scal_scal"))) 
-	    countUp=true;
-	  else if (&(theOldUpdateIntrinsic_p->getInlinableIntrinsicsCatalogueItem())==
-		   &(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement("sub_scal_scal"))) 
-	    countUp=false;
-	  else
-	    THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: an explicit reversal loop update intrinsic does not match the form i+c or i-c");
+	  bool countUp=(*myOriginalReverseVertexPPairList_cit).first->getCounterPart().simpleCountUp();
 	  // the new ForLoop  
 	  ForLoop& theNewForLoop(dynamic_cast<ForLoop&>((*myOriginalReverseVertexPPairList_cit).second->getNewVertex()));
 	  makeLoopExplicitReversalInitialization(theOldForLoop,
@@ -1239,8 +1243,7 @@ namespace xaifBoosterControlFlowReversal {
 					    theNewForLoop,
 					    countUp);
 	  makeLoopExplicitReversalUpdate(theOldForLoop,
-					 theNewForLoop,
-					 countUp);
+					 theNewForLoop);
 	}
 	// insert adjoint edges
 	InEdgeIteratorPair theEndLoop_ieitp(getInEdgesOf(*((*myOriginalReverseVertexPPairList_cit).first)));
@@ -1355,7 +1358,7 @@ namespace xaifBoosterControlFlowReversal {
     const ExpressionVertex& theOldConditionMaxVertex(theOldConditionExpr.getMaxVertex());
     // find the BooleanOperation
     const BooleanOperation* theOldConditionBooleanOperation_p(dynamic_cast<const BooleanOperation*>(&theOldConditionMaxVertex));
-    if (!theOldUpdateIntrinsic_p) { 
+    if (!theOldConditionBooleanOperation_p) { 
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: could not find loop condition boolean operation");
     }
     // copy the init assignment LHS from the old one
@@ -1444,7 +1447,7 @@ namespace xaifBoosterControlFlowReversal {
       newEdge_p->setPosition(2);
     newEdge_p=new ExpressionEdge(false);
     newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
-    theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,theTopOftheUpdate,aMinus);
+    theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,theNewInitMaxVertex,aMinus);
     if (countUp)
       newEdge_p->setPosition(2);
     else 
@@ -1551,8 +1554,7 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void ReversibleControlFlowGraph::makeLoopExplicitReversalUpdate(const ForLoop& theOldForLoop,
-								  ForLoop& theNewForLoop,
-								  bool countUp) { 
+								  ForLoop& theNewForLoop) { 
     // get the new RHS
     Expression& theNewUpdateRHS(theNewForLoop.getUpdate().getAssignment().getRHS());
     const Expression& theOldUpdateRHS(theOldForLoop.getUpdate().getAssignment().getRHS());
@@ -1569,25 +1571,20 @@ namespace xaifBoosterControlFlowReversal {
 									 theOldUpdateRHS.findPositionalSubExpressionOf(theOldUpdateRHS.getMaxVertex(),2),
 									 true,
 									 false));
-    const BooleanOperation* theOldConditionBooleanOperation_p(dynamic_cast<const BooleanOperation*>(&(theOldForLoop.
-												      getCondition().
-												      getExpression().
-												      getMaxVertex())));
+    
+    const Intrinsic* theOldUpdateTopIntrinsic_p(dynamic_cast<const Intrinsic*>(&(theOldUpdateRHS.getMaxVertex())));
+    if (!theOldUpdateTopIntrinsic_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalUpdate: cannot find proper top level intrinsic operation in update expression");
     Intrinsic* theNewUpdateOp_p;
-    switch(theOldConditionBooleanOperation_p->getType()) {
-    case BooleanOperationType::LESS_THAN_OTYPE :
-    case BooleanOperationType::LESS_OR_EQUAL_OTYPE :
+    if (&(theOldUpdateTopIntrinsic_p->getInlinableIntrinsicsCatalogueItem())==
+	&(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement("add_scal_scal"))) 
       theNewUpdateOp_p=new Intrinsic("sub_scal_scal",false);
-      break;
-    case BooleanOperationType::GREATER_THAN_OTYPE :
-    case BooleanOperationType::GREATER_OR_EQUAL_OTYPE :
+    else if (&(theOldUpdateTopIntrinsic_p->getInlinableIntrinsicsCatalogueItem())==
+	     &(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement("sub_scal_scal")))
       theNewUpdateOp_p=new Intrinsic("add_scal_scal",false);
-      break;
-    default:
+    else
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalUpdate: don't know what to do with operation "
-                                 << BooleanOperationType::toString(theOldConditionBooleanOperation_p->getType()));
-      break;
-    }
+                                 << theOldUpdateTopIntrinsic_p->debug().c_str());
     theNewUpdateOp_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
     theNewUpdateRHS.supplyAndAddVertexInstance(*theNewUpdateOp_p);
     ExpressionEdge* newEdge_p=new ExpressionEdge(false);
@@ -1607,6 +1604,7 @@ namespace xaifBoosterControlFlowReversal {
   const ReversibleControlFlowGraph::VertexPPairList& ReversibleControlFlowGraph::getOriginalReverseVertexPPairList() const { 
     return myOriginalReverseVertexPPairList; 
   } 
+
 
 } // end of namespace
 

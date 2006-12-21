@@ -50,8 +50,7 @@ namespace xaifBoosterAddressArithmetic {
 						       const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
 						       CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables,
 						       bool thisIsCF,
-						       const ControlFlowGraphVertex& theContainingVertex,
-						       const ControlFlowGraphVertex& theTopExplicitLoop) {
+						       xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex) {
     Expression::ConstVertexIteratorPair aConstVertexIteratorPair(anExpression.vertices());
     Expression::ConstVertexIterator 
       anExpressionVertexI(aConstVertexIteratorPair.first),
@@ -60,6 +59,7 @@ namespace xaifBoosterAddressArithmetic {
       if ((*anExpressionVertexI).isArgument()) { 
 	// try to find it in theKnownVariables
 	bool foundIt=false;
+	bool locallyRedefined=false; // assume it is not 
 	for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList::const_iterator aKnownVariablesI=theKnownVariables.begin();
 	     aKnownVariablesI!=theKnownVariables.end();
 	     ++aKnownVariablesI) { 
@@ -73,6 +73,17 @@ namespace xaifBoosterAddressArithmetic {
 	if (!foundIt
 	    && 
 	    !isQuasiConstant(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable())) { 
+	  // check that we don't have redefinitions within the same scope
+	  // if we are in an index use
+	  if (!thisIsCF && definesUnderControlFlowGraphVertex(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),
+							      theContainingVertex.getOriginalVertex())) { 
+	    THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInExpression: index variable "
+				       << dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+				       << " redefined in same block in  "
+				       << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
+	  }
+	  // see if it is locally redefined
+	  locallyRedefined=(definesUnderControlFlowGraphVertex(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),theContainingVertex.getTopExplicitLoop().getOriginalVertex())>0);
 	  // try to find it in theUnknownVariables
 	  foundIt=false;
 	  for (CallGraphVertexAlg::UnknownVarInfoList::const_iterator anUnknownVariablesI=theUnknownVariables.begin();
@@ -80,8 +91,7 @@ namespace xaifBoosterAddressArithmetic {
 	       ++anUnknownVariablesI) { 
 	    if ((*anUnknownVariablesI).myVariable_p->equivalenceSignature()==dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable().equivalenceSignature() 
 		&&
-		(!definesUnderControlFlowGraphVertex(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),
-						     theTopExplicitLoop)
+		(!locallyRedefined
 		 ||
 		 (*anUnknownVariablesI).myContainingVertex_p==&theContainingVertex)
 		) {
@@ -90,18 +100,6 @@ namespace xaifBoosterAddressArithmetic {
 	      // or else we need to keep one per control flow decision 
 	      // or one for each index use.
 	      foundIt=true;
-	      // check that we don't have redefinitions within the same scope
-	      // if we are in an index use
-	      if (!thisIsCF && definesUnderControlFlowGraphVertex(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),
-								  theContainingVertex)) { 
-		definesUnderControlFlowGraphVertex(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),
-						   theContainingVertex);
-		DBG_MACRO(DbgGroup::ERROR,
-			  "CallGraphVertexAlg::findUnknownVariablesInExpression: index variable "
-			  << dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
-			  << " redefined in same block in  "
-			  << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
-	      }
 	      break;
 	    }
 	  }
@@ -109,6 +107,7 @@ namespace xaifBoosterAddressArithmetic {
 	if (!foundIt) { 
 	  theUnknownVariables.push_back(UnknownVarInfo(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),
 						       theContainingVertex,
+						       (locallyRedefined?theContainingVertex:theContainingVertex.getTopExplicitLoop()),
 						       thisIsCF));
 	}
       }
@@ -116,12 +115,11 @@ namespace xaifBoosterAddressArithmetic {
   } 
 
   void
-  CallGraphVertexAlg::findUnknownVariablesInDerivativePropagatorIndexExpressions(const BasicBlock& theOriginalBasicBlock,
+  CallGraphVertexAlg::findUnknownVariablesInDerivativePropagatorIndexExpressions(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
 										 const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-										 CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables,
-										 const ControlFlowGraphVertex& aTopLevelLoop) {
+										 CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) {
     // we get the sequences
-    const xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequencePList& aSequencePList(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(theOriginalBasicBlock.getBasicBlockAlgBase()).
+    const xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequencePList& aSequencePList(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(theOriginalBasicBlock.getOriginalVertex().getControlFlowGraphVertexAlgBase()).
 											     getUniqueSequencePList());
     for (xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequencePList::const_iterator aSequencePListI=aSequencePList.begin();
 	 aSequencePListI!=aSequencePList.end();
@@ -150,8 +148,7 @@ namespace xaifBoosterAddressArithmetic {
 						 theKnownVariables,
 						 theUnknownVariables,
 						 false,
-						 theOriginalBasicBlock,
-						 aTopLevelLoop);
+						 theOriginalBasicBlock);
 	      }
 	    } 
 	  }
@@ -167,8 +164,7 @@ namespace xaifBoosterAddressArithmetic {
 					     theKnownVariables,
 					     theUnknownVariables,
 					     false,
-					     theOriginalBasicBlock,
-					     aTopLevelLoop);
+					     theOriginalBasicBlock);
 	  }
 	} 
       } 
@@ -181,11 +177,9 @@ namespace xaifBoosterAddressArithmetic {
 									     CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) { 
     switch (aReversibleControlFlowGraphVertex.getKind()) { 
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::BASICBLOCK:{ 
-      const BasicBlock& theOriginalBasicBlock(dynamic_cast<const BasicBlock&>(aReversibleControlFlowGraphVertex.getOriginalVertex()));
-      findUnknownVariablesInDerivativePropagatorIndexExpressions(theOriginalBasicBlock,
+      findUnknownVariablesInDerivativePropagatorIndexExpressions(aReversibleControlFlowGraphVertex,
 								 theKnownVariables,
-								 theUnknownVariables,
-								 aReversibleControlFlowGraphVertex.getTopExplicitLoop().getOriginalVertex());
+								 theUnknownVariables);
       break;
     } 
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::FORLOOP: { 
@@ -195,22 +189,19 @@ namespace xaifBoosterAddressArithmetic {
 							   theKnownVariables,
 							   theUnknownVariables,
 							   true,
-							   theOriginalForLoop,
-							   aReversibleControlFlowGraphVertex.getTopExplicitLoop().getOriginalVertex());
+							   aReversibleControlFlowGraphVertex);
       // the condition
       CallGraphVertexAlg::findUnknownVariablesInExpression(theOriginalForLoop.getCondition().getExpression(),
 							   theKnownVariables,
 							   theUnknownVariables,
 							   true,
-							   theOriginalForLoop,
-							   aReversibleControlFlowGraphVertex.getTopExplicitLoop().getOriginalVertex());
+							   aReversibleControlFlowGraphVertex);
       // and the update
       CallGraphVertexAlg::findUnknownVariablesInExpression(theOriginalForLoop.getUpdate().getAssignment().getRHS(),
 							   theKnownVariables,
 							   theUnknownVariables,
 							   true,
-							   theOriginalForLoop,
-							   aReversibleControlFlowGraphVertex.getTopExplicitLoop().getOriginalVertex());
+							   aReversibleControlFlowGraphVertex);
       break;
     }
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::BRANCH: { 
@@ -221,8 +212,7 @@ namespace xaifBoosterAddressArithmetic {
 							   theKnownVariables,
 							   theUnknownVariables,
 							   true,
-							   theOriginalBranch,
-							   aReversibleControlFlowGraphVertex.getTopExplicitLoop().getOriginalVertex());
+							   aReversibleControlFlowGraphVertex);
       break;
     }
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::ENDLOOP: 
@@ -238,16 +228,16 @@ namespace xaifBoosterAddressArithmetic {
   
   void 
   CallGraphVertexAlg::pushUnknownVariable(const Variable& anUnknownVariable,
-					  BasicBlock& aBasicBlock_r,
-					  const ForLoop& aTopLevelForLoop) { 
+					  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theTapingVertex) { 
     static std::list<const Symbol*> ourPushAllSymbolPList;
     static std::list<const Symbol*> ourIgnoreAllSymbolPList;
     if (ourIgnoranceFlag) { 
       return;
     }
+    BasicBlock& thePushBlock(dynamic_cast<BasicBlock&>(theTapingVertex.getStorePlaceholder().getNewVertex()));
     // has it been pushed already?
-    for (BasicBlock::BasicBlockElementList::const_iterator pushIterator=aBasicBlock_r.getBasicBlockElementList().begin();
-	 pushIterator!=aBasicBlock_r.getBasicBlockElementList().end();
+    for (BasicBlock::BasicBlockElementList::const_iterator pushIterator=thePushBlock.getBasicBlockElementList().begin();
+	 pushIterator!=thePushBlock.getBasicBlockElementList().end();
 	 ++pushIterator) { 
       if ((*(dynamic_cast<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&>(**pushIterator).getArgumentList().begin()))->getArgument().getVariable().equivalenceSignature()
 	  ==anUnknownVariable.equivalenceSignature()) { 
@@ -284,7 +274,7 @@ namespace xaifBoosterAddressArithmetic {
       std::cout << "Explicit loop reversal in "
 		<< Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
 		<< " for top level loop line "
-		<< aTopLevelForLoop.getLineNumber()
+		<< dynamic_cast<const ForLoop&>(theTapingVertex.getTopExplicitLoop().getOriginalVertex()).getLineNumber()
 		<< " push/pop non-loop variable "
 		<< plainVariableName.c_str()
 		<< std::endl;
@@ -347,36 +337,18 @@ namespace xaifBoosterAddressArithmetic {
 		<< " (plain name: "
 		<< anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
 		<< ") is an array.");
-    int defines(definesUnderControlFlowGraphVertex(anUnknownVariable,aTopLevelForLoop));
-    if (defines>0) { 
-      DBG_MACRO(DbgGroup::ERROR,
-		"CallGraphVertexAlg::pushUnknownVariable: in  routine "
-		<< Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
-		<< " variable " 
-		<< anUnknownVariable.getVariableSymbolReference().getSymbol().getId().c_str()
-		<< " (plain name: "
-		<< anUnknownVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
-		<< ") is defined "
-		<< (defines>1?"more than once ":"")
-		<< "within the top level loop (line "
-		<< aTopLevelForLoop.getLineNumber()
-		<< ") scope.");
-    }
     theInlinableSubroutineCall_p->setId("_addressArithmetic_" + theInlinableSubroutineCall_p->getSubroutineName());
     anUnknownVariable.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-    aBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
+    thePushBlock.supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
   }
   
   void 
-  CallGraphVertexAlg::pushUnknownVariables(const CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables,
-					   BasicBlock& aBasicBlock_r,
-					   const ForLoop& aTopLevelForLoop) { 
+  CallGraphVertexAlg::pushUnknownVariables(const CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) { 
     for (CallGraphVertexAlg::UnknownVarInfoList::const_iterator theUnknownVariables_cit=theUnknownVariables.begin();
 	 theUnknownVariables_cit!=theUnknownVariables.end();
 	 ++theUnknownVariables_cit) { 
       pushUnknownVariable(*((*theUnknownVariables_cit).myVariable_p),
-			  aBasicBlock_r,
-			  aTopLevelForLoop);
+			  *((*theUnknownVariables_cit).myTapingVertex_p));
     } 
   } 
 
@@ -414,70 +386,55 @@ namespace xaifBoosterAddressArithmetic {
               "xaifBoosterAddressArithmetic::CallGraphVertexAlg::algorithm_action_5(fix address arithmetic) called for: "
               << debug().c_str());
     // iterate through the taping graph if we have one:
-    if (hasTapingControlFlowGraph()) { 
-      xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexIteratorPair aVertexIteratorPair(getTapingControlFlowGraph().vertices());
-      xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexIterator 
-	aReversibleControlFlowGraphVertexI(aVertexIteratorPair.first),
-	aReversibleControlFlowGraphVertexEndI(aVertexIteratorPair.second);
-      for (;aReversibleControlFlowGraphVertexI!=aReversibleControlFlowGraphVertexEndI ;++aReversibleControlFlowGraphVertexI) {
-	if ((*aReversibleControlFlowGraphVertexI).getReversalType()==ForLoopReversalType::EXPLICIT) { 
-	  CallGraphVertexAlg::UnknownVarInfoList theUnknownVariables;
-	  const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables((*aReversibleControlFlowGraphVertexI).getKnownLoopVariables());
-	  findUnknownVariablesInReversibleControlFlowGraphVertex(*aReversibleControlFlowGraphVertexI,
-								 theKnownVariables,
-								 theUnknownVariables);
-	  if (!theUnknownVariables.empty()) { 
-	    // get the taping point
-	    BasicBlock& aBasicBlock(dynamic_cast<BasicBlock&>((*aReversibleControlFlowGraphVertexI).
-							      getTopExplicitLoop().
-							      getTopExplicitLoopAddressArithmetic().
-							      getNewVertex()));
-	    // tape the unknown variables
-	    pushUnknownVariables(theUnknownVariables,
-				 aBasicBlock,
-				 dynamic_cast<const ForLoop&>((*aReversibleControlFlowGraphVertexI).getTopExplicitLoop().getOriginalVertex()));
-	  } 
-	}
+    if (!hasTapingControlFlowGraph())
+      return;
+    xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexIteratorPair aVertexIteratorPair(getTapingControlFlowGraph().vertices());
+    xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexIterator 
+      aReversibleControlFlowGraphVertexI(aVertexIteratorPair.first),
+      aReversibleControlFlowGraphVertexBeginI(aVertexIteratorPair.first),
+      aReversibleControlFlowGraphVertexEndI(aVertexIteratorPair.second);
+    for (;aReversibleControlFlowGraphVertexI!=aReversibleControlFlowGraphVertexEndI ;++aReversibleControlFlowGraphVertexI) {
+      if ((*aReversibleControlFlowGraphVertexI).getReversalType()==ForLoopReversalType::EXPLICIT) { 
+	CallGraphVertexAlg::UnknownVarInfoList theUnknownVariables;
+	const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables((*aReversibleControlFlowGraphVertexI).getKnownLoopVariables());
+	findUnknownVariablesInReversibleControlFlowGraphVertex(*aReversibleControlFlowGraphVertexI,
+							       theKnownVariables,
+							       theUnknownVariables);
+	if (!theUnknownVariables.empty()) { 
+	  // tape the unknown variables
+	  pushUnknownVariables(theUnknownVariables);
+	} 
       }
-      // we are done pushing everything 
-      // and now we can create the corresponding pops in reverse order:
-      xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList& theOriginalReverseVertexPPairList(getTapingControlFlowGraph().getOriginalReverseVertexPPairList());
-      for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList::iterator aVertexPPairListI=theOriginalReverseVertexPPairList.begin();
+    }
+    // we are done pushing everything 
+    // and now we can create the corresponding pops in reverse order:
+        xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexIterator 
+	  aReversibleControlFlowGraphVertex2I(aReversibleControlFlowGraphVertexBeginI);
+    for (;aReversibleControlFlowGraphVertex2I!=aReversibleControlFlowGraphVertexEndI ;++aReversibleControlFlowGraphVertex2I) {
+      if ((*aReversibleControlFlowGraphVertex2I).getReversalType()==ForLoopReversalType::EXPLICIT
+	  && 
+	  (*aReversibleControlFlowGraphVertex2I).hasStorePlaceholder()) { 
+	// the push block	
+	BasicBlock& aPushBasicBlock(dynamic_cast<BasicBlock&>((*aReversibleControlFlowGraphVertex2I).getStorePlaceholder().getNewVertex()));
+	// find the corresponding restore block
+	// by going to the counterpart node, finding its equivalent node in the adjoint graph 
+	// and getting that node's restore placeholder: 
+	xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theCounterPart((*aReversibleControlFlowGraphVertex2I).getCounterPart());
+	xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList& theOriginalReverseVertexPPairList(getTapingControlFlowGraph().getOriginalReverseVertexPPairList());
+	for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList::iterator aVertexPPairListI=theOriginalReverseVertexPPairList.begin();
 	   aVertexPPairListI!=theOriginalReverseVertexPPairList.end();
 	   ++aVertexPPairListI) { 
-	if ((*aVertexPPairListI).first->getReversalType()==ForLoopReversalType::EXPLICIT
-	    && 
-	    (*aVertexPPairListI).first==&((*aVertexPPairListI).first->getTopExplicitLoop())) { 
-	  // this is a top explicit loop
-	  BasicBlock& aPushBasicBlock(dynamic_cast<BasicBlock&>((*aVertexPPairListI).first->
-								getTopExplicitLoopAddressArithmetic().
-								getNewVertex()));
-	  // find the counterpart in the adjoint graph:
-	  // this is a loop, its counterpart is an ENDLOOP which is the original to the adjoint FORLOOP;
-	  // BTW it doesn't work the other way round since we don't set up counterpart in the adjoint graph
-	  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theEndLoopCounterPart((*aVertexPPairListI).first->getCounterPart());
-	  xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList::iterator anInnerVertexPPairListI=theOriginalReverseVertexPPairList.begin();
-	  for (;
-	       anInnerVertexPPairListI!=theOriginalReverseVertexPPairList.end();
-	       ++anInnerVertexPPairListI) { 
-	    if ((*anInnerVertexPPairListI).first==&theEndLoopCounterPart)
-	      break;
-	  }
-	  if (anInnerVertexPPairListI==theOriginalReverseVertexPPairList.end())
-	    THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_5: ENDLOOP " 
-				       << theEndLoopCounterPart.getOriginalVertex().debug().c_str()
-				       << " not in the vertex pair list");
-	  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theReverseLoop(*(*anInnerVertexPPairListI).second);
-	  // this one has a corresponding BasicBlock for the address arithmetic variables: 
-	  BasicBlock& aPopBasicBlock(dynamic_cast<BasicBlock&>(theReverseLoop.
-							       getTopExplicitLoopAddressArithmetic().
-							       getNewVertex()));
-	  BasicBlock::BasicBlockElementList::const_reverse_iterator pushIteratorEnd=aPushBasicBlock.getBasicBlockElementList().rend();
-	  for (BasicBlock::BasicBlockElementList::const_reverse_iterator pushIterator=aPushBasicBlock.getBasicBlockElementList().rbegin();
-	       pushIterator!=pushIteratorEnd;
-	       ++pushIterator) { 
-	    createPopFromPush(dynamic_cast<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&>(**pushIterator),
-			      aPopBasicBlock);
+	  if ((*aVertexPPairListI).first==&theCounterPart) { 
+	    // the pop block
+	    BasicBlock& aPopBasicBlock(dynamic_cast<BasicBlock&>((*aVertexPPairListI).second->getRestorePlaceholder().getNewVertex()));
+	    BasicBlock::BasicBlockElementList::const_reverse_iterator pushIteratorEnd=aPushBasicBlock.getBasicBlockElementList().rend();
+	    for (BasicBlock::BasicBlockElementList::const_reverse_iterator pushIterator=aPushBasicBlock.getBasicBlockElementList().rbegin();
+		 pushIterator!=pushIteratorEnd;
+		 ++pushIterator) { 
+	      createPopFromPush(dynamic_cast<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&>(**pushIterator),
+				aPopBasicBlock);
+	    }
+	    break;
 	  } 
 	} 
       } 
@@ -515,7 +472,9 @@ namespace xaifBoosterAddressArithmetic {
 
   bool CallGraphVertexAlg::isOnlyUnderTopLevelRoutine() { 
     if (!myOnlyUnderTopLevelRoutineFlag) {
-      if (ConceptuallyStaticInstances::instance()->getCallGraph().firstDominatedBySecond(getContaining(),getTopLevelRoutine()))
+      if (ConceptuallyStaticInstances::instance()->getCallGraph().firstDominatedBySecond(getContaining(),
+											 getTopLevelRoutine(),
+											 false))
 	myOnlyUnderTopLevelRoutineFlag=true;
       else { 
 	DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::isOnlyUnderTopLevelRoutine: routine " 
@@ -577,7 +536,7 @@ namespace xaifBoosterAddressArithmetic {
     int defCount=0;
     if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::STRING_STYPE) { 
       DBG_MACRO(DbgGroup::ERROR,
-		"CallGraphVertexAlg::pushUnknownVariable: (old OA) skipping definitions check for string variable " 
+		"CallGraphVertexAlg::definesUnderControlFlowGraphVertex: (old OA) skipping definitions check for string variable " 
 		<< theVariable.getVariableSymbolReference().getSymbol().getId().c_str()
 		<< " (plain name: "
 		<< theVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
@@ -588,7 +547,7 @@ namespace xaifBoosterAddressArithmetic {
       // this problem happens with the old OA because sometimes in multi-vertex index expressions (k+1 as opposed to just k)
       // it does not return proper duud information. 
       DBG_MACRO(DbgGroup::ERROR,
-		"CallGraphVertexAlg::pushUnknownVariable: (old OA) skipping definitions check since no duud key for  non-string variable " 
+		"CallGraphVertexAlg::definesUnderControlFlowGraphVertex: (old OA) skipping definitions check since no duud key for  non-string variable " 
 		<< theVariable.getVariableSymbolReference().getSymbol().getId().c_str()
 		<< " (plain name: "
 		<< theVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
@@ -602,10 +561,11 @@ namespace xaifBoosterAddressArithmetic {
       for(DuUdMapDefinitionResult::StatementIdList::const_iterator defChainI=defChain.begin();
 	  defChainI!=defChain.end();
 	  ++defChainI) {
-	if (!(*defChainI).empty()  // an empty id signifies an out-of-scope definition and consequently this requires the scope to be the CFG
-	    &&
+	if (!(*defChainI).empty()
+	    && 
 	    getContaining().getControlFlowGraph().firstDominatedBySecond(getContaining().getControlFlowGraph().getContainingVertex(*defChainI),
-									 theControlFlowGraphVertex)) { 
+									 theControlFlowGraphVertex,
+									 false)) { 
 	  defCount++;
 	}
       }

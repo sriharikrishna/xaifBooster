@@ -323,8 +323,7 @@ namespace xaifBoosterControlFlowReversal {
 					   bool countUp); 
 
     void makeLoopExplicitReversalUpdate(const ForLoop& theOldForLoop,
-					ForLoop& theNewForLoop,
-					bool countUp); 
+					ForLoop& theNewForLoop); 
 
     /** 
      * for certain vertex types we find the 'parent' vertex among 

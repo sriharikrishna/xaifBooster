@@ -56,6 +56,7 @@
 
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/ForLoop.hpp"
+#include "xaifBooster/system/inc/BooleanOperation.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphVertex.hpp"
 
@@ -296,6 +297,11 @@ namespace xaifBoosterControlFlowReversal {
     myTopExplicitLoopAddressArithmetic_p=&theTopExplicitLoopAddressArithmetic;
   } 
 
+  bool
+  ReversibleControlFlowGraphVertex::hasStorePlaceholder() const { 
+    return (myStorePlaceholder_p!=0);
+  } 
+
   ReversibleControlFlowGraphVertex& 
   ReversibleControlFlowGraphVertex::getStorePlaceholder() { 
     if (!myStorePlaceholder_p)
@@ -309,6 +315,11 @@ namespace xaifBoosterControlFlowReversal {
     if (myStorePlaceholder_p)
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setStorePlaceholder: already set")
     myStorePlaceholder_p=&theStorePlaceholder;	
+  } 
+
+  bool
+  ReversibleControlFlowGraphVertex::hasRestorePlaceholder() const { 
+    return (myRestorePlaceholder_p!=0);
   } 
 
   ReversibleControlFlowGraphVertex& 
@@ -325,6 +336,39 @@ namespace xaifBoosterControlFlowReversal {
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setRestorePlaceholder: already set")
     if (!(myRestorePlaceholder_p && myRestorePlaceholder_p!=&theRestorePlaceholder) )
       myRestorePlaceholder_p=&theRestorePlaceholder;	
+  } 
+
+  bool ReversibleControlFlowGraphVertex::simpleCountUp() const { 
+    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::simpleCountUp: the vertex is not explicit");
+    } 
+    if (getKind()!=ControlFlowGraphVertexAlg::FORLOOP) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::simpleCountUp: the vertex is a " << ControlFlowGraphVertexAlg::kindToString(getKind()).c_str());
+    } 
+    bool countUp=true;
+    const ForLoop& theForLoop(dynamic_cast<const ForLoop&>(getOriginalVertex()));
+    const Expression& theConditionExpr(theForLoop.getCondition().getExpression());
+    const ExpressionVertex& theConditionMaxVertex(theConditionExpr.getMaxVertex());
+    const BooleanOperation* theConditionBooleanOperation_p(dynamic_cast<const BooleanOperation*>(&theConditionMaxVertex));
+    if (!theConditionBooleanOperation_p) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::simpleCountUp: could not find loop condition boolean operation");
+    }
+    switch(theConditionBooleanOperation_p->getType()) { 
+    case BooleanOperationType::LESS_THAN_OTYPE :
+    case BooleanOperationType::LESS_OR_EQUAL_OTYPE: 
+      countUp=true;
+      break;
+    case BooleanOperationType::GREATER_THAN_OTYPE :
+    case BooleanOperationType::GREATER_OR_EQUAL_OTYPE: 
+      countUp=false;
+      break; 
+    case BooleanOperationType::NOT_EQUAL_OTYPE :
+    default:
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::simpleCountUp: don't know what to do with operation "
+				 << BooleanOperationType::toString(theConditionBooleanOperation_p->getType()));
+      break;
+    }
+    return countUp;
   } 
 
 } // end of namespace
