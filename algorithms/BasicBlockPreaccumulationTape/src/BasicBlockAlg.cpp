@@ -195,6 +195,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       throw;
     }
     recursionGuard--;
+    int count = 0;
     // for each propagator:
     // create an InlinableSubroutinecall for each Variable in each saxpy element in the propagator
     // and also one for each index of target or source vertices
@@ -204,8 +205,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     //   - Source index value (if variable array index)
     // - Target index value (if variable array index) 
     // obviously this order has to be matched by the reverse sweep reading this tape.
-    for (SequencePList::const_iterator aSequencePListI=getUniqueSequencePList().begin();
-	 aSequencePListI!=getUniqueSequencePList().end();
+    for (SequenceHolder::SequencePList::const_iterator aSequencePListI=getBestSequenceHolder().getUniqueSequencePList().begin();
+	 aSequencePListI!=getBestSequenceHolder().getUniqueSequencePList().end();
 	 ++aSequencePListI) {
       // make a reinterpretation instance which refers back to the original one
       ReinterpretedDerivativePropagator* aReinterpretedDerivativePropagator_p(new ReinterpretedDerivativePropagator((*aSequencePListI)->myDerivativePropagator));
@@ -225,6 +226,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) { 
 	    // make the subroutine call
 	    // ANONYMOUS version
+	   count++;
 	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push"));
 	    theSubroutineCall_p->setId("inline_push");
 	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
@@ -256,6 +258,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 				 theTarget.getArrayAccess()); 
 	} 
       } // end for (propagator entry list) 
+//      std::cout << "count: " << count << std::endl; //Basic block level taping output
     } // end for (sequence list) 
   } 
 

@@ -250,9 +250,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       return;
     // mesh the BasicBlockElements with the Sequences
     PlainBasicBlock::BasicBlockElementList::const_reverse_iterator aBasicBlockElementListRI=getContaining().getBasicBlockElementList().rbegin();
-    SequencePList::const_reverse_iterator aSequencePListRI=getUniqueSequencePList().rbegin();
+    SequenceHolder::SequencePList::const_reverse_iterator aSequencePListRI=getBestSequenceHolder().getUniqueSequencePList().rbegin();
+    SequenceHolder::SequencePList::const_reverse_iterator aSequencePListRend=getBestSequenceHolder().getUniqueSequencePList().rend();
     bool noSequence=false;
-    if (aSequencePListRI==getUniqueSequencePList().rend())
+    if (aSequencePListRI==aSequencePListRend)
       // we don't have any sequence left, meaning there is either no sequence at all 
       // or we are at the end where there is a bit left without a sequence
       noSequence=true;
@@ -289,7 +290,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	  reinterpretDerivativePropagatorEntry(**entryPListI);
 	} // end for DerivativePropagatorEntry list
 	++aSequencePListRI;
-	if (aSequencePListRI==getUniqueSequencePList().rend())
+	if (aSequencePListRI==aSequencePListRend)
 	  // there is no sequence left
 	  noSequence=true;
       } // end of if (!done)

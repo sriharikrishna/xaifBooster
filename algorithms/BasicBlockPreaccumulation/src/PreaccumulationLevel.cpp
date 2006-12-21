@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_BASICBLOCKALG_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_BASICBLOCKALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,55 +50,44 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationLevel.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationReverse {  
+namespace xaifBoosterBasicBlockPreaccumulation { 
+  
+  std::string PreaccumulationLevel::toString(const PreaccumulationLevel_E& aPreaccumulationLevel)
+    throw (PrintingIntException) { 
+    std::string returnString;
+    switch(aPreaccumulationLevel) {
+    case PICK_BEST:
+      returnString="pick_best";
+      break;
+    case STATEMENT:
+      returnString="statement";
+      break;
+    case MAX_GRAPH:
+      returnString="max_graph";
+      break;
+    default: 
+      throw PrintingIntException("PreaccumulationLevel::toString: unknown value",aPreaccumulationLevel);
+      break;
+    } // end switch
+    return returnString;
+  } // end of std::string PreaccumulationLevel::toString
 
-  /** 
-   * the taping and the adjoining 
-   * view per basic block 
-   * and the augmented and reversed call graph
-   * are already considered at the AddressArithmetic transformation
-   * we just need to reimplement printing
-   */
-  class BasicBlockAlg : public xaifBoosterAddressArithmetic::BasicBlockAlg {
+  void PreaccumulationLevel::checkValid(const PreaccumulationLevel_E& aPreaccumulationLevel) { 
+    switch(aPreaccumulationLevel) {
+    case PICK_BEST:
+    case STATEMENT:
+    case MAX_GRAPH:
+      break;
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("PreaccumulationLevel::fromString: unknown value " 
+				 << aPreaccumulationLevel);
+      break;
+    } // end switch
+  } // end of std::string PreaccumulationLevel::toString
 
-  public:
-    
-    BasicBlockAlg(BasicBlock& theContaining);
-
-    virtual ~BasicBlockAlg() {};
-
-    virtual void printXMLHierarchy(std::ostream& os) const;
-
-    virtual std::string debug() const ;
-
-    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
-
-  private:
-    
-    /** 
-     * no def
-     */
-    BasicBlockAlg();
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg(const BasicBlockAlg&);
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
-
-  };
- 
 } // end of namespace 
-                                                                     
-#endif

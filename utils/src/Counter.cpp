@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_BASICBLOCKALG_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_BASICBLOCKALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,55 +50,116 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include "xaifBooster/utils/inc/Counter.hpp"
+#include <iostream>
+#include <sstream>
 
-#include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
-
-using namespace xaifBooster;
-
-namespace xaifBoosterBasicBlockPreaccumulationReverse {  
-
-  /** 
-   * the taping and the adjoining 
-   * view per basic block 
-   * and the augmented and reversed call graph
-   * are already considered at the AddressArithmetic transformation
-   * we just need to reimplement printing
-   */
-  class BasicBlockAlg : public xaifBoosterAddressArithmetic::BasicBlockAlg {
-
-  public:
-    
-    BasicBlockAlg(BasicBlock& theContaining);
-
-    virtual ~BasicBlockAlg() {};
-
-    virtual void printXMLHierarchy(std::ostream& os) const;
-
-    virtual std::string debug() const ;
-
-    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
-
-  private:
-    
-    /** 
-     * no def
-     */
-    BasicBlockAlg();
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg(const BasicBlockAlg&);
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
-
-  };
+namespace xaifBooster { 
  
-} // end of namespace 
-                                                                     
-#endif
+  Counter::Counter()
+    : myJacobianEntry(0), myMultiply(0), myAdd(0) {
+  }
+  
+  int Counter::getJacValue() const {
+    return myJacobianEntry;
+  }
+  
+  int Counter::getAddValue() const {
+    return myAdd;
+  }
+  
+  int Counter::getMulValue() const {
+    return myMultiply;
+  }
+  
+  void Counter::jacInc() {
+    myJacobianEntry++;
+  }
+  
+  void Counter::addInc() {
+    myAdd++;
+  }
+  
+  void Counter::mulInc() {
+    myMultiply++;
+  }
+  
+  void Counter::reset() {
+    addReset();
+    mulReset();
+    jacReset();
+  }
+  
+  void Counter::addReset() {
+    myAdd = 0;
+  }
+  
+  void Counter::mulReset() {
+    myMultiply = 0;
+  }
+  
+  void Counter::jacReset() {
+    myJacobianEntry = 0;
+  }
+  
+  std::string Counter::debug () const {
+    std::ostringstream out;
+    out << "Counter["
+	<< this 
+	<< ",Mults=" << myMultiply
+	<< ",Adds=" << myAdd
+	<< ",Jacs=" << myJacobianEntry
+	<< "]" << std::ends;
+    return out.str();
+  } // end of Symbol::debug
+  
+  Counter& Counter::operator=(const Counter &in) {
+    myJacobianEntry = in.myJacobianEntry;
+    myMultiply = in.myMultiply;
+    myAdd = in.myAdd;
+    return *this;    // Return ref for multiple assignment
+  }
+
+  bool Counter::operator>(const Counter &b) const { 
+    if(this->getMulValue() > b.getMulValue()) {
+      return true;
+    }
+    else if(this->getMulValue() < b.getMulValue()) {
+      return false; 
+    } 
+    else  {
+      if(this->getAddValue() > b.getAddValue()) {
+	return true;
+      }
+      else {
+	return false;
+      }
+    }
+  }
+  
+  bool Counter::operator<(const Counter &b) const {
+    if(this->getMulValue() < b.getMulValue()) {
+      return true;
+    }
+    else if(this->getMulValue() > b.getMulValue()) {
+      return false;
+    }
+    else {
+      if(this->getAddValue() < b.getAddValue()) {
+	return true;
+      }
+      else {
+	return false;
+      }
+    }
+  }
+
+  Counter Counter::operator+(const Counter &b) {
+    Counter temp;
+    temp.myAdd = myAdd + b.myAdd;
+    temp.myMultiply = myMultiply + b.myMultiply;
+    temp.myJacobianEntry = myJacobianEntry + b.myJacobianEntry;
+    return temp;
+  }
+
+} 
