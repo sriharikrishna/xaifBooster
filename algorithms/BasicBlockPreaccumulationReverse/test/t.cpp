@@ -50,6 +50,7 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <fstream>
 #include <iostream>
 #include <utility>
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
@@ -64,6 +65,12 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"//IK
+
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
+
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
 
 using namespace xaifBooster;
 
@@ -79,7 +86,7 @@ void Usage(char** argv) {
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
-	    << "             [-S] force statement level preaccumulation" << std::endl
+	    << "             [-S <level>] force preaccumulation level (1: statement, 2 maximal graph), defaults to pick best" << std::endl
 	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
 	    << "             [-v] validate <inputFile> against the schema" << std::endl
 	    << "             [-w \"<list of subroutines with wrappers>\" " << std::endl
@@ -89,9 +96,67 @@ void Usage(char** argv) {
 	    << "             [-r] force renaming of all non-external routines" << std::endl
 	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
 	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
+            << "             [-a] dynamically choose graph elimination algorithm" << std::endl
 	    << "             [-f] checkpoint write order for individual files instead of a memory stack" << std::endl
-	    << " build info : " << buildStamp.c_str() << std::endl;
+	    << "             [-C] turn on runtime counters"  << std::endl
+            << " build info : " << buildStamp.c_str() << std::endl;
 } 
+
+/*class CallGraphVertexLabelWriter
+{
+   public:
+    CallGraphVertexLabelWriter(const CallGraph& g) : myG(g) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      CallGraphVertex* theCallGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
+      std::string theVertexKind;
+      std::string theXaifId;
+      if (dynamic_cast<ControlFlowGraphVertex*>(theCallGraphVertex_p)->isOriginal()) {
+        const xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg& va(dynamic_cast<const xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg&>(theCallGraphVertex_p->getOriginalVertex().getCallGraphVertexAlgBase()));
+        theVertexKind=va.kindToString();
+        const CallGraphVertex& v(dynamic_cast<const CallGraphVertex&>(theCallGraphVertex_p->getOriginalVertex()));
+        theXaifId=v.getId();
+
+      }
+      else {
+        const xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg& va(dynamic_cast<const xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg&>(theCallGraphVertex_p->getNewVertex().getCallGraphVertexAlgBase()));
+        theVertexKind=va.kindToString();
+        const CallGraphVertex& v(dynamic_cast<const CallGraphVertex&>(theCallGraphVertex_p->getNewVertex()));
+        theXaifId=v.getId();
+      }
+      if (theCallGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) {
+        std::ostringstream temp;
+        temp << theXaifId.c_str() << ".e" << std::ends;
+        theXaifId=temp.str();
+      }
+      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
+    }
+    const CallGraph& myG;
+};
+
+class CallGraphEdgeLabelWriter
+{
+    public:
+    CallGraphEdgeLabelWriter(const CallGraph& g) : myG(g) {};
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
+      CallGraphEdge* theCallGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
+      if (theCallGraphEdge_p->hasConditionValue() ||
+          theCallGraphEdge_p->hasRevConditionValue()) {
+        out << "[label=\"";
+        if (theCallGraphEdge_p->hasConditionValue())
+          out << theCallGraphEdge_p->getConditionValue();
+        if (theCallGraphEdge_p->hasRevConditionValue())
+          out << "r" << theCallGraphEdge_p->getRevConditionValue();
+        out << "\"]";
+      }
+    }
+    const CallGraph& myG;
+
+	
+};*/
+
+
 
 int main(int argc,char** argv) { 
   DbgLoggerManager::instance()->setBinaryBuildInfo(buildStamp);
@@ -101,11 +166,9 @@ int main(int argc,char** argv) {
   std::string inFileName, outFileName, intrinsicsFileName, schemaPath;
   // to contain the namespace url in case of -s having a schema location
   std::string aUrl;
-  bool forceStatementLevel=false;
-  bool intentChange=false;
   bool validateAgainstSchema=false;
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwpruUf",argc,argv);
+    CommandLineParser::instance()->initialize("iocdgsSIvwpruUaCf",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -117,9 +180,9 @@ int main(int argc,char** argv) {
     if (CommandLineParser::instance()->isSet('g')) 
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
     if (CommandLineParser::instance()->isSet('S')) 
-      forceStatementLevel=true;
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::forcePreaccumulationLevel(xaifBoosterBasicBlockPreaccumulation::PreaccumulationLevel::PreaccumulationLevel_E(CommandLineParser::instance()->argAsInt('S')));
     if (CommandLineParser::instance()->isSet('I')) 
-      intentChange=true;
+      xaifBoosterBasicBlockPreaccumulationReverse::ArgumentSymbolReferenceAlg::changeIntentForCheckPoints();
     if (CommandLineParser::instance()->isSet('v')) 
       validateAgainstSchema=true;
     if (CommandLineParser::instance()->isSet('w')) 
@@ -134,6 +197,12 @@ int main(int argc,char** argv) {
       xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
     if (CommandLineParser::instance()->isSet('f')) 
       xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::checkPointToFiles();
+    if (CommandLineParser::instance()->isSet('a'))
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
+    if (CommandLineParser::instance()->isSet('C')) {
+     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
+     xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::setRuntimeCounters();
+    }
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
@@ -146,10 +215,6 @@ int main(int argc,char** argv) {
 //     DBG_MACRO(DbgGroup::TEMPORARY,
 // 	      "t.cpp: " 
 // 	      << xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->debug().c_str());
-    if (forceStatementLevel)
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
-    if (intentChange)
-      xaifBoosterBasicBlockPreaccumulationReverse::ArgumentSymbolReferenceAlg::changeIntentForCheckPoints();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
     if (schemaPath.size()) { 
@@ -177,6 +242,15 @@ int main(int argc,char** argv) {
     DBG_MACRO(DbgGroup::TIMING,"before reversal");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
     DBG_MACRO(DbgGroup::TIMING,"before unparse");
+
+      //  if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+    /*GraphVizDisplay::show(Cg,
+                          "StaticGraph",
+                          CallGraphVertexLabelWriter(Cg),
+                          CallGraphEdgeLabelWriter(Cg));*/
+      //   }
+  
+    
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // fix up the addresses in simple loops
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
@@ -199,9 +273,9 @@ int main(int argc,char** argv) {
     return -1;
   } // end catch 
   DBG_MACRO(DbgGroup::METRIC,"total number of assignments: "
-	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getAssignmentCounter()
+	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::getAssignmentCounter()
 	    << " total number of Sequences: "
-	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getSequenceCounter());
+	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::getSequenceCounter());
   return 0;
 }
   

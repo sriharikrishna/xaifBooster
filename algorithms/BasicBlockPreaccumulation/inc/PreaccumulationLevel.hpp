@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_BASICBLOCKALG_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_BASICBLOCKALG_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONLEVEL_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONLEVEL_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,54 +53,26 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
+#include <string>
+#include "xaifBooster/utils/inc/PrintingIntException.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationReverse {  
+namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  /** 
-   * the taping and the adjoining 
-   * view per basic block 
-   * and the augmented and reversed call graph
-   * are already considered at the AddressArithmetic transformation
-   * we just need to reimplement printing
-   */
-  class BasicBlockAlg : public xaifBoosterAddressArithmetic::BasicBlockAlg {
-
+  class PreaccumulationLevel { 
   public:
+    enum PreaccumulationLevel_E {
+      PICK_BEST=0,
+      STATEMENT=1,
+      MAX_GRAPH=2};
+
+    static void checkValid(const PreaccumulationLevel_E& aLevel);
     
-    BasicBlockAlg(BasicBlock& theContaining);
+    static std::string toString(const PreaccumulationLevel_E& aLevel) throw (PrintingIntException);
 
-    virtual ~BasicBlockAlg() {};
+  }; // end of class PreaccumulationLevel
 
-    virtual void printXMLHierarchy(std::ostream& os) const;
-
-    virtual std::string debug() const ;
-
-    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
-
-  private:
-    
-    /** 
-     * no def
-     */
-    BasicBlockAlg();
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg(const BasicBlockAlg&);
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
-
-  };
- 
-} // end of namespace 
+} 
                                                                      
 #endif
