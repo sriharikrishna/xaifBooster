@@ -135,7 +135,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	    (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
 	  handleArrayAccessIndices(**aConcreteArgumentPListI,
 				   // the following parameter was set in BasicBlockAlg::algorithm_action_4()
-				   xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::get().getContaining().getScope(),
+				   xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::instance().get().getContaining().getScope(),
 				   indexAssignmentListI); 
 	}
       } // end for
