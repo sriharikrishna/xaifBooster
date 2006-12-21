@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:31:50 2006
+C Fortran file translated from WHIRL Thu Dec 21 09:33:09 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -109,30 +109,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -140,11 +128,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -203,12 +189,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-C print *,"restore idx, value, x ",theResFStackoffset,Y%v
-          Y%v = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -238,17 +218,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_scalar(Y%v,theResFStack,theResFStackoffset,
-     +theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine foo
@@ -352,30 +324,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -383,11 +343,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -466,12 +424,6 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-C print *,"restore idx, value, x ",theResFStackoffset,Y%v
-          Y%v = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -503,17 +455,9 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_scalar(Y%v,theResFStack,theResFStackoffset,
-     +theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine head

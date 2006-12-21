@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:32:06 2006
+C Fortran file translated from WHIRL Thu Dec 21 09:33:21 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -112,30 +112,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -143,11 +131,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -383,47 +369,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-C print *,"restore idx, value, x ",theResFStackoffset,UVEL%v
-          UVEL%v = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-          do cp_loop_variable_1 = lbound(RHO,1),ubound(RHO,1),1
-             RHO(cp_loop_variable_1)%v = theResFStack(theResFStackoffset
-     +)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SNEW,1),ubound(SNEW,1),1
-             SNEW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SNOW,1),ubound(SNOW,1),1
-             SNOW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SOLD,1),ubound(SOLD,1),1
-             SOLD(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TNEW,1),ubound(TNEW,1),1
-             TNEW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TNOW,1),ubound(TNOW,1),1
-             TNOW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TOLD,1),ubound(TOLD,1),1
-             TOLD(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -462,31 +407,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_scalar(UVEL%v,theResFStack,theResFStackoffs
-     +et,theResFStackSize)
-          call cp_store_real_vector(RHO,size(RHO),theResFStack,theResFSt
-     +ackoffset,theResFStackSize)
-          call cp_store_real_vector(SNEW,size(SNEW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(SNOW,size(SNOW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(SOLD,size(SOLD),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(TNEW,size(TNEW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(TNOW,size(TNOW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(TOLD,size(TOLD),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_forward
@@ -588,30 +511,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -619,11 +530,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -703,14 +612,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-          do cp_loop_variable_1 = lbound(TSVEC,1),ubound(TSVEC,1),1
-             TSVEC(cp_loop_variable_1) = theResFStack(theResFStackoffset
-     +)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -741,17 +642,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_p_real_vector(TSVEC,size(TSVEC),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_final_state
@@ -899,30 +792,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -930,11 +811,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -1172,96 +1051,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-C print *,"restore idx, value, x ",theResFStackoffset,METRIC
-          METRIC = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,METRIC1
-          METRIC1 = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,METRIC2
-          METRIC2 = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,THC_S
-          THC_S = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,THC_T
-          THC_T = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,THC_TOT
-          THC_TOT = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,UBAR
-          UBAR = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,UVEL%v
-          UVEL%v = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-          do cp_loop_variable_1 = lbound(FW,1),ubound(FW,1),1
-             FW(cp_loop_variable_1) = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(NULLFORCE,1),ubound(NULLFORCE,1
-     +),1
-             NULLFORCE(cp_loop_variable_1) = theResFStack(theResFStackof
-     +fset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(S,1),ubound(S,1),1
-             S(cp_loop_variable_1)%v = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SNEW,1),ubound(SNEW,1),1
-             SNEW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SNOW,1),ubound(SNOW,1),1
-             SNOW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SOLD,1),ubound(SOLD,1),1
-             SOLD(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SSTAR,1),ubound(SSTAR,1),1
-             SSTAR(cp_loop_variable_1) = theResFStack(theResFStackoffset
-     +)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(T,1),ubound(T,1),1
-             T(cp_loop_variable_1)%v = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TNEW,1),ubound(TNEW,1),1
-             TNEW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TNOW,1),ubound(TNOW,1),1
-             TNOW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TOLD,1),ubound(TOLD,1),1
-             TOLD(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TSTAR,1),ubound(TSTAR,1),1
-             TSTAR(cp_loop_variable_1) = theResFStack(theResFStackoffset
-     +)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TSVEC,1),ubound(TSVEC,1),1
-             TSVEC(cp_loop_variable_1) = theResFStack(theResFStackoffset
-     +)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -1429,57 +1218,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_scalar(METRIC,theResFStack,theResFStackoffs
-     +et,theResFStackSize)
-          call cp_store_real_scalar(METRIC1,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(METRIC2,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(THC_S,theResFStack,theResFStackoffse
-     +t,theResFStackSize)
-          call cp_store_real_scalar(THC_T,theResFStack,theResFStackoffse
-     +t,theResFStackSize)
-          call cp_store_real_scalar(THC_TOT,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(UBAR,theResFStack,theResFStackoffset
-     +,theResFStackSize)
-          call cp_store_real_scalar(UVEL%v,theResFStack,theResFStackoffs
-     +et,theResFStackSize)
-          call cp_store_p_real_vector(FW,size(FW),theResFStack,theResFSt
-     +ackoffset,theResFStackSize)
-          call cp_store_p_real_vector(NULLFORCE,size(NULLFORCE),theResFS
-     +tack,theResFStackoffset,theResFStackSize)
-          call cp_store_real_vector(S,size(S),theResFStack,theResFStacko
-     +ffset,theResFStackSize)
-          call cp_store_real_vector(SNEW,size(SNEW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(SNOW,size(SNOW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(SOLD,size(SOLD),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_p_real_vector(SSTAR,size(SSTAR),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          call cp_store_real_vector(T,size(T),theResFStack,theResFStacko
-     +ffset,theResFStackSize)
-          call cp_store_real_vector(TNEW,size(TNEW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(TNOW,size(TNOW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(TOLD,size(TOLD),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_p_real_vector(TSTAR,size(TSTAR),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          call cp_store_p_real_vector(TSVEC,size(TSVEC),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_ini_fields
@@ -1601,30 +1342,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -1632,11 +1361,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -1932,128 +1659,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-C print *,"restore idx, value, x ",theResFStackoffset,ALPHA
-          ALPHA = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,BETA
-          BETA = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,BWIDTH
-          BWIDTH = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,DAY
-          DAY = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,DAYS_PER_50M_MIXED_LAYER
-          DAYS_PER_50M_MIXED_LAYER = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,DELTA
-          DELTA = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,DELTA_T
-          DELTA_T = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,EPSILON_IC
-          EPSILON_IC = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,EPSILON_REGULARIZE
-          EPSILON_REGULARIZE = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,FDEPS
-          FDEPS = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,GAMMA_S
-          GAMMA_S = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,GAMMA_T
-          GAMMA_T = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,HUNDRED
-          HUNDRED = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,INTEGRATION_TIME
-          INTEGRATION_TIME = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,NOISE_CORRELATION_TIME
-          NOISE_CORRELATION_TIME = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-          N_MAX = theResIStack(theResIStackoffset)
-          theResIStackoffset = theResIStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,ROBERT_FILTER_COEFF
-          ROBERT_FILTER_COEFF = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,SV
-          SV = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,THOUSAND
-          THOUSAND = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,U0
-          U0 = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-          VERBMODE = theResBStack(theResBStackoffset)
-          theResBStackoffset = theResBStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,YEAR
-          YEAR = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-          do cp_loop_variable_1 = lbound(AREA,1),ubound(AREA,1),1
-             AREA(cp_loop_variable_1) = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(BHEIGHT,1),ubound(BHEIGHT,1),1
-             BHEIGHT(cp_loop_variable_1) = theResFStack(theResFStackoffs
-     +et)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(BLENGTH,1),ubound(BLENGTH,1),1
-             BLENGTH(cp_loop_variable_1) = theResFStack(theResFStackoffs
-     +et)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(PROJ_S,1),ubound(PROJ_S,1),1
-             PROJ_S(cp_loop_variable_1) = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(PROJ_T,1),ubound(PROJ_T,1),1
-             PROJ_T(cp_loop_variable_1) = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(R,1),ubound(R,1),1
-             R(cp_loop_variable_1) = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(R1,1),ubound(R1,1),1
-             R1(cp_loop_variable_1) = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(R_S,1),ubound(R_S,1),1
-             R_S(cp_loop_variable_1) = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(R_T,1),ubound(R_T,1),1
-             R_T(cp_loop_variable_1) = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(VOL,1),ubound(VOL,1),1
-             VOL(cp_loop_variable_1) = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_2 = lbound(X,2),ubound(X,2),1
-             do cp_loop_variable_1 = lbound(X,1),ubound(X,1),1
-                X(cp_loop_variable_1,cp_loop_variable_2) = theResFStack(
-     +theResFStackoffset)
-                theResFStackoffset = theResFStackoffset+1
-             end do
-          end do
-          do cp_loop_variable_1 = lbound(Y,1),ubound(Y,1),1
-             Y(cp_loop_variable_1) = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -2118,86 +1723,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_scalar(ALPHA,theResFStack,theResFStackoffse
-     +t,theResFStackSize)
-          call cp_store_real_scalar(BETA,theResFStack,theResFStackoffset
-     +,theResFStackSize)
-          call cp_store_real_scalar(BWIDTH,theResFStack,theResFStackoffs
-     +et,theResFStackSize)
-          call cp_store_real_scalar(DAY,theResFStack,theResFStackoffset,
-     +theResFStackSize)
-          call cp_store_real_scalar(DAYS_PER_50M_MIXED_LAYER,theResFStac
-     +k,theResFStackoffset,theResFStackSize)
-          call cp_store_real_scalar(DELTA,theResFStack,theResFStackoffse
-     +t,theResFStackSize)
-          call cp_store_real_scalar(DELTA_T,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(EPSILON_IC,theResFStack,theResFStack
-     +offset,theResFStackSize)
-          call cp_store_real_scalar(EPSILON_REGULARIZE,theResFStack,theR
-     +esFStackoffset,theResFStackSize)
-          call cp_store_real_scalar(FDEPS,theResFStack,theResFStackoffse
-     +t,theResFStackSize)
-          call cp_store_real_scalar(GAMMA_S,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(GAMMA_T,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(HUNDRED,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(INTEGRATION_TIME,theResFStack,theRes
-     +FStackoffset,theResFStackSize)
-          call cp_store_real_scalar(NOISE_CORRELATION_TIME,theResFStack,
-     +theResFStackoffset,theResFStackSize)
-          call cp_store_int_scalar(N_MAX,theResIStack,theResIStackoffset
-     +,theResIStackSize)
-          call cp_store_real_scalar(ROBERT_FILTER_COEFF,theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          call cp_store_real_scalar(SV,theResFStack,theResFStackoffset,t
-     +heResFStackSize)
-          call cp_store_real_scalar(THOUSAND,theResFStack,theResFStackof
-     +fset,theResFStackSize)
-          call cp_store_real_scalar(U0,theResFStack,theResFStackoffset,t
-     +heResFStackSize)
-          call cp_store_bool_scalar(VERBMODE,theResBStack,theResBStackof
-     +fset,theResBStackSize)
-          call cp_store_real_scalar(YEAR,theResFStack,theResFStackoffset
-     +,theResFStackSize)
-          call cp_store_p_real_vector(AREA,size(AREA),theResFStack,theRe
-     +sFStackoffset,theResFStackSize)
-          call cp_store_p_real_vector(BHEIGHT,size(BHEIGHT),theResFStack
-     +,theResFStackoffset,theResFStackSize)
-          call cp_store_p_real_vector(BLENGTH,size(BLENGTH),theResFStack
-     +,theResFStackoffset,theResFStackSize)
-          call cp_store_p_real_vector(PROJ_S,size(PROJ_S),theResFStack,t
-     +heResFStackoffset,theResFStackSize)
-          call cp_store_p_real_vector(PROJ_T,size(PROJ_T),theResFStack,t
-     +heResFStackoffset,theResFStackSize)
-          call cp_store_p_real_vector(R,size(R),theResFStack,theResFStac
-     +koffset,theResFStackSize)
-          call cp_store_p_real_vector(R1,size(R1),theResFStack,theResFSt
-     +ackoffset,theResFStackSize)
-          call cp_store_p_real_vector(R_S,size(R_S),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_p_real_vector(R_T,size(R_T),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_p_real_vector(VOL,size(VOL),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          do cp_loop_variable_2 = lbound(X,2),ubound(X,2)
-          call cp_store_p_real_vector(X(:,cp_loop_variable_2),size(X(:,c
-     +p_loop_variable_2)),theResFStack,theResFStackoffset,theResFStackSi
-     +ze)
-          end do
-          call cp_store_p_real_vector(Y,size(Y),theResFStack,theResFStac
-     +koffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_ini_params
@@ -2320,30 +1848,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -2351,11 +1867,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -2662,101 +2176,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-C print *,"restore idx, value, x ",theResFStackoffset,METRIC
-          METRIC = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,METRIC1
-          METRIC1 = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,METRIC2
-          METRIC2 = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,THC_S
-          THC_S = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,THC_T
-          THC_T = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,THC_TOT
-          THC_TOT = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,UBAR
-          UBAR = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-C print *,"restore idx, value, x ",theResFStackoffset,UVEL%v
-          UVEL%v = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-          do cp_loop_variable_1 = lbound(FW,1),ubound(FW,1),1
-             FW(cp_loop_variable_1) = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(NULLFORCE,1),ubound(NULLFORCE,1
-     +),1
-             NULLFORCE(cp_loop_variable_1) = theResFStack(theResFStackof
-     +fset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(RHO,1),ubound(RHO,1),1
-             RHO(cp_loop_variable_1)%v = theResFStack(theResFStackoffset
-     +)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(S,1),ubound(S,1),1
-             S(cp_loop_variable_1)%v = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SNEW,1),ubound(SNEW,1),1
-             SNEW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SNOW,1),ubound(SNOW,1),1
-             SNOW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SOLD,1),ubound(SOLD,1),1
-             SOLD(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SSTAR,1),ubound(SSTAR,1),1
-             SSTAR(cp_loop_variable_1) = theResFStack(theResFStackoffset
-     +)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(T,1),ubound(T,1),1
-             T(cp_loop_variable_1)%v = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TNEW,1),ubound(TNEW,1),1
-             TNEW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TNOW,1),ubound(TNOW,1),1
-             TNOW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TOLD,1),ubound(TOLD,1),1
-             TOLD(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TSTAR,1),ubound(TSTAR,1),1
-             TSTAR(cp_loop_variable_1) = theResFStack(theResFStackoffset
-     +)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TSVEC,1),ubound(TSVEC,1),1
-             TSVEC(cp_loop_variable_1) = theResFStack(theResFStackoffset
-     +)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -2804,59 +2223,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_scalar(METRIC,theResFStack,theResFStackoffs
-     +et,theResFStackSize)
-          call cp_store_real_scalar(METRIC1,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(METRIC2,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(THC_S,theResFStack,theResFStackoffse
-     +t,theResFStackSize)
-          call cp_store_real_scalar(THC_T,theResFStack,theResFStackoffse
-     +t,theResFStackSize)
-          call cp_store_real_scalar(THC_TOT,theResFStack,theResFStackoff
-     +set,theResFStackSize)
-          call cp_store_real_scalar(UBAR,theResFStack,theResFStackoffset
-     +,theResFStackSize)
-          call cp_store_real_scalar(UVEL%v,theResFStack,theResFStackoffs
-     +et,theResFStackSize)
-          call cp_store_p_real_vector(FW,size(FW),theResFStack,theResFSt
-     +ackoffset,theResFStackSize)
-          call cp_store_p_real_vector(NULLFORCE,size(NULLFORCE),theResFS
-     +tack,theResFStackoffset,theResFStackSize)
-          call cp_store_real_vector(RHO,size(RHO),theResFStack,theResFSt
-     +ackoffset,theResFStackSize)
-          call cp_store_real_vector(S,size(S),theResFStack,theResFStacko
-     +ffset,theResFStackSize)
-          call cp_store_real_vector(SNEW,size(SNEW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(SNOW,size(SNOW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(SOLD,size(SOLD),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_p_real_vector(SSTAR,size(SSTAR),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          call cp_store_real_vector(T,size(T),theResFStack,theResFStacko
-     +ffset,theResFStackSize)
-          call cp_store_real_vector(TNEW,size(TNEW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(TNOW,size(TNOW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(TOLD,size(TOLD),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_p_real_vector(TSTAR,size(TSTAR),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          call cp_store_p_real_vector(TSVEC,size(TSVEC),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_model_body
@@ -2976,30 +2345,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -3007,11 +2364,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -3108,14 +2463,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-          do cp_loop_variable_1 = lbound(RHOLOC,1),ubound(RHOLOC,1),1
-             RHOLOC(cp_loop_variable_1)%v = theResFStack(theResFStackoff
-     +set)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -3163,17 +2510,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_vector(RHOLOC,size(RHOLOC),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_density
@@ -3297,30 +2636,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -3328,11 +2655,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -3419,12 +2744,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-C print *,"restore idx, value, x ",theResFStackoffset,UVELLOC%v
-          UVELLOC%v = theResFStack(theResFStackoffset)
-          theResFStackoffset = theResFStackoffset+1
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -3462,17 +2781,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_scalar(UVELLOC%v,theResFStack,theResFStacko
-     +ffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_transport
@@ -3610,30 +2921,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -3641,11 +2940,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -3770,14 +3067,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-          do cp_loop_variable_1 = lbound(FLDNOW,1),ubound(FLDNOW,1),1
-             FLDNOW(cp_loop_variable_1)%v = theResFStack(theResFStackoff
-     +set)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -3847,17 +3136,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_vector(FLDNOW,size(FLDNOW),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_robert_filter
@@ -3968,30 +3249,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -3999,11 +3268,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -4111,29 +3378,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-          do cp_loop_variable_1 = lbound(SNOW,1),ubound(SNOW,1),1
-             SNOW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(SOLD,1),ubound(SOLD,1),1
-             SOLD(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TNOW,1),ubound(TNOW,1),1
-             TNOW(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          do cp_loop_variable_1 = lbound(TOLD,1),ubound(TOLD,1),1
-             TOLD(cp_loop_variable_1)%v = theResFStack(theResFStackoffse
-     +t)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -4210,23 +3454,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_vector(SNOW,size(SNOW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(SOLD,size(SOLD),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(TNOW,size(TNOW),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          call cp_store_real_vector(TOLD,size(TOLD),theResFStack,theResF
-     +Stackoffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_cycle_fields
@@ -4346,30 +3576,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -4377,11 +3595,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -4473,14 +3689,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-          do cp_loop_variable_1 = lbound(FLDNEW,1),ubound(FLDNEW,1),1
-             FLDNEW(cp_loop_variable_1)%v = theResFStack(theResFStackoff
-     +set)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -4528,17 +3736,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_vector(FLDNEW,size(FLDNEW),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_update
@@ -4819,30 +4019,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -4850,11 +4038,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -5171,14 +4357,6 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-          do cp_loop_variable_1 = lbound(FLDNEW,1),ubound(FLDNEW,1),1
-             FLDNEW(cp_loop_variable_1)%v = theResFStack(theResFStackoff
-     +set)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -5333,17 +4511,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_vector(FLDNEW,size(FLDNEW),theResFStack,the
-     +ResFStackoffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine box_timestep
