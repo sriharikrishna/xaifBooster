@@ -144,14 +144,24 @@ namespace xaifBoosterControlFlowReversal {
 
     void setTopExplicitLoopAddressArithmetic(ReversibleControlFlowGraphVertex& theTopExplicitLoop);
 
+    bool hasStorePlaceholder() const;
+
     ReversibleControlFlowGraphVertex& getStorePlaceholder();
 
     void setStorePlaceholder(ReversibleControlFlowGraphVertex& theStorePlaceholder);
+
+    bool hasRestorePlaceholder() const;
 
     ReversibleControlFlowGraphVertex& getRestorePlaceholder();
 
     void setRestorePlaceholder(ReversibleControlFlowGraphVertex& theRestorePlaceholder);
 
+    /**
+     * for explicitly reversible for loops
+     * guess the count direction
+     */
+    bool simpleCountUp() const;
+    
   private:
 
     /** 

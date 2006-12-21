@@ -129,7 +129,10 @@ namespace xaifBoosterControlFlowReversal {
         theVertexKind=va.kindToString();
 	const ControlFlowGraphVertex& v(dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex()));
         theXaifId=v.getId();
-        
+	if (theReversibleControlFlowGraphVertex_p->hasStorePlaceholder())
+	  theXaifId+="s:"+theReversibleControlFlowGraphVertex_p->getStorePlaceholder().getNewVertex().getId();
+	if (theReversibleControlFlowGraphVertex_p->hasRestorePlaceholder())
+	  theXaifId+="r:"+theReversibleControlFlowGraphVertex_p->getRestorePlaceholder().getNewVertex().getId();
       }
       else {
 	const ControlFlowGraphVertexAlg& va(dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()));
@@ -163,7 +166,6 @@ namespace xaifBoosterControlFlowReversal {
         theVertexKind=va.kindToString();
 	const ControlFlowGraphVertex& v(dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex()));
         theXaifId=v.getId();
-        
       }
       else {
 	const ControlFlowGraphVertexAlg& va(dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()));
@@ -171,6 +173,10 @@ namespace xaifBoosterControlFlowReversal {
 	const ControlFlowGraphVertex& v(dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getNewVertex()));
         theXaifId=v.getId();
       }
+      if (theReversibleControlFlowGraphVertex_p->hasStorePlaceholder())
+	theXaifId+="s:"+theReversibleControlFlowGraphVertex_p->getStorePlaceholder().getNewVertex().getId();
+      if (theReversibleControlFlowGraphVertex_p->hasRestorePlaceholder())
+	theXaifId+="r:"+theReversibleControlFlowGraphVertex_p->getRestorePlaceholder().getNewVertex().getId();
       if (theReversibleControlFlowGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) { 
 	std::ostringstream temp;
 	temp << theXaifId.c_str() << ".e";

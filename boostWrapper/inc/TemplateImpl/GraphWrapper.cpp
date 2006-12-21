@@ -542,11 +542,51 @@ namespace xaifBooster {
   template <class Vertex, class Edge>
   bool 
   GraphWrapper<Vertex,Edge>::firstDominatedBySecond(const Vertex& aDominatedVertex_cr,
-						    const Vertex& aDominatorVertex_cr) const {
-    initVisit();
-    bool ret=dominates_r(aDominatedVertex_cr,aDominatorVertex_cr);
-    finishVisit();
+						    const Vertex& aDominatorVertex_cr,
+						    bool sameDirection) const {
+    bool ret;
+    if (&aDominatedVertex_cr == & aDominatorVertex_cr)
+      ret=true;
+    else { 
+      initVisit();
+      if (sameDirection)
+	ret=dominates_f(aDominatedVertex_cr,aDominatorVertex_cr);
+      else  
+	ret=dominates_r(aDominatedVertex_cr,aDominatorVertex_cr);
+      finishVisit();
+    }
     return ret; 
+  }
+
+  template <class Vertex, class Edge>
+  bool 
+  GraphWrapper<Vertex,Edge>::dominates_f(const Vertex& aDominatedVertex_cr,
+					 const Vertex& aDominatorVertex_cr) const {
+    if (aDominatedVertex_cr.wasVisited())
+      return true;
+    aDominatedVertex_cr.setVisited();
+    std::pair < 
+      InternalBoostOutEdgeIteratorType,
+      InternalBoostOutEdgeIteratorType 
+      > 
+      theEnds=boost::out_edges(aDominatedVertex_cr.getDescriptor(),
+			       myBoostGraph);
+    InternalBoostOutEdgeIteratorType ei_current(theEnds.first), ei_end(theEnds.second);
+    if (ei_current==ei_end)
+      // no out edges, not dominated
+      return false; 
+    for (;ei_current!=ei_end; ++ei_current) { 
+      const Vertex& targetVertex(*(boost::get(boost::get(BoostVertexContentType(),
+							 myBoostGraph), // vertex map
+					      boost::target(*(ei_current),
+							    myBoostGraph)))); // vertex descr.
+      if (&targetVertex!=&aDominatorVertex_cr) {
+	if (!dominates_r(targetVertex,aDominatorVertex_cr))
+	  return false;
+      }
+    } // end for
+    // no  paths found that don't go through aDominatorVertex
+    return true; 
   }
 
   template <class Vertex, class Edge>
