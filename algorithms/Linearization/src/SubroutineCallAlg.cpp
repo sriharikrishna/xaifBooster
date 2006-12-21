@@ -389,7 +389,7 @@ namespace xaifBoosterLinearization {
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
 	handleArrayAccessIndices(theConcreteArgument,
 				 // the following parameter was set in BasicBlockAlg::algorithm_action_1()
-				 BasicBlockAlgParameter::get().getContaining().getScope());
+				 BasicBlockAlgParameter::instance().get().getContaining().getScope());
       }
     }
   } 
@@ -437,7 +437,7 @@ namespace xaifBoosterLinearization {
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
 	handleArrayAccessIndices(theConcreteArgument,
 				 // the following parameter was set in BasicBlockAlg::algorithm_action_1()
-				 BasicBlockAlgParameter::get().getContaining().getScope());
+				 BasicBlockAlgParameter::instance().get().getContaining().getScope());
       }
     }
   } 
