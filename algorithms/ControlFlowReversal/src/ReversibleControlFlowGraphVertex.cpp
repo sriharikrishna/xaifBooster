@@ -76,7 +76,8 @@ namespace xaifBoosterControlFlowReversal {
     myTopExplicitLoop_p(0),
     myTopExplicitLoopAddressArithmetic_p(0),
     myStorePlaceholder_p(0),
-    myRestorePlaceholder_p(0) {
+    myRestorePlaceholder_p(0),
+    myEnclosingControlFlow_p(0) {
   }
 
   ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : 
@@ -91,7 +92,8 @@ namespace xaifBoosterControlFlowReversal {
     myTopExplicitLoop_p(0),
     myTopExplicitLoopAddressArithmetic_p(0),
     myStorePlaceholder_p(0),
-    myRestorePlaceholder_p(0) {
+    myRestorePlaceholder_p(0),
+    myEnclosingControlFlow_p(0) {
     ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theOriginal->getControlFlowGraphVertexAlgBase()).getKind();
     if (theKind==ControlFlowGraphVertexAlg::FORLOOP)
       myReversalType=dynamic_cast<const ForLoop*>(theOriginal)->getReversalType();
@@ -158,7 +160,7 @@ namespace xaifBoosterControlFlowReversal {
 	<< ",myIndex="
 	<< myIndex
 	<< ",getKind():"
-	<< getKind()
+	<< ControlFlowGraphVertexAlg::kindToString(getKind()).c_str()
 	<< ",myReversalType="
 	<< ForLoopReversalType::toString(myReversalType).c_str()
 	<< ",myCounterPart_p="
@@ -167,6 +169,12 @@ namespace xaifBoosterControlFlowReversal {
 	<< myTopExplicitLoop_p
 	<< ",myTopExplicitLoopAddressArithmetic_p="
 	<< myTopExplicitLoopAddressArithmetic_p
+	<< ",myStorePlaceholder_p="
+	<< myStorePlaceholder_p
+	<< ",myRestorePlaceholder_p="
+	<< myRestorePlaceholder_p
+	<< ",myEnclosingControlFlow_p="
+	<< myEnclosingControlFlow_p
 	<< ",myKnownLoopVariables[";
       for (VariablePList::const_iterator knownListI= myKnownLoopVariables.begin();
 	   knownListI!= myKnownLoopVariables.end();
@@ -306,7 +314,7 @@ namespace xaifBoosterControlFlowReversal {
   ReversibleControlFlowGraphVertex::getStorePlaceholder() { 
     if (!myStorePlaceholder_p)
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getStorePlaceholder: not set for "
-				 << myOriginalVertex_p->debug().c_str());
+				 << debug().c_str());
     return *myStorePlaceholder_p;
   } 
 
@@ -336,6 +344,27 @@ namespace xaifBoosterControlFlowReversal {
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setRestorePlaceholder: already set")
     if (!(myRestorePlaceholder_p && myRestorePlaceholder_p!=&theRestorePlaceholder) )
       myRestorePlaceholder_p=&theRestorePlaceholder;	
+  } 
+
+  bool
+  ReversibleControlFlowGraphVertex::hasEnclosingControlFlow() const { 
+    return (myEnclosingControlFlow_p!=0);
+  } 
+
+  ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getEnclosingControlFlow() { 
+    if (!myEnclosingControlFlow_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getEnclosingControlFlow: not set for "
+				 << myOriginalVertex_p->debug().c_str());
+    return *myEnclosingControlFlow_p;
+  } 
+
+  void 
+  ReversibleControlFlowGraphVertex::setEnclosingControlFlow(ReversibleControlFlowGraphVertex& theEnclosingControlFlow) { 
+    if (myEnclosingControlFlow_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setEnclosingControlFlow: already set")
+    if (!(myEnclosingControlFlow_p && myEnclosingControlFlow_p!=&theEnclosingControlFlow) )
+      myEnclosingControlFlow_p=&theEnclosingControlFlow;	
   } 
 
   bool ReversibleControlFlowGraphVertex::simpleCountUp() const { 

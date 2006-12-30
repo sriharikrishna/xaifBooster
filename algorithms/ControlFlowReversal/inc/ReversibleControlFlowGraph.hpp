@@ -207,7 +207,8 @@ namespace xaifBoosterControlFlowReversal {
 				    int&,
 				    std::stack<ReversibleControlFlowGraphVertex*>&,
 				    ForLoopReversalType::ForLoopReversalType_E aReversalType,
-				    ReversibleControlFlowGraphVertex* aTopExplicitLoopVertex_p);
+				    ReversibleControlFlowGraphVertex* aTopExplicitLoopVertex_p,
+				    ReversibleControlFlowGraphVertex* enclosingControlFlowVertex_p);
 
     /** 
      * top down topological sort
