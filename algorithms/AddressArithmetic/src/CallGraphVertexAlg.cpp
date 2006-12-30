@@ -408,23 +408,25 @@ namespace xaifBoosterAddressArithmetic {
     }
     // we are done pushing everything 
     // and now we can create the corresponding pops in reverse order:
-        xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexIterator 
-	  aReversibleControlFlowGraphVertex2I(aReversibleControlFlowGraphVertexBeginI);
+    xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexIterator 
+      aReversibleControlFlowGraphVertex2I(aReversibleControlFlowGraphVertexBeginI);
     for (;aReversibleControlFlowGraphVertex2I!=aReversibleControlFlowGraphVertexEndI ;++aReversibleControlFlowGraphVertex2I) {
       if ((*aReversibleControlFlowGraphVertex2I).getReversalType()==ForLoopReversalType::EXPLICIT
 	  && 
-	  (*aReversibleControlFlowGraphVertex2I).hasStorePlaceholder()) { 
+	  (*aReversibleControlFlowGraphVertex2I).hasStorePlaceholder()
+	  && 
+	  // we don't do BASICBLOCKS because all things are supposed to be covered by control flow vertices 
+	  (*aReversibleControlFlowGraphVertex2I).getKind()!=xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::BASICBLOCK) { 
 	// the push block	
 	BasicBlock& aPushBasicBlock(dynamic_cast<BasicBlock&>((*aReversibleControlFlowGraphVertex2I).getStorePlaceholder().getNewVertex()));
-	// find the corresponding restore block
-	// by going to the counterpart node, finding its equivalent node in the adjoint graph 
-	// and getting that node's restore placeholder: 
-	xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theCounterPart((*aReversibleControlFlowGraphVertex2I).getCounterPart());
 	xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList& theOriginalReverseVertexPPairList(getTapingControlFlowGraph().getOriginalReverseVertexPPairList());
 	for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::VertexPPairList::iterator aVertexPPairListI=theOriginalReverseVertexPPairList.begin();
 	   aVertexPPairListI!=theOriginalReverseVertexPPairList.end();
 	   ++aVertexPPairListI) { 
-	  if ((*aVertexPPairListI).first==&theCounterPart) { 
+	  // find the corresponding restore block
+	  // by going to the counterpart node, finding its equivalent node in the adjoint graph 
+	  // and getting that node's restore placeholder: 
+	  if ((*aVertexPPairListI).first==&((*aReversibleControlFlowGraphVertex2I).getCounterPart())) { 
 	    // the pop block
 	    BasicBlock& aPopBasicBlock(dynamic_cast<BasicBlock&>((*aVertexPPairListI).second->getRestorePlaceholder().getNewVertex()));
 	    BasicBlock::BasicBlockElementList::const_reverse_iterator pushIteratorEnd=aPushBasicBlock.getBasicBlockElementList().rend();

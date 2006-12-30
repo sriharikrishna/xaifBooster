@@ -156,6 +156,12 @@ namespace xaifBoosterControlFlowReversal {
 
     void setRestorePlaceholder(ReversibleControlFlowGraphVertex& theRestorePlaceholder);
 
+    bool hasEnclosingControlFlow() const;
+
+    ReversibleControlFlowGraphVertex& getEnclosingControlFlow();
+
+    void setEnclosingControlFlow(ReversibleControlFlowGraphVertex& theEnclosingControlFlow);
+
     /**
      * for explicitly reversible for loops
      * guess the count direction
@@ -266,6 +272,14 @@ namespace xaifBoosterControlFlowReversal {
      * the dtor
      */ 
     ReversibleControlFlowGraphVertex* myRestorePlaceholder_p;
+
+    /** 
+     * pointer to the enclosing Loop or Branch vertex
+     * if it exists; only set for original vertices
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */ 
+    ReversibleControlFlowGraphVertex* myEnclosingControlFlow_p;
    
   };  // end of class
 
