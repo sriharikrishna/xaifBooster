@@ -75,14 +75,27 @@ namespace xaifBoosterAddressArithmetic {
 	    !isQuasiConstant(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable())) { 
 	  // check that we don't have redefinitions within the same scope
 	  // if we are in an index use
-	  if (!thisIsCF && definesUnderControlFlowGraphVertex(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),
-							      theContainingVertex.getOriginalVertex())) { 
-	    THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInExpression: index variable "
-				       << dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
-				       << " redefined in same block in  "
-				       << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
+	  if (!thisIsCF) { 
+	    if (theContainingVertex.hasEnclosingControlFlow()) { 
+	      if (definesUnderControlFlowGraphVertex(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),
+						     theContainingVertex.getEnclosingControlFlow().getOriginalVertex())) { 
+		THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInExpression: index variable "
+					   << dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+					   << " redefined under the enclosing control flow vertex "
+					   << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
+	      }
+	    }
+	    else { 
+	      if (definesUnderControlFlowGraphVertex(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),
+						     theContainingVertex.getOriginalVertex())) { 
+		THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInExpression: index variable "
+					   << dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+					   << " redefined in same block in  "
+					   << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
+	      }
+	    }
 	  }
-	  // see if it is locally redefined
+	  // see if it is redefined under the top level loop
 	  locallyRedefined=(definesUnderControlFlowGraphVertex(dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable(),theContainingVertex.getTopExplicitLoop().getOriginalVertex())>0);
 	  // try to find it in theUnknownVariables
 	  foundIt=false;
