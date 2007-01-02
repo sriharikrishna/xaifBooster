@@ -486,11 +486,11 @@ namespace xaifBoosterControlFlowReversal {
 	for (;beginItie!=endItie ;++beginItie) ieil.push_back(beginItie);
 	std::list<InEdgeIterator>::iterator ieilIt;
 	for (ieilIt=ieil.begin();ieilIt!=ieil.end();++ieilIt) {
-	  if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) 
-	    GraphVizDisplay::show(*this,
-				  "storeConstruction", 
-				  ReversibleControlFlowGraphVertexLabelWriter(*this),
-				  ReversibleControlFlowGraphEdgeLabelWriter(*this));
+// 	  if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) 
+// 	    GraphVizDisplay::show(*this,
+// 				  "storeConstruction", 
+// 				  ReversibleControlFlowGraphVertexLabelWriter(*this),
+// 				  ReversibleControlFlowGraphEdgeLabelWriter(*this));
 	  if (&((*the_mySortedVertices_p_l_it)->getCounterPart())!=&(getSourceOf(*(*ieilIt)))) {
 	    // this is not the inedge from the corresponding ENDLOOP
 	    BasicBlock& theBasicBlock_r(dynamic_cast<BasicBlock&>(insertBasicBlock(getSourceOf(*(*ieilIt)),
