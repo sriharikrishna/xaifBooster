@@ -802,8 +802,6 @@ namespace xaifBoosterControlFlowReversal {
     theCurrentVertex_r.setReversalType(aReversalType);
     if (aTopExplicitLoopVertex_p)
       theCurrentVertex_r.setTopExplicitLoop(*aTopExplicitLoopVertex_p);
-    if (enclosingControlFlowVertex_p)
-      theCurrentVertex_r.setEnclosingControlFlow(*enclosingControlFlowVertex_p);
     mySortedVertices_p_l.push_back(&theCurrentVertex_r);
     // return if ENDLOOP
     if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::ENDLOOP) { 
@@ -814,8 +812,12 @@ namespace xaifBoosterControlFlowReversal {
       theCounterPart.setCounterPart(theCurrentVertex_r);
       theCurrentVertex_r.setCounterPart(theCounterPart);
       theCurrentVertex_r.inheritLoopVariables(theCounterPart);
+      if (theCounterPart.hasEnclosingControlFlow())
+	theCurrentVertex_r.setEnclosingControlFlow(theCounterPart.getEnclosingControlFlow());
       return;
     }
+    if (enclosingControlFlowVertex_p)
+      theCurrentVertex_r.setEnclosingControlFlow(*enclosingControlFlowVertex_p);
     inheritLoopVariables(aReversalType,theCurrentVertex_r);
     // for loops make sure that loop body is tranversed first
     if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::PRELOOP||theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::FORLOOP) {
@@ -889,17 +891,18 @@ namespace xaifBoosterControlFlowReversal {
       if (aReversalType==ForLoopReversalType::EXPLICIT) { 
 	the_endBranch_p->setTopExplicitLoop(theCurrentVertex_r.getTopExplicitLoop());
       }
+      if (enclosingControlFlowVertex_p)
+	the_endBranch_p->setEnclosingControlFlow(*enclosingControlFlowVertex_p);
       theCurrentVertex_r.setCounterPart(*the_endBranch_p);
       mySortedVertices_p_l.push_back(the_endBranch_p);
       // sort successor  
       OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(*(the_endBranch_p)));
-      ReversibleControlFlowGraphVertex* aNewEnclosingControlFlowVertex_p=&theCurrentVertex_r;
       topologicalSortRecursively(getTargetOf(*(theCurrentVertex_oeip.first)),
  				 idx,
  				 endNodes_p_s_r,
  				 aReversalType,
  				 aTopExplicitLoopVertex_p,
-				 aNewEnclosingControlFlowVertex_p); 
+				 enclosingControlFlowVertex_p); 
     }
   }
 
