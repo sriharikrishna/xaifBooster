@@ -151,6 +151,11 @@ else
     TESTFILES=$@
   fi
 fi
+# expand single command line argument with wildcards: 
+if [ $# -eq 1 -a ! -d "examples/$1" ] 
+then 
+  TESTFILES=`ls -d examples/$1 | grep -v CVS | sed 's/examples\///'`
+fi
 for i in `echo ${TESTFILES}`
 do 
   if [ "$allOkSoFar" == "false" ] 
