@@ -102,7 +102,9 @@ namespace xaifBoosterControlFlowReversal {
     BasicBlockAlg operator=(const BasicBlockAlg&);
 
     /** 
-     * reversal type 
+     * this reversal type should always be in sync 
+     * with the reversal type determined through the associated 
+     * ReversibleControlFlowGraphVertex
      */
     ForLoopReversalType::ForLoopReversalType_E myReversalType;
 
