@@ -189,6 +189,16 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	  theReplacement.setReversibleControlFlowGraph(getAdjointControlFlowGraph());
 	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
 	break;
+      case ReplacementId::STRICTANONYMOUSTAPING:
+	if (hasStrictAnonymousTapingControlFlowGraph())
+	  theReplacement.setReversibleControlFlowGraph(getStrictAnonymousTapingControlFlowGraph());
+	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::AUGMENTED);
+	break;
+      case ReplacementId::STRICTANONYMOUSADJOINT:
+	if (hasStrictAnonymousAdjointControlFlowGraph())
+	  theReplacement.setReversibleControlFlowGraph(getStrictAnonymousAdjointControlFlowGraph());
+	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
+	break;
       case ReplacementId::STOREARGUMENT: { 
 	theReplacement.setControlFlowGraphBase(*myCFGStoreArguments_p);
 	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreArguments_p));
