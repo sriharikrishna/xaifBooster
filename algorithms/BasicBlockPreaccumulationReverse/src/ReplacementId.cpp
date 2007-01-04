@@ -68,20 +68,33 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       break;
     case TAPING: 
       returnString="TAPING";
+      break;
     case ADJOINT: 
       returnString="ADJOINT";
+      break;
     case STOREARGUMENT: 
       returnString="STOREARGUMENT";
+      break;
     case STORERESULT: 
       returnString="STORERESULT";
+      break;
     case RESTOREARGUMENT: 
       returnString="RESTOREARGUMENT";
+      break;
     case RESTORERESULT: 
       returnString="RESTORERESULT";
+      break;
     case STORETIMESTEPARGUMENT: 
       returnString="STORETIMESTEPARGUMENT";
+      break;
     case RESTORETIMESTEPARGUMENT: 
       returnString="RESTORETIMESTEPARGUMENT";
+      break;
+    case STRICTANONYMOUSTAPING: 
+      returnString="STRICTANONYMOUSTAPING";
+      break;
+    case STRICTANONYMOUSADJOINT: 
+      returnString="STRICTANONYMOUSADJOINT";
       break;
     default: 
       throw PrintingIntException("ReplacementId::toString: unknown value",aKind);
@@ -111,6 +124,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       returnValue=STORETIMESTEPARGUMENT;
     else if (aName=="RESTORETIMESTEPARGUMENT")
       returnValue=RESTORETIMESTEPARGUMENT;
+    else if (aName=="STRICTANONYMOUSTAPING")
+      returnValue=STRICTANONYMOUSTAPING;
+    else if (aName=="STRICTANONYMOUSADJOINT")
+      returnValue=STRICTANONYMOUSADJOINT;
     else  
       THROW_LOGICEXCEPTION_MACRO("ReplacementId::fromString: unknown value >"
 			   << aName.c_str() << "<");
@@ -122,7 +139,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   } 
 
   bool ReplacementId::atEnd() {
-    return (myCurrent>RESTORETIMESTEPARGUMENT);
+    return (myCurrent>STRICTANONYMOUSADJOINT);
   } 
 
   ReplacementId::ReplacementId_E ReplacementId::operator*() const { 
