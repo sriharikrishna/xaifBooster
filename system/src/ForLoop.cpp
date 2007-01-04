@@ -61,10 +61,10 @@ namespace xaifBooster {
 
   const std::string ForLoop::our_myId_XAIFName("vertex_id");
 
-  ForLoop::ForLoop(const ForLoopReversalType::ForLoopReversalType_E theReversalType) : 
+  ForLoop::ForLoop(const ForLoopReversalType::ForLoopReversalType_E theUserReversalType) : 
     myInitialization(true),
     myUpdate(true),
-    myReversalType(theReversalType){ 
+    myUserReversalType(theUserReversalType){ 
      myControlFlowGraphVertexAlgBase_p=ForLoopAlgFactory::instance()->makeNewAlg(*this);
   }
                                                                                 
@@ -89,7 +89,7 @@ namespace xaifBooster {
        << "\" " 
        << ForLoopReversalType::our_attribute_XAIFName.c_str() 
        << "=\""
-       << ForLoopReversalType::toString(myReversalType).c_str()
+       << ForLoopReversalType::toString(myUserReversalType).c_str()
        << "\">" 
        << std::endl;
     myInitialization.printXMLHierarchy(os);
@@ -143,8 +143,8 @@ namespace xaifBooster {
     return dynamic_cast<ForLoopAlgBase&>(*myControlFlowGraphVertexAlgBase_p);
   }
 
-  ForLoopReversalType::ForLoopReversalType_E ForLoop::getReversalType() const { 
-    return myReversalType;
+  ForLoopReversalType::ForLoopReversalType_E ForLoop::getUserReversalType() const { 
+    return myUserReversalType;
   }
 
   bool 

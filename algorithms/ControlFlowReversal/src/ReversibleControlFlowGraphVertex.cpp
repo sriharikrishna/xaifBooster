@@ -94,9 +94,9 @@ namespace xaifBoosterControlFlowReversal {
     myStorePlaceholder_p(0),
     myRestorePlaceholder_p(0),
     myEnclosingControlFlow_p(0) {
-    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theOriginal->getControlFlowGraphVertexAlgBase()).getKind();
-    if (theKind==ControlFlowGraphVertexAlg::FORLOOP)
-      myReversalType=dynamic_cast<const ForLoop*>(theOriginal)->getReversalType();
+//    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theOriginal->getControlFlowGraphVertexAlgBase()).getKind();
+//     if (theKind==ControlFlowGraphVertexAlg::FORLOOP)
+//       myReversalType=dynamic_cast<const ForLoop*>(theOriginal)->getReversalType();
   }
 
   ReversibleControlFlowGraphVertex::~ReversibleControlFlowGraphVertex() {

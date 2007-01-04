@@ -71,7 +71,7 @@ namespace xaifBooster {
 		  public ObjectWithLineNumber {
   public:
 
-    ForLoop(const ForLoopReversalType::ForLoopReversalType_E theReversalType);
+    ForLoop(const ForLoopReversalType::ForLoopReversalType_E theUserReversalType);
 
     ~ForLoop();
 
@@ -112,7 +112,7 @@ namespace xaifBooster {
      */
     ForLoopAlgBase& getForLoopAlgBase() const;
 
-    ForLoopReversalType::ForLoopReversalType_E getReversalType() const; 
+    ForLoopReversalType::ForLoopReversalType_E getUserReversalType() const; 
 
     virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
 
@@ -147,7 +147,7 @@ namespace xaifBooster {
      * the reversal option as specified by 
      * a user directive
      */
-    const ForLoopReversalType::ForLoopReversalType_E myReversalType;
+    const ForLoopReversalType::ForLoopReversalType_E myUserReversalType;
 
   };
  

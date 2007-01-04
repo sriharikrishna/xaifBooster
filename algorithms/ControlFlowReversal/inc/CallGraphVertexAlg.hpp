@@ -91,6 +91,14 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraph& getAdjointControlFlowGraph();
     const ReversibleControlFlowGraph& getAdjointControlFlowGraph() const;
 
+    bool hasStrictAnonymousTapingControlFlowGraph() const;
+    ReversibleControlFlowGraph& getStrictAnonymousTapingControlFlowGraph();
+    const ReversibleControlFlowGraph& getStrictAnonymousTapingControlFlowGraph() const;
+ 
+    bool hasStrictAnonymousAdjointControlFlowGraph() const;
+    ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph();
+    const ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph() const;
+
   private:
     
     /** 
@@ -126,11 +134,11 @@ namespace xaifBoosterControlFlowReversal {
     /**
      * CFG copy that tapes for strictly anonymous reversal 
      */
-    ReversibleControlFlowGraph* myAnonymousTapingControlFlowGraph_p;
+    ReversibleControlFlowGraph* myStrictAnonymousTapingControlFlowGraph_p;
     /**
      * CFG copy that performs strictly anonymous reversal 
      */
-    ReversibleControlFlowGraph* myAnonymousAdjointControlFlowGraph_p;
+    ReversibleControlFlowGraph* myStrictAnonymousAdjointControlFlowGraph_p;
 
   };  // end of class
 
