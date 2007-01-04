@@ -77,7 +77,8 @@ using namespace xaifBooster;
 namespace xaifBoosterControlFlowReversal { 
 
   ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal_r) : 
-    myOriginalGraph_r(theOriginal_r) {
+    myOriginalGraph_r(theOriginal_r),
+    myRetainUserReversalFlag(true) {
   }
 
   class ReversibleControlFlowGraphVertexLabelWriter {
@@ -827,8 +828,10 @@ namespace xaifBoosterControlFlowReversal {
       // we only require explicit reversal to be specified at the top loop 
       // construct and have to hand it down to all sub graphs
       if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexAlg::FORLOOP 
-	  && 
-	  dynamic_cast<const ForLoop&>(theCurrentVertex_r.getOriginalVertex()).getReversalType()==ForLoopReversalType::EXPLICIT
+	  &&
+	  myRetainUserReversalFlag
+	  &&
+	  dynamic_cast<const ForLoop&>(theCurrentVertex_r.getOriginalVertex()).getUserReversalType()==ForLoopReversalType::EXPLICIT
 	  && 
 	  !aNewTopExplicitLoopVertex_p) { 
 	aNewReversalType=ForLoopReversalType::EXPLICIT;
@@ -1362,14 +1365,6 @@ namespace xaifBoosterControlFlowReversal {
 	}
       }
     }
-
-    //     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-    //       GraphVizDisplay::show(theAdjointControlFlowGraph_r,
-    //      			    "adjoint_beforeEntryMark", 
-    //      			    ReversibleControlFlowGraphVertexLabelWriter(theAdjointControlFlowGraph_r),
-    //      			    ReversibleControlFlowGraphEdgeLabelWriter(theAdjointControlFlowGraph_r));
-    //     }
-    //     theAdjointControlFlowGraph_r.markBranchEntryEdges(); 
   }
 
   void ReversibleControlFlowGraph::printXMLHierarchy(std::ostream& os) const {
@@ -1656,6 +1651,10 @@ namespace xaifBoosterControlFlowReversal {
 
   const ReversibleControlFlowGraph::VertexPPairList& ReversibleControlFlowGraph::getOriginalReverseVertexPPairList() const { 
     return myOriginalReverseVertexPPairList; 
+  } 
+
+  void ReversibleControlFlowGraph::donotRetainUserReversalFlag() { 
+    myRetainUserReversalFlag=false;
   } 
 
 } // end of namespace

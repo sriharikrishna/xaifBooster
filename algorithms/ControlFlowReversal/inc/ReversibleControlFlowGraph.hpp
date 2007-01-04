@@ -121,6 +121,8 @@ namespace xaifBoosterControlFlowReversal {
 
     const VertexPPairList& getOriginalReverseVertexPPairList() const;
 
+    void donotRetainUserReversalFlag(); 
+
   private:
 
     /** 
@@ -333,6 +335,15 @@ namespace xaifBoosterControlFlowReversal {
      */
     void inheritLoopVariables(ForLoopReversalType::ForLoopReversalType_E aReversalType,
  			      ReversibleControlFlowGraphVertex& theCurrentVertex_r);
+
+
+    /**
+     * a flag indicating whether the user specifications
+     * regarding loop reversal should be retained or 
+     * if we should ignore them forcing anonymous reversal 
+     * throughout
+     */
+    bool myRetainUserReversalFlag;
 
   };  // end of class
 
