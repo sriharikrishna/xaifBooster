@@ -81,8 +81,9 @@ namespace xaifBoosterAddressArithmetic {
 						     theContainingVertex.getEnclosingControlFlow().getOriginalVertex())) { 
 		THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInExpression: index variable "
 					   << dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
-					   << " redefined under the enclosing control flow vertex "
-					   << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
+					   << " redefined in "
+					   << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
+					   << " under the enclosing control flow vertex");
 	      }
 	    }
 	    else { 
@@ -90,7 +91,7 @@ namespace xaifBoosterAddressArithmetic {
 						     theContainingVertex.getOriginalVertex())) { 
 		THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInExpression: index variable "
 					   << dynamic_cast<const Argument&>(*anExpressionVertexI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
-					   << " redefined in same block in  "
+					   << " redefined in same block in routine "
 					   << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
 	      }
 	    }
