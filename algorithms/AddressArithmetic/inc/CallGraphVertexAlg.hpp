@@ -109,7 +109,7 @@ namespace xaifBoosterAddressArithmetic {
     typedef std::list<UnknownVarInfo> UnknownVarInfoList;
 
     /** 
-     * FIND variables used in anExpression that 
+     * find variables used in anExpression that 
      * do not occur in theKnownVariables and 
      * put them in the theUnknownVariables
      */
@@ -118,6 +118,26 @@ namespace xaifBoosterAddressArithmetic {
 					  UnknownVarInfoList& theUnknownVariables,
 					  bool thisIsCF,
 					  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
+
+    /** 
+     * find variables used in anExpressionVertex that 
+     * do not occur in theKnownVariables and 
+     * put them in the theUnknownVariables
+     */
+    void findUnknownVariablesInExpressionVertex(const ExpressionVertex& anExpressionVertex,
+						const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+						UnknownVarInfoList& theUnknownVariables,
+						bool thisIsCF,
+						xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
+
+    /** 
+     * find variables used in anArrayAccess
+     */
+    void findUnknownVariablesInArrayAccess(const ArrayAccess& anArrayAccess,
+					   const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+					   UnknownVarInfoList& theUnknownVariables,
+					   bool thisIsCF,
+					   xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
 
     /** 
      * find variables used in index expressions
