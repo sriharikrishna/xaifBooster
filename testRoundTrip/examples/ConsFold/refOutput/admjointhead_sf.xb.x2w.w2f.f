@@ -1,5 +1,9 @@
 C ***********************************************************
+<<<<<<< /sandbox/ikarlin/bin2/OpenAD/xaifBooster_karlin_new/xaifBooster/testRoundTrip/examples/ConsFold/refOutput/admjointhead_sf.xb.x2w.w2f.f
+C Fortran file translated from WHIRL Wed Oct 18 22:39:53 2006
+=======
 C Fortran file translated from WHIRL Fri Nov 10 16:29:49 2006
+>>>>>>> /tmp/admjointhead_sf.xb.x2w.w2f.f~other.xRB8cD
 C ***********************************************************
 C ***********************************************************
 
@@ -52,7 +56,7 @@ C
       TYPE (OpenADTy_active) T6
       TYPE (OpenADTy_active) T7
       TYPE (OpenADTy_active) Y1
-      REAL(w2f__8) OpenAD_Symbol_24
+      REAL(w2f__8) OpenAD_Symbol_40
 C
 C     **** Top Level Pragmas ****
 C
@@ -108,9 +112,9 @@ C     $OpenAD$ INLINE push(subst)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
-      CALL Pop(OpenAD_Symbol_24)
+      CALL Pop(OpenAD_Symbol_40)
 C     $OpenAD$ INLINE Saxpy(subst,subst,subst)
-      CALL Saxpy(OpenAD_Symbol_24, __deriv__(Y(1)), __deriv__(
+      CALL Saxpy(OpenAD_Symbol_40, __deriv__(Y(1)), __deriv__(
      > OpenAD_Symbol_23))
 C     $OpenAD$ INLINE ZeroDeriv(subst)
       CALL ZeroDeriv(__deriv__(Y(1)))
