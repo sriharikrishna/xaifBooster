@@ -1,5 +1,9 @@
 C ***********************************************************
+<<<<<<< /sandbox/ikarlin/bin2/OpenAD/xaifBooster_karlin_new/xaifBooster/testRoundTrip/examples/boxmodel/refOutput/admjointhead_sf.xb.x2w.w2f.f
+C Fortran file translated from WHIRL Wed Oct 18 22:44:21 2006
+=======
 C Fortran file translated from WHIRL Fri Nov 10 16:28:33 2006
+>>>>>>> /tmp/admjointhead_sf.xb.x2w.w2f.f~other.zfAQql
 C ***********************************************************
 C ***********************************************************
 

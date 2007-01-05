@@ -83,6 +83,7 @@ void Usage(char** argv) {
 	    << "             [-r] force renaming of all non-external routines" << std::endl
             << "             [-a] dynamically choose graph elimination algorithm" << std::endl
 	    << "             [-C] turn on runtime counters"  << std::endl
+	    << "             [-x] use scarce algorithm" << std:endl
 	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
 
@@ -95,7 +96,7 @@ int main(int argc,char** argv) {
   // to contain the namespace url in case of -s having a schema location
   std::string aUrl;
   try { 
-    CommandLineParser::instance()->initialize("aiocCdgsSnwr",argc,argv);
+    CommandLineParser::instance()->initialize("aiocCdgsSnwrx",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -116,9 +117,10 @@ int main(int argc,char** argv) {
       xaifBoosterLinearization::ControlFlowGraphAlg::setForceNonExternalRenames();
     if (CommandLineParser::instance()->isSet('a'))
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
-    if (CommandLineParser::instance()->isSet('C')) {
+    if (CommandLineParser::instance()->isSet('C')) 
      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
-    }
+    if (CommandLineParser::instance()->isSet('x')) 
+     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setScarce();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());

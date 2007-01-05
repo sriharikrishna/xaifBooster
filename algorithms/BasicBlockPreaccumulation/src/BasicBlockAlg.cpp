@@ -108,6 +108,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   bool BasicBlockAlg::chooseAlg=false;
+  bool BasicBlockAlg::useScarce=false;
   bool BasicBlockAlg::runtimeCounters=false;
 
   PreaccumulationLevel::PreaccumulationLevel_E BasicBlockAlg::ourPreaccumulationLevel(PreaccumulationLevel::PICK_BEST);
@@ -705,6 +706,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg1Test;
         xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg2Test;
         xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg3Test;
+        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg4Test;
         //Counters for both count of best algorithm and current algorithm
 	Counter min;
 	Counter current;
@@ -741,9 +743,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      min = current;
 	    }
 	  }
+	  if(useScarce)
+          {
+	    ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_sparce; //Set algorithm
+	    (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg4Test); //Run algorithm
+	    countOperations(alg4Test, current); //Count algorithm
+	    //debugging statements
+	    DBG_MACRO(DbgGroup::METRIC, "LSA Sparce elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
+	    //Was current algorithm better than old algorithm
+	      best = &alg4Test; //If better store new algorithm results
 	  //add flattened sequences together
-	  aSequenceHolder.myBasicBlockOperations = aSequenceHolder.myBasicBlockOperations + min; 
-	  current.reset(); //reset counter just in case
+	    aSequenceHolder.myBasicBlockOperations = aSequenceHolder.myBasicBlockOperations + min; 
+	    current.reset(); //reset counter just in case
 	}
 	catch(...) { 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
@@ -1302,6 +1313,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::setRuntimeCounters(){
     runtimeCounters = true;
+  }
+
+  void BasicBlockAlg::setScarce()
+    useScarce = true;
   }
 
   BasicBlockAlg::SequenceHolder& BasicBlockAlg::getSequenceHolder(bool flattenFlag) { 
