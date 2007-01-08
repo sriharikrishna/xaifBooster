@@ -1,5 +1,3 @@
-#ifndef _DIMENSIONBOUNDS_INCLUDE_
-#define _DIMENSIONBOUNDS_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,74 +50,39 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/system/inc/IndexOrder.hpp"
 
 namespace xaifBooster { 
+  
+  std::string IndexOrder::toString(const IndexOrder_E& anOrder)
+    throw (PrintingIntException) { 
+    std::string returnString;
+    switch(anOrder) {
+    case ROWMAJOR:
+      returnString="rowmajor";
+      break;
+    case COLUMNMAJOR:
+      returnString="columnmajor";
+      break;
+    default: 
+      throw PrintingIntException("IndexOrder::toString: unknown value",anOrder);
+      break;
+    } // end switch
+    return returnString;
+  } // end of std::string IndexOrder::toString
 
-  /** 
-   * DimensionBounds for a single dimension of vectors
-   * matrices, etc.
-   */
-  class DimensionBounds : public XMLPrintable {
-  public:
-
-    DimensionBounds (int aLower, 
-		     int anUpper);
-
-    ~DimensionBounds(){};
-
-    /**
-     * print XML hierarchy
-     */
-    void printXMLHierarchy(std::ostream& os) const;
-
-    /**
-     * print debug information
-     */
-    std::string debug() const ;
-
-    /**
-     * name as specified in XAIF schema
-     */
-    static const std::string ourXAIFName;
-
-    /**
-     * name for myLower as specified in XAIF schema
-     */
-    static const std::string our_myLower_XAIFName;
-
-    /**
-     * name for myUpper as specified in XAIF schema
-     */
-    static const std::string our_myUpper_XAIFName;
-
-    int getLower()const;
-    int getUpper()const;
-
-    static IndexOrder::IndexOrder_E getIndexOrder();
-
-  private: 
-
-    /** 
-     * no def
-     */
-    DimensionBounds ();
-
-    const int myLower;
-
-    const int myUpper;
-
-    /**
-     * eventually we should control this either 
-     * through a command line flag or an
-     * xaif attribute
-     */
-    static IndexOrder::IndexOrder_E ourIndexOrder;
-
-  }; // end of class DimensionBounds
- 
+  const IndexOrder::IndexOrder_E
+  IndexOrder::fromString(const std::string& aName) { 
+    IndexOrder_E returnValue;
+    if (aName=="rowmajor")
+      returnValue=ROWMAJOR;
+    else if (aName=="columnmajor")
+      returnValue=COLUMNMAJOR;
+    else  
+      THROW_LOGICEXCEPTION_MACRO("IndexOrder::fromString: unknown value >"
+			   << aName.c_str() << "<");
+    return returnValue;
+  } // end of std::string IndexOrder::fromString
+  
 } // end of namespace xaifBooster
-                                                                     
-#endif
