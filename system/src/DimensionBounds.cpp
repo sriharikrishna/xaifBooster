@@ -62,6 +62,8 @@ namespace xaifBooster {
 
   const std::string DimensionBounds::our_myUpper_XAIFName("upper");
 
+  IndexOrder::IndexOrder_E DimensionBounds::ourIndexOrder(IndexOrder::COLUMNMAJOR);
+
   DimensionBounds::DimensionBounds(int aLower,
 				   int anUpper) : 
     myLower(aLower),
@@ -101,6 +103,10 @@ namespace xaifBooster {
   
   int DimensionBounds::getUpper()const {
     return myUpper;
+  }
+  
+  IndexOrder::IndexOrder_E DimensionBounds::getIndexOrder() {
+    return ourIndexOrder;
   }
 
 } // end of namespace xaifBooster 
