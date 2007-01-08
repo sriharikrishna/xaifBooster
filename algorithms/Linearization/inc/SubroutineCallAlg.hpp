@@ -158,6 +158,7 @@ namespace xaifBoosterLinearization {
 
     std::string giveCallName(bool concreteArgumentActive,
 			     const SymbolReference &aTempSymbolReference,
+			     unsigned int missingDimensions,
 			     bool prior) const ;
     /**
      * if forcePassive then we create a passive type, 
@@ -167,6 +168,7 @@ namespace xaifBoosterLinearization {
 			const Symbol& formalArgumentSymbol,
 			const Scope& formalArgumentScope,
 			Variable& aVariable,
+			int formalMinusConcreteDims,
 			bool forcePassive); 
 
     /** 
