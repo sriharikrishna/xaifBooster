@@ -107,4 +107,20 @@ namespace xaifBooster {
     return returnValue;
   } // end of std::string SymbolShape::fromString
   
+  int SymbolShape::difference(const SymbolShape::SymbolShape_E& oneShape, 
+			      const SymbolShape::SymbolShape_E& minusTheOtherShape) { 
+    return oneShape-minusTheOtherShape;
+  } 
+
+  const SymbolShape::SymbolShape_E SymbolShape::lesserShape(const SymbolShape::SymbolShape_E& aShape, 
+							    unsigned int lesserBy) { 
+    if ((aShape-lesserBy)<0)
+      THROW_LOGICEXCEPTION_MACRO("SymbolShape::lesserShape: no shape for inputs "
+				 << toString(aShape).c_str()
+				 << " and  lesserBy="
+				 << lesserBy);
+    
+    return (SymbolShape_E)(aShape-lesserBy);
+  }
+  
 } // end of namespace xaifBooster

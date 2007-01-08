@@ -75,7 +75,21 @@ public:
     
     static const std::string our_attribute_XAIFName;
 
+    /**
+     * this is the result of 
+     * oneShape-minusTheOtherShape
+     */
+    static int difference(const SymbolShape_E& oneShape, 
+			  const SymbolShape_E& minusTheOtherShape);
+
+    /**
+     * the shape that is lesser than aShape by lesserBy
+     */
+    static const SymbolShape_E lesserShape(const SymbolShape_E& aShape, 
+					   unsigned int lesserBy);
+
   }; // end of class SymbolShape
+
 } // end of namespace xaifBooster
                                                                      
 #endif
