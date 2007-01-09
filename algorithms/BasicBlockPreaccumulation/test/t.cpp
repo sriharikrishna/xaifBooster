@@ -83,7 +83,7 @@ void Usage(char** argv) {
 	    << "             [-r] force renaming of all non-external routines" << std::endl
             << "             [-a] dynamically choose graph elimination algorithm" << std::endl
 	    << "             [-C] turn on runtime counters"  << std::endl
-	    << "             [-x] use scarce algorithm" << std:endl
+	    << "             [-x] use scarce algorithm" << std::endl
 	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
 
