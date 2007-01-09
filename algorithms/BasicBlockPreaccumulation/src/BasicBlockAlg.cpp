@@ -745,7 +745,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  }
 	  if(useScarce)
           {
-	    ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_sparce; //Set algorithm
+	    //ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_sparce; //Set algorithm
 	    (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg4Test); //Run algorithm
 	    countOperations(alg4Test, current); //Count algorithm
 	    //debugging statements
@@ -755,6 +755,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  //add flattened sequences together
 	    aSequenceHolder.myBasicBlockOperations = aSequenceHolder.myBasicBlockOperations + min; 
 	    current.reset(); //reset counter just in case
+	  }
 	}
 	catch(...) { 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
@@ -1315,7 +1316,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     runtimeCounters = true;
   }
 
-  void BasicBlockAlg::setScarce()
+  void BasicBlockAlg::setScarce(){
     useScarce = true;
   }
 

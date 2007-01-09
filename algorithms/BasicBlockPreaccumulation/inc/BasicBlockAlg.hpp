@@ -128,6 +128,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static void setAllAlgorithms();
 
     /**
+     * Sets flag to run scarce algorithm if a flag is set.
+     */
+    static void setScarce();
+    
+    /**
      * Sets flag to insert runtime conuters into the code.
      */
     static void setRuntimeCounters();
@@ -177,6 +182,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;
 
     static bool chooseAlg;
+    static bool useScarce;
     static bool runtimeCounters; 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
     PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;
