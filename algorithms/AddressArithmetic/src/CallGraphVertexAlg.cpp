@@ -392,7 +392,10 @@ namespace xaifBoosterAddressArithmetic {
       theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
       break;
     case SymbolType::REAL_STYPE:
-      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
+      if (anUnknownVariable.getActiveFlag())
+	theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("apush");
+      else
+	theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
       break;
     case SymbolType::BOOL_STYPE:
       theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_b");
@@ -430,7 +433,10 @@ namespace xaifBoosterAddressArithmetic {
       theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i");
       break;
     case SymbolType::REAL_STYPE:
-      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop");
+      if (thePushedVariable.getActiveFlag())
+	theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("apop");
+      else
+	theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop");
       break;
     case SymbolType::BOOL_STYPE:
       theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_b");

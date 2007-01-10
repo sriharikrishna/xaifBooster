@@ -74,6 +74,27 @@ C $OpenAD$ END DECLS
           x=double_tape(double_tape_pointer)
         end subroutine
 
+        subroutine apush(x)
+C $OpenAD$ INLINE DECLS
+          use OpenAD_tape
+          implicit none
+          type(active) :: x
+C $OpenAD$ END DECLS
+          double_tape(double_tape_pointer)=x%v
+          double_tape_pointer=double_tape_pointer+1
+        end subroutine 
+
+
+        subroutine apop(x)
+C $OpenAD$ INLINE DECLS
+          use OpenAD_tape
+          implicit none
+          type(active)  :: x
+C $OpenAD$ END DECLS
+          double_tape_pointer=double_tape_pointer-1
+          x%v=double_tape(double_tape_pointer)
+        end subroutine
+
 
         subroutine push_i(x)
 C $OpenAD$ INLINE DECLS
