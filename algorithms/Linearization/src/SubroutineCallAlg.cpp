@@ -522,16 +522,20 @@ namespace xaifBoosterLinearization {
 						      (*li)->getUpper());
 	  }
 	  break;
-	case IndexOrder::COLUMNMAJOR: // fortran
-	  for (Symbol::DimensionBoundsPList::const_reverse_iterator li=aDimensionBoundsPList.rbegin();
-	       (li!=aDimensionBoundsPList.rend());
-	       ++li,++formalMinusConcreteDims) { 
-	    if (formalMinusConcreteDims>=0)
+	case IndexOrder::COLUMNMAJOR: { // fortran
+	  int usedDimensions=aDimensionBoundsPList.size()+formalMinusConcreteDims;
+	  // formalMinusConcreteDims is negative if we are supposed to use fewer dimensions 
+	  // of the concrete Argument.
+	  for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
+	       (li!=aDimensionBoundsPList.end());
+	       ++li,--usedDimensions) { 
+	    if (usedDimensions>0)
 	      // e.g. between the three-tensor vs vector the reduction is 2 so we skip over the 2 rightmost dimensions.
 	      theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
 						      (*li)->getUpper());
 	  }
 	  break;
+	}     
 	default:
 	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::makeTempSymbol: no logic for "
 				     << IndexOrder::toString(DimensionBounds::getIndexOrder()).c_str());
