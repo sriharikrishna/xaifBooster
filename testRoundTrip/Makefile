@@ -53,9 +53,18 @@
 ######################################################
 # pick your compiler
 ######################################################
-F95=ifort -check all -g -fpe0 -O0 -traceback 
-CC=icc
+FIXEDFORMAT=-ffixed-form
+FREEFORMAT=-ffree-form
+F95=gfortran -g -O0 
+CC=gcc
 
+#FIXEDFORMAT=-fixed
+#FREEFORMAT=-free
+#F95=ifort -check all -g -fpe0 -O0 -traceback 
+#CC=icc
+
+#FIXEDFORMAT=-fixed
+#FREEFORMAT=-free
 #F95=f95 -g -w=unused
 #CC=gcc
 ######################################################
@@ -152,10 +161,10 @@ mfef90:
 	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/crayf90/sgi/mfef90 .
 
 whirl2xaif xaif2whirl whirl2sexp sexp2whirl: 
-	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86-Linux/bin/$@ .
+	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86_64-Linux/bin/$@ .
 
 %.pl: 
-	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86-Linux/bin/$@ .
+	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86_64-Linux/bin/$@ .
 
 whirl2f whirl2f_be:
 	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
@@ -178,10 +187,10 @@ run: params.conf tmpOutput driver numericalComparison
 	./driver
 
 %.o:%.f
-	$(F95) -fixed -c $<
+	$(F95) $(FIXEDFORMAT) -c $<
 
 %.o:%.f90
-	$(F95) -free -c $<
+	$(F95) $(FREEFORMAT) -c $<
 
 ######################################################
 # miscellaneous
