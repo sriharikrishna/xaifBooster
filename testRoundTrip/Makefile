@@ -53,15 +53,20 @@
 ######################################################
 # pick your compiler
 ######################################################
-FIXEDFORMAT=-ffixed-form
-FREEFORMAT=-ffree-form
-F95=gfortran -g -O0 
-CC=gcc
+#FIXEDFORMAT=-ffixed-form
+#FREEFORMAT=-ffree-form
+#F95=g95 -g -O0 
+#CC=gcc
 
-#FIXEDFORMAT=-fixed
-#FREEFORMAT=-free
-#F95=ifort -check all -g -fpe0 -O0 -traceback 
-#CC=icc
+#FIXEDFORMAT=-ffixed-form
+#FREEFORMAT=-ffree-form
+#F95=gfortran -g -O0 
+#CC=gcc
+
+FIXEDFORMAT=-fixed
+FREEFORMAT=-free
+F95=ifort -check all -g -fpe0 -O0 -traceback 
+CC=icc
 
 #FIXEDFORMAT=-fixed
 #FREEFORMAT=-free
