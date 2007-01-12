@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERCONTROLFLOWREVERSAL_BASICBLOCKALG_INCLUDE_
-#define _XAIFBOOSTERCONTROLFLOWREVERSAL_BASICBLOCKALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,53 +50,20 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
-#include "xaifBooster/system/inc/BasicBlock.hpp"
-#include "xaifBooster/system/inc/ForLoopReversalType.hpp"
-
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
+#include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterControlFlowReversal {  
+namespace xaifBoosterAdjointUtils { 
 
-  /** 
-   * class to provide algorithm for BasicBlock
-   */
-  class BasicBlockAlg : virtual public BasicBlockAlgBase,
-			public ControlFlowGraphVertexAlg {
-  public:
-    
-    BasicBlockAlg(BasicBlock& theContaining);
-                                                                                
-    ~BasicBlockAlg();
+  ForLoopReversalType::ForLoopReversalType_E BasicBlockPrintVersion::ourPrintVersion=ForLoopReversalType::ANONYMOUS;
+  
+  void BasicBlockPrintVersion::set(ForLoopReversalType::ForLoopReversalType_E aReversalType) {
+    ourPrintVersion=aReversalType;
+  }
 
-    std::string debug() const;
+  ForLoopReversalType::ForLoopReversalType_E BasicBlockPrintVersion::get() { 
+    return ourPrintVersion;
+  } 
 
-    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E getKind() const {
-      return ControlFlowGraphVertexAlg::BASICBLOCK;
-    };
-
-  private:
-    
-    /** 
-     * no def
-     */
-    BasicBlockAlg();
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg(const BasicBlockAlg&);
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
-
-  };  // end of class
-
-} // end of namespace 
-                                                                     
-#endif
+} // end of namespace xaifBoosterAngelInterfaceAlgorithms 

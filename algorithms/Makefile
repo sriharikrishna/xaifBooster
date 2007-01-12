@@ -55,6 +55,7 @@ obj test doc clean:
 	cd InlinableXMLRepresentation && $(MAKE) $@
 	cd CodeReplacement && $(MAKE) $@
 	cd DerivativePropagator && $(MAKE) $@
+	cd AdjointUtils && $(MAKE) $@
 	cd Linearization && $(MAKE) $@
 	cd BasicBlockPreaccumulation && $(MAKE) $@
 	cd MemOpsTradeoffPreaccumulation && $(MAKE) $@

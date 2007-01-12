@@ -58,6 +58,8 @@
 #include "xaifBooster/system/inc/ForLoop.hpp"
 #include "xaifBooster/system/inc/BooleanOperation.hpp"
 
+#include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
+
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphVertex.hpp"
 
 using namespace xaifBooster;
@@ -141,10 +143,15 @@ namespace xaifBoosterControlFlowReversal {
       xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(aPrintVersion);
     }
     else {
+      // pick the right version since the 
+      // BasicBlockAlg objects have data for both:
+      xaifBoosterAdjointUtils::BasicBlockPrintVersion::set(myReversalType); 
       if (adjoint)
         myOriginalVertex_p->printXMLHierarchy(os);
       else
         myOriginalVertex_p->printXMLHierarchy(os);
+      // reset the print version to the default:
+      xaifBoosterAdjointUtils::BasicBlockPrintVersion::set(ForLoopReversalType::ANONYMOUS); 
     }
   }
 
