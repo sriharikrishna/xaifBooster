@@ -101,8 +101,4 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
-  ForLoopReversalType::ForLoopReversalType_E BasicBlockAlg::getReversalType() const { 
-    return xaifBoosterControlFlowReversal::BasicBlockAlg::getReversalType();
-  }
-
 } // end of namespace

@@ -117,11 +117,23 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     // we don't do this for external calls: 
     if(theSymbolAlg.isExternal())
       return;
+    insertYourself(theBasicBlock, ForLoopReversalType::ANONYMOUS);
+    insertYourself(theBasicBlock, ForLoopReversalType::EXPLICIT);
+  } 
+
+  void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock,
+					 ForLoopReversalType::ForLoopReversalType_E aReversalType) { 
+    xaifBoosterLinearization::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterLinearization::SymbolAlg&>
+						      (getContainingSubroutineCall().
+						       getSymbolReference().getSymbol().getSymbolAlgBase()));
+    // we don't do this for external calls: 
+    if(theSymbolAlg.isExternal())
+      return;
     BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(theBasicBlock.getBasicBlockAlgBase()));
     SubroutineCall& theNewSubroutineCall(theBasicBlockAlg.addSubroutineCall(getContainingSubroutineCall().getSymbolReference().getSymbol(),
 									    getContainingSubroutineCall().getSymbolReference().getScope(),
 									    getContainingSubroutineCall().getActiveUse(),
-									    theBasicBlockAlg.getReversalType()));
+									    aReversalType));
     const SubroutineCall::ConcreteArgumentPList& theOldConcreteArgumentPList(getContainingSubroutineCall().getConcreteArgumentPList());
     SubroutineCall::ConcreteArgumentPList& theNewConcreteArgumentPList(theNewSubroutineCall.getConcreteArgumentPList());
     for (SubroutineCall::ConcreteArgumentPList::const_iterator theOldConcreteArgumentPListI=theOldConcreteArgumentPList.begin();
