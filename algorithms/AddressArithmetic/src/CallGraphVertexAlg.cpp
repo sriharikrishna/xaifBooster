@@ -249,13 +249,36 @@ namespace xaifBoosterAddressArithmetic {
       } 
     }
     // check on the subroutine calls 
-/*     const PlainBasicBlock::BasicBlockElementList& theBasicBlockElementList(dynamic_cast<const BasicBlockElementList&>(theOriginalBasicBlock.getOriginalVertex().getBasicBlockElementList()));
+    const PlainBasicBlock::BasicBlockElementList& theBasicBlockElementList(dynamic_cast<const BasicBlock&>(theOriginalBasicBlock.getOriginalVertex()).getBasicBlockElementList());
     for (PlainBasicBlock::BasicBlockElementList::const_iterator aListI=theBasicBlockElementList.begin();
 	 aListI!=theBasicBlockElementList.end();
 	 ++aListI) { 
-      // TODO need to fill this gap
+      const SubroutineCall* aSubroutineCall_p=dynamic_cast<const SubroutineCall*>(*aListI);
+      if (!aSubroutineCall_p)
+	continue; 
+      CallGraphVertexAlg::UnknownVarInfoList theUnknownIndexVariables;
+      const SubroutineCall::ConcreteArgumentPList& aConcreteArgumentPList(aSubroutineCall_p->getConcreteArgumentPList());
+      for (SubroutineCall::ConcreteArgumentPList::const_iterator argIt=aConcreteArgumentPList.begin();
+	   argIt!=aConcreteArgumentPList.end();
+	   ++argIt) { 
+	if ((*argIt)->isArgument() 
+	    && 
+	    (*argIt)->getArgument().getVariable().hasArrayAccess()) { 
+	  findUnknownVariablesInArrayAccess((*argIt)->getArgument().getVariable().getArrayAccess(),
+					    theKnownVariables,
+					    theUnknownIndexVariables,
+					    false,
+					    theOriginalBasicBlock);
+	}  
+      }
+      if (!theUnknownIndexVariables.empty()) { 
+	DBG_MACRO(DbgGroup::ERROR,
+		  "CallGraphVertexAlg::findUnknownVariablesInDerivativePropagatorIndexExpressions: array with unknown indices is used in subroutine call to "
+		  << aSubroutineCall_p->getSymbolReference().getSymbol().getId().c_str()
+		  << " on line "
+		  << aSubroutineCall_p->getLineNumber());
+      }
     }
-*/ 
   } 
 
   void
