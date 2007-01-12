@@ -66,6 +66,8 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
@@ -113,7 +115,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
        << getContaining().getScope().getId().c_str()
        << "\">" 
        << std::endl;
-    const PlainBasicBlock::BasicBlockElementList& aBasicBlockElementList(getBasicBlockElementList(getReversalType()));
+    const PlainBasicBlock::BasicBlockElementList& aBasicBlockElementList(getBasicBlockElementList(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()));
     for (PlainBasicBlock::BasicBlockElementList::const_iterator li=aBasicBlockElementList.begin();
 	 li!=aBasicBlockElementList.end();
 	 li++)
@@ -507,8 +509,4 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     return myBasicBlockElementListAnonymousReversal;
   }  
 
-  ForLoopReversalType::ForLoopReversalType_E BasicBlockAlg::getReversalType() const { 
-    return ForLoopReversalType::ANONYMOUS;
-  } 
-  
 } // end of namespace

@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERCONTROLFLOWREVERSAL_BASICBLOCKALG_INCLUDE_
-#define _XAIFBOOSTERCONTROLFLOWREVERSAL_BASICBLOCKALG_INCLUDE_
+#ifndef _XAIFBOOSTERADJOINTUTILS_BASICBLOCKPRINTVERSION_INCLUDE_
+#define _XAIFBOOSTERADJOINTUTILS_BASICBLOCKPRINTVERSION_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,52 +53,37 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
-#include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
-
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterControlFlowReversal {  
+namespace xaifBoosterAdjointUtils {  
 
   /** 
-   * class to provide algorithm for BasicBlock
+   * class to implement a selection between 
+   * explicit and anonymous reversal for preaccumulation
    */
-  class BasicBlockAlg : virtual public BasicBlockAlgBase,
-			public ControlFlowGraphVertexAlg {
+  class BasicBlockPrintVersion {
   public:
     
-    BasicBlockAlg(BasicBlock& theContaining);
-                                                                                
-    ~BasicBlockAlg();
+    static void set(ForLoopReversalType::ForLoopReversalType_E aReversalType);
 
-    std::string debug() const;
-
-    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E getKind() const {
-      return ControlFlowGraphVertexAlg::BASICBLOCK;
-    };
+    static ForLoopReversalType::ForLoopReversalType_E get(); 
 
   private:
-    
-    /** 
-     * no def
+
+    /**
+     * we have data for both versions. The control flow reversal variant
+     * decides which one we should take at any given time. Since 
+     * we have both strict anonymous and also possible explicit reversal 
+     * to generate we cannot decide per instance. 
+     * so for each BasicBlock we set this to either ANONYMOUS or EPLICIT
+     * upon printing time. 
      */
-    BasicBlockAlg();
+    static ForLoopReversalType::ForLoopReversalType_E ourPrintVersion; 
 
-    /** 
-     * no def
-     */
-    BasicBlockAlg(const BasicBlockAlg&);
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
-
-  };  // end of class
-
-} // end of namespace 
+  };
+ 
+} 
                                                                      
 #endif

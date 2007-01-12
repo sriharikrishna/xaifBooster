@@ -629,8 +629,6 @@ namespace xaifBoosterControlFlowReversal {
 	 the_mySortedVertices_p_l_it!=mySortedVertices_p_l.end(); 
 	 ++the_mySortedVertices_p_l_it) {
       if((*the_mySortedVertices_p_l_it)->getOriginalControlFlowGraphVertexAlg().getKind()== ControlFlowGraphVertexAlg::BASICBLOCK) {
-	BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>((*the_mySortedVertices_p_l_it)->getOriginalControlFlowGraphVertexAlg()));
-	aBasicBlockAlg.setReversalType((*the_mySortedVertices_p_l_it)->getReversalType());
 	if ((*the_mySortedVertices_p_l_it)->hasEnclosingControlFlow())
 	  (*the_mySortedVertices_p_l_it)->setStorePlaceholder((*the_mySortedVertices_p_l_it)->getEnclosingControlFlow().getStorePlaceholder());
       }
@@ -1022,7 +1020,6 @@ namespace xaifBoosterControlFlowReversal {
       }
       case ControlFlowGraphVertexAlg::BASICBLOCK : {
 	BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>((*the_mySortedVertices_p_l_rit)->getOriginalControlFlowGraphVertexAlg()));
-	aBasicBlockAlg.setReversalType((*the_mySortedVertices_p_l_rit)->getReversalType());
 	theReversibleControlFlowGraphVertex_p=
 	  theAdjointControlFlowGraph_r.old_basic_block(dynamic_cast<const BasicBlock&>(aBasicBlockAlg.BasicBlockAlgBase::getContaining()));
 	break;

@@ -212,10 +212,11 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
  	// JU: result checkpoints can't be stored on a stack
 	theReplacement.setControlFlowGraphBase(*myCFGStoreResults_p);
 	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreResults_p));
- 	handleCheckPointing("cp_res_store",
- 			    SideEffectListType::MOD_LIST,
- 			    theBasicBlock, 
- 			    false);
+ 	// JU: result checkpoints can't be stored on a stack
+//  	handleCheckPointing("cp_res_store",
+//  			    SideEffectListType::MOD_LIST,
+//  			    theBasicBlock, 
+//  			    false);
  	break;
       }
       case ReplacementId::RESTOREARGUMENT: { 
@@ -233,10 +234,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
  	theReplacement.setControlFlowGraphBase(*myCFGRestoreResults_p);
 	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGRestoreResults_p));
  	// JU: result checkpoints can't be stored on a stack
- 	handleCheckPointing("cp_res_restore",
- 			    SideEffectListType::MOD_LIST,
- 			    theBasicBlock,
- 			    false);
+//  	handleCheckPointing("cp_res_restore",
+//  			    SideEffectListType::MOD_LIST,
+//  			    theBasicBlock,
+//  			    false);
  	break;
       }
       case ReplacementId::STORETIMESTEPARGUMENT: { 

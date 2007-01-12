@@ -103,15 +103,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual void algorithm_action_4();
 
-    /** 
-     * this implementation always returns ANONYMOUS. 
-     * EXPLICIT reversal only makes sense after we ran the 
-     * ControlFlowReversal 
-     * BasicBlockPreaccumulationReverse which inherits from ControlFlowReversal
-     * overwrites this implementation
-     */
-    virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
-
     const PlainBasicBlock::BasicBlockElementList& getBasicBlockElementList(const ForLoopReversalType::ForLoopReversalType_E& aReversalType) const; 
     
   private:

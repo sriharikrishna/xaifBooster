@@ -50,58 +50,24 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
-MAIN=t
-
-test: buildStamp.hpp $(MAIN) quickRegression.bash
-
-clean:
-	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) quickRegression.bash
-	rm -rf tmp
-
-obj doc: ;
-
-.PHONY: obj test doc clean
-
-quickRegression.bash: 
-	ln -sf $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/test/quickRegression.bash
+# default target
+default: obj
 
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
-# pick up all algorith specific obj files
-ALG_OBJ_SET=  							   \
-$(wildcard ../src/obj/*.o) 					   \
-$(wildcard ../../AddressArithmetic/src/obj/*.o) 		   \
-$(wildcard ../../ControlFlowReversal/src/obj/*.o) 		   \
-$(wildcard ../../BasicBlockPreaccumulationTapeAdjoint/src/obj/*.o) \
-$(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) 	   \
-$(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o)            \
-$(wildcard ../../Linearization/src/obj/*.o)
+LIB_NAME=xaifBoosterAdjointUtils
 
-VPATH+=../../CrossCountryInterface/lib
-LIBS+=-lxaifBoosterCrossCountryInterface
+MAIN=../lib/lib$(LIB_NAME).a
 
-VPATH+=../../DerivativePropagator/lib
-LIBS+=-lxaifBoosterDerivativePropagator
+obj: $(MAIN)
 
-VPATH+=../../InlinableXMLRepresentation/lib
-LIBS+=-lxaifBoosterInlinableXMLRepresentation
+$(MAIN): $(OBJS)
+	$(AR) $(ARFLAGS) $@ $^
 
-VPATH+=../../AdjointUtils/lib
-LIBS+=-lxaifBoosterAdjointUtils
+clean:
+	rm -f obj/*.o obj/*.d $(MAIN)
 
-VPATH+=../../CodeReplacement/lib
-LIBS+=-lxaifBoosterCodeReplacement
+test doc: ;
 
-# setup for ANGEL
-ifndef ANGELROOT
-  $(error "Error:  environment variable ANGELROOT not defined!")
-endif
-
-VPATH+=$(ANGELROOT)/lib
-LIBS+=-langel
-
-$(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
-	$(CC) $^ $(LFLAGS) -o $@
-
-
+.PHONY: obj test doc clean default
