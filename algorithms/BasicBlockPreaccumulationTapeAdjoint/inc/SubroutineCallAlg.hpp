@@ -53,7 +53,10 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include "xaifBooster/system/inc/ForLoopReversalType.hpp"
+
 #include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
 
@@ -91,6 +94,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual void insertYourself(const BasicBlock& theBasicBlock);
 
+    void insertYourself(const BasicBlock& theBasicBlock,
+			ForLoopReversalType::ForLoopReversalType_E aReversalType);
+
     void printXMLHierarchy(std::ostream& os) const;
 
   private: 
@@ -122,7 +128,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
      */
     void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
 				  Scope& theBasicBlockScope);
-
 
   }; // end of class SubroutineCallAlg
  
