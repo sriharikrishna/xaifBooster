@@ -87,6 +87,9 @@ LIBS+=-lxaifBoosterDerivativePropagator
 VPATH+=../../InlinableXMLRepresentation/lib
 LIBS+=-lxaifBoosterInlinableXMLRepresentation
 
+VPATH+=../../AdjointUtils/lib
+LIBS+=-lxaifBoosterAdjointUtils
+
 VPATH+=../../CodeReplacement/lib
 LIBS+=-lxaifBoosterCodeReplacement
 
