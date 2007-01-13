@@ -145,27 +145,29 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     } // end for
     // reapply any argument conversions we may need
     dynamic_cast<xaifBoosterLinearization::SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()).xaifBoosterLinearization::SubroutineCallAlg::algorithm_action_1();
-    // for each subroutinecall
-    // restore the index value via 
-    // an InlinableSubroutinecall for each 
-    // nonconstant index of an argument that 
-    // has array indices
-    // all in reverser order 
-    // and create a replacement argument.
-    for (SubroutineCall::ConcreteArgumentPList::reverse_iterator aConcreteArgumentPListI=
-	   theNewConcreteArgumentPList.rbegin();
-	 aConcreteArgumentPListI!=theNewConcreteArgumentPList.rend();
-	 ++aConcreteArgumentPListI) { 
-      ConcreteArgument& theConcreteArgument(**aConcreteArgumentPListI);
-      if (theConcreteArgument.isArgument() && theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
-	// if we have to restore index values we replace the ConcreteArgument in question
-	// using the associated ConcreteArgumentAlg instance
-	// and hold on to the pop operations in the alg object associated with this new call.
-	dynamic_cast<SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()).
-	  handleArrayAccessIndices(theConcreteArgument,
-				   theBasicBlock.getScope()); 
-      } 
-    } // end for 
+    if (aReversalType==ForLoopReversalType::ANONYMOUS) { 
+      // for each subroutinecall
+      // restore the index value via 
+      // an InlinableSubroutinecall for each 
+      // nonconstant index of an argument that 
+      // has array indices
+      // all in reverser order 
+      // and create a replacement argument.
+      for (SubroutineCall::ConcreteArgumentPList::reverse_iterator aConcreteArgumentPListI=
+	     theNewConcreteArgumentPList.rbegin();
+	   aConcreteArgumentPListI!=theNewConcreteArgumentPList.rend();
+	   ++aConcreteArgumentPListI) { 
+	ConcreteArgument& theConcreteArgument(**aConcreteArgumentPListI);
+	if (theConcreteArgument.isArgument() && theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
+	  // if we have to restore index values we replace the ConcreteArgument in question
+	  // using the associated ConcreteArgumentAlg instance
+	  // and hold on to the pop operations in the alg object associated with this new call.
+	  dynamic_cast<SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()).
+	    handleArrayAccessIndices(theConcreteArgument,
+				     theBasicBlock.getScope()); 
+	} 
+      } // end for 
+    }
   } 
 
   void SubroutineCallAlg::algorithm_action_4() { 

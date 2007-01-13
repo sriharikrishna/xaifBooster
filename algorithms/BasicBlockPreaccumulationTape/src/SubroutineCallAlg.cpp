@@ -65,6 +65,8 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
 
+#include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 
@@ -88,14 +90,16 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
     // the call
     xaifBoosterLinearization::SubroutineCallAlg::printXMLHierarchy(os);
-    // pushes after the call
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI
-	   =myAfterCallIndexPushes.begin();
-	 aBasicBlockElementListI!=myAfterCallIndexPushes.end();
+    if (xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()==ForLoopReversalType::ANONYMOUS) { 
+      // pushes after the call
+      for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI
+	     =myAfterCallIndexPushes.begin();
+	   aBasicBlockElementListI!=myAfterCallIndexPushes.end();
 	 ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI) { 
-	(*aBasicBlockElementListI)->printXMLHierarchy(os);
-      } 
+	if (*aBasicBlockElementListI) { 
+	  (*aBasicBlockElementListI)->printXMLHierarchy(os);
+	} 
+      }
     }
   } // end of BasicBlockAlg::printXMLHierarchy
   
@@ -209,7 +213,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
 	// save it in the list
 	myAfterCallIndexPushes.push_back(theSubroutineCall_p);
-	theSubroutineCall_p->setId("inline_push_i");
+	theSubroutineCall_p->setId("SRcall_inline_push_i");
 	const Variable& theIndexAssignmentLHS(theIndexExpressionAssignment_p->getLHS());
 	theIndexAssignmentLHS.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
 	if (thePostReplacementIndexListP) {
