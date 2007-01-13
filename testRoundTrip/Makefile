@@ -166,10 +166,10 @@ mfef90:
 	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/crayf90/sgi/mfef90 .
 
 whirl2xaif xaif2whirl whirl2sexp sexp2whirl: 
-	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86_64-Linux/bin/$@ .
+	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86-Linux/bin/$@ .
 
 %.pl: 
-	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86_64-Linux/bin/$@ .
+	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86-Linux/bin/$@ .
 
 whirl2f whirl2f_be:
 	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
