@@ -154,7 +154,8 @@ namespace xaifBoosterLinearization {
      * the bit that creates the inlinable calls
      */
     void addConversion(const ConcreteArgument& theConcreteArgument,
-		       const ArgumentSymbolReference& aFormalArgumentSymbolReference);
+		       const ArgumentSymbolReference& aFormalArgumentSymbolReference,
+		       Scope& theBasicBlockScope);
 
     std::string giveCallName(bool concreteArgumentActive,
 			     const SymbolReference &aTempSymbolReference,
@@ -176,7 +177,8 @@ namespace xaifBoosterLinearization {
      * external calls that don't have hand written adjoints
      * i.e. we don't have a formal parameter list for these calls
      */
-    void addExternalConversion(const ConcreteArgument& theConcreteArgument);
+    void addExternalConversion(const ConcreteArgument& theConcreteArgument,
+			       Scope& theBasicBlockScope);
 
     /** 
      * the list of external subroutines that have hand
@@ -186,7 +188,7 @@ namespace xaifBoosterLinearization {
 
     void initExternalCall(SymbolAlg& aSymbolAlg);
 
-    void handleExternalCall();
+    void handleExternalCall(Scope& theBasicBlockScope);
 
     /** 
      * inserts assignments for index values
