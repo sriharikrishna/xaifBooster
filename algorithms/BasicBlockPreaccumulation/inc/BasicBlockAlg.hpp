@@ -66,6 +66,7 @@
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationLevel.hpp"
 
+
 namespace xaifBooster { 
   class ExpressionVertex;
   class Assignment;
@@ -121,6 +122,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void countOperations(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&, Counter&);
 
+
+    typedef std::list<const Variable*> VariableCPList;
+    
+    /**
+     * run the standard algorithm for creating the elminated graphs
+     */
 
     /**
      * Sets flag to run all algorithms and choose the best one if a flag is set.
@@ -449,6 +456,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * the additional BasicBlockAlgBase&
      * in the signature of PrintDerivativePropagator_fp
      */
+
+
     static void printerWrapper(std::ostream& os,
 			       const BasicBlockAlgBase&, 
 			       const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) {
@@ -474,7 +483,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   Assignment& theNewAssignment,
 							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
 							   VertexPairList& theVertexPairList);
-    typedef std::list<const Variable*> VariableCPList;
 
     /** 
      * determines variables in IN and OUT
@@ -516,6 +524,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static unsigned int ourSequenceCounter;
       
+    void standardEliminationAlgorithm(SequenceHolder::SequencePList::iterator&, PrivateLinearizedComputationalGraph&, VariableCPList& theDepVertexPListCopyWithoutRemoval, SequenceHolder&);
     void incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder);
     
     void incrementGlobalSequenceCounter(const SequenceHolder& aSequenceHolder);
