@@ -66,6 +66,8 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
+
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
@@ -250,6 +252,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void BasicBlockAlg::algorithm_action_4() { // adjoin the DerivativePropagators
     if (getContaining().getBasicBlockElementList().empty())
       return;
+    xaifBoosterLinearization::BasicBlockAlgParameter::instance().set(*this); // in BasicBlockAlg::algorithm_action_4()
     // mesh the BasicBlockElements with the Sequences
     PlainBasicBlock::BasicBlockElementList::const_reverse_iterator aBasicBlockElementListRI=getContaining().getBasicBlockElementList().rbegin();
     SequencePList::const_reverse_iterator aSequencePListRI=getUniqueSequencePList().rbegin();

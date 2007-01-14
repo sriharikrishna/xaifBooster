@@ -228,7 +228,7 @@ namespace xaifBoosterLinearization {
     } // end for iterating through the list if hand written wrappers 
   } 
 
-  void SubroutineCallAlg::handleExternalCall() { 
+  void SubroutineCallAlg::handleExternalCall(Scope& theBasicBlockScope) { 
     // get the symbol's algorithm object
     SymbolAlg& theSymbolAlg(dynamic_cast<SymbolAlg&>(getContainingSubroutineCall().
 						     getSymbolReference().getSymbol().getSymbolAlgBase()));
@@ -276,7 +276,8 @@ namespace xaifBoosterLinearization {
 	    (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
 	    false) {
 	  // we need conversion to passive
-	  addExternalConversion(**concreteArgumentPI);
+	  addExternalConversion(**concreteArgumentPI,
+				theBasicBlockScope);
 	} 
       }
     }
@@ -284,6 +285,7 @@ namespace xaifBoosterLinearization {
 
   void SubroutineCallAlg::algorithm_action_1() { 
     const ArgumentList::ArgumentSymbolReferencePList* anArgumentSymbolReferencePList_p(0); 
+    Scope& theBasicBlockScope(BasicBlockAlgParameter::instance().get().getContaining().getScope());  // in SubroutineCallAlg::algorithm_action_1
     try { 
       // get the formal argument list; 
       anArgumentSymbolReferencePList_p=
@@ -296,7 +298,7 @@ namespace xaifBoosterLinearization {
     } 
     catch (const SubroutineNotFoundException& e) {
       MissingSubroutinesReport::report(e);
-      handleExternalCall();
+      handleExternalCall(theBasicBlockScope);
       return;
     } // end catch
     if (anArgumentSymbolReferencePList_p->size()!=getContainingSubroutineCall().getConcreteArgumentPList().size())
@@ -329,7 +331,8 @@ namespace xaifBoosterLinearization {
       formalArgumentActive=(*formalArgumentPI)->getSymbol().getActiveTypeFlag();
       if (concreteArgumentActive!=formalArgumentActive) { 
 	addConversion(**concreteArgumentPI,
-		      **formalArgumentPI);
+		      **formalArgumentPI,
+		      theBasicBlockScope);
       } 
     }// end for 
   }
@@ -351,7 +354,8 @@ namespace xaifBoosterLinearization {
   } 
 
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
-					const ArgumentSymbolReference& aFormalArgumentSymbolReference) { 
+					const ArgumentSymbolReference& aFormalArgumentSymbolReference,
+					Scope& theBasicBlockScope) { 
     unsigned int missingDimensions(0);
     int formalMinusConcreteDims(0);
     if (theConcreteArgument.isArgument()) { 
@@ -415,14 +419,14 @@ namespace xaifBoosterLinearization {
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
 	handleArrayAccessIndices(theConcreteArgument,
-				 // the following parameter was set in BasicBlockAlg::algorithm_action_1()
-				 BasicBlockAlgParameter::instance().get().getContaining().getScope());
+				 theBasicBlockScope);
       }
     }
   } 
   
 
-  void SubroutineCallAlg::addExternalConversion(const ConcreteArgument& theConcreteArgument) { 
+  void SubroutineCallAlg::addExternalConversion(const ConcreteArgument& theConcreteArgument,
+						Scope& theBasicBlockScope) { 
     const SymbolReference& theActualSymbolReference(theConcreteArgument.getArgument().getVariable().
 						    getVariableSymbolReference());
     // prior call
@@ -466,8 +470,7 @@ namespace xaifBoosterLinearization {
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
 	handleArrayAccessIndices(theConcreteArgument,
-				 // the following parameter was set in BasicBlockAlg::algorithm_action_1()
-				 BasicBlockAlgParameter::instance().get().getContaining().getScope());
+				 theBasicBlockScope);
       }
     }
   } 
@@ -609,7 +612,7 @@ namespace xaifBoosterLinearization {
 							 false),
 				      theBasicBlockScope);
 	theNewVariableSymbolReference_p->setId("1");
-	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices");
+	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::SubroutineCallAlg::handleArrayAccessIndices");
 	// pass it on to the LHS and relinquish ownership
 	theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
 	theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();

@@ -62,8 +62,7 @@
 
 #include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
-
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
@@ -138,8 +137,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	    && 
 	    (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
 	  handleArrayAccessIndices(**aConcreteArgumentPListI,
-				   // the following parameter was set in BasicBlockAlg::algorithm_action_4()
-				   xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::instance().get().getContaining().getScope(),
+				   dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()).getContaining().getScope(), // in SubroutineCallAlg::algorithm_action_4()
 				   indexAssignmentListI); 
 	}
       } // end for
