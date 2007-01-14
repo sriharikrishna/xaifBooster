@@ -615,6 +615,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  }
 	} 
       }
+      if(useScarce)
+      {
+	//run andrews code
+	//scarceEliminationAlgorithm
+      }
+      else //old algorithm for eliminations sequences
+      {
+	standardEliminationAlgorithm(aSequencePListI, theFlattenedSequence, theDepVertexPListCopyWithoutRemovals, aSequenceHolder);
+      }
+    } // end for
+  }
+
+  //runs the standard vertex and edge elmination algorithms
+  void BasicBlockAlg::standardEliminationAlgorithm(SequenceHolder::SequencePList::iterator& aSequencePListI, PrivateLinearizedComputationalGraph& theFlattenedSequence, VariableCPList& theDepVertexPListCopyWithoutRemovals, SequenceHolder& aSequenceHolder){
       // UN: this is used to keep track of those independent variables
       // that were already assigned to temporary variables to ensure correctness
       // of the Jacobian accumulation code.
@@ -718,7 +732,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  min = current; //since first this is min
 	  best = &alg1Test; //it is also best
 	  //debuging print statements with results
-	  DBG_MACRO(DbgGroup::METRIC, "Default elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
+		  DBG_MACRO(DbgGroup::METRIC, "Default elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
 	  current.reset(); //Reset counter for next algorithm
 	  if(chooseAlg) {
 	    ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex; //Set algorithm
@@ -920,8 +934,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       else { 
 	// do nothing, empty graph, as e.g. for a single assignment x=const;
       }
-    } // end for
-  } 
+  }
 
   //Counts the number of add and multiply operations that are in a list passed in to it
   void BasicBlockAlg::countOperations(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList &list, Counter &ops)
