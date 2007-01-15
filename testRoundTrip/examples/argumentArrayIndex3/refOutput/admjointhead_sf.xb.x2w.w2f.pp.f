@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:33:05 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:35:41 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -296,9 +296,9 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_12
       INTEGER(w2f__i8) OpenAD_Symbol_13
-      INTEGER(w2f__i8) OpenAD_Symbol_14
-      INTEGER(w2f__i8) OpenAD_Symbol_15
       INTEGER(w2f__i8) OpenAD_Symbol_16
+      INTEGER(w2f__i8) OpenAD_Symbol_17
+      INTEGER(w2f__i8) OpenAD_Symbol_18
 C
 C     **** Top Level Pragmas ****
 C
@@ -368,14 +368,14 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       K = 1
-      OpenAD_Symbol_15 = K
+      OpenAD_Symbol_17 = K
       CALL foo(X(K),Y)
       Q(1)%v = Y%v
       Y%v = Q(1)%v
       P(1) = 1.0D00
       L = 1
       OpenAD_Symbol_1 = K
-      OpenAD_Symbol_16 = L
+      OpenAD_Symbol_18 = L
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(OpenAD_Symbol_0,P(K))
       CALL foo(OpenAD_Symbol_0,Q(L))
@@ -396,16 +396,16 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
       K = 1
-      OpenAD_Symbol_15 = K
+      OpenAD_Symbol_17 = K
       CALL foo(X(K),Y)
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_15
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_17
           integer_tape_pointer = integer_tape_pointer+1
       Q(1)%v = Y%v
       Y%v = Q(1)%v
       P(1) = 1.0D00
       L = 1
       OpenAD_Symbol_1 = K
-      OpenAD_Symbol_16 = L
+      OpenAD_Symbol_18 = L
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(OpenAD_Symbol_0,P(K))
       CALL foo(OpenAD_Symbol_0,Q(L))
@@ -413,7 +413,7 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(P(INT(OpenAD_Symbol_1)),OpenAD_Symbol_0)
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_1
           integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_16
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_18
           integer_tape_pointer = integer_tape_pointer+1
       RETURN
             our_rev_mode%arg_store=.FALSE.
@@ -456,8 +456,8 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           Y%d = Y%d+OpenAD_Symbol_7%d
           OpenAD_Symbol_7%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_14 = integer_tape(integer_tape_pointer)
-      CALL foo(X(INT(OpenAD_Symbol_14)),Y)
+          OpenAD_Symbol_16 = integer_tape(integer_tape_pointer)
+      CALL foo(X(INT(OpenAD_Symbol_16)),Y)
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.

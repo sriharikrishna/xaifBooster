@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:33:09 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:35:49 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -296,8 +296,8 @@ C
       type(active) :: OpenAD_Symbol_1
       type(active) :: OpenAD_Symbol_13(1 : 2)
       type(active) :: OpenAD_Symbol_14
-      type(active) :: OpenAD_Symbol_15(1 : 2)
-      type(active) :: OpenAD_Symbol_16
+      type(active) :: OpenAD_Symbol_17(1 : 2)
+      type(active) :: OpenAD_Symbol_18
       type(active) :: OpenAD_Symbol_2(1 : 2)
       type(active) :: OpenAD_Symbol_3
 C
@@ -464,14 +464,14 @@ C!! requested inline of 'convert_a2p_vector' has no defn
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_14)
 C!! requested inline of 'convert_p2a_vector' has no defn
-      CALL convert_p2a_vector(OpenAD_Symbol_15,PX)
+      CALL convert_p2a_vector(OpenAD_Symbol_17,PX)
 C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_16,PY)
-      CALL foo(OpenAD_Symbol_15,OpenAD_Symbol_16)
+      CALL convert_p2a_scalar(OpenAD_Symbol_18,PY)
+      CALL foo(OpenAD_Symbol_17,OpenAD_Symbol_18)
 C!! requested inline of 'convert_a2p_vector' has no defn
-      CALL convert_a2p_vector(PX,OpenAD_Symbol_15)
+      CALL convert_a2p_vector(PX,OpenAD_Symbol_17)
 C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(PY,OpenAD_Symbol_16)
+      CALL convert_a2p_scalar(PY,OpenAD_Symbol_18)
       CALL foo(X,Y)
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
