@@ -257,7 +257,7 @@
       <xaif:Branch vertex_id="7" annotation="">
         <xaif:Condition>
           <xaif:Intrinsic vertex_id="1" annotation="" name="string_eq_scal_scal"/>
-          <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
+          <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="ASTRING_3" annotation="" scope_id="3"/>
           </xaif:VariableReference>
           <xaif:Constant vertex_id="3" type="string" value="blah"/>
@@ -439,7 +439,7 @@
       <xaif:Branch vertex_id="17" annotation="">
         <xaif:Condition>
           <xaif:Intrinsic vertex_id="1" annotation="" name="string_eq_scal_scal"/>
-          <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
+          <xaif:VariableReference vertex_id="2" active="false" du_ud="2" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="ASTRING_3" annotation="" scope_id="3"/>
           </xaif:VariableReference>
           <xaif:Constant vertex_id="3" type="string" value="bloh"/>
