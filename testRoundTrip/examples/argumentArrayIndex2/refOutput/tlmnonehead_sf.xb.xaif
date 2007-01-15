@@ -330,7 +330,7 @@
         <xaif:Marker statement_id="27" annotation="{WHIRL_Id#27} [passive: OPR_STID]"/>
         <xaif:Assignment statement_id="index_expression_assignment_for_taping">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_1" annotation="xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_1" annotation="xaifBoosterLinearization::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
@@ -340,7 +340,7 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="index_expression_assignment_for_taping">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_3" annotation="xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_3" annotation="xaifBoosterLinearization::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" du_ud="5" deriv="0" constant="0">
@@ -407,7 +407,7 @@
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:Index>
                   <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                    <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_1" annotation="xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+                    <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_1" annotation="xaifBoosterLinearization::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
                   </xaif:VariableReference>
                 </xaif:Index>
               </xaif:ArrayElementReference>
@@ -427,7 +427,7 @@
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:Index>
                   <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                    <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_3" annotation="xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+                    <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_3" annotation="xaifBoosterLinearization::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
                   </xaif:VariableReference>
                 </xaif:Index>
               </xaif:ArrayElementReference>
