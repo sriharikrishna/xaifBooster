@@ -209,7 +209,7 @@ testAllclean:
 
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
+	$(RM) mfef90 whirl2xaif whirl2sexp xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
 	$(RM) *.mod *.o
 
 obj test doc: 
