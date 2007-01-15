@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:17:44 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:25:24 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -108,6 +108,9 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_36
       INTEGER(w2f__i8) OpenAD_Symbol_37
       INTEGER(w2f__i8) OpenAD_Symbol_38
+      INTEGER(w2f__i8) OpenAD_Symbol_39
+      INTEGER(w2f__i8) OpenAD_Symbol_40
+      INTEGER(w2f__i8) OpenAD_Symbol_41
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
@@ -125,14 +128,14 @@ C
       type(active) :: TEMP2
       REAL(w2f__8) V(1 : 11)
       REAL(w2f__8) Y(1 : 11)
-      INTEGER(w2f__i8) OpenAD_Symbol_39
-      REAL(w2f__8) OpenAD_Symbol_40
-      INTEGER(w2f__i8) OpenAD_Symbol_41
-      REAL(w2f__8) OpenAD_Symbol_42
-      INTEGER(w2f__i8) OpenAD_Symbol_43
-      REAL(w2f__8) OpenAD_Symbol_44
-      INTEGER(w2f__i8) OpenAD_Symbol_45
-      REAL(w2f__8) OpenAD_Symbol_46
+      INTEGER(w2f__i8) OpenAD_Symbol_42
+      REAL(w2f__8) OpenAD_Symbol_43
+      INTEGER(w2f__i8) OpenAD_Symbol_44
+      REAL(w2f__8) OpenAD_Symbol_45
+      INTEGER(w2f__i8) OpenAD_Symbol_46
+      REAL(w2f__8) OpenAD_Symbol_47
+      INTEGER(w2f__i8) OpenAD_Symbol_48
+      REAL(w2f__8) OpenAD_Symbol_49
 C
 C     **** Top Level Pragmas ****
 C
@@ -263,30 +266,30 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_37 = 1
       DO WHILE(INT(OpenAD_Symbol_37) .LE. INT(OpenAD_Symbol_36))
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_39 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_42 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_40 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_43 = double_tape(double_tape_pointer)
           OpenAD_Symbol_35%d = OpenAD_Symbol_35%d+FVEC(INT(OpenAD_Symbol
-     +_39))%d*OpenAD_Symbol_40
+     +_42))%d*OpenAD_Symbol_43
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_41 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_44 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_42 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_45 = double_tape(double_tape_pointer)
           OpenAD_Symbol_33%d = OpenAD_Symbol_33%d+FVEC(INT(OpenAD_Symbol
-     +_41))%d*OpenAD_Symbol_42
+     +_44))%d*OpenAD_Symbol_45
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_43 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_46 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_44 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_47 = double_tape(double_tape_pointer)
           OpenAD_Symbol_28%d = OpenAD_Symbol_28%d+FVEC(INT(OpenAD_Symbol
-     +_43))%d*OpenAD_Symbol_44
+     +_46))%d*OpenAD_Symbol_47
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_45 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_48 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_46 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_49 = double_tape(double_tape_pointer)
           OpenAD_Symbol_25%d = OpenAD_Symbol_25%d+FVEC(INT(OpenAD_Symbol
-     +_45))%d*OpenAD_Symbol_46
-          FVEC(INT(OpenAD_Symbol_45))%d = 0.0d0
+     +_48))%d*OpenAD_Symbol_49
+          FVEC(INT(OpenAD_Symbol_48))%d = 0.0d0
           X(4)%d = X(4)%d+OpenAD_Symbol_25%d
           OpenAD_Symbol_25%d = 0.0d0
           X(1)%d = X(1)%d+OpenAD_Symbol_28%d

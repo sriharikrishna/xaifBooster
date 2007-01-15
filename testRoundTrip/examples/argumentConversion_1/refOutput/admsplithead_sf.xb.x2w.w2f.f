@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:50:08 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:23:16 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -84,16 +84,12 @@ C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
-C     $OpenAD$ INLINE cp_res_store_real_scalar_a(subst)
-      CALL cp_res_store_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
-C     $OpenAD$ INLINE cp_res_restore_real_scalar_a(subst)
-      CALL cp_res_restore_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
@@ -107,6 +103,42 @@ C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 10
+C$OPENAD XXX Template ad_template.f
+      OpenAD_Symbol_6 = (__value__(X(1)) * __value__(X(2)))
+      OpenAD_Symbol_4 = __value__(X(2))
+      OpenAD_Symbol_5 = __value__(X(1))
+      __value__(Y) = OpenAD_Symbol_6
+      OpenAD_Symbol_7 = OpenAD_Symbol_4
+      OpenAD_Symbol_9 = OpenAD_Symbol_5
+C     $OpenAD$ INLINE push(subst)
+      CALL push(OpenAD_Symbol_7)
+C     $OpenAD$ INLINE push(subst)
+      CALL push(OpenAD_Symbol_9)
+      RETURN
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 11
+C     $OpenAD$ INLINE Pop(subst)
+      CALL Pop(OpenAD_Symbol_11)
+C     $OpenAD$ INLINE Saxpy(subst,subst,subst)
+      CALL Saxpy(OpenAD_Symbol_11, __deriv__(Y), __deriv__(
+     > OpenAD_Symbol_10))
+C     $OpenAD$ INLINE Pop(subst)
+      CALL Pop(OpenAD_Symbol_12)
+C     $OpenAD$ INLINE Saxpy(subst,subst,subst)
+      CALL Saxpy(OpenAD_Symbol_12, __deriv__(Y), __deriv__(
+     > OpenAD_Symbol_8))
+C     $OpenAD$ INLINE ZeroDeriv(subst)
+      CALL ZeroDeriv(__deriv__(Y))
+C     $OpenAD$ INLINE IncDeriv(subst,subst)
+      CALL IncDeriv(__deriv__(OpenAD_Symbol_8), __deriv__(X(1)))
+C     $OpenAD$ INLINE ZeroDeriv(subst)
+      CALL ZeroDeriv(__deriv__(OpenAD_Symbol_8))
+C     $OpenAD$ INLINE IncDeriv(subst,subst)
+      CALL IncDeriv(__deriv__(OpenAD_Symbol_10), __deriv__(X(2)))
+C     $OpenAD$ INLINE ZeroDeriv(subst)
+      CALL ZeroDeriv(__deriv__(OpenAD_Symbol_10))
+C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -119,8 +151,8 @@ C
       TYPE (OpenADTy_active) OpenAD_Symbol_1
       TYPE (OpenADTy_active) OpenAD_Symbol_13(1 : 2)
       TYPE (OpenADTy_active) OpenAD_Symbol_14
-      TYPE (OpenADTy_active) OpenAD_Symbol_15(1 : 2)
-      TYPE (OpenADTy_active) OpenAD_Symbol_16
+      TYPE (OpenADTy_active) OpenAD_Symbol_17(1 : 2)
+      TYPE (OpenADTy_active) OpenAD_Symbol_18
       TYPE (OpenADTy_active) OpenAD_Symbol_2(1 : 2)
       TYPE (OpenADTy_active) OpenAD_Symbol_3
 C
@@ -204,15 +236,15 @@ C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
 C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_14))
 C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
-      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_15), PX)
+      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_17), PX)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_16), PY)
-      CALL foo(__deriv__(OpenAD_Symbol_15), __deriv__(OpenAD_Symbol_16)
+      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_18), PY)
+      CALL foo(__deriv__(OpenAD_Symbol_17), __deriv__(OpenAD_Symbol_18)
      > )
 C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
-      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_15))
+      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_17))
 C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_16))
+      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_18))
       CALL foo(__deriv__(X), __deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
@@ -222,8 +254,6 @@ C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
-C     $OpenAD$ INLINE cp_res_store_real_scalar_a(subst)
-      CALL cp_res_store_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
@@ -232,8 +262,6 @@ C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
-C     $OpenAD$ INLINE cp_res_restore_real_scalar_a(subst)
-      CALL cp_res_restore_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
@@ -250,5 +278,53 @@ C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(Y))
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 10
+C$OPENAD XXX Template ad_template.f
+      PX(1) = 1.0D00
+      PX(2) = 2.0D00
+      CALL foo(__deriv__(X), __deriv__(Y))
+C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
+      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_0), PX)
+C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
+      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_1), PY)
+      CALL foo(__deriv__(OpenAD_Symbol_0), __deriv__(OpenAD_Symbol_1))
+C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
+      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_0))
+C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
+      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_1))
+C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
+      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_2), PX)
+C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
+      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_3), PY)
+      CALL foo(__deriv__(OpenAD_Symbol_2), __deriv__(OpenAD_Symbol_3))
+C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
+      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_2))
+C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
+      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_3))
+      RETURN
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 11
+C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
+      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_13), PX)
+C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
+      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_14), PY)
+      CALL foo(__deriv__(OpenAD_Symbol_13), __deriv__(OpenAD_Symbol_14)
+     > )
+C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
+      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_13))
+C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
+      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_14))
+C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
+      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_17), PX)
+C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
+      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_18), PY)
+      CALL foo(__deriv__(OpenAD_Symbol_17), __deriv__(OpenAD_Symbol_18)
+     > )
+C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
+      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_17))
+C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
+      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_18))
+      CALL foo(__deriv__(X), __deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE

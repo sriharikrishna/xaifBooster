@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:59:02 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:30:21 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -82,6 +82,9 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_2
       INTEGER(w2f__i8) OpenAD_Symbol_3
+      INTEGER(w2f__i8) OpenAD_Symbol_4
+      INTEGER(w2f__i8) OpenAD_Symbol_5
+      INTEGER(w2f__i8) OpenAD_Symbol_6
 C
 C     **** Parameters and Result ****
 C
@@ -92,8 +95,8 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i8) OpenAD_Symbol_4
-      INTEGER(w2f__i8) OpenAD_Symbol_5
+      INTEGER(w2f__i8) OpenAD_Symbol_7
+      INTEGER(w2f__i8) OpenAD_Symbol_8
 C
 C     **** Statements ****
 C
@@ -134,16 +137,16 @@ C$OPENAD XXX Simple loop\t
       OpenAD_Symbol_2 = 1
       DO WHILE(INT(OpenAD_Symbol_2) .LE. INT(OpenAD_Symbol_1))
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_4 = integer_tape(integer_tape_pointer)
-          if (iaddr(Y(INT(OpenAD_Symbol_4))) .ne. iaddr(OpenAD_Symbol_0)
+          OpenAD_Symbol_7 = integer_tape(integer_tape_pointer)
+          if (iaddr(Y(INT(OpenAD_Symbol_7))) .ne. iaddr(OpenAD_Symbol_0)
      +) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(INT(OpenAD_Symbol_4)
+            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(INT(OpenAD_Symbol_7)
      +)%d
-            Y(INT(OpenAD_Symbol_4))%d = 0
+            Y(INT(OpenAD_Symbol_7))%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_5 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_5))%d = X(INT(OpenAD_Symbol_5))%d+OpenAD_S
+          OpenAD_Symbol_8 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_8))%d = X(INT(OpenAD_Symbol_8))%d+OpenAD_S
      +ymbol_0%d
           OpenAD_Symbol_0%d = 0.0d0
         OpenAD_Symbol_2 = INT(OpenAD_Symbol_2) + 1
