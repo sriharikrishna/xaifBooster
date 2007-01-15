@@ -25,6 +25,4 @@ typedef std::list<EdgeCorrelationEntry> EdgeCorrelationList;
 
 } // namespace xaifBoosterCrossCountryInterface
 
-#endif  // _scarce_include
-_
-
+#endif  // _scarce_include_
