@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:34:56 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:39:52 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -104,7 +104,22 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_28
       INTEGER(w2f__i8) OpenAD_Symbol_29
       REAL(w2f__8) OpenAD_Symbol_3
+      INTEGER(w2f__i8) OpenAD_Symbol_30
+      INTEGER(w2f__i8) OpenAD_Symbol_31
+      INTEGER(w2f__i8) OpenAD_Symbol_32
+      INTEGER(w2f__i8) OpenAD_Symbol_33
+      INTEGER(w2f__i8) OpenAD_Symbol_34
+      INTEGER(w2f__i8) OpenAD_Symbol_35
+      INTEGER(w2f__i8) OpenAD_Symbol_36
+      INTEGER(w2f__i8) OpenAD_Symbol_37
+      INTEGER(w2f__i8) OpenAD_Symbol_38
+      INTEGER(w2f__i8) OpenAD_Symbol_39
       REAL(w2f__8) OpenAD_Symbol_4
+      INTEGER(w2f__i8) OpenAD_Symbol_40
+      INTEGER(w2f__i8) OpenAD_Symbol_41
+      INTEGER(w2f__i8) OpenAD_Symbol_42
+      INTEGER(w2f__i8) OpenAD_Symbol_43
+      INTEGER(w2f__i8) OpenAD_Symbol_44
       REAL(w2f__8) OpenAD_Symbol_5
       type(active) :: OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
@@ -121,10 +136,10 @@ C
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
       INTEGER(w2f__i4) K
-      REAL(w2f__8) OpenAD_Symbol_30
-      REAL(w2f__8) OpenAD_Symbol_31
-      REAL(w2f__8) OpenAD_Symbol_32
-      REAL(w2f__8) OpenAD_Symbol_33
+      REAL(w2f__8) OpenAD_Symbol_45
+      REAL(w2f__8) OpenAD_Symbol_46
+      REAL(w2f__8) OpenAD_Symbol_47
+      REAL(w2f__8) OpenAD_Symbol_48
 C
 C     **** Top Level Pragmas ****
 C
@@ -320,12 +335,12 @@ C adjoint
           OpenAD_Symbol_22 = integer_tape(integer_tape_pointer)
               IF(OpenAD_Symbol_22 .ne. 0) THEN
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_30 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(1)%d*OpenAD_Symbol_3
-     +0
+          OpenAD_Symbol_45 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(1)%d*OpenAD_Symbol_4
+     +5
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_31 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(1)%d*OpenAD_Symbol_31
+          OpenAD_Symbol_46 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(1)%d*OpenAD_Symbol_46
           Y(1)%d = 0.0d0
           X(1)%d = X(1)%d+OpenAD_Symbol_8%d
           OpenAD_Symbol_8%d = 0.0d0
@@ -338,13 +353,13 @@ C adjoint
           END DO
         ELSE
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_32 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_14%d = OpenAD_Symbol_14%d+Y(1)%d*OpenAD_Symbol_3
-     +2
+          OpenAD_Symbol_47 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_14%d = OpenAD_Symbol_14%d+Y(1)%d*OpenAD_Symbol_4
+     +7
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_33 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_12%d = OpenAD_Symbol_12%d+Y(1)%d*OpenAD_Symbol_3
-     +3
+          OpenAD_Symbol_48 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_12%d = OpenAD_Symbol_12%d+Y(1)%d*OpenAD_Symbol_4
+     +8
           Y(1)%d = 0.0d0
           Y(1)%d = Y(1)%d+OpenAD_Symbol_12%d
           OpenAD_Symbol_12%d = 0.0d0

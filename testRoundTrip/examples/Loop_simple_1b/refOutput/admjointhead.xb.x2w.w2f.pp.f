@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 10:02:19 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:41:08 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -74,6 +74,9 @@ C
       REAL(w2f__8) OpenAD_Symbol_0
       type(active) :: OpenAD_Symbol_10
       type(active) :: OpenAD_Symbol_11
+      INTEGER(w2f__i8) OpenAD_Symbol_12
+      INTEGER(w2f__i8) OpenAD_Symbol_13
+      INTEGER(w2f__i8) OpenAD_Symbol_14
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -91,8 +94,8 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      REAL(w2f__8) OpenAD_Symbol_12
-      REAL(w2f__8) OpenAD_Symbol_13
+      REAL(w2f__8) OpenAD_Symbol_15
+      REAL(w2f__8) OpenAD_Symbol_16
 C
 C     **** Top Level Pragmas ****
 C
@@ -110,30 +113,18 @@ C
           double precision, dimension(:), allocatable, save :: 
      +theArgFStack
           integer, save :: theArgFStackoffset=0, theArgFStackSize=0
-          double precision, dimension(:), allocatable, save :: 
-     +theResFStack
-          integer, save :: theResFStackoffset=0, theResFStackSize=0
           ! integers 'I'
           integer, dimension(:), allocatable, save :: 
      +theArgIStack
           integer, save :: theArgIStackoffset=0, theArgIStackSize=0
-          integer, dimension(:), allocatable, save :: 
-     +theResIStack
-          integer, save :: theResIStackoffset=0, theResIStackSize=0
           ! booleans 'B'
           logical, dimension(:), allocatable, save :: 
      +theArgBStack
           integer, save :: theArgBStackoffset=0, theArgBStackSize=0
-          logical, dimension(:), allocatable, save :: 
-     +theResBStack
-          integer, save :: theResBStackoffset=0, theResBStackSize=0
           ! strings 'S'
           character*(80), dimension(:), allocatable, save :: 
      +theArgSStack
           integer, save :: theArgSStackoffset=0, theArgSStackSize=0
-          character*(80), dimension(:), allocatable, save :: 
-     +theResSStack
-          integer, save :: theResSStackoffset=0, theResSStackSize=0
 
           type(modeType) :: our_orig_mode
 
@@ -141,11 +132,9 @@ C
           integer iaddr
           external iaddr
 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
@@ -222,13 +211,6 @@ C$OPENAD XXX Simple loop
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
           end if 
-          if (our_rev_mode%res_restore) then
-C restore results
-          do cp_loop_variable_1 = lbound(Y,1),ubound(Y,1),1
-             Y(cp_loop_variable_1)%v = theResFStack(theResFStackoffset)
-             theResFStackoffset = theResFStackoffset+1
-          end do
-          end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
@@ -248,12 +230,12 @@ C adjoint
       I = 2 + 1 *((6 - 2) / 1)
       DO WHILE(I .GE. 2)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_12 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_15 = double_tape(double_tape_pointer)
           OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(1)%d*OpenAD_Symbol_1
-     +2
+     +5
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_13 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(1)%d*OpenAD_Symbol_13
+          OpenAD_Symbol_16 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(1)%d*OpenAD_Symbol_16
           Y(1)%d = 0.0d0
           X(1)%d = X(1)%d+OpenAD_Symbol_8%d
           OpenAD_Symbol_8%d = 0.0d0
@@ -275,17 +257,9 @@ C adjoint
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
           end if 
-          if (our_rev_mode%res_store) then
-C store results
-C            print*, " res_store  ", our_rev_mode
-          call cp_store_real_vector(Y,size(Y),theResFStack,theResFStacko
-     +ffset,theResFStackSize)
-          end if 
-C          write(*,'(A,I6,A,I6,A,I6,A,I6,A,I5,A,I5)')
+C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"a:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
-C     +" RF:",theResFStackoffset, 
-C     +" RI:",theResIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
         end subroutine head

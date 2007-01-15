@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 16:10:26 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:37:40 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -81,16 +81,12 @@ C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
-C     $OpenAD$ INLINE cp_res_store_real_vector_a(subst)
-      CALL cp_res_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
-C     $OpenAD$ INLINE cp_res_restore_real_vector_a(subst)
-      CALL cp_res_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
@@ -103,5 +99,30 @@ C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 10
+C$OPENAD XXX Template ad_template.f
+      OpenAD_Symbol_0 = (1.74532925199432954744D-02 * __value__(X(1)))
+      OpenAD_Symbol_4 = COS(OpenAD_Symbol_0)
+      OpenAD_Symbol_3 = 1.74532925199432954744D-02
+      OpenAD_Symbol_1 = (- SIN(OpenAD_Symbol_0))
+      __value__(Y(1)) = OpenAD_Symbol_4
+      OpenAD_Symbol_5 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+C     $OpenAD$ INLINE push(subst)
+      CALL push(OpenAD_Symbol_5)
+      RETURN
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 11
+C     $OpenAD$ INLINE Pop(subst)
+      CALL Pop(OpenAD_Symbol_7)
+C     $OpenAD$ INLINE Saxpy(subst,subst,subst)
+      CALL Saxpy(OpenAD_Symbol_7, __deriv__(Y(1)), __deriv__(
+     > OpenAD_Symbol_6))
+C     $OpenAD$ INLINE ZeroDeriv(subst)
+      CALL ZeroDeriv(__deriv__(Y(1)))
+C     $OpenAD$ INLINE IncDeriv(subst,subst)
+      CALL IncDeriv(__deriv__(OpenAD_Symbol_6), __deriv__(X(1)))
+C     $OpenAD$ INLINE ZeroDeriv(subst)
+      CALL ZeroDeriv(__deriv__(OpenAD_Symbol_6))
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE
