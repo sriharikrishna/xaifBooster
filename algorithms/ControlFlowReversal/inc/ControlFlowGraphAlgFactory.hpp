@@ -53,11 +53,11 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlgFactory.hpp"
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphAlg.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(ControlFlowGraph,xaifBoosterLinearization::ControlFlowGraphAlgFactory,xaifBoosterControlFlowReversal)
+
+  DERIVED_ALG_FACTORY_DECL_MACRO(ControlFlowGraph,xaifBooster::ControlFlowGraphAlgFactory,xaifBoosterControlFlowReversal)
 
 
 #endif

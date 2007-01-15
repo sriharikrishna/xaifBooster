@@ -53,7 +53,8 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlg.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 
 using namespace xaifBooster;
 
@@ -63,7 +64,7 @@ namespace xaifBoosterControlFlowReversal {
    * class to implement algorithms relevant for the 
    * reversal of the control flow
    */
-  class ControlFlowGraphAlg : public xaifBoosterLinearization::ControlFlowGraphAlg {
+  class ControlFlowGraphAlg : public ControlFlowGraphAlgBase {
   public:
     
     ControlFlowGraphAlg(const ControlFlowGraph& theContaining);
