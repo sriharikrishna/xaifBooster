@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:54:43 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:25:32 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -344,9 +344,54 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_351
       INTEGER(w2f__i8) OpenAD_Symbol_352
       INTEGER(w2f__i8) OpenAD_Symbol_353
+      INTEGER(w2f__i8) OpenAD_Symbol_354
+      INTEGER(w2f__i8) OpenAD_Symbol_355
+      INTEGER(w2f__i8) OpenAD_Symbol_356
+      INTEGER(w2f__i8) OpenAD_Symbol_357
+      INTEGER(w2f__i8) OpenAD_Symbol_358
+      INTEGER(w2f__i8) OpenAD_Symbol_359
       REAL(w2f__8) OpenAD_Symbol_36
+      INTEGER(w2f__i8) OpenAD_Symbol_360
+      INTEGER(w2f__i8) OpenAD_Symbol_361
+      INTEGER(w2f__i8) OpenAD_Symbol_362
+      INTEGER(w2f__i8) OpenAD_Symbol_363
+      INTEGER(w2f__i8) OpenAD_Symbol_364
+      INTEGER(w2f__i8) OpenAD_Symbol_365
+      INTEGER(w2f__i8) OpenAD_Symbol_366
+      INTEGER(w2f__i8) OpenAD_Symbol_367
+      INTEGER(w2f__i8) OpenAD_Symbol_368
+      INTEGER(w2f__i8) OpenAD_Symbol_369
+      INTEGER(w2f__i8) OpenAD_Symbol_370
+      INTEGER(w2f__i8) OpenAD_Symbol_371
+      INTEGER(w2f__i8) OpenAD_Symbol_372
+      INTEGER(w2f__i8) OpenAD_Symbol_373
+      INTEGER(w2f__i8) OpenAD_Symbol_374
+      INTEGER(w2f__i8) OpenAD_Symbol_375
+      INTEGER(w2f__i8) OpenAD_Symbol_376
+      INTEGER(w2f__i8) OpenAD_Symbol_377
+      INTEGER(w2f__i8) OpenAD_Symbol_378
+      INTEGER(w2f__i8) OpenAD_Symbol_379
       REAL(w2f__8) OpenAD_Symbol_38
+      INTEGER(w2f__i8) OpenAD_Symbol_380
+      INTEGER(w2f__i8) OpenAD_Symbol_381
+      INTEGER(w2f__i8) OpenAD_Symbol_382
+      INTEGER(w2f__i8) OpenAD_Symbol_383
+      INTEGER(w2f__i8) OpenAD_Symbol_384
+      INTEGER(w2f__i8) OpenAD_Symbol_385
+      INTEGER(w2f__i8) OpenAD_Symbol_386
+      INTEGER(w2f__i8) OpenAD_Symbol_387
+      INTEGER(w2f__i8) OpenAD_Symbol_388
+      INTEGER(w2f__i8) OpenAD_Symbol_389
       REAL(w2f__8) OpenAD_Symbol_39
+      INTEGER(w2f__i8) OpenAD_Symbol_390
+      INTEGER(w2f__i8) OpenAD_Symbol_391
+      INTEGER(w2f__i8) OpenAD_Symbol_392
+      INTEGER(w2f__i8) OpenAD_Symbol_393
+      INTEGER(w2f__i8) OpenAD_Symbol_394
+      INTEGER(w2f__i8) OpenAD_Symbol_395
+      INTEGER(w2f__i8) OpenAD_Symbol_396
+      INTEGER(w2f__i8) OpenAD_Symbol_397
+      INTEGER(w2f__i8) OpenAD_Symbol_398
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_40
       REAL(w2f__8) OpenAD_Symbol_41
@@ -452,115 +497,115 @@ C
       PARAMETER ( TWO =     2.000000000000000)
       REAL(w2f__8) ZERO
       PARAMETER ( ZERO =     0.000000000000000)
-      INTEGER(w2f__i8) OpenAD_Symbol_354
-      INTEGER(w2f__i8) OpenAD_Symbol_355
-      INTEGER(w2f__i8) OpenAD_Symbol_356
-      INTEGER(w2f__i8) OpenAD_Symbol_357
-      INTEGER(w2f__i8) OpenAD_Symbol_358
-      INTEGER(w2f__i8) OpenAD_Symbol_359
-      INTEGER(w2f__i8) OpenAD_Symbol_360
-      INTEGER(w2f__i8) OpenAD_Symbol_361
-      REAL(w2f__8) OpenAD_Symbol_362
-      INTEGER(w2f__i8) OpenAD_Symbol_363
-      REAL(w2f__8) OpenAD_Symbol_364
-      INTEGER(w2f__i8) OpenAD_Symbol_365
-      REAL(w2f__8) OpenAD_Symbol_366
-      INTEGER(w2f__i8) OpenAD_Symbol_367
-      REAL(w2f__8) OpenAD_Symbol_368
-      INTEGER(w2f__i8) OpenAD_Symbol_369
-      REAL(w2f__8) OpenAD_Symbol_370
-      INTEGER(w2f__i8) OpenAD_Symbol_371
-      REAL(w2f__8) OpenAD_Symbol_372
-      INTEGER(w2f__i8) OpenAD_Symbol_373
-      REAL(w2f__8) OpenAD_Symbol_374
-      INTEGER(w2f__i8) OpenAD_Symbol_375
-      REAL(w2f__8) OpenAD_Symbol_376
-      INTEGER(w2f__i8) OpenAD_Symbol_377
-      REAL(w2f__8) OpenAD_Symbol_378
-      INTEGER(w2f__i8) OpenAD_Symbol_379
-      REAL(w2f__8) OpenAD_Symbol_380
-      INTEGER(w2f__i8) OpenAD_Symbol_381
-      REAL(w2f__8) OpenAD_Symbol_382
-      INTEGER(w2f__i8) OpenAD_Symbol_383
-      REAL(w2f__8) OpenAD_Symbol_384
-      INTEGER(w2f__i8) OpenAD_Symbol_385
-      REAL(w2f__8) OpenAD_Symbol_386
-      INTEGER(w2f__i8) OpenAD_Symbol_387
-      REAL(w2f__8) OpenAD_Symbol_388
-      INTEGER(w2f__i8) OpenAD_Symbol_389
-      REAL(w2f__8) OpenAD_Symbol_390
-      INTEGER(w2f__i8) OpenAD_Symbol_391
-      REAL(w2f__8) OpenAD_Symbol_392
-      INTEGER(w2f__i8) OpenAD_Symbol_393
-      REAL(w2f__8) OpenAD_Symbol_394
-      INTEGER(w2f__i8) OpenAD_Symbol_395
-      REAL(w2f__8) OpenAD_Symbol_396
-      INTEGER(w2f__i8) OpenAD_Symbol_397
-      REAL(w2f__8) OpenAD_Symbol_398
       INTEGER(w2f__i8) OpenAD_Symbol_399
-      REAL(w2f__8) OpenAD_Symbol_400
+      INTEGER(w2f__i8) OpenAD_Symbol_400
       INTEGER(w2f__i8) OpenAD_Symbol_401
-      REAL(w2f__8) OpenAD_Symbol_402
+      INTEGER(w2f__i8) OpenAD_Symbol_402
       INTEGER(w2f__i8) OpenAD_Symbol_403
-      REAL(w2f__8) OpenAD_Symbol_404
+      INTEGER(w2f__i8) OpenAD_Symbol_404
       INTEGER(w2f__i8) OpenAD_Symbol_405
-      REAL(w2f__8) OpenAD_Symbol_406
-      INTEGER(w2f__i8) OpenAD_Symbol_407
-      REAL(w2f__8) OpenAD_Symbol_408
-      INTEGER(w2f__i8) OpenAD_Symbol_409
-      REAL(w2f__8) OpenAD_Symbol_410
-      INTEGER(w2f__i8) OpenAD_Symbol_411
-      REAL(w2f__8) OpenAD_Symbol_412
-      INTEGER(w2f__i8) OpenAD_Symbol_413
-      REAL(w2f__8) OpenAD_Symbol_414
-      INTEGER(w2f__i8) OpenAD_Symbol_415
-      REAL(w2f__8) OpenAD_Symbol_416
-      INTEGER(w2f__i8) OpenAD_Symbol_417
-      REAL(w2f__8) OpenAD_Symbol_418
-      INTEGER(w2f__i8) OpenAD_Symbol_419
-      REAL(w2f__8) OpenAD_Symbol_420
-      INTEGER(w2f__i8) OpenAD_Symbol_421
-      REAL(w2f__8) OpenAD_Symbol_422
-      INTEGER(w2f__i8) OpenAD_Symbol_423
-      REAL(w2f__8) OpenAD_Symbol_424
-      INTEGER(w2f__i8) OpenAD_Symbol_425
-      REAL(w2f__8) OpenAD_Symbol_426
-      INTEGER(w2f__i8) OpenAD_Symbol_427
-      REAL(w2f__8) OpenAD_Symbol_428
-      INTEGER(w2f__i8) OpenAD_Symbol_429
+      INTEGER(w2f__i8) OpenAD_Symbol_406
+      REAL(w2f__8) OpenAD_Symbol_407
+      INTEGER(w2f__i8) OpenAD_Symbol_408
+      REAL(w2f__8) OpenAD_Symbol_409
+      INTEGER(w2f__i8) OpenAD_Symbol_410
+      REAL(w2f__8) OpenAD_Symbol_411
+      INTEGER(w2f__i8) OpenAD_Symbol_412
+      REAL(w2f__8) OpenAD_Symbol_413
+      INTEGER(w2f__i8) OpenAD_Symbol_414
+      REAL(w2f__8) OpenAD_Symbol_415
+      INTEGER(w2f__i8) OpenAD_Symbol_416
+      REAL(w2f__8) OpenAD_Symbol_417
+      INTEGER(w2f__i8) OpenAD_Symbol_418
+      REAL(w2f__8) OpenAD_Symbol_419
+      INTEGER(w2f__i8) OpenAD_Symbol_420
+      REAL(w2f__8) OpenAD_Symbol_421
+      INTEGER(w2f__i8) OpenAD_Symbol_422
+      REAL(w2f__8) OpenAD_Symbol_423
+      INTEGER(w2f__i8) OpenAD_Symbol_424
+      REAL(w2f__8) OpenAD_Symbol_425
+      INTEGER(w2f__i8) OpenAD_Symbol_426
+      REAL(w2f__8) OpenAD_Symbol_427
+      INTEGER(w2f__i8) OpenAD_Symbol_428
+      REAL(w2f__8) OpenAD_Symbol_429
       INTEGER(w2f__i8) OpenAD_Symbol_430
       REAL(w2f__8) OpenAD_Symbol_431
       INTEGER(w2f__i8) OpenAD_Symbol_432
-      INTEGER(w2f__i8) OpenAD_Symbol_433
+      REAL(w2f__8) OpenAD_Symbol_433
       INTEGER(w2f__i8) OpenAD_Symbol_434
-      INTEGER(w2f__i8) OpenAD_Symbol_435
+      REAL(w2f__8) OpenAD_Symbol_435
       INTEGER(w2f__i8) OpenAD_Symbol_436
-      INTEGER(w2f__i8) OpenAD_Symbol_437
+      REAL(w2f__8) OpenAD_Symbol_437
       INTEGER(w2f__i8) OpenAD_Symbol_438
-      INTEGER(w2f__i8) OpenAD_Symbol_439
+      REAL(w2f__8) OpenAD_Symbol_439
       INTEGER(w2f__i8) OpenAD_Symbol_440
-      INTEGER(w2f__i8) OpenAD_Symbol_441
+      REAL(w2f__8) OpenAD_Symbol_441
       INTEGER(w2f__i8) OpenAD_Symbol_442
-      INTEGER(w2f__i8) OpenAD_Symbol_443
+      REAL(w2f__8) OpenAD_Symbol_443
       INTEGER(w2f__i8) OpenAD_Symbol_444
-      INTEGER(w2f__i8) OpenAD_Symbol_445
+      REAL(w2f__8) OpenAD_Symbol_445
       INTEGER(w2f__i8) OpenAD_Symbol_446
-      INTEGER(w2f__i8) OpenAD_Symbol_447
+      REAL(w2f__8) OpenAD_Symbol_447
       INTEGER(w2f__i8) OpenAD_Symbol_448
-      INTEGER(w2f__i8) OpenAD_Symbol_449
+      REAL(w2f__8) OpenAD_Symbol_449
       INTEGER(w2f__i8) OpenAD_Symbol_450
-      INTEGER(w2f__i8) OpenAD_Symbol_451
+      REAL(w2f__8) OpenAD_Symbol_451
       INTEGER(w2f__i8) OpenAD_Symbol_452
-      INTEGER(w2f__i8) OpenAD_Symbol_453
+      REAL(w2f__8) OpenAD_Symbol_453
       INTEGER(w2f__i8) OpenAD_Symbol_454
-      INTEGER(w2f__i8) OpenAD_Symbol_455
+      REAL(w2f__8) OpenAD_Symbol_455
       INTEGER(w2f__i8) OpenAD_Symbol_456
-      INTEGER(w2f__i8) OpenAD_Symbol_457
+      REAL(w2f__8) OpenAD_Symbol_457
       INTEGER(w2f__i8) OpenAD_Symbol_458
-      INTEGER(w2f__i8) OpenAD_Symbol_459
+      REAL(w2f__8) OpenAD_Symbol_459
       INTEGER(w2f__i8) OpenAD_Symbol_460
       REAL(w2f__8) OpenAD_Symbol_461
       INTEGER(w2f__i8) OpenAD_Symbol_462
+      REAL(w2f__8) OpenAD_Symbol_463
+      INTEGER(w2f__i8) OpenAD_Symbol_464
+      REAL(w2f__8) OpenAD_Symbol_465
+      INTEGER(w2f__i8) OpenAD_Symbol_466
+      REAL(w2f__8) OpenAD_Symbol_467
+      INTEGER(w2f__i8) OpenAD_Symbol_468
+      REAL(w2f__8) OpenAD_Symbol_469
+      INTEGER(w2f__i8) OpenAD_Symbol_470
+      REAL(w2f__8) OpenAD_Symbol_471
+      INTEGER(w2f__i8) OpenAD_Symbol_472
+      REAL(w2f__8) OpenAD_Symbol_473
+      INTEGER(w2f__i8) OpenAD_Symbol_474
+      INTEGER(w2f__i8) OpenAD_Symbol_475
+      REAL(w2f__8) OpenAD_Symbol_476
+      INTEGER(w2f__i8) OpenAD_Symbol_477
+      INTEGER(w2f__i8) OpenAD_Symbol_478
+      INTEGER(w2f__i8) OpenAD_Symbol_479
+      INTEGER(w2f__i8) OpenAD_Symbol_480
+      INTEGER(w2f__i8) OpenAD_Symbol_481
+      INTEGER(w2f__i8) OpenAD_Symbol_482
+      INTEGER(w2f__i8) OpenAD_Symbol_483
+      INTEGER(w2f__i8) OpenAD_Symbol_484
+      INTEGER(w2f__i8) OpenAD_Symbol_485
+      INTEGER(w2f__i8) OpenAD_Symbol_486
+      INTEGER(w2f__i8) OpenAD_Symbol_487
+      INTEGER(w2f__i8) OpenAD_Symbol_488
+      INTEGER(w2f__i8) OpenAD_Symbol_489
+      INTEGER(w2f__i8) OpenAD_Symbol_490
+      INTEGER(w2f__i8) OpenAD_Symbol_491
+      INTEGER(w2f__i8) OpenAD_Symbol_492
+      INTEGER(w2f__i8) OpenAD_Symbol_493
+      INTEGER(w2f__i8) OpenAD_Symbol_494
+      INTEGER(w2f__i8) OpenAD_Symbol_495
+      INTEGER(w2f__i8) OpenAD_Symbol_496
+      INTEGER(w2f__i8) OpenAD_Symbol_497
+      INTEGER(w2f__i8) OpenAD_Symbol_498
+      INTEGER(w2f__i8) OpenAD_Symbol_499
+      INTEGER(w2f__i8) OpenAD_Symbol_500
+      INTEGER(w2f__i8) OpenAD_Symbol_501
+      INTEGER(w2f__i8) OpenAD_Symbol_502
+      INTEGER(w2f__i8) OpenAD_Symbol_503
+      INTEGER(w2f__i8) OpenAD_Symbol_504
+      INTEGER(w2f__i8) OpenAD_Symbol_505
+      REAL(w2f__8) OpenAD_Symbol_506
+      INTEGER(w2f__i8) OpenAD_Symbol_507
 C
 C     **** Top Level Pragmas ****
 C
@@ -699,8 +744,8 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
             PBL%v = X(K-NX+(-1))%v
-            OpenAD_Symbol_458 = (K - NX + INT((-1_w2f__i8)))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_458
+            OpenAD_Symbol_503 = (K - NX + INT((-1_w2f__i8)))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_503
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_330 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_330
@@ -718,8 +763,8 @@ C$OPENAD XXX Template ad_template.f
             IF(I .eq. INT(2_w2f__i8)) THEN
               PB%v = X(K-NX)%v
               PBB%v = 0.0D00
-              OpenAD_Symbol_452 = (K - NX)
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_452
+              OpenAD_Symbol_497 = (K - NX)
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_497
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_331 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_331
@@ -727,11 +772,11 @@ C$OPENAD XXX Template ad_template.f
             ELSE
               PB%v = X(K-NX)%v
               PBB%v = X(K-2*NX)%v
-              OpenAD_Symbol_454 = (K - INT(2_w2f__i8) * NX)
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_454
+              OpenAD_Symbol_499 = (K - INT(2_w2f__i8) * NX)
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_499
           integer_tape_pointer = integer_tape_pointer+1
-              OpenAD_Symbol_455 = (K - NX)
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_455
+              OpenAD_Symbol_500 = (K - NX)
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_500
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_332 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_332
@@ -748,8 +793,8 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
             PBR%v = X(K-NX+1)%v
-            OpenAD_Symbol_450 = (K - NX + INT(1_w2f__i8))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_450
+            OpenAD_Symbol_495 = (K - NX + INT(1_w2f__i8))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_495
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_336 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_336
@@ -767,8 +812,8 @@ C$OPENAD XXX Template ad_template.f
             IF(J .eq. INT(2_w2f__i8)) THEN
               PL%v = X(K+(-1))%v
               PLL%v = 0.0D00
-              OpenAD_Symbol_444 = (K + INT((-1_w2f__i8)))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_444
+              OpenAD_Symbol_489 = (K + INT((-1_w2f__i8)))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_489
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_337 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_337
@@ -776,11 +821,11 @@ C$OPENAD XXX Template ad_template.f
             ELSE
               PL%v = X(K+(-1))%v
               PLL%v = X(K+(-2))%v
-              OpenAD_Symbol_446 = (K + INT((-2_w2f__i8)))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_446
+              OpenAD_Symbol_491 = (K + INT((-2_w2f__i8)))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_491
           integer_tape_pointer = integer_tape_pointer+1
-              OpenAD_Symbol_447 = (K + INT((-1_w2f__i8)))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_447
+              OpenAD_Symbol_492 = (K + INT((-1_w2f__i8)))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_492
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_338 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_338
@@ -796,8 +841,8 @@ C$OPENAD XXX Template ad_template.f
           IF(J .eq.(NX + INT((-1_w2f__i8)))) THEN
             PR%v = X(K+1)%v
             PRR%v = 0.0D00
-            OpenAD_Symbol_357 = (K + INT(1_w2f__i8))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_357
+            OpenAD_Symbol_402 = (K + INT(1_w2f__i8))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_402
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_343 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_343
@@ -814,11 +859,11 @@ C$OPENAD XXX Template ad_template.f
             ELSE
               PR%v = X(K+1)%v
               PRR%v = X(K+2)%v
-              OpenAD_Symbol_440 = (K + INT(2_w2f__i8))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_440
+              OpenAD_Symbol_485 = (K + INT(2_w2f__i8))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_485
           integer_tape_pointer = integer_tape_pointer+1
-              OpenAD_Symbol_441 = (K + INT(1_w2f__i8))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_441
+              OpenAD_Symbol_486 = (K + INT(1_w2f__i8))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_486
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_342 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_342
@@ -835,8 +880,8 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
             PTL%v = X(NX+K+(-1))%v
-            OpenAD_Symbol_437 = (NX + K + INT((-1_w2f__i8)))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_437
+            OpenAD_Symbol_482 = (NX + K + INT((-1_w2f__i8)))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_482
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_346 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_346
@@ -845,8 +890,8 @@ C$OPENAD XXX Template ad_template.f
           IF(I .eq.(NY + INT((-1_w2f__i8)))) THEN
             PT%v = X(NX+K)%v
             PTT%v = 0.0D00
-            OpenAD_Symbol_359 = (NX + K)
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_359
+            OpenAD_Symbol_404 = (NX + K)
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_404
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_349 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_349
@@ -867,11 +912,11 @@ C$OPENAD XXX Template ad_template.f
             ELSE
               PT%v = X(NX+K)%v
               PTT%v = X(K+2*NX)%v
-              OpenAD_Symbol_433 = (K + INT(2_w2f__i8) * NX)
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_433
+              OpenAD_Symbol_478 = (K + INT(2_w2f__i8) * NX)
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_478
           integer_tape_pointer = integer_tape_pointer+1
-              OpenAD_Symbol_434 = (NX + K)
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_434
+              OpenAD_Symbol_479 = (NX + K)
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_479
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_348 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_348
@@ -888,8 +933,8 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
             PTR%v = X(NX+K+1)%v
-            OpenAD_Symbol_429 = (NX + K + INT(1_w2f__i8))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_429
+            OpenAD_Symbol_474 = (NX + K + INT(1_w2f__i8))
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_474
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_352 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_352
@@ -1322,15 +1367,15 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_310 = 1
       DO WHILE(INT(OpenAD_Symbol_310) .LE. INT(OpenAD_Symbol_309))
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_460 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_505 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_461 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_506 = double_tape(double_tape_pointer)
           OpenAD_Symbol_308%d = OpenAD_Symbol_308%d+FVEC(INT(OpenAD_Symb
-     +ol_460))%d*OpenAD_Symbol_461
-          FVEC(INT(OpenAD_Symbol_460))%d = 0.0d0
+     +ol_505))%d*OpenAD_Symbol_506
+          FVEC(INT(OpenAD_Symbol_505))%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_462 = integer_tape(integer_tape_pointer)
-          FVEC(INT(OpenAD_Symbol_462))%d = FVEC(INT(OpenAD_Symbol_462))%
+          OpenAD_Symbol_507 = integer_tape(integer_tape_pointer)
+          FVEC(INT(OpenAD_Symbol_507))%d = FVEC(INT(OpenAD_Symbol_507))%
      +d+OpenAD_Symbol_308%d
           OpenAD_Symbol_308%d = 0.0d0
         OpenAD_Symbol_310 = INT(OpenAD_Symbol_310) + 1
@@ -1344,210 +1389,210 @@ C$OPENAD XXX Template ad_template.f
         OpenAD_Symbol_314 = 1
         DO WHILE(INT(OpenAD_Symbol_314) .LE. INT(OpenAD_Symbol_313))
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_361 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_406 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_362 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_407 = double_tape(double_tape_pointer)
           OpenAD_Symbol_246%d = OpenAD_Symbol_246%d+FVEC(INT(OpenAD_Symb
-     +ol_361))%d*OpenAD_Symbol_362
+     +ol_406))%d*OpenAD_Symbol_407
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_363 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_408 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_364 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_409 = double_tape(double_tape_pointer)
           OpenAD_Symbol_246%d = OpenAD_Symbol_246%d+FVEC(INT(OpenAD_Symb
-     +ol_363))%d*OpenAD_Symbol_364
+     +ol_408))%d*OpenAD_Symbol_409
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_365 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_410 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_366 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_411 = double_tape(double_tape_pointer)
           OpenAD_Symbol_239%d = OpenAD_Symbol_239%d+FVEC(INT(OpenAD_Symb
-     +ol_365))%d*OpenAD_Symbol_366
+     +ol_410))%d*OpenAD_Symbol_411
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_367 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_412 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_368 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_413 = double_tape(double_tape_pointer)
           OpenAD_Symbol_239%d = OpenAD_Symbol_239%d+FVEC(INT(OpenAD_Symb
-     +ol_367))%d*OpenAD_Symbol_368
+     +ol_412))%d*OpenAD_Symbol_413
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_369 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_414 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_370 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_415 = double_tape(double_tape_pointer)
           OpenAD_Symbol_220%d = OpenAD_Symbol_220%d+FVEC(INT(OpenAD_Symb
-     +ol_369))%d*OpenAD_Symbol_370
+     +ol_414))%d*OpenAD_Symbol_415
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_371 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_416 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_372 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_417 = double_tape(double_tape_pointer)
           OpenAD_Symbol_220%d = OpenAD_Symbol_220%d+FVEC(INT(OpenAD_Symb
-     +ol_371))%d*OpenAD_Symbol_372
+     +ol_416))%d*OpenAD_Symbol_417
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_373 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_418 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_374 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_419 = double_tape(double_tape_pointer)
           OpenAD_Symbol_242%d = OpenAD_Symbol_242%d+FVEC(INT(OpenAD_Symb
-     +ol_373))%d*OpenAD_Symbol_374
+     +ol_418))%d*OpenAD_Symbol_419
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_375 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_420 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_376 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_421 = double_tape(double_tape_pointer)
           OpenAD_Symbol_242%d = OpenAD_Symbol_242%d+FVEC(INT(OpenAD_Symb
-     +ol_375))%d*OpenAD_Symbol_376
+     +ol_420))%d*OpenAD_Symbol_421
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_377 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_422 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_378 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_423 = double_tape(double_tape_pointer)
           OpenAD_Symbol_249%d = OpenAD_Symbol_249%d+FVEC(INT(OpenAD_Symb
-     +ol_377))%d*OpenAD_Symbol_378
+     +ol_422))%d*OpenAD_Symbol_423
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_379 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_424 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_380 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_425 = double_tape(double_tape_pointer)
           OpenAD_Symbol_249%d = OpenAD_Symbol_249%d+FVEC(INT(OpenAD_Symb
-     +ol_379))%d*OpenAD_Symbol_380
+     +ol_424))%d*OpenAD_Symbol_425
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_381 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_426 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_382 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_427 = double_tape(double_tape_pointer)
           OpenAD_Symbol_246%d = OpenAD_Symbol_246%d+FVEC(INT(OpenAD_Symb
-     +ol_381))%d*OpenAD_Symbol_382
+     +ol_426))%d*OpenAD_Symbol_427
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_383 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_428 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_384 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_429 = double_tape(double_tape_pointer)
           OpenAD_Symbol_249%d = OpenAD_Symbol_249%d+FVEC(INT(OpenAD_Symb
-     +ol_383))%d*OpenAD_Symbol_384
+     +ol_428))%d*OpenAD_Symbol_429
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_385 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_430 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_386 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_431 = double_tape(double_tape_pointer)
           OpenAD_Symbol_239%d = OpenAD_Symbol_239%d+FVEC(INT(OpenAD_Symb
-     +ol_385))%d*OpenAD_Symbol_386
+     +ol_430))%d*OpenAD_Symbol_431
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_387 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_432 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_388 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_433 = double_tape(double_tape_pointer)
           OpenAD_Symbol_242%d = OpenAD_Symbol_242%d+FVEC(INT(OpenAD_Symb
-     +ol_387))%d*OpenAD_Symbol_388
+     +ol_432))%d*OpenAD_Symbol_433
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_389 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_434 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_390 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_435 = double_tape(double_tape_pointer)
           OpenAD_Symbol_220%d = OpenAD_Symbol_220%d+FVEC(INT(OpenAD_Symb
-     +ol_389))%d*OpenAD_Symbol_390
+     +ol_434))%d*OpenAD_Symbol_435
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_391 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_436 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_392 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_437 = double_tape(double_tape_pointer)
           OpenAD_Symbol_270%d = OpenAD_Symbol_270%d+FVEC(INT(OpenAD_Symb
-     +ol_391))%d*OpenAD_Symbol_392
+     +ol_436))%d*OpenAD_Symbol_437
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_393 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_438 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_394 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_439 = double_tape(double_tape_pointer)
           OpenAD_Symbol_227%d = OpenAD_Symbol_227%d+FVEC(INT(OpenAD_Symb
-     +ol_393))%d*OpenAD_Symbol_394
+     +ol_438))%d*OpenAD_Symbol_439
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_395 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_440 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_396 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_441 = double_tape(double_tape_pointer)
           OpenAD_Symbol_259%d = OpenAD_Symbol_259%d+FVEC(INT(OpenAD_Symb
-     +ol_395))%d*OpenAD_Symbol_396
+     +ol_440))%d*OpenAD_Symbol_441
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_397 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_442 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_398 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_443 = double_tape(double_tape_pointer)
           OpenAD_Symbol_213%d = OpenAD_Symbol_213%d+FVEC(INT(OpenAD_Symb
-     +ol_397))%d*OpenAD_Symbol_398
+     +ol_442))%d*OpenAD_Symbol_443
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_399 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_444 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_400 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_445 = double_tape(double_tape_pointer)
           OpenAD_Symbol_259%d = OpenAD_Symbol_259%d+FVEC(INT(OpenAD_Symb
-     +ol_399))%d*OpenAD_Symbol_400
+     +ol_444))%d*OpenAD_Symbol_445
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_401 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_446 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_402 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_447 = double_tape(double_tape_pointer)
           OpenAD_Symbol_220%d = OpenAD_Symbol_220%d+FVEC(INT(OpenAD_Symb
-     +ol_401))%d*OpenAD_Symbol_402
+     +ol_446))%d*OpenAD_Symbol_447
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_403 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_448 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_404 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_449 = double_tape(double_tape_pointer)
           OpenAD_Symbol_253%d = OpenAD_Symbol_253%d+FVEC(INT(OpenAD_Symb
-     +ol_403))%d*OpenAD_Symbol_404
+     +ol_448))%d*OpenAD_Symbol_449
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_405 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_450 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_406 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_451 = double_tape(double_tape_pointer)
           OpenAD_Symbol_249%d = OpenAD_Symbol_249%d+FVEC(INT(OpenAD_Symb
-     +ol_405))%d*OpenAD_Symbol_406
+     +ol_450))%d*OpenAD_Symbol_451
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_407 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_452 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_408 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_453 = double_tape(double_tape_pointer)
           OpenAD_Symbol_246%d = OpenAD_Symbol_246%d+FVEC(INT(OpenAD_Symb
-     +ol_407))%d*OpenAD_Symbol_408
+     +ol_452))%d*OpenAD_Symbol_453
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_409 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_454 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_410 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_455 = double_tape(double_tape_pointer)
           OpenAD_Symbol_242%d = OpenAD_Symbol_242%d+FVEC(INT(OpenAD_Symb
-     +ol_409))%d*OpenAD_Symbol_410
+     +ol_454))%d*OpenAD_Symbol_455
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_411 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_456 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_412 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_457 = double_tape(double_tape_pointer)
           OpenAD_Symbol_239%d = OpenAD_Symbol_239%d+FVEC(INT(OpenAD_Symb
-     +ol_411))%d*OpenAD_Symbol_412
+     +ol_456))%d*OpenAD_Symbol_457
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_413 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_458 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_414 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_459 = double_tape(double_tape_pointer)
           OpenAD_Symbol_235%d = OpenAD_Symbol_235%d+FVEC(INT(OpenAD_Symb
-     +ol_413))%d*OpenAD_Symbol_414
+     +ol_458))%d*OpenAD_Symbol_459
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_415 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_460 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_416 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_461 = double_tape(double_tape_pointer)
           OpenAD_Symbol_220%d = OpenAD_Symbol_220%d+FVEC(INT(OpenAD_Symb
-     +ol_415))%d*OpenAD_Symbol_416
+     +ol_460))%d*OpenAD_Symbol_461
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_417 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_462 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_418 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_463 = double_tape(double_tape_pointer)
           OpenAD_Symbol_216%d = OpenAD_Symbol_216%d+FVEC(INT(OpenAD_Symb
-     +ol_417))%d*OpenAD_Symbol_418
+     +ol_462))%d*OpenAD_Symbol_463
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_419 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_464 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_420 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_465 = double_tape(double_tape_pointer)
           OpenAD_Symbol_227%d = OpenAD_Symbol_227%d+FVEC(INT(OpenAD_Symb
-     +ol_419))%d*OpenAD_Symbol_420
+     +ol_464))%d*OpenAD_Symbol_465
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_421 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_466 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_422 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_467 = double_tape(double_tape_pointer)
           OpenAD_Symbol_223%d = OpenAD_Symbol_223%d+FVEC(INT(OpenAD_Symb
-     +ol_421))%d*OpenAD_Symbol_422
+     +ol_466))%d*OpenAD_Symbol_467
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_423 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_468 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_424 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_469 = double_tape(double_tape_pointer)
           OpenAD_Symbol_220%d = OpenAD_Symbol_220%d+FVEC(INT(OpenAD_Symb
-     +ol_423))%d*OpenAD_Symbol_424
+     +ol_468))%d*OpenAD_Symbol_469
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_425 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_470 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_426 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_471 = double_tape(double_tape_pointer)
           OpenAD_Symbol_216%d = OpenAD_Symbol_216%d+FVEC(INT(OpenAD_Symb
-     +ol_425))%d*OpenAD_Symbol_426
+     +ol_470))%d*OpenAD_Symbol_471
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_427 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_472 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_428 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_473 = double_tape(double_tape_pointer)
           OpenAD_Symbol_213%d = OpenAD_Symbol_213%d+FVEC(INT(OpenAD_Symb
-     +ol_427))%d*OpenAD_Symbol_428
-          FVEC(INT(OpenAD_Symbol_427))%d = 0.0d0
+     +ol_472))%d*OpenAD_Symbol_473
+          FVEC(INT(OpenAD_Symbol_472))%d = 0.0d0
           PTL%d = PTL%d+OpenAD_Symbol_213%d
           OpenAD_Symbol_213%d = 0.0d0
           PTR%d = PTR%d+OpenAD_Symbol_216%d
@@ -1584,8 +1629,8 @@ C$OPENAD XXX Template ad_template.f
             PTR%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_430 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_430))%d = X(INT(OpenAD_Symbol_430))%d+Open
+          OpenAD_Symbol_475 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_475))%d = X(INT(OpenAD_Symbol_475))%d+Open
      +AD_Symbol_290%d
           OpenAD_Symbol_290%d = 0.0d0
           ENDIF
@@ -1598,8 +1643,8 @@ C$OPENAD XXX Template ad_template.f
             PT%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_360 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_360))%d = X(INT(OpenAD_Symbol_360))%d+Open
+          OpenAD_Symbol_405 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_405))%d = X(INT(OpenAD_Symbol_405))%d+Open
      +AD_Symbol_173%d
           OpenAD_Symbol_173%d = 0.0d0
           ELSE
@@ -1607,14 +1652,14 @@ C$OPENAD XXX Template ad_template.f
           OpenAD_Symbol_317 = integer_tape(integer_tape_pointer)
             IF(OpenAD_Symbol_317 .ne. 0) THEN
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_431 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_476 = double_tape(double_tape_pointer)
           OpenAD_Symbol_292%d = OpenAD_Symbol_292%d+PTT%d*OpenAD_Symbol_
-     +431
+     +476
           PTT%d = 0.0d0
           PT%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_432 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_432))%d = X(INT(OpenAD_Symbol_432))%d+Open
+          OpenAD_Symbol_477 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_477))%d = X(INT(OpenAD_Symbol_477))%d+Open
      +AD_Symbol_292%d
           OpenAD_Symbol_292%d = 0.0d0
             ELSE
@@ -1627,13 +1672,13 @@ C$OPENAD XXX Template ad_template.f
             PT%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_435 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_435))%d = X(INT(OpenAD_Symbol_435))%d+Open
+          OpenAD_Symbol_480 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_480))%d = X(INT(OpenAD_Symbol_480))%d+Open
      +AD_Symbol_293%d
           OpenAD_Symbol_293%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_436 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_436))%d = X(INT(OpenAD_Symbol_436))%d+Open
+          OpenAD_Symbol_481 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_481))%d = X(INT(OpenAD_Symbol_481))%d+Open
      +AD_Symbol_294%d
           OpenAD_Symbol_294%d = 0.0d0
             ENDIF
@@ -1648,8 +1693,8 @@ C$OPENAD XXX Template ad_template.f
             PTL%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_438 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_438))%d = X(INT(OpenAD_Symbol_438))%d+Open
+          OpenAD_Symbol_483 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_483))%d = X(INT(OpenAD_Symbol_483))%d+Open
      +AD_Symbol_295%d
           OpenAD_Symbol_295%d = 0.0d0
           ENDIF
@@ -1662,8 +1707,8 @@ C$OPENAD XXX Template ad_template.f
             PR%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_358 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_358))%d = X(INT(OpenAD_Symbol_358))%d+Open
+          OpenAD_Symbol_403 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_403))%d = X(INT(OpenAD_Symbol_403))%d+Open
      +AD_Symbol_172%d
           OpenAD_Symbol_172%d = 0.0d0
           ELSE
@@ -1676,8 +1721,8 @@ C$OPENAD XXX Template ad_template.f
             PRR%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_439 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_439))%d = X(INT(OpenAD_Symbol_439))%d+Open
+          OpenAD_Symbol_484 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_484))%d = X(INT(OpenAD_Symbol_484))%d+Open
      +AD_Symbol_296%d
           OpenAD_Symbol_296%d = 0.0d0
             ELSE
@@ -1690,13 +1735,13 @@ C$OPENAD XXX Template ad_template.f
             PR%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_442 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_442))%d = X(INT(OpenAD_Symbol_442))%d+Open
+          OpenAD_Symbol_487 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_487))%d = X(INT(OpenAD_Symbol_487))%d+Open
      +AD_Symbol_297%d
           OpenAD_Symbol_297%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_443 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_443))%d = X(INT(OpenAD_Symbol_443))%d+Open
+          OpenAD_Symbol_488 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_488))%d = X(INT(OpenAD_Symbol_488))%d+Open
      +AD_Symbol_298%d
           OpenAD_Symbol_298%d = 0.0d0
             ENDIF
@@ -1706,8 +1751,8 @@ C$OPENAD XXX Template ad_template.f
             P%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_356 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_356))%d = X(INT(OpenAD_Symbol_356))%d+Open
+          OpenAD_Symbol_401 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_401))%d = X(INT(OpenAD_Symbol_401))%d+Open
      +AD_Symbol_171%d
           OpenAD_Symbol_171%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
@@ -1719,8 +1764,8 @@ C$OPENAD XXX Template ad_template.f
             PLL%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_355 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_355))%d = X(INT(OpenAD_Symbol_355))%d+Open
+          OpenAD_Symbol_400 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_400))%d = X(INT(OpenAD_Symbol_400))%d+Open
      +AD_Symbol_170%d
           OpenAD_Symbol_170%d = 0.0d0
           ELSE
@@ -1733,8 +1778,8 @@ C$OPENAD XXX Template ad_template.f
             PL%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_445 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_445))%d = X(INT(OpenAD_Symbol_445))%d+Open
+          OpenAD_Symbol_490 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_490))%d = X(INT(OpenAD_Symbol_490))%d+Open
      +AD_Symbol_299%d
           OpenAD_Symbol_299%d = 0.0d0
             ELSE
@@ -1747,13 +1792,13 @@ C$OPENAD XXX Template ad_template.f
             PL%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_448 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_448))%d = X(INT(OpenAD_Symbol_448))%d+Open
+          OpenAD_Symbol_493 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_493))%d = X(INT(OpenAD_Symbol_493))%d+Open
      +AD_Symbol_300%d
           OpenAD_Symbol_300%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_449 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_449))%d = X(INT(OpenAD_Symbol_449))%d+Open
+          OpenAD_Symbol_494 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_494))%d = X(INT(OpenAD_Symbol_494))%d+Open
      +AD_Symbol_301%d
           OpenAD_Symbol_301%d = 0.0d0
             ENDIF
@@ -1768,8 +1813,8 @@ C$OPENAD XXX Template ad_template.f
             PBR%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_451 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_451))%d = X(INT(OpenAD_Symbol_451))%d+Open
+          OpenAD_Symbol_496 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_496))%d = X(INT(OpenAD_Symbol_496))%d+Open
      +AD_Symbol_302%d
           OpenAD_Symbol_302%d = 0.0d0
           ENDIF
@@ -1782,8 +1827,8 @@ C$OPENAD XXX Template ad_template.f
             PBB%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_354 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_354))%d = X(INT(OpenAD_Symbol_354))%d+Open
+          OpenAD_Symbol_399 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_399))%d = X(INT(OpenAD_Symbol_399))%d+Open
      +AD_Symbol_169%d
           OpenAD_Symbol_169%d = 0.0d0
           ELSE
@@ -1796,8 +1841,8 @@ C$OPENAD XXX Template ad_template.f
             PB%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_453 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_453))%d = X(INT(OpenAD_Symbol_453))%d+Open
+          OpenAD_Symbol_498 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_498))%d = X(INT(OpenAD_Symbol_498))%d+Open
      +AD_Symbol_303%d
           OpenAD_Symbol_303%d = 0.0d0
             ELSE
@@ -1810,13 +1855,13 @@ C$OPENAD XXX Template ad_template.f
             PB%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_456 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_456))%d = X(INT(OpenAD_Symbol_456))%d+Open
+          OpenAD_Symbol_501 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_501))%d = X(INT(OpenAD_Symbol_501))%d+Open
      +AD_Symbol_304%d
           OpenAD_Symbol_304%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_457 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_457))%d = X(INT(OpenAD_Symbol_457))%d+Open
+          OpenAD_Symbol_502 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_502))%d = X(INT(OpenAD_Symbol_502))%d+Open
      +AD_Symbol_305%d
           OpenAD_Symbol_305%d = 0.0d0
             ENDIF
@@ -1831,8 +1876,8 @@ C$OPENAD XXX Template ad_template.f
             PBL%d = 0
           end if
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_459 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_459))%d = X(INT(OpenAD_Symbol_459))%d+Open
+          OpenAD_Symbol_504 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_504))%d = X(INT(OpenAD_Symbol_504))%d+Open
      +AD_Symbol_306%d
           OpenAD_Symbol_306%d = 0.0d0
           ENDIF

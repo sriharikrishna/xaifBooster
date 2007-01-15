@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:16:03 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:23:23 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -188,6 +188,7 @@ C ========== end copyright notice ==============
       use active_module
       use globals
       use globals
+      use globals
       IMPLICIT NONE
 C
 C     **** Global Variables & Derived Type Definitions ****
@@ -310,6 +311,7 @@ C ========== end copyright notice ==============
       use active_module
       use globals
       use globals
+      use globals
       IMPLICIT NONE
 C
 C     **** Global Variables & Derived Type Definitions ****
@@ -325,8 +327,8 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_7
-      REAL(w2f__8) OpenAD_Symbol_8
+      REAL(w2f__8) OpenAD_Symbol_10
+      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
 C
@@ -364,12 +366,12 @@ C$OPENAD XXX Template ad_template.f
           if (our_rev_mode%adjoint) then
 ! adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_7 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_2%d = OpenAD_Symbol_2%d+GY%d*OpenAD_Symbol_7
+          OpenAD_Symbol_9 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_2%d = OpenAD_Symbol_2%d+GY%d*OpenAD_Symbol_9
           GY%d = 0.0d0
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_8 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_2%d = OpenAD_Symbol_2%d+Y(1)%d*OpenAD_Symbol_8
+          OpenAD_Symbol_10 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_2%d = OpenAD_Symbol_2%d+Y(1)%d*OpenAD_Symbol_10
           Y(1)%d = 0.0d0
           if (iaddr(GX) .ne. iaddr(OpenAD_Symbol_2)) then
             OpenAD_Symbol_2%d = OpenAD_Symbol_2%d+GX%d

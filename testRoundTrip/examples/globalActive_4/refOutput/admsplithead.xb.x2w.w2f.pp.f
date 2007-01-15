@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:19:44 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:27:06 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -65,6 +65,7 @@ C ========== end copyright notice ==============
 
       use w2f__types
       use active_module
+      use all_globals_mod
       use all_globals_mod
       use all_globals_mod
       IMPLICIT NONE
@@ -188,6 +189,7 @@ C ========== end copyright notice ==============
 
       use w2f__types
       use active_module
+      use all_globals_mod
       use all_globals_mod
       use all_globals_mod
       IMPLICIT NONE

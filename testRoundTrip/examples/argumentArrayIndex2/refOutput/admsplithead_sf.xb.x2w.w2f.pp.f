@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:15:48 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:23:02 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -211,8 +211,8 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_14
       INTEGER(w2f__i8) OpenAD_Symbol_15
-      INTEGER(w2f__i8) OpenAD_Symbol_16
-      INTEGER(w2f__i8) OpenAD_Symbol_17
+      INTEGER(w2f__i8) OpenAD_Symbol_20
+      INTEGER(w2f__i8) OpenAD_Symbol_21
       INTEGER(w2f__i8) OpenAD_Symbol_3
 C
 C     **** Top Level Pragmas ****
@@ -230,7 +230,7 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       K = 1
-      OpenAD_Symbol_17 = K
+      OpenAD_Symbol_21 = K
       CALL foo(X(K),Y)
       P(1) = 1.0D00
       L = 1
@@ -251,9 +251,9 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
 ! taping
 C$OPENAD XXX Template ad_template.f
       K = 1
-      OpenAD_Symbol_17 = K
+      OpenAD_Symbol_21 = K
       CALL foo(X(K),Y)
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_17
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_21
           integer_tape_pointer = integer_tape_pointer+1
       P(1) = 1.0D00
       L = 1
@@ -290,7 +290,7 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(Q(INT(OpenAD_Symbol_14)),OpenAD_Symbol_12)
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_16 = integer_tape(integer_tape_pointer)
-      CALL foo(X(INT(OpenAD_Symbol_16)),Y)
+          OpenAD_Symbol_20 = integer_tape(integer_tape_pointer)
+      CALL foo(X(INT(OpenAD_Symbol_20)),Y)
           end if 
         end subroutine head

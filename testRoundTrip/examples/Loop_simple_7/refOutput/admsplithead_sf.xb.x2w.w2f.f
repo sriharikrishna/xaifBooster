@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:58:32 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:30:16 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -22,6 +22,9 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_2
       INTEGER(w2f__i8) OpenAD_Symbol_3
+      INTEGER(w2f__i8) OpenAD_Symbol_4
+      INTEGER(w2f__i8) OpenAD_Symbol_5
+      INTEGER(w2f__i8) OpenAD_Symbol_6
 C
 C     **** Parameters and Result ****
 C
@@ -32,8 +35,8 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i8) OpenAD_Symbol_4
-      INTEGER(w2f__i8) OpenAD_Symbol_5
+      INTEGER(w2f__i8) OpenAD_Symbol_7
+      INTEGER(w2f__i8) OpenAD_Symbol_8
 C
 C     **** Statements ****
 C
@@ -67,15 +70,15 @@ C     $OpenAD$ INLINE pop_i(subst)
       OpenAD_Symbol_2 = 1
       DO WHILE(INT(OpenAD_Symbol_2) .LE. INT(OpenAD_Symbol_1))
 C       $OpenAD$ INLINE pop_i(subst)
-        CALL pop_i(OpenAD_Symbol_4)
+        CALL pop_i(OpenAD_Symbol_7)
 C       $OpenAD$ INLINE CondIncZeroDeriv(subst,subst)
-        CALL CondIncZeroDeriv(__deriv__(Y(INT(OpenAD_Symbol_4))),
+        CALL CondIncZeroDeriv(__deriv__(Y(INT(OpenAD_Symbol_7))),
      >  __deriv__(OpenAD_Symbol_0))
 C       $OpenAD$ INLINE pop_i(subst)
-        CALL pop_i(OpenAD_Symbol_5)
+        CALL pop_i(OpenAD_Symbol_8)
 C       $OpenAD$ INLINE IncDeriv(subst,subst)
         CALL IncDeriv(__deriv__(OpenAD_Symbol_0), __deriv__(X(INT(
-     > OpenAD_Symbol_5))))
+     > OpenAD_Symbol_8))))
 C       $OpenAD$ INLINE ZeroDeriv(subst)
         CALL ZeroDeriv(__deriv__(OpenAD_Symbol_0))
         OpenAD_Symbol_2 = INT(OpenAD_Symbol_2) + 1
@@ -88,8 +91,6 @@ C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
-C     $OpenAD$ INLINE cp_res_store_real_vector_a(subst)
-      CALL cp_res_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
@@ -98,8 +99,6 @@ C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
       CALL cp_arg_restore_integer_scalar(K)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
-C     $OpenAD$ INLINE cp_res_restore_real_vector_a(subst)
-      CALL cp_res_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
@@ -116,6 +115,42 @@ C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
       CALL cp_arg_restore_integer_scalar(K)
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 10
+C$OPENAD XXX Template ad_template.f
+C$OPENAD XXX Simple loop\t
+      OpenAD_Symbol_6 = 0_w2f__i8
+      DO I = 1, K, 1
+        __value__(Y(INT(I))) = __value__(X(I))
+C       $OpenAD$ INLINE push_i(subst)
+        CALL push_i(I)
+C       $OpenAD$ INLINE push_i(subst)
+        CALL push_i(I)
+        OpenAD_Symbol_6 = (INT(OpenAD_Symbol_6) + INT(1_w2f__i8))
+      END DO
+C     $OpenAD$ INLINE push_i(subst)
+      CALL push_i(OpenAD_Symbol_6)
+      RETURN
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 11
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(OpenAD_Symbol_4)
+      OpenAD_Symbol_5 = 1
+      DO WHILE(INT(OpenAD_Symbol_5) .LE. INT(OpenAD_Symbol_4))
+C       $OpenAD$ INLINE pop_i(subst)
+        CALL pop_i(OpenAD_Symbol_7)
+C       $OpenAD$ INLINE CondIncZeroDeriv(subst,subst)
+        CALL CondIncZeroDeriv(__deriv__(Y(INT(OpenAD_Symbol_7))),
+     >  __deriv__(OpenAD_Symbol_0))
+C       $OpenAD$ INLINE pop_i(subst)
+        CALL pop_i(OpenAD_Symbol_8)
+C       $OpenAD$ INLINE IncDeriv(subst,subst)
+        CALL IncDeriv(__deriv__(OpenAD_Symbol_0), __deriv__(X(INT(
+     > OpenAD_Symbol_8))))
+C       $OpenAD$ INLINE ZeroDeriv(subst)
+        CALL ZeroDeriv(__deriv__(OpenAD_Symbol_0))
+        OpenAD_Symbol_5 = INT(OpenAD_Symbol_5) + 1
+      END DO
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE
 
@@ -159,8 +194,6 @@ C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
-C     $OpenAD$ INLINE cp_res_store_real_vector_a(subst)
-      CALL cp_res_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
@@ -169,8 +202,6 @@ C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
-C     $OpenAD$ INLINE cp_res_restore_real_vector_a(subst)
-      CALL cp_res_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
@@ -187,5 +218,13 @@ C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 10
+C$OPENAD XXX Template ad_template.f
+      CALL bar(__deriv__(X), __deriv__(Y), 3_w2f__i8)
+      RETURN
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 11
+      CALL bar(__deriv__(X), __deriv__(Y), 3_w2f__i8)
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE
