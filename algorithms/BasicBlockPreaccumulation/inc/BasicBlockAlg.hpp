@@ -126,10 +126,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     typedef std::list<const Variable*> VariableCPList;
     
     /**
-     * run the standard algorithm for creating the elminated graphs
-     */
-
-    /**
      * Sets flag to run all algorithms and choose the best one if a flag is set.
      */
     static void setAllAlgorithms();
@@ -524,7 +520,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static unsigned int ourSequenceCounter;
       
+    /**
+     * run the standard algorithm for creating the elminated graphs
+     */
     void standardEliminationAlgorithm(SequenceHolder::SequencePList::iterator&, PrivateLinearizedComputationalGraph&, VariableCPList& theDepVertexPListCopyWithoutRemoval, SequenceHolder&);
+    
+    /**
+     * run the scarce algorithm for creating the elminated graphs
+     */
+    void scarceEliminationAlgorithm(SequenceHolder::SequencePList::iterator&, PrivateLinearizedComputationalGraph&, VariableCPList& theDepVertexPListCopyWithoutRemoval, SequenceHolder&);
+    
     void incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder);
     
     void incrementGlobalSequenceCounter(const SequenceHolder& aSequenceHolder);
