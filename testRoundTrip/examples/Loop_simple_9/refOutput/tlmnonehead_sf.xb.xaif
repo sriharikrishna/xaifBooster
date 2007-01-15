@@ -96,6 +96,13 @@
       <xaif:DUUDSet key="2">
         <xaif:StatementId idRef=""/>
       </xaif:DUUDSet>
+      <xaif:DUUDSet key="3">
+        <xaif:StatementId idRef="20"/>
+        <xaif:StatementId idRef="23"/>
+      </xaif:DUUDSet>
+      <xaif:DUUDSet key="4">
+        <xaif:StatementId idRef="38"/>
+      </xaif:DUUDSet>
     </xaif:DUUDSetList>
     <xaif:ControlFlowGraph vertex_id="1" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" active="1">
     </xaif:ControlFlowGraph>
@@ -204,7 +211,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:Index>
-                  <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                  <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
                     <xaif:SymbolReference vertex_id="1" symbol_id="K_5" annotation="" scope_id="3"/>
                   </xaif:VariableReference>
                 </xaif:Index>
@@ -222,7 +229,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:Index>
-                  <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                  <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
                     <xaif:SymbolReference vertex_id="1" symbol_id="K_5" annotation="" scope_id="3"/>
                   </xaif:VariableReference>
                 </xaif:Index>
