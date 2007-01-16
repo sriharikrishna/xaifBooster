@@ -56,7 +56,6 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlgFactory.hpp"
-#include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/IfStatementAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/PreLoopAlgFactory.hpp"
@@ -97,7 +96,6 @@ namespace xaifBoosterControlFlowReversal {
   void AlgFactoryManager::resets() {
     resetCallGraphAlgFactory(new CallGraphAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
-    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
     resetControlFlowGraphVertexAlgFactory(new ControlFlowGraphVertexAlgFactory());
     resetIfStatementAlgFactory(new IfStatementAlgFactory());
     resetPreLoopAlgFactory(new PreLoopAlgFactory());
