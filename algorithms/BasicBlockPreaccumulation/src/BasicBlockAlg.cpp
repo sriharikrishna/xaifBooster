@@ -741,7 +741,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	try { 
 	  //ourCompute_elimination_sequence_fp=&angel::compute_partial_elimination_sequence; //Set algorithm
 		angel::compute_partial_elimination_sequence (theFlattenedSequence, ourIntParameter, ourGamma, alg1Test, rgraph, v_cor_list, e_cor_list); //Run algorithm
-          GraphVizDisplay::show(rgraph, "remainder graph");
+          if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	    GraphVizDisplay::show(rgraph, "remainderGraph");
+	  }
 	  countOperations(alg1Test, current); //Count algorithm
 	  min = current; //since first this is min
 	  best = &alg1Test; //it is also best
