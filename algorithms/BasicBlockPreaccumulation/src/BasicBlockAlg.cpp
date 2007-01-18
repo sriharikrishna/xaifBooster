@@ -522,8 +522,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::algorithm_action_3() {
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
 	      << debug().c_str());
-    if (ourPreaccumulationLevel!=PreaccumulationLevel::STATEMENT)
-      algorithm_action_3_perSequence(myFlatOn);
+    if(!useScarce)
+    {
+      if (ourPreaccumulationLevel!=PreaccumulationLevel::STATEMENT)
+        algorithm_action_3_perSequence(myFlatOn);
+    }
     if (ourPreaccumulationLevel!=PreaccumulationLevel::MAX_GRAPH)
       algorithm_action_3_perSequence(myFlatOff);
     switch(ourPreaccumulationLevel) { 
