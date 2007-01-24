@@ -79,7 +79,7 @@ namespace xaifBoosterAddressArithmetic {
     for (xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList::const_iterator aKnownVariablesI=theKnownVariables.begin();
 	 aKnownVariablesI!=theKnownVariables.end();
 	 ++aKnownVariablesI) { 
-      std::cout << "comparing known " << (*aKnownVariablesI)->equivalenceSignature() << " with unknown " << anArgument.getVariable().equivalenceSignature() << std::endl; 
+      // std::cout << "comparing known " << (*aKnownVariablesI)->equivalenceSignature() << " with unknown " << anArgument.getVariable().equivalenceSignature() << std::endl; 
       if ((*aKnownVariablesI)->equivalenceSignature()
 	  ==
 	  anArgument.getVariable().equivalenceSignature()) { 
@@ -154,7 +154,7 @@ namespace xaifBoosterAddressArithmetic {
 	for (CallGraphVertexAlg::UnknownVarInfoList::const_iterator anUnknownVariablesI=theUnknownVariables.begin();
 	     anUnknownVariablesI!=theUnknownVariables.end();
 	     ++anUnknownVariablesI) { 
-	  std::cout << "comparing old unknown variable " << (*anUnknownVariablesI).myVariable_p->equivalenceSignature() << " with new unknown " << anArgument.getVariable().equivalenceSignature() << std::endl; 
+	  // std::cout << "comparing old unknown variable " << (*anUnknownVariablesI).myVariable_p->equivalenceSignature() << " with new unknown " << anArgument.getVariable().equivalenceSignature() << std::endl; 
 	  if ((*anUnknownVariablesI).myVariable_p->equivalenceSignature()==anArgument.getVariable().equivalenceSignature() 
 	      &&
 	      (!locallyRedefined
@@ -344,17 +344,19 @@ namespace xaifBoosterAddressArithmetic {
     if (ourIgnoranceFlag) { 
       return;
     }
-    std::cout << "about to push " << anUnknownVariable.equivalenceSignature() << " in " << theTapingVertex.debug().c_str() << std::endl; 
+    // std::cout << "about to push " << anUnknownVariable.equivalenceSignature() << " in " << theTapingVertex.debug().c_str() << std::endl; 
     BasicBlock& thePushBlock(dynamic_cast<BasicBlock&>(theTapingVertex.getStorePlaceholder().getNewVertex()));
     // has it been pushed already?
     for (BasicBlock::BasicBlockElementList::const_iterator pushIterator=thePushBlock.getBasicBlockElementList().begin();
 	 pushIterator!=thePushBlock.getBasicBlockElementList().end();
 	 ++pushIterator) { 
+/* 
       std::cout << "comparing already pushed " 
 		<< (*(dynamic_cast<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&>(**pushIterator).getArgumentList().begin()))->getArgument().getVariable().equivalenceSignature()
 		<< " with to be pushed variable "
 		<< anUnknownVariable.equivalenceSignature() 
 		<< std::endl; 
+*/
       if ((*(dynamic_cast<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&>(**pushIterator).getArgumentList().begin()))->getArgument().getVariable().equivalenceSignature()
 	  ==anUnknownVariable.equivalenceSignature()) { 
 	// already pushed, done
