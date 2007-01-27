@@ -750,6 +750,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  countOperations(alg1Test, current); //Count algorithm
 	  min = current; //since first this is min
 	  best = &alg1Test; //it is also best
+	  int tempcount;
+	  tempcount = e_cor_list.size();
+	  DBG_MACRO(DbgGroup::METRIC, "Edge list size count " << tempcount << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
+	 //Next two lines do not work
+	  //tempcount = e_cor_list.size.numOfEdges();
+	  
+	  //DBG_MACRO(DbgGroup::METRIC, "Number of Edges  " << tempcount << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
 	  //debuging print statements with results
 		  DBG_MACRO(DbgGroup::METRIC, "Default elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
 	  current.reset(); //Reset counter for next algorithm
