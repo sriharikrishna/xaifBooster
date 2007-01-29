@@ -65,7 +65,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     enum PreaccumulationLevel_E {
       PICK_BEST=0,
       STATEMENT=1,
-      MAX_GRAPH=2};
+      MAX_GRAPH=2,
+      MAX_GRAPH_SCARSE=3
+    };
 
     static void checkValid(const PreaccumulationLevel_E& aLevel);
     

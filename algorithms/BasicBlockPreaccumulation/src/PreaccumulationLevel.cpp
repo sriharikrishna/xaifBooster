@@ -70,6 +70,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     case MAX_GRAPH:
       returnString="max_graph";
       break;
+    case MAX_GRAPH_SCARSE:
+      returnString="max_graph_scarse";
+      break;
     default: 
       throw PrintingIntException("PreaccumulationLevel::toString: unknown value",aPreaccumulationLevel);
       break;
@@ -82,6 +85,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     case PICK_BEST:
     case STATEMENT:
     case MAX_GRAPH:
+    case MAX_GRAPH_SCARSE:
       break;
     default: 
       THROW_LOGICEXCEPTION_MACRO("PreaccumulationLevel::fromString: unknown value " 
