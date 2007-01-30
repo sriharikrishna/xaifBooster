@@ -51,16 +51,16 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/LogicException.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationLevel.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMode.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
   
-  std::string PreaccumulationLevel::toString(const PreaccumulationLevel_E& aPreaccumulationLevel)
+  std::string PreaccumulationMode::toString(const PreaccumulationMode_E& aPreaccumulationMode)
     throw (PrintingIntException) { 
     std::string returnString;
-    switch(aPreaccumulationLevel) {
+    switch(aPreaccumulationMode) {
     case PICK_BEST:
       returnString="pick_best";
       break;
@@ -74,24 +74,24 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       returnString="max_graph_scarse";
       break;
     default: 
-      throw PrintingIntException("PreaccumulationLevel::toString: unknown value",aPreaccumulationLevel);
+      throw PrintingIntException("PreaccumulationMode::toString: unknown value",aPreaccumulationMode);
       break;
-    } // end switch
+    } 
     return returnString;
-  } // end of std::string PreaccumulationLevel::toString
+  } 
 
-  void PreaccumulationLevel::checkValid(const PreaccumulationLevel_E& aPreaccumulationLevel) { 
-    switch(aPreaccumulationLevel) {
+  void PreaccumulationMode::checkValid(const PreaccumulationMode_E& aPreaccumulationMode) { 
+    switch(aPreaccumulationMode) {
     case PICK_BEST:
     case STATEMENT:
     case MAX_GRAPH:
     case MAX_GRAPH_SCARSE:
       break;
     default: 
-      THROW_LOGICEXCEPTION_MACRO("PreaccumulationLevel::fromString: unknown value " 
-				 << aPreaccumulationLevel);
+      THROW_LOGICEXCEPTION_MACRO("PreaccumulationMode::fromString: unknown value " 
+				 << aPreaccumulationMode);
       break;
-    } // end switch
-  } // end of std::string PreaccumulationLevel::toString
+    } 
+  } 
 
 } // end of namespace 

@@ -76,14 +76,13 @@ void Usage(char** argv) {
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
-	    << "             [-S <level>] force preaccumulation level (1: statement, 2 maximal graph), defaults to pick best" << std::endl
+	    << "             [-S <level>] force preaccumulation level (1: statement, 2: max. graph, 3: max. graph scarse), defaults to pick best" << std::endl
 	    << "             [-n] allow n-ary sax operations" << std::endl
 	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
             << "                 space separated list enclosed in double quotes" << std::endl
 	    << "             [-r] force renaming of all non-external routines" << std::endl
             << "             [-a] dynamically choose graph elimination algorithm" << std::endl
 	    << "             [-C] turn on runtime counters"  << std::endl
-	    << "             [-x] use scarce algorithm" << std::endl
 	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
 
@@ -96,7 +95,7 @@ int main(int argc,char** argv) {
   // to contain the namespace url in case of -s having a schema location
   std::string aUrl;
   try { 
-    CommandLineParser::instance()->initialize("aiocCdgsSnwrx",argc,argv);
+    CommandLineParser::instance()->initialize("aiocCdgsSnwr",argc,argv);
     inFileName=CommandLineParser::instance()->argAsString('i');
     intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
     if (CommandLineParser::instance()->isSet('s')) 
@@ -108,7 +107,7 @@ int main(int argc,char** argv) {
     if (CommandLineParser::instance()->isSet('g')) 
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
     if (CommandLineParser::instance()->isSet('S')) 
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::forcePreaccumulationLevel(xaifBoosterBasicBlockPreaccumulation::PreaccumulationLevel::PreaccumulationLevel_E(CommandLineParser::instance()->argAsInt('S')));
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::forcePreaccumulationMode(xaifBoosterBasicBlockPreaccumulation::PreaccumulationMode::PreaccumulationMode_E(CommandLineParser::instance()->argAsInt('S')));
     if (CommandLineParser::instance()->isSet('n')) 
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
     if (CommandLineParser::instance()->isSet('w')) 
@@ -119,8 +118,6 @@ int main(int argc,char** argv) {
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
     if (CommandLineParser::instance()->isSet('C')) 
      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
-    if (CommandLineParser::instance()->isSet('x')) 
-     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setScarce();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
