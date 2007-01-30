@@ -102,14 +102,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
   
   bool 
-  AssignmentAlg::vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence) { 
+  AssignmentAlg::vertexIdentification(PrivateLinearizedComputationalGraph& theComputationalGraph) { 
     if (!getActiveFlag()) 
       // nothing to do here 
       return true; 
     Expression& theExpression(getLinearizedRightHandSide());
-    VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theFlattenedSequence.getVertexIdentificationListActiveLHS());
-    VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theFlattenedSequence.getVertexIdentificationListActiveRHS());
-    VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
+    VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theComputationalGraph.getVertexIdentificationListActiveLHS());
+    VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theComputationalGraph.getVertexIdentificationListActiveRHS());
+    VertexIdentificationListPassive& theVertexIdentificationListPassive(theComputationalGraph.getVertexIdentificationListPassive());
     Expression::VertexIteratorPair p=theExpression.vertices();
     Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
     for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
@@ -177,23 +177,30 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     BasicBlockAlg& aBasicBlockAlg(BasicBlockAlgParameter::instance().get());
     // we need to do the representative sequence first because we only redo the activity analysis
     // and linearization once.
-    if (BasicBlockAlg::getPreaccumulationLevel()!=PreaccumulationLevel::STATEMENT)
-      algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(true));
-    if (BasicBlockAlg::getPreaccumulationLevel()!=PreaccumulationLevel::MAX_GRAPH)
-      algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(false));
+    BasicBlockAlg::SequenceHolder* repSequenceHolder_p=&(aBasicBlockAlg.getRepresentativeSequenceHolder());
+    algorithm_action_2_perSequence(aBasicBlockAlg,*repSequenceHolder_p);
+    if (BasicBlockAlg::getPreaccumulationMode()==PreaccumulationMode::PICK_BEST) { 
+      // do all others: 
+      if (repSequenceHolder_p!=&(aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::STATEMENT)))
+	algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::STATEMENT));
+      if (repSequenceHolder_p!=&(aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::MAX_GRAPH)))
+	algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::MAX_GRAPH));
+      if (repSequenceHolder_p!=&(aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::MAX_GRAPH_SCARSE)))
+	algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::MAX_GRAPH_SCARSE));
+    }
   }
 
   void 
   AssignmentAlg::algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
 						BasicBlockAlg::SequenceHolder& aSequenceHolder) { 
-    PrivateLinearizedComputationalGraph& theFlattenedSequence=
-      BasicBlockAlgParameter::instance().get().getFlattenedSequence(getContainingAssignment(),
+    PrivateLinearizedComputationalGraph& theComputationalGraph=
+      BasicBlockAlgParameter::instance().get().getComputationalGraph(getContainingAssignment(),
 					  aSequenceHolder);
     // this was set in BasicBlockAlg::algorithm_action_2
     VertexPPairList theVertexTrackList;
-    if (!vertexIdentification(theFlattenedSequence)) { 
+    if (!vertexIdentification(theComputationalGraph)) { 
       // there is an ambiguity, do the split
-      aSequenceHolder.splitFlattenedSequence(getContainingAssignment());
+      aSequenceHolder.splitComputationalGraph(getContainingAssignment());
       // redo everything for this assignment
       algorithm_action_2_perSequence(aBasicBlockAlg,
 				     aSequenceHolder);
@@ -218,9 +225,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // and the second part of the linearization
       xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
     }
-    VertexIdentificationListPassive& theVertexIdentificationListPassive(theFlattenedSequence.getVertexIdentificationListPassive());
+    VertexIdentificationListPassive& theVertexIdentificationListPassive(theComputationalGraph.getVertexIdentificationListPassive());
     if (!getActiveFlag()) { 
-      theFlattenedSequence.addToPassiveStatementIdList(getContainingAssignment().getId());
+      theComputationalGraph.addToPassiveStatementIdList(getContainingAssignment().getId());
       if (getContainingAssignment().getLHS().getActiveType()) {   // but the LHS has active type
 	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS(),
 						      getContainingAssignment().getId());
@@ -235,8 +242,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
       // keep track of all the vertices we add with this statement in case we need to split and 
       // remove them
-      VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theFlattenedSequence.getVertexIdentificationListActiveLHS());
-      VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theFlattenedSequence.getVertexIdentificationListActiveRHS());
+      VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theComputationalGraph.getVertexIdentificationListActiveLHS());
+      VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theComputationalGraph.getVertexIdentificationListActiveRHS());
       DBG_MACRO(DbgGroup::DATA,
 		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "
 		<< theVertexIdentificationListPassive.debug().c_str()
@@ -275,7 +282,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // alias a preceding LHS
 	    // we need to add this vertex
 	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
-	    theFlattenedSequence.supplyAndAddVertexInstance(*theLCGVertex_p);
+	    theComputationalGraph.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA,
 		      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
 		      << theLCGVertex_p->debug().c_str());
@@ -339,12 +346,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): cannot find edge source or target");
 	// filter out parallel edges:
 	PrivateLinearizedComputationalGraph::OutEdgeIteratorPair 
-	  anOutEdgeItPair(theFlattenedSequence.getOutEdgesOf(*theLCGSource_p));
+	  anOutEdgeItPair(theComputationalGraph.getOutEdgesOf(*theLCGSource_p));
 	PrivateLinearizedComputationalGraph::OutEdgeIterator 
 	  aPrivLinCompGEdgeI(anOutEdgeItPair.first),
 	  aPrivLinCompGEdgeIEnd(anOutEdgeItPair.second);
 	for (;aPrivLinCompGEdgeI!=aPrivLinCompGEdgeIEnd;++aPrivLinCompGEdgeI) { 
-	  if (theLCGTarget_p==&(theFlattenedSequence.getTargetOf(*aPrivLinCompGEdgeI)))
+	  if (theLCGTarget_p==&(theComputationalGraph.getTargetOf(*aPrivLinCompGEdgeI)))
 	    break; // already have such an edge in here
 	} // end for 
 	if (aPrivLinCompGEdgeI!=aPrivLinCompGEdgeIEnd) {  // this is an edge parallel to an existing  edge
@@ -354,7 +361,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	PrivateLinearizedComputationalGraphEdge* theEdge_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge();
 	// set the back reference
 	theEdge_p->setLinearizedExpressionEdge(*ExpressionEdgeI);
-	theFlattenedSequence.supplyAndAddEdgeInstance(*theEdge_p,
+	theComputationalGraph.supplyAndAddEdgeInstance(*theEdge_p,
 						      *theLCGSource_p,
 						      *theLCGTarget_p);
 	DBG_MACRO(DbgGroup::DATA,
@@ -382,7 +389,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	theLHSLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
 	// the new one needs to be added to the graph, 
 	// the old one is already in there
-	theFlattenedSequence.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
+	theComputationalGraph.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
 	// the new one needs to have its RHS set to the old ones LHS
 	theLHSLCGVertex_p->setRHSVariable(theOldLHSLCGVertex_p->getLHSVariable());
 	// we need to add the unit edge
@@ -390,7 +397,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// we can't set a back reference because there is none
 	theEdge_p->setUnitExpressionEdge();
 	// add the edge to the graph
-	theFlattenedSequence.supplyAndAddEdgeInstance(*theEdge_p,
+	theComputationalGraph.supplyAndAddEdgeInstance(*theEdge_p,
 						      *theOldLHSLCGVertex_p,
 						      *theLHSLCGVertex_p);
       } // end if 
@@ -415,7 +422,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // the left hand sides as dependendents and when we are 
       // done with one flattening section we remove the ones not 
       // needed
-      theFlattenedSequence.addToDependentList(*theLHSLCGVertex_p,
+      theComputationalGraph.addToDependentList(*theLHSLCGVertex_p,
 					      getContainingAssignment().getId());
       DBG_MACRO(DbgGroup::DATA,
 		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "

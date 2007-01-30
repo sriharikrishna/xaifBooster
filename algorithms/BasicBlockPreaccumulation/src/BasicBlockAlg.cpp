@@ -86,10 +86,12 @@
  * the various methods provided by the ANGEL library
  */
 namespace angel { 
+
   extern void compute_elimination_sequence (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
-					    int tasks, 
+					    int iterations, 
 					    double gamma,
 					    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list);
+
   extern void compute_elimination_sequence_lsa_vertex (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
 						       int iterations, 
 						       double gamma,
@@ -101,12 +103,12 @@ namespace angel {
 						     xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list);
 
   extern void compute_partial_elimination_sequence (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
-		  int tasks, 
-		  double, // for interface unification
-		  xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list,
-		  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& rgraph,
-		  xaifBoosterCrossCountryInterface::VertexCorrelationList& v_cor_list,
-		  xaifBoosterCrossCountryInterface::EdgeCorrelationList& e_cor_list);
+						    int iterations, 
+						    double gamma,
+						    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expressionList,
+						    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& remainderGraph,
+						    xaifBoosterCrossCountryInterface::VertexCorrelationList& aVertexCorrelationList,
+						    xaifBoosterCrossCountryInterface::EdgeCorrelationList& anEdgeCorrelationList);
 }
 
 using namespace xaifBooster;
@@ -117,25 +119,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   unsigned int BasicBlockAlg::ourSequenceCounter=0;
 
   bool BasicBlockAlg::ourPermitNarySaxFlag=false;
-  bool BasicBlockAlg::chooseAlg=false;
-  bool BasicBlockAlg::useScarce=false;
-  bool BasicBlockAlg::runtimeCounters=false;
+  bool BasicBlockAlg::ourChooseAlgFlag=false;
+  bool BasicBlockAlg::ourRuntimeCountersFlag=false;
 
-  PreaccumulationLevel::PreaccumulationLevel_E BasicBlockAlg::ourPreaccumulationLevel(PreaccumulationLevel::PICK_BEST);
+  PreaccumulationMode::PreaccumulationMode_E BasicBlockAlg::ourPreaccumulationMode(PreaccumulationMode::PICK_BEST);
 
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
 
-
-  //BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence;
-  BasicBlockAlg::Compute_elimination_sequence_fp BasicBlockAlg::ourCompute_elimination_sequence_fp=0;
-
-  int BasicBlockAlg::ourIntParameter=5000;
+  BasicBlockAlg::ComputeEliminationSequence_fpList BasicBlockAlg::ourNonScarseEliminations_fpList;
+  int BasicBlockAlg::ourIterationsParameter=5000;
   double BasicBlockAlg::ourGamma=5.0;
 
   BasicBlockAlg::Sequence::Sequence() {
-    myFlattenedSequence_p=ourPrivateLinearizedComputationalGraphAlgFactory_p->makeNewPrivateLinearizedComputationalGraph();
+    myComputationalGraph_p=ourPrivateLinearizedComputationalGraphAlgFactory_p->makeNewPrivateLinearizedComputationalGraph();
   }
   
   BasicBlockAlg::Sequence::~Sequence() { 
@@ -149,8 +147,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 ++i) 
       if (*i)
 	delete *i;
-    if (myFlattenedSequence_p)
-      delete myFlattenedSequence_p;
+    if (myComputationalGraph_p)
+      delete myComputationalGraph_p;
+    for (EliminationResultPList::iterator i=myEliminationResultPList.begin();
+	 i!=myEliminationResultPList.end();
+	 ++i)
+      if (*i)
+	delete *i;
   }
 
   Assignment& BasicBlockAlg::Sequence::appendFrontAssignment() { 
@@ -175,11 +178,45 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string BasicBlockAlg::Sequence::debug() const { 
     std::ostringstream out;
-    out << "Sequence[" << this 
+    out << "Sequence[" << this
 	<< ",myFirstElement_p=" << myFirstElement_p
 	<< ",myLastElement_p=" << myLastElement_p
 	<< "]" << std::ends;  
     return out.str();
+  } 
+
+  BasicBlockAlg::Sequence::EliminationResult& BasicBlockAlg::Sequence::addNewEliminationResult() { 
+    EliminationResult* theResult_p=new  EliminationResult;
+    myEliminationResultPList.push_back(theResult_p);
+    return *theResult_p;
+  }
+
+  void BasicBlockAlg::Sequence::countPreaccumulationOperations(BasicBlockAlg::Sequence::EliminationResult& anEliminationResult) {
+    for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
+	  anEliminationResult.myJAEList.getGraphList().begin();
+	it!=anEliminationResult.myJAEList.getGraphList().end();
+	++it) {
+      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression2(*(*it));
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression2.vertices());
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
+      if(theExpression2.isJacobianEntry()) {
+	anEliminationResult.myCounter.jacInc();
+      }
+      //goes through every vertex in each graph
+      for (;testVertexI!=testVertexIEnd; ++testVertexI) {
+	//if the vertex is an operation then figure out which one it is and increment the counter
+	if ((*testVertexI).getReferenceType() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION) {
+	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP) 
+	    anEliminationResult.myCounter.mulInc();
+	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP) 
+	    anEliminationResult.myCounter.addInc();
+	}
+      }
+    }
+  }
+
+  void BasicBlockAlg::Sequence::setBestResult() {
+    THROW_LOGICEXCEPTION_MACRO("implement BasicBlockAlg::Sequence::setBestResult");
   } 
 
   BasicBlockAlg::SequenceHolder::SequenceHolder(bool flatten) : 
@@ -233,10 +270,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myUniqueSequencePList;
   } 
 
-  void BasicBlockAlg::SequenceHolder::splitFlattenedSequence(const Assignment& theAssignment) { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::splitFlattenedSequence entering");
+  void BasicBlockAlg::SequenceHolder::splitComputationalGraph(const Assignment& theAssignment) { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::splitComputationalGraph entering");
     if(!myBasicBlockElementSequencePPairList.size()) { 
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::splitFlattenedSequence: must be initialized unless called out of order");
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::splitComputationalGraph: must be initialized unless called out of order");
     }
     for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
 	 i!=myBasicBlockElementSequencePPairList.end();
@@ -256,11 +293,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	ourSequenceCounter++;
 	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
 	myUniqueSequencePList.push_back((*i).second);
-	DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::splitFlattenedSequence leaving");
+	DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::splitComputationalGraph leaving");
 	return; 
       } 
     } // end if 
-    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitFlattenedSequence: couldn't find"
+    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitComputationalGraph: couldn't find"
 			       << theAssignment.debug().c_str());
   }
 
@@ -295,9 +332,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
     xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterLinearization::BasicBlockAlg(theContaining),
-    myBestSeq_p(0),
-    myFlatOn(false),
-    myFlatOff(true) {
+    myBestSequenceHolder_p(0) {
+    mySequenceHolderPVector[PreaccumulationMode::STATEMENT]=new SequenceHolder(true);
+    mySequenceHolderPVector[PreaccumulationMode::MAX_GRAPH]=new SequenceHolder(false);
+    mySequenceHolderPVector[PreaccumulationMode::MAX_GRAPH_SCARSE]=new SequenceHolder(false);
     // we must choose one SequenceHolder to do the things 
     // that are common across all the variants,
     // in particular the steps that can be done only once
@@ -305,13 +343,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // linearization. The latter items should be done 
     // on the flattening version which is why we pick that one 
     // as the representative. 
-    if (ourPreaccumulationLevel!=PreaccumulationLevel::STATEMENT)
-      myRepresentativeSequence_p=&myFlatOn;
-    else
-      myRepresentativeSequence_p=&myFlatOff;
+    if (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST) 
+      myRepresentativeSequence_p=mySequenceHolderPVector[PreaccumulationMode::MAX_GRAPH];
+    else 
+      myRepresentativeSequence_p=mySequenceHolderPVector[ourPreaccumulationMode];
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
+    for (SequenceHolderPVector::iterator i=mySequenceHolderPVector.begin();
+	 i!=mySequenceHolderPVector.end();
+	 ++i)
+      if (*i)
+	delete (*i);
   } // end of BasicBlockAlg::~BasicBlockAlg()
 
   PrivateLinearizedComputationalGraphAlgFactory* 
@@ -370,16 +413,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        << getContaining().getScope().getId().c_str()
        << "\">" 
        << std::endl;
-    if(runtimeCounters)
-      {
-	//Add macros for printing out counters
-	for(PlainBasicBlock::BasicBlockElementList::const_iterator myBasicBlockElementListI = myBasicBlockElementList.begin();
-	    myBasicBlockElementListI != myBasicBlockElementList.end();
-	    ++myBasicBlockElementListI)
-	  {
-	    (*(myBasicBlockElementListI))->printXMLHierarchy(os);
-	  }
-      }
     for (PlainBasicBlock::BasicBlockElementList::const_iterator li=getContaining().getBasicBlockElementList().begin();
 	 li!=getContaining().getBasicBlockElementList().end();
 	 li++) { 
@@ -426,6 +459,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// have no sequence, just print the element
 	(*(li))->printXMLHierarchy(os);
     } // end for all BasicBlockElement instances
+    if(ourRuntimeCountersFlag) {
+      for(PlainBasicBlock::BasicBlockElementList::const_iterator myCounterCallListI = myCounterCallList.begin();
+	  myCounterCallListI != myCounterCallList.end();
+	  ++myCounterCallListI) {
+	(*(myCounterCallListI))->printXMLHierarchy(os);
+      }
+    }
     os << pm.indent()
        << "</"
        << PlainBasicBlock::ourXAIFName.c_str()
@@ -522,33 +562,198 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::algorithm_action_3() {
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
 	      << debug().c_str());
-    if (ourPreaccumulationLevel!=PreaccumulationLevel::STATEMENT)
-      algorithm_action_3_perSequence(myFlatOn);
-    if(!useScarce)
-    {
-      if (ourPreaccumulationLevel!=PreaccumulationLevel::MAX_GRAPH)
-        algorithm_action_3_perSequence(myFlatOff);
+    if ((ourPreaccumulationMode==PreaccumulationMode::STATEMENT)
+	||
+        (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST))
+      algorithm_action_3_perSequence(getSequenceHolder(PreaccumulationMode::STATEMENT)); 
+    if ((ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH)
+	||
+        (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST))
+      algorithm_action_3_perSequence(getSequenceHolder(PreaccumulationMode::MAX_GRAPH)); 
+    if ((ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH_SCARSE)
+	||
+        (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST))
+      algorithm_action_3_perSequence(getSequenceHolder(PreaccumulationMode::MAX_GRAPH_SCARSE)); 
+    if (ourPreaccumulationMode!=PreaccumulationMode::PICK_BEST)
+      myBestSequenceHolder_p=mySequenceHolderPVector[ourPreaccumulationMode];
+    else { 
+      // this is the outer heuristic to pick between the sequences
+      // on a basic block level: 
+      myBestSequenceHolder_p=0; // todo fill in: 
     }
-    switch(ourPreaccumulationLevel) { 
-    case PreaccumulationLevel::STATEMENT:
-      myBestSeq_p=&myFlatOff;
-      break;
-    case PreaccumulationLevel::MAX_GRAPH:
-      myBestSeq_p=&myFlatOn;
-      break;
-    default: 
-      // this is the heuristic to pick between the two sequences
-      if(myFlatOn.myBasicBlockOperations.getJacValue() < myFlatOff.myBasicBlockOperations.getJacValue())
-	  myBestSeq_p = &myFlatOn;
-      else if(myFlatOff.myBasicBlockOperations.getJacValue() < myFlatOn.myBasicBlockOperations.getJacValue())
-	myBestSeq_p = &myFlatOff;
-      else if(myFlatOff.myBasicBlockOperations < myFlatOn.myBasicBlockOperations)
-	myBestSeq_p = &myFlatOff;
-      else
-	myBestSeq_p = &myFlatOn;
-      break;
+    //     	if(ourRuntimeCountersFlag) {
+    // 	  //Insert Macros into the code that will be expanded to count multiplications and additions
+    // 	  //Multiplication counter
+    // 	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
+    // 	  theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
+    // 	  theSubroutineCall_p->setId("inline_countmult");
+    // 	  theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getMulValue());
+    // 	  // save it in the list
+    // 	  myCounterCallList.push_back(theSubroutineCall_p);
+    // 	  //Addition Counter
+    // 	  theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
+    // 	  theSubroutineCall_p->setId("inline_countadd");
+    // 	  theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getAddValue());
+    // 	  // save it in the list
+    // 	  myCounterCallList.push_back(theSubroutineCall_p);
+    // 	}
+
+  }
+
+  void
+  BasicBlockAlg::fillIndependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph) {
+    PrivateLinearizedComputationalGraph::VertexIteratorPair p(theComputationalGraph.vertices());
+    PrivateLinearizedComputationalGraph::VertexIterator it(p.first),endIt(p.second);
+    for (;it!=endIt;++it) { 
+      // here we should have constants etc. already removed
+      // JU: this is temporary until we have r/w analysis
+      if (!theComputationalGraph.numInEdgesOf(*it)) {
+	theComputationalGraph.addToIndependentList(*it);
+      }
+    } 
+  }
+
+  void
+  BasicBlockAlg::fillDependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph,
+				    VariableCPList& theDepVertexPListCopyWithoutRemovals) {
+    // now look at all the vertices in the dependent list 
+    // and remove the ones not needed as indicated by 
+    // the duud information:
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(theComputationalGraph.getDependentList());
+    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
+	 aDepVertexPListI!=theDepVertexPList.end();) { 
+      // cast it first
+      const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
+      // copy it
+      theDepVertexPListCopyWithoutRemovals.push_back(&(myPrivateVertex.getLHSVariable()));
+      // advance the iterator before we delete anything:
+      ++aDepVertexPListI;
+      // all the dependent ones should have the LHS set
+      const DuUdMapKey& aDuUdMapKey(myPrivateVertex.getLHSVariable().getDuUdMapKey()); 
+      if (aDuUdMapKey.getKind()==InfoMapKey::TEMP_VAR) { 
+	// now the assumption is that temporaries are local to the flattened Sequence
+	// and we can remove: 
+	theComputationalGraph.removeFromDependentList(myPrivateVertex);
+	continue;
+      }
+      DuUdMapUseResult theDuUdMapUseResult(ConceptuallyStaticInstances::instance()->
+					   getCallGraph().getDuUdMap().use(aDuUdMapKey,
+									   theComputationalGraph.getStatementIdLists()));
+      if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
+	  || 
+	  theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
+	if (!theComputationalGraph.numOutEdgesOf(myPrivateVertex)) { 
+	  if (theDuUdMapUseResult.myActiveUse!=ActiveUseType::PASSIVEUSE) { 
+	    // if the use is no strictly passive then in case of UNIQUE_INSIDE this vertex 
+	    // should not be maximal and in case of AMBIGUOUS_INSIDE there should have 
+	    // been a split. 
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::fixUpDependentsList: attempting to remove a maximal vertex "
+				       << myPrivateVertex.getLHSVariable().debug().c_str()
+				       << " key "
+				       << aDuUdMapKey.debug().c_str()
+				       << " from the dependent list");
+	  }
+	  // else do nothing, just leave it. This may indicate some inconsistency in 
+	  // the activity results
+	}
+	else { 
+	  // we only use it in the scope of this flattened sequence, therefore remove it
+	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: removing dependent " 
+		    << myPrivateVertex.getLHSVariable().debug().c_str()
+		    << " list size: " << theDepVertexPList.size()); 
+	  theComputationalGraph.removeFromDependentList(myPrivateVertex);
+	  continue;
+	}
+      }
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
+	if (theComputationalGraph.numOutEdgesOf(myPrivateVertex)) { 
+	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: non-maximal dependent " 
+		    << myPrivateVertex.getLHSVariable().debug().c_str()); 
+	}
+	else { 
+	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: keeping regular dependent " 
+		    << myPrivateVertex.getLHSVariable().debug().c_str()); 
+	}
+      } 
     }
   }
+
+  void 
+  BasicBlockAlg::graphFilter(VariableHashTable& theListOfAlreadyAssignedIndependents,
+			     SequenceHolder::SequencePList::iterator& aSequencePListI,
+			     VariableCPList& theDepVertexPListCopyWithoutRemovals,
+			     SequenceHolder& aSequenceHolder) { 
+    PrivateLinearizedComputationalGraph& theComputationalGraph(*((*aSequencePListI)->myComputationalGraph_p)); 
+    // try to find collapsed vertices which are 
+    // either singleton vertices, or 
+    // vertices that occur in theComputationalGraph 
+    // dependent AND independent list.
+    // first filter out singleton vertices:
+    xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator aDPBeginI((*aSequencePListI)->myDerivativePropagator.getEntryPList().begin());
+    bool findNext=true;
+    while (findNext) {
+      PrivateLinearizedComputationalGraph::VertexIteratorPair aVertexIteratorPair(theComputationalGraph.vertices());
+      PrivateLinearizedComputationalGraph::VertexIterator aVertexI(aVertexIteratorPair.first),endAVertexI(aVertexIteratorPair.second);
+      findNext=false;
+      for (;aVertexI!=endAVertexI;++aVertexI) {
+	if (!(theComputationalGraph.numOutEdgesOf(*aVertexI)+theComputationalGraph.numInEdgesOf(*aVertexI))) { 
+	  // a singleton
+	  findNext=true;
+	  // remove this vertex in the dependent/independent lists
+	  theComputationalGraph.removeFromDependentList(*aVertexI);
+	  theComputationalGraph.removeFromIndependentList(*aVertexI);
+	  handleCollapsedVertex(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*aVertexI),
+				theDepVertexPListCopyWithoutRemovals,
+				theListOfAlreadyAssignedIndependents,
+				**aSequencePListI,
+				aDPBeginI);
+	  // remove it from the graph
+	  theComputationalGraph.removeAndDeleteVertex(*aVertexI);
+	  // need to break out here because we removed the vertex
+	  break;
+	} // end if 
+      } // end for 
+    } // end while 
+    // now deal with the remaining graph and possible
+    // non-singleton collapsed vertices:
+    PrivateLinearizedComputationalGraph::VertexIteratorPair anotherVertexIteratorPair(theComputationalGraph.vertices());
+    PrivateLinearizedComputationalGraph::VertexIterator anotherVertexI(anotherVertexIteratorPair.first),endAnotherVertexI(anotherVertexIteratorPair.second);
+    for (;anotherVertexI!=endAnotherVertexI;++anotherVertexI) {
+      // try to locate it in the dependent list: 
+      bool located=false; 
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList&  theDependentList(theComputationalGraph.getDependentList());
+      for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator theVertexPointerListI=
+	    theDependentList.begin();
+	  theVertexPointerListI!=theDependentList.end();
+	  ++theVertexPointerListI) { 
+	if(&(*anotherVertexI)==*theVertexPointerListI) { 
+	  located=true;
+	  break;
+	}
+      }
+      if (!located)
+	break;
+      located=false; 
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList&  theIndependentList(theComputationalGraph.getIndependentList());
+      for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator theVertexPointerListI=
+	    theIndependentList.begin();
+	  theVertexPointerListI!=theIndependentList.end();
+	  ++theVertexPointerListI) { 
+	if(&(*anotherVertexI)==*theVertexPointerListI) { 
+	  located=true;
+	  break;
+	}
+      }
+      if (!located)
+	break;
+      // if we are here then we found a collapsed vertex.
+      handleCollapsedVertex(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*anotherVertexI),
+			    theDepVertexPListCopyWithoutRemovals,
+			    theListOfAlreadyAssignedIndependents,
+			    **aSequencePListI,
+			    aDPBeginI);
+    } // end for 
+  }			    
 
   void 
   BasicBlockAlg::algorithm_action_3_perSequence(BasicBlockAlg::SequenceHolder& aSequenceHolder) { 	  
@@ -556,706 +761,259 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     for (SequenceHolder::SequencePList::iterator aSequencePListI=aSequenceHolder.getUniqueSequencePList().begin();
 	 aSequencePListI!=aSequenceHolder.getUniqueSequencePList().end();
 	 ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
-      PrivateLinearizedComputationalGraph& theFlattenedSequence=*((*aSequencePListI)->myFlattenedSequence_p);
-      PrivateLinearizedComputationalGraph::VertexIteratorPair p(theFlattenedSequence.vertices());
-      PrivateLinearizedComputationalGraph::VertexIterator it(p.first),endIt(p.second);
-      for (;it!=endIt;++it) { 
-	// here we should have constants etc. already removed
-	// JU: this is temporary until we have r/w analysis
-	if (!theFlattenedSequence.numInEdgesOf(*it)) {
-	  theFlattenedSequence.addToIndependentList(*it);
-	}
-      } 
-      // now look at all the vertices in the dependent list 
-      // and remove the ones not needed as indicated by 
-      // the duud information:
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(theFlattenedSequence.getDependentList());
+      PrivateLinearizedComputationalGraph& theComputationalGraph=*((*aSequencePListI)->myComputationalGraph_p);
+      fillIndependentsList(theComputationalGraph);
       // we need a complete copy to ensure correctness in case of overwritten (local) independents
       VariableCPList theDepVertexPListCopyWithoutRemovals;
-      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
-	   aDepVertexPListI!=theDepVertexPList.end();) { 
-	// cast it first
-	const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
-	// copy it
-	theDepVertexPListCopyWithoutRemovals.push_back(&(myPrivateVertex.getLHSVariable()));
-	// advance the iterator before we delete anything:
-	++aDepVertexPListI;
-	// all the dependent ones should have the LHS set
-	const DuUdMapKey& aDuUdMapKey(myPrivateVertex.getLHSVariable().getDuUdMapKey()); 
-	if (aDuUdMapKey.getKind()==InfoMapKey::TEMP_VAR) { 
-	  // now the assumption is that temporaries are local to the flattened Sequence
-	  // and we can remove: 
-	  theFlattenedSequence.removeFromDependentList(myPrivateVertex);
-	  continue;
-	}
-	DuUdMapUseResult theDuUdMapUseResult(ConceptuallyStaticInstances::instance()->
-					     getCallGraph().getDuUdMap().use(aDuUdMapKey,
-									     theFlattenedSequence.getStatementIdLists()));
-	if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
-	    || 
-	    theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
-	  if (!theFlattenedSequence.numOutEdgesOf(myPrivateVertex)) { 
-	    if (theDuUdMapUseResult.myActiveUse!=ActiveUseType::PASSIVEUSE) { 
-	      // if the use is no strictly passive then in case of UNIQUE_INSIDE this vertex 
-	      // should not be maximal and in case of AMBIGUOUS_INSIDE there should have 
-	      // been a split. 
-	      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: attempting to remove a maximal vertex "
-					 << myPrivateVertex.getLHSVariable().debug().c_str()
-					 << " key "
-					 << aDuUdMapKey.debug().c_str()
-					 << " from the dependent list");
-	    }
-	    // else do nothing, just leave it. This may indicate some inconsistency in 
-	    // the activity results
-	  }
-	  else { 
-	    // we only use it in the scope of this flattened sequence, therefore remove it
-	    DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::algorithm_action_3: removing dependent " 
-		      << myPrivateVertex.getLHSVariable().debug().c_str()
-		      << " list size: " << theDepVertexPList.size()); 
-	    theFlattenedSequence.removeFromDependentList(myPrivateVertex);
-	    continue;
-	  }
-	}
-	if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
-	  if (theFlattenedSequence.numOutEdgesOf(myPrivateVertex)) { 
-	    DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::algorithm_action_3: non-maximal dependent " 
-		      << myPrivateVertex.getLHSVariable().debug().c_str()); 
-	  }
-	  else { 
-	    DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::algorithm_action_3: keeping regular dependent " 
-		      << myPrivateVertex.getLHSVariable().debug().c_str()); 
-	  }
-	} 
-      }
-      if(useScarce)
-      {
-	//run andrews code
-	scarceEliminationAlgorithm(aSequencePListI, theFlattenedSequence, theDepVertexPListCopyWithoutRemovals, aSequenceHolder);
-      }
-      else //old algorithm for eliminations sequences
-      {
-	standardEliminationAlgorithm(aSequencePListI, theFlattenedSequence, theDepVertexPListCopyWithoutRemovals, aSequenceHolder);
-      }
+      fillDependentsList(theComputationalGraph,theDepVertexPListCopyWithoutRemovals);
+      // UN: this is used to keep track of those independent variables
+      // that were already assigned to temporary variables to ensure correctness
+      // of the Jacobian accumulation code.
+      VariableHashTable theListOfAlreadyAssignedIndependents;
+      graphFilter(theListOfAlreadyAssignedIndependents,
+		  aSequencePListI,
+		  theDepVertexPListCopyWithoutRemovals,
+		  aSequenceHolder);
+      runElimination(aSequencePListI, 
+		     theDepVertexPListCopyWithoutRemovals, 
+		     aSequenceHolder);
+      generate(theListOfAlreadyAssignedIndependents,
+	       aSequencePListI, 
+	       theDepVertexPListCopyWithoutRemovals, 
+	       aSequenceHolder);
     } // end for
   }
 
-  //runs the scarce vertex and edge elmination algorithms
-  void BasicBlockAlg::scarceEliminationAlgorithm(SequenceHolder::SequencePList::iterator& aSequencePListI, PrivateLinearizedComputationalGraph& theFlattenedSequence, VariableCPList& theDepVertexPListCopyWithoutRemovals, SequenceHolder& aSequenceHolder){
-      // UN: this is used to keep track of those independent variables
-      // that were already assigned to temporary variables to ensure correctness
-      // of the Jacobian accumulation code.
-      VariableHashTable theListOfAlreadyAssignedIndependents;
-      InternalReferenceConcretizationList theInternalReferenceConcretizationList;
-      // try to find collapsed vertices which are 
-      // either singleton vertices, or 
-      // vertices that occur in theFlattenedSequence 
-      // dependent AND independent list.
-      // first filter out singleton vertices:
-      xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator aDPBeginI((*aSequencePListI)->myDerivativePropagator.getEntryPList().begin());
-      bool findNext=true;
-      while (findNext) {
-	PrivateLinearizedComputationalGraph::VertexIteratorPair aVertexIteratorPair(theFlattenedSequence.vertices());
-	PrivateLinearizedComputationalGraph::VertexIterator aVertexI(aVertexIteratorPair.first),endAVertexI(aVertexIteratorPair.second);
-	findNext=false;
-	for (;aVertexI!=endAVertexI;++aVertexI) {
-	  if (!(theFlattenedSequence.numOutEdgesOf(*aVertexI)+theFlattenedSequence.numInEdgesOf(*aVertexI))) { 
-	    // a singleton
-	    findNext=true;
-	    // remove this vertex in the dependent/independent lists
-	    theFlattenedSequence.removeFromDependentList(*aVertexI);
-	    theFlattenedSequence.removeFromIndependentList(*aVertexI);
-	    handleCollapsedVertex(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*aVertexI),
-				  theDepVertexPListCopyWithoutRemovals,
-				  theListOfAlreadyAssignedIndependents,
-				  **aSequencePListI,
-				  aDPBeginI);
-	    // remove it from the graph
-	    theFlattenedSequence.removeAndDeleteVertex(*aVertexI);
-	    // need to break out here because we removed the vertex
-	    break;
-	  } // end if 
-	} // end for 
-      } // end while 
-      // now deal with the remaining graph and possible
-      // non-singleton collapsed vertices:
-      PrivateLinearizedComputationalGraph::VertexIteratorPair anotherVertexIteratorPair(theFlattenedSequence.vertices());
-      PrivateLinearizedComputationalGraph::VertexIterator anotherVertexI(anotherVertexIteratorPair.first),endAnotherVertexI(anotherVertexIteratorPair.second);
-      for (;anotherVertexI!=endAnotherVertexI;++anotherVertexI) {
-	// try to locate it in the dependent list: 
-	bool located=false; 
-	const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList&  theDependentList(theFlattenedSequence.getDependentList());
-	for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator theVertexPointerListI=
-	      theDependentList.begin();
-	    theVertexPointerListI!=theDependentList.end();
-	    ++theVertexPointerListI) { 
-	  if(&(*anotherVertexI)==*theVertexPointerListI) { 
-	    located=true;
-	    break;
-	  }
-	}
-	if (!located)
-	  break;
-	located=false; 
-	const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList&  theIndependentList(theFlattenedSequence.getIndependentList());
-	for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator theVertexPointerListI=
-	      theIndependentList.begin();
-	    theVertexPointerListI!=theIndependentList.end();
-	    ++theVertexPointerListI) { 
-	  if(&(*anotherVertexI)==*theVertexPointerListI) { 
-	    located=true;
-	    break;
-	  }
-	}
-	if (!located)
-	  break;
-	// if we are here then we found a collapsed vertex.
-	handleCollapsedVertex(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*anotherVertexI),
-			      theDepVertexPListCopyWithoutRemovals,
-			      theListOfAlreadyAssignedIndependents,
-			      **aSequencePListI,
-			      aDPBeginI);
-      } // end for 
-      // the list to distinguish SAX from SAXPY or alternatively collect into n-ary SAX: 
-      typedef std::pair<const Variable*,
-	xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
-      typedef std::list<VarDevPropPPair> VarDevPropPPairList;
-      VarDevPropPPairList theListOfAlreadyAssignedDependents;
-      if (theFlattenedSequence.numVertices()) {
-	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	  GraphVizDisplay::show(theFlattenedSequence,
-				"flattened",
-				PrivateLinearizedComputationalGraphVertexLabelWriter(theFlattenedSequence));
-	}
-        //Pointer for best list
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList *best;
-        //List variables to store algorithms results
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg1Test;
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg2Test;
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg3Test;
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg4Test;
-        //Counters for both count of best algorithm and current algorithm
-	Counter min;
-	Counter current;
-        xaifBoosterCrossCountryInterface::LinearizedComputationalGraph rgraph;
-	xaifBoosterCrossCountryInterface::VertexCorrelationList v_cor_list;
-        xaifBoosterCrossCountryInterface::EdgeCorrelationList e_cor_list;
-        // call Angel which fills myJacobianAccumulationExpressionList and finds most efficient algorithm
-	try { 
-	  //ourCompute_elimination_sequence_fp=&angel::compute_partial_elimination_sequence; //Set algorithm
-		angel::compute_partial_elimination_sequence (theFlattenedSequence, ourIntParameter, ourGamma, alg1Test, rgraph, v_cor_list, e_cor_list); //Run algorithm
-          if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-	    GraphVizDisplay::show(rgraph, "remainderGraph");
-	  }
-	  countOperations(alg1Test, current); //Count algorithm
-	  min = current; //since first this is min
-	  best = &alg1Test; //it is also best
-	  int tempcount;
-	  tempcount = e_cor_list.size();
-	  DBG_MACRO(DbgGroup::METRIC, "Edge list size count " << tempcount << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
-	 //Next two lines do not work
-	  //tempcount = e_cor_list.size.numOfEdges();
-	  
-	  //DBG_MACRO(DbgGroup::METRIC, "Number of Edges  " << tempcount << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
-	  //debuging print statements with results
-		  DBG_MACRO(DbgGroup::METRIC, "Default elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
-	  current.reset(); //Reset counter for next algorithm
-	}
-	catch(...) { 
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
-	}
-        //Insert Macros into the code that will be expanded to count multiplications and additions
-        //Multiplication counter
-	if(runtimeCounters)
-	  {
-	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
-	    theSubroutineCall_p->setId("inline_countmult");
-	    theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getMulValue());
-	    // save it in the list
-	    myBasicBlockElementList.push_back(theSubroutineCall_p);
-	    //Addition Counter
-	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
-	    theSubroutineCall_p->setId("inline_countadd");
-	    theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getAddValue());
-	    // save it in the list
-	    myBasicBlockElementList.push_back(theSubroutineCall_p);
-	  }
-	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
-	      (*best).getGraphList().begin();
-	    it!=(*best).getGraphList().end();
-	    ++it) { 
-	  // make a new assignment: 
-	  Assignment& aNewAssignment=(*aSequencePListI)->appendEndAssignment();
-	  // JU should we get away with this setting of "jacobian_accumulation" for the Id
-	  aNewAssignment.setId("jacobian_accumulation");
-	  // make a new LHS: 
-	  Variable& theLHS(aNewAssignment.getLHS());
-	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-				getCallGraph().getScopeTree().getGlobalScope());
-	  VariableSymbolReference* theVariableSymbolReference_p=
-	    new VariableSymbolReference(theGlobalScope.getSymbolTable().
-					addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							   SymbolType::REAL_STYPE,
-							   SymbolShape::SCALAR,
-							   false),
-					theGlobalScope);
-	  // JU: this assignment of the vertex Id might have to change 
-	  // if we create vector assignments as auxilliary variables...
-	  theVariableSymbolReference_p->setId("1");
-	  theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
-	  theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-	  theLHS.getAliasMapKey().setTemporary();
-	  theLHS.getDuUdMapKey().setTemporary();
-	  const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression(*(*it));
-	  if (theExpression.isJacobianEntry()) { 
-	    // UN: assign independent to temporary if aliased by some
-	    // dependent
-	    // use temporary in DerivativePropagator
-	    // temporary currently lives in global scope 
-	    // this is the actual independent:
-	    const Variable& 
-	      theIndepVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-			       (theExpression.getIndependent()).getRHSVariable());
-	    const Variable* theIndepVariableContainer_cp=0;
-	    if (isAliased(theIndepVariable,
-			  theDepVertexPListCopyWithoutRemovals)) { 
-	      // make a Variable (container) for use in the saxpys:
-	      Variable* theIndepVariableContainer_p = new Variable;
-	      // was this actual indepenent already assigned?
-	      // Note, that at this point they should indeed all be syntactically distinct 
-	      if (!(theListOfAlreadyAssignedIndependents.hasElement(theIndepVariable.equivalenceSignature()))) {
-		// no, we have to make a new assignment
-		// this will be the lhs:
-		Variable theTarget;
-		Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-				      getCallGraph().getScopeTree().getGlobalScope());
-		VariableSymbolReference* theTemporaryVariableReference_p=
-		  new VariableSymbolReference(theGlobalScope.getSymbolTable().
-					      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-								 SymbolType::REAL_STYPE,
-								 SymbolShape::SCALAR,
-								 true),
-					      theGlobalScope);
-		theTemporaryVariableReference_p->setId("1");
-		theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
-		theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
-		theTarget.getAliasMapKey().setTemporary();
-		theTarget.getDuUdMapKey().setTemporary();
-		// copy the new temporary into the container
-		theTarget.copyMyselfInto(*theIndepVariableContainer_p);
-		// "theTarget" is only local but the DerivativePropagatorSetDeriv 
-		// ctor performs a deep copy and owns the new instance so we are fine
-		// the theListOfAlreadyAssignedIndependents needs to contain the 
-		// address of the copy.
-		theListOfAlreadyAssignedIndependents.
-		  addElement(theIndepVariable.equivalenceSignature(),
-			     &((*aSequencePListI)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
-												  theIndepVariable).getTarget()));
-	      } // end if (wasn't assigned before)  
-	      else {
-		// yes, it was assigned before
-		// copy the previously created temporary into the container
-		(theListOfAlreadyAssignedIndependents.getElement(theIndepVariable.equivalenceSignature()))->
-		  copyMyselfInto(*theIndepVariableContainer_p); 
-	      }
-	      // point to the new or previously created temporary
-	      theIndepVariableContainer_cp=theIndepVariableContainer_p;
-	    } // end if isAliased
-	    else { // not aliased
-	      // point to the original independent
-	      theIndepVariableContainer_cp=&theIndepVariable;
-	    }
-	    // make the entry to the DerivativePropagator
-	    // UN: use the  variable in the container theIndepVariableContainer_p 
-	    // instead of original independent
-	    const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-					 (theExpression.getDependent()).getLHSVariable());
-	    bool found=false;
-	    VarDevPropPPairList::iterator aVarDevPropPPairListI=theListOfAlreadyAssignedDependents.begin();
-	    for (; 
-		 aVarDevPropPPairListI!=theListOfAlreadyAssignedDependents.end(); 
-		 ++aVarDevPropPPairListI) { 
-	      if ((*aVarDevPropPPairListI).first==&theDependent){ 
-		found=true;
-		break;
-	      } 
-	    }
-	    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* theSaxpy_p(0);
-	    if (!found 
-		||
-		(found && !doesPermitNarySax())) { 
-	      theSaxpy_p=&((*aSequencePListI)->myDerivativePropagator.
-			   addSaxpyToEntryPList(theLHS,
-						*theIndepVariableContainer_cp,
-						theDependent));
-	    }
-	    else { 
-	      theSaxpy_p=(*aVarDevPropPPairListI).second;
-	      theSaxpy_p->addAX(theLHS,
-				*theIndepVariableContainer_cp);
-	    } 
-	    if (!found) { 
-	      theSaxpy_p->useAsSax();
-	      theListOfAlreadyAssignedDependents.
-		push_back(VarDevPropPPair(&theDependent,
-					  theSaxpy_p));
-	    }
-	  } // end if is JacobianEntry
-	  // iterate through all vertices bottom up
-	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair aPair(theExpression.vertices());
-	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator aJacExprVertexI(aPair.first), aJacExprVertexIEnd(aPair.second);
-	  // find the maximal vertex
-	  for (;aJacExprVertexI!=aJacExprVertexIEnd; ++aJacExprVertexI) { 
-	    if (!theExpression.numOutEdgesOf(*aJacExprVertexI))
-	      break;
-	  } // end for
-	  VertexPairList theVertexPairList;
-	  traverseAndBuildJacobianAccumulationsFromBottomUp(*aJacExprVertexI,
-							    theExpression,
-							    aNewAssignment,
-							    theInternalReferenceConcretizationList,
-							    theVertexPairList);
-	  // add the LHS to the tracking list: 
-	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
-	} // end for 
-	//debuging print statements with results
-	DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
-      } // end if have flattened graph with more than one vertex
-      else { 
-	// do nothing, empty graph, as e.g. for a single assignment x=const;
-      }
-  }
-  //runs the standard vertex and edge elmination algorithms
-  void BasicBlockAlg::standardEliminationAlgorithm(SequenceHolder::SequencePList::iterator& aSequencePListI, PrivateLinearizedComputationalGraph& theFlattenedSequence, VariableCPList& theDepVertexPListCopyWithoutRemovals, SequenceHolder& aSequenceHolder){
-      // UN: this is used to keep track of those independent variables
-      // that were already assigned to temporary variables to ensure correctness
-      // of the Jacobian accumulation code.
-      VariableHashTable theListOfAlreadyAssignedIndependents;
-      InternalReferenceConcretizationList theInternalReferenceConcretizationList;
-      // try to find collapsed vertices which are 
-      // either singleton vertices, or 
-      // vertices that occur in theFlattenedSequence 
-      // dependent AND independent list.
-      // first filter out singleton vertices:
-      xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator aDPBeginI((*aSequencePListI)->myDerivativePropagator.getEntryPList().begin());
-      bool findNext=true;
-      while (findNext) {
-	PrivateLinearizedComputationalGraph::VertexIteratorPair aVertexIteratorPair(theFlattenedSequence.vertices());
-	PrivateLinearizedComputationalGraph::VertexIterator aVertexI(aVertexIteratorPair.first),endAVertexI(aVertexIteratorPair.second);
-	findNext=false;
-	for (;aVertexI!=endAVertexI;++aVertexI) {
-	  if (!(theFlattenedSequence.numOutEdgesOf(*aVertexI)+theFlattenedSequence.numInEdgesOf(*aVertexI))) { 
-	    // a singleton
-	    findNext=true;
-	    // remove this vertex in the dependent/independent lists
-	    theFlattenedSequence.removeFromDependentList(*aVertexI);
-	    theFlattenedSequence.removeFromIndependentList(*aVertexI);
-	    handleCollapsedVertex(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*aVertexI),
-				  theDepVertexPListCopyWithoutRemovals,
-				  theListOfAlreadyAssignedIndependents,
-				  **aSequencePListI,
-				  aDPBeginI);
-	    // remove it from the graph
-	    theFlattenedSequence.removeAndDeleteVertex(*aVertexI);
-	    // need to break out here because we removed the vertex
-	    break;
-	  } // end if 
-	} // end for 
-      } // end while 
-      // now deal with the remaining graph and possible
-      // non-singleton collapsed vertices:
-      PrivateLinearizedComputationalGraph::VertexIteratorPair anotherVertexIteratorPair(theFlattenedSequence.vertices());
-      PrivateLinearizedComputationalGraph::VertexIterator anotherVertexI(anotherVertexIteratorPair.first),endAnotherVertexI(anotherVertexIteratorPair.second);
-      for (;anotherVertexI!=endAnotherVertexI;++anotherVertexI) {
-	// try to locate it in the dependent list: 
-	bool located=false; 
-	const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList&  theDependentList(theFlattenedSequence.getDependentList());
-	for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator theVertexPointerListI=
-	      theDependentList.begin();
-	    theVertexPointerListI!=theDependentList.end();
-	    ++theVertexPointerListI) { 
-	  if(&(*anotherVertexI)==*theVertexPointerListI) { 
-	    located=true;
-	    break;
-	  }
-	}
-	if (!located)
-	  break;
-	located=false; 
-	const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList&  theIndependentList(theFlattenedSequence.getIndependentList());
-	for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator theVertexPointerListI=
-	      theIndependentList.begin();
-	    theVertexPointerListI!=theIndependentList.end();
-	    ++theVertexPointerListI) { 
-	  if(&(*anotherVertexI)==*theVertexPointerListI) { 
-	    located=true;
-	    break;
-	  }
-	}
-	if (!located)
-	  break;
-	// if we are here then we found a collapsed vertex.
-	handleCollapsedVertex(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*anotherVertexI),
-			      theDepVertexPListCopyWithoutRemovals,
-			      theListOfAlreadyAssignedIndependents,
-			      **aSequencePListI,
-			      aDPBeginI);
-      } // end for 
-      // the list to distinguish SAX from SAXPY or alternatively collect into n-ary SAX: 
-      typedef std::pair<const Variable*,
-	xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
-      typedef std::list<VarDevPropPPair> VarDevPropPPairList;
-      VarDevPropPPairList theListOfAlreadyAssignedDependents;
-      if (theFlattenedSequence.numVertices()) {
-	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	  GraphVizDisplay::show(theFlattenedSequence,
-				"flattened",
-				PrivateLinearizedComputationalGraphVertexLabelWriter(theFlattenedSequence));
-	}
-        //Pointer for best list
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList *best;
-        //List variables to store algorithms results
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg1Test;
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg2Test;
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg3Test;
-        xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList alg4Test;
-        //Counters for both count of best algorithm and current algorithm
-	Counter min;
-	Counter current;
-        // call Angel which fills myJacobianAccumulationExpressionList and finds most efficient algorithm
-	try { 
-	  ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence; //Set algorithm
-          (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg1Test); //Run algorithm
-	  countOperations(alg1Test, current); //Count algorithm
-	  min = current; //since first this is min
-	  best = &alg1Test; //it is also best
-	  //debuging print statements with results
-		  DBG_MACRO(DbgGroup::METRIC, "Default elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
-	  current.reset(); //Reset counter for next algorithm
-	  if(chooseAlg) {
-	    ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_vertex; //Set algorithm
-	    (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg2Test); //Run algorithm
-	    countOperations(alg2Test, current); //Count algorithm
-	    //Debuging output statements
-	    DBG_MACRO(DbgGroup::METRIC, "LSA Vertex elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
-	    //Was current algorithm better than old algorithm
-	    if(current < min) {
-	      best = &alg2Test; //If better store new algrithms results
-	      min = current;
-	    }
-	    current.reset(); //reset counter for next algorithm
-	    ourCompute_elimination_sequence_fp=&angel::compute_elimination_sequence_lsa_face; //Set algorithm
-	    (*ourCompute_elimination_sequence_fp) (theFlattenedSequence, ourIntParameter, ourGamma, alg3Test); //Run algorithm
-	    countOperations(alg3Test, current); //Count algorithm
-	    //debugging statements
-	    DBG_MACRO(DbgGroup::METRIC, "LSA Face elimination " << current.debug().c_str() << " for Sequence " << &theFlattenedSequence << " in BasicBlockAlg " << this);
-	    //Was current algorithm better than old algorithm
-	    if(current < min) {
-	      best = &alg3Test; //If better store new algorithm results
-	      min = current;
-	    }
-	  }
-	}
-	catch(...) { 
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: exception thrown from within angel call");
-	}
-        //Insert Macros into the code that will be expanded to count multiplications and additions
-        //Multiplication counter
-	if(runtimeCounters)
-	  {
-	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
-	    theSubroutineCall_p->setId("inline_countmult");
-	    theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getMulValue());
-	    // save it in the list
-	    myBasicBlockElementList.push_back(theSubroutineCall_p);
-	    //Addition Counter
-	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
-	    theSubroutineCall_p->setId("inline_countadd");
-	    theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getAddValue());
-	    // save it in the list
-	    myBasicBlockElementList.push_back(theSubroutineCall_p);
-	  }
-	for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
-	      (*best).getGraphList().begin();
-	    it!=(*best).getGraphList().end();
-	    ++it) { 
-	  // make a new assignment: 
-	  Assignment& aNewAssignment=(*aSequencePListI)->appendEndAssignment();
-	  // JU should we get away with this setting of "jacobian_accumulation" for the Id
-	  aNewAssignment.setId("jacobian_accumulation");
-	  // make a new LHS: 
-	  Variable& theLHS(aNewAssignment.getLHS());
-	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-				getCallGraph().getScopeTree().getGlobalScope());
-	  VariableSymbolReference* theVariableSymbolReference_p=
-	    new VariableSymbolReference(theGlobalScope.getSymbolTable().
-					addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							   SymbolType::REAL_STYPE,
-							   SymbolShape::SCALAR,
-							   false),
-					theGlobalScope);
-	  // JU: this assignment of the vertex Id might have to change 
-	  // if we create vector assignments as auxilliary variables...
-	  theVariableSymbolReference_p->setId("1");
-	  theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
-	  theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-	  theLHS.getAliasMapKey().setTemporary();
-	  theLHS.getDuUdMapKey().setTemporary();
-	  const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression(*(*it));
-	  if (theExpression.isJacobianEntry()) { 
-	    // UN: assign independent to temporary if aliased by some
-	    // dependent
-	    // use temporary in DerivativePropagator
-	    // temporary currently lives in global scope 
-	    // this is the actual independent:
-	    const Variable& 
-	      theIndepVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-			       (theExpression.getIndependent()).getRHSVariable());
-	    const Variable* theIndepVariableContainer_cp=0;
-	    if (isAliased(theIndepVariable,
-			  theDepVertexPListCopyWithoutRemovals)) { 
-	      // make a Variable (container) for use in the saxpys:
-	      Variable* theIndepVariableContainer_p = new Variable;
-	      // was this actual indepenent already assigned?
-	      // Note, that at this point they should indeed all be syntactically distinct 
-	      if (!(theListOfAlreadyAssignedIndependents.hasElement(theIndepVariable.equivalenceSignature()))) {
-		// no, we have to make a new assignment
-		// this will be the lhs:
-		Variable theTarget;
-		Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-				      getCallGraph().getScopeTree().getGlobalScope());
-		VariableSymbolReference* theTemporaryVariableReference_p=
-		  new VariableSymbolReference(theGlobalScope.getSymbolTable().
-					      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-								 SymbolType::REAL_STYPE,
-								 SymbolShape::SCALAR,
-								 true),
-					      theGlobalScope);
-		theTemporaryVariableReference_p->setId("1");
-		theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
-		theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
-		theTarget.getAliasMapKey().setTemporary();
-		theTarget.getDuUdMapKey().setTemporary();
-		// copy the new temporary into the container
-		theTarget.copyMyselfInto(*theIndepVariableContainer_p);
-		// "theTarget" is only local but the DerivativePropagatorSetDeriv 
-		// ctor performs a deep copy and owns the new instance so we are fine
-		// the theListOfAlreadyAssignedIndependents needs to contain the 
-		// address of the copy.
-		theListOfAlreadyAssignedIndependents.
-		  addElement(theIndepVariable.equivalenceSignature(),
-			     &((*aSequencePListI)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
-												  theIndepVariable).getTarget()));
-	      } // end if (wasn't assigned before)  
-	      else {
-		// yes, it was assigned before
-		// copy the previously created temporary into the container
-		(theListOfAlreadyAssignedIndependents.getElement(theIndepVariable.equivalenceSignature()))->
-		  copyMyselfInto(*theIndepVariableContainer_p); 
-	      }
-	      // point to the new or previously created temporary
-	      theIndepVariableContainer_cp=theIndepVariableContainer_p;
-	    } // end if isAliased
-	    else { // not aliased
-	      // point to the original independent
-	      theIndepVariableContainer_cp=&theIndepVariable;
-	    }
-	    // make the entry to the DerivativePropagator
-	    // UN: use the  variable in the container theIndepVariableContainer_p 
-	    // instead of original independent
-	    const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-					 (theExpression.getDependent()).getLHSVariable());
-	    bool found=false;
-	    VarDevPropPPairList::iterator aVarDevPropPPairListI=theListOfAlreadyAssignedDependents.begin();
-	    for (; 
-		 aVarDevPropPPairListI!=theListOfAlreadyAssignedDependents.end(); 
-		 ++aVarDevPropPPairListI) { 
-	      if ((*aVarDevPropPPairListI).first==&theDependent){ 
-		found=true;
-		break;
-	      } 
-	    }
-	    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* theSaxpy_p(0);
-	    if (!found 
-		||
-		(found && !doesPermitNarySax())) { 
-	      theSaxpy_p=&((*aSequencePListI)->myDerivativePropagator.
-			   addSaxpyToEntryPList(theLHS,
-						*theIndepVariableContainer_cp,
-						theDependent));
-	    }
-	    else { 
-	      theSaxpy_p=(*aVarDevPropPPairListI).second;
-	      theSaxpy_p->addAX(theLHS,
-				*theIndepVariableContainer_cp);
-	    } 
-	    if (!found) { 
-	      theSaxpy_p->useAsSax();
-	      theListOfAlreadyAssignedDependents.
-		push_back(VarDevPropPPair(&theDependent,
-					  theSaxpy_p));
-	    }
-	  } // end if is JacobianEntry
-	  // iterate through all vertices bottom up
-	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair aPair(theExpression.vertices());
-	  xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator aJacExprVertexI(aPair.first), aJacExprVertexIEnd(aPair.second);
-	  // find the maximal vertex
-	  for (;aJacExprVertexI!=aJacExprVertexIEnd; ++aJacExprVertexI) { 
-	    if (!theExpression.numOutEdgesOf(*aJacExprVertexI))
-	      break;
-	  } // end for
-	  VertexPairList theVertexPairList;
-	  traverseAndBuildJacobianAccumulationsFromBottomUp(*aJacExprVertexI,
-							    theExpression,
-							    aNewAssignment,
-							    theInternalReferenceConcretizationList,
-							    theVertexPairList);
-	  // add the LHS to the tracking list: 
-	  theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
-	} // end for 
-	//debuging print statements with results
-	DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
-      } // end if have flattened graph with more than one vertex
-      else { 
-	// do nothing, empty graph, as e.g. for a single assignment x=const;
-      }
-  }
-
-  //Counts the number of add and multiply operations that are in a list passed in to it
-  void BasicBlockAlg::countOperations(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList &list, Counter &ops)
-  {
-    //goes through each graph in the list
-    for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
-	  list.getGraphList().begin();
-	it!=list.getGraphList().end();
-	++it) {
-      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression2(*(*it));
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression2.vertices());
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
-      if(theExpression2.isJacobianEntry())
-	{
-	  ops.jacInc();
-	}
-      //goes through every vertex in each graph
-      for (;testVertexI!=testVertexIEnd; ++testVertexI) {
-	//if the vertex is an operation then figure out which one it is and increment the counter
-	if ((*testVertexI).getReferenceType() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION)
-	  {
-	    if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP)
-	      {
-		ops.mulInc();
-	      }
-	    if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP)
-	      {
-		ops.addInc();
-	      }
-	  }
-      } // end for
+  void 
+  BasicBlockAlg::runAngelNonScarse(SequenceHolder::SequencePList::iterator& aSequencePListI){
+    if (ourNonScarseEliminations_fpList.empty()) { 
+      // the first one is the default: 
+      ourNonScarseEliminations_fpList.
+	push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("default vertex / edge elimination"), 
+								       &angel::compute_elimination_sequence));
+      ourNonScarseEliminations_fpList.
+	push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("LSA vertex elimination"), 
+								       &angel::compute_elimination_sequence_lsa_vertex));
+      ourNonScarseEliminations_fpList.
+	push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("LSA face elimination"), 
+								       &angel::compute_elimination_sequence_lsa_face));
     }
-    return;
+    PrivateLinearizedComputationalGraph& theComputationalGraph=*((*aSequencePListI)->myComputationalGraph_p);
+    for (ComputeEliminationSequence_fpList::iterator elimMethodI=ourNonScarseEliminations_fpList.begin();
+	 elimMethodI!=ourNonScarseEliminations_fpList.end();
+	 ++elimMethodI) { 
+      Sequence::EliminationResult& aResult((*aSequencePListI)->addNewEliminationResult());
+      try { 
+	(*((*elimMethodI).second))(theComputationalGraph, 
+				   ourIterationsParameter, 
+				   ourGamma, 
+				   aResult.myJAEList);
+      }
+      catch(...) { 
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runAngelNonScarse: exception thrown from within angel while running "
+				   << (*elimMethodI).first.c_str());
+      }
+      if (!ourChooseAlgFlag)
+	break; 
+    }
+    (*aSequencePListI)->setBestResult(); 
   }
 
-	
+
+  void BasicBlockAlg::runElimination(SequenceHolder::SequencePList::iterator& aSequencePListI, 
+				     VariableCPList& theDepVertexPListCopyWithoutRemovals, 
+				     SequenceHolder& aSequenceHolder){
+    PrivateLinearizedComputationalGraph& theComputationalGraph=*((*aSequencePListI)->myComputationalGraph_p);
+    if (theComputationalGraph.numVertices()) {
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+	GraphVizDisplay::show(theComputationalGraph,
+			      "flattened",
+			      PrivateLinearizedComputationalGraphVertexLabelWriter(theComputationalGraph));
+      }
+      if (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST 
+	  || 
+	  ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH_SCARSE) { 
+	// there is currently only 1 choice:
+	Sequence::EliminationResult& aResult((*aSequencePListI)->addNewEliminationResult());
+	try { 
+	  angel::compute_partial_elimination_sequence(theComputationalGraph, 
+						      ourIterationsParameter, 
+						      ourGamma, 
+						      aResult.myJAEList, 
+						      aResult.myRemainderGraph, 
+						      aResult.myVertexCorrelationList, 
+						      aResult.myEdgeCorrelationList);
+	}
+	catch(...) { 
+	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: exception thrown from within angel::compute_partial_elimination_sequence");
+	}
+	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	  GraphVizDisplay::show(aResult.myRemainderGraph, "remainderGraph");
+	}
+	(*aSequencePListI)->setBestResult(); 
+      }
+      if (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST 
+	  || 
+	  ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH
+	  || 
+	  ourPreaccumulationMode==PreaccumulationMode::STATEMENT) 
+	runAngelNonScarse(aSequencePListI);
+    }
+  }
+
+  void BasicBlockAlg::generate(BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
+			       SequenceHolder::SequencePList::iterator& aSequencePListI, 
+			       VariableCPList& theDepVertexPListCopyWithoutRemovals, 
+			       SequenceHolder& aSequenceHolder) {
+    // keep track of what bits we already made into real variables
+    InternalReferenceConcretizationList theInternalReferenceConcretizationList;
+    // the list to distinguish SAX from SAXPY or alternatively collect into n-ary SAX: 
+    typedef std::pair<const Variable*,
+      xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
+    typedef std::list<VarDevPropPPair> VarDevPropPPairList;
+    VarDevPropPPairList theListOfAlreadyAssignedDependents;
+    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theBestVersion((*aSequencePListI)->myBestEliminationResult_p->myJAEList);
+    for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=theBestVersion.getGraphList().begin();
+	it!=theBestVersion.getGraphList().end();
+	++it) { 
+      // make a new assignment: 
+      Assignment& aNewAssignment=(*aSequencePListI)->appendEndAssignment();
+      // JU should we get away with this setting of "jacobian_accumulation" for the Id
+      aNewAssignment.setId("jacobian_accumulation");
+      // make a new LHS: 
+      Variable& theLHS(aNewAssignment.getLHS());
+      Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+			    getCallGraph().getScopeTree().getGlobalScope());
+      VariableSymbolReference* theVariableSymbolReference_p=
+	new VariableSymbolReference(theGlobalScope.getSymbolTable().
+				    addUniqueAuxSymbol(SymbolKind::VARIABLE,
+						       SymbolType::REAL_STYPE,
+						       SymbolShape::SCALAR,
+						       false),
+				    theGlobalScope);
+      // JU: this assignment of the vertex Id might have to change 
+      // if we create vector assignments as auxilliary variables...
+      theVariableSymbolReference_p->setId("1");
+      theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
+      theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+      theLHS.getAliasMapKey().setTemporary();
+      theLHS.getDuUdMapKey().setTemporary();
+      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression(*(*it));
+      if (theExpression.isJacobianEntry()) { 
+	// UN: assign independent to temporary if aliased by some
+	// dependent
+	// use temporary in DerivativePropagator
+	// temporary currently lives in global scope 
+	// this is the actual independent:
+	const Variable& 
+	  theIndepVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
+			   (theExpression.getIndependent()).getRHSVariable());
+	const Variable* theIndepVariableContainer_cp=0;
+	if (isAliased(theIndepVariable,
+		      theDepVertexPListCopyWithoutRemovals)) { 
+	  // make a Variable (container) for use in the saxpys:
+	  Variable* theIndepVariableContainer_p = new Variable;
+	  // was this actual indepenent already assigned?
+	  // Note, that at this point they should indeed all be syntactically distinct 
+	  if (!(theListOfAlreadyAssignedIndependents.hasElement(theIndepVariable.equivalenceSignature()))) {
+	    // no, we have to make a new assignment
+	    // this will be the lhs:
+	    Variable theTarget;
+	    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+				  getCallGraph().getScopeTree().getGlobalScope());
+	    VariableSymbolReference* theTemporaryVariableReference_p=
+	      new VariableSymbolReference(theGlobalScope.getSymbolTable().
+					  addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							     SymbolType::REAL_STYPE,
+							     SymbolShape::SCALAR,
+							     true),
+					  theGlobalScope);
+	    theTemporaryVariableReference_p->setId("1");
+	    theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
+	    theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
+	    theTarget.getAliasMapKey().setTemporary();
+	    theTarget.getDuUdMapKey().setTemporary();
+	    // copy the new temporary into the container
+	    theTarget.copyMyselfInto(*theIndepVariableContainer_p);
+	    // "theTarget" is only local but the DerivativePropagatorSetDeriv 
+	    // ctor performs a deep copy and owns the new instance so we are fine
+	    // the theListOfAlreadyAssignedIndependents needs to contain the 
+	    // address of the copy.
+	    theListOfAlreadyAssignedIndependents.
+	      addElement(theIndepVariable.equivalenceSignature(),
+			 &((*aSequencePListI)->myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+											      theIndepVariable).getTarget()));
+	  } // end if (wasn't assigned before)  
+	  else {
+	    // yes, it was assigned before
+	    // copy the previously created temporary into the container
+	    (theListOfAlreadyAssignedIndependents.getElement(theIndepVariable.equivalenceSignature()))->
+	      copyMyselfInto(*theIndepVariableContainer_p); 
+	  }
+	  // point to the new or previously created temporary
+	  theIndepVariableContainer_cp=theIndepVariableContainer_p;
+	} // end if isAliased
+	else { // not aliased
+	  // point to the original independent
+	  theIndepVariableContainer_cp=&theIndepVariable;
+	}
+	// make the entry to the DerivativePropagator
+	// UN: use the  variable in the container theIndepVariableContainer_p 
+	// instead of original independent
+	const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
+				     (theExpression.getDependent()).getLHSVariable());
+	bool found=false;
+	VarDevPropPPairList::iterator aVarDevPropPPairListI=theListOfAlreadyAssignedDependents.begin();
+	for (; 
+	     aVarDevPropPPairListI!=theListOfAlreadyAssignedDependents.end(); 
+	     ++aVarDevPropPPairListI) { 
+	  if ((*aVarDevPropPPairListI).first==&theDependent){ 
+	    found=true;
+	    break;
+	  } 
+	}
+	xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* theSaxpy_p(0);
+	if (!found 
+	    ||
+	    (found && !doesPermitNarySax())) { 
+	  theSaxpy_p=&((*aSequencePListI)->myDerivativePropagator.
+		       addSaxpyToEntryPList(theLHS,
+					    *theIndepVariableContainer_cp,
+					    theDependent));
+	}
+	else { 
+	  theSaxpy_p=(*aVarDevPropPPairListI).second;
+	  theSaxpy_p->addAX(theLHS,
+			    *theIndepVariableContainer_cp);
+	} 
+	if (!found) { 
+	  theSaxpy_p->useAsSax();
+	  theListOfAlreadyAssignedDependents.
+	    push_back(VarDevPropPPair(&theDependent,
+				      theSaxpy_p));
+	}
+      } // end if is JacobianEntry
+      // iterate through all vertices bottom up
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair aPair(theExpression.vertices());
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator aJacExprVertexI(aPair.first), aJacExprVertexIEnd(aPair.second);
+      // find the maximal vertex
+      for (;aJacExprVertexI!=aJacExprVertexIEnd; ++aJacExprVertexI) { 
+	if (!theExpression.numOutEdgesOf(*aJacExprVertexI))
+	  break;
+      } // end for
+      VertexPairList theVertexPairList;
+      traverseAndBuildJacobianAccumulationsFromBottomUp(*aJacExprVertexI,
+							theExpression,
+							aNewAssignment,
+							theInternalReferenceConcretizationList,
+							theVertexPairList);
+      // add the LHS to the tracking list: 
+      theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
+    } // end for 
+    //debuging print statements with results
+    DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
+  }
+
   void BasicBlockAlg::handleCollapsedVertex(PrivateLinearizedComputationalGraphVertex& theCollapsedVertex,
 					    VariableCPList& theDepVertexPListCopyWithoutRemovals,
 					    BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
@@ -1500,9 +1258,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   PrivateLinearizedComputationalGraph& 
-  BasicBlockAlg::getFlattenedSequence(const Assignment& theAssignment,
-				      BasicBlockAlg::SequenceHolder& aSequenceHolder) { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::getFlattenedSequence entering with "
+  BasicBlockAlg::getComputationalGraph(const Assignment& theAssignment,
+				       BasicBlockAlg::SequenceHolder& aSequenceHolder) { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::getComputationalGraph entering with "
 	      << debug().c_str());
     Sequence* theSequence_p=0;
     if(!aSequenceHolder.getBasicBlockElementSequencePPairList().size()) { 
@@ -1537,11 +1295,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      aSequenceHolder.getUniqueSequencePList().push_back(theSequence_p);
 	    } 
 	    else { 
- 	      // have something assigned which means this 
- 	      // assignment is directly following its predecessor
- 	      // so we use the same triple
- 	      theSequence_p=(*i).second;
-              theSequence_p->myLastElement_p=&theAssignment;
+	      // have something assigned which means this 
+	      // assignment is directly following its predecessor
+	      // so we use the same triple
+	      theSequence_p=(*i).second;
+	      theSequence_p->myLastElement_p=&theAssignment;
 	    }
 	    // go back to the requesting assignment: 
 	    ++i;
@@ -1559,11 +1317,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	break;
       } // end if 
     if (!theSequence_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getFlattenedSequence: this basic block does not have element "
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getComputationalGraph: this basic block does not have element "
 				 << theAssignment.debug().c_str());
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::getFlattenedSequence leaving with "
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::getComputationalGraph leaving with "
 	      << debug().c_str());
-    return *(theSequence_p->myFlattenedSequence_p);
+    return *(theSequence_p->myComputationalGraph_p);
   } 
 
   bool BasicBlockAlg::isAliased(const Variable& theIndepVariable,
@@ -1607,47 +1365,54 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void BasicBlockAlg::setAllAlgorithms(){
-    chooseAlg = true;
+    ourChooseAlgFlag = true;
   }
 
   void BasicBlockAlg::setRuntimeCounters(){
-    runtimeCounters = true;
+    ourRuntimeCountersFlag = true;
   }
 
-  void BasicBlockAlg::setScarce(){
-    useScarce = true;
-  }
-
-  BasicBlockAlg::SequenceHolder& BasicBlockAlg::getSequenceHolder(bool flattenFlag) { 
-    if ((ourPreaccumulationLevel==PreaccumulationLevel::STATEMENT && flattenFlag)
-	||
-	(ourPreaccumulationLevel==PreaccumulationLevel::MAX_GRAPH && !flattenFlag))
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getSequenceHolder: under PreaccumulationLevel "
-				 << PreaccumulationLevel::toString(ourPreaccumulationLevel).c_str()
-				 << " we do not populate data for the SequenceHolder with flattenFlag value "
-				 << flattenFlag);
-      return (flattenFlag?myFlatOn:myFlatOff);
+  BasicBlockAlg::SequenceHolder& 
+  BasicBlockAlg::getSequenceHolder(PreaccumulationMode::PreaccumulationMode_E aMode) { 
+    switch(aMode) { 
+    case PreaccumulationMode::STATEMENT: 
+    case PreaccumulationMode::MAX_GRAPH: 
+    case PreaccumulationMode::MAX_GRAPH_SCARSE: 
+      break; 
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getSequenceHolder: no logic for Mode "
+				 << PreaccumulationMode::toString(aMode).c_str());
+      break; 
+    }
+    // so the compiler is happy
+    return *(mySequenceHolderPVector[aMode]);
   }
 
   const BasicBlockAlg::SequenceHolder& BasicBlockAlg::getBestSequenceHolder() const { 
-    if (!myBestSeq_p)
+    if (!myBestSequenceHolder_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getBestSequenceHolder: not determined");
-    return *myBestSeq_p;
+    return *myBestSequenceHolder_p;
   } 
 
   BasicBlockAlg::SequenceHolder& BasicBlockAlg::getBestSequenceHolder() { 
-    if (!myBestSeq_p)
+    if (!myBestSequenceHolder_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::SequenceHolder::getBestSequenceHolder: not determined");
-    return *myBestSeq_p;
+    return *myBestSequenceHolder_p;
   } 
 
-  void BasicBlockAlg::forcePreaccumulationLevel(PreaccumulationLevel::PreaccumulationLevel_E aLevel) { 
-    PreaccumulationLevel::checkValid(aLevel);
-    ourPreaccumulationLevel=aLevel;
+  void BasicBlockAlg::forcePreaccumulationMode(PreaccumulationMode::PreaccumulationMode_E aMode) { 
+    PreaccumulationMode::checkValid(aMode);
+    ourPreaccumulationMode=aMode;
   } 
 
-  PreaccumulationLevel::PreaccumulationLevel_E BasicBlockAlg::getPreaccumulationLevel() { 
-    return ourPreaccumulationLevel;
+  PreaccumulationMode::PreaccumulationMode_E BasicBlockAlg::getPreaccumulationMode() { 
+    return ourPreaccumulationMode;
+  } 
+
+  BasicBlockAlg::SequenceHolder& BasicBlockAlg::getRepresentativeSequenceHolder() { 
+    if(!myRepresentativeSequence_p) 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getRepresentativeSequenceHolder:  no representative set");
+    return *myRepresentativeSequence_p;
   } 
 
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

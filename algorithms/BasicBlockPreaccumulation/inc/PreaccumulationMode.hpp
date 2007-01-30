@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONLEVEL_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONLEVEL_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONMODE_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONMODE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -60,20 +60,20 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  class PreaccumulationLevel { 
+  class PreaccumulationMode { 
   public:
-    enum PreaccumulationLevel_E {
-      PICK_BEST=0,
-      STATEMENT=1,
-      MAX_GRAPH=2,
-      MAX_GRAPH_SCARSE=3
+    enum PreaccumulationMode_E {
+      PICK_BEST=-1,
+      STATEMENT=0,
+      MAX_GRAPH=1,
+      MAX_GRAPH_SCARSE=2
     };
 
-    static void checkValid(const PreaccumulationLevel_E& aLevel);
+    static void checkValid(const PreaccumulationMode_E& aMode);
     
-    static std::string toString(const PreaccumulationLevel_E& aLevel) throw (PrintingIntException);
+    static std::string toString(const PreaccumulationMode_E& aMode) throw (PrintingIntException);
 
-  }; // end of class PreaccumulationLevel
+  }; 
 
 } 
                                                                      
