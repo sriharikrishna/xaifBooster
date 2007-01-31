@@ -180,7 +180,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static bool ourChooseAlgFlag;
     static bool ourRuntimeCountersFlag; 
 
-    PlainBasicBlock::BasicBlockElementList myCounterCallList;
+    PlainBasicBlock::BasicBlockElementList myRuntimeCounterCallList;
     
     /** 
      * no def
@@ -227,16 +227,35 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       /**
        * this is the result of applying an elimination to a Sequence
        */
-      struct EliminationResult { 
+      class EliminationResult { 
+
       public: 
+	
+	EliminationResult();  
+
 	xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList myJAEList;
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph myRemainderGraph;
 	xaifBoosterCrossCountryInterface::VertexCorrelationList myVertexCorrelationList;
 	xaifBoosterCrossCountryInterface::EdgeCorrelationList myEdgeCorrelationList;
+
+	const PreaccumulationCounter& getCounter(); 
+
+      private: 
 	/** 
 	 * the ensuing operation counts etc. 
 	 */
 	PreaccumulationCounter myCounter; 
+
+	/**
+	 * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
+	 */
+	void countPreaccumulationOperations();
+
+	/** 
+	 * have we counted the elimination operations
+	 */
+	bool myCountedFlag;
+
       };
 
       EliminationResult& addNewEliminationResult(); 
@@ -293,12 +312,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       EliminationResult& getBestResult();
 
-      /**
-       * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
-       */
-      void countPreaccumulationOperations(EliminationResult& anEliminationResult);
-
-
     private: 
 
       /**
@@ -324,7 +337,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       Sequence& operator= (const Sequence&);
 
       EliminationResultPList myEliminationResultPList;
-
+      
     }; // end of struct Sequence
 
   private: 
@@ -426,7 +439,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * assignments. 
      */
     PrivateLinearizedComputationalGraph& getComputationalGraph(const Assignment& theAssignment,
-							      SequenceHolder& aSequenceHolder);
+							       SequenceHolder& aSequenceHolder);
     
     void addMyselfToAssignmentIdList(const Assignment&, 
 				     const SequenceHolder& aSequenceHolder);
@@ -532,11 +545,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static unsigned int ourSequenceCounter;
       
     /**
-     * run the standard algorithm for creating the elminated graphs
-     */
-    void standardEliminationAlgorithm(SequenceHolder::SequencePList::iterator&, PrivateLinearizedComputationalGraph&, VariableCPList& theDepVertexPListCopyWithoutRemoval, SequenceHolder&);
-    
-    /**
      * run the scarce algorithm for creating the elminated graphs
      */
     void runElimination(SequenceHolder::SequencePList::iterator&, 
@@ -577,7 +585,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	     VariableCPList& theDepVertexPListCopyWithoutRemovals, 
 	     SequenceHolder& aSequenceHolder); 
 
-    };
+  };
  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms
                                                                      
