@@ -82,16 +82,16 @@ namespace xaifBooster {
     return myMultiply;
   }
   
-  void PreaccumulationCounter::jacInc() {
-    myJacobianEntry++;
+  void PreaccumulationCounter::jacInc(unsigned int by) {
+    myJacobianEntry+=by;
   }
   
-  void PreaccumulationCounter::addInc() {
-    myAdd++;
+  void PreaccumulationCounter::addInc(unsigned int by) {
+    myAdd+=by;
   }
   
-  void PreaccumulationCounter::mulInc() {
-    myMultiply++;
+  void PreaccumulationCounter::mulInc(unsigned int by) {
+    myMultiply+=by;
   }
   
   void PreaccumulationCounter::reset() {

@@ -532,7 +532,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /*
      * performs the core of algorithm_action_3();
      */
-    void algorithm_action_3_perSequence(SequenceHolder&);
+    void algorithm_action_3_perSequence(PreaccumulationMode::PreaccumulationMode_E);
     
     /** 
      * counting all assignments
@@ -549,7 +549,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void runElimination(SequenceHolder::SequencePList::iterator&, 
 			VariableCPList& theDepVertexPListCopyWithoutRemoval, 
-			SequenceHolder&);
+			SequenceHolder&,
+			PreaccumulationMode::PreaccumulationMode_E);
     
     void incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder);
     
