@@ -180,7 +180,7 @@ int main(int argc,char** argv) {
     if (CommandLineParser::instance()->isSet('g')) 
       DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
     if (CommandLineParser::instance()->isSet('S')) 
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::forcePreaccumulationLevel(xaifBoosterBasicBlockPreaccumulation::PreaccumulationLevel::PreaccumulationLevel_E(CommandLineParser::instance()->argAsInt('S')));
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::forcePreaccumulationMode(xaifBoosterBasicBlockPreaccumulation::PreaccumulationMode::PreaccumulationMode_E(CommandLineParser::instance()->argAsInt('S')));
     if (CommandLineParser::instance()->isSet('I')) 
       xaifBoosterBasicBlockPreaccumulationReverse::ArgumentSymbolReferenceAlg::changeIntentForCheckPoints();
     if (CommandLineParser::instance()->isSet('v')) 

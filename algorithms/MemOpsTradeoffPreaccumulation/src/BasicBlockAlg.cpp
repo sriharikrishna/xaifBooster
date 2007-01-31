@@ -588,7 +588,9 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
     xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) {
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::ourCompute_elimination_sequence_fp=&compute_elimination_sequence; 
+    ourNonScarseEliminations_fpList.
+      push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("default vertex / edge elimination"), 
+								     &compute_elimination_sequence));
   }
 
   void

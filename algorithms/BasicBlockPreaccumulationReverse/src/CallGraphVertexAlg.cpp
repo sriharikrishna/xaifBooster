@@ -51,8 +51,11 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 #include <string>
-#include "xaifBooster/utils/inc/MemCounter.hpp" //IK
-#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"//IK
+#include <fstream>
+
+#include "xaifBooster/utils/inc/MemCounter.hpp"
+
+#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
 
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
@@ -66,11 +69,10 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp" //IK
-
-#include <fstream>
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
@@ -166,11 +168,11 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	if(tester != NULL)
 	  {
 	    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg& tester2(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(tester->getBasicBlockAlgBase()));
-	    subroutineOperations = subroutineOperations + tester2.getBasicBlockOperations();
+	    myPreaccumulationCounter.incrementBy(tester2.getBasicBlockOperations());
 	  }
       }
     DBG_MACRO(DbgGroup::METRIC, "Subroutine Operations "
-              << subroutineOperations.debug());
+              << myPreaccumulationCounter.debug());
     if (theSymbolAlg.hasReplacementSymbolReference()) 
       theSymbolReference_p=&(theSymbolAlg.getReplacementSymbolReference());
     else
@@ -348,12 +350,12 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     if(0) {	    
       DBG_MACRO(DbgGroup::METRIC, "Arg "
 		<< myArg.debug());
-      subroutineMemOperations = myArg;
+      myMemCounter = myArg;
     }
     else {
       DBG_MACRO(DbgGroup::METRIC, "Tsarg "
 		<< myTsarg.debug());
-      subroutineMemOperations = myTsarg;
+      myMemCounter = myTsarg;
     }
   } 
 
