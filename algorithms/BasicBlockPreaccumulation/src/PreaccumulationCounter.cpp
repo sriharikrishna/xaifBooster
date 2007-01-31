@@ -50,61 +50,71 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/Counter.hpp"
+
 #include <iostream>
 #include <sstream>
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
+
 namespace xaifBooster { 
  
-  Counter::Counter()
-    : myJacobianEntry(0), myMultiply(0), myAdd(0) {
+  bool PreaccumulationCounter::ourJacobianEntrCountIsPrimaryFlag=false;
+
+  void PreaccumulationCounter::setJacobianEntrCountIsPrimary() { 
+    ourJacobianEntrCountIsPrimaryFlag=true;
+  } 
+
+  PreaccumulationCounter::PreaccumulationCounter() : 
+    myJacobianEntry(0), 
+    myMultiply(0), 
+    myAdd(0) {
   }
   
-  int Counter::getJacValue() const {
+  unsigned int PreaccumulationCounter::getJacValue() const {
     return myJacobianEntry;
   }
   
-  int Counter::getAddValue() const {
+  unsigned int PreaccumulationCounter::getAddValue() const {
     return myAdd;
   }
   
-  int Counter::getMulValue() const {
+  unsigned int PreaccumulationCounter::getMulValue() const {
     return myMultiply;
   }
   
-  void Counter::jacInc() {
+  void PreaccumulationCounter::jacInc() {
     myJacobianEntry++;
   }
   
-  void Counter::addInc() {
+  void PreaccumulationCounter::addInc() {
     myAdd++;
   }
   
-  void Counter::mulInc() {
+  void PreaccumulationCounter::mulInc() {
     myMultiply++;
   }
   
-  void Counter::reset() {
+  void PreaccumulationCounter::reset() {
     addReset();
     mulReset();
     jacReset();
   }
   
-  void Counter::addReset() {
+  void PreaccumulationCounter::addReset() {
     myAdd = 0;
   }
   
-  void Counter::mulReset() {
+  void PreaccumulationCounter::mulReset() {
     myMultiply = 0;
   }
   
-  void Counter::jacReset() {
+  void PreaccumulationCounter::jacReset() {
     myJacobianEntry = 0;
   }
   
-  std::string Counter::debug () const {
+  std::string PreaccumulationCounter::debug () const {
     std::ostringstream out;
-    out << "Counter["
+    out << "PreaccumulationCounter["
 	<< this 
 	<< ",Mults=" << myMultiply
 	<< ",Adds=" << myAdd
@@ -113,53 +123,53 @@ namespace xaifBooster {
     return out.str();
   } // end of Symbol::debug
   
-  Counter& Counter::operator=(const Counter &in) {
-    myJacobianEntry = in.myJacobianEntry;
-    myMultiply = in.myMultiply;
-    myAdd = in.myAdd;
-    return *this;    // Return ref for multiple assignment
-  }
-
-  bool Counter::operator>(const Counter &b) const { 
-    if(this->getMulValue() > b.getMulValue()) {
-      return true;
+  bool PreaccumulationCounter::operator<(const PreaccumulationCounter &b) const {
+    if (ourJacobianEntrCountIsPrimaryFlag) { 
+      // this is the case when we in reverse mode 
+      // and we store the Jacobian entries 
+      // os they are much more costly 
+      if(this->getJacValue() < b.getJacValue())
+	return true;
+      else if(this->getJacValue() > b.getJacValue()) 
+	return false;
+      else { 
+	if(this->getMulValue() < b.getMulValue()) 
+	  return true;
+	else if(this->getMulValue() > b.getMulValue()) 
+	  return false;
+	else {
+	  if(this->getAddValue() < b.getAddValue()) 
+	    return true;
+	  else 
+	    return false;
+	}
+      }
     }
-    else if(this->getMulValue() < b.getMulValue()) {
-      return false; 
-    } 
-    else  {
-      if(this->getAddValue() > b.getAddValue()) {
+    else { 
+      // we are in forward mode and don't store the 
+      // jacobian entries and rather count them simply as multiplications
+      if((this->getMulValue() + this->getJacValue()) < (b.getMulValue() + this->getJacValue())) {
 	return true;
       }
-      else {
+      else if((this->getMulValue() + this->getJacValue()) > (b.getMulValue() + this->getJacValue())) {
 	return false;
       }
-    }
-  }
-  
-  bool Counter::operator<(const Counter &b) const {
-    if(this->getMulValue() < b.getMulValue()) {
-      return true;
-    }
-    else if(this->getMulValue() > b.getMulValue()) {
-      return false;
-    }
-    else {
-      if(this->getAddValue() < b.getAddValue()) {
-	return true;
-      }
       else {
-	return false;
+	if(this->getAddValue() < b.getAddValue()) {
+	  return true;
+	}
+	else {
+	  return false;
+	}
       }
     }
   }
 
-  Counter Counter::operator+(const Counter &b) {
-    Counter temp;
-    temp.myAdd = myAdd + b.myAdd;
-    temp.myMultiply = myMultiply + b.myMultiply;
-    temp.myJacobianEntry = myJacobianEntry + b.myJacobianEntry;
-    return temp;
+  void PreaccumulationCounter::incrementBy(const PreaccumulationCounter &anotherCounter) {
+    PreaccumulationCounter temp;
+    myAdd +=  anotherCounter.myAdd;
+    myMultiply += anotherCounter.myMultiply;
+    myJacobianEntry += anotherCounter.myJacobianEntry;
   }
 
 } 

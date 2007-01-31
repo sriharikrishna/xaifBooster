@@ -1,5 +1,5 @@
-#ifndef _COUNTER_INCLUDE_
-#define _COUNTER_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONCOUNTER_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_PREACCUMULATIONCOUNTER_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -58,31 +58,48 @@
 
 namespace xaifBooster { 
 
-  class Counter  {
-    private:
+  class PreaccumulationCounter  {
+  private:
+    
     /**
      *  All counters are used to count the number of opperations of their type.
      *  The operations being counted are defined by their name.
      */
-    int myJacobianEntry;
-    int myMultiply;
-    int myAdd;
-	  
+    unsigned int myJacobianEntry;
+    unsigned int myMultiply;
+    unsigned int myAdd;
+
+    /**
+     * no def
+     */
+    PreaccumulationCounter(const PreaccumulationCounter&);
+	
+    /**
+     * no def
+     */
+    PreaccumulationCounter& operator=(const PreaccumulationCounter&); 
+
+    /** 
+     * if this is true we first weigh by number of 
+     * Jacobian entries or remainderGraph edges resp. 
+     */
+    static bool ourJacobianEntrCountIsPrimaryFlag;  
+
   public:
 
-    Counter(const Counter&);
+    static void setJacobianEntrCountIsPrimary();
 
     /**
      * Initializes the values of all counters to 0.
      */
-    Counter();
+    PreaccumulationCounter();
 
     /**
      * Retrieves values from the data structure as specified by the function name.
      */
-    int getJacValue() const;
-    int getMulValue() const;
-    int getAddValue() const;
+    unsigned int getJacValue() const;
+    unsigned int getMulValue() const;
+    unsigned int getAddValue() const;
     
     /**
      * Increments the value of the counter specified by 1.
@@ -103,36 +120,18 @@ namespace xaifBooster {
     void mulReset();
     void jacReset();
 
-    /**
-     * Prints all the counters values on a single line.
-     */
     std::string debug() const ;
     
     /**
-     * Overloads the = operator so that two Counter types can be set equal to
-     * each other.
+     * see definition
      */
-    Counter& operator=(const Counter &p);
-
-     /**
-     * Overloads the > operator so that counter1 > counter2 if it has a greater
-     * multiply value.  If the nultiply values are equal then counter1 > counter2
-     * if it has more additions.
-     */
-    bool operator>(const Counter &b) const;
-    
-    /**
-     * Overloads the < operator so that counter1 < counter2 if it has a lesser
-     * multiply value.  If the nultiply values are equal then counter1 < counter2
-     * if it has fewer additions.
-     */
-    bool operator<(const Counter &b) const;
+    bool operator<(const PreaccumulationCounter &anotherCounter) const;
 
     /**
-     * Overloads the + operator so that counter1 = counter2 + counter3. The add
-     * and multiply values are summed up seperatly.
+     * increments this counter by anotherCounter
      */
-    Counter operator+(const Counter &b);
+    void incrementBy(const PreaccumulationCounter &anotherCounter);
+
   }; 
 
 } // end of namespace xaifBooster
