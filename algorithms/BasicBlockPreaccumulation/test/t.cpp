@@ -81,7 +81,7 @@ void Usage(char** argv) {
 	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
             << "                 space separated list enclosed in double quotes" << std::endl
 	    << "             [-r] force renaming of all non-external routines" << std::endl
-            << "             [-a] dynamically choose graph elimination algorithm" << std::endl
+            << "             [-a] also run LSA graph eliminations and pick the best result" << std::endl
 	    << "             [-C] turn on runtime counters"  << std::endl
 	    << " build info : " << buildStamp.c_str() << std::endl;
 } 
