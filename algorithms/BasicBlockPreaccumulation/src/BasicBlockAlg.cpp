@@ -139,14 +139,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void BasicBlockAlg::Sequence::EliminationResult::countPreaccumulationOperations() {
+    myCounter.jacInc(myRemainderGraph.numEdges());
+    bool usesRemainderGraph(myCounter.getJacValue()!=0);
     for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
 	  myJAEList.getGraphList().begin();
 	it!=myJAEList.getGraphList().end();
 	++it) {
-      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression2(*(*it));
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression2.vertices());
+      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression(*(*it));
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression.vertices());
       xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
-      if(theExpression2.isJacobianEntry()) {
+      if(!usesRemainderGraph && theExpression.isJacobianEntry()) {
 	myCounter.jacInc();
       }
       //goes through every vertex in each graph
@@ -596,18 +598,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::algorithm_action_3() {
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
 	      << debug().c_str());
-    if ((ourPreaccumulationMode==PreaccumulationMode::STATEMENT)
-	||
-        (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST))
-      algorithm_action_3_perSequence(getSequenceHolder(PreaccumulationMode::STATEMENT)); 
     if ((ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH)
 	||
         (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST))
-      algorithm_action_3_perSequence(getSequenceHolder(PreaccumulationMode::MAX_GRAPH)); 
+      algorithm_action_3_perSequence(PreaccumulationMode::MAX_GRAPH); 
     if ((ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH_SCARSE)
 	||
         (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST))
-      algorithm_action_3_perSequence(getSequenceHolder(PreaccumulationMode::MAX_GRAPH_SCARSE)); 
+      algorithm_action_3_perSequence(PreaccumulationMode::MAX_GRAPH_SCARSE); 
+    if ((ourPreaccumulationMode==PreaccumulationMode::STATEMENT)
+	||
+        (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST))
+      algorithm_action_3_perSequence(PreaccumulationMode::STATEMENT); 
     if (ourPreaccumulationMode!=PreaccumulationMode::PICK_BEST)
       myBestSequenceHolder_p=mySequenceHolderPVector[ourPreaccumulationMode];
     else { 
@@ -621,6 +623,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  myBestSequenceHolder_p->myBasicBlockOperations)
 	myBestSequenceHolder_p=&(getSequenceHolder(PreaccumulationMode::STATEMENT));
     }
+    DBG_MACRO(DbgGroup::METRIC, "BasicBlock metrics: best is " 
+	      << myBestSequenceHolder_p->myBasicBlockOperations.debug().c_str() 
+	      << " in SequenceHolder " 
+	      << myBestSequenceHolder_p->debug().c_str()
+	      << " in BasicBlockAlg " 
+	      << this);
     if(ourRuntimeCountersFlag) {
       //Insert Macros into the code that will be expanded to count multiplications and additions
       //Multiplication counter
@@ -795,7 +803,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }			    
 
   void 
-  BasicBlockAlg::algorithm_action_3_perSequence(BasicBlockAlg::SequenceHolder& aSequenceHolder) { 	  
+  BasicBlockAlg::algorithm_action_3_perSequence(PreaccumulationMode::PreaccumulationMode_E thisMode) { 	  
+    BasicBlockAlg::SequenceHolder& aSequenceHolder(getSequenceHolder(thisMode));
     aSequenceHolder.myBasicBlockOperations.reset();
     for (SequenceHolder::SequencePList::iterator aSequencePListI=aSequenceHolder.getUniqueSequencePList().begin();
 	 aSequencePListI!=aSequenceHolder.getUniqueSequencePList().end();
@@ -815,7 +824,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		  aSequenceHolder);
       runElimination(aSequencePListI, 
 		     theDepVertexPListCopyWithoutRemovals, 
-		     aSequenceHolder);
+		     aSequenceHolder,
+		     thisMode);
       generate(theListOfAlreadyAssignedIndependents,
 	       aSequencePListI, 
 	       theDepVertexPListCopyWithoutRemovals, 
@@ -863,7 +873,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::runElimination(SequenceHolder::SequencePList::iterator& aSequencePListI, 
 				     VariableCPList& theDepVertexPListCopyWithoutRemovals, 
-				     SequenceHolder& aSequenceHolder){
+				     SequenceHolder& aSequenceHolder,
+				     PreaccumulationMode::PreaccumulationMode_E thisMode){
     PrivateLinearizedComputationalGraph& theComputationalGraph=*((*aSequencePListI)->myComputationalGraph_p);
     if (theComputationalGraph.numVertices()) {
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
@@ -871,9 +882,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			      "flattened",
 			      PrivateLinearizedComputationalGraphVertexLabelWriter(theComputationalGraph));
       }
-      if (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST 
-	  || 
-	  ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH_SCARSE) { 
+      if (thisMode==PreaccumulationMode::MAX_GRAPH_SCARSE) { 
 	// there is currently only 1 choice:
 	Sequence::EliminationResult& aResult((*aSequencePListI)->addNewEliminationResult());
 	try { 
@@ -894,11 +903,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	(*aSequencePListI)->setBestResult(); 
 	DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: compute_partial_elimination_sequence " << aResult.getCounter().debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
       }
-      if (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST 
-	  || 
-	  ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH
-	  || 
-	  ourPreaccumulationMode==PreaccumulationMode::STATEMENT) 
+      else  
 	runAngelNonScarse(aSequencePListI);
     }
     aSequenceHolder.myBasicBlockOperations.incrementBy((*aSequencePListI)->getBestResult().getCounter());

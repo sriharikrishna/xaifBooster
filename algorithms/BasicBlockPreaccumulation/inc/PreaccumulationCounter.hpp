@@ -102,11 +102,17 @@ namespace xaifBooster {
     unsigned int getAddValue() const;
     
     /**
-     * Increments the value of the counter specified by 1.
+     * Increments the value of the counter.
      */
-    void mulInc();
-    void jacInc();
-    void addInc();
+    void mulInc(unsigned int by=1);
+    /**
+     * Increments the value of the counter.
+     */
+    void jacInc(unsigned int by=1);
+    /**
+     * Increments the value of the counter.
+     */
+    void addInc(unsigned int by=1);
 
     /**
      * Calls each counter specific reset function.
