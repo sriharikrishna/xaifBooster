@@ -55,18 +55,20 @@
 
 #include <list>
 
+#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
+
 #include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlg.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
-#include "xaifBooster/utils/inc/Counter.hpp" 
-#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMode.hpp"
 
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMode.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
 
 namespace xaifBooster { 
   class ExpressionVertex;
@@ -155,7 +157,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     static bool doesPermitNarySax();
 
-    const Counter& getBasicBlockOperations() const;
+    const PreaccumulationCounter& getBasicBlockOperations() const;
 
     const DuUdMapDefinitionResult::StatementIdList& getAssignmentIdList()const;
 
@@ -234,7 +236,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	/** 
 	 * the ensuing operation counts etc. 
 	 */
-	Counter myCounter; 
+	PreaccumulationCounter myCounter; 
       };
 
       EliminationResult& addNewEliminationResult(); 
@@ -288,6 +290,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       const AssignmentPList& getEndAssignmentList() const;
 
       void setBestResult();
+
+      EliminationResult& getBestResult();
 
       /**
        * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
@@ -350,7 +354,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       /**
        * counting all Operations within a basic block
        */
-      Counter myBasicBlockOperations;
+      PreaccumulationCounter myBasicBlockOperations;
 
       typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
 

@@ -56,6 +56,8 @@
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
+
+  unsigned short PreaccumulationMode::ourModeCount=3;
   
   std::string PreaccumulationMode::toString(const PreaccumulationMode_E& aPreaccumulationMode)
     throw (PrintingIntException) { 

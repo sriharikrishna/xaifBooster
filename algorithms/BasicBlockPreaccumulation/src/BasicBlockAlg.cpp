@@ -54,7 +54,6 @@
 
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-#include "xaifBooster/utils/inc/Counter.hpp" 
 
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
@@ -68,15 +67,17 @@
 #include "xaifBooster/system/inc/Constant.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdgeAlgFactory.hpp"
@@ -132,7 +133,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   int BasicBlockAlg::ourIterationsParameter=5000;
   double BasicBlockAlg::ourGamma=5.0;
 
-  BasicBlockAlg::Sequence::Sequence() {
+  BasicBlockAlg::Sequence::Sequence() :
+    myBestEliminationResult_p(0),
+    myFirstElement_p(0),
+    myLastElement_p(0) {
     myComputationalGraph_p=ourPrivateLinearizedComputationalGraphAlgFactory_p->makeNewPrivateLinearizedComputationalGraph();
   }
   
@@ -216,7 +220,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void BasicBlockAlg::Sequence::setBestResult() {
-    THROW_LOGICEXCEPTION_MACRO("implement BasicBlockAlg::Sequence::setBestResult");
+    if (myEliminationResultPList.empty())
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::setBestResult:  no results");
+    myBestEliminationResult_p=*(myEliminationResultPList.begin());
+    for (EliminationResultPList::iterator i=++(myEliminationResultPList.begin());
+	 i!=myEliminationResultPList.end();
+	 ++i) { 
+      if ((*i)->myCounter<myBestEliminationResult_p->myCounter)
+	myBestEliminationResult_p=*i;
+    }
+  } 
+
+  BasicBlockAlg::Sequence::EliminationResult& BasicBlockAlg::Sequence::getBestResult() {
+    if (!myBestEliminationResult_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult:  not set");
+    return *myBestEliminationResult_p;
   } 
 
   BasicBlockAlg::SequenceHolder::SequenceHolder(bool flatten) : 
@@ -332,7 +350,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
     xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterLinearization::BasicBlockAlg(theContaining),
-    myBestSequenceHolder_p(0) {
+    myBestSequenceHolder_p(0),
+    mySequenceHolderPVector(PreaccumulationMode::ourModeCount) { 
     mySequenceHolderPVector[PreaccumulationMode::STATEMENT]=new SequenceHolder(true);
     mySequenceHolderPVector[PreaccumulationMode::MAX_GRAPH]=new SequenceHolder(false);
     mySequenceHolderPVector[PreaccumulationMode::MAX_GRAPH_SCARSE]=new SequenceHolder(false);
@@ -577,27 +596,32 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (ourPreaccumulationMode!=PreaccumulationMode::PICK_BEST)
       myBestSequenceHolder_p=mySequenceHolderPVector[ourPreaccumulationMode];
     else { 
-      // this is the outer heuristic to pick between the sequences
-      // on a basic block level: 
-      myBestSequenceHolder_p=0; // todo fill in: 
+      myBestSequenceHolder_p=&(getSequenceHolder(PreaccumulationMode::MAX_GRAPH));
+      if (getSequenceHolder(PreaccumulationMode::MAX_GRAPH_SCARSE).myBasicBlockOperations
+	  <
+	  myBestSequenceHolder_p->myBasicBlockOperations)
+	myBestSequenceHolder_p=&(getSequenceHolder(PreaccumulationMode::MAX_GRAPH_SCARSE));
+      if (getSequenceHolder(PreaccumulationMode::STATEMENT).myBasicBlockOperations
+	  <
+	  myBestSequenceHolder_p->myBasicBlockOperations)
+	myBestSequenceHolder_p=&(getSequenceHolder(PreaccumulationMode::STATEMENT));
     }
-    //     	if(ourRuntimeCountersFlag) {
-    // 	  //Insert Macros into the code that will be expanded to count multiplications and additions
-    // 	  //Multiplication counter
-    // 	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
-    // 	  theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
-    // 	  theSubroutineCall_p->setId("inline_countmult");
-    // 	  theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getMulValue());
-    // 	  // save it in the list
-    // 	  myCounterCallList.push_back(theSubroutineCall_p);
-    // 	  //Addition Counter
-    // 	  theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
-    // 	  theSubroutineCall_p->setId("inline_countadd");
-    // 	  theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(min.getAddValue());
-    // 	  // save it in the list
-    // 	  myCounterCallList.push_back(theSubroutineCall_p);
-    // 	}
-
+    if(ourRuntimeCountersFlag) {
+      //Insert Macros into the code that will be expanded to count multiplications and additions
+      //Multiplication counter
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
+      theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countmult");
+      theSubroutineCall_p->setId("inline_countmult");
+      theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(myBestSequenceHolder_p->myBasicBlockOperations.getMulValue());
+      // save it in the list
+      myCounterCallList.push_back(theSubroutineCall_p);
+      //Addition Counter
+      theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
+      theSubroutineCall_p->setId("inline_countadd");
+      theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(myBestSequenceHolder_p->myBasicBlockOperations.getAddValue());
+      // save it in the list
+      myCounterCallList.push_back(theSubroutineCall_p);
+    }
   }
 
   void
@@ -816,7 +840,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (!ourChooseAlgFlag)
 	break; 
     }
-    (*aSequencePListI)->setBestResult(); 
+    (*aSequencePListI)->setBestResult();
   }
 
 
@@ -859,6 +883,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  ourPreaccumulationMode==PreaccumulationMode::STATEMENT) 
 	runAngelNonScarse(aSequencePListI);
     }
+    aSequenceHolder.myBasicBlockOperations.incrementBy((*aSequencePListI)->getBestResult().myCounter);
   }
 
   void BasicBlockAlg::generate(BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
@@ -1351,7 +1376,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return ourPermitNarySaxFlag;
   }
 
-  const Counter& BasicBlockAlg::getBasicBlockOperations() const {
+  const PreaccumulationCounter& BasicBlockAlg::getBasicBlockOperations() const {
     return getBestSequenceHolder().myBasicBlockOperations;
   }
 

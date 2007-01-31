@@ -62,6 +62,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   class PreaccumulationMode { 
   public:
+    
+    static unsigned short ourModeCount;
+
     enum PreaccumulationMode_E {
       PICK_BEST=-1,
       STATEMENT=0,
