@@ -76,7 +76,7 @@ void Usage(char** argv) {
 	    << "             [-g <debugGroup]" << std::endl
 	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
 	    << "                 default to 0(ERROR)" << std::endl
-	    << "             [-S <level>] force preaccumulation level (1: statement, 2: max. graph, 3: max. graph scarse), defaults to pick best" << std::endl
+	    << "             [-S <level>] force preaccumulation level (0: statement, 1: max. graph, 2: max. graph scarse), defaults to pick best" << std::endl
 	    << "             [-n] allow n-ary sax operations" << std::endl
 	    << "             [-w \"<list of subroutines with wrappers\" " << std::endl
             << "                 space separated list enclosed in double quotes" << std::endl

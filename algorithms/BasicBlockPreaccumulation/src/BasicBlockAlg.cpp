@@ -50,6 +50,7 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+
 #include <sstream>
 
 #include "xaifBooster/utils/inc/PrintManager.hpp"
@@ -133,6 +134,44 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   int BasicBlockAlg::ourIterationsParameter=5000;
   double BasicBlockAlg::ourGamma=5.0;
 
+  BasicBlockAlg::Sequence::EliminationResult::EliminationResult() : 
+    myCountedFlag(false) { 
+  }
+
+  void BasicBlockAlg::Sequence::EliminationResult::countPreaccumulationOperations() {
+    for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
+	  myJAEList.getGraphList().begin();
+	it!=myJAEList.getGraphList().end();
+	++it) {
+      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression2(*(*it));
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression2.vertices());
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
+      if(theExpression2.isJacobianEntry()) {
+	myCounter.jacInc();
+      }
+      //goes through every vertex in each graph
+      for (;testVertexI!=testVertexIEnd; ++testVertexI) {
+	//if the vertex is an operation then figure out which one it is and increment the counter
+	if ((*testVertexI).getReferenceType() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION) {
+	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP) 
+	    myCounter.mulInc();
+	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP) 
+	    myCounter.addInc();
+	}
+      }
+    }
+  }
+
+  const PreaccumulationCounter& BasicBlockAlg::Sequence::EliminationResult::getCounter() { 
+    if (!myCountedFlag) { 
+      countPreaccumulationOperations();
+      if (myCounter.getJacValue()+myCounter.getAddValue()+myCounter.getMulValue()==0) 	
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::EliminationResult::getCounter: nothing counted");
+      myCountedFlag=true;
+    }
+    return myCounter; 
+  } 
+
   BasicBlockAlg::Sequence::Sequence() :
     myBestEliminationResult_p(0),
     myFirstElement_p(0),
@@ -195,30 +234,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *theResult_p;
   }
 
-  void BasicBlockAlg::Sequence::countPreaccumulationOperations(BasicBlockAlg::Sequence::EliminationResult& anEliminationResult) {
-    for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
-	  anEliminationResult.myJAEList.getGraphList().begin();
-	it!=anEliminationResult.myJAEList.getGraphList().end();
-	++it) {
-      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression2(*(*it));
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression2.vertices());
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
-      if(theExpression2.isJacobianEntry()) {
-	anEliminationResult.myCounter.jacInc();
-      }
-      //goes through every vertex in each graph
-      for (;testVertexI!=testVertexIEnd; ++testVertexI) {
-	//if the vertex is an operation then figure out which one it is and increment the counter
-	if ((*testVertexI).getReferenceType() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION) {
-	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP) 
-	    anEliminationResult.myCounter.mulInc();
-	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP) 
-	    anEliminationResult.myCounter.addInc();
-	}
-      }
-    }
-  }
-
   void BasicBlockAlg::Sequence::setBestResult() {
     if (myEliminationResultPList.empty())
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::setBestResult:  no results");
@@ -226,7 +241,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     for (EliminationResultPList::iterator i=++(myEliminationResultPList.begin());
 	 i!=myEliminationResultPList.end();
 	 ++i) { 
-      if ((*i)->myCounter<myBestEliminationResult_p->myCounter)
+      if ((*i)->getCounter()<myBestEliminationResult_p->getCounter())
 	myBestEliminationResult_p=*i;
     }
   } 
@@ -479,10 +494,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	(*(li))->printXMLHierarchy(os);
     } // end for all BasicBlockElement instances
     if(ourRuntimeCountersFlag) {
-      for(PlainBasicBlock::BasicBlockElementList::const_iterator myCounterCallListI = myCounterCallList.begin();
-	  myCounterCallListI != myCounterCallList.end();
-	  ++myCounterCallListI) {
-	(*(myCounterCallListI))->printXMLHierarchy(os);
+      for(PlainBasicBlock::BasicBlockElementList::const_iterator myRuntimeCounterCallListI = myRuntimeCounterCallList.begin();
+	  myRuntimeCounterCallListI != myRuntimeCounterCallList.end();
+	  ++myRuntimeCounterCallListI) {
+	(*(myRuntimeCounterCallListI))->printXMLHierarchy(os);
       }
     }
     os << pm.indent()
@@ -614,13 +629,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       theSubroutineCall_p->setId("inline_countmult");
       theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(myBestSequenceHolder_p->myBasicBlockOperations.getMulValue());
       // save it in the list
-      myCounterCallList.push_back(theSubroutineCall_p);
+      myRuntimeCounterCallList.push_back(theSubroutineCall_p);
       //Addition Counter
       theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countadd");
       theSubroutineCall_p->setId("inline_countadd");
       theSubroutineCall_p->addConcreteArgument(1).makeConstant(SymbolType::INTEGER_STYPE).setint(myBestSequenceHolder_p->myBasicBlockOperations.getAddValue());
       // save it in the list
-      myCounterCallList.push_back(theSubroutineCall_p);
+      myRuntimeCounterCallList.push_back(theSubroutineCall_p);
     }
   }
 
@@ -837,10 +852,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runAngelNonScarse: exception thrown from within angel while running "
 				   << (*elimMethodI).first.c_str());
       }
+      DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << (*elimMethodI).first.c_str() << " " << aResult.getCounter().debug().c_str() << " in BasicBlockAlg " << this);
       if (!ourChooseAlgFlag)
 	break; 
     }
     (*aSequencePListI)->setBestResult();
+    DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: best is: " << (*aSequencePListI)->getBestResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
   }
 
 
@@ -875,6 +892,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  GraphVizDisplay::show(aResult.myRemainderGraph, "remainderGraph");
 	}
 	(*aSequencePListI)->setBestResult(); 
+	DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: compute_partial_elimination_sequence " << aResult.getCounter().debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
       }
       if (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST 
 	  || 
@@ -883,7 +901,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  ourPreaccumulationMode==PreaccumulationMode::STATEMENT) 
 	runAngelNonScarse(aSequencePListI);
     }
-    aSequenceHolder.myBasicBlockOperations.incrementBy((*aSequencePListI)->getBestResult().myCounter);
+    aSequenceHolder.myBasicBlockOperations.incrementBy((*aSequencePListI)->getBestResult().getCounter());
   }
 
   void BasicBlockAlg::generate(BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
@@ -1036,7 +1054,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
     } // end for 
     //debuging print statements with results
-    DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
+    DBG_MACRO(DbgGroup::METRIC, "SeqeunceHolder metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
   }
 
   void BasicBlockAlg::handleCollapsedVertex(PrivateLinearizedComputationalGraphVertex& theCollapsedVertex,
