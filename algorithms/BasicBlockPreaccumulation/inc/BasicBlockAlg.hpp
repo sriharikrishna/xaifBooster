@@ -238,23 +238,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	xaifBoosterCrossCountryInterface::VertexCorrelationList myVertexCorrelationList;
 	xaifBoosterCrossCountryInterface::EdgeCorrelationList myEdgeCorrelationList;
 
-	const PreaccumulationCounter& getCounter(); 
+	const PreaccumulationCounter& getCounter() const; 
 
       private: 
 	/** 
 	 * the ensuing operation counts etc. 
 	 */
-	PreaccumulationCounter myCounter; 
+	mutable PreaccumulationCounter myCounter; 
 
 	/**
 	 * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
 	 */
-	void countPreaccumulationOperations();
+	void countPreaccumulationOperations() const;
 
 	/** 
 	 * have we counted the elimination operations
 	 */
-	bool myCountedFlag;
+	mutable bool myCountedFlag;
 
       };
 
@@ -262,8 +262,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       typedef std::list<EliminationResult*> EliminationResultPList;
 
-      EliminationResult* myBestEliminationResult_p;
-      
       /** 
        * the derivative accumulator for this sequence
        */
@@ -310,8 +308,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       void setBestResult();
 
-      EliminationResult& getBestResult();
-
+      const Sequence::EliminationResult& getBestResult() const;
+      
     private: 
 
       /**
@@ -337,6 +335,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       Sequence& operator= (const Sequence&);
 
       EliminationResultPList myEliminationResultPList;
+
+      EliminationResult* myBestEliminationResult_p;
       
     }; // end of struct Sequence
 

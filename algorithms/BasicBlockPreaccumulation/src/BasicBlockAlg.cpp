@@ -124,7 +124,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   bool BasicBlockAlg::ourChooseAlgFlag=false;
   bool BasicBlockAlg::ourRuntimeCountersFlag=false;
 
-  PreaccumulationMode::PreaccumulationMode_E BasicBlockAlg::ourPreaccumulationMode(PreaccumulationMode::PICK_BEST);
+  // PreaccumulationMode::PreaccumulationMode_E BasicBlockAlg::ourPreaccumulationMode(PreaccumulationMode::PICK_BEST);
+  PreaccumulationMode::PreaccumulationMode_E BasicBlockAlg::ourPreaccumulationMode(PreaccumulationMode::MAX_GRAPH);
 
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
@@ -138,7 +139,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myCountedFlag(false) { 
   }
 
-  void BasicBlockAlg::Sequence::EliminationResult::countPreaccumulationOperations() {
+  void BasicBlockAlg::Sequence::EliminationResult::countPreaccumulationOperations() const {
     myCounter.jacInc(myRemainderGraph.numEdges());
     bool usesRemainderGraph(myCounter.getJacValue()!=0);
     for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
@@ -164,7 +165,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
   }
 
-  const PreaccumulationCounter& BasicBlockAlg::Sequence::EliminationResult::getCounter() { 
+  const PreaccumulationCounter& BasicBlockAlg::Sequence::EliminationResult::getCounter() const { 
     if (!myCountedFlag) { 
       countPreaccumulationOperations();
       if (myCounter.getJacValue()+myCounter.getAddValue()+myCounter.getMulValue()==0) 	
@@ -175,9 +176,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   BasicBlockAlg::Sequence::Sequence() :
-    myBestEliminationResult_p(0),
     myFirstElement_p(0),
-    myLastElement_p(0) {
+    myLastElement_p(0),
+    myBestEliminationResult_p(0) {
     myComputationalGraph_p=ourPrivateLinearizedComputationalGraphAlgFactory_p->makeNewPrivateLinearizedComputationalGraph();
   }
   
@@ -248,7 +249,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
   } 
 
-  BasicBlockAlg::Sequence::EliminationResult& BasicBlockAlg::Sequence::getBestResult() {
+  const BasicBlockAlg::Sequence::EliminationResult& BasicBlockAlg::Sequence::getBestResult() const {
     if (!myBestEliminationResult_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult:  not set");
     return *myBestEliminationResult_p;
@@ -822,14 +823,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		  aSequencePListI,
 		  theDepVertexPListCopyWithoutRemovals,
 		  aSequenceHolder);
-      runElimination(aSequencePListI, 
-		     theDepVertexPListCopyWithoutRemovals, 
-		     aSequenceHolder,
-		     thisMode);
-      generate(theListOfAlreadyAssignedIndependents,
-	       aSequencePListI, 
-	       theDepVertexPListCopyWithoutRemovals, 
-	       aSequenceHolder);
+      if ((*aSequencePListI)->myComputationalGraph_p->numVertices()) {
+	runElimination(aSequencePListI, 
+		       theDepVertexPListCopyWithoutRemovals, 
+		       aSequenceHolder,
+		       thisMode);
+	generate(theListOfAlreadyAssignedIndependents,
+		 aSequencePListI, 
+		 theDepVertexPListCopyWithoutRemovals, 
+		 aSequenceHolder);
+      }
     } // end for
   }
 
@@ -876,36 +879,34 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				     SequenceHolder& aSequenceHolder,
 				     PreaccumulationMode::PreaccumulationMode_E thisMode){
     PrivateLinearizedComputationalGraph& theComputationalGraph=*((*aSequencePListI)->myComputationalGraph_p);
-    if (theComputationalGraph.numVertices()) {
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-	GraphVizDisplay::show(theComputationalGraph,
-			      "flattened",
-			      PrivateLinearizedComputationalGraphVertexLabelWriter(theComputationalGraph));
-      }
-      if (thisMode==PreaccumulationMode::MAX_GRAPH_SCARSE) { 
-	// there is currently only 1 choice:
-	Sequence::EliminationResult& aResult((*aSequencePListI)->addNewEliminationResult());
-	try { 
-	  angel::compute_partial_elimination_sequence(theComputationalGraph, 
-						      ourIterationsParameter, 
-						      ourGamma, 
-						      aResult.myJAEList, 
-						      aResult.myRemainderGraph, 
-						      aResult.myVertexCorrelationList, 
-						      aResult.myEdgeCorrelationList);
-	}
-	catch(...) { 
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: exception thrown from within angel::compute_partial_elimination_sequence");
-	}
-	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-	  GraphVizDisplay::show(aResult.myRemainderGraph, "remainderGraph");
-	}
-	(*aSequencePListI)->setBestResult(); 
-	DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: compute_partial_elimination_sequence " << aResult.getCounter().debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
-      }
-      else  
-	runAngelNonScarse(aSequencePListI);
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(theComputationalGraph,
+			    "flattened",
+			    PrivateLinearizedComputationalGraphVertexLabelWriter(theComputationalGraph));
     }
+    if (thisMode==PreaccumulationMode::MAX_GRAPH_SCARSE) { 
+      // there is currently only 1 choice:
+      Sequence::EliminationResult& aResult((*aSequencePListI)->addNewEliminationResult());
+      try { 
+	angel::compute_partial_elimination_sequence(theComputationalGraph, 
+						    ourIterationsParameter, 
+						    ourGamma, 
+						    aResult.myJAEList, 
+						    aResult.myRemainderGraph, 
+						    aResult.myVertexCorrelationList, 
+						    aResult.myEdgeCorrelationList);
+      }
+      catch(...) { 
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: exception thrown from within angel::compute_partial_elimination_sequence");
+      }
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	GraphVizDisplay::show(aResult.myRemainderGraph, "remainderGraph");
+      }
+      (*aSequencePListI)->setBestResult(); 
+      DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: compute_partial_elimination_sequence " << aResult.getCounter().debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
+    }
+    else  
+      runAngelNonScarse(aSequencePListI);
     aSequenceHolder.myBasicBlockOperations.incrementBy((*aSequencePListI)->getBestResult().getCounter());
   }
 
@@ -920,7 +921,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
     typedef std::list<VarDevPropPPair> VarDevPropPPairList;
     VarDevPropPPairList theListOfAlreadyAssignedDependents;
-    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theBestVersion((*aSequencePListI)->myBestEliminationResult_p->myJAEList);
+    const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theBestVersion((*aSequencePListI)->getBestResult().myJAEList);
     for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=theBestVersion.getGraphList().begin();
 	it!=theBestVersion.getGraphList().end();
 	++it) { 
