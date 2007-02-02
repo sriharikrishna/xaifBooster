@@ -925,7 +925,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=theBestVersion.getGraphList().begin();
 	it!=theBestVersion.getGraphList().end();
 	++it) { 
-      // make a new assignment: 
+      // make a new assignment which is going to contain the JAE:  
       Assignment& aNewAssignment=(*aSequencePListI)->appendEndAssignment();
       // JU should we get away with this setting of "jacobian_accumulation" for the Id
       aNewAssignment.setId("jacobian_accumulation");
@@ -948,6 +948,22 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       theLHS.getAliasMapKey().setTemporary();
       theLHS.getDuUdMapKey().setTemporary();
       const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression(*(*it));
+      // iterate through all vertices bottom up
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair aPair(theExpression.vertices());
+      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator aJacExprVertexI(aPair.first), aJacExprVertexIEnd(aPair.second);
+      // find the maximal vertex
+      for (;aJacExprVertexI!=aJacExprVertexIEnd; ++aJacExprVertexI) { 
+	if (!theExpression.numOutEdgesOf(*aJacExprVertexI))
+	  break;
+      } // end for
+      VertexPairList theVertexPairList;
+      traverseAndBuildJacobianAccumulationsFromBottomUp(*aJacExprVertexI,
+							theExpression,
+							aNewAssignment,
+							theInternalReferenceConcretizationList,
+							theVertexPairList);
+      // add the LHS to the tracking list: 
+      theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
       if (theExpression.isJacobianEntry()) { 
 	// UN: assign independent to temporary if aliased by some
 	// dependent
@@ -1042,22 +1058,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				      theSaxpy_p));
 	}
       } // end if is JacobianEntry
-      // iterate through all vertices bottom up
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair aPair(theExpression.vertices());
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator aJacExprVertexI(aPair.first), aJacExprVertexIEnd(aPair.second);
-      // find the maximal vertex
-      for (;aJacExprVertexI!=aJacExprVertexIEnd; ++aJacExprVertexI) { 
-	if (!theExpression.numOutEdgesOf(*aJacExprVertexI))
-	  break;
-      } // end for
-      VertexPairList theVertexPairList;
-      traverseAndBuildJacobianAccumulationsFromBottomUp(*aJacExprVertexI,
-							theExpression,
-							aNewAssignment,
-							theInternalReferenceConcretizationList,
-							theVertexPairList);
-      // add the LHS to the tracking list: 
-      theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
     } // end for 
     //debuging print statements with results
     DBG_MACRO(DbgGroup::METRIC, "SeqeunceHolder metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
