@@ -546,11 +546,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       
     /**
      * run the scarce algorithm for creating the elminated graphs
+     * using thisMode
      */
-    void runElimination(SequenceHolder::SequencePList::iterator&, 
+    void runElimination(Sequence& aSequence, 
 			VariableCPList& theDepVertexPListCopyWithoutRemoval, 
-			SequenceHolder&,
-			PreaccumulationMode::PreaccumulationMode_E);
+			SequenceHolder& aSequenceHolder,
+			PreaccumulationMode::PreaccumulationMode_E thisMode);
     
     void incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder);
     
@@ -568,7 +569,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * filter out singleton vertices
      */
     void graphFilter(VariableHashTable& theListOfAlreadyAssignedIndependents,
-		     SequenceHolder::SequencePList::iterator& aSequencePListI,
+		     Sequence& aSequencePListI,
 		     VariableCPList& theDepVertexPListCopyWithoutRemovals,
 		     BasicBlockAlg::SequenceHolder& aSequenceHolder); 
 
@@ -578,13 +579,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			    VariableCPList& theDepVertexPListCopyWithoutRemovals);
 
     void 
-    runAngelNonScarse(SequenceHolder::SequencePList::iterator& aSequencePListI); 
+    runAngelNonScarse(Sequence& aSequence); 
+
 
     void 
     generate(VariableHashTable& theListOfAlreadyAssignedIndependents,
-	     SequenceHolder::SequencePList::iterator& aSequencePListI, 
+	     Sequence& aSequence, 
 	     VariableCPList& theDepVertexPListCopyWithoutRemovals, 
 	     SequenceHolder& aSequenceHolder); 
+
+    typedef std::pair<const Variable*,
+      xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
+    typedef std::list<VarDevPropPPair> VarDevPropPPairList;
+
+    void 
+    generateSimplePropagator(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,
+			     VariableHashTable& theListOfAlreadyAssignedIndependents,
+			     Sequence& aSequence,
+			     VariableCPList& theDepVertexPListCopyWithoutRemovals,
+			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
+			     const Variable& theLHS); 
 
   };
  
