@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:21:11 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:31:32 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -88,7 +88,13 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_23
       INTEGER(w2f__i8) OpenAD_Symbol_24
       INTEGER(w2f__i8) OpenAD_Symbol_25
+      INTEGER(w2f__i8) OpenAD_Symbol_26
+      INTEGER(w2f__i8) OpenAD_Symbol_27
+      INTEGER(w2f__i8) OpenAD_Symbol_28
+      INTEGER(w2f__i8) OpenAD_Symbol_29
       REAL(w2f__8) OpenAD_Symbol_3
+      INTEGER(w2f__i8) OpenAD_Symbol_30
+      INTEGER(w2f__i8) OpenAD_Symbol_31
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
@@ -103,12 +109,12 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_26
-      REAL(w2f__8) OpenAD_Symbol_27
-      REAL(w2f__8) OpenAD_Symbol_28
-      REAL(w2f__8) OpenAD_Symbol_29
-      REAL(w2f__8) OpenAD_Symbol_30
-      REAL(w2f__8) OpenAD_Symbol_31
+      REAL(w2f__8) OpenAD_Symbol_32
+      REAL(w2f__8) OpenAD_Symbol_33
+      REAL(w2f__8) OpenAD_Symbol_34
+      REAL(w2f__8) OpenAD_Symbol_35
+      REAL(w2f__8) OpenAD_Symbol_36
+      REAL(w2f__8) OpenAD_Symbol_37
 C
 C     **** Top Level Pragmas ****
 C
@@ -168,8 +174,8 @@ C$OPENAD XXX Template ad_template.f
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_23
           integer_tape_pointer = integer_tape_pointer+1
         ENDIF
-        OpenAD_Symbol_24 = 1_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_24
+        OpenAD_Symbol_25 = 1_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_25
           integer_tape_pointer = integer_tape_pointer+1
       ELSE
         Y(1)%v = (X(1)%v-X(2)%v)
@@ -181,8 +187,8 @@ C$OPENAD XXX Template ad_template.f
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_18
           double_tape_pointer = double_tape_pointer+1
-        OpenAD_Symbol_25 = 0_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_25
+        OpenAD_Symbol_24 = 0_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_24
           integer_tape_pointer = integer_tape_pointer+1
       ENDIF
       Y(2)%v = Y(1)%v
@@ -203,12 +209,12 @@ C$OPENAD XXX Template ad_template.f
           OpenAD_Symbol_21 = integer_tape(integer_tape_pointer)
         IF(OpenAD_Symbol_21 .ne. 0) THEN
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_26 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(1)%d*OpenAD_Symbol_2
-     +6
+          OpenAD_Symbol_32 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(1)%d*OpenAD_Symbol_3
+     +2
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_27 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(1)%d*OpenAD_Symbol_27
+          OpenAD_Symbol_33 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(1)%d*OpenAD_Symbol_33
           Y(1)%d = 0.0d0
           X(1)%d = X(1)%d+OpenAD_Symbol_8%d
           OpenAD_Symbol_8%d = 0.0d0
@@ -216,13 +222,13 @@ C$OPENAD XXX Template ad_template.f
           OpenAD_Symbol_10%d = 0.0d0
         ELSE
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_28 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_15%d = OpenAD_Symbol_15%d+Y(1)%d*OpenAD_Symbol_2
-     +8
+          OpenAD_Symbol_34 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_15%d = OpenAD_Symbol_15%d+Y(1)%d*OpenAD_Symbol_3
+     +4
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_29 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_13%d = OpenAD_Symbol_13%d+Y(1)%d*OpenAD_Symbol_2
-     +9
+          OpenAD_Symbol_35 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_13%d = OpenAD_Symbol_13%d+Y(1)%d*OpenAD_Symbol_3
+     +5
           Y(1)%d = 0.0d0
           X(2)%d = X(2)%d+OpenAD_Symbol_13%d
           OpenAD_Symbol_13%d = 0.0d0
@@ -231,13 +237,13 @@ C$OPENAD XXX Template ad_template.f
         ENDIF
       ELSE
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_30 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_36 = double_tape(double_tape_pointer)
           OpenAD_Symbol_19%d = OpenAD_Symbol_19%d+Y(1)%d*OpenAD_Symbol_3
-     +0
+     +6
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_31 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_37 = double_tape(double_tape_pointer)
           OpenAD_Symbol_17%d = OpenAD_Symbol_17%d+Y(1)%d*OpenAD_Symbol_3
-     +1
+     +7
           Y(1)%d = 0.0d0
           X(1)%d = X(1)%d+OpenAD_Symbol_17%d
           OpenAD_Symbol_17%d = 0.0d0

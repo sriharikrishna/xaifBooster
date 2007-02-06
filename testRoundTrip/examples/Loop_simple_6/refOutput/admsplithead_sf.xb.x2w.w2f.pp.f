@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:20:42 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:30:12 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -78,7 +78,15 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_0
+      REAL(w2f__8) OpenAD_Symbol_1
+      INTEGER(w2f__i8) OpenAD_Symbol_10
+      INTEGER(w2f__i8) OpenAD_Symbol_11
+      INTEGER(w2f__i8) OpenAD_Symbol_12
+      INTEGER(w2f__i8) OpenAD_Symbol_13
+      INTEGER(w2f__i8) OpenAD_Symbol_14
+      INTEGER(w2f__i8) OpenAD_Symbol_15
+      INTEGER(w2f__i8) OpenAD_Symbol_16
+      INTEGER(w2f__i8) OpenAD_Symbol_17
       REAL(w2f__8) OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -86,6 +94,7 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_6
       INTEGER(w2f__i8) OpenAD_Symbol_7
       INTEGER(w2f__i8) OpenAD_Symbol_8
+      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -95,7 +104,11 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      REAL(w2f__8) OpenAD_Symbol_12
+      INTEGER(w2f__i8) OpenAD_Symbol_18
+      INTEGER(w2f__i8) OpenAD_Symbol_19
+      INTEGER(w2f__i8) OpenAD_Symbol_20
+      REAL(w2f__8) OpenAD_Symbol_21
+      INTEGER(w2f__i8) OpenAD_Symbol_22
 C
 C     **** Top Level Pragmas ****
 C
@@ -119,7 +132,7 @@ C$OPENAD XXX Simple loop\t
       ELSE
 C$OPENAD XXX Simple loop\t
         DO I = 1, 3, 1
-          Y(INT(I))%v = (X(I)%v*2.0D00)
+          Y(INT(I))%v = (2.0D00*X(I)%v)
         END DO
       ENDIF
       RETURN
@@ -138,10 +151,10 @@ C$OPENAD XXX Simple loop\t
       ELSE
 C$OPENAD XXX Simple loop\t
         DO I = 1, 3, 1
-          OpenAD_Symbol_2 = (X(I)%v*2.0D00)
-          OpenAD_Symbol_0 = 2.0D00
+          OpenAD_Symbol_2 = (2.0D00*X(I)%v)
+          OpenAD_Symbol_1 = 2.0D00
           Y(INT(I))%v = OpenAD_Symbol_2
-          OpenAD_Symbol_4 = OpenAD_Symbol_0
+          OpenAD_Symbol_4 = OpenAD_Symbol_1
           double_tape(double_tape_pointer) = OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer+1
         END DO
@@ -170,8 +183,8 @@ C$OPENAD XXX Simple loop\t
         I = 1 + 1 *((3 - 1) / 1)
         DO WHILE(I .GE. 1)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_12 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(I)%d*OpenAD_Symbol_12
+          OpenAD_Symbol_21 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(I)%d*OpenAD_Symbol_21
           Y(I)%d = 0.0d0
           X(I)%d = X(I)%d+OpenAD_Symbol_5%d
           OpenAD_Symbol_5%d = 0.0d0

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:35:40 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:41:53 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -81,6 +81,9 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
+      INTEGER(w2f__i8) OpenAD_Symbol_1
+      INTEGER(w2f__i8) OpenAD_Symbol_2
+      INTEGER(w2f__i8) OpenAD_Symbol_3
 C
 C     **** Parameters and Result ****
 C
@@ -91,6 +94,8 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i8) OpenAD_Symbol_4
+      INTEGER(w2f__i8) OpenAD_Symbol_5
 C
 C     **** Top Level Pragmas ****
 C

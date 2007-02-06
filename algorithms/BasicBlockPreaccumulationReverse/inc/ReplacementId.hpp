@@ -75,7 +75,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       RESTOREARGUMENT=6,
       RESTORERESULT=7,
       STORETIMESTEPARGUMENT=8,
-      RESTORETIMESTEPARGUMENT=9
+      RESTORETIMESTEPARGUMENT=9,
+      STRICTANONYMOUSTAPING=10,
+      STRICTANONYMOUSADJOINT=11
     };
 
     static std::string toString(const ReplacementId_E& aKind) throw (PrintingIntException);

@@ -62,13 +62,13 @@
 
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdgeAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertexAlgFactory.hpp"
@@ -174,7 +174,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
-    BasicBlockAlg& aBasicBlockAlg(BasicBlockAlgParameter::instance().get());
+    BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()));
     // we need to do the representative sequence first because we only redo the activity analysis
     // and linearization once.
     BasicBlockAlg::SequenceHolder* repSequenceHolder_p=&(aBasicBlockAlg.getRepresentativeSequenceHolder());
@@ -194,8 +194,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   AssignmentAlg::algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
 						BasicBlockAlg::SequenceHolder& aSequenceHolder) { 
     PrivateLinearizedComputationalGraph& theComputationalGraph=
-      BasicBlockAlgParameter::instance().get().getComputationalGraph(getContainingAssignment(),
-					  aSequenceHolder);
+      dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()).getComputationalGraph(getContainingAssignment(),
+															     aSequenceHolder);
     // this was set in BasicBlockAlg::algorithm_action_2
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theComputationalGraph)) { 
@@ -207,21 +207,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // and leave
       return;
     }
-    BasicBlockAlgParameter::instance().get().addMyselfToAssignmentIdList(getContainingAssignment(),
-                                                                         aSequenceHolder);
-    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(BasicBlockAlgParameter::instance().get().getAssignmentIdList());
+    dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()).addMyselfToAssignmentIdList(getContainingAssignment(),
+																 aSequenceHolder);
+    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()).getAssignmentIdList());
     // now redo the activity analysis
-//     if (haveLinearizedRightHandSide() && 
-// 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
-//       GraphVizDisplay::show(getLinearizedRightHandSide(),"before",
-// 			    VertexLabelWriter(getLinearizedRightHandSide()));
+    //     if (haveLinearizedRightHandSide() && 
+    // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+    //       GraphVizDisplay::show(getLinearizedRightHandSide(),"before",
+    // 			    VertexLabelWriter(getLinearizedRightHandSide()));
     // here is why we need to do the representative SequenceHolder first:
     if (aBasicBlockAlg.isRepresentativeSequenceHolder(aSequenceHolder)){ 
       xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
-//     if (haveLinearizedRightHandSide() && 
-// 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
-//       GraphVizDisplay::show(getLinearizedRightHandSide(),"after",
-// 			    VertexLabelWriter(getLinearizedRightHandSide()));
+    //     if (haveLinearizedRightHandSide() && 
+    // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+    //       GraphVizDisplay::show(getLinearizedRightHandSide(),"after",
+    // 			    VertexLabelWriter(getLinearizedRightHandSide()));
     // and the second part of the linearization
       xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
     }

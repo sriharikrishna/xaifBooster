@@ -111,7 +111,7 @@
       </xaif:ArgumentList>
       <xaif:Entry vertex_id="1" annotation=""/>
       <xaif:ForLoop vertex_id="2" annotation="" reversal="anonymous">
-        <xaif:Initialization>
+        <xaif:Initialization statement_id="fi">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
@@ -128,7 +128,7 @@
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:Condition>
-        <xaif:Update>
+        <xaif:Update statement_id="fu">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="i" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>

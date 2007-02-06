@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:35:02 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:40:07 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -85,6 +85,12 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_19
       REAL(w2f__8) OpenAD_Symbol_2
       INTEGER(w2f__i8) OpenAD_Symbol_20
+      INTEGER(w2f__i8) OpenAD_Symbol_21
+      INTEGER(w2f__i8) OpenAD_Symbol_22
+      INTEGER(w2f__i8) OpenAD_Symbol_23
+      INTEGER(w2f__i8) OpenAD_Symbol_24
+      INTEGER(w2f__i8) OpenAD_Symbol_25
+      INTEGER(w2f__i8) OpenAD_Symbol_26
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
@@ -101,11 +107,10 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      LOGICAL(w2f__i4) t__1
-      REAL(w2f__8) OpenAD_Symbol_21
-      REAL(w2f__8) OpenAD_Symbol_22
-      REAL(w2f__8) OpenAD_Symbol_23
-      REAL(w2f__8) OpenAD_Symbol_24
+      REAL(w2f__8) OpenAD_Symbol_27
+      REAL(w2f__8) OpenAD_Symbol_28
+      REAL(w2f__8) OpenAD_Symbol_29
+      REAL(w2f__8) OpenAD_Symbol_30
 C
 C     **** Top Level Pragmas ****
 C
@@ -178,15 +183,13 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       I = 1
-      t__1 = I .LT. 3
-      DO WHILE(t__1)
+      DO WHILE(I .LT. INT(3_w2f__i8))
         IF(I .LT. INT(2_w2f__i8)) THEN
           Y(2)%v = SIN(X(1)%v)
         ELSE
           Y(1)%v = COS(X(2)%v)
         ENDIF
         I = I + 1
-        t__1 = I .LT. 3
       END DO
       Y(2)%v = (Y(1)%v*Y(2)%v)
       
@@ -204,9 +207,8 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
       I = 1
-      t__1 = I .LT. 3
       OpenAD_Symbol_18 = 0_w2f__i8
-      DO WHILE(t__1)
+      DO WHILE(I .LT. INT(3_w2f__i8))
         IF(I .LT. INT(2_w2f__i8)) THEN
           OpenAD_Symbol_1 = SIN(X(1)%v)
           OpenAD_Symbol_0 = COS(X(1)%v)
@@ -229,7 +231,6 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
         ENDIF
         I = I + 1
-        t__1 = I .LT. 3
         OpenAD_Symbol_18 = (INT(OpenAD_Symbol_18) + INT(1_w2f__i8))
       END DO
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_18
@@ -264,13 +265,13 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_23 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_29 = double_tape(double_tape_pointer)
           OpenAD_Symbol_14%d = OpenAD_Symbol_14%d+Y(2)%d*OpenAD_Symbol_2
-     +3
+     +9
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_24 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_12%d = OpenAD_Symbol_12%d+Y(2)%d*OpenAD_Symbol_2
-     +4
+          OpenAD_Symbol_30 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_12%d = OpenAD_Symbol_12%d+Y(2)%d*OpenAD_Symbol_3
+     +0
           Y(2)%d = 0.0d0
           Y(1)%d = Y(1)%d+OpenAD_Symbol_12%d
           OpenAD_Symbol_12%d = 0.0d0
@@ -284,16 +285,16 @@ C adjoint
           OpenAD_Symbol_17 = integer_tape(integer_tape_pointer)
         IF(OpenAD_Symbol_17 .ne. 0) THEN
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_21 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(2)%d*OpenAD_Symbol_21
+          OpenAD_Symbol_27 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(2)%d*OpenAD_Symbol_27
           Y(2)%d = 0.0d0
           X(1)%d = X(1)%d+OpenAD_Symbol_8%d
           OpenAD_Symbol_8%d = 0.0d0
         ELSE
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_22 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_28 = double_tape(double_tape_pointer)
           OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(1)%d*OpenAD_Symbol_2
-     +2
+     +8
           Y(1)%d = 0.0d0
           X(2)%d = X(2)%d+OpenAD_Symbol_10%d
           OpenAD_Symbol_10%d = 0.0d0

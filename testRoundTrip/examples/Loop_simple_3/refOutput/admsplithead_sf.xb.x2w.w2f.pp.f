@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 16:13:15 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:29:33 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -85,7 +85,16 @@ C
       REAL(w2f__8) OpenAD_Symbol_12
       type(active) :: OpenAD_Symbol_13
       type(active) :: OpenAD_Symbol_14
+      INTEGER(w2f__i8) OpenAD_Symbol_15
+      INTEGER(w2f__i8) OpenAD_Symbol_16
+      INTEGER(w2f__i8) OpenAD_Symbol_17
+      INTEGER(w2f__i8) OpenAD_Symbol_18
+      INTEGER(w2f__i8) OpenAD_Symbol_19
       REAL(w2f__8) OpenAD_Symbol_2
+      INTEGER(w2f__i8) OpenAD_Symbol_20
+      INTEGER(w2f__i8) OpenAD_Symbol_21
+      INTEGER(w2f__i8) OpenAD_Symbol_22
+      INTEGER(w2f__i8) OpenAD_Symbol_23
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       type(active) :: OpenAD_Symbol_5
@@ -103,10 +112,10 @@ C     **** Local Variables and Functions ****
 C
       CHARACTER(10) ASTRING
       INTEGER(w2f__i4) I
-      REAL(w2f__8) OpenAD_Symbol_15
-      REAL(w2f__8) OpenAD_Symbol_16
-      REAL(w2f__8) OpenAD_Symbol_17
-      REAL(w2f__8) OpenAD_Symbol_18
+      REAL(w2f__8) OpenAD_Symbol_24
+      REAL(w2f__8) OpenAD_Symbol_25
+      REAL(w2f__8) OpenAD_Symbol_26
+      REAL(w2f__8) OpenAD_Symbol_27
 C
 C     **** Top Level Pragmas ****
 C
@@ -191,13 +200,13 @@ C$OPENAD XXX Simple loop
       DO WHILE(I .GE. 1)
         IF(ASTRING .EQ. 'bloh') THEN
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_17 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_13%d = OpenAD_Symbol_13%d+Y(1)%d*OpenAD_Symbol_1
-     +7
+          OpenAD_Symbol_26 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_13%d = OpenAD_Symbol_13%d+Y(1)%d*OpenAD_Symbol_2
+     +6
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_18 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_11%d = OpenAD_Symbol_11%d+Y(1)%d*OpenAD_Symbol_1
-     +8
+          OpenAD_Symbol_27 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_11%d = OpenAD_Symbol_11%d+Y(1)%d*OpenAD_Symbol_2
+     +7
           Y(1)%d = 0.0d0
           Y(1)%d = Y(1)%d+OpenAD_Symbol_11%d
           OpenAD_Symbol_11%d = 0.0d0
@@ -206,11 +215,11 @@ C$OPENAD XXX Simple loop
         ENDIF
         IF(ASTRING .EQ. 'blah') THEN
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_15 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_9%d = OpenAD_Symbol_9%d+Y(1)%d*OpenAD_Symbol_15
+          OpenAD_Symbol_24 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_9%d = OpenAD_Symbol_9%d+Y(1)%d*OpenAD_Symbol_24
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_16 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y(1)%d*OpenAD_Symbol_16
+          OpenAD_Symbol_25 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y(1)%d*OpenAD_Symbol_25
           Y(1)%d = 0.0d0
           X(1)%d = X(1)%d+OpenAD_Symbol_7%d
           OpenAD_Symbol_7%d = 0.0d0

@@ -84,6 +84,9 @@ LIBS+=-lxaifBoosterDerivativePropagator
 VPATH+=../../InlinableXMLRepresentation/lib
 LIBS+=-lxaifBoosterInlinableXMLRepresentation
 
+VPATH+=../../AdjointUtils/lib
+LIBS+=-lxaifBoosterAdjointUtils
+
 # setup for ANGEL
 ifndef ANGELROOT
   $(error "Error:  environment variable ANGELROOT not defined!")

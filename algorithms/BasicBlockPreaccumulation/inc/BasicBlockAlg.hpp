@@ -600,6 +600,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 			     const Variable& theLHS); 
 
+    /** 
+     * to satisfy schema uniqueness constraints
+     */
+    static std::string makeUniqueId(); 
+
   };
  
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms

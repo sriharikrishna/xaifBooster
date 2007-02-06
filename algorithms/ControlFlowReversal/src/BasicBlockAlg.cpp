@@ -61,8 +61,7 @@ namespace xaifBoosterControlFlowReversal {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     BasicBlockAlgBase(theContaining),
-    ControlFlowGraphVertexAlg(theContaining),
-    myReversalType(ForLoopReversalType::ANONYMOUS) {
+    ControlFlowGraphVertexAlg(theContaining) {
   }
 
   BasicBlockAlg::~BasicBlockAlg() {}
@@ -73,14 +72,6 @@ namespace xaifBoosterControlFlowReversal {
     out << "xaifBoosterControlFlowReversal::BasicBlockAlg[" << this
         << "]" << std::ends;
     return out.str();
-  }
-
-  void BasicBlockAlg::setReversalType(ForLoopReversalType::ForLoopReversalType_E aReversalType) { 
-    myReversalType=aReversalType;
-  }
-
-  ForLoopReversalType::ForLoopReversalType_E BasicBlockAlg::getReversalType() const { 
-    return myReversalType;
   }
 
 } // end of namespace

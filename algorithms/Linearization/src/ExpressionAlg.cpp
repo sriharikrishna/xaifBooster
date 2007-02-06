@@ -231,9 +231,7 @@ namespace xaifBoosterLinearization {
 	const ExpressionEdgeAlg::VertexPairList& theConcreteArgumentInstancesList(theI3ExpressionEdgeAlg.getConcreteArgumentInstancesList());
 	theI3ExpressionEdgeAlg.makeConcretePartialAssignment();
 	Expression& theNewConcretePartial(theI3ExpressionEdgeAlg.getConcretePartialAssignment().getRHS());
-	// JU: Can we live with "elementary_partial" as assignment ID for this new 
-	// assignment?
-	theI3ExpressionEdgeAlg.getConcretePartialAssignment().setId("elementary_partial");
+	theI3ExpressionEdgeAlg.getConcretePartialAssignment().setId(makeUniqueId());
 	InlinableIntrinsicsExpression::ConstVertexIteratorPair anAbstractvertexPair(thePartialExpression.vertices());
 	InlinableIntrinsicsExpression::ConstVertexIterator abstractVertexIt(anAbstractvertexPair.first), abstractVertexEndIt(anAbstractvertexPair.second);
 	for(;abstractVertexIt!=abstractVertexEndIt; ++abstractVertexIt) { 
@@ -425,5 +423,12 @@ namespace xaifBoosterLinearization {
       activityAnalysisTopDownPass(getContaining().getSourceOf(*iE));
     }  
   } // end of ExpressionAlg::activityAnalysisTopDownPass
+
+  std::string ExpressionAlg::makeUniqueId() { 
+    static unsigned anId=0;
+    std::ostringstream ostr;
+    ostr << "_elementary_partial_" << anId++ << std::ends;
+    return ostr.str();
+  }
 
 }

@@ -136,6 +136,7 @@ namespace xaifBoosterControlFlowReversal {
     void addLoopVariable(const Variable& aLoopVariable);
 
     ReversibleControlFlowGraphVertex& getTopExplicitLoop();
+    const ReversibleControlFlowGraphVertex& getTopExplicitLoop() const;
 
     void setTopExplicitLoop(ReversibleControlFlowGraphVertex& theTopExplicitLoop);
 
@@ -143,6 +144,30 @@ namespace xaifBoosterControlFlowReversal {
 
     void setTopExplicitLoopAddressArithmetic(ReversibleControlFlowGraphVertex& theTopExplicitLoop);
 
+    bool hasStorePlaceholder() const;
+
+    ReversibleControlFlowGraphVertex& getStorePlaceholder();
+
+    void setStorePlaceholder(ReversibleControlFlowGraphVertex& theStorePlaceholder);
+
+    bool hasRestorePlaceholder() const;
+
+    ReversibleControlFlowGraphVertex& getRestorePlaceholder();
+
+    void setRestorePlaceholder(ReversibleControlFlowGraphVertex& theRestorePlaceholder);
+
+    bool hasEnclosingControlFlow() const;
+
+    ReversibleControlFlowGraphVertex& getEnclosingControlFlow();
+
+    void setEnclosingControlFlow(ReversibleControlFlowGraphVertex& theEnclosingControlFlow);
+
+    /**
+     * for explicitly reversible for loops
+     * guess the count direction
+     */
+    bool simpleCountUp() const;
+    
   private:
 
     /** 
@@ -223,12 +248,39 @@ namespace xaifBoosterControlFlowReversal {
      * pointer to the top level 
      * explicit loop's basic block that holds pushes/pops of
      * variables needed to fix address computations in simple 
-     * loop constructs
+     * loop constructs for those variables NOT redefined within 
+     * the simple loop
      * this is just a reference not to be deleted by 
      * the dtor
      */
     ReversibleControlFlowGraphVertex* myTopExplicitLoopAddressArithmetic_p;
 
+    /** 
+     * pointer to the placeholder basic block 
+     * to store control flow related information
+     * for the variables that are redefined within the simple loop
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */ 
+    ReversibleControlFlowGraphVertex* myStorePlaceholder_p;
+
+    /** 
+     * pointer to the placeholder basic block 
+     * to restore control flow related information
+     * for the variables that are redefined within the simple loop
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */ 
+    ReversibleControlFlowGraphVertex* myRestorePlaceholder_p;
+
+    /** 
+     * pointer to the enclosing Loop or Branch vertex
+     * if it exists; only set for original vertices
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */ 
+    ReversibleControlFlowGraphVertex* myEnclosingControlFlow_p;
+   
   };  // end of class
 
 } // end of namespace 

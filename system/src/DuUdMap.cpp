@@ -103,6 +103,28 @@ namespace xaifBooster {
     return (*aNewDuUdMapEntry_p);
   } 
 
+  const DuUdMapEntry& DuUdMap::getEntry(const DuUdMapKey& aKey) const { 
+    if (aKey.getKind()==DuUdMapKey::TEMP_VAR)
+      // obviously because the map doesn't contain any info on temporaries, 
+      // the calling context should figure it out itself
+      THROW_LOGICEXCEPTION_MACRO("DuUdMap::getDuUdMapEntry: not supported for temporaries");
+    if (aKey.getKind()==DuUdMapKey::NO_INFO) 
+      THROW_LOGICEXCEPTION_MACRO("DuUdMap::getDuUdMapEntry: no duud information");
+    if (aKey.getKey()<0 
+	|| 
+	aKey.getKey()>=myDuUdMapEntryPVector.size())  
+      // have an explicit check here rather than using 'at' which 
+      // wouldn't hint where the problem is...
+      THROW_LOGICEXCEPTION_MACRO("DuUdMap::getDuUdMapEntry: key >" 
+				 << aKey.getKey() 
+				 << "< out of range");
+    if (!myDuUdMapEntryPVector[aKey.getKey()])
+      THROW_LOGICEXCEPTION_MACRO("DuUdMap::getDuUdMapEntry: null pointer for key >" 
+				 << aKey.getKey() 
+				 << "<");
+    return *myDuUdMapEntryPVector[aKey.getKey()];
+  }
+
   const DuUdMapDefinitionResult DuUdMap::definition(const DuUdMapKey& aKey,
 						    const DuUdMapDefinitionResult::StatementIdList& anIdList) const {
     DuUdMapDefinitionResult theResult;

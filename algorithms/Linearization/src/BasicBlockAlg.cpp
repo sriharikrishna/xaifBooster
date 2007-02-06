@@ -85,8 +85,7 @@ namespace xaifBoosterLinearization {
     return out.str();
   } // end of BasicBlockAlg::debug
 
-  void
-  BasicBlockAlg::algorithm_action_1() {
+  void BasicBlockAlg::algorithm_action_1() {
     static unsigned int recursionGuard=0;
     try { 
       recursionGuard++;
@@ -99,7 +98,7 @@ namespace xaifBoosterLinearization {
       // invoke directly and need to rely on GenericTraverseInvoke
       // In order to pass parameters through BasicBlockParameter
       // we have to make sure that this method is never invoked recursively
-      BasicBlockAlgParameter::instance().set(*this);	
+      BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_1()
     } 
     catch (...) { 
       recursionGuard--;

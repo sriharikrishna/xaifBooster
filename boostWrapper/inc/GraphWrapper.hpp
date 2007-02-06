@@ -161,6 +161,17 @@ namespace xaifBooster {
      */
     void clear();
 
+    /** 
+     * tests if aDominatedVertex is strictly dominated 
+     * by aDominatorVertex, i.e. all paths to maximal vertices
+     * in the graph have to pass through aDominatorVertex
+     * direction indicates if the path should follow the 
+     * edge direction or its reverse
+     */
+    bool firstDominatedBySecond(const Vertex& aDominatedVertex,
+				const Vertex& aDominatorVertex,
+				bool sameDirection) const;
+
   protected:
 
     /** 
@@ -332,6 +343,28 @@ namespace xaifBooster {
      * gets the next usable edge id
      */
     unsigned int getNextEdgeId();
+
+
+    /** 
+     * indicates if we perform a visitor algorithm on the graph
+     */
+    mutable bool myVisitInProgressFlag;
+
+    void initVisit() const;
+
+    void finishVisit() const;
+
+    /** 
+     * strict domination in edge direction
+     */
+    bool dominates_f(const Vertex& aDominatedVertex,
+		     const Vertex& aDominatorVertex) const;
+
+    /** 
+     * strict domination in reverse edge direction
+     */
+    bool dominates_r(const Vertex& aDominatedVertex,
+		     const Vertex& aDominatorVertex) const;
 
   }; // end of class GraphWrapper
   

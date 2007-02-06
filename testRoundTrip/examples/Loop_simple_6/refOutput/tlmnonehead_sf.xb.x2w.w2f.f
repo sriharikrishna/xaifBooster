@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 15:54:01 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:42:51 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -18,7 +18,7 @@ C
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_0
+      REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       TYPE (OpenADTy_active) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -53,10 +53,10 @@ C$OPENAD XXX Simple loop\t
       ELSE
 C$OPENAD XXX Simple loop\t
         DO I = 1, 3, 1
-          OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
-          OpenAD_Symbol_0 = 2.0D00
+          OpenAD_Symbol_2 = (2.0D00 * __value__(X(I)))
+          OpenAD_Symbol_1 = 2.0D00
           __value__(Y(INT(I))) = OpenAD_Symbol_2
-          OpenAD_Symbol_4 = OpenAD_Symbol_0
+          OpenAD_Symbol_4 = OpenAD_Symbol_1
           CALL setderiv(__deriv__(OpenAD_Symbol_5), __deriv__(X(I)))
           CALL sax(OpenAD_Symbol_4, __deriv__(OpenAD_Symbol_5),
      >  __deriv__(Y(I)))

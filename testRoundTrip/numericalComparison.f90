@@ -42,11 +42,13 @@ program numericalComparison
         end if
         if (maxCompEps<relErr) maxCompEps=relErr
         if (relErr > compEps) then
-           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "significant change for DD vs reference in ","F(",j,",",k,")=",ndd, " vs ", rdd
+           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "significant change for DD vs reference in ","F(",j,",",k,")=",&
+&ndd, " vs ", rdd
            compProb=.true.
         end if
         if (debug) then
-           write(*,'(A,EN26.16E3,A,EN26.16E3,A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "relErr ", relErr, " and compEps ",compEps," for DD vs reference in ","F(",j,",",k,")=",ndd, " vs ", rdd
+           write(*,'(A,EN26.16E3,A,EN26.16E3,A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "relErr ", relErr, " and compEps ",&
+&compEps," for DD vs reference in ","F(",j,",",k,")=",ndd, " vs ", rdd
         end if
         if (abs(rad)>0) then 
            relErr=abs(nad-rad)/abs(rad)
@@ -55,11 +57,13 @@ program numericalComparison
         end if
         if (maxCompEps<relErr) maxCompEps=relErr
         if (relErr > compEps) then
-           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "significant change for AD vs reference in ","F(",j,",",k,")=",nad, " vs ", rad
+           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "significant change for AD vs reference in ","F(",j,",",k,")=",&
+&nad, " vs ", rad
            compProb=.true.
         end if
         if (debug) then
-           write(*,'(A,EN26.16E3,A,EN26.16E3,A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "relErr ", relErr, " and compEps ",compEps," for AD vs reference in ","F(",j,",",k,")=",nad, " vs ", rad
+           write(*,'(A,EN26.16E3,A,EN26.16E3,A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "relErr ", relErr, " and compEps ",&
+&compEps," for AD vs reference in ","F(",j,",",k,")=",nad, " vs ", rad
         end if
         if (abs(nad)>0) then 
            relErr=abs(ndd-nad)/abs(nad)
@@ -68,11 +72,13 @@ program numericalComparison
         end if
         if (maxRelativeError<relErr) maxRelativeError=relErr
         if (relErr > testRelativeError) then
-           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "significant change for AD vs DD in ","F(",j,",",k,")=",nad, " vs ", ndd
+           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "significant change for AD vs DD in ","F(",j,",",k,")=",nad,&
+& " vs ", ndd
            problem=.true.
         end if
         if (debug) then
-           write(*,'(A,EN26.16E3,A,EN26.16E3,A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "relErr ", relErr, " and testRelErr ",testRelativeError," for AD vs reference in ","F(",j,",",k,")=",nad, " vs ", ndd
+           write(*,'(A,EN26.16E3,A,EN26.16E3,A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "relErr ", relErr, " and testRelErr ",&
+&testRelativeError," for AD vs reference in ","F(",j,",",k,")=",nad, " vs ", ndd
         end if
      end if
   end do

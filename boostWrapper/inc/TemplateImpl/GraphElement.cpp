@@ -59,8 +59,9 @@
 namespace xaifBooster { 
 
   template <class VertexOrEdgeDescriptor>
-  GraphElement<VertexOrEdgeDescriptor>::GraphElement() 
-    : myInitFlag(false) {
+  GraphElement<VertexOrEdgeDescriptor>::GraphElement() : 
+    myInitFlag(false),
+    myVisitedFlag(false) {
   }
   
   template <class VertexOrEdgeDescriptor>
@@ -89,5 +90,23 @@ namespace xaifBooster {
 	<< "]" << std::ends;  
     return out.str();
   } // end of GraphElement<VertexOrEdgeDescriptor>::debug
+
+  template <class VertexOrEdgeDescriptor>
+  void   
+  GraphElement<VertexOrEdgeDescriptor>::setVisited() const { 
+    myVisitedFlag=true;
+  }
+
+  template <class VertexOrEdgeDescriptor>
+  bool   
+  GraphElement<VertexOrEdgeDescriptor>::wasVisited() const { 
+    return myVisitedFlag;
+  }
+
+  template <class VertexOrEdgeDescriptor>
+  void   
+  GraphElement<VertexOrEdgeDescriptor>::resetVisited() const { 
+    myVisitedFlag=false;
+  }
 
 } // end of namespace

@@ -105,6 +105,13 @@ namespace xaifBooster {
      */
     bool hasElement(const Symbol& aSymbol) const; 
     
+    /** 
+     * tries to find a matching symbol disregarding fron-end decorations
+     */
+    bool hasSymbolWithPlainName(const std::string& aPlainName) const; 
+
+    const Symbol&  getSymbolWithPlainName(const std::string& aPlainName) const; 
+    
   private: 
     
     typedef HashTable<Symbol*> HashTableSymbolP;

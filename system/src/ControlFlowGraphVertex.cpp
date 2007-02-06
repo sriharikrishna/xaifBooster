@@ -89,5 +89,8 @@ namespace xaifBooster {
     return *myControlFlowGraphVertexAlgBase_p;
   }
 
+  bool ControlFlowGraphVertex::hasStatement(const ObjectWithId::Id& aStatementId) const { 
+    return false;
+  }
 
 } // end of namespace xaifBooster 

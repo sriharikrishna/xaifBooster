@@ -53,9 +53,23 @@
 ######################################################
 # pick your compiler
 ######################################################
+#FIXEDFORMAT=-ffixed-form
+#FREEFORMAT=-ffree-form
+#F95=g95 -g -O0 
+#CC=gcc
+
+#FIXEDFORMAT=-ffixed-form
+#FREEFORMAT=-ffree-form
+#F95=gfortran -g -O0 
+#CC=gcc
+
+FIXEDFORMAT=-fixed
+FREEFORMAT=-free
 F95=ifort -check all -g -fpe0 -O0 -traceback 
 CC=icc
 
+#FIXEDFORMAT=-fixed
+#FREEFORMAT=-free
 #F95=f95 -g -w=unused
 #CC=gcc
 ######################################################
@@ -119,11 +133,11 @@ head_sf.B: head_sf.f mfef90
 
 # WHIRL -> XAIF
 head_sf.xaif : head_sf.B whirl2xaif
-	./whirl2xaif -o $@ $<
+	./whirl2xaif -n -o $@ $<
 
 # XAIF -> XAIF'
 head_sf.xb.xaif : head_sf.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
-	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG)
+	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG) 
 
 # XAIF' -> WHIRL'
 head_sf.xb.x2w.B : head_sf.xb.xaif xaif2whirl
@@ -180,10 +194,10 @@ run: params.conf tmpOutput driver numericalComparison
 	./driver
 
 %.o:%.f
-	$(F95) -fixed -c $<
+	$(F95) $(FIXEDFORMAT) -c $<
 
 %.o:%.f90
-	$(F95) -free -c $<
+	$(F95) $(FREEFORMAT) -c $<
 
 ######################################################
 # miscellaneous
@@ -197,7 +211,7 @@ testAllclean:
 
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
+	$(RM) mfef90 whirl2xaif whirl2sexp xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
 	$(RM) *.mod *.o
 
 obj test doc: 

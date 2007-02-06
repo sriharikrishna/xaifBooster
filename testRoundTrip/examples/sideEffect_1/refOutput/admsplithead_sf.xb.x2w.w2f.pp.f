@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:22:49 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:34:39 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -216,6 +216,7 @@ C ========== end copyright notice ==============
       use active_module
       use globals
       use globals
+      use globals
       IMPLICIT NONE
 C
 C     **** Global Variables & Derived Type Definitions ****
@@ -341,6 +342,7 @@ C ========== end copyright notice ==============
 
       use w2f__types
       use active_module
+      use globals
       use globals
       use globals
       IMPLICIT NONE

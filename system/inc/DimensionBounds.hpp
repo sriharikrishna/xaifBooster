@@ -54,6 +54,7 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/IndexOrder.hpp"
 
 namespace xaifBooster { 
 
@@ -97,6 +98,8 @@ namespace xaifBooster {
     int getLower()const;
     int getUpper()const;
 
+    static IndexOrder::IndexOrder_E getIndexOrder();
+
   private: 
 
     /** 
@@ -107,6 +110,13 @@ namespace xaifBooster {
     const int myLower;
 
     const int myUpper;
+
+    /**
+     * eventually we should control this either 
+     * through a command line flag or an
+     * xaif attribute
+     */
+    static IndexOrder::IndexOrder_E ourIndexOrder;
 
   }; // end of class DimensionBounds
  

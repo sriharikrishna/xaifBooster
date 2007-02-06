@@ -66,6 +66,10 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
+
+#include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
@@ -113,7 +117,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
        << getContaining().getScope().getId().c_str()
        << "\">" 
        << std::endl;
-    const PlainBasicBlock::BasicBlockElementList& aBasicBlockElementList(getBasicBlockElementList(getReversalType()));
+    const PlainBasicBlock::BasicBlockElementList& aBasicBlockElementList(getBasicBlockElementList(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()));
     for (PlainBasicBlock::BasicBlockElementList::const_iterator li=aBasicBlockElementList.begin();
 	 li!=aBasicBlockElementList.end();
 	 li++)
@@ -248,6 +252,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void BasicBlockAlg::algorithm_action_4() { // adjoin the DerivativePropagators
     if (getContaining().getBasicBlockElementList().empty())
       return;
+    xaifBoosterLinearization::BasicBlockAlgParameter::instance().set(*this); // in BasicBlockAlg::algorithm_action_4()
     // mesh the BasicBlockElements with the Sequences
     PlainBasicBlock::BasicBlockElementList::const_reverse_iterator aBasicBlockElementListRI=getContaining().getBasicBlockElementList().rbegin();
     SequenceHolder::SequencePList::const_reverse_iterator aSequencePListRI=getBestSequenceHolder().getUniqueSequencePList().rbegin();
@@ -508,8 +513,4 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     return myBasicBlockElementListAnonymousReversal;
   }  
 
-  ForLoopReversalType::ForLoopReversalType_E BasicBlockAlg::getReversalType() const { 
-    return ForLoopReversalType::ANONYMOUS;
-  } 
-  
 } // end of namespace

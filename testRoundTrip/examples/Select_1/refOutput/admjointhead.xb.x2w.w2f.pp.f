@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:37:02 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:46:39 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -77,6 +77,10 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_11
       INTEGER(w2f__i8) OpenAD_Symbol_12
       INTEGER(w2f__i8) OpenAD_Symbol_13
+      INTEGER(w2f__i8) OpenAD_Symbol_14
+      INTEGER(w2f__i8) OpenAD_Symbol_15
+      INTEGER(w2f__i8) OpenAD_Symbol_16
+      INTEGER(w2f__i8) OpenAD_Symbol_17
       REAL(w2f__8) OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -94,9 +98,8 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) select_expr_temp_0
-      REAL(w2f__8) OpenAD_Symbol_14
-      REAL(w2f__8) OpenAD_Symbol_15
+      REAL(w2f__8) OpenAD_Symbol_18
+      REAL(w2f__8) OpenAD_Symbol_19
 C
 C     **** Top Level Pragmas ****
 C
@@ -170,9 +173,8 @@ C original function
 C$OPENAD XXX Template ad_template.f
       I = 1
       Y(1)%v = 2.0D00
-      select_expr_temp_0 = I
-      IF ( select_expr_temp_0  .EQ.  1)  GO TO  4
-      IF ( select_expr_temp_0  .EQ.  2)  GO TO  8
+      IF ( I  .EQ.  1)  GO TO  4
+      IF ( I  .EQ.  2)  GO TO  8
       GO TO 9
 9     CONTINUE
       Y(1)%v = X(1)%v
@@ -201,29 +203,28 @@ C taping
 C$OPENAD XXX Template ad_template.f
       I = 1
       Y(1)%v = 2.0D00
-      select_expr_temp_0 = I
-      IF ( select_expr_temp_0  .EQ.  1)  GO TO  40
-      IF ( select_expr_temp_0  .EQ.  2)  GO TO  44
+      IF ( I  .EQ.  1)  GO TO  40
+      IF ( I  .EQ.  2)  GO TO  44
       GO TO 45
 45    CONTINUE
       Y(1)%v = X(1)%v
       OpenAD_Symbol_13 = 3_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_13
           integer_tape_pointer = integer_tape_pointer+1
-      GO TO 42
+      GO TO 49
 40    CONTINUE
       Y(1)%v = X(1)%v
       OpenAD_Symbol_11 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_11
           integer_tape_pointer = integer_tape_pointer+1
-      GO TO 42
+      GO TO 49
 44    CONTINUE
       Y(1)%v = X(1)%v
       OpenAD_Symbol_12 = 2_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_12
           integer_tape_pointer = integer_tape_pointer+1
-      GO TO 42
-42    CONTINUE
+      GO TO 49
+49    CONTINUE
       OpenAD_Symbol_2 = (Y(1)%v*Y(1)%v)
       OpenAD_Symbol_0 = Y(1)%v
       OpenAD_Symbol_1 = Y(1)%v
@@ -254,11 +255,11 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_14 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y(1)%d*OpenAD_Symbol_14
+          OpenAD_Symbol_18 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y(1)%d*OpenAD_Symbol_18
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_15 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(1)%d*OpenAD_Symbol_15
+          OpenAD_Symbol_19 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(1)%d*OpenAD_Symbol_19
           Y(1)%d = 0.0d0
           Y(1)%d = Y(1)%d+OpenAD_Symbol_5%d
           OpenAD_Symbol_5%d = 0.0d0
@@ -266,34 +267,34 @@ C adjoint
           OpenAD_Symbol_7%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_10 = integer_tape(integer_tape_pointer)
-      IF ( OpenAD_Symbol_10  .EQ.  1)  GO TO  90
-      IF ( OpenAD_Symbol_10  .EQ.  2)  GO TO  89
-      IF ( OpenAD_Symbol_10  .EQ.  3)  GO TO  88
-90    CONTINUE
+      IF ( OpenAD_Symbol_10  .EQ.  1)  GO TO  94
+      IF ( OpenAD_Symbol_10  .EQ.  2)  GO TO  93
+      IF ( OpenAD_Symbol_10  .EQ.  3)  GO TO  92
+94    CONTINUE
           if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_3)) then
             OpenAD_Symbol_3%d = OpenAD_Symbol_3%d+Y(1)%d
             Y(1)%d = 0
           end if
           X(1)%d = X(1)%d+OpenAD_Symbol_3%d
           OpenAD_Symbol_3%d = 0.0d0
-      GO TO 92
-89    CONTINUE
+      GO TO 96
+93    CONTINUE
           if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_8)) then
             OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(1)%d
             Y(1)%d = 0
           end if
           X(1)%d = X(1)%d+OpenAD_Symbol_8%d
           OpenAD_Symbol_8%d = 0.0d0
-      GO TO 92
-88    CONTINUE
+      GO TO 96
+92    CONTINUE
           if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_9)) then
             OpenAD_Symbol_9%d = OpenAD_Symbol_9%d+Y(1)%d
             Y(1)%d = 0
           end if
           X(1)%d = X(1)%d+OpenAD_Symbol_9%d
           OpenAD_Symbol_9%d = 0.0d0
-      GO TO 92
-92    CONTINUE
+      GO TO 96
+96    CONTINUE
           Y(1)%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
