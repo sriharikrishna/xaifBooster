@@ -365,6 +365,45 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return ourSequenceCounter;
   }
 
+  BasicBlockAlg::IntermediateReferences::~IntermediateReferences() { 
+    for (VarPLCGPPairList::iterator i = myVarPLCGPPairList.begin();
+	 i!=myVarPLCGPPairList.end();
+	 ++i) { 
+      if ((*i).first)
+	delete (*i).first;
+    } 
+  } 
+
+  const Variable& BasicBlockAlg::IntermediateReferences::getVariable(const PrivateLinearizedComputationalGraphVertex& theVertex) { 
+    if (theVertex.hasLHSVariable())
+      return theVertex.getLHSVariable();
+    // see if we have it in the list: 
+    for (VarPLCGPPairList::iterator i = myVarPLCGPPairList.begin();
+	 i!=myVarPLCGPPairList.end();
+	 ++i) { 
+      if ((*i).second==&theVertex)
+	return *((*i).first);
+    }
+    // not found, make a new one: 
+    Variable* theNewVariable_p(new Variable);
+    myVarPLCGPPairList.push_back(VarPLCGPPair(theNewVariable_p,&theVertex));
+    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+			  getCallGraph().getScopeTree().getGlobalScope());
+    VariableSymbolReference* theVariableSymbolReference_p=
+      new VariableSymbolReference(theGlobalScope.getSymbolTable().
+				  addUniqueAuxSymbol(SymbolKind::VARIABLE,
+						     SymbolType::REAL_STYPE,
+						     SymbolShape::SCALAR,
+						     false),
+				  theGlobalScope);
+    theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::IntermediateReferences::getVariable");
+    theNewVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+    theNewVariable_p->getAliasMapKey().setTemporary();
+    theNewVariable_p->getDuUdMapKey().setTemporary();
+    return *theNewVariable_p;
+  } 
+
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
     xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterLinearization::BasicBlockAlg(theContaining),
@@ -966,7 +1005,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // add the LHS to the tracking list: 
       theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
       if (theExpression.isJacobianEntry()) { 
-	generateSimplePropagator(theExpression,
+	generateSimplePropagator(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getIndependent()).getRHSVariable(),
+				 dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getDependent()).getLHSVariable(),
 				 theListOfAlreadyAssignedIndependents,
 				 aSequence, 
 				 theDepVertexPListCopyWithoutRemovals,
@@ -979,7 +1019,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       generateRemainderGraphPropagators(theListOfAlreadyAssignedIndependents,
 					aSequence, 
 					theDepVertexPListCopyWithoutRemovals,
-					theListOfAlreadyAssignedDependents);
+					theListOfAlreadyAssignedDependents,
+					theInternalReferenceConcretizationList);
     //debuging print statements with results
     DBG_MACRO(DbgGroup::METRIC, "SeqeunceHolder metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
   }
@@ -987,9 +1028,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void BasicBlockAlg::generateRemainderGraphPropagators(VariableHashTable& theListOfAlreadyAssignedIndependents,
 							Sequence& aSequence, 
 							VariableCPList& theDepVertexPListCopyWithoutRemovals,
-							VarDevPropPPairList& theListOfAlreadyAssignedDependents) { 
+							VarDevPropPPairList& theListOfAlreadyAssignedDependents,
+							const InternalReferenceConcretizationList& theInternalReferenceConcretizationList) { 
     typedef std::list<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*> LinearizedComputationalGraphVertexPList; 
     LinearizedComputationalGraphVertexPList workList;
+    IntermediateReferences theIntermediateReferences;
     bool done=false; 
     aSequence.getBestResult().myRemainderGraph.initVisit();
     while (!done) { 
@@ -1055,20 +1098,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  } 
 	  if (!theEdgeCorr_p) 
 	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphPropagators: edge not found in correlation list");
+	  theEdgeCorr_p->myRemainderGraphEdge_p->setVisited();
 	  generateRemainderGraphEdgePropagator(*theSourceCorr_p,
 					       *theTargetCorr_p,
 					       *theEdgeCorr_p,
 					       theListOfAlreadyAssignedIndependents,
 					       aSequence,
 					       theDepVertexPListCopyWithoutRemovals,
-					       theListOfAlreadyAssignedDependents); 
-	}					       
+					       theListOfAlreadyAssignedDependents,
+					       theIntermediateReferences,
+					       theInternalReferenceConcretizationList); 
+	  theEdgeCorr_p->myRemainderGraphEdge_p->setVisited();
+	}
+	theSourceCorr_p->myRemainderVertex_p->setVisited();
       }
       if (workList.empty())
 	done=true;
       else
 	workList.clear();
     }
+    aSequence.getBestResult().myRemainderGraph.finishVisit();
   } 
 
   void BasicBlockAlg::generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
@@ -1077,19 +1126,69 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
 							   Sequence& aSequence,
 							   BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
-							   VarDevPropPPairList& theListOfAlreadyAssignedDependents) {
+							   VarDevPropPPairList& theListOfAlreadyAssignedDependents,
+							   IntermediateReferences& theIntermediateReferences,
+							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList) {
+    
+    // figure out who holds the edge label: 
+    const Variable& theEdgeLabelVariable(getEdgeLabel(theEdge,theInternalReferenceConcretizationList));
     switch(theEdge.myType) { 
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::LCG_EDGE : 
       break;
-    case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::JAE_VERT : 
+    case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::JAE_VERT : { 
+      // figure out what the source is:
+      const Variable* theSourceVariable_p(0);
+      if (aSequence.getBestResult().myRemainderGraph.numInEdgesOf(*(theSource.myRemainderVertex_p)))
+	theSourceVariable_p=&(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p))));
+      else 
+	theSourceVariable_p=&(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p)).getRHSVariable());
+      // figure out what the target is:
+      const Variable& theTargetVariable(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theTarget.myOriginalVertex_p))));
+      generateSimplePropagator(*theSourceVariable_p,
+			       theTargetVariable,
+			       theListOfAlreadyAssignedIndependents,
+			       aSequence,
+			       theDepVertexPListCopyWithoutRemovals,
+			       theListOfAlreadyAssignedDependents,
+			       theEdgeLabelVariable);
       break;
+    }
     default: 
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphEdgePropagator: unknown type");
       break;
     }
   } 
 
-  void BasicBlockAlg::generateSimplePropagator(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,
+  const Variable& BasicBlockAlg::getEdgeLabel(const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
+					      const InternalReferenceConcretizationList& theInternalReferenceConcretizationList) { 
+    switch(theEdge.myType) { 
+    case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::LCG_EDGE :
+      return dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*(theEdge.myEliminationReference.myOriginalEdge_p)).getAssignmentFromEdge().getLHS();
+      break;
+    case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::JAE_VERT : {
+      // this is similar to what we do in traverseFromBottomUp
+      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& theReferredToVertex(*(theEdge.myEliminationReference.myJAEVertex_p));
+      // this has to be a maximal vertex in one of previous 
+      // expressions in the list that we tracked already: 
+      InternalReferenceConcretizationList::const_iterator it;
+      for (it=theInternalReferenceConcretizationList.begin();
+	   it!=theInternalReferenceConcretizationList.end();
+	   ++it) 
+	if ((*it).first==&theReferredToVertex) 
+	  break;
+      if (it==theInternalReferenceConcretizationList.end()) 
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getEdgeLabel: unknown JAE_VERT reference");
+      return *((*it).second);
+      break;
+    }
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getEdgeLabel: unknown type");
+      break;
+    }
+  } 
+
+  void BasicBlockAlg::generateSimplePropagator(const Variable& theIndepVariable,
+					       const Variable& theDependent,
 					       BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
 					       Sequence& aSequence,
 					       BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
@@ -1099,10 +1198,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // dependent
     // use temporary in DerivativePropagator
     // temporary currently lives in global scope 
-    // this is the actual independent
-    const Variable& 
-      theIndepVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-		       (theExpression.getIndependent()).getRHSVariable());
     const Variable* theIndepVariableContainer_cp=0;
     if (isAliased(theIndepVariable,
 		  theDepVertexPListCopyWithoutRemovals)) { 
@@ -1155,8 +1250,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // make the entry to the DerivativePropagator
     // UN: use the  variable in the container theIndepVariableContainer_p 
     // instead of original independent
-    const Variable& theDependent(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>
-				 (theExpression.getDependent()).getLHSVariable());
     bool found=false;
     VarDevPropPPairList::iterator aVarDevPropPPairListI=theListOfAlreadyAssignedDependents.begin();
     for (; 

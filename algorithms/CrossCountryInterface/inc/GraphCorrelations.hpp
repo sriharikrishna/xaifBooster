@@ -83,13 +83,13 @@ namespace xaifBoosterCrossCountryInterface {
     union { 
       const LinearizedComputationalGraphEdge* myOriginalEdge_p;
       JacobianAccumulationExpressionVertex* myJAEVertex_p;
-    } myElminationReference;
+    } myEliminationReference;
 
     enum RemainderEdgeType_E {LCG_EDGE, 
 			      JAE_VERT,
 			      UNDEFINED};
     /** 
-     * the discriminator for myElminationReference
+     * the discriminator for myEliminationReference
      */
     RemainderEdgeType_E myType;
     LinearizedComputationalGraphEdge* myRemainderGraphEdge_p;
