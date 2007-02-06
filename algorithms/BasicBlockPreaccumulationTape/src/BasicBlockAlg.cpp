@@ -62,10 +62,11 @@
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
+
+#include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
-
 
 using namespace xaifBooster;
 
@@ -162,9 +163,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	// this is the right one: 
 	found=true;
 	for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI=
-	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList(ourAlgorithm.getReversalType()).begin();
+	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()).begin();
 	     aBasicBlockElementListI!=
-	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList(ourAlgorithm.getReversalType()).end();
+	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()).end();
 	     ++aBasicBlockElementListI)
 	  (*(aBasicBlockElementListI))->printXMLHierarchy(os);
 	break; 
@@ -188,7 +189,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       // invoke directly and need to rely on GenericTraverseInvoke
       // In order to pass parameters through BasicBlockParameter
       // we have to make sure that this method is never invoked recursively
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlgParameter::instance().set(*this);	
+      xaifBoosterLinearization::BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_4()
     } 
     catch (...) { 
       recursionGuard--;
@@ -271,7 +272,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	 ++anIndexListTypeCI) { 
       // now we have two cases, essentially the expression is a single vertex with a constant 
       // (this discounts constant expressions, this is a todo which might be dealt with later or 
-      // it may be completelt superceded by a TBR analysis)
+      // it may be completely superceded by a TBR analysis)
       const Expression& theIndexExpression(**anIndexListTypeCI);
       if (theIndexExpression.numVertices()==1) { 
 	// now it could be either a Constant or an Argument
@@ -284,7 +285,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  // save it in the list
 	  aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
 										   ForLoopReversalType::ANONYMOUS);
-	  theSubroutineCall_p->setId("inline_push_i");
+	  theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
 	  dynamic_cast<const Argument&>(*(p.first)).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
 	}
       } // has one vertex 
@@ -317,7 +318,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	// save it in the list
 	aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
 										 ForLoopReversalType::ANONYMOUS);
-	theSubroutineCall_p->setId("inline_push_i");
+	theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
 	theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
       }  // end else has more then one vertex   
     } // end for i
@@ -331,10 +332,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } // end of BasicBlockAlg::debug
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
-  } 
-
-  ForLoopReversalType::ForLoopReversalType_E BasicBlockAlg::getReversalType() const { 
-    return ForLoopReversalType::ANONYMOUS;
   } 
 
 } // end of namespace xaifBoosterAngelInterfaceAlgorithms 

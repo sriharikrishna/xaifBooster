@@ -86,6 +86,8 @@ namespace xaifBooster {
 
     DuUdMapEntry& addDuUdMapEntry(unsigned int theKey); 
 
+    const DuUdMapEntry& getEntry(const DuUdMapKey& theKey) const; 
+
     /** 
      * aKey is the key of a right-hand-side variable
      * which is to be checked for definitions in

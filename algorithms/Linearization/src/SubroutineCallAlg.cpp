@@ -228,7 +228,7 @@ namespace xaifBoosterLinearization {
     } // end for iterating through the list if hand written wrappers 
   } 
 
-  void SubroutineCallAlg::handleExternalCall() { 
+  void SubroutineCallAlg::handleExternalCall(Scope& theBasicBlockScope) { 
     // get the symbol's algorithm object
     SymbolAlg& theSymbolAlg(dynamic_cast<SymbolAlg&>(getContainingSubroutineCall().
 						     getSymbolReference().getSymbol().getSymbolAlgBase()));
@@ -276,7 +276,8 @@ namespace xaifBoosterLinearization {
 	    (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
 	    false) {
 	  // we need conversion to passive
-	  addExternalConversion(**concreteArgumentPI);
+	  addExternalConversion(**concreteArgumentPI,
+				theBasicBlockScope);
 	} 
       }
     }
@@ -284,18 +285,20 @@ namespace xaifBoosterLinearization {
 
   void SubroutineCallAlg::algorithm_action_1() { 
     const ArgumentList::ArgumentSymbolReferencePList* anArgumentSymbolReferencePList_p(0); 
+    Scope& theBasicBlockScope(BasicBlockAlgParameter::instance().get().getContaining().getScope());  // in SubroutineCallAlg::algorithm_action_1
     try { 
       // get the formal argument list; 
       anArgumentSymbolReferencePList_p=
 	&(ConceptuallyStaticInstances::instance()->
 	  getCallGraph().
 	  getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).
+	  getControlFlowGraph().
 	  getArgumentList().
 	  getArgumentSymbolReferencePList());
     } 
     catch (const SubroutineNotFoundException& e) {
       MissingSubroutinesReport::report(e);
-      handleExternalCall();
+      handleExternalCall(theBasicBlockScope);
       return;
     } // end catch
     if (anArgumentSymbolReferencePList_p->size()!=getContainingSubroutineCall().getConcreteArgumentPList().size())
@@ -328,13 +331,15 @@ namespace xaifBoosterLinearization {
       formalArgumentActive=(*formalArgumentPI)->getSymbol().getActiveTypeFlag();
       if (concreteArgumentActive!=formalArgumentActive) { 
 	addConversion(**concreteArgumentPI,
-		      **formalArgumentPI);
+		      **formalArgumentPI,
+		      theBasicBlockScope);
       } 
     }// end for 
   }
 
   std::string SubroutineCallAlg::giveCallName(bool concreteArgumentActive,
 					      const SymbolReference &aTempSymbolReference,
+					      unsigned int missingDimensions,
 					      bool prior) const { 
     std::string aSubroutineName("convert_");
     if (prior && concreteArgumentActive 
@@ -343,16 +348,41 @@ namespace xaifBoosterLinearization {
       aSubroutineName.append("a2p_");
     else
       aSubroutineName.append("p2a_");
-    aSubroutineName.append(SymbolShape::toString(aTempSymbolReference.getSymbol().getSymbolShape()));
+    aSubroutineName.append(SymbolShape::toString(SymbolShape::lesserShape(aTempSymbolReference.getSymbol().getSymbolShape(),
+									  missingDimensions)));
     return aSubroutineName;
   } 
 
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
-					const ArgumentSymbolReference& aFormalArgumentSymbolReference) { 
+					const ArgumentSymbolReference& aFormalArgumentSymbolReference,
+					Scope& theBasicBlockScope) { 
+    unsigned int missingDimensions(0);
+    int formalMinusConcreteDims(0);
+    if (theConcreteArgument.isArgument()) { 
+      // it is possible that the concrete argument has fewer dimensions than the actual one and 
+      // the user logic works around this problem by inserting a 1 in the missing indices. 
+      // in this case we get a positive number
+      formalMinusConcreteDims=SymbolShape::difference(aFormalArgumentSymbolReference.
+									getSymbol().
+									getSymbolShape(),
+									theConcreteArgument.
+									getArgument().
+									getVariable().
+									getVariableSymbolReference().
+									getSymbol().
+									getSymbolShape());
+      // slicing can also lead to the case that the formal argument has fewer dimensions than the 
+      // concrete one but rather than a negative number we reset this to 0. 
+      if (formalMinusConcreteDims<0)
+	missingDimensions=0;
+      else 
+	missingDimensions=formalMinusConcreteDims;
+    }
     // prior call
     std::string 
       aSubroutineName(giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
 				   aFormalArgumentSymbolReference,
+				   missingDimensions,
 				   true));
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
       thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
@@ -364,6 +394,7 @@ namespace xaifBoosterLinearization {
 		   aFormalArgumentSymbolReference.getSymbol(),
 		   aFormalArgumentSymbolReference.getScope(),
 		   theTempVar,
+		   formalMinusConcreteDims,
 		   false);
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
@@ -374,6 +405,7 @@ namespace xaifBoosterLinearization {
       // post call:
       aSubroutineName=giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
 				   aFormalArgumentSymbolReference,
+				   missingDimensions,
 				   false);
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
 	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
@@ -387,20 +419,21 @@ namespace xaifBoosterLinearization {
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
 	handleArrayAccessIndices(theConcreteArgument,
-				 // the following parameter was set in BasicBlockAlg::algorithm_action_1()
-				 BasicBlockAlgParameter::instance().get().getContaining().getScope());
+				 theBasicBlockScope);
       }
     }
   } 
   
 
-  void SubroutineCallAlg::addExternalConversion(const ConcreteArgument& theConcreteArgument) { 
+  void SubroutineCallAlg::addExternalConversion(const ConcreteArgument& theConcreteArgument,
+						Scope& theBasicBlockScope) { 
     const SymbolReference& theActualSymbolReference(theConcreteArgument.getArgument().getVariable().
 						    getVariableSymbolReference());
     // prior call
     std::string 
       aSubroutineName(giveCallName(true, // the concrete parameter is implied to be active
 				   theActualSymbolReference, // we don't have a formal parameter here 
+				   0,
 				   true));
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
       thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
@@ -412,6 +445,7 @@ namespace xaifBoosterLinearization {
 		   theActualSymbolReference.getSymbol(),
 		   theActualSymbolReference.getScope(),
 		   theTempVar,
+		   0,
 		   true);
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
@@ -422,6 +456,7 @@ namespace xaifBoosterLinearization {
       // post call:
       aSubroutineName=giveCallName(true, // the concrete parameter is implied to be active
 				   theActualSymbolReference, // we don't have a formal parameter here 
+				   0,
 				   false);
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
 	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
@@ -435,8 +470,7 @@ namespace xaifBoosterLinearization {
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
 	handleArrayAccessIndices(theConcreteArgument,
-				 // the following parameter was set in BasicBlockAlg::algorithm_action_1()
-				 BasicBlockAlgParameter::instance().get().getContaining().getScope());
+				 theBasicBlockScope);
       }
     }
   } 
@@ -445,6 +479,7 @@ namespace xaifBoosterLinearization {
 					 const Symbol& formalArgumentSymbol,
 					 const Scope&, // formalArgumentScope  when we finally get around it
 					 Variable& aVariable,
+					 int formalMinusConcreteDims,
 					 bool forcePassive) { 
     // create a new symbol and add a new VariableSymbolReference in the Variable
     Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
@@ -453,7 +488,8 @@ namespace xaifBoosterLinearization {
 				 getSymbolTable().
 				 addUniqueAuxSymbol(SymbolKind::VARIABLE,
 						    formalArgumentSymbol.getSymbolType(),
-						    formalArgumentSymbol.getSymbolShape(),
+						    SymbolShape::lesserShape(formalArgumentSymbol.getSymbolShape(),
+									     (formalMinusConcreteDims<0)?0:formalMinusConcreteDims),
 						    (forcePassive)?false:formalArgumentSymbol.getActiveTypeFlag()));
     VariableSymbolReference* 
       theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
@@ -467,21 +503,46 @@ namespace xaifBoosterLinearization {
 					      getSymbol());
       if (theConcreteArgumentSymbol.hasDimensionBounds()) { 
 	const Symbol::DimensionBoundsPList& aDimensionBoundsPList(theConcreteArgumentSymbol.getDimensionBoundsPList());
-	int dimensionReduction=
-	  theConcreteArgument.
-	  getArgument().
-	  getVariable().
-	  getVariableSymbolReference().
-	  getSymbol().getSymbolShape()
-	  -
-	  formalArgumentSymbol.getSymbolShape();
-	// the difference in dimension e.g. between a three-tensor and a vector is 2
-	for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
-	     (li!=aDimensionBoundsPList.end() && dimensionReduction<=0);
-	     // e.g. between the three-tensor vs vector we skip over the 2 leading dimensions.
-	     ++li,--dimensionReduction) { 
-	  theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
-						  (*li)->getUpper());
+	if (formalMinusConcreteDims>0) { 
+	  // this can be the case in Fortran where we pass in a n-tensor for 
+	  // and n+k tensor formal argument.  The k missing dimension then 
+	  // have to be 1 except it is unclear which of the n+k are the missing ones
+	  DBG_MACRO(DbgGroup::ERROR, "SubroutineCallAlg::makeTempSymbol: " 
+		    << formalMinusConcreteDims 
+		    << " missing dimensions for " 
+		    << theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+		    << " in call to " 
+		    << getContainingSubroutineCall().getSymbolReference().getSymbol().getId().c_str());
+	}
+	switch(DimensionBounds::getIndexOrder()) { 
+	case IndexOrder::ROWMAJOR: // c and c++
+	  for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
+	       (li!=aDimensionBoundsPList.end());
+	       ++li, ++formalMinusConcreteDims) { 
+	    if (formalMinusConcreteDims>=0)
+	      // e.g. between the three-tensor vs vector the reduction is 2 so we skip over the 2 leftmost dimensions.
+	      theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
+						      (*li)->getUpper());
+	  }
+	  break;
+	case IndexOrder::COLUMNMAJOR: { // fortran
+	  int usedDimensions=aDimensionBoundsPList.size()+formalMinusConcreteDims;
+	  // formalMinusConcreteDims is negative if we are supposed to use fewer dimensions 
+	  // of the concrete Argument.
+	  for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
+	       (li!=aDimensionBoundsPList.end());
+	       ++li,--usedDimensions) { 
+	    if (usedDimensions>0)
+	      // e.g. between the three-tensor vs vector the reduction is 2 so we skip over the 2 rightmost dimensions.
+	      theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
+						      (*li)->getUpper());
+	  }
+	  break;
+	}     
+	default:
+	  THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::makeTempSymbol: no logic for "
+				     << IndexOrder::toString(DimensionBounds::getIndexOrder()).c_str());
+	  break;
 	}
       }
     }
@@ -551,7 +612,7 @@ namespace xaifBoosterLinearization {
 							 false),
 				      theBasicBlockScope);
 	theNewVariableSymbolReference_p->setId("1");
-	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices");
+	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::SubroutineCallAlg::handleArrayAccessIndices");
 	// pass it on to the LHS and relinquish ownership
 	theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
 	theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();

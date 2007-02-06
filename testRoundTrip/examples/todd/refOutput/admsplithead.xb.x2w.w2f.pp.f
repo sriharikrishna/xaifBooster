@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:23:11 2006
+C Fortran file translated from WHIRL Tue Nov 28 16:02:15 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -71,6 +71,7 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
+      REAL(w2f__8) OpenAD_Symbol_10
       type(active) :: OpenAD_Symbol_100
       REAL(w2f__8) OpenAD_Symbol_101
       type(active) :: OpenAD_Symbol_102
@@ -100,7 +101,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_19
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_20
-      REAL(w2f__8) OpenAD_Symbol_21
+      REAL(w2f__8) OpenAD_Symbol_22
       REAL(w2f__8) OpenAD_Symbol_23
       REAL(w2f__8) OpenAD_Symbol_24
       REAL(w2f__8) OpenAD_Symbol_25
@@ -171,7 +172,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_87
       REAL(w2f__8) OpenAD_Symbol_88
       REAL(w2f__8) OpenAD_Symbol_89
-      REAL(w2f__8) OpenAD_Symbol_9
       REAL(w2f__8) OpenAD_Symbol_90
       REAL(w2f__8) OpenAD_Symbol_91
       type(active) :: OpenAD_Symbol_92
@@ -246,14 +246,14 @@ C$OPENAD XXX Template ad_template.f
       A = 5.0D-01
       SQRT3 = 5.77350258827209472656D-01
       MATR(0)%v = (X(2)%v-X(1)%v)
-      MATR(1)%v = (SQRT3*(X(3)%v*2.0D00-X(2)%v-X(1)%v))
+      MATR(1)%v = (SQRT3*(2.0D00*X(3)%v-X(2)%v-X(1)%v))
       MATR(2)%v = (X(5)%v-X(4)%v)
-      MATR(3)%v = (SQRT3*(X(6)%v*2.0D00-X(5)%v-X(4)%v))
+      MATR(3)%v = (SQRT3*(2.0D00*X(6)%v-X(5)%v-X(4)%v))
       M03%v = (MATR(0)%v*MATR(3)%v)
       M12%v = (MATR(1)%v*MATR(2)%v)
       G%v = (M03%v-M12%v)
-      D00 = (M03%v*2.0D00)
-      D11 = (M12%v*2.0D00)
+      D00 = (2.0D00*M03%v)
+      D11 = (2.0D00*M12%v)
       M00%v = (MATR(0)%v*MATR(0)%v)
       M11%v = (MATR(1)%v*MATR(1)%v)
       M22%v = (MATR(2)%v*MATR(2)%v)
@@ -273,9 +273,9 @@ C$OPENAD XXX Template ad_template.f
       MATR(0)%v = (X(2)%v-X(1)%v)
       OpenAD_Symbol_0 = 1_w2f__i8
       OpenAD_Symbol_1 = (-1_w2f__i8)
-      OpenAD_Symbol_2 = (X(3)%v*2.0D00-X(2)%v-X(1)%v)
+      OpenAD_Symbol_2 = (2.0D00*X(3)%v-X(2)%v-X(1)%v)
       OpenAD_Symbol_11 = (SQRT3 * OpenAD_Symbol_2)
-      OpenAD_Symbol_9 = 2.0D00
+      OpenAD_Symbol_10 = 2.0D00
       OpenAD_Symbol_7 = 1_w2f__i8
       OpenAD_Symbol_8 = (-1_w2f__i8)
       OpenAD_Symbol_5 = 1_w2f__i8
@@ -285,9 +285,9 @@ C$OPENAD XXX Template ad_template.f
       MATR(2)%v = (X(5)%v-X(4)%v)
       OpenAD_Symbol_12 = 1_w2f__i8
       OpenAD_Symbol_13 = (-1_w2f__i8)
-      OpenAD_Symbol_14 = (X(6)%v*2.0D00-X(5)%v-X(4)%v)
+      OpenAD_Symbol_14 = (2.0D00*X(6)%v-X(5)%v-X(4)%v)
       OpenAD_Symbol_23 = (SQRT3 * OpenAD_Symbol_14)
-      OpenAD_Symbol_21 = 2.0D00
+      OpenAD_Symbol_22 = 2.0D00
       OpenAD_Symbol_19 = 1_w2f__i8
       OpenAD_Symbol_20 = (-1_w2f__i8)
       OpenAD_Symbol_17 = 1_w2f__i8
@@ -302,8 +302,8 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_68 = (OpenAD_Symbol_20 * OpenAD_Symbol_61)
       OpenAD_Symbol_70 = (OpenAD_Symbol_7 * OpenAD_Symbol_64)
       OpenAD_Symbol_71 = (OpenAD_Symbol_8 * OpenAD_Symbol_64)
-      OpenAD_Symbol_73 = (OpenAD_Symbol_21 * OpenAD_Symbol_67)
-      OpenAD_Symbol_75 = (OpenAD_Symbol_9 * OpenAD_Symbol_70)
+      OpenAD_Symbol_73 = (OpenAD_Symbol_22 * OpenAD_Symbol_67)
+      OpenAD_Symbol_75 = (OpenAD_Symbol_10 * OpenAD_Symbol_70)
       OpenAD_Symbol_77 = OpenAD_Symbol_0
       OpenAD_Symbol_79 = OpenAD_Symbol_1
       OpenAD_Symbol_81 = OpenAD_Symbol_12
@@ -339,8 +339,8 @@ C$OPENAD XXX Template ad_template.f
       G%v = (M03%v-M12%v)
       OpenAD_Symbol_30 = 1_w2f__i8
       OpenAD_Symbol_31 = (-1_w2f__i8)
-      D00 = (M03%v*2.0D00)
-      D11 = (M12%v*2.0D00)
+      D00 = (2.0D00*M03%v)
+      D11 = (2.0D00*M12%v)
       OpenAD_Symbol_34 = (MATR(0)%v*MATR(0)%v)
       OpenAD_Symbol_32 = MATR(0)%v
       OpenAD_Symbol_33 = MATR(0)%v

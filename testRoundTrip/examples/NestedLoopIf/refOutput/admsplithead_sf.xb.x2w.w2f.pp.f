@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:21:28 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:31:44 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -89,7 +89,13 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_16
       INTEGER(w2f__i8) OpenAD_Symbol_17
       INTEGER(w2f__i8) OpenAD_Symbol_18
+      INTEGER(w2f__i8) OpenAD_Symbol_19
       REAL(w2f__8) OpenAD_Symbol_2
+      INTEGER(w2f__i8) OpenAD_Symbol_20
+      INTEGER(w2f__i8) OpenAD_Symbol_21
+      INTEGER(w2f__i8) OpenAD_Symbol_22
+      INTEGER(w2f__i8) OpenAD_Symbol_23
+      INTEGER(w2f__i8) OpenAD_Symbol_24
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
@@ -106,19 +112,19 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i8) OpenAD_Symbol_19
-      REAL(w2f__8) OpenAD_Symbol_20
-      INTEGER(w2f__i8) OpenAD_Symbol_21
-      REAL(w2f__8) OpenAD_Symbol_22
-      INTEGER(w2f__i8) OpenAD_Symbol_23
-      INTEGER(w2f__i8) OpenAD_Symbol_24
       INTEGER(w2f__i8) OpenAD_Symbol_25
-      INTEGER(w2f__i8) OpenAD_Symbol_26
-      REAL(w2f__8) OpenAD_Symbol_27
-      INTEGER(w2f__i8) OpenAD_Symbol_28
-      REAL(w2f__8) OpenAD_Symbol_29
+      REAL(w2f__8) OpenAD_Symbol_26
+      INTEGER(w2f__i8) OpenAD_Symbol_27
+      REAL(w2f__8) OpenAD_Symbol_28
+      INTEGER(w2f__i8) OpenAD_Symbol_29
       INTEGER(w2f__i8) OpenAD_Symbol_30
       INTEGER(w2f__i8) OpenAD_Symbol_31
+      INTEGER(w2f__i8) OpenAD_Symbol_32
+      REAL(w2f__8) OpenAD_Symbol_33
+      INTEGER(w2f__i8) OpenAD_Symbol_34
+      REAL(w2f__8) OpenAD_Symbol_35
+      INTEGER(w2f__i8) OpenAD_Symbol_36
+      INTEGER(w2f__i8) OpenAD_Symbol_37
 C
 C     **** Top Level Pragmas ****
 C
@@ -209,56 +215,56 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_14 = 1
       DO WHILE(INT(OpenAD_Symbol_14) .LE. INT(OpenAD_Symbol_13))
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_25 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_25))%d = 0.0d0
+          OpenAD_Symbol_31 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_31))%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_15 = integer_tape(integer_tape_pointer)
         IF(OpenAD_Symbol_15 .ne. 0) THEN
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_19 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_25 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_20 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(INT(OpenAD_Symbol_19))
-     +%d*OpenAD_Symbol_20
+          OpenAD_Symbol_26 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(INT(OpenAD_Symbol_25))
+     +%d*OpenAD_Symbol_26
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_21 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_27 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_22 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y(INT(OpenAD_Symbol_21))
-     +%d*OpenAD_Symbol_22
-          Y(INT(OpenAD_Symbol_21))%d = 0.0d0
+          OpenAD_Symbol_28 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y(INT(OpenAD_Symbol_27))
+     +%d*OpenAD_Symbol_28
+          Y(INT(OpenAD_Symbol_27))%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_23 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_23))%d = X(INT(OpenAD_Symbol_23))%d+OpenAD
+          OpenAD_Symbol_29 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_29))%d = X(INT(OpenAD_Symbol_29))%d+OpenAD
      +_Symbol_6%d
           OpenAD_Symbol_6%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_24 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_24))%d = X(INT(OpenAD_Symbol_24))%d+OpenAD
+          OpenAD_Symbol_30 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_30))%d = X(INT(OpenAD_Symbol_30))%d+OpenAD
      +_Symbol_8%d
           OpenAD_Symbol_8%d = 0.0d0
         ELSE
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_26 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_32 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_27 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_12%d = OpenAD_Symbol_12%d+Y(INT(OpenAD_Symbol_26
-     +))%d*OpenAD_Symbol_27
+          OpenAD_Symbol_33 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_12%d = OpenAD_Symbol_12%d+Y(INT(OpenAD_Symbol_32
+     +))%d*OpenAD_Symbol_33
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_28 = integer_tape(integer_tape_pointer)
+          OpenAD_Symbol_34 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_29 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(INT(OpenAD_Symbol_28
-     +))%d*OpenAD_Symbol_29
-          Y(INT(OpenAD_Symbol_28))%d = 0.0d0
+          OpenAD_Symbol_35 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(INT(OpenAD_Symbol_34
+     +))%d*OpenAD_Symbol_35
+          Y(INT(OpenAD_Symbol_34))%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_30 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_30))%d = X(INT(OpenAD_Symbol_30))%d+OpenAD
+          OpenAD_Symbol_36 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_36))%d = X(INT(OpenAD_Symbol_36))%d+OpenAD
      +_Symbol_10%d
           OpenAD_Symbol_10%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_31 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_31))%d = X(INT(OpenAD_Symbol_31))%d+OpenAD
+          OpenAD_Symbol_37 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_37))%d = X(INT(OpenAD_Symbol_37))%d+OpenAD
      +_Symbol_12%d
           OpenAD_Symbol_12%d = 0.0d0
         ENDIF

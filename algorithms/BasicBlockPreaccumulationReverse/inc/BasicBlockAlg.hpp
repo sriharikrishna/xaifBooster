@@ -80,8 +80,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    virtual ForLoopReversalType::ForLoopReversalType_E getReversalType() const;
-
   private:
     
     /** 

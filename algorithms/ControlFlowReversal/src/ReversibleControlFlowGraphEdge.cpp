@@ -82,14 +82,6 @@ namespace xaifBoosterControlFlowReversal {
 
   ReversibleControlFlowGraphEdge::~ReversibleControlFlowGraphEdge() {}
 
-  bool ReversibleControlFlowGraphEdge::isBackEdge(const ReversibleControlFlowGraph& theGraph) const {
-    if (theGraph.getSourceOf(*this).getIndex()==-1
-	||
-	theGraph.getTargetOf(*this).getIndex()==-1) 
-      return false;
-    return theGraph.getSourceOf(*this).getIndex()>theGraph.getTargetOf(*this).getIndex();
-  }
-
   bool ReversibleControlFlowGraphEdge::leadsToLoopBody() const {
     return (myConditionValueFlag && myConditionValue==1);
   }

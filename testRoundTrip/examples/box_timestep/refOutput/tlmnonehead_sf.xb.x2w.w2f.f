@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 14:51:32 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:38:44 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -391,7 +391,7 @@ C$OPENAD XXX Template ad_template.f
      >  __deriv__(DFLDDT(1)))
       ENDIF
       DO L = 1, 3, 1
-        OpenAD_Symbol_53 = (DELTA_T * 2.0D00)
+        OpenAD_Symbol_53 = (2.0D00 * DELTA_T)
         OpenAD_Symbol_56 = (FLDOLD(L) + __value__(DFLDDT(L)) *
      >  OpenAD_Symbol_53)
         OpenAD_Symbol_54 = OpenAD_Symbol_53

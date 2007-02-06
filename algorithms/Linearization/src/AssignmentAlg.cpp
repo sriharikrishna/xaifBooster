@@ -76,7 +76,8 @@ namespace xaifBoosterLinearization {
     myHaveLinearizedRightHandSide(false),
     myDelayedLHSAssignment_p(0),
     myActiveFlag(true), // note: delayed initialization
-    myActiveFlagInit(false) { 
+    myActiveFlagInit(false),
+    myReplacementCounter(0) { 
   }
 
   std::string AssignmentAlg::debug() const { 
@@ -226,7 +227,7 @@ namespace xaifBoosterLinearization {
 	Assignment& theReplacementAssignment(dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).
 										getExpressionVertexAlgBase()).
 					     makeReplacementAssignment());
-	theReplacementAssignment.setId("replacement for " + theContainingAssignment.getId());
+	theReplacementAssignment.setId(makeReplacementId());
 	// now we add a copy of the  target vertex  to the replacement assignment
 	ExpressionVertex& theReplacementTargetVertex((*ExpressionVertexI).createCopyOfMyself());
 	theReplacementAssignment.getRHS().supplyAndAddVertexInstance(theReplacementTargetVertex);
@@ -321,7 +322,7 @@ namespace xaifBoosterLinearization {
       if (!theTargetVertexAlg.hasReplacement()) { 
 	// create replacement Assignment, 
 	Assignment& theReplacementAssignment(theTargetVertexAlg.makeReplacementAssignment());
-	theReplacementAssignment.setId("replacement for " + getContaining().getId());
+	theReplacementAssignment.setId(makeReplacementId());
 	// now we add a copy of the  target vertex  to the replacement assignment
 	ExpressionVertex& theReplacementTargetVertex(theTargetVertex.createCopyOfMyself());
 	theReplacementAssignment.getRHS().supplyAndAddVertexInstance(theReplacementTargetVertex);
@@ -565,4 +566,9 @@ namespace xaifBoosterLinearization {
     return myActiveFlag;
   } 
 
+  std::string AssignmentAlg::makeReplacementId() { 
+    std::ostringstream ostr;
+    ostr << "_replacement_" << ++myReplacementCounter << "_for_" << getContaining().getId().c_str() << std::ends; 
+    return ostr.str();
+  }
 }

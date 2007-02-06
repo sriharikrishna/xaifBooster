@@ -231,6 +231,16 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	  theReplacement.setReversibleControlFlowGraph(getAdjointControlFlowGraph());
 	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
 	break;
+      case ReplacementId::STRICTANONYMOUSTAPING:
+	if (hasStrictAnonymousTapingControlFlowGraph())
+	  theReplacement.setReversibleControlFlowGraph(getStrictAnonymousTapingControlFlowGraph());
+	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::AUGMENTED);
+	break;
+      case ReplacementId::STRICTANONYMOUSADJOINT:
+	if (hasStrictAnonymousAdjointControlFlowGraph())
+	  theReplacement.setReversibleControlFlowGraph(getStrictAnonymousAdjointControlFlowGraph());
+	theReplacement.setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
+	break;
       case ReplacementId::STOREARGUMENT: { 
 	theReplacement.setControlFlowGraphBase(*myCFGStoreArguments_p);
 	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreArguments_p));
@@ -255,13 +265,13 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
  	// JU: result checkpoints can't be stored on a stack
 	theReplacement.setControlFlowGraphBase(*myCFGStoreResults_p);
 	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreResults_p));
- 	handleCheckPointing("cp_res_store",
- 			    SideEffectListType::MOD_LIST,
- 			    theBasicBlock, 
- 			    false, 
-			    count);
-	myRes = myRes + count;
-	count.reset();
+ 	// JU: result checkpoints can't be stored on a stack
+//  	handleCheckPointing("cp_res_store",
+//  			    SideEffectListType::MOD_LIST,
+// 			    false, 
+//			    count);
+//	myRes = myRes + count;
+//	count.reset();
  	break;
       }
       case ReplacementId::RESTOREARGUMENT: { 
@@ -281,12 +291,12 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
  	theReplacement.setControlFlowGraphBase(*myCFGRestoreResults_p);
 	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGRestoreResults_p));
  	// JU: result checkpoints can't be stored on a stack
- 	handleCheckPointing("cp_res_restore",
- 			    SideEffectListType::MOD_LIST,
- 			    theBasicBlock,
- 			    false, 
-			    count);
-	count.reset();
+//  	handleCheckPointing("cp_res_restore",
+//  			    SideEffectListType::MOD_LIST,
+//  			    theBasicBlock,
+// 			    false, 
+//			    count);
+//	count.reset();
  	break;
       }
       case ReplacementId::STORETIMESTEPARGUMENT: { 

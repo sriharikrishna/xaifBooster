@@ -70,6 +70,8 @@ namespace xaifBooster {
 
   HashTable<Symbol::SymbolPassivation> Symbol::ourPassivatedSymbolHashTable;
 
+  bool Symbol::ourCaseSensitiveFlag=false; 
+
   Symbol::Symbol(const std::string& aName, 
 		 const SymbolKind::SymbolKind_E& aKind,
 		 const SymbolType::SymbolType_E& aType,
@@ -282,46 +284,34 @@ namespace xaifBooster {
   }
 
   void Symbol::forcedPassivation() { 
-    if (!ourPassivatedSymbolHashTable.getInternalHashMap().empty()) { 
+    if (!myTempFlag
+	&& 
+	!ourPassivatedSymbolHashTable.getInternalHashMap().empty()) { 
       // find a matching element
       // we have 2 issues, 
       // first case sensitivity
-      std::string anInputName(getId());
-      std::transform(anInputName.begin(),
-		     anInputName.end(), 
-		     anInputName.begin(), 
-		     toupper);
-      // second the appendices added by the 
+      std::string theSymbolName(getId());
+      if (!ourCaseSensitiveFlag)
+	std::transform(theSymbolName.begin(),
+		       theSymbolName.end(), 
+		       theSymbolName.begin(), 
+		       toupper);
+      // second the decorations added by the 
       // fortran front end.
-      // the tail should just be empty or contain underscores followed by digits
-      // strip the trailing _[0-9]* from the variableName
-      std::string anInputNameStripped(anInputName,0,anInputName.find_last_of('_'));
-      std::string anInputNameTail(anInputName,anInputName.find_last_of('_'),anInputName.size());
-      unsigned int position=0;
-      while(position<anInputNameTail.size() && anInputNameTail[position]=='_')
-	position++;
-      while(position<anInputNameTail.size() && std::isdigit(anInputNameTail[position]))
-	position++;
-      if (position!=anInputNameTail.size()) {
-	// this doesn't have the proper appendix
-	DBG_MACRO(DbgGroup::WARNING, "Symbol::Symbol: unexpected tail "
-		  << anInputNameTail.c_str() 
-		  << " in " 
-		  << anInputName.c_str());
-	anInputNameStripped=anInputName;
-      }
-      if (ourPassivatedSymbolHashTable.hasElement(anInputNameStripped))
-	ourPassivatedSymbolHashTable.getElement(anInputNameStripped).passivate(getId(), 
+      std::string theSymbolNameStripped(stripFrontEndDecorations(theSymbolName,(getSymbolKind()==SymbolKind::SUBROUTINE)));
+      if (ourPassivatedSymbolHashTable.hasElement(theSymbolNameStripped))
+	ourPassivatedSymbolHashTable.getElement(theSymbolNameStripped).passivate(getId(), 
 									       *this);
     } 
   }
 
   void Symbol::addSymbolNamesToPassivate(const std::string& theSymbolNamesSeparatedBySpaces) { 
     std::string allUpperCase(theSymbolNamesSeparatedBySpaces);
-    std::transform(allUpperCase.begin(),
-		   allUpperCase.end(), 
-		   allUpperCase.begin(), 
-		   toupper);
+    if (!ourCaseSensitiveFlag)
+      std::transform(allUpperCase.begin(),
+		     allUpperCase.end(), 
+		     allUpperCase.begin(), 
+		     toupper);
     std::string::size_type startPosition=0,endPosition=0;
     std::string::size_type totalSize(allUpperCase.size());
     while (startPosition<=totalSize && endPosition<=totalSize) { 
@@ -334,5 +324,57 @@ namespace xaifBooster {
       startPosition=endPosition;
     } 
   }
+
+  std::string Symbol::stripFrontEndDecorations(const std::string& aDecoratedName,
+					       bool isSubroutineName) { 
+    // strip the trailing _[0-9]* appended by mfef90 from the variable Name
+    std::string aPlainName(aDecoratedName,0,aDecoratedName.find_last_of('_'));
+    std::string aDecoration(aDecoratedName,aDecoratedName.find_last_of('_'),aDecoratedName.size());
+    unsigned int position=0;
+    while(position<aDecoration.size() && aDecoration[position]=='_')
+      position++;
+    while(position<aDecoration.size() && std::isdigit(aDecoration[position]))
+      position++;
+    if (position!=aDecoration.size()) {
+      // this doesn't have the proper appendix
+      DBG_MACRO(DbgGroup::ERROR, "Symbol::stripFrontEndDecorations: unexpected decoration string "
+		<< aDecoration.c_str() 
+		<< " in " 
+		<< aDecoratedName.c_str()
+		<< " but we continue");
+      return aDecoratedName;
+    }
+    if (isSubroutineName && aPlainName[aPlainName.size()-1]=='_')
+      // only user defined subroutine have an extra _
+      aPlainName.erase(aPlainName.size()-1);
+    return aPlainName;
+  }
+    
+  std::string Symbol::plainName() const { 
+    if (myTempFlag)
+      // temporaries have been created here, not by the front-end
+      return getId();
+    return stripFrontEndDecorations(getId(), (getSymbolKind()==SymbolKind::SUBROUTINE));
+  }
+
+  bool Symbol::samePlainName(const std::string& aPlainName) const { 
+    std::string aPlainNameCaseified(aPlainName);
+    if (!ourCaseSensitiveFlag)
+      std::transform(aPlainNameCaseified.begin(),
+		     aPlainNameCaseified.end(), 
+		     aPlainNameCaseified.begin(), 
+		     toupper);
+    std::string theSymbolPlainName(plainName());
+    if (!ourCaseSensitiveFlag)
+      std::transform(theSymbolPlainName.begin(),
+		     theSymbolPlainName.end(), 
+		     theSymbolPlainName.begin(), 
+		     toupper);
+    return (aPlainNameCaseified.compare(theSymbolPlainName)==0);
+  }
+
+  void Symbol::setCaseSensitive() { 
+    ourCaseSensitiveFlag=true;
+  } 
 
 } // end of namespace xaifBooster 

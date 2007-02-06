@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Nov 10 16:37:40 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:43:59 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -39,13 +39,13 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       __value__(Y(1)) = __value__(X(1))
-      I = INT(__value__(X(1)) +(-1.0D00)) + 1
+      I = 1 + INT(__value__(X(1)) +(-1.0D00))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       __value__(Y(1)) = __value__(X(1))
-      I = INT(__value__(X(1)) +(-1.0D00)) + 1
+      I = 1 + INT(__value__(X(1)) +(-1.0D00))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
@@ -62,16 +62,12 @@ C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
-C     $OpenAD$ INLINE cp_res_store_real_vector_a(subst)
-      CALL cp_res_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
-C     $OpenAD$ INLINE cp_res_restore_real_vector_a(subst)
-      CALL cp_res_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
@@ -84,5 +80,20 @@ C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 10
+C$OPENAD XXX Template ad_template.f
+      __value__(Y(1)) = __value__(X(1))
+      I = 1 + INT(__value__(X(1)) +(-1.0D00))
+      RETURN
+C     $OpenAD$ END REPLACEMENT
+C     $OpenAD$ BEGIN REPLACEMENT 11
+C     $OpenAD$ INLINE CondIncZeroDeriv(subst,subst)
+      CALL CondIncZeroDeriv(__deriv__(Y(1)), __deriv__(OpenAD_Symbol_0)
+     > )
+C     $OpenAD$ INLINE IncDeriv(subst,subst)
+      CALL IncDeriv(__deriv__(OpenAD_Symbol_0), __deriv__(X(1)))
+C     $OpenAD$ INLINE ZeroDeriv(subst)
+      CALL ZeroDeriv(__deriv__(OpenAD_Symbol_0))
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE

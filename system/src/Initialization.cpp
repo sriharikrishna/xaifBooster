@@ -68,6 +68,11 @@ namespace xaifBooster {
     os << pm.indent() 
        << "<"
        << ourXAIFName.c_str() 
+       << " " 
+       << Assignment::our_myId_XAIFName.c_str() 
+       << "=\"" 
+       << myAssignment.getId().c_str()
+       << "\""
        << ">" 
        << std::endl;
     myAssignment.printXMLHierarchyLHS(os);

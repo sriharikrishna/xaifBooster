@@ -165,4 +165,43 @@ namespace xaifBooster {
     return false;
   } 
 
+  bool SymbolTable::hasSymbolWithPlainName(const std::string& aPlainName) const { 
+    for(HashTableSymbolP::InternalHashMapType::const_iterator myHashMap_iterator=
+	  myHashTableSymbolP.getInternalHashMap().begin();
+	myHashMap_iterator!=myHashTableSymbolP.getInternalHashMap().end();
+	myHashMap_iterator++) { 
+      if ((*myHashMap_iterator).second->samePlainName(aPlainName)) 
+	return true;
+    }
+    return false;
+  } 
+
+  const Symbol& SymbolTable::getSymbolWithPlainName(const std::string& aPlainName) const { 
+    bool foundOne=false;
+    const Symbol* aSymbol_p(0);
+    for(HashTableSymbolP::InternalHashMapType::const_iterator myHashMap_iterator=
+	  myHashTableSymbolP.getInternalHashMap().begin();
+	myHashMap_iterator!=myHashTableSymbolP.getInternalHashMap().end();
+	myHashMap_iterator++) { 
+      if ((*myHashMap_iterator).second->samePlainName(aPlainName)) { 
+	if (!foundOne) { 
+	  foundOne=true;
+	  aSymbol_p=(*myHashMap_iterator).second;
+	}
+	else { 
+	  THROW_LOGICEXCEPTION_MACRO("SymbolTable::getSymbolWithPlainName: name "
+				     << aPlainName.c_str()
+				     << " has ambiguous matches "
+				     << aSymbol_p->getId().c_str()
+				     << " and " 
+				     << (*myHashMap_iterator).second->getId());
+	}
+      }
+    }
+    if (!foundOne) 
+      THROW_LOGICEXCEPTION_MACRO("SymbolTable::getSymbolWithPlainName: no symbol matching plain name "
+				 << aPlainName.c_str());
+    return *aSymbol_p;
+  } 
+
 } 

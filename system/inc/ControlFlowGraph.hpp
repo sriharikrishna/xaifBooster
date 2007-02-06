@@ -148,6 +148,12 @@ namespace xaifBooster {
      */ 
     // Scope& getScope(); 
 
+    /**
+     * for aStatementId get the containing ControlFlowGraphVertex
+     * or throw an exception
+     */
+    const ControlFlowGraphVertex& getContainingVertex(const ObjectWithId::Id& aStatementId) const;
+
   private: 
     
     /** 

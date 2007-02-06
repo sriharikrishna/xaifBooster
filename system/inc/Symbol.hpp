@@ -143,6 +143,27 @@ namespace xaifBooster {
      */
     void forcedPassivation(); 
 
+    /** 
+     *  symbol name without front-end decorations
+     */
+    std::string plainName() const;
+
+    /**
+     * \todo: this method should be reimplemented for 
+     * front-ends with different decorations
+     */
+    static std::string stripFrontEndDecorations(const std::string& aDecoratedName,
+						bool isSubroutineName);
+
+    static void setCaseSensitive();
+
+    /** 
+     * checks if a given symbol can be matched 
+     * to a plain name taking into account 
+     * front-end decorations and case sensitivity
+     */
+    bool samePlainName(const std::string& aPlainName) const; 
+
   private:
 
     friend class SymbolTable;
@@ -262,6 +283,11 @@ namespace xaifBooster {
      * ambiguous scopes.
      */
     static HashTable<SymbolPassivation> ourPassivatedSymbolHashTable;
+
+    /**
+     * are symbol names case sensitive?
+     */
+    static bool ourCaseSensitiveFlag;
 
   };
  

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 16:13:13 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:45:14 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -41,7 +41,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) select_expr_temp_0
 C
 C     **** Top Level Pragmas ****
 C
@@ -54,9 +53,8 @@ C$OPENAD XXX Template ad_template.f
       I = 1
       Y(1)%v = 2.0D00
       CALL zero_deriv(Y(1))
-      select_expr_temp_0 = I
-      IF ( select_expr_temp_0  .EQ.  1)  GO TO  4
-      IF ( select_expr_temp_0  .EQ.  2)  GO TO  8
+      IF ( I  .EQ.  1)  GO TO  4
+      IF ( I  .EQ.  2)  GO TO  8
       GO TO 9
 9     CONTINUE
       Y(1)%v = X(1)%v

@@ -56,6 +56,9 @@
 
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/ForLoop.hpp"
+#include "xaifBooster/system/inc/BooleanOperation.hpp"
+
+#include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphVertex.hpp"
 
@@ -73,7 +76,10 @@ namespace xaifBoosterControlFlowReversal {
     myReversalType(ForLoopReversalType::ANONYMOUS), 
     myCounterPart_p(0),
     myTopExplicitLoop_p(0),
-    myTopExplicitLoopAddressArithmetic_p(0) {
+    myTopExplicitLoopAddressArithmetic_p(0),
+    myStorePlaceholder_p(0),
+    myRestorePlaceholder_p(0),
+    myEnclosingControlFlow_p(0) {
   }
 
   ReversibleControlFlowGraphVertex::ReversibleControlFlowGraphVertex(const ControlFlowGraphVertex* theOriginal) : 
@@ -86,10 +92,13 @@ namespace xaifBoosterControlFlowReversal {
     myReversalType(ForLoopReversalType::ANONYMOUS), 
     myCounterPart_p(0),
     myTopExplicitLoop_p(0),
-    myTopExplicitLoopAddressArithmetic_p(0) {
-    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theOriginal->getControlFlowGraphVertexAlgBase()).getKind();
-    if (theKind==ControlFlowGraphVertexAlg::FORLOOP)
-      myReversalType=dynamic_cast<const ForLoop*>(theOriginal)->getReversalType();
+    myTopExplicitLoopAddressArithmetic_p(0),
+    myStorePlaceholder_p(0),
+    myRestorePlaceholder_p(0),
+    myEnclosingControlFlow_p(0) {
+//    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theOriginal->getControlFlowGraphVertexAlgBase()).getKind();
+//     if (theKind==ControlFlowGraphVertexAlg::FORLOOP)
+//       myReversalType=dynamic_cast<const ForLoop*>(theOriginal)->getReversalType();
   }
 
   ReversibleControlFlowGraphVertex::~ReversibleControlFlowGraphVertex() {
@@ -134,10 +143,15 @@ namespace xaifBoosterControlFlowReversal {
       xaifBooster::ConceptuallyStaticInstances::instance()->setPrintVersion(aPrintVersion);
     }
     else {
+      // pick the right version since the 
+      // BasicBlockAlg objects have data for both:
+      xaifBoosterAdjointUtils::BasicBlockPrintVersion::set(myReversalType); 
       if (adjoint)
         myOriginalVertex_p->printXMLHierarchy(os);
       else
         myOriginalVertex_p->printXMLHierarchy(os);
+      // reset the print version to the default:
+      xaifBoosterAdjointUtils::BasicBlockPrintVersion::set(ForLoopReversalType::ANONYMOUS); 
     }
   }
 
@@ -153,7 +167,7 @@ namespace xaifBoosterControlFlowReversal {
 	<< ",myIndex="
 	<< myIndex
 	<< ",getKind():"
-	<< getKind()
+	<< ControlFlowGraphVertexAlg::kindToString(getKind()).c_str()
 	<< ",myReversalType="
 	<< ForLoopReversalType::toString(myReversalType).c_str()
 	<< ",myCounterPart_p="
@@ -162,6 +176,12 @@ namespace xaifBoosterControlFlowReversal {
 	<< myTopExplicitLoop_p
 	<< ",myTopExplicitLoopAddressArithmetic_p="
 	<< myTopExplicitLoopAddressArithmetic_p
+	<< ",myStorePlaceholder_p="
+	<< myStorePlaceholder_p
+	<< ",myRestorePlaceholder_p="
+	<< myRestorePlaceholder_p
+	<< ",myEnclosingControlFlow_p="
+	<< myEnclosingControlFlow_p
 	<< ",myKnownLoopVariables[";
       for (VariablePList::const_iterator knownListI= myKnownLoopVariables.begin();
 	   knownListI!= myKnownLoopVariables.end();
@@ -246,9 +266,19 @@ namespace xaifBoosterControlFlowReversal {
     myKnownLoopVariables.push_back(&aLoopVariable);
   }
 
-
   ReversibleControlFlowGraphVertex& 
   ReversibleControlFlowGraphVertex::getTopExplicitLoop() { 
+    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
+    } 
+    if (!myTopExplicitLoop_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: not set for "
+				 << myOriginalVertex_p->debug().c_str());
+    return *myTopExplicitLoop_p;
+  } 
+
+  const ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getTopExplicitLoop() const { 
     if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
     } 
@@ -280,6 +310,101 @@ namespace xaifBoosterControlFlowReversal {
     if (myTopExplicitLoopAddressArithmetic_p)
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setTopExplicitLoopAddressArithmetic: already set");
     myTopExplicitLoopAddressArithmetic_p=&theTopExplicitLoopAddressArithmetic;
+  } 
+
+  bool
+  ReversibleControlFlowGraphVertex::hasStorePlaceholder() const { 
+    return (myStorePlaceholder_p!=0);
+  } 
+
+  ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getStorePlaceholder() { 
+    if (!myStorePlaceholder_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getStorePlaceholder: not set for "
+				 << debug().c_str());
+    return *myStorePlaceholder_p;
+  } 
+
+  void 
+  ReversibleControlFlowGraphVertex::setStorePlaceholder(ReversibleControlFlowGraphVertex& theStorePlaceholder) { 
+    if (myStorePlaceholder_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setStorePlaceholder: already set")
+    myStorePlaceholder_p=&theStorePlaceholder;	
+  } 
+
+  bool
+  ReversibleControlFlowGraphVertex::hasRestorePlaceholder() const { 
+    return (myRestorePlaceholder_p!=0);
+  } 
+
+  ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getRestorePlaceholder() { 
+    if (!myRestorePlaceholder_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getRestorePlaceholder: not set for "
+				 << myOriginalVertex_p->debug().c_str());
+    return *myRestorePlaceholder_p;
+  } 
+
+  void 
+  ReversibleControlFlowGraphVertex::setRestorePlaceholder(ReversibleControlFlowGraphVertex& theRestorePlaceholder) { 
+    if (myRestorePlaceholder_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setRestorePlaceholder: already set")
+    if (!(myRestorePlaceholder_p && myRestorePlaceholder_p!=&theRestorePlaceholder) )
+      myRestorePlaceholder_p=&theRestorePlaceholder;	
+  } 
+
+  bool
+  ReversibleControlFlowGraphVertex::hasEnclosingControlFlow() const { 
+    return (myEnclosingControlFlow_p!=0);
+  } 
+
+  ReversibleControlFlowGraphVertex& 
+  ReversibleControlFlowGraphVertex::getEnclosingControlFlow() { 
+    if (!myEnclosingControlFlow_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getEnclosingControlFlow: not set for "
+				 << myOriginalVertex_p->debug().c_str());
+    return *myEnclosingControlFlow_p;
+  } 
+
+  void 
+  ReversibleControlFlowGraphVertex::setEnclosingControlFlow(ReversibleControlFlowGraphVertex& theEnclosingControlFlow) { 
+    if (myEnclosingControlFlow_p)
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setEnclosingControlFlow: already set")
+    if (!(myEnclosingControlFlow_p && myEnclosingControlFlow_p!=&theEnclosingControlFlow) )
+      myEnclosingControlFlow_p=&theEnclosingControlFlow;	
+  } 
+
+  bool ReversibleControlFlowGraphVertex::simpleCountUp() const { 
+    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::simpleCountUp: the vertex is not explicit");
+    } 
+    if (getKind()!=ControlFlowGraphVertexAlg::FORLOOP) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::simpleCountUp: the vertex is a " << ControlFlowGraphVertexAlg::kindToString(getKind()).c_str());
+    } 
+    bool countUp=true;
+    const ForLoop& theForLoop(dynamic_cast<const ForLoop&>(getOriginalVertex()));
+    const Expression& theConditionExpr(theForLoop.getCondition().getExpression());
+    const ExpressionVertex& theConditionMaxVertex(theConditionExpr.getMaxVertex());
+    const BooleanOperation* theConditionBooleanOperation_p(dynamic_cast<const BooleanOperation*>(&theConditionMaxVertex));
+    if (!theConditionBooleanOperation_p) { 
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::simpleCountUp: could not find loop condition boolean operation");
+    }
+    switch(theConditionBooleanOperation_p->getType()) { 
+    case BooleanOperationType::LESS_THAN_OTYPE :
+    case BooleanOperationType::LESS_OR_EQUAL_OTYPE: 
+      countUp=true;
+      break;
+    case BooleanOperationType::GREATER_THAN_OTYPE :
+    case BooleanOperationType::GREATER_OR_EQUAL_OTYPE: 
+      countUp=false;
+      break; 
+    case BooleanOperationType::NOT_EQUAL_OTYPE :
+    default:
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::simpleCountUp: don't know what to do with operation "
+				 << BooleanOperationType::toString(theConditionBooleanOperation_p->getType()));
+      break;
+    }
+    return countUp;
   } 
 
 } // end of namespace

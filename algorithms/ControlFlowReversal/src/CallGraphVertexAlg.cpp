@@ -57,7 +57,6 @@
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 
 
@@ -68,12 +67,16 @@ namespace xaifBoosterControlFlowReversal {
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     CallGraphVertexAlgBase(theContaining), 
     myTapingControlFlowGraph_p(NULL), 
-    myAdjointControlFlowGraph_p(NULL) {
+    myAdjointControlFlowGraph_p(NULL),
+    myStrictAnonymousTapingControlFlowGraph_p(NULL), 
+    myStrictAnonymousAdjointControlFlowGraph_p(NULL) {
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() {
     if (myTapingControlFlowGraph_p) delete myTapingControlFlowGraph_p;
     if (myAdjointControlFlowGraph_p) delete myAdjointControlFlowGraph_p;
+    if (myStrictAnonymousTapingControlFlowGraph_p) delete myStrictAnonymousTapingControlFlowGraph_p;
+    if (myStrictAnonymousAdjointControlFlowGraph_p) delete myStrictAnonymousAdjointControlFlowGraph_p;
   }
 
   bool CallGraphVertexAlg::hasTapingControlFlowGraph() const { 
@@ -112,6 +115,42 @@ namespace xaifBoosterControlFlowReversal {
     return *myAdjointControlFlowGraph_p;
   }
 
+  bool CallGraphVertexAlg::hasStrictAnonymousTapingControlFlowGraph() const { 
+    return (myStrictAnonymousTapingControlFlowGraph_p?true:false);
+  }
+  
+  ReversibleControlFlowGraph&
+  CallGraphVertexAlg::getStrictAnonymousTapingControlFlowGraph() {
+    if (!myStrictAnonymousTapingControlFlowGraph_p) 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getStrictAnonymousTapingControlFlowGraph: not set");
+    return *myStrictAnonymousTapingControlFlowGraph_p;
+  }
+                                                                                
+  const ReversibleControlFlowGraph&
+  CallGraphVertexAlg::getStrictAnonymousTapingControlFlowGraph() const {
+    if (!myStrictAnonymousTapingControlFlowGraph_p) 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getStrictAnonymousTapingControlFlowGraph: not set");
+    return *myStrictAnonymousTapingControlFlowGraph_p;
+  }
+
+  bool CallGraphVertexAlg::hasStrictAnonymousAdjointControlFlowGraph() const { 
+    return (myStrictAnonymousAdjointControlFlowGraph_p?true:false);
+  }
+
+  ReversibleControlFlowGraph&
+  CallGraphVertexAlg::getStrictAnonymousAdjointControlFlowGraph() {
+    if (!myStrictAnonymousAdjointControlFlowGraph_p) 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getStrictAnonymousAdjointControlFlowGraph: not set");
+    return *myStrictAnonymousAdjointControlFlowGraph_p;
+  }
+                                                                                
+  const ReversibleControlFlowGraph&
+  CallGraphVertexAlg::getStrictAnonymousAdjointControlFlowGraph() const {
+    if (!myStrictAnonymousAdjointControlFlowGraph_p) 
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::getStrictAnonymousAdjointControlFlowGraph: not set");
+    return *myStrictAnonymousAdjointControlFlowGraph_p;
+  }
+
   class ControlFlowGraphVertexLabelWriter {
   public:
     ControlFlowGraphVertexLabelWriter(const ReversibleControlFlowGraph& g) : myG(g) {}
@@ -119,29 +158,30 @@ namespace xaifBoosterControlFlowReversal {
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
       ReversibleControlFlowGraphVertex* theReversibleControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
       std::string theVertexKind;
-      std::string theXaifId;
+      std::string theIdInfo; // <xaif id>[s<store placeholder>][r<restore placeholder>][t<top level explicit loop>][e<enclosing control flow start>]
       if (theReversibleControlFlowGraphVertex_p->isOriginal()) {
 	const ControlFlowGraphVertexAlg& va(dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex().getControlFlowGraphVertexAlgBase()));
         theVertexKind=va.kindToString();
 	const ControlFlowGraphVertex& v(dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex()));
-        theXaifId=v.getId();
-        
+        theIdInfo=v.getId();
+	if (theReversibleControlFlowGraphVertex_p->hasStorePlaceholder())
+	  theIdInfo+="s"+theReversibleControlFlowGraphVertex_p->getStorePlaceholder().getNewVertex().getId();
+	if (theReversibleControlFlowGraphVertex_p->hasRestorePlaceholder())
+	  theIdInfo+="r"+theReversibleControlFlowGraphVertex_p->getRestorePlaceholder().getNewVertex().getId();
       }
       else {
 	const ControlFlowGraphVertexAlg& va(dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()));
         theVertexKind=va.kindToString();
 	const ControlFlowGraphVertex& v(dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getNewVertex()));
-        theXaifId=v.getId();
+        theIdInfo=v.getId();
       }
       if (theReversibleControlFlowGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) { 
-	std::ostringstream temp;
-	temp << theXaifId.c_str() 
-	     << ".e" 
-	     << theReversibleControlFlowGraphVertex_p->getTopExplicitLoop().getOriginalVertex().getId().c_str()
-	     << std::ends;
-	theXaifId=temp.str();
+	theIdInfo+="t"+theReversibleControlFlowGraphVertex_p->getTopExplicitLoop().getOriginalVertex().getId();
       }
-      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theXaifId.c_str() << "): " << theVertexKind.c_str() << "\"]";
+      if (theReversibleControlFlowGraphVertex_p->hasEnclosingControlFlow()) { 
+	theIdInfo+="e"+theReversibleControlFlowGraphVertex_p->getEnclosingControlFlow().getOriginalVertex().getId();
+      }
+      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() << " (" << theIdInfo.c_str() << "): " << theVertexKind.c_str() << "\"]";
     }
     const ReversibleControlFlowGraph& myG;
   };
@@ -159,7 +199,6 @@ namespace xaifBoosterControlFlowReversal {
         theVertexKind=va.kindToString();
 	const ControlFlowGraphVertex& v(dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getOriginalVertex()));
         theXaifId=v.getId();
-        
       }
       else {
 	const ControlFlowGraphVertexAlg& va(dynamic_cast<const ControlFlowGraphVertexAlg&>(theReversibleControlFlowGraphVertex_p->getNewVertex().getControlFlowGraphVertexAlgBase()));
@@ -167,6 +206,10 @@ namespace xaifBoosterControlFlowReversal {
 	const ControlFlowGraphVertex& v(dynamic_cast<const ControlFlowGraphVertex&>(theReversibleControlFlowGraphVertex_p->getNewVertex()));
         theXaifId=v.getId();
       }
+      if (theReversibleControlFlowGraphVertex_p->hasStorePlaceholder())
+	theXaifId+="s:"+theReversibleControlFlowGraphVertex_p->getStorePlaceholder().getNewVertex().getId();
+      if (theReversibleControlFlowGraphVertex_p->hasRestorePlaceholder())
+	theXaifId+="r:"+theReversibleControlFlowGraphVertex_p->getRestorePlaceholder().getNewVertex().getId();
       if (theReversibleControlFlowGraphVertex_p->getReversalType()==ForLoopReversalType::EXPLICIT) { 
 	std::ostringstream temp;
 	temp << theXaifId.c_str() << ".e";
@@ -228,6 +271,33 @@ namespace xaifBoosterControlFlowReversal {
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_taping", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
+    // do the same steps for the strictly anonymous version where we ignore the user supplied flags
+    myStrictAnonymousTapingControlFlowGraph_p=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
+    myStrictAnonymousAdjointControlFlowGraph_p=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
+    myStrictAnonymousTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
+    // this flag causes strict anonymity
+    myStrictAnonymousTapingControlFlowGraph_p->donotRetainUserReversalFlag();
+    // GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
+    myStrictAnonymousTapingControlFlowGraph_p->topologicalSort();
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_strict_anonymous_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
+    }
+    myStrictAnonymousTapingControlFlowGraph_p->markBranchExitEdges();
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_strict_anonymous_branch_marked", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
+    }
+    // buildAdjointControlFlowGraph() should always be based on the
+    // original CFG, that is, it should precede the call to 
+    // storeControlFlow()
+    // but we should have found out how to label branch edges...
+    myStrictAnonymousTapingControlFlowGraph_p->buildAdjointControlFlowGraph(*myStrictAnonymousAdjointControlFlowGraph_p);
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myStrictAnonymousAdjointControlFlowGraph_p,"cfg_strict_anonymous_adjoint", AdjointControlFlowGraphVertexLabelWriter(*myStrictAnonymousAdjointControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousAdjointControlFlowGraph_p));
+    }
+    myStrictAnonymousTapingControlFlowGraph_p->storeControlFlow();
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_strict_anonymous_taping", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
+    }
   } // end CallGraphVertexAlg::algorithm_action_4() 
 
   void
@@ -237,19 +307,10 @@ namespace xaifBoosterControlFlowReversal {
        << "<"
        << getContaining().getControlFlowGraph().ourXAIFName.c_str()
        << " ";
-    const xaifBoosterLinearization::SymbolAlg& 
-      theSymbolAlg(dynamic_cast<const xaifBoosterLinearization::SymbolAlg&>(getContaining().
-									    getControlFlowGraph().
-									    getSymbolReference().
-									    getSymbol().
-									    getSymbolAlgBase()));
-    if (theSymbolAlg.hasReplacementSymbolReference())
-      getContaining().getControlFlowGraph().printAttributes(os,theSymbolAlg.getReplacementSymbolReference());
-    else
-      getContaining().getControlFlowGraph().printAttributes(os,
-							    getContaining().
-							    getControlFlowGraph().
-							    getSymbolReference());
+    getContaining().getControlFlowGraph().printAttributes(os,
+							  getContaining().
+							  getControlFlowGraph().
+							  getSymbolReference());
     os << " "
        << getContaining().getControlFlowGraph().our_myActiveFlag_XAIFName.c_str()
        << "=\""
@@ -266,6 +327,12 @@ namespace xaifBoosterControlFlowReversal {
 
     if (myAdjointControlFlowGraph_p)
       myAdjointControlFlowGraph_p->printXMLHierarchy(os);
+                                                                                
+    if (myStrictAnonymousTapingControlFlowGraph_p)
+      myStrictAnonymousTapingControlFlowGraph_p->printXMLHierarchy(os);
+
+    if (myStrictAnonymousAdjointControlFlowGraph_p)
+      myStrictAnonymousAdjointControlFlowGraph_p->printXMLHierarchy(os);
                                                                                 
     os << pm.indent()
        << "</"

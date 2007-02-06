@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:18:53 2006
+C Fortran file translated from WHIRL Tue Nov 28 15:55:12 2006
 C ***********************************************************
 C ***********************************************************
 
@@ -163,8 +163,8 @@ C
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_7
+      REAL(w2f__8) OpenAD_Symbol_6
+      REAL(w2f__8) OpenAD_Symbol_8
       REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
@@ -198,7 +198,7 @@ C$OPENAD XXX Template ad_template.f
       T%v = X(1)%v
       T2%v = (T%v*2.0D00)
       CALL foo()
-      Y%v = (T2%v*3.0D00+T%v*2.0D00)
+      Y%v = (3.0D00*T2%v+2.0D00*T%v)
       
           end if
           if (our_rev_mode%tape) then
@@ -212,14 +212,14 @@ C$OPENAD XXX Template ad_template.f
           double_tape(double_tape_pointer) = OpenAD_Symbol_11
           double_tape_pointer = double_tape_pointer+1
       CALL foo()
-      OpenAD_Symbol_9 = (T2%v*3.0D00+T%v*2.0D00)
-      OpenAD_Symbol_5 = 3.0D00
+      OpenAD_Symbol_9 = (3.0D00*T2%v+2.0D00*T%v)
+      OpenAD_Symbol_6 = 3.0D00
       OpenAD_Symbol_3 = 1_w2f__i8
-      OpenAD_Symbol_7 = 2.0D00
+      OpenAD_Symbol_8 = 2.0D00
       OpenAD_Symbol_4 = 1_w2f__i8
       Y%v = OpenAD_Symbol_9
-      OpenAD_Symbol_12 = (OpenAD_Symbol_5 * OpenAD_Symbol_3)
-      OpenAD_Symbol_14 = (OpenAD_Symbol_7 * OpenAD_Symbol_4)
+      OpenAD_Symbol_12 = (OpenAD_Symbol_6 * OpenAD_Symbol_3)
+      OpenAD_Symbol_14 = (OpenAD_Symbol_8 * OpenAD_Symbol_4)
           double_tape(double_tape_pointer) = OpenAD_Symbol_12
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_14

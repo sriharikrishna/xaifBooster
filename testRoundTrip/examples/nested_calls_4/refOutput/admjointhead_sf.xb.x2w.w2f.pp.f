@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:35:58 2006
+C Fortran file translated from WHIRL Mon Jan 15 14:43:02 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -375,10 +375,10 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_32
       REAL(w2f__8) OpenAD_Symbol_33
       REAL(w2f__8) OpenAD_Symbol_34
       REAL(w2f__8) OpenAD_Symbol_35
+      REAL(w2f__8) OpenAD_Symbol_36
 C
 C     **** Statements ****
 C
@@ -498,18 +498,18 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_32 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_24%d = OpenAD_Symbol_24%d+D%d*OpenAD_Symbol_32
-          double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_33 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_22%d = OpenAD_Symbol_22%d+D%d*OpenAD_Symbol_33
-          D%d = 0.0d0
+          OpenAD_Symbol_24%d = OpenAD_Symbol_24%d+D%d*OpenAD_Symbol_33
           double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_34 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_24%d = OpenAD_Symbol_24%d+C%d*OpenAD_Symbol_34
+          OpenAD_Symbol_22%d = OpenAD_Symbol_22%d+D%d*OpenAD_Symbol_34
+          D%d = 0.0d0
           double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_35 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_22%d = OpenAD_Symbol_22%d+C%d*OpenAD_Symbol_35
+          OpenAD_Symbol_24%d = OpenAD_Symbol_24%d+C%d*OpenAD_Symbol_35
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_36 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_22%d = OpenAD_Symbol_22%d+C%d*OpenAD_Symbol_36
           C%d = 0.0d0
           A%d = A%d+OpenAD_Symbol_22%d
           OpenAD_Symbol_22%d = 0.0d0

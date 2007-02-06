@@ -68,6 +68,7 @@
 #include "xaifBooster/system/inc/Constant.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
@@ -79,7 +80,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgParameter.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdgeAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertexAlgFactory.hpp"
@@ -534,7 +534,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // invoke directly and need to rely on GenericTraverseInvoke
       // In order to pass parameters through BasicBlockParameter
       // we have to make sure that this method is never invoked recursively
-      BasicBlockAlgParameter::instance().set(*this);	
+      xaifBoosterLinearization::BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_2() 
     } 
     catch (...) { 
       recursionGuard--;
@@ -929,8 +929,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	++it) { 
       // make a new assignment which is going to contain the JAE:  
       Assignment& aNewAssignment=aSequence.appendEndAssignment();
-      // JU should we get away with this setting of "jacobian_accumulation" for the Id
-      aNewAssignment.setId("jacobian_accumulation");
+	  aNewAssignment.setId(makeUniqueId());
       // make a new LHS: 
       Variable& theLHS(aNewAssignment.getLHS());
       Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
@@ -1436,6 +1435,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void BasicBlockAlg::setRuntimeCounters(){
     ourRuntimeCountersFlag = true;
   }
+  std::string BasicBlockAlg::makeUniqueId() { 
+    static unsigned anId=0;
+    std::ostringstream ostr;
+    ostr << "_jacobian_accumulation_" << anId++ << std::ends;
+    return ostr.str();
+  }
+  
 
   BasicBlockAlg::SequenceHolder& 
   BasicBlockAlg::getSequenceHolder(PreaccumulationMode::PreaccumulationMode_E aMode) { 

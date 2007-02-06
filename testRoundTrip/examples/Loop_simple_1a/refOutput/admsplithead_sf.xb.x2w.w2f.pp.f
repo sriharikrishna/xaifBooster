@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:20:27 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:28:53 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -80,6 +80,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
+      INTEGER(w2f__i8) OpenAD_Symbol_10
+      INTEGER(w2f__i8) OpenAD_Symbol_11
       REAL(w2f__8) OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -87,6 +89,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_6
       type(active) :: OpenAD_Symbol_7
       type(active) :: OpenAD_Symbol_8
+      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -96,8 +99,8 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      REAL(w2f__8) OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_12
+      REAL(w2f__8) OpenAD_Symbol_13
 C
 C     **** Top Level Pragmas ****
 C
@@ -147,18 +150,20 @@ C$OPENAD XXX Simple loop
           end if
           Y(1)%d = Y(1)%d+OpenAD_Symbol_8%d
           OpenAD_Symbol_8%d = 0.0d0
-      DO I = 3 +(-1) *((1 -(-1)) /(-1)), 3, (-1)
+      I = 3 -(-1) *((3 - 1) /(-1))
+      DO WHILE(I .LE. 3)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_9 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y(1)%d*OpenAD_Symbol_9
+          OpenAD_Symbol_12 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y(1)%d*OpenAD_Symbol_12
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_10 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(1)%d*OpenAD_Symbol_10
+          OpenAD_Symbol_13 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(1)%d*OpenAD_Symbol_13
           Y(1)%d = 0.0d0
           X(1)%d = X(1)%d+OpenAD_Symbol_5%d
           OpenAD_Symbol_5%d = 0.0d0
           Y(1)%d = Y(1)%d+OpenAD_Symbol_7%d
           OpenAD_Symbol_7%d = 0.0d0
+        I = I -(-1)
       END DO
           if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_3)) then
             OpenAD_Symbol_3%d = OpenAD_Symbol_3%d+Y(1)%d

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Oct  6 14:08:42 2006
+C Fortran file translated from WHIRL Mon Jan 15 13:29:39 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -81,6 +81,9 @@ C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
       type(active) :: OpenAD_Symbol_10
+      INTEGER(w2f__i8) OpenAD_Symbol_11
+      INTEGER(w2f__i8) OpenAD_Symbol_12
+      INTEGER(w2f__i8) OpenAD_Symbol_13
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -100,9 +103,15 @@ C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
-      REAL(w2f__8) OpenAD_Symbol_12
-      REAL(w2f__8) OpenAD_Symbol_14
-      REAL(w2f__8) OpenAD_Symbol_16
+      INTEGER(w2f__i8) OpenAD_Symbol_14
+      REAL(w2f__8) OpenAD_Symbol_15
+      INTEGER(w2f__i8) OpenAD_Symbol_16
+      REAL(w2f__8) OpenAD_Symbol_17
+      INTEGER(w2f__i8) OpenAD_Symbol_18
+      REAL(w2f__8) OpenAD_Symbol_19
+      INTEGER(w2f__i8) OpenAD_Symbol_20
+      INTEGER(w2f__i8) OpenAD_Symbol_21
+      INTEGER(w2f__i8) OpenAD_Symbol_22
 C
 C     **** Statements ****
 C
@@ -153,15 +162,15 @@ C$OPENAD XXX Simple loop
       I = 1 + 1 *((2 - 1) / 1)
       DO WHILE(I .GE. 1)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_12 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_15 = double_tape(double_tape_pointer)
           OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(J)%d*OpenAD_Symbol_1
-     +2
+     +5
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_14 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(J)%d*OpenAD_Symbol_14
+          OpenAD_Symbol_17 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(J)%d*OpenAD_Symbol_17
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_16 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y(J)%d*OpenAD_Symbol_16
+          OpenAD_Symbol_19 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y(J)%d*OpenAD_Symbol_19
           Y(J)%d = 0.0d0
           X(I)%d = X(I)%d+OpenAD_Symbol_6%d
           OpenAD_Symbol_6%d = 0.0d0

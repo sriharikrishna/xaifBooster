@@ -40,6 +40,8 @@ namespace xaifBoosterAddressArithmetic {
     
     static void setIgnorance();
 
+    static void setTopLevelRoutine(const std::string& theName);
+
   private:
     
     /** 
@@ -57,6 +59,55 @@ namespace xaifBoosterAddressArithmetic {
      */
     CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
 
+    /**
+     * information on the unknown variables
+     */
+    struct UnknownVarInfo { 
+      /** 
+       * the unknown variable, 
+       * just a reference, do not delete
+       */
+      const Variable * myVariable_p;
+      /** 
+       * the vertex in which we refer to myVariable_p, 
+       * just a reference, do not delete
+       */
+      const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex * myContainingVertex_p;
+      /** 
+       * the vertex determining the taping point (either the top level loop 
+       * or a control flow vertex( not a basic block) under the top level loop
+       * just a reference, do not delete
+       */
+      xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex * myTapingVertex_p;
+      /** 
+       * is the reference to myVariable_p control flow related
+       */
+      bool myCFDecisionFlag;
+      /** 
+       * how many references have we encountered
+       */
+      unsigned int myRefCount;
+
+      UnknownVarInfo() : 
+	myVariable_p(0),
+	myContainingVertex_p(0),
+	myTapingVertex_p(0),
+	myCFDecisionFlag(false),
+	myRefCount(0) { };
+      UnknownVarInfo(const Variable& theVariable,
+		     const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex,
+		     xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theTapingVertex,
+		     bool theCFDecisionFlag) : 
+	myVariable_p(&theVariable),
+	myContainingVertex_p(&theContainingVertex),
+	myTapingVertex_p(&theTapingVertex),
+	myCFDecisionFlag(theCFDecisionFlag),
+	myRefCount(0) { };
+
+    }; 
+
+    typedef std::list<UnknownVarInfo> UnknownVarInfoList;
+
     /** 
      * find variables used in anExpression that 
      * do not occur in theKnownVariables and 
@@ -64,39 +115,59 @@ namespace xaifBoosterAddressArithmetic {
      */
     void findUnknownVariablesInExpression(const Expression& anExpression,
 					  const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-					  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables);
+					  UnknownVarInfoList& theUnknownVariables,
+					  bool thisIsCF,
+					  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
+
+    /** 
+     * find variables used in anExpressionVertex that 
+     * do not occur in theKnownVariables and 
+     * put them in the theUnknownVariables
+     */
+    void findUnknownVariablesInExpressionVertex(const ExpressionVertex& anExpressionVertex,
+						const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+						UnknownVarInfoList& theUnknownVariables,
+						bool thisIsCF,
+						xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
+
+    /** 
+     * find variables used in anArrayAccess
+     */
+    void findUnknownVariablesInArrayAccess(const ArrayAccess& anArrayAccess,
+					   const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+					   UnknownVarInfoList& theUnknownVariables,
+					   bool thisIsCF,
+					   xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
 
     /** 
      * find variables used in index expressions
      * occuring in the DerivativePropagator 
      * instances for a given BasicBlock
      */
-    void findUnknownVariablesInDerivativePropagatorIndexExpressions(const BasicBlock& theOriginalBasicBlock,
+    void findUnknownVariablesInDerivativePropagatorIndexExpressions(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
 								    const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-								    xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables);
+								    UnknownVarInfoList& theUnknownVariables);
 
     /** 
      * find variables used in aReversibleControlFlowGraphVertex 
      */
-    void findUnknownVariablesInReversibleControlFlowGraphVertex(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aReversibleControlFlowGraphVertex,
+    void findUnknownVariablesInReversibleControlFlowGraphVertex( xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aReversibleControlFlowGraphVertex,
 								const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-								xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables);
+								UnknownVarInfoList& theUnknownVariables);
 
     /** 
      * push anUnknownVariable
-     * with statement inserted into aBasicBlock_r
+     * with statement inserted into the storeplaceholder 
+     * associated with aTapingVertex
      */
     void pushUnknownVariable(const Variable& anUnknownVariable,
-			     BasicBlock& aBasicBlock_r,
-			     unsigned int aTopLevelForLoopLineNumber);
+			     xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aTapingVertex);
 
     /** 
      * push all theUnknownVariables
      * with statements inserted into aBasicBlock_r
      */
-    void pushUnknownVariables(const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theUnknownVariables,
-			      BasicBlock& aBasicBlock_r,
-			      unsigned int aTopLevelForLoopLineNumber);
+    void pushUnknownVariables(const UnknownVarInfoList& theUnknownVariables);
 
     /** 
      * there is aPushCall
@@ -115,6 +186,53 @@ namespace xaifBoosterAddressArithmetic {
      * force ignorance (nothing gets pushed), default false
      */
     static bool ourIgnoranceFlag;
+
+    /** 
+     * the name of the top level routine 
+     * which we refer to to test for quasi-constness of 
+     * variables used in simple loop constructs
+     */
+    static std::string ourTopLevelRoutineName;
+
+    /**
+     * has ourTopLevelRoutineName been set
+     */ 
+    bool static haveTopLevelRoutineName();
+
+    /**
+     * defined in getTopLevelRoutine ;
+     * we don't own the instance pointed to by
+     * this attribute
+     */
+    static const CallGraphVertex* ourTopLevelRoutine_p;
+
+    /** 
+     * have we shown that this routine is called 
+     * only under the top level routine
+     */
+    bool myOnlyUnderTopLevelRoutineFlag;
+
+    /** 
+     * determines if a this routine is called 
+     * only under the top level routine
+     */
+    bool isOnlyUnderTopLevelRoutine(); 
+
+    /**
+     * gets the routine associated with ourTopLevelRoutineName
+     */
+    static const CallGraphVertex& getTopLevelRoutine();  
+
+    /**
+     * check if the variable is quasi-constant
+     */
+    bool isQuasiConstant(const Variable& theVariable); 
+
+    /** 
+     * how often is theVariable defined within this CF subtree with theControlFlowGraphVertex as root
+     */
+    int definesUnderControlFlowGraphVertex(const Variable& theVariable,
+					   const ControlFlowGraphVertex& theControlFlowGraphVertex);
 
   };  // end of class
 

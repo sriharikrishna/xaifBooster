@@ -62,6 +62,7 @@
 #include "xaifBooster/system/inc/EndBranch.hpp"
 #include "xaifBooster/system/inc/EndLoop.hpp"
 #include "xaifBooster/system/inc/ForLoop.hpp"
+#include "xaifBooster/system/inc/PreLoop.hpp"
 #include "xaifBooster/system/inc/IfStatement.hpp"
 #include "xaifBooster/system/inc/Branch.hpp"
 #include "xaifBooster/system/inc/Entry.hpp"
@@ -119,6 +120,8 @@ namespace xaifBoosterControlFlowReversal {
     VertexPPairList& getOriginalReverseVertexPPairList();
 
     const VertexPPairList& getOriginalReverseVertexPPairList() const;
+
+    void donotRetainUserReversalFlag(); 
 
   private:
 
@@ -206,7 +209,8 @@ namespace xaifBoosterControlFlowReversal {
 				    int&,
 				    std::stack<ReversibleControlFlowGraphVertex*>&,
 				    ForLoopReversalType::ForLoopReversalType_E aReversalType,
-				    ReversibleControlFlowGraphVertex* aTopExplicitLoopVertex_p);
+				    ReversibleControlFlowGraphVertex* aTopExplicitLoopVertex_p,
+				    ReversibleControlFlowGraphVertex* enclosingControlFlowVertex_p);
 
     /** 
      * top down topological sort
@@ -255,7 +259,14 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * make a new forloop
      */
-    ReversibleControlFlowGraphVertex* new_forloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType);
+    ReversibleControlFlowGraphVertex* new_forloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType,
+						  const ForLoop& theOldForLoop);
+
+    /** 
+     * make a new preloop
+     */
+    ReversibleControlFlowGraphVertex* new_preloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType,
+						  const PreLoop& theOldPreLoop);
 
     /** 
      * make a new endloop
@@ -315,8 +326,7 @@ namespace xaifBoosterControlFlowReversal {
 					   bool countUp); 
 
     void makeLoopExplicitReversalUpdate(const ForLoop& theOldForLoop,
-					ForLoop& theNewForLoop,
-					bool countUp); 
+					ForLoop& theNewForLoop); 
 
     /** 
      * for certain vertex types we find the 'parent' vertex among 
@@ -325,6 +335,15 @@ namespace xaifBoosterControlFlowReversal {
      */
     void inheritLoopVariables(ForLoopReversalType::ForLoopReversalType_E aReversalType,
  			      ReversibleControlFlowGraphVertex& theCurrentVertex_r);
+
+
+    /**
+     * a flag indicating whether the user specifications
+     * regarding loop reversal should be retained or 
+     * if we should ignore them forcing anonymous reversal 
+     * throughout
+     */
+    bool myRetainUserReversalFlag;
 
   };  // end of class
 

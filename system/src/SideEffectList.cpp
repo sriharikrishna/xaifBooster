@@ -53,6 +53,7 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/SideEffectList.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 namespace xaifBooster { 
 
@@ -122,6 +123,18 @@ namespace xaifBooster {
     Variable* theVariable_p=new Variable;
     myVariablePList.push_back(theVariable_p);
     return *theVariable_p;
+  } 
+
+  bool SideEffectList::hasElement(const Variable& aVariable) const {
+    DBG_MACRO(DbgGroup::DATA,"SideEffectList::hasElement: checking for " 
+	      << aVariable.getVariableSymbolReference().getSymbol().getId().c_str());
+    for (VariablePList::const_iterator i=myVariablePList.begin();
+	 i!=myVariablePList.end();
+	 ++i){ 
+      if ((*i)->getVariableSymbolReference().refersToSameSymbolAs(aVariable.getVariableSymbolReference())) 
+	return true;
+    }
+    return false; 
   } 
 
 } // end of namespace xaifBooster 
