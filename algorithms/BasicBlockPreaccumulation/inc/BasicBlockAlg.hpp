@@ -598,7 +598,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			     Sequence& aSequence,
 			     VariableCPList& theDepVertexPListCopyWithoutRemovals,
 			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
-			     const Variable& theLHS); 
+			     const Variable& theLocalJacobianEntry);
+
+  void generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
+					    const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theTarget, 
+					    const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theEdge,
+					    VariableHashTable& theListOfAlreadyAssignedIndependents,
+					    Sequence& aSequence,
+					    VariableCPList& theDepVertexPListCopyWithoutRemovals,
+					    VarDevPropPPairList& theListOfAlreadyAssignedDependents); 
 
   };
  

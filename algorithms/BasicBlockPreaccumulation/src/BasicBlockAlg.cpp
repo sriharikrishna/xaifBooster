@@ -975,16 +975,79 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 theLHS);
       } // end if is JacobianEntry
     } // end for 
+    // look for a remainder graph
+    if (!aSequence.getBestResult().myEdgeCorrelationList.empty()) 
+      generateRemainderGraphPropagators(theListOfAlreadyAssignedIndependents,
+					aSequence, 
+					theDepVertexPListCopyWithoutRemovals,
+					theListOfAlreadyAssignedDependents);
     //debuging print statements with results
     DBG_MACRO(DbgGroup::METRIC, "SeqeunceHolder metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
   }
+
+  void BasicBlockAlg::generateRemainderGraphPropagators(theListOfAlreadyAssignedIndependents,
+							aSequence, 
+							theDepVertexPListCopyWithoutRemovals,
+							theListOfAlreadyAssignedDependents) { 
+    typedef std::list<xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*> LinearizedComputationalGraphEdgePList; 
+    LinearizedComputationalGraphEdgePList edgeCompletedList;
+    typedef std::list<xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*> LinearizedComputationalGraphVertexPList; 
+    LinearizedComputationalGraphVertexPList vertexWorkList;
+    typedef std::list<xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*> LinearizedComputationalGraphVertexPList; 
+    LinearizedComputationalGraphVertexPList vertexCompletedList;
+    bool done=false; 
+    while (!done) { 
+    //  worklist population: 
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph(aSequence.getBestResult().myRemainderGraph);
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair pi(theRemainderGraph.getVertices());
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator anLCGvertI(pi.first),anLCGvertEndI(pi.second);
+    for(; anLCGvertI!=anLCGvertEndI: ++anLCGvertI) { 
+      if (theRemainderGraph.numInEdgesOf(*anLCGvertI))
+	workList.push_back(&(*anLCGvertI)); 
+    }
+      for (LinearizedComputationalGraphVertexPList::iterator workListI=workList.begin(); 
+	   workListI=workList.end(); 
+	   ++workListI) { 
+	
+      } 
+      workList.clear();
+      // repopulate
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair pi2(theRemainderGraph.getVertices());
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator anotherLCGvertI(pi.first),anotherLCGvertEndI(pi.second);
+      for(; anotherLCGvertI!=anotherLCGvertEndI: ++anotherLCGvertI) { 
+	// check all the in-edges
+	if (theRemainderGraph.numInEdgesOf(*anotherLCGvertI))
+	  workList.push_back(&(*anotherLCGvertI)); 
+    }
+      
+      
+    } 
+  } 
+
+  void BasicBlockAlg::generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
+							   const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theTarget, 
+							   const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theEdge,
+							   BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
+							   Sequence& aSequence,
+							   BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
+							   VarDevPropPPairList& theListOfAlreadyAssignedDependents) {
+    switch(theEdge.myType) { 
+    case EdgeCorrelationEntry::LCG_EDGE : 
+      break;
+    case EdgeCorrelationEntry::JAE_VERT : 
+      break;
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphEdgePropagator: unknown type");
+      break;
+    }
+  } 
 
   void BasicBlockAlg::generateSimplePropagator(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,
 					       BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
 					       Sequence& aSequence,
 					       BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 					       VarDevPropPPairList& theListOfAlreadyAssignedDependents,
-					       const Variable& theLHS) { 
+					       const Variable& theLocalJacobianEntry) { 
     // assign independent to temporary if aliased by some
     // dependent
     // use temporary in DerivativePropagator
@@ -1062,13 +1125,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	||
 	(found && !doesPermitNarySax())) { 
       theSaxpy_p=&(aSequence.myDerivativePropagator.
-		   addSaxpyToEntryPList(theLHS,
+		   addSaxpyToEntryPList(theLocalJacobianEntry,
 					*theIndepVariableContainer_cp,
 					theDependent));
     }
     else { 
       theSaxpy_p=(*aVarDevPropPPairListI).second;
-      theSaxpy_p->addAX(theLHS,
+      theSaxpy_p->addAX(theLocalJacobianEntry,
 			*theIndepVariableContainer_cp);
     } 
     if (!found) { 
