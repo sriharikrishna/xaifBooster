@@ -600,13 +600,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 			     const Variable& theLocalJacobianEntry);
 
-  void generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
-					    const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theTarget, 
-					    const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theEdge,
-					    VariableHashTable& theListOfAlreadyAssignedIndependents,
-					    Sequence& aSequence,
-					    VariableCPList& theDepVertexPListCopyWithoutRemovals,
-					    VarDevPropPPairList& theListOfAlreadyAssignedDependents); 
+    void generateRemainderGraphPropagators(VariableHashTable& theListOfAlreadyAssignedIndependents,
+					   Sequence& aSequence, 
+					   VariableCPList& theDepVertexPListCopyWithoutRemovals,
+					   VarDevPropPPairList& theListOfAlreadyAssignedDependents); 
+
+    void generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
+					      const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theTarget, 
+					      const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
+					      VariableHashTable& theListOfAlreadyAssignedIndependents,
+					      Sequence& aSequence,
+					      VariableCPList& theDepVertexPListCopyWithoutRemovals,
+					      VarDevPropPPairList& theListOfAlreadyAssignedDependents); 
 
     /** 
      * to satisfy schema uniqueness constraints

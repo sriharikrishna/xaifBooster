@@ -984,56 +984,104 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     DBG_MACRO(DbgGroup::METRIC, "SeqeunceHolder metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
   }
 
-  void BasicBlockAlg::generateRemainderGraphPropagators(theListOfAlreadyAssignedIndependents,
-							aSequence, 
-							theDepVertexPListCopyWithoutRemovals,
-							theListOfAlreadyAssignedDependents) { 
-    typedef std::list<xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*> LinearizedComputationalGraphEdgePList; 
-    LinearizedComputationalGraphEdgePList edgeCompletedList;
-    typedef std::list<xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*> LinearizedComputationalGraphVertexPList; 
-    LinearizedComputationalGraphVertexPList vertexWorkList;
-    typedef std::list<xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*> LinearizedComputationalGraphVertexPList; 
-    LinearizedComputationalGraphVertexPList vertexCompletedList;
+  void BasicBlockAlg::generateRemainderGraphPropagators(VariableHashTable& theListOfAlreadyAssignedIndependents,
+							Sequence& aSequence, 
+							VariableCPList& theDepVertexPListCopyWithoutRemovals,
+							VarDevPropPPairList& theListOfAlreadyAssignedDependents) { 
+    typedef std::list<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*> LinearizedComputationalGraphVertexPList; 
+    LinearizedComputationalGraphVertexPList workList;
     bool done=false; 
+    aSequence.getBestResult().myRemainderGraph.initVisit();
     while (!done) { 
-    //  worklist population: 
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph(aSequence.getBestResult().myRemainderGraph);
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair pi(theRemainderGraph.getVertices());
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator anLCGvertI(pi.first),anLCGvertEndI(pi.second);
-    for(; anLCGvertI!=anLCGvertEndI: ++anLCGvertI) { 
-      if (theRemainderGraph.numInEdgesOf(*anLCGvertI))
-	workList.push_back(&(*anLCGvertI)); 
-    }
+      //  worklist population: 
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph(aSequence.getBestResult().myRemainderGraph);
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair aVertexIP(theRemainderGraph.vertices());
+      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator anLCGVertI(aVertexIP.first),anLCGvertEndI(aVertexIP.second);
+      for(; anLCGVertI!=anLCGvertEndI; ++anLCGVertI) {
+	if (!(*anLCGVertI).wasVisited()) { // we are not done with this vertex
+	  // look at all the incoming edges: 
+	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair anEdgeIP(theRemainderGraph.getInEdgesOf(*anLCGVertI));
+	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator anLCGEdgeI(anEdgeIP.first),anLCGEdgeEndI(anEdgeIP.second);
+	  for (; anLCGEdgeI!=anLCGEdgeEndI; ++ anLCGEdgeI) { 
+	    if (!(*anLCGEdgeI).wasVisited())
+	      break; 
+	  }
+	  // only when all in edges are visited can we work in this vertex
+	  if (anLCGEdgeI==anLCGEdgeEndI) 
+	    workList.push_back(&(*anLCGVertI));
+	}
+      }
       for (LinearizedComputationalGraphVertexPList::iterator workListI=workList.begin(); 
-	   workListI=workList.end(); 
+	   workListI!=workList.end(); 
 	   ++workListI) { 
-	
-      } 
-      workList.clear();
-      // repopulate
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair pi2(theRemainderGraph.getVertices());
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator anotherLCGvertI(pi.first),anotherLCGvertEndI(pi.second);
-      for(; anotherLCGvertI!=anotherLCGvertEndI: ++anotherLCGvertI) { 
-	// check all the in-edges
-	if (theRemainderGraph.numInEdgesOf(*anotherLCGvertI))
-	  workList.push_back(&(*anotherLCGvertI)); 
+	// find this vertex (source) in the correlation list: 
+	const xaifBoosterCrossCountryInterface::VertexCorrelationEntry* theSourceCorr_p(0);
+	for (xaifBoosterCrossCountryInterface::VertexCorrelationList::const_iterator vertexCorrListI=aSequence.getBestResult().myVertexCorrelationList.begin();
+	     vertexCorrListI!=aSequence.getBestResult().myVertexCorrelationList.end();
+	     ++vertexCorrListI) { 
+	  if ((*vertexCorrListI).myRemainderVertex_p==*workListI) { 
+	    theSourceCorr_p=&(*vertexCorrListI);
+	    break; 
+	  }
+	} 
+	if (!theSourceCorr_p) 
+	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphPropagators: source vertex not found in correlation list");
+	// look at all outgoing edges: 
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair anEdgeIP(theRemainderGraph.getOutEdgesOf(**workListI));
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator anLCGEdgeI(anEdgeIP.first),anLCGEdgeEndI(anEdgeIP.second);
+	for (; anLCGEdgeI!=anLCGEdgeEndI; ++anLCGEdgeI) { 
+	  const xaifBoosterCrossCountryInterface::VertexCorrelationEntry* theTargetCorr_p(0);
+	  const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theTargetVertex(theRemainderGraph.getTargetOf(*anLCGEdgeI));
+	  // find the target in the correlation list
+	  for (xaifBoosterCrossCountryInterface::VertexCorrelationList::const_iterator vertexCorrListI=aSequence.getBestResult().myVertexCorrelationList.begin();
+	       vertexCorrListI!=aSequence.getBestResult().myVertexCorrelationList.end();
+	       ++vertexCorrListI) { 
+	    if ((*vertexCorrListI).myRemainderVertex_p==&theTargetVertex) { 
+	      theTargetCorr_p=&(*vertexCorrListI);
+	      break; 
+	    }
+	  } 
+	  if (!theTargetCorr_p) 
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphPropagators: target vertex not found in correlation list");
+	  // find the edge in the correlation list
+	  const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry* theEdgeCorr_p(0);
+	  for (xaifBoosterCrossCountryInterface::EdgeCorrelationList::const_iterator edgeCorrListI=aSequence.getBestResult().myEdgeCorrelationList.begin();
+	       edgeCorrListI!=aSequence.getBestResult().myEdgeCorrelationList.end();
+	       ++edgeCorrListI) { 
+	    if ((*edgeCorrListI).myRemainderGraphEdge_p==&(*anLCGEdgeI)) { 
+	      theEdgeCorr_p=&(*edgeCorrListI);
+	      break; 
+	    }
+	  } 
+	  if (!theEdgeCorr_p) 
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphPropagators: edge not found in correlation list");
+	  generateRemainderGraphEdgePropagator(*theSourceCorr_p,
+					       *theTargetCorr_p,
+					       *theEdgeCorr_p,
+					       theListOfAlreadyAssignedIndependents,
+					       aSequence,
+					       theDepVertexPListCopyWithoutRemovals,
+					       theListOfAlreadyAssignedDependents); 
+	}					       
+      }
+      if (workList.empty())
+	done=true;
+      else
+	workList.clear();
     }
-      
-      
-    } 
   } 
 
   void BasicBlockAlg::generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
 							   const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theTarget, 
-							   const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theEdge,
+							   const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
 							   BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
 							   Sequence& aSequence,
 							   BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 							   VarDevPropPPairList& theListOfAlreadyAssignedDependents) {
     switch(theEdge.myType) { 
-    case EdgeCorrelationEntry::LCG_EDGE : 
+    case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::LCG_EDGE : 
       break;
-    case EdgeCorrelationEntry::JAE_VERT : 
+    case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::JAE_VERT : 
       break;
     default: 
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphEdgePropagator: unknown type");
