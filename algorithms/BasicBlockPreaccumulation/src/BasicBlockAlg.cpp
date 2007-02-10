@@ -968,7 +968,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	++it) { 
       // make a new assignment which is going to contain the JAE:  
       Assignment& aNewAssignment=aSequence.appendEndAssignment();
-	  aNewAssignment.setId(makeUniqueId());
+      aNewAssignment.setId(makeUniqueId());
       // make a new LHS: 
       Variable& theLHS(aNewAssignment.getLHS());
       Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
@@ -1132,18 +1132,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     // figure out who holds the edge label: 
     const Variable& theEdgeLabelVariable(getEdgeLabel(theEdge,theInternalReferenceConcretizationList));
+    // figure out what the source is:
+    const Variable* theSourceVariable_p(0);
+    if (aSequence.getBestResult().myRemainderGraph.numInEdgesOf(*(theSource.myRemainderVertex_p)))
+      theSourceVariable_p=&(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p))));
+    else 
+      theSourceVariable_p=&(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p)).getRHSVariable());
+    // figure out what the target is:
+    const Variable& theTargetVariable(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theTarget.myOriginalVertex_p))));
     switch(theEdge.myType) { 
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::LCG_EDGE : 
+      generateSimplePropagatorFromEdge(*theSourceVariable_p,
+				       theTargetVariable,
+				       theListOfAlreadyAssignedIndependents,
+				       aSequence,
+				       theDepVertexPListCopyWithoutRemovals,
+				       theListOfAlreadyAssignedDependents,
+				       theEdgeLabelVariable,
+				       dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*(theEdge.myEliminationReference.myOriginalEdge_p)));
       break;
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::JAE_VERT : { 
-      // figure out what the source is:
-      const Variable* theSourceVariable_p(0);
-      if (aSequence.getBestResult().myRemainderGraph.numInEdgesOf(*(theSource.myRemainderVertex_p)))
-	theSourceVariable_p=&(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p))));
-      else 
-	theSourceVariable_p=&(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p)).getRHSVariable());
-      // figure out what the target is:
-      const Variable& theTargetVariable(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theTarget.myOriginalVertex_p))));
       generateSimplePropagator(*theSourceVariable_p,
 			       theTargetVariable,
 			       theListOfAlreadyAssignedIndependents,
@@ -1186,6 +1194,40 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       break;
     }
   } 
+
+  void BasicBlockAlg::generateSimplePropagatorFromEdge(const Variable& theSourceVariable,
+						       const Variable& theTargetVariable,
+						       BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
+						       Sequence& aSequence,
+						       BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
+						       VarDevPropPPairList& theListOfAlreadyAssignedDependents,
+						       const Variable& theLocalJacobianEntry,
+						       const PrivateLinearizedComputationalGraphEdge& thePrivateEdge) { 
+    generateSimplePropagator(theSourceVariable,
+			     theTargetVariable,
+			     theListOfAlreadyAssignedIndependents,
+			     aSequence,
+			     theDepVertexPListCopyWithoutRemovals,
+			     theListOfAlreadyAssignedDependents,
+			     dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(thePrivateEdge.
+											getLinearizedExpressionEdge().
+											getExpressionEdgeAlgBase()).
+			     getConcretePartialAssignment().getLHS());
+    if(!thePrivateEdge.getParallels().empty()) { 
+      for (PrivateLinearizedComputationalGraphEdge::ExpressionEdgePList::const_iterator i=thePrivateEdge.getParallels().begin();
+	   i!=thePrivateEdge.getParallels().end();
+	   ++i) { 
+	generateSimplePropagator(theSourceVariable,
+				 theTargetVariable,
+				 theListOfAlreadyAssignedIndependents,
+				 aSequence,
+				 theDepVertexPListCopyWithoutRemovals,
+				 theListOfAlreadyAssignedDependents,
+				 dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>((*i)->getExpressionEdgeAlgBase()).
+				 getConcretePartialAssignment().getLHS());
+      }
+    }
+  }
 
   void BasicBlockAlg::generateSimplePropagator(const Variable& theIndepVariable,
 					       const Variable& theDependent,
@@ -1232,7 +1274,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	theListOfAlreadyAssignedIndependents.
 	  addElement(theIndepVariable.equivalenceSignature(),
 		     &(aSequence.myDerivativePropagator.addSetDerivToEntryPList(theTarget,
-											  theIndepVariable).getTarget()));
+										theIndepVariable).getTarget()));
       } // end if (wasn't assigned before)  
       else {
 	// yes, it was assigned before
@@ -1389,7 +1431,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// since we handed PrivateLinearizedComputationalGraphEdges
 	// to Angel in the first place
 	const PrivateLinearizedComputationalGraphEdge& thePrivateEdge(dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(theVertex.getExternalReference()));
-	if(thePrivateEdge.getParallels().size()) { 
+	if(!thePrivateEdge.getParallels().empty()) { 
 	  unsigned int position;
 	  Intrinsic* theIntrinsic_p=0;
 	  for (PrivateLinearizedComputationalGraphEdge::ExpressionEdgePList::const_iterator i=thePrivateEdge.getParallels().begin();
