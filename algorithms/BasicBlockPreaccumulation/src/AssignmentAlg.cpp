@@ -320,8 +320,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       Expression::EdgeIteratorPair pe=theExpression.edges();
       Expression::EdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second);
       for (; ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) {
-	if (dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>((*ExpressionEdgeI).getExpressionEdgeAlgBase()).getPartialDerivativeKind() ==
-	    PartialDerivativeKind::PASSIVE) 
+	PartialDerivativeKind::PartialDerivativeKind_E thePartialDerivativeKind(dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>((*ExpressionEdgeI).getExpressionEdgeAlgBase()).getPartialDerivativeKind());
+	if (thePartialDerivativeKind == PartialDerivativeKind::PASSIVE) 
 	  continue;
 	const PrivateLinearizedComputationalGraphVertex *theLCGSource_p(0), *theLCGTarget_p(0);
 	ExpressionVertex& theSource(theExpression.getSourceOf(*ExpressionEdgeI));
@@ -361,6 +361,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	PrivateLinearizedComputationalGraphEdge* theEdge_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge();
 	// set the back reference
 	theEdge_p->setLinearizedExpressionEdge(*ExpressionEdgeI);
+	if (thePartialDerivativeKind == PartialDerivativeKind::LINEAR_ONE
+	    ||
+	    thePartialDerivativeKind == PartialDerivativeKind::LINEAR_MINUS_ONE)
+	  theEdge_p->setUnitLabel();
 	theComputationalGraph.supplyAndAddEdgeInstance(*theEdge_p,
 						      *theLCGSource_p,
 						      *theLCGTarget_p);
