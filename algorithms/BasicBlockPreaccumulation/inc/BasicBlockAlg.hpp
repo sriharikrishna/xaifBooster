@@ -83,6 +83,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   class PrivateLinearizedComputationalGraphAlgFactory;
   class PrivateLinearizedComputationalGraphEdgeAlgFactory;
   class PrivateLinearizedComputationalGraphVertexAlgFactory;
+  class PrivateLinearizedComputationalGraphEdge;
 
   /** 
    * class to implement algorithms relevant for the 
@@ -589,7 +590,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	     SequenceHolder& aSequenceHolder); 
 
     typedef std::pair<const Variable*,
-      xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
+		      xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
     typedef std::list<VarDevPropPPair> VarDevPropPPairList;
 
     void 
@@ -601,11 +602,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 			     const Variable& theLocalJacobianEntry);
 
+    void 
+    generateSimplePropagatorFromEdge(const Variable& theSourceVariable,
+				     const Variable& theTargetVariable,
+				     BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
+				     Sequence& aSequence,
+				     BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
+				     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
+				     const Variable& theLocalJacobianEntry,
+				     const PrivateLinearizedComputationalGraphEdge& thePrivateEdge);
+    
     struct IntermediateReferences {
       ~IntermediateReferences(); 
       const Variable& getVariable(const PrivateLinearizedComputationalGraphVertex& theVertex); 
       typedef std::pair<const Variable*,const PrivateLinearizedComputationalGraphVertex*> VarPLCGPPair;
-      typedef std::list<VarPLCGPPair> VarPLCGPPairList;
+	typedef std::list<VarPLCGPPair> VarPLCGPPairList;
       /** 
        * we own the variable instance in this list 
        * and everybody makes copies 
