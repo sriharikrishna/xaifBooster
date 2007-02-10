@@ -1419,7 +1419,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  } // end for 
 	  // now deal with this edge
 	  ExpressionVertex* theNewVertex_p=0;
-	  if (thePrivateEdge.isUnitExpressionEdge()) { 
+	  if (thePrivateEdge.isDirectCopyEdge()) { 
 	    // add the constant '1' to the assignment
 	    Constant* theConstant_p=new Constant(SymbolType::INTEGER_STYPE,
 						 false);
@@ -1448,7 +1448,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theNewExpressionVertex_p=theIntrinsic_p;	      
 	} // end if 
 	else { 
-	  if (thePrivateEdge.isUnitExpressionEdge()) { 
+	  if (thePrivateEdge.isDirectCopyEdge()) { 
 	    // add the constant '1' to the assignment
 	    Constant* theConstant_p=new Constant(SymbolType::INTEGER_STYPE,
 						 false);
