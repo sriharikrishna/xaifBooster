@@ -382,7 +382,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// has 't1' as LHS and now we would 
 	// try to add 't2' as another LHS.
 	// The clean solution is to represent t2=t1 by adding another vertex 
-	// with a special unit edge.
+	// with a special direct copy  edge.
 	// the top node becomes the old LHS
 	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
 	// now we make a new one which will be top node
@@ -392,10 +392,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	theComputationalGraph.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
 	// the new one needs to have its RHS set to the old ones LHS
 	theLHSLCGVertex_p->setRHSVariable(theOldLHSLCGVertex_p->getLHSVariable());
-	// we need to add the unit edge
+	// we need to add the direct copy edge
 	PrivateLinearizedComputationalGraphEdge* theEdge_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge();
 	// we can't set a back reference because there is none
-	theEdge_p->setUnitExpressionEdge();
+	theEdge_p->setDirectCopyEdge();
 	// add the edge to the graph
 	theComputationalGraph.supplyAndAddEdgeInstance(*theEdge_p,
 						      *theOldLHSLCGVertex_p,
