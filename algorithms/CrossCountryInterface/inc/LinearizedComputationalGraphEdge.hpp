@@ -62,9 +62,22 @@ namespace xaifBoosterCrossCountryInterface {
   class LinearizedComputationalGraphEdge : public Edge {
   public:
 
-    LinearizedComputationalGraphEdge(){};
+    LinearizedComputationalGraphEdge();
 
     ~LinearizedComputationalGraphEdge(){};
+
+    void setUnitLabel();
+
+    bool hasUnitLabel() const; 
+
+  private: 
+
+    /**
+     * optional flag indicating 
+     * this edge label has unit value (+/- 1) 
+     */
+    bool myUnitLabelFlag;
+	
  
   }; // end of class LinearizedComputationalGraphEdge
  

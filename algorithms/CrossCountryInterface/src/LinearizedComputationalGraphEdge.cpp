@@ -54,4 +54,16 @@
 
 namespace xaifBoosterCrossCountryInterface {
 
+  LinearizedComputationalGraphEdge::LinearizedComputationalGraphEdge() :
+    myUnitLabelFlag(false) { 
+  } 
+
+  void LinearizedComputationalGraphEdge::setUnitLabel() { 
+    myUnitLabelFlag=true; 
+  }
+
+  bool LinearizedComputationalGraphEdge::hasUnitLabel() const { 
+    return myUnitLabelFlag;
+  }
+
 } 
