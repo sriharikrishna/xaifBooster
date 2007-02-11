@@ -1004,8 +1004,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							theVertexPairList);
       // add the LHS to the tracking list: 
       theInternalReferenceConcretizationList.push_back(InternalReferenceConcretization(&*aJacExprVertexI,&theLHS));
-      if (theExpression.isJacobianEntry()) { 
-	generateSimplePropagator(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getIndependent()).getRHSVariable(),
+      if (theExpression.isJacobianEntry()) {
+	generateSimplePropagator(getVariableWithAliasCheck(theListOfAlreadyAssignedSources,
+							   theDepVertexPListCopyWithoutRemovals,
+							   dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getIndependent()).getRHSVariable(),
+							   aSequence),
 				 dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getDependent()).getLHSVariable(),
 				 theListOfAlreadyAssignedSources,
 				 aSequence, 
@@ -1023,6 +1026,66 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					theInternalReferenceConcretizationList);
     //debuging print statements with results
     DBG_MACRO(DbgGroup::METRIC, "SeqeunceHolder metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str() << " for " << aSequenceHolder.debug().c_str() << " in BasicBlockAlg " << this);
+  }
+
+  const Variable& BasicBlockAlg::getVariableWithAliasCheck(BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
+							   VariableCPList& theDepVertexPListCopyWithoutRemovals,
+							   const Variable& theIndepVariable,
+							   BasicBlockAlg::Sequence& aSequence) { 
+    // assign source to temporary if aliased by some
+    // dependent
+    // use temporary in DerivativePropagator
+    // temporary currently lives in global scope 
+    const Variable* theIndepVariableContainer_cp=0;
+    if (isAliased(theIndepVariable,
+		  theDepVertexPListCopyWithoutRemovals)) { 
+      // make a Variable (container) for use in the saxpys:
+      Variable* theIndepVariableContainer_p = new Variable;
+      // was this actual indepenent already assigned?
+      // Note, that at this point they should indeed all be syntactically distinct 
+      if (!(theListOfAlreadyAssignedSources.hasElement(theIndepVariable.equivalenceSignature()))) {
+	// no, we have to make a new assignment
+	// this will be the lhs:
+	Variable theTarget;
+	Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+			      getCallGraph().getScopeTree().getGlobalScope());
+	VariableSymbolReference* theTemporaryVariableReference_p=
+	  new VariableSymbolReference(theGlobalScope.getSymbolTable().
+				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							 SymbolType::REAL_STYPE,
+							 SymbolShape::SCALAR,
+							 true),
+				      theGlobalScope);
+	theTemporaryVariableReference_p->setId("1");
+	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getVariableWithAliasCheck");
+	theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
+	theTarget.getAliasMapKey().setTemporary();
+	theTarget.getDuUdMapKey().setTemporary();
+	// copy the new temporary into the container
+	theTarget.copyMyselfInto(*theIndepVariableContainer_p);
+	// "theTarget" is only local but the DerivativePropagatorSetDeriv 
+	// ctor performs a deep copy and owns the new instance so we are fine
+	// the theListOfAlreadyAssignedSources needs to contain the 
+	// address of the copy.
+	theListOfAlreadyAssignedSources.
+	  addElement(theIndepVariable.equivalenceSignature(),
+		     &(aSequence.myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+										theIndepVariable).getTarget()));
+      } // end if (wasn't assigned before)  
+      else {
+	// yes, it was assigned before
+	// copy the previously created temporary into the container
+	(theListOfAlreadyAssignedSources.getElement(theIndepVariable.equivalenceSignature()))->
+	  copyMyselfInto(*theIndepVariableContainer_p); 
+      }
+      // point to the new or previously created temporary
+      theIndepVariableContainer_cp=theIndepVariableContainer_p;
+    } // end if isAliased
+    else { // not aliased
+      // point to the original independent
+      theIndepVariableContainer_cp=&theIndepVariable;
+    }
+    return *theIndepVariableContainer_cp;
   }
 
   void BasicBlockAlg::generateRemainderGraphPropagators(VariableHashTable& theListOfAlreadyAssignedSources,
@@ -1236,59 +1299,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					       BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 					       VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 					       const Variable& theLocalJacobianEntry) { 
-    // assign source to temporary if aliased by some
-    // dependent
-    // use temporary in DerivativePropagator
-    // temporary currently lives in global scope 
-    const Variable* theIndepVariableContainer_cp=0;
-    if (isAliased(theIndepVariable,
-		  theDepVertexPListCopyWithoutRemovals)) { 
-      // make a Variable (container) for use in the saxpys:
-      Variable* theIndepVariableContainer_p = new Variable;
-      // was this actual indepenent already assigned?
-      // Note, that at this point they should indeed all be syntactically distinct 
-      if (!(theListOfAlreadyAssignedSources.hasElement(theIndepVariable.equivalenceSignature()))) {
-	// no, we have to make a new assignment
-	// this will be the lhs:
-	Variable theTarget;
-	Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-			      getCallGraph().getScopeTree().getGlobalScope());
-	VariableSymbolReference* theTemporaryVariableReference_p=
-	  new VariableSymbolReference(theGlobalScope.getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::REAL_STYPE,
-							 SymbolShape::SCALAR,
-							 true),
-				      theGlobalScope);
-	theTemporaryVariableReference_p->setId("1");
-	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::aliasedSource");
-	theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
-	theTarget.getAliasMapKey().setTemporary();
-	theTarget.getDuUdMapKey().setTemporary();
-	// copy the new temporary into the container
-	theTarget.copyMyselfInto(*theIndepVariableContainer_p);
-	// "theTarget" is only local but the DerivativePropagatorSetDeriv 
-	// ctor performs a deep copy and owns the new instance so we are fine
-	// the theListOfAlreadyAssignedSources needs to contain the 
-	// address of the copy.
-	theListOfAlreadyAssignedSources.
-	  addElement(theIndepVariable.equivalenceSignature(),
-		     &(aSequence.myDerivativePropagator.addSetDerivToEntryPList(theTarget,
-										theIndepVariable).getTarget()));
-      } // end if (wasn't assigned before)  
-      else {
-	// yes, it was assigned before
-	// copy the previously created temporary into the container
-	(theListOfAlreadyAssignedSources.getElement(theIndepVariable.equivalenceSignature()))->
-	  copyMyselfInto(*theIndepVariableContainer_p); 
-      }
-      // point to the new or previously created temporary
-      theIndepVariableContainer_cp=theIndepVariableContainer_p;
-    } // end if isAliased
-    else { // not aliased
-      // point to the original independent
-      theIndepVariableContainer_cp=&theIndepVariable;
-    }
     // make the entry to the DerivativePropagator
     // UN: use the  variable in the container theIndepVariableContainer_p 
     // instead of original independent
@@ -1308,13 +1318,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	(found && !doesPermitNarySax())) { 
       theSaxpy_p=&(aSequence.myDerivativePropagator.
 		   addSaxpyToEntryPList(theLocalJacobianEntry,
-					*theIndepVariableContainer_cp,
+					theIndepVariable,
 					theDependent));
     }
     else { 
       theSaxpy_p=(*aVarDevPropPPairListI).second;
       theSaxpy_p->addAX(theLocalJacobianEntry,
-			*theIndepVariableContainer_cp);
+			theIndepVariable);
     } 
     if (!found) { 
       theSaxpy_p->useAsSax();
@@ -1329,62 +1339,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					    BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 					    BasicBlockAlg::Sequence& aSequence,
 					    xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI) { 
-    // this is the independent:
-    const Variable& theIndepVariable(theCollapsedVertex.getRHSVariable());
-    // now figure out if the independent may be overwritten:
-    const Variable* theIndepVariableContainer_cp=0;
-    if (isAliased(theIndepVariable,
-		  theDepVertexPListCopyWithoutRemovals)) { 
-      // make a Variable (container) for use in the setDeriv
-      Variable* theIndepVariableContainer_p = new Variable;
-      // was this actual indepenent already assigned?
-      // Note, that at this point they should indeed all be syntactically distinct 
-      if (!(theListOfAlreadyAssignedSources.hasElement(theIndepVariable.equivalenceSignature()))) {
-	// no, we have to make a new assignment
-	// this will be the lhs:
-	Variable theTarget;
-	Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-			      getCallGraph().getScopeTree().getGlobalScope());
-	VariableSymbolReference* theTemporaryVariableReference_p=
-	  new VariableSymbolReference(theGlobalScope.getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::REAL_STYPE,
-							 SymbolShape::SCALAR,
-							 true),
-				      theGlobalScope);
-	theTemporaryVariableReference_p->setId("1");
-	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
-	theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
-	theTarget.getAliasMapKey().setTemporary();
-	theTarget.getDuUdMapKey().setTemporary();
-	// copy the new temporary into the container
-	theTarget.copyMyselfInto(*theIndepVariableContainer_p);
-	// "theTarget" is only local but the DerivativePropagatorSetDeriv 
-	// ctor performs a deep copy and owns the new instance so we are fine
-	// the theListOfAlreadyAssignedSources needs to contain the 
-	// address of the copy.
-	theListOfAlreadyAssignedSources.
-	  addElement(theIndepVariable.equivalenceSignature(),
-		     &(aSequence.myDerivativePropagator.addSetDerivToEntryPList(theTarget,
-										theIndepVariable).getTarget()));
-      } // end if (wasn't assigned efore  
-      else {
-	// yes, it was assigned before
-	// copy the previously created temporary into the container
-	(theListOfAlreadyAssignedSources.getElement(theIndepVariable.equivalenceSignature()))->
-	  copyMyselfInto(*theIndepVariableContainer_p); 
-      }
-      // point to the new or previously created temporary
-      theIndepVariableContainer_cp=theIndepVariableContainer_p;
-    } // end if isAliased
-    else { // not aliased
-      // point to the original independent
-      theIndepVariableContainer_cp=&theIndepVariable;
-    }
-    // make the direct assignment
     aSequence.myDerivativePropagator.
       addSetDerivToEntryPList(theCollapsedVertex.getLHSVariable(),
-			      *theIndepVariableContainer_cp,
+			      getVariableWithAliasCheck(theListOfAlreadyAssignedSources,
+							theDepVertexPListCopyWithoutRemovals,
+							theCollapsedVertex.getRHSVariable(),
+							aSequence),
 			      aDPBeginI);
   }
 
