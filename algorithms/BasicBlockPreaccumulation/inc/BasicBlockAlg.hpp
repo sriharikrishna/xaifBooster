@@ -628,6 +628,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const Variable& getVariable(const PrivateLinearizedComputationalGraphVertex& theVertex,
 				IntermediateReferences& theIntermediateReferences);
 
+    const Variable& getVariableWithAliasCheck(VariableHashTable& theListOfAlreadyAssignedSources,
+					      VariableCPList& theDepVertexPListCopyWithoutRemovals,
+					      const Variable& theIndepVariable,
+					      Sequence& aSequence); 
+
     void generateRemainderGraphPropagators(VariableHashTable& theListOfAlreadyAssignedSources,
 					   Sequence& aSequence, 
 					   VariableCPList& theDepVertexPListCopyWithoutRemovals,
