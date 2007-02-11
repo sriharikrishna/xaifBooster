@@ -526,7 +526,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     void handleCollapsedVertex(PrivateLinearizedComputationalGraphVertex& theCollapsedVertex,
 			       VariableCPList& theDepVertexPListCopyWithoutRemovals,
-			       VariableHashTable& theListOfAlreadyAssignedIndependents,
+			       VariableHashTable& theListOfAlreadyAssignedSources,
 			       BasicBlockAlg::Sequence& aSequence,
 			       xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI);
 
@@ -569,7 +569,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /** 
      * filter out singleton vertices
      */
-    void graphFilter(VariableHashTable& theListOfAlreadyAssignedIndependents,
+    void graphFilter(VariableHashTable& theListOfAlreadyAssignedSources,
 		     Sequence& aSequencePListI,
 		     VariableCPList& theDepVertexPListCopyWithoutRemovals,
 		     BasicBlockAlg::SequenceHolder& aSequenceHolder); 
@@ -584,7 +584,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
 
     void 
-    generate(VariableHashTable& theListOfAlreadyAssignedIndependents,
+    generate(VariableHashTable& theListOfAlreadyAssignedSources,
 	     Sequence& aSequence, 
 	     VariableCPList& theDepVertexPListCopyWithoutRemovals, 
 	     SequenceHolder& aSequenceHolder); 
@@ -596,7 +596,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void 
     generateSimplePropagator(const Variable& theIndepVariable,
 			     const Variable& theDependent,
-			     VariableHashTable& theListOfAlreadyAssignedIndependents,
+			     VariableHashTable& theListOfAlreadyAssignedSources,
 			     Sequence& aSequence,
 			     VariableCPList& theDepVertexPListCopyWithoutRemovals,
 			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
@@ -605,7 +605,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void 
     generateSimplePropagatorFromEdge(const Variable& theSourceVariable,
 				     const Variable& theTargetVariable,
-				     BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedIndependents,
+				     BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 				     Sequence& aSequence,
 				     BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 				     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
@@ -628,7 +628,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const Variable& getVariable(const PrivateLinearizedComputationalGraphVertex& theVertex,
 				IntermediateReferences& theIntermediateReferences);
 
-    void generateRemainderGraphPropagators(VariableHashTable& theListOfAlreadyAssignedIndependents,
+    void generateRemainderGraphPropagators(VariableHashTable& theListOfAlreadyAssignedSources,
 					   Sequence& aSequence, 
 					   VariableCPList& theDepVertexPListCopyWithoutRemovals,
 					   VarDevPropPPairList& theListOfAlreadyAssignedDependents,
@@ -637,7 +637,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
 					      const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theTarget, 
 					      const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
-					      VariableHashTable& theListOfAlreadyAssignedIndependents,
+					      VariableHashTable& theListOfAlreadyAssignedSources,
 					      Sequence& aSequence,
 					      VariableCPList& theDepVertexPListCopyWithoutRemovals,
 					      VarDevPropPPairList& theListOfAlreadyAssignedDependents,
