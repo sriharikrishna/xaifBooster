@@ -634,6 +634,24 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
   };
 
+  class PrivateLinearizedComputationalGraphEdgeLabelWriter {
+  public:
+    PrivateLinearizedComputationalGraphEdgeLabelWriter(const PrivateLinearizedComputationalGraph& g) : myG(g) {};
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
+      const PrivateLinearizedComputationalGraphEdge* thePrivateLinearizedComputationalGraphEdge_p=
+	dynamic_cast<const PrivateLinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
+											     myG.getInternalBoostGraph()),
+										  v));
+      if (thePrivateLinearizedComputationalGraphEdge_p->hasUnitLabel()) { 
+	out << "[color=\"red\"]";
+      }
+    }
+    const PrivateLinearizedComputationalGraph& myG;
+  };
+
+
+
   void 
   BasicBlockAlg::algorithm_action_3() {
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
@@ -921,7 +939,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
       GraphVizDisplay::show(theComputationalGraph,
 			    "flattened",
-			    PrivateLinearizedComputationalGraphVertexLabelWriter(theComputationalGraph));
+			    PrivateLinearizedComputationalGraphVertexLabelWriter(theComputationalGraph),
+			    PrivateLinearizedComputationalGraphEdgeLabelWriter(theComputationalGraph));
     }
     if (thisMode==PreaccumulationMode::MAX_GRAPH_SCARSE) { 
       // there is currently only 1 choice:
