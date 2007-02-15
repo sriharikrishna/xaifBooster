@@ -394,7 +394,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				  addUniqueAuxSymbol(SymbolKind::VARIABLE,
 						     SymbolType::REAL_STYPE,
 						     SymbolShape::SCALAR,
-						     false),
+						     true),
 				  theGlobalScope);
     theVariableSymbolReference_p->setId("1");
     theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::IntermediateReferences::getVariable");
