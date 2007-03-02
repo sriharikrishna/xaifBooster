@@ -30,7 +30,7 @@ PROJECT_NUMBER         = 1
 # If a relative path is entered, it will be relative to the location 
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = 
+OUTPUT_DIRECTORY       = doc
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create 
 # 4096 sub-directories (in 2 levels) under the output directory of each output 
@@ -450,38 +450,38 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = ../utils/inc \
-                         ../utils/inc/TemplateImpl \
-                         ../utils/src \
-                         ../boostWrapper/inc \
-                         ../boostWrapper/inc/TemplateImpl \
-                         ../system/inc \
-                         ../system/inc/TemplateImpl \
-                         ../system/src \
-                         ../algorithms/AddressArithmetic/inc \
-                         ../algorithms/AddressArithmetic/src \
-                         ../algorithms/Linearization/inc \
-                         ../algorithms/Linearization/src \
-                         ../algorithms/BasicBlockPreaccumulation/inc \
-                         ../algorithms/BasicBlockPreaccumulation/src \
-                         ../algorithms/BasicBlockPreaccumulationTape/inc \
-                         ../algorithms/BasicBlockPreaccumulationTape/src \
-                         ../algorithms/BasicBlockPreaccumulationTapeAdjoint/inc \
-                         ../algorithms/BasicBlockPreaccumulationTapeAdjoint/src \
-                         ../algorithms/BasicBlockPreaccumulationReverse/inc \
-                         ../algorithms/BasicBlockPreaccumulationReverse/src \
-                         ../algorithms/ControlFlowReversal/inc \
-                         ../algorithms/ControlFlowReversal/src \
-                         ../algorithms/MemOpsTradeoffPreaccumulation/inc \
-                         ../algorithms/MemOpsTradeoffPreaccumulation/src \
-                         ../algorithms/CodeReplacement/inc \
-                         ../algorithms/CodeReplacement/src \
-                         ../algorithms/CrossCountryInterface/inc \
-                         ../algorithms/CrossCountryInterface/src \
-                         ../algorithms/DerivativePropagator/inc \
-                         ../algorithms/DerivativePropagator/src \
-                         ../algorithms/InlinableXMLRepresentation/inc \
-                         ../algorithms/InlinableXMLRepresentation/src
+INPUT                  = utils/inc \
+                         utils/inc/TemplateImpl \
+                         utils/src \
+                         boostWrapper/inc \
+                         boostWrapper/inc/TemplateImpl \
+                         system/inc \
+                         system/inc/TemplateImpl \
+                         system/src \
+                         algorithms/AddressArithmetic/inc \
+                         algorithms/AddressArithmetic/src \
+                         algorithms/Linearization/inc \
+                         algorithms/Linearization/src \
+                         algorithms/BasicBlockPreaccumulation/inc \
+                         algorithms/BasicBlockPreaccumulation/src \
+                         algorithms/BasicBlockPreaccumulationTape/inc \
+                         algorithms/BasicBlockPreaccumulationTape/src \
+                         algorithms/BasicBlockPreaccumulationTapeAdjoint/inc \
+                         algorithms/BasicBlockPreaccumulationTapeAdjoint/src \
+                         algorithms/BasicBlockPreaccumulationReverse/inc \
+                         algorithms/BasicBlockPreaccumulationReverse/src \
+                         algorithms/ControlFlowReversal/inc \
+                         algorithms/ControlFlowReversal/src \
+                         algorithms/MemOpsTradeoffPreaccumulation/inc \
+                         algorithms/MemOpsTradeoffPreaccumulation/src \
+                         algorithms/CodeReplacement/inc \
+                         algorithms/CodeReplacement/src \
+                         algorithms/CrossCountryInterface/inc \
+                         algorithms/CrossCountryInterface/src \
+                         algorithms/DerivativePropagator/inc \
+                         algorithms/DerivativePropagator/src \
+                         algorithms/InlinableXMLRepresentation/inc \
+                         algorithms/InlinableXMLRepresentation/src
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
