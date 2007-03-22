@@ -1213,13 +1213,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList) {
     
     // figure out who holds the edge label: 
-    const Variable& theEdgeLabelVariable(getEdgeLabel(theEdge,theInternalReferenceConcretizationList));
+    const Variable& theEdgeLabelVariable(getEdgeLabel(theEdge,theInternalReferenceConcretizationList,aSequence));
     // figure out what the source is:
     const Variable* theSourceVariable_p(0);
-    if (aSequence.getBestResult().myRemainderGraph.numInEdgesOf(*(theSource.myRemainderVertex_p)))
+    if (aSequence.getBestResult().myRemainderGraph.numInEdgesOf(*(theSource.myRemainderVertex_p))) { 
       theSourceVariable_p=&(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p))));
-    else 
-      theSourceVariable_p=&(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p)).getRHSVariable());
+    }
+    else { 
+      theSourceVariable_p=&(getVariableWithAliasCheck(theListOfAlreadyAssignedSources,
+						      theDepVertexPListCopyWithoutRemovals,
+						      dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p)).getRHSVariable(),
+						      aSequence));
+    }
     // figure out what the target is:
     const Variable& theTargetVariable(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theTarget.myOriginalVertex_p))));
     switch(theEdge.myType) { 
@@ -1250,11 +1255,48 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   const Variable& BasicBlockAlg::getEdgeLabel(const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
-					      const InternalReferenceConcretizationList& theInternalReferenceConcretizationList) { 
+					      const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
+					      Sequence& aSequence) { 
     switch(theEdge.myType) { 
-    case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::LCG_EDGE :
-      return dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*(theEdge.myEliminationReference.myOriginalEdge_p)).getAssignmentFromEdge().getLHS();
+    case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::LCG_EDGE : {
+      const PrivateLinearizedComputationalGraphEdge& thePrivateEdge(dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*(theEdge.myEliminationReference.myOriginalEdge_p)));
+      if (thePrivateEdge.isDirectCopyEdge()) { 
+	// this is the stupid solution for now
+	Assignment& aNewAssignment=aSequence.appendFrontAssignment();
+	aNewAssignment.setId(makeUniqueId());
+	// make a new LHS: 
+	Variable& theLHS(aNewAssignment.getLHS());
+	Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+			      getCallGraph().getScopeTree().getGlobalScope());
+	VariableSymbolReference* theVariableSymbolReference_p=
+	  new VariableSymbolReference(theGlobalScope.getSymbolTable().
+				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							 SymbolType::REAL_STYPE,
+							 SymbolShape::SCALAR,
+							 false),
+				      theGlobalScope);
+	// JU: this assignment of the vertex Id might have to change 
+	// if we create vector assignments as auxilliary variables...
+	theVariableSymbolReference_p->setId("1");
+	theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS");
+	theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+	theLHS.getAliasMapKey().setTemporary();
+	theLHS.getDuUdMapKey().setTemporary();
+	// add the constant '1' to the assignment
+	Constant* theConstant_p=new Constant(SymbolType::INTEGER_STYPE,
+					     false);
+	// set the value
+	theConstant_p->setint(1);
+	// set the vertex id
+	theConstant_p->setId(aNewAssignment.getRHS().getNextVertexId());
+	// add it to RHS
+	aNewAssignment.getRHS().supplyAndAddVertexInstance(*theConstant_p);
+	return theLHS;
+      }
+      else
+	return thePrivateEdge.getAssignmentFromEdge().getLHS();
       break;
+    }
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::JAE_VERT : {
       // this is similar to what we do in traverseFromBottomUp
       const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& theReferredToVertex(*(theEdge.myEliminationReference.myJAEVertex_p));
@@ -1291,10 +1333,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			     aSequence,
 			     theDepVertexPListCopyWithoutRemovals,
 			     theListOfAlreadyAssignedDependents,
-			     dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(thePrivateEdge.
-											getLinearizedExpressionEdge().
-											getExpressionEdgeAlgBase()).
-			     getConcretePartialAssignment().getLHS());
+			     theLocalJacobianEntry);
     if(!thePrivateEdge.getParallels().empty()) { 
       for (PrivateLinearizedComputationalGraphEdge::ExpressionEdgePList::const_iterator i=thePrivateEdge.getParallels().begin();
 	   i!=thePrivateEdge.getParallels().end();
