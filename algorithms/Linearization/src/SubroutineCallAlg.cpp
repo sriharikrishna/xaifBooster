@@ -571,66 +571,70 @@ namespace xaifBoosterLinearization {
     ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.
 										   getConcreteArgumentAlgBase()));
     // one potential extra replacement spot:
-    ArrayAccess::IndexListType *thePostReplacementIndexListP=0;
-    ArrayAccess::IndexListType::iterator thePostReplacementIndexListI;
+    ArrayAccess::IndexTripletListType *thePostReplacementIndexTripletListP=0;
+    ArrayAccess::IndexTripletListType::iterator thePostReplacementIndexTripletListI;
     if (theConcreteArgumentAlg.hasPostConversionConcreteArgument()) { 
-      thePostReplacementIndexListP=&(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexList());
-      thePostReplacementIndexListI=thePostReplacementIndexListP->begin();
+      thePostReplacementIndexTripletListP=&(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexTripletList());
+      thePostReplacementIndexTripletListI=thePostReplacementIndexTripletListP->begin();
     }
-    const ArrayAccess::IndexListType& theIndexList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexList());
-    for (ArrayAccess::IndexListType::const_iterator anIndexListTypeCI=theIndexList.begin();
-	 anIndexListTypeCI!=theIndexList.end();
-	 ++anIndexListTypeCI) { 
-      // now we have two cases, essentially the expression is a single vertex with a constant 
-      // (this discounts constant expressions, this is a todo which might be dealt with later or 
-      // it may be completelt superceded by a TBR analysis)
-      const Expression& theIndexExpression(**anIndexListTypeCI);
-      if (theIndexExpression.numVertices()==1
-	  && 
-	  (!(*(theIndexExpression.vertices().first)).isArgument())) { 
-	// this must be a constant
-	// do nothing
-      }
-      else {  // is not a constant
-	// clear out the old index expression
-	if (thePostReplacementIndexListP)
-	  (*thePostReplacementIndexListI)->clear();
-	// make an assignment 
-	// because we cannot be sure that whatever variables 
-	// are involved in the index expression remain unchanged during this call
-	// and we also do not allow expressions as arguments in general
-	Assignment* theIndexExpressionAssignment_p(new Assignment(false));
-	// save it in the list
-	myPriorToCallIndexAssignments.push_back(theIndexExpressionAssignment_p);
-	theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
-	// create a new symbol and add a new VariableSymbolReference in the Variable
-	VariableSymbolReference* theNewVariableSymbolReference_p=
-	  new VariableSymbolReference(theBasicBlockScope.getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::INTEGER_STYPE,
-							 SymbolShape::SCALAR,
-							 false),
-				      theBasicBlockScope);
-	theNewVariableSymbolReference_p->setId("1");
-	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::SubroutineCallAlg::handleArrayAccessIndices");
-	// pass it on to the LHS and relinquish ownership
-	theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-	theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
-	theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
-	// set the RHS
-	theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
-	if (thePostReplacementIndexListP) {
-	  Argument& theIndexArgument(*new Argument);
-	  // relinquish ownership and it to the index expression
-	  // that we had previously cleared (see above)
-	  (*thePostReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
-	  theIndexArgument.setId(1);
-	  theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theIndexArgument.getVariable());
+    const ArrayAccess::IndexTripletListType& theIndexTripletList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexTripletList());
+    for (ArrayAccess::IndexTripletListType::const_iterator anIndexTripletListTypeCI=theIndexTripletList.begin();
+	 anIndexTripletListTypeCI!=theIndexTripletList.end();
+	 ++anIndexTripletListTypeCI) { 
+      for (IndexTriplet::IndexPairList::const_iterator anIndexPairListCI=(*anIndexTripletListTypeCI)->getIndexPairList().begin();
+	   anIndexPairListCI!=(*anIndexTripletListTypeCI)->getIndexPairList().end();
+	   ++anIndexPairListCI) { 
+	// now we have two cases, essentially the expression is a single vertex with a constant 
+	// (this discounts constant expressions, this is a todo which might be dealt with later or 
+	// it may be completly superceded by a TBR analysis)
+	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
+	if (theIndexExpression.numVertices()==1
+	    && 
+	    (!(*(theIndexExpression.vertices().first)).isArgument())) { 
+	  // this must be a constant
+	  // do nothing
 	}
-      }  // end else has more then one vertex   
+	else {  // is not a constant
+	  // clear out the old index expression
+	  if (thePostReplacementIndexTripletListP)
+	    (*thePostReplacementIndexTripletListI)->getExpression((*anIndexPairListCI).first).clear();
+	  // make an assignment 
+	  // because we cannot be sure that whatever variables 
+	  // are involved in the index expression remain unchanged during this call
+	  // and we also do not allow expressions as arguments in general
+	  Assignment* theIndexExpressionAssignment_p(new Assignment(false));
+	  // save it in the list
+	  myPriorToCallIndexAssignments.push_back(theIndexExpressionAssignment_p);
+	  theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
+	  // create a new symbol and add a new VariableSymbolReference in the Variable
+	  VariableSymbolReference* theNewVariableSymbolReference_p=
+	    new VariableSymbolReference(theBasicBlockScope.getSymbolTable().
+					addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							   SymbolType::INTEGER_STYPE,
+							   SymbolShape::SCALAR,
+							   false),
+					theBasicBlockScope);
+	  theNewVariableSymbolReference_p->setId("1");
+	  theNewVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::SubroutineCallAlg::handleArrayAccessIndices");
+	  // pass it on to the LHS and relinquish ownership
+	  theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+	  theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
+	  theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
+	  // set the RHS
+	  theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
+	  if (thePostReplacementIndexTripletListP) {
+	    Argument& theIndexArgument(*new Argument);
+	    // relinquish ownership and it to the index expression
+	    // that we had previously cleared (see above)
+	    (*thePostReplacementIndexTripletListI)->getExpression((*anIndexPairListCI).first).supplyAndAddVertexInstance(theIndexArgument);
+	    theIndexArgument.setId(1);
+	    theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theIndexArgument.getVariable());
+	  }
+	}  // end else has more then one vertex   
+      } // end for looking through the IndexTripletList
       // advance the other iterator if needed
-      if (thePostReplacementIndexListP)
-	++thePostReplacementIndexListI;
+      if (thePostReplacementIndexTripletListP)
+	++thePostReplacementIndexTripletListI;
     } // end for index
   } // end of SubroutineCallAlg::handleArrayAccessIndices
 

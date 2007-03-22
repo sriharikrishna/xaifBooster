@@ -192,15 +192,19 @@ namespace xaifBoosterAddressArithmetic {
 							CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables,
 							bool thisIsCF,
 							xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex) {
-    const ArrayAccess::IndexListType& anIndexList(anArrayAccess.getIndexList());
-    for (ArrayAccess::IndexListType::const_iterator anIndexListI=anIndexList.begin();
-	 anIndexListI!=anIndexList.end();
-	 ++anIndexListI) { 
-      findUnknownVariablesInExpression(**anIndexListI,
-				       theKnownVariables,
-				       theUnknownVariables,
-				       thisIsCF,
-				       theContainingVertex);
+    const ArrayAccess::IndexTripletListType& anIndexTripletList(anArrayAccess.getIndexTripletList());
+    for (ArrayAccess::IndexTripletListType::const_iterator anIndexTripletListCI=anIndexTripletList.begin();
+	 anIndexTripletListCI!=anIndexTripletList.end();
+	 ++anIndexTripletListCI) { 
+      for (IndexTriplet::IndexPairList::const_iterator anIndexPairListCI=(*anIndexTripletListCI)->getIndexPairList().begin();
+	   anIndexPairListCI!=(*anIndexTripletListCI)->getIndexPairList().end();
+	   ++anIndexPairListCI) { 
+	findUnknownVariablesInExpression(*((*anIndexPairListCI).second),
+					 theKnownVariables,
+					 theUnknownVariables,
+					 thisIsCF,
+					 theContainingVertex);
+      }
     }
   } 
 
