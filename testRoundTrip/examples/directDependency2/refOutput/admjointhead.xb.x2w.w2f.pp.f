@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:34:17 2006
+C Fortran file translated from WHIRL Mon Apr  2 13:53:15 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -235,7 +235,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      REAL(w2f__8) OpenAD_Symbol_10
       REAL(w2f__8) OpenAD_Symbol_11
       REAL(w2f__8) OpenAD_Symbol_12
       type(active) :: OpenAD_Symbol_13
@@ -251,7 +250,8 @@ C
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_8
+      REAL(w2f__8) OpenAD_Symbol_7
+      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -335,7 +335,7 @@ C$OPENAD XXX Template ad_template.f
       T%v = (X(1)%v+X(2)%v)
       T2%v = (T%v*2.0D00)
       CALL foo()
-      Y%v = (3.0D00*T2%v+2.0D00*T%v)
+      Y%v = (T2%v*3.0D00+T%v*2.0D00)
       
             our_rev_mode=our_orig_mode
           end if 
@@ -369,14 +369,14 @@ C$OPENAD XXX Template ad_template.f
           double_tape(double_tape_pointer) = OpenAD_Symbol_17
           double_tape_pointer = double_tape_pointer+1
       CALL foo()
-      OpenAD_Symbol_11 = (3.0D00*T2%v+2.0D00*T%v)
-      OpenAD_Symbol_8 = 3.0D00
+      OpenAD_Symbol_11 = (T2%v*3.0D00+T%v*2.0D00)
+      OpenAD_Symbol_7 = 3.0D00
       OpenAD_Symbol_5 = 1_w2f__i8
-      OpenAD_Symbol_10 = 2.0D00
+      OpenAD_Symbol_9 = 2.0D00
       OpenAD_Symbol_6 = 1_w2f__i8
       Y%v = OpenAD_Symbol_11
-      OpenAD_Symbol_18 = (OpenAD_Symbol_8 * OpenAD_Symbol_5)
-      OpenAD_Symbol_20 = (OpenAD_Symbol_10 * OpenAD_Symbol_6)
+      OpenAD_Symbol_18 = (OpenAD_Symbol_7 * OpenAD_Symbol_5)
+      OpenAD_Symbol_20 = (OpenAD_Symbol_9 * OpenAD_Symbol_6)
           double_tape(double_tape_pointer) = OpenAD_Symbol_18
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_20
