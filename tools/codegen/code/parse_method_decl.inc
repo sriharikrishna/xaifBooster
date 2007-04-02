@@ -12,6 +12,7 @@ void onAssignmentRHS(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper
 void onBasicBlock(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onBooleanOperation(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onBranch(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onBound(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onCallGraph(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onCallGraphEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onConcreteArgument(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
@@ -31,6 +32,8 @@ void onExpressionEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelpe
 void onForLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onGoto(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onIfStatement(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onIndex(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onIndexTriplet(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onInitialization(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onIntrinsic(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onLabel(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
@@ -46,6 +49,7 @@ void onScopeContainment(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHel
 void onScopes(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSideEffectReference(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onStatementId(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onStride(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSubroutineCall(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSymbol(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSymbolReference(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

@@ -180,18 +180,22 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 						   Scope& theBasicBlockScope) { 
     // first figure out if we actually need to do anything: 
     bool needReplacements=false;
-    const ArrayAccess::IndexListType& theIndexList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexList());
-    for (ArrayAccess::IndexListType::const_reverse_iterator anIndexListTypeCI=theIndexList.rbegin();
-	 !needReplacements && (anIndexListTypeCI!=theIndexList.rend());
-	 ++anIndexListTypeCI) { 
-      const Expression& theIndexExpression(**anIndexListTypeCI);
-      if (theIndexExpression.numVertices()==1
-	  && 
-	  !(*(theIndexExpression.vertices().first)).isArgument()) { 
-	// do nothing
-      }
-      else { 
-	needReplacements=true;
+    const ArrayAccess::IndexTripletListType& theIndexTripletList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexTripletList());
+    for (ArrayAccess::IndexTripletListType::const_reverse_iterator anIndexTripletListTypeCI=theIndexTripletList.rbegin();
+	 !needReplacements && (anIndexTripletListTypeCI!=theIndexTripletList.rend());
+	 ++anIndexTripletListTypeCI) { 
+      for (IndexTriplet::IndexPairList::const_iterator anIndexPairListCI=(*anIndexTripletListTypeCI)->getIndexPairList().begin();
+	   anIndexPairListCI!=(*anIndexTripletListTypeCI)->getIndexPairList().end();
+	   ++anIndexPairListCI) { 
+	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
+	if (theIndexExpression.numVertices()==1
+	    && 
+	    !(*(theIndexExpression.vertices().first)).isArgument()) { 
+	  // do nothing
+	}
+	else { 
+	  needReplacements=true;
+	}
       }
     }
     if (!needReplacements)
@@ -200,97 +204,101 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     xaifBoosterLinearization::ConcreteArgumentAlg& 
       theConcreteArgumentAlg(dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
     // three different potential replacement spots:
-    ArrayAccess::IndexListType 
-      *theArgumentReplacementIndexListP=0, *thePriorReplacementIndexListP=0, *thePostReplacementIndexListP=0;
-    ArrayAccess::IndexListType::reverse_iterator theArgumentReplacementIndexListI,thePriorReplacementIndexListI,thePostReplacementIndexListI;
+    ArrayAccess::IndexTripletListType 
+      *theArgumentReplacementIndexTripletListP=0, *thePriorReplacementIndexTripletListP=0, *thePostReplacementIndexTripletListP=0;
+    ArrayAccess::IndexTripletListType::reverse_iterator theArgumentReplacementIndexTripletListI,thePriorReplacementIndexTripletListI,thePostReplacementIndexTripletListI;
     if (!theConcreteArgumentAlg.hasReplacement()) { 
       // it already may have a replacement in case we got an activity mismatch
       // make the identical copy
       theConcreteArgumentAlg.makeReplacement(theConcreteArgument.getArgument().getVariable());
-      theArgumentReplacementIndexListP=&(theConcreteArgumentAlg.getReplacement().getArgument().getVariable().getArrayAccess().getIndexList());
-      theArgumentReplacementIndexListI=theArgumentReplacementIndexListP->rbegin();
+      theArgumentReplacementIndexTripletListP=&(theConcreteArgumentAlg.getReplacement().getArgument().getVariable().getArrayAccess().getIndexTripletList());
+      theArgumentReplacementIndexTripletListI=theArgumentReplacementIndexTripletListP->rbegin();
     } else { 
       if (theConcreteArgumentAlg.hasPriorConversionConcreteArgument()) { 
-	thePriorReplacementIndexListP=&(theConcreteArgumentAlg.getPriorConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexList());
-	thePriorReplacementIndexListI=thePriorReplacementIndexListP->rbegin();
+	thePriorReplacementIndexTripletListP=&(theConcreteArgumentAlg.getPriorConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexTripletList());
+	thePriorReplacementIndexTripletListI=thePriorReplacementIndexTripletListP->rbegin();
       }
       if (theConcreteArgumentAlg.hasPostConversionConcreteArgument()) { 
-	thePostReplacementIndexListP=&(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexList());
-	thePostReplacementIndexListI=thePostReplacementIndexListP->rbegin();
+	thePostReplacementIndexTripletListP=&(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexTripletList());
+	thePostReplacementIndexTripletListI=thePostReplacementIndexTripletListP->rbegin();
       }	
     }
     // reverse iterate in parallel through the original and replacement index lists 
-    for (ArrayAccess::IndexListType::const_reverse_iterator anIndexListTypeCI=theIndexList.rbegin();
-	 anIndexListTypeCI!=theIndexList.rend();
-	 ++anIndexListTypeCI) { 
-      const Expression& theIndexExpression(**anIndexListTypeCI);
-      if (theIndexExpression.numVertices()==1
-	  && 
-	  !(*(theIndexExpression.vertices().first)).isArgument()) { 
-	// do nothing
-      }
-      else { 
-	// it is a variable or expression whose value we pushed and now want to pop
-	// and replace. First clear the old index expressions where needed
-	if (theArgumentReplacementIndexListP)
-	  (*theArgumentReplacementIndexListI)->clear();
-	if (thePriorReplacementIndexListP)
-	  (*thePriorReplacementIndexListI)->clear();
-	if (thePostReplacementIndexListP)
-	  (*thePostReplacementIndexListI)->clear();
-	// pop the index value  we had taped
-	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* thePopCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i"));
-	myPops.push_back(thePopCall_p);
-	thePopCall_p->setId("inline_pop_i");
-	Variable& theInlineVariable(thePopCall_p->addConcreteArgument(1).getArgument().getVariable());
-	// give it a name etc.
-	// create a new symbol and add a new VariableSymbolReference in the Variable
-	VariableSymbolReference* theInlineVariableSymbolReference_p=
-	  new VariableSymbolReference(theBasicBlockScope.getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::INTEGER_STYPE,
-							 SymbolShape::SCALAR,
-							 false),
-				      theBasicBlockScope);
-	theInlineVariableSymbolReference_p->setId("1");
-	theInlineVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::handleArrayAccessIndices");
-	// pass it on to the variable and relinquish ownership
-	theInlineVariable.supplyAndAddVertexInstance(*theInlineVariableSymbolReference_p);
-	theInlineVariable.getAliasMapKey().setTemporary();
-	theInlineVariable.getDuUdMapKey().setTemporary();
-	// create a copy of the variable in the indexExpression where needed
-	if (theArgumentReplacementIndexListP) {
-	  Argument& theIndexArgument(*new Argument);
-	  // relinquish ownership and it to the index expression
-	  // that we had previously cleared (see above)
-	  (*theArgumentReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
-	  theIndexArgument.setId(1);
-	  theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
+    for (ArrayAccess::IndexTripletListType::const_reverse_iterator anIndexTripletListTypeCI=theIndexTripletList.rbegin();
+	 anIndexTripletListTypeCI!=theIndexTripletList.rend();
+	 ++anIndexTripletListTypeCI) { 
+      for (IndexTriplet::IndexPairList::const_iterator anIndexPairListCI=(*anIndexTripletListTypeCI)->getIndexPairList().begin();
+	   anIndexPairListCI!=(*anIndexTripletListTypeCI)->getIndexPairList().end();
+	   ++anIndexPairListCI) { 
+	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
+	if (theIndexExpression.numVertices()==1
+	    && 
+	    !(*(theIndexExpression.vertices().first)).isArgument()) { 
+	  // do nothing
 	}
-	if (thePriorReplacementIndexListP) {
-	  Argument& theIndexArgument(*new Argument);
-	  // relinquish ownership and it to the index expression
-	  // that we had previously cleared (see above)
-	  (*thePriorReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
-	  theIndexArgument.setId(1);
-	  theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
+	else { 
+	  // it is a variable or expression whose value we pushed and now want to pop
+	  // and replace. First clear the old index expressions where needed
+	  if (theArgumentReplacementIndexTripletListP)
+	    (*theArgumentReplacementIndexTripletListI)->getExpression((*anIndexPairListCI).first).clear();
+	  if (thePriorReplacementIndexTripletListP)
+	    (*thePriorReplacementIndexTripletListI)->getExpression((*anIndexPairListCI).first).clear();
+	  if (thePostReplacementIndexTripletListP)
+	    (*thePostReplacementIndexTripletListI)->getExpression((*anIndexPairListCI).first).clear();
+	  // pop the index value  we had taped
+	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* thePopCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i"));
+	  myPops.push_back(thePopCall_p);
+	  thePopCall_p->setId("inline_pop_i");
+	  Variable& theInlineVariable(thePopCall_p->addConcreteArgument(1).getArgument().getVariable());
+	  // give it a name etc.
+	  // create a new symbol and add a new VariableSymbolReference in the Variable
+	  VariableSymbolReference* theInlineVariableSymbolReference_p=
+	    new VariableSymbolReference(theBasicBlockScope.getSymbolTable().
+					addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							   SymbolType::INTEGER_STYPE,
+							   SymbolShape::SCALAR,
+							   false),
+					theBasicBlockScope);
+	  theInlineVariableSymbolReference_p->setId("1");
+	  theInlineVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::handleArrayAccessIndices");
+	  // pass it on to the variable and relinquish ownership
+	  theInlineVariable.supplyAndAddVertexInstance(*theInlineVariableSymbolReference_p);
+	  theInlineVariable.getAliasMapKey().setTemporary();
+	  theInlineVariable.getDuUdMapKey().setTemporary();
+	  // create a copy of the variable in the indexExpression where needed
+	  if (theArgumentReplacementIndexTripletListP) {
+	    Argument& theIndexArgument(*new Argument);
+	    // relinquish ownership and it to the index expression
+	    // that we had previously cleared (see above)
+	    (*theArgumentReplacementIndexTripletListI)->getExpression((*anIndexPairListCI).first).supplyAndAddVertexInstance(theIndexArgument);
+	    theIndexArgument.setId(1);
+	    theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
+	  }
+	  if (thePriorReplacementIndexTripletListP) {
+	    Argument& theIndexArgument(*new Argument);
+	    // relinquish ownership and it to the index expression
+	    // that we had previously cleared (see above)
+	    (*thePriorReplacementIndexTripletListI)->getExpression((*anIndexPairListCI).first).supplyAndAddVertexInstance(theIndexArgument);
+	    theIndexArgument.setId(1);
+	    theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
+	  }
+	  if (thePostReplacementIndexTripletListP) {
+	    Argument& theIndexArgument(*new Argument);
+	    // relinquish ownership and it to the index expression
+	    // that we had previously cleared (see above)
+	    (*thePostReplacementIndexTripletListI)->getExpression((*anIndexPairListCI).first).supplyAndAddVertexInstance(theIndexArgument);
+	    theIndexArgument.setId(1);
+	    theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
+	  }
 	}
-	if (thePostReplacementIndexListP) {
-	  Argument& theIndexArgument(*new Argument);
-	  // relinquish ownership and it to the index expression
-	  // that we had previously cleared (see above)
-	  (*thePostReplacementIndexListI)->supplyAndAddVertexInstance(theIndexArgument);
-	  theIndexArgument.setId(1);
-	  theInlineVariable.copyMyselfInto(theIndexArgument.getVariable());
-	}
-      }
-      // advance the other iterators as needed
-      if (theArgumentReplacementIndexListP)
-	++theArgumentReplacementIndexListI;
-      if (thePriorReplacementIndexListP)
-	++thePriorReplacementIndexListI;
-      if (thePostReplacementIndexListP)
-	++thePostReplacementIndexListI;
+	// advance the other iterators as needed
+	if (theArgumentReplacementIndexTripletListP)
+	  ++theArgumentReplacementIndexTripletListI;
+	if (thePriorReplacementIndexTripletListP)
+	  ++thePriorReplacementIndexTripletListI;
+	if (thePostReplacementIndexTripletListP)
+	  ++thePostReplacementIndexTripletListI;
+      } // end for index pairs
     } // end for iteration through indices
   } // end of SubroutineCallAlg::handleArrayAccessIndices
 
