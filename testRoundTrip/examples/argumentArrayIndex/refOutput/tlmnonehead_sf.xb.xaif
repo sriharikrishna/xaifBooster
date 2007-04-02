@@ -282,11 +282,13 @@
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="4"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
-                    <xaif:SymbolReference vertex_id="1" symbol_id="K_4" annotation="" scope_id="4"/>
-                  </xaif:VariableReference>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="K_4" annotation="" scope_id="4"/>
+                    </xaif:VariableReference>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
@@ -295,15 +297,17 @@
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="4"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
-                  <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-                    <xaif:SymbolReference vertex_id="1" symbol_id="K_4" annotation="" scope_id="4"/>
-                  </xaif:VariableReference>
-                  <xaif:Constant vertex_id="3" type="integer" value="1"/>
-                  <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-                  <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
+                    <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="K_4" annotation="" scope_id="4"/>
+                    </xaif:VariableReference>
+                    <xaif:Constant vertex_id="3" type="integer" value="1"/>
+                    <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
+                    <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>
@@ -314,11 +318,13 @@
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="4"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
-                    <xaif:SymbolReference vertex_id="1" symbol_id="K_4" annotation="" scope_id="4"/>
-                  </xaif:VariableReference>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="K_4" annotation="" scope_id="4"/>
+                    </xaif:VariableReference>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:VariableReference>

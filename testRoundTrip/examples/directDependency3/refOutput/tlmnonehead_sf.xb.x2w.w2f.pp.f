@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:40:08 2006
+C Fortran file translated from WHIRL Mon Apr  2 13:23:34 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -31,7 +31,7 @@ C$OPENAD XXX Template ad_template.f
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_1
+      REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
@@ -59,10 +59,10 @@ C$OPENAD XXX Template ad_template.f
       CALL setderiv(OpenAD_Symbol_3,X(1))
       CALL setderiv(T,OpenAD_Symbol_3)
       CALL foo()
-      OpenAD_Symbol_2 = (2.0D00*T%v)
-      OpenAD_Symbol_1 = 2.0D00
+      OpenAD_Symbol_2 = (T%v*2.0D00)
+      OpenAD_Symbol_0 = 2.0D00
       Y%v = OpenAD_Symbol_2
-      OpenAD_Symbol_4 = OpenAD_Symbol_1
+      OpenAD_Symbol_4 = OpenAD_Symbol_0
       CALL setderiv(OpenAD_Symbol_5,T)
       CALL sax(OpenAD_Symbol_4,OpenAD_Symbol_5,Y)
       RETURN
