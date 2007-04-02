@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:27:53 2007
+C Fortran file translated from WHIRL Mon Apr  2 13:37:56 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -54,6 +54,7 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      LOGICAL(w2f__i4) t__1
       REAL(w2f__8) OpenAD_Symbol_27
       REAL(w2f__8) OpenAD_Symbol_28
       REAL(w2f__8) OpenAD_Symbol_29
@@ -69,6 +70,7 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       I = 1
+      t__1 = I .LT. 3
       DO WHILE(I .LT. INT(3_w2f__i8))
         IF(I .LT. INT(2_w2f__i8)) THEN
           __value__(Y(2)) = SIN(__value__(X(1)))
@@ -76,6 +78,7 @@ C$OPENAD XXX Template ad_template.f
           __value__(Y(1)) = COS(__value__(X(2)))
         ENDIF
         I = I + 1
+        t__1 = I .LT. 3
       END DO
       __value__(Y(2)) = (__value__(Y(1)) * __value__(Y(2)))
       RETURN
@@ -83,6 +86,7 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       I = 1
+      t__1 = I .LT. 3
       OpenAD_Symbol_18 = 0_w2f__i8
       DO WHILE(I .LT. INT(3_w2f__i8))
         IF(I .LT. INT(2_w2f__i8)) THEN
@@ -107,6 +111,7 @@ C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(OpenAD_Symbol_20)
         ENDIF
         I = I + 1
+        t__1 = I .LT. 3
         OpenAD_Symbol_18 = (INT(OpenAD_Symbol_18) + INT(1_w2f__i8))
       END DO
 C     $OpenAD$ INLINE push_i(subst)
@@ -213,6 +218,7 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
       I = 1
+      t__1 = I .LT. 3
       OpenAD_Symbol_24 = 0_w2f__i8
       DO WHILE(I .LT. INT(3_w2f__i8))
         IF(I .LT. INT(2_w2f__i8)) THEN
@@ -237,6 +243,7 @@ C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(OpenAD_Symbol_26)
         ENDIF
         I = I + 1
+        t__1 = I .LT. 3
         OpenAD_Symbol_24 = (INT(OpenAD_Symbol_24) + INT(1_w2f__i8))
       END DO
 C     $OpenAD$ INLINE push_i(subst)

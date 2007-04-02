@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:30:16 2007
+C Fortran file translated from WHIRL Mon Apr  2 13:39:42 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -35,6 +35,7 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i4) t__1
       INTEGER(w2f__i8) OpenAD_Symbol_7
       INTEGER(w2f__i8) OpenAD_Symbol_8
 C
@@ -43,6 +44,7 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
+      t__1 = K
       DO I = 1, K, 1
         __value__(Y(INT(I))) = __value__(X(I))
       END DO
@@ -51,6 +53,7 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
+      t__1 = K
       OpenAD_Symbol_3 = 0_w2f__i8
       DO I = 1, K, 1
         __value__(Y(INT(I))) = __value__(X(I))
@@ -119,6 +122,7 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
+      t__1 = K
       OpenAD_Symbol_6 = 0_w2f__i8
       DO I = 1, K, 1
         __value__(Y(INT(I))) = __value__(X(I))
