@@ -55,7 +55,7 @@
 
 #include <list>
 #include "xaifBooster/system/inc/VariableVertex.hpp"
-#include "xaifBooster/system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/IndexTriplet.hpp"
 
 namespace xaifBooster { 
 
@@ -74,9 +74,6 @@ namespace xaifBooster {
 
     void printXMLHierarchy(std::ostream& os) const;
 
-    void printXMLHierarchyIndex(std::ostream& os,
-				const Expression& theIndex) const;
-
     /** 
      * \todo implementation incomplete
      */
@@ -88,27 +85,26 @@ namespace xaifBooster {
     virtual std::string equivalenceSignature() const;
 
     static const std::string ourXAIFName;
-    static const std::string our_myIndex_XAIFName;
     static const std::string our_myId_XAIFName;
 
     virtual VariableVertex& createCopyOfMyself() const ;
 
-    typedef std::list<Expression*> IndexListType;
+    typedef std::list<IndexTriplet*> IndexTripletListType;
 
     /**
      * access index list
      */
-    const IndexListType& getIndexList() const ;
+    const IndexTripletListType& getIndexTripletList() const ;
 
     /**
      * access index list
      */
-    IndexListType& getIndexList();
+    IndexTripletListType& getIndexTripletList();
     
     /** 
      * add a new expression to the list 
      */
-    Expression& addIndex();
+    IndexTriplet& addIndexTriplet();
 
   private:
     
@@ -125,7 +121,7 @@ namespace xaifBooster {
     /**
      * Array indeces
      */
-    IndexListType myIndexList;
+    IndexTripletListType myIndexTripletList;
 
   };
  

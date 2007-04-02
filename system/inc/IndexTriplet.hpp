@@ -1,3 +1,5 @@
+#ifndef _INDEXTRIPLET_INCLUDE_
+#define _INDEXTRIPLET_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,68 +52,93 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/PrintManager.hpp"
-#include "xaifBooster/system/inc/ArrayAccess.hpp"
+
+#include <list>
+#include "xaifBooster/system/inc/VariableVertex.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
 
 namespace xaifBooster { 
 
-  VariableVertex& 
-  ArrayAccess::createCopyOfMyself() const { 
-    ArrayAccess* theCopy_p=new ArrayAccess();
-    for (IndexTripletListType::const_iterator i=myIndexTripletList.begin();
-	 i!=myIndexTripletList.end();
-	 ++i) { 
-      (*i)->copyMyselfInto(theCopy_p->addIndexTriplet());
-    } 
-    theCopy_p->setId(getId());
-    return *theCopy_p;
-  }
+  /**
+   * contains array dereference allowing 
+   * for slicing and non-unit stride
+   */
+  class IndexTriplet {
+  public:
 
-  std::string ArrayAccess::equivalenceSignature() const { 
-    std::ostringstream oss;
-    // JU: incomplete: 
-    oss << "ArrayAccess::" << std::ends;
-    return std::string(oss.str());
-  } 
+    IndexTriplet ();
 
-  const std::string ArrayAccess::ourXAIFName("xaif:ArrayElementReference");
-  const std::string ArrayAccess::our_myId_XAIFName("vertex_id");
+    virtual ~IndexTriplet();
 
-  void ArrayAccess::printXMLHierarchy(std::ostream& os) const {
-    PrintManager& pm=PrintManager::getInstance();
-    os << pm.indent() 
-       << "<" 
-       << ourXAIFName.c_str() 
-       << " " 
-       << our_myId_XAIFName.c_str() 
-       << "=\"" 
-       << getId().c_str() 
-       << "\">" 
-       << std::endl;
-    for (IndexTripletListType::const_iterator i=myIndexTripletList.begin();
-	 i!=myIndexTripletList.end();
-	 ++i) 
-      (*i)->printXMLHierarchy(os);
-    os << pm.indent()
-       << "</"
-       << ourXAIFName.c_str()
-       << ">"
-       << std::endl;
-    pm.releaseInstance(); 
-  } // end ArrayAccess::printXMLHierarchy
+    void printXMLHierarchy(std::ostream& os) const;
 
-  const ArrayAccess::IndexTripletListType& ArrayAccess::getIndexTripletList() const {
-    return myIndexTripletList;
-  }
-  
-  ArrayAccess::IndexTripletListType& ArrayAccess::getIndexTripletList() {
-    return myIndexTripletList;
-  }
+    void printXMLHierarchyIndexTripletElement(std::ostream& os,
+					     const Expression& theIndex,
+					     const std::string& anXaifName) const;
 
-  IndexTriplet& ArrayAccess::addIndexTriplet() {
-    IndexTriplet* anIndexTriplet_p=new IndexTriplet();
-    myIndexTripletList.push_back(anIndexTriplet_p);
-    return *anIndexTriplet_p;
-  }
+    /** 
+     * \todo implementation incomplete
+     */
+    std::string debug() const { return std::string("IndexTriplet");} ;
 
-} 
+    /** 
+     * \todo implementation incomplete
+     */
+    virtual std::string equivalenceSignature() const;
+
+    static const std::string ourXAIFName;
+    static const std::string our_myIndex_XAIFName;
+    static const std::string our_myBound_XAIFName;
+    static const std::string our_myStride_XAIFName;
+
+    void copyMyselfInto(IndexTriplet& anotherIndexTriplet) const ;
+
+    enum IndexTriplet_E{
+      IT_INDEX,
+      IT_BOUND,
+      IT_STRIDE};
+      
+    /** 
+     * add an expression identified by discriminator
+     */
+    Expression& addExpression(const IndexTriplet_E& discriminator);
+
+    /** 
+     * get an expression identified by discriminator
+     */
+    const Expression& getExpression(const IndexTriplet_E& discriminator) const;
+    Expression& getExpression(const IndexTriplet_E& discriminator);
+
+    /** 
+     * test if an expression identified by discriminator exists
+     */
+    bool hasExpression(const IndexTriplet_E& discriminator) const;
+
+    typedef std::pair<IndexTriplet_E,Expression*> IndexPair;
+
+    typedef std::list<IndexPair> IndexPairList;
+
+    const IndexPairList& getIndexPairList() const;
+
+  private:
+    
+    /**
+     * no def
+     */
+    IndexTriplet(const IndexTriplet&);
+
+    /**
+     * no def
+     */
+    IndexTriplet operator=(const IndexTriplet&);
+
+    /** 
+     * the index or lower bound
+     */ 
+    IndexPairList myIndexPairList;
+
+  };
+ 
+} // end of namespace xaifBooster
+                                                                     
+#endif

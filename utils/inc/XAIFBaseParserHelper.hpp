@@ -75,6 +75,7 @@ namespace xaifBooster {
   class ForLoop;
   class Goto;
   class IfStatement;
+  class IndexTriplet;
   class Initialization;
   class Label;
   class PostLoop;
