@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:47:30 2007
+C Fortran file translated from WHIRL Mon Apr  2 14:02:52 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -20,7 +20,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      REAL(w2f__8) OpenAD_Symbol_10
       TYPE (OpenADTy_active) OpenAD_Symbol_100
       REAL(w2f__8) OpenAD_Symbol_101
       TYPE (OpenADTy_active) OpenAD_Symbol_102
@@ -50,7 +49,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_19
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_20
-      REAL(w2f__8) OpenAD_Symbol_22
+      REAL(w2f__8) OpenAD_Symbol_21
       REAL(w2f__8) OpenAD_Symbol_23
       REAL(w2f__8) OpenAD_Symbol_24
       REAL(w2f__8) OpenAD_Symbol_25
@@ -121,6 +120,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_87
       REAL(w2f__8) OpenAD_Symbol_88
       REAL(w2f__8) OpenAD_Symbol_89
+      REAL(w2f__8) OpenAD_Symbol_9
       REAL(w2f__8) OpenAD_Symbol_90
       REAL(w2f__8) OpenAD_Symbol_91
       TYPE (OpenADTy_active) OpenAD_Symbol_92
@@ -190,16 +190,16 @@ C$OPENAD XXX Template ad_template.f
       A = 5.0D-01
       SQRT3 = 5.77350258827209472656D-01
       __value__(MATR(0)) = (__value__(X(2)) - __value__(X(1)))
-      __value__(MATR(1)) = (SQRT3 *(2.0D00 * __value__(X(3)) -
+      __value__(MATR(1)) = (SQRT3 *(__value__(X(3)) * 2.0D00 -
      >  __value__(X(2)) - __value__(X(1))))
       __value__(MATR(2)) = (__value__(X(5)) - __value__(X(4)))
-      __value__(MATR(3)) = (SQRT3 *(2.0D00 * __value__(X(6)) -
+      __value__(MATR(3)) = (SQRT3 *(__value__(X(6)) * 2.0D00 -
      >  __value__(X(5)) - __value__(X(4))))
       __value__(M03) = (__value__(MATR(0)) * __value__(MATR(3)))
       __value__(M12) = (__value__(MATR(1)) * __value__(MATR(2)))
       __value__(G) = (__value__(M03) - __value__(M12))
-      D00 = (2.0D00 * __value__(M03))
-      D11 = (2.0D00 * __value__(M12))
+      D00 = (__value__(M03) * 2.0D00)
+      D11 = (__value__(M12) * 2.0D00)
       __value__(M00) = (__value__(MATR(0)) * __value__(MATR(0)))
       __value__(M11) = (__value__(MATR(1)) * __value__(MATR(1)))
       __value__(M22) = (__value__(MATR(2)) * __value__(MATR(2)))
@@ -218,10 +218,10 @@ C$OPENAD XXX Template ad_template.f
       __value__(MATR(0)) = (__value__(X(2)) - __value__(X(1)))
       OpenAD_Symbol_0 = 1_w2f__i8
       OpenAD_Symbol_1 = (-1_w2f__i8)
-      OpenAD_Symbol_2 = (2.0D00 * __value__(X(3)) - __value__(X(2)) -
+      OpenAD_Symbol_2 = (__value__(X(3)) * 2.0D00 - __value__(X(2)) -
      >  __value__(X(1)))
       OpenAD_Symbol_11 = (SQRT3 * OpenAD_Symbol_2)
-      OpenAD_Symbol_10 = 2.0D00
+      OpenAD_Symbol_9 = 2.0D00
       OpenAD_Symbol_7 = 1_w2f__i8
       OpenAD_Symbol_8 = (-1_w2f__i8)
       OpenAD_Symbol_5 = 1_w2f__i8
@@ -231,10 +231,10 @@ C$OPENAD XXX Template ad_template.f
       __value__(MATR(2)) = (__value__(X(5)) - __value__(X(4)))
       OpenAD_Symbol_12 = 1_w2f__i8
       OpenAD_Symbol_13 = (-1_w2f__i8)
-      OpenAD_Symbol_14 = (2.0D00 * __value__(X(6)) - __value__(X(5)) -
+      OpenAD_Symbol_14 = (__value__(X(6)) * 2.0D00 - __value__(X(5)) -
      >  __value__(X(4)))
       OpenAD_Symbol_23 = (SQRT3 * OpenAD_Symbol_14)
-      OpenAD_Symbol_22 = 2.0D00
+      OpenAD_Symbol_21 = 2.0D00
       OpenAD_Symbol_19 = 1_w2f__i8
       OpenAD_Symbol_20 = (-1_w2f__i8)
       OpenAD_Symbol_17 = 1_w2f__i8
@@ -249,8 +249,8 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_68 = (OpenAD_Symbol_20 * OpenAD_Symbol_61)
       OpenAD_Symbol_70 = (OpenAD_Symbol_7 * OpenAD_Symbol_64)
       OpenAD_Symbol_71 = (OpenAD_Symbol_8 * OpenAD_Symbol_64)
-      OpenAD_Symbol_73 = (OpenAD_Symbol_22 * OpenAD_Symbol_67)
-      OpenAD_Symbol_75 = (OpenAD_Symbol_10 * OpenAD_Symbol_70)
+      OpenAD_Symbol_73 = (OpenAD_Symbol_21 * OpenAD_Symbol_67)
+      OpenAD_Symbol_75 = (OpenAD_Symbol_9 * OpenAD_Symbol_70)
       OpenAD_Symbol_77 = OpenAD_Symbol_0
       OpenAD_Symbol_79 = OpenAD_Symbol_1
       OpenAD_Symbol_81 = OpenAD_Symbol_12
@@ -286,8 +286,8 @@ C     $OpenAD$ INLINE push(subst)
       __value__(G) = (__value__(M03) - __value__(M12))
       OpenAD_Symbol_30 = 1_w2f__i8
       OpenAD_Symbol_31 = (-1_w2f__i8)
-      D00 = (2.0D00 * __value__(M03))
-      D11 = (2.0D00 * __value__(M12))
+      D00 = (__value__(M03) * 2.0D00)
+      D11 = (__value__(M12) * 2.0D00)
       OpenAD_Symbol_34 = (__value__(MATR(0)) * __value__(MATR(0)))
       OpenAD_Symbol_32 = __value__(MATR(0))
       OpenAD_Symbol_33 = __value__(MATR(0))
@@ -613,10 +613,10 @@ C$OPENAD XXX Template ad_template.f
       __value__(MATR(0)) = (__value__(X(2)) - __value__(X(1)))
       OpenAD_Symbol_0 = 1_w2f__i8
       OpenAD_Symbol_1 = (-1_w2f__i8)
-      OpenAD_Symbol_2 = (2.0D00 * __value__(X(3)) - __value__(X(2)) -
+      OpenAD_Symbol_2 = (__value__(X(3)) * 2.0D00 - __value__(X(2)) -
      >  __value__(X(1)))
       OpenAD_Symbol_11 = (SQRT3 * OpenAD_Symbol_2)
-      OpenAD_Symbol_10 = 2.0D00
+      OpenAD_Symbol_9 = 2.0D00
       OpenAD_Symbol_7 = 1_w2f__i8
       OpenAD_Symbol_8 = (-1_w2f__i8)
       OpenAD_Symbol_5 = 1_w2f__i8
@@ -626,10 +626,10 @@ C$OPENAD XXX Template ad_template.f
       __value__(MATR(2)) = (__value__(X(5)) - __value__(X(4)))
       OpenAD_Symbol_12 = 1_w2f__i8
       OpenAD_Symbol_13 = (-1_w2f__i8)
-      OpenAD_Symbol_14 = (2.0D00 * __value__(X(6)) - __value__(X(5)) -
+      OpenAD_Symbol_14 = (__value__(X(6)) * 2.0D00 - __value__(X(5)) -
      >  __value__(X(4)))
       OpenAD_Symbol_23 = (SQRT3 * OpenAD_Symbol_14)
-      OpenAD_Symbol_22 = 2.0D00
+      OpenAD_Symbol_21 = 2.0D00
       OpenAD_Symbol_19 = 1_w2f__i8
       OpenAD_Symbol_20 = (-1_w2f__i8)
       OpenAD_Symbol_17 = 1_w2f__i8
@@ -644,8 +644,8 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_68 = (OpenAD_Symbol_20 * OpenAD_Symbol_61)
       OpenAD_Symbol_70 = (OpenAD_Symbol_7 * OpenAD_Symbol_64)
       OpenAD_Symbol_71 = (OpenAD_Symbol_8 * OpenAD_Symbol_64)
-      OpenAD_Symbol_73 = (OpenAD_Symbol_22 * OpenAD_Symbol_67)
-      OpenAD_Symbol_75 = (OpenAD_Symbol_10 * OpenAD_Symbol_70)
+      OpenAD_Symbol_73 = (OpenAD_Symbol_21 * OpenAD_Symbol_67)
+      OpenAD_Symbol_75 = (OpenAD_Symbol_9 * OpenAD_Symbol_70)
       OpenAD_Symbol_77 = OpenAD_Symbol_0
       OpenAD_Symbol_79 = OpenAD_Symbol_1
       OpenAD_Symbol_81 = OpenAD_Symbol_12
@@ -681,8 +681,8 @@ C     $OpenAD$ INLINE push(subst)
       __value__(G) = (__value__(M03) - __value__(M12))
       OpenAD_Symbol_30 = 1_w2f__i8
       OpenAD_Symbol_31 = (-1_w2f__i8)
-      D00 = (2.0D00 * __value__(M03))
-      D11 = (2.0D00 * __value__(M12))
+      D00 = (__value__(M03) * 2.0D00)
+      D11 = (__value__(M12) * 2.0D00)
       OpenAD_Symbol_34 = (__value__(MATR(0)) * __value__(MATR(0)))
       OpenAD_Symbol_32 = __value__(MATR(0))
       OpenAD_Symbol_33 = __value__(MATR(0))
