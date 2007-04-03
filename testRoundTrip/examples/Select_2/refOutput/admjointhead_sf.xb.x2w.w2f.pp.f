@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:46:45 2007
+C Fortran file translated from WHIRL Mon Apr  2 14:01:49 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -101,7 +101,7 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_25
       INTEGER(w2f__i8) OpenAD_Symbol_26
       REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_5
+      REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
       type(active) :: OpenAD_Symbol_8
@@ -115,6 +115,7 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i4) select_expr_temp_0
       INTEGER(w2f__i8) OpenAD_Symbol_27
       REAL(w2f__8) OpenAD_Symbol_28
       INTEGER(w2f__i8) OpenAD_Symbol_29
@@ -188,11 +189,12 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 3, 1
+        select_expr_temp_0 = I
         IF ( I  .EQ.  1)  GO TO  19
         IF ( I  .EQ.  2)  GO TO  23
         GO TO 24
 24      CONTINUE
-        Y(INT(I))%v = (2.0D00*X(I)%v)
+        Y(INT(I))%v = (X(I)%v*2.0D00)
         GO TO 21
 19      CONTINUE
         Y(INT(I))%v = SIN(X(I)%v)
@@ -218,14 +220,15 @@ C taping
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_16 = 0_w2f__i8
       DO I = 1, 3, 1
+        select_expr_temp_0 = I
         IF ( I  .EQ.  1)  GO TO  91
         IF ( I  .EQ.  2)  GO TO  95
         GO TO 96
 96      CONTINUE
-        OpenAD_Symbol_6 = (2.0D00*X(I)%v)
-        OpenAD_Symbol_5 = 2.0D00
+        OpenAD_Symbol_6 = (X(I)%v*2.0D00)
+        OpenAD_Symbol_4 = 2.0D00
         Y(INT(I))%v = OpenAD_Symbol_6
-        OpenAD_Symbol_11 = OpenAD_Symbol_5
+        OpenAD_Symbol_11 = OpenAD_Symbol_4
           integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_11
@@ -298,7 +301,7 @@ C adjoint
           OpenAD_Symbol_15 = integer_tape(integer_tape_pointer)
         IF ( OpenAD_Symbol_15  .EQ.  1)  GO TO  188
         IF ( OpenAD_Symbol_15  .EQ.  2)  GO TO  187
-        IF ( OpenAD_Symbol_15  .EQ.  3)  GO TO  186
+        IF ( OpenAD_Symbol_15  .EQ.  3)  GO TO  184
 188     CONTINUE
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_27 = integer_tape(integer_tape_pointer)
@@ -327,7 +330,7 @@ C adjoint
      +_Symbol_10%d
           OpenAD_Symbol_10%d = 0.0d0
         GO TO 190
-186     CONTINUE
+184     CONTINUE
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_33 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1

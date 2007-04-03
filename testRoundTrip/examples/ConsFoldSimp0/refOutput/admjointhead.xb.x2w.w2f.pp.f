@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:33:47 2006
+C Fortran file translated from WHIRL Mon Apr  2 13:52:29 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -74,7 +74,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
       type(active) :: OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_3
+      REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
@@ -158,7 +158,7 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       T1%v = (X(1)%v+X(1)%v)
-      T2%v = (2.0D00*T1%v)
+      T2%v = (T1%v*2.0D00)
       Y1%v = T2%v
       Y(1)%v = Y1%v
       
@@ -178,13 +178,13 @@ C$OPENAD XXX Template ad_template.f
       T1%v = (X(1)%v+X(1)%v)
       OpenAD_Symbol_0 = 1_w2f__i8
       OpenAD_Symbol_1 = 1_w2f__i8
-      OpenAD_Symbol_4 = (2.0D00*T1%v)
-      OpenAD_Symbol_3 = 2.0D00
+      OpenAD_Symbol_4 = (T1%v*2.0D00)
+      OpenAD_Symbol_2 = 2.0D00
       T2%v = OpenAD_Symbol_4
       Y1%v = T2%v
       Y(1)%v = Y1%v
       OpenAD_Symbol_5 = (INT(1_w2f__i8) * INT(1_w2f__i8))
-      OpenAD_Symbol_6 = (OpenAD_Symbol_3 * OpenAD_Symbol_5)
+      OpenAD_Symbol_6 = (OpenAD_Symbol_2 * OpenAD_Symbol_5)
       OpenAD_Symbol_7 = (OpenAD_Symbol_0 * OpenAD_Symbol_6)
       OpenAD_Symbol_9 = (OpenAD_Symbol_1 * OpenAD_Symbol_6)
           double_tape(double_tape_pointer) = OpenAD_Symbol_7

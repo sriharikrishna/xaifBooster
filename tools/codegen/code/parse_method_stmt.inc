@@ -5,12 +5,12 @@ ourActionCatalogue.addElement(Argument::ourXAIFName, ActionItem(&XAIFBaseParserH
 ourActionCatalogue.addElement(ArgumentList::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onArgumentList));
 ourActionCatalogue.addElement(ArgumentSymbolReference::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onArgumentSymbolReference));
 ourActionCatalogue.addElement(ArrayAccess::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onArrayAccess));
-ourActionCatalogue.addElement(ArrayAccess::our_myIndex_XAIFName, ActionItem(&XAIFBaseParserHandlers::onArrayIndex));
 ourActionCatalogue.addElement(Assignment::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onAssignment));
 ourActionCatalogue.addElement(Assignment::our_myLHS_XAIFName, ActionItem(&XAIFBaseParserHandlers::onAssignmentLHS));
 ourActionCatalogue.addElement(Assignment::our_myRHS_XAIFName, ActionItem(&XAIFBaseParserHandlers::onAssignmentRHS));
 ourActionCatalogue.addElement(BasicBlock::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onBasicBlock));
 ourActionCatalogue.addElement(BooleanOperation::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onBooleanOperation));
+ourActionCatalogue.addElement(IndexTriplet::our_myBound_XAIFName, ActionItem(&XAIFBaseParserHandlers::onBound));
 ourActionCatalogue.addElement(Branch::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onBranch));
 ourActionCatalogue.addElement(CallGraph::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onCallGraph));
 ourActionCatalogue.addElement(CallGraphEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onCallGraphEdge));
@@ -30,6 +30,8 @@ ourActionCatalogue.addElement(ExpressionEdge::ourXAIFName, ActionItem(&XAIFBaseP
 ourActionCatalogue.addElement(ForLoop::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onForLoop));
 ourActionCatalogue.addElement(Goto::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onGoto));
 ourActionCatalogue.addElement(IfStatement::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onIfStatement));
+ourActionCatalogue.addElement(IndexTriplet::our_myIndex_XAIFName, ActionItem(&XAIFBaseParserHandlers::onIndex));
+ourActionCatalogue.addElement(IndexTriplet::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onIndexTriplet));
 ourActionCatalogue.addElement(Initialization::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onInitialization));
 ourActionCatalogue.addElement(Intrinsic::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onIntrinsic));
 ourActionCatalogue.addElement(Label::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onLabel));
@@ -45,6 +47,7 @@ ourActionCatalogue.addElement(ScopeContainment::ourXAIFName, ActionItem(&XAIFBas
 ourActionCatalogue.addElement(Scopes::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onScopes));
 ourActionCatalogue.addElement(SideEffectList::our_SideEffectReference_XAIFName, ActionItem(&XAIFBaseParserHandlers::onSideEffectReference));
 ourActionCatalogue.addElement(DuUdMapEntry::our_StatementId_XAIFName, ActionItem(&XAIFBaseParserHandlers::onStatementId));
+ourActionCatalogue.addElement(IndexTriplet::our_myStride_XAIFName, ActionItem(&XAIFBaseParserHandlers::onStride));
 ourActionCatalogue.addElement(SubroutineCall::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSubroutineCall));
 ourActionCatalogue.addElement(Symbol::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSymbol));
 ourActionCatalogue.addElement(VariableSymbolReference::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSymbolReference));

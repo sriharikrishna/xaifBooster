@@ -536,11 +536,32 @@ namespace xaifBooster {
   }
 
   void 
-  XAIFBaseParserHandlers::onArrayIndex(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onArrayIndex" ); 
+  XAIFBaseParserHandlers::onIndexTriplet(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onIndexTriplet" ); 
     ArrayAccess& theArrayAccess(passingIn.getArrayAccess());
-    Expression& theIndexExpression(theArrayAccess.addIndex());
-    passingOut.setExpression(theIndexExpression);
+    IndexTriplet& theIndexTriplet(theArrayAccess.addIndexTriplet());
+    passingOut.setIndexTriplet(theIndexTriplet);
+  }
+
+  void 
+  XAIFBaseParserHandlers::onIndex(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onIndex" ); 
+    IndexTriplet& theIndexTriplet(passingIn.getIndexTriplet());
+    passingOut.setExpression(theIndexTriplet.addExpression(IndexTriplet::IT_INDEX));
+  }
+
+  void 
+  XAIFBaseParserHandlers::onBound(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onBound" ); 
+    IndexTriplet& theIndexTriplet(passingIn.getIndexTriplet());
+    passingOut.setExpression(theIndexTriplet.addExpression(IndexTriplet::IT_BOUND));
+  }
+
+  void 
+  XAIFBaseParserHandlers::onStride(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onStride" ); 
+    IndexTriplet& theIndexTriplet(passingIn.getIndexTriplet());
+    passingOut.setExpression(theIndexTriplet.addExpression(IndexTriplet::IT_STRIDE));
   }
 
   void 

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:44:14 2006
+C Fortran file translated from WHIRL Mon Apr  2 13:27:26 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -21,8 +21,8 @@ C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
       TYPE (OpenADTy_active) OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_5
+      REAL(w2f__8) OpenAD_Symbol_2
+      REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
       TYPE (OpenADTy_active) OpenAD_Symbol_8
@@ -51,15 +51,15 @@ C     open(3,file='data.tmp')
       READ(3, '(EN26.16E3,EN26.16E3)') X
 C     close(3)
       CLOSE(UNIT = 3)
-      OpenAD_Symbol_6 = (2.0D00 * __value__(X(1)) + 3.0D00 * __value__(
-     > X(2)))
-      OpenAD_Symbol_3 = 2.0D00
+      OpenAD_Symbol_6 = (__value__(X(1)) * 2.0D00 + __value__(X(2)) *
+     >  3.0D00)
+      OpenAD_Symbol_2 = 2.0D00
       OpenAD_Symbol_0 = 1_w2f__i8
-      OpenAD_Symbol_5 = 3.0D00
+      OpenAD_Symbol_4 = 3.0D00
       OpenAD_Symbol_1 = 1_w2f__i8
       __value__(Y(1)) = OpenAD_Symbol_6
-      OpenAD_Symbol_7 = (OpenAD_Symbol_3 * OpenAD_Symbol_0)
-      OpenAD_Symbol_9 = (OpenAD_Symbol_5 * OpenAD_Symbol_1)
+      OpenAD_Symbol_7 = (OpenAD_Symbol_2 * OpenAD_Symbol_0)
+      OpenAD_Symbol_9 = (OpenAD_Symbol_4 * OpenAD_Symbol_1)
       CALL setderiv(__deriv__(OpenAD_Symbol_10), __deriv__(X(2)))
       CALL setderiv(__deriv__(OpenAD_Symbol_8), __deriv__(X(1)))
       CALL sax(OpenAD_Symbol_7, __deriv__(OpenAD_Symbol_8), __deriv__(Y

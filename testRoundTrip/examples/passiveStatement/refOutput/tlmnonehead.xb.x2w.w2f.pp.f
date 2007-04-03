@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:43:50 2006
+C Fortran file translated from WHIRL Mon Apr  2 13:27:14 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -33,6 +33,6 @@ C$OPENAD XXX Template ad_template.f
       Y(1)%v = X(1)%v
       CALL setderiv(OpenAD_Symbol_0,X(1))
       CALL setderiv(Y(1),OpenAD_Symbol_0)
-      I = 1+INT(X(1)%v+(-1.0D00))
+      I = INT(X(1)%v+(-1.0D00))+1
       RETURN
       END SUBROUTINE

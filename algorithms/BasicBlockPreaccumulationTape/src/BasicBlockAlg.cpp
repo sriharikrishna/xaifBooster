@@ -266,61 +266,65 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   void
   BasicBlockAlg::reinterpretArrayAccess(BasicBlockAlg::ReinterpretedDerivativePropagator& aReinterpretedDerivativePropagator,
 					const ArrayAccess& theArrayAccess) { 
-    const ArrayAccess::IndexListType& theIndexList(theArrayAccess.getIndexList());
-    for (ArrayAccess::IndexListType::const_iterator anIndexListTypeCI=theIndexList.begin();
-	 anIndexListTypeCI!=theIndexList.end();
-	 ++anIndexListTypeCI) { 
-      // now we have two cases, essentially the expression is a single vertex with a constant 
-      // (this discounts constant expressions, this is a todo which might be dealt with later or 
-      // it may be completely superceded by a TBR analysis)
-      const Expression& theIndexExpression(**anIndexListTypeCI);
-      if (theIndexExpression.numVertices()==1) { 
-	// now it could be either a Constant or an Argument
-	Expression::ConstVertexIteratorPair p(theIndexExpression.vertices());
-	// has only one: 
-	if ((*(p.first)).isArgument()) { 
-	  // it is a variable whose value we want to push
+    const ArrayAccess::IndexTripletListType& theIndexTripletList(theArrayAccess.getIndexTripletList());
+    for (ArrayAccess::IndexTripletListType::const_iterator anIndexTripletListTypeCI=theIndexTripletList.begin();
+	 anIndexTripletListTypeCI!=theIndexTripletList.end();
+	 ++anIndexTripletListTypeCI) { 
+      for (IndexTriplet::IndexPairList::const_iterator anIndexPairListCI=(*anIndexTripletListTypeCI)->getIndexPairList().begin();
+	   anIndexPairListCI!=(*anIndexTripletListTypeCI)->getIndexPairList().end();
+	   ++anIndexPairListCI) { 
+	// now we have two cases, essentially the expression is a single vertex with a constant 
+	// (this discounts constant expressions, this is a todo which might be dealt with later or 
+	// it may be completely superceded by a TBR analysis)
+	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
+	if (theIndexExpression.numVertices()==1) { 
+	  // now it could be either a Constant or an Argument
+	  Expression::ConstVertexIteratorPair p(theIndexExpression.vertices());
+	  // has only one: 
+	  if ((*(p.first)).isArgument()) { 
+	    // it is a variable whose value we want to push
+	    // make it
+	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
+	    // save it in the list
+	    aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+										     ForLoopReversalType::ANONYMOUS);
+	    theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
+	    dynamic_cast<const Argument&>(*(p.first)).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+	  }
+	} // has one vertex 
+	else {  // has more then one vertex
 	  // make it
+	  Assignment* theIndexExpressionAssignment_p(new Assignment(false));
+	  // save it in the list
+	  aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theIndexExpressionAssignment_p,
+										   ForLoopReversalType::ANONYMOUS);
+	  theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
+	  // create a new symbol and add a new VariableSymbolReference in the Variable
+	  VariableSymbolReference* theNewVariableSymbolReference_p=
+	    new VariableSymbolReference(getContaining().getScope().
+					getSymbolTable().
+					addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							   SymbolType::INTEGER_STYPE,
+							   SymbolShape::SCALAR,
+							   false),
+					getContaining().getScope());
+	  theNewVariableSymbolReference_p->setId("1");
+	  theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess");
+	  // pass it on to the LHS and relinquish ownership
+	  theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+	  theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
+	  theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
+	  // set the RHS
+	  theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
+	  // make the subroutine call: 
 	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
 	  // save it in the list
-	  aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+	  aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
 										   ForLoopReversalType::ANONYMOUS);
-	  theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
-	  dynamic_cast<const Argument&>(*(p.first)).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-	}
-      } // has one vertex 
-      else {  // has more then one vertex
-	// make it
-	Assignment* theIndexExpressionAssignment_p(new Assignment(false));
-	// save it in the list
-	aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theIndexExpressionAssignment_p,
-										 ForLoopReversalType::ANONYMOUS);
-	theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
-	// create a new symbol and add a new VariableSymbolReference in the Variable
-	VariableSymbolReference* theNewVariableSymbolReference_p=
-	  new VariableSymbolReference(getContaining().getScope().
-				      getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::INTEGER_STYPE,
-							 SymbolShape::SCALAR,
-							 false),
-				      getContaining().getScope());
-	theNewVariableSymbolReference_p->setId("1");
-	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess");
-	// pass it on to the LHS and relinquish ownership
-	theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-	theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
-	theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
-	// set the RHS
-	theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
-	// make the subroutine call: 
-	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
-	// save it in the list
-	aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
-										 ForLoopReversalType::ANONYMOUS);
 	theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
 	theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-      }  // end else has more then one vertex   
+	}  // end else has more then one vertex   
+      } // loop for index pairs
     } // end for i
   } // end of BasicBlockAlg::reinterpretArrayAccess
 
