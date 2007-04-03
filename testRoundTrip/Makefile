@@ -174,6 +174,9 @@ whirl2xaif xaif2whirl whirl2sexp sexp2whirl:
 whirl2f whirl2f_be:
 	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
 
+ir_b2a: 
+	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/ir_tools/ir_b2a
+
 xaifBooster:
 	./pickAlgorithm.bash
 
@@ -209,7 +212,7 @@ testAllclean:
 
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif whirl2sexp xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
+	$(RM) mfef90 whirl2xaif whirl2sexp sexp2whirl ir_b2a xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
 	$(RM) *.mod *.o
 
 obj test doc: 
