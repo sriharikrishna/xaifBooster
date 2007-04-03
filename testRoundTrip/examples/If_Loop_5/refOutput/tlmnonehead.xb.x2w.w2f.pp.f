@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:41:13 2006
+C Fortran file translated from WHIRL Mon Apr  2 13:24:26 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -35,6 +35,7 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      LOGICAL(w2f__i4) t__1
 C
 C     **** Top Level Pragmas ****
 C
@@ -45,6 +46,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       I = 1
+      t__1 = I .LT. 3
       DO WHILE(I .LT. INT(3_w2f__i8))
         IF(I .LT. INT(2_w2f__i8)) THEN
           OpenAD_Symbol_1 = SIN(X(1)%v)
@@ -62,6 +64,7 @@ C$OPENAD XXX Template ad_template.f
           CALL sax(OpenAD_Symbol_9,OpenAD_Symbol_10,Y(1))
         ENDIF
         I = I + 1
+        t__1 = I .LT. 3
       END DO
       OpenAD_Symbol_6 = (Y(1)%v*Y(2)%v)
       OpenAD_Symbol_4 = Y(2)%v

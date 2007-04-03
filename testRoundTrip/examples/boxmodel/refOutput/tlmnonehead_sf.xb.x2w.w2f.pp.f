@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:37:25 2006
+C Fortran file translated from WHIRL Mon Apr  2 13:20:13 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -207,7 +207,7 @@ C$OPENAD XXX Template ad_template.f
       TSTAR(2) = 0.0D00
       SSTAR(1) = 3.6D+01
       SSTAR(2) = 3.4D+01
-      UBAR = (2.0D+01 * SV)
+      UBAR = (SV * 2.0D+01)
       T(1)%v = 2.0D+01
       T(2)%v = 1.0D00
       T(3)%v = 1.0D00
@@ -310,17 +310,17 @@ C$OPENAD XXX Template ad_template.f
       DAY = 8.64D+04
       YEAR = (DAY * 3.65D+02)
       SV = 1.0D+12
-      U0 = ((1.6D+01 * SV) / 4.00000000000000019169D-04)
+      U0 = ((SV * 1.6D+01) / 4.00000000000000019169D-04)
       ALPHA = 1.6679999999999998864D-04
       BETA = 7.81000000000000010186D-04
       DAYS_PER_50M_MIXED_LAYER = 5.0D+01
-      GAMMA_T = (1.0D00 /(3.0D+02 * DAY))
+      GAMMA_T = (1.0D00 /(DAY * 3.0D+02))
       GAMMA_S = (0.0D00 /((BHEIGHT(1) / 5.0D+03) * DAY *
      >  DAYS_PER_50M_MIXED_LAYER))
       EPSILON_IC = (-1.00000000000000004792D-04)
       NOISE_CORRELATION_TIME = (DAY * 1.5D+01)
-      DELTA_T = (5.0D00 * DAY)
-      INTEGRATION_TIME = (5.0D+01 * YEAR)
+      DELTA_T = (DAY * 5.0D00)
+      INTEGRATION_TIME = (YEAR * 5.0D+01)
       N_MAX = INT((INTEGRATION_TIME / DELTA_T))
       FDEPS = 9.99999999999999954748D-07
       Y(1) = (THOUSAND / 3.2680000000000000715D-02)
@@ -404,7 +404,7 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL box_ini_fields()
       MAXLEV2 = (N_MAX / 73) + 1
-      IF(INT(3650_w2f__i8) .LT. N_MAX) THEN
+      IF(N_MAX .GT. INT(3650_w2f__i8)) THEN
         WRITE(*, *) 'NEED TO SET nlev1*nlev2 >= n_max '
       ELSE
         DO ILEV2 = 1, 50, 1
@@ -568,7 +568,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_130
       REAL(w2f__8) OpenAD_Symbol_131
       REAL(w2f__8) OpenAD_Symbol_132
-      REAL(w2f__8) OpenAD_Symbol_134
+      REAL(w2f__8) OpenAD_Symbol_133
       REAL(w2f__8) OpenAD_Symbol_135
       REAL(w2f__8) OpenAD_Symbol_227
       REAL(w2f__8) OpenAD_Symbol_228
@@ -602,13 +602,13 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       DO L = 1, 3, 1
-        OpenAD_Symbol_126 = (FLDOLD(L)%v+FLDNEW(L)%v-2.0D00*FLDNOW(L)%v)
+        OpenAD_Symbol_126 = (FLDOLD(L)%v+FLDNEW(L)%v-FLDNOW(L)%v*2.0D00)
         OpenAD_Symbol_135 = (FLDNOW(L)%v+ROBERT_FILTER_COEFF*OpenAD_Symb
      +ol_126)
         OpenAD_Symbol_124 = 1_w2f__i8
         OpenAD_Symbol_129 = 1_w2f__i8
         OpenAD_Symbol_131 = 1_w2f__i8
-        OpenAD_Symbol_134 = 2.0D00
+        OpenAD_Symbol_133 = 2.0D00
         OpenAD_Symbol_132 = (-1_w2f__i8)
         OpenAD_Symbol_130 = 1_w2f__i8
         OpenAD_Symbol_128 = ROBERT_FILTER_COEFF
@@ -619,7 +619,7 @@ C$OPENAD XXX Template ad_template.f
         OpenAD_Symbol_230 = (OpenAD_Symbol_130 * OpenAD_Symbol_227)
         OpenAD_Symbol_231 = (OpenAD_Symbol_131 * OpenAD_Symbol_230)
         OpenAD_Symbol_233 = (OpenAD_Symbol_132 * OpenAD_Symbol_230)
-        OpenAD_Symbol_234 = (OpenAD_Symbol_134 * OpenAD_Symbol_233)
+        OpenAD_Symbol_234 = (OpenAD_Symbol_133 * OpenAD_Symbol_233)
         OpenAD_Symbol_236 = OpenAD_Symbol_124
         CALL setderiv(OpenAD_Symbol_237,FLDNOW(L))
         CALL setderiv(OpenAD_Symbol_235,FLDNOW(L))
@@ -714,7 +714,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       DO L = 1, 3, 1
-        OpenAD_Symbol_142 = (2.0D00 * DELTA_T)
+        OpenAD_Symbol_142 = (DELTA_T * 2.0D00)
         OpenAD_Symbol_145 = (FLDOLD(L)%v+DFLDDT(L)%v*OpenAD_Symbol_142)
         OpenAD_Symbol_140 = 1_w2f__i8
         OpenAD_Symbol_143 = OpenAD_Symbol_142

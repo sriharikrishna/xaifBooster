@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:30:21 2007
+C Fortran file translated from WHIRL Mon Apr  2 13:39:47 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -86,6 +86,7 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i4) t__1
       INTEGER(w2f__i8) OpenAD_Symbol_7
       INTEGER(w2f__i8) OpenAD_Symbol_8
 C
@@ -99,7 +100,8 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      DO I = 1, (2 * K), 1
+      t__1 = K * 2
+      DO I = 1, (K * 2), 1
         Y(INT(I))%v = X(I)%v
       END DO
       
@@ -108,8 +110,9 @@ C$OPENAD XXX Simple loop\t
 ! taping
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
+      t__1 = K * 2
       OpenAD_Symbol_3 = 0_w2f__i8
-      DO I = 1, (2 * K), 1
+      DO I = 1, (K * 2), 1
         Y(INT(I))%v = X(I)%v
           integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1

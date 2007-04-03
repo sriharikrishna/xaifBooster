@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Nov 28 15:43:14 2006
+C Fortran file translated from WHIRL Mon Apr  2 13:26:13 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -24,12 +24,14 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i4) t__1
 C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      DO I = 1, (2 * K), 1
+      t__1 = K * 2
+      DO I = 1, (K * 2), 1
         Y(INT(I))%v = X(I)%v
         CALL setderiv(OpenAD_Symbol_0,X(I))
         CALL setderiv(Y(I),OpenAD_Symbol_0)

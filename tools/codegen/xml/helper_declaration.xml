@@ -9,7 +9,7 @@
   <CodeGen:NonRepeatableCodeOrLineBreak text="public:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="32">
+  <CodeGen:RepeatableCode nr_versions="33">
     <CodeGen:CodeTemplate nr_entries="15">
       <CodeGen:StaticCode text="void set"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -82,6 +82,9 @@
       <CodeGen:DynamicCode hook_ref="1" text="IfStatement"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="IndexTriplet"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Initialization"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -127,7 +130,7 @@
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak text="private:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="32" use_versions="3">
+  <CodeGen:RepeatableCode nr_versions="33" use_versions="3">
     <CodeGen:CodeTemplate nr_entries="5">
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="* my"/>

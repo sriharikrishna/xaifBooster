@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:35:08 2006
+C Fortran file translated from WHIRL Mon Apr  2 13:54:59 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -111,7 +111,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_8
+      REAL(w2f__8) OpenAD_Symbol_7
       REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
@@ -201,7 +201,7 @@ C$OPENAD XXX Template ad_template.f
       T1%v = (X(1)%v/X(2)%v)
       T2%v = COS(T1%v)
       Y1%v = EXP(T2%v)
-      Y2%v = (3.14000010490417480469D00*T2%v)
+      Y2%v = (T2%v*3.14000010490417480469D00)
       Y3%v = SIN(T2%v)
       Y4%v = (T1%v*T2%v)
       Y(1)%v = Y1%v
@@ -232,8 +232,8 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_6 = EXP(T2%v)
       OpenAD_Symbol_5 = EXP(T2%v)
       Y1%v = OpenAD_Symbol_6
-      OpenAD_Symbol_9 = (3.14000010490417480469D00*T2%v)
-      OpenAD_Symbol_8 = 3.14000010490417480469D00
+      OpenAD_Symbol_9 = (T2%v*3.14000010490417480469D00)
+      OpenAD_Symbol_7 = 3.14000010490417480469D00
       Y2%v = OpenAD_Symbol_9
       OpenAD_Symbol_11 = SIN(T2%v)
       OpenAD_Symbol_10 = COS(T2%v)
@@ -249,7 +249,7 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_15 = (OpenAD_Symbol_12 * INT(1_w2f__i8))
       OpenAD_Symbol_16 = (OpenAD_Symbol_13 * INT(1_w2f__i8))
       OpenAD_Symbol_17 = (OpenAD_Symbol_10 * INT(1_w2f__i8))
-      OpenAD_Symbol_18 = (OpenAD_Symbol_8 * INT(1_w2f__i8))
+      OpenAD_Symbol_18 = (OpenAD_Symbol_7 * INT(1_w2f__i8))
       OpenAD_Symbol_19 = (OpenAD_Symbol_5 * INT(1_w2f__i8))
       OpenAD_Symbol_20 = (OpenAD_Symbol_15 + OpenAD_Symbol_3 *  OpenAD_S
      +ymbol_16)

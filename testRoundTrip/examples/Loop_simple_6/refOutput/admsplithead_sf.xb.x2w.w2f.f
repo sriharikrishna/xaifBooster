@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:30:12 2007
+C Fortran file translated from WHIRL Mon Apr  2 13:39:37 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -18,7 +18,7 @@ C
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_1
+      REAL(w2f__8) OpenAD_Symbol_0
       INTEGER(w2f__i8) OpenAD_Symbol_10
       INTEGER(w2f__i8) OpenAD_Symbol_11
       INTEGER(w2f__i8) OpenAD_Symbol_12
@@ -67,7 +67,7 @@ C$OPENAD XXX Simple loop\t
       ELSE
 C$OPENAD XXX Simple loop\t
         DO I = 1, 3, 1
-          __value__(Y(INT(I))) = (2.0D00 * __value__(X(I)))
+          __value__(Y(INT(I))) = (__value__(X(I)) * 2.0D00)
         END DO
       ENDIF
       RETURN
@@ -85,10 +85,10 @@ C       $OpenAD$ INLINE push_i(subst)
       ELSE
 C$OPENAD XXX Simple loop\t
         DO I = 1, 3, 1
-          OpenAD_Symbol_2 = (2.0D00 * __value__(X(I)))
-          OpenAD_Symbol_1 = 2.0D00
+          OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
+          OpenAD_Symbol_0 = 2.0D00
           __value__(Y(INT(I))) = OpenAD_Symbol_2
-          OpenAD_Symbol_4 = OpenAD_Symbol_1
+          OpenAD_Symbol_4 = OpenAD_Symbol_0
 C         $OpenAD$ INLINE push(subst)
           CALL push(OpenAD_Symbol_4)
         END DO
@@ -177,10 +177,10 @@ C       $OpenAD$ INLINE push_i(subst)
 C$OPENAD XXX Simple loop\t
         OpenAD_Symbol_15 = 0_w2f__i8
         DO I = 1, 3, 1
-          OpenAD_Symbol_2 = (2.0D00 * __value__(X(I)))
-          OpenAD_Symbol_1 = 2.0D00
+          OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
+          OpenAD_Symbol_0 = 2.0D00
           __value__(Y(INT(I))) = OpenAD_Symbol_2
-          OpenAD_Symbol_4 = OpenAD_Symbol_1
+          OpenAD_Symbol_4 = OpenAD_Symbol_0
 C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(I)
 C         $OpenAD$ INLINE push(subst)

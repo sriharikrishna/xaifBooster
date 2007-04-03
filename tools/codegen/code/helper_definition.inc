@@ -250,6 +250,20 @@ bool XAIFBaseParserHelper::hasIfStatement() const {
 return (myIfStatement_p!=0);
 }
 
+void XAIFBaseParserHelper::setIndexTriplet(IndexTriplet& whatToSet) {
+if (myIndexTriplet_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "IndexTriplet" << " item already set");
+myIndexTriplet_p=&whatToSet;
+}
+IndexTriplet& XAIFBaseParserHelper::getIndexTriplet() const {
+if (!myIndexTriplet_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "IndexTriplet" << " item not set");
+return *myIndexTriplet_p;
+}
+bool XAIFBaseParserHelper::hasIndexTriplet() const {
+return (myIndexTriplet_p!=0);
+}
+
 void XAIFBaseParserHelper::setInitialization(Initialization& whatToSet) {
 if (myInitialization_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "Initialization" << " item already set");

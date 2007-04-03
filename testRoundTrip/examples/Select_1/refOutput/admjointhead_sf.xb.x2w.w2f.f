@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:46:39 2007
+C Fortran file translated from WHIRL Mon Apr  2 14:01:44 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -45,6 +45,7 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i4) select_expr_temp_0
       REAL(w2f__8) OpenAD_Symbol_18
       REAL(w2f__8) OpenAD_Symbol_19
 C
@@ -59,6 +60,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       I = 1
       __value__(Y(1)) = 2.0D00
+      select_expr_temp_0 = I
       IF ( I  .EQ.  1)  GO TO  4
       IF ( I  .EQ.  2)  GO TO  8
       GO TO 9
@@ -79,6 +81,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       I = 1
       __value__(Y(1)) = 2.0D00
+      select_expr_temp_0 = I
       IF ( I  .EQ.  1)  GO TO  40
       IF ( I  .EQ.  2)  GO TO  44
       GO TO 45
@@ -206,6 +209,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
       I = 1
       __value__(Y(1)) = 2.0D00
+      select_expr_temp_0 = I
       IF ( I  .EQ.  1)  GO TO  150
       IF ( I  .EQ.  2)  GO TO  154
       GO TO 155

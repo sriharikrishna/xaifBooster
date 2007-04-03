@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="2" nr_templates="2" outfile="parse_method_stmt.inc">
 
-  <CodeGen:RepeatableCode nr_versions="54">
+  <CodeGen:RepeatableCode nr_versions="57">
     <CodeGen:CodeTemplate nr_entries="9">
       <CodeGen:StaticCode text="ourActionCatalogue.addElement("/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -54,11 +54,6 @@
       <CodeGen:DynamicCode hook_ref="3" text="ArrayAccess"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="ArrayAccess"/>
-      <CodeGen:DynamicCode hook_ref="2" text="our_myIndex_XAIFName"/>
-      <CodeGen:DynamicCode hook_ref="3" text="ArrayIndex"/>
-    </CodeGen:CodeVersion>
-    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Assignment"/>
       <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="Assignment"/>
@@ -82,6 +77,11 @@
       <CodeGen:DynamicCode hook_ref="1" text="BooleanOperation"/>
       <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="BooleanOperation"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="IndexTriplet"/>
+      <CodeGen:DynamicCode hook_ref="2" text="our_myBound_XAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="Bound"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Branch"/>
@@ -179,6 +179,16 @@
       <CodeGen:DynamicCode hook_ref="3" text="IfStatement"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="IndexTriplet"/>
+      <CodeGen:DynamicCode hook_ref="2" text="our_myIndex_XAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="Index"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="IndexTriplet"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="IndexTriplet"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Initialization"/>
       <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="Initialization"/>
@@ -252,6 +262,11 @@
       <CodeGen:DynamicCode hook_ref="1" text="DuUdMapEntry"/>
       <CodeGen:DynamicCode hook_ref="2" text="our_StatementId_XAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="StatementId"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="IndexTriplet"/>
+      <CodeGen:DynamicCode hook_ref="2" text="our_myStride_XAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="Stride"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="SubroutineCall"/>
