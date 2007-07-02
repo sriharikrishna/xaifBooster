@@ -98,6 +98,8 @@ namespace xaifBooster {
      */
     IfStatementAlgBase& getIfStatementAlgBase() const;
 
+    virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::IF_VKIND;}
+
   private:
     
     /** 

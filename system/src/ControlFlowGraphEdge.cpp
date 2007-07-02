@@ -125,4 +125,8 @@ namespace xaifBooster {
     return out.str();
   } // end of ControlFlowGraphEdge::debug
 
+  bool ControlFlowGraphEdge::leadsToLoopBody() const {
+    return (myConditionValueFlag && myConditionValue==1);
+  }
+
 } // end of namespace xaifBooster 

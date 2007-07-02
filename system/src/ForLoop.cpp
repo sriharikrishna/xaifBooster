@@ -63,9 +63,9 @@ namespace xaifBooster {
 
   ForLoop::ForLoop(const ForLoopReversalType::ForLoopReversalType_E theUserReversalType) : 
     myInitialization(true),
-    myUpdate(true),
-    myUserReversalType(theUserReversalType){ 
-     myControlFlowGraphVertexAlgBase_p=ForLoopAlgFactory::instance()->makeNewAlg(*this);
+    myUpdate(true) { 
+    myReversalType=theUserReversalType;
+    myControlFlowGraphVertexAlgBase_p=ForLoopAlgFactory::instance()->makeNewAlg(*this);
   }
                                                                                 
   ForLoop::~ForLoop() {
@@ -89,7 +89,7 @@ namespace xaifBooster {
        << "\" " 
        << ForLoopReversalType::our_attribute_XAIFName.c_str() 
        << "=\""
-       << ForLoopReversalType::toString(myUserReversalType).c_str()
+       << ForLoopReversalType::toString(myReversalType).c_str()
        << "\">" 
        << std::endl;
     myInitialization.printXMLHierarchy(os);
@@ -143,10 +143,6 @@ namespace xaifBooster {
     return dynamic_cast<ForLoopAlgBase&>(*myControlFlowGraphVertexAlgBase_p);
   }
 
-  ForLoopReversalType::ForLoopReversalType_E ForLoop::getUserReversalType() const { 
-    return myUserReversalType;
-  }
-
   bool 
   ForLoop::hasStatement(const ObjectWithId::Id& aStatementId) const { 
     bool found=false;
@@ -159,5 +155,12 @@ namespace xaifBooster {
     }
     return found; 
   } 
+
+  void 
+  ForLoop::addLoopVariable() { 
+    myKnownLoopVariables.push_back(&(getInitialization().
+				     getAssignment().
+				     getLHS()));
+  }
 
 } // end of namespace xaifBooster 

@@ -112,9 +112,11 @@ namespace xaifBooster {
      */
     ForLoopAlgBase& getForLoopAlgBase() const;
 
-    ForLoopReversalType::ForLoopReversalType_E getUserReversalType() const; 
-
     virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
+
+    virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::FORLOOP_VKIND;}
+
+    virtual void addLoopVariable();
 
   private:
 
@@ -141,13 +143,6 @@ namespace xaifBooster {
      * may be passivated in the parser
      */
     Update myUpdate;
-
-    /** 
-     * the attribute indicating  
-     * the reversal option as specified by 
-     * a user directive
-     */
-    const ForLoopReversalType::ForLoopReversalType_E myUserReversalType;
 
   };
  

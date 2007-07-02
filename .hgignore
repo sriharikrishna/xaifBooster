@@ -1,7 +1,9 @@
 syntax: glob
-*.o
-*.d
+*/src/obj/*
+*/test/obj/*
 *.a
 *~
 */t
+*/buildStamp.hpp
 .resetEnv.last
+doc/html/*

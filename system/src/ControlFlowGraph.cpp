@@ -250,4 +250,192 @@ namespace xaifBooster {
     return *aControlFlowGraphVertex_p;
   } 
 
+  bool ControlFlowGraph::overwrites(const Variable& aVariable) const { 
+    bool returnValue=false; 
+    return returnValue;
+  } 
+
+  void
+  ControlFlowGraph::augmentGraphInfoRecursively(ControlFlowGraphVertex& theCurrentVertex_r, 
+						int& idx,
+						std::stack<ControlFlowGraphVertex*>& endNodes_p_s_r, 
+						ForLoopReversalType::ForLoopReversalType_E aReversalType,
+						ControlFlowGraphVertex* aTopExplicitLoopVertex_p,
+						ControlFlowGraphVertex* enclosingControlFlowVertex_p) {
+    if (theCurrentVertex_r.wasVisited()) return;
+    theCurrentVertex_r.setVisited();
+    // push current node to stack if ENDBRANCH and return
+    if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::ENDBRANCH_VKIND) {
+      endNodes_p_s_r.push(&theCurrentVertex_r);
+      return;
+    } 
+    // set index of current node and increment
+    theCurrentVertex_r.setIndex(idx++);
+    theCurrentVertex_r.setReversalType(aReversalType);
+    if (aTopExplicitLoopVertex_p)
+      theCurrentVertex_r.setTopExplicitLoop(*aTopExplicitLoopVertex_p);
+    // return if ENDLOOP
+    if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::ENDLOOP_VKIND) { 
+      // the end loop should have exactly one out edge to the loop node:
+      if (numOutEdgesOf(theCurrentVertex_r)>1) 
+	THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::augmentGraphInfoRecursively: ENDLOOP with more than 1 out edge");
+      ControlFlowGraphVertex& theCounterPart(getTargetOf(*(getOutEdgesOf(theCurrentVertex_r).first)));
+      theCounterPart.setCounterPart(theCurrentVertex_r);
+      theCurrentVertex_r.setCounterPart(theCounterPart);
+      theCurrentVertex_r.inheritLoopVariables(theCounterPart);
+      if (theCounterPart.hasEnclosingControlFlow())
+	theCurrentVertex_r.setEnclosingControlFlow(theCounterPart.getEnclosingControlFlow());
+      return;
+    }
+    if (enclosingControlFlowVertex_p)
+      theCurrentVertex_r.setEnclosingControlFlow(*enclosingControlFlowVertex_p);
+    inheritLoopVariables(aReversalType,theCurrentVertex_r);
+    // for loops make sure that loop body is tranversed first
+    if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::PRELOOP_VKIND
+	||
+	theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::FORLOOP_VKIND) {
+      ControlFlowGraphVertex* aNewEnclosingControlFlowVertex_p=&theCurrentVertex_r;
+      ForLoopReversalType::ForLoopReversalType_E aNewReversalType(aReversalType);
+      ControlFlowGraphVertex* aNewTopExplicitLoopVertex_p=aTopExplicitLoopVertex_p;
+      // we only require explicit reversal to be specified at the top loop 
+      // construct and have to hand it down to all sub graphs
+      if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::FORLOOP_VKIND 
+	  &&
+	  theCurrentVertex_r.getReversalType()==ForLoopReversalType::EXPLICIT
+	  && 
+	  !aNewTopExplicitLoopVertex_p) { 
+	aNewReversalType=ForLoopReversalType::EXPLICIT;
+	aNewTopExplicitLoopVertex_p=&theCurrentVertex_r;
+      }
+      // reset the reversal type
+      theCurrentVertex_r.setReversalType(aNewReversalType);
+      if (aNewTopExplicitLoopVertex_p)
+	theCurrentVertex_r.setTopExplicitLoop(*aNewTopExplicitLoopVertex_p);
+      if (aNewReversalType==ForLoopReversalType::EXPLICIT) { 
+	theCurrentVertex_r.addLoopVariable();
+      }
+      OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(theCurrentVertex_r));
+      // sort loop body
+      OutEdgeIterator begin_oei_toLoopBody(theCurrentVertex_oeip.first),end_oei_toLoopBody(theCurrentVertex_oeip.second);
+      for (;begin_oei_toLoopBody!=end_oei_toLoopBody;++begin_oei_toLoopBody) 
+        if ((*begin_oei_toLoopBody).leadsToLoopBody()) 
+          augmentGraphInfoRecursively(getTargetOf(*begin_oei_toLoopBody),
+				     idx,
+				     endNodes_p_s_r,
+				     aNewReversalType,
+				     aNewTopExplicitLoopVertex_p,
+				     aNewEnclosingControlFlowVertex_p); 
+      // sort nodes after loop
+      OutEdgeIterator begin_oei_toAfterLoop(theCurrentVertex_oeip.first),end_oei_toAfterLoop(theCurrentVertex_oeip.second);
+      for (;begin_oei_toAfterLoop!=end_oei_toAfterLoop;++begin_oei_toAfterLoop) 
+        if (!(*begin_oei_toAfterLoop).leadsToLoopBody()) 
+          augmentGraphInfoRecursively(getTargetOf(*begin_oei_toAfterLoop),
+				     idx,
+				     endNodes_p_s_r,
+				     aReversalType,
+				     aTopExplicitLoopVertex_p,
+				     enclosingControlFlowVertex_p); 
+    }
+    else { // go for all successors otherwise
+      ControlFlowGraphVertex* aNewEnclosingControlFlowVertex_p=enclosingControlFlowVertex_p;
+      if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::BRANCH_VKIND) 
+	aNewEnclosingControlFlowVertex_p=&theCurrentVertex_r;
+      OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(theCurrentVertex_r));
+      OutEdgeIterator begin_oei(theCurrentVertex_oeip.first),end_oei(theCurrentVertex_oeip.second);
+      for (;begin_oei!=end_oei;++begin_oei) 
+        augmentGraphInfoRecursively(getTargetOf(*begin_oei),
+				   idx,
+				   endNodes_p_s_r,
+				   aReversalType,
+				   aTopExplicitLoopVertex_p,
+				   aNewEnclosingControlFlowVertex_p); 
+    }
+    // if branch node then handle corresponding end node
+    if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::BRANCH_VKIND) {
+      ControlFlowGraphVertex* the_endBranch_p=endNodes_p_s_r.top();
+      endNodes_p_s_r.pop();
+      the_endBranch_p->setIndex(idx++);
+      the_endBranch_p->setReversalType(aReversalType);
+      the_endBranch_p->setCounterPart(theCurrentVertex_r);
+      the_endBranch_p->inheritLoopVariables(theCurrentVertex_r);
+      if (aReversalType==ForLoopReversalType::EXPLICIT) { 
+	the_endBranch_p->setTopExplicitLoop(theCurrentVertex_r.getTopExplicitLoop());
+      }
+      if (enclosingControlFlowVertex_p)
+	the_endBranch_p->setEnclosingControlFlow(*enclosingControlFlowVertex_p);
+      theCurrentVertex_r.setCounterPart(*the_endBranch_p);
+      // sort successor  
+      OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(*(the_endBranch_p)));
+      augmentGraphInfoRecursively(getTargetOf(*(theCurrentVertex_oeip.first)),
+ 				 idx,
+ 				 endNodes_p_s_r,
+ 				 aReversalType,
+ 				 aTopExplicitLoopVertex_p,
+				 enclosingControlFlowVertex_p); 
+    }
+  }
+
+  void ControlFlowGraph::augmentGraphInfo() {
+    initVisit();
+    int idx=1;
+    std::stack<ControlFlowGraphVertex*> endNodes_p_s;
+    augmentGraphInfoRecursively(getEntry(),idx,endNodes_p_s, ForLoopReversalType::ANONYMOUS,0,0);
+    finishVisit();
+  }
+
+  void 
+  ControlFlowGraph::inheritLoopVariables(ForLoopReversalType::ForLoopReversalType_E aReversalType,
+					 ControlFlowGraphVertex& theCurrentVertex_r) { 
+    // just ensure the proper logic, i.e. the kind of 
+    // vertices we get the inheritance from.
+    // this is not intended to be done for the 'end' bits 
+    // ENDBRANCH etc. 
+    switch (theCurrentVertex_r.getKind()) { 
+    case ControlFlowGraphVertexKind::FORLOOP_VKIND: 
+    case ControlFlowGraphVertexKind::PRELOOP_VKIND: 
+    case ControlFlowGraphVertexKind::BASICBLOCK_VKIND: 
+    case ControlFlowGraphVertexKind::BRANCH_VKIND: 
+      if ( aReversalType==ForLoopReversalType::EXPLICIT) { 
+	// iterate through the in edges
+	InEdgeIteratorPair anInEdgeIteratorPair(getInEdgesOf(theCurrentVertex_r));
+	InEdgeIterator anInEdgeI(anInEdgeIteratorPair.first),anInEdgeIEnd(anInEdgeIteratorPair.second);
+	for (;anInEdgeI!=anInEdgeIEnd;++anInEdgeI) { 
+	  if ((theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::FORLOOP_VKIND 
+	       || 
+	       theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::PRELOOP_VKIND)
+	      && 
+	      getSourceOf(*anInEdgeI).getKind()!=ControlFlowGraphVertexKind::ENDLOOP_VKIND) { 
+	    theCurrentVertex_r.inheritLoopVariables(getSourceOf(*anInEdgeI));
+	    break;
+	  } 
+	  else { 
+	    // all others that we allow after the switch above should have a single in-edge 
+	    // always assuming structured graphs
+	    theCurrentVertex_r.inheritLoopVariables(getSourceOf(*anInEdgeI));
+	  }
+	}
+      } 
+      break;
+    case ControlFlowGraphVertexKind::ENTRY_VKIND: 
+    case ControlFlowGraphVertexKind::EXIT_VKIND: 
+    case ControlFlowGraphVertexKind::LABEL_VKIND: 
+    case ControlFlowGraphVertexKind::GOTO_VKIND: 
+      // do nothing
+      break;
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::inheritLoopVariables: cannot use this for "
+				 << ControlFlowGraphVertexKind::toString(theCurrentVertex_r.getKind()).c_str());
+      break;
+    } 
+  } 
+
+  ControlFlowGraphVertex& ControlFlowGraph::getEntry()  {
+    ControlFlowGraph::VertexIteratorPair p(vertices());
+    ControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
+    for (;beginIt!=endIt ;++beginIt) 
+      if ((*beginIt).getKind()==ControlFlowGraphVertexKind::ENTRY_VKIND) 
+	return *beginIt;
+    THROW_LOGICEXCEPTION_MACRO("Missing ENTRY node in control flow graph"); 
+  }
+
 } // end of namespace xaifBooster 

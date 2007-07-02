@@ -1,5 +1,3 @@
-#ifndef _POSTLOOP_INCLUDE_
-#define _POSTLOOP_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,60 +50,90 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/system/inc/Condition.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
-#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertexKind.hpp"
 
 namespace xaifBooster { 
 
-  /**
-   * this class describes 
-   * a loop with a post condition 
-   */
-  class PostLoop : public ControlFlowGraphVertex,
-		   public ObjectWithLineNumber {
-  public:
+  std::string 
+  ControlFlowGraphVertexKind::toString(const ControlFlowGraphVertexKind_E& aKind)
+    throw (PrintingIntException) { 
+    std::string returnString;
+    switch(aKind) {
+    case ENTRY_VKIND:
+      returnString="entry";
+      break;
+    case EXIT_VKIND:
+      returnString="exit";
+      break;
+    case BASICBLOCK_VKIND:
+      returnString="basicblock";
+      break;
+    case ENDBRANCH_VKIND:
+      returnString="endbranch";
+      break;
+    case ENDLOOP_VKIND:
+      returnString="endloop";
+      break;
+    case IF_VKIND:
+      returnString="if";
+      break;
+    case PRELOOP_VKIND:
+      returnString="preloop";
+      break;
+    case POSTLOOP_VKIND:
+      returnString="postloop";
+      break;
+    case FORLOOP_VKIND:
+      returnString="forloop";
+      break;
+    case BRANCH_VKIND:
+      returnString="branch";
+      break;
+    case LABEL_VKIND:
+      returnString="label";
+      break;
+    case GOTO_VKIND:
+      returnString="goto";
+      break;
+    default: 
+      throw PrintingIntException("ControlFlowGraphVertexKind::toString: unknown value",aKind);
+      break;
+    } // end switch
+    return returnString;
+  } // end of std::string ControlFlowGraphVertexKind::toString
 
-    PostLoop (){};
-
-    ~PostLoop(){};
-
-    /**
-     * print XML hierarchy
-     */
-    void printXMLHierarchy(std::ostream& os) const;
-
-    /**
-     * print debug information
-     */
-    std::string debug() const ;
-
-    /**
-     * name for this class as represented in XAIF schema
-     */
-    static const std::string ourXAIFName;
-
-    /**
-     * name for inherited member myId as represented in XAIF schema
-     */
-    static const std::string our_myId_XAIFName;
-    
-    Condition& getCondition();
-
-    const Condition& getCondition() const;
-
-    virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::POSTLOOP_VKIND;}
-
-  private:
-    
-    /** 
-     * the condition for the postloop
-     */
-    Condition myCondition;
-
-  };
- 
+  const ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E
+  ControlFlowGraphVertexKind::fromString(const std::string& aName) { 
+    ControlFlowGraphVertexKind_E returnValue;
+    if (aName=="entry")
+      returnValue=ENTRY_VKIND;
+    else if (aName=="exit")
+      returnValue=EXIT_VKIND;
+    else if (aName=="basicblock")
+      returnValue=BASICBLOCK_VKIND;
+    else if (aName=="endbranch")
+      returnValue=ENDBRANCH_VKIND;
+    else if (aName=="endloop")
+      returnValue=ENDLOOP_VKIND;
+    else if (aName=="if")
+      returnValue=IF_VKIND;
+    else if (aName=="preloop")
+      returnValue=PRELOOP_VKIND;
+    else if (aName=="postloop")
+      returnValue=POSTLOOP_VKIND;
+    else if (aName=="forloop")
+      returnValue=FORLOOP_VKIND;
+    else if (aName=="branch")
+      returnValue=BRANCH_VKIND;
+    else if (aName=="label")
+      returnValue=LABEL_VKIND;
+    else if (aName=="goto")
+      returnValue=GOTO_VKIND;
+    else  
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertexKind::fromString: unknown value >"
+			   << aName.c_str() << "<");
+    return returnValue;
+  } // end of std::string ControlFlowGraphVertexKind::fromString
+  
 } // end of namespace xaifBooster
-                                                                     
-#endif

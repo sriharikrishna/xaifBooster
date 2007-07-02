@@ -829,7 +829,7 @@ namespace xaifBoosterControlFlowReversal {
 	  &&
 	  myRetainUserReversalFlag
 	  &&
-	  dynamic_cast<const ForLoop&>(theCurrentVertex_r.getOriginalVertex()).getUserReversalType()==ForLoopReversalType::EXPLICIT
+	  dynamic_cast<const ForLoop&>(theCurrentVertex_r.getOriginalVertex()).getReversalType()==ForLoopReversalType::EXPLICIT
 	  && 
 	  !aNewTopExplicitLoopVertex_p) { 
 	aNewReversalType=ForLoopReversalType::EXPLICIT;
