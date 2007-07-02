@@ -98,6 +98,8 @@ namespace xaifBooster {
      */
     BranchAlgBase& getBranchAlgBase() const;
 
+    virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::BRANCH_VKIND;}
+
   private:
     
     /** 

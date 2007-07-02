@@ -81,6 +81,8 @@ namespace xaifBooster {
      */
     static const std::string our_myId_XAIFName;
 
+    virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::GOTO_VKIND;}
+
   };
  
 } // end of namespace xaifBooster

@@ -55,10 +55,13 @@
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
+
 #include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/VertexTraversable.hpp"
-
+#include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphVertexAlgBase.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphVertexKind.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
 
 namespace xaifBooster { 
 
@@ -101,15 +104,97 @@ namespace xaifBooster {
     
     virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
 
-    protected:
+    virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const = 0;
+
+    ForLoopReversalType::ForLoopReversalType_E getReversalType() const; 
+
+    void setReversalType(ForLoopReversalType::ForLoopReversalType_E aReversalType); 
+
+
+    int getIndex() const;
+
+    void setIndex(int);
+
+    void setCounterPart(ControlFlowGraphVertex& theCounterPart);
+
+    ControlFlowGraphVertex& getCounterPart();
+
+    typedef std::list<const Variable*> VariablePList;
+
+    const VariablePList& getKnownLoopVariables()const;
+    
+    void inheritLoopVariables(const ControlFlowGraphVertex& aParent);
+
+    virtual void addLoopVariable(){} // overwritten in Loop vertices
+
+    ControlFlowGraphVertex& getTopExplicitLoop();
+    const ControlFlowGraphVertex& getTopExplicitLoop() const;
+
+    void setTopExplicitLoop(ControlFlowGraphVertex& theTopExplicitLoop);
+
+    ControlFlowGraphVertex& getTopExplicitLoopAddressArithmetic();
+
+    void setTopExplicitLoopAddressArithmetic(ControlFlowGraphVertex& theTopExplicitLoop);
+
+    bool hasEnclosingControlFlow() const;
+
+    ControlFlowGraphVertex& getEnclosingControlFlow();
+
+    void setEnclosingControlFlow(ControlFlowGraphVertex& theEnclosingControlFlow);
+
+  protected:
 
     /**
-     * this will be set to point a dynamically instance
+     * this will be set to point a dynamically constructed instance
      * during construction and deleted during
      * destruction
      */
     ControlFlowGraphVertexAlgBase* myControlFlowGraphVertexAlgBase_p;
 
+    /** 
+     * the attribute indicating  
+     * the reversal option as specified by 
+     * a user directive for a top level loop
+     */
+    ForLoopReversalType::ForLoopReversalType_E myReversalType;
+
+    /** 
+     * index for topological sort
+     */
+    int myIndex;
+
+    /** 
+     * list of variable known to be loop variables
+     * in loops for explicit reversal collected from 
+     * the respective top loop down
+     * we don't own the Variables we are pointing to
+     */ 
+    VariablePList myKnownLoopVariables; 
+
+  private: 
+
+    /** 
+     * pointer to corresponding vertex for 
+     * LOOP-ENDLOOP and BRANCH-ENDBRANCH pairs
+     * is initialized during the topological sort
+     */
+    ControlFlowGraphVertex* myCounterPart_p;
+
+    /** 
+     * pointer to the top level 
+     * explicit loop for explicit reversals
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */
+    ControlFlowGraphVertex* myTopExplicitLoop_p;
+
+    /** 
+     * pointer to the enclosing Loop or Branch vertex
+     * if it exists; only set for original vertices
+     * this is just a reference not to be deleted by 
+     * the dtor
+     */ 
+    ControlFlowGraphVertex* myEnclosingControlFlow_p;
 
   }; // end of class ControlFlowGraphVertex
  

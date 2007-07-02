@@ -1,5 +1,5 @@
-#ifndef _POSTLOOP_INCLUDE_
-#define _POSTLOOP_INCLUDE_
+#ifndef _CONTROLFLOWGRAPHVERTEXKIND_INCLUDE_
+#define _CONTROLFLOWGRAPHVERTEXKIND_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,59 +53,34 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/Condition.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
-#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
+#include <string>
+#include "xaifBooster/utils/inc/PrintingIntException.hpp"
 
 namespace xaifBooster { 
+  class ControlFlowGraphVertexKind { 
+public:
+    enum ControlFlowGraphVertexKind_E {UNDEF_VKIND,
+				       ENTRY_VKIND,
+				       EXIT_VKIND,
+				       IF_VKIND,
+				       FORLOOP_VKIND,
+				       PRELOOP_VKIND,
+				       POSTLOOP_VKIND,
+				       BASICBLOCK_VKIND,
+				       ENDLOOP_VKIND,
+				       ENDBRANCH_VKIND,
+				       BRANCH_VKIND,
+				       LABEL_VKIND,
+				       GOTO_VKIND};
 
-  /**
-   * this class describes 
-   * a loop with a post condition 
-   */
-  class PostLoop : public ControlFlowGraphVertex,
-		   public ObjectWithLineNumber {
-  public:
+    static std::string toString(const ControlFlowGraphVertexKind_E& aKind) throw (PrintingIntException);
 
-    PostLoop (){};
-
-    ~PostLoop(){};
-
-    /**
-     * print XML hierarchy
-     */
-    void printXMLHierarchy(std::ostream& os) const;
-
-    /**
-     * print debug information
-     */
-    std::string debug() const ;
-
-    /**
-     * name for this class as represented in XAIF schema
-     */
-    static const std::string ourXAIFName;
-
-    /**
-     * name for inherited member myId as represented in XAIF schema
-     */
-    static const std::string our_myId_XAIFName;
+    static const ControlFlowGraphVertexKind_E fromString(const std::string& aName);
     
-    Condition& getCondition();
+    static const std::string our_attribute_XAIFName;
 
-    const Condition& getCondition() const;
+  }; // end of class ControlFlowGraphVertexKind
 
-    virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::POSTLOOP_VKIND;}
-
-  private:
-    
-    /** 
-     * the condition for the postloop
-     */
-    Condition myCondition;
-
-  };
- 
 } // end of namespace xaifBooster
                                                                      
 #endif
