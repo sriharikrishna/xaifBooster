@@ -66,9 +66,9 @@ $(MAIN): $(OBJS)
 clean:
 	rm -f obj/*.o obj/*.d $(MAIN)
 
-test doc: ;
+test : ;
 
-.PHONY: obj test doc clean default
+.PHONY: obj test clean default
 
 
 

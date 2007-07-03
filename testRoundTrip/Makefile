@@ -215,6 +215,6 @@ clean: testAllclean
 	$(RM) mfef90 whirl2xaif whirl2sexp sexp2whirl ir_b2a xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
 	$(RM) *.mod *.o
 
-obj test doc: 
+obj test : 
 
-.PHONY: all obj test doc clean testAllclean run
+.PHONY: all obj test clean testAllclean run
