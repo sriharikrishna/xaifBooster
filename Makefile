@@ -50,9 +50,12 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
-obj test doc clean: 
+obj test clean: 
 	cd utils && $(MAKE) $@
 	cd system && $(MAKE) $@
 	cd algorithms && $(MAKE) $@
 
-.PHONY: obj test doc clean codegen
+doc : 
+	doxygen
+
+.PHONY: obj test clean doc codegen

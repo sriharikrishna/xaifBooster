@@ -52,8 +52,8 @@
 # ========== end copyright notice ==============
 default: obj test 
 
-obj test doc clean:
+obj test clean:
 	cd src && $(MAKE) $@
 	cd test && $(MAKE) $@
 
-.PHONY: default obj test doc clean
+.PHONY: default obj test clean

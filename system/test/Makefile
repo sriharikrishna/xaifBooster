@@ -58,9 +58,9 @@ clean:
 	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) 
 	rm -rf tmp
 
-oabj doc: ;
+obj : ;
 
-.PHONY: obj test doc clean
+.PHONY: obj test clean
 
 include ../../Makefile.incl
 -include $(DEPINCL)

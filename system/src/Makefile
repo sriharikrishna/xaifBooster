@@ -61,7 +61,7 @@ obj: $(OBJS)
 clean:
 	rm -f obj/*.o obj/*.d
 
-test doc: ;
+test : ;
 
-.PHONY: obj test doc clean
+.PHONY: obj test clean
 
