@@ -50,20 +50,31 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
-obj test clean:
-	cd CrossCountryInterface && $(MAKE) $@
-	cd InlinableXMLRepresentation && $(MAKE) $@
-	cd CodeReplacement && $(MAKE) $@
-	cd DerivativePropagator && $(MAKE) $@
-	cd AdjointUtils && $(MAKE) $@
-	cd TypeChange && $(MAKE) $@
-	cd Linearization && $(MAKE) $@
-	cd BasicBlockPreaccumulation && $(MAKE) $@
-	cd MemOpsTradeoffPreaccumulation && $(MAKE) $@
-	cd BasicBlockPreaccumulationTape && $(MAKE) $@
-	cd BasicBlockPreaccumulationTapeAdjoint && $(MAKE) $@
-	cd ControlFlowReversal && $(MAKE) $@
-	cd AddressArithmetic && $(MAKE) $@
-	cd BasicBlockPreaccumulationReverse && $(MAKE) $@
+MAIN=t
+
+test: buildStamp.hpp $(MAIN) quickRegression.bash
+
+clean:
+	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) quickRegression.bash 
+	rm -rf tmp
+
+obj : ;
 
 .PHONY: obj test clean
+
+quickRegression.bash: 
+	ln -sf $(XAIFBOOSTERROOT)/xaifBooster/system/test/quickRegression.bash
+
+include ../../../Makefile.incl
+-include $(DEPINCL)
+
+# pick up all algorith specific obj files
+ALG_OBJ_SET=$(wildcard ../src/obj/*.o)
+
+VPATH+=../../InlinableXMLRepresentation/lib
+LIBS+=-lxaifBoosterInlinableXMLRepresentation
+
+$(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
+	$(CC) $^ $(LFLAGS) -o $@
+
+
