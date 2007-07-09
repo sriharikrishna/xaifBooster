@@ -56,9 +56,9 @@ default: obj
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
-obj: $(OBJS)
+objs: obj $(OBJS)
 
 clean:
 	rm -f obj/*.o obj/*.d
 
-.PHONY: obj test clean
+.PHONY: objs test clean

@@ -60,7 +60,7 @@ LIB_NAME=xaifBoosterDerivativePropagator
 
 MAIN=../lib/lib$(LIB_NAME).a
 
-obj: $(MAIN)
+objs: obj $(MAIN)
 
 $(MAIN): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
@@ -70,4 +70,4 @@ clean:
 
 test : ;
 
-.PHONY: obj test clean default
+.PHONY: objs test clean default

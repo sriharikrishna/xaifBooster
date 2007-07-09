@@ -58,9 +58,9 @@ clean:
 	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) quickRegression.bash
 	rm -rf tmp
 
-obj: ;
+objs: ;
 
-.PHONY: obj test clean
+.PHONY: objs test clean
 
 quickRegression.bash: 
 	ln -sf $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/test/quickRegression.bash

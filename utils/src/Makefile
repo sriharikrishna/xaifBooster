@@ -58,7 +58,7 @@ include ../../Makefile.incl
 
 MAIN=$(UTILS_LIB_DIR)/lib$(UTILS_LIB_NAME).a
 
-obj: $(MAIN)
+objs: obj $(MAIN)
 
 $(MAIN): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
@@ -68,7 +68,7 @@ clean:
 
 test : ;
 
-.PHONY: obj test clean default
+.PHONY: objs test clean default
 
 
 
