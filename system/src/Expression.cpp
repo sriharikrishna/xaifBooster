@@ -240,4 +240,58 @@ namespace xaifBooster {
     return aVertex;
   }
 
+  void Expression::appendArguments(Expression::ArgumentPList& listToBeAppended) { 
+    Expression::VertexIteratorPair expVertItPair(vertices());
+    Expression::VertexIterator expVertIt(expVertItPair.first), expVertItEnd(expVertItPair.second);
+    for (; expVertIt!=expVertItEnd; ++expVertIt) {
+      Expression::InEdgeIteratorPair expInEdgeItPair(getInEdgesOf(*expVertIt));
+      if (expInEdgeItPair.first==expInEdgeItPair.second // no in edges
+	  && 
+	  (*expVertIt).isArgument()) { 
+	listToBeAppended.push_back(&(dynamic_cast<Argument&>(*expVertIt)));
+      }
+    }
+  } 
+
+  void Expression::appendArguments(Expression::CArgumentPList& listToBeAppended)const { 
+    Expression::ConstVertexIteratorPair expVertItPair(vertices());
+    Expression::ConstVertexIterator expVertIt(expVertItPair.first), expVertItEnd(expVertItPair.second);
+    for (; expVertIt!=expVertItEnd; ++expVertIt) {
+      Expression::ConstInEdgeIteratorPair expInEdgeItPair(getInEdgesOf(*expVertIt));
+      if (expInEdgeItPair.first==expInEdgeItPair.second // no in edges
+	  && 
+	  (*expVertIt).isArgument()) { 
+	listToBeAppended.push_back(&(dynamic_cast<const Argument&>(*expVertIt)));
+      }
+    }
+  } 
+
+  void Expression::replaceVariables(const Expression::VariablePVariableSRPPairList& replacementList) {
+    ArgumentPList listToBeAppended;
+    appendArguments(listToBeAppended);
+    for (ArgumentPList::iterator argumentI=listToBeAppended.begin();
+	 argumentI!=listToBeAppended.end();
+	 ++argumentI) { 
+      for (VariablePVariableSRPPairList::const_iterator replacementI=replacementList.begin();
+	   replacementI!=replacementList.end();
+	   ++replacementI) {
+	if ((*replacementI).first->equivalentTo((*argumentI)->getVariable())) { 
+	  // make the replacement vertex in this expression
+	  Argument* newArgument_p=new Argument(false);
+	  newArgument_p->getVariable().supplyAndAddVertexInstance((*replacementI).second->createCopyOfMyself());
+	  supplyAndAddVertexInstance(*newArgument_p);
+	  Expression::OutEdgeIteratorPair expOutEdgeItPair(getOutEdgesOf(**argumentI));
+	  Expression::OutEdgeIterator expOutEdgeIt(expOutEdgeItPair.first), expOutEdgeItEnd(expOutEdgeItPair.second);
+	  for ( ; expOutEdgeIt!=expOutEdgeItEnd; ++expOutEdgeIt) { 
+	    supplyAndAddEdgeInstance((*expOutEdgeIt).createCopyOfMyself(),
+				     getSourceOf(*expOutEdgeIt),
+				     getTargetOf(*expOutEdgeIt));
+	  } 
+	  removeAndDeleteVertex(**argumentI);
+	  break; 
+	} 
+      } 
+    }
+  } 
+
 } // end of namespace xaifBooster 

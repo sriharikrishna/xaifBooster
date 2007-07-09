@@ -156,12 +156,6 @@ namespace xaifBooster {
      */
     const ControlFlowGraphVertex& getContainingVertex(const ObjectWithId::Id& aStatementId) const;
 
-    /** 
-     * the implementation is incomplete
-     * \todo refer to alias results
-     */
-    bool overwrites(const Variable& aVariable) const; 
-
   private: 
     
     /** 

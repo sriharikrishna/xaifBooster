@@ -173,4 +173,8 @@ namespace xaifBooster {
     return myIndexPairList;
   }
 
+  IndexTriplet::IndexPairList& IndexTriplet::getIndexPairList() { 
+    return myIndexPairList;
+  }
+
 } 

@@ -152,6 +152,12 @@ namespace xaifBooster {
      */
     ActiveUseType::ActiveUseType_E getActiveUse() const; 
 
+    /** 
+     * the implementation is incomplete
+     * \todo refer to alias results
+     */
+    bool overwrites(const Variable& aVariable) const; 
+
   private: 
     
     /**
