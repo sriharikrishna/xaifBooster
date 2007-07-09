@@ -52,15 +52,13 @@
 # ========== end copyright notice ==============
 MAIN=t
 
-test: buildStamp.hpp $(MAIN) quickRegression.bash
+test: obj buildStamp.hpp $(MAIN) quickRegression.bash
 
-clean:
-	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) quickRegression.bash
-	rm -rf tmp
+CLEANTARGETS+=buildStamp.hpp tmp $(MAIN) quickRegression.bash
 
-obj : ;
+objs : ;
 
-.PHONY: obj test clean
+.PHONY: objs test 
 
 quickRegression.bash: 
 	ln -sf $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/test/quickRegression.bash

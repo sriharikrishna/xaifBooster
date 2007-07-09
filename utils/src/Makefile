@@ -51,24 +51,23 @@
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
 # default target
-default: obj
+default: objs
+
+CLEANTARGETS+=$(THELIB)
 
 include ../../Makefile.incl
 -include $(DEPINCL)
 
-MAIN=$(UTILS_LIB_DIR)/lib$(UTILS_LIB_NAME).a
+THELIB=$(UTILS_LIB_DIR)/lib$(UTILS_LIB_NAME).a
 
-obj: $(MAIN)
+objs: obj $(THELIB)
 
-$(MAIN): $(OBJS)
+$(THELIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
-
-clean:
-	rm -f obj/*.o obj/*.d $(MAIN)
 
 test : ;
 
-.PHONY: obj test clean default
+.PHONY: objs test default
 
 
 
