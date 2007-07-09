@@ -54,13 +54,11 @@ MAIN=t
 
 test: buildStamp.hpp $(MAIN) quickRegression.bash
 
-clean:
-	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) quickRegression.bash 
-	rm -rf tmp
+CLEANTARGETS+=buildStamp.hpp tmp $(MAIN) quickRegression.bash
 
 objs : ;
 
-.PHONY: objs test clean
+.PHONY: objs test 
 
 quickRegression.bash: 
 	ln -sf $(XAIFBOOSTERROOT)/xaifBooster/system/test/quickRegression.bash
