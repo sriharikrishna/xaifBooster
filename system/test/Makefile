@@ -54,13 +54,11 @@ MAIN=t
 
 test: buildStamp.hpp $(MAIN)
 
-clean:
-	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) 
-	rm -rf tmp
+CLEANTARGETS+=buildStamp.hpp tmp $(MAIN)
 
 objs : ;
 
-.PHONY: objs test clean
+.PHONY: objs test 
 
 include ../../Makefile.incl
 -include $(DEPINCL)
