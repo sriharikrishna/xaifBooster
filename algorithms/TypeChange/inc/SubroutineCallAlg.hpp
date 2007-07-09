@@ -57,7 +57,8 @@
 #include <list> 
 
 #include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
-#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
+#include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 
 
@@ -116,7 +117,9 @@ namespace xaifBoosterTypeChange {
      * to temporaries in case they get overwritten during 
      * the call
      */
-    PlainBasicBlock::BasicBlockElementList myPriorToCallIndexAssignments;
+    PlainBasicBlock::BasicBlockElementList myPriorToCallAssignments;
+    
+    Expression::VariablePVariableSRPPairList myReplacementPairs; 
 
   private: 
 
@@ -155,7 +158,7 @@ namespace xaifBoosterTypeChange {
      */
     void addConversion(const ConcreteArgument& theConcreteArgument,
 		       const ArgumentSymbolReference& aFormalArgumentSymbolReference,
-		       Scope& theBasicBlockScope);
+		       const BasicBlock& theBasicBlock);
 
     std::string giveCallName(bool concreteArgumentActive,
 			     const SymbolReference &aTempSymbolReference,
@@ -178,7 +181,7 @@ namespace xaifBoosterTypeChange {
      * i.e. we don't have a formal parameter list for these calls
      */
     void addExternalConversion(const ConcreteArgument& theConcreteArgument,
-			       Scope& theBasicBlockScope);
+			       const BasicBlock& theBasicBlock);
 
     /** 
      * the list of external subroutines that have hand
@@ -188,13 +191,13 @@ namespace xaifBoosterTypeChange {
 
     void initExternalCall(SymbolAlg& aSymbolAlg);
 
-    void handleExternalCall(Scope& theBasicBlockScope);
+    void handleExternalCall(const BasicBlock& theBasicBlock);
 
     /** 
      * inserts assignments for index values
      */
     void handleArrayAccessIndices(const ConcreteArgument& theConcreteArgument,
-				  Scope& theBasicBlockScope);
+				  const BasicBlock& theBasicBlock);
 
   }; // end of class SubroutineCallAlg
  

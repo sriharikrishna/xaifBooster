@@ -250,11 +250,6 @@ namespace xaifBooster {
     return *aControlFlowGraphVertex_p;
   } 
 
-  bool ControlFlowGraph::overwrites(const Variable& aVariable) const { 
-    bool returnValue=false; 
-    return returnValue;
-  } 
-
   void
   ControlFlowGraph::augmentGraphInfoRecursively(ControlFlowGraphVertex& theCurrentVertex_r, 
 						int& idx,

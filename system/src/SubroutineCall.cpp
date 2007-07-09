@@ -209,5 +209,10 @@ namespace xaifBooster {
   ActiveUseType::ActiveUseType_E SubroutineCall::getActiveUse() const { 
     return myActiveUse;
   } 
+
+  bool SubroutineCall::overwrites(const Variable& aVariable) const { 
+    bool returnValue=false; 
+    return returnValue;
+  } 
   
 } // end of namespace xaifBooster 
