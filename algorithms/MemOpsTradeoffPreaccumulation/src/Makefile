@@ -51,14 +51,11 @@
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
 # default target
-default: obj
+default: objs
 
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
-obj: $(OBJS)
+objs: obj $(OBJS)
 
-clean:
-	rm -f obj/*.o obj/*.d
-
-.PHONY: obj test clean
+.PHONY: objs test 

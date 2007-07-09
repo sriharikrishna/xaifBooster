@@ -1,7 +1,7 @@
-default: obj test 
+default: objs test 
 
-obj test clean:
+objs test clean:
 	cd src && $(MAKE) $@
 	cd test && $(MAKE) $@
 
-.PHONY: default obj test clean
+.PHONY: default objs test clean

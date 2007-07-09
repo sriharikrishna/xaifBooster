@@ -50,7 +50,7 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
-obj test clean:
+objs test clean:
 	cd CrossCountryInterface && $(MAKE) $@
 	cd InlinableXMLRepresentation && $(MAKE) $@
 	cd CodeReplacement && $(MAKE) $@
@@ -66,4 +66,4 @@ obj test clean:
 	cd AddressArithmetic && $(MAKE) $@
 	cd BasicBlockPreaccumulationReverse && $(MAKE) $@
 
-.PHONY: obj test clean
+.PHONY: objs test clean
