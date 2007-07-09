@@ -1,6 +1,6 @@
 MAIN=t
 
-test: buildStamp.hpp $(MAIN) quickRegression.bash
+test: obj buildStamp.hpp $(MAIN) quickRegression.bash
 
 CLEANTARGETS+=buildStamp.hpp tmp $(MAIN) quickRegression.bash
 
