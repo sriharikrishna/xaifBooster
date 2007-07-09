@@ -52,7 +52,7 @@
 # ========== end copyright notice ==============
 MAIN=t
 
-test: buildStamp.hpp $(MAIN)
+test: obj buildStamp.hpp $(MAIN)
 
 CLEANTARGETS+=buildStamp.hpp tmp $(MAIN)
 

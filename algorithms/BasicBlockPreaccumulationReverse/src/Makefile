@@ -58,6 +58,6 @@ include ../../../Makefile.incl
 
 objs: obj $(OBJS)
 
-test: ;
+test: obj ;
 
 .PHONY: objs test 
