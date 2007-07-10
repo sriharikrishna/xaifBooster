@@ -55,6 +55,7 @@
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 namespace xaifBooster { 
 
@@ -431,6 +432,17 @@ namespace xaifBooster {
       if ((*beginIt).getKind()==ControlFlowGraphVertexKind::ENTRY_VKIND) 
 	return *beginIt;
     THROW_LOGICEXCEPTION_MACRO("Missing ENTRY node in control flow graph"); 
+  }
+
+  bool ControlFlowGraph::overwrites(const SymbolReference& theSymbolReference) const { 
+    const SideEffectList::VariablePList& theModList(getSideEffectList(SideEffectListType::MOD_LIST).getVariablePList()); 
+    for (SideEffectList::VariablePList::const_iterator listI=theModList.begin();
+	 listI!=theModList.end();
+	 ++listI) {
+      if ((*listI)->getVariableSymbolReference().refersToSameSymbolAs(theSymbolReference))
+	return true; 
+    }
+    return false; 
   }
 
 } // end of namespace xaifBooster 

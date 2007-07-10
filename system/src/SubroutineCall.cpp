@@ -56,6 +56,9 @@
 #include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
 #include "xaifBooster/system/inc/SubroutineCallAlgFactory.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 namespace xaifBooster { 
 
@@ -211,8 +214,34 @@ namespace xaifBooster {
   } 
 
   bool SubroutineCall::overwrites(const Variable& aVariable) const { 
-    bool returnValue=false; 
-    return returnValue;
+    // this is a hack until we have better analysis
+    // see if it matches anything in the subroutine's mod list: 
+    const ControlFlowGraph& theSubroutine(ConceptuallyStaticInstances::instance()->getCallGraph().
+					  getSubroutineBySymbolReference(getSymbolReference()).getControlFlowGraph());
+    if (theSubroutine.overwrites(aVariable.getVariableSymbolReference()))
+      return true;
+    // check if it is in the argument list: 
+    for (ConcreteArgumentPList::const_iterator i=myConcreteArgumentPList.begin();
+	 i!=myConcreteArgumentPList.end();
+	 ++i) { 
+      if((*i)->isArgument() 
+	 && 
+	 (*i)->getArgument().getVariable().equivalentTo(aVariable)) { 
+	// is an argument, check the mod-list for the corresponding formal 
+	// find the corresponding formal: 
+	const ArgumentList::ArgumentSymbolReferencePList& theFormalList(theSubroutine.getArgumentList().getArgumentSymbolReferencePList());
+	for (ArgumentList::ArgumentSymbolReferencePList::const_iterator formalIt=theFormalList.begin();
+	     formalIt!=theFormalList.end();
+	     ++formalIt) { 
+	  if ((*formalIt)->getPosition()==(*i)->getPosition()
+	      && 
+	      theSubroutine.overwrites(**formalIt)) { 
+	    return true;
+	  }
+	}
+      }
+    }
+    return false;
   } 
   
 } // end of namespace xaifBooster 

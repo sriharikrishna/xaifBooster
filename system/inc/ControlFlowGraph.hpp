@@ -156,6 +156,12 @@ namespace xaifBooster {
      */
     const ControlFlowGraphVertex& getContainingVertex(const ObjectWithId::Id& aStatementId) const;
 
+    /** 
+     * determines if theSymbolReference is overwritten
+     * \todo this hack should be replaced by the proper analysis
+     */
+    bool overwrites(const SymbolReference& theSymbolReference) const; 
+
   private: 
     
     /** 
