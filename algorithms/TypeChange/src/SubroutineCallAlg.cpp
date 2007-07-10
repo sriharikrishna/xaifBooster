@@ -363,14 +363,14 @@ namespace xaifBoosterTypeChange {
       // the user logic works around this problem by inserting a 1 in the missing indices. 
       // in this case we get a positive number
       formalMinusConcreteDims=SymbolShape::difference(aFormalArgumentSymbolReference.
-									getSymbol().
-									getSymbolShape(),
-									theConcreteArgument.
-									getArgument().
-									getVariable().
-									getVariableSymbolReference().
-									getSymbol().
-									getSymbolShape());
+						      getSymbol().
+						      getSymbolShape(),
+						      theConcreteArgument.
+						      getArgument().
+						      getVariable().
+						      getVariableSymbolReference().
+						      getSymbol().
+						      getSymbolShape());
       // slicing can also lead to the case that the formal argument has fewer dimensions than the 
       // concrete one but rather than a negative number we reset this to 0. 
       if (formalMinusConcreteDims<0)
