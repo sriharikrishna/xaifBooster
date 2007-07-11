@@ -53,7 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SubroutineCallAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -66,7 +66,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   /** 
    * class to implement taping array access in arguments
    */
-  class SubroutineCallAlg : virtual public xaifBoosterLinearization::SubroutineCallAlg {
+  class SubroutineCallAlg : virtual public xaifBoosterTypeChange::SubroutineCallAlg {
 
   public:
     

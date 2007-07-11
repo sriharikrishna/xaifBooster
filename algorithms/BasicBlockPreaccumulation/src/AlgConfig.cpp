@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_CONCRETEARGUMENTALGFACTORY_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_CONCRETEARGUMENTALGFACTORY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,11 +50,39 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <iostream>
 
-#include "xaifBooster/system/inc/ConcreteArgumentAlgFactory.hpp"
-#include "xaifBooster/system/inc/ConcreteArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(ConcreteArgument,xaifBooster::ConcreteArgumentAlgFactory,xaifBoosterLinearization)
+namespace xaifBoosterBasicBlockPreaccumulation { 
 
-#endif
+  AlgConfig::AlgConfig(int argc, 
+		       char** argv,
+		       const std::string& buildStamp) :
+    xaifBoosterLinearization::AlgConfig(argc,argv,buildStamp) {
+  } 
+
+  std::string AlgConfig::getSwitches() { 
+    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches()+"Sn");
+  } 
+
+  void AlgConfig::config() { 
+    xaifBoosterLinearization::AlgConfig::config();
+    if (isSet('S')) 
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
+    if (isSet('n')) 
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
+  } 
+
+  void AlgConfig::usage() { 
+    xaifBoosterLinearization::AlgConfig::usage();
+    std::cout << " BasicBlockPreaccumulation options: " << std::endl
+	      << "             [-S] force statement level preaccumulation" << std::endl
+	      << "             [-n] allow n-ary sax operations" << std::endl;
+  } 
+
+} // end of namespace xaifBooster
+                                                                     
+
+

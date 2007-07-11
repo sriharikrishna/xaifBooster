@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_ACTIVITYPATTERN_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_ACTIVITYPATTERN_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPE_ALGCONFIG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPE_ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,45 +53,31 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include <list>
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgConfig.hpp"
 
-using namespace xaifBooster; 
+namespace xaifBoosterBasicBlockPreaccumulationTape { 
 
-namespace xaifBoosterLinearization { 
+  /** 
+   * configuration and usage for this transformation 
+   */
+  class AlgConfig : public xaifBoosterBasicBlockPreaccumulation::AlgConfig  { 
 
-  class ActivityPattern { 
+  public:
 
-  public: 
+    AlgConfig(int argc, 
+	      char** argv,
+	      const std::string& buildStamp);
 
-    ActivityPattern();
+    virtual void usage();
 
-    /** 
-     * indicate an active argument at 
-     * aPosition
-     * if size is not set or aPosition is 
-     * not in [1,mySize]
-     * an exception is thrown. 
-     */
-    void setActive(unsigned short aPosition);
+    virtual void config();
 
-    void setSize(unsigned short aSize);
-
-    unsigned short getSize()const;
-
-    bool operator== (const ActivityPattern& anotherPattern) const;
-
-    bool operator!= (const ActivityPattern& anotherPattern) const;
-
-    std::string discrepancyPositions(const ActivityPattern& anotherPattern) const;
-
-  private:
+  protected:
     
-    short mySize;
+    virtual std::string getSwitches();
 
-    unsigned int myPattern;
-    
-  }; // end of class ActivityPattern
-
-}
-
+  }; 
+  
+} // end of namespace xaifBooster
+                                                                     
 #endif

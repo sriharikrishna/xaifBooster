@@ -60,9 +60,10 @@
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
+
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
@@ -175,7 +176,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
     // this was set in BasicBlockAlg::algorithm_action_2
-    BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get())); // in AssignmentAlg::algorithm_action_2()
+    BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get())); // in AssignmentAlg::algorithm_action_2()
     PrivateLinearizedComputationalGraph& theFlattenedSequence=
       theBasicBlockAlg.getFlattenedSequence(getContainingAssignment());
     VertexPPairList theVertexTrackList;

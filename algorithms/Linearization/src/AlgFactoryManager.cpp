@@ -55,16 +55,11 @@
 #include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ArgumentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ConstantAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -93,20 +88,15 @@ namespace xaifBoosterLinearization {
   void AlgFactoryManager::resets() {
     resetArgumentAlgFactory(new ArgumentAlgFactory());
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
-    resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
     resetConstantAlgFactory(new ConstantAlgFactory());
-    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
     resetExpressionAlgFactory(new ExpressionAlgFactory());
     resetExpressionEdgeAlgFactory(new ExpressionEdgeAlgFactory());
     resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
-    resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
-    resetSymbolAlgFactory(new SymbolAlgFactory());
   }
 
   void AlgFactoryManager::init() {
-    xaifBooster::AlgFactoryManager::init();
+    xaifBoosterTypeChange::AlgFactoryManager::init();
     xaifBoosterLinearization::AlgFactoryManager::resets();
   }
 

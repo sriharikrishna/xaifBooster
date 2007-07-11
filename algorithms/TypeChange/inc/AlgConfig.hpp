@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERTYPECHANGE_ALGCONFIG_INCLUDE_
+#define _XAIFBOOSTERTYPECHANGE_ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,11 +52,32 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/system/inc/ConcreteArgumentAlgBase.hpp"
-#include "xaifBooster/system/inc/ConcreteArgument.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlg.hpp"
 
+#include "xaifBooster/system/inc/AlgConfig.hpp"
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(ConcreteArgument,xaifBoosterLinearization)
+namespace xaifBoosterTypeChange { 
 
+  /** 
+   * configuration and usage for this transformation 
+   */
+  class AlgConfig : public xaifBooster::AlgConfig  { 
+
+  public:
+
+    AlgConfig(int argc, 
+	      char** argv,
+	      const std::string& buildStamp);
+
+    virtual void usage();
+
+    virtual void config();
+
+  protected:
+    
+    virtual std::string getSwitches();
+
+  }; 
+  
+} // end of namespace xaifBooster
+                                                                     
+#endif

@@ -60,9 +60,9 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlg.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/ConcreteArgumentAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
@@ -72,7 +72,7 @@
 namespace xaifBoosterBasicBlockPreaccumulationTape {  
 
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
-    xaifBoosterLinearization::SubroutineCallAlg(theContainingSubroutineCall) { 
+    xaifBoosterTypeChange::SubroutineCallAlg(theContainingSubroutineCall) { 
   }
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
@@ -88,7 +88,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   void
   SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
     // the call
-    xaifBoosterLinearization::SubroutineCallAlg::printXMLHierarchy(os);
+    xaifBoosterTypeChange::SubroutineCallAlg::printXMLHierarchy(os);
     if (xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()==ForLoopReversalType::ANONYMOUS) { 
       // pushes after the call
       for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI
@@ -118,9 +118,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   
   void SubroutineCallAlg::algorithm_action_4() { 
-    xaifBoosterLinearization::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterLinearization::SymbolAlg&>
-						      (getContainingSubroutineCall().
-						       getSymbolReference().getSymbol().getSymbolAlgBase()));
+    xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
+						   (getContainingSubroutineCall().
+						    getSymbolReference().getSymbol().getSymbolAlgBase()));
     // we don't do this for external calls: 
     if(!theSymbolAlg.isExternal()) { 
       // for each subroutinecall
@@ -128,7 +128,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       // an InlinableSubroutinecall for each 
       // nonconstant index of an argument that 
       // has array indices
-      PlainBasicBlock::BasicBlockElementList::iterator indexAssignmentListI=myPriorToCallIndexAssignments.begin();
+      PlainBasicBlock::BasicBlockElementList::iterator indexAssignmentListI=myPriorToCallAssignments.begin();
       for (SubroutineCall::ConcreteArgumentPList::const_iterator aConcreteArgumentPListI=
 	     getContainingSubroutineCall().getConcreteArgumentPList().begin();
 	   aConcreteArgumentPListI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
@@ -137,7 +137,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	    && 
 	    (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
 	  handleArrayAccessIndices(**aConcreteArgumentPListI,
-				   dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()).getContaining().getScope(), // in SubroutineCallAlg::algorithm_action_4()
+				   dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getContaining().getScope(), // in SubroutineCallAlg::algorithm_action_4()
 				   indexAssignmentListI); 
 	}
       } // end for
@@ -148,8 +148,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 						   Scope& theBasicBlockScope,
 						   PlainBasicBlock::BasicBlockElementList::iterator& indexAssignmentListI) { 
     // get the argument algorithm instance 
-    xaifBoosterLinearization::ConcreteArgumentAlg& 
-      theConcreteArgumentAlg(dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
+    xaifBoosterTypeChange::ConcreteArgumentAlg& 
+      theConcreteArgumentAlg(dynamic_cast<xaifBoosterTypeChange::ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
     // one potential extra replacement spots:
     ArrayAccess::IndexTripletListType *thePostReplacementIndexTripletListP=0;
     ArrayAccess::IndexTripletListType::iterator thePostReplacementIndexTripletListI;
@@ -178,14 +178,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  // clear out the old index expression
 	  if (thePostReplacementIndexTripletListP)
 	    (*thePostReplacementIndexTripletListI)->getExpression((*anIndexPairListCI).first).clear();
-	  xaifBoosterLinearization::ConcreteArgumentAlg& 
-	    theConcreteArgumentAlg(dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.
+	  xaifBoosterTypeChange::ConcreteArgumentAlg& 
+	    theConcreteArgumentAlg(dynamic_cast<xaifBoosterTypeChange::ConcreteArgumentAlg&>(theConcreteArgument.
 											      getConcreteArgumentAlgBase()));
 	  Assignment* theIndexExpressionAssignment_p(0);
 	  if (!theConcreteArgumentAlg.hasReplacement()) { 
 	    theIndexExpressionAssignment_p=new Assignment(false);
 	    // save it in the list
-	    myPriorToCallIndexAssignments.push_back(theIndexExpressionAssignment_p);
+	    myPriorToCallAssignments.push_back(theIndexExpressionAssignment_p);
 	    theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
 	    // create a new symbol and add a new VariableSymbolReference in the Variable
 	    VariableSymbolReference* theNewVariableSymbolReference_p=

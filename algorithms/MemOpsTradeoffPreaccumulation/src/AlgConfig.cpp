@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_CONCRETEARGUMENTALG_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_CONCRETEARGUMENTALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,92 +50,39 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <iostream>
 
-#include "xaifBooster/system/inc/ConcreteArgumentAlgBase.hpp"
+#include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/HeuristicParse.hpp"
 
-using namespace xaifBooster;
+namespace xaifBoosterMemOpsTradeoffPreaccumulation { 
 
-namespace xaifBooster { 
-  class ConcreteArgument;
-}
+  AlgConfig::AlgConfig(int argc, 
+		       char** argv,
+		       const std::string& buildStamp) :
+    xaifBoosterBasicBlockPreaccumulation::AlgConfig(argc,argv,buildStamp) {
+  } 
 
-namespace xaifBoosterLinearization {  
+  std::string AlgConfig::getSwitches() { 
+    return std::string(xaifBoosterBasicBlockPreaccumulation::AlgConfig::getSwitches()+"h");
+  } 
 
-  /** 
-   * class to hold a replaced argument for 
-   * cases of enforced conversions between active 
-   * and passive types when there is a mismatch 
-   * of types between the actual and the formal 
-   * argument
-   */
-  class ConcreteArgumentAlg : public ConcreteArgumentAlgBase {
+  void AlgConfig::config() { 
+    xaifBoosterBasicBlockPreaccumulation::AlgConfig::config();
+    if (isSet('h'))
+      MemOpsTradeoffPreaccumulation::HeuristicParse::fromString(argAsString('h'));
+  } 
 
-  public:
-    
-    ConcreteArgumentAlg(const ConcreteArgument& theContainingConcreteArgument);
+  void AlgConfig::usage() { 
+    xaifBoosterBasicBlockPreaccumulation::AlgConfig::usage();
+    std::cout << " MemOpsTradeoffPreaccumulation options: " << std::endl
+	      << "             [-h <Heuristic List> ]" << std::endl
+	      << "                 List must be in all caps, the first word must be either VERTEX, FACE, or EDGE," << std::endl
+	      << "                 followed by applicable heuristics as noted in the readme file." << std::endl
+	      << "                 all words are to be separated by a single space" << std::endl;
+  } 
 
-    virtual ~ConcreteArgumentAlg();
-
-    virtual void printXMLHierarchy(std::ostream& os) const;
-
-    virtual std::string debug() const ;
-
-    void makeReplacement(const Variable& aVariable);
-
-    bool hasReplacement() const;
-
-    ConcreteArgument& getReplacement();
-
-    bool hasPriorConversionConcreteArgument() const;
-
-    ConcreteArgument& getPriorConversionConcreteArgument();
-
-    void setPriorConversionConcreteArgument(ConcreteArgument& aConcreteArgument);
-
-    bool hasPostConversionConcreteArgument() const;
-
-    ConcreteArgument& getPostConversionConcreteArgument();
-
-    void setPostConversionConcreteArgument(ConcreteArgument& aConcreteArgument);
-
-  private: 
-
-    /** 
-     * no def
-     */
-    ConcreteArgumentAlg();
-
-    /** 
-     * no def
-     */
-    ConcreteArgumentAlg(const ConcreteArgumentAlg&);
-
-    /** 
-     * no def
-     */
-    ConcreteArgumentAlg operator=(const ConcreteArgumentAlg&);
-
-    /** 
-     * my replacement, i.e. the converted argument.
-     */
-    ConcreteArgument* myReplacement_p;
-
-    /** 
-     * a reference to the old argument used in the prior conversion
-     * we want to keep track of those in case of a later need 
-     * to modify them, e.g. for storing/restoring indices
-     */
-    ConcreteArgument* myPriorConversionConcreteArgument_p;
-
-    /** 
-     * a reference to the old argument used in the post conversion
-     * we want to keep track of those in case of a later need 
-     * to modify them, e.g. for storing/restoring indices
-     */
-    ConcreteArgument* myPostConversionConcreteArgument_p;
-    
-  }; // end of class ConcreteArgumentAlg
- 
-} 
+} // end of namespace xaifBooster
                                                                      
-#endif
+
+
