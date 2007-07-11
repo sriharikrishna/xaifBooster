@@ -59,8 +59,8 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/ConcreteArgumentAlg.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/ConcreteArgumentAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
@@ -68,7 +68,7 @@
 namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
 
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
-    xaifBoosterLinearization::SubroutineCallAlg(theContainingSubroutineCall),
+    xaifBoosterTypeChange::SubroutineCallAlg(theContainingSubroutineCall),
     BasicBlockElementAlg(theContainingSubroutineCall) { 
   }
 
@@ -93,7 +93,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       } 
     }
     // only print the adjustments (not the assignments)
-    xaifBoosterLinearization::SubroutineCallAlg::printXMLHierarchyImplWithAdjustments(os);
+    xaifBoosterTypeChange::SubroutineCallAlg::printXMLHierarchyImplWithAdjustments(os);
   } // end of BasicBlockAlg::printXMLHierarchy
 
   std::string 
@@ -111,7 +111,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   } 
 
   void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock) { 
-    xaifBoosterLinearization::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterLinearization::SymbolAlg&>
+    xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
 						      (getContainingSubroutineCall().
 						       getSymbolReference().getSymbol().getSymbolAlgBase()));
     // we don't do this for external calls: 
@@ -123,7 +123,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock,
 					 ForLoopReversalType::ForLoopReversalType_E aReversalType) { 
-    xaifBoosterLinearization::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterLinearization::SymbolAlg&>
+    xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
 						      (getContainingSubroutineCall().
 						       getSymbolReference().getSymbol().getSymbolAlgBase()));
     // we don't do this for external calls: 
@@ -144,7 +144,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       (*theOldConcreteArgumentPListI)->copyMyselfInto(*theNewConcreteArgument_p);
     } // end for
     // reapply any argument conversions we may need
-    dynamic_cast<xaifBoosterLinearization::SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()).xaifBoosterLinearization::SubroutineCallAlg::algorithm_action_1();
+    dynamic_cast<xaifBoosterTypeChange::SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()).xaifBoosterTypeChange::SubroutineCallAlg::algorithm_action_1();
     if (aReversalType==ForLoopReversalType::ANONYMOUS) { 
       // for each subroutinecall
       // restore the index value via 
@@ -201,8 +201,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     if (!needReplacements)
       return;
     // get the algorithm instance
-    xaifBoosterLinearization::ConcreteArgumentAlg& 
-      theConcreteArgumentAlg(dynamic_cast<xaifBoosterLinearization::ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
+    xaifBoosterTypeChange::ConcreteArgumentAlg& 
+      theConcreteArgumentAlg(dynamic_cast<xaifBoosterTypeChange::ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
     // three different potential replacement spots:
     ArrayAccess::IndexTripletListType 
       *theArgumentReplacementIndexTripletListP=0, *thePriorReplacementIndexTripletListP=0, *thePostReplacementIndexTripletListP=0;

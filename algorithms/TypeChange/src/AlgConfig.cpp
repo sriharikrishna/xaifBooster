@@ -50,36 +50,40 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include "xaifBooster/algorithms/TypeChange/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlg.hpp"
 
+namespace xaifBoosterTypeChange { 
 
-#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-#include "xaifBooster/system/inc/SymbolReference.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/MissingSubroutinesReport.hpp"
-
-namespace xaifBoosterLinearization { 
-
-  MissingSubroutinesReport::SymbolReferencePList MissingSubroutinesReport::ourReportedList;
-
-  void MissingSubroutinesReport::report(const  SubroutineNotFoundException& e) { 
-    const SymbolReference& s(e.getSymbolReference());
-    SymbolReferencePList::iterator i;
-    for (i=ourReportedList.begin();
-	 i!=ourReportedList.end();
-	 ++i) { 
-      if (&((*i)->getScope())==&(s.getScope()) && &((*i)->getSymbol())==&(s.getSymbol()))
-	break;
-    }
-    if (i==ourReportedList.end()) { 
-      ourReportedList.push_back(new SymbolReference(s.getSymbol(),
-						    s.getScope()));
-      DBG_MACRO(DbgGroup::WARNING, 
-		"cannot find subroutine " 
-		<< s.getSymbol().plainName().c_str() 
-		<< " (xaif name " 
-		<< s.getSymbol().getId().c_str() 
-		<< ") but this may be an external call, we continue");
-    }
+  AlgConfig::AlgConfig(int argc, 
+		       char** argv,
+		       const std::string& buildStamp) :
+    xaifBooster::AlgConfig(argc,argv,buildStamp) {
   } 
-  
-}
+
+  std::string AlgConfig::getSwitches() { 
+    return std::string(xaifBooster::AlgConfig::getSwitches()+"wr");
+  } 
+
+  void AlgConfig::config() { 
+    xaifBooster::AlgConfig::config();
+    if (isSet('w')) 
+      xaifBoosterTypeChange::SubroutineCallAlg::addWrapperNames(argAsString('w'));
+    if (isSet('r')) 
+      xaifBoosterTypeChange::ControlFlowGraphAlg::setForceNonExternalRenames();
+  } 
+
+  void AlgConfig::usage() { 
+    xaifBooster::AlgConfig::usage();
+    std::cout << " TypeChange options: " << std::endl
+	      << "             [-w \"<list of subroutines with wrappers\"]" << std::endl
+	      << "                 space separated list enclosed in double quotes" << std::endl
+	      << "             [-r] " << std::endl
+	      << "                 force renaming of all non-external routines" << std::endl;
+  } 
+
+} // end of namespace xaifBooster
+                                                                     
+
 

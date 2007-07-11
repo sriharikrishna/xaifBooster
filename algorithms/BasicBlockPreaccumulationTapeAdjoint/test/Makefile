@@ -71,7 +71,8 @@ ALG_OBJ_SET= \
 $(wildcard ../src/obj/*.o) \
 $(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) \
 $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) \
-$(wildcard ../../Linearization/src/obj/*.o) 
+$(wildcard ../../Linearization/src/obj/*.o) \
+$(wildcard ../../TypeChange/src/obj/*.o) 
 
 VPATH+=../../CrossCountryInterface/lib
 LIBS+=-lxaifBoosterCrossCountryInterface

@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_MISSINGSUBROUTINESREPORT_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_MISSINGSUBROUTINESREPORT_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,29 +50,69 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <iostream>
 
-#include <list>
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
-#include "xaifBooster/system/inc/SubroutineNotFoundException.hpp"
+#include "xaifBooster/system/inc/AlgConfig.hpp"
 
-using namespace xaifBooster; 
+namespace xaifBooster { 
 
-namespace xaifBoosterLinearization { 
+  AlgConfig::AlgConfig(int argc, 
+		       char** argv,
+		       const std::string& buildStamp) :
+    CommandLineParser(argc,argv),
+    myBuildStamp(buildStamp) {
+  } 
 
-  class MissingSubroutinesReport { 
+  std::string AlgConfig::getSwitches() { 
+    return std::string("iocdgs");
+  } 
 
-  public: 
+  void AlgConfig::config() { 
+    parse(getSwitches());
+    myInputFileName=argAsString('i');
+    myIntrinsicsFileName=argAsString('c');
+    if (isSet('s')) 
+      mySchemaPath=argAsString('s');
+    if (isSet('o')) 
+      myOutFileName=argAsString('o');
+    if (isSet('d')) 
+      DbgLoggerManager::instance()->setFile(argAsString('d'));
+    if (isSet('g')) 
+      DbgLoggerManager::instance()->setSelection(argAsInt('g'));
+  } 
 
-    static void report(const  SubroutineNotFoundException& e);
+  void AlgConfig::usage() { 
+    std::cout << "driver (" << myBuildStamp.c_str() << ") usage:" << std::endl
+	      << myArgv[0]
+	      << " -i <inputFile> -c <intrinsicsCatalogueFile> " << std::endl
+	      << " common options: " << std::endl
+	      << "             [-s <pathToSchema> ] defaults to ./" << std::endl
+	      << "             [-o <outputFile> ] [-d <debugOutputFile> ]" << std::endl
+	      << "                 both default to cout" << std::endl
+	      << "             [-g <debugGroup> ]" << std::endl
+	      << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
+	      << "                 default to 0(ERROR)" << std::endl;
+  } 
 
-  private:
-    
-    typedef std::list<SymbolReference*> SymbolReferencePList;
+  const std::string& AlgConfig::getInputFileName() const { 
+    return myInputFileName; 
+  } 
 
-    static SymbolReferencePList ourReportedList;
+  const std::string& AlgConfig::getIntrinsicsFileName() const { 
+    return myIntrinsicsFileName; 
+  } 
 
-  }; // end of class MissingSubroutinesReport
+  const std::string& AlgConfig::getSchemaPath() const { 
+    return mySchemaPath; 
+  } 
 
-}
+  const std::string& AlgConfig::getOutFileName() const { 
+    return myOutFileName; 
+  } 
 
-#endif
+} // end of namespace xaifBooster
+                                                                     
+
+

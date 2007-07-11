@@ -81,22 +81,26 @@ namespace xaifBooster {
   class CommandLineParser {
   public: 
 
-    ~CommandLineParser();
+    /**
+     * instantiate parser with
+     * \parm argc from main
+     * \parm argv from main
+     */ 
+    CommandLineParser(int argc, 
+		      char** argv); 
+    
+    virtual ~CommandLineParser();
     
     /**
      *  instantiate the parser, it is implemented as a singleton 
      */ 
     static CommandLineParser* instance(); 
 
-    /**
-     *  after instantiation initialize the parser with
-     *  1st parameter: all the switches allowed for this executable
-     *  2nd parameter: argc  from main's head
-     *  3rd parameter: argv  from main's head 
-     */ 
-    void initialize(const std::string& switches, 
-		    int argc, 
-		    char** argv);
+    /** 
+     * do the parsing in a step separate from construction
+     * \paran theSwitches allowed for this transformation
+     */
+    void parse(const std::string& theSwitches);
 
     /** 
      * display all the arguments that have been found on the command line 
@@ -128,22 +132,30 @@ namespace xaifBooster {
 
     CommandLineParser();
 
-    static CommandLineParser* ourClassInstance_p; 
-
     /** 
      * here we keep the parsed information
      */
     CommandLineArguments myCommandLineArguments;
+
+  protected: 
+
+    /** 
+     * copy of argc
+     */
+    int myArgc; 
+
+    /**
+     * pointer to argv
+     */
+    char** myArgv;
+
+    /** 
+     * has parse been called? 
+     */
+    bool myParsedFlag;
 
   }; // end of class CommandLineParser
    
 } // end of namespace xaifBooster
 
 #endif
-
-
-
-
-
-
-

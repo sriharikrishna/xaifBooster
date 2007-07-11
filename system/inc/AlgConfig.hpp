@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_BASICBLOCKALGPARAMETER_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_BASICBLOCKALGPARAMETER_INCLUDE_
+#ifndef _ALGCONFIG_INCLUDE_
+#define _ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,15 +53,43 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/utils/inc/SingletonParameterPerThread.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/utils/inc/CommandLineParser.hpp"
 
-using namespace xaifBooster;
+namespace xaifBooster { 
 
-namespace xaifBoosterLinearization {  
+  /** 
+   * configuration and usage for this transformation 
+   */
+  class AlgConfig : public CommandLineParser { 
+
+  public:
+
+    AlgConfig(int argc, 
+	      char** argv,
+	      const std::string& buildStamp);
+
+    virtual void usage();
+
+    virtual void config();
+
+    const std::string& getInputFileName() const; 
+    const std::string& getIntrinsicsFileName() const; 
+    const std::string& getSchemaPath() const; 
+    const std::string& getOutFileName() const; 
+
+  protected:
+
+    virtual std::string getSwitches();
+
+  private: 
+
+    std::string myInputFileName; 
+    std::string myIntrinsicsFileName; 
+    std::string mySchemaPath; 
+    std::string myOutFileName;
+    std::string myBuildStamp;
+  }; 
   
-  typedef SingletonParameterPerThread<BasicBlockAlg> BasicBlockAlgParameter;
-
-} // end of namespace 
-
+} // end of namespace xaifBooster
+                                                                     
 #endif

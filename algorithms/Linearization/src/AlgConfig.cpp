@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_BASICBLOCKALGFACTORY_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_BASICBLOCKALGFACTORY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,12 +50,32 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <iostream>
 
-#include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/AlgConfig.hpp"
+
+namespace xaifBoosterLinearization { 
+
+  AlgConfig::AlgConfig(int argc, 
+		       char** argv,
+		       const std::string& buildStamp) :
+    xaifBoosterTypeChange::AlgConfig(argc,argv,buildStamp) {
+  } 
+
+  std::string AlgConfig::getSwitches() { 
+    return std::string(xaifBoosterTypeChange::AlgConfig::getSwitches());
+  } 
+
+  void AlgConfig::config() { 
+    xaifBoosterTypeChange::AlgConfig::config();
+  } 
+
+  void AlgConfig::usage() { 
+    xaifBoosterTypeChange::AlgConfig::usage();
+    std::cout << " Linearization options: no specific options here " << std::endl;
+  } 
+
+} // end of namespace xaifBooster
+                                                                     
 
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBooster::BasicBlockAlgFactory,xaifBoosterLinearization)
-
-
-#endif

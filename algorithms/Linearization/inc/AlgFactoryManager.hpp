@@ -53,7 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/AlgFactoryManager.hpp"
 
 namespace xaifBoosterLinearization { 
 
@@ -61,7 +61,7 @@ namespace xaifBoosterLinearization {
    * the singleton class for 
    * setting algorithm factory pointers
    */
-  class AlgFactoryManager : virtual public xaifBooster::AlgFactoryManager { 
+  class AlgFactoryManager : virtual public xaifBoosterTypeChange::AlgFactoryManager { 
 
   public: 
 

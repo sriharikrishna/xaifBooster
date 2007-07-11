@@ -110,7 +110,7 @@ namespace xaifBooster {
     }
   } // end of parse
 
-  void XMLParser::setExternalSchemaLocation(std::string theSchemaLocation) { 
+  void XMLParser::setExternalSchemaLocation(const std::string& theSchemaLocation) { 
     DBG_MACRO(DbgGroup::CALLSTACK, 
 	      "in XMLParser::setExternalSchemaLocation for " 
 	      << theSchemaLocation.c_str());

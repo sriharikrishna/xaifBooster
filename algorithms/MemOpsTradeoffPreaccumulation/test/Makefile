@@ -67,7 +67,7 @@ include ../../../Makefile.incl
 -include $(DEPINCL)
 
 # pick up all algorith specific obj files
-ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) 
+ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) $(wildcard ../../TypeChange/src/obj/*.o) 
 
 VPATH+=../../InlinableXMLRepresentation/lib
 LIBS+=-lxaifBoosterInlinableXMLRepresentation

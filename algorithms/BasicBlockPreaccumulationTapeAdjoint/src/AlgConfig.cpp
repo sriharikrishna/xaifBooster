@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_SYMBOLALGFACTORY_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_SYMBOLALGFACTORY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,10 +50,32 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <iostream>
 
-#include "xaifBooster/system/inc/SymbolAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgConfig.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(Symbol,xaifBooster::SymbolAlgFactory,xaifBoosterLinearization)
+namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint { 
 
-#endif
+  AlgConfig::AlgConfig(int argc, 
+		       char** argv,
+		       const std::string& buildStamp) :
+    xaifBoosterBasicBlockPreaccumulationTape::AlgConfig(argc,argv,buildStamp) {
+  } 
+
+  std::string AlgConfig::getSwitches() { 
+    return std::string(xaifBoosterBasicBlockPreaccumulationTape::AlgConfig::getSwitches());
+  } 
+
+  void AlgConfig::config() { 
+    xaifBoosterBasicBlockPreaccumulationTape::AlgConfig::config();
+  } 
+
+  void AlgConfig::usage() { 
+    xaifBoosterBasicBlockPreaccumulationTape::AlgConfig::usage();
+    std::cout << " BasicBlockPreaccumulationTapeAdjoint options: no specific options here" << std::endl; 
+  } 
+
+} // end of namespace xaifBooster
+                                                                     
+
+

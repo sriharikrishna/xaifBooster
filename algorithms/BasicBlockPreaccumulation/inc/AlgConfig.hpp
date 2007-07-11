@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_CONTROLFLOWGRAPHALG_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_CONTROLFLOWGRAPHALG_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_ALGCONFIG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,61 +53,31 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/AlgConfig.hpp"
 
-using namespace xaifBooster;
-
-namespace xaifBoosterLinearization {  
+namespace xaifBoosterBasicBlockPreaccumulation { 
 
   /** 
-   * class to implement renaming of subroutine definitions
-   * if enforced
+   * configuration and usage for this transformation 
    */
-  class ControlFlowGraphAlg : public ControlFlowGraphAlgBase {
+  class AlgConfig : public xaifBoosterLinearization::AlgConfig  { 
+
   public:
+
+    AlgConfig(int argc, 
+	      char** argv,
+	      const std::string& buildStamp);
+
+    virtual void usage();
+
+    virtual void config();
+
+  protected:
     
-    ControlFlowGraphAlg(const ControlFlowGraph& theContaining);
+    virtual std::string getSwitches();
 
-    virtual ~ControlFlowGraphAlg();
-
-    virtual void printXMLHierarchy(std::ostream& os) const;
-
-    virtual void algorithm_action_1();
-                                                                                
-    virtual std::string debug() const ;
-
-    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    static void setForceNonExternalRenames();
-    
-    bool forceNonExternalRenames() const;
-
-  private:
-    
-    /** 
-     * no def
-     */
-    ControlFlowGraphAlg();
-
-    /** 
-     * no def
-     */
-    ControlFlowGraphAlg(const ControlFlowGraphAlg&);
-
-    /** 
-     * no def
-     */
-    ControlFlowGraphAlg operator=(const ControlFlowGraphAlg&);
-
-    /** 
-     * force renames of all subroutine calls/definitions
-     * (non-external) 
-     */
-    static bool ourForceNonExternalRenamesFlag;
-
-  };  // end of class
-
-} // end of namespace 
+  }; 
+  
+} // end of namespace xaifBooster
                                                                      
 #endif

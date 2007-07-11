@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERLINEARIZATION_BASICBLOCKALG_INCLUDE_
-#define _XAIFBOOSTERLINEARIZATION_BASICBLOCKALG_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPEADJOINT_ALGCONFIG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPEADJOINT_ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,59 +53,31 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include <list>
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgConfig.hpp"
 
-#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
-
-using namespace xaifBooster;
-
-namespace xaifBoosterLinearization {  
+namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint { 
 
   /** 
-   * class to pass down scope information
+   * configuration and usage for this transformation 
    */
-  class BasicBlockAlg : virtual public BasicBlockAlgBase {
+  class AlgConfig : public xaifBoosterBasicBlockPreaccumulationTape::AlgConfig  { 
+
   public:
+
+    AlgConfig(int argc, 
+	      char** argv,
+	      const std::string& buildStamp);
+
+    virtual void usage();
+
+    virtual void config();
+
+  protected:
     
-    BasicBlockAlg(BasicBlock& theContaining);
+    virtual std::string getSwitches();
 
-    virtual ~BasicBlockAlg();
-
-    virtual void printXMLHierarchy(std::ostream& os) const;
-
-    virtual std::string debug() const ;
-
-    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    /**
-     * pass down scope information
-     */
-    virtual void algorithm_action_1();
-
-    /**
-     * access container
-     */
-    const BasicBlock& getContaining() const;
-    
-  private:
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg();
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg(const BasicBlockAlg&);
-
-    /** 
-     * no def
-     */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
-   
-  };
- 
-} // end of namespace xaifBoosterAngelInterfaceAlgorithms
+  }; 
+  
+} // end of namespace xaifBooster
                                                                      
 #endif

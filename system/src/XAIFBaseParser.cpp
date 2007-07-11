@@ -81,6 +81,13 @@ namespace xaifBooster {
 
   }
 
+  void XAIFBaseParser::setExternalSchemaLocation(const std::string& theSchemaLocation) { 
+    if (theSchemaLocation.size()) { 
+      std::string aUrl("http://www.mcs.anl.gov/XAIF ");
+      XMLParser::setExternalSchemaLocation(aUrl+theSchemaLocation+"/xaif.xsd");
+    } 
+  } 
+
   void 
   XAIFBaseParser::staticInitialize() { 
     if (ourStaticInitFlag)

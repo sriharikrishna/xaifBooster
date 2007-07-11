@@ -50,11 +50,32 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
-#include "xaifBooster/system/inc/SubroutineCall.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlgFactory.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
+#include <iostream>
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgConfig.hpp"
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(SubroutineCall,xaifBoosterLinearization)
+namespace xaifBoosterBasicBlockPreaccumulationTape { 
+
+  AlgConfig::AlgConfig(int argc, 
+		       char** argv,
+		       const std::string& buildStamp) :
+    xaifBoosterBasicBlockPreaccumulation::AlgConfig(argc,argv,buildStamp) {
+  } 
+
+  std::string AlgConfig::getSwitches() { 
+    return std::string(xaifBoosterBasicBlockPreaccumulation::AlgConfig::getSwitches());
+  } 
+
+  void AlgConfig::config() { 
+    xaifBoosterBasicBlockPreaccumulation::AlgConfig::config();
+  } 
+
+  void AlgConfig::usage() { 
+    xaifBoosterBasicBlockPreaccumulation::AlgConfig::usage();
+    std::cout << " BasicBlockPreaccumulationTape options: no specific options here" << std::endl; 
+  } 
+
+} // end of namespace xaifBooster
+                                                                     
+
 
