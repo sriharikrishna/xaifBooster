@@ -8,7 +8,7 @@
 
   <CodeGen:RepeatableCode nr_versions="57">
     <CodeGen:CodeTemplate nr_entries="9">
-      <CodeGen:StaticCode text="ourActionCatalogue.addElement("/>
+      <CodeGen:StaticCode text="ourStartActionCatalogue.addElement("/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="::"/>
       <CodeGen:DynamicCodePlaceholder hook="2"/>
@@ -306,7 +306,7 @@
   </CodeGen:RepeatableCode>
   <CodeGen:RepeatableCode nr_versions="3">
     <CodeGen:CodeTemplate nr_entries="9">
-      <CodeGen:StaticCode text="ourActionCatalogue.addElement("/>
+      <CodeGen:StaticCode text="ourStartActionCatalogue.addElement("/>
       <CodeGen:StaticCode text="&#34;"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="&#34;"/>

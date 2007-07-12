@@ -60,6 +60,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
   AlgConfig::AlgConfig(int argc, 
 		       char** argv,
 		       const std::string& buildStamp) :
+    xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterBasicBlockPreaccumulation::AlgConfig(argc,argv,buildStamp) {
   } 
 

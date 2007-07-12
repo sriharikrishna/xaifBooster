@@ -79,6 +79,14 @@ namespace xaifBooster {
     virtual ~GraphWrapper();
 
     unsigned int numEdges()const {return boost::num_edges(myBoostGraph);};
+
+    /**
+     * returns true if there are no vertices
+     * (as opposed to "empty" graph indicating 
+     * no edges but possibly isolated vertices)
+     */
+    bool isNull()const; 
+
     unsigned int numOutEdgesOf(const Vertex& aVertex)const; 
     unsigned int numInEdgesOf(const Vertex& aVertex)const; 
     unsigned int numVertices()const {return boost::num_vertices(myBoostGraph);};

@@ -209,9 +209,9 @@ namespace xaifBoosterAddressArithmetic {
   } 
 
   void
-  CallGraphVertexAlg::findUnknownVariablesInDerivativePropagatorIndexExpressions(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
-										 const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-										 CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) {
+  CallGraphVertexAlg::findUnknownIndexVariablesInBasicBlockElements(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
+								    const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+								    CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) {
     // we get the sequences
     const xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequencePList& 
       aSequencePList(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(theOriginalBasicBlock.getOriginalVertex().getControlFlowGraphVertexAlgBase()).
@@ -291,9 +291,9 @@ namespace xaifBoosterAddressArithmetic {
 									     CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) { 
     switch (aReversibleControlFlowGraphVertex.getKind()) { 
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::BASICBLOCK:{ 
-      findUnknownVariablesInDerivativePropagatorIndexExpressions(aReversibleControlFlowGraphVertex,
-								 theKnownVariables,
-								 theUnknownVariables);
+      findUnknownIndexVariablesInBasicBlockElements(aReversibleControlFlowGraphVertex,
+						    theKnownVariables,
+						    theUnknownVariables);
       break;
     } 
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::FORLOOP: { 

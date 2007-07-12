@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 10 10:59:20 2007
+C Fortran file translated from WHIRL Wed Jul 11 14:01:55 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -11,12 +11,12 @@ C ***********************************************************
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
+      REAL(w2f__8) OpenAD_Symbol_2
+      REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_6
+      type(active) :: OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -26,15 +26,15 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_6 = (X%v*X%v)
-      OpenAD_Symbol_4 = X%v
-      OpenAD_Symbol_5 = X%v
-      Y%v = OpenAD_Symbol_6
-      OpenAD_Symbol_7 = OpenAD_Symbol_4
-      OpenAD_Symbol_9 = OpenAD_Symbol_5
-      CALL setderiv(OpenAD_Symbol_8,X)
-      CALL sax(OpenAD_Symbol_7,OpenAD_Symbol_8,Y)
-      CALL saxpy(OpenAD_Symbol_9,OpenAD_Symbol_8,Y)
+      OpenAD_Symbol_4 = (X%v*X%v)
+      OpenAD_Symbol_2 = X%v
+      OpenAD_Symbol_3 = X%v
+      Y%v = OpenAD_Symbol_4
+      OpenAD_Symbol_5 = OpenAD_Symbol_2
+      OpenAD_Symbol_7 = OpenAD_Symbol_3
+      CALL setderiv(OpenAD_Symbol_6,X)
+      CALL sax(OpenAD_Symbol_5,OpenAD_Symbol_6,Y)
+      CALL saxpy(OpenAD_Symbol_7,OpenAD_Symbol_6,Y)
       RETURN
       END SUBROUTINE
 
@@ -46,8 +46,8 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
-      type(active) :: OpenAD_Symbol_10
-      type(active) :: OpenAD_Symbol_3
+      type(active) :: OpenAD_Symbol_1
+      type(active) :: OpenAD_Symbol_8
 C
 C     **** Parameters and Result ****
 C
@@ -62,8 +62,6 @@ C
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
       REAL(w2f__8) PY
-      INTEGER(w2f__i8) OpenAD_Symbol_1
-      INTEGER(w2f__i8) OpenAD_Symbol_2
 C
 C     **** Top Level Pragmas ****
 C
@@ -78,26 +76,23 @@ C$OPENAD XXX Simple loop
         DO J = 1, 2, 1
           AX(INT(I),INT(J))%v = X(I)%v
           APX(INT(I), INT(J)) = (I * 4.0D00)
-          CALL setderiv(OpenAD_Symbol_10,X(I))
-          CALL setderiv(AX(I,J),OpenAD_Symbol_10)
+          CALL setderiv(OpenAD_Symbol_8,X(I))
+          CALL setderiv(AX(I,J),OpenAD_Symbol_8)
         END DO
       END DO
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           CALL foo(AX(I,J),Y)
-          OpenAD_Symbol_1 = I
-          OpenAD_Symbol_2 = J
 C         $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
           CALL convert_p2a_scalar(OpenAD_Symbol_0,APX(I,J))
 C         $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-          CALL convert_p2a_scalar(OpenAD_Symbol_3,PY)
-          CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_3)
+          CALL convert_p2a_scalar(OpenAD_Symbol_1,PY)
+          CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
 C         $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-          CALL convert_a2p_scalar(APX(INT(OpenAD_Symbol_1),INT(OpenAD_Sy
-     +mbol_2)),OpenAD_Symbol_0)
+          CALL convert_a2p_scalar(APX(I,J),OpenAD_Symbol_0)
 C         $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-          CALL convert_a2p_scalar(PY,OpenAD_Symbol_3)
+          CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
         END DO
       END DO
       RETURN

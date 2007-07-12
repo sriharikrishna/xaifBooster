@@ -60,6 +60,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   AlgConfig::AlgConfig(int argc, 
 		       char** argv,
 		       const std::string& buildStamp) :
+    xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterLinearization::AlgConfig(argc,argv,buildStamp) {
   } 
 

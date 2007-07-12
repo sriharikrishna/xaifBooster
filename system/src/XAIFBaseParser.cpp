@@ -50,21 +50,25 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/system/inc/XAIFBaseParser.hpp"
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/TransService.hpp>
-#include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <sstream>
+
+#include "xercesc/util/PlatformUtils.hpp"
+#include "xercesc/util/TransService.hpp"
+#include "xercesc/sax2/SAX2XMLReader.hpp"
+#include "xercesc/sax2/XMLReaderFactory.hpp"
+
 #include "xaifBooster/utils/inc/XMLParserErrorHandler.hpp"
 #include "xaifBooster/utils/inc/XMLParserMessage.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-#include <sstream>
+
+#include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 
 namespace xaifBooster {
   
   bool XAIFBaseParser::ourStaticInitFlag;
-  HashTable<XAIFBaseParser::ActionItem> XAIFBaseParser::ourActionCatalogue;
+  HashTable<XAIFBaseParser::ActionItem> XAIFBaseParser::ourStartActionCatalogue;
+  HashTable<XAIFBaseParser::ActionItem> XAIFBaseParser::ourEndActionCatalogue;
 
   void 
   XAIFBaseParser::initialize(bool validateAgainstSchema) {
@@ -96,6 +100,11 @@ namespace xaifBooster {
 
 #include "xaifBooster/tools/codegen/code/parse_method_stmt.inc"
 
+ourEndActionCatalogue.addElement(ControlFlowGraph::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onControlFlowGraphEnd));
+ourEndActionCatalogue.addElement("#comment", ActionItem(&XAIFBaseParserHandlers::onDummy));
+ourEndActionCatalogue.addElement("#document", ActionItem(&XAIFBaseParserHandlers::onDummy));
+ourEndActionCatalogue.addElement("#text", ActionItem(&XAIFBaseParserHandlers::onDummy));
+
   } // end of XAIFBaseParser::staticInitialize
 
     void XAIFBaseParser::setDocumentLocator(const XERCES_CPP_NAMESPACE::Locator* const locator)
@@ -103,68 +112,67 @@ namespace xaifBooster {
       myLocator_p=locator;
     }
 
-  /*
-   * UN: Implementation of startElement handler
-   */
-
   void XAIFBaseParser::startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE::Attributes& attributes) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParser::startElement" );
     XMLParser::ourAttributes_p=&attributes;
-    actionInvocation(qname); 
+    startActionInvocation(qname); 
   }
-
-  /*
-   * UN: Implementation of endElement handler
-   */
 
   void XAIFBaseParser::endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParser::endElement" );
-    XMLParserHelper* myDummyHelper=myXMLParserHelperStack.top();
-    myXMLParserHelperStack.pop();
-    delete myDummyHelper;
+    endActionInvocation(qname); 
   }
-
-  /*
-   * UN: Implementation of startDocument handler
-   */
 
   void XAIFBaseParser::startDocument() {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParser::startDocument" );
-    XAIFBaseParserHelper* myDummyHelper=new XAIFBaseParserHelper;
-    myXMLParserHelperStack.push(myDummyHelper);
+    XAIFBaseParserHelper* aDummyHelper_p=new XAIFBaseParserHelper;
+    myXMLParserHelperStack.push(aDummyHelper_p);
   }
-
-  /*
-   * UN: Implementation of endDocument handler
-   */
 
   void XAIFBaseParser::endDocument() {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParser::endDocument" );
-    XMLParserHelper* myDummyHelper=myXMLParserHelperStack.top();
+    XMLParserHelper* aDummyHelper_p=myXMLParserHelperStack.top();
     myXMLParserHelperStack.pop();
-    delete myDummyHelper;
+    delete aDummyHelper_p;
   }
 
-  /*
-   * UN: takes only the name of the current element and
-   * calls the appropriate handler routine
-   */
-
-  void XAIFBaseParser::actionInvocation(const XMLCh* const qname) {
+  void XAIFBaseParser::startActionInvocation(const XMLCh* const qname) {
     XAIFBaseParserHelper* passingFromParent=dynamic_cast<XAIFBaseParserHelper*>(myXMLParserHelperStack.top());
     XAIFBaseParserHelper* passingToChild=new XAIFBaseParserHelper;
     myXMLParserHelperStack.push(passingToChild);
-    try { 
-      ActionItem& theAction=ourActionCatalogue.getElement(XMLParserMessage(qname).toString());
+    try {
+      ActionItem& theAction=ourStartActionCatalogue.getElement(XMLParserMessage(qname).toString());
       (this->*(theAction.myAction))(*passingFromParent,
 				    *passingToChild) ;
     } 
     catch (LogicException& e) { 
       DBG_MACRO(DbgGroup::ERROR,
-		"XMLParser::actionInvocation: caught: " 
+		"XMLParser::startActionInvocation: caught: " 
 		<< e.getReason().c_str() << " at line " << myLocator_p->getLineNumber() << " in the input XML file"); 
       throw e;
     } 
-  } // end of XAIFBaseParser::actionInvocation
+  } 
+
+  void XAIFBaseParser::endActionInvocation(const XMLCh* const qname) {
+    XAIFBaseParserHelper* thisElementsHelper_p(dynamic_cast<XAIFBaseParserHelper*>(myXMLParserHelperStack.top()));
+    myXMLParserHelperStack.pop();
+    XAIFBaseParserHelper* parentElementHelper_p(dynamic_cast<XAIFBaseParserHelper*>(myXMLParserHelperStack.top()));
+    try { 
+      if (ourEndActionCatalogue.hasElement(XMLParserMessage(qname).toString())) { 
+	// we start out with only one element in the catalogue...
+	ActionItem& theAction=ourEndActionCatalogue.getElement(XMLParserMessage(qname).toString());
+	(this->*(theAction.myAction))(*thisElementsHelper_p,
+				      *parentElementHelper_p);
+      }
+    } 
+    catch (LogicException& e) { 
+      delete thisElementsHelper_p;
+      DBG_MACRO(DbgGroup::ERROR,
+		"XMLParser::endActionInvocation: caught: " 
+		<< e.getReason().c_str() << " at line " << myLocator_p->getLineNumber() << " in the input XML file"); 
+      throw e;
+    } 
+    delete thisElementsHelper_p;
+  }
 
 } // end of namespace 

@@ -267,7 +267,11 @@ namespace xaifBooster {
     } 
     // set index of current node and increment
     theCurrentVertex_r.setIndex(idx++);
-    theCurrentVertex_r.setReversalType(aReversalType);
+    // upgrade the reversal type if needed
+    if (theCurrentVertex_r.getReversalType()==ForLoopReversalType::ANONYMOUS
+	&& 
+	aReversalType==ForLoopReversalType::EXPLICIT) 
+      theCurrentVertex_r.setReversalType(aReversalType);
     if (aTopExplicitLoopVertex_p)
       theCurrentVertex_r.setTopExplicitLoop(*aTopExplicitLoopVertex_p);
     // return if ENDLOOP
@@ -372,6 +376,9 @@ namespace xaifBooster {
   }
 
   void ControlFlowGraph::augmentGraphInfo() {
+    // do this only for non-null graphs
+    if (isNull())
+      return; 
     initVisit();
     int idx=1;
     std::stack<ControlFlowGraphVertex*> endNodes_p_s;

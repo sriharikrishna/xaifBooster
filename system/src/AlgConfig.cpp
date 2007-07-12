@@ -55,6 +55,7 @@
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 #include "xaifBooster/system/inc/AlgConfig.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
 
 namespace xaifBooster { 
 
@@ -62,15 +63,21 @@ namespace xaifBooster {
 		       char** argv,
 		       const std::string& buildStamp) :
     CommandLineParser(argc,argv),
-    myBuildStamp(buildStamp) {
+    myBuildStamp(buildStamp),
+    myConfiguredFlag(false),
+    myInputValidationFlag(false) {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgs");
+    return std::string("iocdgsvp");
   } 
 
   void AlgConfig::config() { 
-    parse(getSwitches());
+    static bool parsed=false; 
+    if (!parsed) { 
+      parse(getSwitches());
+      parsed=true; 
+    }
     myInputFileName=argAsString('i');
     myIntrinsicsFileName=argAsString('c');
     if (isSet('s')) 
@@ -81,6 +88,10 @@ namespace xaifBooster {
       DbgLoggerManager::instance()->setFile(argAsString('d'));
     if (isSet('g')) 
       DbgLoggerManager::instance()->setSelection(argAsInt('g'));
+    if (isSet('p'))
+      Symbol::addSymbolNamesToPassivate(argAsString('p'));
+    myInputValidationFlag=isSet('v');
+    myConfiguredFlag=true; 
   } 
 
   void AlgConfig::usage() { 
@@ -88,27 +99,46 @@ namespace xaifBooster {
 	      << myArgv[0]
 	      << " -i <inputFile> -c <intrinsicsCatalogueFile> " << std::endl
 	      << " common options: " << std::endl
-	      << "             [-s <pathToSchema> ] defaults to ./" << std::endl
+	      << "             [-s <pathToSchema> ] " << std::endl
+	      << "                 XAIF schema path, defaults to ./" << std::endl
 	      << "             [-o <outputFile> ] [-d <debugOutputFile> ]" << std::endl
-	      << "                 both default to cout" << std::endl
+	      << "                 both default to std::cout" << std::endl
 	      << "             [-g <debugGroup> ]" << std::endl
-	      << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
-	      << "                 default to 0(ERROR)" << std::endl;
+	      << "                 with debugGroup >=0 the sum of any of: " << std::endl
+	      << "                 "<< DbgGroup::printAll().c_str() << std::endl
+	      << "                 defaults to 0(ERROR)" << std::endl
+              << "             [-p \"<list of symbols to forcibly passivate> \" ]" << std::endl 
+              << "                 space separated list enclosed in double quotes" << std::endl
+	      << "             [-v] validate the input against the schema" << std::endl;
   } 
 
   const std::string& AlgConfig::getInputFileName() const { 
+    if (!myConfiguredFlag)
+      THROW_LOGICEXCEPTION_MACRO("AlgConfig::config() has not been called"); 
     return myInputFileName; 
   } 
 
+  bool AlgConfig::getInputValidationFlag() const { 
+    if (!myConfiguredFlag)
+      THROW_LOGICEXCEPTION_MACRO("AlgConfig::config() has not been called"); 
+    return myInputValidationFlag; 
+  } 
+
   const std::string& AlgConfig::getIntrinsicsFileName() const { 
+    if (!myConfiguredFlag)
+      THROW_LOGICEXCEPTION_MACRO("AlgConfig::config() has not been called"); 
     return myIntrinsicsFileName; 
   } 
 
   const std::string& AlgConfig::getSchemaPath() const { 
+    if (!myConfiguredFlag)
+      THROW_LOGICEXCEPTION_MACRO("AlgConfig::config() has not been called"); 
     return mySchemaPath; 
   } 
 
   const std::string& AlgConfig::getOutFileName() const { 
+    if (!myConfiguredFlag)
+      THROW_LOGICEXCEPTION_MACRO("AlgConfig::config() has not been called"); 
     return myOutFileName; 
   } 
 

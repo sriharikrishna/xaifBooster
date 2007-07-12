@@ -87,10 +87,11 @@ int main(int argc,char** argv) {
     ip.setExternalSchemaLocation(algConfig.getSchemaPath());
     ip.parse(algConfig.getIntrinsicsFileName());
     XAIFBaseParser p;
-    p.initialize(true);
+    p.initialize(algConfig.getInputValidationFlag());
     p.setExternalSchemaLocation(algConfig.getSchemaPath());
     p.parse(algConfig.getInputFileName());
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    Cg.getScopeTree().forcedPassivation();
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // analyze
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // generate code 
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());

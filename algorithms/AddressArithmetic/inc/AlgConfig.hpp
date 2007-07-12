@@ -1,5 +1,5 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
+#ifndef _XAIFBOOSTERADDRESSARITHMETIC_ALGCONFIG_INCLUDE_
+#define _XAIFBOOSTERADDRESSARITHMETIC_ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,14 +53,16 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgConfig.hpp"
 
-namespace xaifBooster { 
+namespace xaifBoosterAddressArithmetic { 
 
   /** 
    * configuration and usage for this transformation 
    */
-  class AlgConfig : public CommandLineParser { 
+  class AlgConfig : public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgConfig,
+		    public xaifBoosterControlFlowReversal::AlgConfig { 
 
   public:
 
@@ -72,26 +74,10 @@ namespace xaifBooster {
 
     virtual void config();
 
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
   protected:
-
+    
     virtual std::string getSwitches();
 
-  private: 
-
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
-    
   }; 
   
 } // end of namespace xaifBooster

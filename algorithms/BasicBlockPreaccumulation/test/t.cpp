@@ -88,10 +88,11 @@ int main(int argc,char** argv) {
     ip.setExternalSchemaLocation(algConfig.getSchemaPath());
     ip.parse(algConfig.getIntrinsicsFileName());
     XAIFBaseParser p;
-    p.initialize(true);
+    p.initialize(algConfig.getInputValidationFlag());
     p.setExternalSchemaLocation(algConfig.getSchemaPath());
     p.parse(algConfig.getInputFileName());
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    Cg.getScopeTree().forcedPassivation();
     DBG_MACRO(DbgGroup::TIMING,"before linearize");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
     DBG_MACRO(DbgGroup::TIMING,"before flatten");

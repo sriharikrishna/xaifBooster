@@ -59,6 +59,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   AlgConfig::AlgConfig(int argc, 
 		       char** argv,
 		       const std::string& buildStamp) :
+    xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterBasicBlockPreaccumulationTape::AlgConfig(argc,argv,buildStamp) {
   } 
 
