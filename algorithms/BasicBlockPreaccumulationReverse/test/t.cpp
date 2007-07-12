@@ -52,123 +52,45 @@
 // ========== end copyright notice ==============
 #include <iostream>
 #include <utility>
+
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+
 #include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ControlFlowGraphAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
-#include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/test/buildStamp.hpp"
 
-void Usage(char** argv) { 
-  std::cout << "test driver: "
-	    << argv[0]
-	    << " -i <inputFile> -c <intrinsicsCatalogueFile> " << std::endl
-	    << "             [-s <pathToSchema> ] defaults to ./" << std::endl
-	    << "             [-o <outputFile> ] [-d <debugOutputFile>]" << std::endl
-	    << "                 both default to cout" << std::endl
-	    << "             [-g <debugGroup]" << std::endl
-	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
-	    << "                 default to 0(ERROR)" << std::endl
-	    << "             [-S] force statement level preaccumulation" << std::endl
-	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
-	    << "             [-v] validate <inputFile> against the schema" << std::endl
-	    << "             [-w \"<list of subroutines with wrappers>\" " << std::endl
-            << "                 space separated list enclosed in double quotes" << std::endl
-	    << "             [-p \"<list of symbols to forcibly passivate>\" " << std::endl
-            << "                 space separated list enclosed in double quotes" << std::endl
-	    << "             [-r] force renaming of all non-external routines" << std::endl
-	    << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
-	    << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
-	    << "             [-t <name> ] top level procedure checked for quasi-constant data " << std::endl
-	    << "             [-f] checkpoint write order for individual files instead of a memory stack" << std::endl
-	    << " build info : " << buildStamp.c_str() << std::endl;
-} 
 
 int main(int argc,char** argv) { 
   DbgLoggerManager::instance()->setBinaryBuildInfo(buildStamp);
   DbgLoggerManager::instance()->setSelection(DbgGroup::ERROR 
 					     //| DbgGroup::CALLSTACK | DbgGroup::TEMPORARY
 					     );
-  std::string inFileName, outFileName, intrinsicsFileName, schemaPath;
-  // to contain the namespace url in case of -s having a schema location
-  std::string aUrl;
-  bool forceStatementLevel=false;
-  bool intentChange=false;
-  bool validateAgainstSchema=false;
+  xaifBoosterBasicBlockPreaccumulationReverse::AlgConfig algConfig(argc,argv,buildStamp);
   try { 
-    CommandLineParser::instance()->initialize("iocdgsSIvwpruUtf",argc,argv);
-    inFileName=CommandLineParser::instance()->argAsString('i');
-    intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
-    if (CommandLineParser::instance()->isSet('s')) 
-      schemaPath=CommandLineParser::instance()->argAsString('s');
-    if (CommandLineParser::instance()->isSet('o')) 
-      outFileName=CommandLineParser::instance()->argAsString('o');
-    if (CommandLineParser::instance()->isSet('d')) 
-      DbgLoggerManager::instance()->setFile(CommandLineParser::instance()->argAsString('d'));
-    if (CommandLineParser::instance()->isSet('g')) 
-      DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
-    if (CommandLineParser::instance()->isSet('S')) 
-      forceStatementLevel=true;
-    if (CommandLineParser::instance()->isSet('I')) 
-      intentChange=true;
-    if (CommandLineParser::instance()->isSet('v')) 
-      validateAgainstSchema=true;
-    if (CommandLineParser::instance()->isSet('w')) 
-      xaifBoosterLinearization::SubroutineCallAlg::addWrapperNames(CommandLineParser::instance()->argAsString('w'));
-    if (CommandLineParser::instance()->isSet('p')) 
-      Symbol::addSymbolNamesToPassivate(CommandLineParser::instance()->argAsString('p'));
-    if (CommandLineParser::instance()->isSet('r')) 
-      xaifBoosterLinearization::ControlFlowGraphAlg::setForceNonExternalRenames();
-    if (CommandLineParser::instance()->isSet('u')) 
-      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setUserDecides();
-    if (CommandLineParser::instance()->isSet('U')) 
-      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setIgnorance();
-    if (CommandLineParser::instance()->isSet('t')) 
-      xaifBoosterAddressArithmetic::CallGraphVertexAlg::setTopLevelRoutine(CommandLineParser::instance()->argAsString('t'));
-    if (CommandLineParser::instance()->isSet('f')) 
-      xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::checkPointToFiles();
+    algConfig.config();
   } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
-    Usage(argv);
+    algConfig.usage();
     return -1;
   } // end catch 
   try {   
-    DBG_MACRO(DbgGroup::TIMING,"before initialization");
     xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->init();
-//     DBG_MACRO(DbgGroup::TEMPORARY,
-// 	      "t.cpp: " 
-// 	      << xaifBoosterBasicBlockPreaccumulationReverse::AlgFactoryManager::instance()->debug().c_str());
-    if (forceStatementLevel)
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
-    if (intentChange)
-      xaifBoosterBasicBlockPreaccumulationReverse::ArgumentSymbolReferenceAlg::changeIntentForCheckPoints();
     InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
-    if (schemaPath.size()) { 
-      aUrl="http://www.mcs.anl.gov/XAIFInlinableIntrinsics ";
-      ip.setExternalSchemaLocation(aUrl+schemaPath+"/xaif_inlinable_intrinsics.xsd");
-    } 
-    DBG_MACRO(DbgGroup::TIMING,"before intrinsics XAIF parsing");
-    ip.parse(intrinsicsFileName);
+    ip.setExternalSchemaLocation(algConfig.getSchemaPath());
+    ip.parse(algConfig.getIntrinsicsFileName());
     XAIFBaseParser p;
-    DBG_MACRO(DbgGroup::TIMING,"before input XAIF parsing");
-    p.initialize(validateAgainstSchema);
-    if (schemaPath.size()) { 
-      aUrl="http://www.mcs.anl.gov/XAIF ";
-      p.setExternalSchemaLocation(aUrl+schemaPath+"/xaif.xsd");
-    } 
-    p.parse(inFileName);
+    p.initialize(algConfig.getInputValidationFlag());
+    p.setExternalSchemaLocation(algConfig.getSchemaPath());
+    p.parse(algConfig.getInputFileName());
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
     Cg.getScopeTree().forcedPassivation();
     DBG_MACRO(DbgGroup::TIMING,"before linearize");
@@ -183,22 +105,38 @@ int main(int argc,char** argv) {
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // fix up the addresses in simple loops
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
-    if (schemaPath.size())
-      newLocation.append(" "+schemaPath+"/xaif_output.xsd");
+    if (algConfig.getSchemaPath().size())
+      newLocation.append(" "+algConfig.getSchemaPath()+"/xaif_output.xsd");
     else 
       newLocation.append(" xaif_output.xsd");
     Cg.resetSchemaLocation(newLocation);
-    if (CommandLineParser::instance()->isSet('o')) { 
-      std::ofstream theOutFile(CommandLineParser::instance()->argAsString('o').c_str(),
+    if (algConfig.isSet('o')) { 
+      std::ofstream theOutFile(algConfig.getOutFileName().c_str(),
 			       std::ios::out);
       Cg.printXMLHierarchy(theOutFile);
       theOutFile.close();
     } 
     else 
       Cg.printXMLHierarchy(std::cout);
-  } catch (BaseException& e) { 
+  } 
+  catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
+    return -1;
+  } // end catch 
+  catch (std::bad_cast& e) { 
+    DBG_MACRO(DbgGroup::ERROR,
+	      "caught std::bad_cast exception: " << e.what());
+    return -1;
+  } // end catch 
+  catch (std::exception& e) { 
+    DBG_MACRO(DbgGroup::ERROR,
+	      "caught std::exception: " << e.what());
+    return -1;
+  } // end catch 
+  catch (...) { 
+    DBG_MACRO(DbgGroup::ERROR,
+	      "caught something");
     return -1;
   } // end catch 
   DBG_MACRO(DbgGroup::METRIC,"total number of assignments: "

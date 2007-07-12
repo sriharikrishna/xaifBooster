@@ -117,10 +117,18 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     /** 
      * inserts inlined stores for index values
      */
-    void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
-				  Scope& theBasicBlockScope,
-				  PlainBasicBlock::BasicBlockElementList::iterator& indexAssignmentListI);
+    void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument);
     
+    typedef std::list<Variable*> VariablePList; 
+    
+    /** 
+     * list of all index variables pushed
+     * where the second of the pair 
+     * is non-null pointer if the value was saved 
+     * in a temporary, pointing to that temporary.
+     */
+    Expression::VariablePVariableSRPPairList myIndexVariablesPushed; 
+
   }; // end of class SubroutineCallAlg
  
 } 

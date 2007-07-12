@@ -77,10 +77,9 @@ namespace xaifBoosterTypeChange {
   void AlgConfig::usage() { 
     xaifBooster::AlgConfig::usage();
     std::cout << " TypeChange options: " << std::endl
-	      << "             [-w \"<list of subroutines with wrappers\"]" << std::endl
+	      << "             [-w \"<list of subroutines with wrappers\"> ]" << std::endl
 	      << "                 space separated list enclosed in double quotes" << std::endl
-	      << "             [-r] " << std::endl
-	      << "                 force renaming of all non-external routines" << std::endl;
+	      << "             [-r] force renaming of all non-external routines" << std::endl;
   } 
 
 } // end of namespace xaifBooster

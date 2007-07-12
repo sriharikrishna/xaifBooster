@@ -115,13 +115,14 @@ int main(int argc,char** argv) {
     } 
     ip.parse(intrinsicsFileName);
     XAIFBaseParser p;
-    p.initialize(true);
+    p.initialize(algConfig.getInputValidationFlag());
     if (schemaPath.size()) { 
       aUrl="http://www.mcs.anl.gov/XAIF ";
       p.setExternalSchemaLocation(aUrl+schemaPath+"/xaif.xsd");
     } 
     p.parse(inFileName);
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    Cg.getScopeTree().forcedPassivation();
     DBG_MACRO(DbgGroup::TIMING,"before linearize");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
     DBG_MACRO(DbgGroup::TIMING,"before flatten");

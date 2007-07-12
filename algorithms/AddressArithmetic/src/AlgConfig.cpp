@@ -1,5 +1,3 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,48 +50,50 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <iostream>
 
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 
-namespace xaifBooster { 
+namespace xaifBoosterAddressArithmetic { 
 
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public CommandLineParser { 
+  AlgConfig::AlgConfig(int argc, 
+		       char** argv,
+		       const std::string& buildStamp) :
+    xaifBooster::AlgConfig(argc,argv,buildStamp),
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgConfig(argc,argv,buildStamp),
+    xaifBoosterControlFlowReversal::AlgConfig(argc,argv,buildStamp) {
+  } 
 
-  public:
+  std::string AlgConfig::getSwitches() { 
+    return std::string(xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgConfig::getSwitches()
+		       +
+		       xaifBoosterControlFlowReversal::AlgConfig::getSwitches()
+		       +
+		       "uUt");
+  } 
 
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
+  void AlgConfig::config() { 
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgConfig::config();
+    xaifBoosterControlFlowReversal::AlgConfig::config();
+    if (isSet('u')) 
+      CallGraphVertexAlg::setUserDecides();
+    if (isSet('U')) 
+      CallGraphVertexAlg::setIgnorance();
+    if (isSet('t')) 
+      CallGraphVertexAlg::setTopLevelRoutine(argAsString('t'));
+  } 
 
-    virtual void usage();
+  void AlgConfig::usage() { 
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgConfig::usage();
+    std::cout << " AddressArithmetic options:" << std::endl
+	      << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
+	      << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
+	      << "             [-t <name> ]" << std::endl
+	      << "                top level procedure <name> is checked for quasi-constant data" << std::endl;
+  } 
 
-    virtual void config();
-
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
-  protected:
-
-    virtual std::string getSwitches();
-
-  private: 
-
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
-    
-  }; 
-  
 } // end of namespace xaifBooster
                                                                      
-#endif
+
+

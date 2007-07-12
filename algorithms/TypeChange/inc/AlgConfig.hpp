@@ -60,7 +60,7 @@ namespace xaifBoosterTypeChange {
   /** 
    * configuration and usage for this transformation 
    */
-  class AlgConfig : public xaifBooster::AlgConfig  { 
+  class AlgConfig : virtual public xaifBooster::AlgConfig  { 
 
   public:
 

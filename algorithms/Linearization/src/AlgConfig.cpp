@@ -59,6 +59,7 @@ namespace xaifBoosterLinearization {
   AlgConfig::AlgConfig(int argc, 
 		       char** argv,
 		       const std::string& buildStamp) :
+    xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterTypeChange::AlgConfig(argc,argv,buildStamp) {
   } 
 

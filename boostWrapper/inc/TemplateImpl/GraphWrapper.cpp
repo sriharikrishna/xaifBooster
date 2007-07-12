@@ -480,6 +480,17 @@ namespace xaifBooster {
   } // end of GraphWrapper<Vertex,Edge>::numOutEdgesOf 
 
   template <class Vertex, class Edge>
+  bool 
+  GraphWrapper<Vertex,Edge>::isNull()const { 
+    std::pair < 
+      InternalBoostVertexIteratorType,
+      InternalBoostVertexIteratorType 
+      > 
+    theVertexEnds=boost::vertices(myBoostGraph);
+    return (theVertexEnds.first==theVertexEnds.second);
+  }
+
+  template <class Vertex, class Edge>
   unsigned int 
   GraphWrapper<Vertex,Edge>::numInEdgesOf(const Vertex& aVertex)const { 
     return boost::in_degree(aVertex.getDescriptor(),

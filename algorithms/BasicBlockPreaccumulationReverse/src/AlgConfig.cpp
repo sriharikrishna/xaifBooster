@@ -1,5 +1,3 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,48 +50,39 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <iostream>
 
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
-namespace xaifBooster { 
+namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public CommandLineParser { 
+  AlgConfig::AlgConfig(int argc, 
+		       char** argv,
+		       const std::string& buildStamp) :
+    xaifBooster::AlgConfig(argc,argv,buildStamp),
+    xaifBoosterAddressArithmetic::AlgConfig(argc,argv,buildStamp) {
+  } 
 
-  public:
+  std::string AlgConfig::getSwitches() { 
+    return std::string(xaifBoosterAddressArithmetic::AlgConfig::getSwitches()+"fI");
+  } 
 
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
+  void AlgConfig::config() { 
+    xaifBoosterAddressArithmetic::AlgConfig::config();
+    if (isSet('f')) 
+      CallGraphVertexAlg::checkPointToFiles();
+    if (isSet('I')) 
+      ArgumentSymbolReferenceAlg::changeIntentForCheckPoints();
+  } 
 
-    virtual void usage();
+  void AlgConfig::usage() { 
+    xaifBoosterAddressArithmetic::AlgConfig::usage();
+    std::cout << " BasicBlockPreaccumulationReverse options:" << std::endl
+	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
+	    << "             [-f] checkpoint write order for individual files instead of a memory stack" << std::endl; 
+  } 
 
-    virtual void config();
-
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
-  protected:
-
-    virtual std::string getSwitches();
-
-  private: 
-
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
-    
-  }; 
-  
 } // end of namespace xaifBooster
                                                                      
-#endif

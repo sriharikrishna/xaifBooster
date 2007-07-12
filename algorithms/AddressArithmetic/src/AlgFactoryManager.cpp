@@ -96,6 +96,7 @@ namespace xaifBoosterAddressArithmetic {
   void AlgFactoryManager::init() {
     // need to pick a path
     dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager*>(this)->xaifBooster::AlgFactoryManager::init();
+    dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager*>(this)->xaifBoosterTypeChange::AlgFactoryManager::resets();
     dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager*>(this)->xaifBoosterLinearization::AlgFactoryManager::resets();
     xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
     xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::resets();

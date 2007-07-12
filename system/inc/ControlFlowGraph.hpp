@@ -162,6 +162,12 @@ namespace xaifBooster {
      */
     bool overwrites(const SymbolReference& theSymbolReference) const; 
 
+    /** 
+     * augment the graph vertices with additional 
+     * information
+     */
+    void augmentGraphInfo();
+
   private: 
     
     /** 
@@ -216,12 +222,6 @@ namespace xaifBooster {
      * of ControlFlowGraph
      */
     ArgumentList myArgumentList;
-
-    /** 
-     * augment the graph vertices with additional 
-     * information
-     */
-    void augmentGraphInfo();
 
     /** 
      * workhorse for augmentGraphInfo

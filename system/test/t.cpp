@@ -86,10 +86,11 @@ int main(int argc,char** argv) {
     ip.setExternalSchemaLocation(algConfig.getSchemaPath());
     ip.parse(algConfig.getIntrinsicsFileName());
     XAIFBaseParser p;
-    p.initialize(true);
+    p.initialize(algConfig.getInputValidationFlag());
     p.setExternalSchemaLocation(algConfig.getSchemaPath());
     p.parse(algConfig.getInputFileName());
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    Cg.getScopeTree().forcedPassivation();
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     if (algConfig.getSchemaPath().size())

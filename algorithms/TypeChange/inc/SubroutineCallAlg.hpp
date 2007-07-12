@@ -99,17 +99,24 @@ namespace xaifBoosterTypeChange {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     /** 
+     * see replaceArguments
+     */
+    virtual void algorithm_action_1();
+
+    /** 
      * adjust for active/passive type mismatches 
      * \todo fix handling for external calls which should all be passive!
      * rename calls for all subroutines that are external and have 
      * wrappers or all internally defined subroutines if this is 
      * enforced, see CallGraphVertexAlg
      */
-    virtual void algorithm_action_1();
+    void replaceArguments(bool withCopy); 
 
     static void addWrapperNames(const std::string& theSpaceSeparatedNames);
 
-  protected:
+    const Expression::VariablePVariableSRPPairList& getReplacementPairs()const; 
+
+  private:
     
     /** 
      * for conversions we need to first assign 
@@ -120,8 +127,6 @@ namespace xaifBoosterTypeChange {
     PlainBasicBlock::BasicBlockElementList myPriorToCallAssignments;
     
     Expression::VariablePVariableSRPPairList myReplacementPairs; 
-
-  private: 
 
     /** 
      * no def
@@ -154,11 +159,14 @@ namespace xaifBoosterTypeChange {
     const Variable& makeTempVariable(const Symbol& formalArgument);
 
     /** 
-     * the bit that creates the inlinable calls
+     * the bit that replaces the argument 
+     * and creates the inlinable calls
+     * if withCopy is true
      */
     void addConversion(const ConcreteArgument& theConcreteArgument,
 		       const ArgumentSymbolReference& aFormalArgumentSymbolReference,
-		       const BasicBlock& theBasicBlock);
+		       const BasicBlock& theBasicBlock,
+		       bool withCopy);
 
     std::string giveCallName(bool concreteArgumentActive,
 			     const SymbolReference &aTempSymbolReference,

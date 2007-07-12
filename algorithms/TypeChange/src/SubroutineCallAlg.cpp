@@ -284,6 +284,10 @@ namespace xaifBoosterTypeChange {
   }
 
   void SubroutineCallAlg::algorithm_action_1() { 
+    replaceArguments(true);
+  }
+
+  void SubroutineCallAlg::replaceArguments(bool withCopy) { 
     const ArgumentList::ArgumentSymbolReferencePList* anArgumentSymbolReferencePList_p(0); 
     const BasicBlock& theBasicBlock(BasicBlockAlgParameter::instance().get().getContaining());  // set in SubroutineCallAlg::algorithm_action_1
     try { 
@@ -332,11 +336,12 @@ namespace xaifBoosterTypeChange {
       if (concreteArgumentActive!=formalArgumentActive) { 
 	addConversion(**concreteArgumentPI,
 		      **formalArgumentPI,
-		      theBasicBlock);
+		      theBasicBlock,
+		      withCopy);
       } 
     }// end for 
-  }
-
+  } 
+  
   std::string SubroutineCallAlg::giveCallName(bool concreteArgumentActive,
 					      const SymbolReference &aTempSymbolReference,
 					      unsigned int missingDimensions,
@@ -355,7 +360,8 @@ namespace xaifBoosterTypeChange {
 
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
 					const ArgumentSymbolReference& aFormalArgumentSymbolReference,
-					const BasicBlock& theBasicBlock) { 
+					const BasicBlock& theBasicBlock,
+					bool withCopy) { 
     unsigned int missingDimensions(0);
     int formalMinusConcreteDims(0);
     if (theConcreteArgument.isArgument()) { 
@@ -378,6 +384,18 @@ namespace xaifBoosterTypeChange {
       else 
 	missingDimensions=formalMinusConcreteDims;
     }
+    // this is the extra temporary that replaces the original argument
+    Variable theTempVar;
+    makeTempSymbol(theConcreteArgument,
+		   aFormalArgumentSymbolReference.getSymbol(),
+		   aFormalArgumentSymbolReference.getScope(),
+		   theTempVar,
+		   formalMinusConcreteDims,
+		   false);
+    ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
+    theConcreteArgumentAlg.makeReplacement(theTempVar);
+    if (!withCopy)
+      return; 
     // prior call
     std::string 
       aSubroutineName(giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
@@ -388,8 +406,7 @@ namespace xaifBoosterTypeChange {
       thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
     myPriorAdjustmentsList.push_back(thePriorCall_p);
     thePriorCall_p->setId("SubroutineCallAlg::addConversion prior");
-    // this is the extra temporary that replaces the original argument
-    Variable& theTempVar(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
+    theTempVar.copyMyselfInto(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
     makeTempSymbol(theConcreteArgument,
 		   aFormalArgumentSymbolReference.getSymbol(),
 		   aFormalArgumentSymbolReference.getScope(),
@@ -398,8 +415,6 @@ namespace xaifBoosterTypeChange {
 		   false);
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
-    ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
-    theConcreteArgumentAlg.makeReplacement(theTempVar);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
     if (theConcreteArgument.isArgument()) { // no point in copying a constant back.
       // post call:
@@ -610,11 +625,20 @@ namespace xaifBoosterTypeChange {
 	    if (!savedAlready 
 		&& 
 		(dynamic_cast<const SubroutineCall&>(getContaining())).overwrites((*argumentI)->getVariable())) {
-	      // clear out the old index expression
-	      // make an assignment 
-	      // because we cannot be sure that whatever variables 
-	      // are involved in the index expression remain unchanged during this call
-	      // and we also do not allow expressions as arguments in general
+	      if (theBasicBlock.getReversalType()==ForLoopReversalType::EXPLICIT) { 
+	        // for sanity check if we a re about to change a known loop variable 
+		// in this call which we forbid
+		const ControlFlowGraphVertex::VariablePList&  theKnownLoopVariables(theBasicBlock.getKnownLoopVariables());
+		for (ControlFlowGraphVertex::VariablePList::const_iterator knownVarsI=theKnownLoopVariables.begin();
+		     knownVarsI!=theKnownLoopVariables.end();
+		     ++knownVarsI) { 
+		  if ((*argumentI)->getVariable().equivalentTo(**knownVarsI)) 
+		    THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: analysis determines overwrite of simple loop variable "
+					       << (*argumentI)->getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
+					       << " in call to "
+					       << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str());
+		} 
+	      }
 	      Assignment* theIndexExpressionAssignment_p(new Assignment(false));
 	      // save it in the list
 	      myPriorToCallAssignments.push_back(theIndexExpressionAssignment_p);
@@ -644,7 +668,6 @@ namespace xaifBoosterTypeChange {
     }
     // now we are done going through all the index expressions. 
     // we need to replace all the saved variable values in the post conversion. 
-    // one potential extra replacement spot:
     ArrayAccess::IndexTripletListType& thePostReplacementIndexTripletList(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexTripletList());
     for (ArrayAccess::IndexTripletListType::iterator thePostReplacementIndexTripletListI=thePostReplacementIndexTripletList.begin();
 	 thePostReplacementIndexTripletListI!=thePostReplacementIndexTripletList.end();
@@ -657,5 +680,9 @@ namespace xaifBoosterTypeChange {
       }
     }
   } // end of SubroutineCallAlg::handleArrayAccessIndices
+
+  const Expression::VariablePVariableSRPPairList& SubroutineCallAlg::getReplacementPairs()const { 
+    return myReplacementPairs;
+  } 
 
 } // end of namespace 
