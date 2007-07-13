@@ -407,12 +407,6 @@ namespace xaifBoosterTypeChange {
     myPriorAdjustmentsList.push_back(thePriorCall_p);
     thePriorCall_p->setId("SubroutineCallAlg::addConversion prior");
     theTempVar.copyMyselfInto(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
-    makeTempSymbol(theConcreteArgument,
-		   aFormalArgumentSymbolReference.getSymbol(),
-		   aFormalArgumentSymbolReference.getScope(),
-		   theTempVar,
-		   formalMinusConcreteDims,
-		   false);
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
