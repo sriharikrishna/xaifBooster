@@ -55,7 +55,7 @@
 
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 
-#include "xaifBooster/algorithms/TypeChange/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
@@ -71,7 +71,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   /** 
    * class to implement reversal of BasicBlockElements
    */
-  class SubroutineCallAlg : virtual public xaifBoosterTypeChange::SubroutineCallAlg,
+  class SubroutineCallAlg : virtual public xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg,
 			    public BasicBlockElementAlg {
 
   public:
@@ -126,8 +126,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /** 
      * inserts inlined restores for index values
      */
-    void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
-				  Scope& theBasicBlockScope);
+    void handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg);
 
   }; // end of class SubroutineCallAlg
  

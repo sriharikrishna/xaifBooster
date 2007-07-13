@@ -88,6 +88,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     void printXMLHierarchy(std::ostream& os) const;
 
+    const Expression::VariablePVariableSRPPairList& getIndexVariablesPushed() const; 
+
   private: 
 
     /** 

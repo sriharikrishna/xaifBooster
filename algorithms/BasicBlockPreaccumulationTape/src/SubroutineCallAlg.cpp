@@ -184,6 +184,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	    for (Expression::VariablePVariableSRPPairList::iterator it=myIndexVariablesPushed.begin();
 		 it!=myIndexVariablesPushed.end();
 		 ++it) { 
+	      DBG_MACRO(DbgGroup::DATA, "comparing " << (*argumentI)->getVariable().debug().c_str() << " to " << ((*it).first)->debug().c_str()); 
 	      if ((*argumentI)->getVariable().equivalentTo(*((*it).first))) { 
 		pushedAlready=true; 
 		break; 
@@ -196,11 +197,16 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	      myAfterCallIndexPushes.push_back(theSubroutineCall_p);
 	      theSubroutineCall_p->setId("SRcall_inline_push_i");
 	      (*argumentI)->getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+	      myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&(*argumentI)->getVariable(),0));
 	    }
 	  }
 	}
       }
     }
+  }
+
+  const Expression::VariablePVariableSRPPairList& SubroutineCallAlg::getIndexVariablesPushed() const { 
+    return myIndexVariablesPushed;
   }
   
 } // end of namespace 

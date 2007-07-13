@@ -62,7 +62,6 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
   SubroutineCallAlg::SubroutineCallAlg(SubroutineCall& theContaining) : 
-    // SubroutineCallAlgBase(theContaining),
     xaifBoosterTypeChange::SubroutineCallAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg(theContaining){ 

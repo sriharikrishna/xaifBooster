@@ -69,6 +69,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
     xaifBoosterTypeChange::SubroutineCallAlg(theContainingSubroutineCall),
+    xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg(theContainingSubroutineCall),
     BasicBlockElementAlg(theContainingSubroutineCall) { 
   }
 
@@ -112,8 +113,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock) { 
     xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
-						      (getContainingSubroutineCall().
-						       getSymbolReference().getSymbol().getSymbolAlgBase()));
+						   (getContainingSubroutineCall().
+						    getSymbolReference().getSymbol().getSymbolAlgBase()));
     // we don't do this for external calls: 
     if(theSymbolAlg.isExternal())
       return;
@@ -145,29 +146,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     } // end for
     // reapply any argument changes we may need
     // but for the adjoint we can skip the copy calls
-    dynamic_cast<xaifBoosterTypeChange::SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()).xaifBoosterTypeChange::SubroutineCallAlg::replaceArguments(false);
+    SubroutineCallAlg& theNewSubroutineCallAlg(dynamic_cast<SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()));
+    theNewSubroutineCallAlg.replaceArguments(false);
     if (aReversalType==ForLoopReversalType::ANONYMOUS) { 
-      // for each subroutinecall
-      // restore the index value via 
-      // an InlinableSubroutinecall for each 
-      // nonconstant index of an argument that 
-      // has array indices
-      // all in reverser order 
-      // and create a replacement argument.
-      for (SubroutineCall::ConcreteArgumentPList::reverse_iterator aConcreteArgumentPListI=
-	     theNewConcreteArgumentPList.rbegin();
-	   aConcreteArgumentPListI!=theNewConcreteArgumentPList.rend();
-	   ++aConcreteArgumentPListI) { 
-	ConcreteArgument& theConcreteArgument(**aConcreteArgumentPListI);
-	if (theConcreteArgument.isArgument() && theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
-	  // if we have to restore index values we replace the ConcreteArgument in question
-	  // using the associated ConcreteArgumentAlg instance
-	  // and hold on to the pop operations in the alg object associated with this new call.
-	  dynamic_cast<SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()).
-	    handleArrayAccessIndices(theConcreteArgument,
-				     theBasicBlock.getScope()); 
-	} 
-      } // end for 
+      theNewSubroutineCallAlg.handleArrayAccessIndices(*this);
     }
   } 
 
@@ -177,18 +159,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     // there, not on the original one, so it is easier to do it there.
   } 
   
-  void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
-						   Scope& theBasicBlockScope) { 
-    // get the algorithm instance
-    xaifBoosterTypeChange::ConcreteArgumentAlg& 
-      theConcreteArgumentAlg(dynamic_cast<xaifBoosterTypeChange::ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
-    // first figure out if we actually need to do anything: 
-    if (theConcreteArgumentAlg.hasReplacement()) { 
-      // already replaced by something suitable which by construction does not have indices
-      return;
-    }
+  void SubroutineCallAlg::handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg) { 
     // pop all the indices: 
-    const Expression::VariablePVariableSRPPairList& theTypeChangePairs(getReplacementPairs()); 
+    const Expression::VariablePVariableSRPPairList& theTypeChangePairs(orignalCallAlg.getIndexVariablesPushed()); 
     for (Expression::VariablePVariableSRPPairList::const_iterator pairIt=theTypeChangePairs.begin();
 	 pairIt!=theTypeChangePairs.end();
 	 ++pairIt) { 
