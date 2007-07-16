@@ -73,25 +73,24 @@ namespace xaifBooster {
   } 
 
   void AlgConfig::config() { 
-    static bool parsed=false; 
-    if (!parsed) { 
+    if (!myConfiguredFlag) { 
+      // avoid doing this twice
       parse(getSwitches());
-      parsed=true; 
-    }
-    myInputFileName=argAsString('i');
-    myIntrinsicsFileName=argAsString('c');
-    if (isSet('s')) 
-      mySchemaPath=argAsString('s');
-    if (isSet('o')) 
-      myOutFileName=argAsString('o');
-    if (isSet('d')) 
-      DbgLoggerManager::instance()->setFile(argAsString('d'));
-    if (isSet('g')) 
-      DbgLoggerManager::instance()->setSelection(argAsInt('g'));
-    if (isSet('p'))
-      Symbol::addSymbolNamesToPassivate(argAsString('p'));
-    myInputValidationFlag=isSet('v');
-    myConfiguredFlag=true; 
+      myInputFileName=argAsString('i');
+      myIntrinsicsFileName=argAsString('c');
+      if (isSet('s')) 
+	mySchemaPath=argAsString('s');
+      if (isSet('o')) 
+	myOutFileName=argAsString('o');
+      if (isSet('d')) 
+	DbgLoggerManager::instance()->setFile(argAsString('d'));
+      if (isSet('g')) 
+	DbgLoggerManager::instance()->setSelection(argAsInt('g'));
+      if (isSet('p'))
+	Symbol::addSymbolNamesToPassivate(argAsString('p'));
+      myInputValidationFlag=isSet('v');
+      myConfiguredFlag=true;
+    } 
   } 
 
   void AlgConfig::usage() { 

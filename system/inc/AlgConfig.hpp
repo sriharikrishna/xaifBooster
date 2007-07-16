@@ -70,6 +70,19 @@ namespace xaifBooster {
 
     virtual void usage();
 
+    /**
+     * We separate the parsing/configuration 
+     * step from the construction because 
+     * we want to throw exceptions when 
+     * something is not correctly specified
+     * and we should not throw exceptions from the constructor.
+     * On the other hand we have to avoid running config twice 
+     * because we populate hashmaps etc.  We do have virtual 
+     * inheritance though and if it wasn't for the need 
+     * to throw exceptions it could easily be done in the 
+     * constructor. Here we resort to a static guard 
+     * to avoid running things twice. 
+     */
     virtual void config();
 
     const std::string& getInputFileName() const; 
