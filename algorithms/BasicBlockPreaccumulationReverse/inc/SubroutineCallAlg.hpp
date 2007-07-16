@@ -84,11 +84,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      */
     virtual void algorithm_action_1();
 
-    /**
-     * refering to xaifBoosterBasicBlockPreaccumulationTape(Adjoint)::SubroutineCallAlg::algorithm_action_4
-     */
-    virtual void algorithm_action_4();
-
   private:
 
     /** 

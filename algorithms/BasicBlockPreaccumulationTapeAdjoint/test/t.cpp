@@ -92,10 +92,11 @@ int main(int argc,char** argv) {
     p.parse(algConfig.getInputFileName());
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
     Cg.getScopeTree().forcedPassivation();
-    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
-    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // flatten
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // analysis + type change
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // linearize 
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
-    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // tape adjoin
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // tape 
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // adjoin
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     if (algConfig.getSchemaPath().size())

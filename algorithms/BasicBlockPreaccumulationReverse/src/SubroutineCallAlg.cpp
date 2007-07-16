@@ -105,9 +105,4 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>(this)->xaifBoosterTypeChange::SubroutineCallAlg::algorithm_action_1();
   }
 
-  void SubroutineCallAlg::algorithm_action_4() { 
-    xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4();
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::algorithm_action_4();
-  }
-
 } // end of namespace

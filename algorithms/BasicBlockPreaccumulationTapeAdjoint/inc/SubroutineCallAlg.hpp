@@ -86,12 +86,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    /**
-     * \todo : distinction between constant and non-constant index expressions is simplified
-     * or we have this fixed by a proper TBR analysis
-     */
-    virtual void algorithm_action_4();
-
     virtual void insertYourself(const BasicBlock& theBasicBlock);
 
     void insertYourself(const BasicBlock& theBasicBlock,
