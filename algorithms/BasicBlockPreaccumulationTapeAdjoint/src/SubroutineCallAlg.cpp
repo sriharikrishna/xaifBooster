@@ -153,12 +153,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     }
   } 
 
-  void SubroutineCallAlg::algorithm_action_4() { 
-    // everything is done in insertYourself
-    // because we are working on the new subroutineCall created 
-    // there, not on the original one, so it is easier to do it there.
-  } 
-  
   void SubroutineCallAlg::handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg) { 
     // pop all the indices: 
     const Expression::VariablePVariableSRPPairList& theTypeChangePairs(orignalCallAlg.getIndexVariablesPushed()); 

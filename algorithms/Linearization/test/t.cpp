@@ -92,7 +92,7 @@ int main(int argc,char** argv) {
     p.parse(algConfig.getInputFileName());
     CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
     Cg.getScopeTree().forcedPassivation();
-    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // analyze
+    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // type change + analyze
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // generate code 
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
