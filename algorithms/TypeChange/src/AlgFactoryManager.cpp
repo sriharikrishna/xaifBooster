@@ -53,6 +53,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/algorithms/TypeChange/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/ConcreteArgumentAlgFactory.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SubroutineCallAlgFactory.hpp"
@@ -83,6 +84,7 @@ namespace xaifBoosterTypeChange {
   } // end of AlgFactoryManager::instance
 
   void AlgFactoryManager::resets() {
+    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
