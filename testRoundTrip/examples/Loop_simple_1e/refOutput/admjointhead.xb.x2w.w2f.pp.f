@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:41:28 2007
+C Fortran file translated from WHIRL Tue Jul 17 09:44:53 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -270,10 +270,6 @@ C
       EXTERNAL foo
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
-      INTEGER(w2f__i8) OpenAD_Symbol_10
-      INTEGER(w2f__i8) OpenAD_Symbol_7
-      INTEGER(w2f__i8) OpenAD_Symbol_8
-      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
 C
@@ -348,8 +344,6 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       J = 1
       DO I = 1, 2, 1
-        OpenAD_Symbol_9 = J
-        OpenAD_Symbol_10 = J
         CALL foo(X(J),Y(J))
       END DO
       
@@ -370,12 +364,8 @@ C$OPENAD XXX Simple loop
       J = 1
       OpenAD_Symbol_3 = 0_w2f__i8
       DO I = 1, 2, 1
-        OpenAD_Symbol_9 = J
-        OpenAD_Symbol_10 = J
         CALL foo(X(J),Y(J))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_9
-          integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_10
+          integer_tape(integer_tape_pointer) = J
           integer_tape_pointer = integer_tape_pointer+1
         OpenAD_Symbol_3 = (INT(OpenAD_Symbol_3) + INT(1_w2f__i8))
       END DO
@@ -405,10 +395,8 @@ C adjoint
       OpenAD_Symbol_2 = 1
       DO WHILE(INT(OpenAD_Symbol_2) .LE. INT(OpenAD_Symbol_1))
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_7 = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_8 = integer_tape(integer_tape_pointer)
-        CALL foo(X(INT(OpenAD_Symbol_8)),Y(INT(OpenAD_Symbol_7)))
+          J = integer_tape(integer_tape_pointer)
+        CALL foo(X(J),Y(J))
         OpenAD_Symbol_2 = INT(OpenAD_Symbol_2) + 1
       END DO
             our_rev_mode%arg_store=.FALSE.

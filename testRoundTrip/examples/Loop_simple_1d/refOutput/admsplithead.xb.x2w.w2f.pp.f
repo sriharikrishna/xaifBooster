@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:29:12 2007
+C Fortran file translated from WHIRL Tue Jul 17 09:30:52 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -181,10 +181,6 @@ C     **** Local Variables and Functions ****
 C
       EXTERNAL foo
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i8) OpenAD_Symbol_4
-      INTEGER(w2f__i8) OpenAD_Symbol_5
-      INTEGER(w2f__i8) OpenAD_Symbol_6
-      INTEGER(w2f__i8) OpenAD_Symbol_7
 C
 C     **** Top Level Pragmas ****
 C
@@ -202,8 +198,6 @@ C
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
-        OpenAD_Symbol_6 = I
-        OpenAD_Symbol_7 = I
         CALL foo(X(I),Y(I))
       END DO
       
@@ -213,8 +207,6 @@ C$OPENAD XXX Simple loop
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
-        OpenAD_Symbol_6 = I
-        OpenAD_Symbol_7 = I
         CALL foo(X(I),Y(I))
       END DO
       

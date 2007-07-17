@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:42:18 2007
+C Fortran file translated from WHIRL Tue Jul 17 09:34:45 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -227,7 +227,7 @@ C$OPENAD XXX Template ad_template.f
           OpenAD_Symbol_15 = integer_tape(integer_tape_pointer)
         IF ( OpenAD_Symbol_15  .EQ.  1)  GO TO  188
         IF ( OpenAD_Symbol_15  .EQ.  2)  GO TO  187
-        IF ( OpenAD_Symbol_15  .EQ.  3)  GO TO  184
+        IF ( OpenAD_Symbol_15  .EQ.  3)  GO TO  186
 188     CONTINUE
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_27 = integer_tape(integer_tape_pointer)
@@ -256,7 +256,7 @@ C$OPENAD XXX Template ad_template.f
      +_Symbol_10%d
           OpenAD_Symbol_10%d = 0.0d0
         GO TO 190
-184     CONTINUE
+186     CONTINUE
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_33 = integer_tape(integer_tape_pointer)
           double_tape_pointer = double_tape_pointer-1

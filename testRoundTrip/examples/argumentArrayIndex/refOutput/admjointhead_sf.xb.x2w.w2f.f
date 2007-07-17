@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:35:30 2007
+C Fortran file translated from WHIRL Tue Jul 17 09:41:18 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -136,12 +136,6 @@ C     **** Local Variables and Functions ****
 C
       EXTERNAL foo
       INTEGER(w2f__i4) K
-      INTEGER(w2f__i8) OpenAD_Symbol_10
-      INTEGER(w2f__i8) OpenAD_Symbol_11
-      INTEGER(w2f__i8) OpenAD_Symbol_6
-      INTEGER(w2f__i8) OpenAD_Symbol_7
-      INTEGER(w2f__i8) OpenAD_Symbol_8
-      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
 C
@@ -153,39 +147,28 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       K = 1
-      OpenAD_Symbol_9 = K
-      OpenAD_Symbol_10 = (K + INT(1_w2f__i8))
       CALL foo(__deriv__(X(K)), __deriv__(X(K + 1)))
-      OpenAD_Symbol_11 = K
       CALL foo(__deriv__(X(K)), __deriv__(Y))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       K = 1
-      OpenAD_Symbol_9 = K
-      OpenAD_Symbol_10 = (K + INT(1_w2f__i8))
       CALL foo(__deriv__(X(K)), __deriv__(X(K + 1)))
 C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(OpenAD_Symbol_9)
-C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(OpenAD_Symbol_10)
-      OpenAD_Symbol_11 = K
+      CALL push_i(K)
       CALL foo(__deriv__(X(K)), __deriv__(Y))
 C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(OpenAD_Symbol_11)
+      CALL push_i(K)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(OpenAD_Symbol_6)
-      CALL foo(__deriv__(X(INT(OpenAD_Symbol_6))), __deriv__(Y))
+      CALL pop_i(K)
+      CALL foo(__deriv__(X(K)), __deriv__(Y))
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(OpenAD_Symbol_7)
-C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(OpenAD_Symbol_8)
-      CALL foo(__deriv__(X(INT(OpenAD_Symbol_8))), __deriv__(X(INT(
-     > OpenAD_Symbol_7))))
+      CALL pop_i(K)
+      CALL foo(__deriv__(X(K)), __deriv__(X(K + 1)))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
@@ -226,28 +209,20 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
       K = 1
-      OpenAD_Symbol_9 = K
-      OpenAD_Symbol_10 = (K + INT(1_w2f__i8))
       CALL foo(__deriv__(X(K)), __deriv__(X(K + 1)))
 C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(OpenAD_Symbol_9)
-C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(OpenAD_Symbol_10)
-      OpenAD_Symbol_11 = K
+      CALL push_i(K)
       CALL foo(__deriv__(X(K)), __deriv__(Y))
 C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(OpenAD_Symbol_11)
+      CALL push_i(K)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(OpenAD_Symbol_6)
-      CALL foo(__deriv__(X(INT(OpenAD_Symbol_6))), __deriv__(Y))
+      CALL pop_i(K)
+      CALL foo(__deriv__(X(K)), __deriv__(Y))
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(OpenAD_Symbol_7)
-C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(OpenAD_Symbol_8)
-      CALL foo(__deriv__(X(INT(OpenAD_Symbol_8))), __deriv__(X(INT(
-     > OpenAD_Symbol_7))))
+      CALL pop_i(K)
+      CALL foo(__deriv__(X(K)), __deriv__(X(K + 1)))
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:43:02 2007
+C Fortran file translated from WHIRL Tue Jul 17 09:45:46 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -262,11 +262,7 @@ C adjoint
           OpenAD_Symbol_16%d = 0.0d0
           D%d = D%d+OpenAD_Symbol_18%d
           OpenAD_Symbol_18%d = 0.0d0
-C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_31,P)
       CALL foo(X(1),OpenAD_Symbol_31,C,D)
-C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(P,OpenAD_Symbol_31)
       CALL foo(X(1),X(2),C,D)
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
