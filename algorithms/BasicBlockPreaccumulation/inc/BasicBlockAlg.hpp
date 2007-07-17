@@ -593,6 +593,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		      xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
     typedef std::list<VarDevPropPPair> VarDevPropPPairList;
 
+    /** 
+     * requires theIndepVariable to be alias checked
+     */
     void 
     generateSimplePropagator(const Variable& theIndepVariable,
 			     const Variable& theDependent,
@@ -602,6 +605,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 			     const Variable& theLocalJacobianEntry);
 
+    /** 
+     * requires theIndepVariable to be alias checked
+     */
     void 
     generateSimplePropagatorFromEdge(const Variable& theSourceVariable,
 				     const Variable& theTargetVariable,

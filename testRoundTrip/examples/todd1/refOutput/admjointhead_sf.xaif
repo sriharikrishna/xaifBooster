@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Tue Nov 28 16:16:23 2006 -->
+<!-- XAIF file translated from WHIRL at Mon Apr  2 14:02:59 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -1333,10 +1333,10 @@
           <xaif:Intrinsic vertex_id="3" name="sub_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="4" name="sub_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="5" name="mul_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="6" type="real" value="2.00000000000000000000e+00"/>
-          <xaif:VariableReference vertex_id="7" du_ud="2">
+          <xaif:VariableReference vertex_id="6" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="X2_10"/>
           </xaif:VariableReference>
+          <xaif:Constant vertex_id="7" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="6" target="5" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="7" target="5" position="2"/>
           <xaif:VariableReference vertex_id="8" du_ud="2">
@@ -1381,10 +1381,10 @@
           <xaif:Intrinsic vertex_id="3" name="sub_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="4" name="sub_scal_scal" type="***"/>
           <xaif:Intrinsic vertex_id="5" name="mul_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="6" type="real" value="2.00000000000000000000e+00"/>
-          <xaif:VariableReference vertex_id="7" du_ud="2">
+          <xaif:VariableReference vertex_id="6" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="X5_13"/>
           </xaif:VariableReference>
+          <xaif:Constant vertex_id="7" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="6" target="5" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="7" target="5" position="2"/>
           <xaif:VariableReference vertex_id="8" du_ud="2">
@@ -1455,10 +1455,10 @@
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="mul_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="2" type="real" value="2.00000000000000000000e+00"/>
-          <xaif:VariableReference vertex_id="3" du_ud="10">
+          <xaif:VariableReference vertex_id="2" du_ud="10">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="M03_57"/>
           </xaif:VariableReference>
+          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -1469,10 +1469,10 @@
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="mul_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="2" type="real" value="2.00000000000000000000e+00"/>
-          <xaif:VariableReference vertex_id="3" du_ud="11">
+          <xaif:VariableReference vertex_id="2" du_ud="11">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="M12_59"/>
           </xaif:VariableReference>
+          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -1721,10 +1721,10 @@
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="mul_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="2" type="real" value="2.00000000000000000000e+00"/>
-          <xaif:VariableReference vertex_id="3" du_ud="20">
+          <xaif:VariableReference vertex_id="2" du_ud="20">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="LOC1_52"/>
           </xaif:VariableReference>
+          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -1897,10 +1897,10 @@
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="mul_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="2" type="real" value="2.00000000000000000000e+00"/>
-          <xaif:VariableReference vertex_id="3" du_ud="27">
+          <xaif:VariableReference vertex_id="2" du_ud="27">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="LOC1_52"/>
           </xaif:VariableReference>
+          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -1961,10 +1961,10 @@
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="mul_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="2" type="real" value="2.00000000000000000000e+00"/>
-          <xaif:VariableReference vertex_id="3" du_ud="30">
+          <xaif:VariableReference vertex_id="2" du_ud="30">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="LOC1_52"/>
           </xaif:VariableReference>
+          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -2787,10 +2787,10 @@
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="mul_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="2" type="real" value="1.20000000000000000000e+01"/>
-          <xaif:VariableReference vertex_id="3" du_ud="56">
+          <xaif:VariableReference vertex_id="2" du_ud="56">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="R13_75"/>
           </xaif:VariableReference>
+          <xaif:Constant vertex_id="3" type="real" value="1.20000000000000000000e+01"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>

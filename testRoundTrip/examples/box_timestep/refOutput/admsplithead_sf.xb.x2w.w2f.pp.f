@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:24:44 2007
+C Fortran file translated from WHIRL Mon Apr  2 13:35:26 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -300,7 +300,7 @@ C$OPENAD XXX Template ad_template.f
         DFLDDT(3)%v = (-((UVELLOC*(FLDNOW(1)%v-FLDNOW(3)%v))/VOL(3)))
       ENDIF
       DO L = 1, 3, 1
-        FLDNEW(INT(L))%v = (FLDOLD(L)+DFLDDT(L)%v*2.0D00*DELTA_T)
+        FLDNEW(INT(L))%v = (FLDOLD(L)+DFLDDT(L)%v*DELTA_T*2.0D00)
       END DO
       RETURN
           end if
@@ -482,7 +482,7 @@ C$OPENAD XXX Template ad_template.f
       ENDIF
       OpenAD_Symbol_175 = 0_w2f__i8
       DO L = 1, 3, 1
-        OpenAD_Symbol_53 = (2.0D00 * DELTA_T)
+        OpenAD_Symbol_53 = (DELTA_T * 2.0D00)
         OpenAD_Symbol_56 = (FLDOLD(L)+DFLDDT(L)%v*OpenAD_Symbol_53)
         OpenAD_Symbol_54 = OpenAD_Symbol_53
         OpenAD_Symbol_52 = 1_w2f__i8

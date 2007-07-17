@@ -325,9 +325,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -339,9 +341,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -353,9 +357,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -367,9 +373,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -381,9 +389,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="5"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="5"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -395,9 +405,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="6"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="6"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -409,9 +421,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="7"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="7"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -423,9 +437,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="8"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="8"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -437,9 +453,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="9"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="9"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -451,9 +469,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="10"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="10"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -465,9 +485,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="11"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="11"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -479,9 +501,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -493,9 +517,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -507,9 +533,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -521,9 +549,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -535,9 +565,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="5"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="5"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -549,9 +581,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="6"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="6"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -563,9 +597,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="7"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="7"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -577,9 +613,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="8"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="8"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -591,9 +629,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="9"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="9"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -605,9 +645,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="10"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="10"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -619,9 +661,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="11"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="11"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -673,11 +717,13 @@
               <xaif:VariableReference vertex_id="2" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -685,20 +731,24 @@
               <xaif:VariableReference vertex_id="4" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
               <xaif:VariableReference vertex_id="5" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -717,9 +767,11 @@
               <xaif:VariableReference vertex_id="2" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -727,11 +779,13 @@
               <xaif:VariableReference vertex_id="4" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -739,20 +793,24 @@
               <xaif:VariableReference vertex_id="6" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
               <xaif:VariableReference vertex_id="7" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -768,11 +826,13 @@
             <xaif:AssignmentLHS active="true" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                    <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                  </xaif:VariableReference>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                    </xaif:VariableReference>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -781,11 +841,13 @@
               <xaif:VariableReference vertex_id="2" active="false" du_ud="4" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -794,9 +856,11 @@
               <xaif:VariableReference vertex_id="5" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -837,9 +901,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -851,9 +917,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -865,9 +933,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -879,9 +949,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -893,9 +965,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="5"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="5"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -907,9 +981,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="6"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="6"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -921,9 +997,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="7"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="7"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -935,9 +1013,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="8"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="8"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -949,9 +1029,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="9"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="9"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -963,9 +1045,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="10"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="10"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -977,9 +1061,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="11"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="11"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -991,9 +1077,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1005,9 +1093,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1019,9 +1109,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1033,9 +1125,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1047,9 +1141,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="5"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="5"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1061,9 +1157,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="6"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="6"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1075,9 +1173,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="7"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="7"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1089,9 +1189,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="8"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="8"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1103,9 +1205,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="9"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="9"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1117,9 +1221,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="10"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="10"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1131,9 +1237,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="11"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="11"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1185,20 +1293,24 @@
               <xaif:VariableReference vertex_id="4" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
               <xaif:VariableReference vertex_id="5" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1215,11 +1327,13 @@
               <xaif:VariableReference vertex_id="2" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1246,11 +1360,13 @@
               <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1275,20 +1391,24 @@
               <xaif:VariableReference vertex_id="6" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
               <xaif:VariableReference vertex_id="7" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1305,9 +1425,11 @@
               <xaif:VariableReference vertex_id="2" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1315,11 +1437,13 @@
               <xaif:VariableReference vertex_id="4" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1356,11 +1480,13 @@
               <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1393,9 +1519,11 @@
               <xaif:VariableReference vertex_id="5" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1415,11 +1543,13 @@
               <xaif:VariableReference vertex_id="2" active="false" du_ud="4" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1454,9 +1584,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1509,11 +1641,13 @@
             <xaif:AssignmentLHS active="true" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                    <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                  </xaif:VariableReference>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                    </xaif:VariableReference>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -1855,11 +1989,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_42" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_42" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1894,11 +2030,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_44" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_44" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1933,11 +2071,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_46" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_46" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1972,11 +2112,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_48" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_48" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -1992,11 +2134,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_48" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_48" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2012,9 +2156,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2037,9 +2183,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2062,9 +2210,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2087,9 +2237,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2224,9 +2376,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2238,9 +2392,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2252,9 +2408,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2266,9 +2424,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2280,9 +2440,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="5"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="5"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2294,9 +2456,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="6"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="6"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2308,9 +2472,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="7"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="7"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2322,9 +2488,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="8"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="8"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2336,9 +2504,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="9"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="9"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2350,9 +2520,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="10"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="10"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2364,9 +2536,11 @@
             <xaif:AssignmentLHS active="false" du_ud="7" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="11"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="11"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2378,9 +2552,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2392,9 +2568,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2406,9 +2584,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2420,9 +2600,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2434,9 +2616,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="5"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="5"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2448,9 +2632,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="6"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="6"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2462,9 +2648,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="7"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="7"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2476,9 +2664,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="8"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="8"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2490,9 +2680,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="9"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="9"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2504,9 +2696,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="10"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="10"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2518,9 +2712,11 @@
             <xaif:AssignmentLHS active="false" du_ud="8" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="11"/>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" value="11"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -2572,20 +2768,24 @@
               <xaif:VariableReference vertex_id="4" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
               <xaif:VariableReference vertex_id="5" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2602,11 +2802,13 @@
               <xaif:VariableReference vertex_id="2" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2633,11 +2835,13 @@
               <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2662,20 +2866,24 @@
               <xaif:VariableReference vertex_id="6" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
               <xaif:VariableReference vertex_id="7" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2692,9 +2900,11 @@
               <xaif:VariableReference vertex_id="2" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2702,11 +2912,13 @@
               <xaif:VariableReference vertex_id="4" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2743,11 +2955,13 @@
               <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="V_6" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2780,9 +2994,11 @@
               <xaif:VariableReference vertex_id="5" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2802,11 +3018,13 @@
               <xaif:VariableReference vertex_id="2" active="false" du_ud="4" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="Y_7" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2841,9 +3059,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -2896,11 +3116,13 @@
             <xaif:AssignmentLHS active="true" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
-                <xaif:Index>
-                  <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
-                    <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
-                  </xaif:VariableReference>
-                </xaif:Index>
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:VariableReference vertex_id="1" active="false" du_ud="2" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
+                    </xaif:VariableReference>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:AssignmentLHS>
@@ -3242,11 +3464,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_42" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_42" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -3281,11 +3505,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_44" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_44" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -3320,11 +3546,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_46" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_46" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -3359,11 +3587,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_48" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_48" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -3379,11 +3609,13 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FVEC_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_48" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_48" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess" scope_id="3"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -3399,9 +3631,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="4"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="4"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -3424,9 +3658,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -3449,9 +3685,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="3"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>
@@ -3474,9 +3712,11 @@
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="2"/>
-                  </xaif:Index>
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" value="2"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
               </xaif:VariableReference>

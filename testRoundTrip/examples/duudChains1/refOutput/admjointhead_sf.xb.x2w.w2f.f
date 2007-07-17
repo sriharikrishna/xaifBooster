@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:38:32 2007
+C Fortran file translated from WHIRL Mon Apr  2 13:53:26 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -18,7 +18,7 @@ C
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_1
+      REAL(w2f__8) OpenAD_Symbol_0
       INTEGER(w2f__i8) OpenAD_Symbol_10
       INTEGER(w2f__i8) OpenAD_Symbol_11
       INTEGER(w2f__i8) OpenAD_Symbol_12
@@ -59,7 +59,7 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
-        __value__(T(INT(I))) = (2.0D00 * __value__(X(I)))
+        __value__(T(INT(I))) = (__value__(X(I)) * 2.0D00)
         __value__(Y(INT(I))) = (__value__(T(I)) * 4.0D00)
       END DO
       RETURN
@@ -68,10 +68,10 @@ C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_12 = 0_w2f__i8
       DO I = 1, 2, 1
-        OpenAD_Symbol_2 = (2.0D00 * __value__(X(I)))
-        OpenAD_Symbol_1 = 2.0D00
+        OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
+        OpenAD_Symbol_0 = 2.0D00
         __value__(T(INT(I))) = OpenAD_Symbol_2
-        OpenAD_Symbol_6 = OpenAD_Symbol_1
+        OpenAD_Symbol_6 = OpenAD_Symbol_0
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(I)
 C       $OpenAD$ INLINE push(subst)
@@ -162,10 +162,10 @@ C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_15 = 0_w2f__i8
       DO I = 1, 2, 1
-        OpenAD_Symbol_2 = (2.0D00 * __value__(X(I)))
-        OpenAD_Symbol_1 = 2.0D00
+        OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
+        OpenAD_Symbol_0 = 2.0D00
         __value__(T(INT(I))) = OpenAD_Symbol_2
-        OpenAD_Symbol_6 = OpenAD_Symbol_1
+        OpenAD_Symbol_6 = OpenAD_Symbol_0
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(I)
 C       $OpenAD$ INLINE push(subst)

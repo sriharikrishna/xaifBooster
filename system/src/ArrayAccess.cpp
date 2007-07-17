@@ -58,10 +58,10 @@ namespace xaifBooster {
   VariableVertex& 
   ArrayAccess::createCopyOfMyself() const { 
     ArrayAccess* theCopy_p=new ArrayAccess();
-    for (IndexListType::const_iterator i=myIndexList.begin();
-	 i!=myIndexList.end();
+    for (IndexTripletListType::const_iterator i=myIndexTripletList.begin();
+	 i!=myIndexTripletList.end();
 	 ++i) { 
-      (*i)->copyMyselfInto(theCopy_p->addIndex(),false,false);
+      (*i)->copyMyselfInto(theCopy_p->addIndexTriplet());
     } 
     theCopy_p->setId(getId());
     return *theCopy_p;
@@ -75,7 +75,6 @@ namespace xaifBooster {
   } 
 
   const std::string ArrayAccess::ourXAIFName("xaif:ArrayElementReference");
-  const std::string ArrayAccess::our_myIndex_XAIFName("xaif:Index");
   const std::string ArrayAccess::our_myId_XAIFName("vertex_id");
 
   void ArrayAccess::printXMLHierarchy(std::ostream& os) const {
@@ -89,10 +88,10 @@ namespace xaifBooster {
        << getId().c_str() 
        << "\">" 
        << std::endl;
-    for (IndexListType::const_iterator i=myIndexList.begin();
-	 i!=myIndexList.end();
+    for (IndexTripletListType::const_iterator i=myIndexTripletList.begin();
+	 i!=myIndexTripletList.end();
 	 ++i) 
-      printXMLHierarchyIndex(os,**i);
+      (*i)->printXMLHierarchy(os);
     os << pm.indent()
        << "</"
        << ourXAIFName.c_str()
@@ -101,35 +100,18 @@ namespace xaifBooster {
     pm.releaseInstance(); 
   } // end ArrayAccess::printXMLHierarchy
 
-  void ArrayAccess::printXMLHierarchyIndex(std::ostream& os,
-					   const Expression& theIndex) const { 
-    PrintManager& pm=PrintManager::getInstance();
-    os << pm.indent() 
-       << "<" 
-       << our_myIndex_XAIFName.c_str() 
-       << ">" 
-       << std::endl;
-    theIndex.printXMLHierarchyImpl(os);
-    os << pm.indent() 
-       << "</"
-       << our_myIndex_XAIFName.c_str()
-       << ">"
-       << std::endl;
-    pm.releaseInstance(); 
-  } // end of ArrayAccess::printXMLHierarchyIndex
-
-  const ArrayAccess::IndexListType& ArrayAccess::getIndexList() const {
-    return myIndexList;
+  const ArrayAccess::IndexTripletListType& ArrayAccess::getIndexTripletList() const {
+    return myIndexTripletList;
   }
   
-  ArrayAccess::IndexListType& ArrayAccess::getIndexList() {
-    return myIndexList;
+  ArrayAccess::IndexTripletListType& ArrayAccess::getIndexTripletList() {
+    return myIndexTripletList;
   }
 
-  Expression& ArrayAccess::addIndex() {
-    Expression* anExpression_p=new Expression();
-    myIndexList.push_back(anExpression_p);
-    return *anExpression_p;
+  IndexTriplet& ArrayAccess::addIndexTriplet() {
+    IndexTriplet* anIndexTriplet_p=new IndexTriplet();
+    myIndexTripletList.push_back(anIndexTriplet_p);
+    return *anIndexTriplet_p;
   }
 
 } 
