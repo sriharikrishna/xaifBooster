@@ -650,7 +650,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					      const InternalReferenceConcretizationList& theInternalReferenceConcretizationList); 
 
     const Variable& getEdgeLabel(const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
-				 const InternalReferenceConcretizationList& theInternalReferenceConcretizationList);
+				 const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
+				 Sequence& aSequence);
     
 
     /** 
