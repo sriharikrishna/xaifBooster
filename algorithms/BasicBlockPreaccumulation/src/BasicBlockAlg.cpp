@@ -73,7 +73,8 @@
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
 
-#include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/EliminationMethods.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/EliminationException.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
@@ -84,34 +85,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdgeAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertexAlgFactory.hpp"
 
-/** 
- * the various methods provided by the ANGEL library
- */
-namespace angel { 
-
-  extern void compute_elimination_sequence (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
-					    int iterations, 
-					    double gamma,
-					    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list);
-
-  extern void compute_elimination_sequence_lsa_vertex (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
-						       int iterations, 
-						       double gamma,
-						       xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list);
-
-  extern void compute_elimination_sequence_lsa_face (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
-						     int iterations, 
-						     double gamma,
-						     xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expression_list);
-
-  extern void compute_partial_elimination_sequence (const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& xgraph,
-						    int iterations, 
-						    double gamma,
-						    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& expressionList,
-						    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& remainderGraph,
-						    xaifBoosterCrossCountryInterface::VertexCorrelationList& aVertexCorrelationList,
-						    xaifBoosterCrossCountryInterface::EdgeCorrelationList& anEdgeCorrelationList);
-}
 
 using namespace xaifBooster;
 
@@ -899,13 +872,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // the first one is the default: 
       ourNonScarseEliminations_fpList.
 	push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("default vertex / edge elimination"), 
-								       &angel::compute_elimination_sequence));
+								       &xaifBoosterCrossCountryInterface::compute_elimination_sequence));
       ourNonScarseEliminations_fpList.
 	push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("LSA vertex elimination"), 
-								       &angel::compute_elimination_sequence_lsa_vertex));
+								       &xaifBoosterCrossCountryInterface::compute_elimination_sequence_lsa_vertex));
       ourNonScarseEliminations_fpList.
 	push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("LSA face elimination"), 
-								       &angel::compute_elimination_sequence_lsa_face));
+								       &xaifBoosterCrossCountryInterface::compute_elimination_sequence_lsa_face));
     }
     PrivateLinearizedComputationalGraph& theComputationalGraph=*(aSequence.myComputationalGraph_p);
     for (ComputeEliminationSequence_fpList::iterator elimMethodI=ourNonScarseEliminations_fpList.begin();
@@ -946,16 +919,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // there is currently only 1 choice:
       Sequence::EliminationResult& aResult(aSequence.addNewEliminationResult());
       try { 
-	angel::compute_partial_elimination_sequence(theComputationalGraph, 
-						    ourIterationsParameter, 
-						    ourGamma, 
-						    aResult.myJAEList, 
-						    aResult.myRemainderGraph, 
-						    aResult.myVertexCorrelationList, 
-						    aResult.myEdgeCorrelationList);
+	xaifBoosterCrossCountryInterface::compute_partial_elimination_sequence(theComputationalGraph, 
+										 ourIterationsParameter, 
+										 ourGamma, 
+										 aResult.myJAEList, 
+										 aResult.myRemainderGraph, 
+										 aResult.myVertexCorrelationList, 
+										 aResult.myEdgeCorrelationList);
       }
-      catch(...) { 
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: exception thrown from within angel::compute_partial_elimination_sequence");
+      catch(xaifBoosterCrossCountryInterface::EliminationException e) { 
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: exception thrown from within compute_partial_elimination_sequence:" 
+				   << e.getReason().c_str());
       }
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
 	GraphVizDisplay::show(aResult.myRemainderGraph, "remainderGraph");
@@ -1216,10 +1190,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const Variable& theEdgeLabelVariable(getEdgeLabel(theEdge,theInternalReferenceConcretizationList,aSequence));
     // figure out what the source is:
     const Variable* theSourceVariable_p(0);
-    if (aSequence.getBestResult().myRemainderGraph.numInEdgesOf(*(theSource.myRemainderVertex_p)))
+    if (aSequence.getBestResult().myRemainderGraph.numInEdgesOf(*(theSource.myRemainderVertex_p))) { 
       theSourceVariable_p=&(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p))));
-    else 
-      theSourceVariable_p=&(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p)).getRHSVariable());
+    }
+    else { 
+      theSourceVariable_p=&(getVariableWithAliasCheck(theListOfAlreadyAssignedSources,
+						      theDepVertexPListCopyWithoutRemovals,
+						      dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p)).getRHSVariable(),
+						      aSequence));
+    }
     // figure out what the target is:
     const Variable& theTargetVariable(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theTarget.myOriginalVertex_p))));
     switch(theEdge.myType) { 

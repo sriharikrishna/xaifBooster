@@ -199,53 +199,57 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     if (!theOriginalVariable.hasArrayAccess() || aReversalType==ForLoopReversalType::EXPLICIT)
       return;
     // otherwise we will replace index expressions: 
-    ArrayAccess::IndexListType& theNewIndexList(theNewVariable.getArrayAccess().getIndexList());
-    const ArrayAccess::IndexListType& theOriginalIndexList(theOriginalVariable.getArrayAccess().getIndexList());
-    ArrayAccess::IndexListType::reverse_iterator aNewIndexListTypeI=theNewIndexList.rbegin() ;
-    for (ArrayAccess::IndexListType::const_reverse_iterator anOriginalIndexListTypeCI=theOriginalIndexList.rbegin();
-	 anOriginalIndexListTypeCI!=theOriginalIndexList.rend();
-	 ++anOriginalIndexListTypeCI,
-	   ++aNewIndexListTypeI) { 
-      // now we have two cases, essentially the expression is a single vertex with a constant 
-      // (this discounts constant expressions, this is a todo which might be dealt with later or 
-      // it may be completelt superceded by a TBR analysis)
-      const Expression& theIndexExpression(**anOriginalIndexListTypeCI);
-      if (theIndexExpression.numVertices()==1
-	  && 
-	  !(*(theIndexExpression.vertices().first)).isArgument()) { 
-	// do nothing
-	continue;
-      }
-      // it is a variable or expression whose value we pushed and now want to pop
-      // and replace. First clear the old index expression that we copied into aNewIndexListTypeI
-      (*aNewIndexListTypeI)->clear();
-      // pop the value
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& thePopCall(addInlinableSubroutineCall("pop_i",
-													    aReversalType));
-      thePopCall.setId("inline_pop_i");
-      Variable& theInlineVariable(thePopCall.addConcreteArgument(1).getArgument().getVariable());
-      // give it a name etc.
-      // create a new symbol and add a new VariableSymbolReference in the Variable
-      VariableSymbolReference* theNewVariableSymbolReference_p=
-	new VariableSymbolReference(getContaining().getScope().
-				    getSymbolTable().
-				    addUniqueAuxSymbol(SymbolKind::VARIABLE,
-						       SymbolType::INTEGER_STYPE,
-						       SymbolShape::SCALAR,
-						       false),
-				    getContaining().getScope());
-      theNewVariableSymbolReference_p->setId("1");
-      theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess");
-      // pass it on to the variable and relinquish ownership
-      theInlineVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-      theInlineVariable.getAliasMapKey().setTemporary();
-      theInlineVariable.getDuUdMapKey().setTemporary();
-      // create a copy of the variable in the indexExpression: 
-      Argument& theNewArgument(*new Argument);
-      // relinquish ownership to the index expression: 
-      (*aNewIndexListTypeI)->supplyAndAddVertexInstance(theNewArgument);
-      theNewArgument.setId(1);
-      theInlineVariable.copyMyselfInto(theNewArgument.getVariable());
+    ArrayAccess::IndexTripletListType& theNewIndexTripletList(theNewVariable.getArrayAccess().getIndexTripletList());
+    const ArrayAccess::IndexTripletListType& theOriginalIndexTripletList(theOriginalVariable.getArrayAccess().getIndexTripletList());
+    ArrayAccess::IndexTripletListType::reverse_iterator aNewIndexTripletListTypeI=theNewIndexTripletList.rbegin() ;
+    for (ArrayAccess::IndexTripletListType::const_reverse_iterator anOriginalIndexTripletListTypeCI=theOriginalIndexTripletList.rbegin();
+	 anOriginalIndexTripletListTypeCI!=theOriginalIndexTripletList.rend();
+	 ++anOriginalIndexTripletListTypeCI,
+	   ++aNewIndexTripletListTypeI) { 
+      for (IndexTriplet::IndexPairList::const_iterator anIndexPairListCI=(*anOriginalIndexTripletListTypeCI)->getIndexPairList().begin();
+	   anIndexPairListCI!=(*anOriginalIndexTripletListTypeCI)->getIndexPairList().end();
+	   ++anIndexPairListCI) { 
+	// now we have two cases, essentially the expression is a single vertex with a constant 
+	// (this discounts constant expressions, this is a todo which might be dealt with later or 
+	// it may be completelt superceded by a TBR analysis)
+	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
+	if (theIndexExpression.numVertices()==1
+	    && 
+	    !(*(theIndexExpression.vertices().first)).isArgument()) { 
+	  // do nothing
+	  continue;
+	}
+	// it is a variable or expression whose value we pushed and now want to pop
+	// and replace. First clear the old index expression that we copied into aNewIndexTripletListTypeI
+	(*aNewIndexTripletListTypeI)->getExpression((*anIndexPairListCI).first).clear();
+	// pop the value
+	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& thePopCall(addInlinableSubroutineCall("pop_i",
+													      aReversalType));
+	thePopCall.setId("inline_pop_i");
+	Variable& theInlineVariable(thePopCall.addConcreteArgument(1).getArgument().getVariable());
+	// give it a name etc.
+	// create a new symbol and add a new VariableSymbolReference in the Variable
+	VariableSymbolReference* theNewVariableSymbolReference_p=
+	  new VariableSymbolReference(getContaining().getScope().
+				      getSymbolTable().
+				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
+							 SymbolType::INTEGER_STYPE,
+							 SymbolShape::SCALAR,
+							 false),
+				      getContaining().getScope());
+	theNewVariableSymbolReference_p->setId("1");
+	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess");
+	// pass it on to the variable and relinquish ownership
+	theInlineVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+	theInlineVariable.getAliasMapKey().setTemporary();
+	theInlineVariable.getDuUdMapKey().setTemporary();
+	// create a copy of the variable in the indexExpression: 
+	Argument& theNewArgument(*new Argument);
+	// relinquish ownership to the index expression: 
+	(*aNewIndexTripletListTypeI)->getExpression((*anIndexPairListCI).first).supplyAndAddVertexInstance(theNewArgument);
+	theNewArgument.setId(1);
+	theInlineVariable.copyMyselfInto(theNewArgument.getVariable());
+      } // end for loop through the pairlist
     } // end for i
   } 
 

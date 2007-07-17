@@ -14,7 +14,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="1" nr_templates="1" outfile="helper_definition.inc">
 
-  <CodeGen:RepeatableCode nr_versions="32">
+  <CodeGen:RepeatableCode nr_versions="33">
     <CodeGen:CodeTemplate nr_entries="83">
       <CodeGen:StaticCode text="void "/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -170,6 +170,10 @@
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
       <CodeGen:DynamicCode hook_ref="2" text="IfStatement"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>
+      <CodeGen:DynamicCode hook_ref="2" text="IndexTriplet"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="XAIFBaseParserHelper"/>

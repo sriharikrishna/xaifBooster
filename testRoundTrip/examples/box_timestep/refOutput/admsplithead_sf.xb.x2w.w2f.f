@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:24:44 2007
+C Fortran file translated from WHIRL Mon Apr  2 13:35:26 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -242,7 +242,7 @@ C$OPENAD XXX Template ad_template.f
       ENDIF
       DO L = 1, 3, 1
         __value__(FLDNEW(INT(L))) = (FLDOLD(L) + __value__(DFLDDT(L)) *
-     >  2.0D00 * DELTA_T)
+     >  DELTA_T * 2.0D00)
       END DO
       RETURN
 C     $OpenAD$ END REPLACEMENT
@@ -429,7 +429,7 @@ C       $OpenAD$ INLINE push_i(subst)
       ENDIF
       OpenAD_Symbol_175 = 0_w2f__i8
       DO L = 1, 3, 1
-        OpenAD_Symbol_53 = (2.0D00 * DELTA_T)
+        OpenAD_Symbol_53 = (DELTA_T * 2.0D00)
         OpenAD_Symbol_56 = (FLDOLD(L) + __value__(DFLDDT(L)) *
      >  OpenAD_Symbol_53)
         OpenAD_Symbol_54 = OpenAD_Symbol_53
@@ -896,7 +896,7 @@ C       $OpenAD$ INLINE push_i(subst)
       ENDIF
       OpenAD_Symbol_181 = 0_w2f__i8
       DO L = 1, 3, 1
-        OpenAD_Symbol_53 = (2.0D00 * DELTA_T)
+        OpenAD_Symbol_53 = (DELTA_T * 2.0D00)
         OpenAD_Symbol_56 = (FLDOLD(L) + __value__(DFLDDT(L)) *
      >  OpenAD_Symbol_53)
         OpenAD_Symbol_54 = OpenAD_Symbol_53
