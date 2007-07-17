@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:23:23 2007
+C Fortran file translated from WHIRL Mon Jul 16 17:33:16 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -146,15 +146,7 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(OpenAD_Symbol_5, __deriv__(GX))
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(OpenAD_Symbol_6, __deriv__(GY))
       CALL bar(OpenAD_Symbol_5, OpenAD_Symbol_6)
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(GX), OpenAD_Symbol_5)
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(GY), OpenAD_Symbol_6)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
@@ -205,15 +197,7 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(OpenAD_Symbol_5, __deriv__(GX))
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(OpenAD_Symbol_6, __deriv__(GY))
       CALL bar(OpenAD_Symbol_5, OpenAD_Symbol_6)
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(GX), OpenAD_Symbol_5)
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(GY), OpenAD_Symbol_6)
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE
 

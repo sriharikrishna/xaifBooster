@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:38:38 2007
+C Fortran file translated from WHIRL Tue Jul 17 09:43:36 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -190,8 +190,6 @@ C
       EXTERNAL foo
       INTEGER(w2f__i4) I
       REAL(w2f__8) T(1 : 2)
-      INTEGER(w2f__i8) OpenAD_Symbol_11
-      INTEGER(w2f__i8) OpenAD_Symbol_12
 C
 C     **** Top Level Pragmas ****
 C
@@ -205,7 +203,6 @@ C$OPENAD XXX Template ad_template.f
       I = 2
       CALL barext(T(I))
       I = 1
-      OpenAD_Symbol_12 = I
       CALL foo(__deriv__(X), __deriv__(Y(I)))
       RETURN
 C     $OpenAD$ END REPLACEMENT
@@ -214,16 +211,15 @@ C$OPENAD XXX Template ad_template.f
       I = 2
       CALL barext(T(I))
       I = 1
-      OpenAD_Symbol_12 = I
       CALL foo(__deriv__(X), __deriv__(Y(I)))
 C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(OpenAD_Symbol_12)
+      CALL push_i(I)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(OpenAD_Symbol_11)
-      CALL foo(__deriv__(X), __deriv__(Y(INT(OpenAD_Symbol_11))))
+      CALL pop_i(I)
+      CALL foo(__deriv__(X), __deriv__(Y(I)))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
@@ -262,15 +258,14 @@ C$OPENAD XXX Template ad_template.f
       I = 2
       CALL barext(T(I))
       I = 1
-      OpenAD_Symbol_12 = I
       CALL foo(__deriv__(X), __deriv__(Y(I)))
 C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(OpenAD_Symbol_12)
+      CALL push_i(I)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(OpenAD_Symbol_11)
-      CALL foo(__deriv__(X), __deriv__(Y(INT(OpenAD_Symbol_11))))
+      CALL pop_i(I)
+      CALL foo(__deriv__(X), __deriv__(Y(I)))
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE

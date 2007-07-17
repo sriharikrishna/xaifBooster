@@ -372,7 +372,7 @@
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="10" annotation="" scope_id="4">
       </xaif:BasicBlock>
-      <xaif:ForLoop vertex_id="11" annotation="" reversal="anonymous">
+      <xaif:ForLoop vertex_id="11" annotation="" reversal="explicit">
         <xaif:Initialization statement_id="26">
           <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="J_7" annotation="" scope_id="4"/>
@@ -560,7 +560,7 @@
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="18" annotation="" scope_id="4">
       </xaif:BasicBlock>
-      <xaif:ForLoop vertex_id="19" annotation="" reversal="anonymous">
+      <xaif:ForLoop vertex_id="19" annotation="" reversal="explicit">
         <xaif:Initialization statement_id="74">
           <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="J_7" annotation="" scope_id="4"/>

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:19:11 2006
+C Fortran file translated from WHIRL Mon Jul 16 17:35:27 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -235,8 +235,6 @@ C
       EXTERNAL foo
       INTEGER(w2f__i4) I
       REAL(w2f__8) T(1 : 2)
-      INTEGER(w2f__i8) OpenAD_Symbol_11
-      INTEGER(w2f__i8) OpenAD_Symbol_12
 C
 C     **** Top Level Pragmas ****
 C
@@ -255,7 +253,6 @@ C$OPENAD XXX Template ad_template.f
       I = 2
       CALL barext(T(I))
       I = 1
-      OpenAD_Symbol_12 = I
       CALL foo(X,Y(I))
       RETURN
           end if
@@ -265,16 +262,15 @@ C$OPENAD XXX Template ad_template.f
       I = 2
       CALL barext(T(I))
       I = 1
-      OpenAD_Symbol_12 = I
       CALL foo(X,Y(I))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_12
+          integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
       RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_11 = integer_tape(integer_tape_pointer)
-      CALL foo(X,Y(INT(OpenAD_Symbol_11)))
+          I = integer_tape(integer_tape_pointer)
+      CALL foo(X,Y(I))
           end if 
         end subroutine head
