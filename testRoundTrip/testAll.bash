@@ -217,7 +217,8 @@ do
   fi
 
 ### compare all the transformation results:
-  for tfile in "head_sf.xaif" "head_sf.xb.xaif" "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f"
+  fileCompare $exdir head_sf.xaif "" 'file translated from'  
+  for tfile in "head_sf.xb.xaif" "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f"
   do 
     fileCompare $exdir $tfile ${mode}${SUB_MODE} 'file translated from' 
   done
