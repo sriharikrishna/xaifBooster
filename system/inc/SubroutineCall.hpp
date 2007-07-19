@@ -69,9 +69,12 @@ namespace xaifBooster {
   class SubroutineCall : public BasicBlockElement,
 			 public ObjectWithLineNumber {
   public:
+
     /** 
-     * \param makeAlgorithm  news up an algorithm object if required
-     * this is also carried through for the respective members
+     * \param theSymbol the name of the subroutine
+     * \param theScope  the corresponding scope of theSymbol
+     * \param activeUseType true if this call is active, i.e. has active arguments
+     * \param makeAlgorithm  news up an algorithm object if required which then  is also carried through for the respective members
      */
     SubroutineCall (const Symbol& theSymbol,
 		    const Scope& theScope,
