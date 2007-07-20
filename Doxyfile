@@ -490,7 +490,8 @@ INPUT                  = utils/inc \
                          algorithms/DerivativePropagator/inc \
                          algorithms/DerivativePropagator/src \
                          algorithms/InlinableXMLRepresentation/inc \
-                         algorithms/InlinableXMLRepresentation/src
+                         algorithms/InlinableXMLRepresentation/src \
+			 tools/codegen/code
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
