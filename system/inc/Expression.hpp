@@ -104,8 +104,7 @@ namespace xaifBooster {
     std::string debug() const ;
 
     /**
-     * perform a deep copy of the contents 
-     * into theTarget
+     * \param theTarget where we deep copy the contents of this instance to
      * \param withNewId indicates if the graph 
      * elements will have their own Id's  
      * created from getNexVertex/EdgeId()
