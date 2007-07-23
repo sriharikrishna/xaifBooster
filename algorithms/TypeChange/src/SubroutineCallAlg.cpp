@@ -222,7 +222,7 @@ namespace xaifBoosterTypeChange {
 	if (((*concreteArgumentPI)->isArgument())?
 	    (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
 	    false) { 
-	  aSymbolAlg.getActivityPattern().setActive((*concreteArgumentPI)->getPosition());
+	  aSymbolAlg.getActivityPattern().trackAt((*concreteArgumentPI)->getPosition());
 	} 
       }// end for iterating through all concrete arguments 
     } // end for iterating through the list if hand written wrappers 
@@ -240,7 +240,7 @@ namespace xaifBoosterTypeChange {
       // we do a consistency check if this is a handwritten wrapper
       if (theSymbolAlg.hasHandCodedWrapper()) { 
 	// make the ActivityPattern for this call
-	ActivityPattern aNewPattern;
+	SignaturePattern aNewPattern;
 	aNewPattern.setSize(getContainingSubroutineCall().
 			    getConcreteArgumentPList().
 			    size());
@@ -255,7 +255,7 @@ namespace xaifBoosterTypeChange {
 	  if (((*concreteArgumentPI)->isArgument())?
 	      (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
 	      false) { 
-	    aNewPattern.setActive((*concreteArgumentPI)->getPosition());
+	    aNewPattern.trackAt((*concreteArgumentPI)->getPosition());
 	  } 
 	}// end for iterating through all concrete arguments 
 	if (aNewPattern!=theSymbolAlg.getActivityPattern()) { 

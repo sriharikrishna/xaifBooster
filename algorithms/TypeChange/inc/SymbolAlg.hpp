@@ -54,7 +54,7 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/system/inc/SymbolAlgBase.hpp"
-#include "xaifBooster/algorithms/TypeChange/inc/ActivityPattern.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SignaturePattern.hpp"
 
 using namespace xaifBooster;
 
@@ -110,13 +110,13 @@ namespace xaifBoosterTypeChange {
      * if this is not a hand-adjoined call 
      * an exception is thrown. 
      */
-    const ActivityPattern& getActivityPattern() const; 
+    const SignaturePattern& getActivityPattern() const; 
 
     /**    
      * if this is not a hand-adjoined call 
      * an exception is thrown. 
      */
-    ActivityPattern& getActivityPattern(); 
+    SignaturePattern& getActivityPattern(); 
 
     const SymbolReference& getReplacementSymbolReference() const; 
 
@@ -159,7 +159,7 @@ namespace xaifBoosterTypeChange {
      * wrappers 
      * which for now is supplied on the command line
      */
-    ActivityPattern myActivityPattern;
+    SignaturePattern myActivityPattern;
 
     SymbolReference* myHandCodeWrapperSymbolReference_p; 
 
