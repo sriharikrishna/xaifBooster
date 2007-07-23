@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Mon Apr  2 13:24:06 2007 -->
+<!-- XAIF file translated from WHIRL at Mon Jul 23 10:24:08 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -68,10 +68,10 @@
       <xaif:AliasRange from_virtual_address="1" to_virtual_address="1"/>
     </xaif:AliasSet>
     <xaif:AliasSet key="1">
-      <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="1"/>
+      <xaif:AliasRange from_virtual_address="3" to_virtual_address="4" partial="1"/>
     </xaif:AliasSet>
     <xaif:AliasSet key="2">
-      <xaif:AliasRange from_virtual_address="3" to_virtual_address="4" partial="1"/>
+      <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="1"/>
     </xaif:AliasSet>
   </xaif:AliasSetList>
 
@@ -84,11 +84,11 @@
   </xaif:DUUDSetList>
 
   <!-- ******************************************************************** -->
-  <xaif:ControlFlowGraph vertex_id="1" scope_id="1" symbol_id="all_globals_mod__20" annotation="{PU_Id#1}" controlflowgraph_scope_id="2">
+  <xaif:ControlFlowGraph vertex_id="10" scope_id="1" symbol_id="all_globals_mod__20" annotation="{PU_Id#1}" controlflowgraph_scope_id="2">
   </xaif:ControlFlowGraph>
 
   <!-- ******************************************************************** -->
-  <xaif:ControlFlowGraph vertex_id="2" scope_id="1" symbol_id="foo__23" annotation="{PU_Id#2}" controlflowgraph_scope_id="3">
+  <xaif:ControlFlowGraph vertex_id="11" scope_id="1" symbol_id="foo__23" annotation="{PU_Id#2}" controlflowgraph_scope_id="3">
     <xaif:ArgumentList/>
     <xaif:ModLocal>
       <xaif:SideEffectReference vertex_id="1">
@@ -167,7 +167,7 @@
   </xaif:ControlFlowGraph>
 
   <!-- ******************************************************************** -->
-  <xaif:ControlFlowGraph vertex_id="3" scope_id="1" symbol_id="head__25" annotation="{PU_Id#3}" controlflowgraph_scope_id="4">
+  <xaif:ControlFlowGraph vertex_id="12" scope_id="1" symbol_id="head__25" annotation="{PU_Id#3}" controlflowgraph_scope_id="4">
     <xaif:ArgumentList/>
     <xaif:ModLocal/>
     <xaif:Mod>
@@ -198,5 +198,5 @@
     <xaif:ControlFlowEdge edge_id="2" source="8" target="9"/>
   </xaif:ControlFlowGraph>
 
-  <xaif:CallGraphEdge edge_id="1" source="3" target="2"/>
+  <xaif:CallGraphEdge edge_id="1" source="12" target="11"/>
 </xaif:CallGraph>

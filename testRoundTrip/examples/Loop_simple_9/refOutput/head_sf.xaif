@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Mon Apr  2 13:26:36 2007 -->
+<!-- XAIF file translated from WHIRL at Mon Jul 23 10:29:48 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -85,20 +85,37 @@
       <xaif:StatementId idRef=""/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="3">
+      <xaif:StatementId idRef=""/>
+      <xaif:StatementId idRef="28"/>
+    </xaif:DUUDSet>
+    <xaif:DUUDSet key="4">
       <xaif:StatementId idRef="20"/>
       <xaif:StatementId idRef="23"/>
     </xaif:DUUDSet>
-    <xaif:DUUDSet key="4">
+    <xaif:DUUDSet key="5">
+      <xaif:StatementId idRef="28"/>
+      <xaif:StatementId idRef="33"/>
+    </xaif:DUUDSet>
+    <xaif:DUUDSet key="6">
+      <xaif:StatementId idRef="38"/>
+    </xaif:DUUDSet>
+    <xaif:DUUDSet key="7">
+      <xaif:StatementId idRef=""/>
+      <xaif:StatementId idRef="33"/>
+      <xaif:StatementId idRef="38"/>
+    </xaif:DUUDSet>
+    <xaif:DUUDSet key="8">
+      <xaif:StatementId idRef=""/>
       <xaif:StatementId idRef="38"/>
     </xaif:DUUDSet>
   </xaif:DUUDSetList>
 
   <!-- ******************************************************************** -->
-  <xaif:ControlFlowGraph vertex_id="1" scope_id="1" symbol_id="all_globals_mod__20" annotation="{PU_Id#1}" controlflowgraph_scope_id="2">
+  <xaif:ControlFlowGraph vertex_id="14" scope_id="1" symbol_id="all_globals_mod__20" annotation="{PU_Id#1}" controlflowgraph_scope_id="2">
   </xaif:ControlFlowGraph>
 
   <!-- ******************************************************************** -->
-  <xaif:ControlFlowGraph vertex_id="2" scope_id="1" symbol_id="head__21" annotation="{PU_Id#2}" controlflowgraph_scope_id="3">
+  <xaif:ControlFlowGraph vertex_id="15" scope_id="1" symbol_id="head__21" annotation="{PU_Id#2}" controlflowgraph_scope_id="3">
     <xaif:ArgumentList>
       <xaif:ArgumentSymbolReference position="1" scope_id="3" symbol_id="X_1" intent="in" annotation="{WHIRL_Id#2}"/>
       <xaif:ArgumentSymbolReference position="2" scope_id="3" symbol_id="Y_2" intent="out" annotation="{WHIRL_Id#3}"/>
@@ -131,7 +148,7 @@
       <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_PRAGMA]"/>
     </xaif:BasicBlock>
 
-    <xaif:Branch vertex_id="14" lineNumber="63">
+    <xaif:Branch vertex_id="33" lineNumber="63">
       <xaif:Condition>
         <xaif:BooleanOperation vertex_id="1" name="equal"/>
         <xaif:VariableReference vertex_id="2" du_ud="2">
@@ -157,13 +174,13 @@
 
     <xaif:EndBranch vertex_id="8"/>
 
-    <xaif:BasicBlock vertex_id="15" scope_id="3">
+    <xaif:BasicBlock vertex_id="34" scope_id="3">
       <xaif:Marker statement_id="25" annotation="{WHIRL_Id#25} [passive: OPR_PRAGMA]"/>
     </xaif:BasicBlock>
 
     <xaif:ForLoop vertex_id="9" reversal="explicit" lineNumber="69">
       <xaif:Initialization statement_id="28">
-        <xaif:AssignmentLHS du_ud="1">
+        <xaif:AssignmentLHS du_ud="7">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="I_3"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
@@ -180,12 +197,12 @@
         <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
       </xaif:Condition>
       <xaif:Update statement_id="33">
-        <xaif:AssignmentLHS du_ud="1">
+        <xaif:AssignmentLHS du_ud="8">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="I_3"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
           <xaif:Intrinsic vertex_id="1" name="add_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="2" du_ud="1">
+          <xaif:VariableReference vertex_id="2" du_ud="3">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="I_3"/>
           </xaif:VariableReference>
           <xaif:Constant vertex_id="3" type="integer" value="1"/>
@@ -202,7 +219,7 @@
           <xaif:ArrayElementReference vertex_id="2">
             <xaif:IndexTriplet>
               <xaif:Index>
-                <xaif:VariableReference vertex_id="1" du_ud="2">
+                <xaif:VariableReference vertex_id="1" du_ud="5">
                   <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="I_3"/>
                 </xaif:VariableReference>
               </xaif:Index>
@@ -216,7 +233,7 @@
             <xaif:ArrayElementReference vertex_id="2">
               <xaif:IndexTriplet>
                 <xaif:Index>
-                  <xaif:VariableReference vertex_id="1" du_ud="3">
+                  <xaif:VariableReference vertex_id="1" du_ud="4">
                     <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="K_5"/>
                   </xaif:VariableReference>
                 </xaif:Index>
@@ -228,7 +245,7 @@
       </xaif:Assignment>
     </xaif:BasicBlock>
 
-    <xaif:EndLoop vertex_id="16"/>
+    <xaif:EndLoop vertex_id="35"/>
 
     <xaif:BasicBlock vertex_id="12" scope_id="3">
       <xaif:Marker statement_id="48" annotation="{WHIRL_Id#48} [passive: OPR_RETURN]"/>
@@ -241,18 +258,18 @@
     </xaif:BasicBlock>
 
     <xaif:ControlFlowEdge edge_id="1" source="4" target="5"/>
-    <xaif:ControlFlowEdge edge_id="2" source="5" target="14"/>
+    <xaif:ControlFlowEdge edge_id="2" source="5" target="33"/>
     <xaif:ControlFlowEdge edge_id="3" source="6" target="8"/>
     <xaif:ControlFlowEdge edge_id="4" source="7" target="8"/>
-    <xaif:ControlFlowEdge edge_id="5" source="8" target="15"/>
+    <xaif:ControlFlowEdge edge_id="5" source="8" target="34"/>
     <xaif:ControlFlowEdge edge_id="6" source="9" target="10" has_condition_value="true" condition_value="1"/>
     <xaif:ControlFlowEdge edge_id="7" source="9" target="12"/>
-    <xaif:ControlFlowEdge edge_id="8" source="10" target="16"/>
+    <xaif:ControlFlowEdge edge_id="8" source="10" target="35"/>
     <xaif:ControlFlowEdge edge_id="9" source="12" target="13"/>
-    <xaif:ControlFlowEdge edge_id="10" source="14" target="6" has_condition_value="true" condition_value="1"/>
-    <xaif:ControlFlowEdge edge_id="11" source="14" target="7"/>
-    <xaif:ControlFlowEdge edge_id="12" source="15" target="9"/>
-    <xaif:ControlFlowEdge edge_id="13" source="16" target="9"/>
+    <xaif:ControlFlowEdge edge_id="10" source="33" target="6" has_condition_value="true" condition_value="1"/>
+    <xaif:ControlFlowEdge edge_id="11" source="33" target="7"/>
+    <xaif:ControlFlowEdge edge_id="12" source="34" target="9"/>
+    <xaif:ControlFlowEdge edge_id="13" source="35" target="9"/>
   </xaif:ControlFlowGraph>
 
 </xaif:CallGraph>
