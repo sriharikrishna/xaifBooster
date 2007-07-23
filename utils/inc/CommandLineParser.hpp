@@ -83,8 +83,8 @@ namespace xaifBooster {
 
     /**
      * instantiate parser with
-     * \parm argc from main
-     * \parm argv from main
+     * \param argc from main
+     * \param argv from main
      */ 
     CommandLineParser(int argc, 
 		      char** argv); 
@@ -98,7 +98,7 @@ namespace xaifBooster {
 
     /** 
      * do the parsing in a step separate from construction
-     * \paran theSwitches allowed for this transformation
+     * \param theSwitches allowed for this transformation
      */
     void parse(const std::string& theSwitches);
 

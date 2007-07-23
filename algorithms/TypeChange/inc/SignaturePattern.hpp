@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERTYPECHANGE_ACTIVITYPATTERN_INCLUDE_
-#define _XAIFBOOSTERTYPECHANGE_ACTIVITYPATTERN_INCLUDE_
+#ifndef _XAIFBOOSTERTYPECHANGE_SIGNATUREPATTERN_INCLUDE_
+#define _XAIFBOOSTERTYPECHANGE_SIGNATUREPATTERN_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -59,30 +59,29 @@ using namespace xaifBooster;
 
 namespace xaifBoosterTypeChange { 
 
-  class ActivityPattern { 
+  class SignaturePattern { 
 
   public: 
 
-    ActivityPattern();
+    SignaturePattern();
 
     /** 
-     * indicate an active argument at 
-     * aPosition
+     * track an argument at aPosition
      * if size is not set or aPosition is 
      * not in [1,mySize]
      * an exception is thrown. 
      */
-    void setActive(unsigned short aPosition);
+    void trackAt(unsigned short aPosition);
 
     void setSize(unsigned short aSize);
 
     unsigned short getSize()const;
 
-    bool operator== (const ActivityPattern& anotherPattern) const;
+    bool operator== (const SignaturePattern& anotherPattern) const;
 
-    bool operator!= (const ActivityPattern& anotherPattern) const;
+    bool operator!= (const SignaturePattern& anotherPattern) const;
 
-    std::string discrepancyPositions(const ActivityPattern& anotherPattern) const;
+    std::string discrepancyPositions(const SignaturePattern& anotherPattern) const;
 
   private:
     
@@ -90,7 +89,7 @@ namespace xaifBoosterTypeChange {
 
     unsigned int myPattern;
     
-  }; // end of class ActivityPattern
+  }; 
 
 }
 

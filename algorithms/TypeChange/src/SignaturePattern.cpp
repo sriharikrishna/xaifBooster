@@ -54,51 +54,51 @@
 
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 #include "xaifBooster/system/inc/SymbolReference.hpp"
-#include "xaifBooster/algorithms/TypeChange/inc/ActivityPattern.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SignaturePattern.hpp"
 
 namespace xaifBoosterTypeChange { 
 
-  ActivityPattern::ActivityPattern() : mySize(-1), myPattern(0) {
+  SignaturePattern::SignaturePattern() : mySize(-1), myPattern(0) {
   } 
 
-  void ActivityPattern::setActive(unsigned short aPosition) { 
+  void SignaturePattern::trackAt(unsigned short aPosition) { 
     if (aPosition<1 || aPosition>getSize())
-      	THROW_LOGICEXCEPTION_MACRO("ActivityPattern::setActive: aPosition "
-				   << aPosition
-				   << " is out of range [1,"
-				   << getSize()
-				   << "]");
+      THROW_LOGICEXCEPTION_MACRO("SignaturePattern::setActive: aPosition "
+				 << aPosition
+				 << " is out of range [1,"
+				 << getSize()
+				 << "]");
     myPattern &= 1<<aPosition-1;
   }
   
-  void ActivityPattern::setSize(unsigned short aSize) { 
+  void SignaturePattern::setSize(unsigned short aSize) { 
     if (aSize<1 || aSize>sizeof(myPattern)*8)
-      	THROW_LOGICEXCEPTION_MACRO("ActivityPattern::setSize: "
-				   << aSize
-				   << " is out of range [1,"
-				   << sizeof(myPattern)*8
-				   << "]");
+      THROW_LOGICEXCEPTION_MACRO("SignaturePattern::setSize: "
+				 << aSize
+				 << " is out of range [1,"
+				 << sizeof(myPattern)*8
+				 << "]");
     mySize=aSize;
   }
   
 
-  unsigned short ActivityPattern::getSize()const { 
+  unsigned short SignaturePattern::getSize()const { 
     if (mySize<1)
-      THROW_LOGICEXCEPTION_MACRO("ActivityPattern::getSize: not set ");
+      THROW_LOGICEXCEPTION_MACRO("SignaturePattern::getSize: not set ");
     return mySize;
   }
   
-  bool ActivityPattern::operator == (const ActivityPattern& anotherPattern) const { 
+  bool SignaturePattern::operator == (const SignaturePattern& anotherPattern) const { 
     return (myPattern==anotherPattern.myPattern);
   } 
   
-  bool ActivityPattern::operator != (const ActivityPattern& anotherPattern) const{ 
+  bool SignaturePattern::operator != (const SignaturePattern& anotherPattern) const{ 
     return (myPattern!=anotherPattern.myPattern);
   } 
 
-  std::string ActivityPattern::discrepancyPositions(const ActivityPattern& anotherPattern) const { 
+  std::string SignaturePattern::discrepancyPositions(const SignaturePattern& anotherPattern) const { 
     if (getSize()!=anotherPattern.getSize()) 
-      THROW_LOGICEXCEPTION_MACRO("ActivityPattern::discrepancyPositions: size mismatch ");
+      THROW_LOGICEXCEPTION_MACRO("SignaturePattern::discrepancyPositions: size mismatch ");
     unsigned int theDiscrepancy(myPattern^anotherPattern.myPattern);
     std::ostringstream out;
     for (unsigned short i=0; i<mySize-1; ++i) { 
