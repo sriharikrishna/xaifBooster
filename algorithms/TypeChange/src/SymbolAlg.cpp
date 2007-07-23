@@ -142,13 +142,13 @@ namespace xaifBoosterTypeChange {
     makeReplacementSymbol(theOriginalSymbolReference);
   }
     
-  const ActivityPattern& SymbolAlg::getActivityPattern() const { 
+  const SignaturePattern& SymbolAlg::getActivityPattern() const { 
     if (!myHasHandCodedWrapperFlag)
       THROW_LOGICEXCEPTION_MACRO("SymbolAlg::getActivityPattern: has no hand coded wrapper");
     return myActivityPattern;
   } 
 
-  ActivityPattern& SymbolAlg::getActivityPattern() { 
+  SignaturePattern& SymbolAlg::getActivityPattern() { 
     if (!myHasHandCodedWrapperFlag)
       THROW_LOGICEXCEPTION_MACRO("SymbolAlg::getActivityPattern: has no hand coded wrapper");
     return myActivityPattern;
