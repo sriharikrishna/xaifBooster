@@ -98,19 +98,10 @@
         <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="1"/>
       </xaif:AliasSet>
       <xaif:AliasSet key="1">
-        <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="1"/>
-      </xaif:AliasSet>
-      <xaif:AliasSet key="2">
         <xaif:AliasRange from_virtual_address="3" to_virtual_address="4" partial="1"/>
       </xaif:AliasSet>
-      <xaif:AliasSet key="3">
-        <xaif:AliasRange from_virtual_address="7" to_virtual_address="8" partial="1"/>
-      </xaif:AliasSet>
-      <xaif:AliasSet key="4">
-        <xaif:AliasRange from_virtual_address="5" to_virtual_address="6" partial="1"/>
-      </xaif:AliasSet>
-      <xaif:AliasSet key="5">
-        <xaif:AliasRange from_virtual_address="9" to_virtual_address="10" partial="1"/>
+      <xaif:AliasSet key="2">
+        <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="1"/>
       </xaif:AliasSet>
     </xaif:AliasSetList>
     <xaif:DUUDSetList>
@@ -122,9 +113,9 @@
         <xaif:StatementId idRef=""/>
       </xaif:DUUDSet>
     </xaif:DUUDSetList>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" active="1">
+    <xaif:ControlFlowGraph vertex_id="7" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" active="1">
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="2" symbol_id="head__21" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" active="1">
+    <xaif:ControlFlowGraph vertex_id="8" symbol_id="head__21" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="X_1" scope_id="3" annotation="{WHIRL_Id#2}" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="Y_2" scope_id="3" annotation="{WHIRL_Id#3}" intent="inout"/>
