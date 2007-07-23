@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:20:13 2007
+C Fortran file translated from WHIRL Mon Jul 23 10:50:07 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -662,14 +662,14 @@ C$OPENAD XXX Template ad_template.f
       DO L = 1, 3, 1
         TOLD(INT(L))%v = TNOW(L)%v
         TNOW(INT(L))%v = TNEW(L)%v
-        SOLD(INT(L))%v = SNOW(L)%v
-        SNOW(INT(L))%v = SNEW(L)%v
-        CALL setderiv(OpenAD_Symbol_241,SNEW(L))
-        CALL setderiv(OpenAD_Symbol_240,SNOW(L))
         CALL setderiv(OpenAD_Symbol_239,TNEW(L))
         CALL setderiv(OpenAD_Symbol_238,TNOW(L))
         CALL setderiv(TOLD(L),OpenAD_Symbol_238)
         CALL setderiv(TNOW(L),OpenAD_Symbol_239)
+        SOLD(INT(L))%v = SNOW(L)%v
+        SNOW(INT(L))%v = SNEW(L)%v
+        CALL setderiv(OpenAD_Symbol_241,SNEW(L))
+        CALL setderiv(OpenAD_Symbol_240,SNOW(L))
         CALL setderiv(SOLD(L),OpenAD_Symbol_240)
         CALL setderiv(SNOW(L),OpenAD_Symbol_241)
       END DO
