@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:20:47 2006
+C Fortran file translated from WHIRL Mon Jul 23 11:18:40 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -139,22 +139,22 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_3 = X(1)%v
       OpenAD_Symbol_1 = COS(OpenAD_Symbol_0)
       Y(2)%v = OpenAD_Symbol_4
+      OpenAD_Symbol_6 = SIN(X(3)%v)
+      OpenAD_Symbol_5 = COS(X(3)%v)
+      Y(3)%v = OpenAD_Symbol_6
+      OpenAD_Symbol_8 = COS(X(4)%v)
+      OpenAD_Symbol_7 = (-SIN(X(4)%v))
+      Y(4)%v = OpenAD_Symbol_8
       OpenAD_Symbol_19 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
       OpenAD_Symbol_21 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+      OpenAD_Symbol_23 = OpenAD_Symbol_5
+      OpenAD_Symbol_25 = OpenAD_Symbol_7
           double_tape(double_tape_pointer) = OpenAD_Symbol_19
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_21
           double_tape_pointer = double_tape_pointer+1
-      OpenAD_Symbol_6 = SIN(X(3)%v)
-      OpenAD_Symbol_5 = COS(X(3)%v)
-      Y(3)%v = OpenAD_Symbol_6
-      OpenAD_Symbol_23 = OpenAD_Symbol_5
           double_tape(double_tape_pointer) = OpenAD_Symbol_23
           double_tape_pointer = double_tape_pointer+1
-      OpenAD_Symbol_8 = COS(X(4)%v)
-      OpenAD_Symbol_7 = (-SIN(X(4)%v))
-      Y(4)%v = OpenAD_Symbol_8
-      OpenAD_Symbol_25 = OpenAD_Symbol_7
           double_tape(double_tape_pointer) = OpenAD_Symbol_25
           double_tape_pointer = double_tape_pointer+1
       RETURN
@@ -166,15 +166,11 @@ C$OPENAD XXX Template ad_template.f
           OpenAD_Symbol_26%d = OpenAD_Symbol_26%d+Y(4)%d*OpenAD_Symbol_3
      +5
           Y(4)%d = 0.0d0
-          X(4)%d = X(4)%d+OpenAD_Symbol_26%d
-          OpenAD_Symbol_26%d = 0.0d0
           double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_36 = double_tape(double_tape_pointer)
           OpenAD_Symbol_24%d = OpenAD_Symbol_24%d+Y(3)%d*OpenAD_Symbol_3
      +6
           Y(3)%d = 0.0d0
-          X(3)%d = X(3)%d+OpenAD_Symbol_24%d
-          OpenAD_Symbol_24%d = 0.0d0
           double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_37 = double_tape(double_tape_pointer)
           OpenAD_Symbol_22%d = OpenAD_Symbol_22%d+Y(2)%d*OpenAD_Symbol_3
@@ -188,6 +184,10 @@ C$OPENAD XXX Template ad_template.f
           OpenAD_Symbol_20%d = 0.0d0
           X(2)%d = X(2)%d+OpenAD_Symbol_22%d
           OpenAD_Symbol_22%d = 0.0d0
+          X(3)%d = X(3)%d+OpenAD_Symbol_24%d
+          OpenAD_Symbol_24%d = 0.0d0
+          X(4)%d = X(4)%d+OpenAD_Symbol_26%d
+          OpenAD_Symbol_26%d = 0.0d0
       CALL foo(X(1),X(2),Y(1))
           end if 
         end subroutine head
