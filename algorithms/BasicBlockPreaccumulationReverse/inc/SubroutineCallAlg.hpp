@@ -84,6 +84,11 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      */
     virtual void algorithm_action_1();
 
+    /** 
+     * do some checking regarding the const pattern
+     */
+    virtual void algorithm_action_2();
+
   private:
 
     /** 

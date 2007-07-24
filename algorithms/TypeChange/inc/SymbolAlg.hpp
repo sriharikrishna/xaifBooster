@@ -122,6 +122,20 @@ namespace xaifBoosterTypeChange {
 
     bool hasReplacementSymbolReference() const; 
 
+    bool hasRepresentativeConstPattern()const; 
+
+    /**    
+     * one call to initialize the returned reference 
+     * for subsequent calls an exception is thrown. 
+     */
+    SignaturePattern& initRepresentativeConstPattern(); 
+
+    /**    
+     * if no representative has been collected 
+     * an exception is thrown. 
+     */
+    const SignaturePattern& getRepresentativeConstPattern() const; 
+
   private: 
 
     /** 
@@ -154,12 +168,26 @@ namespace xaifBoosterTypeChange {
     bool myHasHandCodedWrapperFlag;
 
     /** 
-     * true if this symbol's name 
-     * appears on the list of hand coded 
-     * wrappers 
-     * which for now is supplied on the command line
+     * activity pattern of formal arguments by position
      */
     SignaturePattern myActivityPattern;
+
+    /** 
+     * representative pattern for constant arguments by position; 
+     * the assumption here is that we either have 
+     * a single repeated pattern of calls with constant 
+     * arguments or we dont.  In the latter case we 
+     * have to worry about restoring checkpoint values to 
+     * formal parameters called with constant actuals
+     * while in the former case we simply don't checkpoint the 
+     * arguments in question
+     */
+    SignaturePattern myRepresentativeConstPattern;
+
+    /** 
+     * have we collected a representative pattern?
+     */
+    bool myHasRepresentativeConstPatternFlag; 
 
     SymbolReference* myHandCodeWrapperSymbolReference_p; 
 

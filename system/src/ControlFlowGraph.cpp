@@ -452,4 +452,14 @@ namespace xaifBooster {
     return false; 
   }
 
+  ControlFlowGraph::FormalResult ControlFlowGraph::hasFormal(const SymbolReference& theSymbolReference) const { 
+    for (ArgumentList::ArgumentSymbolReferencePList::const_iterator listI=getArgumentList().getArgumentSymbolReferencePList().begin();
+	 listI!=getArgumentList().getArgumentSymbolReferencePList().end();
+	 ++listI) {
+      if ((*listI)->refersToSameSymbolAs(theSymbolReference))
+	return FormalResult(true,(*listI)->getPosition()); 
+    }
+    return FormalResult(false,0); 
+  }
+
 } // end of namespace xaifBooster 

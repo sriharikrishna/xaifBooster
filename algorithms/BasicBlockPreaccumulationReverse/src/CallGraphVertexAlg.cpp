@@ -354,6 +354,25 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   CallGraphVertexAlg::handleCheckPoint(const std::string& aSubroutineNameBase,
 				       BasicBlock& theBasicBlock,
 				       const Variable& aVariable) { 
+    ControlFlowGraph::FormalResult theResult(getContaining().getControlFlowGraph().hasFormal(aVariable.getVariableSymbolReference()));
+    if (theResult.first) { 
+      // get the symbol alg
+      const xaifBoosterTypeChange::SymbolAlg& 
+	theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>(getContaining().
+								     getControlFlowGraph().
+								     getSymbolReference().
+								     getSymbol().
+								     getSymbolAlgBase()));
+      // see if we skip this because of all constant invocations. 
+      // if we have a representative
+      DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::handleCheckPoint: checking " << aVariable.debug().c_str() << " for " << debug().c_str());
+      if (theSymbolAlg.hasRepresentativeConstPattern() 
+	  && 
+	  theSymbolAlg.getRepresentativeConstPattern().isTracked(theResult.second)) { 
+	DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::handleCheckPoint: skipping " << aVariable.debug().c_str() << " for " << debug().c_str());
+	return; 
+      }
+    }
     addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+"_"+
 					    SymbolType::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolType())+"_"+
 					    SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()),

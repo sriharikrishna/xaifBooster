@@ -68,14 +68,14 @@ namespace xaifBoosterTypeChange {
 				 << " is out of range [1,"
 				 << getSize()
 				 << "]");
-    myPattern &= 1<<aPosition-1;
+    myPattern |= 1<<aPosition-1;
   }
   
   void SignaturePattern::setSize(unsigned short aSize) { 
-    if (aSize<1 || aSize>sizeof(myPattern)*8)
+    if (aSize<0 || aSize>sizeof(myPattern)*8)
       THROW_LOGICEXCEPTION_MACRO("SignaturePattern::setSize: "
 				 << aSize
-				 << " is out of range [1,"
+				 << " is out of range [0,"
 				 << sizeof(myPattern)*8
 				 << "]");
     mySize=aSize;
@@ -83,7 +83,7 @@ namespace xaifBoosterTypeChange {
   
 
   unsigned short SignaturePattern::getSize()const { 
-    if (mySize<1)
+    if (mySize<0)
       THROW_LOGICEXCEPTION_MACRO("SignaturePattern::getSize: not set ");
     return mySize;
   }
@@ -103,10 +103,20 @@ namespace xaifBoosterTypeChange {
     std::ostringstream out;
     for (unsigned short i=0; i<mySize-1; ++i) { 
       if (theDiscrepancy & 1<<i) 
-	out << i << " ";
+	out << i+1 << " ";
     }
     return out.str();
   } 
   
+  bool SignaturePattern::isTracked(unsigned short aPosition) const { 
+    if (aPosition<1 || aPosition>getSize())
+      THROW_LOGICEXCEPTION_MACRO("SignaturePattern::isTracked: aPosition "
+				 << aPosition
+				 << " is out of range [1,"
+				 << getSize()
+				 << "]");
+    return myPattern & (1<<aPosition-1);
+  } 
+
 }
 
