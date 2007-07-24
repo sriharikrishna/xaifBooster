@@ -179,7 +179,7 @@ do
     then 
       continue
     else
-      echo "** example $i failreason ****************************"
+      echo "** example $i ****************************"
       cat examples/$i/FAILREASON_${mode}_${SUB_MODE}
       echo "*****************************************************" 
       echo -n "run it anyway y/[n] ? "
