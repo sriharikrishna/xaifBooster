@@ -66,6 +66,7 @@ namespace xaifBoosterTypeChange {
     SymbolAlgBase(theContainingSymbol),
     myIsExternalFlag(false),
     myHasHandCodedWrapperFlag(false),
+    myHasRepresentativeConstPatternFlag(false),
     myHandCodeWrapperSymbolReference_p(0) { 
   }
 
@@ -164,4 +165,21 @@ namespace xaifBoosterTypeChange {
     return (myHandCodeWrapperSymbolReference_p)?true:false;
   }
     
+  bool SymbolAlg::hasRepresentativeConstPattern()const { 
+    return myHasRepresentativeConstPatternFlag;
+  } 
+
+  SignaturePattern& SymbolAlg::initRepresentativeConstPattern() { 
+    if (myHasRepresentativeConstPatternFlag)
+      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::initRepresentativeConstPattern: representative already collected");
+    myHasRepresentativeConstPatternFlag=true; 
+    return myRepresentativeConstPattern;
+ } 
+
+  const SignaturePattern& SymbolAlg::getRepresentativeConstPattern() const { 
+    if (!myHasRepresentativeConstPatternFlag)
+      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::getRepresentativeConstPattern: no representative collected");
+    return myRepresentativeConstPattern;
+  } 
+
 } // end of namespace 

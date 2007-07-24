@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 17 09:44:34 2007
+C Fortran file translated from WHIRL Mon Jul 23 21:44:34 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -151,8 +151,6 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_int_scalar(J,theArgIStack,theArgIStackoffset,the
-     +ArgIStackSize)
           call cp_store_real_vector(X,size(X),theArgFStack,theArgFStacko
      +ffset,theArgFStackSize)
           call cp_store_real_vector(Y,size(Y),theArgFStack,theArgFStacko
@@ -184,9 +182,6 @@ C+Y(cp_loop_variable_1)%v
 C write(*,'(A,EN26.16E3)')"restore(v)  ",
 C+X(cp_loop_variable_1)%v
           end do
-          J = theArgIStack(theArgIStackoffset)
-          theArgIStackoffset = theArgIStackoffset-1
-C write(*,'(A,I5)')"restore(s)  ",J
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode

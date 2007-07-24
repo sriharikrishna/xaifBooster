@@ -162,6 +162,13 @@ namespace xaifBooster {
      */
     bool overwrites(const SymbolReference& theSymbolReference) const; 
 
+    typedef std::pair<bool,int> FormalResult;
+
+    /** 
+     * determines if theSymbolReference is a formal parameter
+     */
+    FormalResult hasFormal(const SymbolReference& theSymbolReference) const; 
+
     /** 
      * augment the graph vertices with additional 
      * information

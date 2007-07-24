@@ -312,6 +312,14 @@ namespace xaifBoosterTypeChange {
 				 << getContainingSubroutineCall().getConcreteArgumentPList().size()
 				 << " concrete ) for "
 				 << getContainingSubroutineCall().getSymbolReference().debug().c_str());
+    SymbolAlg& theSymbolAlg(dynamic_cast<SymbolAlg&>(getContainingSubroutineCall().
+						     getSymbolReference().getSymbol().getSymbolAlgBase()));
+    bool doConstPattern(!theSymbolAlg.hasRepresentativeConstPattern());
+    SignaturePattern* theConstPattern_p(0);
+    if (doConstPattern) { 
+      theConstPattern_p=&(theSymbolAlg.initRepresentativeConstPattern()); 
+      theConstPattern_p->setSize(anArgumentSymbolReferencePList_p->size());
+    } 
     for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
 	   getContainingSubroutineCall().getConcreteArgumentPList().begin();
 	 concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
@@ -339,6 +347,14 @@ namespace xaifBoosterTypeChange {
 		      theBasicBlock,
 		      withCopy);
       } 
+      if (doConstPattern 
+	  && 
+	  (*concreteArgumentPI)->isConstant()
+	  && 
+	  !formalArgumentActive)
+	// if the argument is constant but the formal is active we 
+	// need a conversion so it now is a variable
+	theConstPattern_p->trackAt((*concreteArgumentPI)->getPosition());
     }// end for 
   } 
   
