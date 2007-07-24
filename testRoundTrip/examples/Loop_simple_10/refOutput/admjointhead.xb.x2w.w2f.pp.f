@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jul 23 21:44:34 2007
+C Fortran file translated from WHIRL Tue Jul 24 13:22:36 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -242,8 +242,6 @@ C$OPENAD XXX Simple loop
           integer_tape(integer_tape_pointer) = A(I,J)
           integer_tape_pointer = integer_tape_pointer+1
       END DO
-          integer_tape(integer_tape_pointer) = J
-          integer_tape_pointer = integer_tape_pointer+1
       
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
@@ -263,8 +261,6 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-          integer_tape_pointer = integer_tape_pointer-1
-          J = integer_tape(integer_tape_pointer)
       I = 1 + 1 *((2 - 1) / 1)
       DO WHILE(I .GE. 1)
           integer_tape_pointer = integer_tape_pointer-1

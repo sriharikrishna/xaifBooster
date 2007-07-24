@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jul 23 21:44:34 2007
+C Fortran file translated from WHIRL Tue Jul 24 13:22:36 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -108,13 +108,9 @@ C         $OpenAD$ INLINE push(subst)
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(A(I, J))
       END DO
-C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(J)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
-C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(J)
       I = 1 + 1 *((2 - 1) / 1)
       DO WHILE(I .GE. 1)
 C       $OpenAD$ INLINE pop_i(subst)
