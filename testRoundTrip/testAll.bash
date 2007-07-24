@@ -173,6 +173,23 @@ do
   then 
     echo "ERROR: no such test : $i "; allOkSoFar="false"; continue;
   fi
+  if [ -f "examples/$i/FAILREASON_${mode}_${SUB_MODE}" ] 
+  then
+    if [ -n "$BATCHMODE" ]
+    then 
+      continue
+    else
+      echo "** example $i failreason ****************************"
+      cat examples/$i/FAILREASON_${mode}_${SUB_MODE}
+      echo "*****************************************************" 
+      echo -n "run it anyway y/[n] ? "
+      read answer
+      if [ "$answer" != "y" ] 
+      then 
+	continue
+      fi
+    fi
+  fi
   export TARGET=head
   ${MAKE} testAllclean
   if [ $? -ne 0 ] 
