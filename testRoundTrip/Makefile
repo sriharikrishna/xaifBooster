@@ -1,4 +1,4 @@
-# ========== begin copyright notice ==============
+/# ========== begin copyright notice ==============
 # This file is part of 
 # ---------------
 # xaifBooster
@@ -178,7 +178,7 @@ ir_b2a:
 	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/ir_tools/ir_b2a
 
 xaifBooster:
-	./pickAlgorithm.bash
+	./pickAlgorithm.bash $(SUB_MODE)
 
 ######################################################
 # compilation
