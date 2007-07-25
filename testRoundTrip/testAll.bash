@@ -84,6 +84,15 @@ function fileCompare {
   fi
 } 
 
+sepLength=80
+
+function printSep {
+  for((psCount=0;$psCount<=$1;psCount=$(($psCount+1))));do
+    echo -n "*"
+  done
+  echo ""
+}
+
 askAll="n"
 mode="none"
 SUB_MODE="none"
@@ -179,9 +188,12 @@ do
     then 
       continue
     else
-      echo "** example $i ****************************"
+      head="** example $i "
+      echo -n "$head"
+      let tailLength=sepLength-${#head}
+      printSep $tailLength
       cat examples/$i/FAILREASON_${mode}_${SUB_MODE}
-      echo "*****************************************************" 
+      printSep $sepLength
       echo -n "run it anyway y/[n] ? "
       read answer
       if [ "$answer" != "y" ] 
@@ -196,7 +208,10 @@ do
   then 
     echo "ERROR in: ${MAKE} testAllclean"; allOkSoFar="false"; continue;
   fi
-  echo "** running $i *************************************************"
+  head="** running $i "
+  echo -n "$head"
+  let tailLength=sepLength-${#head}
+  printSep $tailLength
   TARGET_DRIVER=driver_${mode}
   if [ "$REVERSE_MODE" == "y" ] 
   then 
@@ -235,10 +250,10 @@ do
 
 ### compare all the transformation results:
   fileCompare $exdir head_sf.xaif "" 'file translated from'  
-  for tfile in "head_sf.xb.xaif" "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f"
-  do 
-    fileCompare $exdir $tfile ${mode}${SUB_MODE} 'file translated from' 
-  done
+#  for tfile in "head_sf.xb.xaif" "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f"
+#  do 
+#    fileCompare $exdir $tfile ${mode}${SUB_MODE} 'file translated from' 
+#  done
 
   ${MAKE} run
   if [ $? -ne 0 ] 
