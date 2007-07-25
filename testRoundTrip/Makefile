@@ -1,4 +1,4 @@
-/# ========== begin copyright notice ==============
+# ========== begin copyright notice ==============
 # This file is part of 
 # ---------------
 # xaifBooster
