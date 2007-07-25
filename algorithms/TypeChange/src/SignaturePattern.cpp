@@ -58,7 +58,9 @@
 
 namespace xaifBoosterTypeChange { 
 
-  SignaturePattern::SignaturePattern() : mySize(-1), myPattern(0) {
+  const unsigned short SignaturePattern::ourMaxParameterCount;
+
+  SignaturePattern::SignaturePattern() : mySize(-1) {
   } 
 
   void SignaturePattern::trackAt(unsigned short aPosition) { 
@@ -68,15 +70,15 @@ namespace xaifBoosterTypeChange {
 				 << " is out of range [1,"
 				 << getSize()
 				 << "]");
-    myPattern |= 1<<aPosition-1;
+    myPattern.set(aPosition-1);
   }
   
   void SignaturePattern::setSize(unsigned short aSize) { 
-    if (aSize<0 || aSize>sizeof(myPattern)*8)
+    if (aSize>ourMaxParameterCount)
       THROW_LOGICEXCEPTION_MACRO("SignaturePattern::setSize: "
 				 << aSize
 				 << " is out of range [0,"
-				 << sizeof(myPattern)*8
+				 << ourMaxParameterCount
 				 << "]");
     mySize=aSize;
   }
@@ -87,6 +89,10 @@ namespace xaifBoosterTypeChange {
       THROW_LOGICEXCEPTION_MACRO("SignaturePattern::getSize: not set ");
     return mySize;
   }
+
+  bool SignaturePattern::initialized() const { 
+    return (mySize>=0);
+  } 
   
   bool SignaturePattern::operator == (const SignaturePattern& anotherPattern) const { 
     return (myPattern==anotherPattern.myPattern);
@@ -99,10 +105,9 @@ namespace xaifBoosterTypeChange {
   std::string SignaturePattern::discrepancyPositions(const SignaturePattern& anotherPattern) const { 
     if (getSize()!=anotherPattern.getSize()) 
       THROW_LOGICEXCEPTION_MACRO("SignaturePattern::discrepancyPositions: size mismatch ");
-    unsigned int theDiscrepancy(myPattern^anotherPattern.myPattern);
     std::ostringstream out;
     for (unsigned short i=0; i<mySize-1; ++i) { 
-      if (theDiscrepancy & 1<<i) 
+      if (myPattern.test(i)!=anotherPattern.myPattern.test(i)) 
 	out << i+1 << " ";
     }
     return out.str();
@@ -115,7 +120,7 @@ namespace xaifBoosterTypeChange {
 				 << " is out of range [1,"
 				 << getSize()
 				 << "]");
-    return myPattern & (1<<aPosition-1);
+    return myPattern.test(aPosition-1);
   } 
 
 }
