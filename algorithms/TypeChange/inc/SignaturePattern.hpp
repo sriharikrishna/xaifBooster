@@ -53,7 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include <list>
+#include <bitset>
 
 using namespace xaifBooster; 
 
@@ -62,6 +62,8 @@ namespace xaifBoosterTypeChange {
   class SignaturePattern { 
 
   public: 
+
+    static const unsigned short ourMaxParameterCount=128; 
 
     SignaturePattern();
 
@@ -84,6 +86,8 @@ namespace xaifBoosterTypeChange {
 
     void setSize(unsigned short aSize);
 
+    bool initialized() const; 
+
     unsigned short getSize()const;
 
     bool operator== (const SignaturePattern& anotherPattern) const;
@@ -96,7 +100,7 @@ namespace xaifBoosterTypeChange {
     
     short mySize;
 
-    unsigned int myPattern;
+    std::bitset<ourMaxParameterCount> myPattern;
     
   }; 
 
