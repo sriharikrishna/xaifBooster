@@ -67,7 +67,8 @@ namespace xaifBooster {
 namespace xaifBoosterTypeChange {  
 
   /** 
-   * class to track external references
+   * class to track external subroutine references
+   * and their active calling patterns 
    */
   class SymbolAlg : public SymbolAlgBase{
 
@@ -122,20 +123,6 @@ namespace xaifBoosterTypeChange {
 
     bool hasReplacementSymbolReference() const; 
 
-    bool hasRepresentativeConstPattern()const; 
-
-    /**    
-     * one call to initialize the returned reference 
-     * for subsequent calls an exception is thrown. 
-     */
-    SignaturePattern& initRepresentativeConstPattern(); 
-
-    /**    
-     * if no representative has been collected 
-     * an exception is thrown. 
-     */
-    const SignaturePattern& getRepresentativeConstPattern() const; 
-
   private: 
 
     /** 
@@ -171,23 +158,6 @@ namespace xaifBoosterTypeChange {
      * activity pattern of formal arguments by position
      */
     SignaturePattern myActivityPattern;
-
-    /** 
-     * representative pattern for constant arguments by position; 
-     * the assumption here is that we either have 
-     * a single repeated pattern of calls with constant 
-     * arguments or we dont.  In the latter case we 
-     * have to worry about restoring checkpoint values to 
-     * formal parameters called with constant actuals
-     * while in the former case we simply don't checkpoint the 
-     * arguments in question
-     */
-    SignaturePattern myRepresentativeConstPattern;
-
-    /** 
-     * have we collected a representative pattern?
-     */
-    bool myHasRepresentativeConstPatternFlag; 
 
     SymbolReference* myHandCodeWrapperSymbolReference_p; 
 

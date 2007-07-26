@@ -108,41 +108,4 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>(this)->xaifBoosterTypeChange::SubroutineCallAlg::algorithm_action_1();
   }
 
-  void SubroutineCallAlg::algorithm_action_2() { 
-    // get the symbol's algorithm object
-    xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>(getContainingSubroutineCall().
-												   getSymbolReference().getSymbol().getSymbolAlgBase()));
-    if (theSymbolAlg.hasRepresentativeConstPattern()) { 
-      // we ask this because the routine may in effect not be called anywhere
-      // and so we would never get a representative
-      // do a check on the const pattern:
-      xaifBoosterTypeChange::SignaturePattern thisCallsConstPattern;
-      thisCallsConstPattern.setSize(getContainingSubroutineCall().
-				    getConcreteArgumentPList().
-				    size());
-      if (thisCallsConstPattern.getSize()!=theSymbolAlg.getRepresentativeConstPattern().getSize()) { 
-	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count inconsistent between calls for "
-				   << getContainingSubroutineCall().getSymbolReference().debug().c_str());
-      } 
-      for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
-	     getContainingSubroutineCall().getConcreteArgumentPList().begin();
-	   concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
-	   ++concreteArgumentPI) { 
-	// get alg
-	xaifBoosterTypeChange::ConcreteArgumentAlg& theArgAlg(dynamic_cast<xaifBoosterTypeChange::ConcreteArgumentAlg&>((*concreteArgumentPI)->getConcreteArgumentAlgBase()));
-	if ((*concreteArgumentPI)->isConstant()
-	    && 
-	    ! theArgAlg.hasReplacement())
-	  // no need to track a constant that is replaced anyway
-	  thisCallsConstPattern.trackAt((*concreteArgumentPI)->getPosition());
-      } 
-      if (thisCallsConstPattern!=theSymbolAlg.getRepresentativeConstPattern()) { 
-	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_2: inconsistent const patterns in position(s) "
-				   << thisCallsConstPattern.discrepancyPositions(theSymbolAlg.getRepresentativeConstPattern()).c_str()
-				   << " for call to subroutine " 
-				   << getContainingSubroutineCall().getSymbolReference().debug().c_str());
-      }
-    }
-  }
-
 } // end of namespace

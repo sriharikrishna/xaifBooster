@@ -13,7 +13,7 @@
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
 
-#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
@@ -82,16 +82,22 @@ namespace xaifBoosterAddressArithmetic {
 	      << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str() 
 	      << " found (" <<  theFormalResult.first << "," << theFormalResult.second << ")");
     if (theFormalResult.first) { 
-      const xaifBoosterTypeChange::SymbolAlg& 
-	theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>(getContaining().
-								     getControlFlowGraph().
-								     getSymbolReference().
-								     getSymbol().
-								     getSymbolAlgBase()));
-      if (theSymbolAlg.hasRepresentativeConstPattern() 
-	  && 
-	  theSymbolAlg.getRepresentativeConstPattern().isTracked(theFormalResult.second)) 
+      xaifBoosterTypeChange::ControlFlowGraphAlg& 
+	theControlFlowGraphAlg(dynamic_cast<xaifBoosterTypeChange::ControlFlowGraphAlg&>(getContaining().
+											 getControlFlowGraph().
+											 getControlFlowGraphAlgBase()));
+      if (!theControlFlowGraphAlg.getSomewhereVariablePattern().isTracked(theFormalResult.second)) { 
+	// if the formal argument is never variable anywhere we don't need to tape it
+	// we should check though if the variable gets overwritten in case we are 
+	// in the top level routine and don't see any calls to it.
+	if (getContaining().getControlFlowGraph().overwrites(anArgument.getVariable().getVariableSymbolReference()))
+	  THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInArgument: found overwritten argument "
+				     << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str());
+	DBG_MACRO(DbgGroup::DATA, "CallGraphVertexAlg::findUnknownVariablesInArgument: skipping "
+		  << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str() 
+		  << " found (" <<  theFormalResult.first << "," << theFormalResult.second << ")");
 	return;
+      }
     } 
     // try to find it in theKnownVariables
     bool foundIt=false;
