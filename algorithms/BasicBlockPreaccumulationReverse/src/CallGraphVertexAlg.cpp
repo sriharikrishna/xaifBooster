@@ -59,6 +59,7 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlg.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
@@ -357,20 +358,23 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     ControlFlowGraph::FormalResult theResult(getContaining().getControlFlowGraph().hasFormal(aVariable.getVariableSymbolReference()));
     if (theResult.first) { 
       // get the symbol alg
-      const xaifBoosterTypeChange::SymbolAlg& 
-	theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>(getContaining().
-								     getControlFlowGraph().
-								     getSymbolReference().
-								     getSymbol().
-								     getSymbolAlgBase()));
+      xaifBoosterTypeChange::ControlFlowGraphAlg& 
+	theControlFlowGraphAlg(dynamic_cast<xaifBoosterTypeChange::ControlFlowGraphAlg&>(getContaining().
+											 getControlFlowGraph().
+											 getControlFlowGraphAlgBase()));
       // see if we skip this because of all constant invocations. 
-      // if we have a representative
       DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::handleCheckPoint: checking " << aVariable.debug().c_str() << " for " << debug().c_str());
-      if (theSymbolAlg.hasRepresentativeConstPattern() 
-	  && 
-	  theSymbolAlg.getRepresentativeConstPattern().isTracked(theResult.second)) { 
+      if (!theControlFlowGraphAlg.getSomewhereVariablePattern().isTracked(theResult.second)) {
+	// must always be called with some constant or is head routine or is never called.
 	DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::handleCheckPoint: skipping " << aVariable.debug().c_str() << " for " << debug().c_str());
 	return; 
+      }
+      if (theControlFlowGraphAlg.getSomewhereConstPattern().isTracked(theResult.second)) {
+	DBG_MACRO(DbgGroup::WARNING, "CallGraphVertexAlg::handleCheckPoint: checkpointing " 
+		  << aVariable.getVariableSymbolReference().getSymbol().plainName().c_str() 
+		  << " in " 
+		  << getContaining().getControlFlowGraph().getSymbolReference().getSymbol().plainName().c_str()
+		  << " which may be called with a constant");
       }
     }
     addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+"_"+

@@ -123,12 +123,7 @@ namespace xaifBooster {
     /**
      * get algorithm
      */
-    ControlFlowGraphAlgBase& getControlFlowGraphAlgBase();
-
-    /**
-     * get algorithm
-     */
-    const ControlFlowGraphAlgBase& getControlFlowGraphAlgBase() const;
+    ControlFlowGraphAlgBase& getControlFlowGraphAlgBase() const;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 

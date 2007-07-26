@@ -143,13 +143,6 @@ namespace xaifBooster {
   } // end of ControlFlowGraph::debug
 
   ControlFlowGraphAlgBase&
-  ControlFlowGraph::getControlFlowGraphAlgBase() {
-    if (!myControlFlowGraphAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getControlFlowGraphAlgBase: not set");
-    return *myControlFlowGraphAlgBase_p;
-  }
-                                                                                
-  const ControlFlowGraphAlgBase&
   ControlFlowGraph::getControlFlowGraphAlgBase() const {
     if (!myControlFlowGraphAlgBase_p)
       THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getControlFlowGraphAlgBase: not set");
