@@ -161,6 +161,13 @@ namespace xaifBooster {
      */
     bool overwrites(const Variable& aVariable) const; 
 
+    static bool getBlackBoxOptimism(); 
+
+    /** 
+     * set ourBlackBoxOptimism to false
+     */
+    static void noBlackBoxOptimism(); 
+
   private: 
     
     /**
@@ -188,6 +195,13 @@ namespace xaifBooster {
      * of SubroutineCall
      */
     ConcreteArgumentPList myConcreteArgumentPList;
+
+    /** 
+     * if true (default) we are optimistic 
+     * in regard to black box routines, 
+     * e.g. they don't have side effects
+     */
+    static bool ourBlackBoxOptimism; 
 
   };
  
