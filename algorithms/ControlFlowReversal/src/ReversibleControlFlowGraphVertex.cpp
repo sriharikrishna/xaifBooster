@@ -71,7 +71,6 @@ namespace xaifBoosterControlFlowReversal {
     adjoint(false), 
     myOriginalVertex_p(0), 
     myNewVertex_p(0),
-    myVisitedFlag(false), 
     myIndex(0), 
     myReversalType(ForLoopReversalType::ANONYMOUS), 
     myCounterPart_p(0),
@@ -87,7 +86,6 @@ namespace xaifBoosterControlFlowReversal {
     adjoint(false),
     myOriginalVertex_p(theOriginal),
     myNewVertex_p(0),
-    myVisitedFlag(false),
     myIndex(0),
     myReversalType(ForLoopReversalType::ANONYMOUS), 
     myCounterPart_p(0),
@@ -96,9 +94,6 @@ namespace xaifBoosterControlFlowReversal {
     myStorePlaceholder_p(0),
     myRestorePlaceholder_p(0),
     myEnclosingControlFlow_p(0) {
-//    ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind=dynamic_cast<const ControlFlowGraphVertexAlg&>(theOriginal->getControlFlowGraphVertexAlgBase()).getKind();
-//     if (theKind==ControlFlowGraphVertexAlg::FORLOOP)
-//       myReversalType=dynamic_cast<const ForLoop*>(theOriginal)->getReversalType();
   }
 
   ReversibleControlFlowGraphVertex::~ReversibleControlFlowGraphVertex() {
@@ -194,14 +189,6 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void ReversibleControlFlowGraphVertex::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
-  }
-
-  void ReversibleControlFlowGraphVertex::setVisited(bool b) {
-    myVisitedFlag=b;
-  } 
-
-  bool ReversibleControlFlowGraphVertex::getVisited() const {
-    return myVisitedFlag;
   }
 
   void ReversibleControlFlowGraphVertex::setIndex(int i) {
