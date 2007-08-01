@@ -1019,6 +1019,7 @@
       <xaif:DUUDSet key="36">
         <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="619"/>
+        <xaif:StatementId idRef="693"/>
       </xaif:DUUDSet>
       <xaif:DUUDSet key="37">
         <xaif:StatementId idRef="683"/>
