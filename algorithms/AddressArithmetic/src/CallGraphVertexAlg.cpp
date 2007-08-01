@@ -715,6 +715,7 @@ namespace xaifBoosterAddressArithmetic {
       for(DuUdMapDefinitionResult::StatementIdList::const_iterator defChainI=defChain.begin();
 	  defChainI!=defChain.end();
 	  ++defChainI) {
+	// std::cout << "checking for " << (*defChainI).c_str() << " under " << theControlFlowGraphVertex.debug().c_str() << std::endl; 
 	if (!(*defChainI).empty()
 	    && 
 	    getContaining().getControlFlowGraph().firstDominatedBySecond(getContaining().getControlFlowGraph().getContainingVertex(*defChainI),
