@@ -117,6 +117,10 @@
         <xaif:StatementId idRef="12"/>
       </xaif:DUUDSet>
       <xaif:DUUDSet key="4">
+        <xaif:StatementId idRef=""/>
+        <xaif:StatementId idRef="26"/>
+      </xaif:DUUDSet>
+      <xaif:DUUDSet key="5">
         <xaif:StatementId idRef="26"/>
       </xaif:DUUDSet>
     </xaif:DUUDSetList>

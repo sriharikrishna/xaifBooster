@@ -1397,6 +1397,7 @@
       <xaif:DUUDSet key="31">
         <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="619"/>
+        <xaif:StatementId idRef="693"/>
       </xaif:DUUDSet>
       <xaif:DUUDSet key="32">
         <xaif:StatementId idRef="679"/>
