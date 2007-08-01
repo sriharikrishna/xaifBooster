@@ -116,6 +116,10 @@
       <xaif:DUUDSet key="2">
         <xaif:StatementId idRef=""/>
       </xaif:DUUDSet>
+      <xaif:DUUDSet key="3">
+        <xaif:StatementId idRef=""/>
+        <xaif:StatementId idRef="24"/>
+      </xaif:DUUDSet>
     </xaif:DUUDSetList>
     <xaif:ReplacementList vertex_id="1" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" template_name="reverse_subroutine_template">
       <xaif:Replacement placeholder="1">

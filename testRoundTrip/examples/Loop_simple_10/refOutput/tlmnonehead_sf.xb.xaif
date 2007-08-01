@@ -174,26 +174,23 @@
       <xaif:DUUDSet key="3">
         <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="12"/>
+        <xaif:StatementId idRef="46"/>
+        <xaif:StatementId idRef="72"/>
       </xaif:DUUDSet>
       <xaif:DUUDSet key="4">
         <xaif:StatementId idRef=""/>
-        <xaif:StatementId idRef="12"/>
         <xaif:StatementId idRef="46"/>
+        <xaif:StatementId idRef="72"/>
       </xaif:DUUDSet>
       <xaif:DUUDSet key="5">
         <xaif:StatementId idRef=""/>
-        <xaif:StatementId idRef="46"/>
         <xaif:StatementId idRef="72"/>
       </xaif:DUUDSet>
       <xaif:DUUDSet key="6">
         <xaif:StatementId idRef=""/>
-        <xaif:StatementId idRef="72"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="7">
-        <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="35"/>
       </xaif:DUUDSet>
-      <xaif:DUUDSet key="8">
+      <xaif:DUUDSet key="7">
         <xaif:StatementId idRef="45"/>
       </xaif:DUUDSet>
     </xaif:DUUDSetList>
@@ -249,7 +246,7 @@
         <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_PRAGMA]"/>
         <xaif:Marker statement_id="11" annotation="{WHIRL_Id#11} [passive: OPR_PRAGMA]"/>
         <xaif:Assignment statement_id="12">
-          <xaif:AssignmentLHS active="true" du_ud="5" deriv="0" constant="0">
+          <xaif:AssignmentLHS active="true" du_ud="4" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
             <xaif:ArrayElementReference vertex_id="2">
               <xaif:IndexTriplet>
@@ -501,7 +498,7 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="46: delayed LHS assignment for correct partials">
-          <xaif:AssignmentLHS active="true" du_ud="6" deriv="0" constant="0">
+          <xaif:AssignmentLHS active="true" du_ud="5" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
             <xaif:ArrayElementReference vertex_id="2">
               <xaif:IndexTriplet>
@@ -635,7 +632,7 @@
       <xaif:EndLoop vertex_id="14" annotation=""/>
       <xaif:BasicBlock vertex_id="9" annotation="" scope_id="3">
         <xaif:Assignment statement_id="72">
-          <xaif:AssignmentLHS active="true" du_ud="2" deriv="0" constant="0">
+          <xaif:AssignmentLHS active="true" du_ud="5" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
             <xaif:ArrayElementReference vertex_id="2">
               <xaif:IndexTriplet>
@@ -648,7 +645,7 @@
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" annotation="" name="sub_scal_scal"/>
-            <xaif:VariableReference vertex_id="2" active="true" du_ud="4" deriv="0" constant="0">
+            <xaif:VariableReference vertex_id="2" active="true" du_ud="3" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -924,7 +921,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
           <xaif:Argument position="3">
-            <xaif:VariableReference vertex_id="1" active="false" du_ud="7" deriv="0" constant="0">
+            <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="A_3" annotation="" scope_id="4"/>
             </xaif:VariableReference>
           </xaif:Argument>

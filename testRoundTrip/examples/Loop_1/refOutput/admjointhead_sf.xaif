@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Mon Apr  2 13:55:14 2007 -->
+<!-- XAIF file translated from WHIRL at Wed Aug  1 11:23:13 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -80,18 +80,14 @@
     <xaif:DUUDSet key="3">
       <xaif:StatementId idRef=""/>
       <xaif:StatementId idRef="11"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="4">
-      <xaif:StatementId idRef=""/>
-      <xaif:StatementId idRef="11"/>
       <xaif:StatementId idRef="33"/>
     </xaif:DUUDSet>
-    <xaif:DUUDSet key="5">
+    <xaif:DUUDSet key="4">
       <xaif:StatementId idRef=""/>
       <xaif:StatementId idRef="33"/>
       <xaif:StatementId idRef="49"/>
     </xaif:DUUDSet>
-    <xaif:DUUDSet key="6">
+    <xaif:DUUDSet key="5">
       <xaif:StatementId idRef=""/>
       <xaif:StatementId idRef="49"/>
     </xaif:DUUDSet>
@@ -140,7 +136,7 @@
       <xaif:Marker statement_id="9" annotation="{WHIRL_Id#9} [passive: OPR_PRAGMA]"/>
       <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_PRAGMA]"/>
       <xaif:Assignment statement_id="11" lineNumber="63">
-        <xaif:AssignmentLHS du_ud="5">
+        <xaif:AssignmentLHS du_ud="4">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="Y_2"/>
           <xaif:ArrayElementReference vertex_id="2">
             <xaif:IndexTriplet>
@@ -203,7 +199,7 @@
 
     <xaif:BasicBlock vertex_id="7" scope_id="3">
       <xaif:Assignment statement_id="33" lineNumber="65">
-        <xaif:AssignmentLHS du_ud="6">
+        <xaif:AssignmentLHS du_ud="5">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="Y_2"/>
           <xaif:ArrayElementReference vertex_id="2">
             <xaif:IndexTriplet>
@@ -260,7 +256,7 @@
           <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:VariableReference vertex_id="1" du_ud="4">
+          <xaif:VariableReference vertex_id="1" du_ud="3">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="Y_2"/>
             <xaif:ArrayElementReference vertex_id="2">
               <xaif:IndexTriplet>
