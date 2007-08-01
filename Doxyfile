@@ -467,6 +467,7 @@ INPUT                  = utils/inc \
                          utils/src \
                          boostWrapper/inc \
                          boostWrapper/inc/TemplateImpl \
+                         tools/codegen/code \
                          system/inc \
                          system/inc/TemplateImpl \
                          system/src \
@@ -495,8 +496,7 @@ INPUT                  = utils/inc \
                          algorithms/DerivativePropagator/inc \
                          algorithms/DerivativePropagator/src \
                          algorithms/InlinableXMLRepresentation/inc \
-                         algorithms/InlinableXMLRepresentation/src \
-                         tools/codegen/code
+                         algorithms/InlinableXMLRepresentation/src 
 
 # This tag can be used to specify the character encoding of the source files that 
 # doxygen parses. Internally doxygen uses the UTF-8 encoding, which is also the default 

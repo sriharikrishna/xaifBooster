@@ -77,7 +77,7 @@ namespace xaifBoosterTypeChange {
 		<< s.getSymbol().plainName().c_str() 
 		<< " (xaif name " 
 		<< s.getSymbol().getId().c_str() 
-		<< ") but this may be an external call, we continue");
+		<< ") which means the analysis may net be able to track activity through these calls. Consider providing stubs for external routines.");
     }
   } 
   
