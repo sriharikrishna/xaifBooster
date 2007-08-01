@@ -185,6 +185,8 @@
       </xaif:DUUDSet>
       <xaif:DUUDSet key="9">
         <xaif:StatementId idRef=""/>
+        <xaif:StatementId idRef="22"/>
+        <xaif:StatementId idRef="50"/>
         <xaif:StatementId idRef="54"/>
       </xaif:DUUDSet>
     </xaif:DUUDSetList>
@@ -969,7 +971,7 @@
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
-          <xaif:Update statement_id="_cfr_6_init">
+          <xaif:Update statement_id="_cfr_6_update">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_16" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/LHS)" scope_id="1"/>
             </xaif:AssignmentLHS>
@@ -1864,7 +1866,7 @@
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:Condition>
-          <xaif:Update statement_id="_cfr_6_init">
+          <xaif:Update statement_id="_cfr_6_update">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_22" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::buildAdjointControlFlowGraph(FORLOOP/LHS)" scope_id="1"/>
             </xaif:AssignmentLHS>
