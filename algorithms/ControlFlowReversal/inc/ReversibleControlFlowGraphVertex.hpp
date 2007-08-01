@@ -92,9 +92,6 @@ namespace xaifBoosterControlFlowReversal {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    bool getVisited() const;
-    void setVisited(bool);
-
     int getIndex() const;
     void setIndex(int);
     void setAdjointIndex(int);
@@ -205,11 +202,6 @@ namespace xaifBoosterControlFlowReversal {
     ControlFlowGraphVertex* myNewVertex_p;
 
     /** 
-     * flag for marking as visited during recursive traversal
-     */
-    bool myVisitedFlag;
-
-    /** 
      * index for topological sort
      */
     int myIndex;
@@ -217,7 +209,9 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * reversal type that applies to all 
      * nodes under a top forloop which 
-     * is designated for explicit reversal
+     * is designated for explicit reversal;
+     * this setting may differ from the reversal
+     * type set in the original vertex
      */
     ForLoopReversalType::ForLoopReversalType_E myReversalType;
 

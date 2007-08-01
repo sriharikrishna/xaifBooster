@@ -56,6 +56,7 @@
 
 #include "xaifBooster/system/inc/AlgConfig.hpp"
 #include "xaifBooster/system/inc/Symbol.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
 
 namespace xaifBooster { 
 
@@ -69,7 +70,7 @@ namespace xaifBooster {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgsvp");
+    return std::string("iocdgsvpb");
   } 
 
   void AlgConfig::config() { 
@@ -88,6 +89,8 @@ namespace xaifBooster {
 	DbgLoggerManager::instance()->setSelection(argAsInt('g'));
       if (isSet('p'))
 	Symbol::addSymbolNamesToPassivate(argAsString('p'));
+      if (isSet('b'))
+	SubroutineCall::noBlackBoxOptimism();
       myInputValidationFlag=isSet('v');
       myConfiguredFlag=true;
     } 
@@ -106,8 +109,9 @@ namespace xaifBooster {
 	      << "                 with debugGroup >=0 the sum of any of: " << std::endl
 	      << "                 "<< DbgGroup::printAll().c_str() << std::endl
 	      << "                 defaults to 0(ERROR)" << std::endl
-              << "             [-p \"<list of symbols to forcibly passivate> \" ]" << std::endl 
+              << "             [-p \"<list of symbols to forcibly passivate>\" ]" << std::endl 
               << "                 space separated list enclosed in double quotes" << std::endl
+              << "             [-b] pessimistic assumptions for black box routines" << std::endl 
 	      << "             [-v] validate the input against the schema" << std::endl;
   } 
 
