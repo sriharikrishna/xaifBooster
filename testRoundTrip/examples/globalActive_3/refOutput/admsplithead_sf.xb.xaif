@@ -117,13 +117,13 @@
         <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="1"/>
       </xaif:AliasSet>
       <xaif:AliasSet key="3">
-        <xaif:AliasRange from_virtual_address="2" to_virtual_address="3" partial="1"/>
+        <xaif:AliasRange from_virtual_address="2" to_virtual_address="2" partial="0"/>
       </xaif:AliasSet>
       <xaif:AliasSet key="4">
-        <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="0"/>
+        <xaif:AliasRange from_virtual_address="3" to_virtual_address="4" partial="1"/>
       </xaif:AliasSet>
       <xaif:AliasSet key="5">
-        <xaif:AliasRange from_virtual_address="4" to_virtual_address="5" partial="1"/>
+        <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="0"/>
       </xaif:AliasSet>
     </xaif:AliasSetList>
     <xaif:DUUDSetList>
@@ -138,7 +138,7 @@
         <xaif:StatementId idRef="12"/>
       </xaif:DUUDSet>
     </xaif:DUUDSetList>
-    <xaif:ReplacementList vertex_id="1" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" template_name="reverse_subroutine_template">
+    <xaif:ReplacementList vertex_id="13" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" template_name="reverse_subroutine_template">
       <xaif:Replacement placeholder="1">
       </xaif:Replacement>
       <xaif:Replacement placeholder="2">
@@ -198,7 +198,7 @@
       <xaif:Replacement placeholder="11">
       </xaif:Replacement>
     </xaif:ReplacementList>
-    <xaif:ReplacementList vertex_id="2" symbol_id="globals__21" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" template_name="reverse_subroutine_template">
+    <xaif:ReplacementList vertex_id="14" symbol_id="globals__21" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" template_name="reverse_subroutine_template">
       <xaif:Replacement placeholder="1">
       </xaif:Replacement>
       <xaif:Replacement placeholder="2">
@@ -258,7 +258,7 @@
       <xaif:Replacement placeholder="11">
       </xaif:Replacement>
     </xaif:ReplacementList>
-    <xaif:ReplacementList vertex_id="3" symbol_id="foo__23" scope_id="1" controlflowgraph_scope_id="4" annotation="{PU_Id#3}" template_name="reverse_subroutine_template">
+    <xaif:ReplacementList vertex_id="15" symbol_id="foo__23" scope_id="1" controlflowgraph_scope_id="4" annotation="{PU_Id#3}" template_name="reverse_subroutine_template">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="X_1" scope_id="4" annotation="{WHIRL_Id#2}" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="Y_2" scope_id="4" annotation="{WHIRL_Id#3}" intent="inout"/>
@@ -877,7 +877,7 @@
         <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="8" target="_adj__cfr_v_2" has_condition_value="0"/>
       </xaif:Replacement>
     </xaif:ReplacementList>
-    <xaif:ReplacementList vertex_id="4" symbol_id="head__25" scope_id="1" controlflowgraph_scope_id="5" annotation="{PU_Id#4}" template_name="reverse_subroutine_template">
+    <xaif:ReplacementList vertex_id="16" symbol_id="head__25" scope_id="1" controlflowgraph_scope_id="5" annotation="{PU_Id#4}" template_name="reverse_subroutine_template">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="X_1" scope_id="5" annotation="{WHIRL_Id#2}" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="Y_2" scope_id="5" annotation="{WHIRL_Id#3}" intent="inout"/>
@@ -895,7 +895,7 @@
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
-              <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="AGLOBAL_22" annotation="" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
@@ -937,7 +937,7 @@
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
-              <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="AGLOBAL_22" annotation="" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
@@ -1015,7 +1015,7 @@
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
-              <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="AGLOBAL_22" annotation="" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
@@ -1170,7 +1170,7 @@
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
-              <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="AGLOBAL_22" annotation="" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
@@ -1248,7 +1248,7 @@
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
-              <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="AGLOBAL_22" annotation="" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
@@ -1259,5 +1259,5 @@
         <xaif:ControlFlowEdge edge_id="_cfr_e_2" source="11" target="_adj__cfr_v_2" has_condition_value="0"/>
       </xaif:Replacement>
     </xaif:ReplacementList>
-    <xaif:CallGraphEdge edge_id="1" source="4" target="3"/>
+    <xaif:CallGraphEdge edge_id="1" source="16" target="15"/>
   </xaif:CallGraph>

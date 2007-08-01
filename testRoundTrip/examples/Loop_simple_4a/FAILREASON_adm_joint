@@ -1,0 +1,3 @@
+head::j is attempted to be restored by address arithmetic but is called in driver with a constant so we get a SEGV
+but at the transformation we don't see the driver so we can't tell. <a href="http://koolkat2.cs.rice.edu/bugtracker/bug.php?op=show&bugid=126&pos=5">bug report</a>
+

@@ -131,9 +131,9 @@
         <xaif:StatementId idRef="63"/>
       </xaif:DUUDSet>
     </xaif:DUUDSetList>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" active="1">
+    <xaif:ControlFlowGraph vertex_id="11" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" active="1">
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="2" symbol_id="head__21" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" active="1">
+    <xaif:ControlFlowGraph vertex_id="12" symbol_id="head__21" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" active="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="X_1" scope_id="3" annotation="{WHIRL_Id#2}" intent="in"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="Y_2" scope_id="3" annotation="{WHIRL_Id#3}" intent="out"/>
@@ -200,7 +200,7 @@
         </xaif:DerivativePropagator>
         <xaif:Marker statement_id="19" annotation="{WHIRL_Id#19} [passive: OPR_STID]"/>
       </xaif:BasicBlock>
-      <xaif:Branch vertex_id="11" annotation="">
+      <xaif:Branch vertex_id="27" annotation="">
         <xaif:Condition>
           <xaif:VariableReference vertex_id="1" active="false" du_ud="3" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="I_3" annotation="" scope_id="3"/>
@@ -272,7 +272,7 @@
         <xaif:Marker statement_id="38" annotation="{WHIRL_Id#38}{StmtGoto#1}"/>
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="9" annotation=""/>
-      <xaif:BasicBlock vertex_id="12" annotation="" scope_id="3">
+      <xaif:BasicBlock vertex_id="28" annotation="" scope_id="3">
         <xaif:Marker statement_id="62" annotation="{WHIRL_Id#62}{StmtLabel#1}"/>
         <xaif:Assignment statement_id="_replacement_1_for_63">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
@@ -591,14 +591,14 @@
         </xaif:DerivativePropagator>
       </xaif:BasicBlock>
       <xaif:ControlFlowEdge edge_id="1" source="4" target="5" has_condition_value="0"/>
-      <xaif:ControlFlowEdge edge_id="2" source="5" target="11" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="2" source="5" target="27" has_condition_value="0"/>
       <xaif:ControlFlowEdge edge_id="3" source="6" target="9" has_condition_value="0"/>
       <xaif:ControlFlowEdge edge_id="4" source="7" target="9" has_condition_value="0"/>
       <xaif:ControlFlowEdge edge_id="5" source="8" target="9" has_condition_value="0"/>
-      <xaif:ControlFlowEdge edge_id="6" source="9" target="12" has_condition_value="0"/>
-      <xaif:ControlFlowEdge edge_id="7" source="11" target="6" has_condition_value="1" condition_value="1"/>
-      <xaif:ControlFlowEdge edge_id="8" source="11" target="7" has_condition_value="1" condition_value="2"/>
-      <xaif:ControlFlowEdge edge_id="9" source="11" target="8" has_condition_value="0"/>
-      <xaif:ControlFlowEdge edge_id="10" source="12" target="10" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="6" source="9" target="28" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="7" source="27" target="6" has_condition_value="1" condition_value="1"/>
+      <xaif:ControlFlowEdge edge_id="8" source="27" target="7" has_condition_value="1" condition_value="2"/>
+      <xaif:ControlFlowEdge edge_id="9" source="27" target="8" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="10" source="28" target="10" has_condition_value="0"/>
     </xaif:ControlFlowGraph>
   </xaif:CallGraph>
