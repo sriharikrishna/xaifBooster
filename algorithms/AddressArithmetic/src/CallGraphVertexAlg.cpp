@@ -86,17 +86,24 @@ namespace xaifBoosterAddressArithmetic {
 	theControlFlowGraphAlg(dynamic_cast<xaifBoosterTypeChange::ControlFlowGraphAlg&>(getContaining().
 											 getControlFlowGraph().
 											 getControlFlowGraphAlgBase()));
-      if (!theControlFlowGraphAlg.getSomewhereVariablePattern().isTracked(theFormalResult.second)) { 
+      if (!theControlFlowGraphAlg.getSomewhereVariablePattern().isTracked(theFormalResult.second)
+	  && 
+	  ConceptuallyStaticInstances::instance()->getCallGraph().numInEdgesOf(getContaining())) { 
 	// if the formal argument is never variable anywhere we don't need to tape it
-	// we should check though if the variable gets overwritten in case we are 
-	// in the top level routine and don't see any calls to it.
-	if (getContaining().getControlFlowGraph().overwrites(anArgument.getVariable().getVariableSymbolReference()))
+	// but we need to check if the variable gets overwritten in case we don't
+	// see any calls to the routine (e.g. the case for the top level routine) 
+	if (!getContaining().getControlFlowGraph().overwrites(anArgument.getVariable().getVariableSymbolReference())) { 
+	  DBG_MACRO(DbgGroup::DATA, "CallGraphVertexAlg::findUnknownVariablesInArgument: skipping "
+		    << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str() 
+		    << " found (" <<  theFormalResult.first << "," << theFormalResult.second << ")");
+	  return;
+	}
+	else { 
 	  THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInArgument: found overwritten argument "
-				     << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str());
-	DBG_MACRO(DbgGroup::DATA, "CallGraphVertexAlg::findUnknownVariablesInArgument: skipping "
-		  << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str() 
-		  << " found (" <<  theFormalResult.first << "," << theFormalResult.second << ")");
-	return;
+				     << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
+				     << " in "
+				     << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
+	}
       }
     } 
     // try to find it in theKnownVariables
