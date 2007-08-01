@@ -52,7 +52,7 @@
 <pathentry kind="src" path=""/>
 <pathentry kind="out" path=""/>
 <pathentry kind="con" path="org.eclipse.cdt.make.core.DISCOVERED_SCANNER_INFO"/>
-<pathentry include="/m_home/m_utkej/Argonne/hg/xaifBooster_current" kind="inc" path="" system="true"/>
+<pathentry include="/m_home/m_utkej/Argonne/Dev/Current/OpenAD" kind="inc" path="" system="true"/>
 </item>
 </data>
 </cdtproject>
