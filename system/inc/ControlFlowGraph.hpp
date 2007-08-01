@@ -123,12 +123,7 @@ namespace xaifBooster {
     /**
      * get algorithm
      */
-    ControlFlowGraphAlgBase& getControlFlowGraphAlgBase();
-
-    /**
-     * get algorithm
-     */
-    const ControlFlowGraphAlgBase& getControlFlowGraphAlgBase() const;
+    ControlFlowGraphAlgBase& getControlFlowGraphAlgBase() const;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
@@ -161,6 +156,13 @@ namespace xaifBooster {
      * \todo this hack should be replaced by the proper analysis
      */
     bool overwrites(const SymbolReference& theSymbolReference) const; 
+
+    typedef std::pair<bool,int> FormalResult;
+
+    /** 
+     * determines if theSymbolReference is a formal parameter
+     */
+    FormalResult hasFormal(const SymbolReference& theSymbolReference) const; 
 
     /** 
      * augment the graph vertices with additional 

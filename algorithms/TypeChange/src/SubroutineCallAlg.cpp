@@ -72,7 +72,7 @@
 #include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/ConcreteArgumentAlg.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/MissingSubroutinesReport.hpp"
-#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlg.hpp"
 
 namespace xaifBoosterTypeChange {  
 
@@ -289,14 +289,15 @@ namespace xaifBoosterTypeChange {
 
   void SubroutineCallAlg::replaceArguments(bool withCopy) { 
     const ArgumentList::ArgumentSymbolReferencePList* anArgumentSymbolReferencePList_p(0); 
+    const ControlFlowGraph* aCFG_p(0); 
     const BasicBlock& theBasicBlock(BasicBlockAlgParameter::instance().get().getContaining());  // set in SubroutineCallAlg::algorithm_action_1
     try { 
       // get the formal argument list; 
       anArgumentSymbolReferencePList_p=
-	&(ConceptuallyStaticInstances::instance()->
-	  getCallGraph().
-	  getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).
-	  getControlFlowGraph().
+	&((aCFG_p=&(ConceptuallyStaticInstances::instance()->
+		    getCallGraph().
+		    getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).
+		    getControlFlowGraph()))->
 	  getArgumentList().
 	  getArgumentSymbolReferencePList());
     } 
@@ -312,6 +313,7 @@ namespace xaifBoosterTypeChange {
 				 << getContainingSubroutineCall().getConcreteArgumentPList().size()
 				 << " concrete ) for "
 				 << getContainingSubroutineCall().getSymbolReference().debug().c_str());
+    ControlFlowGraphAlg& theControlFlowGraphAlg(dynamic_cast<ControlFlowGraphAlg&>(aCFG_p->getControlFlowGraphAlgBase()));
     for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
 	   getContainingSubroutineCall().getConcreteArgumentPList().begin();
 	 concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
@@ -339,6 +341,14 @@ namespace xaifBoosterTypeChange {
 		      theBasicBlock,
 		      withCopy);
       } 
+      if ((*concreteArgumentPI)->isConstant()
+	  && 
+	  !formalArgumentActive)
+	// if the argument is constant but the formal is active we 
+	// need a conversion so it no longer is constant
+	theControlFlowGraphAlg.getSomewhereConstPattern().trackAt((*concreteArgumentPI)->getPosition());
+      if (!(*concreteArgumentPI)->isConstant())
+	theControlFlowGraphAlg.getSomewhereVariablePattern().trackAt((*concreteArgumentPI)->getPosition());
     }// end for 
   } 
   
@@ -518,10 +528,12 @@ namespace xaifBoosterTypeChange {
 	  // have to be 1 except it is unclear which of the n+k are the missing ones
 	  DBG_MACRO(DbgGroup::ERROR, "SubroutineCallAlg::makeTempSymbol: " 
 		    << formalMinusConcreteDims 
-		    << " missing dimensions for " 
-		    << theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+		    << " missing dimension(s) for " 
+		    << theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
 		    << " in call to " 
-		    << getContainingSubroutineCall().getSymbolReference().getSymbol().getId().c_str());
+		    << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str()
+		    << " on line " 
+		    << getContainingSubroutineCall().getLineNumber());
 	}
 	switch(DimensionBounds::getIndexOrder()) { 
 	case IndexOrder::ROWMAJOR: // c and c++
