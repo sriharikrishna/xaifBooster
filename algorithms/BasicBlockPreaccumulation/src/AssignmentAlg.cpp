@@ -175,7 +175,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
-    BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()));
+    BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()));
     // we need to do the representative sequence first because we only redo the activity analysis
     // and linearization once.
     BasicBlockAlg::SequenceHolder* repSequenceHolder_p=&(aBasicBlockAlg.getRepresentativeSequenceHolder());
@@ -195,7 +195,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   AssignmentAlg::algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
 						BasicBlockAlg::SequenceHolder& aSequenceHolder) { 
     PrivateLinearizedComputationalGraph& theComputationalGraph=
-      dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()).getComputationalGraph(getContainingAssignment(),
+      dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getComputationalGraph(getContainingAssignment(),
 															     aSequenceHolder);
     // this was set in BasicBlockAlg::algorithm_action_2
     BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get())); // in AssignmentAlg::algorithm_action_2()
@@ -209,9 +209,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // and leave
       return;
     }
-    dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()).addMyselfToAssignmentIdList(getContainingAssignment(),
+    dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).addMyselfToAssignmentIdList(getContainingAssignment(),
 																 aSequenceHolder);
-    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(dynamic_cast<BasicBlockAlg&>(xaifBoosterLinearization::BasicBlockAlgParameter::instance().get()).getAssignmentIdList());
+    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getAssignmentIdList());
     // now redo the activity analysis
     //     if (haveLinearizedRightHandSide() && 
     // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
