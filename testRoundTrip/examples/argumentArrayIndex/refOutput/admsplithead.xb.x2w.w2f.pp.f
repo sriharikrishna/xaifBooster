@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Jul 21 11:15:34 2006
+C Fortran file translated from WHIRL Mon Jul 16 17:30:20 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -189,12 +189,6 @@ C     **** Local Variables and Functions ****
 C
       EXTERNAL foo
       INTEGER(w2f__i4) K
-      INTEGER(w2f__i8) OpenAD_Symbol_10
-      INTEGER(w2f__i8) OpenAD_Symbol_11
-      INTEGER(w2f__i8) OpenAD_Symbol_6
-      INTEGER(w2f__i8) OpenAD_Symbol_7
-      INTEGER(w2f__i8) OpenAD_Symbol_8
-      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
 C
@@ -211,10 +205,7 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       K = 1
-      OpenAD_Symbol_9 = K
-      OpenAD_Symbol_10 = (K + INT(1_w2f__i8))
       CALL foo(X(K),X(K+1))
-      OpenAD_Symbol_11 = K
       CALL foo(X(K),Y)
       
           end if
@@ -222,28 +213,21 @@ C$OPENAD XXX Template ad_template.f
 ! taping
 C$OPENAD XXX Template ad_template.f
       K = 1
-      OpenAD_Symbol_9 = K
-      OpenAD_Symbol_10 = (K + INT(1_w2f__i8))
       CALL foo(X(K),X(K+1))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_9
+          integer_tape(integer_tape_pointer) = K
           integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_10
-          integer_tape_pointer = integer_tape_pointer+1
-      OpenAD_Symbol_11 = K
       CALL foo(X(K),Y)
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_11
+          integer_tape(integer_tape_pointer) = K
           integer_tape_pointer = integer_tape_pointer+1
       
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_6 = integer_tape(integer_tape_pointer)
-      CALL foo(X(INT(OpenAD_Symbol_6)),Y)
+          K = integer_tape(integer_tape_pointer)
+      CALL foo(X(K),Y)
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_7 = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_8 = integer_tape(integer_tape_pointer)
-      CALL foo(X(INT(OpenAD_Symbol_8)),X(INT(OpenAD_Symbol_7)))
+          K = integer_tape(integer_tape_pointer)
+      CALL foo(X(K),X(K+1))
           end if 
         end subroutine head

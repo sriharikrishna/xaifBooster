@@ -52,15 +52,13 @@
 # ========== end copyright notice ==============
 MAIN=t
 
-test: buildStamp.hpp $(MAIN) quickRegression.bash
+test: obj buildStamp.hpp $(MAIN) quickRegression.bash
 
-clean:
-	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) quickRegression.bash
-	rm -rf tmp
+CLEANTARGETS+=buildStamp.hpp tmp $(MAIN) quickRegression.bash
 
-obj doc: ;
+objs : ;
 
-.PHONY: obj test doc clean
+.PHONY: objs test 
 
 quickRegression.bash: 
 	ln -sf $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/test/quickRegression.bash
@@ -69,7 +67,7 @@ include ../../../Makefile.incl
 -include $(DEPINCL)
 
 # pick up all algorith specific obj files
-ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) 
+ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) $(wildcard ../../TypeChange/src/obj/*.o) 
 
 VPATH+=../../InlinableXMLRepresentation/lib
 LIBS+=-lxaifBoosterInlinableXMLRepresentation

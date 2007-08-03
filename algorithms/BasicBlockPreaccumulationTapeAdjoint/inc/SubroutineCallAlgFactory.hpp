@@ -53,9 +53,9 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SubroutineCallAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(SubroutineCall,xaifBoosterLinearization::SubroutineCallAlgFactory,xaifBoosterBasicBlockPreaccumulationTapeAdjoint)
+  DERIVED_ALG_FACTORY_DECL_MACRO(SubroutineCall,xaifBoosterTypeChange::SubroutineCallAlgFactory,xaifBoosterBasicBlockPreaccumulationTapeAdjoint)
 
 #endif

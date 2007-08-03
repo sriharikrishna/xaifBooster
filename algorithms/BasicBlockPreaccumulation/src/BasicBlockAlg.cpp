@@ -67,8 +67,9 @@
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
+
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
@@ -546,7 +547,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // invoke directly and need to rely on GenericTraverseInvoke
       // In order to pass parameters through BasicBlockParameter
       // we have to make sure that this method is never invoked recursively
-      xaifBoosterLinearization::BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_2() 
+      xaifBoosterTypeChange::BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_2() 
     } 
     catch (...) { 
       recursionGuard--;

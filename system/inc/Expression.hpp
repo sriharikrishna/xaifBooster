@@ -54,11 +54,13 @@
 // ========== end copyright notice ==============
 
 #include <list>
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/ExpressionEdge.hpp"
 #include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
-#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/system/inc/ExpressionAlgBase.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/Argument.hpp"
 
 namespace xaifBooster { 
 
@@ -102,8 +104,7 @@ namespace xaifBooster {
     std::string debug() const ;
 
     /**
-     * perform a deep copy of the contents 
-     * into theTarget
+     * \param theTarget where we deep copy the contents of this instance to
      * \param withNewId indicates if the graph 
      * elements will have their own Id's  
      * created from getNexVertex/EdgeId()
@@ -147,6 +148,30 @@ namespace xaifBooster {
      */
     const ExpressionVertex& findPositionalSubExpressionOf(const ExpressionVertex& aVertex,
 							  unsigned int aPosition) const;
+
+
+    /**
+     * for variable replacements in an expression: 
+     * in the pair the first is the variable to be replaced, 
+     * the second the variable by which the first is replaced
+     */
+    typedef std::pair<const Variable*,VariableSymbolReference*> VariablePVariableSRPPair;
+    typedef std::list<VariablePVariableSRPPair> VariablePVariableSRPPairList; 
+
+    /** 
+     * this is generic utility for replacing Variables in a given 
+     * Expression.  These Expression instances have to be non-constant, 
+     * i.e. attributes of some algorithm class
+     */
+    void replaceVariables(const VariablePVariableSRPPairList& replacementList); 
+
+    typedef std::list<Argument*> ArgumentPList;
+
+    void appendArguments(ArgumentPList& listToBeAppended);
+
+    typedef std::list<const Argument*> CArgumentPList;
+
+    void appendArguments(CArgumentPList& listToBeAppended)const;
 
   private:
 

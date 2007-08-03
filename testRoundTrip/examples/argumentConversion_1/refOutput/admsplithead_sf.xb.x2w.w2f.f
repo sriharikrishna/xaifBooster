@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:23:16 2007
+C Fortran file translated from WHIRL Mon Jul 16 17:33:06 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -225,26 +225,10 @@ C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
-C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
-      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_13), PX)
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_14), PY)
       CALL foo(__deriv__(OpenAD_Symbol_13), __deriv__(OpenAD_Symbol_14)
      > )
-C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
-      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_13))
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_14))
-C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
-      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_17), PX)
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_18), PY)
       CALL foo(__deriv__(OpenAD_Symbol_17), __deriv__(OpenAD_Symbol_18)
      > )
-C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
-      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_17))
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_18))
       CALL foo(__deriv__(X), __deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
@@ -305,26 +289,10 @@ C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
-C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
-      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_13), PX)
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_14), PY)
       CALL foo(__deriv__(OpenAD_Symbol_13), __deriv__(OpenAD_Symbol_14)
      > )
-C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
-      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_13))
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_14))
-C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
-      CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_17), PX)
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_18), PY)
       CALL foo(__deriv__(OpenAD_Symbol_17), __deriv__(OpenAD_Symbol_18)
      > )
-C     $OpenAD$ INLINE convert_a2p_vector(subst,subst)
-      CALL convert_a2p_vector(PX, __deriv__(OpenAD_Symbol_17))
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_18))
       CALL foo(__deriv__(X), __deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE

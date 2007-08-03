@@ -51,23 +51,22 @@
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
 # default target
-default: obj
+default: objs
+
+CLEANTARGETS+=$(THELIB)
 
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
 LIB_NAME=xaifBoosterCodeReplacement
 
-MAIN=../lib/lib$(LIB_NAME).a
+THELIB=../lib/lib$(LIB_NAME).a
 
-obj: $(MAIN)
+objs: obj $(THELIB)
 
-$(MAIN): $(OBJS)
+$(THELIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
 
-clean:
-	rm -f obj/*.o obj/*.d $(MAIN)
+test : ;
 
-test doc: ;
-
-.PHONY: obj test doc clean default
+.PHONY: objs test default

@@ -62,8 +62,7 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
   SubroutineCallAlg::SubroutineCallAlg(SubroutineCall& theContaining) : 
-    // SubroutineCallAlgBase(theContaining),
-    xaifBoosterLinearization::SubroutineCallAlg(theContaining),
+    xaifBoosterTypeChange::SubroutineCallAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg(theContaining){ 
   }
@@ -74,7 +73,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     case xaifBoosterCodeReplacement::PrintVersion::ORIGINAL: { 
       // pick a path:
       dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>(this)->
-	xaifBoosterLinearization::SubroutineCallAlg::printXMLHierarchy(os);
+	xaifBoosterTypeChange::SubroutineCallAlg::printXMLHierarchy(os);
       break;
     }
     case xaifBoosterCodeReplacement::PrintVersion::AUGMENTED: 
@@ -103,12 +102,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   void SubroutineCallAlg::algorithm_action_1() { 
     // pick a path
-    dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>(this)->xaifBoosterLinearization::SubroutineCallAlg::algorithm_action_1();
-  }
-
-  void SubroutineCallAlg::algorithm_action_4() { 
-    xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4();
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::algorithm_action_4();
+    dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>(this)->xaifBoosterTypeChange::SubroutineCallAlg::algorithm_action_1();
   }
 
 } // end of namespace

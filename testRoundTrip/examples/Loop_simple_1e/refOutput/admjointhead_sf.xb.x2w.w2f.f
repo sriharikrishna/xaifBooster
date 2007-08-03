@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:41:28 2007
+C Fortran file translated from WHIRL Tue Jul 17 09:44:53 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -104,10 +104,6 @@ C
       EXTERNAL foo
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
-      INTEGER(w2f__i8) OpenAD_Symbol_10
-      INTEGER(w2f__i8) OpenAD_Symbol_7
-      INTEGER(w2f__i8) OpenAD_Symbol_8
-      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
 C
@@ -121,8 +117,6 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       J = 1
       DO I = 1, 2, 1
-        OpenAD_Symbol_9 = J
-        OpenAD_Symbol_10 = J
         CALL foo(__deriv__(X(J)), __deriv__(Y(J)))
       END DO
       RETURN
@@ -133,13 +127,9 @@ C$OPENAD XXX Simple loop
       J = 1
       OpenAD_Symbol_3 = 0_w2f__i8
       DO I = 1, 2, 1
-        OpenAD_Symbol_9 = J
-        OpenAD_Symbol_10 = J
         CALL foo(__deriv__(X(J)), __deriv__(Y(J)))
 C       $OpenAD$ INLINE push_i(subst)
-        CALL push_i(OpenAD_Symbol_9)
-C       $OpenAD$ INLINE push_i(subst)
-        CALL push_i(OpenAD_Symbol_10)
+        CALL push_i(J)
         OpenAD_Symbol_3 = (INT(OpenAD_Symbol_3) + INT(1_w2f__i8))
       END DO
 C     $OpenAD$ INLINE push_i(subst)
@@ -152,11 +142,8 @@ C     $OpenAD$ INLINE pop_i(subst)
       OpenAD_Symbol_2 = 1
       DO WHILE(INT(OpenAD_Symbol_2) .LE. INT(OpenAD_Symbol_1))
 C       $OpenAD$ INLINE pop_i(subst)
-        CALL pop_i(OpenAD_Symbol_7)
-C       $OpenAD$ INLINE pop_i(subst)
-        CALL pop_i(OpenAD_Symbol_8)
-        CALL foo(__deriv__(X(INT(OpenAD_Symbol_8))), __deriv__(Y(INT(
-     > OpenAD_Symbol_7))))
+        CALL pop_i(J)
+        CALL foo(__deriv__(X(J)), __deriv__(Y(J)))
         OpenAD_Symbol_2 = INT(OpenAD_Symbol_2) + 1
       END DO
 C     $OpenAD$ END REPLACEMENT
@@ -198,13 +185,9 @@ C$OPENAD XXX Simple loop
       J = 1
       OpenAD_Symbol_6 = 0_w2f__i8
       DO I = 1, 2, 1
-        OpenAD_Symbol_9 = J
-        OpenAD_Symbol_10 = J
         CALL foo(__deriv__(X(J)), __deriv__(Y(J)))
 C       $OpenAD$ INLINE push_i(subst)
-        CALL push_i(OpenAD_Symbol_9)
-C       $OpenAD$ INLINE push_i(subst)
-        CALL push_i(OpenAD_Symbol_10)
+        CALL push_i(J)
         OpenAD_Symbol_6 = (INT(OpenAD_Symbol_6) + INT(1_w2f__i8))
       END DO
 C     $OpenAD$ INLINE push_i(subst)
@@ -217,11 +200,8 @@ C     $OpenAD$ INLINE pop_i(subst)
       OpenAD_Symbol_5 = 1
       DO WHILE(INT(OpenAD_Symbol_5) .LE. INT(OpenAD_Symbol_4))
 C       $OpenAD$ INLINE pop_i(subst)
-        CALL pop_i(OpenAD_Symbol_7)
-C       $OpenAD$ INLINE pop_i(subst)
-        CALL pop_i(OpenAD_Symbol_8)
-        CALL foo(__deriv__(X(INT(OpenAD_Symbol_8))), __deriv__(Y(INT(
-     > OpenAD_Symbol_7))))
+        CALL pop_i(J)
+        CALL foo(__deriv__(X(J)), __deriv__(Y(J)))
         OpenAD_Symbol_5 = INT(OpenAD_Symbol_5) + 1
       END DO
 C     $OpenAD$ END REPLACEMENT

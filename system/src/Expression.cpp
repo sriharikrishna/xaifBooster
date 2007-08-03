@@ -240,4 +240,76 @@ namespace xaifBooster {
     return aVertex;
   }
 
+  void Expression::appendArguments(Expression::ArgumentPList& listToBeAppended) { 
+    Expression::VertexIteratorPair expVertItPair(vertices());
+    Expression::VertexIterator expVertIt(expVertItPair.first), expVertItEnd(expVertItPair.second);
+    for (; expVertIt!=expVertItEnd; ++expVertIt) {
+      Expression::InEdgeIteratorPair expInEdgeItPair(getInEdgesOf(*expVertIt));
+      if (expInEdgeItPair.first==expInEdgeItPair.second // no in edges
+	  && 
+	  (*expVertIt).isArgument()) { 
+	listToBeAppended.push_back(&(dynamic_cast<Argument&>(*expVertIt)));
+      }
+    }
+  } 
+
+  void Expression::appendArguments(Expression::CArgumentPList& listToBeAppended)const { 
+    Expression::ConstVertexIteratorPair expVertItPair(vertices());
+    Expression::ConstVertexIterator expVertIt(expVertItPair.first), expVertItEnd(expVertItPair.second);
+    for (; expVertIt!=expVertItEnd; ++expVertIt) {
+      Expression::ConstInEdgeIteratorPair expInEdgeItPair(getInEdgesOf(*expVertIt));
+      if (expInEdgeItPair.first==expInEdgeItPair.second // no in edges
+	  && 
+	  (*expVertIt).isArgument()) { 
+	listToBeAppended.push_back(&(dynamic_cast<const Argument&>(*expVertIt)));
+      }
+    }
+  } 
+
+  void Expression::replaceVariables(const Expression::VariablePVariableSRPPairList& replacementList) {
+    ArgumentPList listToBeAppended;
+    appendArguments(listToBeAppended);
+    for (ArgumentPList::iterator argumentI=listToBeAppended.begin();
+	 argumentI!=listToBeAppended.end();
+	 ++argumentI) { 
+      for (VariablePVariableSRPPairList::const_iterator replacementI=replacementList.begin();
+	   replacementI!=replacementList.end();
+	   ++replacementI) {
+	if ((*replacementI).first->equivalentTo((*argumentI)->getVariable())) { 
+	  DBG_MACRO(DbgGroup::DATA,"Expression::replaceVariables: replacing :"
+		    << (*argumentI)->getVariable().debug().c_str() ); 
+	  // make the replacement vertex in this expression
+	  Argument* newArgument_p=new Argument(false);
+	  newArgument_p->getVariable().supplyAndAddVertexInstance((*replacementI).second->createCopyOfMyself());
+	  supplyAndAddVertexInstance(*newArgument_p);
+	  Expression::OutEdgeIteratorPair expOutEdgeItPair(getOutEdgesOf(**argumentI));
+	  Expression::OutEdgeIterator expOutEdgeIt(expOutEdgeItPair.first), expOutEdgeItEnd(expOutEdgeItPair.second);
+	  typedef std::pair<ExpressionEdge*,ExpressionVertex*> TargetPair;
+	  typedef std::list<TargetPair> TargetPairList; 
+	  TargetPairList targetList; 
+	  // save the targets separately because insertion 
+	  // etc. confuses the graph iterators
+	  for ( ; expOutEdgeIt!=expOutEdgeItEnd; ++expOutEdgeIt) { 
+	    targetList.push_back(TargetPair(&(*expOutEdgeIt),&getTargetOf(*expOutEdgeIt)));
+	  } 
+	  // now make the new edges
+	  for (TargetPairList::iterator it=targetList.begin();
+	       it!=targetList.end();
+	       ++it) { 
+	    DBG_MACRO(DbgGroup::DATA,"Expression::replaceVariables: replacing edge "
+		      << (*it).first->debug().c_str()
+		      << " with target "
+		      << (*it).second->debug().c_str()); 
+	    supplyAndAddEdgeInstance((*it).first->createCopyOfMyself(),
+				     *newArgument_p,
+				     *((*it).second));
+	  }
+	  newArgument_p->setId((*argumentI)->getId());
+	  removeAndDeleteVertex(**argumentI);
+	  break; 
+	} 
+      } 
+    }
+  } 
+
 } // end of namespace xaifBooster 

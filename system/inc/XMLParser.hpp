@@ -66,11 +66,11 @@ namespace xaifBooster {
   class XMLParser {
   public:
     XMLParser(){};
-    ~XMLParser(){};
+    virtual ~XMLParser(){};
 
     void initialize(bool validateAgainstSchema);
     void parse(std::string theXMLFileName);
-    void setExternalSchemaLocation(std::string theSchemaLocation);
+    virtual void setExternalSchemaLocation(const std::string& theSchemaLocation);
     
     /**
      * converts an XML boolean string

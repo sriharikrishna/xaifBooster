@@ -98,6 +98,8 @@ namespace xaifBooster {
      */
     PreLoopAlgBase& getPreLoopAlgBase() const;
 
+    virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::PRELOOP_VKIND;}
+
   private:
     
     /** 

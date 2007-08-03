@@ -120,6 +120,8 @@ namespace xaifBooster {
 
     const IndexPairList& getIndexPairList() const;
 
+    IndexPairList& getIndexPairList();
+
   private:
     
     /**

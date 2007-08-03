@@ -93,10 +93,6 @@
         <xaif:SymbolTable>
           <xaif:Symbol symbol_id="I_5" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#5}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_11" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_12" kind="variable" type="integer" shape="scalar" annotation="" active="0" temp="1">
-          </xaif:Symbol>
           <xaif:Symbol symbol_id="T_6" kind="variable" type="real" shape="vector" annotation="{Sym_Id#6}" active="0" temp="0">
             <xaif:DimensionBounds lower="1" upper="2"/>
           </xaif:Symbol>
@@ -261,7 +257,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="convert_a2p_scalar" statement_id="SubroutineCallAlg::addConversion prior">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterTypeChange::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -273,7 +269,7 @@
           <xaif:SubroutineCall statement_id="15" symbol_id="barext__22" scope_id="1" active="undefined">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterTypeChange::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:SubroutineCall>
@@ -285,7 +281,7 @@
             </xaif:Argument>
             <xaif:Argument position="2">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterTypeChange::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -345,7 +341,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="convert_a2p_scalar" statement_id="SubroutineCallAlg::addConversion prior">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterTypeChange::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -357,7 +353,7 @@
           <xaif:SubroutineCall statement_id="15" symbol_id="barext__22" scope_id="1" active="undefined">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterTypeChange::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:SubroutineCall>
@@ -369,7 +365,7 @@
             </xaif:Argument>
             <xaif:Argument position="2">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterTypeChange::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -481,14 +477,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="3"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="3"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -505,14 +501,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="3"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="3"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -739,7 +735,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="convert_a2p_scalar" statement_id="SubroutineCallAlg::addConversion prior">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterTypeChange::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -751,7 +747,7 @@
           <xaif:SubroutineCall statement_id="15" symbol_id="barext__22" scope_id="1" active="undefined">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterTypeChange::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:SubroutineCall>
@@ -763,7 +759,7 @@
             </xaif:Argument>
             <xaif:Argument position="2">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterTypeChange::SubroutineCallAlg::makeTempVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -875,14 +871,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="3"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="3"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -899,14 +895,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="3"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4" scope_id="3"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="3"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -1047,16 +1043,6 @@
             </xaif:Argument>
           </xaif:SubroutineCall>
           <xaif:Marker statement_id="19" annotation="{WHIRL_Id#19} [passive: OPR_STID]"/>
-          <xaif:Assignment statement_id="index_expression_assignment_for_taping">
-            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_12" annotation="xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
-            </xaif:AssignmentLHS>
-            <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="I_5" annotation="" scope_id="4"/>
-              </xaif:VariableReference>
-            </xaif:AssignmentRHS>
-          </xaif:Assignment>
           <xaif:SubroutineCall statement_id="21" symbol_id="foo__21" scope_id="1" active="undefined">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
@@ -1109,16 +1095,6 @@
             </xaif:Argument>
           </xaif:SubroutineCall>
           <xaif:Marker statement_id="19" annotation="{WHIRL_Id#19} [passive: OPR_STID]"/>
-          <xaif:Assignment statement_id="index_expression_assignment_for_taping">
-            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_12" annotation="xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
-            </xaif:AssignmentLHS>
-            <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="I_5" annotation="" scope_id="4"/>
-              </xaif:VariableReference>
-            </xaif:AssignmentRHS>
-          </xaif:Assignment>
           <xaif:SubroutineCall statement_id="21" symbol_id="foo__21" scope_id="1" active="undefined">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
@@ -1143,8 +1119,8 @@
           </xaif:SubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="SRcall_inline_push_i">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_12" annotation="xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+              <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="I_5" annotation="" scope_id="4"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -1159,8 +1135,8 @@
         <xaif:BasicBlock vertex_id="8" annotation="" scope_id="4">
           <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_11" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+              <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="I_5" annotation="" scope_id="4"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -1176,8 +1152,8 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_11" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_5" annotation="" scope_id="4"/>
                       </xaif:VariableReference>
                     </xaif:Index>
                   </xaif:IndexTriplet>
@@ -1333,16 +1309,6 @@
             </xaif:Argument>
           </xaif:SubroutineCall>
           <xaif:Marker statement_id="19" annotation="{WHIRL_Id#19} [passive: OPR_STID]"/>
-          <xaif:Assignment statement_id="index_expression_assignment_for_taping">
-            <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_12" annotation="xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
-            </xaif:AssignmentLHS>
-            <xaif:AssignmentRHS>
-              <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="I_5" annotation="" scope_id="4"/>
-              </xaif:VariableReference>
-            </xaif:AssignmentRHS>
-          </xaif:Assignment>
           <xaif:SubroutineCall statement_id="21" symbol_id="foo__21" scope_id="1" active="undefined">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
@@ -1367,8 +1333,8 @@
           </xaif:SubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="SRcall_inline_push_i">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_12" annotation="xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+              <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="I_5" annotation="" scope_id="4"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -1383,8 +1349,8 @@
         <xaif:BasicBlock vertex_id="8" annotation="" scope_id="4">
           <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_11" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+              <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="I_5" annotation="" scope_id="4"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -1400,8 +1366,8 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                        <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_11" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg::handleArrayAccessIndices" scope_id="4"/>
+                      <xaif:VariableReference vertex_id="1" active="false" du_ud="6" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="I_5" annotation="" scope_id="4"/>
                       </xaif:VariableReference>
                     </xaif:Index>
                   </xaif:IndexTriplet>

@@ -1,14 +1,12 @@
 MAIN=t
 
-test: buildStamp.hpp $(MAIN) quickRegression.bash
+test: obj buildStamp.hpp $(MAIN) quickRegression.bash
 
-clean:
-	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) quickRegression.bash
-	rm -rf tmp
+CLEANTARGETS+=buildStamp.hpp tmp $(MAIN) quickRegression.bash
 
-obj doc: ;
+objs : ;
 
-.PHONY: obj test doc clean
+.PHONY: objs test 
 
 quickRegression.bash: 
 	ln -sf $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/test/quickRegression.bash
@@ -23,7 +21,8 @@ $(wildcard ../../ControlFlowReversal/src/obj/*.o) 		   \
 $(wildcard ../../BasicBlockPreaccumulationTapeAdjoint/src/obj/*.o) \
 $(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) 	   \
 $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o)            \
-$(wildcard ../../Linearization/src/obj/*.o)
+$(wildcard ../../Linearization/src/obj/*.o)			   \
+$(wildcard ../../TypeChange/src/obj/*.o)
 
 VPATH+=../../CrossCountryInterface/lib
 LIBS+=-lxaifBoosterCrossCountryInterface

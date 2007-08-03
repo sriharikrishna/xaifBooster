@@ -56,6 +56,10 @@
 #include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
 #include "xaifBooster/system/inc/SubroutineCallAlgFactory.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/SubroutineNotFoundException.hpp"
 
 namespace xaifBooster { 
 
@@ -63,6 +67,7 @@ namespace xaifBooster {
   const std::string SubroutineCall::our_myId_XAIFName("statement_id");
   const std::string SubroutineCall::our_symbolId_XAIFName("symbol_id");
   const std::string SubroutineCall::our_scopeId_XAIFName("scope_id");
+  bool SubroutineCall::ourBlackBoxOptimism(true);
 
   SubroutineCall::SubroutineCall (const Symbol& theSymbol,
 				  const Scope& theScope,
@@ -209,5 +214,52 @@ namespace xaifBooster {
   ActiveUseType::ActiveUseType_E SubroutineCall::getActiveUse() const { 
     return myActiveUse;
   } 
+
+  bool SubroutineCall::overwrites(const Variable& aVariable) const { 
+    // this is a hack until we have better analysis
+    // see if it matches anything in the subroutine's mod list: 
+    try { 
+      const ControlFlowGraph& theSubroutine(ConceptuallyStaticInstances::instance()->getCallGraph().
+ 					  getSubroutineBySymbolReference(getSymbolReference()).getControlFlowGraph());
+      if (theSubroutine.overwrites(aVariable.getVariableSymbolReference()))
+	return true;
+      // check if it is in the argument list: 
+      for (ConcreteArgumentPList::const_iterator i=myConcreteArgumentPList.begin();
+	   i!=myConcreteArgumentPList.end();
+	   ++i) { 
+	if((*i)->isArgument() 
+	   && 
+	   (*i)->getArgument().getVariable().equivalentTo(aVariable)) { 
+	  // is an argument, check the mod-list for the corresponding formal 
+	  // find the corresponding formal: 
+	  const ArgumentList::ArgumentSymbolReferencePList& theFormalList(theSubroutine.getArgumentList().getArgumentSymbolReferencePList());
+	  for (ArgumentList::ArgumentSymbolReferencePList::const_iterator formalIt=theFormalList.begin();
+	       formalIt!=theFormalList.end();
+	       ++formalIt) { 
+	    if ((*formalIt)->getPosition()==(*i)->getPosition()
+		&& 
+		theSubroutine.overwrites(**formalIt)) { 
+	      return true;
+	    }
+	  }
+	}
+      }
+      return false;
+    }
+    catch (SubroutineNotFoundException e) { 
+      if (ourBlackBoxOptimism)
+	return false; 
+      else
+	return true; 
+    } 
+  } 
+
+  bool SubroutineCall::getBlackBoxOptimism() { 
+    return ourBlackBoxOptimism; 
+  } 
   
+  void SubroutineCall::noBlackBoxOptimism() { 
+    ourBlackBoxOptimism=false;
+  } 
+
 } // end of namespace xaifBooster 

@@ -101,6 +101,8 @@ namespace xaifBooster {
 
 #include "xaifBooster/tools/codegen/code/parse_method_decl.inc"
 
+void onControlFlowGraphEnd(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+
   protected:
     XAIFBaseParserHandlers(){};
     ~XAIFBaseParserHandlers(){};

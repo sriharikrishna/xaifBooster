@@ -101,9 +101,14 @@ namespace xaifBoosterAddressArithmetic {
     virtual void algorithm_action_3();
 
     /**
-     * refering to xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4
+     * refering to xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4
      */
     virtual void algorithm_action_4();
+
+    /**
+     * refering to xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5
+     */
+    virtual void algorithm_action_5();
 
   private:
 

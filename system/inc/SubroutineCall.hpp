@@ -69,9 +69,12 @@ namespace xaifBooster {
   class SubroutineCall : public BasicBlockElement,
 			 public ObjectWithLineNumber {
   public:
+
     /** 
-     * \param makeAlgorithm  news up an algorithm object if required
-     * this is also carried through for the respective members
+     * \param theSymbol the name of the subroutine
+     * \param theScope  the corresponding scope of theSymbol
+     * \param activeUseType true if this call is active, i.e. has active arguments
+     * \param makeAlgorithm  news up an algorithm object if required which then  is also carried through for the respective members
      */
     SubroutineCall (const Symbol& theSymbol,
 		    const Scope& theScope,
@@ -152,6 +155,19 @@ namespace xaifBooster {
      */
     ActiveUseType::ActiveUseType_E getActiveUse() const; 
 
+    /** 
+     * the implementation is incomplete
+     * \todo refer to alias results
+     */
+    bool overwrites(const Variable& aVariable) const; 
+
+    static bool getBlackBoxOptimism(); 
+
+    /** 
+     * set ourBlackBoxOptimism to false
+     */
+    static void noBlackBoxOptimism(); 
+
   private: 
     
     /**
@@ -179,6 +195,13 @@ namespace xaifBooster {
      * of SubroutineCall
      */
     ConcreteArgumentPList myConcreteArgumentPList;
+
+    /** 
+     * if true (default) we are optimistic 
+     * in regard to black box routines, 
+     * e.g. they don't have side effects
+     */
+    static bool ourBlackBoxOptimism; 
 
   };
  

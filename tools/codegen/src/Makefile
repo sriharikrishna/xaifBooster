@@ -50,6 +50,8 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
+CLEANTARGETS+=../classes/*.class
+
 include ../Makefile.incl
 
 all: CodeGenerator.java
@@ -57,7 +59,4 @@ all: CodeGenerator.java
 	javac CodeGenerator.java 
 	mv *.class ../classes
 
-clean:
-	rm ../classes/*.class
-
-.PHONY: all clean
+.PHONY: all 

@@ -153,6 +153,8 @@
       </xaif:DUUDSet>
       <xaif:DUUDSet key="9">
         <xaif:StatementId idRef=""/>
+        <xaif:StatementId idRef="22"/>
+        <xaif:StatementId idRef="50"/>
         <xaif:StatementId idRef="54"/>
       </xaif:DUUDSet>
     </xaif:DUUDSetList>

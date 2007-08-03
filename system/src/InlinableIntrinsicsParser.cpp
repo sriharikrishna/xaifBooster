@@ -70,6 +70,13 @@ namespace xaifBooster {
     myInlinableIntrinsicsCatalogue(theInlinableIntrinsicsCatalogue_r){
   }
   
+  void InlinableIntrinsicsParser::setExternalSchemaLocation(const std::string& theSchemaLocation) { 
+    if (theSchemaLocation.size()) { 
+      std::string aUrl("http://www.mcs.anl.gov/XAIFInlinableIntrinsics ");
+      XMLParser::setExternalSchemaLocation(aUrl+theSchemaLocation+"/xaif_inlinable_intrinsics.xsd");
+    } 
+  } 
+  
   void InlinableIntrinsicsParser::initialize() { 
     try { 
 

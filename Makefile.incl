@@ -132,6 +132,15 @@ export OBJS=$(addprefix obj/, $(addsuffix .o, $(FLIST)))
 # include the dependency information 
 export DEPINCL = $(addprefix obj/, $(addsuffix .d, $(FLIST)))
 
+# make object dir
+obj: 
+	mkdir  obj
+
+clean: 
+	rm -rf obj $(CLEANTARGETS)
+
+.PHONY: clean
+
 # compile the objects
 # as part of this we create dependency information 
 # 1: echo complaint about any undefined variable

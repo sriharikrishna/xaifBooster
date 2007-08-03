@@ -66,7 +66,7 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlgParameter.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
@@ -253,10 +253,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     } // end for i
   } 
 
-  void BasicBlockAlg::algorithm_action_4() { // adjoin the DerivativePropagators
+  void BasicBlockAlg::algorithm_action_5() { // adjoin the DerivativePropagators
     if (getContaining().getBasicBlockElementList().empty())
       return;
-    xaifBoosterLinearization::BasicBlockAlgParameter::instance().set(*this); // in BasicBlockAlg::algorithm_action_4()
+    xaifBoosterTypeChange::BasicBlockAlgParameter::instance().set(*this); // in BasicBlockAlg::algorithm_action_5()
     // mesh the BasicBlockElements with the Sequences
     PlainBasicBlock::BasicBlockElementList::const_reverse_iterator aBasicBlockElementListRI=getContaining().getBasicBlockElementList().rbegin();
     SequenceHolder::SequencePList::const_reverse_iterator aSequencePListRI=getBestSequenceHolder().getUniqueSequencePList().rbegin();
@@ -304,7 +304,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	  noSequence=true;
       } // end of if (!done)
     } // end while (!done)
-  } // end of algorithm_action_4 
+  } 
 
   void BasicBlockAlg::addZeroDeriv(Variable& theTarget,
 				   const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
@@ -357,7 +357,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       new VariableSymbolReference(aTemporarySymbol,
 				  getContaining().getScope());
     theNewVariableSymbolReference_p->setId("1");
-    theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4");
+    theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop");
     // pass it on to the variable and relinquish ownership
     theInlineVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
     theInlineVariable.getAliasMapKey().setTemporary();
@@ -473,7 +473,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	    break; 
 	  } 
 	default: 
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_4: cannot handle factor kind " 
+	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::reinterpretDerivativePropagatorEntry: cannot handle factor kind " 
 				     << (*aFactorListI).getKind()); 
 	  break; 
 	} // end switch 

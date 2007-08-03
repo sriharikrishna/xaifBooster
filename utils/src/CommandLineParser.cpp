@@ -56,49 +56,49 @@
 
 namespace xaifBooster { 
 
-  CommandLineParser* CommandLineParser::ourClassInstance_p=NULL;
-
-  CommandLineParser::CommandLineParser() {
+  CommandLineParser::CommandLineParser(int argc, 
+				       char** argv) :
+    myArgc(argc), 
+    myArgv(argv),
+    myParsedFlag(false) { 
   } 
 
   CommandLineParser::~CommandLineParser() {
-    ourClassInstance_p=NULL;
   } 
   
-  CommandLineParser*
-  CommandLineParser::instance(){
-    if (! ourClassInstance_p)
-      ourClassInstance_p=new CommandLineParser();
-    return ourClassInstance_p; 
-  } 
-
   void
-  CommandLineParser::initialize(const std::string& switches, 
-				int argc, 
-				char** argv) {
-    myCommandLineArguments.addSwitches(switches);
+  CommandLineParser::parse(const std::string& theSwitches) {
+    if (myParsedFlag)
+      THROW_LOGICEXCEPTION_MACRO("CommandLineParser::parse(): cannot parse more than once!");
+    myCommandLineArguments.addSwitches(theSwitches);
     // the first piece after the program name should be a
     // switch or a group of switches. 
-    CommandLineSegment theSegment(argc, argv);
+    CommandLineSegment theSegment(myArgc, myArgv);
     while (theSegment.notDone()){
       theSegment.parse();
       myCommandLineArguments.setSegment(theSegment); 
     } // end while 
+    myParsedFlag=true; 
   }
      
-
   void
   CommandLineParser::displayArguments() const {
+    if (!myParsedFlag)
+      THROW_LOGICEXCEPTION_MACRO("CommandLineParser::displayArguments parse has not been called!");
     myCommandLineArguments.dump();
   }
 
   const std::string& 
   CommandLineParser::argAsString(char theSwitch) const {
+    if (!myParsedFlag)
+      THROW_LOGICEXCEPTION_MACRO("CommandLineParser::argAsString parse has not been called!");
     return myCommandLineArguments.getArgument(theSwitch);
   } // end CommandLineParser::displayArguments
 
   int
   CommandLineParser::argAsInt(char theSwitch) const {
+    if (!myParsedFlag)
+      THROW_LOGICEXCEPTION_MACRO("CommandLineParser::argAsInt parse has not been called!");
     int value;
     std::string temp(myCommandLineArguments.getArgument(theSwitch));
     if (temp.empty()) { // make sure that is something
@@ -141,6 +141,8 @@ namespace xaifBooster {
 
   double
   CommandLineParser::argAsDouble(char theSwitch) const  {
+    if (!myParsedFlag)
+      THROW_LOGICEXCEPTION_MACRO("CommandLineParser::argAsDouble parse has not been called!");
     double value;
     std::string temp(myCommandLineArguments.getArgument(theSwitch));
     if (temp.empty()) { // make sure that is something
@@ -181,6 +183,8 @@ namespace xaifBooster {
 
   bool
   CommandLineParser::isSet(char theSwitch) const {
+    if (!myParsedFlag)
+      THROW_LOGICEXCEPTION_MACRO("CommandLineParser::isSet parse has not been called!");
     return myCommandLineArguments.isSet(theSwitch);
   } // end CommandLineParser::argAsDouble
 

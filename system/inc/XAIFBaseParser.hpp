@@ -73,6 +73,8 @@ namespace xaifBooster {
     void startElement(const XMLCh*, const XMLCh*, const XMLCh*, const XERCES_CPP_NAMESPACE::Attributes&);
     void endElement(const XMLCh*, const XMLCh*, const XMLCh*);
 
+    virtual void setExternalSchemaLocation(const std::string& theSchemaLocation);
+
   private:
 
     const XERCES_CPP_NAMESPACE::Locator * myLocator_p;
@@ -93,9 +95,14 @@ namespace xaifBooster {
     }; 
 
     /**
-     * the action catalogue 
+     * the action catalogue for start elements 
      */
-    static HashTable<ActionItem> ourActionCatalogue;
+    static HashTable<ActionItem> ourStartActionCatalogue;
+    
+    /**
+     * the action catalogue for end elements
+     */
+    static HashTable<ActionItem> ourEndActionCatalogue;
     
     /**
      * flag guarding the onetime initialization of
@@ -111,11 +118,18 @@ namespace xaifBooster {
     static void staticInitialize();
 
     /**
-     * method used by * startElement.
+     * method used by startElement.
      * selects action method appropriate for node name
-     * from XAIFBaseParser::ourActionCatalogue
+     * from ourStartActionCatalogue
      */
-    void actionInvocation(const XMLCh* const);
+    void startActionInvocation(const XMLCh* const);
+
+    /**
+     * method used by endElement.
+     * selects action method appropriate for node name
+     * from ourEndActionCatalogue
+     */
+    void endActionInvocation(const XMLCh* const);
 
   }; // end of class XAIFBaseParser
 
