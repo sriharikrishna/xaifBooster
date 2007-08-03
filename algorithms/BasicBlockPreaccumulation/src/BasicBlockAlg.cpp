@@ -380,7 +380,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
     xaifBooster::BasicBlockAlgBase(theContaining),
-    xaifBoosterLinearization::BasicBlockAlg(theContaining),
+    xaifBoosterTypeChange::BasicBlockAlg(theContaining),
     myBestSequenceHolder_p(0),
     mySequenceHolderPVector(PreaccumulationMode::ourModeCount) { 
     mySequenceHolderPVector[PreaccumulationMode::STATEMENT]=new SequenceHolder(true);

@@ -57,7 +57,7 @@
 
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlg.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
@@ -149,6 +149,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * access container
      */
     const BasicBlock& getContaining() const;
+
+    /** 
+     * we can decide to restrict the
+     * preaccumulation to the level of single statements
+     * effectively precluding the flattening
+     */
+    
+    static void limitToStatementLevel();
+
+    static bool doesLimitToStatementLevel();
     
     /** 
      * we can allow to have all 'ax' factors collected 
