@@ -71,8 +71,9 @@ namespace xaifBooster {
     void endDocument();
     void startElement(const XMLCh*, const XMLCh*, const XMLCh*, const XERCES_CPP_NAMESPACE::Attributes&);
     void endElement(const XMLCh*, const XMLCh*, const XMLCh*);
+ 
+    virtual void setExternalSchemaLocation(const std::string& theSchemaLocation);
 
-    
   private:
 
     InlinableIntrinsicsCatalogue& myInlinableIntrinsicsCatalogue;

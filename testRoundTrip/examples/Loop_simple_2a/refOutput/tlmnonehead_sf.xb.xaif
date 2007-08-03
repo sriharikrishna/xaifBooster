@@ -116,6 +116,7 @@
       <xaif:DUUDSet key="3">
         <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="23"/>
+        <xaif:StatementId idRef="70"/>
       </xaif:DUUDSet>
       <xaif:DUUDSet key="4">
         <xaif:StatementId idRef=""/>
@@ -302,7 +303,7 @@
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="11" annotation="" scope_id="3">
       </xaif:BasicBlock>
-      <xaif:ForLoop vertex_id="12" annotation="" reversal="anonymous">
+      <xaif:ForLoop vertex_id="12" annotation="" reversal="explicit">
         <xaif:Initialization statement_id="48">
           <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="J_4" annotation="" scope_id="3"/>
@@ -337,7 +338,7 @@
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="13" annotation="" scope_id="3">
       </xaif:BasicBlock>
-      <xaif:ForLoop vertex_id="14" annotation="" reversal="anonymous">
+      <xaif:ForLoop vertex_id="14" annotation="" reversal="explicit">
         <xaif:Initialization statement_id="60">
           <xaif:AssignmentLHS active="false" du_ud="1" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="K_5" annotation="" scope_id="3"/>

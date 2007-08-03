@@ -209,9 +209,9 @@ namespace xaifBoosterAddressArithmetic {
   } 
 
   void
-  CallGraphVertexAlg::findUnknownVariablesInDerivativePropagatorIndexExpressions(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
-										 const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-										 CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) {
+  CallGraphVertexAlg::findUnknownIndexVariablesInBasicBlockElements(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
+								    const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+								    CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) {
     // we get the sequences
     const xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::SequencePList& aSequencePList(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(theOriginalBasicBlock.getOriginalVertex().getControlFlowGraphVertexAlgBase()).
 													     getBestSequenceHolder().getUniqueSequencePList());
@@ -290,9 +290,9 @@ namespace xaifBoosterAddressArithmetic {
 									     CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) { 
     switch (aReversibleControlFlowGraphVertex.getKind()) { 
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::BASICBLOCK:{ 
-      findUnknownVariablesInDerivativePropagatorIndexExpressions(aReversibleControlFlowGraphVertex,
-								 theKnownVariables,
-								 theUnknownVariables);
+      findUnknownIndexVariablesInBasicBlockElements(aReversibleControlFlowGraphVertex,
+						    theKnownVariables,
+						    theUnknownVariables);
       break;
     } 
     case xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::FORLOOP: { 
@@ -681,6 +681,7 @@ namespace xaifBoosterAddressArithmetic {
       for(DuUdMapDefinitionResult::StatementIdList::const_iterator defChainI=defChain.begin();
 	  defChainI!=defChain.end();
 	  ++defChainI) {
+	// std::cout << "checking for " << (*defChainI).c_str() << " under " << theControlFlowGraphVertex.debug().c_str() << std::endl; 
 	if (!(*defChainI).empty()
 	    && 
 	    getContaining().getControlFlowGraph().firstDominatedBySecond(getContaining().getControlFlowGraph().getContainingVertex(*defChainI),

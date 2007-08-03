@@ -140,16 +140,6 @@ namespace xaifBoosterControlFlowReversal {
      */
     ReversibleControlFlowGraph operator=(const ReversibleControlFlowGraph&);
 
-    /** 
-     * set myVisitedFlag of all vertices to false
-     */
-    void initVisit(); 
-
-    /** 
-     * set all indeces to -1
-     */
-    void clearIndeces(); 
-
     /**
      * Insert edge from theAdjointSource_cr to theAdjointTarget_cr as specfied by 
      * source and target;
@@ -263,10 +253,9 @@ namespace xaifBoosterControlFlowReversal {
 						  const ForLoop& theOldForLoop);
 
     /** 
-     * make a new preloop
+     * make a new anonymous forloop for the given preloop
      */
-    ReversibleControlFlowGraphVertex* new_preloop(ForLoopReversalType::ForLoopReversalType_E aForLoopReversalType,
-						  const PreLoop& theOldPreLoop);
+    ReversibleControlFlowGraphVertex* new_preloop(const PreLoop& theOriginalPreLoop);
 
     /** 
      * make a new endloop
@@ -309,10 +298,10 @@ namespace xaifBoosterControlFlowReversal {
     std::list<ReversibleControlFlowGraphVertex*> mySortedVertices_p_l;
 
     /** 
-     * list of correspondences between original vertices
-     * and new ones in the reversed cfg
-     * NOTE: this is populated only in the eventually augmented version,
-     * not in the adjoint version! 
+     * list of correspondences between vertices in the original CFG (first)
+     * and new ones in the reversed cfg (second).
+     * NOTE: this is populated only in the eventually augmented CFG,
+     * but not in the adjoint CFG! 
      * \todo JU: refactor this 
      */
     VertexPPairList myOriginalReverseVertexPPairList;

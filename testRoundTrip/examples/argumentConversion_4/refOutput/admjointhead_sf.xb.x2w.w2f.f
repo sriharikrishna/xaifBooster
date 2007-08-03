@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:36:00 2007
+C Fortran file translated from WHIRL Tue Jul 17 09:41:56 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -190,16 +190,8 @@ C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_10), PX(1))
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_11), PY)
       CALL foo(__deriv__(OpenAD_Symbol_10), __deriv__(OpenAD_Symbol_11)
      > )
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(PX(1), __deriv__(OpenAD_Symbol_10))
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_11))
       CALL foo(__deriv__(X(1)), __deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
@@ -249,16 +241,8 @@ C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_10), PX(1))
-C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_11), PY)
       CALL foo(__deriv__(OpenAD_Symbol_10), __deriv__(OpenAD_Symbol_11)
      > )
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(PX(1), __deriv__(OpenAD_Symbol_10))
-C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
-      CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_11))
       CALL foo(__deriv__(X(1)), __deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE

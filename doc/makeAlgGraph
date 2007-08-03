@@ -1,0 +1,8 @@
+find ./ -name "*Alg.hpp" -print | xargs grep "public "  | sed -f makeAlgGraph.sed  |  sed -f makeAlgGraph2.sed   |  sed -f makeAlgGraph2.sed |  sed -f makeAlgGraph3.sed |  sed -f makeAlgGraph3.sed |  sed -f makeAlgGraph3.sed  | sed 's/::/_/g' | sed 's/BasicBlockPreaccumulation/BBP/g' | sed 's/ControlFlowReversal/CFR/g' > algGraphEdges.txt
+cat algGraphEdges.txt | sed 's/->/\n/' | sed 's/[ 	]*//g' | sort | uniq > algGraphVertices.txt 
+echo "Digraph {" > algGraph.dot
+cat algGraphVertices.txt | sed 's/$/;/' >> algGraph.dot
+cat algGraphEdges.txt | sed 's/$/;/' >> algGraph.dot
+echo "}" >> algGraph.dot
+dot -Tps algGraph.dot > algGraph.ps
+gv algGraph.ps

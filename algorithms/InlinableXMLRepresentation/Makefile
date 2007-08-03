@@ -50,9 +50,9 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
-default: obj test 
+default: objs test 
 
-obj test doc clean:
+objs test clean:
 	cd src && $(MAKE) $@
 
-.PHONY: default obj test doc clean
+.PHONY: default objs test clean

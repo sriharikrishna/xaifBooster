@@ -53,7 +53,6 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlg.hpp"
 
 using namespace xaifBooster;
@@ -66,8 +65,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
    * view per SubroutineCall; 
    * we just need to reimplement printing
    */
-  class SubroutineCallAlg : public xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg,
-			    public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg {
+  class SubroutineCallAlg : public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg {
 
   public:
     
@@ -85,11 +83,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * refering to xaifBoosterLinearization::SubroutineCallAlg::algorithm_action_1
      */
     virtual void algorithm_action_1();
-
-    /**
-     * refering to xaifBoosterBasicBlockPreaccumulationTape(Adjoint)::SubroutineCallAlg::algorithm_action_4
-     */
-    virtual void algorithm_action_4();
 
   private:
 

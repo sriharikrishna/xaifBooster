@@ -50,12 +50,13 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
-obj test doc clean:
+objs test clean:
 	cd CrossCountryInterface && $(MAKE) $@
 	cd InlinableXMLRepresentation && $(MAKE) $@
 	cd CodeReplacement && $(MAKE) $@
 	cd DerivativePropagator && $(MAKE) $@
 	cd AdjointUtils && $(MAKE) $@
+	cd TypeChange && $(MAKE) $@
 	cd Linearization && $(MAKE) $@
 	cd BasicBlockPreaccumulation && $(MAKE) $@
 	cd MemOpsTradeoffPreaccumulation && $(MAKE) $@
@@ -65,4 +66,4 @@ obj test doc clean:
 	cd AddressArithmetic && $(MAKE) $@
 	cd BasicBlockPreaccumulationReverse && $(MAKE) $@
 
-.PHONY: obj test doc clean
+.PHONY: objs test clean

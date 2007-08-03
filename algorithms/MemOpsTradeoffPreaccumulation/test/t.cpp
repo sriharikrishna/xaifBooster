@@ -52,92 +52,58 @@
 // ========== end copyright notice ==============
 #include <iostream>
 #include <utility>
+
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+
 #include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/HeuristicParse.hpp"
+#include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/AlgConfig.hpp"
 
 using namespace xaifBooster;
 
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/test/buildStamp.hpp"
 
-void Usage(char** argv) { 
-  std::cout << "test driver: "
-	    << argv[0]
-	    << " -i <inputFile> -c <intrinsicsCatalogueFile> " << std::endl
-	    << "             [-s <pathToSchema> ] defaults to ./" << std::endl
-	    << "             [-o <outputFile> ] [-d <debugOutputFile>]" << std::endl
-	    << "                 both default to cout" << std::endl
-            << "             [-h <Heuristic List>]" << std::endl
-            << "                 List must be in all caps, the first word must be either VERTEX, FACE, or EDGE," << std::endl
-            << "                 followed by applicable heuristics as noted in the readme file." << std::endl
-            << "                 all words are to be separated by a single space" << std::endl
-            << "             [-g <debugGroup>]" << std::endl
-	    << "                 with debugGroup >=0 the sum of any of: " << DbgGroup::printAll().c_str() << std::endl
-	    << "                 default to 0(ERROR)" << std::endl
-	    << " build info : " << buildStamp.c_str() << std::endl;
-} 
 
 int main(int argc,char** argv) { 
   DbgLoggerManager::instance()->setBinaryBuildInfo(buildStamp);
   DbgLoggerManager::instance()->setSelection(DbgGroup::ERROR 
 					     //| DbgGroup::CALLSTACK | DbgGroup::TEMPORARY
 					     );
-  std::string inFileName, outFileName, intrinsicsFileName, schemaPath;
-  // to contain the namespace url in case of -s having a schema location
-  std::string aUrl;
+  xaifBoosterMemOpsTradeoffPreaccumulation::AlgConfig algConfig(argc,argv,buildStamp);
   try { 
-    CommandLineParser::instance()->initialize("iocdghs",argc,argv);
-    inFileName=CommandLineParser::instance()->argAsString('i');
-    intrinsicsFileName=CommandLineParser::instance()->argAsString('c');
-    if (CommandLineParser::instance()->isSet('s')) 
-      schemaPath=CommandLineParser::instance()->argAsString('s');
-    if (CommandLineParser::instance()->isSet('o'))
-      outFileName=CommandLineParser::instance()->argAsString('o');
-    if (CommandLineParser::instance()->isSet('d'))
-      DbgLoggerManager::instance()->setFile(CommandLineParser::instance()->argAsString('d'));
-    if (CommandLineParser::instance()->isSet('g'))
-      DbgLoggerManager::instance()->setSelection(CommandLineParser::instance()->argAsInt('g'));
-    if (CommandLineParser::instance()->isSet('h'))
-      MemOpsTradeoffPreaccumulation::HeuristicParse::fromString(CommandLineParser::instance()->argAsString('h'));
-  } catch (BaseException& e) {
+    algConfig.config();
+  } catch (BaseException& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught exception: " << e.getReason());
-    Usage(argv);
+    algConfig.usage();
     return -1;
-  } // end catch
+  } // end catch 
   try {   
     xaifBoosterMemOpsTradeoffPreaccumulation::AlgFactoryManager::instance()->init();
-    InlinableIntrinsicsParser ip(xaifBooster::ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
+    InlinableIntrinsicsParser ip(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     ip.initialize();
-    if (schemaPath.size()) { 
-      aUrl="http://www.mcs.anl.gov/XAIFInlinableIntrinsics ";
-      ip.setExternalSchemaLocation(aUrl+schemaPath+"/xaif_inlinable_intrinsics.xsd");
-    } 
-    ip.parse(intrinsicsFileName);
+    ip.setExternalSchemaLocation(algConfig.getSchemaPath());
+    ip.parse(algConfig.getIntrinsicsFileName());
     XAIFBaseParser p;
-    p.initialize(true);
-    if (schemaPath.size()) { 
-      aUrl="http://www.mcs.anl.gov/XAIF ";
-      p.setExternalSchemaLocation(aUrl+schemaPath+"/xaif.xsd");
-    } 
-    p.parse(inFileName);
-    CallGraph& Cg(xaifBooster::ConceptuallyStaticInstances::instance()->getCallGraph());
+    p.initialize(algConfig.getInputValidationFlag());
+    p.setExternalSchemaLocation(algConfig.getSchemaPath());
+    p.parse(algConfig.getInputFileName());
+    CallGraph& Cg(ConceptuallyStaticInstances::instance()->getCallGraph());
+    Cg.getScopeTree().forcedPassivation();
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_1); // linearize
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_2); // flatten
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_3); // accumulate Jacobian
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
-    if (schemaPath.size())
-      newLocation.append(" "+schemaPath+"/xaif_output.xsd");
+    if (algConfig.getSchemaPath().size())
+      newLocation.append(" "+algConfig.getSchemaPath()+"/xaif_output.xsd");
     else 
       newLocation.append(" xaif_output.xsd");
     Cg.resetSchemaLocation(newLocation);
-    if (CommandLineParser::instance()->isSet('o')) { 
-      std::ofstream theOutFile(CommandLineParser::instance()->argAsString('o').c_str(),
+    if (algConfig.isSet('o')) { 
+      std::ofstream theOutFile(algConfig.getOutFileName().c_str(),
 			       std::ios::out);
       Cg.printXMLHierarchy(theOutFile);
       theOutFile.close();

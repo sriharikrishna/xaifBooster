@@ -90,7 +90,10 @@ namespace xaifBoosterAddressArithmetic {
 
   void BasicBlockAlg::algorithm_action_4() { 
     xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4();
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4();
+  } 
+
+  void BasicBlockAlg::algorithm_action_5() { 
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5();
   }
   
 } // end of namespace

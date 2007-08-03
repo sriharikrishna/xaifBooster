@@ -157,6 +157,12 @@ namespace xaifBooster {
   }
 
   void 
+  XAIFBaseParserHandlers::onControlFlowGraphEnd(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onControlFlowGraphEnd" ); 
+    passingIn.getControlFlowGraph().augmentGraphInfo();
+  }
+
+  void 
   XAIFBaseParserHandlers::onSymbol(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onSymbol" ); 
     SymbolTable& theSymbolTable(passingIn.getSymbolTable());

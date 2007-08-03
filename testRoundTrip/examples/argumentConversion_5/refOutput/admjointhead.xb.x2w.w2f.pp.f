@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 14:36:05 2007
+C Fortran file translated from WHIRL Tue Jul 17 09:42:16 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -423,15 +423,7 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-C!! requested inline of 'convert_p2a_vector' has no defn
-      CALL convert_p2a_vector(OpenAD_Symbol_11,PX)
-C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_12,PY)
       CALL foo(OpenAD_Symbol_11,OpenAD_Symbol_12)
-C!! requested inline of 'convert_a2p_vector' has no defn
-      CALL convert_a2p_vector(PX,OpenAD_Symbol_11)
-C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(PY,OpenAD_Symbol_12)
       CALL foo(X,Y)
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.

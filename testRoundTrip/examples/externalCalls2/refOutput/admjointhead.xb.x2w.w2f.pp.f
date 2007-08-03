@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:34:25 2006
+C Fortran file translated from WHIRL Tue Jul 17 09:43:36 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -314,8 +314,6 @@ C
       EXTERNAL foo
       INTEGER(w2f__i4) I
       REAL(w2f__8) T(1 : 2)
-      INTEGER(w2f__i8) OpenAD_Symbol_11
-      INTEGER(w2f__i8) OpenAD_Symbol_12
 C
 C     **** Top Level Pragmas ****
 C
@@ -390,7 +388,6 @@ C$OPENAD XXX Template ad_template.f
       I = 2
       CALL barext(T(I))
       I = 1
-      OpenAD_Symbol_12 = I
       CALL foo(X,Y(I))
       
             our_rev_mode=our_orig_mode
@@ -409,9 +406,8 @@ C$OPENAD XXX Template ad_template.f
       I = 2
       CALL barext(T(I))
       I = 1
-      OpenAD_Symbol_12 = I
       CALL foo(X,Y(I))
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_12
+          integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
       
             our_rev_mode%arg_store=.FALSE.
@@ -433,8 +429,8 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_11 = integer_tape(integer_tape_pointer)
-      CALL foo(X,Y(INT(OpenAD_Symbol_11)))
+          I = integer_tape(integer_tape_pointer)
+      CALL foo(X,Y(I))
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.

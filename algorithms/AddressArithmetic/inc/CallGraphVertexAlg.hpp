@@ -13,7 +13,11 @@ namespace xaifBoosterAddressArithmetic {
 
   /** 
    * class to implement algorithms relevant for the 
-   * address arithmetic
+   * address arithmetic but so far only for 
+   * the explicit reversal case. 
+   * taping and restoring of non-explicit reversal
+   * is handled in BasicBlockPreaccumulationTape and 
+   * BasicBlockPreaccumulationTapeAdjoint resp.
    */
   class CallGraphVertexAlg : public xaifBoosterControlFlowReversal::CallGraphVertexAlg {
   public:
@@ -142,11 +146,11 @@ namespace xaifBoosterAddressArithmetic {
     /** 
      * find variables used in index expressions
      * occuring in the DerivativePropagator 
-     * instances for a given BasicBlock
+     * instances and subroutine calls for a given BasicBlock
      */
-    void findUnknownVariablesInDerivativePropagatorIndexExpressions(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
-								    const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-								    UnknownVarInfoList& theUnknownVariables);
+    void findUnknownIndexVariablesInBasicBlockElements(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
+						       const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+						       UnknownVarInfoList& theUnknownVariables);
 
     /** 
      * find variables used in aReversibleControlFlowGraphVertex 

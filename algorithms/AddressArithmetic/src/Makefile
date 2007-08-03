@@ -1,14 +1,11 @@
 # default target
-default: obj
+default: objs
 
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
-obj: $(OBJS)
+objs: obj $(OBJS)
 
-clean:
-	rm -f obj/*.o obj/*.d
+test : ;
 
-test doc: ;
-
-.PHONY: obj test doc clean
+.PHONY: objs test 

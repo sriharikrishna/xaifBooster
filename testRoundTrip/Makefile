@@ -137,7 +137,7 @@ head_sf.xaif : head_sf.B whirl2xaif
 
 # XAIF -> XAIF'
 head_sf.xb.xaif : head_sf.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
-	./xaifBooster -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG) 
+	./xaifBooster -v -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG) 
 
 # XAIF' -> WHIRL'
 head_sf.xb.x2w.B : head_sf.xb.xaif xaif2whirl
@@ -176,6 +176,9 @@ whirl2xaif xaif2whirl whirl2sexp sexp2whirl:
 whirl2f whirl2f_be:
 	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
 
+ir_b2a: 
+	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/ir_tools/ir_b2a
+
 xaifBooster:
 	./pickAlgorithm.bash
 
@@ -211,9 +214,9 @@ testAllclean:
 
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif whirl2sexp xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
+	$(RM) mfef90 whirl2xaif whirl2sexp sexp2whirl ir_b2a xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
 	$(RM) *.mod *.o
 
-obj test doc: 
+objs test : 
 
-.PHONY: all obj test doc clean testAllclean run
+.PHONY: all objs test clean testAllclean run

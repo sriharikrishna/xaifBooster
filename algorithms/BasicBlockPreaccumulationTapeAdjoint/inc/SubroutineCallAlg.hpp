@@ -55,7 +55,7 @@
 
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
@@ -71,7 +71,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   /** 
    * class to implement reversal of BasicBlockElements
    */
-  class SubroutineCallAlg : virtual public xaifBoosterLinearization::SubroutineCallAlg,
+  class SubroutineCallAlg : virtual public xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg,
 			    public BasicBlockElementAlg {
 
   public:
@@ -85,12 +85,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    /**
-     * \todo : distinction between constant and non-constant index expressions is simplified
-     * or we have this fixed by a proper TBR analysis
-     */
-    virtual void algorithm_action_4();
 
     virtual void insertYourself(const BasicBlock& theBasicBlock);
 
@@ -126,8 +120,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /** 
      * inserts inlined restores for index values
      */
-    void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument,
-				  Scope& theBasicBlockScope);
+    void handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg);
 
   }; // end of class SubroutineCallAlg
  

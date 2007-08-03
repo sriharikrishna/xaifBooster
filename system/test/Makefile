@@ -52,15 +52,13 @@
 # ========== end copyright notice ==============
 MAIN=t
 
-test: buildStamp.hpp $(MAIN)
+test: obj buildStamp.hpp $(MAIN)
 
-clean:
-	rm -f buildStamp.hpp obj/*.o obj/*.d $(MAIN) 
-	rm -rf tmp
+CLEANTARGETS+=buildStamp.hpp tmp $(MAIN)
 
-oabj doc: ;
+objs : ;
 
-.PHONY: obj test doc clean
+.PHONY: objs test 
 
 include ../../Makefile.incl
 -include $(DEPINCL)

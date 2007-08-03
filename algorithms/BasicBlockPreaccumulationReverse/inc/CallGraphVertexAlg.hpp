@@ -169,11 +169,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
     
     /** 
-     * give a name for the inlinable routine to which we append 
-     * e.g. '_<type_string>_<shape_string>';
-     * with intent type to be excluded we filter out all 
-     * non-applicable things (OUT for argument and IN for result)
-     * and the BasicBlock is the one we are adding to
+     * append type and shape strings to aSubroutineNameBase 
+     * add the checkpointing calls to theBasicBlock
      */
     void handleCheckPointing(const std::string& aSubroutineNameBase,
 			     SideEffectListType::SideEffectListType_E theSideEffectListType,

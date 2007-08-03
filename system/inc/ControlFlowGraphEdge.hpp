@@ -114,6 +114,8 @@ namespace xaifBooster {
 
     int getConditionValue() const;
 
+    bool leadsToLoopBody() const;
+
   private:
 
     bool myConditionValueFlag;

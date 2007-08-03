@@ -89,7 +89,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
    * class to implement algorithms relevant for the 
    * angel interface
    */
-  class BasicBlockAlg : public xaifBoosterLinearization::BasicBlockAlg {
+  class BasicBlockAlg : public xaifBoosterTypeChange::BasicBlockAlg {
   public:
     
     BasicBlockAlg(BasicBlock& theContaining);

@@ -61,14 +61,12 @@
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/SymbolAlg.hpp"
-
 #include "xaifBooster/algorithms/CodeReplacement/inc/Replacement.hpp"
-
 #include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
@@ -147,12 +145,12 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   CallGraphVertexAlg::algorithm_action_4() { 
     xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(); 
     // see if we have a replacement symbol for this one: 
-    const xaifBoosterLinearization::SymbolAlg& 
-      theSymbolAlg(dynamic_cast<const xaifBoosterLinearization::SymbolAlg&>(getContaining().
-									    getControlFlowGraph().
-									    getSymbolReference().
-									    getSymbol().
-									    getSymbolAlgBase()));
+    const xaifBoosterTypeChange::SymbolAlg& 
+      theSymbolAlg(dynamic_cast<const xaifBoosterTypeChange::SymbolAlg&>(getContaining().
+									 getControlFlowGraph().
+									 getSymbolReference().
+									 getSymbol().
+									 getSymbolAlgBase()));
     const SymbolReference* theSymbolReference_p;
     MemCounter myArg;
     MemCounter myTsarg;
@@ -262,10 +260,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	break;
       }
       case ReplacementId::STORERESULT: { 
- 	// JU: result checkpoints can't be stored on a stack
 	theReplacement.setControlFlowGraphBase(*myCFGStoreResults_p);
-	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreResults_p));
+	initCheckPointCFG(*myCFGStoreResults_p);
  	// JU: result checkpoints can't be stored on a stack
+//	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGStoreResults_p));
 //  	handleCheckPointing("cp_res_store",
 //  			    SideEffectListType::MOD_LIST,
 // 			    false, 
@@ -289,8 +287,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       }
       case ReplacementId::RESTORERESULT: { 
  	theReplacement.setControlFlowGraphBase(*myCFGRestoreResults_p);
-	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGRestoreResults_p));
+	initCheckPointCFG(*myCFGRestoreResults_p);
  	// JU: result checkpoints can't be stored on a stack
+//	BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGRestoreResults_p));
 //  	handleCheckPointing("cp_res_restore",
 //  			    SideEffectListType::MOD_LIST,
 //  			    theBasicBlock,

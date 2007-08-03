@@ -95,6 +95,8 @@ namespace xaifBooster {
 
     const Condition& getCondition() const;
 
+    virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::POSTLOOP_VKIND;}
+
   private:
     
     /** 

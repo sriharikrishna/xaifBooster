@@ -53,13 +53,15 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include <stack>
+
 #include "xaifBooster/system/inc/SideEffectList.hpp"
 #include "xaifBooster/system/inc/SideEffectListType.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphCommonAttributes.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphBase.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
 #include "xaifBooster/system/inc/ArgumentList.hpp"
-
+#include "xaifBooster/system/inc/Variable.hpp"
 
 namespace xaifBooster { 
 
@@ -154,6 +156,18 @@ namespace xaifBooster {
      */
     const ControlFlowGraphVertex& getContainingVertex(const ObjectWithId::Id& aStatementId) const;
 
+    /** 
+     * determines if theSymbolReference is overwritten
+     * \todo this hack should be replaced by the proper analysis
+     */
+    bool overwrites(const SymbolReference& theSymbolReference) const; 
+
+    /** 
+     * augment the graph vertices with additional 
+     * information
+     */
+    void augmentGraphInfo();
+
   private: 
     
     /** 
@@ -209,8 +223,28 @@ namespace xaifBooster {
      */
     ArgumentList myArgumentList;
 
-  }; // end of class ControlFlowGraph
+    /** 
+     * workhorse for augmentGraphInfo
+     */
+    void augmentGraphInfoRecursively(ControlFlowGraphVertex& theCurrentVertex_r, 
+				     int& idx,
+				     std::stack<ControlFlowGraphVertex*>& endNodes_p_s_r, 
+				     ForLoopReversalType::ForLoopReversalType_E aReversalType,
+				     ControlFlowGraphVertex* aTopExplicitLoopVertex_p,
+				     ControlFlowGraphVertex* enclosingControlFlowVertex_p); 
+      
+    /** 
+     * for certain vertex types we find the 'parent' vertex among 
+     * the sources of theCurrentVertex_r  in-edges and 
+     * let the current vertex inherit the loop variables from there
+     */
+    void inheritLoopVariables(ForLoopReversalType::ForLoopReversalType_E aReversalType,
+ 			      ControlFlowGraphVertex& theCurrentVertex_r);
 
+    ControlFlowGraphVertex& getEntry();
+
+  }; // end of class ControlFlowGraph
+  
 } // end of namespace xaifBooster
                                                                      
 #endif

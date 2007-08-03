@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Aug  7 14:36:52 2006
+C Fortran file translated from WHIRL Mon Jul 16 17:33:20 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -260,15 +260,7 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_10,PX(1))
-C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_11,PY)
       CALL foo(OpenAD_Symbol_10,OpenAD_Symbol_11)
-C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(PX(1),OpenAD_Symbol_10)
-C!! requested inline of 'convert_a2p_scalar' has no defn
-      CALL convert_a2p_scalar(PY,OpenAD_Symbol_11)
       CALL foo(X(1),Y)
           end if 
         end subroutine head
