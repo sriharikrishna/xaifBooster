@@ -151,16 +151,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const BasicBlock& getContaining() const;
 
     /** 
-     * we can decide to restrict the
-     * preaccumulation to the level of single statements
-     * effectively precluding the flattening
-     */
-    
-    static void limitToStatementLevel();
-
-    static bool doesLimitToStatementLevel();
-    
-    /** 
      * we can allow to have all 'ax' factors collected 
      * into one DerivativePropagator per 'y'
      */
