@@ -124,15 +124,15 @@ namespace xaifBoosterAddressArithmetic {
 					  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
 
     /** 
-     * find variables used in anExpressionVertex that 
+     * find variables used in anArgument that 
      * do not occur in theKnownVariables and 
      * put them in the theUnknownVariables
      */
-    void findUnknownVariablesInExpressionVertex(const ExpressionVertex& anExpressionVertex,
-						const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
-						UnknownVarInfoList& theUnknownVariables,
-						bool thisIsCF,
-						xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
+    void findUnknownVariablesInArgument(const Argument& anArgument,
+					const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+					UnknownVarInfoList& theUnknownVariables,
+					bool thisIsCF,
+					xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
 
     /** 
      * find variables used in anArrayAccess

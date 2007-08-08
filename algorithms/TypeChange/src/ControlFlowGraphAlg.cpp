@@ -116,5 +116,24 @@ namespace xaifBoosterTypeChange {
     return ourForceNonExternalRenamesFlag;
   }
 
-} // end of namespace
+  SignaturePattern& ControlFlowGraphAlg::getSomewhereConstPattern() { 
+    if (!mySomewhereConstPattern.initialized()) 
+      mySomewhereConstPattern.setSize(getContaining().
+				      getArgumentList().
+				      getArgumentSymbolReferencePList().
+				      size());
+    return mySomewhereConstPattern;
+  } 
+
+  SignaturePattern& ControlFlowGraphAlg::getSomewhereVariablePattern() { 
+    if (!mySomewhereVariablePattern.initialized()) 
+      mySomewhereVariablePattern.setSize(getContaining().
+					 getArgumentList().
+					 getArgumentSymbolReferencePList().
+					 size());
+    return mySomewhereVariablePattern;
+  } 
+  
+}
+
 

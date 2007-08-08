@@ -54,6 +54,9 @@
 
 #include "xaifBooster/system/inc/BasicBlockElement.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/ConcreteArgumentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/CodeReplacement/inc/ConceptuallyStaticInstances.hpp"
 

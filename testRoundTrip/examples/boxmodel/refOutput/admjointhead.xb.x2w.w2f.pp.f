@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 17 09:42:26 2007
+C Fortran file translated from WHIRL Mon Jul 23 11:22:53 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -146,8 +146,6 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_int_scalar(ILEV1,theArgIStack,theArgIStackoffset
-     +,theArgIStackSize)
           call cp_store_real_scalar(ALPHA,theArgFStack,theArgFStackoffse
      +t,theArgFStackSize)
           call cp_store_real_scalar(BETA,theArgFStack,theArgFStackoffset
@@ -166,6 +164,8 @@ C store arguments
      +heArgFStackSize)
           call cp_store_real_scalar(UVEL%v,theArgFStack,theArgFStackoffs
      +et,theArgFStackSize)
+          call cp_store_int_scalar(ILEV1,theArgIStack,theArgIStackoffset
+     +,theArgIStackSize)
           call cp_store_p_real_vector(FW,size(FW),theArgFStack,theArgFSt
      +ackoffset,theArgFStackSize)
           call cp_store_p_real_vector(NULLFORCE,size(NULLFORCE),theArgFS
@@ -277,6 +277,9 @@ C+NULLFORCE(cp_loop_variable_1)
 C write(*,'(A,EN26.16E3)')"restore(v)  ",
 C+FW(cp_loop_variable_1)
           end do
+          ILEV1 = theArgIStack(theArgIStackoffset)
+          theArgIStackoffset = theArgIStackoffset-1
+C write(*,'(A,I5)')"restore(s)  ",ILEV1
           UVEL%v = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",UVEL%v
           theArgFStackoffset = theArgFStackoffset-1
@@ -304,9 +307,6 @@ C write(*,'(A,EN26.16E3)')"restore(s)  ",BETA
           ALPHA = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",ALPHA
           theArgFStackoffset = theArgFStackoffset-1
-          ILEV1 = theArgIStack(theArgIStackoffset)
-          theArgIStackoffset = theArgIStackoffset-1
-C write(*,'(A,I5)')"restore(s)  ",ILEV1
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode
@@ -847,12 +847,16 @@ C store arguments
      +set,theArgFStackSize)
           call cp_store_real_scalar(SV,theArgFStack,theArgFStackoffset,t
      +heArgFStackSize)
+          call cp_store_real_scalar(UBAR,theArgFStack,theArgFStackoffset
+     +,theArgFStackSize)
           call cp_store_real_scalar(YEAR,theArgFStack,theArgFStackoffset
      +,theArgFStackSize)
           call cp_store_p_real_vector(AREA,size(AREA),theArgFStack,theAr
      +gFStackoffset,theArgFStackSize)
           call cp_store_p_real_vector(FW,size(FW),theArgFStack,theArgFSt
      +ackoffset,theArgFStackSize)
+          call cp_store_p_real_vector(NULLFORCE,size(NULLFORCE),theArgFS
+     +tack,theArgFStackoffset,theArgFStackSize)
           call cp_store_real_vector(S,size(S),theArgFStack,theArgFStacko
      +ffset,theArgFStackSize)
           call cp_store_real_vector(T,size(T),theArgFStack,theArgFStacko
@@ -881,6 +885,14 @@ C+T(cp_loop_variable_1)%v
 C write(*,'(A,EN26.16E3)')"restore(v)  ",
 C+S(cp_loop_variable_1)%v
           end do
+          do cp_loop_variable_1 = ubound(NULLFORCE,1),lbound(NULLFORCE,1
+     +),-1
+             NULLFORCE(cp_loop_variable_1) = theArgFStack(theArgFStackof
+     +fset)
+             theArgFStackoffset = theArgFStackoffset-1
+C write(*,'(A,EN26.16E3)')"restore(v)  ",
+C+NULLFORCE(cp_loop_variable_1)
+          end do
           do cp_loop_variable_1 = ubound(FW,1),lbound(FW,1),-1
              FW(cp_loop_variable_1) = theArgFStack(theArgFStackoffset)
              theArgFStackoffset = theArgFStackoffset-1
@@ -895,6 +907,9 @@ C+AREA(cp_loop_variable_1)
           end do
           YEAR = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",YEAR
+          theArgFStackoffset = theArgFStackoffset-1
+          UBAR = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",UBAR
           theArgFStackoffset = theArgFStackoffset-1
           SV = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",SV
@@ -1418,6 +1433,32 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
+          call cp_store_real_scalar(ALPHA,theArgFStack,theArgFStackoffse
+     +t,theArgFStackSize)
+          call cp_store_real_scalar(BETA,theArgFStack,theArgFStackoffset
+     +,theArgFStackSize)
+          call cp_store_real_scalar(BWIDTH,theArgFStack,theArgFStackoffs
+     +et,theArgFStackSize)
+          call cp_store_real_scalar(DAY,theArgFStack,theArgFStackoffset,
+     +theArgFStackSize)
+          call cp_store_real_scalar(DAYS_PER_50M_MIXED_LAYER,theArgFStac
+     +k,theArgFStackoffset,theArgFStackSize)
+          call cp_store_real_scalar(DELTA,theArgFStack,theArgFStackoffse
+     +t,theArgFStackSize)
+          call cp_store_real_scalar(DELTA_T,theArgFStack,theArgFStackoff
+     +set,theArgFStackSize)
+          call cp_store_real_scalar(EPSILON_REGULARIZE,theArgFStack,theA
+     +rgFStackoffset,theArgFStackSize)
+          call cp_store_real_scalar(INTEGRATION_TIME,theArgFStack,theArg
+     +FStackoffset,theArgFStackSize)
+          call cp_store_real_scalar(SV,theArgFStack,theArgFStackoffset,t
+     +heArgFStackSize)
+          call cp_store_real_scalar(THOUSAND,theArgFStack,theArgFStackof
+     +fset,theArgFStackSize)
+          call cp_store_real_scalar(U0,theArgFStack,theArgFStackoffset,t
+     +heArgFStackSize)
+          call cp_store_real_scalar(YEAR,theArgFStack,theArgFStackoffset
+     +,theArgFStackSize)
           call cp_store_p_real_vector(AREA,size(AREA),theArgFStack,theAr
      +gFStackoffset,theArgFStackSize)
           call cp_store_p_real_vector(BHEIGHT,size(BHEIGHT),theArgFStack
@@ -1486,6 +1527,45 @@ C+BHEIGHT(cp_loop_variable_1)
 C write(*,'(A,EN26.16E3)')"restore(v)  ",
 C+AREA(cp_loop_variable_1)
           end do
+          YEAR = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",YEAR
+          theArgFStackoffset = theArgFStackoffset-1
+          U0 = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",U0
+          theArgFStackoffset = theArgFStackoffset-1
+          THOUSAND = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",THOUSAND
+          theArgFStackoffset = theArgFStackoffset-1
+          SV = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",SV
+          theArgFStackoffset = theArgFStackoffset-1
+          INTEGRATION_TIME = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",INTEGRATION_TIME
+          theArgFStackoffset = theArgFStackoffset-1
+          EPSILON_REGULARIZE = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",EPSILON_REGULARIZE
+          theArgFStackoffset = theArgFStackoffset-1
+          DELTA_T = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",DELTA_T
+          theArgFStackoffset = theArgFStackoffset-1
+          DELTA = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",DELTA
+          theArgFStackoffset = theArgFStackoffset-1
+          DAYS_PER_50M_MIXED_LAYER = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",DAYS_PER_50M_MIXED_LAYER
+          theArgFStackoffset = theArgFStackoffset-1
+          DAY = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",DAY
+          theArgFStackoffset = theArgFStackoffset-1
+          BWIDTH = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",BWIDTH
+          theArgFStackoffset = theArgFStackoffset-1
+          BETA = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",BETA
+          theArgFStackoffset = theArgFStackoffset-1
+          ALPHA = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",ALPHA
+          theArgFStackoffset = theArgFStackoffset-1
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode
@@ -1962,6 +2042,8 @@ C store arguments
      +heArgFStackSize)
           call cp_store_real_scalar(U0,theArgFStack,theArgFStackoffset,t
      +heArgFStackSize)
+          call cp_store_real_scalar(UBAR,theArgFStack,theArgFStackoffset
+     +,theArgFStackSize)
           call cp_store_real_scalar(UVEL%v,theArgFStack,theArgFStackoffs
      +et,theArgFStackSize)
           call cp_store_real_scalar(YEAR,theArgFStack,theArgFStackoffset
@@ -2114,6 +2196,9 @@ C write(*,'(A,EN26.16E3)')"restore(s)  ",YEAR
           theArgFStackoffset = theArgFStackoffset-1
           UVEL%v = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",UVEL%v
+          theArgFStackoffset = theArgFStackoffset-1
+          UBAR = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",UBAR
           theArgFStackoffset = theArgFStackoffset-1
           U0 = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",U0
@@ -3425,16 +3510,16 @@ C$OPENAD XXX Template ad_template.f
       DO L = 1, 3, 1
         TOLD(INT(L))%v = TNOW(L)%v
         TNOW(INT(L))%v = TNEW(L)%v
+          integer_tape(integer_tape_pointer) = L
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = L
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = L
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = L
+          integer_tape_pointer = integer_tape_pointer+1
         SOLD(INT(L))%v = SNOW(L)%v
         SNOW(INT(L))%v = SNEW(L)%v
-          integer_tape(integer_tape_pointer) = L
-          integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = L
-          integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = L
-          integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = L
-          integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = L
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = L
@@ -3488,40 +3573,40 @@ C adjoint
           end if
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_457 = integer_tape(integer_tape_pointer)
-          if (iaddr(TNOW(INT(OpenAD_Symbol_457))) .ne. iaddr(OpenAD_Symb
-     +ol_239)) then
-            OpenAD_Symbol_239%d = OpenAD_Symbol_239%d+TNOW(INT(OpenAD_Sy
-     +mbol_457))%d
-            TNOW(INT(OpenAD_Symbol_457))%d = 0
-          end if
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_458 = integer_tape(integer_tape_pointer)
-          if (iaddr(TOLD(INT(OpenAD_Symbol_458))) .ne. iaddr(OpenAD_Symb
-     +ol_238)) then
-            OpenAD_Symbol_238%d = OpenAD_Symbol_238%d+TOLD(INT(OpenAD_Sy
-     +mbol_458))%d
-            TOLD(INT(OpenAD_Symbol_458))%d = 0
-          end if
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_459 = integer_tape(integer_tape_pointer)
-          TNOW(INT(OpenAD_Symbol_459))%d = TNOW(INT(OpenAD_Symbol_459))%
-     +d+OpenAD_Symbol_238%d
-          OpenAD_Symbol_238%d = 0.0d0
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_460 = integer_tape(integer_tape_pointer)
-          TNEW(INT(OpenAD_Symbol_460))%d = TNEW(INT(OpenAD_Symbol_460))%
-     +d+OpenAD_Symbol_239%d
-          OpenAD_Symbol_239%d = 0.0d0
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_461 = integer_tape(integer_tape_pointer)
-          SNOW(INT(OpenAD_Symbol_461))%d = SNOW(INT(OpenAD_Symbol_461))%
+          SNOW(INT(OpenAD_Symbol_457))%d = SNOW(INT(OpenAD_Symbol_457))%
      +d+OpenAD_Symbol_240%d
           OpenAD_Symbol_240%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_462 = integer_tape(integer_tape_pointer)
-          SNEW(INT(OpenAD_Symbol_462))%d = SNEW(INT(OpenAD_Symbol_462))%
+          OpenAD_Symbol_458 = integer_tape(integer_tape_pointer)
+          SNEW(INT(OpenAD_Symbol_458))%d = SNEW(INT(OpenAD_Symbol_458))%
      +d+OpenAD_Symbol_241%d
           OpenAD_Symbol_241%d = 0.0d0
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_459 = integer_tape(integer_tape_pointer)
+          if (iaddr(TNOW(INT(OpenAD_Symbol_459))) .ne. iaddr(OpenAD_Symb
+     +ol_239)) then
+            OpenAD_Symbol_239%d = OpenAD_Symbol_239%d+TNOW(INT(OpenAD_Sy
+     +mbol_459))%d
+            TNOW(INT(OpenAD_Symbol_459))%d = 0
+          end if
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_460 = integer_tape(integer_tape_pointer)
+          if (iaddr(TOLD(INT(OpenAD_Symbol_460))) .ne. iaddr(OpenAD_Symb
+     +ol_238)) then
+            OpenAD_Symbol_238%d = OpenAD_Symbol_238%d+TOLD(INT(OpenAD_Sy
+     +mbol_460))%d
+            TOLD(INT(OpenAD_Symbol_460))%d = 0
+          end if
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_461 = integer_tape(integer_tape_pointer)
+          TNOW(INT(OpenAD_Symbol_461))%d = TNOW(INT(OpenAD_Symbol_461))%
+     +d+OpenAD_Symbol_238%d
+          OpenAD_Symbol_238%d = 0.0d0
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_462 = integer_tape(integer_tape_pointer)
+          TNEW(INT(OpenAD_Symbol_462))%d = TNEW(INT(OpenAD_Symbol_462))%
+     +d+OpenAD_Symbol_239%d
+          OpenAD_Symbol_239%d = 0.0d0
         OpenAD_Symbol_291 = INT(OpenAD_Symbol_291) + 1
       END DO
             our_rev_mode%arg_store=.FALSE.
@@ -4132,48 +4217,28 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
+          call cp_store_real_vector(FLDOLD,size(FLDOLD),theArgFStack,the
+     +ArgFStackoffset,theArgFStackSize)
+          call cp_store_real_vector(FLDNEW,size(FLDNEW),theArgFStack,the
+     +ArgFStackoffset,theArgFStackSize)
+          call cp_store_real_scalar(DELTA_T,theArgFStack,theArgFStackoff
+     +set,theArgFStackSize)
           call cp_store_real_scalar(GAMMALOC,theArgFStack,theArgFStackof
      +fset,theArgFStackSize)
           call cp_store_real_scalar(UVELLOC%v,theArgFStack,theArgFStacko
      +ffset,theArgFStackSize)
-          call cp_store_real_scalar(DELTA_T,theArgFStack,theArgFStackoff
-     +set,theArgFStackSize)
+          call cp_store_p_real_vector(VOL,size(VOL),theArgFStack,theArgF
+     +Stackoffset,theArgFStackSize)
           call cp_store_p_real_vector(FLDSTAR,size(FLDSTAR),theArgFStack
      +,theArgFStackoffset,theArgFStackSize)
           call cp_store_p_real_vector(EXTFORLOC,size(EXTFORLOC),theArgFS
      +tack,theArgFStackoffset,theArgFStackSize)
           call cp_store_real_vector(FLDNOW,size(FLDNOW),theArgFStack,the
      +ArgFStackoffset,theArgFStackSize)
-          call cp_store_real_vector(FLDOLD,size(FLDOLD),theArgFStack,the
-     +ArgFStackoffset,theArgFStackSize)
-          call cp_store_real_vector(FLDNEW,size(FLDNEW),theArgFStack,the
-     +ArgFStackoffset,theArgFStackSize)
-          call cp_store_p_real_vector(VOL,size(VOL),theArgFStack,theArgF
-     +Stackoffset,theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          do cp_loop_variable_1 = ubound(VOL,1),lbound(VOL,1),-1
-             VOL(cp_loop_variable_1) = theArgFStack(theArgFStackoffset)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+VOL(cp_loop_variable_1)
-          end do
-          do cp_loop_variable_1 = ubound(FLDNEW,1),lbound(FLDNEW,1),-1
-             FLDNEW(cp_loop_variable_1)%v = theArgFStack(theArgFStackoff
-     +set)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+FLDNEW(cp_loop_variable_1)%v
-          end do
-          do cp_loop_variable_1 = ubound(FLDOLD,1),lbound(FLDOLD,1),-1
-             FLDOLD(cp_loop_variable_1)%v = theArgFStack(theArgFStackoff
-     +set)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+FLDOLD(cp_loop_variable_1)%v
-          end do
           do cp_loop_variable_1 = ubound(FLDNOW,1),lbound(FLDNOW,1),-1
              FLDNOW(cp_loop_variable_1)%v = theArgFStack(theArgFStackoff
      +set)
@@ -4196,15 +4261,35 @@ C+EXTFORLOC(cp_loop_variable_1)
 C write(*,'(A,EN26.16E3)')"restore(v)  ",
 C+FLDSTAR(cp_loop_variable_1)
           end do
-          DELTA_T = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",DELTA_T
-          theArgFStackoffset = theArgFStackoffset-1
+          do cp_loop_variable_1 = ubound(VOL,1),lbound(VOL,1),-1
+             VOL(cp_loop_variable_1) = theArgFStack(theArgFStackoffset)
+             theArgFStackoffset = theArgFStackoffset-1
+C write(*,'(A,EN26.16E3)')"restore(v)  ",
+C+VOL(cp_loop_variable_1)
+          end do
           UVELLOC%v = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",UVELLOC%v
           theArgFStackoffset = theArgFStackoffset-1
           GAMMALOC = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",GAMMALOC
           theArgFStackoffset = theArgFStackoffset-1
+          DELTA_T = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",DELTA_T
+          theArgFStackoffset = theArgFStackoffset-1
+          do cp_loop_variable_1 = ubound(FLDNEW,1),lbound(FLDNEW,1),-1
+             FLDNEW(cp_loop_variable_1)%v = theArgFStack(theArgFStackoff
+     +set)
+             theArgFStackoffset = theArgFStackoffset-1
+C write(*,'(A,EN26.16E3)')"restore(v)  ",
+C+FLDNEW(cp_loop_variable_1)%v
+          end do
+          do cp_loop_variable_1 = ubound(FLDOLD,1),lbound(FLDOLD,1),-1
+             FLDOLD(cp_loop_variable_1)%v = theArgFStack(theArgFStackoff
+     +set)
+             theArgFStackoffset = theArgFStackoffset-1
+C write(*,'(A,EN26.16E3)')"restore(v)  ",
+C+FLDOLD(cp_loop_variable_1)%v
+          end do
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode
