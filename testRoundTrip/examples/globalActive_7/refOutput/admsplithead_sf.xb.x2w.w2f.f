@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jul 16 17:36:21 2007
+C Fortran file translated from WHIRL Mon Jul 23 11:10:42 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -310,34 +310,34 @@ C     $OpenAD$ BEGIN REPLACEMENT 3
      > )
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(Y)
 C     $OpenAD$ INLINE cp_arg_store_real_vector(subst)
       CALL cp_arg_store_real_vector(X)
+C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
+      CALL cp_arg_store_real_scalar(Y)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
-C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
-      CALL cp_arg_restore_real_vector(X)
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
       CALL cp_arg_restore_real_scalar(Y)
+C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
+      CALL cp_arg_restore_real_vector(X)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
       CALL cp_arg_store_real_scalar(Y)
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(Y)
 C     $OpenAD$ INLINE cp_arg_store_real_vector(subst)
       CALL cp_arg_store_real_vector(X)
+C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
+      CALL cp_arg_store_real_scalar(Y)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
-C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
-      CALL cp_arg_restore_real_vector(X)
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
       CALL cp_arg_restore_real_scalar(Y)
+C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
+      CALL cp_arg_restore_real_vector(X)
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
       CALL cp_arg_restore_real_scalar(Y)
 C     $OpenAD$ END REPLACEMENT

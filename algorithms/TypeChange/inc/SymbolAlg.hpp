@@ -67,7 +67,8 @@ namespace xaifBooster {
 namespace xaifBoosterTypeChange {  
 
   /** 
-   * class to track external references
+   * class to track external subroutine references
+   * and their active calling patterns 
    */
   class SymbolAlg : public SymbolAlgBase{
 
@@ -154,10 +155,7 @@ namespace xaifBoosterTypeChange {
     bool myHasHandCodedWrapperFlag;
 
     /** 
-     * true if this symbol's name 
-     * appears on the list of hand coded 
-     * wrappers 
-     * which for now is supplied on the command line
+     * activity pattern of formal arguments by position
      */
     SignaturePattern myActivityPattern;
 
