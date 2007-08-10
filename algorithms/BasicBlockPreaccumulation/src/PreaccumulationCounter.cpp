@@ -67,7 +67,9 @@ namespace xaifBooster {
   PreaccumulationCounter::PreaccumulationCounter() : 
     myJacobianEntry(0), 
     myMultiply(0), 
-    myAdd(0) {
+    myAdd(0),
+    myNumDivides(0),
+    myNumReroutings(0) {
   }
   
   unsigned int PreaccumulationCounter::getJacValue() const {
@@ -94,10 +96,20 @@ namespace xaifBooster {
     myMultiply+=by;
   }
   
+  void PreaccumulationCounter::divideInc(unsigned int by) {
+    myNumDivides+=by;
+  }
+  
+  void PreaccumulationCounter::reroutingInc(unsigned int by) {
+    myNumReroutings+=by;
+  }
+  
   void PreaccumulationCounter::reset() {
     addReset();
     mulReset();
     jacReset();
+    divReset();
+    rerReset();
   }
   
   void PreaccumulationCounter::addReset() {
@@ -112,6 +124,14 @@ namespace xaifBooster {
     myJacobianEntry = 0;
   }
   
+  void PreaccumulationCounter::divReset() {
+    myNumDivides = 0;
+  }
+  
+  void PreaccumulationCounter::rerReset() {
+    myNumReroutings = 0;
+  }
+  
   std::string PreaccumulationCounter::debug () const {
     std::ostringstream out;
     out << "PreaccumulationCounter["
@@ -119,6 +139,8 @@ namespace xaifBooster {
 	<< ",Mults=" << myMultiply
 	<< ",Adds=" << myAdd
 	<< ",Jacs=" << myJacobianEntry
+	<< ",Divisions=" << myNumDivides
+	<< ",Reroutings=" << myNumReroutings
 	<< "]" << std::ends;
     return out.str();
   } // end of Symbol::debug
@@ -170,6 +192,8 @@ namespace xaifBooster {
     myAdd +=  anotherCounter.myAdd;
     myMultiply += anotherCounter.myMultiply;
     myJacobianEntry += anotherCounter.myJacobianEntry;
+    myNumDivides += anotherCounter.myNumDivides;
+    myNumReroutings += anotherCounter.myNumReroutings;
   }
 
 } 

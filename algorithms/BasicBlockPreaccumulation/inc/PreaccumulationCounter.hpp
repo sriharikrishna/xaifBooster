@@ -68,6 +68,8 @@ namespace xaifBooster {
     unsigned int myJacobianEntry;
     unsigned int myMultiply;
     unsigned int myAdd;
+    unsigned int myNumDivides;
+    unsigned int myNumReroutings;
 
     /**
      * no def
@@ -100,6 +102,8 @@ namespace xaifBooster {
     unsigned int getJacValue() const;
     unsigned int getMulValue() const;
     unsigned int getAddValue() const;
+    unsigned int getNumDivides() const;
+    unsigned int getNumReroutings() const;
     
     /**
      * Increments the value of the counter.
@@ -113,6 +117,14 @@ namespace xaifBooster {
      * Increments the value of the counter.
      */
     void addInc(unsigned int by=1);
+    /**
+     * Increments the value of the counter.
+     */
+    void divideInc(unsigned int by=1);
+    /**
+     * Increments the value of the counter.
+     */
+    void reroutingInc(unsigned int by=1);
 
     /**
      * Calls each counter specific reset function.
@@ -125,6 +137,8 @@ namespace xaifBooster {
     void addReset();
     void mulReset();
     void jacReset();
+    void divReset();
+    void rerReset();
 
     std::string debug() const ;
     
