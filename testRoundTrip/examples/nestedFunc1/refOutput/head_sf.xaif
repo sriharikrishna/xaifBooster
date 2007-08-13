@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Thu Aug  9 14:46:47 2007 -->
+<!-- XAIF file translated from WHIRL at Mon Aug 13 10:59:52 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -203,7 +203,7 @@
           <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="0.0000000000e+00"/>
+          <xaif:Constant vertex_id="1" type="real" value="1.0000000000e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:SubroutineCall statement_id="28" scope_id="1" lineNumber="64" symbol_id="FOO_21"/>
