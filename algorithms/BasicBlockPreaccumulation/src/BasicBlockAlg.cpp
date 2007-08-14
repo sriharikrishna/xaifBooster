@@ -105,54 +105,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
 
-  BasicBlockAlg::ComputeEliminationSequence_fpList BasicBlockAlg::ourNonScarseEliminations_fpList;
   int BasicBlockAlg::ourIterationsParameter=5000;
   double BasicBlockAlg::ourGamma=5.0;
-
-  BasicBlockAlg::Sequence::EliminationResult::EliminationResult() : 
-    myCountedFlag(false) { 
-  }
-
-  void BasicBlockAlg::Sequence::EliminationResult::countPreaccumulationOperations() const {
-    myCounter.jacInc(myRemainderGraph.numEdges());
-    bool usesRemainderGraph(myCounter.getJacValue()!=0);
-    for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
-	  myJAEList.getGraphList().begin();
-	it!=myJAEList.getGraphList().end();
-	++it) {
-      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression(*(*it));
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression.vertices());
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
-      if(!usesRemainderGraph && theExpression.isJacobianEntry()) {
-	myCounter.jacInc();
-      }
-      //goes through every vertex in each graph
-      for (;testVertexI!=testVertexIEnd; ++testVertexI) {
-	//if the vertex is an operation then figure out which one it is and increment the counter
-	if ((*testVertexI).getReferenceType() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION) {
-	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP) 
-	    myCounter.mulInc();
-	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP) 
-	    myCounter.addInc();
-	}
-      }
-    }
-  }
-
-  const PreaccumulationCounter& BasicBlockAlg::Sequence::EliminationResult::getCounter() const { 
-    if (!myCountedFlag) { 
-      countPreaccumulationOperations();
-      if (myCounter.getJacValue()+myCounter.getAddValue()+myCounter.getMulValue()==0) 	
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::EliminationResult::getCounter: nothing counted");
-      myCountedFlag=true;
-    }
-    return myCounter; 
-  } 
 
   BasicBlockAlg::Sequence::Sequence() :
     myFirstElement_p(0),
     myLastElement_p(0),
-    myBestEliminationResult_p(0) {
+    myBestElimination_p(0) {
     myComputationalGraph_p=ourPrivateLinearizedComputationalGraphAlgFactory_p->makeNewPrivateLinearizedComputationalGraph();
   }
   
@@ -167,13 +126,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 ++i) 
       if (*i)
 	delete *i;
-    if (myComputationalGraph_p)
-      delete myComputationalGraph_p;
-    for (EliminationResultPList::iterator i=myEliminationResultPList.begin();
-	 i!=myEliminationResultPList.end();
-	 ++i)
+    for (EliminationPList::iterator i = myEliminationPList.begin(); i != myEliminationPList.end(); ++i)
       if (*i)
 	delete *i;
+    if (myComputationalGraph_p)
+      delete myComputationalGraph_p;
   }
 
   Assignment& BasicBlockAlg::Sequence::appendFrontAssignment() { 
@@ -205,30 +162,33 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
-  BasicBlockAlg::Sequence::EliminationResult& BasicBlockAlg::Sequence::addNewEliminationResult() { 
-    EliminationResult* theResult_p=new  EliminationResult;
-    myEliminationResultPList.push_back(theResult_p);
-    return *theResult_p;
+  xaifBoosterCrossCountryInterface::Elimination& BasicBlockAlg::Sequence::addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph* lcg_p) { 
+	  Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination (lcg_p);
+    myEliminationPList.push_back(theElimination_p);
+    return *theElimination_p;
   }
 
   void BasicBlockAlg::Sequence::setBestResult() {
-    if (myEliminationResultPList.empty())
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::setBestResult:  no results");
-    myBestEliminationResult_p=*(myEliminationResultPList.begin());
-    for (EliminationResultPList::iterator i=++(myEliminationResultPList.begin());
-	 i!=myEliminationResultPList.end();
-	 ++i) { 
-      if ((*i)->getCounter()<myBestEliminationResult_p->getCounter())
-	myBestEliminationResult_p=*i;
+    if (myEliminationPList.empty())
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::setBestResult:  no eliminations, thus no results");
+    myBestElimination_p = *(myEliminationPList.begin());
+    for (EliminationPList::iterator i = ++(myEliminationPList.begin()); i != myEliminationPList.end(); ++i) { 
+      if ((*i)->getEliminationResult().getCounter()<myBestElimination_p->getEliminationResult().getCounter())
+	myBestElimination_p = *i;
     }
   } 
 
-  const BasicBlockAlg::Sequence::EliminationResult& BasicBlockAlg::Sequence::getBestResult() const {
-    if (!myBestEliminationResult_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult:  not set");
-    return *myBestEliminationResult_p;
+  const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& BasicBlockAlg::Sequence::getBestResult() const {
+    if (!myBestElimination_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
+    return myBestElimination_p->getEliminationResult();
   } 
 
+  BasicBlockAlg::Sequence::EliminationPList& BasicBlockAlg::Sequence::getEliminationPList() {
+    if (myEliminationPList.empty())
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getEliminationPList: myEliminationP:List is empty");
+    return myEliminationPList;
+  } 
   BasicBlockAlg::SequenceHolder::SequenceHolder(bool flatten) : 
     myLimitToStatementLevelFlag(flatten) {
   }
@@ -869,34 +829,27 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   BasicBlockAlg::runAngelNonScarse(Sequence& aSequence){
-    if (ourNonScarseEliminations_fpList.empty()) { 
-      // the first one is the default: 
-      ourNonScarseEliminations_fpList.
-	push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("default vertex / edge elimination"), 
-								       &xaifBoosterCrossCountryInterface::compute_elimination_sequence));
-      ourNonScarseEliminations_fpList.
-	push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("LSA vertex elimination"), 
-								       &xaifBoosterCrossCountryInterface::compute_elimination_sequence_lsa_vertex));
-      ourNonScarseEliminations_fpList.
-	push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("LSA face elimination"), 
-								       &xaifBoosterCrossCountryInterface::compute_elimination_sequence_lsa_face));
-    }
     PrivateLinearizedComputationalGraph& theComputationalGraph=*(aSequence.myComputationalGraph_p);
-    for (ComputeEliminationSequence_fpList::iterator elimMethodI=ourNonScarseEliminations_fpList.begin();
-	 elimMethodI!=ourNonScarseEliminations_fpList.end();
-	 ++elimMethodI) { 
-      Sequence::EliminationResult& aResult(aSequence.addNewEliminationResult());
-      try { 
-	(*((*elimMethodI).second))(theComputationalGraph, 
-				   ourIterationsParameter, 
-				   ourGamma, 
-				   aResult.myJAEList);
+
+    // JU: the first one is the default: 
+    xaifBoosterCrossCountryInterface::Elimination& regular_Elimination (aSequence.addNewElimination(&theComputationalGraph));
+    regular_Elimination.initAsRegular();
+
+    xaifBoosterCrossCountryInterface::Elimination& lsavertex_Elimination (aSequence.addNewElimination(&theComputationalGraph));
+    lsavertex_Elimination.initAsLSAVertex(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
+
+    xaifBoosterCrossCountryInterface::Elimination& lsaface_Elimination(aSequence.addNewElimination(&theComputationalGraph));
+    lsaface_Elimination.initAsLSAFace(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
+
+    for (Sequence::EliminationPList::iterator elim_i = aSequence.getEliminationPList().begin(); elim_i != aSequence.getEliminationPList().end(); ++elim_i) { 
+      try {
+	(*elim_i)->eliminate();
       }
       catch(...) { 
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runAngelNonScarse: exception thrown from within angel while running "
-				   << (*elimMethodI).first.c_str());
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runAngelNonScarse: exception thrown from within angel while running eliminate()"
+				   << (*elim_i)->getDescription());
       }
-      DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << (*elimMethodI).first.c_str() << " " << aResult.getCounter().debug().c_str() << " in BasicBlockAlg " << this);
+      DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << (*elim_i)->getDescription() << " " << (*elim_i)->getEliminationResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
       if (!ourChooseAlgFlag)
 	break; 
     }
@@ -917,29 +870,24 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			    PrivateLinearizedComputationalGraphEdgeLabelWriter(theComputationalGraph));
     }
     if (thisMode==PreaccumulationMode::MAX_GRAPH_SCARSE) { 
-      // there is currently only 1 choice:
-      Sequence::EliminationResult& aResult(aSequence.addNewEliminationResult());
-      try { 
-	xaifBoosterCrossCountryInterface::compute_partial_elimination_sequence(theComputationalGraph, 
-										 ourIterationsParameter, 
-										 ourGamma, 
-										 aResult.myJAEList, 
-										 aResult.myRemainderGraph, 
-										 aResult.myVertexCorrelationList, 
-										 aResult.myEdgeCorrelationList);
+      // JU: there is currently only 1 choice
+      xaifBoosterCrossCountryInterface::Elimination& anElimination(aSequence.addNewElimination(&theComputationalGraph));
+      anElimination.initAsScarce();
+      try {
+	anElimination.eliminate();	
       }
       catch(xaifBoosterCrossCountryInterface::EliminationException e) { 
 	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: exception thrown from within compute_partial_elimination_sequence:" 
 				   << e.getReason().c_str());
       }
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-	GraphVizDisplay::show(aResult.myRemainderGraph, "remainderGraph");
+	GraphVizDisplay::show(anElimination.getEliminationResult().myRemainderLCG, "remainderGraph");
       }
       aSequence.setBestResult(); 
       DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: compute_partial_elimination_sequence " 
-		<< aResult.getCounter().debug().c_str() 
-		<< "  number of JAE: " << aResult.myJAEList.getGraphList().size() 
-		<< " R graph edges: " << aResult.myRemainderGraph.numEdges() 
+		<< anElimination.getEliminationResult().getCounter().debug().c_str() 
+		<< "  number of JAE: " << anElimination.getEliminationResult().myJAEList.getGraphList().size() 
+		<< " R graph edges: " << anElimination.getEliminationResult().myRemainderLCG.numEdges() 
 		<< " for " << aSequenceHolder.debug().c_str() 
 		<< " in BasicBlockAlg " << this);
     }
@@ -1091,10 +1039,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     LinearizedComputationalGraphVertexPList workList;
     IntermediateReferences theIntermediateReferences;
     bool done=false; 
-    aSequence.getBestResult().myRemainderGraph.initVisit();
+    aSequence.getBestResult().myRemainderLCG.initVisit();
     while (!done) { 
       //  worklist population: 
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph(aSequence.getBestResult().myRemainderGraph);
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph(aSequence.getBestResult().myRemainderLCG);
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair aVertexIP(theRemainderGraph.vertices());
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator anLCGVertI(aVertexIP.first),anLCGvertEndI(aVertexIP.second);
       for(; anLCGVertI!=anLCGvertEndI; ++anLCGVertI) {
@@ -1174,7 +1122,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       else
 	workList.clear();
     }
-    aSequence.getBestResult().myRemainderGraph.finishVisit();
+    aSequence.getBestResult().myRemainderLCG.finishVisit();
   } 
 
   void BasicBlockAlg::generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
@@ -1191,7 +1139,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const Variable& theEdgeLabelVariable(getEdgeLabel(theEdge,theInternalReferenceConcretizationList,aSequence));
     // figure out what the source is:
     const Variable* theSourceVariable_p(0);
-    if (aSequence.getBestResult().myRemainderGraph.numInEdgesOf(*(theSource.myRemainderVertex_p))) { 
+    if (aSequence.getBestResult().myRemainderLCG.numInEdgesOf(*(theSource.myRemainderVertex_p))) { 
       theSourceVariable_p=&(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p))));
     }
     else { 
