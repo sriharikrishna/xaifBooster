@@ -53,6 +53,8 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
+
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
@@ -62,7 +64,6 @@ using namespace xaifBoosterCrossCountryInterface;
 
 namespace xaifBoosterCrossCountryInterface { 
 
-
   /**
    * class for configuring and carrying out an elimination sequence
    */
@@ -70,37 +71,32 @@ namespace xaifBoosterCrossCountryInterface {
 
     public:
     
-    // constructor for regular (complete) or scarce elimination modes
-    Elimination(EliminationType_E eType, LinearizedComputationalGraph& lcg) : myType (etype),
-									      myLCG_p (lcg),
-									      myNumIterations (0),
-									      myGamma (0) {
-      if (eType == LSA_VERTEX_ELIMTYPE || eType == LSA_FACE_ELIMTYPE)
-	THROW_LOGICEXCEPTION_MACRO("Elimination::Elimination(): incorrect constructor invoked");
-    }
-   
-    // constructor for LSA elimination modes
-    Elimination(EliminationType_E eType, LinearizedComputationalGraph& lcg, int i, double g) : myType (etype),
-											       myLCG_p (lcg),
-											       myNumIterations (i),
-											       myGamma (g) {
-      if (eType == REGULAR_ELIMTYPE || eType == SCARCE_ELIMTYPE)
-	THROW_LOGICEXCEPTION_MACRO("Elimination::Elimination(): incorrect constructor invoked");
-    }
-
-    enum EliminationType_E {REGULAR_ELIMTYPE,
+    enum EliminationType_E {UNSET_ELIMTYPE,
+			    REGULAR_ELIMTYPE,
 	                    LSA_VERTEX_ELIMTYPE,
 	                    LSA_FACE_ELIMTYPE,
 			    SCARCE_ELIMTYPE};
 
+    Elimination (LinearizedComputationalGraph* lcg_p);
+    ~Elimination(){};
+
+    // init functions allow for a generic constructor for all elimination types
+    void initAsRegular();
+    void initAsLSAVertex(int i, double g);
+    void initAsLSAFace(int i, double g);
+    void initAsScarce();
+    
     void eliminate();
 
+    std::string getDescription();
+    
     LinearizedComputationalGraph& getLCG () const {
       if (!myLCG_p)
 	THROW_LOGICEXCEPTION_MACRO("Elimination::getLCG: entry not set");
       return *myLCG_p;
     } // end of Elimination::getLCG
 
+    
     /**
      * this is the result of applying an elimination to a Sequence
      */
@@ -110,10 +106,15 @@ namespace xaifBoosterCrossCountryInterface {
 
       EliminationResult();
 
+      JacobianAccumulationExpressionList myJAEList;
+      LinearizedComputationalGraph myRemainderLCG;
+      VertexCorrelationList myVertexCorrelationList;
+      EdgeCorrelationList myEdgeCorrelationList;
+
       const PreaccumulationCounter& getCounter() const;
 
     private:
-    
+      
       /**
        * the ensuing operation counts etc.
        */
@@ -131,23 +132,22 @@ namespace xaifBoosterCrossCountryInterface {
 
     }; // end of class EliminationResult
 
+    const EliminationResult& getEliminationResult() const {
+      return myEliminationResult;
+    }
+
   private:
 
-    Elimination();
-
     EliminationType_E myType;
+   
+    std::string myDescription;
     
     LinearizedComputationalGraph *myLCG_p;
 
-    JacobianAccumulationExpressionList myJAEList;
-
     int myNumIterations;
     double myGamma;
-
-    LinearizedComputationalGraph myRemainderLCG;
-    VertexCorrelationList myVertexCorrelationList;
-    EdgeCorrelationList myEdgeCorrelationList;
-    
+   
+    EliminationResult myEliminationResult;
   }; // end of class Elimination
 
 } 

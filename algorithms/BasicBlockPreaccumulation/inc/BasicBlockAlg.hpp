@@ -61,6 +61,7 @@
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/Elimination.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 
@@ -225,43 +226,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        */
       PrivateLinearizedComputationalGraph* myComputationalGraph_p;
     
-      /**
-       * this is the result of applying an elimination to a Sequence
-       */
-      class EliminationResult { 
+      xaifBoosterCrossCountryInterface::Elimination& addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph* lcg_p); 
 
-      public: 
-	
-	EliminationResult();  
-
-	xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList myJAEList;
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph myRemainderGraph;
-	xaifBoosterCrossCountryInterface::VertexCorrelationList myVertexCorrelationList;
-	xaifBoosterCrossCountryInterface::EdgeCorrelationList myEdgeCorrelationList;
-
-	const PreaccumulationCounter& getCounter() const; 
-
-      private: 
-	/** 
-	 * the ensuing operation counts etc. 
-	 */
-	mutable PreaccumulationCounter myCounter; 
-
-	/**
-	 * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
-	 */
-	void countPreaccumulationOperations() const;
-
-	/** 
-	 * have we counted the elimination operations
-	 */
-	mutable bool myCountedFlag;
-
-      };
-
-      EliminationResult& addNewEliminationResult(); 
-
-      typedef std::list<EliminationResult*> EliminationResultPList;
+      typedef std::list<Elimination*> EliminationPList;
 
       /** 
        * the derivative accumulator for this sequence
@@ -309,8 +276,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       void setBestResult();
 
-      const Sequence::EliminationResult& getBestResult() const;
-      
+      const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& getBestResult() const;
+     
+      EliminationPList& getEliminationPList();
     private: 
 
       /**
@@ -335,11 +303,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        */
       Sequence& operator= (const Sequence&);
 
-      EliminationResultPList myEliminationResultPList;
+      EliminationPList myEliminationPList;
 
-      EliminationResult* myBestEliminationResult_p;
+      Elimination* myBestElimination_p;
       
-    }; // end of struct Sequence
+    }; // end of class Sequence
 
   private: 
 
