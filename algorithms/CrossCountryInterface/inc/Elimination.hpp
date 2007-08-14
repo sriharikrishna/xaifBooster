@@ -96,6 +96,13 @@ namespace xaifBoosterCrossCountryInterface {
       return *myLCG_p;
     } // end of Elimination::getLCG
 
+    const int getNumIterations () const {
+      return myNumIterations;
+    }
+    
+    const double getGamma () const {
+      return myGamma;
+    }
     
     /**
      * this is the result of applying an elimination to a Sequence
@@ -132,7 +139,7 @@ namespace xaifBoosterCrossCountryInterface {
 
     }; // end of class EliminationResult
 
-    const EliminationResult& getEliminationResult() const {
+    EliminationResult& getEliminationResult() {
       return myEliminationResult;
     }
 
