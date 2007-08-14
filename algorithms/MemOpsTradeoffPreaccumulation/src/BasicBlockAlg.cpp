@@ -65,13 +65,9 @@
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/VertexElim.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/FaceElim.hpp"
 
-using namespace MemOpsTradeoffPreaccumulation;
-
 namespace xaifBoosterMemOpsTradeoffPreaccumulation { 
 
-  void BasicBlockAlg::compute_elimination_sequence(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theOriginal,
-						   int mode,
-						   double, // consolidate interfaces
+  void xaifBoosterMemOpsTradeoffPreaccumulation::BasicBlockAlg::compute_elimination_sequence(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theOriginal,
 						   xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList){
 
     ConceptuallyStaticInstances::HeuristicList HeuristicSequence = ConceptuallyStaticInstances::instance()->getList();
@@ -587,11 +583,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
   
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
     xaifBooster::BasicBlockAlgBase(theContaining),
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) {
-    ourNonScarseEliminations_fpList.
-      push_back(std::pair<std::string,ComputeEliminationSequence_fp>(std::string("default vertex / edge elimination"), 
-								     &compute_elimination_sequence));
-  }
+    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) {}
 
   void
   BasicBlockAlg::algorithm_action_2() {
@@ -617,4 +609,14 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::traverseToChildren(anAction_c);
   }
 
+  void BasicBlockAlg::runElimination(Sequence& aSequence,
+				     VariableCPList& theDepVertexPListCopyWithoutRemovals,
+				     SequenceHolder& aSequenceHolder,
+				     xaifBoosterBasicBlockPreaccumulation::PreaccumulationMode::PreaccumulationMode_E thisMode){
+    LinearizedComputationalGraph& theComputationalGraph = *(aSequence.myComputationalGraph_p);
+    xaifBoosterCrossCountryInterface::Elimination& regular_Elimination (aSequence.addNewElimination(theComputationalGraph));
+    regular_Elimination.initAsRegular();
+    regular_Elimination.eliminate();
+    aSequenceHolder.myBasicBlockOperations.incrementBy(aSequence.getBestResult().getCounter());
+  }
 } // end of namespace

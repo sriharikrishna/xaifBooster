@@ -162,8 +162,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
-  xaifBoosterCrossCountryInterface::Elimination& BasicBlockAlg::Sequence::addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph* lcg_p) { 
-	  Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination (lcg_p);
+  xaifBoosterCrossCountryInterface::Elimination& BasicBlockAlg::Sequence::addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg) { 
+	  Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination (lcg);
     myEliminationPList.push_back(theElimination_p);
     return *theElimination_p;
   }
@@ -827,37 +827,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end for
   }
 
-  void 
-  BasicBlockAlg::runAngelNonScarse(Sequence& aSequence){
-    PrivateLinearizedComputationalGraph& theComputationalGraph=*(aSequence.myComputationalGraph_p);
-
-    // JU: the first one is the default: 
-    xaifBoosterCrossCountryInterface::Elimination& regular_Elimination (aSequence.addNewElimination(&theComputationalGraph));
-    regular_Elimination.initAsRegular();
-
-    xaifBoosterCrossCountryInterface::Elimination& lsavertex_Elimination (aSequence.addNewElimination(&theComputationalGraph));
-    lsavertex_Elimination.initAsLSAVertex(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
-
-    xaifBoosterCrossCountryInterface::Elimination& lsaface_Elimination(aSequence.addNewElimination(&theComputationalGraph));
-    lsaface_Elimination.initAsLSAFace(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
-
-    for (Sequence::EliminationPList::iterator elim_i = aSequence.getEliminationPList().begin(); elim_i != aSequence.getEliminationPList().end(); ++elim_i) { 
-      try {
-	(*elim_i)->eliminate();
-      }
-      catch(...) { 
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runAngelNonScarse: exception thrown from within angel while running eliminate()"
-				   << (*elim_i)->getDescription());
-      }
-      DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << (*elim_i)->getDescription() << " " << (*elim_i)->getEliminationResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
-      if (!ourChooseAlgFlag)
-	break; 
-    }
-    aSequence.setBestResult();
-    DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: best is: " << aSequence.getBestResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
-  }
-
-
   void BasicBlockAlg::runElimination(Sequence& aSequence, 
 				     VariableCPList& theDepVertexPListCopyWithoutRemovals, 
 				     SequenceHolder& aSequenceHolder,
@@ -871,7 +840,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
     if (thisMode==PreaccumulationMode::MAX_GRAPH_SCARSE) { 
       // JU: there is currently only 1 choice
-      xaifBoosterCrossCountryInterface::Elimination& anElimination(aSequence.addNewElimination(&theComputationalGraph));
+      xaifBoosterCrossCountryInterface::Elimination& anElimination(aSequence.addNewElimination(theComputationalGraph));
       anElimination.initAsScarce();
       try {
 	anElimination.eliminate();	
@@ -891,8 +860,32 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		<< " for " << aSequenceHolder.debug().c_str() 
 		<< " in BasicBlockAlg " << this);
     }
-    else  
-      runAngelNonScarse(aSequence);
+    else { // non-scarce
+      // JU: the first one is the default: 
+      xaifBoosterCrossCountryInterface::Elimination& regular_Elimination (aSequence.addNewElimination(theComputationalGraph));
+      regular_Elimination.initAsRegular();
+
+      xaifBoosterCrossCountryInterface::Elimination& lsavertex_Elimination (aSequence.addNewElimination(theComputationalGraph));
+      lsavertex_Elimination.initAsLSAVertex(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
+
+      xaifBoosterCrossCountryInterface::Elimination& lsaface_Elimination(aSequence.addNewElimination(theComputationalGraph));
+      lsaface_Elimination.initAsLSAFace(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
+
+      for (Sequence::EliminationPList::iterator elim_i = aSequence.getEliminationPList().begin(); elim_i != aSequence.getEliminationPList().end(); ++elim_i) { 
+        try {
+	  (*elim_i)->eliminate();
+        }
+        catch(...) { 
+	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runAngelNonScarse: exception thrown from within angel while running eliminate()"
+				     << (*elim_i)->getDescription());
+        }
+        DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << (*elim_i)->getDescription() << " " << (*elim_i)->getEliminationResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
+        if (!ourChooseAlgFlag)
+	  break; 
+      }
+      aSequence.setBestResult();
+      DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: best is: " << aSequence.getBestResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
+    }
     aSequenceHolder.myBasicBlockOperations.incrementBy(aSequence.getBestResult().getCounter());
   }
 

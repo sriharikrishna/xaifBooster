@@ -77,7 +77,7 @@ namespace xaifBoosterCrossCountryInterface {
 	                    LSA_FACE_ELIMTYPE,
 			    SCARCE_ELIMTYPE};
 
-    Elimination (LinearizedComputationalGraph* lcg_p);
+    Elimination (LinearizedComputationalGraph& lcg);
     ~Elimination(){};
 
     // init functions allow for a generic constructor for all elimination types
@@ -92,7 +92,7 @@ namespace xaifBoosterCrossCountryInterface {
     
     LinearizedComputationalGraph& getLCG () const {
       if (!myLCG_p)
-	THROW_LOGICEXCEPTION_MACRO("Elimination::getLCG: entry not set");
+	THROW_LOGICEXCEPTION_MACRO("Elimination::getLCG(): myLCG_p is NULL");
       return *myLCG_p;
     } // end of Elimination::getLCG
 
@@ -145,6 +145,8 @@ namespace xaifBoosterCrossCountryInterface {
 
   private:
 
+    Elimination(){};
+    
     EliminationType_E myType;
    
     std::string myDescription;
