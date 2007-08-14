@@ -114,15 +114,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual void algorithm_action_3();
 
-    /**
-     * pointer to function for computing non-scarse elimination sequences
-     */
-    typedef void (*ComputeEliminationSequence_fp)(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
-						  int,
-						  double,
-						  xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&);
-    typedef std::list<std::pair<std::string,ComputeEliminationSequence_fp> > ComputeEliminationSequence_fpList;
-    static ComputeEliminationSequence_fpList ourNonScarseEliminations_fpList;
     static int ourIterationsParameter;
     static double ourGamma;
 
@@ -226,7 +217,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        */
       PrivateLinearizedComputationalGraph* myComputationalGraph_p;
     
-      xaifBoosterCrossCountryInterface::Elimination& addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph* lcg_p); 
+      xaifBoosterCrossCountryInterface::Elimination& addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg); 
 
       typedef std::list<Elimination*> EliminationPList;
 
@@ -514,10 +505,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static unsigned int ourSequenceCounter;
       
     /**
-     * run the scarce algorithm for creating the elminated graphs
-     * using thisMode
+     * run the algorithm for creating the elminated graphs using thisMode
      */
-    void runElimination(Sequence& aSequence, 
+    virtual void runElimination(Sequence& aSequence, 
 			VariableCPList& theDepVertexPListCopyWithoutRemoval, 
 			SequenceHolder& aSequenceHolder,
 			PreaccumulationMode::PreaccumulationMode_E thisMode);
@@ -546,10 +536,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     void fillDependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph,
 			    VariableCPList& theDepVertexPListCopyWithoutRemovals);
-
-    void 
-    runAngelNonScarse(Sequence& aSequence); 
-
 
     void 
     generate(VariableHashTable& theListOfAlreadyAssignedSources,
