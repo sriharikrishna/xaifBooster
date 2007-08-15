@@ -57,9 +57,9 @@ namespace xaifBoosterCrossCountryInterface {
 
   // constructor for regular (complete) or scarce elimination modes
   Elimination::Elimination (LinearizedComputationalGraph& lcg) : myType (UNSET_ELIMTYPE),
-								   myLCG_p (&lcg),
-								   myNumIterations (0),
-								   myGamma (0) {
+								 myLCG_p (&lcg),
+								 myNumIterations (0),
+								 myGamma (0) {
     //if (eType == LSA_VERTEX_ELIMTYPE || eType == LSA_FACE_ELIMTYPE)
     //  THROW_LOGICEXCEPTION_MACRO("Elimination::Elimination(): incorrect constructor invoked");
   }
@@ -128,7 +128,7 @@ namespace xaifBoosterCrossCountryInterface {
     if (!myCountedFlag) { 
       countPreaccumulationOperations();
       if (myCounter.getJacValue()+myCounter.getAddValue()+myCounter.getMulValue()==0) 	
-	THROW_LOGICEXCEPTION_MACRO("Elimination::EliminationResult::getCounter: nothing counted");
+	THROW_LOGICEXCEPTION_MACRO("Elimination::EliminationResult::getCounter() nothing counted");
       myCountedFlag=true;
     }
     return myCounter; 

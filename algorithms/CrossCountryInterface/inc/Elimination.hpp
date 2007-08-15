@@ -151,7 +151,7 @@ namespace xaifBoosterCrossCountryInterface {
    
     std::string myDescription;
     
-    LinearizedComputationalGraph *myLCG_p;
+    LinearizedComputationalGraph* myLCG_p;
 
     int myNumIterations;
     double myGamma;
