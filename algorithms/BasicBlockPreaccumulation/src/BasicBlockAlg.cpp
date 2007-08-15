@@ -169,16 +169,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void BasicBlockAlg::Sequence::setBestResult() {
+    std::cout << "setBestResult() called, where myEliminationPList is of size " << myEliminationPList.size() << std::endl;
     if (myEliminationPList.empty())
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::setBestResult:  no eliminations, thus no results");
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::setBestResult() : no eliminations, thus no results");
     myBestElimination_p = *(myEliminationPList.begin());
     for (EliminationPList::iterator i = ++(myEliminationPList.begin()); i != myEliminationPList.end(); ++i) { 
-      if ((*i)->getEliminationResult().getCounter()<myBestElimination_p->getEliminationResult().getCounter())
+      if ((*i)->getEliminationResult().getCounter() < myBestElimination_p->getEliminationResult().getCounter())
 	myBestElimination_p = *i;
     }
   } 
 
   const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& BasicBlockAlg::Sequence::getBestResult() const {
+    std::cout << "getBestResult() called, where myEliminationPList is of size " << myEliminationPList.size() << std::endl;
     if (!myBestElimination_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
     return myBestElimination_p->getEliminationResult();
@@ -853,7 +855,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	GraphVizDisplay::show(anElimination.getEliminationResult().myRemainderLCG, "remainderGraph");
       }
       aSequence.setBestResult(); 
-      DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: compute_partial_elimination_sequence " 
+      DBG_MACRO(DbgGroup::METRIC, "Sequence metrics: compute_partial_elimination_sequence " 
 		<< anElimination.getEliminationResult().getCounter().debug().c_str() 
 		<< "  number of JAE: " << anElimination.getEliminationResult().myJAEList.getGraphList().size() 
 		<< " R graph edges: " << anElimination.getEliminationResult().myRemainderLCG.numEdges() 
@@ -865,26 +867,30 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterCrossCountryInterface::Elimination& regular_Elimination (aSequence.addNewElimination(theComputationalGraph));
       regular_Elimination.initAsRegular();
 
-      xaifBoosterCrossCountryInterface::Elimination& lsavertex_Elimination (aSequence.addNewElimination(theComputationalGraph));
-      lsavertex_Elimination.initAsLSAVertex(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
+      if (ourChooseAlgFlag) {
+        xaifBoosterCrossCountryInterface::Elimination& lsavertex_Elimination (aSequence.addNewElimination(theComputationalGraph));
+        lsavertex_Elimination.initAsLSAVertex(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
 
-      xaifBoosterCrossCountryInterface::Elimination& lsaface_Elimination(aSequence.addNewElimination(theComputationalGraph));
-      lsaface_Elimination.initAsLSAFace(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
-
+        xaifBoosterCrossCountryInterface::Elimination& lsaface_Elimination (aSequence.addNewElimination(theComputationalGraph));
+        lsaface_Elimination.initAsLSAFace(BasicBlockAlg::ourIterationsParameter, BasicBlockAlg::ourGamma);
+      }
       for (Sequence::EliminationPList::iterator elim_i = aSequence.getEliminationPList().begin(); elim_i != aSequence.getEliminationPList().end(); ++elim_i) { 
-        try {
+	try {
+	  std::cout << "**************************************************************************************" << std::endl;
+	  std::cout << "        Performing " << (*elim_i)->getDescription() << "..." << std::endl;
+	  std::cout << "**************************************************************************************" << std::endl;
 	  (*elim_i)->eliminate();
         }
         catch(...) { 
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runAngelNonScarse: exception thrown from within angel while running eliminate()"
+	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runEliminationNonScarse: exception thrown from within angel while running Elimination::eliminate()"
 				     << (*elim_i)->getDescription());
         }
-        DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: " << (*elim_i)->getDescription() << " " << (*elim_i)->getEliminationResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
-        if (!ourChooseAlgFlag)
-	  break; 
+        DBG_MACRO(DbgGroup::METRIC, "Sequence metrics: " << (*elim_i)->getDescription() << " " << (*elim_i)->getEliminationResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
+	//if (!ourChooseAlgFlag)
+	//  break;
       }
       aSequence.setBestResult();
-      DBG_MACRO(DbgGroup::METRIC, "Seqeunce metrics: best is: " << aSequence.getBestResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
+      DBG_MACRO(DbgGroup::METRIC, "Sequence metrics: best is: " << aSequence.getBestResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
     }
     aSequenceHolder.myBasicBlockOperations.incrementBy(aSequence.getBestResult().getCounter());
   }
