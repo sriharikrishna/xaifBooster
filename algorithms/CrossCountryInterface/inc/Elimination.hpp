@@ -90,7 +90,7 @@ namespace xaifBoosterCrossCountryInterface {
 
     std::string getDescription();
     
-    LinearizedComputationalGraph& getLCG () const {
+     const LinearizedComputationalGraph& getLCG () const {
       if (!myLCG_p)
 	THROW_LOGICEXCEPTION_MACRO("Elimination::getLCG(): myLCG_p is NULL");
       return *myLCG_p;

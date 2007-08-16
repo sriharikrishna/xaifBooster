@@ -94,24 +94,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    /**
-     * compute elimination sequence receives a flattened linearized computational graph and a 
-     * JAE list.  First, a copy of the graph is made, so that the original can remain unmodified.
-     * the original can remain unmodified.  At the moment, vertex elimination can only be used on
-     * graphs where the independent vertices are those vertices with no inedges, and the dependent
-     * vertices are the ones with no outedges, rather than the distinctions specified by the
-     * independent and dependent lists that come as a part of the original graph.
-     * The first heuristic is run on the set of possible eliminations, if it can't decide on a
-     * unique elimination target, the second heuristic is run on the remaining elements, and so
-     * on, until either forward mode or reverse mode is called.  These two heuristics always
-     * decide on a single element.  The JAE list is updated as eliminations are made.
-     * After execution, theOriginal remains the same, and the JAE list is full of the eliminations
-     * required to reduce the original to a bipartite graph.
-     */
-    static void compute_elimination_sequence(
-      const LinearizedComputationalGraph& theOriginal,
-      JacobianAccumulationExpressionList& theJacobianAccumulationExpressionList);
-
   private:
 
     /** 

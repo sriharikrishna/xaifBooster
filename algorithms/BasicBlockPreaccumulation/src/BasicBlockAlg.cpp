@@ -874,9 +874,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       }
       for (Sequence::EliminationPList::iterator elim_i = aSequence.getEliminationPList().begin(); elim_i != aSequence.getEliminationPList().end(); ++elim_i) { 
 	try {
-	  std::cout << "*****************************************************************************" << std::endl;
-	  std::cout << "        Performing " << (*elim_i)->getDescription() << "..." << std::endl;
-	  std::cout << "*****************************************************************************" << std::endl;
 	  (*elim_i)->eliminate();
         }
         catch(...) { 
