@@ -129,7 +129,7 @@ head_sf.f : all_globals_mod.f head.f
 
 # F -> WHIRL
 head_sf.B: head_sf.f mfef90
-	./mfef90 -F -N132 $<
+	./mfef90 -z -F -N132 $<
 
 # WHIRL -> XAIF
 head_sf.xaif : head_sf.B whirl2xaif
