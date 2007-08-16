@@ -197,8 +197,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     PrivateLinearizedComputationalGraph& theComputationalGraph=
       dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getComputationalGraph(getContainingAssignment(),
 															     aSequenceHolder);
-    // this was set in BasicBlockAlg::algorithm_action_2
-    BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get())); // in AssignmentAlg::algorithm_action_2()
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theComputationalGraph)) { 
       // there is an ambiguity, do the split
