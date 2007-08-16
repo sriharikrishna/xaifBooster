@@ -95,7 +95,8 @@ namespace xaifBoosterCrossCountryInterface {
   }
 
   Elimination::EliminationResult::EliminationResult() :
-    myCountedFlag(false) { 
+    myNumReroutings (0),
+    myCountedFlag (false) { 
   }
 
   void Elimination::EliminationResult::countPreaccumulationOperations() const {
