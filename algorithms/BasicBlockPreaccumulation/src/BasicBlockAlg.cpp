@@ -74,7 +74,6 @@
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
 
-#include "xaifBooster/algorithms/CrossCountryInterface/inc/EliminationMethods.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/EliminationException.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
@@ -169,7 +168,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void BasicBlockAlg::Sequence::setBestResult() {
-    std::cout << "setBestResult() called, where myEliminationPList is of size " << myEliminationPList.size() << std::endl;
     if (myEliminationPList.empty())
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::setBestResult() : no eliminations, thus no results");
     myBestElimination_p = *(myEliminationPList.begin());
@@ -180,7 +178,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& BasicBlockAlg::Sequence::getBestResult() const {
-    std::cout << "getBestResult() called, where myEliminationPList is of size " << myEliminationPList.size() << std::endl;
     if (!myBestElimination_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
     return myBestElimination_p->getEliminationResult();
@@ -856,7 +853,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       }
       aSequence.setBestResult(); 
       DBG_MACRO(DbgGroup::METRIC, "Sequence metrics: compute_partial_elimination_sequence " 
-		<< anElimination.getEliminationResult().getCounter().debug().c_str() 
+		<< anElimination.getEliminationResult().getCounter().debug().c_str()
+		<< "  number of reroutings performed: " << anElimination.getEliminationResult().myNumReroutings
 		<< "  number of JAE: " << anElimination.getEliminationResult().myJAEList.getGraphList().size() 
 		<< " R graph edges: " << anElimination.getEliminationResult().myRemainderLCG.numEdges() 
 		<< " for " << aSequenceHolder.debug().c_str() 
@@ -876,9 +874,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       }
       for (Sequence::EliminationPList::iterator elim_i = aSequence.getEliminationPList().begin(); elim_i != aSequence.getEliminationPList().end(); ++elim_i) { 
 	try {
-	  std::cout << "**************************************************************************************" << std::endl;
+	  std::cout << "*****************************************************************************" << std::endl;
 	  std::cout << "        Performing " << (*elim_i)->getDescription() << "..." << std::endl;
-	  std::cout << "**************************************************************************************" << std::endl;
+	  std::cout << "*****************************************************************************" << std::endl;
 	  (*elim_i)->eliminate();
         }
         catch(...) { 

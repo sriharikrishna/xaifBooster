@@ -117,6 +117,7 @@ namespace xaifBoosterCrossCountryInterface {
       LinearizedComputationalGraph myRemainderLCG;
       VertexCorrelationList myVertexCorrelationList;
       EdgeCorrelationList myEdgeCorrelationList;
+      unsigned int myNumReroutings;
 
       const PreaccumulationCounter& getCounter() const;
 
