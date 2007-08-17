@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:22:38 2007
+C Fortran file translated from WHIRL Thu Aug 16 22:08:55 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -298,7 +298,7 @@ C
       type(active) :: DPDX
       type(active) :: DPDY
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       REAL(w2f__8) HX
       REAL(w2f__8) HX2
       REAL(w2f__8) HY
@@ -310,7 +310,7 @@ C
       REAL(w2f__8) NXP1
       REAL(w2f__8) NYP1
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       type(active) :: P
       type(active) :: PB
       type(active) :: PBB
@@ -330,11 +330,11 @@ C
       type(active) :: PTR
       type(active) :: PTT
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       INTEGER(w2f__i4) t__3
       INTEGER(w2f__i4) t__4
 C

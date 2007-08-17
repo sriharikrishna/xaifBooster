@@ -74,8 +74,8 @@ program driver
   read(2,'(I5,/,I5,/,F8.1)') n, m, h
   close(2)
 
-  do i=2,n+1   
-     x0(i)=sqrt(1.*i)
+  do i=1,n
+     x0(i)=sqrt(1.*(i+1))
   end do
 
   open(2,file='tmpOutput/dd.out')
@@ -86,11 +86,11 @@ program driver
   call ad_reroute (x1, x2, y1, y2)
 
   do i=1,n
-     x1%v=x0(1)
-     x2%v=x0(2)
+     x_ph1%v=x0(1)
+     x_ph2%v=x0(2)
 
-     if (i==1) x_ph1%v=y_ph1%v+h
-     if (i==2) x_ph2%v=y_ph2%v+h
+     if (i==1) x_ph1%v=x1%v+h
+     if (i==2) x_ph2%v=x2%v+h
      call ad_reroute (x_ph1, x_ph2, y_ph1, y_ph2)
      write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",1,",",i,")=",(y_ph1%v-y1%v)/h
      write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",2,",",i,")=",(y_ph2%v-y2%v)/h
