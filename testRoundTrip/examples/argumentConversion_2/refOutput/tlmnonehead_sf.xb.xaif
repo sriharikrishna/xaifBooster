@@ -155,7 +155,7 @@
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_2" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_2" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getVariableWithAliasCheck" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
@@ -166,7 +166,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_2" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_2" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getVariableWithAliasCheck" scope_id="1"/>
             </xaif:Src>
           </xaif:SetDeriv>
         </xaif:DerivativePropagator>

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:28:13 2007
+C Fortran file translated from WHIRL Fri Aug 17 08:38:20 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -53,7 +53,7 @@ C$OPENAD XXX Template ad_template.f
       __value__(Y(1)) = 2.0D00
       CALL zero_deriv(__deriv__(Y(1)))
       select_expr_temp_0 = I
-      IF ( I  .EQ.  1)  GO TO  4
+      IF ( I  .EQ.  1)  GO TO  3
       IF ( I  .EQ.  2)  GO TO  8
       GO TO 9
 9     CONTINUE
@@ -61,7 +61,7 @@ C$OPENAD XXX Template ad_template.f
       CALL setderiv(__deriv__(OpenAD_Symbol_9), __deriv__(X(1)))
       CALL setderiv(__deriv__(Y(1)), __deriv__(OpenAD_Symbol_9))
       GO TO 6
-4     CONTINUE
+3     CONTINUE
       __value__(Y(1)) = __value__(X(1))
       CALL setderiv(__deriv__(OpenAD_Symbol_3), __deriv__(X(1)))
       CALL setderiv(__deriv__(Y(1)), __deriv__(OpenAD_Symbol_3))
