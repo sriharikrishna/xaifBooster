@@ -361,10 +361,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	PrivateLinearizedComputationalGraphEdge* theEdge_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge();
 	// set the back reference
 	theEdge_p->setLinearizedExpressionEdge(*ExpressionEdgeI);
-	if (thePartialDerivativeKind == PartialDerivativeKind::LINEAR_ONE
-	    ||
-	    thePartialDerivativeKind == PartialDerivativeKind::LINEAR_MINUS_ONE)
-	  theEdge_p->setUnitLabel();
+	if (thePartialDerivativeKind == PartialDerivativeKind::LINEAR_ONE || thePartialDerivativeKind == PartialDerivativeKind::LINEAR_MINUS_ONE)
+	  theEdge_p->setEdgeLabelType(LinearizedComputationalGraphEdge::UNIT_LABEL);
+	else if (thePartialDerivativeKind == PartialDerivativeKind::LINEAR)
+	  theEdge_p->setEdgeLabelType(LinearizedComputationalGraphEdge::CONSTANT_LABEL);
 	theComputationalGraph.supplyAndAddEdgeInstance(*theEdge_p,
 						      *theLCGSource_p,
 						      *theLCGTarget_p);

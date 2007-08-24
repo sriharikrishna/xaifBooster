@@ -77,6 +77,10 @@ namespace xaifBoosterCrossCountryInterface {
 	                    LSA_FACE_ELIMTYPE,
 			    SCARCE_ELIMTYPE};
 
+    enum AwarenessLevel_E { NO_AWARENESS=0,
+			    UNIT_AWARENESS=1,
+			    CONSTANT_AWARENESS=2};
+    
     Elimination (LinearizedComputationalGraph& lcg);
     ~Elimination(){};
 
@@ -88,6 +92,11 @@ namespace xaifBoosterCrossCountryInterface {
     
     void eliminate();
 
+    static void setAwarenessLevel (AwarenessLevel_E anAwarenessLevel);
+    static std::string AwarenessLevelToString (const AwarenessLevel_E anAwarenessLevel);
+   
+    static void setAllowMaintainingFlag();
+    
     std::string getDescription();
     
      const LinearizedComputationalGraph& getLCG () const {
@@ -154,6 +163,9 @@ namespace xaifBoosterCrossCountryInterface {
     
     LinearizedComputationalGraph* myLCG_p;
 
+    static AwarenessLevel_E ourAwarenessLevel;
+    static bool ourAllowMaintainingFlag;
+    
     int myNumIterations;
     double myGamma;
    

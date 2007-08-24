@@ -55,6 +55,9 @@
 
 namespace xaifBoosterCrossCountryInterface {
 
+  Elimination::AwarenessLevel_E Elimination::ourAwarenessLevel = NO_AWARENESS;
+  bool Elimination::ourAllowMaintainingFlag = false;
+
   // constructor for regular (complete) or scarce elimination modes
   Elimination::Elimination (LinearizedComputationalGraph& lcg) : myType (UNSET_ELIMTYPE),
 								 myLCG_p (&lcg),
@@ -62,6 +65,37 @@ namespace xaifBoosterCrossCountryInterface {
 								 myGamma (0) {
     //if (eType == LSA_VERTEX_ELIMTYPE || eType == LSA_FACE_ELIMTYPE)
     //  THROW_LOGICEXCEPTION_MACRO("Elimination::Elimination(): incorrect constructor invoked");
+  }
+
+  void Elimination::setAwarenessLevel(Elimination::AwarenessLevel_E anAwarenessLevel) {
+    std::cout << "AwarenessLevel set to " << Elimination::AwarenessLevelToString(ourAwarenessLevel);
+    ourAwarenessLevel = anAwarenessLevel;
+  }
+  
+  std::string Elimination::AwarenessLevelToString (const Elimination::AwarenessLevel_E anAwarenessLevel)
+	  //throw (PrintingIntException)
+  {
+    std::string returnString;
+    switch(anAwarenessLevel) {
+    case NO_AWARENESS:
+      returnString="no_awareness";
+      break;
+    case UNIT_AWARENESS:
+      returnString="unit_awareness";
+      break;
+    case CONSTANT_AWARENESS:
+      returnString="constant_awareness";
+      break;
+    default:
+      std::cout << "Error: unknown value passed to AwarenessLevelToString\n";
+      //throw PrintingIntException("Elimination::AwarenessLevelToString(): unknown value", aPreaccumulationMode);
+      break;
+    }
+    return returnString;
+  } // end of toString();
+ 
+  void Elimination::setAllowMaintainingFlag() {
+    ourAllowMaintainingFlag = true;
   }
 
   void Elimination::initAsRegular() {
