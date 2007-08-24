@@ -576,9 +576,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	dynamic_cast<const PrivateLinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
 											     myG.getInternalBoostGraph()),
 										  v));
-      if (thePrivateLinearizedComputationalGraphEdge_p->hasUnitLabel()) { 
+      if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == LinearizedComputationalGraphEdge::UNIT_LABEL)
 	out << "[color=\"red\"]";
-      }
+      else if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == LinearizedComputationalGraphEdge::CONSTANT_LABEL)
+	out << "[color=\"blue\"]";
     }
     const PrivateLinearizedComputationalGraph& myG;
   };
