@@ -84,10 +84,6 @@ namespace xaifBoosterAddressArithmetic {
        */
       xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex * myTapingVertex_p;
       /** 
-       * is the reference to myVariable_p control flow related
-       */
-      bool myCFDecisionFlag;
-      /** 
        * how many references have we encountered
        */
       unsigned int myRefCount;
@@ -96,16 +92,13 @@ namespace xaifBoosterAddressArithmetic {
 	myVariable_p(0),
 	myContainingVertex_p(0),
 	myTapingVertex_p(0),
-	myCFDecisionFlag(false),
 	myRefCount(0) { };
       UnknownVarInfo(const Variable& theVariable,
 		     const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex,
-		     xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theTapingVertex,
-		     bool theCFDecisionFlag) : 
+		     xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theTapingVertex) : 
 	myVariable_p(&theVariable),
 	myContainingVertex_p(&theContainingVertex),
 	myTapingVertex_p(&theTapingVertex),
-	myCFDecisionFlag(theCFDecisionFlag),
 	myRefCount(0) { };
 
     }; 

@@ -80,7 +80,7 @@ namespace xaifBoosterAddressArithmetic {
     ControlFlowGraph::FormalResult theFormalResult(getContaining().getControlFlowGraph().hasFormal(anArgument.getVariable().getVariableSymbolReference()));
     DBG_MACRO(DbgGroup::DATA, "CallGraphVertexAlg::findUnknownVariablesInArgument: checking on "
 	      << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str() 
-	      << " found (" <<  theFormalResult.first << "," << theFormalResult.second << ")");
+	      << " found as formal parmeter: (found,postion)==(" <<  theFormalResult.first << "," << theFormalResult.second << ")");
     if (theFormalResult.first) { 
       xaifBoosterTypeChange::ControlFlowGraphAlg& 
 	theControlFlowGraphAlg(dynamic_cast<xaifBoosterTypeChange::ControlFlowGraphAlg&>(getContaining().
@@ -125,28 +125,27 @@ namespace xaifBoosterAddressArithmetic {
       // see if this is quasi constant
       bool quasiConstantFlag(isQuasiConstant(anArgument.getVariable()));
       if (!quasiConstantFlag) {
-	// possible errors:
 	// check that we don't have redefinitions within the same scope
-	// if we are in an index use
-	if (!thisIsCF) { 
-	  if (theContainingVertex.hasEnclosingControlFlow()) { 
-	    if (definesUnderControlFlowGraphVertex(anArgument.getVariable(),
-						   theContainingVertex.getEnclosingControlFlow().getOriginalVertex())) { 
-	      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInArgument: index variable "
-					 << anArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
-					 << " redefined in "
-					 << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
-					 << " under the enclosing control flow vertex");
-	    }
+	if (!thisIsCF && theContainingVertex.hasEnclosingControlFlow()) { 
+	  if (definesUnderControlFlowGraphVertex(anArgument.getVariable(),
+						 theContainingVertex.getEnclosingControlFlow().getOriginalVertex())) { 
+	    DBG_MACRO(DbgGroup::ERROR,"CallGraphVertexAlg::findUnknownVariablesInArgument: variable "
+				       << anArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+				       << " redefined in "
+				       << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
+				       << " under the enclosing control flow vertex");
 	  }
-	  else { 
-	    if (definesUnderControlFlowGraphVertex(anArgument.getVariable(),
-						   theContainingVertex.getOriginalVertex())) { 
-	      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInArgument: index variable "
-					 << anArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
-					 << " redefined in same block in routine "
-					 << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
-	    }
+	}
+	else { 
+	  if (definesUnderControlFlowGraphVertex(anArgument.getVariable(),
+						 theContainingVertex.getOriginalVertex())) { 
+	    DBG_MACRO(DbgGroup::ERROR,
+		      "CallGraphVertexAlg::findUnknownVariablesInArgument:  variable "
+		      << anArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+		      << " redefined under " 
+		      << xaifBoosterControlFlowReversal::ControlFlowGraphVertexAlg::kindToString(theContainingVertex.getKind())
+		      << " construct in routine "
+		      << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
 	  }
 	}
 	// see if it is an array of some sort:
@@ -168,13 +167,10 @@ namespace xaifBoosterAddressArithmetic {
 					    thisIsCF,
 					    theContainingVertex);
 	  if (!theUnknownIndexVariables.empty()) { 
-	    DBG_MACRO(DbgGroup::ERROR,
-		      "CallGraphVertexAlg::findUnknownVariablesInArgument: expression "
-		      //		      << anArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
-		      << anArgument.getVariable().equivalenceSignature().c_str()
-		      << " (plain name: "
+	    DBG_MACRO(DbgGroup::WARNING,
+		      "CallGraphVertexAlg::findUnknownVariablesInArgument: "
 		      << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
-		      << ") is an array with unknown indices used in routine "
+		      << " is an array with unknown indices used in routine "
 		      << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
 		      << " under top loop on line "
 		      << dynamic_cast<const ForLoop&>(theContainingVertex.getTopExplicitLoop().getOriginalVertex()).getLineNumber());
@@ -212,8 +208,7 @@ namespace xaifBoosterAddressArithmetic {
       theUnknownVariables.push_back(UnknownVarInfo(anArgument.getVariable(),
 						   theContainingVertex,
 						   // if it is redefined or has index variables then we need to store it locally.
-						   (locallyRedefined||anArgument.getVariable().hasArrayAccess()?theContainingVertex:theContainingVertex.getTopExplicitLoop()),
-						   thisIsCF));
+						   (locallyRedefined||anArgument.getVariable().hasArrayAccess()?theContainingVertex:theContainingVertex.getTopExplicitLoop())));
     }
     if (!theUnknownIndexVariables.empty()) 
       theUnknownVariables.splice(theUnknownVariables.end(),theUnknownIndexVariables);
@@ -686,22 +681,10 @@ namespace xaifBoosterAddressArithmetic {
 
   int CallGraphVertexAlg::definesUnderControlFlowGraphVertex(const Variable& theVariable,
 							     const ControlFlowGraphVertex& theControlFlowGraphVertex) { 
-
     int defCount=0;
-    if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::STRING_STYPE) { 
+    if (theVariable.getDuUdMapKey().getKind()==DuUdMapKey::NO_INFO) { 
       DBG_MACRO(DbgGroup::ERROR,
-		"CallGraphVertexAlg::definesUnderControlFlowGraphVertex: (old OA) skipping definitions check for string variable " 
-		<< theVariable.getVariableSymbolReference().getSymbol().getId().c_str()
-		<< " (plain name: "
-		<< theVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
-		<< ") in routine "
-		<< Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
-    }
-    else if (theVariable.getDuUdMapKey().getKind()==DuUdMapKey::NO_INFO) { 
-      // this problem happens with the old OA because sometimes in multi-vertex index expressions (k+1 as opposed to just k)
-      // it does not return proper duud information. 
-      DBG_MACRO(DbgGroup::ERROR,
-		"CallGraphVertexAlg::definesUnderControlFlowGraphVertex: (old OA) skipping definitions check since no duud key for  non-string variable " 
+		"CallGraphVertexAlg::definesUnderControlFlowGraphVertex: (old OA) skipping definitions check since no duud key for variable " 
 		<< theVariable.getVariableSymbolReference().getSymbol().getId().c_str()
 		<< " (plain name: "
 		<< theVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
@@ -715,7 +698,11 @@ namespace xaifBoosterAddressArithmetic {
       for(DuUdMapDefinitionResult::StatementIdList::const_iterator defChainI=defChain.begin();
 	  defChainI!=defChain.end();
 	  ++defChainI) {
-	// std::cout << "checking for " << (*defChainI).c_str() << " under " << theControlFlowGraphVertex.debug().c_str() << std::endl; 
+	DBG_MACRO(DbgGroup::DATA,
+		  "CallGraphVertexAlg::definesUnderControlFlowGraphVertex: checking for " 
+		  << (*defChainI).c_str() 
+		  << " under " 
+		  << theControlFlowGraphVertex.debug().c_str());
 	if (!(*defChainI).empty()
 	    && 
 	    getContaining().getControlFlowGraph().firstDominatedBySecond(getContaining().getControlFlowGraph().getContainingVertex(*defChainI),

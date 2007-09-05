@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Wed Aug  1 21:44:46 2007 -->
+<!-- XAIF file translated from WHIRL at Mon Aug 20 23:23:01 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -72,15 +72,6 @@
       <xaif:AliasRange from_virtual_address="5" to_virtual_address="6" partial="1"/>
     </xaif:AliasSet>
     <xaif:AliasSet key="4">
-      <xaif:AliasRange from_virtual_address="8" to_virtual_address="9" partial="1"/>
-    </xaif:AliasSet>
-    <xaif:AliasSet key="5">
-      <xaif:AliasRange from_virtual_address="10" to_virtual_address="11" partial="1"/>
-    </xaif:AliasSet>
-    <xaif:AliasSet key="6">
-      <xaif:AliasRange from_virtual_address="12" to_virtual_address="13" partial="1"/>
-    </xaif:AliasSet>
-    <xaif:AliasSet key="7">
       <xaif:AliasRange from_virtual_address="7" to_virtual_address="7" partial="0"/>
     </xaif:AliasSet>
   </xaif:AliasSetList>

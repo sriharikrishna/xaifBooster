@@ -53,6 +53,7 @@
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveRHS.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 using namespace xaifBooster;
 
@@ -90,6 +91,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   void VertexIdentificationListActiveRHS::addElement(const Variable& theVariable,
+						     const ObjectWithId::Id& statementId,
 						     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
 						     const DuUdMapDefinitionResult::StatementIdList& theKnownAssignmentsList) { 
     if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) 
@@ -104,6 +106,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // in order to be an assignment in needs to occur in theKnownAssignmentsList
       if (ConceptuallyStaticInstances::instance()->
 	  getCallGraph().getDuUdMap().definition(theVariable.getDuUdMapKey(),
+						 statementId,
 						 theKnownAssignmentsList).myAnswer
 	  !=
 	  DuUdMapDefinitionResult::UNIQUE_INSIDE) { 

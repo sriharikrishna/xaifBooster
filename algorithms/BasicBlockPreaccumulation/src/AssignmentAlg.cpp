@@ -118,9 +118,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
       VertexIdentificationList::IdentificationResult_E thePassiveIdResult(VertexIdentificationList::NOT_IDENTIFIED);
       if ((*ExpressionVertexI).isArgument()) { 
-	theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable(),
+									getContainingAssignment().getId());
 	theRHSIdResult=theVertexIdentificationListActiveRHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
-	thePassiveIdResult=theVertexIdentificationListPassive.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	thePassiveIdResult=theVertexIdentificationListPassive.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable(),
+									getContainingAssignment().getId());
       } 
       if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED
 	  || 
@@ -234,7 +236,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
 	PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=0;
 	if ((*ExpressionVertexI).isArgument()) { 
-	  theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	  theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable(),
+									  getContainingAssignment().getId());
 	  theRHSIdResult=theVertexIdentificationListActiveRHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	} 
 	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
@@ -267,13 +270,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      Variable& theVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	      if (theRHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) { 
 		theVertexIdentificationListActiveRHS.addElement(theVariable,
+								getContainingAssignment().getId(),
 								theLCGVertex_p,
 								theKnownAssignments);
 		DBG_MACRO(DbgGroup::DATA,
 			  "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) added to RHS: "
 			  << theVertexIdentificationListActiveRHS.debug().c_str());
 	      }
-	      theLCGVertex_p->setRHSVariable(theVariable);
+	      theLCGVertex_p->setRHSVariable(theVariable,
+					     getContainingAssignment().getId());
 	    } // end if 
 	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						     theLCGVertex_p));
@@ -368,7 +373,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// the old one is already in there
 	theFlattenedSequence.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
 	// the new one needs to have its RHS set to the old ones LHS
-	theLHSLCGVertex_p->setRHSVariable(theOldLHSLCGVertex_p->getLHSVariable());
+	theLHSLCGVertex_p->setRHSVariable(theOldLHSLCGVertex_p->getLHSVariable(),
+					  getContainingAssignment().getId());
 	// we need to add the unit edge
 	PrivateLinearizedComputationalGraphEdge* theEdge_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge();
 	// we can't set a back reference because there is none
@@ -388,13 +394,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) after remove from RHS: "
 		<< theVertexIdentificationListActiveRHS.debug().c_str());
       // a known active lhs cannot have a passive identification
-      theVertexIdentificationListPassive.removeIfIdentifiable(theLHS);
+      theVertexIdentificationListPassive.removeIfIdentifiable(theLHS,
+							      getContainingAssignment().getId());
       // an overwritten LHS needs to refer to the respective last definition
       theVertexIdentificationListActiveLHS.removeIfIdentifiable(theLHS);
       theVertexIdentificationListActiveLHS.addElement(theLHS,
 					     	      theLHSLCGVertex_p,
 						      getContainingAssignment().getId());
-      theLHSLCGVertex_p->setLHSVariable(theLHS);
+      theLHSLCGVertex_p->setLHSVariable(theLHS,
+					getContainingAssignment().getId());
       // as we step through the assignments we add all 
       // the left hand sides as dependendents and when we are 
       // done with one flattening section we remove the ones not 

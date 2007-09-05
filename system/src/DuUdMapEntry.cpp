@@ -117,7 +117,8 @@ namespace xaifBooster {
     myStatementIdList.push_back(anId);
   } 
 
-  const DuUdMapUseResult DuUdMapEntry::use(const DuUdMapUseResult::StatementIdLists& idLists) const { 
+  const DuUdMapUseResult DuUdMapEntry::use(const ObjectWithId::Id& statementId,
+					   const DuUdMapUseResult::StatementIdLists& idLists) const { 
     DuUdMapUseResult theResult;
     if (myStatementIdList.empty()) { 
       DBG_MACRO(DbgGroup::ERROR,"DuUdMapEntry::use: an empty StatementIdList implies dead code, the subsequent transformations may fail");
@@ -125,6 +126,8 @@ namespace xaifBooster {
     }
     unsigned int matchNumber=0;
     bool hasOutOfScope=false;
+    bool passedDef=false;
+    bool loopCarried=false;
     for(DuUdMapDefinitionResult::StatementIdList::const_iterator chainI=myStatementIdList.begin();
 	chainI!=myStatementIdList.end();
 	++chainI) {
@@ -134,14 +137,20 @@ namespace xaifBooster {
 	  ++dependentStatementIdListI) { 
 	if (*dependentStatementIdListI=="")
 	  THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: StatementIds in the active statement id list cannot be empty");
-	if (*dependentStatementIdListI==*chainI)
+	if (*dependentStatementIdListI==*chainI) { 
 	  matchNumber++;
+	  if (!passedDef)
+	    loopCarried=true;
+	}
 	if (matchNumber==1) { 
 	  theResult.myStatementId=*chainI;
 	  theResult.myActiveUse=ActiveUseType::ACTIVEUSE;
 	}
+	if (*dependentStatementIdListI==statementId)
+	  passedDef=true;
       }
       // second test against the passive statements
+      passedDef=false;
       for(DuUdMapDefinitionResult::StatementIdList::const_iterator passiveStatementIdListI=idLists.myPassiveStatementIdList.begin();
 	  passiveStatementIdListI!=idLists.myPassiveStatementIdList.end();
 	  ++passiveStatementIdListI) { 
@@ -152,15 +161,21 @@ namespace xaifBooster {
 	  if (theResult.myActiveUse==ActiveUseType::ACTIVEUSE) { 
 	    theResult.myActiveUse=ActiveUseType::UNDEFINEDUSE;
 	  }
+	  if (!passedDef) 
+	    loopCarried=true;
 	}
 	if (matchNumber==1) { 
 	  theResult.myStatementId=*chainI;
 	  theResult.myActiveUse=ActiveUseType::PASSIVEUSE;
 	}
+	if (*passiveStatementIdListI==statementId)
+	  passedDef=true;
       }
       if (*chainI=="") 
 	hasOutOfScope=true;
     }
+    if (loopCarried)
+      hasOutOfScope=true;
     if ((matchNumber==0 
 	 &&
 	 (hasOutOfScope
@@ -194,12 +209,15 @@ namespace xaifBooster {
     return theResult;
   }
 
-  const DuUdMapDefinitionResult DuUdMapEntry::definition(const DuUdMapDefinitionResult::StatementIdList& anIdList) const { 
+  const DuUdMapDefinitionResult DuUdMapEntry::definition(const ObjectWithId::Id& statementId,
+							 const DuUdMapDefinitionResult::StatementIdList& anIdList) const { 
     if (myStatementIdList.empty()) 
       THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::definition: empty StatementIdList implies use of a variable that has not been defined");
     DuUdMapDefinitionResult theResult;
     unsigned int matchNumber=0;
     bool hasOutOfScope=false;
+    bool passedUse=false;
+    bool loopCarried=false;
     for(DuUdMapDefinitionResult::StatementIdList::const_iterator chainI=myStatementIdList.begin();
 	chainI!=myStatementIdList.end();
 	++chainI) {
@@ -208,14 +226,21 @@ namespace xaifBooster {
 	  ++it) { 
 	if (*it=="")
 	  THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::definition: all StatementIds in anIdList are supposed to be for regular statements and therefore cannot be empty");
-	if (*it==*chainI)
+	if (*it==*chainI) { 
 	  matchNumber++;
+	  if (passedUse) 
+	    loopCarried=true;
+	}
 	if (matchNumber==1)
 	  theResult.myStatementId=*chainI;
+	if (statementId==*it)
+	  passedUse=true;
       }
       if (*chainI=="") 
 	hasOutOfScope=true;
     }
+    if (loopCarried)
+      hasOutOfScope=true;
     if ((matchNumber==0 
 	 &&
 	 (hasOutOfScope
