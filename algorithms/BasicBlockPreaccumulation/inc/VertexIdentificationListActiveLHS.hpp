@@ -79,7 +79,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * in case of duud information absent this can also 
      * be invoked between LHS variables.
      */
-    IdentificationResult canIdentify(const Variable& theVariable) const;
+    IdentificationResult canIdentify(const Variable& theVariable,
+				     const ObjectWithId::Id& statementId) const;
 
     /** 
      * in case of duud information present we keep adding 

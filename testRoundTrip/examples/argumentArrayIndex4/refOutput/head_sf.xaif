@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Fri Jul 20 16:10:57 2007 -->
+<!-- XAIF file translated from WHIRL at Mon Aug 20 23:15:01 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -140,6 +140,7 @@
       <xaif:StatementId idRef="41"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="9">
+      <xaif:StatementId idRef=""/>
       <xaif:StatementId idRef="27"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="10">
@@ -303,7 +304,7 @@
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="27" lineNumber="76">
-        <xaif:AssignmentLHS du_ud="1">
+        <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="Y_2"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>

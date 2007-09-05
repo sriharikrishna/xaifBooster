@@ -95,16 +95,22 @@ namespace xaifBooster{
      * found in the scope of question so far
      * this applies only to UD chains and for this use 
      * we are looking for a definition
+     * and we use statementId to distinguish 
+     * loop carried dependencies
      */
-    const DuUdMapDefinitionResult definition(const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
+    const DuUdMapDefinitionResult definition(const ObjectWithId::Id& statementId,
+					     const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
 
     /** 
      * idList contains the Ids of all statements (active and passive) 
      * in the scope of question so far
      * this applies only to DU chains and for this definition 
      * we are looking for uses
+     * and we use statementId to distinguish 
+     * loop carried dependencies
      */
-    const DuUdMapUseResult use(const DuUdMapUseResult::StatementIdLists& idLists) const;
+    const DuUdMapUseResult use(const ObjectWithId::Id& statementId,
+			       const DuUdMapUseResult::StatementIdLists& idLists) const;
 
     /** 
      * the name says it all

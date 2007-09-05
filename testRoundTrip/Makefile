@@ -205,10 +205,10 @@ run: params.conf tmpOutput driver numericalComparison
 ######################################################
 
 tmpOutput: 
-	mkdir -p $@
+	@mkdir -p $@
 
 testAllclean:
-	$(RM) head_sf.* head.* driver* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput data.tmp
+	@$(RM) head_sf.* head.* driver* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput data.tmp
 
 clean: testAllclean
 	$(RM) *.xsd 

@@ -83,7 +83,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   VertexIdentificationList::IdentificationResult_E 
-  VertexIdentificationListPassive::canIdentify(const Variable& theVariable) const { 
+  VertexIdentificationListPassive::canIdentify(const Variable& theVariable,
+					       const ObjectWithId::Id& statementId) const { 
     IdentificationResult_E result=NOT_IDENTIFIED;
     if (isDuUdMapBased() 
 	&& 
@@ -94,6 +95,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       getStatementIdList(aStatementIdList);
       DuUdMapDefinitionResult theResult(ConceptuallyStaticInstances::instance()->
 					getCallGraph().getDuUdMap().definition(theVariable.getDuUdMapKey(),
+									       statementId,
 									       aStatementIdList));
       // either one or more LHSs of passive statements that we have in the list
       // means this one is guaranteed to be passive too
@@ -131,21 +133,24 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       baseOnDuUdMap();
     if (!isDuUdMapBased() 
 	&& 
-	canIdentify(theVariable)==UNIQUELY_IDENTIFIED) 
+	canIdentify(theVariable,
+		    aStatementId)==UNIQUELY_IDENTIFIED) 
       return; 
     myList.push_back(new ListItem(theVariable.getAliasMapKey(),
 				  theVariable.getDuUdMapKey(),
 				  aStatementId));
   } 
 
-  void VertexIdentificationListPassive::removeIfIdentifiable(const Variable& theVariable) { 
+  void VertexIdentificationListPassive::removeIfIdentifiable(const Variable& theVariable,
+							     const ObjectWithId::Id& statementId) { 
     if (isDuUdMapBased())
       return;
     if (myList.empty())
       return;
     AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getAliasMap());
-    IdentificationResult_E idResult(canIdentify(theVariable));
+    IdentificationResult_E idResult(canIdentify(theVariable,
+						statementId));
     while(idResult!=NOT_IDENTIFIED) { 
       for (ListItemPList::iterator aListIterator(myList.begin());
 	   aListIterator!=myList.end(); 
@@ -156,7 +161,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  break;
 	}
       } // end for 
-      idResult=canIdentify(theVariable);
+      idResult=canIdentify(theVariable,
+			   statementId);
     } // end while 
   } 
 

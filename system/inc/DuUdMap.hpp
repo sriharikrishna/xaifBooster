@@ -92,16 +92,22 @@ namespace xaifBooster {
      * aKey is the key of a right-hand-side variable
      * which is to be checked for definitions in
      * statements listed in anIdList
+     * and we use statementId to distinguish 
+     * loop carried dependencies
      */
     const DuUdMapDefinitionResult definition(const DuUdMapKey& aKey,
+					     const ObjectWithId::Id& statementId,
 					     const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
 
     /** 
      * aKey is the key of a left-hand-side variable
      * which is to be checked for uses in
      * statements listed in the idLists
+     * and we use statementId to distinguish 
+     * loop carried dependencies
      */
     const DuUdMapUseResult use(const DuUdMapKey& aKey,
+			       const ObjectWithId::Id& statementId,
 			       const DuUdMapUseResult::StatementIdLists& idLists) const;
     
     /** 

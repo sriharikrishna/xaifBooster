@@ -126,6 +126,7 @@ namespace xaifBooster {
   }
 
   const DuUdMapDefinitionResult DuUdMap::definition(const DuUdMapKey& aKey,
+						    const ObjectWithId::Id& statementId,
 						    const DuUdMapDefinitionResult::StatementIdList& anIdList) const {
     DuUdMapDefinitionResult theResult;
     if (aKey.getKind()==DuUdMapKey::TEMP_VAR)
@@ -143,7 +144,8 @@ namespace xaifBooster {
 				   << aKey.getKey() 
 				   << "< out of range");
       if (myDuUdMapEntryPVector[aKey.getKey()])
-	return myDuUdMapEntryPVector[aKey.getKey()]->definition(anIdList);
+	return myDuUdMapEntryPVector[aKey.getKey()]->definition(statementId,
+								anIdList);
       else 
 	THROW_LOGICEXCEPTION_MACRO("DuUdMap::definition: key >" 
 				   << aKey.getKey() 
@@ -153,6 +155,7 @@ namespace xaifBooster {
   } 
 
   const DuUdMapUseResult DuUdMap::use(const DuUdMapKey& aKey,
+				      const ObjectWithId::Id& statementId,
 				      const DuUdMapUseResult::StatementIdLists& idLists) const {
     DuUdMapUseResult theResult;
     if (aKey.getKind()==DuUdMapKey::TEMP_VAR)
@@ -170,7 +173,8 @@ namespace xaifBooster {
 				   << aKey.getKey() 
 				   << "< out of range");
       if (myDuUdMapEntryPVector[aKey.getKey()])
-	return myDuUdMapEntryPVector[aKey.getKey()]->use(idLists);
+	return myDuUdMapEntryPVector[aKey.getKey()]->use(statementId,
+							 idLists);
       else 
 	THROW_LOGICEXCEPTION_MACRO("DuUdMap::use: key >" 
 				   << aKey.getKey() 
