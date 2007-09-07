@@ -100,7 +100,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
 
       ListItem(const AliasMapKey& anAliasMapKey,
-	       const DuUdMapKey& aDuUdMapKey,
+	       const StatementIdSetMapKey& aDuUdMapKey,
 	       const ObjectWithId::Id& aStatementId);
 
       virtual std::string debug() const;
@@ -117,7 +117,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /** 
      * retrieve the list of statement IDs collected in myList
      */
-    void getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const;
+    void getStatementIdList(StatementIdList& aStatementIdList)const;
 
   }; // end of class VertexIdentificationListPassive  
    

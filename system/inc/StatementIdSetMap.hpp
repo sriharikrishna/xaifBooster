@@ -1,3 +1,5 @@
+#ifndef _STATEMENTIDSETMAP_INCLUDE_
+#define _STATEMENTIDSETMAP_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,18 +52,55 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
+
+#include <vector>
+#include <list>
+
+#include "xaifBooster/utils/inc/Debuggable.hpp"
+
+#include "xaifBooster/system/inc/StatementIdSetMapEntry.hpp"
 
 namespace xaifBooster { 
 
-  DuUdMapUseResult::StatementIdLists::StatementIdLists(const StatementIdList& aDependentStatementIdList,
-						       const StatementIdList& aPassiveStatementIdList) :
-    myDependentStatementIdList(aDependentStatementIdList),
-    myPassiveStatementIdList(aPassiveStatementIdList) {
-  }
+  class StatementIdSetMapKey;
 
-  DuUdMapUseResult::DuUdMapUseResult() { 
-    myActiveUse=ActiveUseType::UNDEFINEDUSE;
-  }
+  class StatementIdSetMap: virtual public Debuggable {
+
+  public:
     
-} // end of namespace  
+    StatementIdSetMap(){};
+
+    ~StatementIdSetMap();
+
+    virtual std::string debug() const ; 
+
+    typedef std::vector<StatementIdSetMapEntry*> StatementIdSetMapEntryPVector;
+
+    StatementIdSetMapEntry& addEntry(unsigned int theKey); 
+
+    const StatementIdSetMapEntry& getEntry(const StatementIdSetMapKey& theKey) const; 
+
+    const StatementIdSetMapEntryPVector& getEntries() const; 
+
+  private: 
+
+    /**
+     * no def
+     */
+    StatementIdSetMap(const StatementIdSetMap&);
+
+    /**
+     * no def
+     */
+    StatementIdSetMap operator=(const StatementIdSetMap&);
+
+    /** 
+     * the vector containing all the entries
+     */
+    StatementIdSetMapEntryPVector myStatementIdSetMapEntryPVector;
+
+  };
+
+} 
+                                                                     
+#endif

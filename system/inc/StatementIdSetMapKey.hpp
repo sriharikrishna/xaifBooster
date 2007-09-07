@@ -1,3 +1,5 @@
+#ifndef _STATEMENTIDSETMAPKEY_INCLUDE_
+#define _STATEMENTIDSETMAPKEY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,18 +52,13 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
+
+#include "xaifBooster/system/inc/InfoMapKey.hpp"
 
 namespace xaifBooster { 
 
-  DuUdMapUseResult::StatementIdLists::StatementIdLists(const StatementIdList& aDependentStatementIdList,
-						       const StatementIdList& aPassiveStatementIdList) :
-    myDependentStatementIdList(aDependentStatementIdList),
-    myPassiveStatementIdList(aPassiveStatementIdList) {
-  }
+  class StatementIdSetMapKey : public InfoMapKey {};
 
-  DuUdMapUseResult::DuUdMapUseResult() { 
-    myActiveUse=ActiveUseType::UNDEFINEDUSE;
-  }
-    
-} // end of namespace  
+} 
+                                                                     
+#endif

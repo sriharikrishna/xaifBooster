@@ -1,3 +1,5 @@
+#ifndef _STATEMENTIDSETMAPENTRY_INCLUDE_
+#define _STATEMENTIDSETMAPENTRY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,18 +52,69 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
 
-namespace xaifBooster { 
+#include <string>
 
-  DuUdMapUseResult::StatementIdLists::StatementIdLists(const StatementIdList& aDependentStatementIdList,
-						       const StatementIdList& aPassiveStatementIdList) :
-    myDependentStatementIdList(aDependentStatementIdList),
-    myPassiveStatementIdList(aPassiveStatementIdList) {
-  }
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
-  DuUdMapUseResult::DuUdMapUseResult() { 
-    myActiveUse=ActiveUseType::UNDEFINEDUSE;
-  }
+#include "xaifBooster/system/inc/StatementIdSet.hpp"
+
+namespace xaifBooster{ 
+
+  /**
+   * entry to a map, contains the key itself (for convenience replicated)
+   * and the set of statement IDs
+   */
+  class StatementIdSetMapEntry : public XMLPrintable{ 
     
-} // end of namespace  
+  public: 
+  
+    StatementIdSetMapEntry(unsigned int theKey); 
+ 
+    ~StatementIdSetMapEntry();
+
+    std::string debug() const ; 
+
+    static const std::string ourXAIFName;
+    static const std::string our_myKey_XAIFName;
+    static const std::string our_StatementId_XAIFName;
+    static const std::string our_IdRef_XAIFName;
+
+    void printXMLHierarchy(std::ostream& os) const; 
+
+    const StatementIdSet& getStatementIdSet() const; 
+
+    void insert(const ObjectWithId::Id& anId);
+
+  private:
+
+    /**
+     * keys start with 1
+     * in XAIF schema the default is 0 
+     * which refers to a dummy instance in the
+     * DuUdMap
+     */
+    const unsigned int myKey;
+
+    /**
+     * no def
+     */
+    StatementIdSetMapEntry();
+
+    /**
+     * no def
+     */
+    StatementIdSetMapEntry(const StatementIdSetMapEntry&);
+
+    /**
+     * no def
+     */
+    StatementIdSetMapEntry operator=(const StatementIdSetMapEntry&);
+
+    StatementIdSet myStatementIdSet;
+    
+  }; 
+
+} 
+
+#endif

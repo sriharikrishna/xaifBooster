@@ -1,3 +1,5 @@
+#ifndef _STATEMENTIDSET_INCLUDE_
+#define _STATEMENTIDSET_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,18 +52,15 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
 
-namespace xaifBooster { 
+#include <set>
 
-  DuUdMapUseResult::StatementIdLists::StatementIdLists(const StatementIdList& aDependentStatementIdList,
-						       const StatementIdList& aPassiveStatementIdList) :
-    myDependentStatementIdList(aDependentStatementIdList),
-    myPassiveStatementIdList(aPassiveStatementIdList) {
-  }
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
-  DuUdMapUseResult::DuUdMapUseResult() { 
-    myActiveUse=ActiveUseType::UNDEFINEDUSE;
-  }
-    
-} // end of namespace  
+namespace xaifBooster{ 
+
+    typedef std::set<ObjectWithId::Id> StatementIdSet;
+
+} 
+
+#endif

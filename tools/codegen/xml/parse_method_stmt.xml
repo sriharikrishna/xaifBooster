@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="2" nr_templates="2" outfile="parse_method_stmt.inc">
 
-  <CodeGen:RepeatableCode nr_versions="57">
+  <CodeGen:RepeatableCode nr_versions="58">
     <CodeGen:CodeTemplate nr_entries="9">
       <CodeGen:StaticCode text="ourStartActionCatalogue.addElement("/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -129,14 +129,14 @@
       <CodeGen:DynamicCode hook_ref="3" text="DimensionBounds"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="DoMap"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="DoMap"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="DuUdMap"/>
       <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="DuUdMap"/>
-    </CodeGen:CodeVersion>
-    <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="DuUdMapEntry"/>
-      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
-      <CodeGen:DynamicCode hook_ref="3" text="DuUdMapEntry"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="EndBranch"/>
@@ -259,9 +259,14 @@
       <CodeGen:DynamicCode hook_ref="3" text="SideEffectReference"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="DuUdMapEntry"/>
+      <CodeGen:DynamicCode hook_ref="1" text="StatementIdSetMapEntry"/>
       <CodeGen:DynamicCode hook_ref="2" text="our_StatementId_XAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="StatementId"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="StatementIdSetMapEntry"/>
+      <CodeGen:DynamicCode hook_ref="2" text="ourXAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="StatementIdSetMapEntry"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="IndexTriplet"/>

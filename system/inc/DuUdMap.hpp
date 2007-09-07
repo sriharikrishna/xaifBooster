@@ -53,40 +53,29 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include <vector>
-#include <list>
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/StatementIdSetMap.hpp"
 #include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
 #include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
-#include "xaifBooster/system/inc/DuUdMapEntry.hpp"
 
 namespace xaifBooster { 
-
-  class DuUdMapKey;
 
 
   /**
    * map to hold DuUdMapEntry information 
    */
-  class DuUdMap {
+  class DuUdMap : public StatementIdSetMap ,
+		  public XMLPrintable {
 
   public:
     
-    DuUdMap(){};
-
-    ~DuUdMap();
-
     static const std::string ourXAIFName;
 
-    std::string debug() const ; 
+    DuUdMap(){};
+
+    ~DuUdMap(){};
 
     void printXMLHierarchy(std::ostream& os) const; 
-
-    typedef std::vector<DuUdMapEntry*> DuUdMapEntryPVector;
-
-    DuUdMapEntry& addDuUdMapEntry(unsigned int theKey); 
-
-    const DuUdMapEntry& getEntry(const DuUdMapKey& theKey) const; 
 
     /** 
      * aKey is the key of a right-hand-side variable
@@ -95,9 +84,9 @@ namespace xaifBooster {
      * and we use statementId to distinguish 
      * loop carried dependencies
      */
-    const DuUdMapDefinitionResult definition(const DuUdMapKey& aKey,
+    const DuUdMapDefinitionResult definition(const StatementIdSetMapKey& aKey,
 					     const ObjectWithId::Id& statementId,
-					     const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
+					     const StatementIdList& anIdList) const;
 
     /** 
      * aKey is the key of a left-hand-side variable
@@ -106,7 +95,7 @@ namespace xaifBooster {
      * and we use statementId to distinguish 
      * loop carried dependencies
      */
-    const DuUdMapUseResult use(const DuUdMapKey& aKey,
+    const DuUdMapUseResult use(const StatementIdSetMapKey& aKey,
 			       const ObjectWithId::Id& statementId,
 			       const DuUdMapUseResult::StatementIdLists& idLists) const;
     
@@ -118,8 +107,8 @@ namespace xaifBooster {
      * Note: sameDefinition returning false does not 
      * imply the definitions are disjoint
      */
-    bool sameDefinition(const DuUdMapKey& aKey,
-			const DuUdMapKey& anotherKey) const;
+    bool sameDefinition(const StatementIdSetMapKey& aKey,
+			const StatementIdSetMapKey& anotherKey) const;
 
 
     /** 
@@ -130,8 +119,8 @@ namespace xaifBooster {
      * Note: disjointDefinition returning false does not 
      * imply the definitions are the same
      */
-    bool disjointDefinition(const DuUdMapKey& aKey,
-			    const DuUdMapKey& anotherKey) const;
+    bool disjointDefinition(const StatementIdSetMapKey& aKey,
+			    const StatementIdSetMapKey& anotherKey) const;
 
   private: 
 
@@ -145,13 +134,8 @@ namespace xaifBooster {
      */
     DuUdMap operator=(const DuUdMap&);
 
-    /** 
-     * the vector containing all the entries
-     */
-    DuUdMapEntryPVector myDuUdMapEntryPVector;
+  };
 
-  }; // end of class DuUdMap
-
-} // end of namespace 
+} 
                                                                      
 #endif

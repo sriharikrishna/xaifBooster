@@ -59,7 +59,7 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
   VertexIdentificationListActiveLHS::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
-							const DuUdMapKey& aDuUdMapKey,
+							const StatementIdSetMapKey& aDuUdMapKey,
 							PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p,
 							const ObjectWithId::Id& aStatementId) : 
     VertexIdentificationListActive::ListItem(anAliasMapKey,
@@ -73,8 +73,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 						 const ObjectWithId::Id& statementId) const { 
     if (isDuUdMapBased() 
 	&& 
-	theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) { 
-      DuUdMapDefinitionResult::StatementIdList aStatementIdList;
+	theVariable.getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO) { 
+      StatementIdList aStatementIdList;
       getStatementIdList(aStatementIdList);
       DuUdMapDefinitionResult theResult(ConceptuallyStaticInstances::instance()->
 					getCallGraph().getDuUdMap().definition(theVariable.getDuUdMapKey(),
@@ -114,7 +114,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void VertexIdentificationListActiveLHS::addElement(const Variable& theVariable,
 						     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
 						     const ObjectWithId::Id& aStatementId) { 
-    if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) 
+    if (theVariable.getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO) 
       // if we ever encounter a usefull piece of duud information:
       baseOnDuUdMap();
     if (!isDuUdMapBased() 
@@ -152,7 +152,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
-  void VertexIdentificationListActiveLHS::getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const { 
+  void VertexIdentificationListActiveLHS::getStatementIdList(StatementIdList& aStatementIdList)const { 
     for (ListItemPList::const_iterator aListIterator=myList.begin();
 	 aListIterator!=myList.end(); 
 	 ++aListIterator) { 

@@ -59,9 +59,9 @@
 #include "xaifBooster/system/inc/VariableVertex.hpp"
 #include "xaifBooster/system/inc/VariableEdge.hpp"
 #include "xaifBooster/system/inc/AliasMapKey.hpp"
-#include "xaifBooster/system/inc/DuUdMapKey.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
+#include "xaifBooster/system/inc/StatementIdSetMapKey.hpp"
 
 namespace xaifBooster { 
 
@@ -122,9 +122,9 @@ namespace xaifBooster {
 
     const AliasMapKey& getAliasMapKey() const;
 
-    DuUdMapKey& getDuUdMapKey();
+    StatementIdSetMapKey& getDuUdMapKey();
 
-    const DuUdMapKey& getDuUdMapKey() const;
+    const StatementIdSetMapKey& getDuUdMapKey() const;
 
     /**
      * get the data type from the SymbolReference,
@@ -226,7 +226,7 @@ namespace xaifBooster {
     /** 
      * key into  DuUdMap
      */
-    DuUdMapKey myDuUdMapKey;
+    StatementIdSetMapKey myDuUdMapKey;
 
     /** 
      * indicating the use of the value 

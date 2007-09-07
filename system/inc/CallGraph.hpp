@@ -60,6 +60,7 @@
 #include "xaifBooster/system/inc/Scopes.hpp"
 #include "xaifBooster/system/inc/AliasMap.hpp"
 #include "xaifBooster/system/inc/DuUdMap.hpp"
+#include "xaifBooster/system/inc/DoMap.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraphAlgBase.hpp"
  
@@ -144,6 +145,16 @@ namespace xaifBooster {
      */
     const DuUdMap& getDuUdMap() const;
 
+    /**
+     * get the DoMap
+     */
+    DoMap& getDoMap();
+
+    /**
+     * get the DoMap
+     */
+    const DoMap& getDoMap() const;
+
     void setProgramName(const std::string& aProgramName);
 
     const std::string& getSchemaLocation() const;
@@ -215,6 +226,12 @@ namespace xaifBooster {
      * def-use/use-def information
      */
     DuUdMap myDuUdMap;
+
+    /**
+     * the CallGraph owns the map for 
+     * def-overwrite information
+     */
+    DoMap myDoMap;
 
     /**
      * the schema instance 

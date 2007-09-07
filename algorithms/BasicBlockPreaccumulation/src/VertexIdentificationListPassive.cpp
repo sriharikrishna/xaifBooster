@@ -62,7 +62,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   VertexIdentificationListPassive::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
-						      const DuUdMapKey& aDuUdMapKey,
+						      const StatementIdSetMapKey& aDuUdMapKey,
 						      const ObjectWithId::Id& aStatementId) : 
     VertexIdentificationList::ListItem(anAliasMapKey,
 				       aDuUdMapKey),
@@ -88,10 +88,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     IdentificationResult_E result=NOT_IDENTIFIED;
     if (isDuUdMapBased() 
 	&& 
-	theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) { 
+	theVariable.getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO) { 
       // if we ever encounter a bit of DuUd information:
       baseOnDuUdMap();
-      DuUdMapDefinitionResult::StatementIdList aStatementIdList;
+      StatementIdList aStatementIdList;
       getStatementIdList(aStatementIdList);
       DuUdMapDefinitionResult theResult(ConceptuallyStaticInstances::instance()->
 					getCallGraph().getDuUdMap().definition(theVariable.getDuUdMapKey(),
@@ -128,7 +128,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void VertexIdentificationListPassive::addElement(const Variable& theVariable,
 						   const ObjectWithId::Id& aStatementId) { 
-    if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) 
+    if (theVariable.getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO) 
       // if we ever encounter a usefull piece of duud information:
       baseOnDuUdMap();
     if (!isDuUdMapBased() 
@@ -176,7 +176,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
-  void VertexIdentificationListPassive::getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const { 
+  void VertexIdentificationListPassive::getStatementIdList(StatementIdList& aStatementIdList)const { 
     for (ListItemPList::const_iterator aListIterator=myList.begin();
 	 aListIterator!=myList.end(); 
 	 ++aListIterator) { 

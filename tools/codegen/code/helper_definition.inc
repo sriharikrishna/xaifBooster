@@ -152,6 +152,20 @@ bool XAIFBaseParserHelper::hasControlFlowGraph() const {
 return (myControlFlowGraph_p!=0);
 }
 
+void XAIFBaseParserHelper::setDoMap(DoMap& whatToSet) {
+if (myDoMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DoMap" << " item already set");
+myDoMap_p=&whatToSet;
+}
+DoMap& XAIFBaseParserHelper::getDoMap() const {
+if (!myDoMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DoMap" << " item not set");
+return *myDoMap_p;
+}
+bool XAIFBaseParserHelper::hasDoMap() const {
+return (myDoMap_p!=0);
+}
+
 void XAIFBaseParserHelper::setDuUdMap(DuUdMap& whatToSet) {
 if (myDuUdMap_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMap" << " item already set");
@@ -164,20 +178,6 @@ return *myDuUdMap_p;
 }
 bool XAIFBaseParserHelper::hasDuUdMap() const {
 return (myDuUdMap_p!=0);
-}
-
-void XAIFBaseParserHelper::setDuUdMapEntry(DuUdMapEntry& whatToSet) {
-if (myDuUdMapEntry_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "DuUdMapEntry" << " item already set");
-myDuUdMapEntry_p=&whatToSet;
-}
-DuUdMapEntry& XAIFBaseParserHelper::getDuUdMapEntry() const {
-if (!myDuUdMapEntry_p)
-THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "DuUdMapEntry" << " item not set");
-return *myDuUdMapEntry_p;
-}
-bool XAIFBaseParserHelper::hasDuUdMapEntry() const {
-return (myDuUdMapEntry_p!=0);
 }
 
 void XAIFBaseParserHelper::setExpression(Expression& whatToSet) {
@@ -360,6 +360,34 @@ return *mySideEffectList_p;
 }
 bool XAIFBaseParserHelper::hasSideEffectList() const {
 return (mySideEffectList_p!=0);
+}
+
+void XAIFBaseParserHelper::setStatementIdSetMap(StatementIdSetMap& whatToSet) {
+if (myStatementIdSetMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "StatementIdSetMap" << " item already set");
+myStatementIdSetMap_p=&whatToSet;
+}
+StatementIdSetMap& XAIFBaseParserHelper::getStatementIdSetMap() const {
+if (!myStatementIdSetMap_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "StatementIdSetMap" << " item not set");
+return *myStatementIdSetMap_p;
+}
+bool XAIFBaseParserHelper::hasStatementIdSetMap() const {
+return (myStatementIdSetMap_p!=0);
+}
+
+void XAIFBaseParserHelper::setStatementIdSetMapEntry(StatementIdSetMapEntry& whatToSet) {
+if (myStatementIdSetMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "StatementIdSetMapEntry" << " item already set");
+myStatementIdSetMapEntry_p=&whatToSet;
+}
+StatementIdSetMapEntry& XAIFBaseParserHelper::getStatementIdSetMapEntry() const {
+if (!myStatementIdSetMapEntry_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "StatementIdSetMapEntry" << " item not set");
+return *myStatementIdSetMapEntry_p;
+}
+bool XAIFBaseParserHelper::hasStatementIdSetMapEntry() const {
+return (myStatementIdSetMapEntry_p!=0);
 }
 
 void XAIFBaseParserHelper::setSubroutineCall(SubroutineCall& whatToSet) {
