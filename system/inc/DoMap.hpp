@@ -1,5 +1,5 @@
-#ifndef _DUUDMAPENTRY_INCLUDE_
-#define _DUUDMAPENTRY_INCLUDE_
+#ifndef _DOMAP_INCLUDE_
+#define _DOMAP_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,108 +53,41 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include <string>
-#include <list>
-
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
+#include "xaifBooster/system/inc/StatementIdSetMap.hpp"
 
-#include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
-#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
-
-namespace xaifBooster{ 
+namespace xaifBooster { 
 
   /**
-   * contains the list of statement IDs
+   * map to hold DoMapEntry information 
    */
-  class DuUdMapEntry : public XMLPrintable{ 
+  class DoMap : public StatementIdSetMap,
+		public XMLPrintable{
+
+  public:
     
-  public: 
-  
-    DuUdMapEntry(unsigned int theKey); 
- 
-    ~DuUdMapEntry();
+    DoMap(){};
 
-    std::string debug() const ; 
-
+    ~DoMap(){};
+    
     static const std::string ourXAIFName;
-
-    static const std::string our_myKey_XAIFName;
-
-    static const std::string our_StatementId_XAIFName;
-
-    static const std::string our_IdRef_XAIFName;
 
     void printXMLHierarchy(std::ostream& os) const; 
 
-    const DuUdMapDefinitionResult::StatementIdList& getStatementIdList() const; 
-
-    void appendToStatementIdList(const ObjectWithId::Id& anId);
-
-    /** 
-     * anIdList contains the Ids of all statements 
-     * found in the scope of question so far
-     * this applies only to UD chains and for this use 
-     * we are looking for a definition
-     * and we use statementId to distinguish 
-     * loop carried dependencies
-     */
-    const DuUdMapDefinitionResult definition(const ObjectWithId::Id& statementId,
-					     const DuUdMapDefinitionResult::StatementIdList& anIdList) const;
-
-    /** 
-     * idList contains the Ids of all statements (active and passive) 
-     * in the scope of question so far
-     * this applies only to DU chains and for this definition 
-     * we are looking for uses
-     * and we use statementId to distinguish 
-     * loop carried dependencies
-     */
-    const DuUdMapUseResult use(const ObjectWithId::Id& statementId,
-			       const DuUdMapUseResult::StatementIdLists& idLists) const;
-
-    /** 
-     * the name says it all
-     * Note: sameDefinitionAs returning false does not 
-     * imply the definitions are disjoint
-     */
-    bool sameDefinitionAs(const DuUdMapEntry& anotherEntry) const;
-
-    /** 
-     * the name says it all
-     * Note: disjointDefinitionFrom returning false does not 
-     * imply the definitions are the same
-     */
-    bool disjointDefinitionFrom(const DuUdMapEntry& anotherEntry) const;
-
-  private:
-
-    /**
-     * keys start with 1
-     * in XAIF schema the default is 0 
-     * which refers to a dummy instance in the
-     * DuUdMap
-     */
-    const unsigned int myKey;
+  private: 
 
     /**
      * no def
      */
-    DuUdMapEntry();
+    DoMap(const DoMap&);
 
     /**
      * no def
      */
-    DuUdMapEntry(const DuUdMapEntry&);
+    DoMap operator=(const DoMap&);
 
-    /**
-     * no def
-     */
-    DuUdMapEntry operator=(const DuUdMapEntry&);
+  }; // end of class DoMap
 
-    DuUdMapDefinitionResult::StatementIdList myStatementIdList;
-    
-  }; // end of class DuUdMapEntry
-
-} // end of namespace xaifBooster
-
+} // end of namespace 
+                                                                     
 #endif

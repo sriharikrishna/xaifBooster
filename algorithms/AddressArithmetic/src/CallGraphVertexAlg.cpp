@@ -682,7 +682,7 @@ namespace xaifBoosterAddressArithmetic {
   int CallGraphVertexAlg::definesUnderControlFlowGraphVertex(const Variable& theVariable,
 							     const ControlFlowGraphVertex& theControlFlowGraphVertex) { 
     int defCount=0;
-    if (theVariable.getDuUdMapKey().getKind()==DuUdMapKey::NO_INFO) { 
+    if (theVariable.getDuUdMapKey().getKind()==InfoMapKey::NO_INFO) { 
       DBG_MACRO(DbgGroup::ERROR,
 		"CallGraphVertexAlg::definesUnderControlFlowGraphVertex: (old OA) skipping definitions check since no duud key for variable " 
 		<< theVariable.getVariableSymbolReference().getSymbol().getId().c_str()
@@ -693,9 +693,9 @@ namespace xaifBoosterAddressArithmetic {
     } 
     else {
       // check all the definition locations:
-      const DuUdMapDefinitionResult::StatementIdList& defChain(ConceptuallyStaticInstances::instance()->
-							       getCallGraph().getDuUdMap().getEntry(theVariable.getDuUdMapKey()).getStatementIdList());
-      for(DuUdMapDefinitionResult::StatementIdList::const_iterator defChainI=defChain.begin();
+      const StatementIdSet& defChain(ConceptuallyStaticInstances::instance()->
+				     getCallGraph().getDuUdMap().getEntry(theVariable.getDuUdMapKey()).getStatementIdSet());
+      for(StatementIdSet::const_iterator defChainI=defChain.begin();
 	  defChainI!=defChain.end();
 	  ++defChainI) {
 	DBG_MACRO(DbgGroup::DATA,

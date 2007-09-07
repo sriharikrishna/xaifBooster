@@ -1,5 +1,5 @@
-#ifndef _DUUDMAPKEY_INCLUDE_
-#define _DUUDMAPKEY_INCLUDE_
+#ifndef _STATEMENTIDLIST_INCLUDE_
+#define _STATEMENTIDLIST_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,12 +53,14 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/InfoMapKey.hpp"
+#include <list>
 
-namespace xaifBooster { 
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
-  class DuUdMapKey : public InfoMapKey {};
+namespace xaifBooster{ 
 
-} // end of namespace xaifBooster
-                                                                     
+    typedef std::list<ObjectWithId::Id> StatementIdList;
+
+} 
+
 #endif

@@ -191,7 +191,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       return;
     } 
     theBasicBlockAlg.addMyselfToAssignmentIdList(getContainingAssignment());
-    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(theBasicBlockAlg.getAssignmentIdList());
+    const StatementIdList& theKnownAssignments(theBasicBlockAlg.getAssignmentIdList());
     // now redo the activity analysis
     //     if (haveLinearizedRightHandSide() && 
     // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))

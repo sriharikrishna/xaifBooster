@@ -9,8 +9,8 @@
   <CodeGen:NonRepeatableCodeOrLineBreak text="public:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="33">
-    <CodeGen:CodeTemplate nr_entries="15">
+  <CodeGen:RepeatableCode nr_versions="35">
+   <CodeGen:CodeTemplate nr_entries="15">
       <CodeGen:StaticCode text="void set"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="("/>
@@ -61,10 +61,10 @@
       <CodeGen:DynamicCode hook_ref="1" text="ControlFlowGraph"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="DuUdMap"/>
+      <CodeGen:DynamicCode hook_ref="1" text="DoMap"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
-      <CodeGen:DynamicCode hook_ref="1" text="DuUdMapEntry"/>
+      <CodeGen:DynamicCode hook_ref="1" text="DuUdMap"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Expression"/>
@@ -106,6 +106,12 @@
       <CodeGen:DynamicCode hook_ref="1" text="SideEffectList"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="StatementIdSetMap"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="StatementIdSetMapEntry"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="SubroutineCall"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
@@ -130,7 +136,7 @@
   <CodeGen:NonRepeatableCodeOrLineBreak/>
   <CodeGen:NonRepeatableCodeOrLineBreak text="private:"/>
   <CodeGen:NonRepeatableCodeOrLineBreak/>
-  <CodeGen:RepeatableCode nr_versions="33" use_versions="3">
+  <CodeGen:RepeatableCode nr_versions="35" use_versions="3">
     <CodeGen:CodeTemplate nr_entries="5">
       <CodeGen:DynamicCodePlaceholder hook="1"/>
       <CodeGen:StaticCode text="* my"/>

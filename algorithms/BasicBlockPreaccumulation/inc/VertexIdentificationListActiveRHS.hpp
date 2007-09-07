@@ -83,7 +83,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual void addElement(const Variable& theVariable,
 			    const ObjectWithId::Id& statementId,
 			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
-			    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignmentsList);
+			    const StatementIdList& theKnownAssignmentsList);
     
   }; // end of class VertexIdentificationListActiveRHS  
    

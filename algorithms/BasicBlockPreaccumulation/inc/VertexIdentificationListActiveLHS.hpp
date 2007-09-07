@@ -103,7 +103,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
 
       ListItem(const AliasMapKey& anAliasMapKey,
-	       const DuUdMapKey& aDuUdMapKey,
+	       const StatementIdSetMapKey& aDuUdMapKey,
 	       PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p,
 	       const ObjectWithId::Id& aStatementId);
 
@@ -123,7 +123,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /** 
      * retrieve the list of statement IDs collected in myList
      */
-    void getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const;
+    void getStatementIdList(StatementIdList& aStatementIdList)const;
 
   }; // end of class VertexIdentificationListActiveLHS  
    
