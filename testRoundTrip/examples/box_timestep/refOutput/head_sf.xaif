@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Wed Aug  1 21:39:30 2007 -->
+<!-- XAIF file translated from WHIRL at Mon Sep 10 21:57:49 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -77,7 +77,7 @@
 
   </xaif:ScopeHierarchy>
 
-  <xaif:AliasSetList>
+  <xaif:AliasSetMap>
     <xaif:AliasSet key="0">
       <xaif:AliasRange from_virtual_address="1" to_virtual_address="1"/>
     </xaif:AliasSet>
@@ -114,25 +114,25 @@
     <xaif:AliasSet key="11">
       <xaif:AliasRange from_virtual_address="9" to_virtual_address="10" partial="1"/>
     </xaif:AliasSet>
-  </xaif:AliasSetList>
+  </xaif:AliasSetMap>
 
-  <xaif:DUUDSetList>
-    <xaif:DUUDSet key="0"/>
-    <xaif:DUUDSet key="1"/>
-    <xaif:DUUDSet key="2">
+  <xaif:DUUDSetMap>
+    <xaif:StmtIdSet key="0"/>
+    <xaif:StmtIdSet key="1"/>
+    <xaif:StmtIdSet key="2">
       <xaif:StatementId idRef=""/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="3">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="3">
       <xaif:StatementId idRef=""/>
       <xaif:StatementId idRef="16"/>
       <xaif:StatementId idRef="22"/>
       <xaif:StatementId idRef="28"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="4">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="4">
       <xaif:StatementId idRef="307"/>
       <xaif:StatementId idRef="312"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="5">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="5">
       <xaif:StatementId idRef=""/>
       <xaif:StatementId idRef="41"/>
       <xaif:StatementId idRef="94"/>
@@ -140,27 +140,62 @@
       <xaif:StatementId idRef="173"/>
       <xaif:StatementId idRef="226"/>
       <xaif:StatementId idRef="279"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="6">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="6">
       <xaif:StatementId idRef="34"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="7">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="7">
       <xaif:StatementId idRef="41"/>
       <xaif:StatementId idRef="94"/>
       <xaif:StatementId idRef="147"/>
       <xaif:StatementId idRef="173"/>
       <xaif:StatementId idRef="226"/>
       <xaif:StatementId idRef="279"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="8">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="8">
       <xaif:StatementId idRef="317"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="9">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="9">
       <xaif:StatementId idRef="305"/>
       <xaif:StatementId idRef="312"/>
       <xaif:StatementId idRef="317"/>
-    </xaif:DUUDSet>
-  </xaif:DUUDSetList>
+    </xaif:StmtIdSet>
+  </xaif:DUUDSetMap>
+
+  <xaif:DOSetMap>
+    <xaif:StmtIdSet key="0"/>
+    <xaif:StmtIdSet key="1"/>
+    <xaif:StmtIdSet key="2">
+      <xaif:StatementId idRef=""/>
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="3">
+      <xaif:StatementId idRef="22"/>
+      <xaif:StatementId idRef="28"/>
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="4">
+      <xaif:StatementId idRef="28"/>
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="5">
+      <xaif:StatementId idRef="94"/>
+      <xaif:StatementId idRef="147"/>
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="6">
+      <xaif:StatementId idRef="147"/>
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="7">
+      <xaif:StatementId idRef="226"/>
+      <xaif:StatementId idRef="279"/>
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="8">
+      <xaif:StatementId idRef="279"/>
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="9">
+      <xaif:StatementId idRef="312"/>
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="10">
+      <xaif:StatementId idRef="317"/>
+    </xaif:StmtIdSet>
+  </xaif:DOSetMap>
 
   <!-- ******************************************************************** -->
   <xaif:ControlFlowGraph vertex_id="14" scope_id="1" symbol_id="all_globals_mod__20" annotation="{PU_Id#1}" controlflowgraph_scope_id="2">
@@ -233,7 +268,7 @@
     <xaif:BasicBlock vertex_id="5" scope_id="3">
       <xaif:Marker statement_id="14" annotation="{WHIRL_Id#14} [passive: OPR_PRAGMA]"/>
       <xaif:Marker statement_id="15" annotation="{WHIRL_Id#15} [passive: OPR_PRAGMA]"/>
-      <xaif:Assignment statement_id="16" lineNumber="83">
+      <xaif:Assignment statement_id="16" lineNumber="83" do_chain="3">
         <xaif:AssignmentLHS du_ud="7">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="VOL_11"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -249,7 +284,7 @@
           <xaif:Constant vertex_id="1" type="real" value="1.0000000000e+01"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="22" lineNumber="84">
+      <xaif:Assignment statement_id="22" lineNumber="84" do_chain="4">
         <xaif:AssignmentLHS du_ud="7">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="VOL_11"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -265,7 +300,7 @@
           <xaif:Constant vertex_id="1" type="real" value="1.2000000000e+01"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="28" lineNumber="85">
+      <xaif:Assignment statement_id="28" lineNumber="85" do_chain="1">
         <xaif:AssignmentLHS du_ud="7">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="VOL_11"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -281,7 +316,7 @@
           <xaif:Constant vertex_id="1" type="real" value="1.4000000000e+01"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="34" lineNumber="86">
+      <xaif:Assignment statement_id="34" lineNumber="86" do_chain="1">
         <xaif:AssignmentLHS du_ud="8">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="DELTA_T_8"/>
         </xaif:AssignmentLHS>
@@ -304,7 +339,7 @@
     </xaif:Branch>
 
     <xaif:BasicBlock vertex_id="6" scope_id="3">
-      <xaif:Assignment statement_id="41" lineNumber="91">
+      <xaif:Assignment statement_id="41" lineNumber="91" do_chain="5">
         <xaif:AssignmentLHS du_ud="8">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="DFLDDT_9"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -426,7 +461,7 @@
           <xaif:ExpressionEdge edge_id="16" source="17" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="94" lineNumber="95">
+      <xaif:Assignment statement_id="94" lineNumber="95" do_chain="6">
         <xaif:AssignmentLHS du_ud="8">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="DFLDDT_9"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -548,7 +583,7 @@
           <xaif:ExpressionEdge edge_id="16" source="17" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="147" lineNumber="99">
+      <xaif:Assignment statement_id="147" lineNumber="99" do_chain="1">
         <xaif:AssignmentLHS du_ud="8">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="DFLDDT_9"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -647,7 +682,7 @@
     </xaif:ForLoop>
 
     <xaif:BasicBlock vertex_id="10" scope_id="3">
-      <xaif:Assignment statement_id="317" lineNumber="115">
+      <xaif:Assignment statement_id="317" lineNumber="115" do_chain="10">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="FLDNEW_7"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -714,7 +749,7 @@
     <xaif:Exit vertex_id="13"/>
 
     <xaif:BasicBlock vertex_id="7" scope_id="3">
-      <xaif:Assignment statement_id="173" lineNumber="102">
+      <xaif:Assignment statement_id="173" lineNumber="102" do_chain="7">
         <xaif:AssignmentLHS du_ud="8">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="DFLDDT_9"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -836,7 +871,7 @@
           <xaif:ExpressionEdge edge_id="16" source="17" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="226" lineNumber="106">
+      <xaif:Assignment statement_id="226" lineNumber="106" do_chain="8">
         <xaif:AssignmentLHS du_ud="8">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="DFLDDT_9"/>
           <xaif:ArrayElementReference vertex_id="2">
@@ -958,7 +993,7 @@
           <xaif:ExpressionEdge edge_id="16" source="17" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Assignment statement_id="279" lineNumber="110">
+      <xaif:Assignment statement_id="279" lineNumber="110" do_chain="1">
         <xaif:AssignmentLHS du_ud="8">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="DFLDDT_9"/>
           <xaif:ArrayElementReference vertex_id="2">

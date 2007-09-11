@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Wed Sep  5 11:29:32 2007 -->
+<!-- XAIF file translated from WHIRL at Mon Sep 10 22:19:50 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -78,7 +78,7 @@
 
   </xaif:ScopeHierarchy>
 
-  <xaif:AliasSetList>
+  <xaif:AliasSetMap>
     <xaif:AliasSet key="0">
       <xaif:AliasRange from_virtual_address="1" to_virtual_address="1"/>
     </xaif:AliasSet>
@@ -97,33 +97,44 @@
     <xaif:AliasSet key="5">
       <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="0"/>
     </xaif:AliasSet>
-  </xaif:AliasSetList>
+  </xaif:AliasSetMap>
 
-  <xaif:DUUDSetList>
-    <xaif:DUUDSet key="0"/>
-    <xaif:DUUDSet key="1"/>
-    <xaif:DUUDSet key="2">
+  <xaif:DUUDSetMap>
+    <xaif:StmtIdSet key="0"/>
+    <xaif:StmtIdSet key="1"/>
+    <xaif:StmtIdSet key="2">
       <xaif:StatementId idRef=""/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="3">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="3">
       <xaif:StatementId idRef="9"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="4">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="4">
       <xaif:StatementId idRef="18"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="5">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="5">
       <xaif:StatementId idRef="11"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="6">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="6">
       <xaif:StatementId idRef="19"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="7">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="7">
       <xaif:StatementId idRef="13"/>
-    </xaif:DUUDSet>
-    <xaif:DUUDSet key="8">
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="8">
       <xaif:StatementId idRef="21"/>
-    </xaif:DUUDSet>
-  </xaif:DUUDSetList>
+    </xaif:StmtIdSet>
+  </xaif:DUUDSetMap>
+
+  <xaif:DOSetMap>
+    <xaif:StmtIdSet key="0"/>
+    <xaif:StmtIdSet key="1"/>
+    <xaif:StmtIdSet key="2">
+      <xaif:StatementId idRef=""/>
+    </xaif:StmtIdSet>
+    <xaif:StmtIdSet key="3">
+      <xaif:StatementId idRef="19"/>
+    </xaif:StmtIdSet>
+  </xaif:DOSetMap>
 
   <!-- ******************************************************************** -->
   <xaif:ControlFlowGraph vertex_id="10" scope_id="1" symbol_id="all_globals_mod__20" annotation="{PU_Id#1}" controlflowgraph_scope_id="2">
@@ -161,7 +172,7 @@
     <xaif:BasicBlock vertex_id="5" scope_id="3">
       <xaif:Marker statement_id="7" annotation="{WHIRL_Id#7} [passive: OPR_PRAGMA]"/>
       <xaif:Marker statement_id="8" annotation="{WHIRL_Id#8} [passive: OPR_PRAGMA]"/>
-      <xaif:Assignment statement_id="9" lineNumber="62">
+      <xaif:Assignment statement_id="9" lineNumber="62" do_chain="1">
         <xaif:AssignmentLHS du_ud="4">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="T_4"/>
         </xaif:AssignmentLHS>
@@ -186,7 +197,7 @@
           </xaif:VariableReference>
         </xaif:Argument>
       </xaif:SubroutineCall>
-      <xaif:Assignment statement_id="18" lineNumber="64">
+      <xaif:Assignment statement_id="18" lineNumber="64" do_chain="1">
         <xaif:AssignmentLHS du_ud="2">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="Y_2"/>
         </xaif:AssignmentLHS>
