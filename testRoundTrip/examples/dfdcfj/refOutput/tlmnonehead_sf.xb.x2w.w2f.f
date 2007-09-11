@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:22:14 2007
+C Fortran file translated from WHIRL Thu Sep  6 23:19:59 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -312,7 +312,7 @@ C
       TYPE (OpenADTy_active) DPDX
       TYPE (OpenADTy_active) DPDY
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       REAL(w2f__8) HX
       REAL(w2f__8) HX2
       REAL(w2f__8) HY
@@ -324,7 +324,7 @@ C
       REAL(w2f__8) NXP1
       REAL(w2f__8) NYP1
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       TYPE (OpenADTy_active) P
       TYPE (OpenADTy_active) PB
       TYPE (OpenADTy_active) PBB
@@ -344,11 +344,11 @@ C
       TYPE (OpenADTy_active) PTR
       TYPE (OpenADTy_active) PTT
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       INTEGER(w2f__i4) t__3
       INTEGER(w2f__i4) t__4
       INTEGER(w2f__i4) t__5
