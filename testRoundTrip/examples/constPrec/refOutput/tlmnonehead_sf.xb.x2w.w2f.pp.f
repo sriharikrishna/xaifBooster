@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:22:05 2007
+C Fortran file translated from WHIRL Thu Sep  6 23:19:39 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -35,9 +35,9 @@ C
 C     **** Local Variables and Functions ****
 C
       REAL(w2f__8) DEG2RAD
-      PARAMETER ( DEG2RAD =   0.01745329251994330)
+      PARAMETER ( DEG2RAD = 1.74532925199432954744D-02)
       REAL(w2f__8) PI
-      PARAMETER ( PI =     3.141592653589793)
+      PARAMETER ( PI = 3.141592653589793116D00)
 C
 C     **** Top Level Pragmas ****
 C
