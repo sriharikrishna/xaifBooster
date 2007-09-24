@@ -55,15 +55,15 @@
 namespace xaifBoosterCrossCountryInterface {
 
   LinearizedComputationalGraphEdge::LinearizedComputationalGraphEdge() :
-    myUnitLabelFlag(false) { 
+    myEdgeLabelType(VARIABLE_LABEL) { 
   } 
 
-  void LinearizedComputationalGraphEdge::setUnitLabel() { 
-    myUnitLabelFlag=true; 
+  void LinearizedComputationalGraphEdge::setEdgeLabelType(LinearizedComputationalGraphEdge::LCG_Edge_Label_Type_E anEdgeLabelType) { 
+    myEdgeLabelType = anEdgeLabelType; 
   }
 
-  bool LinearizedComputationalGraphEdge::hasUnitLabel() const { 
-    return myUnitLabelFlag;
+  LinearizedComputationalGraphEdge::LCG_Edge_Label_Type_E LinearizedComputationalGraphEdge::getEdgeLabelType() const { 
+    return myEdgeLabelType;
   }
 
 } 

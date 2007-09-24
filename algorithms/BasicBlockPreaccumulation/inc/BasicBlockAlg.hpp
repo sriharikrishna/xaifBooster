@@ -61,6 +61,7 @@
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/Elimination.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 
@@ -113,15 +114,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual void algorithm_action_3();
 
-    /**
-     * pointer to function for computing non-scarse elimination sequences
-     */
-    typedef void (*ComputeEliminationSequence_fp)(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph&,
-						  int,
-						  double,
-						  xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList&);
-    typedef std::list<std::pair<std::string,ComputeEliminationSequence_fp> > ComputeEliminationSequence_fpList;
-    static ComputeEliminationSequence_fpList ourNonScarseEliminations_fpList;
     static int ourIterationsParameter;
     static double ourGamma;
 
@@ -225,43 +217,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        */
       PrivateLinearizedComputationalGraph* myComputationalGraph_p;
     
-      /**
-       * this is the result of applying an elimination to a Sequence
-       */
-      class EliminationResult { 
+      xaifBoosterCrossCountryInterface::Elimination& addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg); 
 
-      public: 
-	
-	EliminationResult();  
-
-	xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList myJAEList;
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph myRemainderGraph;
-	xaifBoosterCrossCountryInterface::VertexCorrelationList myVertexCorrelationList;
-	xaifBoosterCrossCountryInterface::EdgeCorrelationList myEdgeCorrelationList;
-
-	const PreaccumulationCounter& getCounter() const; 
-
-      private: 
-	/** 
-	 * the ensuing operation counts etc. 
-	 */
-	mutable PreaccumulationCounter myCounter; 
-
-	/**
-	 * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
-	 */
-	void countPreaccumulationOperations() const;
-
-	/** 
-	 * have we counted the elimination operations
-	 */
-	mutable bool myCountedFlag;
-
-      };
-
-      EliminationResult& addNewEliminationResult(); 
-
-      typedef std::list<EliminationResult*> EliminationResultPList;
+      typedef std::list<Elimination*> EliminationPList;
 
       /** 
        * the derivative accumulator for this sequence
@@ -309,8 +267,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       void setBestResult();
 
-      const Sequence::EliminationResult& getBestResult() const;
-      
+      const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& getBestResult() const;
+     
+      EliminationPList& getEliminationPList();
     private: 
 
       /**
@@ -335,11 +294,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        */
       Sequence& operator= (const Sequence&);
 
-      EliminationResultPList myEliminationResultPList;
+      EliminationPList myEliminationPList;
 
-      EliminationResult* myBestEliminationResult_p;
+      Elimination* myBestElimination_p;
       
-    }; // end of struct Sequence
+    }; // end of class Sequence
 
   private: 
 
@@ -546,10 +505,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static unsigned int ourSequenceCounter;
       
     /**
-     * run the scarce algorithm for creating the elminated graphs
-     * using thisMode
+     * run the algorithm for creating the elminated graphs using thisMode
      */
-    void runElimination(Sequence& aSequence, 
+    virtual void runElimination(Sequence& aSequence, 
 			VariableCPList& theDepVertexPListCopyWithoutRemoval, 
 			SequenceHolder& aSequenceHolder,
 			PreaccumulationMode::PreaccumulationMode_E thisMode);
@@ -578,10 +536,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     void fillDependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph,
 			    VariableCPList& theDepVertexPListCopyWithoutRemovals);
-
-    void 
-    runAngelNonScarse(Sequence& aSequence); 
-
 
     void 
     generate(VariableHashTable& theListOfAlreadyAssignedSources,
