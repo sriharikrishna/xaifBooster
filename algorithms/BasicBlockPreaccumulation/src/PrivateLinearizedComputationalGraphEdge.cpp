@@ -91,7 +91,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (myLinearizedExpressionEdge_p || myDirectCopyEdgeFlag) 
       THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphEdge::setDirectCopyEdge: already set");
     myDirectCopyEdgeFlag=true;
-    setUnitLabel();
+    setEdgeLabelType(UNIT_LABEL);
   }
 
   bool PrivateLinearizedComputationalGraphEdge::isDirectCopyEdge() const {

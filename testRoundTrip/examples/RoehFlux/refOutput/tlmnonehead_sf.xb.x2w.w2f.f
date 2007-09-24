@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:27:40 2007
+C Fortran file translated from WHIRL Fri Aug 17 08:37:29 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -2195,7 +2195,7 @@ C
       TYPE (OpenADTy_active) EL
       TYPE (OpenADTy_active) ER
       REAL(w2f__4) HALF
-      PARAMETER ( HALF =    0.5000000)
+      PARAMETER ( HALF = 5.0E-01)
       TYPE (OpenADTy_active) HAVE
       TYPE (OpenADTy_active) HL
       TYPE (OpenADTy_active) HR
@@ -2212,7 +2212,7 @@ C
       TYPE (OpenADTy_active) NZHAT
       TYPE (OpenADTy_active) OMEGA
       REAL(w2f__4) ONE
-      PARAMETER ( ONE =     1.000000)
+      PARAMETER ( ONE = 1.0)
       TYPE (OpenADTy_active) ROEL
       TYPE (OpenADTy_active) ROER
       TYPE (OpenADTy_active) RUL
@@ -2234,7 +2234,7 @@ C
       TYPE (OpenADTy_active) WAVE
       TYPE (OpenADTy_active) WTILDE
       REAL(w2f__4) ZERO
-      PARAMETER ( ZERO =     0.000000)
+      PARAMETER ( ZERO = 0.0)
 C
 C     **** Top Level Pragmas ****
 C

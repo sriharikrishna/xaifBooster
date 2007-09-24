@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Mon Apr  2 13:22:37 2007 -->
+<!-- XAIF file translated from WHIRL at Thu Aug 16 22:08:54 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -379,12 +379,13 @@
       <xaif:StatementId idRef="615"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="33">
-      <xaif:StatementId idRef="106"/>
       <xaif:StatementId idRef="128"/>
+      <xaif:StatementId idRef="201"/>
       <xaif:StatementId idRef="223"/>
       <xaif:StatementId idRef="282"/>
       <xaif:StatementId idRef="323"/>
       <xaif:StatementId idRef="418"/>
+      <xaif:StatementId idRef="470"/>
       <xaif:StatementId idRef="615"/>
     </xaif:DUUDSet>
     <xaif:DUUDSet key="34">
@@ -1547,10 +1548,10 @@
                 <xaif:Index>
                   <xaif:Intrinsic vertex_id="1" name="add_scal_scal" type="***"/>
                   <xaif:Intrinsic vertex_id="2" name="add_scal_scal" type="***"/>
-                  <xaif:VariableReference vertex_id="3" du_ud="0">
+                  <xaif:VariableReference vertex_id="3" du_ud="2">
                     <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="NX_1"/>
                   </xaif:VariableReference>
-                  <xaif:VariableReference vertex_id="4" du_ud="0">
+                  <xaif:VariableReference vertex_id="4" du_ud="7">
                     <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="K_17"/>
                   </xaif:VariableReference>
                   <xaif:ExpressionEdge edge_id="1" source="3" target="2" position="1"/>
@@ -1917,10 +1918,10 @@
                 <xaif:Index>
                   <xaif:Intrinsic vertex_id="1" name="add_scal_scal" type="***"/>
                   <xaif:Intrinsic vertex_id="2" name="sub_scal_scal" type="***"/>
-                  <xaif:VariableReference vertex_id="3" du_ud="0">
+                  <xaif:VariableReference vertex_id="3" du_ud="7">
                     <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="K_17"/>
                   </xaif:VariableReference>
-                  <xaif:VariableReference vertex_id="4" du_ud="0">
+                  <xaif:VariableReference vertex_id="4" du_ud="2">
                     <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="NX_1"/>
                   </xaif:VariableReference>
                   <xaif:ExpressionEdge edge_id="1" source="3" target="2" position="1"/>
@@ -2060,10 +2061,10 @@
                 <xaif:Index>
                   <xaif:Intrinsic vertex_id="1" name="add_scal_scal" type="***"/>
                   <xaif:Intrinsic vertex_id="2" name="sub_scal_scal" type="***"/>
-                  <xaif:VariableReference vertex_id="3" du_ud="7">
+                  <xaif:VariableReference vertex_id="3" du_ud="0">
                     <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="K_17"/>
                   </xaif:VariableReference>
-                  <xaif:VariableReference vertex_id="4" du_ud="2">
+                  <xaif:VariableReference vertex_id="4" du_ud="0">
                     <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="NX_1"/>
                   </xaif:VariableReference>
                   <xaif:ExpressionEdge edge_id="1" source="3" target="2" position="1"/>

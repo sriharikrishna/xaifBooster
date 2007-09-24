@@ -66,18 +66,23 @@ namespace xaifBoosterCrossCountryInterface {
 
     ~LinearizedComputationalGraphEdge(){};
 
-    void setUnitLabel();
+    enum LCG_Edge_Label_Type_E { VARIABLE_LABEL,
+				 UNIT_LABEL,
+				 CONSTANT_LABEL };
+    
+    void setEdgeLabelType(LCG_Edge_Label_Type_E anEdgeLabelType);
 
-    bool hasUnitLabel() const; 
+    LCG_Edge_Label_Type_E getEdgeLabelType() const;
 
   private: 
 
     /**
-     * optional flag indicating 
-     * this edge label has unit value (+/- 1) 
+     * Indicator of edge label type.
+     * Every edge is either variable, unit (+/- 1), or constant. 
+     * Set to VARIABLE_EDGE by default
      */
-    bool myUnitLabelFlag;
-	
+    LCG_Edge_Label_Type_E myEdgeLabelType;
+
  
   }; // end of class LinearizedComputationalGraphEdge
  
