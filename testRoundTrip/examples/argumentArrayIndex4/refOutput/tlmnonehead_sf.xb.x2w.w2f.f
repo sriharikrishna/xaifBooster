@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Wed Jul 11 14:00:44 2007
+C Fortran file translated from WHIRL Thu Oct  4 23:45:45 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -38,7 +38,6 @@ C$OPENAD XXX Template ad_template.f
       CALL setderiv(__deriv__(OpenAD_Symbol_6), __deriv__(X))
       CALL sax(OpenAD_Symbol_5, __deriv__(OpenAD_Symbol_6), __deriv__(Y
      > ))
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -95,5 +94,4 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL foo(__deriv__(OpenAD_Symbol_1), __deriv__(Q(L)))
 C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       CALL convert_a2p_scalar(R, __deriv__(OpenAD_Symbol_1))
-      RETURN
       END SUBROUTINE

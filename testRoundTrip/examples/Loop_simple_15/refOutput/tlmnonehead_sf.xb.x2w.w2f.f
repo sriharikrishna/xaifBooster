@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Sep  6 23:54:41 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:06:55 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -70,5 +70,4 @@ C$OPENAD XXX Simple loop
         CALL sax(OpenAD_Symbol_7, __deriv__(OpenAD_Symbol_8), __deriv__
      > (Y(I)))
       END DO
-      RETURN
       END SUBROUTINE

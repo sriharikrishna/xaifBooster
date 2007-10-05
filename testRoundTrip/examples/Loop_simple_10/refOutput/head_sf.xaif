@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ******************************************************************** -->
-<!-- XAIF file translated from WHIRL at Mon Sep 10 22:21:32 2007 -->
+<!-- XAIF file translated from WHIRL at Mon Oct  1 23:46:20 2007 -->
 <!-- ******************************************************************** -->
 
 <xaif:CallGraph xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xaif="http://www.mcs.anl.gov/XAIF" xsi:schemaLocation="http://www.mcs.anl.gov/XAIF xaif.xsd" program_name="***myprog***" prefix="OpenAD_">
@@ -29,7 +29,7 @@
         <xaif:Symbol symbol_id=".preg_return_val_19" kind="variable" type="opaque" shape="scalar" annotation="{Sym_Id#19}" active="0"/>
         <xaif:Symbol symbol_id="all_globals_mod__20" kind="subroutine" type="void" annotation="{Sym_Id#20}"/>
         <xaif:Symbol symbol_id="foo__21" kind="subroutine" type="void" annotation="{Sym_Id#21}"/>
-        <xaif:Symbol symbol_id="head__24" kind="subroutine" type="void" annotation="{Sym_Id#24}"/>
+        <xaif:Symbol symbol_id="head__25" kind="subroutine" type="void" annotation="{Sym_Id#25}"/>
       </xaif:SymbolTable>
     </xaif:Scope>
 
@@ -143,7 +143,6 @@
     <xaif:StmtIdSet key="5">
       <xaif:StatementId idRef=""/>
       <xaif:StatementId idRef="46"/>
-      <xaif:StatementId idRef="72"/>
     </xaif:StmtIdSet>
     <xaif:StmtIdSet key="6">
       <xaif:StatementId idRef="23"/>
@@ -462,37 +461,13 @@
           <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Intrinsic vertex_id="1" name="sub_scal_scal" type="***"/>
-          <xaif:VariableReference vertex_id="2" du_ud="4">
-            <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="Y_2"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:IndexTriplet>
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                </xaif:Index>
-              </xaif:IndexTriplet>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:VariableReference>
-          <xaif:VariableReference vertex_id="3" du_ud="2">
-            <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="X_1"/>
-            <xaif:ArrayElementReference vertex_id="2">
-              <xaif:IndexTriplet>
-                <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
-                </xaif:Index>
-              </xaif:IndexTriplet>
-            </xaif:ArrayElementReference>
-            <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-          </xaif:VariableReference>
-          <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-          <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
+          <xaif:Constant vertex_id="1" type="real" value="0.0000000000e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
     </xaif:BasicBlock>
 
     <xaif:BasicBlock vertex_id="12" scope_id="3">
-      <xaif:Marker statement_id="88" annotation="{WHIRL_Id#88} [passive: OPR_RETURN]"/>
+      <xaif:Marker statement_id="78" annotation="{WHIRL_Id#78} [passive: OPR_RETURN]"/>
     </xaif:BasicBlock>
 
     <xaif:Exit vertex_id="13"/>
@@ -511,7 +486,7 @@
   </xaif:ControlFlowGraph>
 
   <!-- ******************************************************************** -->
-  <xaif:ControlFlowGraph vertex_id="35" scope_id="1" symbol_id="head__24" annotation="{PU_Id#3}" controlflowgraph_scope_id="4">
+  <xaif:ControlFlowGraph vertex_id="35" scope_id="1" symbol_id="head__25" annotation="{PU_Id#3}" controlflowgraph_scope_id="4">
     <xaif:ArgumentList>
       <xaif:ArgumentSymbolReference position="1" scope_id="4" symbol_id="X_1" intent="in" annotation="{WHIRL_Id#2}"/>
       <xaif:ArgumentSymbolReference position="2" scope_id="4" symbol_id="Y_2" intent="out" annotation="{WHIRL_Id#3}"/>

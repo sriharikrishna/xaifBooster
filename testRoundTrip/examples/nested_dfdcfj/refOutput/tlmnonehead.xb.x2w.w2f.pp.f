@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Sep  6 23:56:15 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:11:56 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -78,7 +78,6 @@ C$OPENAD XXX Template ad_template.f
         CALL setderiv(OpenAD_Symbol_170,FVEC(K))
         CALL sax(OpenAD_Symbol_169,OpenAD_Symbol_170,FVEC(K))
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE foo(NX, NY, X, FVEC, R, N, HX, HY, HY2, HX2)
@@ -508,7 +507,6 @@ C$OPENAD XXX Template ad_template.f
           CALL saxpy(OpenAD_Symbol_217,OpenAD_Symbol_216,FVEC(K))
         END DO
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE bar(PBB, PBL, PB, PBR, PLL, PL, P, PR, PRR, PTL, PT,
@@ -915,5 +913,4 @@ C$OPENAD XXX Template ad_template.f
       CALL saxpy(OpenAD_Symbol_305,OpenAD_Symbol_263,PLLAP)
       CALL saxpy(OpenAD_Symbol_306,OpenAD_Symbol_270,PBLAP)
       CALL saxpy(OpenAD_Symbol_307,OpenAD_Symbol_270,PBLAP)
-      RETURN
       END SUBROUTINE

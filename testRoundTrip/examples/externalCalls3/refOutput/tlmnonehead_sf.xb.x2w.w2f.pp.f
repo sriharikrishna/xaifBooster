@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Aug 13 10:55:01 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:01:33 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -40,5 +40,4 @@ C$OPENAD XXX Template ad_template.f
       T1 = X
       CALL barext(X, T2)
       Y = T2
-      RETURN
       END SUBROUTINE

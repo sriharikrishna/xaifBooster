@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Sep  6 23:54:36 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:06:49 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -81,5 +81,4 @@ C$OPENAD XXX Simple loop
         CALL sax(OpenAD_Symbol_8,OpenAD_Symbol_9,Y(I))
         CALL saxpy(OpenAD_Symbol_10,OpenAD_Symbol_11,Y(I))
       END DO
-      RETURN
       END SUBROUTINE

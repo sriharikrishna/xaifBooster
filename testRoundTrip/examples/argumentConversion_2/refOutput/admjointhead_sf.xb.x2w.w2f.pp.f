@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 17 09:41:47 2007
+C Fortran file translated from WHIRL Fri Oct  5 10:33:58 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -322,20 +322,10 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_real_scalar(X%v,theArgFStack,theArgFStackoffset,
-     +theArgFStackSize)
-          call cp_store_real_scalar(Y%v,theArgFStack,theArgFStackoffset,
-     +theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          Y%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",Y%v
-          theArgFStackoffset = theArgFStackoffset-1
-          X%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",X%v
-          theArgFStackoffset = theArgFStackoffset-1
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode

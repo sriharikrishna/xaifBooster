@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 24 13:26:45 2007
+C Fortran file translated from WHIRL Fri Oct  5 10:42:29 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -2151,7 +2151,7 @@ C
       TYPE (OpenADTy_active) EL
       TYPE (OpenADTy_active) ER
       REAL(w2f__4) HALF
-      PARAMETER ( HALF =    0.5000000)
+      PARAMETER ( HALF = 5.0E-01)
       TYPE (OpenADTy_active) HAVE
       TYPE (OpenADTy_active) HL
       TYPE (OpenADTy_active) HR
@@ -2168,7 +2168,7 @@ C
       TYPE (OpenADTy_active) NZHAT
       TYPE (OpenADTy_active) OMEGA
       REAL(w2f__4) ONE
-      PARAMETER ( ONE =     1.000000)
+      PARAMETER ( ONE = 1.0)
       TYPE (OpenADTy_active) ROEL
       TYPE (OpenADTy_active) ROER
       TYPE (OpenADTy_active) RUL
@@ -2190,7 +2190,7 @@ C
       TYPE (OpenADTy_active) WAVE
       TYPE (OpenADTy_active) WTILDE
       REAL(w2f__4) ZERO
-      PARAMETER ( ZERO =     0.000000)
+      PARAMETER ( ZERO = 0.0)
       REAL(w2f__8) OpenAD_Symbol_2121
       REAL(w2f__8) OpenAD_Symbol_2122
       REAL(w2f__8) OpenAD_Symbol_2123
@@ -10096,92 +10096,16 @@ C     $OpenAD$ INLINE ZeroDeriv(subst)
       CALL ZeroDeriv(__deriv__(OpenAD_Symbol_585))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(GAMMA))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(GM1))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(GM1INV))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(NLEFIX))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(LEFIX))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(MCHEPS)
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(NRM))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(PRIML))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(PRIMR))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(PRIMR))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(PRIML))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(NRM))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
-      CALL cp_arg_restore_real_scalar(MCHEPS)
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(LEFIX))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(NLEFIX))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(GM1INV))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(GM1))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(GAMMA))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(FLUX))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(GAMMA))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(GM1))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(GM1INV))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(NLEFIX))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(LEFIX))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(MCHEPS)
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(NRM))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(PRIML))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(PRIMR))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(PRIMR))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(PRIML))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(NRM))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
-      CALL cp_arg_restore_real_scalar(MCHEPS)
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(LEFIX))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(NLEFIX))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(GM1INV))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(GM1))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(GAMMA))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(FLUX))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 10:46:27 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:07:08 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -71,5 +71,4 @@ C$OPENAD XXX Simple loop
       END DO
       CALL setderiv(__deriv__(OpenAD_Symbol_11), __deriv__(Y(1)))
       CALL setderiv(__deriv__(Y(1)), __deriv__(OpenAD_Symbol_11))
-      RETURN
       END SUBROUTINE

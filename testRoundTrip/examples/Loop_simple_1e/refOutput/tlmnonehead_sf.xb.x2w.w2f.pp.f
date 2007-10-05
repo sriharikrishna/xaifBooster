@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 10:41:15 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:07:16 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -32,7 +32,6 @@ C
       Y%v = X%v
       CALL setderiv(OpenAD_Symbol_0,X)
       CALL setderiv(Y,OpenAD_Symbol_0)
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -66,5 +65,4 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         CALL foo(X(J),Y(J))
       END DO
-      RETURN
       END SUBROUTINE
