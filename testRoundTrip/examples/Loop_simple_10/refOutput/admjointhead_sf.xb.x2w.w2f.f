@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 17 09:44:34 2007
+C Fortran file translated from WHIRL Tue Jul 24 13:22:36 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -108,13 +108,9 @@ C         $OpenAD$ INLINE push(subst)
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(A(I, J))
       END DO
-C     $OpenAD$ INLINE push_i(subst)
-      CALL push_i(J)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
-C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(J)
       I = 1 + 1 *((2 - 1) / 1)
       DO WHILE(I .GE. 1)
 C       $OpenAD$ INLINE pop_i(subst)
@@ -173,8 +169,6 @@ C     $OpenAD$ INLINE ZeroDeriv(subst)
       CALL ZeroDeriv(__deriv__(OpenAD_Symbol_8))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
-C     $OpenAD$ INLINE cp_arg_store_integer_scalar(subst)
-      CALL cp_arg_store_integer_scalar(J)
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
@@ -191,16 +185,12 @@ C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
-      CALL cp_arg_restore_integer_scalar(J)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(Y))
-C     $OpenAD$ INLINE cp_arg_store_integer_scalar(subst)
-      CALL cp_arg_store_integer_scalar(J)
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
@@ -215,8 +205,6 @@ C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
-      CALL cp_arg_restore_integer_scalar(J)
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT

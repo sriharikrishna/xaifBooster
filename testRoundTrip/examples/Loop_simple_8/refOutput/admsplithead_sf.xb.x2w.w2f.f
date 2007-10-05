@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:39:47 2007
+C Fortran file translated from WHIRL Tue Jul 24 13:10:19 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -88,8 +88,6 @@ C       $OpenAD$ INLINE ZeroDeriv(subst)
       END DO
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
-C     $OpenAD$ INLINE cp_arg_store_integer_scalar(subst)
-      CALL cp_arg_store_integer_scalar(K)
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
@@ -98,24 +96,18 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
-      CALL cp_arg_restore_integer_scalar(K)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(Y))
-C     $OpenAD$ INLINE cp_arg_store_integer_scalar(subst)
-      CALL cp_arg_store_integer_scalar(K)
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
-      CALL cp_arg_restore_integer_scalar(K)
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
