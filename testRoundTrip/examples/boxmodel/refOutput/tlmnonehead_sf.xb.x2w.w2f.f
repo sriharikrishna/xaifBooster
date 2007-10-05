@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:20:13 2007
+C Fortran file translated from WHIRL Mon Jul 23 10:50:07 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -677,14 +677,14 @@ C$OPENAD XXX Template ad_template.f
       DO L = 1, 3, 1
         __value__(TOLD(INT(L))) = __value__(TNOW(L))
         __value__(TNOW(INT(L))) = __value__(TNEW(L))
-        __value__(SOLD(INT(L))) = __value__(SNOW(L))
-        __value__(SNOW(INT(L))) = __value__(SNEW(L))
-        CALL setderiv(__deriv__(OpenAD_Symbol_241), __deriv__(SNEW(L)))
-        CALL setderiv(__deriv__(OpenAD_Symbol_240), __deriv__(SNOW(L)))
         CALL setderiv(__deriv__(OpenAD_Symbol_239), __deriv__(TNEW(L)))
         CALL setderiv(__deriv__(OpenAD_Symbol_238), __deriv__(TNOW(L)))
         CALL setderiv(__deriv__(TOLD(L)), __deriv__(OpenAD_Symbol_238))
         CALL setderiv(__deriv__(TNOW(L)), __deriv__(OpenAD_Symbol_239))
+        __value__(SOLD(INT(L))) = __value__(SNOW(L))
+        __value__(SNOW(INT(L))) = __value__(SNEW(L))
+        CALL setderiv(__deriv__(OpenAD_Symbol_241), __deriv__(SNEW(L)))
+        CALL setderiv(__deriv__(OpenAD_Symbol_240), __deriv__(SNOW(L)))
         CALL setderiv(__deriv__(SOLD(L)), __deriv__(OpenAD_Symbol_240))
         CALL setderiv(__deriv__(SNOW(L)), __deriv__(OpenAD_Symbol_241))
       END DO

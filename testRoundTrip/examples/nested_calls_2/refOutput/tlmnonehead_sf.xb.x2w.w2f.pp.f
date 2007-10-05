@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 15:58:34 2006
+C Fortran file translated from WHIRL Mon Jul 23 11:03:49 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -63,23 +63,23 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_3 = X(1)%v
       OpenAD_Symbol_1 = COS(OpenAD_Symbol_0)
       Y(2)%v = OpenAD_Symbol_4
+      OpenAD_Symbol_6 = SIN(X(3)%v)
+      OpenAD_Symbol_5 = COS(X(3)%v)
+      Y(3)%v = OpenAD_Symbol_6
+      OpenAD_Symbol_8 = COS(X(4)%v)
+      OpenAD_Symbol_7 = (-SIN(X(4)%v))
+      Y(4)%v = OpenAD_Symbol_8
       OpenAD_Symbol_19 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
       OpenAD_Symbol_21 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+      OpenAD_Symbol_23 = OpenAD_Symbol_5
+      OpenAD_Symbol_25 = OpenAD_Symbol_7
+      CALL setderiv(OpenAD_Symbol_26,X(4))
+      CALL setderiv(OpenAD_Symbol_24,X(3))
       CALL setderiv(OpenAD_Symbol_22,X(2))
       CALL setderiv(OpenAD_Symbol_20,X(1))
       CALL sax(OpenAD_Symbol_19,OpenAD_Symbol_20,Y(2))
       CALL saxpy(OpenAD_Symbol_21,OpenAD_Symbol_22,Y(2))
-      OpenAD_Symbol_6 = SIN(X(3)%v)
-      OpenAD_Symbol_5 = COS(X(3)%v)
-      Y(3)%v = OpenAD_Symbol_6
-      OpenAD_Symbol_23 = OpenAD_Symbol_5
-      CALL setderiv(OpenAD_Symbol_24,X(3))
       CALL sax(OpenAD_Symbol_23,OpenAD_Symbol_24,Y(3))
-      OpenAD_Symbol_8 = COS(X(4)%v)
-      OpenAD_Symbol_7 = (-SIN(X(4)%v))
-      Y(4)%v = OpenAD_Symbol_8
-      OpenAD_Symbol_25 = OpenAD_Symbol_7
-      CALL setderiv(OpenAD_Symbol_26,X(4))
       CALL sax(OpenAD_Symbol_25,OpenAD_Symbol_26,Y(4))
       RETURN
       END SUBROUTINE
