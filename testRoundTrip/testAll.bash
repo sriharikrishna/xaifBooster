@@ -68,12 +68,14 @@ function fileCompare {
     then 
     echo  "Transformation -- diff $fcfileName $fcexampleDir/refOutput/$referenceFile"
     diff -I "$ignoreString" $fcfileName $fcexampleDir/refOutput/$referenceFile
-    echo  "accept/copy new $fcfileName to $fcexampleDir/refOutput/$referenceFile ? y/[n] "
+    echo  "accept/copy new $fcfileName to $fcexampleDir/refOutput/$referenceFile ? [y]/n "
     if [ -z "$BATCHMODE" ] 
     then
       read answer
-      if [ "$answer" == "y" ] 
+      if [ "$answer" == "n" ] 
         then 
+        echo "skipping change"
+      else
         ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile
         if [ $? -ne 0 ] 
           then 
@@ -250,7 +252,7 @@ do
 
 ### compare all the transformation results:
   fileCompare $exdir head_sf.xaif "" 'file translated from'  
-  for tfile in "head_sf.xb.xaif" "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f"
+  for tfile in "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f" "head_sf.xb.xaif"
   do 
     fileCompare $exdir $tfile ${mode}${SUB_MODE} 'file translated from' 
   done
