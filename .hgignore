@@ -34,3 +34,4 @@ testRoundTrip/all_globals_mod.f
 testRoundTrip/all_globals_mod.xb.x2w.w2f.pp.f
 testRoundTrip/driver
 testRoundTrip/driver.f90
+tools/codegen/classes/*.class
