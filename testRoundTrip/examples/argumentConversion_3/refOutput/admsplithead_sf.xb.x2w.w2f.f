@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jul 23 11:08:26 2007
+C Fortran file translated from WHIRL Thu Sep 27 15:52:45 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -270,14 +270,10 @@ C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(GX))
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(GY))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(GY))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
@@ -290,24 +286,16 @@ C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(GX))
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(GY))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(GX))
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(GY))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(GY))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(GX))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(GY))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)

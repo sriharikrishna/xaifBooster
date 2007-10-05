@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:52:01 2007
+C Fortran file translated from WHIRL Fri Oct  5 10:35:07 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -304,57 +304,10 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_real_scalar(GAMMALOC,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(UVELLOC,theArgFStack,theArgFStackoff
-     +set,theArgFStackSize)
-          call cp_store_p_real_vector(FLDSTAR,size(FLDSTAR),theArgFStack
-     +,theArgFStackoffset,theArgFStackSize)
-          call cp_store_p_real_vector(EXTFORLOC,size(EXTFORLOC),theArgFS
-     +tack,theArgFStackoffset,theArgFStackSize)
-          call cp_store_real_vector(FLDNOW,size(FLDNOW),theArgFStack,the
-     +ArgFStackoffset,theArgFStackSize)
-          call cp_store_p_real_vector(FLDOLD,size(FLDOLD),theArgFStack,t
-     +heArgFStackoffset,theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          do cp_loop_variable_1 = ubound(FLDOLD,1),lbound(FLDOLD,1),-1
-             FLDOLD(cp_loop_variable_1) = theArgFStack(theArgFStackoffse
-     +t)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+FLDOLD(cp_loop_variable_1)
-          end do
-          do cp_loop_variable_1 = ubound(FLDNOW,1),lbound(FLDNOW,1),-1
-             FLDNOW(cp_loop_variable_1)%v = theArgFStack(theArgFStackoff
-     +set)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+FLDNOW(cp_loop_variable_1)%v
-          end do
-          do cp_loop_variable_1 = ubound(EXTFORLOC,1),lbound(EXTFORLOC,1
-     +),-1
-             EXTFORLOC(cp_loop_variable_1) = theArgFStack(theArgFStackof
-     +fset)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+EXTFORLOC(cp_loop_variable_1)
-          end do
-          do cp_loop_variable_1 = ubound(FLDSTAR,1),lbound(FLDSTAR,1),-1
-             FLDSTAR(cp_loop_variable_1) = theArgFStack(theArgFStackoffs
-     +et)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+FLDSTAR(cp_loop_variable_1)
-          end do
-          UVELLOC = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",UVELLOC
-          theArgFStackoffset = theArgFStackoffset-1
-          GAMMALOC = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",GAMMALOC
-          theArgFStackoffset = theArgFStackoffset-1
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:52:34 2007
+C Fortran file translated from WHIRL Fri Oct  5 10:35:52 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -86,9 +86,9 @@ C
 C     **** Local Variables and Functions ****
 C
       REAL(w2f__8) DEG2RAD
-      PARAMETER ( DEG2RAD =   0.01745329251994330)
+      PARAMETER ( DEG2RAD = 1.74532925199432954744D-02)
       REAL(w2f__8) PI
-      PARAMETER ( PI =     3.141592653589793)
+      PARAMETER ( PI = 3.141592653589793116D00)
       REAL(w2f__8) OpenAD_Symbol_7
 C
 C     **** Top Level Pragmas ****
@@ -134,18 +134,10 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_real_vector(X,size(X),theArgFStack,theArgFStacko
-     +ffset,theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          do cp_loop_variable_1 = ubound(X,1),lbound(X,1),-1
-             X(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffset)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+X(cp_loop_variable_1)%v
-          end do
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode

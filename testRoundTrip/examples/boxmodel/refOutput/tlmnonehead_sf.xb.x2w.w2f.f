@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jul 23 10:50:07 2007
+C Fortran file translated from WHIRL Thu Oct  4 23:46:19 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -124,7 +124,6 @@ C$OPENAD XXX Template ad_template.f
           CALL zero_deriv(__deriv__(TNOW(INT(L))))
         ENDIF
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_final_state()
@@ -152,7 +151,6 @@ C$OPENAD XXX Template ad_template.f
         TSVEC(INT(L)) = __value__(TNOW(L))
         TSVEC(INT(L + 3)) = __value__(SNOW(L))
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_ini_fields()
@@ -271,7 +269,6 @@ C$OPENAD XXX Template ad_template.f
       END DO
       __value__(UVEL) = UBAR
       CALL zero_deriv(__deriv__(UVEL))
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_ini_params()
@@ -373,7 +370,6 @@ C$OPENAD XXX Template ad_template.f
           X(INT(I), INT(J)) = (X(I, J) + EPSILON_REGULARIZE)
         END DO
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_model_body()
@@ -423,7 +419,6 @@ C$OPENAD XXX Template ad_template.f
         END DO
         CALL box_final_state()
       ENDIF
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_density(TLOC, SLOC, RHOLOC)
@@ -479,7 +474,6 @@ C$OPENAD XXX Template ad_template.f
         CALL saxpy(OpenAD_Symbol_148, __deriv__(OpenAD_Symbol_149),
      >  __deriv__(RHOLOC(L)))
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_transport(RHOLOC, UVELLOC)
@@ -557,7 +551,6 @@ C$OPENAD XXX Template ad_template.f
      >  __deriv__(UVELLOC))
       CALL saxpy(OpenAD_Symbol_158, __deriv__(OpenAD_Symbol_159),
      >  __deriv__(UVELLOC))
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_robert_filter(FLDNOW, FLDOLD, FLDNEW)
@@ -646,7 +639,6 @@ C$OPENAD XXX Template ad_template.f
         CALL saxpy(OpenAD_Symbol_236, __deriv__(OpenAD_Symbol_237),
      >  __deriv__(FLDNOW(L)))
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_cycle_fields()
@@ -688,7 +680,6 @@ C$OPENAD XXX Template ad_template.f
         CALL setderiv(__deriv__(SOLD(L)), __deriv__(OpenAD_Symbol_240))
         CALL setderiv(__deriv__(SNOW(L)), __deriv__(OpenAD_Symbol_241))
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_update(FLDNEW, FLDOLD, DFLDDT)
@@ -746,7 +737,6 @@ C$OPENAD XXX Template ad_template.f
         CALL saxpy(OpenAD_Symbol_258, __deriv__(OpenAD_Symbol_259),
      >  __deriv__(FLDNEW(L)))
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE box_timestep(GAMMALOC, FLDSTAR, EXTFORLOC, UVELLOC,
@@ -1159,5 +1149,4 @@ C$OPENAD XXX Template ad_template.f
       ENDIF
       CALL box_update(__deriv__(FLDNEW), __deriv__(FLDOLD), __deriv__(
      > DFLDDT))
-      RETURN
       END SUBROUTINE

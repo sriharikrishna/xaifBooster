@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 14:55:28 2006
+C Fortran file translated from WHIRL Thu Oct  4 23:46:32 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -31,5 +31,4 @@ C
 C$OPENAD XXX Template ad_template.f
       __value__(Y(1)) = (INT(INT(__value__(X(1)))) * 2.5D00)
       CALL zero_deriv(__deriv__(Y(1)))
-      RETURN
       END SUBROUTINE

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Aug 13 10:59:52 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:12:01 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -42,7 +42,6 @@ C$OPENAD XXX Template ad_template.f
       __value__(Y(1)) = 1.0D00
       CALL zero_deriv(__deriv__(Y(1)))
       CALL FOO()
-      RETURN
       CONTAINS
 
         SUBROUTINE FOO()
@@ -81,6 +80,5 @@ C
           CALL saxpy(OpenAD_Symbol_5, __deriv__(OpenAD_Symbol_6),
      >  __deriv__(Y(1)))
         END DO
-        RETURN
         END SUBROUTINE
       END

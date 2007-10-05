@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 10:49:19 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:07:46 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -122,7 +122,6 @@ C$OPENAD XXX Simple loop
       END DO
       GLOBALSTRING = 'either'
       LOCALSTRING = GLOBALSTRING
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -156,5 +155,4 @@ C$OPENAD XXX Template ad_template.f
       GLOBALSTRING = 'yes'
       CALL foo(__deriv__(X), __deriv__(Y))
       GLOBALSTRING = 'both'
-      RETURN
       END SUBROUTINE

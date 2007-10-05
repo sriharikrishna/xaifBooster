@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 15:54:51 2006
+C Fortran file translated from WHIRL Fri Oct  5 00:08:07 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -55,5 +55,4 @@ C$OPENAD XXX Template ad_template.f
      > ))
       CALL saxpy(OpenAD_Symbol_7, __deriv__(OpenAD_Symbol_6), __deriv__
      > (Y))
-      RETURN
       END SUBROUTINE

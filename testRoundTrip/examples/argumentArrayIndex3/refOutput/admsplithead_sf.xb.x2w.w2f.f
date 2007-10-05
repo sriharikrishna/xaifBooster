@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jul 23 11:08:22 2007
+C Fortran file translated from WHIRL Thu Sep 27 15:52:36 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -202,36 +202,16 @@ C     $OpenAD$ INLINE pop_i(subst)
       CALL foo(__deriv__(X(K)), __deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(Y))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(Y))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
-      CALL cp_arg_store_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(Y))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
-      CALL cp_arg_restore_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
