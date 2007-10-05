@@ -6,7 +6,6 @@ syntax: glob
 *~
 *.orig
 *.B
-*.w2f.f
 *.mod
 *.mod-whirl
 *.xsd
