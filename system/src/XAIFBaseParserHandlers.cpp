@@ -322,6 +322,8 @@ namespace xaifBooster {
     theAssignment_p->setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
     theAssignment_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theAssignment_p);
+    theAssignment_p->getDoMapKey().
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Assignment::our_myDoMapKey_XAIFName)));
     passingOut.setAssignment(*theAssignment_p);
   }
 

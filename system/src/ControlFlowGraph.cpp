@@ -56,6 +56,10 @@
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/Branch.hpp"
+#include "xaifBooster/system/inc/StatementIdSet.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
 
 namespace xaifBooster { 
 
@@ -228,6 +232,18 @@ namespace xaifBooster {
     return  *aSideEffectList_p;
   }
 
+  ControlFlowGraphVertex::FindAssignmentResult ControlFlowGraph::findAssignment(const ObjectWithId::Id& aStatementId) const { 
+    ControlFlowGraphVertex::FindAssignmentResult aResult(false,0);
+    ControlFlowGraph::ConstVertexIteratorPair p(vertices());
+    ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
+    for (;beginIt!=endIt ;++beginIt) { 
+      aResult=(*beginIt).findAssignment(aStatementId);
+      if (aResult.first)
+	return aResult;
+    }
+    return aResult;
+  }
+
   const ControlFlowGraphVertex& ControlFlowGraph::getContainingVertex(const ObjectWithId::Id& aStatementId) const { 
     ControlFlowGraph::ConstVertexIteratorPair p(vertices());
     ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
@@ -267,6 +283,7 @@ namespace xaifBooster {
       theCurrentVertex_r.setReversalType(aReversalType);
     if (aTopExplicitLoopVertex_p)
       theCurrentVertex_r.setTopExplicitLoop(*aTopExplicitLoopVertex_p);
+    mySortedVertices_p_l.push_back(&theCurrentVertex_r);
     // return if ENDLOOP
     if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::ENDLOOP_VKIND) { 
       // the end loop should have exactly one out edge to the loop node:
@@ -278,6 +295,8 @@ namespace xaifBooster {
       theCurrentVertex_r.inheritLoopVariables(theCounterPart);
       if (theCounterPart.hasEnclosingControlFlow())
 	theCurrentVertex_r.setEnclosingControlFlow(theCounterPart.getEnclosingControlFlow());
+      // the following is particularly for PRELOOPs: 
+      theCurrentVertex_r.setReversalType(theCurrentVertex_r.getCounterPart().getReversalType());
       return;
     }
     if (enclosingControlFlowVertex_p)
@@ -301,10 +320,16 @@ namespace xaifBooster {
 	aNewTopExplicitLoopVertex_p=&theCurrentVertex_r;
       }
       // reset the reversal type
-      theCurrentVertex_r.setReversalType(aNewReversalType);
-      if (aNewTopExplicitLoopVertex_p)
-	theCurrentVertex_r.setTopExplicitLoop(*aNewTopExplicitLoopVertex_p);
-      if (aNewReversalType==ForLoopReversalType::EXPLICIT) { 
+      if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::PRELOOP_VKIND) 
+	theCurrentVertex_r.setReversalType(ForLoopReversalType::ANONYMOUS);
+      else { 
+	theCurrentVertex_r.setReversalType(aNewReversalType);
+	if (aNewTopExplicitLoopVertex_p)
+	  theCurrentVertex_r.setTopExplicitLoop(*aNewTopExplicitLoopVertex_p);
+      }
+      if (aNewReversalType==ForLoopReversalType::EXPLICIT
+	  && 
+	  theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::FORLOOP_VKIND) { 
 	theCurrentVertex_r.addLoopVariable();
       }
       OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(theCurrentVertex_r));
@@ -357,6 +382,7 @@ namespace xaifBooster {
       if (enclosingControlFlowVertex_p)
 	the_endBranch_p->setEnclosingControlFlow(*enclosingControlFlowVertex_p);
       theCurrentVertex_r.setCounterPart(*the_endBranch_p);
+      mySortedVertices_p_l.push_back(the_endBranch_p);
       // sort successor  
       OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(*(the_endBranch_p)));
       augmentGraphInfoRecursively(getTargetOf(*(theCurrentVertex_oeip.first)),
@@ -377,6 +403,34 @@ namespace xaifBooster {
     std::stack<ControlFlowGraphVertex*> endNodes_p_s;
     augmentGraphInfoRecursively(getEntry(),idx,endNodes_p_s, ForLoopReversalType::ANONYMOUS,0,0);
     finishVisit();
+    // do a little preliminary test to see if the condition variables are 
+    // modified under the branch and if so the branch is definitely not explicit: 
+    ControlFlowGraph::VertexIteratorPair p(vertices());
+    ControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
+    for (;beginIt!=endIt ;++beginIt) {
+      if ((*beginIt).getReversalType()==ForLoopReversalType::EXPLICIT 
+	  && 
+	  (*beginIt).getKind()==ControlFlowGraphVertexKind::BRANCH_VKIND) { 
+	Branch& theBranch(dynamic_cast<Branch&>((*beginIt)));
+	Expression::CArgumentPList theArguments;
+	theBranch.getCondition().getExpression().appendArguments(theArguments);
+	for (Expression::CArgumentPList::const_iterator theArgIt=theArguments.begin();
+	     theArgIt!=theArguments.end();
+	     ++theArgIt) {
+	  if (definesUnderControlFlowGraphVertex((*theArgIt)->getVariable(),
+						 theBranch)) { 
+	    // this is not really explicit then...
+	    DBG_MACRO(DbgGroup::ERROR,"::ControlFlowGraph::augmentGraphInfo: condition variable "
+		      << (*theArgIt)->getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+		      << " in "
+		      << getSymbolReference().getSymbol().plainName().c_str()
+		      << " redefined under Branch contained in loop marked as \'simple\'; we will suppress the flag for this loop");
+	    theBranch.setReversalType(ForLoopReversalType::ANONYMOUS);
+	    theBranch.getCounterPart().setReversalType(ForLoopReversalType::ANONYMOUS);
+	  }
+	}
+      }
+    }
   }
 
   void 
@@ -454,5 +508,83 @@ namespace xaifBooster {
     }
     return FormalResult(false,0); 
   }
+
+  unsigned int ControlFlowGraph::definesUnderControlFlowGraphVertex(const Variable& theVariable,
+								    const ControlFlowGraphVertex& theControlFlowGraphVertex) const { 
+    int defCount=0;
+    if (theVariable.getDuUdMapKey().getKind()==InfoMapKey::NO_INFO) { 
+      DBG_MACRO(DbgGroup::ERROR,
+		"ControlFlowGraph::definesUnderControlFlowGraphVertex: (old OA) skipping definitions check since no duud key for variable " 
+		<< theVariable.getVariableSymbolReference().getSymbol().getId().c_str()
+		<< " (plain name: "
+		<< theVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
+		<< ") in routine "
+		<< getSymbolReference().getSymbol().plainName().c_str());
+    } 
+    else {
+      // check all the definition locations:
+      const StatementIdSet& defChain(ConceptuallyStaticInstances::instance()->
+				     getCallGraph().getDuUdMap().getEntry(theVariable.getDuUdMapKey()).getStatementIdSet());
+      for(StatementIdSet::const_iterator defChainI=defChain.begin();
+	  defChainI!=defChain.end();
+	  ++defChainI) {
+	if (!(*defChainI).empty()) { 
+	  DBG_MACRO(DbgGroup::DATA,
+		    "ControlFlowGraph::definesUnderControlFlowGraphVertex: checking for " 
+		    << (*defChainI).c_str() 
+		    << " under " 
+		    << theControlFlowGraphVertex.debug().c_str());
+	  if (firstDominatedBySecond(getContainingVertex(*defChainI),
+				     theControlFlowGraphVertex,
+				     false)) { 
+	    defCount++;
+	  }
+	  else { 
+	    // have outside definition but possibly inside overwrites of that definition
+	    // look at the overwrites of that definition dominated by theControlFlowGraphVertex
+	    ControlFlowGraphVertex::FindAssignmentResult theFinderResult(findAssignment(*defChainI));
+	    if (!theFinderResult.first) { 
+	      DBG_MACRO(DbgGroup::ERROR, "ControlFlowGraph::definesUnderControlFlowGraphVertex: cannot find statement for id "
+			<< (*defChainI).c_str());
+	    }
+	    else { 
+	      const Assignment& theDefiningAssignment(*(theFinderResult.second));
+	      DBG_MACRO(DbgGroup::DATA,
+			"ControlFlowGraph::definesUnderControlFlowGraphVertex: the defining assignment is " 
+			<< theDefiningAssignment.debug().c_str());
+	      const StatementIdSet& overwriteChain(ConceptuallyStaticInstances::instance()->
+						   getCallGraph().getDoMap().getEntry(theDefiningAssignment.getDoMapKey()).getStatementIdSet());
+	      for(StatementIdSet::const_iterator overwriteChainI=overwriteChain.begin();
+		  overwriteChainI!=overwriteChain.end();
+		  ++overwriteChainI) {
+		DBG_MACRO(DbgGroup::DATA,
+			  "ControlFlowGraph::definesUnderControlFlowGraphVertex: checking for " 
+			  << (*overwriteChainI).c_str() 
+			  << " under " 
+			  << theControlFlowGraphVertex.debug().c_str());
+		if (!(*overwriteChainI).empty()) { 
+		  if (firstDominatedBySecond(getContainingVertex(*overwriteChainI),
+					     theControlFlowGraphVertex,
+					     false)) { 
+		    defCount++;
+		  }
+		}
+	      }
+	    }
+	  } 
+	}
+	else { 
+	  DBG_MACRO(DbgGroup::DATA,
+		    "ControlFlowGraph::definesUnderControlFlowGraphVertex: outside definition");
+	}
+
+      }
+    }
+    return defCount;
+  }
+
+  std::list<const ControlFlowGraphVertex*> ControlFlowGraph::getSOrtedVertexList() const { 
+    return mySortedVertices_p_l;
+  } 
 
 } // end of namespace xaifBooster 

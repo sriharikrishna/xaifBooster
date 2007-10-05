@@ -92,6 +92,11 @@ namespace xaifBooster {
 
     virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
 
+    /**
+     * for aStatementId get the Assignment if it exists
+     */
+    virtual ControlFlowGraphVertex::FindAssignmentResult findAssignment(const ObjectWithId::Id& aStatementId) const;
+
     virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::BASICBLOCK_VKIND;}
 
   }; // end of class BasicBlock

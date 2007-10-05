@@ -65,6 +65,8 @@
 
 namespace xaifBooster { 
 
+  class Assignment;
+
   /**
    * the ControlFlowGraphVertex is a base class for elements 
    * of a control flow such a if statements, basic blocks, loops etc.
@@ -104,6 +106,13 @@ namespace xaifBooster {
     
     virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
 
+    typedef std::pair<bool,const Assignment*> FindAssignmentResult;
+
+    /**
+     * for aStatementId get the Assignment if it exists
+     */
+    virtual FindAssignmentResult findAssignment(const ObjectWithId::Id& aStatementId) const;
+
     virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const = 0;
 
     ForLoopReversalType::ForLoopReversalType_E getReversalType() const; 
@@ -119,27 +128,23 @@ namespace xaifBooster {
 
     ControlFlowGraphVertex& getCounterPart();
 
+    ControlFlowGraphVertex& getCounterPart() const;
+
     typedef std::list<const Variable*> VariablePList;
 
     const VariablePList& getKnownLoopVariables()const;
-    
     void inheritLoopVariables(const ControlFlowGraphVertex& aParent);
-
     virtual void addLoopVariable(){} // overwritten in Loop vertices
 
+    bool hasTopExplicitLoop() const;
     ControlFlowGraphVertex& getTopExplicitLoop();
     const ControlFlowGraphVertex& getTopExplicitLoop() const;
-
     void setTopExplicitLoop(ControlFlowGraphVertex& theTopExplicitLoop);
 
-    ControlFlowGraphVertex& getTopExplicitLoopAddressArithmetic();
-
-    void setTopExplicitLoopAddressArithmetic(ControlFlowGraphVertex& theTopExplicitLoop);
 
     bool hasEnclosingControlFlow() const;
-
     ControlFlowGraphVertex& getEnclosingControlFlow();
-
+    const ControlFlowGraphVertex& getEnclosingControlFlow() const;
     void setEnclosingControlFlow(ControlFlowGraphVertex& theEnclosingControlFlow);
 
   protected:
