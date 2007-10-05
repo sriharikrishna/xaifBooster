@@ -114,7 +114,10 @@ namespace xaifBoosterAddressArithmetic {
     for (ControlFlowGraphVertex::VariablePList::const_iterator aKnownVariablesI=theKnownVariables.begin();
 	 aKnownVariablesI!=theKnownVariables.end();
 	 ++aKnownVariablesI) { 
-      std::cout << "comparing known " << (*aKnownVariablesI)->equivalenceSignature().c_str() << " with unknown " << anArgument.getVariable().equivalenceSignature().c_str() << std::endl; 
+      DBG_MACRO(DbgGroup::DATA, "comparing known " 
+                 << (*aKnownVariablesI)->equivalenceSignature().c_str() 
+                 << " with unknown " 
+                 << anArgument.getVariable().equivalenceSignature().c_str()); 
       if ((*aKnownVariablesI)->equivalenceSignature()
 	  ==
 	  anArgument.getVariable().equivalenceSignature()) { 
@@ -195,7 +198,10 @@ namespace xaifBoosterAddressArithmetic {
 	for (CallGraphVertexAlg::UnknownVarInfoList::const_iterator anUnknownVariablesI=theUnknownVariables.begin();
 	     anUnknownVariablesI!=theUnknownVariables.end();
 	     ++anUnknownVariablesI) { 
-	  // std::cout << "comparing old unknown variable " << (*anUnknownVariablesI).myVariable_p->equivalenceSignature() << " with new unknown " << anArgument.getVariable().equivalenceSignature() << std::endl; 
+	  DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::findUnknownVariablesInArgument: comparing old unknown variable " 
+                    << (*anUnknownVariablesI).myVariable_p->equivalenceSignature().c_str() 
+                    << " with new unknown " 
+                    << anArgument.getVariable().equivalenceSignature().c_str()); 
 	  if ((*anUnknownVariablesI).myVariable_p->equivalenceSignature()==anArgument.getVariable().equivalenceSignature() 
 	      &&
 	      (!redefinedUnderTopLevelLoop
