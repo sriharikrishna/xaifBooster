@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:35:26 2007
+C Fortran file translated from WHIRL Mon Oct  1 09:48:28 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -650,68 +650,16 @@ C       $OpenAD$ INLINE ZeroDeriv(subst)
       ENDIF
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(GAMMALOC)
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(UVELLOC)
-C     $OpenAD$ INLINE cp_arg_store_real_vector(subst)
-      CALL cp_arg_store_real_vector(FLDSTAR)
-C     $OpenAD$ INLINE cp_arg_store_real_vector(subst)
-      CALL cp_arg_store_real_vector(EXTFORLOC)
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(FLDNOW))
-C     $OpenAD$ INLINE cp_arg_store_real_vector(subst)
-      CALL cp_arg_store_real_vector(FLDOLD)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
-C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
-      CALL cp_arg_restore_real_vector(FLDOLD)
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(FLDNOW))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
-      CALL cp_arg_restore_real_vector(EXTFORLOC)
-C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
-      CALL cp_arg_restore_real_vector(FLDSTAR)
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
-      CALL cp_arg_restore_real_scalar(UVELLOC)
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
-      CALL cp_arg_restore_real_scalar(GAMMALOC)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(FLDNEW))
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(GAMMALOC)
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(UVELLOC)
-C     $OpenAD$ INLINE cp_arg_store_real_vector(subst)
-      CALL cp_arg_store_real_vector(FLDSTAR)
-C     $OpenAD$ INLINE cp_arg_store_real_vector(subst)
-      CALL cp_arg_store_real_vector(EXTFORLOC)
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(FLDNOW))
-C     $OpenAD$ INLINE cp_arg_store_real_vector(subst)
-      CALL cp_arg_store_real_vector(FLDOLD)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
-C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
-      CALL cp_arg_restore_real_vector(FLDOLD)
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(FLDNOW))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
-      CALL cp_arg_restore_real_vector(EXTFORLOC)
-C     $OpenAD$ INLINE cp_arg_restore_real_vector(subst)
-      CALL cp_arg_restore_real_vector(FLDSTAR)
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
-      CALL cp_arg_restore_real_scalar(UVELLOC)
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
-      CALL cp_arg_restore_real_scalar(GAMMALOC)
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(FLDNEW))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f

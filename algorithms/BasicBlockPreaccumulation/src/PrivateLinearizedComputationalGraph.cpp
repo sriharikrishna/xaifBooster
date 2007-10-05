@@ -86,7 +86,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void PrivateLinearizedComputationalGraph::removeFromDependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theDependentVertex) {
     VertexPointerList::iterator aVertexPointerListI=myDependentList.begin();
-    DuUdMapDefinitionResult::StatementIdList::iterator aStatementIdListI=myDependentStatementIdList.begin();
+    StatementIdList::iterator aStatementIdListI=myDependentStatementIdList.begin();
       for (;
 	   aVertexPointerListI!=myDependentList.end();
 	   ++aStatementIdListI,++aVertexPointerListI) { 

@@ -122,6 +122,7 @@ namespace xaifBooster {
     myScopeTree.printXMLHierarchy(os);
     myAliasMap.printXMLHierarchy(os);
     myDuUdMap.printXMLHierarchy(os);
+    myDoMap.printXMLHierarchy(os);
     CallGraph::ConstVertexIteratorPair p(vertices());
     CallGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt)
@@ -164,6 +165,14 @@ namespace xaifBooster {
 
   const DuUdMap& CallGraph::getDuUdMap() const { 
     return myDuUdMap;
+  }
+ 
+  DoMap& CallGraph::getDoMap() { 
+    return myDoMap;
+  }
+
+  const DoMap& CallGraph::getDoMap() const { 
+    return myDoMap;
   }
   
   void CallGraph::setProgramName(const std::string& aProgramName) { 

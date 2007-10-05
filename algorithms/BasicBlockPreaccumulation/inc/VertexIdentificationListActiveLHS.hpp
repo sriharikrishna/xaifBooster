@@ -79,7 +79,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * in case of duud information absent this can also 
      * be invoked between LHS variables.
      */
-    IdentificationResult canIdentify(const Variable& theVariable) const;
+    IdentificationResult canIdentify(const Variable& theVariable,
+				     const ObjectWithId::Id& statementId) const;
 
     /** 
      * in case of duud information present we keep adding 
@@ -102,7 +103,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
 
       ListItem(const AliasMapKey& anAliasMapKey,
-	       const DuUdMapKey& aDuUdMapKey,
+	       const StatementIdSetMapKey& aDuUdMapKey,
 	       PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p,
 	       const ObjectWithId::Id& aStatementId);
 
@@ -122,7 +123,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /** 
      * retrieve the list of statement IDs collected in myList
      */
-    void getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const;
+    void getStatementIdList(StatementIdList& aStatementIdList)const;
 
   }; // end of class VertexIdentificationListActiveLHS  
    

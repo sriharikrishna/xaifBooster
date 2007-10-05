@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 16:02:04 2006
+C Fortran file translated from WHIRL Fri Oct  5 00:12:07 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -78,5 +78,4 @@ C$OPENAD XXX Template ad_template.f
         X(INT(I))%v = 0.0D00
         CALL zero_deriv(X(INT(I)))
       END DO
-      RETURN
       END SUBROUTINE

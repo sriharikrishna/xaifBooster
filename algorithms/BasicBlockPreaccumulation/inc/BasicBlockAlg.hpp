@@ -175,7 +175,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     static unsigned int getSequenceCounter();
 
-    const DuUdMapDefinitionResult::StatementIdList& getAssignmentIdList()const;
+    const StatementIdList& getAssignmentIdList()const;
 
     void addMyselfToAssignmentIdList(const Assignment&);
 
@@ -399,7 +399,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /** 
      * the list of all Assignment statement Ids
      */ 
-    DuUdMapDefinitionResult::StatementIdList ourAssignmentIdList;
+    StatementIdList myAssignmentIdList;
 
     typedef HashTable<const Variable*> VariableHashTable;
 

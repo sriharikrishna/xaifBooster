@@ -178,7 +178,7 @@ namespace xaifBoosterControlFlowReversal {
 	<< ",myEnclosingControlFlow_p="
 	<< myEnclosingControlFlow_p
 	<< ",myKnownLoopVariables[";
-      for (VariablePList::const_iterator knownListI= myKnownLoopVariables.begin();
+      for (ControlFlowGraphVertex::VariablePList::const_iterator knownListI= myKnownLoopVariables.begin();
 	   knownListI!= myKnownLoopVariables.end();
 	   ++knownListI) { 
 	out << (*knownListI)->debug().c_str();
@@ -231,17 +231,17 @@ namespace xaifBoosterControlFlowReversal {
     return *myCounterPart_p;
   }
 
-  const ReversibleControlFlowGraphVertex::VariablePList& 
+  const ControlFlowGraphVertex::VariablePList& 
   ReversibleControlFlowGraphVertex::getKnownLoopVariables()const { 
     return myKnownLoopVariables;
   } 
     
   void 
   ReversibleControlFlowGraphVertex::inheritLoopVariables(const ReversibleControlFlowGraphVertex& aParent) {
-    const ReversibleControlFlowGraphVertex::VariablePList& aParentList(aParent.getKnownLoopVariables());
+    const ControlFlowGraphVertex::VariablePList& aParentList(aParent.getKnownLoopVariables());
     if (myKnownLoopVariables.size())
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::inheritLoopVariables: already inherited once");
-    for(VariablePList::const_iterator i=aParentList.begin();
+    for(ControlFlowGraphVertex::VariablePList::const_iterator i=aParentList.begin();
 	i!=aParentList.end();
 	++i) { 
       myKnownLoopVariables.push_back(*i);
@@ -253,11 +253,13 @@ namespace xaifBoosterControlFlowReversal {
     myKnownLoopVariables.push_back(&aLoopVariable);
   }
 
+  void 
+  ReversibleControlFlowGraphVertex::setLoopVariables(const ControlFlowGraphVertex::VariablePList& loopVariables) { 
+    myKnownLoopVariables=loopVariables;
+  }
+
   ReversibleControlFlowGraphVertex& 
   ReversibleControlFlowGraphVertex::getTopExplicitLoop() { 
-    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
-      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
-    } 
     if (!myTopExplicitLoop_p)
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: not set for "
 				 << myOriginalVertex_p->debug().c_str());
@@ -266,9 +268,6 @@ namespace xaifBoosterControlFlowReversal {
 
   const ReversibleControlFlowGraphVertex& 
   ReversibleControlFlowGraphVertex::getTopExplicitLoop() const { 
-    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
-      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
-    } 
     if (!myTopExplicitLoop_p)
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::getTopExplicitLoop: not set for "
 				 << myOriginalVertex_p->debug().c_str());
@@ -277,9 +276,6 @@ namespace xaifBoosterControlFlowReversal {
 
   void 
   ReversibleControlFlowGraphVertex::setTopExplicitLoop(ReversibleControlFlowGraphVertex& theTopExplicitLoop) { 
-    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
-      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::setTopExplicitLoop: the vertex is not explicit");
-    } 
     if (!(myTopExplicitLoop_p && myTopExplicitLoop_p!=&theTopExplicitLoop) )
       myTopExplicitLoop_p=&theTopExplicitLoop;	
   } 

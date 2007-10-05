@@ -397,7 +397,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// advance the iterator before we delete anything:
 	++aDepVertexPListI;
 	// all the dependent ones should have the LHS set
-	const DuUdMapKey& aDuUdMapKey(myPrivateVertex.getLHSVariable().getDuUdMapKey()); 
+	const StatementIdSetMapKey& aDuUdMapKey(myPrivateVertex.getLHSVariable().getDuUdMapKey()); 
 	if (aDuUdMapKey.getKind()==InfoMapKey::TEMP_VAR) { 
 	  // now the assumption is that temporaries are local to the flattened Sequence
 	  // and we can remove: 
@@ -406,13 +406,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	}
 	DuUdMapUseResult theDuUdMapUseResult(ConceptuallyStaticInstances::instance()->
 					     getCallGraph().getDuUdMap().use(aDuUdMapKey,
+									     myPrivateVertex.getStatementId(),
 									     theFlattenedSequence.getStatementIdLists()));
 	if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
 	    || 
 	    theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
 	  if (!theFlattenedSequence.numOutEdgesOf(myPrivateVertex)) { 
 	    if (theDuUdMapUseResult.myActiveUse!=ActiveUseType::PASSIVEUSE) { 
-	      // if the use is no strictly passive then in case of UNIQUE_INSIDE this vertex 
+	      // if the use is not strictly passive then in case of UNIQUE_INSIDE this vertex 
 	      // should not be maximal and in case of AMBIGUOUS_INSIDE there should have 
 	      // been a split. 
 	      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_3: attempting to remove a maximal vertex "
@@ -1118,12 +1119,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return ourSequenceCounter;
   }
 
-  const DuUdMapDefinitionResult::StatementIdList& BasicBlockAlg::getAssignmentIdList()const { 
-    return ourAssignmentIdList;
+  const StatementIdList& BasicBlockAlg::getAssignmentIdList()const { 
+    return myAssignmentIdList;
   } 
 
   void BasicBlockAlg::addMyselfToAssignmentIdList(const Assignment& anAssignment) { 
-    ourAssignmentIdList.push_back(anAssignment.getId());
+    myAssignmentIdList.push_back(anAssignment.getId());
   } 
 
   std::string BasicBlockAlg::makeUniqueId() { 

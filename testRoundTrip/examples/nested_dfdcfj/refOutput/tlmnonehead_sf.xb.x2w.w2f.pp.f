@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:26:55 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:11:56 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -40,7 +40,7 @@ C
       INTEGER(w2f__i8) t__2
       EXTERNAL foo
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       REAL(w2f__8) HX
       REAL(w2f__8) HX2
       REAL(w2f__8) HY
@@ -50,13 +50,13 @@ C
       REAL(w2f__8) NXP1
       REAL(w2f__8) NYP1
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       INTEGER(w2f__i4) t__3
 C
 C     **** Top Level Pragmas ****
@@ -87,7 +87,6 @@ C$OPENAD XXX Template ad_template.f
         CALL setderiv(OpenAD_Symbol_170,FVEC(K))
         CALL sax(OpenAD_Symbol_169,OpenAD_Symbol_170,FVEC(K))
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE foo(NX, NY, X, FVEC, R, N, HX, HY, HY2, HX2)
@@ -233,12 +232,12 @@ C
       type(active) :: DPDX
       type(active) :: DPDY
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
       INTEGER(w2f__i4) K
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       type(active) :: P
       type(active) :: PB
       type(active) :: PBB
@@ -258,11 +257,11 @@ C
       type(active) :: PTR
       type(active) :: PTT
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       INTEGER(w2f__i4) t__6
       INTEGER(w2f__i4) t__7
 C
@@ -517,7 +516,6 @@ C$OPENAD XXX Template ad_template.f
           CALL saxpy(OpenAD_Symbol_217,OpenAD_Symbol_216,FVEC(K))
         END DO
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE bar(PBB, PBL, PB, PBR, PLL, PL, P, PR, PRR, PTL, PT,
@@ -713,15 +711,15 @@ C
 C     **** Local Variables and Functions ****
 C
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
 C
 C     **** Statements ****
 C
@@ -924,5 +922,4 @@ C$OPENAD XXX Template ad_template.f
       CALL saxpy(OpenAD_Symbol_305,OpenAD_Symbol_263,PLLAP)
       CALL saxpy(OpenAD_Symbol_306,OpenAD_Symbol_270,PBLAP)
       CALL saxpy(OpenAD_Symbol_307,OpenAD_Symbol_270,PBLAP)
-      RETURN
       END SUBROUTINE

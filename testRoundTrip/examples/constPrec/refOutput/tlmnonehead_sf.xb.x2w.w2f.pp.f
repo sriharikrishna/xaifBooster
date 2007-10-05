@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:22:05 2007
+C Fortran file translated from WHIRL Thu Oct  4 23:46:52 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -35,9 +35,9 @@ C
 C     **** Local Variables and Functions ****
 C
       REAL(w2f__8) DEG2RAD
-      PARAMETER ( DEG2RAD =   0.01745329251994330)
+      PARAMETER ( DEG2RAD = 1.74532925199432954744D-02)
       REAL(w2f__8) PI
-      PARAMETER ( PI =     3.141592653589793)
+      PARAMETER ( PI = 3.141592653589793116D00)
 C
 C     **** Top Level Pragmas ****
 C
@@ -55,5 +55,4 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_5 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
       CALL setderiv(OpenAD_Symbol_6,X(1))
       CALL sax(OpenAD_Symbol_5,OpenAD_Symbol_6,Y(1))
-      RETURN
       END SUBROUTINE

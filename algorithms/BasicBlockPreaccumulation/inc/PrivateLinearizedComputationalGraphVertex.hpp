@@ -53,6 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 
 namespace xaifBooster { 
@@ -72,9 +73,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     ~PrivateLinearizedComputationalGraphVertex(){}
 
-    void setRHSVariable(const Variable& aVariable);
+    void setRHSVariable(const Variable& aVariable,
+			const ObjectWithId::Id& statementId);
 
-    void setLHSVariable(const Variable& aVariable);
+    void setLHSVariable(const Variable& aVariable,
+			const ObjectWithId::Id& statementId);
     
     const Variable& getRHSVariable() const;
 
@@ -84,6 +87,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     std::string debug() const ;
     
+    const ObjectWithId::Id& getStatementId() const; 
+
   private:
     
     /**
@@ -108,6 +113,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * to by myLHSVariable_p
      */
     const Variable* myLHSVariable_p;
+
+    /** 
+     * set to the respective statement id 
+     * if  myRHSVariable_p
+     * or myLHSVariable_p is set
+     */
+    ObjectWithId::Id myStatementId; 
  
   }; // end of class PrivateLinearizedComputationalGraphVertex
  

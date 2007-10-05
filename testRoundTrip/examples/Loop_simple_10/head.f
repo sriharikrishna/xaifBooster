@@ -10,7 +10,7 @@ c$openad xxx simple loop
             if (a(i,j).ne.0) then
               y(1)=y(1)*x(1)*a(i,j)
             else
-              y(1)=y(1)-x(1)
+              y(1)=0.0
             end if
           end do
 c$openad DEPENDENT(y)

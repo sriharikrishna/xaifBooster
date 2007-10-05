@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 24 13:24:20 2007
+C Fortran file translated from WHIRL Fri Oct  5 10:41:05 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -84,9 +84,6 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_2
       INTEGER(w2f__i8) OpenAD_Symbol_3
-      INTEGER(w2f__i8) OpenAD_Symbol_4
-      INTEGER(w2f__i8) OpenAD_Symbol_5
-      INTEGER(w2f__i8) OpenAD_Symbol_6
 C
 C     **** Parameters and Result ****
 C
@@ -98,8 +95,8 @@ C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) t__1
-      INTEGER(w2f__i8) OpenAD_Symbol_7
-      INTEGER(w2f__i8) OpenAD_Symbol_8
+      INTEGER(w2f__i8) OpenAD_Symbol_4
+      INTEGER(w2f__i8) OpenAD_Symbol_5
 C
 C     **** Statements ****
 C
@@ -179,17 +176,9 @@ C taping
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
       t__1 = K * 2
-      OpenAD_Symbol_3 = 0_w2f__i8
       DO I = 1, (K * 2), 1
         Y(INT(I))%v = X(I)%v
-          integer_tape(integer_tape_pointer) = I
-          integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = I
-          integer_tape_pointer = integer_tape_pointer+1
-        OpenAD_Symbol_3 = (INT(OpenAD_Symbol_3) + INT(1_w2f__i8))
       END DO
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_3
-          integer_tape_pointer = integer_tape_pointer+1
       RETURN
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
@@ -209,24 +198,15 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_1 = integer_tape(integer_tape_pointer)
-      OpenAD_Symbol_2 = 1
-      DO WHILE(INT(OpenAD_Symbol_2) .LE. INT(OpenAD_Symbol_1))
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_7 = integer_tape(integer_tape_pointer)
-          if (iaddr(Y(INT(OpenAD_Symbol_7))) .ne. iaddr(OpenAD_Symbol_0)
-     +) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(INT(OpenAD_Symbol_7)
-     +)%d
-            Y(INT(OpenAD_Symbol_7))%d = 0
+      I = 1 + 1 *((K * 2 - 1) / 1)
+      DO WHILE(I .GE. 1)
+          if (iaddr(Y(I)) .ne. iaddr(OpenAD_Symbol_0)) then
+            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(I)%d
+            Y(I)%d = 0
           end if
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_8 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_8))%d = X(INT(OpenAD_Symbol_8))%d+OpenAD_S
-     +ymbol_0%d
+          X(I)%d = X(I)%d+OpenAD_Symbol_0%d
           OpenAD_Symbol_0%d = 0.0d0
-        OpenAD_Symbol_2 = INT(OpenAD_Symbol_2) + 1
+        I = I - 1
       END DO
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
@@ -360,26 +340,10 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_real_vector(X,size(X),theArgFStack,theArgFStacko
-     +ffset,theArgFStackSize)
-          call cp_store_real_vector(Y,size(Y),theArgFStack,theArgFStacko
-     +ffset,theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          do cp_loop_variable_1 = ubound(Y,1),lbound(Y,1),-1
-             Y(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffset)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+Y(cp_loop_variable_1)%v
-          end do
-          do cp_loop_variable_1 = ubound(X,1),lbound(X,1),-1
-             X(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffset)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+X(cp_loop_variable_1)%v
-          end do
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode

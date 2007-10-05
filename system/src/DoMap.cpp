@@ -1,5 +1,3 @@
-#ifndef _DUUDMAPKEY_INCLUDE_
-#define _DUUDMAPKEY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,13 +50,32 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/system/inc/InfoMapKey.hpp"
+#include "xaifBooster/system/inc/DoMap.hpp"
 
 namespace xaifBooster { 
 
-  class DuUdMapKey : public InfoMapKey {};
+  const std::string DoMap::ourXAIFName("xaif:DOSetMap");
 
-} // end of namespace xaifBooster
-                                                                     
-#endif
+  void DoMap::printXMLHierarchy(std::ostream& os) const {
+    PrintManager& pm=PrintManager::getInstance();
+    os << pm.indent() 
+       << "<" 
+       << ourXAIFName 
+       << ">" 
+       << std::endl; 
+    for(StatementIdSetMapEntryPVector::const_iterator it=getEntries().begin();
+	it!=getEntries().end();
+	it++)
+      if (*it)
+	(*it)->printXMLHierarchy(os);       
+    os << pm.indent() 
+       << "</"
+       << ourXAIFName
+       << ">" << std::endl;
+    pm.releaseInstance();
+  } // end of  DoMap::printXMLHierarchy
+
+} // end of namespace  

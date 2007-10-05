@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:28:03 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:13:52 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -2727,7 +2727,7 @@ C
       type(active) :: EL
       type(active) :: ER
       REAL(w2f__4) HALF
-      PARAMETER ( HALF =    0.5000000)
+      PARAMETER ( HALF = 5.0E-01)
       type(active) :: HAVE
       type(active) :: HL
       type(active) :: HR
@@ -2743,7 +2743,7 @@ C
       type(active) :: NZHAT
       type(active) :: OMEGA
       REAL(w2f__4) ONE
-      PARAMETER ( ONE =     1.000000)
+      PARAMETER ( ONE = 1.0)
       type(active) :: ROEL
       type(active) :: ROER
       type(active) :: RUL
@@ -2765,7 +2765,7 @@ C
       type(active) :: WAVE
       type(active) :: WTILDE
       REAL(w2f__4) ZERO
-      PARAMETER ( ZERO =     0.000000)
+      PARAMETER ( ZERO = 0.0)
 C
 C     **** Top Level Pragmas ****
 C
@@ -6888,5 +6888,4 @@ C$OPENAD XXX Template ad_template.f
       CALL saxpy(OpenAD_Symbol_2656,OpenAD_Symbol_742,FLUX1)
       CALL saxpy(OpenAD_Symbol_2657,OpenAD_Symbol_742,FLUX5)
       CALL saxpy(OpenAD_Symbol_2658,OpenAD_Symbol_742,FLUX2)
-      RETURN
       END SUBROUTINE

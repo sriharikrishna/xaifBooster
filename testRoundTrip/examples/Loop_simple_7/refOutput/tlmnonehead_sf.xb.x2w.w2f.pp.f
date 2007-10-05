@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:26:09 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:07:53 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -45,7 +45,6 @@ C$OPENAD XXX Simple loop\t
         CALL setderiv(OpenAD_Symbol_0,X(I))
         CALL setderiv(Y(I),OpenAD_Symbol_0)
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -73,5 +72,4 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       CALL bar(X,Y,3 _w2f__i8)
-      RETURN
       END SUBROUTINE

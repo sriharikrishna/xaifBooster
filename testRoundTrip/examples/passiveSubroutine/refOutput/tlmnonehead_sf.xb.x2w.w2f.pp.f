@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 16:05:01 2006
+C Fortran file translated from WHIRL Fri Oct  5 00:12:14 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -41,7 +41,6 @@ C$OPENAD XXX Template ad_template.f
       CALL foo(X(1),Y(1))
       P = 1.0D00
       CALL bar(P, Q)
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE foo(A, B)
@@ -75,7 +74,6 @@ C$OPENAD XXX Template ad_template.f
       CALL setderiv(OpenAD_Symbol_4,A)
       CALL sax(OpenAD_Symbol_3,OpenAD_Symbol_4,B)
       CALL saxpy(OpenAD_Symbol_5,OpenAD_Symbol_4,B)
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE bar(A, B)
@@ -92,5 +90,4 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       B = COS(A)
-      RETURN
       END SUBROUTINE

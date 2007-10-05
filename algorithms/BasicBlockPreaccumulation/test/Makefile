@@ -52,11 +52,9 @@
 # ========== end copyright notice ==============
 MAIN=t
 
-test: obj buildStamp.hpp $(MAIN) quickRegression.bash
+objs test: obj buildStamp.hpp $(MAIN) quickRegression.bash
 
 CLEANTARGETS+=buildStamp.hpp tmp $(MAIN) quickRegression.bash
-
-objs : ;
 
 .PHONY: objs test 
 

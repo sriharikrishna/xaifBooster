@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:23:54 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:01:37 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -573,7 +573,6 @@ C$OPENAD XXX Template ad_template.f
           CALL saxpy(OpenAD_Symbol_243,OpenAD_Symbol_244,BULKMOD(I,J))
         END DO
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -666,5 +665,4 @@ C$OPENAD XXX Template ad_template.f
           CALL setderiv(Y(J+I*2+(-2)),OpenAD_Symbol_251)
         END DO
       END DO
-      RETURN
       END SUBROUTINE

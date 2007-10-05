@@ -22,8 +22,8 @@ void onControlFlowGraph(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHel
 void onControlFlowGraphEdge(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onDimensionBounds(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onDummy(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onDoMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onDuUdMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
-void onDuUdMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onEndBranch(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onEndLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
@@ -49,6 +49,8 @@ void onScopeContainment(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHel
 void onScopes(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSideEffectReference(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onStatementId(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onStatementIdSetMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onStatementIdSetMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onStride(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSubroutineCall(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onSymbol(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);

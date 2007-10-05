@@ -116,8 +116,13 @@ namespace xaifBooster {
     static const std::string our_myId_XAIFName;
     static const std::string our_myLHS_XAIFName;
     static const std::string our_myRHS_XAIFName;
+    static const std::string our_myDoMapKey_XAIFName;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    StatementIdSetMapKey& getDoMapKey();
+
+    const StatementIdSetMapKey& getDoMapKey() const;
 
   private: 
 
@@ -140,6 +145,11 @@ namespace xaifBooster {
      * right hand side
      */
     Expression myRHS;
+
+    /** 
+     * key into  DoMap
+     */
+    StatementIdSetMapKey myDoMapKey;
 
   }; // end of class Assignment
  

@@ -107,7 +107,7 @@
       <xaif:ScopeEdge edge_id="2" source="3" target="1"/>
       <xaif:ScopeEdge edge_id="3" source="4" target="1"/>
     </xaif:ScopeHierarchy>
-    <xaif:AliasSetList>
+    <xaif:AliasSetMap>
       <xaif:AliasSet key="0">
         <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="1"/>
       </xaif:AliasSet>
@@ -135,56 +135,87 @@
       <xaif:AliasSet key="7">
         <xaif:AliasRange from_virtual_address="6" to_virtual_address="6" partial="0"/>
       </xaif:AliasSet>
-    </xaif:AliasSetList>
-    <xaif:DUUDSetList>
-      <xaif:DUUDSet key="0">
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="1">
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="2">
+    </xaif:AliasSetMap>
+    <xaif:DUUDSetMap>
+      <xaif:StmtIdSet key="0">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="1">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="2">
         <xaif:StatementId idRef=""/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="3">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="3">
         <xaif:StatementId idRef="11"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="4">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="4">
         <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="13"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="5">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="5">
         <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="13"/>
         <xaif:StatementId idRef="21"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="6">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="6">
         <xaif:StatementId idRef="39"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="7">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="7">
         <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="33"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="8">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="8">
         <xaif:StatementId idRef="13"/>
         <xaif:StatementId idRef="41"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="9">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="9">
+        <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="27"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="10">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="10">
         <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="41"/>
         <xaif:StatementId idRef="52"/>
         <xaif:StatementId idRef="58"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="11">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="11">
         <xaif:StatementId idRef="41"/>
         <xaif:StatementId idRef="58"/>
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="12">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="12">
         <xaif:StatementId idRef=""/>
         <xaif:StatementId idRef="58"/>
-      </xaif:DUUDSet>
-    </xaif:DUUDSetList>
+      </xaif:StmtIdSet>
+    </xaif:DUUDSetMap>
+    <xaif:DOSetMap>
+      <xaif:StmtIdSet key="0">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="1">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="2">
+        <xaif:StatementId idRef=""/>
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="3">
+        <xaif:StatementId idRef="21"/>
+        <xaif:StatementId idRef="27"/>
+        <xaif:StatementId idRef="41"/>
+        <xaif:StatementId idRef="58"/>
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="4">
+        <xaif:StatementId idRef="27"/>
+        <xaif:StatementId idRef="41"/>
+        <xaif:StatementId idRef="58"/>
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="5">
+        <xaif:StatementId idRef="41"/>
+        <xaif:StatementId idRef="58"/>
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="6">
+        <xaif:StatementId idRef="52"/>
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="7">
+        <xaif:StatementId idRef="58"/>
+      </xaif:StmtIdSet>
+    </xaif:DOSetMap>
     <xaif:ControlFlowGraph vertex_id="10" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" active="1">
     </xaif:ControlFlowGraph>
     <xaif:ControlFlowGraph vertex_id="11" symbol_id="foo__21" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" active="1">
@@ -398,7 +429,7 @@
           </xaif:SetDeriv>
         </xaif:DerivativePropagator>
         <xaif:Assignment statement_id="27">
-          <xaif:AssignmentLHS active="true" du_ud="1" deriv="0" constant="0">
+          <xaif:AssignmentLHS active="true" du_ud="2" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="4"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>

@@ -118,6 +118,11 @@ namespace xaifBooster {
 
     virtual void addLoopVariable();
 
+    /**
+     * for aStatementId get the Assignment if it exists
+     */
+    virtual ControlFlowGraphVertex::FindAssignmentResult findAssignment(const ObjectWithId::Id& aStatementId) const;
+
   private:
 
     /** 
