@@ -111,7 +111,7 @@ namespace xaifBoosterAddressArithmetic {
      * put them in the theUnknownVariables
      */
     void findUnknownVariablesInExpression(const Expression& anExpression,
-					  const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+					  const ControlFlowGraphVertex::VariablePList& theKnownVariables,
 					  UnknownVarInfoList& theUnknownVariables,
 					  bool thisIsCF,
 					  xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
@@ -122,7 +122,7 @@ namespace xaifBoosterAddressArithmetic {
      * put them in the theUnknownVariables
      */
     void findUnknownVariablesInArgument(const Argument& anArgument,
-					const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+					const ControlFlowGraphVertex::VariablePList& theKnownVariables,
 					UnknownVarInfoList& theUnknownVariables,
 					bool thisIsCF,
 					xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
@@ -131,7 +131,7 @@ namespace xaifBoosterAddressArithmetic {
      * find variables used in anArrayAccess
      */
     void findUnknownVariablesInArrayAccess(const ArrayAccess& anArrayAccess,
-					   const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+					   const ControlFlowGraphVertex::VariablePList& theKnownVariables,
 					   UnknownVarInfoList& theUnknownVariables,
 					   bool thisIsCF,
 					   xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex);
@@ -142,14 +142,14 @@ namespace xaifBoosterAddressArithmetic {
      * instances and subroutine calls for a given BasicBlock
      */
     void findUnknownIndexVariablesInBasicBlockElements(xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theOriginalBasicBlock,
-						       const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+						       const ControlFlowGraphVertex::VariablePList& theKnownVariables,
 						       UnknownVarInfoList& theUnknownVariables);
 
     /** 
      * find variables used in aReversibleControlFlowGraphVertex 
      */
     void findUnknownVariablesInReversibleControlFlowGraphVertex( xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aReversibleControlFlowGraphVertex,
-								const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex::VariablePList& theKnownVariables,
+								const ControlFlowGraphVertex::VariablePList& theKnownVariables,
 								UnknownVarInfoList& theUnknownVariables);
 
     /** 
@@ -224,12 +224,6 @@ namespace xaifBoosterAddressArithmetic {
      * check if the variable is quasi-constant
      */
     bool isQuasiConstant(const Variable& theVariable); 
-
-    /** 
-     * how often is theVariable defined within this CF subtree with theControlFlowGraphVertex as root
-     */
-    int definesUnderControlFlowGraphVertex(const Variable& theVariable,
-					   const ControlFlowGraphVertex& theControlFlowGraphVertex);
 
   };  // end of class
 

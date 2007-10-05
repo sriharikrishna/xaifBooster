@@ -70,6 +70,7 @@ namespace xaifBooster {
   const std::string Assignment::our_myRHS_XAIFName("xaif:AssignmentRHS");
   const std::string Assignment::ourXAIFName("xaif:Assignment");
   const std::string Assignment::our_myId_XAIFName("statement_id");
+  const std::string Assignment::our_myDoMapKey_XAIFName("do_chain");
 
   Assignment::Assignment(bool makeAlgorithm) : 
     myRHS(makeAlgorithm) {
@@ -190,5 +191,14 @@ namespace xaifBooster {
     myRHS.genericTraversal(anAction_c);
     myLHS.genericTraversal(anAction_c);
   } 
+
+  StatementIdSetMapKey& Assignment::getDoMapKey() { 
+    return myDoMapKey;
+  } 
+
+  const StatementIdSetMapKey& Assignment::getDoMapKey() const { 
+    return myDoMapKey;
+  }
+
 
 } // end of namespace xaifBooster 

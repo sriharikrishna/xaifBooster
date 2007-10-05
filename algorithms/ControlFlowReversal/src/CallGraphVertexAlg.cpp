@@ -251,7 +251,7 @@ namespace xaifBoosterControlFlowReversal {
     myAdjointControlFlowGraph_p=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
     myTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
     //	GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
-    myTapingControlFlowGraph_p->topologicalSort();
+    // myTapingControlFlowGraph_p->topologicalSort();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
@@ -274,11 +274,11 @@ namespace xaifBoosterControlFlowReversal {
     // do the same steps for the strictly anonymous version where we ignore the user supplied flags
     myStrictAnonymousTapingControlFlowGraph_p=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
     myStrictAnonymousAdjointControlFlowGraph_p=new ReversibleControlFlowGraph(getContaining().getControlFlowGraph());
-    myStrictAnonymousTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
     // this flag causes strict anonymity
     myStrictAnonymousTapingControlFlowGraph_p->donotRetainUserReversalFlag();
+    myStrictAnonymousTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
     // GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
-    myStrictAnonymousTapingControlFlowGraph_p->topologicalSort();
+    //    myStrictAnonymousTapingControlFlowGraph_p->topologicalSort();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
       GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_strict_anonymous_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
     }

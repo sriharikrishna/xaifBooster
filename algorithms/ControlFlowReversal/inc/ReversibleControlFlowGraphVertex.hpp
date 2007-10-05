@@ -124,10 +124,10 @@ namespace xaifBoosterControlFlowReversal {
 
     ReversibleControlFlowGraphVertex& getCounterPart();
 
-    typedef std::list<const Variable*> VariablePList;
-
-    const VariablePList& getKnownLoopVariables()const;
+    const ControlFlowGraphVertex::VariablePList& getKnownLoopVariables()const;
     
+    void setLoopVariables(const ControlFlowGraphVertex::VariablePList&);
+
     void inheritLoopVariables(const ReversibleControlFlowGraphVertex& aParent);
 
     void addLoopVariable(const Variable& aLoopVariable);
@@ -228,7 +228,7 @@ namespace xaifBoosterControlFlowReversal {
      * the respective top loop down
      * we don't own the Variables we are pointing to
      */ 
-    VariablePList myKnownLoopVariables; 
+    ControlFlowGraphVertex::VariablePList myKnownLoopVariables; 
 
     /** 
      * pointer to the top level 

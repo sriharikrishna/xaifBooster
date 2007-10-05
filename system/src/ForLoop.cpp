@@ -163,4 +163,12 @@ namespace xaifBooster {
 				     getLHS()));
   }
 
+  ControlFlowGraphVertex::FindAssignmentResult ForLoop::findAssignment(const ObjectWithId::Id& aStatementId) const { 
+    if (aStatementId==getInitialization().getAssignment().getId())
+      return FindAssignmentResult(false,&(getInitialization().getAssignment()));
+    if (aStatementId==getUpdate().getAssignment().getId())
+      return FindAssignmentResult(false,&(getUpdate().getAssignment()));
+    return FindAssignmentResult(false,0);
+  }
+
 } // end of namespace xaifBooster 
