@@ -20,8 +20,8 @@ ourStartActionCatalogue.addElement(Constant::ourXAIFName, ActionItem(&XAIFBasePa
 ourStartActionCatalogue.addElement(ControlFlowGraph::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onControlFlowGraph));
 ourStartActionCatalogue.addElement(ControlFlowGraphEdge::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onControlFlowGraphEdge));
 ourStartActionCatalogue.addElement(DimensionBounds::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onDimensionBounds));
+ourStartActionCatalogue.addElement(DoMap::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onDoMap));
 ourStartActionCatalogue.addElement(DuUdMap::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onDuUdMap));
-ourStartActionCatalogue.addElement(DuUdMapEntry::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onDuUdMapEntry));
 ourStartActionCatalogue.addElement(EndBranch::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEndBranch));
 ourStartActionCatalogue.addElement(EndLoop::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEndLoop));
 ourStartActionCatalogue.addElement(Entry::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onEntry));
@@ -46,7 +46,8 @@ ourStartActionCatalogue.addElement(Scope::ourXAIFName, ActionItem(&XAIFBaseParse
 ourStartActionCatalogue.addElement(ScopeContainment::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onScopeContainment));
 ourStartActionCatalogue.addElement(Scopes::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onScopes));
 ourStartActionCatalogue.addElement(SideEffectList::our_SideEffectReference_XAIFName, ActionItem(&XAIFBaseParserHandlers::onSideEffectReference));
-ourStartActionCatalogue.addElement(DuUdMapEntry::our_StatementId_XAIFName, ActionItem(&XAIFBaseParserHandlers::onStatementId));
+ourStartActionCatalogue.addElement(StatementIdSetMapEntry::our_StatementId_XAIFName, ActionItem(&XAIFBaseParserHandlers::onStatementId));
+ourStartActionCatalogue.addElement(StatementIdSetMapEntry::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onStatementIdSetMapEntry));
 ourStartActionCatalogue.addElement(IndexTriplet::our_myStride_XAIFName, ActionItem(&XAIFBaseParserHandlers::onStride));
 ourStartActionCatalogue.addElement(SubroutineCall::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSubroutineCall));
 ourStartActionCatalogue.addElement(Symbol::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onSymbol));

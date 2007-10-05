@@ -112,7 +112,7 @@ namespace xaifBooster {
 				 << debug().c_str());
     // just use the default assignment which should be good enough
     theTarget.myAliasMapKey=myAliasMapKey;
-    if (myDuUdMapKey.getKind()==DuUdMapKey::NOT_SET)
+    if (myDuUdMapKey.getKind()==InfoMapKey::NOT_SET)
       THROW_LOGICEXCEPTION_MACRO("Variable::copyMyselfInto: myDuUdMapKey not initialized for " 
 				 << debug().c_str());
     // just use the default assignment which should be good enough
@@ -164,7 +164,7 @@ namespace xaifBooster {
 	 << getAliasMapKey().getKey()
 	 << "\"";
     }
-    if (getDuUdMapKey().getKind()==DuUdMapKey::SET) { 
+    if (getDuUdMapKey().getKind()==InfoMapKey::SET) { 
       os << " "
 	 << our_myDuUdMapKey_XAIFName.c_str()
 	 << "=\""
@@ -212,11 +212,11 @@ namespace xaifBooster {
     return myAliasMapKey;
   }
 
-  DuUdMapKey& Variable::getDuUdMapKey() { 
+  StatementIdSetMapKey& Variable::getDuUdMapKey() { 
     return myDuUdMapKey;
   } 
 
-  const DuUdMapKey& Variable::getDuUdMapKey() const { 
+  const StatementIdSetMapKey& Variable::getDuUdMapKey() const { 
     return myDuUdMapKey;
   }
 

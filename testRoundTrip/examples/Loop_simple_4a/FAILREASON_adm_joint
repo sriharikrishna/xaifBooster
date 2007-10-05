@@ -1,0 +1,1 @@
+We try to restore j but cannot see that head as top level routine is called with constant for the actual parameter. This is expected behavior.

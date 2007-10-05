@@ -160,7 +160,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * the resp. dependent is the right hand side
      * myDependentStatementIdList and myPassiveStatementIdList are supposed to be disjoint
      */
-    DuUdMapDefinitionResult::StatementIdList myDependentStatementIdList;
+    StatementIdList myDependentStatementIdList;
     
     /** 
      * this is the list of statementIds for the passive statements 
@@ -169,7 +169,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * and therefore not show up in myDependentStatementIdList
      * myDependentStatementIdList and myPassiveStatementIdList are supposed to be disjoint
      */
-    DuUdMapDefinitionResult::StatementIdList myPassiveStatementIdList;
+    StatementIdList myPassiveStatementIdList;
     
   }; // end of class PrivateLinearizedComputationalGraph 
 

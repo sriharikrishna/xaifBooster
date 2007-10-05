@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 24 13:26:45 2007
+C Fortran file translated from WHIRL Fri Oct  5 10:42:29 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -2213,7 +2213,7 @@ C
       type(active) :: EL
       type(active) :: ER
       REAL(w2f__4) HALF
-      PARAMETER ( HALF =    0.5000000)
+      PARAMETER ( HALF = 5.0E-01)
       type(active) :: HAVE
       type(active) :: HL
       type(active) :: HR
@@ -2230,7 +2230,7 @@ C
       type(active) :: NZHAT
       type(active) :: OMEGA
       REAL(w2f__4) ONE
-      PARAMETER ( ONE =     1.000000)
+      PARAMETER ( ONE = 1.0)
       type(active) :: ROEL
       type(active) :: ROER
       type(active) :: RUL
@@ -2252,7 +2252,7 @@ C
       type(active) :: WAVE
       type(active) :: WTILDE
       REAL(w2f__4) ZERO
-      PARAMETER ( ZERO =     0.000000)
+      PARAMETER ( ZERO = 0.0)
       REAL(w2f__8) OpenAD_Symbol_2121
       REAL(w2f__8) OpenAD_Symbol_2122
       REAL(w2f__8) OpenAD_Symbol_2123
@@ -2890,67 +2890,10 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_real_scalar(GAMMA%v,theArgFStack,theArgFStackoff
-     +set,theArgFStackSize)
-          call cp_store_real_scalar(GM1%v,theArgFStack,theArgFStackoffse
-     +t,theArgFStackSize)
-          call cp_store_real_scalar(GM1INV%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(NLEFIX%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(LEFIX%v,theArgFStack,theArgFStackoff
-     +set,theArgFStackSize)
-          call cp_store_real_scalar(MCHEPS,theArgFStack,theArgFStackoffs
-     +et,theArgFStackSize)
-          call cp_store_real_vector(NRM,size(NRM),theArgFStack,theArgFSt
-     +ackoffset,theArgFStackSize)
-          call cp_store_real_vector(PRIML,size(PRIML),theArgFStack,theAr
-     +gFStackoffset,theArgFStackSize)
-          call cp_store_real_vector(PRIMR,size(PRIMR),theArgFStack,theAr
-     +gFStackoffset,theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          do cp_loop_variable_1 = ubound(PRIMR,1),lbound(PRIMR,1),-1
-             PRIMR(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffs
-     +et)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+PRIMR(cp_loop_variable_1)%v
-          end do
-          do cp_loop_variable_1 = ubound(PRIML,1),lbound(PRIML,1),-1
-             PRIML(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffs
-     +et)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+PRIML(cp_loop_variable_1)%v
-          end do
-          do cp_loop_variable_1 = ubound(NRM,1),lbound(NRM,1),-1
-             NRM(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffset
-     +)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+NRM(cp_loop_variable_1)%v
-          end do
-          MCHEPS = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",MCHEPS
-          theArgFStackoffset = theArgFStackoffset-1
-          LEFIX%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",LEFIX%v
-          theArgFStackoffset = theArgFStackoffset-1
-          NLEFIX%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",NLEFIX%v
-          theArgFStackoffset = theArgFStackoffset-1
-          GM1INV%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",GM1INV%v
-          theArgFStackoffset = theArgFStackoffset-1
-          GM1%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",GM1%v
-          theArgFStackoffset = theArgFStackoffset-1
-          GAMMA%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",GAMMA%v
-          theArgFStackoffset = theArgFStackoffset-1
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode

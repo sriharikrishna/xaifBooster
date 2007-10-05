@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:25:57 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:07:48 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -59,5 +59,4 @@ C$OPENAD XXX Simple loop\t
      >  __deriv__(Y(I)))
         ENDIF
       END DO
-      RETURN
       END SUBROUTINE

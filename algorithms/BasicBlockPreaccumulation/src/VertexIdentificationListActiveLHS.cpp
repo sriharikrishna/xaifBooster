@@ -59,7 +59,7 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
   VertexIdentificationListActiveLHS::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
-							const DuUdMapKey& aDuUdMapKey,
+							const StatementIdSetMapKey& aDuUdMapKey,
 							PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p,
 							const ObjectWithId::Id& aStatementId) : 
     VertexIdentificationListActive::ListItem(anAliasMapKey,
@@ -69,14 +69,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   VertexIdentificationListActiveLHS::IdentificationResult 
-  VertexIdentificationListActiveLHS::canIdentify(const Variable& theVariable) const { 
+  VertexIdentificationListActiveLHS::canIdentify(const Variable& theVariable,
+						 const ObjectWithId::Id& statementId) const { 
     if (isDuUdMapBased() 
 	&& 
-	theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) { 
-      DuUdMapDefinitionResult::StatementIdList aStatementIdList;
+	theVariable.getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO) { 
+      StatementIdList aStatementIdList;
       getStatementIdList(aStatementIdList);
       DuUdMapDefinitionResult theResult(ConceptuallyStaticInstances::instance()->
 					getCallGraph().getDuUdMap().definition(theVariable.getDuUdMapKey(),
+									       statementId,
 									       aStatementIdList));
       if (theResult.myAnswer==DuUdMapDefinitionResult::UNIQUE_INSIDE) {
 	for (ListItemPList::const_iterator aListIterator=myList.begin();
@@ -112,12 +114,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void VertexIdentificationListActiveLHS::addElement(const Variable& theVariable,
 						     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
 						     const ObjectWithId::Id& aStatementId) { 
-    if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) 
+    if (theVariable.getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO) 
       // if we ever encounter a usefull piece of duud information:
       baseOnDuUdMap();
     if (!isDuUdMapBased() 
 	&& 
-	canIdentify(theVariable).getAnswer()!=NOT_IDENTIFIED) 
+	canIdentify(theVariable,
+		    aStatementId).getAnswer()!=NOT_IDENTIFIED) 
       THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::addElement: new element must have a unique address");
     myList.push_back(new ListItem(theVariable.getAliasMapKey(),
      				  theVariable.getDuUdMapKey(),
@@ -149,7 +152,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
-  void VertexIdentificationListActiveLHS::getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const { 
+  void VertexIdentificationListActiveLHS::getStatementIdList(StatementIdList& aStatementIdList)const { 
     for (ListItemPList::const_iterator aListIterator=myList.begin();
 	 aListIterator!=myList.end(); 
 	 ++aListIterator) { 

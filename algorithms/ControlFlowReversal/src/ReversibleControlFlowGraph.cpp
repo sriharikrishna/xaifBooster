@@ -132,13 +132,63 @@ namespace xaifBoosterControlFlowReversal {
 
   void
   ReversibleControlFlowGraph::makeThisACopyOfOriginalControlFlowGraph() {
+    class GetReversibleFromOriginal {
+    public : 
+      ReversibleControlFlowGraphVertex& operator() (std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > vertexCopy_l,
+						    const ControlFlowGraphVertex& theOriginalVertex) { 
+	std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::iterator vertexCopyListIt;
+	for (vertexCopyListIt=vertexCopy_l.begin();
+	     vertexCopyListIt!=vertexCopy_l.end();
+	     ++vertexCopyListIt) {
+	  if (&theOriginalVertex==(*vertexCopyListIt).first)
+	    return *((*vertexCopyListIt).second);
+	}
+	THROW_LOGICEXCEPTION_MACRO("getReversibleFromOriginal: not found"); 
+      };
+    } getReversibleFromOriginal;
     std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > vertexCopy_l;
     ControlFlowGraph::ConstVertexIteratorPair p(myOriginalGraph_r.vertices());
-    ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
-    for (;beginIt!=endIt ;++beginIt) {
-      ReversibleControlFlowGraphVertex* anOriginalVertex=new ReversibleControlFlowGraphVertex(&(*beginIt));
-      vertexCopy_l.push_back(std::make_pair(&(*beginIt),anOriginalVertex));  
+    ControlFlowGraph::ConstVertexIterator vertexIt(p.first),endIt(p.second);
+    for (;vertexIt!=endIt ;++vertexIt) {
+      ReversibleControlFlowGraphVertex* anOriginalVertex=new ReversibleControlFlowGraphVertex(&(*vertexIt));
+      vertexCopy_l.push_back(std::make_pair(&(*vertexIt),anOriginalVertex));  
       supplyAndAddVertexInstance(*anOriginalVertex);
+      // copy simple augmented info: 
+      anOriginalVertex->setIndex((*vertexIt).getIndex());
+      anOriginalVertex->setReversalType((myRetainUserReversalFlag)?(*vertexIt).getReversalType():ForLoopReversalType::ANONYMOUS);
+    } 
+    // copy the augmented vertex references now that we have all reversible vertices created: 
+    std::list<std::pair<const ControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> >::iterator vertexCopyListIt;
+    for (vertexCopyListIt=vertexCopy_l.begin();
+	 vertexCopyListIt!=vertexCopy_l.end();
+	 ++vertexCopyListIt) {
+      ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind((*vertexCopyListIt).second->getKind());
+      if (theKind==ControlFlowGraphVertexAlg::FORLOOP 
+	  || 
+	  theKind==ControlFlowGraphVertexAlg::PRELOOP
+	  ||
+	  theKind==ControlFlowGraphVertexAlg::BRANCH
+	  ||
+ 	  theKind==ControlFlowGraphVertexAlg::ENDLOOP
+	  ||
+ 	  theKind==ControlFlowGraphVertexAlg::ENDBRANCH)
+	(*vertexCopyListIt).second->setCounterPart(getReversibleFromOriginal(vertexCopy_l,
+									     (*vertexCopyListIt).first->getCounterPart()));
+      (*vertexCopyListIt).second->setLoopVariables((*vertexCopyListIt).first->getKnownLoopVariables());
+      if ((*vertexCopyListIt).first->hasTopExplicitLoop())
+	(*vertexCopyListIt).second->setTopExplicitLoop(getReversibleFromOriginal(vertexCopy_l,
+										 (*vertexCopyListIt).first->getTopExplicitLoop()));
+      if ((*vertexCopyListIt).first->hasEnclosingControlFlow())
+	(*vertexCopyListIt).second->setEnclosingControlFlow(getReversibleFromOriginal(vertexCopy_l,
+										      (*vertexCopyListIt).first->getEnclosingControlFlow()));
+    }
+    // the sorted vertex list
+    const std::list<const ControlFlowGraphVertex*>& theList(myOriginalGraph_r.getSOrtedVertexList());
+    for (std::list<const ControlFlowGraphVertex*>::const_iterator sortListIter=theList.begin();
+	 sortListIter!=theList.end();
+	 ++sortListIter) { 
+      mySortedVertices_p_l.push_back(&(getReversibleFromOriginal(vertexCopy_l,
+								 **sortListIter)));
     }
     ControlFlowGraph::ConstEdgeIteratorPair pe(myOriginalGraph_r.edges());
     ControlFlowGraph::ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
