@@ -66,14 +66,16 @@ function fileCompare {
   fi
   if [ -n "$hasDiff" ] 
     then 
-    echo  "Transformation difference in $fcfileName new(<) vs old(>) :"
+    echo  "Transformation -- diff $fcfileName $fcexampleDir/refOutput/$referenceFile"
     diff -I "$ignoreString" $fcfileName $fcexampleDir/refOutput/$referenceFile
-    echo  "accept/copy new $fcfileName to $fcexampleDir/refOutput/$referenceFile ? y/[n] "
+    echo  "accept/copy new $fcfileName to $fcexampleDir/refOutput/$referenceFile ? [y]/n "
     if [ -z "$BATCHMODE" ] 
     then
       read answer
-      if [ "$answer" == "y" ] 
+      if [ "$answer" == "n" ] 
         then 
+        echo "skipping change"
+      else
         ${CP} $fcfileName $fcexampleDir/refOutput/$referenceFile
         if [ $? -ne 0 ] 
           then 
@@ -83,6 +85,15 @@ function fileCompare {
     fi
   fi
 } 
+
+sepLength=80
+
+function printSep {
+  for((psCount=0;$psCount<=$1;psCount=$(($psCount+1))));do
+    echo -n "*"
+  done
+  echo ""
+}
 
 askAll="n"
 mode="none"
@@ -173,13 +184,36 @@ do
   then 
     echo "ERROR: no such test : $i "; allOkSoFar="false"; continue;
   fi
+  if [ -f "examples/$i/FAILREASON_${mode}_${SUB_MODE}" ] 
+  then
+    if [ -n "$BATCHMODE" ]
+    then 
+      continue
+    else
+      head="** example $i "
+      echo -n "$head"
+      let tailLength=sepLength-${#head}
+      printSep $tailLength
+      cat examples/$i/FAILREASON_${mode}_${SUB_MODE}
+      printSep $sepLength
+      echo -n "run it anyway y/[n] ? "
+      read answer
+      if [ "$answer" != "y" ] 
+      then 
+	continue
+      fi
+    fi
+  fi
   export TARGET=head
   ${MAKE} testAllclean
   if [ $? -ne 0 ] 
   then 
     echo "ERROR in: ${MAKE} testAllclean"; allOkSoFar="false"; continue;
   fi
-  echo "** running $i *************************************************"
+  head="** running $i "
+  echo -n "$head"
+  let tailLength=sepLength-${#head}
+  printSep $tailLength
   TARGET_DRIVER=driver_${mode}
   if [ "$REVERSE_MODE" == "y" ] 
   then 
@@ -217,7 +251,8 @@ do
   fi
 
 ### compare all the transformation results:
-  for tfile in "head_sf.xaif" "head_sf.xb.xaif" "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f"
+  fileCompare $exdir head_sf.xaif "" 'file translated from'  
+  for tfile in "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f" "head_sf.xb.xaif"
   do 
     fileCompare $exdir $tfile ${mode}${SUB_MODE} 'file translated from' 
   done

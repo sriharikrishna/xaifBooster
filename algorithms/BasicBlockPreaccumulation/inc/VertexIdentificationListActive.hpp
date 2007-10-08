@@ -140,7 +140,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
       
       ListItem(const AliasMapKey& anAliasMapKey,
-	       const DuUdMapKey& aDuUdMapKey,
+	       const StatementIdSetMapKey& aDuUdMapKey,
 	       PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p);
 
       virtual std::string debug() const;

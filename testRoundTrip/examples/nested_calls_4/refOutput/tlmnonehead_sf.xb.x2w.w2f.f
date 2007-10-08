@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 15:59:41 2006
+C Fortran file translated from WHIRL Fri Oct  5 00:11:54 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -81,7 +81,6 @@ C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
      > (Y(4)))
       CALL saxpy(OpenAD_Symbol_20, __deriv__(OpenAD_Symbol_18),
      >  __deriv__(Y(4)))
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE foo(A, B, C, D)
@@ -141,5 +140,4 @@ C$OPENAD XXX Template ad_template.f
      > (D))
       CALL saxpy(OpenAD_Symbol_26, __deriv__(OpenAD_Symbol_24),
      >  __deriv__(D))
-      RETURN
       END SUBROUTINE

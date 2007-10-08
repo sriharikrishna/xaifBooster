@@ -54,8 +54,8 @@
 
 namespace xaifBooster { 
 
-  DuUdMapUseResult::StatementIdLists::StatementIdLists(const DuUdMapUseResult::StatementIdList& aDependentStatementIdList,
-						       const DuUdMapUseResult::StatementIdList& aPassiveStatementIdList) :
+  DuUdMapUseResult::StatementIdLists::StatementIdLists(const StatementIdList& aDependentStatementIdList,
+						       const StatementIdList& aPassiveStatementIdList) :
     myDependentStatementIdList(aDependentStatementIdList),
     myPassiveStatementIdList(aPassiveStatementIdList) {
   }

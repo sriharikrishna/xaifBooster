@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:26:40 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:08:05 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -61,5 +61,4 @@ C$OPENAD XXX Simple loop
         CALL setderiv(OpenAD_Symbol_5,X(K))
         CALL setderiv(Y(I),OpenAD_Symbol_5)
       END DO
-      RETURN
       END SUBROUTINE

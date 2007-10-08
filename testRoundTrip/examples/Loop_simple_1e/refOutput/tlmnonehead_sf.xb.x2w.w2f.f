@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 10:41:15 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:07:16 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -30,7 +30,6 @@ C
       __value__(Y) = __value__(X)
       CALL setderiv(__deriv__(OpenAD_Symbol_0), __deriv__(X))
       CALL setderiv(__deriv__(Y), __deriv__(OpenAD_Symbol_0))
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -63,5 +62,4 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         CALL foo(__deriv__(X(J)), __deriv__(Y(J)))
       END DO
-      RETURN
       END SUBROUTINE

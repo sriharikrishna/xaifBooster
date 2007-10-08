@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 17 09:32:04 2007
+C Fortran file translated from WHIRL Fri Oct  5 10:18:27 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -95,7 +95,7 @@ C
       INTEGER(w2f__i8) t__2
       EXTERNAL foo
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       REAL(w2f__8) HX
       REAL(w2f__8) HX2
       REAL(w2f__8) HY
@@ -105,13 +105,13 @@ C
       REAL(w2f__8) NXP1
       REAL(w2f__8) NYP1
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       INTEGER(w2f__i4) t__3
       INTEGER(w2f__i8) OpenAD_Symbol_414
       REAL(w2f__8) OpenAD_Symbol_415
@@ -489,12 +489,12 @@ C
       type(active) :: DPDX
       type(active) :: DPDY
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
       INTEGER(w2f__i4) K
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       type(active) :: P
       type(active) :: PB
       type(active) :: PBB
@@ -514,11 +514,11 @@ C
       type(active) :: PTR
       type(active) :: PTT
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       INTEGER(w2f__i4) t__6
       INTEGER(w2f__i4) t__7
       INTEGER(w2f__i8) OpenAD_Symbol_398
@@ -1697,15 +1697,15 @@ C
 C     **** Local Variables and Functions ****
 C
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       REAL(w2f__8) OpenAD_Symbol_467
       REAL(w2f__8) OpenAD_Symbol_468
       REAL(w2f__8) OpenAD_Symbol_469

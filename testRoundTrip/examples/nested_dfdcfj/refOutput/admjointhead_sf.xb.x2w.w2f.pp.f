@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Tue Jul 17 09:45:53 2007
+C Fortran file translated from WHIRL Fri Oct  5 10:41:39 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -106,7 +106,7 @@ C
       INTEGER(w2f__i8) t__2
       EXTERNAL foo
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       REAL(w2f__8) HX
       REAL(w2f__8) HX2
       REAL(w2f__8) HY
@@ -116,13 +116,13 @@ C
       REAL(w2f__8) NXP1
       REAL(w2f__8) NYP1
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       INTEGER(w2f__i4) t__3
       INTEGER(w2f__i8) OpenAD_Symbol_414
       REAL(w2f__8) OpenAD_Symbol_415
@@ -171,42 +171,10 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_int_scalar(NX,theArgIStack,theArgIStackoffset,th
-     +eArgIStackSize)
-          call cp_store_int_scalar(NY,theArgIStack,theArgIStackoffset,th
-     +eArgIStackSize)
-          call cp_store_real_scalar(R,theArgFStack,theArgFStackoffset,th
-     +eArgFStackSize)
-          call cp_store_real_vector(X,size(X),theArgFStack,theArgFStacko
-     +ffset,theArgFStackSize)
-          call cp_store_real_vector(FVEC,size(FVEC),theArgFStack,theArgF
-     +Stackoffset,theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          do cp_loop_variable_1 = ubound(FVEC,1),lbound(FVEC,1),-1
-             FVEC(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffse
-     +t)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+FVEC(cp_loop_variable_1)%v
-          end do
-          do cp_loop_variable_1 = ubound(X,1),lbound(X,1),-1
-             X(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffset)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+X(cp_loop_variable_1)%v
-          end do
-          R = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",R
-          theArgFStackoffset = theArgFStackoffset-1
-          NY = theArgIStack(theArgIStackoffset)
-          theArgIStackoffset = theArgIStackoffset-1
-C write(*,'(A,I5)')"restore(s)  ",NY
-          NX = theArgIStack(theArgIStackoffset)
-          theArgIStackoffset = theArgIStackoffset-1
-C write(*,'(A,I5)')"restore(s)  ",NX
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode
@@ -610,12 +578,12 @@ C
       type(active) :: DPDX
       type(active) :: DPDY
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
       INTEGER(w2f__i4) K
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       type(active) :: P
       type(active) :: PB
       type(active) :: PBB
@@ -635,11 +603,11 @@ C
       type(active) :: PTR
       type(active) :: PTT
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       INTEGER(w2f__i4) t__6
       INTEGER(w2f__i4) t__7
       INTEGER(w2f__i8) OpenAD_Symbol_398
@@ -747,6 +715,10 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
+          call cp_store_real_scalar(HY2,theArgFStack,theArgFStackoffset,
+     +theArgFStackSize)
+          call cp_store_real_scalar(HX2,theArgFStack,theArgFStackoffset,
+     +theArgFStackSize)
           call cp_store_int_scalar(NX,theArgIStack,theArgIStackoffset,th
      +eArgIStackSize)
           call cp_store_int_scalar(NY,theArgIStack,theArgIStackoffset,th
@@ -757,10 +729,6 @@ C store arguments
      +heArgFStackSize)
           call cp_store_real_scalar(HY,theArgFStack,theArgFStackoffset,t
      +heArgFStackSize)
-          call cp_store_real_scalar(HY2,theArgFStack,theArgFStackoffset,
-     +theArgFStackSize)
-          call cp_store_real_scalar(HX2,theArgFStack,theArgFStackoffset,
-     +theArgFStackSize)
           call cp_store_real_vector(X,size(X),theArgFStack,theArgFStacko
      +ffset,theArgFStackSize)
           end if 
@@ -773,12 +741,6 @@ C restore arguments
 C write(*,'(A,EN26.16E3)')"restore(v)  ",
 C+X(cp_loop_variable_1)%v
           end do
-          HX2 = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",HX2
-          theArgFStackoffset = theArgFStackoffset-1
-          HY2 = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",HY2
-          theArgFStackoffset = theArgFStackoffset-1
           HY = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",HY
           theArgFStackoffset = theArgFStackoffset-1
@@ -794,6 +756,12 @@ C write(*,'(A,I5)')"restore(s)  ",NY
           NX = theArgIStack(theArgIStackoffset)
           theArgIStackoffset = theArgIStackoffset-1
 C write(*,'(A,I5)')"restore(s)  ",NX
+          HX2 = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",HX2
+          theArgFStackoffset = theArgFStackoffset-1
+          HY2 = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",HY2
+          theArgFStackoffset = theArgFStackoffset-1
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode
@@ -1939,15 +1907,15 @@ C
 C     **** Local Variables and Functions ****
 C
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       REAL(w2f__8) OpenAD_Symbol_467
       REAL(w2f__8) OpenAD_Symbol_468
       REAL(w2f__8) OpenAD_Symbol_469

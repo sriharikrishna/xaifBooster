@@ -55,6 +55,7 @@
 
 #include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SignaturePattern.hpp"
 
 using namespace xaifBooster;
 
@@ -83,6 +84,10 @@ namespace xaifBoosterTypeChange {
     
     bool forceNonExternalRenames() const;
 
+    SignaturePattern& getSomewhereVariablePattern(); 
+
+    SignaturePattern& getSomewhereConstPattern(); 
+
   private:
     
     /** 
@@ -106,8 +111,20 @@ namespace xaifBoosterTypeChange {
      */
     static bool ourForceNonExternalRenamesFlag;
 
-  };  // end of class
+    /** 
+     * We cannot simply restore values to 
+     * formal parameters called somewhere with constant actuals.
+     */
+    SignaturePattern mySomewhereConstPattern;
 
-} // end of namespace 
+    /** 
+     * for arguments that are always called with constants; 
+     * we can skip taping/checkpointing
+     */
+    SignaturePattern mySomewhereVariablePattern;
+
+  };  
+
+} 
                                                                      
 #endif

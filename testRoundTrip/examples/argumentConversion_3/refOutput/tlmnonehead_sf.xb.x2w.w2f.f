@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 14:39:18 2006
+C Fortran file translated from WHIRL Thu Oct  4 23:45:54 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -44,7 +44,6 @@ C
       T = BARX
       BARX = BARY
       BARY = T
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE foo()
@@ -72,7 +71,6 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(GX), OpenAD_Symbol_0)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(GY), OpenAD_Symbol_1)
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -110,5 +108,4 @@ C$OPENAD XXX Template ad_template.f
      > (1)))
       CALL sax(OpenAD_Symbol_4, __deriv__(OpenAD_Symbol_2), __deriv__(
      > GY))
-      RETURN
       END SUBROUTINE

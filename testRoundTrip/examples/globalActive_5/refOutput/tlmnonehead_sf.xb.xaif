@@ -77,29 +77,38 @@
       <xaif:ScopeEdge edge_id="1" source="2" target="1"/>
       <xaif:ScopeEdge edge_id="2" source="3" target="1"/>
     </xaif:ScopeHierarchy>
-    <xaif:AliasSetList>
+    <xaif:AliasSetMap>
       <xaif:AliasSet key="0">
         <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="1"/>
       </xaif:AliasSet>
       <xaif:AliasSet key="1">
-        <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="1"/>
-      </xaif:AliasSet>
-      <xaif:AliasSet key="2">
         <xaif:AliasRange from_virtual_address="3" to_virtual_address="4" partial="1"/>
       </xaif:AliasSet>
-    </xaif:AliasSetList>
-    <xaif:DUUDSetList>
-      <xaif:DUUDSet key="0">
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="1">
-      </xaif:DUUDSet>
-      <xaif:DUUDSet key="2">
+      <xaif:AliasSet key="2">
+        <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="1"/>
+      </xaif:AliasSet>
+    </xaif:AliasSetMap>
+    <xaif:DUUDSetMap>
+      <xaif:StmtIdSet key="0">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="1">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="2">
         <xaif:StatementId idRef=""/>
-      </xaif:DUUDSet>
-    </xaif:DUUDSetList>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" active="1">
+      </xaif:StmtIdSet>
+    </xaif:DUUDSetMap>
+    <xaif:DOSetMap>
+      <xaif:StmtIdSet key="0">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="1">
+      </xaif:StmtIdSet>
+      <xaif:StmtIdSet key="2">
+        <xaif:StatementId idRef=""/>
+      </xaif:StmtIdSet>
+    </xaif:DOSetMap>
+    <xaif:ControlFlowGraph vertex_id="7" symbol_id="all_globals_mod__20" scope_id="1" controlflowgraph_scope_id="2" annotation="{PU_Id#1}" active="1">
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="2" symbol_id="head__23" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" active="1">
+    <xaif:ControlFlowGraph vertex_id="8" symbol_id="head__23" scope_id="1" controlflowgraph_scope_id="3" annotation="{PU_Id#2}" active="1">
       <xaif:ModLocal>
         <xaif:SideEffectReference active="true" deriv="0" constant="0">
           <xaif:SymbolReference vertex_id="1" symbol_id="Y_22" annotation="" scope_id="1"/>

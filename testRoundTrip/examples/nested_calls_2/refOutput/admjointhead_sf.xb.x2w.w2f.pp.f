@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Dec 21 09:35:51 2006
+C Fortran file translated from WHIRL Fri Oct  5 10:41:24 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -154,26 +154,10 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_real_vector(X,size(X),theArgFStack,theArgFStacko
-     +ffset,theArgFStackSize)
-          call cp_store_real_vector(Y,size(Y),theArgFStack,theArgFStacko
-     +ffset,theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          do cp_loop_variable_1 = ubound(Y,1),lbound(Y,1),-1
-             Y(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffset)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+Y(cp_loop_variable_1)%v
-          end do
-          do cp_loop_variable_1 = ubound(X,1),lbound(X,1),-1
-             X(cp_loop_variable_1)%v = theArgFStack(theArgFStackoffset)
-             theArgFStackoffset = theArgFStackoffset-1
-C write(*,'(A,EN26.16E3)')"restore(v)  ",
-C+X(cp_loop_variable_1)%v
-          end do
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode
@@ -208,22 +192,22 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_3 = X(1)%v
       OpenAD_Symbol_1 = COS(OpenAD_Symbol_0)
       Y(2)%v = OpenAD_Symbol_4
+      OpenAD_Symbol_6 = SIN(X(3)%v)
+      OpenAD_Symbol_5 = COS(X(3)%v)
+      Y(3)%v = OpenAD_Symbol_6
+      OpenAD_Symbol_8 = COS(X(4)%v)
+      OpenAD_Symbol_7 = (-SIN(X(4)%v))
+      Y(4)%v = OpenAD_Symbol_8
       OpenAD_Symbol_19 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
       OpenAD_Symbol_21 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+      OpenAD_Symbol_23 = OpenAD_Symbol_5
+      OpenAD_Symbol_25 = OpenAD_Symbol_7
           double_tape(double_tape_pointer) = OpenAD_Symbol_19
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_21
           double_tape_pointer = double_tape_pointer+1
-      OpenAD_Symbol_6 = SIN(X(3)%v)
-      OpenAD_Symbol_5 = COS(X(3)%v)
-      Y(3)%v = OpenAD_Symbol_6
-      OpenAD_Symbol_23 = OpenAD_Symbol_5
           double_tape(double_tape_pointer) = OpenAD_Symbol_23
           double_tape_pointer = double_tape_pointer+1
-      OpenAD_Symbol_8 = COS(X(4)%v)
-      OpenAD_Symbol_7 = (-SIN(X(4)%v))
-      Y(4)%v = OpenAD_Symbol_8
-      OpenAD_Symbol_25 = OpenAD_Symbol_7
           double_tape(double_tape_pointer) = OpenAD_Symbol_25
           double_tape_pointer = double_tape_pointer+1
       RETURN
@@ -250,15 +234,11 @@ C adjoint
           OpenAD_Symbol_26%d = OpenAD_Symbol_26%d+Y(4)%d*OpenAD_Symbol_3
      +5
           Y(4)%d = 0.0d0
-          X(4)%d = X(4)%d+OpenAD_Symbol_26%d
-          OpenAD_Symbol_26%d = 0.0d0
           double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_36 = double_tape(double_tape_pointer)
           OpenAD_Symbol_24%d = OpenAD_Symbol_24%d+Y(3)%d*OpenAD_Symbol_3
      +6
           Y(3)%d = 0.0d0
-          X(3)%d = X(3)%d+OpenAD_Symbol_24%d
-          OpenAD_Symbol_24%d = 0.0d0
           double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_37 = double_tape(double_tape_pointer)
           OpenAD_Symbol_22%d = OpenAD_Symbol_22%d+Y(2)%d*OpenAD_Symbol_3
@@ -272,6 +252,10 @@ C adjoint
           OpenAD_Symbol_20%d = 0.0d0
           X(2)%d = X(2)%d+OpenAD_Symbol_22%d
           OpenAD_Symbol_22%d = 0.0d0
+          X(3)%d = X(3)%d+OpenAD_Symbol_24%d
+          OpenAD_Symbol_24%d = 0.0d0
+          X(4)%d = X(4)%d+OpenAD_Symbol_26%d
+          OpenAD_Symbol_26%d = 0.0d0
       CALL foo(X(1),X(2),Y(1))
       CALL foo(X(1),X(2),Y(1))
             our_rev_mode%arg_store=.FALSE.
@@ -418,19 +402,19 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_real_scalar(A%v,theArgFStack,theArgFStackoffset,
-     +theArgFStackSize)
           call cp_store_real_scalar(B%v,theArgFStack,theArgFStackoffset,
+     +theArgFStackSize)
+          call cp_store_real_scalar(A%v,theArgFStack,theArgFStackoffset,
      +theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          B%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",B%v
-          theArgFStackoffset = theArgFStackoffset-1
           A%v = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",A%v
+          theArgFStackoffset = theArgFStackoffset-1
+          B%v = theArgFStack(theArgFStackoffset)
+C write(*,'(A,EN26.16E3)')"restore(s)  ",B%v
           theArgFStackoffset = theArgFStackoffset-1
           end if
           if (our_rev_mode%plain) then

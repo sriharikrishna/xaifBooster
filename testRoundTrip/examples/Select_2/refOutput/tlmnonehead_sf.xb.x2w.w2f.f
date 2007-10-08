@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 13:28:25 2007
+C Fortran file translated from WHIRL Fri Oct  5 00:14:08 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -85,5 +85,4 @@ C$OPENAD XXX Template ad_template.f
         GO TO 21
 21      CONTINUE
       END DO
-      RETURN
       END SUBROUTINE

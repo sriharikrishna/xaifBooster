@@ -180,7 +180,7 @@ ir_b2a:
 	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/ir_tools/ir_b2a
 
 xaifBooster:
-	./pickAlgorithm.bash
+	./pickAlgorithm.bash $(SUB_MODE)
 
 ######################################################
 # compilation
@@ -207,10 +207,10 @@ run: params.conf tmpOutput driver numericalComparison
 ######################################################
 
 tmpOutput: 
-	mkdir -p $@
+	@mkdir -p $@
 
 testAllclean:
-	$(RM) head_sf.* head.* driver* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput data.tmp
+	@$(RM) head_sf.* head.* driver* params.conf all_globals_* ad_template.f *mod-whirl tmpOutput data.tmp
 
 clean: testAllclean
 	$(RM) *.xsd 

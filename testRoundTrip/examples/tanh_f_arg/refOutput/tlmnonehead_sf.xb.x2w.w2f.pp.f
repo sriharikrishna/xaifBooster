@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 16:24:00 2006
+C Fortran file translated from WHIRL Fri Oct  5 00:15:13 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -45,5 +45,4 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_2 = OpenAD_Symbol_1
       CALL setderiv(OpenAD_Symbol_3,X(1))
       CALL sax(OpenAD_Symbol_2,OpenAD_Symbol_3,Y(1))
-      RETURN
       END SUBROUTINE

@@ -265,23 +265,30 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onDuUdMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onDuUdMap" ); 
     DuUdMap& theDuUdMap(passingIn.getDuUdMap());
-    passingOut.setDuUdMap(theDuUdMap);
+    passingOut.setStatementIdSetMap(theDuUdMap);
   }
 
   void 
-  XAIFBaseParserHandlers::onDuUdMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onDuUdMapEntry" ); 
-    DuUdMap& theDuUdMap(passingIn.getDuUdMap());
-    DuUdMapEntry& theDuUdMapEntry=theDuUdMap.
-      addDuUdMapEntry(StringConversions::convertToInt(XMLParser::getAttributeValueByName(DuUdMapEntry::our_myKey_XAIFName)));
-    passingOut.setDuUdMapEntry(theDuUdMapEntry);
+  XAIFBaseParserHandlers::onDoMap(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onDoMap" ); 
+    DoMap& theDoMap(passingIn.getDoMap());
+    passingOut.setStatementIdSetMap(theDoMap);
+  }
+
+  void 
+  XAIFBaseParserHandlers::onStatementIdSetMapEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onStatementIdSetMapEntry" ); 
+    StatementIdSetMap& theStatementIdSetMap(passingIn.getStatementIdSetMap());
+    StatementIdSetMapEntry& theStatementIdSetMapEntry=theStatementIdSetMap.
+      addEntry(StringConversions::convertToInt(XMLParser::getAttributeValueByName(StatementIdSetMapEntry::our_myKey_XAIFName)));
+    passingOut.setStatementIdSetMapEntry(theStatementIdSetMapEntry);
   }
 
   void 
   XAIFBaseParserHandlers::onStatementId(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onStatementId" ); 
-    DuUdMapEntry& theDuUdMapEntry(passingIn.getDuUdMapEntry());
-    theDuUdMapEntry.appendToStatementIdList(XMLParser::getAttributeValueByName(DuUdMapEntry::our_IdRef_XAIFName));
+    StatementIdSetMapEntry& theStatementIdSetMapEntry(passingIn.getStatementIdSetMapEntry());
+    theStatementIdSetMapEntry.insert(XMLParser::getAttributeValueByName(StatementIdSetMapEntry::our_IdRef_XAIFName));
   }
 
   void 
@@ -304,6 +311,7 @@ namespace xaifBooster {
     passingOut.setScopes(theCallGraph.getScopeTree());
     passingOut.setAliasMap(theCallGraph.getAliasMap());
     passingOut.setDuUdMap(theCallGraph.getDuUdMap());
+    passingOut.setDoMap(theCallGraph.getDoMap());
   }
 
   void 
@@ -314,6 +322,8 @@ namespace xaifBooster {
     theAssignment_p->setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
     theAssignment_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theAssignment_p);
+    theAssignment_p->getDoMapKey().
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Assignment::our_myDoMapKey_XAIFName)));
     passingOut.setAssignment(*theAssignment_p);
   }
 

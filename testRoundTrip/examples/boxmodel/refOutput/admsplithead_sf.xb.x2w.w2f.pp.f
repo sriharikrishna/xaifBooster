@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jul 16 17:33:50 2007
+C Fortran file translated from WHIRL Mon Jul 23 11:08:42 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -2211,16 +2211,16 @@ C$OPENAD XXX Template ad_template.f
       DO L = 1, 3, 1
         TOLD(INT(L))%v = TNOW(L)%v
         TNOW(INT(L))%v = TNEW(L)%v
+          integer_tape(integer_tape_pointer) = L
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = L
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = L
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = L
+          integer_tape_pointer = integer_tape_pointer+1
         SOLD(INT(L))%v = SNOW(L)%v
         SNOW(INT(L))%v = SNEW(L)%v
-          integer_tape(integer_tape_pointer) = L
-          integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = L
-          integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = L
-          integer_tape_pointer = integer_tape_pointer+1
-          integer_tape(integer_tape_pointer) = L
-          integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = L
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = L
@@ -2259,40 +2259,40 @@ C$OPENAD XXX Template ad_template.f
           end if
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_457 = integer_tape(integer_tape_pointer)
-          if (iaddr(TNOW(INT(OpenAD_Symbol_457))) .ne. iaddr(OpenAD_Symb
-     +ol_239)) then
-            OpenAD_Symbol_239%d = OpenAD_Symbol_239%d+TNOW(INT(OpenAD_Sy
-     +mbol_457))%d
-            TNOW(INT(OpenAD_Symbol_457))%d = 0
-          end if
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_458 = integer_tape(integer_tape_pointer)
-          if (iaddr(TOLD(INT(OpenAD_Symbol_458))) .ne. iaddr(OpenAD_Symb
-     +ol_238)) then
-            OpenAD_Symbol_238%d = OpenAD_Symbol_238%d+TOLD(INT(OpenAD_Sy
-     +mbol_458))%d
-            TOLD(INT(OpenAD_Symbol_458))%d = 0
-          end if
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_459 = integer_tape(integer_tape_pointer)
-          TNOW(INT(OpenAD_Symbol_459))%d = TNOW(INT(OpenAD_Symbol_459))%
-     +d+OpenAD_Symbol_238%d
-          OpenAD_Symbol_238%d = 0.0d0
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_460 = integer_tape(integer_tape_pointer)
-          TNEW(INT(OpenAD_Symbol_460))%d = TNEW(INT(OpenAD_Symbol_460))%
-     +d+OpenAD_Symbol_239%d
-          OpenAD_Symbol_239%d = 0.0d0
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_461 = integer_tape(integer_tape_pointer)
-          SNOW(INT(OpenAD_Symbol_461))%d = SNOW(INT(OpenAD_Symbol_461))%
+          SNOW(INT(OpenAD_Symbol_457))%d = SNOW(INT(OpenAD_Symbol_457))%
      +d+OpenAD_Symbol_240%d
           OpenAD_Symbol_240%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_462 = integer_tape(integer_tape_pointer)
-          SNEW(INT(OpenAD_Symbol_462))%d = SNEW(INT(OpenAD_Symbol_462))%
+          OpenAD_Symbol_458 = integer_tape(integer_tape_pointer)
+          SNEW(INT(OpenAD_Symbol_458))%d = SNEW(INT(OpenAD_Symbol_458))%
      +d+OpenAD_Symbol_241%d
           OpenAD_Symbol_241%d = 0.0d0
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_459 = integer_tape(integer_tape_pointer)
+          if (iaddr(TNOW(INT(OpenAD_Symbol_459))) .ne. iaddr(OpenAD_Symb
+     +ol_239)) then
+            OpenAD_Symbol_239%d = OpenAD_Symbol_239%d+TNOW(INT(OpenAD_Sy
+     +mbol_459))%d
+            TNOW(INT(OpenAD_Symbol_459))%d = 0
+          end if
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_460 = integer_tape(integer_tape_pointer)
+          if (iaddr(TOLD(INT(OpenAD_Symbol_460))) .ne. iaddr(OpenAD_Symb
+     +ol_238)) then
+            OpenAD_Symbol_238%d = OpenAD_Symbol_238%d+TOLD(INT(OpenAD_Sy
+     +mbol_460))%d
+            TOLD(INT(OpenAD_Symbol_460))%d = 0
+          end if
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_461 = integer_tape(integer_tape_pointer)
+          TNOW(INT(OpenAD_Symbol_461))%d = TNOW(INT(OpenAD_Symbol_461))%
+     +d+OpenAD_Symbol_238%d
+          OpenAD_Symbol_238%d = 0.0d0
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_462 = integer_tape(integer_tape_pointer)
+          TNEW(INT(OpenAD_Symbol_462))%d = TNEW(INT(OpenAD_Symbol_462))%
+     +d+OpenAD_Symbol_239%d
+          OpenAD_Symbol_239%d = 0.0d0
         OpenAD_Symbol_291 = INT(OpenAD_Symbol_291) + 1
       END DO
           end if 

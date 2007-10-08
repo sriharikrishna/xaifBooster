@@ -59,6 +59,7 @@
 #include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/system/inc/BasicBlockElement.hpp"
 #include "xaifBooster/system/inc/Scope.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
 
 namespace xaifBooster { 
 
@@ -146,6 +147,19 @@ namespace xaifBooster {
 	return true; 
     }
     return false; 
+  } 
+  
+  ControlFlowGraphVertex::FindAssignmentResult BasicBlock::findAssignment(const ObjectWithId::Id& aStatementId) const { 
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myElementList.begin();
+         li!=myElementList.end();
+         ++li) {
+      if ((*li)->getId()==aStatementId) { 
+	const Assignment* anAssignment_p=dynamic_cast<const Assignment*>(*li);
+	if (anAssignment_p)
+	  return ControlFlowGraphVertex::FindAssignmentResult(true,anAssignment_p);
+      }
+    }
+    return ControlFlowGraphVertex::FindAssignmentResult(false,0); 
   } 
   
 } // end of namespace xaifBooster 
