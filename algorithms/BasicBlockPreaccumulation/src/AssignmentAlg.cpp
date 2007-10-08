@@ -211,7 +211,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
     dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).addMyselfToAssignmentIdList(getContainingAssignment(),
 																 aSequenceHolder);
-    const DuUdMapDefinitionResult::StatementIdList& theKnownAssignments(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getAssignmentIdList());
+    const StatementIdList& theKnownAssignments(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getAssignmentIdList());
     // now redo the activity analysis
     //     if (haveLinearizedRightHandSide() && 
     // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))

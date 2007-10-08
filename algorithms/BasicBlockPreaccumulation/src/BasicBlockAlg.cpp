@@ -678,7 +678,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       DuUdMapUseResult theDuUdMapUseResult(ConceptuallyStaticInstances::instance()->
 					   getCallGraph().getDuUdMap().use(aDuUdMapKey,
 									     myPrivateVertex.getStatementId(),
-									     theComputationalGraph.getStatementIdLists())
+									   theComputationalGraph.getStatementIdLists()));
       if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
 	  || 
 	  theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 

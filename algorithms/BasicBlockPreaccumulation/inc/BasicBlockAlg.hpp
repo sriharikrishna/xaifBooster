@@ -479,7 +479,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /*
      * the list of all Assignment statement Ids
      */ 
-    DuUdMapDefinitionResult::StatementIdList ourAssignmentIdList;
+    StatementIdList myAssignmentIdList;
 
     typedef HashTable<const Variable*> VariableHashTable;
 
