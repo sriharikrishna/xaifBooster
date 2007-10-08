@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 16:02:38 2006
+C Fortran file translated from WHIRL Fri Oct  5 00:12:10 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -62,5 +62,4 @@ C$OPENAD XXX Template ad_template.f
      >  __deriv__(Y(I)))
         END DO
       END DO
-      RETURN
       END SUBROUTINE

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Fri Oct  6 13:55:49 2006
+C Fortran file translated from WHIRL Fri Oct  5 00:07:34 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -57,7 +57,6 @@ C$OPENAD XXX Simple loop
         CALL saxpy(OpenAD_Symbol_7,OpenAD_Symbol_8,Y(J))
         CALL saxpy(OpenAD_Symbol_9,OpenAD_Symbol_10,Y(J))
       END DO
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -90,5 +89,4 @@ C$OPENAD XXX Template ad_template.f
       CALL zero_deriv(Y(2))
       CALL foo(X,Y,1 _w2f__i8)
       CALL foo(X,Y,2 _w2f__i8)
-      RETURN
       END SUBROUTINE

@@ -84,12 +84,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * therefore passive is signified by  UNIQELY_IDENTIFIED and this doesn't 
      * mean we need to know exactly what it is identified with 
      */
-    virtual IdentificationResult_E canIdentify(const Variable& theVariable) const;
+    virtual IdentificationResult_E canIdentify(const Variable& theVariable,
+					       const ObjectWithId::Id& statementId) const;
 
     void addElement(const Variable& theVariable,
 		    const ObjectWithId::Id& aStatementId);
 
-    void removeIfIdentifiable(const Variable& theVariable); 
+    void removeIfIdentifiable(const Variable& theVariable,
+			      const ObjectWithId::Id& statementId); 
 
   private:
 
@@ -98,7 +100,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
 
       ListItem(const AliasMapKey& anAliasMapKey,
-	       const DuUdMapKey& aDuUdMapKey,
+	       const StatementIdSetMapKey& aDuUdMapKey,
 	       const ObjectWithId::Id& aStatementId);
 
       virtual std::string debug() const;
@@ -115,7 +117,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /** 
      * retrieve the list of statement IDs collected in myList
      */
-    void getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const;
+    void getStatementIdList(StatementIdList& aStatementIdList)const;
 
   }; // end of class VertexIdentificationListPassive  
    

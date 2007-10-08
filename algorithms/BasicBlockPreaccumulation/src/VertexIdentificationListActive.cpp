@@ -89,7 +89,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   VertexIdentificationListActive::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
-						     const DuUdMapKey& aDuUdMapKey,
+						     const StatementIdSetMapKey& aDuUdMapKey,
 						     PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p) : 
     VertexIdentificationList::ListItem(anAliasMapKey,
 				       aDuUdMapKey),

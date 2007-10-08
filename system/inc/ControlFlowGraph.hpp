@@ -123,12 +123,7 @@ namespace xaifBooster {
     /**
      * get algorithm
      */
-    ControlFlowGraphAlgBase& getControlFlowGraphAlgBase();
-
-    /**
-     * get algorithm
-     */
-    const ControlFlowGraphAlgBase& getControlFlowGraphAlgBase() const;
+    ControlFlowGraphAlgBase& getControlFlowGraphAlgBase() const;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
@@ -151,6 +146,11 @@ namespace xaifBooster {
     // Scope& getScope(); 
 
     /**
+     * for aStatementId get the Assignment if it exists
+     */
+    ControlFlowGraphVertex::FindAssignmentResult findAssignment(const ObjectWithId::Id& aStatementId) const;
+
+    /**
      * for aStatementId get the containing ControlFlowGraphVertex
      * or throw an exception
      */
@@ -162,11 +162,26 @@ namespace xaifBooster {
      */
     bool overwrites(const SymbolReference& theSymbolReference) const; 
 
+    typedef std::pair<bool,int> FormalResult;
+
+    /** 
+     * determines if theSymbolReference is a formal parameter
+     */
+    FormalResult hasFormal(const SymbolReference& theSymbolReference) const; 
+
     /** 
      * augment the graph vertices with additional 
      * information
      */
     void augmentGraphInfo();
+
+    /** 
+     * how often is theVariable defined within this CF subtree with theControlFlowGraphVertex as root
+     */
+    unsigned int definesUnderControlFlowGraphVertex(const Variable& theVariable,
+						    const ControlFlowGraphVertex& theControlFlowGraphVertex) const;
+
+    std::list<const ControlFlowGraphVertex*> getSOrtedVertexList() const; 
 
   private: 
     
@@ -240,6 +255,11 @@ namespace xaifBooster {
      */
     void inheritLoopVariables(ForLoopReversalType::ForLoopReversalType_E aReversalType,
  			      ControlFlowGraphVertex& theCurrentVertex_r);
+
+    /** 
+     * topologically sorted vertex list
+     */
+    std::list<const ControlFlowGraphVertex*> mySortedVertices_p_l;
 
     ControlFlowGraphVertex& getEntry();
 

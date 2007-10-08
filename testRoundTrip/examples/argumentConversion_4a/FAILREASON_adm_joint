@@ -1,0 +1,2 @@
+This is an example for f77 style pseudo pointer arithmetic where we interpret ax(1,1) and apx(1,1) as the beginning 
+of a vector of length 2 rather than a scalar.  This doesn't work with the f90 style conversion routines. 

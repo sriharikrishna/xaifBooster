@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 15:52:20 2006
+C Fortran file translated from WHIRL Fri Oct  5 00:07:25 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -72,5 +72,4 @@ C$OPENAD XXX Simple loop
           END DO
         END DO
       END DO
-      RETURN
       END SUBROUTINE

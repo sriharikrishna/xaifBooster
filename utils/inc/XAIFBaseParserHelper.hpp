@@ -68,8 +68,8 @@ namespace xaifBooster {
   class ConcreteArgument;
   class Condition;
   class ControlFlowGraph;
+  class DoMap;
   class DuUdMap;
-  class DuUdMapEntry;
   class Expression;
   class ExpressionEdge;
   class ForLoop;
@@ -83,6 +83,8 @@ namespace xaifBooster {
   class Scope;
   class Scopes;
   class SideEffectList;
+  class StatementIdSetMap;
+  class StatementIdSetMapEntry;
   class SubroutineCall;
   class Symbol;
   class SymbolReferenceProperty;

@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Apr  2 14:01:27 2007
+C Fortran file translated from WHIRL Fri Oct  5 10:43:08 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -2771,7 +2771,7 @@ C
       type(active) :: EL
       type(active) :: ER
       REAL(w2f__4) HALF
-      PARAMETER ( HALF =    0.5000000)
+      PARAMETER ( HALF = 5.0E-01)
       type(active) :: HAVE
       type(active) :: HL
       type(active) :: HR
@@ -2787,7 +2787,7 @@ C
       type(active) :: NZHAT
       type(active) :: OMEGA
       REAL(w2f__4) ONE
-      PARAMETER ( ONE =     1.000000)
+      PARAMETER ( ONE = 1.0)
       type(active) :: ROEL
       type(active) :: ROER
       type(active) :: RUL
@@ -2809,7 +2809,7 @@ C
       type(active) :: WAVE
       type(active) :: WTILDE
       REAL(w2f__4) ZERO
-      PARAMETER ( ZERO =     0.000000)
+      PARAMETER ( ZERO = 0.0)
       REAL(w2f__8) OpenAD_Symbol_2659
       REAL(w2f__8) OpenAD_Symbol_2660
       REAL(w2f__8) OpenAD_Symbol_2661
@@ -3147,90 +3147,10 @@ C     +" IT:",integer_tape_pointer
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
-          call cp_store_real_scalar(NRM1%v,theArgFStack,theArgFStackoffs
-     +et,theArgFStackSize)
-          call cp_store_real_scalar(NRM2%v,theArgFStack,theArgFStackoffs
-     +et,theArgFStackSize)
-          call cp_store_real_scalar(NRM3%v,theArgFStack,theArgFStackoffs
-     +et,theArgFStackSize)
-          call cp_store_real_scalar(PRIML1%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(PRIML2%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(PRIML3%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(PRIML4%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(PRIML5%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(PRIMR1%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(PRIMR2%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(PRIMR3%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(PRIMR4%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(PRIMR5%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
-          call cp_store_real_scalar(GAMMA%v,theArgFStack,theArgFStackoff
-     +set,theArgFStackSize)
-          call cp_store_real_scalar(GM1%v,theArgFStack,theArgFStackoffse
-     +t,theArgFStackSize)
-          call cp_store_real_scalar(GM1INV%v,theArgFStack,theArgFStackof
-     +fset,theArgFStackSize)
           end if 
           if (our_rev_mode%arg_restore) then
 C            print*, " arg_restore", our_rev_mode
 C restore arguments
-          GM1INV%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",GM1INV%v
-          theArgFStackoffset = theArgFStackoffset-1
-          GM1%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",GM1%v
-          theArgFStackoffset = theArgFStackoffset-1
-          GAMMA%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",GAMMA%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIMR5%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIMR5%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIMR4%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIMR4%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIMR3%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIMR3%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIMR2%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIMR2%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIMR1%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIMR1%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIML5%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIML5%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIML4%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIML4%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIML3%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIML3%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIML2%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIML2%v
-          theArgFStackoffset = theArgFStackoffset-1
-          PRIML1%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",PRIML1%v
-          theArgFStackoffset = theArgFStackoffset-1
-          NRM3%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",NRM3%v
-          theArgFStackoffset = theArgFStackoffset-1
-          NRM2%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",NRM2%v
-          theArgFStackoffset = theArgFStackoffset-1
-          NRM1%v = theArgFStack(theArgFStackoffset)
-C write(*,'(A,EN26.16E3)')"restore(s)  ",NRM1%v
-          theArgFStackoffset = theArgFStackoffset-1
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode

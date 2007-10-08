@@ -60,7 +60,7 @@
 
 namespace xaifBooster { 
 
-  const std::string AliasMap::ourXAIFName("xaif:AliasSetList");
+  const std::string AliasMap::ourXAIFName("xaif:AliasSetMap");
   
   AliasMap::~AliasMap() {
     for(AAVector::const_iterator it=myAAVector.begin();

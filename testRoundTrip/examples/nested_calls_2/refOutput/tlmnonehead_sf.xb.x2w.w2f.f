@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Thu Jul 20 15:58:34 2006
+C Fortran file translated from WHIRL Fri Oct  5 00:08:12 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -61,29 +61,28 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_3 = __value__(X(1))
       OpenAD_Symbol_1 = COS(OpenAD_Symbol_0)
       __value__(Y(2)) = OpenAD_Symbol_4
+      OpenAD_Symbol_6 = SIN(__value__(X(3)))
+      OpenAD_Symbol_5 = COS(__value__(X(3)))
+      __value__(Y(3)) = OpenAD_Symbol_6
+      OpenAD_Symbol_8 = COS(__value__(X(4)))
+      OpenAD_Symbol_7 = (- SIN(__value__(X(4))))
+      __value__(Y(4)) = OpenAD_Symbol_8
       OpenAD_Symbol_19 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
       OpenAD_Symbol_21 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+      OpenAD_Symbol_23 = OpenAD_Symbol_5
+      OpenAD_Symbol_25 = OpenAD_Symbol_7
+      CALL setderiv(__deriv__(OpenAD_Symbol_26), __deriv__(X(4)))
+      CALL setderiv(__deriv__(OpenAD_Symbol_24), __deriv__(X(3)))
       CALL setderiv(__deriv__(OpenAD_Symbol_22), __deriv__(X(2)))
       CALL setderiv(__deriv__(OpenAD_Symbol_20), __deriv__(X(1)))
       CALL sax(OpenAD_Symbol_19, __deriv__(OpenAD_Symbol_20), __deriv__
      > (Y(2)))
       CALL saxpy(OpenAD_Symbol_21, __deriv__(OpenAD_Symbol_22),
      >  __deriv__(Y(2)))
-      OpenAD_Symbol_6 = SIN(__value__(X(3)))
-      OpenAD_Symbol_5 = COS(__value__(X(3)))
-      __value__(Y(3)) = OpenAD_Symbol_6
-      OpenAD_Symbol_23 = OpenAD_Symbol_5
-      CALL setderiv(__deriv__(OpenAD_Symbol_24), __deriv__(X(3)))
       CALL sax(OpenAD_Symbol_23, __deriv__(OpenAD_Symbol_24), __deriv__
      > (Y(3)))
-      OpenAD_Symbol_8 = COS(__value__(X(4)))
-      OpenAD_Symbol_7 = (- SIN(__value__(X(4))))
-      __value__(Y(4)) = OpenAD_Symbol_8
-      OpenAD_Symbol_25 = OpenAD_Symbol_7
-      CALL setderiv(__deriv__(OpenAD_Symbol_26), __deriv__(X(4)))
       CALL sax(OpenAD_Symbol_25, __deriv__(OpenAD_Symbol_26), __deriv__
      > (Y(4)))
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE foo(A, B, C)
@@ -134,7 +133,6 @@ C$OPENAD XXX Template ad_template.f
      >  __deriv__(C))
       CALL saxpy(OpenAD_Symbol_30, __deriv__(OpenAD_Symbol_31),
      >  __deriv__(C))
-      RETURN
       END SUBROUTINE
 
       SUBROUTINE bar(A)
@@ -172,5 +170,4 @@ C$OPENAD XXX Template ad_template.f
      > (A))
       CALL saxpy(OpenAD_Symbol_34, __deriv__(OpenAD_Symbol_33),
      >  __deriv__(A))
-      RETURN
       END SUBROUTINE

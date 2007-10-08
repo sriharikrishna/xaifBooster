@@ -95,13 +95,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
 
       ListItem(const AliasMapKey& anAliasMapKey,
-	       const DuUdMapKey& aDuUdMapKey);
+	       const StatementIdSetMapKey& aDuUdMapKey);
 
       virtual ~ListItem(){};
 
       const AliasMapKey& getAliasMapKey()const;
 
-      const DuUdMapKey& getDuUdMapKey()const;
+      const StatementIdSetMapKey& getDuUdMapKey()const;
       
       virtual std::string debug() const;
       
@@ -123,7 +123,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       ListItem& operator=(const ListItem&);
 
       const AliasMapKey& myAliasMapKey;
-      const DuUdMapKey& myDuUdMapKey;
+      const StatementIdSetMapKey& myDuUdMapKey;
       
     };
    

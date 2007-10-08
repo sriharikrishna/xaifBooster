@@ -87,7 +87,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   VertexIdentificationList::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
-					       const DuUdMapKey& aDuUdMapKey) : 
+					       const StatementIdSetMapKey& aDuUdMapKey) : 
     myAliasMapKey(anAliasMapKey),
     myDuUdMapKey(aDuUdMapKey) {
   }
@@ -96,7 +96,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myAliasMapKey;
   }
    
-  const DuUdMapKey& VertexIdentificationList::ListItem::getDuUdMapKey() const { 
+  const StatementIdSetMapKey& VertexIdentificationList::ListItem::getDuUdMapKey() const { 
     return myDuUdMapKey;
   }
 

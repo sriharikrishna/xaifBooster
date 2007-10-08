@@ -42,8 +42,8 @@ program numericalComparison
         end if
         if (maxCompEps<relErr) maxCompEps=relErr
         if (relErr > compEps) then
-           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "significant change for DD vs reference in ","F(",j,",",k,")=",&
-&ndd, " vs ", rdd
+           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3,A,EN26.16E3)') "significant change for DD vs reference in ","F(",j,",",k,")=",&
+&ndd, " vs ", rdd, " e:", relErr
            compProb=.true.
         end if
         if (debug) then
@@ -57,8 +57,8 @@ program numericalComparison
         end if
         if (maxCompEps<relErr) maxCompEps=relErr
         if (relErr > compEps) then
-           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "significant change for AD vs reference in ","F(",j,",",k,")=",&
-&nad, " vs ", rad
+           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3,A,EN26.16E3)') "significant change for AD vs reference in ","F(",j,",",k,")=",&
+&nad, " vs ", rad, " e:", relErr
            compProb=.true.
         end if
         if (debug) then
@@ -72,8 +72,8 @@ program numericalComparison
         end if
         if (maxRelativeError<relErr) maxRelativeError=relErr
         if (relErr > testRelativeError) then
-           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3)') "significant change for AD vs DD in ","F(",j,",",k,")=",nad,&
-& " vs ", ndd
+           write(*,'(A, A,I3,A,I3,A,EN26.16E3,A,EN26.16E3,A,EN26.16E3)') "significant change for AD vs DD in ","F(",j,",",k,")=",nad,&
+& " vs ", ndd, " e:", relErr
            problem=.true.
         end if
         if (debug) then

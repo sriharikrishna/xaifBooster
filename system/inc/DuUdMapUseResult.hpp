@@ -53,6 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include "xaifBooster/system/inc/StatementIdList.hpp"
 #include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
 

@@ -152,7 +152,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     const PreaccumulationCounter& getBasicBlockOperations() const;
 
-    const DuUdMapDefinitionResult::StatementIdList& getAssignmentIdList()const;
+    const StatementIdList& getAssignmentIdList()const;
 
     /**
      * pointer to printer for DerivativePropagator

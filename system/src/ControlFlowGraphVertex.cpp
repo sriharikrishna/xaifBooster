@@ -101,6 +101,10 @@ namespace xaifBooster {
     return false;
   }
 
+  ControlFlowGraphVertex::FindAssignmentResult ControlFlowGraphVertex::findAssignment(const ObjectWithId::Id& aStatementId) const { 
+    return FindAssignmentResult(false,0);
+  }
+
   void ControlFlowGraphVertex::setIndex(int i) {
     myIndex=i;
   } 
@@ -125,6 +129,12 @@ namespace xaifBooster {
     return *myCounterPart_p;
   }
 
+  ControlFlowGraphVertex& ControlFlowGraphVertex::getCounterPart() const { 
+    if (!myCounterPart_p)
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertexAlg::getCounterPart: not set");
+    return *myCounterPart_p;
+  }
+
   const ControlFlowGraphVertex::VariablePList& 
   ControlFlowGraphVertex::getKnownLoopVariables()const { 
     return myKnownLoopVariables;
@@ -142,11 +152,13 @@ namespace xaifBooster {
     }
   } 
 
+  bool
+  ControlFlowGraphVertex::hasTopExplicitLoop() const { 
+    return (myTopExplicitLoop_p!=0);
+  } 
+
   ControlFlowGraphVertex& 
   ControlFlowGraphVertex::getTopExplicitLoop() { 
-    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
-    } 
     if (!myTopExplicitLoop_p)
       THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::getTopExplicitLoop: not set for "
 				 << debug().c_str());
@@ -155,9 +167,6 @@ namespace xaifBooster {
 
   const ControlFlowGraphVertex& 
   ControlFlowGraphVertex::getTopExplicitLoop() const { 
-    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::getTopExplicitLoop: the vertex is not explicit");
-    } 
     if (!myTopExplicitLoop_p)
       THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::getTopExplicitLoop: not set for "
 				 << debug().c_str());
@@ -166,9 +175,6 @@ namespace xaifBooster {
 
   void 
   ControlFlowGraphVertex::setTopExplicitLoop(ControlFlowGraphVertex& theTopExplicitLoop) { 
-    if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::setTopExplicitLoop: the vertex is not explicit");
-    } 
     if (!(myTopExplicitLoop_p && myTopExplicitLoop_p!=&theTopExplicitLoop) )
       myTopExplicitLoop_p=&theTopExplicitLoop;	
   } 
@@ -180,6 +186,14 @@ namespace xaifBooster {
 
   ControlFlowGraphVertex& 
   ControlFlowGraphVertex::getEnclosingControlFlow() { 
+    if (!myEnclosingControlFlow_p)
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::getEnclosingControlFlow: not set for "
+				 << debug().c_str());
+    return *myEnclosingControlFlow_p;
+  } 
+
+  const ControlFlowGraphVertex& 
+  ControlFlowGraphVertex::getEnclosingControlFlow() const { 
     if (!myEnclosingControlFlow_p)
       THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::getEnclosingControlFlow: not set for "
 				 << debug().c_str());

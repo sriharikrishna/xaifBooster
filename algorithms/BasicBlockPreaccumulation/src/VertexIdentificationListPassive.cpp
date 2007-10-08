@@ -62,7 +62,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   VertexIdentificationListPassive::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
-						      const DuUdMapKey& aDuUdMapKey,
+						      const StatementIdSetMapKey& aDuUdMapKey,
 						      const ObjectWithId::Id& aStatementId) : 
     VertexIdentificationList::ListItem(anAliasMapKey,
 				       aDuUdMapKey),
@@ -83,17 +83,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   VertexIdentificationList::IdentificationResult_E 
-  VertexIdentificationListPassive::canIdentify(const Variable& theVariable) const { 
+  VertexIdentificationListPassive::canIdentify(const Variable& theVariable,
+					       const ObjectWithId::Id& statementId) const { 
     IdentificationResult_E result=NOT_IDENTIFIED;
     if (isDuUdMapBased() 
 	&& 
-	theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) { 
+	theVariable.getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO) { 
       // if we ever encounter a bit of DuUd information:
       baseOnDuUdMap();
-      DuUdMapDefinitionResult::StatementIdList aStatementIdList;
+      StatementIdList aStatementIdList;
       getStatementIdList(aStatementIdList);
       DuUdMapDefinitionResult theResult(ConceptuallyStaticInstances::instance()->
 					getCallGraph().getDuUdMap().definition(theVariable.getDuUdMapKey(),
+									       statementId,
 									       aStatementIdList));
       // either one or more LHSs of passive statements that we have in the list
       // means this one is guaranteed to be passive too
@@ -126,26 +128,29 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void VertexIdentificationListPassive::addElement(const Variable& theVariable,
 						   const ObjectWithId::Id& aStatementId) { 
-    if (theVariable.getDuUdMapKey().getKind()!=DuUdMapKey::NO_INFO) 
+    if (theVariable.getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO) 
       // if we ever encounter a usefull piece of duud information:
       baseOnDuUdMap();
     if (!isDuUdMapBased() 
 	&& 
-	canIdentify(theVariable)==UNIQUELY_IDENTIFIED) 
+	canIdentify(theVariable,
+		    aStatementId)==UNIQUELY_IDENTIFIED) 
       return; 
     myList.push_back(new ListItem(theVariable.getAliasMapKey(),
 				  theVariable.getDuUdMapKey(),
 				  aStatementId));
   } 
 
-  void VertexIdentificationListPassive::removeIfIdentifiable(const Variable& theVariable) { 
+  void VertexIdentificationListPassive::removeIfIdentifiable(const Variable& theVariable,
+							     const ObjectWithId::Id& statementId) { 
     if (isDuUdMapBased())
       return;
     if (myList.empty())
       return;
     AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getAliasMap());
-    IdentificationResult_E idResult(canIdentify(theVariable));
+    IdentificationResult_E idResult(canIdentify(theVariable,
+						statementId));
     while(idResult!=NOT_IDENTIFIED) { 
       for (ListItemPList::iterator aListIterator(myList.begin());
 	   aListIterator!=myList.end(); 
@@ -156,7 +161,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  break;
 	}
       } // end for 
-      idResult=canIdentify(theVariable);
+      idResult=canIdentify(theVariable,
+			   statementId);
     } // end while 
   } 
 
@@ -170,7 +176,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
-  void VertexIdentificationListPassive::getStatementIdList(DuUdMapDefinitionResult::StatementIdList& aStatementIdList)const { 
+  void VertexIdentificationListPassive::getStatementIdList(StatementIdList& aStatementIdList)const { 
     for (ListItemPList::const_iterator aListIterator=myList.begin();
 	 aListIterator!=myList.end(); 
 	 ++aListIterator) { 

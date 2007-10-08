@@ -293,7 +293,7 @@ namespace xaifBoosterControlFlowReversal {
     typedef std::list<ReversibleControlFlowGraphVertex*> ReversibleControlFlowGraphVertexPList;
 
     /** 
-     * vertex list for generating various topological sorts
+     * topologically sorted vertex list
      */
     std::list<ReversibleControlFlowGraphVertex*> mySortedVertices_p_l;
 

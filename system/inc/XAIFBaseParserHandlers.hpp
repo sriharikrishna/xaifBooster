@@ -71,6 +71,7 @@
 #include "xaifBooster/system/inc/ConcreteArgument.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/DoMap.hpp"
 #include "xaifBooster/system/inc/EndBranch.hpp"
 #include "xaifBooster/system/inc/EndLoop.hpp"
 #include "xaifBooster/system/inc/Entry.hpp"

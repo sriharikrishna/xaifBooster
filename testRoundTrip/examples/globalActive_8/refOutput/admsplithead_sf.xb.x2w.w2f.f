@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jan 15 13:27:24 2007
+C Fortran file translated from WHIRL Mon Sep 10 11:53:53 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -120,6 +120,8 @@ C     $OpenAD$ INLINE ZeroDeriv(subst)
       CALL ZeroDeriv(__deriv__(OpenAD_Symbol_9))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
+C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
+      CALL cp_arg_store_real_scalar_a(__deriv__(AGLOBAL))
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
@@ -128,6 +130,8 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
+C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
+      CALL cp_arg_restore_real_scalar_a(__deriv__(AGLOBAL))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
 C     $OpenAD$ END REPLACEMENT
@@ -136,12 +140,16 @@ C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(AGLOBAL))
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(Y))
+C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
+      CALL cp_arg_store_real_scalar_a(__deriv__(AGLOBAL))
 C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
       CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
       CALL cp_arg_restore_real_vector_a(__deriv__(X))
+C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
+      CALL cp_arg_restore_real_scalar_a(__deriv__(AGLOBAL))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(Y))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
@@ -261,18 +269,10 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(AGLOBAL))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(Y))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(X))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(AGLOBAL))
 C     $OpenAD$ END REPLACEMENT
@@ -281,20 +281,8 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
 C     $OpenAD$ INLINE cp_arg_store_real_scalar_a(subst)
       CALL cp_arg_store_real_scalar_a(__deriv__(AGLOBAL))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(Y))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(Y))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(Y))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(Y))
 C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
       CALL cp_arg_restore_real_scalar_a(__deriv__(AGLOBAL))
 C     $OpenAD$ END REPLACEMENT

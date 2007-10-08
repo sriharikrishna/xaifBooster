@@ -76,12 +76,6 @@ namespace xaifBooster {
     
     ObjectWithId::Id myStatementId;
     
-    /** 
-     * convenience definition here
-     * used in DuUdMap(Entry)
-     */ 
-    typedef std::list<ObjectWithId::Id> StatementIdList;
-    
   };
 
 } // end of namespace 

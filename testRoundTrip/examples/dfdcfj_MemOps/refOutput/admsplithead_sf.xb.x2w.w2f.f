@@ -1,5 +1,5 @@
 C ***********************************************************
-C Fortran file translated from WHIRL Mon Jul 16 17:34:59 2007
+C Fortran file translated from WHIRL Mon Oct  1 09:49:34 2007
 C ***********************************************************
 C ***********************************************************
 
@@ -389,7 +389,7 @@ C
       TYPE (OpenADTy_active) DPDX
       TYPE (OpenADTy_active) DPDY
       REAL(w2f__8) FOUR
-      PARAMETER ( FOUR =     4.000000000000000)
+      PARAMETER ( FOUR = 4.0D00)
       REAL(w2f__8) HX
       REAL(w2f__8) HX2
       REAL(w2f__8) HY
@@ -401,7 +401,7 @@ C
       REAL(w2f__8) NXP1
       REAL(w2f__8) NYP1
       REAL(w2f__8) ONE
-      PARAMETER ( ONE =     1.000000000000000)
+      PARAMETER ( ONE = 1.0D00)
       TYPE (OpenADTy_active) P
       TYPE (OpenADTy_active) PB
       TYPE (OpenADTy_active) PBB
@@ -421,11 +421,11 @@ C
       TYPE (OpenADTy_active) PTR
       TYPE (OpenADTy_active) PTT
       REAL(w2f__8) THREE
-      PARAMETER ( THREE =     3.000000000000000)
+      PARAMETER ( THREE = 3.0D00)
       REAL(w2f__8) TWO
-      PARAMETER ( TWO =     2.000000000000000)
+      PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
-      PARAMETER ( ZERO =     0.000000000000000)
+      PARAMETER ( ZERO = 0.0D00)
       INTEGER(w2f__i4) t__3
       INTEGER(w2f__i4) t__4
       INTEGER(w2f__i8) OpenAD_Symbol_384
@@ -1888,52 +1888,16 @@ C           $OpenAD$ INLINE ZeroDeriv(subst)
       END DO
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
-C     $OpenAD$ INLINE cp_arg_store_integer_scalar(subst)
-      CALL cp_arg_store_integer_scalar(NX)
-C     $OpenAD$ INLINE cp_arg_store_integer_scalar(subst)
-      CALL cp_arg_store_integer_scalar(NY)
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(R)
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 5
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 6
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
-      CALL cp_arg_restore_real_scalar(R)
-C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
-      CALL cp_arg_restore_integer_scalar(NY)
-C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
-      CALL cp_arg_restore_integer_scalar(NX)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 7
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 8
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(FVEC))
-C     $OpenAD$ INLINE cp_arg_store_integer_scalar(subst)
-      CALL cp_arg_store_integer_scalar(NX)
-C     $OpenAD$ INLINE cp_arg_store_integer_scalar(subst)
-      CALL cp_arg_store_integer_scalar(NY)
-C     $OpenAD$ INLINE cp_arg_store_real_scalar(subst)
-      CALL cp_arg_store_real_scalar(R)
-C     $OpenAD$ INLINE cp_arg_store_real_vector_a(subst)
-      CALL cp_arg_store_real_vector_a(__deriv__(X))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 9
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(X))
-C     $OpenAD$ INLINE cp_arg_restore_real_scalar(subst)
-      CALL cp_arg_restore_real_scalar(R)
-C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
-      CALL cp_arg_restore_integer_scalar(NY)
-C     $OpenAD$ INLINE cp_arg_restore_integer_scalar(subst)
-      CALL cp_arg_restore_integer_scalar(NX)
-C     $OpenAD$ INLINE cp_arg_restore_real_vector_a(subst)
-      CALL cp_arg_restore_real_vector_a(__deriv__(FVEC))
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f

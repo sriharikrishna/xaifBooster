@@ -66,6 +66,7 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlg.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
@@ -436,6 +437,28 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   CallGraphVertexAlg::handleCheckPoint(const std::string& aSubroutineNameBase,
 				       BasicBlock& theBasicBlock,
 				       const Variable& aVariable, MemCounter &count) { 
+    ControlFlowGraph::FormalResult theResult(getContaining().getControlFlowGraph().hasFormal(aVariable.getVariableSymbolReference()));
+    if (theResult.first) { 
+      // get the symbol alg
+      xaifBoosterTypeChange::ControlFlowGraphAlg& 
+	theControlFlowGraphAlg(dynamic_cast<xaifBoosterTypeChange::ControlFlowGraphAlg&>(getContaining().
+											 getControlFlowGraph().
+											 getControlFlowGraphAlgBase()));
+      // see if we skip this because of all constant invocations. 
+      DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::handleCheckPoint: checking " << aVariable.debug().c_str() << " for " << debug().c_str());
+      if (!theControlFlowGraphAlg.getSomewhereVariablePattern().isTracked(theResult.second)) {
+	// must always be called with some constant or is head routine or is never called.
+	DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::handleCheckPoint: skipping " << aVariable.debug().c_str() << " for " << debug().c_str());
+	return; 
+      }
+      if (theControlFlowGraphAlg.getSomewhereConstPattern().isTracked(theResult.second)) {
+	DBG_MACRO(DbgGroup::WARNING, "CallGraphVertexAlg::handleCheckPoint: checkpointing " 
+		  << aVariable.getVariableSymbolReference().getSymbol().plainName().c_str() 
+		  << " in " 
+		  << getContaining().getControlFlowGraph().getSymbolReference().getSymbol().plainName().c_str()
+		  << " which may be called with a constant");
+      }
+    }
     addCheckPointingInlinableSubroutineCall(aSubroutineNameBase+"_"+
 					    SymbolType::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolType())+"_"+
 					    SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()),
