@@ -625,10 +625,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				      getCallGraph().getScopeTree().getGlobalScope());
 		VariableSymbolReference* theTemporaryVariableReference_p=
 		  new VariableSymbolReference(theGlobalScope.getSymbolTable().
-					      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-								 SymbolType::REAL_STYPE,
-								 SymbolShape::SCALAR,
-								 true),
+					      addUniqueAuxSymbolMatchingVariable(theIndepVariable,
+										 true),
 					      theGlobalScope);
 		theTemporaryVariableReference_p->setId("1");
 		theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
@@ -742,10 +740,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			      getCallGraph().getScopeTree().getGlobalScope());
 	VariableSymbolReference* theTemporaryVariableReference_p=
 	  new VariableSymbolReference(theGlobalScope.getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::REAL_STYPE,
-							 SymbolShape::SCALAR,
-							 true),
+				      addUniqueAuxSymbolMatchingVariable(theIndepVariable,
+									 true),
 				      theGlobalScope);
 	theTemporaryVariableReference_p->setId("1");
 	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
