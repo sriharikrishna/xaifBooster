@@ -56,7 +56,7 @@
         implicit none
         private
         public :: active, saxpy, sax, setderiv, zero_deriv, convert_p2a_scalar, &
-&convert_a2p_scalar, convert_p2a_vector, convert_a2p_vector
+&convert_a2p_scalar, convert_p2a_vector, convert_a2p_vector, oad_allocateMatching
 
         
         !
@@ -79,6 +79,7 @@
         
         interface setderiv
           module procedure setderiv_a_a
+          module procedure setderiv_av_av
         end interface
 
         interface zero_deriv
@@ -101,6 +102,10 @@
         interface convert_a2p_vector
           module procedure convert_a2p_vector_impl
         end interface
+
+	interface oad_allocateMatching
+	  module procedure oad_allocateMatchingV
+	end interface 
 
         contains
         
@@ -152,6 +157,13 @@
           y%d=x%d
         end subroutine setderiv_a_a
 
+        subroutine setderiv_av_av(y,x)
+          type(active), intent(inout), dimension(:) :: y
+          type(active), intent(in), dimension(:) :: x
+
+          y%d=x%d
+        end subroutine setderiv_av_av
+
         !
         ! set derivative components to 0.0
         !
@@ -190,6 +202,13 @@
              convertTo(i)%v=convertFrom(i)
           end do
         end subroutine
-        
+
+        subroutine oad_allocateMatchingV(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:), allocatable :: toBeAllocated
+	  type(active), dimension(:) :: allocateMatching
+          allocate(toBeAllocated(size(allocateMatching)));
+        end subroutine
+       
         end module
 
