@@ -120,8 +120,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   double BasicBlockAlg::ourGamma=0.0;
 
   BasicBlockAlg::Sequence::~Sequence() { 
-    for (AssignmentPList::iterator i=myFrontAssignmentList.begin();
-	 i!=myFrontAssignmentList.end();
+    for (InlinableSubroutineCallPList::iterator i=myAllocationList.begin();
+	 i!=myAllocationList.end();
 	 ++i) 
       if (*i)
 	delete *i;
@@ -153,11 +153,25 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     ourPrivateLinearizedComputationalGraphVertexAlgFactory_p = thePrivateLinearizedComputationalGraphVertexAlgFactory; 
   }
 
-  Assignment& BasicBlockAlg::Sequence::appendFrontAssignment() { 
-    Assignment* theAssignment_p=new Assignment(true);
-    myFrontAssignmentList.push_back(theAssignment_p);
-    return *theAssignment_p;
-  }
+  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+  BasicBlockAlg::Sequence::addAllocation(const VariableSymbolReference& toBeAllocated,
+					 const Variable& variableToMatch) { 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching"); 
+    myAllocationList.push_back(theSRCall_p);
+    // first argument
+    Variable& toBeAllocatedVariable(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
+    VariableSymbolReference* 
+      tobeAllocateVariableSymbolReference_p(new VariableSymbolReference(toBeAllocated.getSymbol(),
+									toBeAllocated.getScope()));
+    tobeAllocateVariableSymbolReference_p->setId("1");
+    tobeAllocateVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::Sequence::addAllocation");
+    toBeAllocatedVariable.supplyAndAddVertexInstance(*tobeAllocateVariableSymbolReference_p);
+    toBeAllocatedVariable.getAliasMapKey().setTemporary();
+    toBeAllocatedVariable.getDuUdMapKey().setTemporary();
+    // second argument
+    variableToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
+    return *theSRCall_p;
+  } 
 
   Assignment& BasicBlockAlg::Sequence::appendEndAssignment() { 
     Assignment* theAssignment_p=new Assignment(true);
@@ -165,8 +179,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *theAssignment_p;
   }
 
-  const BasicBlockAlg::Sequence::AssignmentPList& BasicBlockAlg::Sequence::getFrontAssignmentList() const { 
-    return myFrontAssignmentList;
+  const BasicBlockAlg::Sequence::InlinableSubroutineCallPList& BasicBlockAlg::Sequence::getAllocationList() const { 
+    return myAllocationList;
   }
 
   const BasicBlockAlg::Sequence::AssignmentPList& BasicBlockAlg::Sequence::getEndAssignmentList() const { 
@@ -174,7 +188,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   std::string BasicBlockAlg::Sequence::debug() const { 
-    std::ostringstream out;
+    std::ostringstream out;    
     out << "Sequence[" << this 
 	<< ",myFirstElement_p=" << myFirstElement_p
 	<< ",myLastElement_p=" << myLastElement_p
@@ -242,11 +256,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// Is it the first element?
 	if (*li==aSequence_p->myFirstElement_p) { 
 	  // print all the stuff before the first element
-	  const Sequence::AssignmentPList& theFrontList(aSequence_p->getFrontAssignmentList());
-	  for(Sequence::AssignmentPList::const_iterator fli=theFrontList.begin();
-	      fli!=theFrontList.end();
-	      ++fli) 
-	    (*(fli))->printXMLHierarchy(os);
+	  for (Sequence::InlinableSubroutineCallPList::const_iterator ali=aSequence_p->getAllocationList().begin();
+	       ali!=aSequence_p->getAllocationList().end();
+	       ++ali) 
+	    (*(ali))->printXMLHierarchy(os);
 	}
 	// print the element 
 	(*(li))->printXMLHierarchy(os);
@@ -254,10 +267,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	if (*li==aSequence_p->myLastElement_p) { 
 	  // print all the stuff after the last element
 	  const Sequence::AssignmentPList& theEndList(aSequence_p->getEndAssignmentList());
-	  for(Sequence::AssignmentPList::const_iterator fli=theEndList.begin();
-	      fli!=theEndList.end();
-	      ++fli) 
-	    (*(fli))->printXMLHierarchy(os);
+	  for(Sequence::AssignmentPList::const_iterator eli=theEndList.begin();
+	      eli!=theEndList.end();
+	      ++eli) 
+	    (*(eli))->printXMLHierarchy(os);
 	  // that includes the accumulator
 	  (aPrintDerivativePropagator_fp)(os,
 					  *this,
@@ -628,6 +641,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					      addUniqueAuxSymbolMatchingVariable(theIndepVariable,
 										 true),
 					      theGlobalScope);
+		if (theTemporaryVariableReference_p->getSymbol().getSymbolShape()!=SymbolShape::SCALAR 
+		    &&
+		    !(theTemporaryVariableReference_p->getSymbol().hasDimensionBounds())) { 
+		  (*aSequencePListI)->addAllocation(*theTemporaryVariableReference_p,theIndepVariable).setId(makeUniqueId());
+		}
 		theTemporaryVariableReference_p->setId("1");
 		theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
 		theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
@@ -743,6 +761,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				      addUniqueAuxSymbolMatchingVariable(theIndepVariable,
 									 true),
 				      theGlobalScope);
+	if (theTemporaryVariableReference_p->getSymbol().getSymbolShape()!=SymbolShape::SCALAR 
+	    &&
+	    !(theTemporaryVariableReference_p->getSymbol().hasDimensionBounds())) { 
+	  aSequence.addAllocation(*theTemporaryVariableReference_p,theIndepVariable).setId(makeUniqueId());
+	}
 	theTemporaryVariableReference_p->setId("1");
 	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3");
 	theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
