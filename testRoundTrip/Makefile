@@ -69,7 +69,7 @@ F95=ifort -check all -g -fpe0 -O0 -traceback
 CC=icc
 
 #FIXEDFORMAT=-fixed
-#FREEFORMAT=-free
+#FREEFORMAT=-free -132
 #F95=f95 -g -w=unused
 #CC=gcc
 ######################################################
@@ -199,6 +199,9 @@ run: params.conf tmpOutput driver numericalComparison
 
 %.o:%.f90
 	$(F95) $(FREEFORMAT) -c $<
+
+%.o:%.c
+	$(CC) -c $<
 
 ######################################################
 # miscellaneous
