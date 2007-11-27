@@ -1,7 +1,3 @@
-C ***********************************************************
-C Fortran file translated from WHIRL Thu Aug 16 22:10:13 2007
-C ***********************************************************
-C ***********************************************************
 
       MODULE all_globals_mod
       use w2f__types
@@ -109,5 +105,4 @@ C$OPENAD XXX Template ad_template.f
      >  __deriv__(Y1))
       CALL saxpy(OpenAD_Symbol_21, __deriv__(OpenAD_Symbol_20),
      >  __deriv__(Y2))
-      RETURN
       END SUBROUTINE
