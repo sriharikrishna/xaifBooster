@@ -261,10 +261,9 @@ namespace xaifBoosterAddressArithmetic {
 								    const ControlFlowGraphVertex::VariablePList& theKnownVariables,
 								    CallGraphVertexAlg::UnknownVarInfoList& theUnknownVariables) {
     // we get the sequences
-    const xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequencePList& 
-      aSequencePList(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(theOriginalBasicBlock.getOriginalVertex().getControlFlowGraphVertexAlgBase()).
-		     getUniqueSequencePList());
-    for (xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequencePList::const_iterator aSequencePListI=aSequencePList.begin();
+    const xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::SequencePList& aSequencePList(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(theOriginalBasicBlock.getOriginalVertex().getControlFlowGraphVertexAlgBase()).
+													     getBestSequenceHolder().getUniqueSequencePList());
+    for (xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::SequencePList::const_iterator aSequencePListI=aSequencePList.begin();
 	 aSequencePListI!=aSequencePList.end();
 	 ++aSequencePListI) { 
       // get the propagators

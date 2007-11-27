@@ -65,22 +65,34 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches()+"Sn");
+    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches()+"SnaCAm");
   } 
 
   void AlgConfig::config() { 
     xaifBoosterLinearization::AlgConfig::config();
     if (isSet('S')) 
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::limitToStatementLevel();
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::forcePreaccumulationMode(xaifBoosterBasicBlockPreaccumulation::PreaccumulationMode::PreaccumulationMode_E(argAsInt('S')));
     if (isSet('n')) 
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
-  } 
+    if (isSet('a'))
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
+    if (isSet('C'))
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
+    if (isSet('A'))
+      xaifBoosterCrossCountryInterface::Elimination::setAwarenessLevel(xaifBoosterCrossCountryInterface::Elimination::AwarenessLevel_E(argAsInt('A')));
+    if (isSet('m'))
+      xaifBoosterCrossCountryInterface::Elimination::setAllowMaintainingFlag();
+  }
 
   void AlgConfig::usage() { 
     xaifBoosterLinearization::AlgConfig::usage();
     std::cout << " BasicBlockPreaccumulation options: " << std::endl
-	      << "             [-S] force statement level preaccumulation" << std::endl
-	      << "             [-n] allow n-ary sax operations" << std::endl;
+	      << "             [-S <level>] force statement level preaccumulation (0: statement, 1: max. graph, 2: max. graph scarce), defaults to max. graph" << std::endl
+	      << "             [-n] allow n-ary sax operations" << std::endl
+              << "             [-a] also run LSA graph eliminations and pick the best result" << std::endl
+              << "             [-C] turn on runtime counters"  << std::endl
+	      << "             [-A <level>] set heuristic awareness of unit/constant edges (0: no awareness, 1: unit awareness, 2: constant awareness), defaults to no awareness" << std::endl
+              << "             [-m] allow scarcity-preserving operations that maintain the nontrivial edge count (default is strict reduction)"  << std::endl;
   } 
 
 } // end of namespace xaifBooster
