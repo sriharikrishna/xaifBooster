@@ -120,6 +120,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 ++i) 
       if (*i)
 	delete *i;
+    for (AssignmentPList::iterator i=myFrontAssignmentList.begin();
+	 i!=myFrontAssignmentList.end();
+	 ++i) 
+      if (*i)
+	delete *i;
     for (AssignmentPList::iterator i=myEndAssignmentList.begin();
 	 i!=myEndAssignmentList.end();
 	 ++i) 
@@ -152,6 +157,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *theSRCall_p;
   } 
 
+  Assignment& BasicBlockAlg::Sequence::appendFrontAssignment() { 
+    Assignment* theAssignment_p=new Assignment(true);
+    myFrontAssignmentList.push_back(theAssignment_p);
+    return *theAssignment_p;
+  }
+
   Assignment& BasicBlockAlg::Sequence::appendEndAssignment() { 
     Assignment* theAssignment_p=new Assignment(true);
     myEndAssignmentList.push_back(theAssignment_p);
@@ -160,6 +171,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   const BasicBlockAlg::Sequence::InlinableSubroutineCallPList& BasicBlockAlg::Sequence::getAllocationList() const { 
     return myAllocationList;
+  }
+
+  const BasicBlockAlg::Sequence::AssignmentPList& BasicBlockAlg::Sequence::getFrontAssignmentList() const { 
+    return myFrontAssignmentList;
   }
 
   const BasicBlockAlg::Sequence::AssignmentPList& BasicBlockAlg::Sequence::getEndAssignmentList() const { 
@@ -460,6 +475,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	       ali!=aSequence_p->getAllocationList().end();
 	       ++ali) 
 	    (*(ali))->printXMLHierarchy(os);
+	  const Sequence::AssignmentPList& theFrontList(aSequence_p->getFrontAssignmentList());
+	  for(Sequence::AssignmentPList::const_iterator fli=theFrontList.begin();
+	      fli!=theFrontList.end();
+	      ++fli) 
+	    (*(fli))->printXMLHierarchy(os);
 	}
 	// print the element 
 	(*(li))->printXMLHierarchy(os);
@@ -934,7 +954,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // JU: this assignment of the vertex Id might have to change 
       // if we create vector assignments as auxilliary variables...
       theVariableSymbolReference_p->setId("1");
-      theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS");
+      theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS");
       theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
       theLHS.getAliasMapKey().setTemporary();
       theLHS.getDuUdMapKey().setTemporary();
@@ -1008,7 +1028,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		if (theTemporaryVariableReference_p->getSymbol().getSymbolShape()!=SymbolShape::SCALAR 
 		    &&
 		    !(theTemporaryVariableReference_p->getSymbol().hasDimensionBounds())) { 
-		  (*aSequencePListI)->addAllocation(*theTemporaryVariableReference_p,theIndepVariable).setId(makeUniqueId());
+		  aSequence.addAllocation(*theTemporaryVariableReference_p,theIndepVariable).setId(makeUniqueId());
 		}
 	theTemporaryVariableReference_p->setId("1");
 	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getVariableWithAliasCheck");
@@ -1213,7 +1233,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// JU: this assignment of the vertex Id might have to change 
 	// if we create vector assignments as auxilliary variables...
 	theVariableSymbolReference_p->setId("1");
-	theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS");
+	theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getEdgeLabel::JAE_LHS");
 	theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	theLHS.getAliasMapKey().setTemporary();
 	theLHS.getDuUdMapKey().setTemporary();
@@ -1332,19 +1352,65 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					    BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 					    BasicBlockAlg::Sequence& aSequence,
 					    xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI) { 
+    // this is the independent:
+    const Variable& theIndepVariable(theCollapsedVertex.getRHSVariable());
+    // now figure out if the independent may be overwritten:
+    const Variable* theIndepVariableContainer_cp=0;
+    if (isAliased(theIndepVariable,
+		  theDepVertexPListCopyWithoutRemovals)) { 
+      // make a Variable (container) for use in the setDeriv
+      Variable* theIndepVariableContainer_p = new Variable;
+      // was this actual indepenent already assigned?
+      // Note, that at this point they should indeed all be syntactically distinct 
+      if (!(theListOfAlreadyAssignedSources.hasElement(theIndepVariable.equivalenceSignature()))) {
+	// no, we have to make a new assignment
+	// this will be the lhs:
+	Variable theTarget;
+	Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+			      getCallGraph().getScopeTree().getGlobalScope());
+	VariableSymbolReference* theTemporaryVariableReference_p=
+	  new VariableSymbolReference(theGlobalScope.getSymbolTable().
 				      addUniqueAuxSymbolMatchingVariable(theIndepVariable,
 									 true),
+				      theGlobalScope);
 	if (theTemporaryVariableReference_p->getSymbol().getSymbolShape()!=SymbolShape::SCALAR 
 	    &&
 	    !(theTemporaryVariableReference_p->getSymbol().hasDimensionBounds())) { 
 	  aSequence.addAllocation(*theTemporaryVariableReference_p,theIndepVariable).setId(makeUniqueId());
 	}
+	theTemporaryVariableReference_p->setId("1");
+	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::handleCollapsedVertex");
+	theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
+	theTarget.getAliasMapKey().setTemporary();
+	theTarget.getDuUdMapKey().setTemporary();
+	// copy the new temporary into the container
+	theTarget.copyMyselfInto(*theIndepVariableContainer_p);
+	// "theTarget" is only local but the DerivativePropagatorSetDeriv 
+	// ctor performs a deep copy and owns the new instance so we are fine
+	// the theListOfAlreadyAssignedSources needs to contain the 
+	// address of the copy.
+	theListOfAlreadyAssignedSources.
+	  addElement(theIndepVariable.equivalenceSignature(),
+		     &(aSequence.myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+										theIndepVariable).getTarget()));
+      } // end if (wasn't assigned efore  
+      else {
+	// yes, it was assigned before
+	// copy the previously created temporary into the container
+	(theListOfAlreadyAssignedSources.getElement(theIndepVariable.equivalenceSignature()))->
+	  copyMyselfInto(*theIndepVariableContainer_p); 
+      }
+      // point to the new or previously created temporary
+      theIndepVariableContainer_cp=theIndepVariableContainer_p;
+    } // end if isAliased
+    else { // not aliased
+      // point to the original independent
+      theIndepVariableContainer_cp=&theIndepVariable;
+    }
+    // make the direct assignment
     aSequence.myDerivativePropagator.
       addSetDerivToEntryPList(theCollapsedVertex.getLHSVariable(),
-			      getVariableWithAliasCheck(theListOfAlreadyAssignedSources,
-							theDepVertexPListCopyWithoutRemovals,
-							theCollapsedVertex.getRHSVariable(),
-							aSequence),
+			      *theIndepVariableContainer_cp,
 			      aDPBeginI);
   }
 

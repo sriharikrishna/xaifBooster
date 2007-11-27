@@ -250,11 +250,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * create a new Allocation instance
        * and append it to the list to be printed 
        * in printXMLHierarchy
-       * before any other element of the sequence
+       * before any element of the sequence
        */
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
       addAllocation(const VariableSymbolReference& toBeAllocated,
 		    const Variable& variableToMatch);
+
+      /** 
+       * create a new Assignment instance
+       * and append it to the list to be printed 
+       * in printXMLHierarchy
+       * before any element of the sequence
+       */
+      Assignment& appendFrontAssignment();
 
       /** 
        * create a new Assignment instance
@@ -283,6 +291,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        * the front of this sequence
        */
       InlinableSubroutineCallPList myAllocationList;
+
+      /**
+       * list to hold statements to be added to 
+       * the front of this sequence
+       */
+      AssignmentPList myFrontAssignmentList;
 
       /**
        * list to hold statements to be added to 
