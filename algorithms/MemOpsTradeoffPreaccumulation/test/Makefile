@@ -79,12 +79,12 @@ VPATH+=../../DerivativePropagator/lib
 LIBS+=-lxaifBoosterDerivativePropagator
 
 # setup for ANGEL
-ifndef ANGELROOT
-  $(error "Error:  environment variable ANGELROOT not defined!")
-endif
+#ifndef ANGELROOT
+#  $(error "Error:  environment variable ANGELROOT not defined!")
+#endif
 
-VPATH+=$(ANGELROOT)/lib
-LIBS+=-langel
+#VPATH+=$(ANGELROOT)/lib
+#LIBS+=-langel
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
 	$(CC) $^ $(LFLAGS) -o $@
