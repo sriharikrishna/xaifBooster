@@ -154,6 +154,8 @@ namespace xaifBoosterCrossCountryInterface {
 	    myCounter.mulInc();
 	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP) 
 	    myCounter.addInc();
+	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::DIV_OP) 
+	    myCounter.divInc();
 	}
       }
     }

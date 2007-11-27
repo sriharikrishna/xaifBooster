@@ -118,7 +118,7 @@ namespace xaifBooster {
     /**
      * Increments the value of the counter.
      */
-    void divideInc(unsigned int by=1);
+    void divInc(unsigned int by=1);
 
     /**
      * Calls each counter specific reset function.
