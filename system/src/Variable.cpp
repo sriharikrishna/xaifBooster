@@ -224,6 +224,21 @@ namespace xaifBooster {
     return getVariableSymbolReference().getSymbol().getSymbolType();
   }
 
+  const SymbolShape::SymbolShape_E Variable::getShape() const { 
+    unsigned short numDerefs=0;
+    if (hasArrayAccess()) { 
+      const ArrayAccess::IndexTripletListType& theIndexTripletList(getArrayAccess().getIndexTripletList());
+      for(ArrayAccess::IndexTripletListType::const_iterator it=theIndexTripletList.begin();
+	  it!=theIndexTripletList.end();
+	  ++it) { 
+	if ((*it)->isDeref())
+	  ++numDerefs;
+      }
+    } 
+    return SymbolShape::lesserShape(getVariableSymbolReference().getSymbol().getSymbolShape(),
+				    numDerefs);
+  } 
+
   bool Variable::getActiveType() const { 
     return getVariableSymbolReference().getSymbol().getActiveTypeFlag();
   }

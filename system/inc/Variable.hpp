@@ -60,6 +60,7 @@
 #include "xaifBooster/system/inc/VariableEdge.hpp"
 #include "xaifBooster/system/inc/AliasMapKey.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
+#include "xaifBooster/system/inc/SymbolShape.hpp"
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
 #include "xaifBooster/system/inc/StatementIdSetMapKey.hpp"
 
@@ -128,10 +129,14 @@ namespace xaifBooster {
 
     /**
      * get the data type from the SymbolReference,
-     * \todo note that this will not work if we ever allow 
-     * structures
+     * \todo note that this will not work with structures
      */
     const SymbolType::SymbolType_E& getType() const;
+
+    /**
+     * the actual shape, e.g. scalar for vector element
+     */
+    const SymbolShape::SymbolShape_E getShape() const;
 
     /**
      * get the data type active flag from the SymbolReference

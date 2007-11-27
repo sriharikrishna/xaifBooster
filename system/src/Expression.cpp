@@ -312,4 +312,8 @@ namespace xaifBooster {
     }
   } 
 
+  bool Expression::isConstant() const { 
+    return (numVertices()==1 && !(getMaxVertex().isArgument()));
+  } 
+
 } // end of namespace xaifBooster 

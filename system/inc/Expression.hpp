@@ -171,7 +171,13 @@ namespace xaifBooster {
 
     typedef std::list<const Argument*> CArgumentPList;
 
-    void appendArguments(CArgumentPList& listToBeAppended)const;
+    void appendArguments(CArgumentPList& listToBeAppended) const;
+
+    /** 
+     * true if the expression is constant
+     * \todo for the time being assumes the value is contained in a single constant vertex
+     */
+    bool isConstant() const; 
 
   private:
 

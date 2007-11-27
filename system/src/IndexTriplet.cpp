@@ -64,11 +64,11 @@ namespace xaifBooster {
   }
   
   IndexTriplet::~IndexTriplet(){
-    for (IndexPairList::const_iterator i=myIndexPairList.begin();
-	 i!=myIndexPairList.end();
-	 ++i)
-      if ((*i).second)
-	delete (*i).second;
+    for (IndexPairList::const_iterator it=myIndexPairList.begin();
+	 it!=myIndexPairList.end();
+	 ++it)
+      if ((*it).second)
+	delete (*it).second;
   }
   
   void
@@ -176,5 +176,9 @@ namespace xaifBooster {
   IndexTriplet::IndexPairList& IndexTriplet::getIndexPairList() { 
     return myIndexPairList;
   }
+
+  bool IndexTriplet::isDeref() const { 
+    return (!hasExpression(IT_BOUND));
+  } 
 
 } 

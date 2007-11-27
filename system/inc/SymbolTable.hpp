@@ -59,6 +59,8 @@
 #include "xaifBooster/system/inc/Symbol.hpp"
 
 namespace xaifBooster { 
+  
+  class Variable;
 
   class SymbolTable : public XMLPrintable {
   public:
@@ -81,6 +83,9 @@ namespace xaifBooster {
 				const SymbolType::SymbolType_E& aType,
 				const SymbolShape::SymbolShape_E& aShape,
 				bool anActiveTypeFlag);
+
+    Symbol&  addUniqueAuxSymbolMatchingVariable(const Variable& aVariable,
+						bool anActiveTypeFlag);
 
     const Symbol& getSymbol(const std::string& aName) const;
 
