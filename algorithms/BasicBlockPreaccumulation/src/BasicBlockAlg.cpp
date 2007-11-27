@@ -1457,6 +1457,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP: 
 	  anOpName="mul_scal_scal";
 	  break;
+	case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::DIV_OP: 
+	  anOpName="div_scal_scal";
+	  break;
 	default: 
 	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::traverseFromBottomUp: unknown operation");
 	  break;
