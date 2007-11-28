@@ -99,7 +99,7 @@ namespace xaifBooster {
     myMultiply+=by;
   }
   
-  void PreaccumulationCounter::divideInc(unsigned int by) {
+  void PreaccumulationCounter::divInc(unsigned int by) {
     myNumDivides+=by;
   }
   

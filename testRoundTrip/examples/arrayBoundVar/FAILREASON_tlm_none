@@ -1,0 +1,1 @@
+the intel compiler (default in the Makefile) fails to recognize the allocatable attribute when it is specified separately from the initial variable declaration
