@@ -1,7 +1,3 @@
-C ***********************************************************
-C Fortran file translated from WHIRL Thu Oct  4 23:46:24 2007
-C ***********************************************************
-C ***********************************************************
 
 
       SUBROUTINE box_timestep(GAMMALOC, FLDSTAR, EXTFORLOC, UVELLOC,
