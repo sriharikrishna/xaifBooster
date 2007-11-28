@@ -242,6 +242,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        */
       const BasicBlockElement* myLastElement_p;
 
+      typedef std::list<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall*> InlinableSubroutineCallPList;
+
+      const InlinableSubroutineCallPList& getAllocationList() const;
+
+      /** 
+       * create a new Allocation instance
+       * and append it to the list to be printed 
+       * in printXMLHierarchy
+       * before any element of the sequence
+       */
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+      addAllocation(const VariableSymbolReference& toBeAllocated,
+		    const Variable& variableToMatch);
+
       /** 
        * create a new Assignment instance
        * and append it to the list to be printed 
@@ -271,6 +285,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      
       EliminationPList& getEliminationPList();
     private: 
+
+      /**
+       * list to hold allocation calls to be added to 
+       * the front of this sequence
+       */
+      InlinableSubroutineCallPList myAllocationList;
 
       /**
        * list to hold statements to be added to 
