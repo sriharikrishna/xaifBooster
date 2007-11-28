@@ -87,7 +87,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void AlgConfig::usage() { 
     xaifBoosterLinearization::AlgConfig::usage();
     std::cout << " BasicBlockPreaccumulation options: " << std::endl
-	      << "             [-S <level>] force statement level preaccumulation (0: statement, 1: max. graph, 2: max. graph scarce), defaults to max. graph" << std::endl
+	      << "             [-S <level>] force statement level preaccumulation (0: statement, 1: max. graph, 2: max. graph scarce, 3: max. graph scarce with rerouting mix (experimental!)), defaults to max. graph" << std::endl
 	      << "             [-n] allow n-ary sax operations" << std::endl
               << "             [-a] also run LSA graph eliminations and pick the best result" << std::endl
               << "             [-C] turn on runtime counters"  << std::endl

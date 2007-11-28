@@ -75,7 +75,8 @@ namespace xaifBoosterCrossCountryInterface {
 			    REGULAR_ELIMTYPE,
 	                    LSA_VERTEX_ELIMTYPE,
 	                    LSA_FACE_ELIMTYPE,
-			    SCARCE_ELIMTYPE};
+			    SCARCE_ELIMTYPE,
+			    SCARCE_TRANSFORMATION_TYPE};
 
     enum AwarenessLevel_E { NO_AWARENESS=0,
 			    UNIT_AWARENESS=1,
@@ -88,7 +89,8 @@ namespace xaifBoosterCrossCountryInterface {
     void initAsRegular();
     void initAsLSAVertex(int i, double g);
     void initAsLSAFace(int i, double g);
-    void initAsScarce();
+    void initAsScarceElimination();
+    void initAsScarceTransformation();
     
     void eliminate();
 

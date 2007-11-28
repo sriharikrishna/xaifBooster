@@ -288,7 +288,7 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="_jacobian_accumulation_0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_5" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_5" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="integer" value="1"/>
@@ -300,14 +300,14 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="_jacobian_accumulation_1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_6" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_6" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_2" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_5" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_5" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
@@ -316,14 +316,14 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="_jacobian_accumulation_2">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_7" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_7" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_6" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_6" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
@@ -332,14 +332,14 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="_jacobian_accumulation_3">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_6" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_6" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
@@ -383,7 +383,7 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_7" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_7" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -406,7 +406,7 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">

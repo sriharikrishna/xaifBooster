@@ -69,7 +69,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       PICK_BEST=-1,
       STATEMENT=0,
       MAX_GRAPH=1,
-      MAX_GRAPH_SCARSE=2
+      MAX_GRAPH_SCARSE=2,
+      MAX_GRAPH_SCARSE_REROUTING_MIX=3
     };
 
     static void checkValid(const PreaccumulationMode_E& aMode);
