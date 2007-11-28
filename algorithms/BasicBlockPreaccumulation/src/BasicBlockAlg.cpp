@@ -104,6 +104,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
 
+  // parameters for simulated annealing
   int BasicBlockAlg::ourIterationsParameter=5000;
   double BasicBlockAlg::ourGamma=5.0;
 
@@ -117,6 +118,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::Sequence::~Sequence() { 
     for (InlinableSubroutineCallPList::iterator i=myAllocationList.begin();
 	 i!=myAllocationList.end();
+	 ++i) 
+      if (*i)
+	delete *i;
+    for (AssignmentPList::iterator i=myFrontAssignmentList.begin();
+	 i!=myFrontAssignmentList.end();
 	 ++i) 
       if (*i)
 	delete *i;
@@ -152,6 +158,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *theSRCall_p;
   } 
 
+  Assignment& BasicBlockAlg::Sequence::appendFrontAssignment() { 
+    Assignment* theAssignment_p=new Assignment(true);
+    myFrontAssignmentList.push_back(theAssignment_p);
+    return *theAssignment_p;
+  }
+
   Assignment& BasicBlockAlg::Sequence::appendEndAssignment() { 
     Assignment* theAssignment_p=new Assignment(true);
     myEndAssignmentList.push_back(theAssignment_p);
@@ -160,6 +172,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   const BasicBlockAlg::Sequence::InlinableSubroutineCallPList& BasicBlockAlg::Sequence::getAllocationList() const { 
     return myAllocationList;
+  }
+
+  const BasicBlockAlg::Sequence::AssignmentPList& BasicBlockAlg::Sequence::getFrontAssignmentList() const { 
+    return myFrontAssignmentList;
   }
 
   const BasicBlockAlg::Sequence::AssignmentPList& BasicBlockAlg::Sequence::getEndAssignmentList() const { 
@@ -359,6 +375,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     mySequenceHolderPVector[PreaccumulationMode::STATEMENT]=new SequenceHolder(true);
     mySequenceHolderPVector[PreaccumulationMode::MAX_GRAPH]=new SequenceHolder(false);
     mySequenceHolderPVector[PreaccumulationMode::MAX_GRAPH_SCARSE]=new SequenceHolder(false);
+    mySequenceHolderPVector[PreaccumulationMode::MAX_GRAPH_SCARSE_REROUTING_MIX]=new SequenceHolder(false);
     // we must choose one SequenceHolder to do the things 
     // that are common across all the variants,
     // in particular the steps that can be done only once
@@ -460,6 +477,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	       ali!=aSequence_p->getAllocationList().end();
 	       ++ali) 
 	    (*(ali))->printXMLHierarchy(os);
+	  const Sequence::AssignmentPList& theFrontList(aSequence_p->getFrontAssignmentList());
+	  for(Sequence::AssignmentPList::const_iterator fli=theFrontList.begin();
+	      fli!=theFrontList.end();
+	      ++fli) 
+	    (*(fli))->printXMLHierarchy(os);
 	}
 	// print the element 
 	(*(li))->printXMLHierarchy(os);
@@ -601,8 +623,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   BasicBlockAlg::algorithm_action_3() {
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorihm_action_3: invoked for "
-	      << debug().c_str());
+    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorithm_action_3: invoked for " << debug().c_str());
+    if (ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH_SCARSE_REROUTING_MIX)
+      algorithm_action_3_perSequence(PreaccumulationMode::MAX_GRAPH_SCARSE_REROUTING_MIX);
     if ((ourPreaccumulationMode==PreaccumulationMode::MAX_GRAPH)
 	||
         (ourPreaccumulationMode==PreaccumulationMode::PICK_BEST))
@@ -855,7 +878,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (thisMode==PreaccumulationMode::MAX_GRAPH_SCARSE) { 
       // JU: there is currently only 1 choice
       xaifBoosterCrossCountryInterface::Elimination& anElimination(aSequence.addNewElimination(theComputationalGraph));
-      anElimination.initAsScarce();
+      anElimination.initAsScarceElimination();
       try {
 	anElimination.eliminate();	
       }
@@ -869,9 +892,31 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       aSequence.setBestResult(); 
       DBG_MACRO(DbgGroup::METRIC, "Sequence metrics: compute_partial_elimination_sequence " 
 		<< anElimination.getEliminationResult().getCounter().debug().c_str()
-		<< "  number of reroutings performed: " << anElimination.getEliminationResult().myNumReroutings
 		<< "  number of JAE: " << anElimination.getEliminationResult().myJAEList.getGraphList().size() 
 		<< " R graph edges: " << anElimination.getEliminationResult().myRemainderLCG.numEdges() 
+		<< " for " << aSequenceHolder.debug().c_str() 
+		<< " in BasicBlockAlg " << this);
+    }
+    if ( thisMode == PreaccumulationMode::MAX_GRAPH_SCARSE_REROUTING_MIX) { 
+      // JU: there is currently only 1 choice
+      xaifBoosterCrossCountryInterface::Elimination& anElimination(aSequence.addNewElimination(theComputationalGraph));
+      anElimination.initAsScarceTransformation();
+      try {
+	anElimination.eliminate();	
+      }
+      catch(xaifBoosterCrossCountryInterface::EliminationException e) { 
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: exception thrown from within compute_partial_transformation_sequence:" 
+				   << e.getReason().c_str());
+      }
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+	GraphVizDisplay::show(anElimination.getEliminationResult().myRemainderLCG, "remainderGraph");
+      }
+      aSequence.setBestResult(); 
+      DBG_MACRO(DbgGroup::METRIC, "Sequence metrics: compute_partial_transformation_sequence " 
+		<< anElimination.getEliminationResult().getCounter().debug().c_str()
+		<< "  number of JAE: " << anElimination.getEliminationResult().myJAEList.getGraphList().size() 
+		<< " R graph edges: " << anElimination.getEliminationResult().myRemainderLCG.numEdges()
+		<< " number of reroutings: " << anElimination.getEliminationResult().myNumReroutings
 		<< " for " << aSequenceHolder.debug().c_str() 
 		<< " in BasicBlockAlg " << this);
     }
@@ -934,7 +979,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // JU: this assignment of the vertex Id might have to change 
       // if we create vector assignments as auxilliary variables...
       theVariableSymbolReference_p->setId("1");
-      theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS");
+      theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generate::JAE_LHS");
       theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
       theLHS.getAliasMapKey().setTemporary();
       theLHS.getDuUdMapKey().setTemporary();
@@ -1008,7 +1053,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		if (theTemporaryVariableReference_p->getSymbol().getSymbolShape()!=SymbolShape::SCALAR 
 		    &&
 		    !(theTemporaryVariableReference_p->getSymbol().hasDimensionBounds())) { 
-		  (*aSequencePListI)->addAllocation(*theTemporaryVariableReference_p,theIndepVariable).setId(makeUniqueId());
+		  aSequence.addAllocation(*theTemporaryVariableReference_p,theIndepVariable).setId(makeUniqueId());
 		}
 	theTemporaryVariableReference_p->setId("1");
 	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getVariableWithAliasCheck");
@@ -1213,7 +1258,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// JU: this assignment of the vertex Id might have to change 
 	// if we create vector assignments as auxilliary variables...
 	theVariableSymbolReference_p->setId("1");
-	theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3::JAE_LHS");
+	theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getEdgeLabel::JAE_LHS");
 	theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	theLHS.getAliasMapKey().setTemporary();
 	theLHS.getDuUdMapKey().setTemporary();
@@ -1332,19 +1377,65 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					    BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 					    BasicBlockAlg::Sequence& aSequence,
 					    xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI) { 
+    // this is the independent:
+    const Variable& theIndepVariable(theCollapsedVertex.getRHSVariable());
+    // now figure out if the independent may be overwritten:
+    const Variable* theIndepVariableContainer_cp=0;
+    if (isAliased(theIndepVariable,
+		  theDepVertexPListCopyWithoutRemovals)) { 
+      // make a Variable (container) for use in the setDeriv
+      Variable* theIndepVariableContainer_p = new Variable;
+      // was this actual indepenent already assigned?
+      // Note, that at this point they should indeed all be syntactically distinct 
+      if (!(theListOfAlreadyAssignedSources.hasElement(theIndepVariable.equivalenceSignature()))) {
+	// no, we have to make a new assignment
+	// this will be the lhs:
+	Variable theTarget;
+	Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
+			      getCallGraph().getScopeTree().getGlobalScope());
+	VariableSymbolReference* theTemporaryVariableReference_p=
+	  new VariableSymbolReference(theGlobalScope.getSymbolTable().
 				      addUniqueAuxSymbolMatchingVariable(theIndepVariable,
 									 true),
+				      theGlobalScope);
 	if (theTemporaryVariableReference_p->getSymbol().getSymbolShape()!=SymbolShape::SCALAR 
 	    &&
 	    !(theTemporaryVariableReference_p->getSymbol().hasDimensionBounds())) { 
 	  aSequence.addAllocation(*theTemporaryVariableReference_p,theIndepVariable).setId(makeUniqueId());
 	}
+	theTemporaryVariableReference_p->setId("1");
+	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::handleCollapsedVertex");
+	theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
+	theTarget.getAliasMapKey().setTemporary();
+	theTarget.getDuUdMapKey().setTemporary();
+	// copy the new temporary into the container
+	theTarget.copyMyselfInto(*theIndepVariableContainer_p);
+	// "theTarget" is only local but the DerivativePropagatorSetDeriv 
+	// ctor performs a deep copy and owns the new instance so we are fine
+	// the theListOfAlreadyAssignedSources needs to contain the 
+	// address of the copy.
+	theListOfAlreadyAssignedSources.
+	  addElement(theIndepVariable.equivalenceSignature(),
+		     &(aSequence.myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+										theIndepVariable).getTarget()));
+      } // end if (wasn't assigned efore  
+      else {
+	// yes, it was assigned before
+	// copy the previously created temporary into the container
+	(theListOfAlreadyAssignedSources.getElement(theIndepVariable.equivalenceSignature()))->
+	  copyMyselfInto(*theIndepVariableContainer_p); 
+      }
+      // point to the new or previously created temporary
+      theIndepVariableContainer_cp=theIndepVariableContainer_p;
+    } // end if isAliased
+    else { // not aliased
+      // point to the original independent
+      theIndepVariableContainer_cp=&theIndepVariable;
+    }
+    // make the direct assignment
     aSequence.myDerivativePropagator.
       addSetDerivToEntryPList(theCollapsedVertex.getLHSVariable(),
-			      getVariableWithAliasCheck(theListOfAlreadyAssignedSources,
-							theDepVertexPListCopyWithoutRemovals,
-							theCollapsedVertex.getRHSVariable(),
-							aSequence),
+			      *theIndepVariableContainer_cp,
 			      aDPBeginI);
   }
 
@@ -1536,7 +1627,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::SequenceHolder::getComputationalGraph entering with "
 	      << debug().c_str());
     Sequence* theSequence_p=0;
-    if(!aSequenceHolder.getBasicBlockElementSequencePPairList().size()) { 
+    if(aSequenceHolder.getBasicBlockElementSequencePPairList().empty()) { 
       // not initialized
       for (PlainBasicBlock::BasicBlockElementList::const_iterator i=
 	     getContaining().getBasicBlockElementList().begin();
@@ -1658,6 +1749,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     case PreaccumulationMode::STATEMENT: 
     case PreaccumulationMode::MAX_GRAPH: 
     case PreaccumulationMode::MAX_GRAPH_SCARSE: 
+    case PreaccumulationMode::MAX_GRAPH_SCARSE_REROUTING_MIX: 
       break; 
     default: 
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getSequenceHolder: no logic for Mode "

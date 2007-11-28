@@ -125,6 +125,8 @@ int main(int argc,char** argv) {
 	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::getAssignmentCounter()
 	    << " total number of Sequences: "
 	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::getSequenceCounter());
+  // output the cumulative (over all basic blocks) counter, which belongs to the callgraph
+
   return 0;
 }
   
