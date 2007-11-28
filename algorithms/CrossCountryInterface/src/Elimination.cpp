@@ -55,6 +55,7 @@
 
 namespace xaifBoosterCrossCountryInterface {
 
+  // defaults for command-line configurable settings
   Elimination::AwarenessLevel_E Elimination::ourAwarenessLevel = NO_AWARENESS;
   bool Elimination::ourAllowMaintainingFlag = false;
 
@@ -68,8 +69,8 @@ namespace xaifBoosterCrossCountryInterface {
   }
 
   void Elimination::setAwarenessLevel(Elimination::AwarenessLevel_E anAwarenessLevel) {
-    std::cout << "AwarenessLevel set to " << Elimination::AwarenessLevelToString(ourAwarenessLevel);
     ourAwarenessLevel = anAwarenessLevel;
+    std::cout << "AwarenessLevel set to " << Elimination::AwarenessLevelToString(ourAwarenessLevel) << std::endl;
   }
   
   std::string Elimination::AwarenessLevelToString (const Elimination::AwarenessLevel_E anAwarenessLevel)
@@ -117,9 +118,14 @@ namespace xaifBoosterCrossCountryInterface {
     myGamma = g;
   }
 
-  void Elimination::initAsScarce() {
+  void Elimination::initAsScarceElimination() {
     myType = SCARCE_ELIMTYPE;
     myDescription = "Scarcity-conscious partial elimination";
+  }
+
+  void Elimination::initAsScarceTransformation() {
+    myType = SCARCE_TRANSFORMATION_TYPE;
+    myDescription = "Scarcity-conscious partial transformation (edge elims and reroutings)";
   }
 
   std::string Elimination::getDescription() {

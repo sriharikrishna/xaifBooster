@@ -57,7 +57,7 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  unsigned short PreaccumulationMode::ourModeCount=3;
+  unsigned short PreaccumulationMode::ourModeCount=4;
   
   std::string PreaccumulationMode::toString(const PreaccumulationMode_E& aPreaccumulationMode)
     throw (PrintingIntException) { 
@@ -75,6 +75,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     case MAX_GRAPH_SCARSE:
       returnString="max_graph_scarse";
       break;
+    case MAX_GRAPH_SCARSE_REROUTING_MIX:
+      returnString="max_graph_scarse_rerouting_mix";
+      break;
     default: 
       throw PrintingIntException("PreaccumulationMode::toString: unknown value",aPreaccumulationMode);
       break;
@@ -88,6 +91,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     case STATEMENT:
     case MAX_GRAPH:
     case MAX_GRAPH_SCARSE:
+    case MAX_GRAPH_SCARSE_REROUTING_MIX:
       break;
     default: 
       THROW_LOGICEXCEPTION_MACRO("PreaccumulationMode::fromString: unknown value " 
