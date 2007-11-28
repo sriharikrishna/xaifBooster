@@ -69,7 +69,7 @@ F95=ifort -check all -g -fpe0 -O0 -traceback
 CC=icc
 
 #FIXEDFORMAT=-fixed
-#FREEFORMAT=-free
+#FREEFORMAT=-free -132
 #F95=f95 -g -w=unused
 #CC=gcc
 ######################################################
@@ -133,7 +133,7 @@ head_sf.B: head_sf.f mfef90
 
 # WHIRL -> XAIF
 head_sf.xaif : head_sf.B whirl2xaif
-	./whirl2xaif -n -o $@ $<
+	./whirl2xaif -N -n -o $@ $<
 
 # XAIF -> XAIF'
 head_sf.xb.xaif : head_sf.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
@@ -201,6 +201,9 @@ run: params.conf tmpOutput driver numericalComparison
 
 %.o:%.f90
 	$(F95) $(FREEFORMAT) -c $<
+
+%.o:%.c
+	$(CC) -c $<
 
 ######################################################
 # miscellaneous
