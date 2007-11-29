@@ -897,7 +897,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		<< " for " << aSequenceHolder.debug().c_str() 
 		<< " in BasicBlockAlg " << this);
     }
-    if ( thisMode == PreaccumulationMode::MAX_GRAPH_SCARSE_REROUTING_MIX) { 
+    else if ( thisMode == PreaccumulationMode::MAX_GRAPH_SCARSE_REROUTING_MIX) { 
       // JU: there is currently only 1 choice
       xaifBoosterCrossCountryInterface::Elimination& anElimination(aSequence.addNewElimination(theComputationalGraph));
       anElimination.initAsScarceTransformation();
