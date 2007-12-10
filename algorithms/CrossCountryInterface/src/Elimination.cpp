@@ -70,7 +70,6 @@ namespace xaifBoosterCrossCountryInterface {
 
   void Elimination::setAwarenessLevel(Elimination::AwarenessLevel_E anAwarenessLevel) {
     ourAwarenessLevel = anAwarenessLevel;
-    std::cout << "AwarenessLevel set to " << Elimination::AwarenessLevelToString(ourAwarenessLevel) << std::endl;
   }
   
   std::string Elimination::AwarenessLevelToString (const Elimination::AwarenessLevel_E anAwarenessLevel)
