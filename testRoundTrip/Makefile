@@ -100,8 +100,12 @@ endif
 
 all: head.xb.x2w.w2f.pp.f
 
-ifndef OPENADROOT
-  $(error "Error:  environment variable OPENADROOT not defined!")
+ifndef OPEN64ROOT
+  $(error "Error:  environment variable OPEN64ROOT not defined!")
+endif
+
+ifndef OPENADFORTTKROOT
+  $(error "Error:  environment variable OPENADFORTTKROOT not defined!")
 endif
 
 ifndef XAIFSCHEMAROOT
@@ -163,19 +167,19 @@ head.xb.x2w.w2f.pp.f: head_sf.xb.x2w.w2f.pp.f
 	$(LN) ${XAIFSCHEMAROOT}/schema/$@ .
 
 mfef90: 
-	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/crayf90/sgi/mfef90 .
+	$(LN) ${OPEN64ROOT}/crayf90/sgi/mfef90 .
 
 whirl2xaif xaif2whirl whirl2sexp sexp2whirl: 
-	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86-Linux/bin/$@ .
+	$(LN) ${OPENADFORTTKROOT}/bin/$@ .
 
 %.pl: 
-	$(LN) ${OPENADROOT}/OpenADFortTk/OpenADFortTk-x86-Linux/bin/$@ .
+	$(LN) ${OPENADFORTTKROOT}/bin/$@ .
 
 whirl2f whirl2f_be:
-	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/whirl2f/$@ .
+	$(LN) ${OPEN64ROOT}/whirl2f/$@ .
 
 ir_b2a: 
-	$(LN) ${OPENADROOT}/Open64/osprey1.0/targ_ia32_ia64_linux/ir_tools/ir_b2a
+	$(LN) ${OPEN64ROOT}/ir_tools/ir_b2a
 
 xaifBooster:
 	./pickAlgorithm.bash $(SUB_MODE)
