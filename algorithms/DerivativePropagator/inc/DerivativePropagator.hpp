@@ -132,12 +132,12 @@ namespace xaifBoosterDerivativePropagator {
 								EntryPList::iterator& insertBefore);
 
     DerivativePropagatorSaxpy& addSaxpyToEntryPList(const Constant& thePartial,
-						    const Variable& theDependent,
-						    const Variable& theIndependent);
+						    const Variable& theIndependent,
+						    const Variable& theDependent);
 
     DerivativePropagatorSaxpy& addSaxpyToEntryPList(const Variable& thePartial,
-						    const Variable& theDependent,
-						    const Variable& theIndependent);
+						    const Variable& theIndependent,
+						    const Variable& theDependent);
 
     void addZeroDerivToEntryPList(const Variable& theTarget);
 
