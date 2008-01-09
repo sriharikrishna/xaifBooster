@@ -1,5 +1,3 @@
-#ifndef _INTRINSICALGBASE_INCLUDE_
-#define _INTRINSICALGBASE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,40 +50,37 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <sstream>
 
-#include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ConstantAlg.hpp"
 
-namespace xaifBooster {  
-  
-  class Intrinsic;
+namespace xaifBoosterBasicBlockPreaccumulation {
 
-  class IntrinsicAlgBase: public virtual ExpressionVertexAlgBase { 
+  ConstantAlg::ConstantAlg(Constant& theContainingConstant) :
+    ExpressionVertexAlgBase(theContainingConstant),
+    xaifBoosterLinearization::ExpressionVertexAlg(theContainingConstant),
+    xaifBoosterLinearization::ConstantAlg(theContainingConstant),
+    xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg(theContainingConstant) {
+    passivate();
+  }
 
-  public: 
+  ConstantAlg::~ConstantAlg() {}
 
-    IntrinsicAlgBase(const Intrinsic& theContaining);
+  std::string ConstantAlg::debug() const {
+    std::ostringstream out;
+    out << "xaifBoosterBasicBlockPreaccumulation::ConstantAlg["
+	<< this << "," << xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg::debug().c_str()
+	<< "]" << std::ends;
+    return out.str();
+  } // end of ConstantAlg::debug()
 
-    virtual ~IntrinsicAlgBase();
+  void ConstantAlg::printXMLHierarchy(std::ostream& os) const { 
+    ConstantAlgBase::getContaining().printXMLHierarchyImpl(os);
+  }
 
-  private: 
+  void ConstantAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+  } 
 
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase();
+} // end namespace xaifBoosterBasicBlockPreaccumulation
 
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase(const IntrinsicAlgBase&);
-
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase& operator=(const IntrinsicAlgBase&);
-
-  }; 
-
-} // end of namespace 
-
-#endif

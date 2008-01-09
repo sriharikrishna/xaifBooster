@@ -1,5 +1,3 @@
-#ifndef _INTRINSICALGBASE_INCLUDE_
-#define _INTRINSICALGBASE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,40 +50,47 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <sstream>
 
-#include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
+//#include "xaifBooster/system/inc/ExpressionVertex.hpp"
+//#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+//#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+//#include "xaifBooster/system/inc/CallGraph.hpp"
 
-namespace xaifBooster {  
-  
-  class Intrinsic;
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ExpressionVertexAlg.hpp"
 
-  class IntrinsicAlgBase: public virtual ExpressionVertexAlgBase { 
+namespace xaifBoosterBasicBlockPreaccumulation {
 
-  public: 
+  ExpressionVertexAlg::ExpressionVertexAlg(ExpressionVertex& theContainingExpressionVertex) : 
+    ExpressionVertexAlgBase(theContainingExpressionVertex),
+    xaifBoosterLinearization::ExpressionVertexAlg(theContainingExpressionVertex) {
+//    myTempPropagationVariable_p(0) {
+  }
 
-    IntrinsicAlgBase(const Intrinsic& theContaining);
+  ExpressionVertexAlg::~ExpressionVertexAlg() {
+    //if (myTempPropagationVariable_p)
+    //  delete myTempPropagationVariable_p;
+  }
 
-    virtual ~IntrinsicAlgBase();
+  std::string ExpressionVertexAlg::debug() const {
+    std::ostringstream out;
+    out << "xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg["
+	<< this
+	<< "," << xaifBoosterLinearization::ExpressionVertexAlg::debug().c_str()
+//	<< ","
+//	<< "myPropagationVariable_p="
+//	<< "="
+//	<< myTempPropagationVariable_p
+	<< "]" << std::ends;  
+    return out.str();
+  }
 
-  private: 
+  void ExpressionVertexAlg::printXMLHierarchy(std::ostream& os) const {
+    getContaining().printXMLHierarchyImpl(os);
+  }
 
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase();
+  void ExpressionVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+  }
 
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase(const IntrinsicAlgBase&);
+} // end namespace xaifBoosterBasicBlockPreaccumulation
 
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase& operator=(const IntrinsicAlgBase&);
-
-  }; 
-
-} // end of namespace 
-
-#endif

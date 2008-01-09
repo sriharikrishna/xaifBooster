@@ -1,5 +1,5 @@
-#ifndef _INTRINSICALGBASE_INCLUDE_
-#define _INTRINSICALGBASE_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BOOLEANOPERATIONALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BOOLEANOPERATIONALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,39 +53,48 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ExpressionVertexAlg.hpp"
 
-namespace xaifBooster {  
-  
-  class Intrinsic;
+using namespace xaifBooster;
 
-  class IntrinsicAlgBase: public virtual ExpressionVertexAlgBase { 
+namespace xaifBoosterBasicBlockPreaccumulation {
 
-  public: 
+  class BooleanOperationAlg : public xaifBoosterLinearization::BooleanOperationAlg,
+			      public xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg { 
 
-    IntrinsicAlgBase(const Intrinsic& theContaining);
+  public:
 
-    virtual ~IntrinsicAlgBase();
+    BooleanOperationAlg(BooleanOperation& theContainingBooleanOperation);
 
-  private: 
+    virtual ~BooleanOperationAlg();
 
-    /** 
-     * not defined
+    virtual void printXMLHierarchy(std::ostream& os) const;
+
+    virtual std::string debug() const;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+  private:
+
+    /**
+     * no def
      */
-    IntrinsicAlgBase();
+    BooleanOperationAlg();
 
-    /** 
-     * not defined
+    /**
+     * no def
      */
-    IntrinsicAlgBase(const IntrinsicAlgBase&);
+    BooleanOperationAlg(const BooleanOperationAlg&);
 
-    /** 
-     * not defined
+    /**
+     * no def
      */
-    IntrinsicAlgBase& operator=(const IntrinsicAlgBase&);
+    BooleanOperationAlg operator=(const BooleanOperationAlg&);
 
-  }; 
+  };
 
-} // end of namespace 
+} // end namespace xaifBoosterBasicBlockPreaccumulation
 
 #endif
+
