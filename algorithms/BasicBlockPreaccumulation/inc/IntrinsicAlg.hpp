@@ -1,5 +1,5 @@
-#ifndef _INTRINSICALGBASE_INCLUDE_
-#define _INTRINSICALGBASE_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_INTRINSICALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_INTRINSICALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,39 +53,48 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/IntrinsicAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ExpressionVertexAlg.hpp"
 
-namespace xaifBooster {  
-  
-  class Intrinsic;
+using namespace xaifBooster;
 
-  class IntrinsicAlgBase: public virtual ExpressionVertexAlgBase { 
+namespace xaifBoosterBasicBlockPreaccumulation {
 
-  public: 
+  class IntrinsicAlg : public xaifBoosterLinearization::IntrinsicAlg,
+		       public xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg {
 
-    IntrinsicAlgBase(const Intrinsic& theContaining);
+  public:
 
-    virtual ~IntrinsicAlgBase();
+    IntrinsicAlg(Intrinsic& theContainingIntrinsic);
 
-  private: 
+    virtual ~IntrinsicAlg();
 
-    /** 
-     * not defined
+    virtual void printXMLHierarchy(std::ostream& os) const;
+
+    virtual std::string debug() const;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+  private:
+
+    /**
+     * no def
      */
-    IntrinsicAlgBase();
+    IntrinsicAlg();
 
-    /** 
-     * not defined
+    /**
+     * no def
      */
-    IntrinsicAlgBase(const IntrinsicAlgBase&);
+    IntrinsicAlg(const IntrinsicAlg&);
 
-    /** 
-     * not defined
+    /**
+     * no def
      */
-    IntrinsicAlgBase& operator=(const IntrinsicAlgBase&);
+    IntrinsicAlg operator=(const IntrinsicAlg&);
 
-  }; 
+  };
 
-} // end of namespace 
+} // end namespace xaifBoosterBasicBlockPreaccumulation
 
 #endif
+

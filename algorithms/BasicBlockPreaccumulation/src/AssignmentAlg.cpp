@@ -62,11 +62,11 @@
 
 #include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
 
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ExpressionVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
@@ -136,7 +136,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// the actual identification is unique to a particular LHS or not as long 
 	// as all possibly identified LHSs are passive.
 	// passivate this: 
-	dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).passivate();
+	dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).passivate();
       } // end if 
       else { // the vertex cannot be uniquely identified
 	if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
@@ -164,7 +164,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     VertexLabelWriter(const Expression& e) : myE(e) {};
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
-      xaifBoosterLinearization::ExpressionVertexAlg& va(dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
+      ExpressionVertexAlg& va(dynamic_cast<ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
 																	      myE.getInternalBoostGraph()),
 																   v))).getExpressionVertexAlgBase()));
       out << "[label=\"" << va.isActive() << "\"]";
@@ -276,7 +276,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	else { // the vertex cannot be uniquely identified
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED
 	      && 
-	      dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) {
+	      dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) {
 	    // passive bits have not been removed yet since we potentially 
 	    // need them for some partial code generation but vertices may 
 	    // been marked as passive during the previous analysis.
@@ -306,7 +306,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						     theLCGVertex_p));
 	  } // end if NOT_IDENTIFIED
-	  else if (!dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) { 
+	  else if (!dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) { 
 	    // this is passive stuff  we don't do anything
 	  }
 	  else { // there is an ambiquity

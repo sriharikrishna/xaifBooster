@@ -1,5 +1,3 @@
-#ifndef _INTRINSICALGBASE_INCLUDE_
-#define _INTRINSICALGBASE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,40 +50,36 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <sstream>
 
-#include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
+#include "xaifBooster/system/inc/BooleanOperation.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BooleanOperationAlg.hpp"
 
-namespace xaifBooster {  
-  
-  class Intrinsic;
+namespace xaifBoosterBasicBlockPreaccumulation {
 
-  class IntrinsicAlgBase: public virtual ExpressionVertexAlgBase { 
+  BooleanOperationAlg::BooleanOperationAlg(BooleanOperation& theContainingBooleanOperation) :
+    ExpressionVertexAlgBase(theContainingBooleanOperation),
+    xaifBoosterLinearization::ExpressionVertexAlg(theContainingBooleanOperation),
+    xaifBoosterLinearization::BooleanOperationAlg(theContainingBooleanOperation),
+    xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg(theContainingBooleanOperation) {
+  }
 
-  public: 
+  BooleanOperationAlg::~BooleanOperationAlg() {}
 
-    IntrinsicAlgBase(const Intrinsic& theContaining);
+  std::string BooleanOperationAlg::debug() const {
+    std::ostringstream out;
+    out << "xaifBoosterBasicBlockPreaccumulation::BooleanOperationAlg["
+	<< this << "," << xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg::debug().c_str()
+	<< "]" << std::ends;
+    return out.str();
+  } // end of BooleanOperationAlg::debug()
 
-    virtual ~IntrinsicAlgBase();
+  void BooleanOperationAlg::printXMLHierarchy(std::ostream& os) const {
+    BooleanOperationAlgBase::getContaining().printXMLHierarchyImpl(os);
+  }
 
-  private: 
+  void BooleanOperationAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+  } 
 
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase();
+} // end namespace xaifBoosterBasicBlockPreaccumulation
 
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase(const IntrinsicAlgBase&);
-
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase& operator=(const IntrinsicAlgBase&);
-
-  }; 
-
-} // end of namespace 
-
-#endif

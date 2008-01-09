@@ -1,5 +1,3 @@
-#ifndef _INTRINSICALGBASE_INCLUDE_
-#define _INTRINSICALGBASE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,40 +50,10 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/ConstantAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ConstantAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ConstantAlg.hpp"
 
-#include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
+  DERIVED_ALG_FACTORY_DEF_MACRO(Constant,xaifBoosterBasicBlockPreaccumulation)
 
-namespace xaifBooster {  
-  
-  class Intrinsic;
-
-  class IntrinsicAlgBase: public virtual ExpressionVertexAlgBase { 
-
-  public: 
-
-    IntrinsicAlgBase(const Intrinsic& theContaining);
-
-    virtual ~IntrinsicAlgBase();
-
-  private: 
-
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase();
-
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase(const IntrinsicAlgBase&);
-
-    /** 
-     * not defined
-     */
-    IntrinsicAlgBase& operator=(const IntrinsicAlgBase&);
-
-  }; 
-
-} // end of namespace 
-
-#endif

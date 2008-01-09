@@ -1,5 +1,5 @@
-#ifndef _INTRINSICALGBASE_INCLUDE_
-#define _INTRINSICALGBASE_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_EXPRESSIONVERTEXALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_EXPRESSIONVERTEXALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -54,38 +54,52 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
+#include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
+#include "xaifBooster/system/inc/Scope.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
 
-namespace xaifBooster {  
-  
-  class Intrinsic;
+#include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"
 
-  class IntrinsicAlgBase: public virtual ExpressionVertexAlgBase { 
+using namespace xaifBooster;
 
-  public: 
+namespace xaifBoosterBasicBlockPreaccumulation {
 
-    IntrinsicAlgBase(const Intrinsic& theContaining);
+  class ExpressionVertexAlg : public virtual xaifBoosterLinearization::ExpressionVertexAlg {
 
-    virtual ~IntrinsicAlgBase();
+  public:
+    
+    ExpressionVertexAlg(ExpressionVertex& theContainingExpressionVertex);
+
+    virtual ~ExpressionVertexAlg();
+
+    virtual void printXMLHierarchy(std::ostream& os) const;
+
+    virtual std::string debug() const;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
   private: 
 
-    /** 
-     * not defined
+    /**
+     * no def
      */
-    IntrinsicAlgBase();
+    ExpressionVertexAlg();
 
-    /** 
-     * not defined
+    /**
+     * no def
      */
-    IntrinsicAlgBase(const IntrinsicAlgBase&);
+    ExpressionVertexAlg(const ExpressionVertexAlg&);
 
-    /** 
-     * not defined
+    /**
+     * no def
      */
-    IntrinsicAlgBase& operator=(const IntrinsicAlgBase&);
+    ExpressionVertexAlg operator=(const ExpressionVertexAlg&);
 
-  }; 
-
-} // end of namespace 
+  }; // end class ExpressionVertexAlg
+ 
+} // end namespace xaifBoosterBasicBlockPreaccumulation
 
 #endif
+

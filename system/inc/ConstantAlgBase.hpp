@@ -59,7 +59,7 @@ namespace xaifBooster {
   
   class Constant;
 
-  class ConstantAlgBase: public ExpressionVertexAlgBase { 
+  class ConstantAlgBase: public virtual ExpressionVertexAlgBase { 
 
   public: 
 
