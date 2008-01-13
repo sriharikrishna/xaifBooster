@@ -63,7 +63,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   ExpressionVertexAlg::ExpressionVertexAlg(ExpressionVertex& theContainingExpressionVertex) : 
     ExpressionVertexAlgBase(theContainingExpressionVertex),
-    xaifBoosterLinearization::ExpressionVertexAlg(theContainingExpressionVertex) {
+    xaifBoosterLinearization::ExpressionVertexAlg(theContainingExpressionVertex),
+    myLHSVariable_p(0),
+    myRHSVariable_p(0) {
 //    myTempPropagationVariable_p(0) {
   }
 
@@ -72,17 +74,44 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     //  delete myTempPropagationVariable_p;
   }
 
-  std::string ExpressionVertexAlg::debug() const {
-    std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg["
-	<< this
-	<< "," << xaifBoosterLinearization::ExpressionVertexAlg::debug().c_str()
-//	<< ","
-//	<< "myPropagationVariable_p="
-//	<< "="
-//	<< myTempPropagationVariable_p
-	<< "]" << std::ends;  
-    return out.str();
+  void ExpressionVertexAlg::setRHSVariable(const Variable& aRHSVariable,
+					   const ObjectWithId::Id& statementId) {
+    if (myRHSVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::setRHSVariable: already set to " << myRHSVariable_p->debug().c_str()
+				 << " while trying to set for " << aRHSVariable.debug().c_str());
+    myRHSVariable_p=&aRHSVariable;
+    myStatementId=statementId;
+  }
+
+  const Variable& ExpressionVertexAlg::getRHSVariable() const {
+    if (!myRHSVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::getRHSVariable: not set");
+    return *myRHSVariable_p;
+  }
+
+  void ExpressionVertexAlg::setLHSVariable(const Variable& aLHSVariable,
+					   const ObjectWithId::Id& statementId) {
+    if (myLHSVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::setLHSVariable: already set to " << myLHSVariable_p->debug().c_str()
+				 << " while trying to set for " << aLHSVariable.debug().c_str());
+    myLHSVariable_p=&aLHSVariable;
+    myStatementId=statementId;
+  }
+
+  const Variable& ExpressionVertexAlg::getLHSVariable() const {
+    if (!myLHSVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::getLHSVariable: not set");
+    return *myLHSVariable_p;
+  }
+
+  bool ExpressionVertexAlg::hasLHSVariable() const {
+    return (myLHSVariable_p)?true:false;
+  }
+
+  const ObjectWithId::Id& ExpressionVertexAlg::getStatementId() const {
+    if (!myStatementId.size())
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::getStatementId: not set");
+    return myStatementId;
   }
 
   void ExpressionVertexAlg::printXMLHierarchy(std::ostream& os) const {
@@ -90,6 +119,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void ExpressionVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+  }
+
+  std::string ExpressionVertexAlg::debug() const {
+    std::ostringstream out;
+    out << "xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg["
+	<< this
+	<< "," << xaifBoosterLinearization::ExpressionVertexAlg::debug().c_str()
+//	<< ",myPropagationVariable_p="
+//	<< "="
+//	<< myTempPropagationVariable_p
+	<< "]" << std::ends;  
+    return out.str();
   }
 
 } // end namespace xaifBoosterBasicBlockPreaccumulation

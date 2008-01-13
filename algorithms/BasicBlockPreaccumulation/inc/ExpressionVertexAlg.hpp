@@ -74,13 +74,31 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     virtual ~ExpressionVertexAlg();
 
-    virtual void printXMLHierarchy(std::ostream& os) const;
+    void setRHSVariable(const Variable& aVariable,
+                        const ObjectWithId::Id& statementId);
 
-    virtual std::string debug() const;
+    void setLHSVariable(const Variable& aVariable,
+                        const ObjectWithId::Id& statementId);
+
+    const Variable& getRHSVariable() const;
+
+    const Variable& getLHSVariable() const;
+
+    bool hasLHSVariable() const;
+
+    const ObjectWithId::Id& getStatementId() const;
+
+    virtual void printXMLHierarchy(std::ostream& os) const;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    virtual std::string debug() const;
+
   private: 
+
+    const Variable* myLHSVariable_p;
+    const Variable* myRHSVariable_p;
+    ObjectWithId::Id myStatementId;
 
     /**
      * no def

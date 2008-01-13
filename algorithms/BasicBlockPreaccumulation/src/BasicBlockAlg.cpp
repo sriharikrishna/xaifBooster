@@ -207,6 +207,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
   } 
 
+  const xaifBoosterCrossCountryInterface::Elimination& BasicBlockAlg::Sequence::getBestElimination() const {
+    if (!myBestElimination_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
+    return *myBestElimination_p;
+  }
+
   const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& BasicBlockAlg::Sequence::getBestResult() const {
     if (!myBestElimination_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
@@ -338,8 +344,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   const Variable& BasicBlockAlg::IntermediateReferences::getVariable(const PrivateLinearizedComputationalGraphVertex& theVertex) { 
-    if (theVertex.hasLHSVariable())
-      return theVertex.getLHSVariable();
+    if (theVertex.getExpressionVertexAlg().hasLHSVariable())
+      return theVertex.getExpressionVertexAlg().getLHSVariable();
     // see if we have it in the list: 
     for (VarPLCGPPairList::iterator i = myVarPLCGPPairList.begin();
 	 i!=myVarPLCGPPairList.end();
@@ -569,10 +575,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // cast it first
 	  const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
 	  std::ostringstream oss;
-	  oss << myPrivateVertex.getLHSVariable().getVariableSymbolReference().getSymbol().getId().c_str();
-	  if (myPrivateVertex.getLHSVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
+	  oss << myPrivateVertex.getExpressionVertexAlg().getLHSVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+	  if (myPrivateVertex.getExpressionVertexAlg().getLHSVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
 	    oss  << " k=" 
-		 << myPrivateVertex.getLHSVariable().getDuUdMapKey().getKey();
+		 << myPrivateVertex.getExpressionVertexAlg().getLHSVariable().getDuUdMapKey().getKey();
 	  oss << " d" << std::ends;
 	  theVertexKind=oss.str();
 	  break;
@@ -586,10 +592,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // cast it first
 	  const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aIndepVertexPListI));
 	  std::ostringstream oss;
-	  oss << myPrivateVertex.getRHSVariable().getVariableSymbolReference().getSymbol().getId().c_str();
-	  if (myPrivateVertex.getRHSVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
+	  oss << myPrivateVertex.getExpressionVertexAlg().getRHSVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+	  if (myPrivateVertex.getExpressionVertexAlg().getRHSVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
 	    oss  << " k=" 
-		 << myPrivateVertex.getRHSVariable().getDuUdMapKey().getKey();
+		 << myPrivateVertex.getExpressionVertexAlg().getRHSVariable().getDuUdMapKey().getKey();
 	  oss << " i" << std::ends;
 	  theVertexKind=oss.str();
 	  break;
@@ -700,11 +706,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // cast it first
       const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
       // copy it
-      theDepVertexPListCopyWithoutRemovals.push_back(&(myPrivateVertex.getLHSVariable()));
+      theDepVertexPListCopyWithoutRemovals.push_back(&(myPrivateVertex.getExpressionVertexAlg().getLHSVariable()));
       // advance the iterator before we delete anything:
       ++aDepVertexPListI;
       // all the dependent ones should have the LHS set
-	const StatementIdSetMapKey& aDuUdMapKey(myPrivateVertex.getLHSVariable().getDuUdMapKey()); 
+	const StatementIdSetMapKey& aDuUdMapKey(myPrivateVertex.getExpressionVertexAlg().getLHSVariable().getDuUdMapKey()); 
       if (aDuUdMapKey.getKind()==InfoMapKey::TEMP_VAR) { 
 	// now the assumption is that temporaries are local to the flattened Sequence
 	// and we can remove: 
@@ -713,7 +719,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       }
       DuUdMapUseResult theDuUdMapUseResult(ConceptuallyStaticInstances::instance()->
 					   getCallGraph().getDuUdMap().use(aDuUdMapKey,
-									     myPrivateVertex.getStatementId(),
+									     myPrivateVertex.getExpressionVertexAlg().getStatementId(),
 									   theComputationalGraph.getStatementIdLists()));
       if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
 	  || 
@@ -724,7 +730,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // should not be maximal and in case of AMBIGUOUS_INSIDE there should have 
 	    // been a split. 
 	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::fixUpDependentsList: attempting to remove a maximal vertex "
-				       << myPrivateVertex.getLHSVariable().debug().c_str()
+				       << myPrivateVertex.getExpressionVertexAlg().getLHSVariable().debug().c_str()
 				       << " key "
 				       << aDuUdMapKey.debug().c_str()
 				       << " from the dependent list");
@@ -735,7 +741,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	else { 
 	  // we only use it in the scope of this flattened sequence, therefore remove it
 	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: removing dependent " 
-		    << myPrivateVertex.getLHSVariable().debug().c_str()
+		    << myPrivateVertex.getExpressionVertexAlg().getLHSVariable().debug().c_str()
 		    << " list size: " << theDepVertexPList.size()); 
 	  theComputationalGraph.removeFromDependentList(myPrivateVertex);
 	  continue;
@@ -744,92 +750,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
 	if (theComputationalGraph.numOutEdgesOf(myPrivateVertex)) { 
 	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: non-maximal dependent " 
-		    << myPrivateVertex.getLHSVariable().debug().c_str()); 
+		    << myPrivateVertex.getExpressionVertexAlg().getLHSVariable().debug().c_str()); 
 	}
 	else { 
 	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: keeping regular dependent " 
-		    << myPrivateVertex.getLHSVariable().debug().c_str()); 
+		    << myPrivateVertex.getExpressionVertexAlg().getLHSVariable().debug().c_str()); 
 	}
       } 
     }
   }
-
-  void 
-  BasicBlockAlg::graphFilter(VariableHashTable& theListOfAlreadyAssignedSources,
-			     Sequence& aSequence,
-			     VariableCPList& theDepVertexPListCopyWithoutRemovals,
-			     SequenceHolder& aSequenceHolder) { 
-    PrivateLinearizedComputationalGraph& theComputationalGraph(*(aSequence.myComputationalGraph_p)); 
-    // try to find collapsed vertices which are 
-    // either singleton vertices, or 
-    // vertices that occur in theComputationalGraph 
-    // dependent AND independent list.
-    // first filter out singleton vertices:
-    xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator aDPBeginI(aSequence.myDerivativePropagator.getEntryPList().begin());
-    bool findNext=true;
-    while (findNext) {
-      PrivateLinearizedComputationalGraph::VertexIteratorPair aVertexIteratorPair(theComputationalGraph.vertices());
-      PrivateLinearizedComputationalGraph::VertexIterator aVertexI(aVertexIteratorPair.first),endAVertexI(aVertexIteratorPair.second);
-      findNext=false;
-      for (;aVertexI!=endAVertexI;++aVertexI) {
-	if (!(theComputationalGraph.numOutEdgesOf(*aVertexI)+theComputationalGraph.numInEdgesOf(*aVertexI))) { 
-	  // a singleton
-	  findNext=true;
-	  // remove this vertex in the dependent/independent lists
-	  theComputationalGraph.removeFromDependentList(*aVertexI);
-	  theComputationalGraph.removeFromIndependentList(*aVertexI);
-	  handleCollapsedVertex(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*aVertexI),
-				theDepVertexPListCopyWithoutRemovals,
-				theListOfAlreadyAssignedSources,
-				aSequence,
-				aDPBeginI);
-	  // remove it from the graph
-	  theComputationalGraph.removeAndDeleteVertex(*aVertexI);
-	  // need to break out here because we removed the vertex
-	  break;
-	} // end if 
-      } // end for 
-    } // end while 
-    // now deal with the remaining graph and possible
-    // non-singleton collapsed vertices:
-    PrivateLinearizedComputationalGraph::VertexIteratorPair anotherVertexIteratorPair(theComputationalGraph.vertices());
-    PrivateLinearizedComputationalGraph::VertexIterator anotherVertexI(anotherVertexIteratorPair.first),endAnotherVertexI(anotherVertexIteratorPair.second);
-    for (;anotherVertexI!=endAnotherVertexI;++anotherVertexI) {
-      // try to locate it in the dependent list: 
-      bool located=false; 
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList&  theDependentList(theComputationalGraph.getDependentList());
-      for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator theVertexPointerListI=
-	    theDependentList.begin();
-	  theVertexPointerListI!=theDependentList.end();
-	  ++theVertexPointerListI) { 
-	if(&(*anotherVertexI)==*theVertexPointerListI) { 
-	  located=true;
-	  break;
-	}
-      }
-      if (!located)
-	break;
-      located=false; 
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList&  theIndependentList(theComputationalGraph.getIndependentList());
-      for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator theVertexPointerListI=
-	    theIndependentList.begin();
-	  theVertexPointerListI!=theIndependentList.end();
-	  ++theVertexPointerListI) { 
-	if(&(*anotherVertexI)==*theVertexPointerListI) { 
-	  located=true;
-	  break;
-	}
-      }
-      if (!located)
-	break;
-      // if we are here then we found a collapsed vertex.
-      handleCollapsedVertex(dynamic_cast<PrivateLinearizedComputationalGraphVertex&>(*anotherVertexI),
-			    theDepVertexPListCopyWithoutRemovals,
-			    theListOfAlreadyAssignedSources,
-			    aSequence,
-			    aDPBeginI);
-    } // end for 
-  }			    
 
   void 
   BasicBlockAlg::algorithm_action_3_perSequence(PreaccumulationMode::PreaccumulationMode_E thisMode) { 	  
@@ -847,10 +776,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // that were already assigned to temporary variables to ensure correctness
       // of the Jacobian accumulation code.
       VariableHashTable theListOfAlreadyAssignedSources;
-      graphFilter(theListOfAlreadyAssignedSources,
-		  **aSequencePListI,
-		  theDepVertexPListCopyWithoutRemovals,
-		  aSequenceHolder);
       if ((*aSequencePListI)->myComputationalGraph_p->numVertices()) {
 	runElimination(**aSequencePListI, 
 		       theDepVertexPListCopyWithoutRemovals, 
@@ -1003,9 +928,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (theExpression.isJacobianEntry()) {
 	generateSimplePropagator(getVariableWithAliasCheck(theListOfAlreadyAssignedSources,
 							   theDepVertexPListCopyWithoutRemovals,
-							   dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getIndependent()).getRHSVariable(),
+							   dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getIndependent()).getExpressionVertexAlg().getRHSVariable(),
 							   aSequence),
-				 dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getDependent()).getLHSVariable(),
+				 dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getDependent()).getExpressionVertexAlg().getLHSVariable(),
 				 theListOfAlreadyAssignedSources,
 				 aSequence, 
 				 theDepVertexPListCopyWithoutRemovals,
@@ -1101,8 +1026,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       //  worklist population: 
       const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph(aSequence.getBestResult().myRemainderLCG);
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair aVertexIP(theRemainderGraph.vertices());
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator anLCGVertI(aVertexIP.first),anLCGvertEndI(aVertexIP.second);
-      for(; anLCGVertI!=anLCGvertEndI; ++anLCGVertI) {
+      for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator anLCGVertI(aVertexIP.first),anLCGvertEndI(aVertexIP.second);
+	  anLCGVertI!=anLCGvertEndI; ++anLCGVertI) {
 	if (!(*anLCGVertI).wasVisited()) { // we are not done with this vertex
 	  // look at all the incoming edges: 
 	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair anEdgeIP(theRemainderGraph.getInEdgesOf(*anLCGVertI));
@@ -1119,35 +1044,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       for (LinearizedComputationalGraphVertexPList::iterator workListI=workList.begin(); 
 	   workListI!=workList.end(); 
 	   ++workListI) { 
-	// find this vertex (source) in the correlation list: 
-	const xaifBoosterCrossCountryInterface::VertexCorrelationEntry* theSourceCorr_p(0);
-	for (xaifBoosterCrossCountryInterface::VertexCorrelationList::const_iterator vertexCorrListI=aSequence.getBestResult().myVertexCorrelationList.begin();
-	     vertexCorrListI!=aSequence.getBestResult().myVertexCorrelationList.end();
-	     ++vertexCorrListI) { 
-	  if ((*vertexCorrListI).myRemainderVertex_p==*workListI) { 
-	    theSourceCorr_p=&(*vertexCorrListI);
-	    break; 
-	  }
-	} 
-	if (!theSourceCorr_p) 
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphPropagators: source vertex not found in correlation list");
+	const PrivateLinearizedComputationalGraphVertex& theOriginalSource = aSequence.getBestElimination().rVertex2oVertex(**workListI);
 	// look at all outgoing edges: 
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair anEdgeIP(theRemainderGraph.getOutEdgesOf(**workListI));
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator anLCGEdgeI(anEdgeIP.first),anLCGEdgeEndI(anEdgeIP.second);
 	for (; anLCGEdgeI!=anLCGEdgeEndI; ++anLCGEdgeI) { 
-	  const xaifBoosterCrossCountryInterface::VertexCorrelationEntry* theTargetCorr_p(0);
-	  const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theTargetVertex(theRemainderGraph.getTargetOf(*anLCGEdgeI));
-	  // find the target in the correlation list
-	  for (xaifBoosterCrossCountryInterface::VertexCorrelationList::const_iterator vertexCorrListI=aSequence.getBestResult().myVertexCorrelationList.begin();
-	       vertexCorrListI!=aSequence.getBestResult().myVertexCorrelationList.end();
-	       ++vertexCorrListI) { 
-	    if ((*vertexCorrListI).myRemainderVertex_p==&theTargetVertex) { 
-	      theTargetCorr_p=&(*vertexCorrListI);
-	      break; 
-	    }
-	  } 
-	  if (!theTargetCorr_p) 
-	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphPropagators: target vertex not found in correlation list");
+	  const PrivateLinearizedComputationalGraphVertex& theOriginalTarget = aSequence.getBestElimination().rVertex2oVertex(theRemainderGraph.getTargetOf(*anLCGEdgeI));
 	  // find the edge in the correlation list
 	  const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry* theEdgeCorr_p(0);
 	  for (xaifBoosterCrossCountryInterface::EdgeCorrelationList::const_iterator edgeCorrListI=aSequence.getBestResult().myEdgeCorrelationList.begin();
@@ -1161,8 +1063,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  if (!theEdgeCorr_p) 
 	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphPropagators: edge not found in correlation list");
 	  theEdgeCorr_p->myRemainderGraphEdge_p->setVisited();
-	  generateRemainderGraphEdgePropagator(*theSourceCorr_p,
-					       *theTargetCorr_p,
+	  generateRemainderGraphEdgePropagator(theOriginalSource,
+					       theOriginalTarget,
 					       *theEdgeCorr_p,
 					       theListOfAlreadyAssignedSources,
 					       aSequence,
@@ -1172,7 +1074,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					       theInternalReferenceConcretizationList); 
 	  theEdgeCorr_p->myRemainderGraphEdge_p->setVisited();
 	}
-	theSourceCorr_p->myRemainderVertex_p->setVisited();
+	(*workListI)->setVisited();
       }
       if (workList.empty())
 	done=true;
@@ -1182,8 +1084,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     aSequence.getBestResult().myRemainderLCG.finishVisit();
   } 
 
-  void BasicBlockAlg::generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
-							   const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theTarget, 
+  void BasicBlockAlg::generateRemainderGraphEdgePropagator(const PrivateLinearizedComputationalGraphVertex& theOriginalSource, 
+							   const PrivateLinearizedComputationalGraphVertex& theOriginalTarget, 
 							   const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
 							   BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 							   Sequence& aSequence,
@@ -1196,17 +1098,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const Variable& theEdgeLabelVariable(getEdgeLabel(theEdge,theInternalReferenceConcretizationList,aSequence));
     // figure out what the source is:
     const Variable* theSourceVariable_p(0);
-    if (aSequence.getBestResult().myRemainderLCG.numInEdgesOf(*(theSource.myRemainderVertex_p))) { 
-      theSourceVariable_p=&(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p))));
+    if (aSequence.getBestResult().myRemainderLCG.numInEdgesOf(theOriginalSource)) { 
+      theSourceVariable_p=&(theIntermediateReferences.getVariable(theOriginalSource));
     }
     else { 
       theSourceVariable_p=&(getVariableWithAliasCheck(theListOfAlreadyAssignedSources,
 						      theDepVertexPListCopyWithoutRemovals,
-						      dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theSource.myOriginalVertex_p)).getRHSVariable(),
+						      theOriginalSource.getExpressionVertexAlg().getRHSVariable(),
 						      aSequence));
     }
     // figure out what the target is:
-    const Variable& theTargetVariable(theIntermediateReferences.getVariable(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*(theTarget.myOriginalVertex_p))));
+    const Variable& theTargetVariable(theIntermediateReferences.getVariable(theOriginalTarget));
     switch(theEdge.myType) { 
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::LCG_EDGE : 
       generateSimplePropagatorFromEdge(*theSourceVariable_p,
@@ -1372,13 +1274,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
   }
 
+/*
   void BasicBlockAlg::handleCollapsedVertex(PrivateLinearizedComputationalGraphVertex& theCollapsedVertex,
 					    BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 					    BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 					    BasicBlockAlg::Sequence& aSequence,
 					    xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI) { 
     // this is the independent:
-    const Variable& theIndepVariable(theCollapsedVertex.getRHSVariable());
+    const Variable& theIndepVariable(theCollapsedVertex.getExpressionVertexAlg().getRHSVariable());
     // now figure out if the independent may be overwritten:
     const Variable* theIndepVariableContainer_cp=0;
     if (isAliased(theIndepVariable,
@@ -1434,10 +1337,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
     // make the direct assignment
     aSequence.myDerivativePropagator.
-      addSetDerivToEntryPList(theCollapsedVertex.getLHSVariable(),
+      addSetDerivToEntryPList(theCollapsedVertex.getExpressionVertexAlg().getLHSVariable(),
 			      *theIndepVariableContainer_cp,
 			      aDPBeginI);
   }
+*/
 
   void BasicBlockAlg::traverseAndBuildJacobianAccumulationsFromBottomUp(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& theVertex,
 									const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,

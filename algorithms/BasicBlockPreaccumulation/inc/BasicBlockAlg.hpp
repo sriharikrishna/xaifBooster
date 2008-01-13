@@ -281,6 +281,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       void setBestResult();
 
+      const xaifBoosterCrossCountryInterface::Elimination& getBestElimination() const;
+
       const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& getBestResult() const;
      
       EliminationPList& getEliminationPList();
@@ -503,12 +505,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     typedef HashTable<const Variable*> VariableHashTable;
 
-    void handleCollapsedVertex(PrivateLinearizedComputationalGraphVertex& theCollapsedVertex,
-			       VariableCPList& theDepVertexPListCopyWithoutRemovals,
-			       VariableHashTable& theListOfAlreadyAssignedSources,
-			       BasicBlockAlg::Sequence& aSequence,
-			       xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI);
-
     /*
      * performs the core of algorithm_action_3();
      */
@@ -543,14 +539,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     SequenceHolder* myRepresentativeSequence_p;
 
     static PreaccumulationMode::PreaccumulationMode_E ourPreaccumulationMode;
-
-    /** 
-     * filter out singleton vertices
-     */
-    void graphFilter(VariableHashTable& theListOfAlreadyAssignedSources,
-		     Sequence& aSequencePListI,
-		     VariableCPList& theDepVertexPListCopyWithoutRemovals,
-		     BasicBlockAlg::SequenceHolder& aSequenceHolder); 
 
     void fillIndependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph); 
     
@@ -619,8 +607,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					   VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 					   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList); 
 
-    void generateRemainderGraphEdgePropagator(const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theSource, 
-					      const xaifBoosterCrossCountryInterface::VertexCorrelationEntry& theTarget, 
+    void generateRemainderGraphEdgePropagator(const PrivateLinearizedComputationalGraphVertex& theSource, 
+					      const PrivateLinearizedComputationalGraphVertex& theTarget, 
 					      const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
 					      VariableHashTable& theListOfAlreadyAssignedSources,
 					      Sequence& aSequence,
