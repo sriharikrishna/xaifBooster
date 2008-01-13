@@ -933,7 +933,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getDependent()).getExpressionVertexAlg().getLHSVariable(),
 				 theListOfAlreadyAssignedSources,
 				 aSequence, 
-				 theDepVertexPListCopyWithoutRemovals,
 				 theListOfAlreadyAssignedDependents,
 				 theLHS);
       } // end if is JacobianEntry
@@ -953,8 +952,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   VariableCPList& theDepVertexPListCopyWithoutRemovals,
 							   const Variable& theIndepVariable,
 							   BasicBlockAlg::Sequence& aSequence) { 
-    // assign source to temporary if aliased by some
-    // dependent
+    // assign source to temporary if aliased by some dependent
     // use temporary in DerivativePropagator
     // temporary currently lives in global scope 
     const Variable* theIndepVariableContainer_cp=0;
@@ -1017,14 +1015,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							VariableCPList& theDepVertexPListCopyWithoutRemovals,
 							VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 							const InternalReferenceConcretizationList& theInternalReferenceConcretizationList) { 
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph(aSequence.getBestResult().myRemainderLCG);
     typedef std::list<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*> LinearizedComputationalGraphVertexPList; 
     LinearizedComputationalGraphVertexPList workList;
     IntermediateReferences theIntermediateReferences;
-    bool done=false; 
     aSequence.getBestResult().myRemainderLCG.initVisit();
+    bool done=false; 
     while (!done) { 
       //  worklist population: 
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph(aSequence.getBestResult().myRemainderLCG);
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair aVertexIP(theRemainderGraph.vertices());
       for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator anLCGVertI(aVertexIP.first),anLCGvertEndI(aVertexIP.second);
 	  anLCGVertI!=anLCGvertEndI; ++anLCGVertI) {
@@ -1041,14 +1039,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    workList.push_back(&(*anLCGVertI));
 	}
       }
-      for (LinearizedComputationalGraphVertexPList::iterator workListI=workList.begin(); 
-	   workListI!=workList.end(); 
-	   ++workListI) { 
+      for (LinearizedComputationalGraphVertexPList::iterator workListI=workList.begin(); workListI!=workList.end(); ++workListI) { 
 	const PrivateLinearizedComputationalGraphVertex& theOriginalSource = aSequence.getBestElimination().rVertex2oVertex(**workListI);
 	// look at all outgoing edges: 
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair anEdgeIP(theRemainderGraph.getOutEdgesOf(**workListI));
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator anLCGEdgeI(anEdgeIP.first),anLCGEdgeEndI(anEdgeIP.second);
-	for (; anLCGEdgeI!=anLCGEdgeEndI; ++anLCGEdgeI) { 
+	for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator anLCGEdgeI(anEdgeIP.first),anLCGEdgeEndI(anEdgeIP.second);
+	     anLCGEdgeI!=anLCGEdgeEndI;
+	     ++anLCGEdgeI) { 
 	  const PrivateLinearizedComputationalGraphVertex& theOriginalTarget = aSequence.getBestElimination().rVertex2oVertex(theRemainderGraph.getTargetOf(*anLCGEdgeI));
 	  // find the edge in the correlation list
 	  const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry* theEdgeCorr_p(0);
@@ -1115,7 +1112,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				       theTargetVariable,
 				       theListOfAlreadyAssignedSources,
 				       aSequence,
-				       theDepVertexPListCopyWithoutRemovals,
 				       theListOfAlreadyAssignedDependents,
 				       theEdgeLabelVariable,
 				       dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*(theEdge.myEliminationReference.myOriginalEdge_p)));
@@ -1125,7 +1121,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       theTargetVariable,
 			       theListOfAlreadyAssignedSources,
 			       aSequence,
-			       theDepVertexPListCopyWithoutRemovals,
 			       theListOfAlreadyAssignedDependents,
 			       theEdgeLabelVariable);
       break;
@@ -1205,15 +1200,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 						       const Variable& theTargetVariable,
 						       BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 						       Sequence& aSequence,
-						       BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 						       VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 						       const Variable& theLocalJacobianEntry,
-						       const PrivateLinearizedComputationalGraphEdge& thePrivateEdge) { 
+						       const PrivateLinearizedComputationalGraphEdge& thePrivateEdge) {
     generateSimplePropagator(theSourceVariable,
 			     theTargetVariable,
 			     theListOfAlreadyAssignedSources,
 			     aSequence,
-			     theDepVertexPListCopyWithoutRemovals,
 			     theListOfAlreadyAssignedDependents,
 			     theLocalJacobianEntry);
     if(!thePrivateEdge.getParallels().empty()) { 
@@ -1224,7 +1217,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 theTargetVariable,
 				 theListOfAlreadyAssignedSources,
 				 aSequence,
-				 theDepVertexPListCopyWithoutRemovals,
 				 theListOfAlreadyAssignedDependents,
 				 dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>((*i)->getExpressionEdgeAlgBase()).
 				 getConcretePartialAssignment().getLHS());
@@ -1233,33 +1225,28 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void BasicBlockAlg::generateSimplePropagator(const Variable& theIndepVariable,
-					       const Variable& theDependent,
+					       const Variable& theDependentVariable,
 					       BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 					       Sequence& aSequence,
-					       BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 					       VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 					       const Variable& theLocalJacobianEntry) { 
     // make the entry to the DerivativePropagator
-    // UN: use the  variable in the container theIndepVariableContainer_p 
-    // instead of original independent
+    // UN: use the  variable in the container theIndepVariableContainer_p instead of original independent
     bool found=false;
     VarDevPropPPairList::iterator aVarDevPropPPairListI=theListOfAlreadyAssignedDependents.begin();
     for (; 
 	 aVarDevPropPPairListI!=theListOfAlreadyAssignedDependents.end(); 
 	 ++aVarDevPropPPairListI) { 
-      if ((*aVarDevPropPPairListI).first==&theDependent){ 
+      if ((*aVarDevPropPPairListI).first==&theDependentVariable){ 
 	found=true;
 	break;
       } 
     }
     xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* theSaxpy_p(0);
-    if (!found 
-	||
-	(found && !doesPermitNarySax())) { 
-      theSaxpy_p=&(aSequence.myDerivativePropagator.
-		   addSaxpyToEntryPList(theLocalJacobianEntry,
-					theIndepVariable,
-					theDependent));
+    if (!found || (found && !doesPermitNarySax())) { 
+      theSaxpy_p=&(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theLocalJacobianEntry,
+									 theIndepVariable,
+									 theDependentVariable));
     }
     else { 
       theSaxpy_p=(*aVarDevPropPPairListI).second;
@@ -1268,80 +1255,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } 
     if (!found) { 
       theSaxpy_p->useAsSax();
-      theListOfAlreadyAssignedDependents.
-	push_back(VarDevPropPPair(&theDependent,
-				  theSaxpy_p));
+      theListOfAlreadyAssignedDependents.push_back(VarDevPropPPair(&theDependentVariable,
+								   theSaxpy_p));
     }
-  }
-
-/*
-  void BasicBlockAlg::handleCollapsedVertex(PrivateLinearizedComputationalGraphVertex& theCollapsedVertex,
-					    BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
-					    BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
-					    BasicBlockAlg::Sequence& aSequence,
-					    xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::iterator& aDPBeginI) { 
-    // this is the independent:
-    const Variable& theIndepVariable(theCollapsedVertex.getExpressionVertexAlg().getRHSVariable());
-    // now figure out if the independent may be overwritten:
-    const Variable* theIndepVariableContainer_cp=0;
-    if (isAliased(theIndepVariable,
-		  theDepVertexPListCopyWithoutRemovals)) { 
-      // make a Variable (container) for use in the setDeriv
-      Variable* theIndepVariableContainer_p = new Variable;
-      // was this actual indepenent already assigned?
-      // Note, that at this point they should indeed all be syntactically distinct 
-      if (!(theListOfAlreadyAssignedSources.hasElement(theIndepVariable.equivalenceSignature()))) {
-	// no, we have to make a new assignment
-	// this will be the lhs:
-	Variable theTarget;
-	Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-			      getCallGraph().getScopeTree().getGlobalScope());
-	VariableSymbolReference* theTemporaryVariableReference_p=
-	  new VariableSymbolReference(theGlobalScope.getSymbolTable().
-				      addUniqueAuxSymbolMatchingVariable(theIndepVariable,
-									 true),
-				      theGlobalScope);
-	if (theTemporaryVariableReference_p->getSymbol().getSymbolShape()!=SymbolShape::SCALAR 
-	    &&
-	    !(theTemporaryVariableReference_p->getSymbol().hasDimensionBounds())) { 
-	  aSequence.addAllocation(*theTemporaryVariableReference_p,theIndepVariable).setId(makeUniqueId());
-	}
-	theTemporaryVariableReference_p->setId("1");
-	theTemporaryVariableReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::handleCollapsedVertex");
-	theTarget.supplyAndAddVertexInstance(*theTemporaryVariableReference_p);
-	theTarget.getAliasMapKey().setTemporary();
-	theTarget.getDuUdMapKey().setTemporary();
-	// copy the new temporary into the container
-	theTarget.copyMyselfInto(*theIndepVariableContainer_p);
-	// "theTarget" is only local but the DerivativePropagatorSetDeriv 
-	// ctor performs a deep copy and owns the new instance so we are fine
-	// the theListOfAlreadyAssignedSources needs to contain the 
-	// address of the copy.
-	theListOfAlreadyAssignedSources.
-	  addElement(theIndepVariable.equivalenceSignature(),
-		     &(aSequence.myDerivativePropagator.addSetDerivToEntryPList(theTarget,
-										theIndepVariable).getTarget()));
-      } // end if (wasn't assigned efore  
-      else {
-	// yes, it was assigned before
-	// copy the previously created temporary into the container
-	(theListOfAlreadyAssignedSources.getElement(theIndepVariable.equivalenceSignature()))->
-	  copyMyselfInto(*theIndepVariableContainer_p); 
-      }
-      // point to the new or previously created temporary
-      theIndepVariableContainer_cp=theIndepVariableContainer_p;
-    } // end if isAliased
-    else { // not aliased
-      // point to the original independent
-      theIndepVariableContainer_cp=&theIndepVariable;
-    }
-    // make the direct assignment
-    aSequence.myDerivativePropagator.
-      addSetDerivToEntryPList(theCollapsedVertex.getExpressionVertexAlg().getLHSVariable(),
-			      *theIndepVariableContainer_cp,
-			      aDPBeginI);
-  }
-*/
+  } // end BasicBlockAlg::generateSimplePropagator()
 
   void BasicBlockAlg::traverseAndBuildJacobianAccumulationsFromBottomUp(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& theVertex,
 									const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,
@@ -1645,7 +1562,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     ostr << "_jacobian_accumulation_" << anId++ << std::ends;
     return ostr.str();
   }
-  
 
   BasicBlockAlg::SequenceHolder& 
   BasicBlockAlg::getSequenceHolder(PreaccumulationMode::PreaccumulationMode_E aMode) { 
@@ -1691,4 +1607,5 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *myRepresentativeSequence_p;
   } 
 
-} // end of namespace xaifBoosterAngelInterfaceAlgorithms 
+} // end namespace xaifBoosterBasicBlockPreaccumulation
+ 

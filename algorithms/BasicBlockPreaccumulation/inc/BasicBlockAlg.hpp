@@ -563,7 +563,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			     const Variable& theDependent,
 			     VariableHashTable& theListOfAlreadyAssignedSources,
 			     Sequence& aSequence,
-			     VariableCPList& theDepVertexPListCopyWithoutRemovals,
 			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 			     const Variable& theLocalJacobianEntry);
 
@@ -575,7 +574,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				     const Variable& theTargetVariable,
 				     BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 				     Sequence& aSequence,
-				     BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 				     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 				     const Variable& theLocalJacobianEntry,
 				     const PrivateLinearizedComputationalGraphEdge& thePrivateEdge);
