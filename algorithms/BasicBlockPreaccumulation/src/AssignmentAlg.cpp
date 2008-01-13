@@ -197,8 +197,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   AssignmentAlg::algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
 						BasicBlockAlg::SequenceHolder& aSequenceHolder) { 
     PrivateLinearizedComputationalGraph& theComputationalGraph=
-      dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getComputationalGraph(getContainingAssignment(),
-															     aSequenceHolder);
+     dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getComputationalGraph(getContainingAssignment(),
+															 aSequenceHolder);
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theComputationalGraph)) { 
       // there is an ambiguity, do the split
@@ -210,7 +210,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       return;
     }
     dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).addMyselfToAssignmentIdList(getContainingAssignment(),
-																 aSequenceHolder);
+															      aSequenceHolder);
     const StatementIdList& theKnownAssignments(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getAssignmentIdList());
     // now redo the activity analysis
     //     if (haveLinearizedRightHandSide() && 
@@ -242,12 +242,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // keep track of all the vertices we add with this statement in case we need to split and remove them
       VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theComputationalGraph.getVertexIdentificationListActiveLHS());
       VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theComputationalGraph.getVertexIdentificationListActiveRHS());
-      DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "
-				<< theVertexIdentificationListPassive.debug().c_str()
+      DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: " << theVertexIdentificationListPassive.debug().c_str()
 				<< " LHS " << theVertexIdentificationListActiveLHS.debug().c_str()
 				<< " RHS " << theVertexIdentificationListActiveRHS.debug().c_str());
-
-      PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p=0; // LHS representation
+      PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p = 0; // LHS representation
       ExpressionVertex* theMaximalExpressionVertex_p = 0;
       Expression& theExpression(getLinearizedRightHandSide());
       Expression::VertexIteratorPair p=theExpression.vertices();
@@ -274,8 +272,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	} // end if 
 	else { // the vertex cannot be uniquely identified
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED
-	      && 
-	      dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) {
+	   && dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) {
 	    // passive bits have not been removed yet since we potentially need them for some partial code generation
 	    // but vertices may have been marked as passive during the previous analysis.
 	    // the RHS identification doesn't really matter since we cannot uniquely identify within the RHSs it is
@@ -283,9 +280,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // we need to add this vertex
 	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex(*ExpressionVertexI);
 	    theComputationalGraph.supplyAndAddVertexInstance(*theLCGVertex_p);
-	    DBG_MACRO(DbgGroup::DATA,
-		      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
-		      << theLCGVertex_p->debug().c_str());
+	    DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" << theLCGVertex_p->debug().c_str());
 	    if ((*ExpressionVertexI).isArgument()) {
 	      Variable& theVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	      if (theRHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) { 
@@ -293,9 +288,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 								getContainingAssignment().getId(),
 								theLCGVertex_p,
 								theKnownAssignments);
-		DBG_MACRO(DbgGroup::DATA,
-			  "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) added to RHS: "
-			  << theVertexIdentificationListActiveRHS.debug().c_str());
+		DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) added to RHS: "
+					  << theVertexIdentificationListActiveRHS.debug().c_str());
 	      }
 	      theLCGVertex_p->getExpressionVertexAlg().setRHSVariable(theVariable,
 								      getContainingAssignment().getId());
@@ -315,12 +309,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
 	  if (theLHSLCGVertex_p)
 	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
-	  // the maximal vertex in the RHS is the  
-	  // representation of the LHS
+	  // the maximal vertex in the RHS is the representation of the LHS
 	  theLHSLCGVertex_p=theLCGVertex_p;
 	  theMaximalExpressionVertex_p = &(*ExpressionVertexI);
 	}
-
       } // end for all expression vertices
 
       Expression::EdgeIteratorPair pe=theExpression.edges();
@@ -388,35 +380,24 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// now we are in a case like: 
 	// t1=<some expression>
 	// t2=t1
-	// where the top vertex is the top vertex of <some expression> which 
-	// has 't1' as LHS and now we would 
-	// try to add 't2' as another LHS.
-	// The clean solution is to represent t2=t1 by adding another vertex 
-	// with a special direct copy  edge.
-	// the top node becomes the old LHS
+	// where the top vertex is the top vertex of <some expression> which has 't1' as LHS and now we would try to add 't2' as another LHS.
+	// The clean solution is to represent t2=t1 by adding another vertex with a special direct copy edge. the top node becomes the old LHS.
 	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
 	// now we make a new one which will be top node
 	theLHSLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex(*theMaximalExpressionVertex_p);
-	// the new one needs to be added to the graph, 
-	// the old one is already in there
+	// the new one needs to be added to the graph, the old one is already in there
 	theComputationalGraph.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
-
 	// we need to add the direct copy edge, we can't set a back reference because there is none
 	PrivateLinearizedComputationalGraphEdge* theEdge_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge();
 	theEdge_p->setDirectCopyEdge();
 	theComputationalGraph.supplyAndAddEdgeInstance(*theEdge_p,
-						      *theOldLHSLCGVertex_p,
-						      *theLHSLCGVertex_p);
+						       *theOldLHSLCGVertex_p,
+						       *theLHSLCGVertex_p);
       } // end if 
-      // we need to keep the lists mutually exclusive
-      // a left hand side cannot occur in the right hand side list
-      DBG_MACRO(DbgGroup::DATA,
-		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) before remove from RHS: "
-		<< theVertexIdentificationListActiveRHS.debug().c_str());
+      // we need to keep the lists mutually exclusive. a left hand side cannot occur in the right hand side list
+      DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) before remove from RHS: " << theVertexIdentificationListActiveRHS.debug().c_str());
       theVertexIdentificationListActiveRHS.removeIfIdentifiable(theLHS);
-      DBG_MACRO(DbgGroup::DATA,
-		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) after remove from RHS: "
-		<< theVertexIdentificationListActiveRHS.debug().c_str());
+      DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) after remove from RHS: " << theVertexIdentificationListActiveRHS.debug().c_str());
       // a known active lhs cannot have a passive identification
       theVertexIdentificationListPassive.removeIfIdentifiable(theLHS,
 							      getContainingAssignment().getId());
@@ -427,12 +408,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 						      getContainingAssignment().getId());
       theLHSLCGVertex_p->getExpressionVertexAlg().setLHSVariable(theLHS,
 								 getContainingAssignment().getId());
-      // as we step through the assignments we add all 
-      // the left hand sides as dependendents and when we are 
-      // done with one flattening section we remove the ones not 
-      // needed
+      // as we step through the assignments we add all the left hand sides as dependendents
+      // and when we are done with one flattening section we remove the ones not needed
       theComputationalGraph.addToDependentList(*theLHSLCGVertex_p,
-					      getContainingAssignment().getId());
+					       getContainingAssignment().getId());
       DBG_MACRO(DbgGroup::DATA,
 		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "
 		<< theVertexIdentificationListPassive.debug().c_str()

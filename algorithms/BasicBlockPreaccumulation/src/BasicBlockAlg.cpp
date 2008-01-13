@@ -347,9 +347,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (theVertex.getExpressionVertexAlg().hasLHSVariable())
       return theVertex.getExpressionVertexAlg().getLHSVariable();
     // see if we have it in the list: 
-    for (VarPLCGPPairList::iterator i = myVarPLCGPPairList.begin();
-	 i!=myVarPLCGPPairList.end();
-	 ++i) { 
+    for (VarPLCGPPairList::iterator i = myVarPLCGPPairList.begin(); i!=myVarPLCGPPairList.end(); ++i) { 
       if ((*i).second==&theVertex)
 	return *((*i).first);
     }
@@ -931,7 +929,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getIndependent()).getExpressionVertexAlg().getRHSVariable(),
 							   aSequence),
 				 dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(theExpression.getDependent()).getExpressionVertexAlg().getLHSVariable(),
-				 theListOfAlreadyAssignedSources,
 				 aSequence, 
 				 theListOfAlreadyAssignedDependents,
 				 theLHS);
@@ -989,10 +986,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// ctor performs a deep copy and owns the new instance so we are fine
 	// the theListOfAlreadyAssignedSources needs to contain the 
 	// address of the copy.
-	theListOfAlreadyAssignedSources.
-	  addElement(theIndepVariable.equivalenceSignature(),
-		     &(aSequence.myDerivativePropagator.addSetDerivToEntryPList(theTarget,
-										theIndepVariable).getTarget()));
+	theListOfAlreadyAssignedSources.addElement(theIndepVariable.equivalenceSignature(),
+						   &(aSequence.myDerivativePropagator.addSetDerivToEntryPList(theTarget,
+													      theIndepVariable).getTarget()));
       } // end if (wasn't assigned before)  
       else {
 	// yes, it was assigned before
@@ -1110,7 +1106,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::LCG_EDGE : 
       generateSimplePropagatorFromEdge(*theSourceVariable_p,
 				       theTargetVariable,
-				       theListOfAlreadyAssignedSources,
 				       aSequence,
 				       theListOfAlreadyAssignedDependents,
 				       theEdgeLabelVariable,
@@ -1119,7 +1114,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::JAE_VERT : { 
       generateSimplePropagator(*theSourceVariable_p,
 			       theTargetVariable,
-			       theListOfAlreadyAssignedSources,
 			       aSequence,
 			       theListOfAlreadyAssignedDependents,
 			       theEdgeLabelVariable);
@@ -1198,14 +1192,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::generateSimplePropagatorFromEdge(const Variable& theSourceVariable,
 						       const Variable& theTargetVariable,
-						       BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 						       Sequence& aSequence,
 						       VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 						       const Variable& theLocalJacobianEntry,
 						       const PrivateLinearizedComputationalGraphEdge& thePrivateEdge) {
     generateSimplePropagator(theSourceVariable,
 			     theTargetVariable,
-			     theListOfAlreadyAssignedSources,
 			     aSequence,
 			     theListOfAlreadyAssignedDependents,
 			     theLocalJacobianEntry);
@@ -1215,7 +1207,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	   ++i) { 
 	generateSimplePropagator(theSourceVariable,
 				 theTargetVariable,
-				 theListOfAlreadyAssignedSources,
 				 aSequence,
 				 theListOfAlreadyAssignedDependents,
 				 dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>((*i)->getExpressionEdgeAlgBase()).
@@ -1226,7 +1217,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::generateSimplePropagator(const Variable& theIndepVariable,
 					       const Variable& theDependentVariable,
-					       BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 					       Sequence& aSequence,
 					       VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 					       const Variable& theLocalJacobianEntry) { 

@@ -84,6 +84,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   const Variable& ExpressionVertexAlg::getRHSVariable() const {
+    //if (myLHSVariable_p && myRHSVariable_p) THROW_LOGICEXCEPTION_MACRO("BOTH LHSVARIABLE AND RHSVARIABLE ARE SET");
     if (!myRHSVariable_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::getRHSVariable: not set");
     return *myRHSVariable_p;
@@ -99,6 +100,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   const Variable& ExpressionVertexAlg::getLHSVariable() const {
+    //if (myLHSVariable_p && myRHSVariable_p) THROW_LOGICEXCEPTION_MACRO("BOTH LHSVARIABLE AND RHSVARIABLE ARE SET");
     if (!myLHSVariable_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::getLHSVariable: not set");
     return *myLHSVariable_p;

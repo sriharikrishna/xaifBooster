@@ -561,7 +561,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void 
     generateSimplePropagator(const Variable& theIndepVariable,
 			     const Variable& theDependent,
-			     VariableHashTable& theListOfAlreadyAssignedSources,
 			     Sequence& aSequence,
 			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 			     const Variable& theLocalJacobianEntry);
@@ -572,7 +571,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void 
     generateSimplePropagatorFromEdge(const Variable& theSourceVariable,
 				     const Variable& theTargetVariable,
-				     BasicBlockAlg::VariableHashTable& theListOfAlreadyAssignedSources,
 				     Sequence& aSequence,
 				     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 				     const Variable& theLocalJacobianEntry,
