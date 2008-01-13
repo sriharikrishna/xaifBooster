@@ -53,8 +53,8 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-//#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ExpressionVertexAlg.hpp"
 
@@ -78,6 +78,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg& getExpressionVertexAlg() const;
 
+    void setSAX(xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& aSAX) const;
+
+    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& getSAX() const;
+
+    bool hasSAX() const;
+
     std::string debug() const ;
     
   private:
@@ -86,6 +92,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * Pointer to the expression vertex that corresponds to this PLCG vertex
      */
     const ExpressionVertex* myExpressionVertex_p;
+
+    /**
+     * Used to keep track of whether this vertex has been involved in a sax yet
+     */
+    mutable xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* mySAX_p;
  
   }; // end of class PrivateLinearizedComputationalGraphVertex
  

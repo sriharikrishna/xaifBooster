@@ -276,12 +276,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED
 	      && 
 	      dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) {
-	    // passive bits have not been removed yet since we potentially 
-	    // need them for some partial code generation but vertices may 
-	    // been marked as passive during the previous analysis.
-	    // the RHS identification doesn't really matter since we cannot 
-	    // uniquely identify within the RHSs it is only important that we don't 
-	    // alias a preceding LHS
+	    // passive bits have not been removed yet since we potentially need them for some partial code generation
+	    // but vertices may have been marked as passive during the previous analysis.
+	    // the RHS identification doesn't really matter since we cannot uniquely identify within the RHSs it is
+	    // only important that we don't alias a preceding LHS
 	    // we need to add this vertex
 	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex(*ExpressionVertexI);
 	    theComputationalGraph.supplyAndAddVertexInstance(*theLCGVertex_p);
@@ -308,8 +306,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  else if (!dynamic_cast<ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) { 
 	    // this is passive stuff  we don't do anything
 	  }
-	  else { // there is an ambiquity
-	    // but we should have detected this earlier
+	  else { // there is an ambiquity, but we should have detected this earlier
 	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): should not find an ambiguity at this point");
 	  } // end else (ambiguity)
 	} // end else

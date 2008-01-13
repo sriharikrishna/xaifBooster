@@ -74,6 +74,22 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return dynamic_cast<xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg&>(myExpressionVertex_p->getExpressionVertexAlgBase());
   }
 
+  void PrivateLinearizedComputationalGraphVertex::setSAX(xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& aSAX) const {
+    if (mySAX_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setSAX: already set");
+    mySAX_p = &aSAX;
+  }
+
+  xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& PrivateLinearizedComputationalGraphVertex::getSAX() const {
+    if (!mySAX_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getSAX: not set");
+    return *mySAX_p;
+  }
+
+  bool PrivateLinearizedComputationalGraphVertex::hasSAX() const {
+    return (mySAX_p) ? true : false;
+  }
+
   std::string PrivateLinearizedComputationalGraphVertex::debug() const { 
     std::ostringstream out;
     out << "PrivateLinearizedComputationalGraphVertex[" << this 
