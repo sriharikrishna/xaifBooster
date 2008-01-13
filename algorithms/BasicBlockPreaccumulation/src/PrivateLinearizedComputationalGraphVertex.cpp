@@ -58,64 +58,28 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() : 
-    myRHSVariable_p(0), 
-    myLHSVariable_p(0) {
+  PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex(const ExpressionVertex& anExpressionVertex) : 
+    myExpressionVertex_p(&anExpressionVertex) {
+  }
+
+  const ExpressionVertex& PrivateLinearizedComputationalGraphVertex::getExpressionVertex() const {
+    if (!myExpressionVertex_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getExpressionVertex: not set");
+    return *myExpressionVertex_p;
+  }
+
+  xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg& PrivateLinearizedComputationalGraphVertex::getExpressionVertexAlg() const {
+    if (!myExpressionVertex_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getExpressionVertexAlg: not set");
+    return dynamic_cast<xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg&>(myExpressionVertex_p->getExpressionVertexAlgBase());
   }
 
   std::string PrivateLinearizedComputationalGraphVertex::debug() const { 
     std::ostringstream out;
     out << "PrivateLinearizedComputationalGraphVertex[" << this 
+	<< ",myExpressionVertex_p=" << myExpressionVertex_p
 	<< "]" << std::ends;  
     return out.str();
   } 
 
-  void PrivateLinearizedComputationalGraphVertex::setRHSVariable(const Variable& aRHSVariable,
-								 const ObjectWithId::Id& statementId) {
-    if (myRHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setRHSVariable: already set to "
-				 << myRHSVariable_p->debug().c_str()
-				 << " while trying to set for " 
-				 << aRHSVariable.debug().c_str());
-    myRHSVariable_p=&aRHSVariable;
-    myStatementId=statementId;
-  }
-
-  const Variable& 
-  PrivateLinearizedComputationalGraphVertex::getRHSVariable() const { 
-    if (!myRHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getRHSVariable: not set");
-    return *myRHSVariable_p;
-  } 
-
-  void PrivateLinearizedComputationalGraphVertex::setLHSVariable(const Variable& aLHSVariable,
-								 const ObjectWithId::Id& statementId) {
-    if (myLHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setLHSVariable: already set to "
-				 << myLHSVariable_p->debug().c_str()
-				 << " while trying to set for " 
-				 << aLHSVariable.debug().c_str());
-    myLHSVariable_p=&aLHSVariable;
-    myStatementId=statementId;
-  }
-
-  const Variable& 
-  PrivateLinearizedComputationalGraphVertex::getLHSVariable() const { 
-    if (!myLHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getLHSVariable: not set");
-    return *myLHSVariable_p;
-  } 
-
-  bool
-  PrivateLinearizedComputationalGraphVertex::hasLHSVariable() const { 
-    return (myLHSVariable_p)?true:false;
-  } 
-
-  const ObjectWithId::Id& 
-  PrivateLinearizedComputationalGraphVertex::getStatementId() const { 
-    if (!myStatementId.size())
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getStatementId: not set");
-    return myStatementId; 
-  } 
-
-} 
+} // end namespace xaifBoosterBasicBlockPreaccumulation

@@ -55,7 +55,7 @@ C ========== end copyright notice ==============
           use OpenAD_tape
           use OpenAD_rev
           use OpenAD_checkpoints
-          use checkpoint_module
+C          use checkpoint_module
           use graph_module
 
           ! original arguments get inserted before version

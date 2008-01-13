@@ -64,8 +64,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     virtual ~PrivateLinearizedComputationalGraphVertexAlgFactory(){};
 
-    virtual PrivateLinearizedComputationalGraphVertex* makeNewPrivateLinearizedComputationalGraphVertex() {
-      return new PrivateLinearizedComputationalGraphVertex(); 
+    virtual PrivateLinearizedComputationalGraphVertex* makeNewPrivateLinearizedComputationalGraphVertex(const ExpressionVertex& anExpressionVertex) {
+      return new PrivateLinearizedComputationalGraphVertex(anExpressionVertex); 
     };
 
     virtual std::string debug() const;

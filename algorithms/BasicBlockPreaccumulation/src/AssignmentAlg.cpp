@@ -239,30 +239,29 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end if
     } // end if 
     else {
-      Expression& theExpression(getLinearizedRightHandSide());
-      Expression::VertexIteratorPair p=theExpression.vertices();
-      Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
-      // keep track of all the vertices we add with this statement in case we need to split and 
-      // remove them
+      // keep track of all the vertices we add with this statement in case we need to split and remove them
       VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theComputationalGraph.getVertexIdentificationListActiveLHS());
       VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theComputationalGraph.getVertexIdentificationListActiveRHS());
-      DBG_MACRO(DbgGroup::DATA,
-		"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "
-		<< theVertexIdentificationListPassive.debug().c_str()
-		<< " LHS "
-		<< theVertexIdentificationListActiveLHS.debug().c_str()
-		<< " RHS " 
-		<< theVertexIdentificationListActiveRHS.debug().c_str());
+      DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) passive: "
+				<< theVertexIdentificationListPassive.debug().c_str()
+				<< " LHS " << theVertexIdentificationListActiveLHS.debug().c_str()
+				<< " RHS " << theVertexIdentificationListActiveRHS.debug().c_str());
+
       PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p=0; // LHS representation
-      for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
+      ExpressionVertex* theMaximalExpressionVertex_p = 0;
+      Expression& theExpression(getLinearizedRightHandSide());
+      Expression::VertexIteratorPair p=theExpression.vertices();
+      for (Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second); ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
 	VertexIdentificationListActive::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
-	  theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
+							     theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
 	PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=0;
+
 	if ((*ExpressionVertexI).isArgument()) { 
 	  theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable(),
 									  getContainingAssignment().getId());
 	  theRHSIdResult=theVertexIdentificationListActiveRHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
 	} 
+
 	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
 	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						   theLHSIdResult.getVertexP()));
@@ -284,7 +283,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // uniquely identify within the RHSs it is only important that we don't 
 	    // alias a preceding LHS
 	    // we need to add this vertex
-	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
+	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex(*ExpressionVertexI);
 	    theComputationalGraph.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA,
 		      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" 
@@ -300,8 +299,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			  "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) added to RHS: "
 			  << theVertexIdentificationListActiveRHS.debug().c_str());
 	      }
-	      theLCGVertex_p->setRHSVariable(theVariable,
-					     getContainingAssignment().getId());
+	      theLCGVertex_p->getExpressionVertexAlg().setRHSVariable(theVariable,
+								      getContainingAssignment().getId());
 	    } // end if 
 	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						     theLCGVertex_p));
@@ -314,17 +313,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): should not find an ambiguity at this point");
 	  } // end else (ambiguity)
 	} // end else
+
+	// is this the maximal expression vertex?
 	if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
 	  if (theLHSLCGVertex_p)
 	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
 	  // the maximal vertex in the RHS is the  
 	  // representation of the LHS
 	  theLHSLCGVertex_p=theLCGVertex_p;
+	  theMaximalExpressionVertex_p = &(*ExpressionVertexI);
 	}
-      } // end for 
+
+      } // end for all expression vertices
+
       Expression::EdgeIteratorPair pe=theExpression.edges();
-      Expression::EdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second);
-      for (; ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) {
+      for (Expression::EdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second); ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) {
 	PartialDerivativeKind::PartialDerivativeKind_E thePartialDerivativeKind(dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>((*ExpressionEdgeI).getExpressionEdgeAlgBase()).getPartialDerivativeKind());
 	if (thePartialDerivativeKind == PartialDerivativeKind::PASSIVE) 
 	  continue;
@@ -379,11 +382,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		  << theLCGSource_p->debug().c_str() 
 		  << " target " 
 		  <<  theLCGTarget_p->debug().c_str());
-      }  // end for 
+      }  // end for all expression edges
+
       const Variable& theLHS(getContainingAssignment().getLHS());
       if (!theLHSLCGVertex_p)
 	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): don't have a maximal vertex");
-      if (theLHSLCGVertex_p->hasLHSVariable()) { 
+      if (theMaximalExpressionVertex_p->isArgument()) { 
 	// now we are in a case like: 
 	// t1=<some expression>
 	// t2=t1
@@ -395,18 +399,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// the top node becomes the old LHS
 	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
 	// now we make a new one which will be top node
-	theLHSLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
+	theLHSLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex(*theMaximalExpressionVertex_p);
 	// the new one needs to be added to the graph, 
 	// the old one is already in there
 	theComputationalGraph.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
-	// the new one needs to have its RHS set to the old ones LHS
-	theLHSLCGVertex_p->setRHSVariable(theOldLHSLCGVertex_p->getLHSVariable(),
-					  getContainingAssignment().getId());
-	// we need to add the direct copy edge
+
+	// we need to add the direct copy edge, we can't set a back reference because there is none
 	PrivateLinearizedComputationalGraphEdge* theEdge_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge();
-	// we can't set a back reference because there is none
 	theEdge_p->setDirectCopyEdge();
-	// add the edge to the graph
 	theComputationalGraph.supplyAndAddEdgeInstance(*theEdge_p,
 						      *theOldLHSLCGVertex_p,
 						      *theLHSLCGVertex_p);
@@ -428,8 +428,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       theVertexIdentificationListActiveLHS.addElement(theLHS,
 					     	      theLHSLCGVertex_p,
 						      getContainingAssignment().getId());
-      theLHSLCGVertex_p->setLHSVariable(theLHS,
-					getContainingAssignment().getId());
+      theLHSLCGVertex_p->getExpressionVertexAlg().setLHSVariable(theLHS,
+								 getContainingAssignment().getId());
       // as we step through the assignments we add all 
       // the left hand sides as dependendents and when we are 
       // done with one flattening section we remove the ones not 
@@ -444,9 +444,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		<< " RHS " 
 		<< theVertexIdentificationListActiveRHS.debug().c_str());
     } // end else 
-  } 
+  } // end AssignmentAlg::algorithm_action_2_perSequence()
 
   void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
-} // end of namespace xaifBoosterAngelInterfaceAlgorithms 
+} // end namespace xaifBoosterBasicBlockPreaccumulation
+

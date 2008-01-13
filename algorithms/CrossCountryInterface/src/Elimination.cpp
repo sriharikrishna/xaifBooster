@@ -133,6 +133,17 @@ namespace xaifBoosterCrossCountryInterface {
     return myDescription;
   }
 
+  const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex&
+  Elimination::rVertex2oVertex (const LinearizedComputationalGraphVertex& theRemainderVertex) const {
+  VertexCorrelationList::const_iterator vCorrListI;
+    for (vCorrListI = myEliminationResult.myVertexCorrelationList.begin(); vCorrListI != myEliminationResult.myVertexCorrelationList.end(); ++vCorrListI)
+      if ((*vCorrListI).myRemainderVertex_p == &theRemainderVertex) break;
+    if (vCorrListI == myEliminationResult.myVertexCorrelationList.end())
+      THROW_LOGICEXCEPTION_MACRO("Elimination::remainderVertex2OriginalVertex: correlation could not be found for remainder graph vertex");
+
+    return dynamic_cast<const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex&>(*vCorrListI->myOriginalVertex_p);
+  }
+
   Elimination::EliminationResult::EliminationResult() :
     myNumReroutings (0),
     myCountedFlag (false) { 

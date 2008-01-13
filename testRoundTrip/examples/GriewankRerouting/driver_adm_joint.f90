@@ -102,7 +102,7 @@ program driver
 
      if (i==1) x_ph1%v=x1%v+h
      if (i==2) x_ph2%v=x2%v+h
-     call ad_roehf5 (x_ph1, x_ph2, y_ph1, y_ph2)
+     call ad_reroute (x_ph1, x_ph2, y_ph1, y_ph2)
      write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",1,",",i,")=",(y_ph1%v-y1%v)/h
      write(2,'(A,I3,A,I3,A,EN26.16E3)') "F(",2,",",i,")=",(y_ph2%v-y2%v)/h
   end do

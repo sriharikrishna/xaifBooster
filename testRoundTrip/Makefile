@@ -73,12 +73,12 @@ CC=icc
 #F95=f95 -g -w=unused
 #CC=gcc
 ######################################################
+#checkpoint_module.o             \
 
 ifdef REVERSE_MODE
 MODULES=                        \
 w2f__types.o                    \
 active_module.o                 \
-checkpoint_module.o             \
 graph_module.o                  \
 OpenAD_checkpoints.o            \
 OpenAD_dct.o                    \

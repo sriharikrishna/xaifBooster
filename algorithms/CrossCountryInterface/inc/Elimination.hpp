@@ -54,6 +54,7 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
@@ -115,6 +116,12 @@ namespace xaifBoosterCrossCountryInterface {
       return myGamma;
     }
     
+    /**
+     * returns a reference to the original LCG vertex that corresponds to the passed remainder graph vertex
+     */
+    const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex&
+    rVertex2oVertex (const LinearizedComputationalGraphVertex& theRemainderVertex) const;
+
     /**
      * this is the result of applying an elimination to a Sequence
      */
