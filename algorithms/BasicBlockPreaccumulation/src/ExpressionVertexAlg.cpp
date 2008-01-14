@@ -53,9 +53,9 @@
 #include <sstream>
 
 //#include "xaifBooster/system/inc/ExpressionVertex.hpp"
-//#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
-//#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
-//#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ExpressionVertexAlg.hpp"
 
@@ -65,13 +65,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     ExpressionVertexAlgBase(theContainingExpressionVertex),
     xaifBoosterLinearization::ExpressionVertexAlg(theContainingExpressionVertex),
     myLHSVariable_p(0),
-    myRHSVariable_p(0) {
-//    myTempPropagationVariable_p(0) {
+    myRHSVariable_p(0),
+    myPropagationVariable_p(0) {
   }
 
   ExpressionVertexAlg::~ExpressionVertexAlg() {
-    //if (myTempPropagationVariable_p)
-    //  delete myTempPropagationVariable_p;
+    if (myPropagationVariable_p)
+      delete myPropagationVariable_p;
   }
 
   void ExpressionVertexAlg::setRHSVariable(const Variable& aRHSVariable,
@@ -84,7 +84,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   const Variable& ExpressionVertexAlg::getRHSVariable() const {
-    //if (myLHSVariable_p && myRHSVariable_p) THROW_LOGICEXCEPTION_MACRO("BOTH LHSVARIABLE AND RHSVARIABLE ARE SET");
+/*
+    if (myLHSVariable_p && myRHSVariable_p) {
+      if (myLHSVariable_p == myRHSVariable_p) {
+	THROW_LOGICEXCEPTION_MACRO("-->both LHSVariable AND RHSVariable are set, and they are EQUAL");
+      }
+      else {
+	THROW_LOGICEXCEPTION_MACRO("BOTH LHSVARIABLE AND RHSVARIABLE ARE SET, and they are NOT equal");
+      }
+    }
+*/
     if (!myRHSVariable_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::getRHSVariable: not set");
     return *myRHSVariable_p;
@@ -100,7 +109,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   const Variable& ExpressionVertexAlg::getLHSVariable() const {
-    //if (myLHSVariable_p && myRHSVariable_p) THROW_LOGICEXCEPTION_MACRO("BOTH LHSVARIABLE AND RHSVARIABLE ARE SET");
+/*
+    if (myLHSVariable_p && myRHSVariable_p) {
+      if (myLHSVariable_p == myRHSVariable_p) {
+	THROW_LOGICEXCEPTION_MACRO("-->both LHSVariable AND RHSVariable are set, and they are EQUAL");
+      }
+      else {
+	THROW_LOGICEXCEPTION_MACRO("BOTH LHSVARIABLE AND RHSVARIABLE ARE SET, and they are NOT equal");
+      }
+    }
+*/
     if (!myLHSVariable_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::getLHSVariable: not set");
     return *myLHSVariable_p;
@@ -109,6 +127,29 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   bool ExpressionVertexAlg::hasLHSVariable() const {
     return (myLHSVariable_p)?true:false;
   }
+
+  const Variable& ExpressionVertexAlg::getPropagationVariable() {
+    if (myPropagationVariable_p)
+      return *myPropagationVariable_p;
+    
+    if (myLHSVariable_p)
+      return *myLHSVariable_p;
+
+    // if we havent already created a propagation variable, and there is no LHS variable, then make a new one
+    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+    myPropagationVariable_p  = new Variable();
+    VariableSymbolReference* theVariableSymbolReference_p = new VariableSymbolReference(theGlobalScope.getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
+																	   SymbolType::REAL_STYPE,
+																	   SymbolShape::SCALAR,
+																	   true),
+											theGlobalScope);
+    theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg::getPropagationVariable");
+    myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+    myPropagationVariable_p->getAliasMapKey().setTemporary();
+    myPropagationVariable_p->getDuUdMapKey().setTemporary();
+    return *myPropagationVariable_p;
+  } // end ExpressionVertexAlg::getPropagationVariable()
 
   const ObjectWithId::Id& ExpressionVertexAlg::getStatementId() const {
     if (!myStatementId.size())

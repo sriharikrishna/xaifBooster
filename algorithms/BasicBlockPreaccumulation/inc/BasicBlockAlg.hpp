@@ -576,22 +576,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				     const Variable& theLocalJacobianEntry,
 				     const PrivateLinearizedComputationalGraphEdge& thePrivateEdge);
     
-    struct IntermediateReferences {
-      ~IntermediateReferences(); 
-      const Variable& getVariable(const PrivateLinearizedComputationalGraphVertex& theVertex); 
-      typedef std::pair<const Variable*,const PrivateLinearizedComputationalGraphVertex*> VarPLCGPPair;
-	typedef std::list<VarPLCGPPair> VarPLCGPPairList;
-      /** 
-       * we own the variable instance in this list 
-       * and everybody makes copies 
-       * and at the end we delete them all
-       */
-      VarPLCGPPairList myVarPLCGPPairList; 
-    };
-
-    const Variable& getVariable(const PrivateLinearizedComputationalGraphVertex& theVertex,
-				IntermediateReferences& theIntermediateReferences);
-
     const Variable& getVariableWithAliasCheck(VariableHashTable& theListOfAlreadyAssignedSources,
 					      VariableCPList& theDepVertexPListCopyWithoutRemovals,
 					      const Variable& theIndepVariable,
@@ -610,7 +594,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					      Sequence& aSequence,
 					      VariableCPList& theDepVertexPListCopyWithoutRemovals,
 					      VarDevPropPPairList& theListOfAlreadyAssignedDependents,
-					      IntermediateReferences& theIntermediateReferences,
 					      const InternalReferenceConcretizationList& theInternalReferenceConcretizationList); 
 
     const Variable& getEdgeLabel(const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,

@@ -86,6 +86,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     bool hasLHSVariable() const;
 
+    const Variable& getPropagationVariable();
+
     const ObjectWithId::Id& getStatementId() const;
 
     virtual void printXMLHierarchy(std::ostream& os) const;
@@ -98,6 +100,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     const Variable* myLHSVariable_p;
     const Variable* myRHSVariable_p;
+
+    /**
+     * Variable, owned by this class, that will be used for propagation.
+     * There are two reasons this variable may be created:
+     *  - There is a possible aliasing conflict
+     *  - No variable already exists
+     */
+    Variable* myPropagationVariable_p;
+
     ObjectWithId::Id myStatementId;
 
     /**
