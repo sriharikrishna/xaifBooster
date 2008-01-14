@@ -739,7 +739,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       VariableHashTable theListOfAlreadyAssignedSources;
       if ((*aSequencePListI)->myComputationalGraph_p->numVertices()) {
 	runElimination(**aSequencePListI, 
-		       theDepVertexPListCopyWithoutRemovals, 
+		       //theDepVertexPListCopyWithoutRemovals, 
 		       aSequenceHolder,
 		       thisMode);
 	generate(theListOfAlreadyAssignedSources,
@@ -751,7 +751,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void BasicBlockAlg::runElimination(Sequence& aSequence, 
-				     VariableCPList& theDepVertexPListCopyWithoutRemovals, 
+				     //VariableCPList& theDepVertexPListCopyWithoutRemovals, 
 				     SequenceHolder& aSequenceHolder,
 				     PreaccumulationMode::PreaccumulationMode_E thisMode){
     PrivateLinearizedComputationalGraph& theComputationalGraph=*(aSequence.myComputationalGraph_p);
@@ -896,7 +896,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				 theListOfAlreadyAssignedDependents,
 				 theLHS);
       } // end if is JacobianEntry
-    } // end for 
+    } // end for all JAEs 
     // look for a remainder graph
     if (!aSequence.getBestResult().myEdgeCorrelationList.empty()) 
       generateRemainderGraphPropagators(theListOfAlreadyAssignedSources,
@@ -1046,9 +1046,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 							   VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList) {
-    
-    // figure out who holds the edge label: 
-    const Variable& theEdgeLabelVariable(getEdgeLabel(theEdge,theInternalReferenceConcretizationList,aSequence));
     // figure out what the source is:
     const Variable* theSourceVariable_p(0);
 
@@ -1069,7 +1066,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				       theOriginalTarget.getExpressionVertexAlg().getPropagationVariable(),
 				       aSequence,
 				       theListOfAlreadyAssignedDependents,
-				       theEdgeLabelVariable,
+				       getEdgeLabel(theEdge,theInternalReferenceConcretizationList,aSequence),
 				       dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*(theEdge.myEliminationReference.myOriginalEdge_p)));
       break;
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::JAE_VERT : { 
@@ -1077,7 +1074,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       theOriginalTarget.getExpressionVertexAlg().getPropagationVariable(),
 			       aSequence,
 			       theListOfAlreadyAssignedDependents,
-			       theEdgeLabelVariable);
+			       getEdgeLabel(theEdge,theInternalReferenceConcretizationList,aSequence));
       break;
     }
     default: 

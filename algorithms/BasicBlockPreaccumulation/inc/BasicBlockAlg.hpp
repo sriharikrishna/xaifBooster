@@ -524,7 +524,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * run the algorithm for creating the elminated graphs using thisMode
      */
     virtual void runElimination(Sequence& aSequence, 
-			VariableCPList& theDepVertexPListCopyWithoutRemoval, 
+			//VariableCPList& theDepVertexPListCopyWithoutRemoval, 
 			SequenceHolder& aSequenceHolder,
 			PreaccumulationMode::PreaccumulationMode_E thisMode);
     
