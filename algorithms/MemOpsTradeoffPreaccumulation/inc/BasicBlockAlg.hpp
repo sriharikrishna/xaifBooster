@@ -58,7 +58,6 @@
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/JacobianAccumulationExpressionCopy.hpp"
 #include "xaifBooster/algorithms/MemOpsTradeoffPreaccumulation/inc/DualGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
-//#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMode.hpp"
 
 using namespace xaifBoosterCrossCountryInterface;
 
@@ -115,7 +114,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
      * run the algorithm for creating the elminated graphs using thisMode
      */
     virtual void runElimination(Sequence& aSequence,
-			        VariableCPList& theDepVertexPListCopyWithoutRemoval,
 				SequenceHolder& aSequenceHolder,
 				xaifBoosterBasicBlockPreaccumulation::PreaccumulationMode::PreaccumulationMode_E thisMode);
   };  // end of class

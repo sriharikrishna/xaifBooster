@@ -86,6 +86,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   const Variable& ExpressionVertexAlg::getRHSVariable() const {
 /*
     if (myLHSVariable_p && myRHSVariable_p) {
+      DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg::getRHSVariable Current vertex: " << debug().c_str());
       if (myLHSVariable_p == myRHSVariable_p) {
 	THROW_LOGICEXCEPTION_MACRO("-->both LHSVariable AND RHSVariable are set, and they are EQUAL");
       }
@@ -109,8 +110,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   const Variable& ExpressionVertexAlg::getLHSVariable() const {
-/*
-    if (myLHSVariable_p && myRHSVariable_p) {
+
+/*    if (myLHSVariable_p && myRHSVariable_p) {
+      DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg::getLHSVariable Current vertex: " << debug().c_str());
       if (myLHSVariable_p == myRHSVariable_p) {
 	THROW_LOGICEXCEPTION_MACRO("-->both LHSVariable AND RHSVariable are set, and they are EQUAL");
       }
@@ -168,10 +170,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     std::ostringstream out;
     out << "xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg["
 	<< this
+	<< ",myLHSVariable_p=" << myLHSVariable_p
+	<< ",myRHSVariable_p=" << myRHSVariable_p
+	<< ",myPropagationVariable_p=" << myPropagationVariable_p
 	<< "," << xaifBoosterLinearization::ExpressionVertexAlg::debug().c_str()
-//	<< ",myPropagationVariable_p="
-//	<< "="
-//	<< myTempPropagationVariable_p
 	<< "]" << std::ends;  
     return out.str();
   }

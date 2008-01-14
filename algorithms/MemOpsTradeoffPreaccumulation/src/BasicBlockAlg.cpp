@@ -88,7 +88,6 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
   }
 
   void BasicBlockAlg::runElimination(Sequence& aSequence,
-				     VariableCPList& theDepVertexPListCopyWithoutRemovals,
 				     SequenceHolder& aSequenceHolder,
 				     xaifBoosterBasicBlockPreaccumulation::PreaccumulationMode::PreaccumulationMode_E thisMode){
     LinearizedComputationalGraph& theComputationalGraph = *(aSequence.myComputationalGraph_p);
