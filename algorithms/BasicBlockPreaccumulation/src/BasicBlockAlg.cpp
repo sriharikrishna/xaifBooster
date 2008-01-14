@@ -334,43 +334,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return ourSequenceCounter;
   }
 
-  BasicBlockAlg::IntermediateReferences::~IntermediateReferences() { 
-    for (VarPLCGPPairList::iterator i = myVarPLCGPPairList.begin();
-	 i!=myVarPLCGPPairList.end();
-	 ++i) { 
-      if ((*i).first)
-	delete (*i).first;
-    } 
-  } 
-
-  const Variable& BasicBlockAlg::IntermediateReferences::getVariable(const PrivateLinearizedComputationalGraphVertex& theVertex) { 
-    if (theVertex.getExpressionVertexAlg().hasLHSVariable())
-      return theVertex.getExpressionVertexAlg().getLHSVariable();
-    // see if we have it in the list: 
-    for (VarPLCGPPairList::iterator i = myVarPLCGPPairList.begin(); i!=myVarPLCGPPairList.end(); ++i) { 
-      if ((*i).second==&theVertex)
-	return *((*i).first);
-    }
-    // not found, make a new one: 
-    Variable* theNewVariable_p(new Variable);
-    myVarPLCGPPairList.push_back(VarPLCGPPair(theNewVariable_p,&theVertex));
-    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-			  getCallGraph().getScopeTree().getGlobalScope());
-    VariableSymbolReference* theVariableSymbolReference_p=
-      new VariableSymbolReference(theGlobalScope.getSymbolTable().
-				  addUniqueAuxSymbol(SymbolKind::VARIABLE,
-						     SymbolType::REAL_STYPE,
-						     SymbolShape::SCALAR,
-						     true),
-				  theGlobalScope);
-    theVariableSymbolReference_p->setId("1");
-    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::IntermediateReferences::getVariable");
-    theNewVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
-    theNewVariable_p->getAliasMapKey().setTemporary();
-    theNewVariable_p->getDuUdMapKey().setTemporary();
-    return *theNewVariable_p;
-  } 
-
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
     xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterTypeChange::BasicBlockAlg(theContaining),
@@ -1014,7 +977,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph(aSequence.getBestResult().myRemainderLCG);
     typedef std::list<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*> LinearizedComputationalGraphVertexPList; 
     LinearizedComputationalGraphVertexPList workList;
-    IntermediateReferences theIntermediateReferences;
     aSequence.getBestResult().myRemainderLCG.initVisit();
     bool done=false; 
     while (!done) { 
@@ -1063,7 +1025,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					       aSequence,
 					       theDepVertexPListCopyWithoutRemovals,
 					       theListOfAlreadyAssignedDependents,
-					       theIntermediateReferences,
 					       theInternalReferenceConcretizationList); 
 	  theEdgeCorr_p->myRemainderGraphEdge_p->setVisited();
 	}
@@ -1084,28 +1045,28 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							   Sequence& aSequence,
 							   BasicBlockAlg::VariableCPList& theDepVertexPListCopyWithoutRemovals,
 							   VarDevPropPPairList& theListOfAlreadyAssignedDependents,
-							   IntermediateReferences& theIntermediateReferences,
 							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList) {
     
     // figure out who holds the edge label: 
     const Variable& theEdgeLabelVariable(getEdgeLabel(theEdge,theInternalReferenceConcretizationList,aSequence));
     // figure out what the source is:
     const Variable* theSourceVariable_p(0);
+
+    // if the source vertex isn't an independent
     if (aSequence.getBestResult().myRemainderLCG.numInEdgesOf(theOriginalSource)) { 
-      theSourceVariable_p=&(theIntermediateReferences.getVariable(theOriginalSource));
+      theSourceVariable_p = &theOriginalSource.getExpressionVertexAlg().getPropagationVariable();
     }
-    else { 
+    else { // the source vertex is an independent
       theSourceVariable_p=&(getVariableWithAliasCheck(theListOfAlreadyAssignedSources,
 						      theDepVertexPListCopyWithoutRemovals,
 						      theOriginalSource.getExpressionVertexAlg().getRHSVariable(),
 						      aSequence));
     }
-    // figure out what the target is:
-    const Variable& theTargetVariable(theIntermediateReferences.getVariable(theOriginalTarget));
+
     switch(theEdge.myType) { 
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::LCG_EDGE : 
       generateSimplePropagatorFromEdge(*theSourceVariable_p,
-				       theTargetVariable,
+				       theOriginalTarget.getExpressionVertexAlg().getPropagationVariable(),
 				       aSequence,
 				       theListOfAlreadyAssignedDependents,
 				       theEdgeLabelVariable,
@@ -1113,7 +1074,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       break;
     case xaifBoosterCrossCountryInterface::EdgeCorrelationEntry::JAE_VERT : { 
       generateSimplePropagator(*theSourceVariable_p,
-			       theTargetVariable,
+			       theOriginalTarget.getExpressionVertexAlg().getPropagationVariable(),
 			       aSequence,
 			       theListOfAlreadyAssignedDependents,
 			       theEdgeLabelVariable);
