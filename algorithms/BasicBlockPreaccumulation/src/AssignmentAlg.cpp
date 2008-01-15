@@ -195,7 +195,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   AssignmentAlg::algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
-						BasicBlockAlg::SequenceHolder& aSequenceHolder) { 
+						BasicBlockAlg::SequenceHolder& aSequenceHolder) {
     PrivateLinearizedComputationalGraph& theComputationalGraph=
      dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getComputationalGraph(getContainingAssignment(),
 															 aSequenceHolder);
@@ -278,7 +278,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // the RHS identification doesn't really matter since we cannot uniquely identify within the RHSs it is
 	    // only important that we don't alias a preceding LHS
 	    // we need to add this vertex
-	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex(*ExpressionVertexI);
+	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
 	    theComputationalGraph.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" << theLCGVertex_p->debug().c_str());
 	    if ((*ExpressionVertexI).isArgument()) {
@@ -291,8 +291,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) added to RHS: "
 					  << theVertexIdentificationListActiveRHS.debug().c_str());
 	      }
-	      theLCGVertex_p->getExpressionVertexAlg().setRHSVariable(theVariable,
-								      getContainingAssignment().getId());
+	      theLCGVertex_p->setOriginalVariable(theVariable,
+						  getContainingAssignment().getId());
 	    } // end if 
 	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						     theLCGVertex_p));
@@ -342,11 +342,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	if (!theLCGTarget_p || !theLCGSource_p) 
 	  THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): cannot find edge source or target");
 	// filter out parallel edges:
-	PrivateLinearizedComputationalGraph::OutEdgeIteratorPair 
-	  anOutEdgeItPair(theComputationalGraph.getOutEdgesOf(*theLCGSource_p));
-	PrivateLinearizedComputationalGraph::OutEdgeIterator 
-	  aPrivLinCompGEdgeI(anOutEdgeItPair.first),
-	  aPrivLinCompGEdgeIEnd(anOutEdgeItPair.second);
+	PrivateLinearizedComputationalGraph::OutEdgeIteratorPair anOutEdgeItPair(theComputationalGraph.getOutEdgesOf(*theLCGSource_p));
+	PrivateLinearizedComputationalGraph::OutEdgeIterator aPrivLinCompGEdgeI(anOutEdgeItPair.first), aPrivLinCompGEdgeIEnd(anOutEdgeItPair.second);
 	for (;aPrivLinCompGEdgeI!=aPrivLinCompGEdgeIEnd;++aPrivLinCompGEdgeI) { 
 	  if (theLCGTarget_p==&(theComputationalGraph.getTargetOf(*aPrivLinCompGEdgeI)))
 	    break; // already have such an edge in here
@@ -384,7 +381,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// The clean solution is to represent t2=t1 by adding another vertex with a special direct copy edge. the top node becomes the old LHS.
 	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
 	// now we make a new one which will be top node
-	theLHSLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex(*theMaximalExpressionVertex_p);
+	theLHSLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
 	// the new one needs to be added to the graph, the old one is already in there
 	theComputationalGraph.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
 	// we need to add the direct copy edge, we can't set a back reference because there is none
@@ -406,8 +403,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       theVertexIdentificationListActiveLHS.addElement(theLHS,
 					     	      theLHSLCGVertex_p,
 						      getContainingAssignment().getId());
-      theLHSLCGVertex_p->getExpressionVertexAlg().setLHSVariable(theLHS,
-								 getContainingAssignment().getId());
+      //theLHSLCGVertex_p->zeroOriginalVariable();
+      theLHSLCGVertex_p->setOriginalVariable(theLHS,
+					     getContainingAssignment().getId());
       // as we step through the assignments we add all the left hand sides as dependendents
       // and when we are done with one flattening section we remove the ones not needed
       theComputationalGraph.addToDependentList(*theLHSLCGVertex_p,

@@ -54,12 +54,6 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
-#include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
-#include "xaifBooster/system/inc/Symbol.hpp"
-#include "xaifBooster/system/inc/Scope.hpp"
-#include "xaifBooster/system/inc/Variable.hpp"
-#include "xaifBooster/system/inc/Assignment.hpp"
-
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"
 
 using namespace xaifBooster;
@@ -71,24 +65,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   public:
     
     ExpressionVertexAlg(ExpressionVertex& theContainingExpressionVertex);
-
-    virtual ~ExpressionVertexAlg();
-
-    void setRHSVariable(const Variable& aVariable,
-                        const ObjectWithId::Id& statementId);
-
-    void setLHSVariable(const Variable& aVariable,
-                        const ObjectWithId::Id& statementId);
-
-    const Variable& getRHSVariable() const;
-
-    const Variable& getLHSVariable() const;
-
-    bool hasLHSVariable() const;
-
-    const Variable& getPropagationVariable();
-
-    const ObjectWithId::Id& getStatementId() const;
+    virtual ~ExpressionVertexAlg(){}
 
     virtual void printXMLHierarchy(std::ostream& os) const;
 
@@ -97,19 +74,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual std::string debug() const;
 
   private: 
-
-    const Variable* myLHSVariable_p;
-    const Variable* myRHSVariable_p;
-
-    /**
-     * Variable, owned by this class, that will be used for propagation.
-     * There are two reasons this variable may be created:
-     *  - There is a possible aliasing conflict
-     *  - No variable already exists
-     */
-    Variable* myPropagationVariable_p;
-
-    ObjectWithId::Id myStatementId;
 
     /**
      * no def

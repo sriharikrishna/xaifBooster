@@ -524,9 +524,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * run the algorithm for creating the elminated graphs using thisMode
      */
     virtual void runElimination(Sequence& aSequence, 
-			//VariableCPList& theDepVertexPListCopyWithoutRemoval, 
-			SequenceHolder& aSequenceHolder,
-			PreaccumulationMode::PreaccumulationMode_E thisMode);
+				SequenceHolder& aSequenceHolder,
+				PreaccumulationMode::PreaccumulationMode_E thisMode);
     
     void incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder);
     
@@ -549,7 +548,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     generate(VariableHashTable& theListOfAlreadyAssignedSources,
 	     Sequence& aSequence, 
 	     VariableCPList& theDepVertexPListCopyWithoutRemovals, 
-	     SequenceHolder& aSequenceHolder); 
+	     SequenceHolder& aSequenceHolder,
+	     PreaccumulationMode::PreaccumulationMode_E thisMode); 
 
     typedef std::pair<const Variable*,
 		      xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
@@ -581,20 +581,33 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 					      const Variable& theIndepVariable,
 					      Sequence& aSequence); 
 
-    void generateRemainderGraphPropagators(VariableHashTable& theListOfAlreadyAssignedSources,
-					   Sequence& aSequence, 
-					   VariableCPList& theDepVertexPListCopyWithoutRemovals,
-					   VarDevPropPPairList& theListOfAlreadyAssignedDependents,
+    /**
+     * Traverse the remainder graph and check all edges for possible aliasing conflicts
+     * between the source and the target.  If a possible conflict is detected, then a
+     * new propagation variable is created for the source vertex.
+     * If the source vertex is an independent, then the RHS variable is replaced and a new setderiv is created.
+     */
+    void makePropagationVariables(Sequence& aSequence);
+
+    void generateRemainderGraphPropagators(Sequence& aSequence, 
 					   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList); 
 
-    void generateRemainderGraphEdgePropagator(const PrivateLinearizedComputationalGraphVertex& theSource, 
-					      const PrivateLinearizedComputationalGraphVertex& theTarget, 
+    void generateRemainderGraphEdgePropagator(const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV, 
+					      const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV, 
 					      const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
-					      VariableHashTable& theListOfAlreadyAssignedSources,
 					      Sequence& aSequence,
-					      VariableCPList& theDepVertexPListCopyWithoutRemovals,
-					      VarDevPropPPairList& theListOfAlreadyAssignedDependents,
 					      const InternalReferenceConcretizationList& theInternalReferenceConcretizationList); 
+
+    void generateSimpleRemainderPropagatorFromEdge(const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV,
+						   const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV,
+						   Sequence& aSequence,
+						   const Variable& theLocalJacobianEntry,
+						   const PrivateLinearizedComputationalGraphEdge& thePrivateEdge);
+
+    void generateSimpleRemainderPropagator(const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV,
+					   const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV,
+					   Sequence& aSequence,
+					   const Variable& theLocalJacobianEntry);
 
     const Variable& getEdgeLabel(const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
 				 const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
