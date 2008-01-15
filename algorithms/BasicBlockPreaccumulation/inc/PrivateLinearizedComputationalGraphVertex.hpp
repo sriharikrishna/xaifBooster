@@ -70,31 +70,50 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   public:
 
-    PrivateLinearizedComputationalGraphVertex(const ExpressionVertex& anExpressionVertex);
+    PrivateLinearizedComputationalGraphVertex();
+    ~PrivateLinearizedComputationalGraphVertex();
 
-    ~PrivateLinearizedComputationalGraphVertex(){}
+    bool hasOriginalVariable() const;
+    const Variable& getOriginalVariable() const;
+    void zeroOriginalVariable();
+    void setOriginalVariable(const Variable& aVariable,
+			     const ObjectWithId::Id& aStatementId);
 
-    const ExpressionVertex& getExpressionVertex() const;
+    const Variable& getPropagationVariable() const;
+    void createOrReplacePropagationVariable() const;
 
-    xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg& getExpressionVertexAlg() const;
-
-    void setSAX(xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& aSAX) const;
-
-    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& getSAX() const;
+    const ObjectWithId::Id& getStatementId() const;
 
     bool hasSAX() const;
+    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& getSAX() const;
+    void setSAX(xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& aSAX) const;
 
-    std::string debug() const ;
+    std::string debug() const;
     
-  private:
-   
-    /**
-     * Pointer to the expression vertex that corresponds to this PLCG vertex
-     */
-    const ExpressionVertex* myExpressionVertex_p;
+  private: 
 
     /**
-     * Used to keep track of whether this vertex has been involved in a sax yet
+     * Pointer to the variable that originally corresponds to this vertex.
+     * The variable is not owned by this class.
+     */
+    const Variable* myOriginalVariable_p;
+
+    /**
+     * Pointer to the variable that will be used for propagation in case there is no original variable,
+     * or the original variable had to be replaced because of possible aliasing issues.
+     * This variable is owned by this class, and is deleted in the dtor.
+     */
+    mutable Variable* myPropagationVariable_p;
+
+    /**
+     * set to the respective statement id if myOriginalVariable_p is set
+     */
+    ObjectWithId::Id myStatementId;
+
+    /**
+     * Used to keep track of whether this vertex has been involved in a sax yet.
+     * In case it has, this pointer is used to find the SAX.
+     * The sax is not owned by this class.
      */
     mutable xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* mySAX_p;
  
