@@ -56,6 +56,7 @@ namespace xaifBooster {
 
   PrintManager* PrintManager::ourPrintManagerInstance_p;
   const unsigned int PrintManager::ourDefaultIndentation=2;
+  bool PrintManager::ourVerbosity=false;
   
   PrintManager&
   PrintManager::getInstance() { 
@@ -82,5 +83,13 @@ namespace xaifBooster {
   PrintManager::indent(unsigned int additionalIndent) { 
     return std::string(my_indentation+additionalIndent,' ');
   } // end of indent
+
+  void PrintManager::setVerbose() { 
+    ourVerbosity=true;
+  } 
+
+  bool PrintManager::isVerbose() { 
+    return ourVerbosity;
+  }
 
 } // end of namespace 
