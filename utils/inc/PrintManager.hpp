@@ -58,7 +58,7 @@
 namespace xaifBooster { 
 
   /** 
-   * this class deals with indentation
+   * this class deals with indentation and verbosity
    */
   class PrintManager {
   public: 
@@ -89,11 +89,23 @@ namespace xaifBooster {
 
     static const unsigned int ourDefaultIndentation;
 
+    /** 
+     * turns on verbose output (default off)
+     */
+    static void setVerbose();
+
+    /** 
+     * queries verbosity
+     */
+    static bool isVerbose();
+
   private:
 
     static PrintManager* ourPrintManagerInstance_p;
 
     unsigned int my_indentation;
+
+    static bool ourVerbosity;
 
     PrintManager();
 
