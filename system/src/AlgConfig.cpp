@@ -53,6 +53,7 @@
 #include <iostream>
 
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/utils/inc/PrintManager.hpp"
 
 #include "xaifBooster/system/inc/AlgConfig.hpp"
 #include "xaifBooster/system/inc/Symbol.hpp"
@@ -70,7 +71,7 @@ namespace xaifBooster {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgsvpb");
+    return std::string("iocdgsvpbV");
   } 
 
   void AlgConfig::config() { 
@@ -91,6 +92,8 @@ namespace xaifBooster {
 	Symbol::addSymbolNamesToPassivate(argAsString('p'));
       if (isSet('b'))
 	SubroutineCall::noBlackBoxOptimism();
+      if (isSet('V'))
+	PrintManager::setVerbose();
       myInputValidationFlag=isSet('v');
       myConfiguredFlag=true;
     } 
@@ -112,7 +115,8 @@ namespace xaifBooster {
               << "             [-p \"<list of symbols to forcibly passivate>\" ]" << std::endl 
               << "                 space separated list enclosed in double quotes" << std::endl
               << "             [-b] pessimistic assumptions for black box routines" << std::endl 
-	      << "             [-v] validate the input against the schema" << std::endl;
+	      << "             [-v] validate the input against the schema" << std::endl
+	      << "             [-V] verbose xaif output" << std::endl;
   } 
 
   const std::string& AlgConfig::getInputFileName() const { 
