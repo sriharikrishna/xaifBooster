@@ -38,10 +38,10 @@
 
     <xaif:Scope vertex_id="3" annotation="{SymTab_Id#3}">
       <xaif:SymbolTable>
-        <xaif:Symbol symbol_id="X_1" kind="variable" type="real" shape="vector" annotation="{Sym_Id#1}" active="1">
+        <xaif:Symbol symbol_id="X_1" kind="variable" type="real" feType="F8" shape="vector" annotation="{Sym_Id#1}" active="1">
           <xaif:DimensionBounds lower="1" upper="1"/>
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="Y_2" kind="variable" type="real" shape="vector" annotation="{Sym_Id#2}" active="1">
+        <xaif:Symbol symbol_id="Y_2" kind="variable" type="real" feType="F8" shape="vector" annotation="{Sym_Id#2}" active="1">
           <xaif:DimensionBounds lower="1" upper="1"/>
         </xaif:Symbol>
       </xaif:SymbolTable>
@@ -121,7 +121,7 @@
           <xaif:ArrayElementReference vertex_id="2">
             <xaif:IndexTriplet>
               <xaif:Index>
-                <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
               </xaif:Index>
             </xaif:IndexTriplet>
           </xaif:ArrayElementReference>
@@ -134,7 +134,7 @@
             <xaif:ArrayElementReference vertex_id="2">
               <xaif:IndexTriplet>
                 <xaif:Index>
-                  <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                  <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                 </xaif:Index>
               </xaif:IndexTriplet>
             </xaif:ArrayElementReference>

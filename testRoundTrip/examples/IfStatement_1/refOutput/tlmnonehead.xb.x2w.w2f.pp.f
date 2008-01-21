@@ -31,7 +31,7 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 2.0D00
+      Y(1)%v = 2.0
       CALL zero_deriv(Y(1))
       IF (X(1)%v .GT. 0.0D00) THEN
         Y(1)%v = X(1)%v

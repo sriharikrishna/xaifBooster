@@ -497,8 +497,8 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 1.0D00
-      __value__(Y(2)) = 1.0D00
+      __value__(Y(1)) = 1.0
+      __value__(Y(2)) = 1.0
       GLOBALSTRING = 'yes'
       CALL foo(__deriv__(X), __deriv__(Y))
       GLOBALSTRING = 'both'
@@ -506,8 +506,8 @@ C$OPENAD XXX Template ad_template.f
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 1.0D00
-      __value__(Y(2)) = 1.0D00
+      __value__(Y(1)) = 1.0
+      __value__(Y(2)) = 1.0
       GLOBALSTRING = 'yes'
       CALL foo(__deriv__(X), __deriv__(Y))
       GLOBALSTRING = 'both'
@@ -542,8 +542,8 @@ C     $OpenAD$ INLINE cp_arg_restore_string_scalar(subst)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 1.0D00
-      __value__(Y(2)) = 1.0D00
+      __value__(Y(1)) = 1.0
+      __value__(Y(2)) = 1.0
       GLOBALSTRING = 'yes'
       CALL foo(__deriv__(X), __deriv__(Y))
       GLOBALSTRING = 'both'

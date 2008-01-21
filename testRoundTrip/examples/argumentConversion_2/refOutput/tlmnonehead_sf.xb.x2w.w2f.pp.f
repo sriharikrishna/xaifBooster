@@ -61,7 +61,7 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL foo(X,Y)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(OpenAD_Symbol_0,2.0D00)
+      CALL convert_p2a_scalar(OpenAD_Symbol_0,2.0)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(OpenAD_Symbol_1,PY)
       CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)

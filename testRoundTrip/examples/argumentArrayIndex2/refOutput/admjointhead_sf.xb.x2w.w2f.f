@@ -142,7 +142,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       K = 1
       CALL foo(__deriv__(X(K)), __deriv__(Y))
-      P(1) = 1.0D00
+      P(1) = 1.0
       L = 1
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_0), P(K))
@@ -161,7 +161,7 @@ C$OPENAD XXX Template ad_template.f
       CALL foo(__deriv__(X(K)), __deriv__(Y))
 C     $OpenAD$ INLINE push_i(subst)
       CALL push_i(K)
-      P(1) = 1.0D00
+      P(1) = 1.0
       L = 1
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_0), P(K))
@@ -206,7 +206,7 @@ C$OPENAD XXX Template ad_template.f
       CALL foo(__deriv__(X(K)), __deriv__(Y))
 C     $OpenAD$ INLINE push_i(subst)
       CALL push_i(K)
-      P(1) = 1.0D00
+      P(1) = 1.0
       L = 1
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_0), P(K))

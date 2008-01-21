@@ -144,8 +144,8 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 1.0D00
-      __value__(Y(2)) = 1.0D00
+      __value__(Y(1)) = 1.0
+      __value__(Y(2)) = 1.0
       CALL zero_deriv(__deriv__(Y(1)))
       CALL zero_deriv(__deriv__(Y(2)))
       GLOBALSTRING = 'yes'

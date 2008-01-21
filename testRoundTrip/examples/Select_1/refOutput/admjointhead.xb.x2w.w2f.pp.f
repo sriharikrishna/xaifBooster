@@ -94,7 +94,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) select_expr_temp_0
       REAL(w2f__8) OpenAD_Symbol_18
       REAL(w2f__8) OpenAD_Symbol_19
 C
@@ -153,8 +152,7 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       I = 1
-      Y(1)%v = 2.0D00
-      select_expr_temp_0 = I
+      Y(1)%v = 2.0
       IF ( I  .EQ.  1)  GO TO  4
       IF ( I  .EQ.  2)  GO TO  8
       GO TO 9
@@ -184,8 +182,7 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
       I = 1
-      Y(1)%v = 2.0D00
-      select_expr_temp_0 = I
+      Y(1)%v = 2.0
       IF ( I  .EQ.  1)  GO TO  40
       IF ( I  .EQ.  2)  GO TO  44
       GO TO 45

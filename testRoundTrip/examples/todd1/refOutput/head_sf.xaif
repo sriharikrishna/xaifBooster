@@ -37,171 +37,171 @@
 
     <xaif:Scope vertex_id="3" annotation="{SymTab_Id#3}">
       <xaif:SymbolTable>
-        <xaif:Symbol symbol_id="OBJ_1" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#1}" active="1">
+        <xaif:Symbol symbol_id="OBJ_1" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#1}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="G_OBJ0_2" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#2}" active="1">
+        <xaif:Symbol symbol_id="G_OBJ0_2" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#2}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="G_OBJ1_3" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#3}" active="1">
+        <xaif:Symbol symbol_id="G_OBJ1_3" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#3}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="G_OBJ2_4" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#4}" active="1">
+        <xaif:Symbol symbol_id="G_OBJ2_4" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#4}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="G_OBJ3_5" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#5}" active="1">
+        <xaif:Symbol symbol_id="G_OBJ3_5" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#5}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="G_OBJ4_6" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#6}" active="1">
+        <xaif:Symbol symbol_id="G_OBJ4_6" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#6}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="G_OBJ5_7" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#7}" active="1">
+        <xaif:Symbol symbol_id="G_OBJ5_7" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#7}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="X0_8" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#8}" active="1">
+        <xaif:Symbol symbol_id="X0_8" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#8}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="X1_9" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#9}" active="1">
+        <xaif:Symbol symbol_id="X1_9" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#9}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="X2_10" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#10}" active="1">
+        <xaif:Symbol symbol_id="X2_10" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#10}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="X3_11" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#11}" active="1">
+        <xaif:Symbol symbol_id="X3_11" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#11}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="X4_12" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#12}" active="1">
+        <xaif:Symbol symbol_id="X4_12" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#12}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="X5_13" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#13}" active="1">
+        <xaif:Symbol symbol_id="X5_13" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#13}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ0_14" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#14}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ0_14" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#14}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ1_15" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#15}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ1_15" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#15}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ2_16" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#16}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ2_16" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#16}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ3_17" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#17}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ3_17" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#17}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ4_18" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#18}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ4_18" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#18}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ5_19" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#19}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ5_19" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#19}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ6_20" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#20}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ6_20" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#20}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ7_21" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#21}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ7_21" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#21}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ8_22" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#22}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ8_22" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#22}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ9_23" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#23}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ9_23" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#23}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ10_24" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#24}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ10_24" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#24}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ11_25" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#25}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ11_25" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#25}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ12_26" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#26}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ12_26" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#26}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ13_27" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#27}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ13_27" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#27}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ14_28" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#28}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ14_28" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#28}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ15_29" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#29}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ15_29" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#29}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ16_30" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#30}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ16_30" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#30}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ17_31" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#31}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ17_31" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#31}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ18_32" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#32}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ18_32" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#32}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ19_33" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#33}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ19_33" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#33}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="H_OBJ20_34" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#34}" active="1">
+        <xaif:Symbol symbol_id="H_OBJ20_34" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#34}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="A_35" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#35}" active="0">
+        <xaif:Symbol symbol_id="A_35" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#35}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="AB_36" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#36}" active="0">
+        <xaif:Symbol symbol_id="AB_36" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#36}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="ADJ_M0_37" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#37}" active="1">
+        <xaif:Symbol symbol_id="ADJ_M0_37" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#37}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="ADJ_M1_38" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#38}" active="1">
+        <xaif:Symbol symbol_id="ADJ_M1_38" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#38}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="ADJ_M2_39" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#39}" active="1">
+        <xaif:Symbol symbol_id="ADJ_M2_39" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#39}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="ADJ_M3_40" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#40}" active="1">
+        <xaif:Symbol symbol_id="ADJ_M3_40" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#40}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="B_41" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#41}" active="0">
+        <xaif:Symbol symbol_id="B_41" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#41}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="BM1_42" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#42}" active="0">
+        <xaif:Symbol symbol_id="BM1_42" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#42}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="D00_43" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#43}" active="1">
+        <xaif:Symbol symbol_id="D00_43" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#43}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="D01_44" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#44}" active="1">
+        <xaif:Symbol symbol_id="D01_44" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#44}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="D03_45" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#45}" active="1">
+        <xaif:Symbol symbol_id="D03_45" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#45}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="D11_46" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#46}" active="1">
+        <xaif:Symbol symbol_id="D11_46" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#46}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="D12_47" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#47}" active="1">
+        <xaif:Symbol symbol_id="D12_47" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#47}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="F_48" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#48}" active="1">
+        <xaif:Symbol symbol_id="F_48" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#48}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="FOUR3RD_49" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#49}" active="0">
+        <xaif:Symbol symbol_id="FOUR3RD_49" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#49}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="G_50" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#50}" active="1">
+        <xaif:Symbol symbol_id="G_50" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#50}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="GG_51" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#51}" active="1">
+        <xaif:Symbol symbol_id="GG_51" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#51}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="LOC1_52" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#52}" active="1">
+        <xaif:Symbol symbol_id="LOC1_52" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#52}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="LOC2_53" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#53}" active="1">
+        <xaif:Symbol symbol_id="LOC2_53" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#53}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M00_54" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#54}" active="1">
+        <xaif:Symbol symbol_id="M00_54" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#54}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M01_55" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#55}" active="1">
+        <xaif:Symbol symbol_id="M01_55" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#55}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M02_56" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#56}" active="1">
+        <xaif:Symbol symbol_id="M02_56" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#56}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M03_57" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#57}" active="1">
+        <xaif:Symbol symbol_id="M03_57" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#57}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M11_58" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#58}" active="1">
+        <xaif:Symbol symbol_id="M11_58" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#58}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M12_59" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#59}" active="1">
+        <xaif:Symbol symbol_id="M12_59" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#59}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M13_60" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#60}" active="1">
+        <xaif:Symbol symbol_id="M13_60" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#60}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M22_61" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#61}" active="1">
+        <xaif:Symbol symbol_id="M22_61" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#61}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M23_62" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#62}" active="1">
+        <xaif:Symbol symbol_id="M23_62" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#62}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="M33_63" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#63}" active="1">
+        <xaif:Symbol symbol_id="M33_63" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#63}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="MATR0_64" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#64}" active="1">
+        <xaif:Symbol symbol_id="MATR0_64" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#64}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="MATR1_65" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#65}" active="1">
+        <xaif:Symbol symbol_id="MATR1_65" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#65}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="MATR2_66" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#66}" active="1">
+        <xaif:Symbol symbol_id="MATR2_66" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#66}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="MATR3_67" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#67}" active="1">
+        <xaif:Symbol symbol_id="MATR3_67" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#67}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="NORM_68" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#68}" active="0">
+        <xaif:Symbol symbol_id="NORM_68" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#68}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R00_69" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#69}" active="1">
+        <xaif:Symbol symbol_id="R00_69" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#69}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R01_70" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#70}" active="0">
+        <xaif:Symbol symbol_id="R01_70" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#70}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R02_71" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#71}" active="1">
+        <xaif:Symbol symbol_id="R02_71" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#71}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R03_72" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#72}" active="1">
+        <xaif:Symbol symbol_id="R03_72" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#72}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R11_73" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#73}" active="1">
+        <xaif:Symbol symbol_id="R11_73" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#73}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R12_74" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#74}" active="1">
+        <xaif:Symbol symbol_id="R12_74" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#74}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R13_75" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#75}" active="1">
+        <xaif:Symbol symbol_id="R13_75" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#75}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R22_76" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#76}" active="0">
+        <xaif:Symbol symbol_id="R22_76" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#76}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R23_77" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#77}" active="0">
+        <xaif:Symbol symbol_id="R23_77" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#77}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="R33_78" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#78}" active="0">
+        <xaif:Symbol symbol_id="R33_78" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#78}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="SQRT3_79" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#79}" active="0">
+        <xaif:Symbol symbol_id="SQRT3_79" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#79}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="THIRD_80" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#80}" active="0">
+        <xaif:Symbol symbol_id="THIRD_80" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#80}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="TSQRT3_81" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#81}" active="0">
+        <xaif:Symbol symbol_id="TSQRT3_81" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#81}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="TWO3RD_82" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#82}" active="0">
+        <xaif:Symbol symbol_id="TWO3RD_82" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#82}" active="0">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="TWOSQRT3_83" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#83}" active="0">
+        <xaif:Symbol symbol_id="TWOSQRT3_83" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#83}" active="0">
         </xaif:Symbol>
       </xaif:SymbolTable>
     </xaif:Scope>
@@ -1292,7 +1292,7 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="A_35"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="5.00000000000000000000e-01"/>
+          <xaif:Constant vertex_id="1" type="real" feType="F8" value="5.00000000000000000000e-01"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="77" lineNumber="88" do_chain="1">
@@ -1300,7 +1300,7 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="B_41"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="-1.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="1" type="real" feType="F8" value="-1.00000000000000000000e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="79" lineNumber="89" do_chain="1">
@@ -1324,7 +1324,7 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="SQRT3_79"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="5.77350258827209472656e-01"/>
+          <xaif:Constant vertex_id="1" type="real" feType="F8" value="5.77350258827209472656e-01"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="85" lineNumber="91" do_chain="1">
@@ -1332,7 +1332,7 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="TSQRT3_81"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="1.15470051765441894531e+00"/>
+          <xaif:Constant vertex_id="1" type="real" feType="F8" value="1.15470051765441894531e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="87" lineNumber="92" do_chain="1">
@@ -1340,7 +1340,7 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="TWOSQRT3_83"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="1.15470051765441894531e+00"/>
+          <xaif:Constant vertex_id="1" type="real" feType="F8" value="1.15470051765441894531e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="89" lineNumber="93" do_chain="1">
@@ -1348,7 +1348,7 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="THIRD_80"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="3.33333343267440795898e-01"/>
+          <xaif:Constant vertex_id="1" type="real" feType="F8" value="3.33333343267440795898e-01"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="91" lineNumber="94" do_chain="1">
@@ -1356,7 +1356,7 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="TWO3RD_82"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="6.66666686534881591797e-01"/>
+          <xaif:Constant vertex_id="1" type="real" feType="F8" value="6.66666686534881591797e-01"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="93" lineNumber="95" do_chain="1">
@@ -1364,7 +1364,7 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="FOUR3RD_49"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="1.33333337306976318359e+00"/>
+          <xaif:Constant vertex_id="1" type="real" feType="F8" value="1.33333337306976318359e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="95" lineNumber="96" do_chain="1">
@@ -1372,7 +1372,7 @@
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="BM1_42"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:Constant vertex_id="1" type="real" value="-2.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="1" type="real" feType="F8" value="-2.00000000000000000000e+00"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
       <xaif:Assignment statement_id="97" lineNumber="98" do_chain="1">
@@ -1406,7 +1406,7 @@
           <xaif:VariableReference vertex_id="6" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="X2_10"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="7" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="7" type="real" feType="F8" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="6" target="5" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="7" target="5" position="2"/>
           <xaif:VariableReference vertex_id="8" du_ud="2">
@@ -1454,7 +1454,7 @@
           <xaif:VariableReference vertex_id="6" du_ud="2">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="X5_13"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="7" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="7" type="real" feType="F8" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="6" target="5" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="7" target="5" position="2"/>
           <xaif:VariableReference vertex_id="8" du_ud="2">
@@ -1528,7 +1528,7 @@
           <xaif:VariableReference vertex_id="2" du_ud="10">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="M03_57"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="3" type="real" feType="F8" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -1542,7 +1542,7 @@
           <xaif:VariableReference vertex_id="2" du_ud="11">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="M12_59"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="3" type="real" feType="F8" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -1679,7 +1679,7 @@
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="A_35"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="3" name="div_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="4" type="real" value="1.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="4" type="real" feType="F8" value="1.00000000000000000000e+00"/>
           <xaif:VariableReference vertex_id="5" du_ud="19">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="G_50"/>
           </xaif:VariableReference>
@@ -1715,7 +1715,7 @@
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="AB_36"/>
           </xaif:VariableReference>
           <xaif:Intrinsic vertex_id="3" name="div_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="4" type="real" value="1.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="4" type="real" feType="F8" value="1.00000000000000000000e+00"/>
           <xaif:Intrinsic vertex_id="5" name="mul_scal_scal" type="***"/>
           <xaif:VariableReference vertex_id="6" du_ud="19">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="G_50"/>
@@ -1747,7 +1747,7 @@
           <xaif:ExpressionEdge edge_id="1" source="3" target="2" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="4" target="2" position="2"/>
           <xaif:Intrinsic vertex_id="5" name="div_scal_scal" type="***"/>
-          <xaif:Constant vertex_id="6" type="real" value="1.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="6" type="real" feType="F8" value="1.00000000000000000000e+00"/>
           <xaif:Intrinsic vertex_id="7" name="mul_scal_scal" type="***"/>
           <xaif:VariableReference vertex_id="8" du_ud="19">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="G_50"/>
@@ -1794,7 +1794,7 @@
           <xaif:VariableReference vertex_id="2" du_ud="20">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="LOC1_52"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="3" type="real" feType="F8" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -1970,7 +1970,7 @@
           <xaif:VariableReference vertex_id="2" du_ud="27">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="LOC1_52"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="3" type="real" feType="F8" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -2034,7 +2034,7 @@
           <xaif:VariableReference vertex_id="2" du_ud="30">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="LOC1_52"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="3" type="real" feType="F8" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -2048,7 +2048,7 @@
           <xaif:VariableReference vertex_id="2" du_ud="22">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="LOC2_53"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="real" value="2.00000000000000000000e+00"/>
+          <xaif:Constant vertex_id="3" type="real" feType="F8" value="2.00000000000000000000e+00"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>
@@ -2860,7 +2860,7 @@
           <xaif:VariableReference vertex_id="2" du_ud="56">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="R13_75"/>
           </xaif:VariableReference>
-          <xaif:Constant vertex_id="3" type="real" value="1.20000000000000000000e+01"/>
+          <xaif:Constant vertex_id="3" type="real" feType="F8" value="1.20000000000000000000e+01"/>
           <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
           <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
         </xaif:AssignmentRHS>

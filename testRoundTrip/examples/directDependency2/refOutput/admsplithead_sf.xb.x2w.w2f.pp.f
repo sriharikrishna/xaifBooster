@@ -212,7 +212,7 @@ C$OPENAD XXX Template ad_template.f
       T%v = (X(1)%v+X(2)%v)
       T2%v = (T%v*2.0D00)
       CALL foo()
-      Y%v = (T2%v*3.0D00+T%v*2.0D00)
+      Y%v = (T2%v*DBLE(3.0)+T%v*2.0D00)
       RETURN
           end if
           if (our_rev_mode%tape) then
@@ -237,8 +237,8 @@ C$OPENAD XXX Template ad_template.f
           double_tape(double_tape_pointer) = OpenAD_Symbol_17
           double_tape_pointer = double_tape_pointer+1
       CALL foo()
-      OpenAD_Symbol_11 = (T2%v*3.0D00+T%v*2.0D00)
-      OpenAD_Symbol_7 = 3.0D00
+      OpenAD_Symbol_11 = (T2%v*DBLE(3.0)+T%v*2.0D00)
+      OpenAD_Symbol_7 = 3.0
       OpenAD_Symbol_5 = 1_w2f__i8
       OpenAD_Symbol_9 = 2.0D00
       OpenAD_Symbol_6 = 1_w2f__i8

@@ -75,8 +75,8 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      PX(1) = 1.0D00
-      PX(2) = 2.0D00
+      PX(1) = 1.0
+      PX(2) = 2.0
       CALL foo(X,Y)
 C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
       CALL convert_p2a_vector(OpenAD_Symbol_0,PX)

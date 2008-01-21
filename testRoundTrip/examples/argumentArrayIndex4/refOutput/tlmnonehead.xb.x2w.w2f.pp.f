@@ -68,7 +68,7 @@ C$OPENAD XXX Template ad_template.f
       CALL setderiv(OpenAD_Symbol_7,Y)
       CALL setderiv(Q(1),OpenAD_Symbol_7)
       Y%v = Q(1)%v
-      P(1) = 1.0D00
+      P(1) = 1.0
       CALL setderiv(OpenAD_Symbol_8,Q(1))
       CALL setderiv(Y,OpenAD_Symbol_8)
       L = 1

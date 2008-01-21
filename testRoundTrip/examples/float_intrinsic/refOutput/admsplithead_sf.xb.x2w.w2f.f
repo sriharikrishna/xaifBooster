@@ -38,12 +38,12 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = (FLOAT(INT(6_w2f__i8)) * __value__(X(1)))
+      __value__(Y(1)) = (FLOAT(6) * __value__(X(1)))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_0 = FLOAT(INT(6_w2f__i8))
+      OpenAD_Symbol_0 = FLOAT(6)
       OpenAD_Symbol_3 = (OpenAD_Symbol_0 * __value__(X(1)))
       OpenAD_Symbol_2 = OpenAD_Symbol_0
       __value__(Y(1)) = OpenAD_Symbol_3
@@ -79,7 +79,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_0 = FLOAT(INT(6_w2f__i8))
+      OpenAD_Symbol_0 = FLOAT(6)
       OpenAD_Symbol_3 = (OpenAD_Symbol_0 * __value__(X(1)))
       OpenAD_Symbol_2 = OpenAD_Symbol_0
       __value__(Y(1)) = OpenAD_Symbol_3

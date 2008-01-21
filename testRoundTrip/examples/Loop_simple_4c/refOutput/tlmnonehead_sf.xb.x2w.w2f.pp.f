@@ -140,8 +140,8 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
       CALL zero_deriv(Y(1))
       CALL zero_deriv(Y(2))
       GLOBALSTRING = 'yes'

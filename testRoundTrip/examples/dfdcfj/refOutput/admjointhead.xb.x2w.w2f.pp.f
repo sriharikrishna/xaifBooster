@@ -446,8 +446,6 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      INTEGER(w2f__i8) t__1
-      INTEGER(w2f__i8) t__2
       type(active) :: DPDX
       type(active) :: DPDY
       REAL(w2f__8) FOUR
@@ -488,9 +486,6 @@ C
       PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
       PARAMETER ( ZERO = 0.0D00)
-      INTEGER(w2f__i4) t__3
-      INTEGER(w2f__i4) t__4
-      INTEGER(w2f__i4) t__5
       INTEGER(w2f__i8) OpenAD_Symbol_399
       INTEGER(w2f__i8) OpenAD_Symbol_400
       INTEGER(w2f__i8) OpenAD_Symbol_401
@@ -655,30 +650,26 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      t__1 = INT(NX * NY)
-      t__2 = MAX(INT(NX * NY), 0_w2f__i8)
       N = NX * NY
-      NXP1 = (NX + INT(1_w2f__i8))
-      NYP1 = (NY + INT(1_w2f__i8))
+      NXP1 = (NX + 1)
+      NYP1 = (NY + 1)
       HX = (1.0D00 / NXP1)
       HY = (1.0D00 / NYP1)
       HY2 = (HY * HY)
       HX2 = (HX * HX)
-      t__3 = NY
       DO I = 1, NY, 1
-        t__4 = NX
         DO J = 1, NX, 1
           K = J + NX *(I +(-1))
-          IF((I .eq. INT(1_w2f__i8)) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((I .eq. 1) .OR.(J .eq. 1)) THEN
             PBL%v = 0.0D00
           ELSE
             PBL%v = X(K-NX+(-1))%v
           ENDIF
-          IF(I .eq. INT(1_w2f__i8)) THEN
+          IF(I .eq. 1) THEN
             PB%v = 0.0D00
             PBB%v = X(K)%v
           ELSE
-            IF(I .eq. INT(2_w2f__i8)) THEN
+            IF(I .eq. 2) THEN
               PB%v = X(K-NX)%v
               PBB%v = 0.0D00
             ELSE
@@ -686,16 +677,16 @@ C$OPENAD XXX Template ad_template.f
               PBB%v = X(K-NX*2)%v
             ENDIF
           ENDIF
-          IF((NX .eq. J) .OR.(I .eq. INT(1_w2f__i8))) THEN
+          IF((NX .eq. J) .OR.(I .eq. 1)) THEN
             PBR%v = 0.0D00
           ELSE
             PBR%v = X(K-NX+1)%v
           ENDIF
-          IF(J .eq. INT(1_w2f__i8)) THEN
+          IF(J .eq. 1) THEN
             PL%v = 0.0D00
             PLL%v = X(K)%v
           ELSE
-            IF(J .eq. INT(2_w2f__i8)) THEN
+            IF(J .eq. 2) THEN
               PL%v = X(K+(-1))%v
               PLL%v = 0.0D00
             ELSE
@@ -704,7 +695,7 @@ C$OPENAD XXX Template ad_template.f
             ENDIF
           ENDIF
           P%v = X(K)%v
-          IF(J .eq.(NX + INT((-1_w2f__i8)))) THEN
+          IF(J .eq.(NX +(-1))) THEN
             PR%v = X(K+1)%v
             PRR%v = 0.0D00
           ELSE
@@ -716,12 +707,12 @@ C$OPENAD XXX Template ad_template.f
               PRR%v = X(K+2)%v
             ENDIF
           ENDIF
-          IF((NY .eq. I) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((NY .eq. I) .OR.(J .eq. 1)) THEN
             PTL%v = 0.0D00
           ELSE
             PTL%v = X(NX+K+(-1))%v
           ENDIF
-          IF(I .eq.(NY + INT((-1_w2f__i8)))) THEN
+          IF(I .eq.(NY +(-1))) THEN
             PT%v = X(NX+K)%v
             PTT%v = 0.0D00
           ELSE
@@ -755,7 +746,6 @@ C$OPENAD XXX Template ad_template.f
      +*2.0D00))-((DPDX%v*(PTLAP%v-PBLAP%v))/(HY*2.0D00))))
         END DO
       END DO
-      t__5 = N
       DO K = 1, N, 1
         FVEC(INT(K))%v = (FVEC(K)%v*HX2*HY2)
       END DO
@@ -773,37 +763,33 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      t__1 = INT(NX * NY)
-      t__2 = MAX(INT(NX * NY), 0_w2f__i8)
       N = NX * NY
-      NXP1 = (NX + INT(1_w2f__i8))
-      NYP1 = (NY + INT(1_w2f__i8))
+      NXP1 = (NX + 1)
+      NYP1 = (NY + 1)
       HX = (1.0D00 / NXP1)
       HY = (1.0D00 / NYP1)
       HY2 = (HY * HY)
       HX2 = (HX * HX)
-      t__3 = NY
       OpenAD_Symbol_327 = 0_w2f__i8
       DO I = 1, NY, 1
-        t__4 = NX
         OpenAD_Symbol_328 = 0_w2f__i8
         DO J = 1, NX, 1
           K = J + NX *(I +(-1))
-          IF((I .eq. INT(1_w2f__i8)) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((I .eq. 1) .OR.(J .eq. 1)) THEN
             PBL%v = 0.0D00
             OpenAD_Symbol_329 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_329
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
             PBL%v = X(K-NX+(-1))%v
-            OpenAD_Symbol_414 = (K - NX + INT((-1_w2f__i8)))
+            OpenAD_Symbol_414 = (K - NX +(-1))
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_414
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_330 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_330
           integer_tape_pointer = integer_tape_pointer+1
           ENDIF
-          IF(I .eq. INT(1_w2f__i8)) THEN
+          IF(I .eq. 1) THEN
             PB%v = 0.0D00
             PBB%v = X(K)%v
           integer_tape(integer_tape_pointer) = K
@@ -812,7 +798,7 @@ C$OPENAD XXX Template ad_template.f
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_333
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
-            IF(I .eq. INT(2_w2f__i8)) THEN
+            IF(I .eq. 2) THEN
               PB%v = X(K-NX)%v
               PBB%v = 0.0D00
               OpenAD_Symbol_411 = (K - NX)
@@ -824,7 +810,7 @@ C$OPENAD XXX Template ad_template.f
             ELSE
               PB%v = X(K-NX)%v
               PBB%v = X(K-NX*2)%v
-              OpenAD_Symbol_412 = (K - NX * INT(2_w2f__i8))
+              OpenAD_Symbol_412 = (K - NX * 2)
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_412
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_413 = (K - NX)
@@ -838,21 +824,21 @@ C$OPENAD XXX Template ad_template.f
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_334
           integer_tape_pointer = integer_tape_pointer+1
           ENDIF
-          IF((NX .eq. J) .OR.(I .eq. INT(1_w2f__i8))) THEN
+          IF((NX .eq. J) .OR.(I .eq. 1)) THEN
             PBR%v = 0.0D00
             OpenAD_Symbol_335 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_335
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
             PBR%v = X(K-NX+1)%v
-            OpenAD_Symbol_410 = (K - NX + INT(1_w2f__i8))
+            OpenAD_Symbol_410 = (K - NX + 1)
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_410
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_336 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_336
           integer_tape_pointer = integer_tape_pointer+1
           ENDIF
-          IF(J .eq. INT(1_w2f__i8)) THEN
+          IF(J .eq. 1) THEN
             PL%v = 0.0D00
             PLL%v = X(K)%v
           integer_tape(integer_tape_pointer) = K
@@ -861,10 +847,10 @@ C$OPENAD XXX Template ad_template.f
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_339
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
-            IF(J .eq. INT(2_w2f__i8)) THEN
+            IF(J .eq. 2) THEN
               PL%v = X(K+(-1))%v
               PLL%v = 0.0D00
-              OpenAD_Symbol_407 = (K + INT((-1_w2f__i8)))
+              OpenAD_Symbol_407 = (K +(-1))
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_407
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_337 = 1_w2f__i8
@@ -873,10 +859,10 @@ C$OPENAD XXX Template ad_template.f
             ELSE
               PL%v = X(K+(-1))%v
               PLL%v = X(K+(-2))%v
-              OpenAD_Symbol_408 = (K + INT((-2_w2f__i8)))
+              OpenAD_Symbol_408 = (K +(-2))
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_408
           integer_tape_pointer = integer_tape_pointer+1
-              OpenAD_Symbol_409 = (K + INT((-1_w2f__i8)))
+              OpenAD_Symbol_409 = (K +(-1))
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_409
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_338 = 0_w2f__i8
@@ -890,10 +876,10 @@ C$OPENAD XXX Template ad_template.f
           P%v = X(K)%v
           integer_tape(integer_tape_pointer) = K
           integer_tape_pointer = integer_tape_pointer+1
-          IF(J .eq.(NX + INT((-1_w2f__i8)))) THEN
+          IF(J .eq.(NX +(-1))) THEN
             PR%v = X(K+1)%v
             PRR%v = 0.0D00
-            OpenAD_Symbol_399 = (K + INT(1_w2f__i8))
+            OpenAD_Symbol_399 = (K + 1)
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_399
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_343 = 1_w2f__i8
@@ -911,10 +897,10 @@ C$OPENAD XXX Template ad_template.f
             ELSE
               PR%v = X(K+1)%v
               PRR%v = X(K+2)%v
-              OpenAD_Symbol_405 = (K + INT(2_w2f__i8))
+              OpenAD_Symbol_405 = (K + 2)
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_405
           integer_tape_pointer = integer_tape_pointer+1
-              OpenAD_Symbol_406 = (K + INT(1_w2f__i8))
+              OpenAD_Symbol_406 = (K + 1)
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_406
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_342 = 0_w2f__i8
@@ -925,21 +911,21 @@ C$OPENAD XXX Template ad_template.f
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_344
           integer_tape_pointer = integer_tape_pointer+1
           ENDIF
-          IF((NY .eq. I) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((NY .eq. I) .OR.(J .eq. 1)) THEN
             PTL%v = 0.0D00
             OpenAD_Symbol_345 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_345
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
             PTL%v = X(NX+K+(-1))%v
-            OpenAD_Symbol_404 = (NX + K + INT((-1_w2f__i8)))
+            OpenAD_Symbol_404 = (NX + K +(-1))
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_404
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_346 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_346
           integer_tape_pointer = integer_tape_pointer+1
           ENDIF
-          IF(I .eq.(NY + INT((-1_w2f__i8)))) THEN
+          IF(I .eq.(NY +(-1))) THEN
             PT%v = X(NX+K)%v
             PTT%v = 0.0D00
             OpenAD_Symbol_400 = (NX + K)
@@ -964,7 +950,7 @@ C$OPENAD XXX Template ad_template.f
             ELSE
               PT%v = X(NX+K)%v
               PTT%v = X(K+NX*2)%v
-              OpenAD_Symbol_402 = (K + NX * INT(2_w2f__i8))
+              OpenAD_Symbol_402 = (K + NX * 2)
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_402
           integer_tape_pointer = integer_tape_pointer+1
               OpenAD_Symbol_403 = (NX + K)
@@ -985,7 +971,7 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
           ELSE
             PTR%v = X(NX+K+1)%v
-            OpenAD_Symbol_401 = (NX + K + INT(1_w2f__i8))
+            OpenAD_Symbol_401 = (NX + K + 1)
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_401
           integer_tape_pointer = integer_tape_pointer+1
             OpenAD_Symbol_352 = 0_w2f__i8
@@ -1393,7 +1379,6 @@ C$OPENAD XXX Template ad_template.f
       END DO
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_327
           integer_tape_pointer = integer_tape_pointer+1
-      t__5 = N
       OpenAD_Symbol_353 = 0_w2f__i8
       DO K = 1, N, 1
         OpenAD_Symbol_165 = (HX2 * HY2)

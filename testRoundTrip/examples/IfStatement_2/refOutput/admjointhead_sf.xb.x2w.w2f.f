@@ -62,7 +62,7 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 2.0D00
+      __value__(Y(1)) = 2.0
       IF(__value__(X(1)) .GT. 0.0D00) THEN
         __value__(Y(1)) = __value__(X(1))
         IF(__value__(X(1)) .GT. 1.0D00) THEN
@@ -77,7 +77,7 @@ C$OPENAD XXX Template ad_template.f
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 2.0D00
+      __value__(Y(1)) = 2.0
       IF(__value__(X(1)) .GT. 0.0D00) THEN
         __value__(Y(1)) = __value__(X(1))
         IF(__value__(X(1)) .GT. 1.0D00) THEN
@@ -191,7 +191,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 2.0D00
+      __value__(Y(1)) = 2.0
       IF(__value__(X(1)) .GT. 0.0D00) THEN
         __value__(Y(1)) = __value__(X(1))
         IF(__value__(X(1)) .GT. 1.0D00) THEN

@@ -43,7 +43,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 10, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           Y(1)%v = X(1)%v
           CALL setderiv(OpenAD_Symbol_3,X(1))
           CALL setderiv(Y(1),OpenAD_Symbol_3)

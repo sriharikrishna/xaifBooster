@@ -184,7 +184,7 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           __value__(AX(INT(I), INT(J))) = __value__(X(I))
-          APX(INT(I), INT(J)) = (I * 4.0D00)
+          APX(INT(I), INT(J)) = (I * DBLE(4.0))
         END DO
       END DO
 C$OPENAD XXX Simple loop
@@ -213,7 +213,7 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           __value__(AX(INT(I), INT(J))) = __value__(X(I))
-          APX(INT(I), INT(J)) = (I * 4.0D00)
+          APX(INT(I), INT(J)) = (I * DBLE(4.0))
         END DO
       END DO
 C$OPENAD XXX Simple loop
@@ -284,7 +284,7 @@ C$OPENAD XXX Simple loop
         OpenAD_Symbol_18 = 0_w2f__i8
         DO J = 1, 2, 1
           __value__(AX(INT(I), INT(J))) = __value__(X(I))
-          APX(INT(I), INT(J)) = (I * 4.0D00)
+          APX(INT(I), INT(J)) = (I * DBLE(4.0))
 C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(I)
 C         $OpenAD$ INLINE push_i(subst)

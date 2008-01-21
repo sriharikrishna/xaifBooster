@@ -82,8 +82,8 @@ C$OPENAD XXX Template ad_template.f
       CALL sax(OpenAD_Symbol_16,OpenAD_Symbol_13,T)
       CALL saxpy(OpenAD_Symbol_17,OpenAD_Symbol_15,T)
       CALL foo()
-      OpenAD_Symbol_11 = (T2%v*3.0D00+T%v*2.0D00)
-      OpenAD_Symbol_7 = 3.0D00
+      OpenAD_Symbol_11 = (T2%v*DBLE(3.0)+T%v*2.0D00)
+      OpenAD_Symbol_7 = 3.0
       OpenAD_Symbol_5 = 1_w2f__i8
       OpenAD_Symbol_9 = 2.0D00
       OpenAD_Symbol_6 = 1_w2f__i8

@@ -2976,8 +2976,7 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      NSIZE%v = SIN((NRM(1)%v**INT(2 _w2f__i8))+(NRM(2)%v**INT(2 _w2f__i
-     +8))+(NRM(3)%v**INT(2 _w2f__i8)))
+      NSIZE%v = SIN((NRM(1)%v**2)+(NRM(2)%v**2)+(NRM(3)%v**2))
       IF (MCHEPS .LT. NSIZE%v) THEN
         NSIZEI%v = (1.0D00/NSIZE%v)
       ELSE
@@ -2988,18 +2987,17 @@ C$OPENAD XXX Template ad_template.f
       NZHAT%v = (NRM(3)%v*NSIZEI%v)
       ROEL%v = (1.0D00/(SIN(PRIMR(2)%v/PRIML(2)%v)+1.0D00))
       ROER%v = (1.0D00-ROEL%v)
-      THETAL%v = (((PRIML(3)%v**INT(2 _w2f__i8))+(PRIML(4)%v**INT(2 _w2f
-     +__i8))+(PRIML(5)%v**INT(2 _w2f__i8)))*5.0D-01)
-      THETAR%v = (((PRIMR(3)%v**INT(2 _w2f__i8))+(PRIMR(4)%v**INT(2 _w2f
-     +__i8))+(PRIMR(5)%v**INT(2 _w2f__i8)))*5.0D-01)
+      THETAL%v = (((PRIML(3)%v**2)+(PRIML(4)%v**2)+(PRIML(5)%v**2))*5.0D
+     +-01)
+      THETAR%v = (((PRIMR(3)%v**2)+(PRIMR(4)%v**2)+(PRIMR(5)%v**2))*5.0D
+     +-01)
       HL%v = (THETAL%v+((PRIML(1)%v*GAMMA%v*GM1INV%v)/PRIML(2)%v))
       HR%v = (THETAR%v+((PRIMR(1)%v*GAMMA%v*GM1INV%v)/PRIMR(2)%v))
       UAVE%v = (PRIML(3)%v*ROEL%v+PRIMR(3)%v*ROER%v)
       VAVE%v = (PRIML(4)%v*ROEL%v+PRIMR(4)%v*ROER%v)
       WAVE%v = (PRIML(5)%v*ROEL%v+PRIMR(5)%v*ROER%v)
       HAVE%v = (HL%v*ROEL%v+HR%v*ROER%v)
-      THTAVE%v = (((UAVE%v**INT(2 _w2f__i8))+(VAVE%v**INT(2 _w2f__i8))+(
-     +WAVE%v**INT(2 _w2f__i8)))*5.0D-01)
+      THTAVE%v = (((UAVE%v**2)+(VAVE%v**2)+(WAVE%v**2))*5.0D-01)
       CAVE%v = (GM1%v*(HAVE%v-THTAVE%v))
       CAVE%v = SIN(CAVE%v)
       UHAT%v = (NXHAT%v*UAVE%v+NYHAT%v*VAVE%v+NZHAT%v*WAVE%v)
@@ -3010,14 +3008,14 @@ C$OPENAD XXX Template ad_template.f
       LAMU%v = UHAT%v
       LAMCP%v = (CAVE%v+UHAT%v)
       DELTA%v = (NLEFIX%v*(CAVE%v+UHAT%v))
-      DELTA2%v = (DELTA%v**INT(2 _w2f__i8))
-      LAM2%v = (LAMCM%v**INT(2 _w2f__i8))
+      DELTA2%v = (DELTA%v**2)
+      LAM2%v = (LAMCM%v**2)
       IF (DELTA2%v .LT. LAM2%v) THEN
         ALAMCM%v = LAMCM%v
       ELSE
         ALAMCM%v = (((DELTA2%v+LAM2%v)*5.0D-01)/DELTA2%v)
       ENDIF
-      LAM2%v = (LAMCP%v**INT(2 _w2f__i8))
+      LAM2%v = (LAMCP%v**2)
       IF (DELTA2%v .LT. LAM2%v) THEN
         ALAMCP%v = LAMCP%v
       ELSE
@@ -3025,7 +3023,7 @@ C$OPENAD XXX Template ad_template.f
       ENDIF
       DELTA%v = (LEFIX%v*(CAVE%v+UHAT%v))
       DELTA2%v = (DELTA%v*DELTA%v)
-      LAM2%v = (LAMU%v**INT(2 _w2f__i8))
+      LAM2%v = (LAMU%v**2)
       IF (DELTA2%v .LT. LAM2%v) THEN
         ALAMU%v = LAMU%v
       ELSE
@@ -3097,18 +3095,14 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_0 = ((NRM(1)%v**INT(2 _w2f__i8))+(NRM(2)%v**INT(2 _w
-     +2f__i8))+(NRM(3)%v**INT(2 _w2f__i8)))
+      OpenAD_Symbol_0 = ((NRM(1)%v**2)+(NRM(2)%v**2)+(NRM(3)%v**2))
       OpenAD_Symbol_12 = SIN(OpenAD_Symbol_0)
-      OpenAD_Symbol_6 = (INT(2 _w2f__i8)*(NRM(1)%v**(INT(2 _w2f__i8)-INT
-     +(1 _w2f__i8))))
+      OpenAD_Symbol_6 = (2*(NRM(1)%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_4 = 1_w2f__i8
-      OpenAD_Symbol_8 = (INT(2 _w2f__i8)*(NRM(2)%v**(INT(2 _w2f__i8)-INT
-     +(1 _w2f__i8))))
+      OpenAD_Symbol_8 = (2*(NRM(2)%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_5 = 1_w2f__i8
       OpenAD_Symbol_2 = 1_w2f__i8
-      OpenAD_Symbol_10 = (INT(2 _w2f__i8)*(NRM(3)%v**(INT(2 _w2f__i8)-IN
-     +T(1 _w2f__i8))))
+      OpenAD_Symbol_10 = (2*(NRM(3)%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_3 = 1_w2f__i8
       OpenAD_Symbol_1 = COS(OpenAD_Symbol_0)
       NSIZE%v = OpenAD_Symbol_12
@@ -3165,33 +3159,27 @@ C$OPENAD XXX Template ad_template.f
       ROEL%v = OpenAD_Symbol_34
       ROER%v = (1.0D00-ROEL%v)
       OpenAD_Symbol_36 = (-1_w2f__i8)
-      OpenAD_Symbol_37 = ((PRIML(3)%v**INT(2 _w2f__i8))+(PRIML(4)%v**INT
-     +(2 _w2f__i8))+(PRIML(5)%v**INT(2 _w2f__i8)))
+      OpenAD_Symbol_37 = ((PRIML(3)%v**2)+(PRIML(4)%v**2)+(PRIML(5)%v**2
+     +))
       OpenAD_Symbol_50 = (OpenAD_Symbol_37 * 5.0D-01)
-      OpenAD_Symbol_44 = (INT(2 _w2f__i8)*(PRIML(3)%v**(INT(2 _w2f__i8)-
-     +INT(1 _w2f__i8))))
+      OpenAD_Symbol_44 = (2*(PRIML(3)%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_42 = 1_w2f__i8
-      OpenAD_Symbol_46 = (INT(2 _w2f__i8)*(PRIML(4)%v**(INT(2 _w2f__i8)-
-     +INT(1 _w2f__i8))))
+      OpenAD_Symbol_46 = (2*(PRIML(4)%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_43 = 1_w2f__i8
       OpenAD_Symbol_40 = 1_w2f__i8
-      OpenAD_Symbol_48 = (INT(2 _w2f__i8)*(PRIML(5)%v**(INT(2 _w2f__i8)-
-     +INT(1 _w2f__i8))))
+      OpenAD_Symbol_48 = (2*(PRIML(5)%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_41 = 1_w2f__i8
       OpenAD_Symbol_38 = 5.0D-01
       THETAL%v = OpenAD_Symbol_50
-      OpenAD_Symbol_51 = ((PRIMR(3)%v**INT(2 _w2f__i8))+(PRIMR(4)%v**INT
-     +(2 _w2f__i8))+(PRIMR(5)%v**INT(2 _w2f__i8)))
+      OpenAD_Symbol_51 = ((PRIMR(3)%v**2)+(PRIMR(4)%v**2)+(PRIMR(5)%v**2
+     +))
       OpenAD_Symbol_64 = (OpenAD_Symbol_51 * 5.0D-01)
-      OpenAD_Symbol_58 = (INT(2 _w2f__i8)*(PRIMR(3)%v**(INT(2 _w2f__i8)-
-     +INT(1 _w2f__i8))))
+      OpenAD_Symbol_58 = (2*(PRIMR(3)%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_56 = 1_w2f__i8
-      OpenAD_Symbol_60 = (INT(2 _w2f__i8)*(PRIMR(4)%v**(INT(2 _w2f__i8)-
-     +INT(1 _w2f__i8))))
+      OpenAD_Symbol_60 = (2*(PRIMR(4)%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_57 = 1_w2f__i8
       OpenAD_Symbol_54 = 1_w2f__i8
-      OpenAD_Symbol_62 = (INT(2 _w2f__i8)*(PRIMR(5)%v**(INT(2 _w2f__i8)-
-     +INT(1 _w2f__i8))))
+      OpenAD_Symbol_62 = (2*(PRIMR(5)%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_55 = 1_w2f__i8
       OpenAD_Symbol_52 = 5.0D-01
       THETAR%v = OpenAD_Symbol_64
@@ -3251,18 +3239,14 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_113 = HR%v
       OpenAD_Symbol_109 = 1_w2f__i8
       HAVE%v = OpenAD_Symbol_114
-      OpenAD_Symbol_115 = ((UAVE%v**INT(2 _w2f__i8))+(VAVE%v**INT(2 _w2f
-     +__i8))+(WAVE%v**INT(2 _w2f__i8)))
+      OpenAD_Symbol_115 = ((UAVE%v**2)+(VAVE%v**2)+(WAVE%v**2))
       OpenAD_Symbol_128 = (OpenAD_Symbol_115 * 5.0D-01)
-      OpenAD_Symbol_122 = (INT(2 _w2f__i8)*(UAVE%v**(INT(2 _w2f__i8)-INT
-     +(1 _w2f__i8))))
+      OpenAD_Symbol_122 = (2*(UAVE%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_120 = 1_w2f__i8
-      OpenAD_Symbol_124 = (INT(2 _w2f__i8)*(VAVE%v**(INT(2 _w2f__i8)-INT
-     +(1 _w2f__i8))))
+      OpenAD_Symbol_124 = (2*(VAVE%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_121 = 1_w2f__i8
       OpenAD_Symbol_118 = 1_w2f__i8
-      OpenAD_Symbol_126 = (INT(2 _w2f__i8)*(WAVE%v**(INT(2 _w2f__i8)-INT
-     +(1 _w2f__i8))))
+      OpenAD_Symbol_126 = (2*(WAVE%v**(2-INT(1 _w2f__i8))))
       OpenAD_Symbol_119 = 1_w2f__i8
       OpenAD_Symbol_116 = 5.0D-01
       THTAVE%v = OpenAD_Symbol_128
@@ -3326,13 +3310,11 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_177 = 1_w2f__i8
       OpenAD_Symbol_175 = NLEFIX%v
       DELTA%v = OpenAD_Symbol_178
-      OpenAD_Symbol_181 = (DELTA%v**INT(2 _w2f__i8))
-      OpenAD_Symbol_179 = (INT(2 _w2f__i8)*(DELTA%v**(INT(2 _w2f__i8)-IN
-     +T(1 _w2f__i8))))
+      OpenAD_Symbol_181 = (DELTA%v**2)
+      OpenAD_Symbol_179 = (2*(DELTA%v**(2-INT(1 _w2f__i8))))
       DELTA2%v = OpenAD_Symbol_181
-      OpenAD_Symbol_184 = (LAMCM%v**INT(2 _w2f__i8))
-      OpenAD_Symbol_182 = (INT(2 _w2f__i8)*(LAMCM%v**(INT(2 _w2f__i8)-IN
-     +T(1 _w2f__i8))))
+      OpenAD_Symbol_184 = (LAMCM%v**2)
+      OpenAD_Symbol_182 = (2*(LAMCM%v**(2-INT(1 _w2f__i8))))
       LAM2%v = OpenAD_Symbol_184
       OpenAD_Symbol_588 = (OpenAD_Symbol_22 * OpenAD_Symbol_145)
       OpenAD_Symbol_589 = (OpenAD_Symbol_23 * OpenAD_Symbol_145)
@@ -4277,9 +4259,8 @@ C$OPENAD XXX Template ad_template.f
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_2162
           integer_tape_pointer = integer_tape_pointer+1
       ENDIF
-      OpenAD_Symbol_187 = (LAMCP%v**INT(2 _w2f__i8))
-      OpenAD_Symbol_185 = (INT(2 _w2f__i8)*(LAMCP%v**(INT(2 _w2f__i8)-IN
-     +T(1 _w2f__i8))))
+      OpenAD_Symbol_187 = (LAMCP%v**2)
+      OpenAD_Symbol_185 = (2*(LAMCP%v**(2-INT(1 _w2f__i8))))
       LAM2%v = OpenAD_Symbol_187
       OpenAD_Symbol_1019 = OpenAD_Symbol_185
           double_tape(double_tape_pointer) = OpenAD_Symbol_1019
@@ -4324,9 +4305,8 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_194 = DELTA%v
       OpenAD_Symbol_195 = DELTA%v
       DELTA2%v = OpenAD_Symbol_196
-      OpenAD_Symbol_199 = (LAMU%v**INT(2 _w2f__i8))
-      OpenAD_Symbol_197 = (INT(2 _w2f__i8)*(LAMU%v**(INT(2 _w2f__i8)-INT
-     +(1 _w2f__i8))))
+      OpenAD_Symbol_199 = (LAMU%v**2)
+      OpenAD_Symbol_197 = (2*(LAMU%v**(2-INT(1 _w2f__i8))))
       LAM2%v = OpenAD_Symbol_199
       OpenAD_Symbol_1022 = (OpenAD_Symbol_189 *(OpenAD_Symbol_195 +  Ope
      +nAD_Symbol_194))

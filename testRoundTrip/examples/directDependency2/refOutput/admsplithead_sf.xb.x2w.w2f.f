@@ -99,7 +99,8 @@ C$OPENAD XXX Template ad_template.f
       __value__(T) = (__value__(X(1)) + __value__(X(2)))
       __value__(T2) = (__value__(T) * 2.0D00)
       CALL foo()
-      __value__(Y) = (__value__(T2) * 3.0D00 + __value__(T) * 2.0D00)
+      __value__(Y) = (__value__(T2) * DBLE(3.0) + __value__(T) * 2.0D00
+     > )
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
@@ -123,9 +124,9 @@ C     $OpenAD$ INLINE push(subst)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_17)
       CALL foo()
-      OpenAD_Symbol_11 = (__value__(T2) * 3.0D00 + __value__(T) *
+      OpenAD_Symbol_11 = (__value__(T2) * DBLE(3.0) + __value__(T) *
      >  2.0D00)
-      OpenAD_Symbol_7 = 3.0D00
+      OpenAD_Symbol_7 = 3.0
       OpenAD_Symbol_5 = 1_w2f__i8
       OpenAD_Symbol_9 = 2.0D00
       OpenAD_Symbol_6 = 1_w2f__i8
@@ -226,9 +227,9 @@ C     $OpenAD$ INLINE push(subst)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_17)
       CALL foo()
-      OpenAD_Symbol_11 = (__value__(T2) * 3.0D00 + __value__(T) *
+      OpenAD_Symbol_11 = (__value__(T2) * DBLE(3.0) + __value__(T) *
      >  2.0D00)
-      OpenAD_Symbol_7 = 3.0D00
+      OpenAD_Symbol_7 = 3.0
       OpenAD_Symbol_5 = 1_w2f__i8
       OpenAD_Symbol_9 = 2.0D00
       OpenAD_Symbol_6 = 1_w2f__i8

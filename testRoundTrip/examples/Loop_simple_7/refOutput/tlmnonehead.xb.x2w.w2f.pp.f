@@ -58,5 +58,5 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      CALL bar(X,Y,3 _w2f__i8)
+      CALL bar(X,Y,3)
       END SUBROUTINE

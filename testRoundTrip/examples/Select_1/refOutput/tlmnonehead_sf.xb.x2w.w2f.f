@@ -46,7 +46,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       I = 1
-      __value__(Y(1)) = 2.0D00
+      __value__(Y(1)) = 2.0
       CALL zero_deriv(__deriv__(Y(1)))
       select_expr_temp_0 = I
       IF ( I  .EQ.  1)  GO TO  4

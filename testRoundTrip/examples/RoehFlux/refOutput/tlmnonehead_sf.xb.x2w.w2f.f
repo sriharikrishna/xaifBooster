@@ -2248,19 +2248,16 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_0 = ((__value__(NRM(1)) ** INT(2_w2f__i8)) +(
-     > __value__(NRM(2)) ** INT(2_w2f__i8)) +(__value__(NRM(3)) ** INT(
-     > 2_w2f__i8)))
+      OpenAD_Symbol_0 = ((__value__(NRM(1)) ** 2) +(__value__(NRM(2))
+     >  ** 2) +(__value__(NRM(3)) ** 2))
       OpenAD_Symbol_12 = SIN(OpenAD_Symbol_0)
-      OpenAD_Symbol_6 = (INT(2_w2f__i8) *(__value__(NRM(1)) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_6 = (2 *(__value__(NRM(1)) **(2 - INT(1_w2f__i8))))
       OpenAD_Symbol_4 = 1_w2f__i8
-      OpenAD_Symbol_8 = (INT(2_w2f__i8) *(__value__(NRM(2)) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_8 = (2 *(__value__(NRM(2)) **(2 - INT(1_w2f__i8))))
       OpenAD_Symbol_5 = 1_w2f__i8
       OpenAD_Symbol_2 = 1_w2f__i8
-      OpenAD_Symbol_10 = (INT(2_w2f__i8) *(__value__(NRM(3)) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_10 = (2 *(__value__(NRM(3)) **(2 - INT(1_w2f__i8)))
+     > )
       OpenAD_Symbol_3 = 1_w2f__i8
       OpenAD_Symbol_1 = COS(OpenAD_Symbol_0)
       __value__(NSIZE) = OpenAD_Symbol_12
@@ -2318,35 +2315,33 @@ C$OPENAD XXX Template ad_template.f
       __value__(ROEL) = OpenAD_Symbol_34
       __value__(ROER) = (1.0D00 - __value__(ROEL))
       OpenAD_Symbol_36 = (-1_w2f__i8)
-      OpenAD_Symbol_37 = ((__value__(PRIML(3)) ** INT(2_w2f__i8)) +(
-     > __value__(PRIML(4)) ** INT(2_w2f__i8)) +(__value__(PRIML(5)) **
-     >  INT(2_w2f__i8)))
+      OpenAD_Symbol_37 = ((__value__(PRIML(3)) ** 2) +(__value__(PRIML(
+     > 4)) ** 2) +(__value__(PRIML(5)) ** 2))
       OpenAD_Symbol_50 = (OpenAD_Symbol_37 * 5.0D-01)
-      OpenAD_Symbol_44 = (INT(2_w2f__i8) *(__value__(PRIML(3)) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_44 = (2 *(__value__(PRIML(3)) **(2 - INT(1_w2f__i8)
+     > )))
       OpenAD_Symbol_42 = 1_w2f__i8
-      OpenAD_Symbol_46 = (INT(2_w2f__i8) *(__value__(PRIML(4)) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_46 = (2 *(__value__(PRIML(4)) **(2 - INT(1_w2f__i8)
+     > )))
       OpenAD_Symbol_43 = 1_w2f__i8
       OpenAD_Symbol_40 = 1_w2f__i8
-      OpenAD_Symbol_48 = (INT(2_w2f__i8) *(__value__(PRIML(5)) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_48 = (2 *(__value__(PRIML(5)) **(2 - INT(1_w2f__i8)
+     > )))
       OpenAD_Symbol_41 = 1_w2f__i8
       OpenAD_Symbol_38 = 5.0D-01
       __value__(THETAL) = OpenAD_Symbol_50
-      OpenAD_Symbol_51 = ((__value__(PRIMR(3)) ** INT(2_w2f__i8)) +(
-     > __value__(PRIMR(4)) ** INT(2_w2f__i8)) +(__value__(PRIMR(5)) **
-     >  INT(2_w2f__i8)))
+      OpenAD_Symbol_51 = ((__value__(PRIMR(3)) ** 2) +(__value__(PRIMR(
+     > 4)) ** 2) +(__value__(PRIMR(5)) ** 2))
       OpenAD_Symbol_64 = (OpenAD_Symbol_51 * 5.0D-01)
-      OpenAD_Symbol_58 = (INT(2_w2f__i8) *(__value__(PRIMR(3)) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_58 = (2 *(__value__(PRIMR(3)) **(2 - INT(1_w2f__i8)
+     > )))
       OpenAD_Symbol_56 = 1_w2f__i8
-      OpenAD_Symbol_60 = (INT(2_w2f__i8) *(__value__(PRIMR(4)) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_60 = (2 *(__value__(PRIMR(4)) **(2 - INT(1_w2f__i8)
+     > )))
       OpenAD_Symbol_57 = 1_w2f__i8
       OpenAD_Symbol_54 = 1_w2f__i8
-      OpenAD_Symbol_62 = (INT(2_w2f__i8) *(__value__(PRIMR(5)) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_62 = (2 *(__value__(PRIMR(5)) **(2 - INT(1_w2f__i8)
+     > )))
       OpenAD_Symbol_55 = 1_w2f__i8
       OpenAD_Symbol_52 = 5.0D-01
       __value__(THETAR) = OpenAD_Symbol_64
@@ -2414,19 +2409,15 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_113 = __value__(HR)
       OpenAD_Symbol_109 = 1_w2f__i8
       __value__(HAVE) = OpenAD_Symbol_114
-      OpenAD_Symbol_115 = ((__value__(UAVE) ** INT(2_w2f__i8)) +(
-     > __value__(VAVE) ** INT(2_w2f__i8)) +(__value__(WAVE) ** INT(
-     > 2_w2f__i8)))
+      OpenAD_Symbol_115 = ((__value__(UAVE) ** 2) +(__value__(VAVE) **
+     >  2) +(__value__(WAVE) ** 2))
       OpenAD_Symbol_128 = (OpenAD_Symbol_115 * 5.0D-01)
-      OpenAD_Symbol_122 = (INT(2_w2f__i8) *(__value__(UAVE) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_122 = (2 *(__value__(UAVE) **(2 - INT(1_w2f__i8))))
       OpenAD_Symbol_120 = 1_w2f__i8
-      OpenAD_Symbol_124 = (INT(2_w2f__i8) *(__value__(VAVE) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_124 = (2 *(__value__(VAVE) **(2 - INT(1_w2f__i8))))
       OpenAD_Symbol_121 = 1_w2f__i8
       OpenAD_Symbol_118 = 1_w2f__i8
-      OpenAD_Symbol_126 = (INT(2_w2f__i8) *(__value__(WAVE) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_126 = (2 *(__value__(WAVE) **(2 - INT(1_w2f__i8))))
       OpenAD_Symbol_119 = 1_w2f__i8
       OpenAD_Symbol_116 = 5.0D-01
       __value__(THTAVE) = OpenAD_Symbol_128
@@ -2495,13 +2486,13 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_177 = 1_w2f__i8
       OpenAD_Symbol_175 = __value__(NLEFIX)
       __value__(DELTA) = OpenAD_Symbol_178
-      OpenAD_Symbol_181 = (__value__(DELTA) ** INT(2_w2f__i8))
-      OpenAD_Symbol_179 = (INT(2_w2f__i8) *(__value__(DELTA) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_181 = (__value__(DELTA) ** 2)
+      OpenAD_Symbol_179 = (2 *(__value__(DELTA) **(2 - INT(1_w2f__i8)))
+     > )
       __value__(DELTA2) = OpenAD_Symbol_181
-      OpenAD_Symbol_184 = (__value__(LAMCM) ** INT(2_w2f__i8))
-      OpenAD_Symbol_182 = (INT(2_w2f__i8) *(__value__(LAMCM) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_184 = (__value__(LAMCM) ** 2)
+      OpenAD_Symbol_182 = (2 *(__value__(LAMCM) **(2 - INT(1_w2f__i8)))
+     > )
       __value__(LAM2) = OpenAD_Symbol_184
       OpenAD_Symbol_588 = (OpenAD_Symbol_22 * OpenAD_Symbol_145)
       OpenAD_Symbol_589 = (OpenAD_Symbol_23 * OpenAD_Symbol_145)
@@ -3471,9 +3462,9 @@ C$OPENAD XXX Template ad_template.f
         CALL saxpy(OpenAD_Symbol_2154, __deriv__(OpenAD_Symbol_2151),
      >  __deriv__(ALAMCM))
       ENDIF
-      OpenAD_Symbol_187 = (__value__(LAMCP) ** INT(2_w2f__i8))
-      OpenAD_Symbol_185 = (INT(2_w2f__i8) *(__value__(LAMCP) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_187 = (__value__(LAMCP) ** 2)
+      OpenAD_Symbol_185 = (2 *(__value__(LAMCP) **(2 - INT(1_w2f__i8)))
+     > )
       __value__(LAM2) = OpenAD_Symbol_187
       OpenAD_Symbol_1019 = OpenAD_Symbol_185
       CALL setderiv(__deriv__(OpenAD_Symbol_1020), __deriv__(LAMCP))
@@ -3518,9 +3509,8 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_194 = __value__(DELTA)
       OpenAD_Symbol_195 = __value__(DELTA)
       __value__(DELTA2) = OpenAD_Symbol_196
-      OpenAD_Symbol_199 = (__value__(LAMU) ** INT(2_w2f__i8))
-      OpenAD_Symbol_197 = (INT(2_w2f__i8) *(__value__(LAMU) **(INT(
-     > 2_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_199 = (__value__(LAMU) ** 2)
+      OpenAD_Symbol_197 = (2 *(__value__(LAMU) **(2 - INT(1_w2f__i8))))
       __value__(LAM2) = OpenAD_Symbol_199
       OpenAD_Symbol_1022 = (OpenAD_Symbol_189 *(OpenAD_Symbol_195 +
      >  OpenAD_Symbol_194))

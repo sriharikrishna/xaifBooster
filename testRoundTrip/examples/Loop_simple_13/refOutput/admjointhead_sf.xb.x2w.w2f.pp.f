@@ -164,8 +164,8 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       I = 1
-      Y(1)%v = 0.0D00
-      Y(2)%v = 0.0D00
+      Y(1)%v = 0.0
+      Y(2)%v = 0.0
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         S%v = X(I)%v
@@ -189,8 +189,8 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
       I = 1
-      Y(1)%v = 0.0D00
-      Y(2)%v = 0.0D00
+      Y(1)%v = 0.0
+      Y(2)%v = 0.0
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         S%v = X(I)%v

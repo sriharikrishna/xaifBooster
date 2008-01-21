@@ -86,10 +86,10 @@ C$OPENAD XXX Simple loop
       OpenAD_Symbol_3 = 0_w2f__i8
       DO I = 0, 3, 1
         __value__(Y(INT(I + 1))) = __value__(X(I + 1))
-        OpenAD_Symbol_4 = (I + INT(1_w2f__i8))
+        OpenAD_Symbol_4 = (I + 1)
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(OpenAD_Symbol_4)
-        OpenAD_Symbol_5 = (I + INT(1_w2f__i8))
+        OpenAD_Symbol_5 = (I + 1)
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(OpenAD_Symbol_5)
         OpenAD_Symbol_3 = (INT(OpenAD_Symbol_3) + INT(1_w2f__i8))

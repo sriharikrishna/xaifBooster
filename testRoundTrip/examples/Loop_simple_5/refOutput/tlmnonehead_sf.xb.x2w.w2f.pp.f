@@ -43,7 +43,7 @@ C
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
       DO I = 1, 3, 1
-        IF(I .eq. INT(2_w2f__i8)) THEN
+        IF(I .eq. 2) THEN
           Y(INT(I))%v = X(I)%v
           CALL setderiv(OpenAD_Symbol_3,X(I))
           CALL setderiv(Y(I),OpenAD_Symbol_3)

@@ -172,8 +172,8 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      PX(1) = 1.0D00
-      PX(2) = 2.0D00
+      PX(1) = 1.0
+      PX(2) = 2.0
       CALL foo(__deriv__(X), __deriv__(Y))
 C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
       CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_0), PX)
@@ -197,8 +197,8 @@ C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      PX(1) = 1.0D00
-      PX(2) = 2.0D00
+      PX(1) = 1.0
+      PX(2) = 2.0
       CALL foo(__deriv__(X), __deriv__(Y))
 C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
       CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_0), PX)
@@ -241,8 +241,8 @@ C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      PX(1) = 1.0D00
-      PX(2) = 2.0D00
+      PX(1) = 1.0
+      PX(2) = 2.0
       CALL foo(__deriv__(X), __deriv__(Y))
 C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
       CALL convert_p2a_vector(__deriv__(OpenAD_Symbol_0), PX)

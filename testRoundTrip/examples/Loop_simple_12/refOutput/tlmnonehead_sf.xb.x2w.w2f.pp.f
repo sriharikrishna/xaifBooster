@@ -48,15 +48,15 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       I = 1
-      Y(1)%v = 0.0D00
-      Y(2)%v = 0.0D00
+      Y(1)%v = 0.0
+      Y(2)%v = 0.0
       CALL zero_deriv(Y(1))
       CALL zero_deriv(Y(2))
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         J = 1
         t__1 = J .LT. 3
-        DO WHILE(J .LT. INT(3_w2f__i8))
+        DO WHILE(J .LT. 3)
           OpenAD_Symbol_4 = (Y(I)%v+X(I)%v*X(J)%v)
           OpenAD_Symbol_0 = 1_w2f__i8
           OpenAD_Symbol_2 = X(J)%v

@@ -136,7 +136,7 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = (FLOAT(INT(6 _w2f__i8))*X(1)%v)
+      Y(1)%v = (FLOAT(6)*X(1)%v)
       
             our_rev_mode=our_orig_mode
           end if 
@@ -151,7 +151,7 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_0 = FLOAT(INT(6_w2f__i8))
+      OpenAD_Symbol_0 = FLOAT(6)
       OpenAD_Symbol_3 = (OpenAD_Symbol_0*X(1)%v)
       OpenAD_Symbol_2 = OpenAD_Symbol_0
       Y(1)%v = OpenAD_Symbol_3

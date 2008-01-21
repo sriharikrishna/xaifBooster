@@ -113,7 +113,7 @@ C
          if (our_rev_mode%plain) then
 ! original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 2.0D00
+      Y(1)%v = 2.0
       IF (X(1)%v .GT. 0.0D00) THEN
         Y(1)%v = X(1)%v
       ENDIF
@@ -123,7 +123,7 @@ C$OPENAD XXX Template ad_template.f
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 2.0D00
+      Y(1)%v = 2.0
       IF (X(1)%v .GT. 0.0D00) THEN
         Y(1)%v = X(1)%v
         OpenAD_Symbol_9 = 1_w2f__i8

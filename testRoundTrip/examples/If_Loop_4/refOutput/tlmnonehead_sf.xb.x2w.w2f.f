@@ -55,7 +55,7 @@ C
 C$OPENAD XXX Template ad_template.f
       PI = 3.14149999618530273438D00
       DO I = 1, 9, 1
-        IF(I .GT. INT(5_w2f__i8)) THEN
+        IF(I .GT. 5) THEN
           OpenAD_Symbol_0 = SIN(__value__(X(I)))
           OpenAD_Symbol_4 = (PI * OpenAD_Symbol_0)
           OpenAD_Symbol_3 = COS(__value__(X(I)))

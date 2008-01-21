@@ -30,7 +30,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) select_expr_temp_0
 C
 C     **** Top Level Pragmas ****
 C
@@ -42,7 +41,6 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       I = 1
-      select_expr_temp_0 = I
       IF(I .ne. 0) THEN
         __value__(Y(1)) = __value__(X(1))
       ENDIF
@@ -51,7 +49,6 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       I = 1
-      select_expr_temp_0 = I
       IF(I .ne. 0) THEN
         __value__(Y(1)) = __value__(X(1))
         OpenAD_Symbol_2 = 1_w2f__i8
@@ -92,7 +89,6 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
       I = 1
-      select_expr_temp_0 = I
       IF(I .ne. 0) THEN
         __value__(Y(1)) = __value__(X(1))
         OpenAD_Symbol_5 = 1_w2f__i8

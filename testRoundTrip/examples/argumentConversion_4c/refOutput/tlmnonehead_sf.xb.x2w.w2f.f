@@ -78,7 +78,7 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           __value__(AX(INT(I), INT(J))) = __value__(X(I))
-          APX(INT(I), INT(J)) = (I * 4.0D00)
+          APX(INT(I), INT(J)) = (I * DBLE(4.0))
           CALL setderiv(__deriv__(OpenAD_Symbol_8), __deriv__(X(I)))
           CALL setderiv(__deriv__(AX(I, J)), __deriv__(OpenAD_Symbol_8)
      > )

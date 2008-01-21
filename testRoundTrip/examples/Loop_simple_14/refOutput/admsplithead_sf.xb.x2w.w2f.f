@@ -64,8 +64,8 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       I = 1
-      __value__(Y(1)) = 0.0D00
-      __value__(Y(2)) = 0.0D00
+      __value__(Y(1)) = 0.0
+      __value__(Y(2)) = 0.0
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         __value__(S) = __value__(X(I))
@@ -81,8 +81,8 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       I = 1
-      __value__(Y(1)) = 0.0D00
-      __value__(Y(2)) = 0.0D00
+      __value__(Y(1)) = 0.0
+      __value__(Y(2)) = 0.0
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         __value__(S) = __value__(X(I))
@@ -183,8 +183,8 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
       I = 1
-      __value__(Y(1)) = 0.0D00
-      __value__(Y(2)) = 0.0D00
+      __value__(Y(1)) = 0.0
+      __value__(Y(2)) = 0.0
 C$OPENAD XXX Simple loop
       OpenAD_Symbol_18 = 0_w2f__i8
       DO I = 1, 2, 1

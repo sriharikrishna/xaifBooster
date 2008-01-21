@@ -57,7 +57,7 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 10, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           __value__(Y(1)) = __value__(X(1))
         ELSE
           __value__(Y(1)) = (__value__(X(I)) * __value__(Y(1)))
@@ -69,7 +69,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_11 = 0_w2f__i8
       DO I = 1, 10, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           __value__(Y(1)) = __value__(X(1))
           OpenAD_Symbol_12 = 1_w2f__i8
 C         $OpenAD$ INLINE push_i(subst)
@@ -156,7 +156,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_17 = 0_w2f__i8
       DO I = 1, 10, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           __value__(Y(1)) = __value__(X(1))
           OpenAD_Symbol_18 = 1_w2f__i8
 C         $OpenAD$ INLINE push_i(subst)

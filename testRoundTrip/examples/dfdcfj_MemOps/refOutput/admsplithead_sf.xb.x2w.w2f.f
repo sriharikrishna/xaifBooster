@@ -380,8 +380,6 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      INTEGER(w2f__i8) t__1
-      INTEGER(w2f__i8) t__2
       TYPE (OpenADTy_active) DPDX
       TYPE (OpenADTy_active) DPDY
       REAL(w2f__8) FOUR
@@ -422,8 +420,6 @@ C
       PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
       PARAMETER ( ZERO = 0.0D00)
-      INTEGER(w2f__i4) t__3
-      INTEGER(w2f__i4) t__4
       INTEGER(w2f__i8) OpenAD_Symbol_384
       INTEGER(w2f__i8) OpenAD_Symbol_385
       INTEGER(w2f__i8) OpenAD_Symbol_386
@@ -539,30 +535,26 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      t__1 = INT(NX * NY)
-      t__2 = MAX(INT(NX * NY), 0_w2f__i8)
       N = NX * NY
-      NXP1 = (NX + INT(1_w2f__i8))
-      NYP1 = (NY + INT(1_w2f__i8))
+      NXP1 = (NX + 1)
+      NYP1 = (NY + 1)
       HX = (1.0D00 / NXP1)
       HY = (1.0D00 / NYP1)
       HY2 = (HY * HY)
       HX2 = (HX * HX)
-      t__3 = NY
       DO I = 1, NY, 1
-        t__4 = NX
         DO J = 1, NX, 1
           K = J + NX *(I +(-1))
-          IF((I .eq. INT(1_w2f__i8)) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((I .eq. 1) .OR.(J .eq. 1)) THEN
             __value__(PBL) = 0.0D00
           ELSE
             __value__(PBL) = __value__(X(K - NX + (-1)))
           ENDIF
-          IF(I .eq. INT(1_w2f__i8)) THEN
+          IF(I .eq. 1) THEN
             __value__(PB) = 0.0D00
             __value__(PBB) = __value__(X(K))
           ELSE
-            IF(I .eq. INT(2_w2f__i8)) THEN
+            IF(I .eq. 2) THEN
               __value__(PB) = __value__(X(K - NX))
               __value__(PBB) = 0.0D00
             ELSE
@@ -570,16 +562,16 @@ C$OPENAD XXX Template ad_template.f
               __value__(PBB) = __value__(X(K - NX * 2))
             ENDIF
           ENDIF
-          IF((NX .eq. J) .OR.(I .eq. INT(1_w2f__i8))) THEN
+          IF((NX .eq. J) .OR.(I .eq. 1)) THEN
             __value__(PBR) = 0.0D00
           ELSE
             __value__(PBR) = __value__(X(K - NX + 1))
           ENDIF
-          IF(J .eq. INT(1_w2f__i8)) THEN
+          IF(J .eq. 1) THEN
             __value__(PL) = 0.0D00
             __value__(PLL) = __value__(X(K))
           ELSE
-            IF(J .eq. INT(2_w2f__i8)) THEN
+            IF(J .eq. 2) THEN
               __value__(PL) = __value__(X(K + (-1)))
               __value__(PLL) = 0.0D00
             ELSE
@@ -588,7 +580,7 @@ C$OPENAD XXX Template ad_template.f
             ENDIF
           ENDIF
           __value__(P) = __value__(X(K))
-          IF(J .eq.(NX + INT((-1_w2f__i8)))) THEN
+          IF(J .eq.(NX +(-1))) THEN
             __value__(PR) = __value__(X(K + 1))
             __value__(PRR) = 0.0D00
           ELSE
@@ -600,12 +592,12 @@ C$OPENAD XXX Template ad_template.f
               __value__(PRR) = __value__(X(K + 2))
             ENDIF
           ENDIF
-          IF((NY .eq. I) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((NY .eq. I) .OR.(J .eq. 1)) THEN
             __value__(PTL) = 0.0D00
           ELSE
             __value__(PTL) = __value__(X(NX + K + (-1)))
           ENDIF
-          IF(I .eq.(NY + INT((-1_w2f__i8)))) THEN
+          IF(I .eq.(NY +(-1))) THEN
             __value__(PT) = __value__(X(NX + K))
             __value__(PTT) = 0.0D00
           ELSE
@@ -653,37 +645,33 @@ C$OPENAD XXX Template ad_template.f
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      t__1 = INT(NX * NY)
-      t__2 = MAX(INT(NX * NY), 0_w2f__i8)
       N = NX * NY
-      NXP1 = (NX + INT(1_w2f__i8))
-      NYP1 = (NY + INT(1_w2f__i8))
+      NXP1 = (NX + 1)
+      NYP1 = (NY + 1)
       HX = (1.0D00 / NXP1)
       HY = (1.0D00 / NYP1)
       HY2 = (HY * HY)
       HX2 = (HX * HX)
-      t__3 = NY
       OpenAD_Symbol_316 = 0_w2f__i8
       DO I = 1, NY, 1
-        t__4 = NX
         OpenAD_Symbol_317 = 0_w2f__i8
         DO J = 1, NX, 1
           K = J + NX *(I +(-1))
-          IF((I .eq. INT(1_w2f__i8)) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((I .eq. 1) .OR.(J .eq. 1)) THEN
             __value__(PBL) = 0.0D00
             OpenAD_Symbol_318 = 1_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_318)
           ELSE
             __value__(PBL) = __value__(X(K - NX + (-1)))
-            OpenAD_Symbol_399 = (K - NX + INT((-1_w2f__i8)))
+            OpenAD_Symbol_399 = (K - NX +(-1))
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_399)
             OpenAD_Symbol_319 = 0_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_319)
           ENDIF
-          IF(I .eq. INT(1_w2f__i8)) THEN
+          IF(I .eq. 1) THEN
             __value__(PB) = 0.0D00
             __value__(PBB) = __value__(X(K))
 C           $OpenAD$ INLINE push_i(subst)
@@ -692,7 +680,7 @@ C           $OpenAD$ INLINE push_i(subst)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_322)
           ELSE
-            IF(I .eq. INT(2_w2f__i8)) THEN
+            IF(I .eq. 2) THEN
               __value__(PB) = __value__(X(K - NX))
               __value__(PBB) = 0.0D00
               OpenAD_Symbol_396 = (K - NX)
@@ -704,7 +692,7 @@ C             $OpenAD$ INLINE push_i(subst)
             ELSE
               __value__(PB) = __value__(X(K - NX))
               __value__(PBB) = __value__(X(K - NX * 2))
-              OpenAD_Symbol_397 = (K - NX * INT(2_w2f__i8))
+              OpenAD_Symbol_397 = (K - NX * 2)
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_397)
               OpenAD_Symbol_398 = (K - NX)
@@ -718,21 +706,21 @@ C             $OpenAD$ INLINE push_i(subst)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_323)
           ENDIF
-          IF((NX .eq. J) .OR.(I .eq. INT(1_w2f__i8))) THEN
+          IF((NX .eq. J) .OR.(I .eq. 1)) THEN
             __value__(PBR) = 0.0D00
             OpenAD_Symbol_324 = 1_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_324)
           ELSE
             __value__(PBR) = __value__(X(K - NX + 1))
-            OpenAD_Symbol_395 = (K - NX + INT(1_w2f__i8))
+            OpenAD_Symbol_395 = (K - NX + 1)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_395)
             OpenAD_Symbol_325 = 0_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_325)
           ENDIF
-          IF(J .eq. INT(1_w2f__i8)) THEN
+          IF(J .eq. 1) THEN
             __value__(PL) = 0.0D00
             __value__(PLL) = __value__(X(K))
 C           $OpenAD$ INLINE push_i(subst)
@@ -741,10 +729,10 @@ C           $OpenAD$ INLINE push_i(subst)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_328)
           ELSE
-            IF(J .eq. INT(2_w2f__i8)) THEN
+            IF(J .eq. 2) THEN
               __value__(PL) = __value__(X(K + (-1)))
               __value__(PLL) = 0.0D00
-              OpenAD_Symbol_392 = (K + INT((-1_w2f__i8)))
+              OpenAD_Symbol_392 = (K +(-1))
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_392)
               OpenAD_Symbol_326 = 1_w2f__i8
@@ -753,10 +741,10 @@ C             $OpenAD$ INLINE push_i(subst)
             ELSE
               __value__(PL) = __value__(X(K + (-1)))
               __value__(PLL) = __value__(X(K + (-2)))
-              OpenAD_Symbol_393 = (K + INT((-2_w2f__i8)))
+              OpenAD_Symbol_393 = (K +(-2))
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_393)
-              OpenAD_Symbol_394 = (K + INT((-1_w2f__i8)))
+              OpenAD_Symbol_394 = (K +(-1))
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_394)
               OpenAD_Symbol_327 = 0_w2f__i8
@@ -770,10 +758,10 @@ C           $OpenAD$ INLINE push_i(subst)
           __value__(P) = __value__(X(K))
 C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(K)
-          IF(J .eq.(NX + INT((-1_w2f__i8)))) THEN
+          IF(J .eq.(NX +(-1))) THEN
             __value__(PR) = __value__(X(K + 1))
             __value__(PRR) = 0.0D00
-            OpenAD_Symbol_384 = (K + INT(1_w2f__i8))
+            OpenAD_Symbol_384 = (K + 1)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_384)
             OpenAD_Symbol_332 = 1_w2f__i8
@@ -791,10 +779,10 @@ C             $OpenAD$ INLINE push_i(subst)
             ELSE
               __value__(PR) = __value__(X(K + 1))
               __value__(PRR) = __value__(X(K + 2))
-              OpenAD_Symbol_390 = (K + INT(2_w2f__i8))
+              OpenAD_Symbol_390 = (K + 2)
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_390)
-              OpenAD_Symbol_391 = (K + INT(1_w2f__i8))
+              OpenAD_Symbol_391 = (K + 1)
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_391)
               OpenAD_Symbol_331 = 0_w2f__i8
@@ -805,21 +793,21 @@ C             $OpenAD$ INLINE push_i(subst)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_333)
           ENDIF
-          IF((NY .eq. I) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((NY .eq. I) .OR.(J .eq. 1)) THEN
             __value__(PTL) = 0.0D00
             OpenAD_Symbol_334 = 1_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_334)
           ELSE
             __value__(PTL) = __value__(X(NX + K + (-1)))
-            OpenAD_Symbol_389 = (NX + K + INT((-1_w2f__i8)))
+            OpenAD_Symbol_389 = (NX + K +(-1))
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_389)
             OpenAD_Symbol_335 = 0_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_335)
           ENDIF
-          IF(I .eq.(NY + INT((-1_w2f__i8)))) THEN
+          IF(I .eq.(NY +(-1))) THEN
             __value__(PT) = __value__(X(NX + K))
             __value__(PTT) = 0.0D00
             OpenAD_Symbol_385 = (NX + K)
@@ -840,7 +828,7 @@ C             $OpenAD$ INLINE push_i(subst)
             ELSE
               __value__(PT) = __value__(X(NX + K))
               __value__(PTT) = __value__(X(K + NX * 2))
-              OpenAD_Symbol_387 = (K + NX * INT(2_w2f__i8))
+              OpenAD_Symbol_387 = (K + NX * 2)
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_387)
               OpenAD_Symbol_388 = (NX + K)
@@ -861,7 +849,7 @@ C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_340)
           ELSE
             __value__(PTR) = __value__(X(NX + K + 1))
-            OpenAD_Symbol_386 = (NX + K + INT(1_w2f__i8))
+            OpenAD_Symbol_386 = (NX + K + 1)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_386)
             OpenAD_Symbol_341 = 0_w2f__i8
@@ -1897,37 +1885,33 @@ C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      t__1 = INT(NX * NY)
-      t__2 = MAX(INT(NX * NY), 0_w2f__i8)
       N = NX * NY
-      NXP1 = (NX + INT(1_w2f__i8))
-      NYP1 = (NY + INT(1_w2f__i8))
+      NXP1 = (NX + 1)
+      NYP1 = (NY + 1)
       HX = (1.0D00 / NXP1)
       HY = (1.0D00 / NYP1)
       HY2 = (HY * HY)
       HX2 = (HX * HX)
-      t__3 = NY
       OpenAD_Symbol_358 = 0_w2f__i8
       DO I = 1, NY, 1
-        t__4 = NX
         OpenAD_Symbol_359 = 0_w2f__i8
         DO J = 1, NX, 1
           K = J + NX *(I +(-1))
-          IF((I .eq. INT(1_w2f__i8)) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((I .eq. 1) .OR.(J .eq. 1)) THEN
             __value__(PBL) = 0.0D00
             OpenAD_Symbol_360 = 1_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_360)
           ELSE
             __value__(PBL) = __value__(X(K - NX + (-1)))
-            OpenAD_Symbol_399 = (K - NX + INT((-1_w2f__i8)))
+            OpenAD_Symbol_399 = (K - NX +(-1))
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_399)
             OpenAD_Symbol_361 = 0_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_361)
           ENDIF
-          IF(I .eq. INT(1_w2f__i8)) THEN
+          IF(I .eq. 1) THEN
             __value__(PB) = 0.0D00
             __value__(PBB) = __value__(X(K))
 C           $OpenAD$ INLINE push_i(subst)
@@ -1936,7 +1920,7 @@ C           $OpenAD$ INLINE push_i(subst)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_364)
           ELSE
-            IF(I .eq. INT(2_w2f__i8)) THEN
+            IF(I .eq. 2) THEN
               __value__(PB) = __value__(X(K - NX))
               __value__(PBB) = 0.0D00
               OpenAD_Symbol_396 = (K - NX)
@@ -1948,7 +1932,7 @@ C             $OpenAD$ INLINE push_i(subst)
             ELSE
               __value__(PB) = __value__(X(K - NX))
               __value__(PBB) = __value__(X(K - NX * 2))
-              OpenAD_Symbol_397 = (K - NX * INT(2_w2f__i8))
+              OpenAD_Symbol_397 = (K - NX * 2)
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_397)
               OpenAD_Symbol_398 = (K - NX)
@@ -1962,21 +1946,21 @@ C             $OpenAD$ INLINE push_i(subst)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_365)
           ENDIF
-          IF((NX .eq. J) .OR.(I .eq. INT(1_w2f__i8))) THEN
+          IF((NX .eq. J) .OR.(I .eq. 1)) THEN
             __value__(PBR) = 0.0D00
             OpenAD_Symbol_366 = 1_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_366)
           ELSE
             __value__(PBR) = __value__(X(K - NX + 1))
-            OpenAD_Symbol_395 = (K - NX + INT(1_w2f__i8))
+            OpenAD_Symbol_395 = (K - NX + 1)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_395)
             OpenAD_Symbol_367 = 0_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_367)
           ENDIF
-          IF(J .eq. INT(1_w2f__i8)) THEN
+          IF(J .eq. 1) THEN
             __value__(PL) = 0.0D00
             __value__(PLL) = __value__(X(K))
 C           $OpenAD$ INLINE push_i(subst)
@@ -1985,10 +1969,10 @@ C           $OpenAD$ INLINE push_i(subst)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_370)
           ELSE
-            IF(J .eq. INT(2_w2f__i8)) THEN
+            IF(J .eq. 2) THEN
               __value__(PL) = __value__(X(K + (-1)))
               __value__(PLL) = 0.0D00
-              OpenAD_Symbol_392 = (K + INT((-1_w2f__i8)))
+              OpenAD_Symbol_392 = (K +(-1))
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_392)
               OpenAD_Symbol_368 = 1_w2f__i8
@@ -1997,10 +1981,10 @@ C             $OpenAD$ INLINE push_i(subst)
             ELSE
               __value__(PL) = __value__(X(K + (-1)))
               __value__(PLL) = __value__(X(K + (-2)))
-              OpenAD_Symbol_393 = (K + INT((-2_w2f__i8)))
+              OpenAD_Symbol_393 = (K +(-2))
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_393)
-              OpenAD_Symbol_394 = (K + INT((-1_w2f__i8)))
+              OpenAD_Symbol_394 = (K +(-1))
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_394)
               OpenAD_Symbol_369 = 0_w2f__i8
@@ -2014,10 +1998,10 @@ C           $OpenAD$ INLINE push_i(subst)
           __value__(P) = __value__(X(K))
 C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(K)
-          IF(J .eq.(NX + INT((-1_w2f__i8)))) THEN
+          IF(J .eq.(NX +(-1))) THEN
             __value__(PR) = __value__(X(K + 1))
             __value__(PRR) = 0.0D00
-            OpenAD_Symbol_384 = (K + INT(1_w2f__i8))
+            OpenAD_Symbol_384 = (K + 1)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_384)
             OpenAD_Symbol_374 = 1_w2f__i8
@@ -2035,10 +2019,10 @@ C             $OpenAD$ INLINE push_i(subst)
             ELSE
               __value__(PR) = __value__(X(K + 1))
               __value__(PRR) = __value__(X(K + 2))
-              OpenAD_Symbol_390 = (K + INT(2_w2f__i8))
+              OpenAD_Symbol_390 = (K + 2)
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_390)
-              OpenAD_Symbol_391 = (K + INT(1_w2f__i8))
+              OpenAD_Symbol_391 = (K + 1)
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_391)
               OpenAD_Symbol_373 = 0_w2f__i8
@@ -2049,21 +2033,21 @@ C             $OpenAD$ INLINE push_i(subst)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_375)
           ENDIF
-          IF((NY .eq. I) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((NY .eq. I) .OR.(J .eq. 1)) THEN
             __value__(PTL) = 0.0D00
             OpenAD_Symbol_376 = 1_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_376)
           ELSE
             __value__(PTL) = __value__(X(NX + K + (-1)))
-            OpenAD_Symbol_389 = (NX + K + INT((-1_w2f__i8)))
+            OpenAD_Symbol_389 = (NX + K +(-1))
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_389)
             OpenAD_Symbol_377 = 0_w2f__i8
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_377)
           ENDIF
-          IF(I .eq.(NY + INT((-1_w2f__i8)))) THEN
+          IF(I .eq.(NY +(-1))) THEN
             __value__(PT) = __value__(X(NX + K))
             __value__(PTT) = 0.0D00
             OpenAD_Symbol_385 = (NX + K)
@@ -2084,7 +2068,7 @@ C             $OpenAD$ INLINE push_i(subst)
             ELSE
               __value__(PT) = __value__(X(NX + K))
               __value__(PTT) = __value__(X(K + NX * 2))
-              OpenAD_Symbol_387 = (K + NX * INT(2_w2f__i8))
+              OpenAD_Symbol_387 = (K + NX * 2)
 C             $OpenAD$ INLINE push_i(subst)
               CALL push_i(OpenAD_Symbol_387)
               OpenAD_Symbol_388 = (NX + K)
@@ -2105,7 +2089,7 @@ C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_382)
           ELSE
             __value__(PTR) = __value__(X(NX + K + 1))
-            OpenAD_Symbol_386 = (NX + K + INT(1_w2f__i8))
+            OpenAD_Symbol_386 = (NX + K + 1)
 C           $OpenAD$ INLINE push_i(subst)
             CALL push_i(OpenAD_Symbol_386)
             OpenAD_Symbol_383 = 0_w2f__i8

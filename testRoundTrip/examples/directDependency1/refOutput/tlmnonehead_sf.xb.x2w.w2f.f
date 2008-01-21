@@ -66,9 +66,9 @@ C$OPENAD XXX Template ad_template.f
       CALL sax(OpenAD_Symbol_11, __deriv__(OpenAD_Symbol_10), __deriv__
      > (T2))
       CALL foo()
-      OpenAD_Symbol_9 = (__value__(T2) * 3.0D00 + __value__(T) * 2.0D00
-     > )
-      OpenAD_Symbol_5 = 3.0D00
+      OpenAD_Symbol_9 = (__value__(T2) * DBLE(3.0) + __value__(T) *
+     >  2.0D00)
+      OpenAD_Symbol_5 = 3.0
       OpenAD_Symbol_3 = 1_w2f__i8
       OpenAD_Symbol_7 = 2.0D00
       OpenAD_Symbol_4 = 1_w2f__i8

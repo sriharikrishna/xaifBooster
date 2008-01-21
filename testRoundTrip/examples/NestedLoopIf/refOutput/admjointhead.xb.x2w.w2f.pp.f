@@ -170,12 +170,12 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           Y(INT(I))%v = (X(I)%v*X(I)%v)
         ELSE
           Y(INT(I))%v = (X(I)%v+X(I)%v)
         ENDIF
-        X(INT(I))%v = 0.0D00
+        X(INT(I))%v = 0.0
       END DO
       
             our_rev_mode=our_orig_mode
@@ -193,7 +193,7 @@ C taping
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_16 = 0_w2f__i8
       DO I = 1, 2, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           OpenAD_Symbol_2 = (X(I)%v*X(I)%v)
           OpenAD_Symbol_0 = X(I)%v
           OpenAD_Symbol_1 = X(I)%v
@@ -237,7 +237,7 @@ C$OPENAD XXX Template ad_template.f
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_18
           integer_tape_pointer = integer_tape_pointer+1
         ENDIF
-        X(INT(I))%v = 0.0D00
+        X(INT(I))%v = 0.0
           integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
         OpenAD_Symbol_16 = (INT(OpenAD_Symbol_16) + INT(1_w2f__i8))

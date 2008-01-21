@@ -35,7 +35,7 @@ C
 C$OPENAD XXX Template ad_template.f
       t__1 = J
       t__2 = MAX(J, 0_w2f__i8)
-      __value__(Y(1)) = 1.0D00
+      __value__(Y(1)) = 1.0
       CALL zero_deriv(__deriv__(Y(1)))
       CALL FOO()
       CONTAINS

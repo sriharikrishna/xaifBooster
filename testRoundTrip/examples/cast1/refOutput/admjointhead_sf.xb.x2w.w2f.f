@@ -26,12 +26,12 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = (INT(INT(__value__(X(1)))) * 2.5D00)
+      __value__(Y(1)) = (INT(INT(__value__(X(1)))) * DBLE(2.5))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = (INT(INT(__value__(X(1)))) * 2.5D00)
+      __value__(Y(1)) = (INT(INT(__value__(X(1)))) * DBLE(2.5))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
@@ -52,7 +52,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = (INT(INT(__value__(X(1)))) * 2.5D00)
+      __value__(Y(1)) = (INT(INT(__value__(X(1)))) * DBLE(2.5))
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11

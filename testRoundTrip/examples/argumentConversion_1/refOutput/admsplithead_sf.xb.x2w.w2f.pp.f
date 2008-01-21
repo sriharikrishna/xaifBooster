@@ -234,8 +234,8 @@ C
          if (our_rev_mode%plain) then
 ! original function
 C$OPENAD XXX Template ad_template.f
-      PX(1) = 1.0D00
-      PX(2) = 2.0D00
+      PX(1) = 1.0
+      PX(2) = 2.0
       CALL foo(X,Y)
 C!! requested inline of 'convert_p2a_vector' has no defn
       CALL convert_p2a_vector(OpenAD_Symbol_0,PX)
@@ -260,8 +260,8 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      PX(1) = 1.0D00
-      PX(2) = 2.0D00
+      PX(1) = 1.0
+      PX(2) = 2.0
       CALL foo(X,Y)
 C!! requested inline of 'convert_p2a_vector' has no defn
       CALL convert_p2a_vector(OpenAD_Symbol_0,PX)

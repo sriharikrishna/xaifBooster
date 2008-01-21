@@ -38,17 +38,17 @@
 
     <xaif:Scope vertex_id="3" annotation="{SymTab_Id#3}">
       <xaif:SymbolTable>
-        <xaif:Symbol symbol_id="X1_1" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#1}" active="1">
+        <xaif:Symbol symbol_id="X1_1" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#1}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="X2_2" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#2}" active="1">
+        <xaif:Symbol symbol_id="X2_2" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#2}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="Y1_3" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#3}" active="1">
+        <xaif:Symbol symbol_id="Y1_3" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#3}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="Y2_4" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#4}" active="1">
+        <xaif:Symbol symbol_id="Y2_4" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#4}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="V3_5" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#5}" active="1">
+        <xaif:Symbol symbol_id="V3_5" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#5}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="V4_6" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#6}" active="1">
+        <xaif:Symbol symbol_id="V4_6" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#6}" active="1">
         </xaif:Symbol>
       </xaif:SymbolTable>
     </xaif:Scope>

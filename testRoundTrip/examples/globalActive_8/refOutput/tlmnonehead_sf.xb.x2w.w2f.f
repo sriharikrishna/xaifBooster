@@ -121,9 +121,9 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_5 = (__value__(AGLOBAL) ** INT(3_w2f__i8))
-      OpenAD_Symbol_3 = (INT(3_w2f__i8) *(__value__(AGLOBAL) **(INT(
-     > 3_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_5 = (__value__(AGLOBAL) ** 3)
+      OpenAD_Symbol_3 = (3 *(__value__(AGLOBAL) **(3 - INT(1_w2f__i8)))
+     > )
       __value__(AP) = OpenAD_Symbol_5
       OpenAD_Symbol_13 = OpenAD_Symbol_3
       CALL setderiv(__deriv__(OpenAD_Symbol_14), __deriv__(AGLOBAL))

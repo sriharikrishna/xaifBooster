@@ -272,23 +272,23 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 1.0D00
-      __value__(Y(2)) = 1.0D00
-      CALL foo(__deriv__(X), __deriv__(Y), 1_w2f__i8)
-      CALL foo(__deriv__(X), __deriv__(Y), 2_w2f__i8)
+      __value__(Y(1)) = 1.0
+      __value__(Y(2)) = 1.0
+      CALL foo(__deriv__(X), __deriv__(Y), 1)
+      CALL foo(__deriv__(X), __deriv__(Y), 2)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 1.0D00
-      __value__(Y(2)) = 1.0D00
-      CALL foo(__deriv__(X), __deriv__(Y), 1_w2f__i8)
-      CALL foo(__deriv__(X), __deriv__(Y), 2_w2f__i8)
+      __value__(Y(1)) = 1.0
+      __value__(Y(2)) = 1.0
+      CALL foo(__deriv__(X), __deriv__(Y), 1)
+      CALL foo(__deriv__(X), __deriv__(Y), 2)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
-      CALL foo(__deriv__(X), __deriv__(Y), 2_w2f__i8)
-      CALL foo(__deriv__(X), __deriv__(Y), 1_w2f__i8)
+      CALL foo(__deriv__(X), __deriv__(Y), 2)
+      CALL foo(__deriv__(X), __deriv__(Y), 1)
 C     $OpenAD$ INLINE ZeroDeriv(subst)
       CALL ZeroDeriv(__deriv__(Y(2)))
 C     $OpenAD$ INLINE ZeroDeriv(subst)
@@ -308,15 +308,15 @@ C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 1.0D00
-      __value__(Y(2)) = 1.0D00
-      CALL foo(__deriv__(X), __deriv__(Y), 1_w2f__i8)
-      CALL foo(__deriv__(X), __deriv__(Y), 2_w2f__i8)
+      __value__(Y(1)) = 1.0
+      __value__(Y(2)) = 1.0
+      CALL foo(__deriv__(X), __deriv__(Y), 1)
+      CALL foo(__deriv__(X), __deriv__(Y), 2)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
-      CALL foo(__deriv__(X), __deriv__(Y), 2_w2f__i8)
-      CALL foo(__deriv__(X), __deriv__(Y), 1_w2f__i8)
+      CALL foo(__deriv__(X), __deriv__(Y), 2)
+      CALL foo(__deriv__(X), __deriv__(Y), 1)
 C     $OpenAD$ INLINE ZeroDeriv(subst)
       CALL ZeroDeriv(__deriv__(Y(2)))
 C     $OpenAD$ INLINE ZeroDeriv(subst)

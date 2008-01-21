@@ -72,12 +72,12 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           __value__(Y(INT(I))) = (__value__(X(I)) * __value__(X(I)))
         ELSE
           __value__(Y(INT(I))) = (__value__(X(I)) + __value__(X(I)))
         ENDIF
-        __value__(X(INT(I))) = 0.0D00
+        __value__(X(INT(I))) = 0.0
       END DO
       RETURN
 C     $OpenAD$ END REPLACEMENT
@@ -85,7 +85,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_16 = 0_w2f__i8
       DO I = 1, 2, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           OpenAD_Symbol_2 = (__value__(X(I)) * __value__(X(I)))
           OpenAD_Symbol_0 = __value__(X(I))
           OpenAD_Symbol_1 = __value__(X(I))
@@ -129,7 +129,7 @@ C         $OpenAD$ INLINE push_i(subst)
 C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(OpenAD_Symbol_18)
         ENDIF
-        __value__(X(INT(I))) = 0.0D00
+        __value__(X(INT(I))) = 0.0
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(I)
         OpenAD_Symbol_16 = (INT(OpenAD_Symbol_16) + INT(1_w2f__i8))
@@ -231,7 +231,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_22 = 0_w2f__i8
       DO I = 1, 2, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           OpenAD_Symbol_2 = (__value__(X(I)) * __value__(X(I)))
           OpenAD_Symbol_0 = __value__(X(I))
           OpenAD_Symbol_1 = __value__(X(I))
@@ -275,7 +275,7 @@ C         $OpenAD$ INLINE push_i(subst)
 C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(OpenAD_Symbol_24)
         ENDIF
-        __value__(X(INT(I))) = 0.0D00
+        __value__(X(INT(I))) = 0.0
 C       $OpenAD$ INLINE push_i(subst)
         CALL push_i(I)
         OpenAD_Symbol_22 = (INT(OpenAD_Symbol_22) + INT(1_w2f__i8))

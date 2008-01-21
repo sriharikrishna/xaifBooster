@@ -38,9 +38,9 @@
 
     <xaif:Scope vertex_id="3" annotation="{SymTab_Id#3}">
       <xaif:SymbolTable>
-        <xaif:Symbol symbol_id="X_1" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#1}" active="1">
+        <xaif:Symbol symbol_id="X_1" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#1}" active="1">
         </xaif:Symbol>
-        <xaif:Symbol symbol_id="Y_2" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#2}" active="1">
+        <xaif:Symbol symbol_id="Y_2" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#2}" active="1">
         </xaif:Symbol>
       </xaif:SymbolTable>
     </xaif:Scope>
