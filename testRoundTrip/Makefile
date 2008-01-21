@@ -72,6 +72,12 @@ CC=icc
 #FREEFORMAT=-free -132
 #F95=f95 -g -w=unused
 #CC=gcc
+
+#FIXEDFORMAT=-fixedform
+#FREEFORMAT=-freeform
+#F95=openf95 -g 
+#CC=opencc
+
 ######################################################
 
 ifdef REVERSE_MODE
@@ -139,7 +145,7 @@ head_sf.xaif : head_sf.B whirl2xaif
 
 # XAIF -> XAIF'
 head_sf.xb.xaif : head_sf.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
-	./xaifBooster -v -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG) 
+	./xaifBooster -v -V -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG) 
 
 # XAIF' -> WHIRL'
 head_sf.xb.x2w.B : head_sf.xb.xaif xaif2whirl
