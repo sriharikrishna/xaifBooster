@@ -173,6 +173,7 @@ namespace xaifBooster {
 						  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Symbol::our_myActiveTypeFlag_XAIFName)),
 						  XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Symbol::our_myTempFlag_XAIFName))));
     theNewSymbol.setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    theNewSymbol.setFrontEndType(XMLParser::getAttributeValueByName(FrontEndType::our_attribute_XAIFName));
     passingOut.setSymbol(theNewSymbol);
   }
 
@@ -354,15 +355,17 @@ namespace xaifBooster {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onConstant" ); 
     if (passingIn.hasExpression()) { // comes from an expression
       Expression& theExpression(passingIn.getExpression());
-      Constant* theConstant_p=new Constant(SymbolType::fromString(XMLParser::getAttributeValueByName(Constant::our_myType_XAIFName)));
+      Constant* theConstant_p=new Constant(SymbolType::fromString(XMLParser::getAttributeValueByName(SymbolType::our_attribute_XAIFName)));
       theConstant_p->setId(XMLParser::getAttributeValueByName(Constant::our_myId_XAIFName));
       theConstant_p->setFromString(XMLParser::getAttributeValueByName(Constant::our_myValue_XAIFName));
+      theConstant_p->setFrontEndType(XMLParser::getAttributeValueByName(FrontEndType::our_attribute_XAIFName));
       theExpression.supplyAndAddVertexInstance(*theConstant_p);
     }
     else { // comes from a ConcreteArgument
       ConcreteArgument& theConcreteArgument(passingIn.getConcreteArgument());
-      Constant& theConstant=theConcreteArgument.makeConstant(SymbolType::fromString(XMLParser::getAttributeValueByName(Constant::our_myType_XAIFName)));
+      Constant& theConstant=theConcreteArgument.makeConstant(SymbolType::fromString(XMLParser::getAttributeValueByName(SymbolType::our_attribute_XAIFName)));
       theConstant.setFromString(XMLParser::getAttributeValueByName(Constant::our_myValue_XAIFName));
+      theConstant.setFrontEndType(XMLParser::getAttributeValueByName(FrontEndType::our_attribute_XAIFName));
     }
   }
 
