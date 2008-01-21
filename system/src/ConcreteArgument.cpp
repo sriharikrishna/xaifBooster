@@ -229,6 +229,7 @@ namespace xaifBooster {
     else { 
       Constant& theConstantArg(theTarget.makeConstant(getConstant().getType()));
       theConstantArg.setFromString(getConstant().toString());
+      theConstantArg.setFrontEndType(getConstant().getFrontEndType());
     } 
   } 
 

@@ -53,7 +53,6 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/system/inc/Symbol.hpp"
-#include "xaifBooster/system/inc/Symbol.hpp"
 #include "xaifBooster/system/inc/SymbolAlgFactory.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
@@ -122,6 +121,10 @@ namespace xaifBooster {
        << SymbolType::our_attribute_XAIFName.c_str() 
        << "=\""
        << SymbolType::toString(myType).c_str()
+       << "\" " 
+       << FrontEndType::our_attribute_XAIFName.c_str() 
+       << "=\""
+       << myFrontEndType.c_str()
        << "\" " 
        << SymbolShape::our_attribute_XAIFName.c_str() 
        << "=\""
@@ -376,5 +379,15 @@ namespace xaifBooster {
   void Symbol::setCaseSensitive() { 
     ourCaseSensitiveFlag=true;
   } 
+
+  const FrontEndType& Symbol::getFrontEndType() const { 
+    return myFrontEndType;
+  }
+  
+  void Symbol::setFrontEndType(const FrontEndType& aFrontEndType) {
+    if (!myFrontEndType.empty())
+      THROW_LOGICEXCEPTION_MACRO("Symbol::setFrontEndType: already set");
+    myFrontEndType=aFrontEndType;
+  }
 
 } // end of namespace xaifBooster 
