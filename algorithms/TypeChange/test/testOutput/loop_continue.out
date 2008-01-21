@@ -2,15 +2,15 @@
     <xaif:ScopeHierarchy>
       <xaif:Scope vertex_id="1" annotation="">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id="head" kind="subroutine" type="void" shape="scalar" annotation="" active="1" temp="0">
+          <xaif:Symbol symbol_id="head" kind="subroutine" type="void" feType="" shape="scalar" annotation="" active="1" temp="0">
           </xaif:Symbol>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="2" annotation="">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id="x" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0">
+          <xaif:Symbol symbol_id="x" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="y" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="0">
+          <xaif:Symbol symbol_id="y" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="0">
           </xaif:Symbol>
         </xaif:SymbolTable>
       </xaif:Scope>
@@ -57,7 +57,7 @@
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
-            <xaif:Constant vertex_id="2" type="integer" value="1"/>
+            <xaif:Constant vertex_id="2" type="integer" feType="" value="1"/>
             <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
@@ -74,7 +74,7 @@
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
-            <xaif:Constant vertex_id="2" type="integer" value="1"/>
+            <xaif:Constant vertex_id="2" type="integer" feType="" value="1"/>
             <xaif:Intrinsic vertex_id="3" annotation="" name="add_scal_scal"/>
             <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
