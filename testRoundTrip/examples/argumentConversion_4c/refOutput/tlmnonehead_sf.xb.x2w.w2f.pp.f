@@ -79,7 +79,7 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           AX(INT(I),INT(J))%v = X(I)%v
-          APX(INT(I), INT(J)) = (I * 4.0D00)
+          APX(INT(I), INT(J)) = (I * DBLE(4.0))
           CALL setderiv(OpenAD_Symbol_8,X(I))
           CALL setderiv(AX(I,J),OpenAD_Symbol_8)
         END DO

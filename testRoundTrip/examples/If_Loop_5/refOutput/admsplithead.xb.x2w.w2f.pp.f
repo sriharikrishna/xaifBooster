@@ -101,7 +101,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      LOGICAL(w2f__i4) t__1
       REAL(w2f__8) OpenAD_Symbol_27
       REAL(w2f__8) OpenAD_Symbol_28
       REAL(w2f__8) OpenAD_Symbol_29
@@ -122,15 +121,13 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       I = 1
-      t__1 = I .LT. 3
-      DO WHILE(I .LT. INT(3_w2f__i8))
-        IF(I .LT. INT(2_w2f__i8)) THEN
+      DO WHILE(I .LT. 3)
+        IF(I .LT. 2) THEN
           Y(2)%v = SIN(X(1)%v)
         ELSE
           Y(1)%v = COS(X(2)%v)
         ENDIF
         I = I + 1
-        t__1 = I .LT. 3
       END DO
       Y(2)%v = (Y(1)%v*Y(2)%v)
       
@@ -139,10 +136,9 @@ C$OPENAD XXX Template ad_template.f
 ! taping
 C$OPENAD XXX Template ad_template.f
       I = 1
-      t__1 = I .LT. 3
       OpenAD_Symbol_18 = 0_w2f__i8
-      DO WHILE(I .LT. INT(3_w2f__i8))
-        IF(I .LT. INT(2_w2f__i8)) THEN
+      DO WHILE(I .LT. 3)
+        IF(I .LT. 2) THEN
           OpenAD_Symbol_1 = SIN(X(1)%v)
           OpenAD_Symbol_0 = COS(X(1)%v)
           Y(2)%v = OpenAD_Symbol_1
@@ -164,7 +160,6 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
         ENDIF
         I = I + 1
-        t__1 = I .LT. 3
         OpenAD_Symbol_18 = (INT(OpenAD_Symbol_18) + INT(1_w2f__i8))
       END DO
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_18

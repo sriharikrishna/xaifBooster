@@ -51,7 +51,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
       DO I = 1, 3, 1
-        IF(I .eq. INT(2_w2f__i8)) THEN
+        IF(I .eq. 2) THEN
           __value__(Y(INT(I))) = __value__(X(I))
         ELSE
           __value__(Y(INT(I))) = (__value__(X(I)) * 2.0D00)
@@ -63,7 +63,7 @@ C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
       DO I = 1, 3, 1
-        IF(I .eq. INT(2_w2f__i8)) THEN
+        IF(I .eq. 2) THEN
           __value__(Y(INT(I))) = __value__(X(I))
         ELSE
           OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
@@ -79,7 +79,7 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
       I = 1 + 1 *((3 - 1) / 1)
       DO WHILE(I .GE. 1)
-        IF(I .eq. INT(2_w2f__i8)) THEN
+        IF(I .eq. 2) THEN
 C         $OpenAD$ INLINE CondIncZeroDeriv(subst,subst)
           CALL CondIncZeroDeriv(__deriv__(Y(I)), __deriv__(
      > OpenAD_Symbol_3))
@@ -120,7 +120,7 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
       OpenAD_Symbol_9 = 0_w2f__i8
       DO I = 1, 3, 1
-        IF(I .eq. INT(2_w2f__i8)) THEN
+        IF(I .eq. 2) THEN
           __value__(Y(INT(I))) = __value__(X(I))
 C         $OpenAD$ INLINE push_i(subst)
           CALL push_i(I)

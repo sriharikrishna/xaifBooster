@@ -346,7 +346,7 @@ C original function
 C$OPENAD XXX Template ad_template.f
       K = 1
       CALL foo(X(K),Y)
-      P(1) = 1.0D00
+      P(1) = 1.0
       L = 1
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(OpenAD_Symbol_0,P(K))
@@ -375,7 +375,7 @@ C$OPENAD XXX Template ad_template.f
       CALL foo(X(K),Y)
           integer_tape(integer_tape_pointer) = K
           integer_tape_pointer = integer_tape_pointer+1
-      P(1) = 1.0D00
+      P(1) = 1.0
       L = 1
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(OpenAD_Symbol_0,P(K))

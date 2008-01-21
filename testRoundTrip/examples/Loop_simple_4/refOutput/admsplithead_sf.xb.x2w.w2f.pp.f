@@ -265,25 +265,25 @@ C
          if (our_rev_mode%plain) then
 ! original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
-      CALL foo(X,Y,1 _w2f__i8)
-      CALL foo(X,Y,2 _w2f__i8)
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
+      CALL foo(X,Y,1)
+      CALL foo(X,Y,2)
       RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
-      CALL foo(X,Y,1 _w2f__i8)
-      CALL foo(X,Y,2 _w2f__i8)
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
+      CALL foo(X,Y,1)
+      CALL foo(X,Y,2)
       RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-      CALL foo(X,Y,2 _w2f__i8)
-      CALL foo(X,Y,1 _w2f__i8)
+      CALL foo(X,Y,2)
+      CALL foo(X,Y,1)
           Y(2)%d = 0.0d0
           Y(1)%d = 0.0d0
           end if 

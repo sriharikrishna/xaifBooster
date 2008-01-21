@@ -113,9 +113,8 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_5 = (AGLOBAL%v**INT(3 _w2f__i8))
-      OpenAD_Symbol_3 = (INT(3 _w2f__i8)*(AGLOBAL%v**(INT(3 _w2f__i8)-IN
-     +T(1 _w2f__i8))))
+      OpenAD_Symbol_5 = (AGLOBAL%v**3)
+      OpenAD_Symbol_3 = (3*(AGLOBAL%v**(3-INT(1 _w2f__i8))))
       AP%v = OpenAD_Symbol_5
       OpenAD_Symbol_13 = OpenAD_Symbol_3
       CALL setderiv(OpenAD_Symbol_14,AGLOBAL)

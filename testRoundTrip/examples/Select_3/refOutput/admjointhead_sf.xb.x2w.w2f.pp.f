@@ -92,7 +92,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) select_expr_temp_0
 C
 C     **** Top Level Pragmas ****
 C
@@ -149,7 +148,6 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       I = 1
-      select_expr_temp_0 = I
       IF(I .ne. 0) THEN
         Y(1)%v = X(1)%v
       ENDIF
@@ -168,7 +166,6 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
       I = 1
-      select_expr_temp_0 = I
       IF(I .ne. 0) THEN
         Y(1)%v = X(1)%v
         OpenAD_Symbol_2 = 1_w2f__i8

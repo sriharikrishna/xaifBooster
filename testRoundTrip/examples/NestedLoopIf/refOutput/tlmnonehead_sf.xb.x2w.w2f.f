@@ -47,7 +47,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           OpenAD_Symbol_2 = (__value__(X(I)) * __value__(X(I)))
           OpenAD_Symbol_0 = __value__(X(I))
           OpenAD_Symbol_1 = __value__(X(I))
@@ -73,7 +73,7 @@ C$OPENAD XXX Template ad_template.f
           CALL saxpy(OpenAD_Symbol_11, __deriv__(OpenAD_Symbol_12),
      >  __deriv__(Y(I)))
         ENDIF
-        __value__(X(INT(I))) = 0.0D00
+        __value__(X(INT(I))) = 0.0
         CALL zero_deriv(__deriv__(X(INT(I))))
       END DO
       END SUBROUTINE

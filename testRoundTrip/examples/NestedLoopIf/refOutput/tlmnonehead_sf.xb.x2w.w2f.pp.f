@@ -49,7 +49,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           OpenAD_Symbol_2 = (X(I)%v*X(I)%v)
           OpenAD_Symbol_0 = X(I)%v
           OpenAD_Symbol_1 = X(I)%v
@@ -71,7 +71,7 @@ C$OPENAD XXX Template ad_template.f
           CALL sax(OpenAD_Symbol_9,OpenAD_Symbol_10,Y(I))
           CALL saxpy(OpenAD_Symbol_11,OpenAD_Symbol_12,Y(I))
         ENDIF
-        X(INT(I))%v = 0.0D00
+        X(INT(I))%v = 0.0
         CALL zero_deriv(X(INT(I)))
       END DO
       END SUBROUTINE

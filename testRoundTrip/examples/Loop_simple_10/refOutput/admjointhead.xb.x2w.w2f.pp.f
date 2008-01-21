@@ -180,10 +180,10 @@ C$OPENAD XXX Template ad_template.f
       Y(1)%v = X(1)%v
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
-        IF(A(I, J) .ne. INT(0_w2f__i8)) THEN
+        IF(A(I, J) .ne. 0) THEN
           Y(1)%v = (A(I,J)*X(1)%v*Y(1)%v)
         ELSE
-          Y(1)%v = 0.0D00
+          Y(1)%v = 0.0
         ENDIF
       END DO
       
@@ -203,7 +203,7 @@ C$OPENAD XXX Template ad_template.f
       Y(1)%v = X(1)%v
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
-        IF(A(I, J) .ne. INT(0_w2f__i8)) THEN
+        IF(A(I, J) .ne. 0) THEN
           OpenAD_Symbol_0 = (X(1)%v*Y(1)%v)
           OpenAD_Symbol_5 = (A(I, J) * OpenAD_Symbol_0)
           OpenAD_Symbol_3 = Y(1)%v
@@ -217,7 +217,7 @@ C$OPENAD XXX Simple loop
           double_tape(double_tape_pointer) = OpenAD_Symbol_9
           double_tape_pointer = double_tape_pointer+1
         ELSE
-          Y(1)%v = 0.0D00
+          Y(1)%v = 0.0
         ENDIF
           integer_tape(integer_tape_pointer) = A(I,J)
           integer_tape_pointer = integer_tape_pointer+1
@@ -245,7 +245,7 @@ C adjoint
       DO WHILE(I .GE. 1)
           integer_tape_pointer = integer_tape_pointer-1
           A(I,J) = integer_tape(integer_tape_pointer)
-        IF(A(I, J) .ne. INT(0_w2f__i8)) THEN
+        IF(A(I, J) .ne. 0) THEN
           double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_41 = double_tape(double_tape_pointer)
           OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(1)%d*OpenAD_Symbol_4
@@ -447,7 +447,7 @@ C$OPENAD XXX Template ad_template.f
           A(I, J) = (I + J)
         END DO
       END DO
-      CALL foo(X,Y,A,2 _w2f__i8)
+      CALL foo(X,Y,A,2)
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           A(I, J) = 0
@@ -480,7 +480,7 @@ C$OPENAD XXX Template ad_template.f
       END DO
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_25
           integer_tape_pointer = integer_tape_pointer+1
-      CALL foo(X,Y,A,2 _w2f__i8)
+      CALL foo(X,Y,A,2)
       OpenAD_Symbol_27 = 0_w2f__i8
       DO I = 1, 2, 1
         OpenAD_Symbol_28 = 0_w2f__i8
@@ -525,7 +525,7 @@ C adjoint
         END DO
         OpenAD_Symbol_18 = INT(OpenAD_Symbol_18) + 1
       END DO
-      CALL foo(X,Y,A,2 _w2f__i8)
+      CALL foo(X,Y,A,2)
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_21 = integer_tape(integer_tape_pointer)
       OpenAD_Symbol_22 = 1

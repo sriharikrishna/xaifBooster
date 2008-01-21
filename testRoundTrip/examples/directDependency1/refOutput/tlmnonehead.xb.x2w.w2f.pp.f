@@ -59,8 +59,8 @@ C$OPENAD XXX Template ad_template.f
       CALL setderiv(T,OpenAD_Symbol_10)
       CALL sax(OpenAD_Symbol_11,OpenAD_Symbol_10,T2)
       CALL foo()
-      OpenAD_Symbol_9 = (T2%v*3.0D00+T%v*2.0D00)
-      OpenAD_Symbol_5 = 3.0D00
+      OpenAD_Symbol_9 = (T2%v*DBLE(3.0)+T%v*2.0D00)
+      OpenAD_Symbol_5 = 3.0
       OpenAD_Symbol_3 = 1_w2f__i8
       OpenAD_Symbol_7 = 2.0D00
       OpenAD_Symbol_4 = 1_w2f__i8

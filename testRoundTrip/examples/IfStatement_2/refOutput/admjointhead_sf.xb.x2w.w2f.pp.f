@@ -169,7 +169,7 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 2.0D00
+      Y(1)%v = 2.0
       IF (X(1)%v .GT. 0.0D00) THEN
         Y(1)%v = X(1)%v
         IF (X(1)%v .GT. 1.0D00) THEN
@@ -194,7 +194,7 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 2.0D00
+      Y(1)%v = 2.0
       IF (X(1)%v .GT. 0.0D00) THEN
         Y(1)%v = X(1)%v
         IF (X(1)%v .GT. 1.0D00) THEN

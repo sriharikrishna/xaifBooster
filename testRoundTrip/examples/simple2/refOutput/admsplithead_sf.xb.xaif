@@ -2,101 +2,101 @@
     <xaif:ScopeHierarchy>
       <xaif:Scope vertex_id="1" annotation="{SymTab_Id#1}">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id=".preg_A8_14" kind="variable" type="opaque" shape="scalar" annotation="{Sym_Id#14}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_A8_14" kind="variable" type="opaque" feType="" shape="scalar" annotation="{Sym_Id#14}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_B_1" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#1}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_B_1" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#1}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_C10_15" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#15}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_C10_15" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#15}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_C16_16" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#16}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_C16_16" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#16}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_C4_11" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#11}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_C4_11" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#11}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_C8_12" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#12}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_C8_12" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#12}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_CQ_13" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#13}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_CQ_13" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#13}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_F10_8" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#8}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_F10_8" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#8}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_F16_9" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#9}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_F16_9" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#9}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_F4_6" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#6}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_F4_6" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#6}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_F8_7" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#7}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_F8_7" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#7}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_FQ_10" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#10}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_FQ_10" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#10}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_I16_17" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#17}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_I16_17" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#17}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_I4_2" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#2}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_I4_2" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#2}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_I8_3" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#3}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_I8_3" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#3}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_U16_18" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#18}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_U16_18" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#18}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_U4_4" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#4}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_U4_4" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#4}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_U8_5" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#5}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_U8_5" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#5}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_return_val_19" kind="variable" type="opaque" shape="scalar" annotation="{Sym_Id#19}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_return_val_19" kind="variable" type="opaque" feType="" shape="scalar" annotation="{Sym_Id#19}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="COS_24" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#24}" active="1" temp="0">
+          <xaif:Symbol symbol_id="COS_24" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#24}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_10" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_10" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_11" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_11" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_12" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_12" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_13" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_13" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_14" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_14" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_15" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_15" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_16" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_16" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_17" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_17" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_18" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_18" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_19" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_19" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_2" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_20" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_20" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_21" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_21" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_22" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_22" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_23" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_23" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_24" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_24" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_3" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_3" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_4" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_4" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_5" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_5" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_6" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_6" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_7" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_7" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_8" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_8" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_9" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_9" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="SIN_23" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#23}" active="1" temp="0">
+          <xaif:Symbol symbol_id="SIN_23" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#23}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="all_globals_mod__20" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#20}" active="1" temp="0">
+          <xaif:Symbol symbol_id="all_globals_mod__20" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#20}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="head__21" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#21}" active="1" temp="0">
+          <xaif:Symbol symbol_id="head__21" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#21}" active="1" temp="0">
           </xaif:Symbol>
         </xaif:SymbolTable>
       </xaif:Scope>
@@ -106,31 +106,31 @@
       </xaif:Scope>
       <xaif:Scope vertex_id="3" annotation="{SymTab_Id#3}">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_25" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_25" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_26" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_26" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_27" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_27" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_28" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_28" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_29" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_29" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_30" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_30" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_31" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_31" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="T1_5" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#5}" active="1" temp="0">
+          <xaif:Symbol symbol_id="T1_5" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#5}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="T2_6" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#6}" active="1" temp="0">
+          <xaif:Symbol symbol_id="T2_6" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#6}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="X1_1" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#1}" active="1" temp="0">
+          <xaif:Symbol symbol_id="X1_1" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#1}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="X2_2" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#2}" active="1" temp="0">
+          <xaif:Symbol symbol_id="X2_2" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#2}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="Y1_3" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#3}" active="1" temp="0">
+          <xaif:Symbol symbol_id="Y1_3" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#3}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="Y2_4" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#4}" active="1" temp="0">
+          <xaif:Symbol symbol_id="Y2_4" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#4}" active="1" temp="0">
           </xaif:Symbol>
         </xaif:SymbolTable>
       </xaif:Scope>

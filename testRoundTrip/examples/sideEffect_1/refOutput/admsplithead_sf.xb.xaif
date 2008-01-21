@@ -2,85 +2,85 @@
     <xaif:ScopeHierarchy>
       <xaif:Scope vertex_id="1" annotation="{SymTab_Id#1}">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id=".preg_A8_14" kind="variable" type="opaque" shape="scalar" annotation="{Sym_Id#14}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_A8_14" kind="variable" type="opaque" feType="" shape="scalar" annotation="{Sym_Id#14}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_B_1" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#1}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_B_1" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#1}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_C10_15" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#15}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_C10_15" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#15}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_C16_16" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#16}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_C16_16" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#16}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_C4_11" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#11}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_C4_11" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#11}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_C8_12" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#12}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_C8_12" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#12}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_CQ_13" kind="variable" type="complex" shape="scalar" annotation="{Sym_Id#13}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_CQ_13" kind="variable" type="complex" feType="" shape="scalar" annotation="{Sym_Id#13}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_F10_8" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#8}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_F10_8" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#8}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_F16_9" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#9}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_F16_9" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#9}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_F4_6" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#6}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_F4_6" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#6}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_F8_7" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#7}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_F8_7" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#7}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_FQ_10" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#10}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_FQ_10" kind="variable" type="real" feType="" shape="scalar" annotation="{Sym_Id#10}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_I16_17" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#17}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_I16_17" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#17}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_I4_2" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#2}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_I4_2" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#2}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_I8_3" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#3}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_I8_3" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#3}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_U16_18" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#18}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_U16_18" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#18}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_U4_4" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#4}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_U4_4" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#4}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_U8_5" kind="variable" type="integer" shape="scalar" annotation="{Sym_Id#5}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_U8_5" kind="variable" type="integer" feType="" shape="scalar" annotation="{Sym_Id#5}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id=".preg_return_val_19" kind="variable" type="opaque" shape="scalar" annotation="{Sym_Id#19}" active="0" temp="0">
+          <xaif:Symbol symbol_id=".preg_return_val_19" kind="variable" type="opaque" feType="" shape="scalar" annotation="{Sym_Id#19}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="AGLOBAL_22" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#22}" active="1" temp="0">
+          <xaif:Symbol symbol_id="AGLOBAL_22" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#22}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_0" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_1" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_10" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_10" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_11" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_11" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_12" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_12" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_13" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_13" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_14" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_14" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_2" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_3" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_3" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_4" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_4" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_5" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_5" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_6" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_6" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_7" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_7" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_8" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_8" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_9" kind="variable" type="real" shape="scalar" annotation="" active="1" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_9" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="all_globals_mod__20" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#20}" active="1" temp="0">
+          <xaif:Symbol symbol_id="all_globals_mod__20" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#20}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="bar__25" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#25}" active="1" temp="0">
+          <xaif:Symbol symbol_id="bar__25" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#25}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="foo__23" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#23}" active="1" temp="0">
+          <xaif:Symbol symbol_id="foo__23" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#23}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="globals__21" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#21}" active="1" temp="0">
+          <xaif:Symbol symbol_id="globals__21" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#21}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="head__26" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#26}" active="1" temp="0">
+          <xaif:Symbol symbol_id="head__26" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#26}" active="1" temp="0">
           </xaif:Symbol>
         </xaif:SymbolTable>
       </xaif:Scope>
@@ -94,38 +94,38 @@
       </xaif:Scope>
       <xaif:Scope vertex_id="4" annotation="{SymTab_Id#4}">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_15" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_15" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_16" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_16" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="X_1" kind="variable" type="real" shape="vector" annotation="{Sym_Id#1}" active="1" temp="0">
+          <xaif:Symbol symbol_id="X_1" kind="variable" type="real" feType="F8" shape="vector" annotation="{Sym_Id#1}" active="1" temp="0">
             <xaif:DimensionBounds lower="1" upper="1"/>
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="Y_2" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#2}" active="1" temp="0">
+          <xaif:Symbol symbol_id="Y_2" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#2}" active="1" temp="0">
           </xaif:Symbol>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="5" annotation="{SymTab_Id#5}">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_17" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_17" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_18" kind="variable" type="real" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_18" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="X_1" kind="variable" type="real" shape="scalar" annotation="{Sym_Id#1}" active="1" temp="0">
+          <xaif:Symbol symbol_id="X_1" kind="variable" type="real" feType="F8" shape="scalar" annotation="{Sym_Id#1}" active="1" temp="0">
           </xaif:Symbol>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="6" annotation="{SymTab_Id#6}">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id="X_1" kind="variable" type="real" shape="vector" annotation="{Sym_Id#1}" active="1" temp="0">
+          <xaif:Symbol symbol_id="X_1" kind="variable" type="real" feType="F8" shape="vector" annotation="{Sym_Id#1}" active="1" temp="0">
             <xaif:DimensionBounds lower="1" upper="1"/>
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="Y_2" kind="variable" type="real" shape="vector" annotation="{Sym_Id#2}" active="1" temp="0">
+          <xaif:Symbol symbol_id="Y_2" kind="variable" type="real" feType="F8" shape="vector" annotation="{Sym_Id#2}" active="1" temp="0">
             <xaif:DimensionBounds lower="1" upper="1"/>
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="bar__3" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#3}" active="1" temp="0">
+          <xaif:Symbol symbol_id="bar__3" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#3}" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="foo__4" kind="subroutine" type="void" shape="scalar" annotation="{Sym_Id#4}" active="1" temp="0">
+          <xaif:Symbol symbol_id="foo__4" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#4}" active="1" temp="0">
           </xaif:Symbol>
         </xaif:SymbolTable>
       </xaif:Scope>
@@ -332,7 +332,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -343,7 +343,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -375,7 +375,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -386,7 +386,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -406,7 +406,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -424,7 +424,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -552,7 +552,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -579,7 +579,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -705,7 +705,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -716,7 +716,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -736,7 +736,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -754,7 +754,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -882,7 +882,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -909,7 +909,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -1483,7 +1483,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="AGLOBAL_22" annotation="" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:Constant vertex_id="1" type="real" value="2.00000000000000000000e+00"/>
+              <xaif:Constant vertex_id="1" type="real" feType="F8" value="2.00000000000000000000e+00"/>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:SubroutineCall statement_id="14" symbol_id="bar__25" scope_id="1" active="undefined">
@@ -1493,7 +1493,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -1519,7 +1519,7 @@
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
                   <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                   </xaif:Index>
                 </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
@@ -1548,7 +1548,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="AGLOBAL_22" annotation="" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:Constant vertex_id="1" type="real" value="2.00000000000000000000e+00"/>
+              <xaif:Constant vertex_id="1" type="real" feType="F8" value="2.00000000000000000000e+00"/>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:SubroutineCall statement_id="14" symbol_id="bar__25" scope_id="1" active="undefined">
@@ -1558,7 +1558,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -1584,7 +1584,7 @@
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
                   <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                   </xaif:Index>
                 </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
@@ -1612,7 +1612,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -1663,7 +1663,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -1784,7 +1784,7 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="AGLOBAL_22" annotation="" scope_id="1"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
-              <xaif:Constant vertex_id="1" type="real" value="2.00000000000000000000e+00"/>
+              <xaif:Constant vertex_id="1" type="real" feType="F8" value="2.00000000000000000000e+00"/>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:SubroutineCall statement_id="14" symbol_id="bar__25" scope_id="1" active="undefined">
@@ -1794,7 +1794,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -1820,7 +1820,7 @@
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
                   <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                   </xaif:Index>
                 </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
@@ -1848,7 +1848,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
@@ -1899,7 +1899,7 @@
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" value="1"/>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
                     </xaif:Index>
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>

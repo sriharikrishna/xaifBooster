@@ -511,8 +511,8 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
       GLOBALSTRING = 'yes'
       CALL foo(X,Y)
       GLOBALSTRING = 'both'
@@ -530,8 +530,8 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
       GLOBALSTRING = 'yes'
       CALL foo(X,Y)
       GLOBALSTRING = 'both'

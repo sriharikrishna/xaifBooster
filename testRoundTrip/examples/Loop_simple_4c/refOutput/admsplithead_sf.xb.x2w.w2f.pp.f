@@ -376,8 +376,8 @@ C
          if (our_rev_mode%plain) then
 ! original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
       GLOBALSTRING = 'yes'
       CALL foo(X,Y)
       GLOBALSTRING = 'both'
@@ -386,8 +386,8 @@ C$OPENAD XXX Template ad_template.f
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
       GLOBALSTRING = 'yes'
       CALL foo(X,Y)
       GLOBALSTRING = 'both'

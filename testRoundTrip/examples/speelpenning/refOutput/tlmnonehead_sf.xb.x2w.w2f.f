@@ -41,7 +41,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 10, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           __value__(Y(1)) = __value__(X(1))
           CALL setderiv(__deriv__(OpenAD_Symbol_3), __deriv__(X(1)))
           CALL setderiv(__deriv__(Y(1)), __deriv__(OpenAD_Symbol_3))

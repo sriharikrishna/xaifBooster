@@ -64,5 +64,5 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      CALL bar(__deriv__(X), __deriv__(Y), 2_w2f__i8)
+      CALL bar(__deriv__(X), __deriv__(Y), 2)
       END SUBROUTINE

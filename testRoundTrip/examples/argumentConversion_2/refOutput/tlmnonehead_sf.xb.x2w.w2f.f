@@ -58,7 +58,7 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL foo(__deriv__(X), __deriv__(Y))
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_0), 2.0D00)
+      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_0), 2.0)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_1), PY)
       CALL foo(__deriv__(OpenAD_Symbol_0), __deriv__(OpenAD_Symbol_1))

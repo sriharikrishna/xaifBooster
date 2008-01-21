@@ -320,9 +320,9 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      VOL(1) = 1.0D+01
-      VOL(2) = 1.2D+01
-      VOL(3) = 1.4D+01
+      VOL(1) = 1.0E+01
+      VOL(2) = 1.2E+01
+      VOL(3) = 1.4E+01
       DELTA_T = 2.0D+01
       IF(UVELLOC .GE. 0.0D00) THEN
         DFLDDT(1)%v = ((EXTFORLOC(1)+VOL(1)*GAMMALOC*(FLDSTAR(1)-FLDNOW(
@@ -354,9 +354,9 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      VOL(1) = 1.0D+01
-      VOL(2) = 1.2D+01
-      VOL(3) = 1.4D+01
+      VOL(1) = 1.0E+01
+      VOL(2) = 1.2E+01
+      VOL(3) = 1.4E+01
       DELTA_T = 2.0D+01
       IF(UVELLOC .GE. 0.0D00) THEN
         OpenAD_Symbol_10 = (FLDSTAR(1)-FLDNOW(1)%v)

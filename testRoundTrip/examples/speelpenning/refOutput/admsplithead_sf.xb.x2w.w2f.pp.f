@@ -122,7 +122,7 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 10, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           Y(1)%v = X(1)%v
         ELSE
           Y(1)%v = (X(I)%v*Y(1)%v)
@@ -135,7 +135,7 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_11 = 0_w2f__i8
       DO I = 1, 10, 1
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           Y(1)%v = X(1)%v
           OpenAD_Symbol_12 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_12

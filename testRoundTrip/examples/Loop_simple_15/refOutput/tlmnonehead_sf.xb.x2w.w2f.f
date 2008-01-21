@@ -41,8 +41,8 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       I = 1
-      __value__(Y(1)) = 0.0D00
-      __value__(Y(2)) = 0.0D00
+      __value__(Y(1)) = 0.0
+      __value__(Y(2)) = 0.0
       S = 1.0D00
       CALL zero_deriv(__deriv__(Y(1)))
       CALL zero_deriv(__deriv__(Y(2)))

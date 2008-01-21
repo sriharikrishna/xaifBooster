@@ -116,7 +116,7 @@ C$OPENAD XXX Template ad_template.f
       CALL box_cycle_fields()
       DO L = 1, 3, 1
         IF(__value__(TNOW(L)) .LT.(-2.0D00)) THEN
-          __value__(TNOW(INT(L))) = 2.0D00
+          __value__(TNOW(INT(L))) = 2.0
           CALL zero_deriv(__deriv__(TNOW(INT(L))))
         ENDIF
       END DO
@@ -141,7 +141,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       DO L = 1, 6, 1
-        TSVEC(INT(L)) = 0.0D00
+        TSVEC(INT(L)) = 0.0
       END DO
       DO L = 1, 3, 1
         TSVEC(INT(L)) = __value__(TNOW(L))
@@ -216,7 +216,7 @@ C$OPENAD XXX Template ad_template.f
       CALL zero_deriv(__deriv__(S(2)))
       CALL zero_deriv(__deriv__(S(3)))
       DO L = 1, 6, 1
-        TSVEC(INT(L)) = 0.0D00
+        TSVEC(INT(L)) = 0.0
       END DO
       DO L = 1, 3, 1
         __value__(T(INT(L))) = (__value__(T(L)) + __value__(XX(L)))
@@ -337,12 +337,12 @@ C$OPENAD XXX Template ad_template.f
         R(INT(L)) = ((R(L) * U0) / SV)
       END DO
       DO L = 1, 6, 1
-        IF(L .LE. INT(3_w2f__i8)) THEN
-          PROJ_T(INT(L)) = 1.0D00
-          PROJ_S(INT(L)) = 0.0D00
+        IF(L .LE. 3) THEN
+          PROJ_T(INT(L)) = 1.0
+          PROJ_S(INT(L)) = 0.0
         ELSE
-          PROJ_T(INT(L)) = 0.0D00
-          PROJ_S(INT(L)) = 1.0D00
+          PROJ_T(INT(L)) = 0.0
+          PROJ_S(INT(L)) = 1.0
         ENDIF
       END DO
       DO L = 1, 6, 1
@@ -400,7 +400,7 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL box_ini_fields()
       MAXLEV2 = (N_MAX / 73) + 1
-      IF(N_MAX .GT. INT(3650_w2f__i8)) THEN
+      IF(N_MAX .GT. 3650) THEN
         WRITE(*, *) 'NEED TO SET nlev1*nlev2 >= n_max '
       ELSE
         DO ILEV2 = 1, 50, 1

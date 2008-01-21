@@ -213,9 +213,9 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      VOL(1) = 1.0D+01
-      VOL(2) = 1.2D+01
-      VOL(3) = 1.4D+01
+      VOL(1) = 1.0E+01
+      VOL(2) = 1.2E+01
+      VOL(3) = 1.4E+01
       DELTA_T = 2.0D+01
       IF(UVELLOC .GE. 0.0D00) THEN
         __value__(DFLDDT(1)) = ((EXTFORLOC(1) + VOL(1) * GAMMALOC *(
@@ -244,9 +244,9 @@ C$OPENAD XXX Template ad_template.f
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      VOL(1) = 1.0D+01
-      VOL(2) = 1.2D+01
-      VOL(3) = 1.4D+01
+      VOL(1) = 1.0E+01
+      VOL(2) = 1.2E+01
+      VOL(3) = 1.4E+01
       DELTA_T = 2.0D+01
       IF(UVELLOC .GE. 0.0D00) THEN
         OpenAD_Symbol_10 = (FLDSTAR(1) - __value__(FLDNOW(1)))
@@ -659,9 +659,9 @@ C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      VOL(1) = 1.0D+01
-      VOL(2) = 1.2D+01
-      VOL(3) = 1.4D+01
+      VOL(1) = 1.0E+01
+      VOL(2) = 1.2E+01
+      VOL(3) = 1.4E+01
       DELTA_T = 2.0D+01
       IF(UVELLOC .GE. 0.0D00) THEN
         OpenAD_Symbol_10 = (FLDSTAR(1) - __value__(FLDNOW(1)))

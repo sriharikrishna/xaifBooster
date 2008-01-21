@@ -73,7 +73,7 @@ C$OPENAD XXX Template ad_template.f
       CALL setderiv(__deriv__(OpenAD_Symbol_6), __deriv__(Y))
       CALL setderiv(__deriv__(Q(1)), __deriv__(OpenAD_Symbol_6))
       __value__(Y) = __value__(Q(1))
-      P(1) = 1.0D00
+      P(1) = 1.0
       CALL setderiv(__deriv__(OpenAD_Symbol_7), __deriv__(Q(1)))
       CALL setderiv(__deriv__(Y), __deriv__(OpenAD_Symbol_7))
       L = 1

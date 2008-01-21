@@ -38,7 +38,7 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = 2.0D00
+      __value__(Y(1)) = 2.0
       CALL zero_deriv(__deriv__(Y(1)))
       IF(__value__(X(1)) .GT. 0.0D00) THEN
         __value__(Y(1)) = __value__(X(1))

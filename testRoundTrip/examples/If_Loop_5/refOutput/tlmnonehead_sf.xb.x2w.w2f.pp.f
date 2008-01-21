@@ -52,8 +52,8 @@ C
 C$OPENAD XXX Template ad_template.f
       I = 1
       t__1 = I .LT. 3
-      DO WHILE(I .LT. INT(3_w2f__i8))
-        IF(I .LT. INT(2_w2f__i8)) THEN
+      DO WHILE(I .LT. 3)
+        IF(I .LT. 2) THEN
           OpenAD_Symbol_1 = SIN(X(1)%v)
           OpenAD_Symbol_0 = COS(X(1)%v)
           Y(2)%v = OpenAD_Symbol_1

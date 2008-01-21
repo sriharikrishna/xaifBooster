@@ -43,7 +43,7 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         K = I
-        IF(I .eq. INT(1_w2f__i8)) THEN
+        IF(I .eq. 1) THEN
           OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
           OpenAD_Symbol_0 = 2.0D00
           __value__(Y(INT(I))) = OpenAD_Symbol_2

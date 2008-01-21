@@ -352,8 +352,8 @@ C$OPENAD XXX Template ad_template.f
       t__1 = INT(NX * NY)
       t__2 = MAX(INT(NX * NY), 0_w2f__i8)
       N = NX * NY
-      NXP1 = (NX + INT(1_w2f__i8))
-      NYP1 = (NY + INT(1_w2f__i8))
+      NXP1 = (NX + 1)
+      NYP1 = (NY + 1)
       HX = (1.0D00 / NXP1)
       HY = (1.0D00 / NYP1)
       HY2 = (HY * HY)
@@ -363,7 +363,7 @@ C$OPENAD XXX Template ad_template.f
         t__4 = NX
         DO J = 1, NX, 1
           K = J + NX *(I +(-1))
-          IF((I .eq. INT(1_w2f__i8)) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((I .eq. 1) .OR.(J .eq. 1)) THEN
             __value__(PBL) = 0.0D00
             CALL zero_deriv(__deriv__(PBL))
           ELSE
@@ -372,7 +372,7 @@ C$OPENAD XXX Template ad_template.f
      >  NX + (-1))))
             CALL setderiv(__deriv__(PBL), __deriv__(OpenAD_Symbol_299))
           ENDIF
-          IF(I .eq. INT(1_w2f__i8)) THEN
+          IF(I .eq. 1) THEN
             __value__(PB) = 0.0D00
             __value__(PBB) = __value__(X(K))
             CALL setderiv(__deriv__(OpenAD_Symbol_163), __deriv__(X(K))
@@ -380,7 +380,7 @@ C$OPENAD XXX Template ad_template.f
             CALL setderiv(__deriv__(PBB), __deriv__(OpenAD_Symbol_163))
             CALL zero_deriv(__deriv__(PB))
           ELSE
-            IF(I .eq. INT(2_w2f__i8)) THEN
+            IF(I .eq. 2) THEN
               __value__(PB) = __value__(X(K - NX))
               __value__(PBB) = 0.0D00
               CALL setderiv(__deriv__(OpenAD_Symbol_296), __deriv__(X(K
@@ -401,7 +401,7 @@ C$OPENAD XXX Template ad_template.f
      > ))
             ENDIF
           ENDIF
-          IF((NX .eq. J) .OR.(I .eq. INT(1_w2f__i8))) THEN
+          IF((NX .eq. J) .OR.(I .eq. 1)) THEN
             __value__(PBR) = 0.0D00
             CALL zero_deriv(__deriv__(PBR))
           ELSE
@@ -410,7 +410,7 @@ C$OPENAD XXX Template ad_template.f
      >  NX + 1)))
             CALL setderiv(__deriv__(PBR), __deriv__(OpenAD_Symbol_295))
           ENDIF
-          IF(J .eq. INT(1_w2f__i8)) THEN
+          IF(J .eq. 1) THEN
             __value__(PL) = 0.0D00
             __value__(PLL) = __value__(X(K))
             CALL setderiv(__deriv__(OpenAD_Symbol_164), __deriv__(X(K))
@@ -418,7 +418,7 @@ C$OPENAD XXX Template ad_template.f
             CALL setderiv(__deriv__(PLL), __deriv__(OpenAD_Symbol_164))
             CALL zero_deriv(__deriv__(PL))
           ELSE
-            IF(J .eq. INT(2_w2f__i8)) THEN
+            IF(J .eq. 2) THEN
               __value__(PL) = __value__(X(K + (-1)))
               __value__(PLL) = 0.0D00
               CALL setderiv(__deriv__(OpenAD_Symbol_292), __deriv__(X(K
@@ -442,7 +442,7 @@ C$OPENAD XXX Template ad_template.f
           __value__(P) = __value__(X(K))
           CALL setderiv(__deriv__(OpenAD_Symbol_165), __deriv__(X(K)))
           CALL setderiv(__deriv__(P), __deriv__(OpenAD_Symbol_165))
-          IF(J .eq.(NX + INT((-1_w2f__i8)))) THEN
+          IF(J .eq.(NX +(-1))) THEN
             __value__(PR) = __value__(X(K + 1))
             __value__(PRR) = 0.0D00
             CALL setderiv(__deriv__(OpenAD_Symbol_166), __deriv__(X(K +
@@ -471,7 +471,7 @@ C$OPENAD XXX Template ad_template.f
      > ))
             ENDIF
           ENDIF
-          IF((NY .eq. I) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((NY .eq. I) .OR.(J .eq. 1)) THEN
             __value__(PTL) = 0.0D00
             CALL zero_deriv(__deriv__(PTL))
           ELSE
@@ -480,7 +480,7 @@ C$OPENAD XXX Template ad_template.f
      >  + K + (-1))))
             CALL setderiv(__deriv__(PTL), __deriv__(OpenAD_Symbol_288))
           ENDIF
-          IF(I .eq.(NY + INT((-1_w2f__i8)))) THEN
+          IF(I .eq.(NY +(-1))) THEN
             __value__(PT) = __value__(X(NX + K))
             __value__(PTT) = 0.0D00
             CALL setderiv(__deriv__(OpenAD_Symbol_167), __deriv__(X(NX

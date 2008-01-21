@@ -149,7 +149,7 @@ C original function
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
       DO I = 1, 3, 1
-        IF(I .eq. INT(2_w2f__i8)) THEN
+        IF(I .eq. 2) THEN
           Y(INT(I))%v = X(I)%v
         ELSE
           Y(INT(I))%v = (X(I)%v*2.0D00)
@@ -171,7 +171,7 @@ C taping
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
       DO I = 1, 3, 1
-        IF(I .eq. INT(2_w2f__i8)) THEN
+        IF(I .eq. 2) THEN
           Y(INT(I))%v = X(I)%v
         ELSE
           OpenAD_Symbol_2 = (X(I)%v*2.0D00)
@@ -203,7 +203,7 @@ C            print*, " adjoint    ", our_rev_mode
 C adjoint
       I = 1 + 1 *((3 - 1) / 1)
       DO WHILE(I .GE. 1)
-        IF(I .eq. INT(2_w2f__i8)) THEN
+        IF(I .eq. 2) THEN
           if (iaddr(Y(I)) .ne. iaddr(OpenAD_Symbol_3)) then
             OpenAD_Symbol_3%d = OpenAD_Symbol_3%d+Y(I)%d
             Y(I)%d = 0

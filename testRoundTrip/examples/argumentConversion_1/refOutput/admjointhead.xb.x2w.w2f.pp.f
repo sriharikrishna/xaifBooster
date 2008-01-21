@@ -353,8 +353,8 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      PX(1) = 1.0D00
-      PX(2) = 2.0D00
+      PX(1) = 1.0
+      PX(2) = 2.0
       CALL foo(X,Y)
 C!! requested inline of 'convert_p2a_vector' has no defn
       CALL convert_p2a_vector(OpenAD_Symbol_0,PX)
@@ -388,8 +388,8 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      PX(1) = 1.0D00
-      PX(2) = 2.0D00
+      PX(1) = 1.0
+      PX(2) = 2.0
       CALL foo(X,Y)
 C!! requested inline of 'convert_p2a_vector' has no defn
       CALL convert_p2a_vector(OpenAD_Symbol_0,PX)

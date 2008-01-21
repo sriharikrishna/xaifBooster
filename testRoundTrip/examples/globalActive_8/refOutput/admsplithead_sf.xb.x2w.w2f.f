@@ -328,14 +328,14 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      __value__(AP) = (__value__(AGLOBAL) ** INT(3_w2f__i8))
+      __value__(AP) = (__value__(AGLOBAL) ** 3)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_5 = (__value__(AGLOBAL) ** INT(3_w2f__i8))
-      OpenAD_Symbol_3 = (INT(3_w2f__i8) *(__value__(AGLOBAL) **(INT(
-     > 3_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_5 = (__value__(AGLOBAL) ** 3)
+      OpenAD_Symbol_3 = (3 *(__value__(AGLOBAL) **(3 - INT(1_w2f__i8)))
+     > )
       __value__(AP) = OpenAD_Symbol_5
       OpenAD_Symbol_13 = OpenAD_Symbol_3
 C     $OpenAD$ INLINE push(subst)
@@ -381,9 +381,9 @@ C     $OpenAD$ INLINE cp_arg_restore_real_scalar_a(subst)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_5 = (__value__(AGLOBAL) ** INT(3_w2f__i8))
-      OpenAD_Symbol_3 = (INT(3_w2f__i8) *(__value__(AGLOBAL) **(INT(
-     > 3_w2f__i8) - INT(1_w2f__i8))))
+      OpenAD_Symbol_5 = (__value__(AGLOBAL) ** 3)
+      OpenAD_Symbol_3 = (3 *(__value__(AGLOBAL) **(3 - INT(1_w2f__i8)))
+     > )
       __value__(AP) = OpenAD_Symbol_5
       OpenAD_Symbol_13 = OpenAD_Symbol_3
 C     $OpenAD$ INLINE push(subst)

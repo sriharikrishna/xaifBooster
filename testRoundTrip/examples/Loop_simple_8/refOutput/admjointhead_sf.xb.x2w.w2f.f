@@ -28,7 +28,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) t__1
       INTEGER(w2f__i8) OpenAD_Symbol_4
       INTEGER(w2f__i8) OpenAD_Symbol_5
 C
@@ -37,7 +36,6 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      t__1 = K * 2
       DO I = 1, (K * 2), 1
         __value__(Y(INT(I))) = __value__(X(I))
       END DO
@@ -46,7 +44,6 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      t__1 = K * 2
       DO I = 1, (K * 2), 1
         __value__(Y(INT(I))) = __value__(X(I))
       END DO
@@ -92,7 +89,6 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      t__1 = K * 2
       OpenAD_Symbol_3 = 0_w2f__i8
       DO I = 1, (K * 2), 1
         __value__(Y(INT(I))) = __value__(X(I))
@@ -150,16 +146,16 @@ C     **** Statements ****
 C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
-      CALL bar(__deriv__(X), __deriv__(Y), 2_w2f__i8)
+      CALL bar(__deriv__(X), __deriv__(Y), 2)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
-      CALL bar(__deriv__(X), __deriv__(Y), 2_w2f__i8)
+      CALL bar(__deriv__(X), __deriv__(Y), 2)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
-      CALL bar(__deriv__(X), __deriv__(Y), 2_w2f__i8)
+      CALL bar(__deriv__(X), __deriv__(Y), 2)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 4
 C     $OpenAD$ END REPLACEMENT
@@ -175,10 +171,10 @@ C     $OpenAD$ BEGIN REPLACEMENT 9
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
-      CALL bar(__deriv__(X), __deriv__(Y), 2_w2f__i8)
+      CALL bar(__deriv__(X), __deriv__(Y), 2)
       RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
-      CALL bar(__deriv__(X), __deriv__(Y), 2_w2f__i8)
+      CALL bar(__deriv__(X), __deriv__(Y), 2)
 C     $OpenAD$ END REPLACEMENT
       END SUBROUTINE

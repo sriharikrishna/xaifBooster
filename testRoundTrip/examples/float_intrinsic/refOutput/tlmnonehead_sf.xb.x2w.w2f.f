@@ -33,7 +33,7 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_0 = FLOAT(INT(6_w2f__i8))
+      OpenAD_Symbol_0 = FLOAT(6)
       OpenAD_Symbol_3 = (OpenAD_Symbol_0 * __value__(X(1)))
       OpenAD_Symbol_2 = OpenAD_Symbol_0
       __value__(Y(1)) = OpenAD_Symbol_3

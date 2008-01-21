@@ -243,7 +243,7 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           AX(INT(I),INT(J))%v = X(I)%v
-          APX(INT(I), INT(J)) = (I * 4.0D00)
+          APX(INT(I), INT(J)) = (I * DBLE(4.0))
         END DO
       END DO
 C$OPENAD XXX Simple loop
@@ -270,7 +270,7 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           AX(INT(I),INT(J))%v = X(I)%v
-          APX(INT(I), INT(J)) = (I * 4.0D00)
+          APX(INT(I), INT(J)) = (I * DBLE(4.0))
         END DO
       END DO
 C$OPENAD XXX Simple loop

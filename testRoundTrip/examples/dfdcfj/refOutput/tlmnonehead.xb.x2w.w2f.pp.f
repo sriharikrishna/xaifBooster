@@ -353,8 +353,8 @@ C$OPENAD XXX Template ad_template.f
       t__1 = INT(NX * NY)
       t__2 = MAX(INT(NX * NY), 0_w2f__i8)
       N = NX * NY
-      NXP1 = (NX + INT(1_w2f__i8))
-      NYP1 = (NY + INT(1_w2f__i8))
+      NXP1 = (NX + 1)
+      NYP1 = (NY + 1)
       HX = (1.0D00 / NXP1)
       HY = (1.0D00 / NYP1)
       HY2 = (HY * HY)
@@ -364,7 +364,7 @@ C$OPENAD XXX Template ad_template.f
         t__4 = NX
         DO J = 1, NX, 1
           K = J + NX *(I +(-1))
-          IF((I .eq. INT(1_w2f__i8)) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((I .eq. 1) .OR.(J .eq. 1)) THEN
             PBL%v = 0.0D00
             CALL zero_deriv(PBL)
           ELSE
@@ -372,14 +372,14 @@ C$OPENAD XXX Template ad_template.f
             CALL setderiv(OpenAD_Symbol_306,X(K-NX+(-1)))
             CALL setderiv(PBL,OpenAD_Symbol_306)
           ENDIF
-          IF(I .eq. INT(1_w2f__i8)) THEN
+          IF(I .eq. 1) THEN
             PB%v = 0.0D00
             PBB%v = X(K)%v
             CALL setderiv(OpenAD_Symbol_169,X(K))
             CALL setderiv(PBB,OpenAD_Symbol_169)
             CALL zero_deriv(PB)
           ELSE
-            IF(I .eq. INT(2_w2f__i8)) THEN
+            IF(I .eq. 2) THEN
               PB%v = X(K-NX)%v
               PBB%v = 0.0D00
               CALL setderiv(OpenAD_Symbol_303,X(K-NX))
@@ -394,7 +394,7 @@ C$OPENAD XXX Template ad_template.f
               CALL setderiv(PBB,OpenAD_Symbol_305)
             ENDIF
           ENDIF
-          IF((NX .eq. J) .OR.(I .eq. INT(1_w2f__i8))) THEN
+          IF((NX .eq. J) .OR.(I .eq. 1)) THEN
             PBR%v = 0.0D00
             CALL zero_deriv(PBR)
           ELSE
@@ -402,14 +402,14 @@ C$OPENAD XXX Template ad_template.f
             CALL setderiv(OpenAD_Symbol_302,X(K-NX+1))
             CALL setderiv(PBR,OpenAD_Symbol_302)
           ENDIF
-          IF(J .eq. INT(1_w2f__i8)) THEN
+          IF(J .eq. 1) THEN
             PL%v = 0.0D00
             PLL%v = X(K)%v
             CALL setderiv(OpenAD_Symbol_170,X(K))
             CALL setderiv(PLL,OpenAD_Symbol_170)
             CALL zero_deriv(PL)
           ELSE
-            IF(J .eq. INT(2_w2f__i8)) THEN
+            IF(J .eq. 2) THEN
               PL%v = X(K+(-1))%v
               PLL%v = 0.0D00
               CALL setderiv(OpenAD_Symbol_299,X(K+(-1)))
@@ -427,7 +427,7 @@ C$OPENAD XXX Template ad_template.f
           P%v = X(K)%v
           CALL setderiv(OpenAD_Symbol_171,X(K))
           CALL setderiv(P,OpenAD_Symbol_171)
-          IF(J .eq.(NX + INT((-1_w2f__i8)))) THEN
+          IF(J .eq.(NX +(-1))) THEN
             PR%v = X(K+1)%v
             PRR%v = 0.0D00
             CALL setderiv(OpenAD_Symbol_172,X(K+1))
@@ -449,7 +449,7 @@ C$OPENAD XXX Template ad_template.f
               CALL setderiv(PRR,OpenAD_Symbol_298)
             ENDIF
           ENDIF
-          IF((NY .eq. I) .OR.(J .eq. INT(1_w2f__i8))) THEN
+          IF((NY .eq. I) .OR.(J .eq. 1)) THEN
             PTL%v = 0.0D00
             CALL zero_deriv(PTL)
           ELSE
@@ -457,7 +457,7 @@ C$OPENAD XXX Template ad_template.f
             CALL setderiv(OpenAD_Symbol_295,X(NX+K+(-1)))
             CALL setderiv(PTL,OpenAD_Symbol_295)
           ENDIF
-          IF(I .eq.(NY + INT((-1_w2f__i8)))) THEN
+          IF(I .eq.(NY +(-1))) THEN
             PT%v = X(NX+K)%v
             PTT%v = 0.0D00
             CALL setderiv(OpenAD_Symbol_173,X(NX+K))

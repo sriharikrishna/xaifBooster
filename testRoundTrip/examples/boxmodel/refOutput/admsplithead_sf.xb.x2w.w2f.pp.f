@@ -195,7 +195,7 @@ C$OPENAD XXX Template ad_template.f
       CALL box_cycle_fields()
       DO L = 1, 3, 1
         IF (TNOW(L)%v .LT. (-2.0D00)) THEN
-          TNOW(INT(L))%v = 2.0D00
+          TNOW(INT(L))%v = 2.0
         ENDIF
       END DO
       RETURN
@@ -214,7 +214,7 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_263 = 0_w2f__i8
       DO L = 1, 3, 1
         IF (TNOW(L)%v .LT. (-2.0D00)) THEN
-          TNOW(INT(L))%v = 2.0D00
+          TNOW(INT(L))%v = 2.0
           integer_tape(integer_tape_pointer) = L
           integer_tape_pointer = integer_tape_pointer+1
           OpenAD_Symbol_264 = 1_w2f__i8
@@ -357,7 +357,7 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       DO L = 1, 6, 1
-        TSVEC(INT(L)) = 0.0D00
+        TSVEC(INT(L)) = 0.0
       END DO
       DO L = 1, 3, 1
         TSVEC(INT(L)) = TNOW(L)%v
@@ -370,7 +370,7 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_300 = 0_w2f__i8
       DO L = 1, 6, 1
-        TSVEC(INT(L)) = 0.0D00
+        TSVEC(INT(L)) = 0.0
         OpenAD_Symbol_300 = (INT(OpenAD_Symbol_300) + INT(1_w2f__i8))
       END DO
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_300
@@ -573,7 +573,7 @@ C$OPENAD XXX Template ad_template.f
       S(2)%v = 3.45D+01
       S(3)%v = 3.45D+01
       DO L = 1, 6, 1
-        TSVEC(INT(L)) = 0.0D00
+        TSVEC(INT(L)) = 0.0
       END DO
       DO L = 1, 3, 1
         T(INT(L))%v = (T(L)%v+XX(L)%v)
@@ -616,7 +616,7 @@ C$OPENAD XXX Template ad_template.f
       S(3)%v = 3.45D+01
       OpenAD_Symbol_314 = 0_w2f__i8
       DO L = 1, 6, 1
-        TSVEC(INT(L)) = 0.0D00
+        TSVEC(INT(L)) = 0.0
         OpenAD_Symbol_314 = (INT(OpenAD_Symbol_314) + INT(1_w2f__i8))
       END DO
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_314
@@ -633,7 +633,7 @@ C$OPENAD XXX Template ad_template.f
         OpenAD_Symbol_244 = OpenAD_Symbol_137
         OpenAD_Symbol_246 = OpenAD_Symbol_138
         OpenAD_Symbol_248 = OpenAD_Symbol_139
-        OpenAD_Symbol_326 = (L + INT(3_w2f__i8))
+        OpenAD_Symbol_326 = (L + 3)
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_326
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = L
@@ -1043,12 +1043,12 @@ C$OPENAD XXX Template ad_template.f
         R(INT(L)) = ((R(L) * U0) / SV)
       END DO
       DO L = 1, 6, 1
-        IF(L .LE. INT(3_w2f__i8)) THEN
-          PROJ_T(INT(L)) = 1.0D00
-          PROJ_S(INT(L)) = 0.0D00
+        IF(L .LE. 3) THEN
+          PROJ_T(INT(L)) = 1.0
+          PROJ_S(INT(L)) = 0.0
         ELSE
-          PROJ_T(INT(L)) = 0.0D00
-          PROJ_S(INT(L)) = 1.0D00
+          PROJ_T(INT(L)) = 0.0
+          PROJ_S(INT(L)) = 1.0
         ENDIF
       END DO
       DO L = 1, 6, 1
@@ -1132,15 +1132,15 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
       OpenAD_Symbol_343 = 0_w2f__i8
       DO L = 1, 6, 1
-        IF(L .LE. INT(3_w2f__i8)) THEN
-          PROJ_T(INT(L)) = 1.0D00
-          PROJ_S(INT(L)) = 0.0D00
+        IF(L .LE. 3) THEN
+          PROJ_T(INT(L)) = 1.0
+          PROJ_S(INT(L)) = 0.0
           OpenAD_Symbol_344 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_344
           integer_tape_pointer = integer_tape_pointer+1
         ELSE
-          PROJ_T(INT(L)) = 0.0D00
-          PROJ_S(INT(L)) = 1.0D00
+          PROJ_T(INT(L)) = 0.0
+          PROJ_S(INT(L)) = 1.0
           OpenAD_Symbol_345 = 0_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_345
           integer_tape_pointer = integer_tape_pointer+1
@@ -1375,7 +1375,7 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL box_ini_fields()
       MAXLEV2 = (N_MAX / 73) + 1
-      IF(N_MAX .GT. INT(3650_w2f__i8)) THEN
+      IF(N_MAX .GT. 3650) THEN
         WRITE(*, *) 'NEED TO SET nlev1*nlev2 >= n_max '
       ELSE
         DO ILEV2 = 1, 50, 1
@@ -1397,7 +1397,7 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Template ad_template.f
       CALL box_ini_fields()
       MAXLEV2 = (N_MAX / 73) + 1
-      IF(N_MAX .GT. INT(3650_w2f__i8)) THEN
+      IF(N_MAX .GT. 3650) THEN
         WRITE(*, *) 'NEED TO SET nlev1*nlev2 >= n_max '
         OpenAD_Symbol_388 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_388

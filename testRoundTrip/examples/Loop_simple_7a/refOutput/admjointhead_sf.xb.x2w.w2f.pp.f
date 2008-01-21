@@ -90,7 +90,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) t__1
       INTEGER(w2f__i8) OpenAD_Symbol_4
       INTEGER(w2f__i8) OpenAD_Symbol_5
 C
@@ -157,7 +156,6 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      t__1 = MIN(K, 3)
       DO I = 1, MIN(K, 3), 1
         Y(INT(I))%v = X(I)%v
       END DO
@@ -176,7 +174,6 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      t__1 = MIN(K, 3)
       DO I = 1, MIN(K, 3), 1
         Y(INT(I))%v = X(I)%v
       END DO

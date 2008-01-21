@@ -43,7 +43,7 @@ C$OPENAD XXX Template ad_template.f
       CALL setderiv(Y(1),OpenAD_Symbol_6)
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
-        IF(A(I, J) .ne. INT(0_w2f__i8)) THEN
+        IF(A(I, J) .ne. 0) THEN
           OpenAD_Symbol_0 = (X(1)%v*Y(1)%v)
           OpenAD_Symbol_5 = (A(I, J) * OpenAD_Symbol_0)
           OpenAD_Symbol_3 = Y(1)%v
@@ -57,7 +57,7 @@ C$OPENAD XXX Simple loop
           CALL sax(OpenAD_Symbol_7,OpenAD_Symbol_8,Y(1))
           CALL saxpy(OpenAD_Symbol_9,OpenAD_Symbol_10,Y(1))
         ELSE
-          Y(1)%v = 0.0D00
+          Y(1)%v = 0.0
           CALL zero_deriv(Y(1))
         ENDIF
       END DO
@@ -95,7 +95,7 @@ C$OPENAD XXX Template ad_template.f
           A(I, J) = (I + J)
         END DO
       END DO
-      CALL foo(X,Y,A,2 _w2f__i8)
+      CALL foo(X,Y,A,2)
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           A(I, J) = 0

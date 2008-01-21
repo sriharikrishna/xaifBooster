@@ -90,7 +90,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) t__1
       INTEGER(w2f__i8) OpenAD_Symbol_4
       INTEGER(w2f__i8) OpenAD_Symbol_5
 C
@@ -152,7 +151,6 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      t__1 = K * 2
       DO I = 1, (K * 2), 1
         Y(INT(I))%v = X(I)%v
       END DO
@@ -171,7 +169,6 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      t__1 = K * 2
       DO I = 1, (K * 2), 1
         Y(INT(I))%v = X(I)%v
       END DO
@@ -347,7 +344,7 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      CALL bar(X,Y,2 _w2f__i8)
+      CALL bar(X,Y,2)
       RETURN
             our_rev_mode=our_orig_mode
           end if 
@@ -362,7 +359,7 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      CALL bar(X,Y,2 _w2f__i8)
+      CALL bar(X,Y,2)
       RETURN
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
@@ -382,7 +379,7 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-      CALL bar(X,Y,2 _w2f__i8)
+      CALL bar(X,Y,2)
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.

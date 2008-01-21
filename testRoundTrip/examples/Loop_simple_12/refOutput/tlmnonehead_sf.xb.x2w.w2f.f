@@ -46,15 +46,15 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       I = 1
-      __value__(Y(1)) = 0.0D00
-      __value__(Y(2)) = 0.0D00
+      __value__(Y(1)) = 0.0
+      __value__(Y(2)) = 0.0
       CALL zero_deriv(__deriv__(Y(1)))
       CALL zero_deriv(__deriv__(Y(2)))
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         J = 1
         t__1 = J .LT. 3
-        DO WHILE(J .LT. INT(3_w2f__i8))
+        DO WHILE(J .LT. 3)
           OpenAD_Symbol_4 = (__value__(Y(I)) + __value__(X(I)) *
      >  __value__(X(J)))
           OpenAD_Symbol_0 = 1_w2f__i8

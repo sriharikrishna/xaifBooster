@@ -38,8 +38,8 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       I = 1
-      Y(1)%v = 0.0D00
-      Y(2)%v = 0.0D00
+      Y(1)%v = 0.0
+      Y(2)%v = 0.0
       CALL zero_deriv(Y(1))
       CALL zero_deriv(Y(2))
 C$OPENAD XXX Simple loop
