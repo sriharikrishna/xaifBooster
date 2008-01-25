@@ -51,6 +51,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 #include "xaifBooster/algorithms/TypeChange/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlgFactory.hpp"
@@ -88,8 +89,11 @@ namespace xaifBoosterTypeChange {
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
-    resetSymbolAlgFactory(new SymbolAlgFactory());
-  }
+    resetSymbolAlgFactory(new SymbolAlgFactory()); 
+    DBG_MACRO(DbgGroup::CALLSTACK,
+	      "at the end of xaifBoosterTypeChange::AlgFactoryManager::resets: " 
+	      << debug().c_str());
+ }
 
   void AlgFactoryManager::init() {
     xaifBooster::AlgFactoryManager::init();

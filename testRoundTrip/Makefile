@@ -53,56 +53,75 @@
 ######################################################
 # pick your compiler
 ######################################################
-#FIXEDFORMAT=-ffixed-form
-#FREEFORMAT=-ffree-form
-#F95=g95 -g -O0 
-#CC=gcc
+ifndef F90C
+F90C=ifort
+endif
 
-#FIXEDFORMAT=-ffixed-form
-#FREEFORMAT=-ffree-form
-#F95=gfortran -g -O0 
-#CC=gcc
+ifeq ($(F90C),g95)
+FIXEDFORMAT=-ffixed-form
+FREEFORMAT=-ffree-form
+F90FLAGS=-g -O0 
+CC=gcc
+endif
 
+ifeq ($(F90C),gfortran)
+FIXEDFORMAT=-ffixed-form
+FREEFORMAT=-ffree-form
+F90FLAGS=-g -O0 
+CC=gcc
+endif
+
+
+ifeq ($(F90C),ifort)
 FIXEDFORMAT=-fixed
 FREEFORMAT=-free
-F95=ifort -check all -g -fpe0 -O0 -traceback 
+F90FLAGS=-check all -g -fpe0 -O0 -traceback 
 CC=icc
+endif
 
-#FIXEDFORMAT=-fixed
-#FREEFORMAT=-free -132
-#F95=f95 -g -w=unused
-#CC=gcc
+ifeq ($(F90C),f95)
+FIXEDFORMAT=-fixed
+FREEFORMAT=-free -132
+F90FLAGS=-g -w=unused
+CC=gcc
+endif
 
-#FIXEDFORMAT=-fixedform
-#FREEFORMAT=-freeform
-#F95=openf95 -g 
-#CC=opencc
+ifeq ($(F90C),openf95)
+FIXEDFORMAT=-fixedform
+FREEFORMAT=-freeform
+F90FLAGS=-g 
+CC=opencc
+endif
 
 ######################################################
 
-ifdef REVERSE_MODE
-MODULES=                        \
-w2f__types.o                    \
-active_module.o                 \
+MODULES= w2f__types.o active_module.o                 
+
+ifeq ($(MAJOR_MODE),adm)
+MODULES+=                       \
 OpenAD_checkpoints.o            \
 OpenAD_dct.o                    \
 OpenAD_rev.o                    \
 OpenAD_tape.o                   \
-iaddr.o                         \
-all_globals_mod.xb.x2w.w2f.pp.o 
+iaddr.o                         
 PP_FLAGS=
-ifeq ($(SUB_MODE),joint)
+ifeq ($(MINOR_MODE),joint)
 CP_FLAG=-I
 else
 CP_FLAG=
 endif
-else
-MODULES=                        \
-w2f__types.o                    \
-active_module.o                 \
-all_globals_mod.xb.x2w.w2f.pp.o 
+endif
+
+ifeq ($(MAJOR_MODE),tlm)
 PP_FLAGS=-f
 endif
+
+ifeq ($(MAJOR_MODE),trace)
+PP_FLAGS=
+MODULES+=OpenAD_rev.o OpenAD_trace.o                   
+endif
+
+MODULES+= all_globals_mod.xb.x2w.w2f.pp.o 
 
 all: head.xb.x2w.w2f.pp.f
 
@@ -188,7 +207,7 @@ ir_b2a:
 	$(LN) ${OPEN64ROOT}/ir_tools/ir_b2a
 
 xaifBooster:
-	./pickAlgorithm.bash $(SUB_MODE)
+	./pickAlgorithm.bash $(MAJOR_MODE) $(MINOR_MODE)
 
 ######################################################
 # compilation
@@ -196,19 +215,19 @@ xaifBooster:
 
 # make the driver
 driver: $(MODULES) head.xb.x2w.w2f.pp.o driver.o 
-	$(F95) $^ -o $@ 
+	$(F90C) $(F90FLAGS) $^ -o $@ 
 
 numericalComparison: numericalComparison.o
-	$(F95) $^ -o $@ 
+	$(F90C) $(F90FLAGS) $^ -o $@ 
 
 run: params.conf tmpOutput driver numericalComparison 
 	./driver
 
 %.o:%.f
-	$(F95) $(FIXEDFORMAT) -c $<
+	$(F90C) $(F90FLAGS) $(FIXEDFORMAT) -c $<
 
 %.o:%.f90
-	$(F95) $(FREEFORMAT) -c $<
+	$(F90C) $(F90FLAGS) $(FREEFORMAT) -c $<
 
 %.o:%.c
 	$(CC) -c $<
