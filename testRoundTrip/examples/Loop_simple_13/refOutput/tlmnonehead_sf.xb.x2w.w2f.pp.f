@@ -18,11 +18,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_2
+      REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      type(active) :: OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
 C
 C     **** Parameters and Result ****
 C
@@ -50,8 +47,7 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         S%v = X(I)%v
-        CALL setderiv(OpenAD_Symbol_2,X(I))
-        CALL setderiv(S,OpenAD_Symbol_2)
+        CALL setderiv(S,X(I))
         IF (S%v .GT. 0.0D00) THEN
           S%v = 0.0D00
           CALL zero_deriv(S)
@@ -59,11 +55,9 @@ C$OPENAD XXX Simple loop
         Y(INT(I))%v = (X(I)%v+S%v)
         OpenAD_Symbol_0 = 1_w2f__i8
         OpenAD_Symbol_1 = 1_w2f__i8
-        OpenAD_Symbol_3 = OpenAD_Symbol_0
-        OpenAD_Symbol_5 = OpenAD_Symbol_1
-        CALL setderiv(OpenAD_Symbol_6,S)
-        CALL setderiv(OpenAD_Symbol_4,X(I))
-        CALL sax(OpenAD_Symbol_3,OpenAD_Symbol_4,Y(I))
-        CALL saxpy(OpenAD_Symbol_5,OpenAD_Symbol_6,Y(I))
+        OpenAD_Symbol_2 = OpenAD_Symbol_0
+        OpenAD_Symbol_3 = OpenAD_Symbol_1
+        CALL sax(OpenAD_Symbol_2,X(I),Y(I))
+        CALL saxpy(OpenAD_Symbol_3,S,Y(I))
       END DO
       END SUBROUTINE

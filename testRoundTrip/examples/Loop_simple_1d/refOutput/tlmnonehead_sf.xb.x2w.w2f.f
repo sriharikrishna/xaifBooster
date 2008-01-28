@@ -12,10 +12,6 @@ C
       use w2f__types
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      TYPE (OpenADTy_active) OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       TYPE (OpenADTy_active) X
@@ -24,8 +20,7 @@ C
 C     **** Statements ****
 C
       __value__(Y) = __value__(X)
-      CALL setderiv(__deriv__(OpenAD_Symbol_0), __deriv__(X))
-      CALL setderiv(__deriv__(Y), __deriv__(OpenAD_Symbol_0))
+      CALL setderiv(__deriv__(Y), __deriv__(X))
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)

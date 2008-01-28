@@ -9,16 +9,14 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_11
-      type(active) :: OpenAD_Symbol_12
+      REAL(w2f__8) OpenAD_Symbol_10
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
+      type(active) :: OpenAD_Symbol_7
+      REAL(w2f__8) OpenAD_Symbol_8
+      type(active) :: OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -46,28 +44,26 @@ C$OPENAD XXX Template ad_template.f
         IF ( I  .EQ.  2)  GO TO  23
         GO TO 24
 24      CONTINUE
-        OpenAD_Symbol_6 = (X(I)%v*2.0D00)
+        Y(INT(I))%v = (X(I)%v*2.0D00)
         OpenAD_Symbol_4 = 2.0D00
-        Y(INT(I))%v = OpenAD_Symbol_6
-        OpenAD_Symbol_11 = OpenAD_Symbol_4
-        CALL setderiv(OpenAD_Symbol_12,X(I))
-        CALL sax(OpenAD_Symbol_11,OpenAD_Symbol_12,Y(I))
+        OpenAD_Symbol_10 = OpenAD_Symbol_4
+        CALL sax(OpenAD_Symbol_10,X(I),Y(I))
         GO TO 21
 19      CONTINUE
         OpenAD_Symbol_1 = SIN(X(I)%v)
         OpenAD_Symbol_0 = COS(X(I)%v)
         Y(INT(I))%v = OpenAD_Symbol_1
-        OpenAD_Symbol_7 = OpenAD_Symbol_0
-        CALL setderiv(OpenAD_Symbol_8,X(I))
-        CALL sax(OpenAD_Symbol_7,OpenAD_Symbol_8,Y(I))
+        OpenAD_Symbol_6 = OpenAD_Symbol_0
+        CALL setderiv(OpenAD_Symbol_7,X(I))
+        CALL sax(OpenAD_Symbol_6,OpenAD_Symbol_7,Y(I))
         GO TO 21
 23      CONTINUE
         OpenAD_Symbol_3 = COS(X(I)%v)
         OpenAD_Symbol_2 = (-SIN(X(I)%v))
         Y(INT(I))%v = OpenAD_Symbol_3
-        OpenAD_Symbol_9 = OpenAD_Symbol_2
-        CALL setderiv(OpenAD_Symbol_10,X(I))
-        CALL sax(OpenAD_Symbol_9,OpenAD_Symbol_10,Y(I))
+        OpenAD_Symbol_8 = OpenAD_Symbol_2
+        CALL setderiv(OpenAD_Symbol_9,X(I))
+        CALL sax(OpenAD_Symbol_8,OpenAD_Symbol_9,Y(I))
         GO TO 21
 21      CONTINUE
       END DO

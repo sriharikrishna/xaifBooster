@@ -178,8 +178,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      type(active) :: OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -188,8 +186,8 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
+      REAL(w2f__8) OpenAD_Symbol_4
+      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Statements ****
 C
@@ -206,29 +204,26 @@ C$OPENAD XXX Template ad_template.f
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_2 = (A%v*A%v)
+      B%v = (A%v*A%v)
       OpenAD_Symbol_0 = A%v
       OpenAD_Symbol_1 = A%v
-      B%v = OpenAD_Symbol_2
-      OpenAD_Symbol_3 = OpenAD_Symbol_0
-      OpenAD_Symbol_5 = OpenAD_Symbol_1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_3
+      OpenAD_Symbol_2 = OpenAD_Symbol_0
+      OpenAD_Symbol_3 = OpenAD_Symbol_1
+          double_tape(double_tape_pointer) = OpenAD_Symbol_2
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_5
+          double_tape(double_tape_pointer) = OpenAD_Symbol_3
           double_tape_pointer = double_tape_pointer+1
       
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_6 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_4%d = OpenAD_Symbol_4%d+B%d*OpenAD_Symbol_6
+          OpenAD_Symbol_4 = double_tape(double_tape_pointer)
+          A%d = A%d+B%d*OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_7 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_4%d = OpenAD_Symbol_4%d+B%d*OpenAD_Symbol_7
+          OpenAD_Symbol_5 = double_tape(double_tape_pointer)
+          A%d = A%d+B%d*OpenAD_Symbol_5
           B%d = 0.0d0
-          A%d = A%d+OpenAD_Symbol_4%d
-          OpenAD_Symbol_4%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============

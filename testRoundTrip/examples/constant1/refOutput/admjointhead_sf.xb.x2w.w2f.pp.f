@@ -102,13 +102,11 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_10
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_7
       REAL(w2f__8) OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -117,7 +115,7 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_11
+      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
 C
@@ -190,14 +188,13 @@ C taping
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_2 = (X(1)%v*3.141592653589793116D00)
       OpenAD_Symbol_0 = (OpenAD_Symbol_2 * 2.0D00)
-      OpenAD_Symbol_7 = SIN(OpenAD_Symbol_0)
+      Y(1)%v = SIN(OpenAD_Symbol_0)
       OpenAD_Symbol_5 = 3.141592653589793116D00
       OpenAD_Symbol_3 = 2.0D00
       OpenAD_Symbol_1 = COS(OpenAD_Symbol_0)
-      Y(1)%v = OpenAD_Symbol_7
-      OpenAD_Symbol_8 = (OpenAD_Symbol_5 * OpenAD_Symbol_3)
-      OpenAD_Symbol_9 = (OpenAD_Symbol_8 * OpenAD_Symbol_1)
-          double_tape(double_tape_pointer) = OpenAD_Symbol_9
+      OpenAD_Symbol_7 = (OpenAD_Symbol_5 * OpenAD_Symbol_3)
+      OpenAD_Symbol_8 = (OpenAD_Symbol_7 * OpenAD_Symbol_1)
+          double_tape(double_tape_pointer) = OpenAD_Symbol_8
           double_tape_pointer = double_tape_pointer+1
       RETURN
             our_rev_mode%arg_store=.FALSE.
@@ -219,12 +216,9 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_11 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(1)%d*OpenAD_Symbol_1
-     +1
+          OpenAD_Symbol_9 = double_tape(double_tape_pointer)
+          X(1)%d = X(1)%d+Y(1)%d*OpenAD_Symbol_9
           Y(1)%d = 0.0d0
-          X(1)%d = X(1)%d+OpenAD_Symbol_10%d
-          OpenAD_Symbol_10%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.

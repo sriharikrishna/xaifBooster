@@ -72,10 +72,6 @@ C ========== end copyright notice ==============
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X(1 : 1)
@@ -84,8 +80,8 @@ C
 C
 C     **** Local Variables and Functions ****
 C
+      INTEGER(w2f__i8) OpenAD_Symbol_0
       INTEGER(w2f__i8) OpenAD_Symbol_1
-      INTEGER(w2f__i8) OpenAD_Symbol_2
 C
 C     **** Statements ****
 C
@@ -112,18 +108,12 @@ C$OPENAD XXX Template ad_template.f
           if (our_rev_mode%adjoint) then
 ! adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_1 = integer_tape(integer_tape_pointer)
-          if (iaddr(Y(INT(OpenAD_Symbol_1))) .ne. iaddr(OpenAD_Symbol_0)
-     +) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(INT(OpenAD_Symbol_1)
-     +)%d
-            Y(INT(OpenAD_Symbol_1))%d = 0
-          end if
+          OpenAD_Symbol_0 = integer_tape(integer_tape_pointer)
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_2 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_2))%d = X(INT(OpenAD_Symbol_2))%d+OpenAD_S
-     +ymbol_0%d
-          OpenAD_Symbol_0%d = 0.0d0
+          OpenAD_Symbol_1 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_1))%d = X(INT(OpenAD_Symbol_1))%d+Y(INT(Op
+     +enAD_Symbol_0))%d
+          Y(INT(OpenAD_Symbol_0))%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============

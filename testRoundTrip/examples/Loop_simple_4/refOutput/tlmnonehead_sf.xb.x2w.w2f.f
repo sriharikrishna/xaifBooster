@@ -16,15 +16,12 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      TYPE (OpenADTy_active) OpenAD_Symbol_10
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      TYPE (OpenADTy_active) OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      TYPE (OpenADTy_active) OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_6
+      TYPE (OpenADTy_active) OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -44,24 +41,19 @@ C$OPENAD XXX Template ad_template.f
       J = K
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
-        OpenAD_Symbol_4 = (__value__(Y(J)) + __value__(X(I)) *
+        __value__(Y(INT(J))) = (__value__(Y(J)) + __value__(X(I)) *
      >  __value__(X(I)))
         OpenAD_Symbol_0 = 1_w2f__i8
         OpenAD_Symbol_2 = __value__(X(I))
         OpenAD_Symbol_3 = __value__(X(I))
         OpenAD_Symbol_1 = 1_w2f__i8
-        __value__(Y(INT(J))) = OpenAD_Symbol_4
-        OpenAD_Symbol_5 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
-        OpenAD_Symbol_7 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
-        OpenAD_Symbol_9 = OpenAD_Symbol_0
-        CALL setderiv(__deriv__(OpenAD_Symbol_10), __deriv__(Y(J)))
-        CALL setderiv(__deriv__(OpenAD_Symbol_8), __deriv__(X(I)))
-        CALL setderiv(__deriv__(OpenAD_Symbol_6), __deriv__(X(I)))
-        CALL sax(OpenAD_Symbol_5, __deriv__(OpenAD_Symbol_6), __deriv__
-     > (Y(J)))
-        CALL saxpy(OpenAD_Symbol_7, __deriv__(OpenAD_Symbol_8),
-     >  __deriv__(Y(J)))
-        CALL saxpy(OpenAD_Symbol_9, __deriv__(OpenAD_Symbol_10),
+        OpenAD_Symbol_4 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
+        OpenAD_Symbol_5 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+        OpenAD_Symbol_6 = OpenAD_Symbol_0
+        CALL setderiv(__deriv__(OpenAD_Symbol_7), __deriv__(Y(J)))
+        CALL sax(OpenAD_Symbol_4, __deriv__(X(I)), __deriv__(Y(J)))
+        CALL saxpy(OpenAD_Symbol_5, __deriv__(X(I)), __deriv__(Y(J)))
+        CALL saxpy(OpenAD_Symbol_6, __deriv__(OpenAD_Symbol_7),
      >  __deriv__(Y(J)))
       END DO
       END SUBROUTINE

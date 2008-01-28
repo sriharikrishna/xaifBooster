@@ -69,11 +69,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      type(active) :: OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
+      REAL(w2f__8) OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
@@ -84,8 +80,8 @@ C     **** Local Variables and Functions ****
 C
       EXTERNAL barext
       type(active) :: T
-      REAL(w2f__8) OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_5
+      REAL(w2f__8) OpenAD_Symbol_6
 C
 C     **** Statements ****
 C
@@ -114,37 +110,28 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL barext(OpenAD_Symbol_0)
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(T,OpenAD_Symbol_0)
-      OpenAD_Symbol_3 = (X(2)%v*T%v)
+      Y%v = (X(2)%v*T%v)
       OpenAD_Symbol_1 = T%v
       OpenAD_Symbol_2 = X(2)%v
-      Y%v = OpenAD_Symbol_3
-      OpenAD_Symbol_5 = OpenAD_Symbol_1
-      OpenAD_Symbol_7 = OpenAD_Symbol_2
-          double_tape(double_tape_pointer) = OpenAD_Symbol_5
+      OpenAD_Symbol_3 = OpenAD_Symbol_1
+      OpenAD_Symbol_4 = OpenAD_Symbol_2
+          double_tape(double_tape_pointer) = OpenAD_Symbol_3
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_7
+          double_tape(double_tape_pointer) = OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer+1
       
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_9 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y%d*OpenAD_Symbol_9
+          OpenAD_Symbol_5 = double_tape(double_tape_pointer)
+          T%d = T%d+Y%d*OpenAD_Symbol_5
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_10 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y%d*OpenAD_Symbol_10
+          OpenAD_Symbol_6 = double_tape(double_tape_pointer)
+          X(2)%d = X(2)%d+Y%d*OpenAD_Symbol_6
           Y%d = 0.0d0
-          X(2)%d = X(2)%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
-          T%d = T%d+OpenAD_Symbol_8%d
-          OpenAD_Symbol_8%d = 0.0d0
-          if (iaddr(T) .ne. iaddr(OpenAD_Symbol_4)) then
-            OpenAD_Symbol_4%d = OpenAD_Symbol_4%d+T%d
-            T%d = 0
-          end if
-          X(1)%d = X(1)%d+OpenAD_Symbol_4%d
-          OpenAD_Symbol_4%d = 0.0d0
+          X(1)%d = X(1)%d+T%d
+          T%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============

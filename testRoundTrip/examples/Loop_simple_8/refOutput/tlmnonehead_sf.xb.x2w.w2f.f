@@ -12,10 +12,6 @@ C
       use w2f__types
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      TYPE (OpenADTy_active) OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       TYPE (OpenADTy_active) X(1 : 4)
@@ -36,8 +32,7 @@ C$OPENAD XXX Simple loop\t
       t__1 = K * 2
       DO I = 1, (K * 2), 1
         __value__(Y(INT(I))) = __value__(X(I))
-        CALL setderiv(__deriv__(OpenAD_Symbol_0), __deriv__(X(I)))
-        CALL setderiv(__deriv__(Y(I)), __deriv__(OpenAD_Symbol_0))
+        CALL setderiv(__deriv__(Y(I)), __deriv__(X(I)))
       END DO
       END SUBROUTINE
 

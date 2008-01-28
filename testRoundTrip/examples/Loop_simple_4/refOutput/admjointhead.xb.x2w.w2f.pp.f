@@ -69,18 +69,15 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_10
-      INTEGER(w2f__i8) OpenAD_Symbol_11
-      INTEGER(w2f__i8) OpenAD_Symbol_12
-      INTEGER(w2f__i8) OpenAD_Symbol_13
+      INTEGER(w2f__i8) OpenAD_Symbol_10
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_6
+      type(active) :: OpenAD_Symbol_7
+      INTEGER(w2f__i8) OpenAD_Symbol_8
+      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -92,15 +89,15 @@ C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
+      INTEGER(w2f__i8) OpenAD_Symbol_11
+      REAL(w2f__8) OpenAD_Symbol_12
+      INTEGER(w2f__i8) OpenAD_Symbol_13
       INTEGER(w2f__i8) OpenAD_Symbol_14
       REAL(w2f__8) OpenAD_Symbol_15
       INTEGER(w2f__i8) OpenAD_Symbol_16
-      REAL(w2f__8) OpenAD_Symbol_17
-      INTEGER(w2f__i8) OpenAD_Symbol_18
-      REAL(w2f__8) OpenAD_Symbol_19
-      INTEGER(w2f__i8) OpenAD_Symbol_20
-      INTEGER(w2f__i8) OpenAD_Symbol_21
-      INTEGER(w2f__i8) OpenAD_Symbol_22
+      INTEGER(w2f__i8) OpenAD_Symbol_17
+      REAL(w2f__8) OpenAD_Symbol_18
+      INTEGER(w2f__i8) OpenAD_Symbol_19
 C
 C     **** Statements ****
 C
@@ -189,20 +186,19 @@ C$OPENAD XXX Template ad_template.f
       J = K
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
-        OpenAD_Symbol_4 = (Y(J)%v+X(I)%v*X(I)%v)
+        Y(INT(J))%v = (Y(J)%v+X(I)%v*X(I)%v)
         OpenAD_Symbol_0 = 1_w2f__i8
         OpenAD_Symbol_2 = X(I)%v
         OpenAD_Symbol_3 = X(I)%v
         OpenAD_Symbol_1 = 1_w2f__i8
-        Y(INT(J))%v = OpenAD_Symbol_4
-        OpenAD_Symbol_5 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
-        OpenAD_Symbol_7 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
-        OpenAD_Symbol_9 = OpenAD_Symbol_0
+        OpenAD_Symbol_4 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
+        OpenAD_Symbol_5 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+        OpenAD_Symbol_6 = OpenAD_Symbol_0
+          double_tape(double_tape_pointer) = OpenAD_Symbol_4
+          double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_5
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_7
-          double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_9
+          double_tape(double_tape_pointer) = OpenAD_Symbol_6
           double_tape_pointer = double_tape_pointer+1
       END DO
           integer_tape(integer_tape_pointer) = J
@@ -231,22 +227,17 @@ C adjoint
       I = 1 + 1 *((2 - 1) / 1)
       DO WHILE(I .GE. 1)
           double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_12 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y(J)%d*OpenAD_Symbol_12
+          double_tape_pointer = double_tape_pointer-1
           OpenAD_Symbol_15 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_10%d = OpenAD_Symbol_10%d+Y(J)%d*OpenAD_Symbol_1
-     +5
+          X(I)%d = X(I)%d+Y(J)%d*OpenAD_Symbol_15
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_17 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(J)%d*OpenAD_Symbol_17
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_19 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y(J)%d*OpenAD_Symbol_19
+          OpenAD_Symbol_18 = double_tape(double_tape_pointer)
+          X(I)%d = X(I)%d+Y(J)%d*OpenAD_Symbol_18
           Y(J)%d = 0.0d0
-          X(I)%d = X(I)%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
-          X(I)%d = X(I)%d+OpenAD_Symbol_8%d
-          OpenAD_Symbol_8%d = 0.0d0
-          Y(J)%d = Y(J)%d+OpenAD_Symbol_10%d
-          OpenAD_Symbol_10%d = 0.0d0
+          Y(J)%d = Y(J)%d+OpenAD_Symbol_7%d
+          OpenAD_Symbol_7%d = 0.0d0
         I = I - 1
       END DO
             our_rev_mode%arg_store=.FALSE.

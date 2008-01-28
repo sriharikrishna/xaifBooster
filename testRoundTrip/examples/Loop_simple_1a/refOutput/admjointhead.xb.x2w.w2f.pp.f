@@ -69,15 +69,13 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      INTEGER(w2f__i8) OpenAD_Symbol_10
-      INTEGER(w2f__i8) OpenAD_Symbol_11
       REAL(w2f__8) OpenAD_Symbol_2
-      type(active) :: OpenAD_Symbol_3
+      REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       type(active) :: OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_6
-      type(active) :: OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
+      type(active) :: OpenAD_Symbol_6
+      INTEGER(w2f__i8) OpenAD_Symbol_7
+      INTEGER(w2f__i8) OpenAD_Symbol_8
       INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
@@ -88,8 +86,8 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      REAL(w2f__8) OpenAD_Symbol_12
-      REAL(w2f__8) OpenAD_Symbol_13
+      REAL(w2f__8) OpenAD_Symbol_10
+      REAL(w2f__8) OpenAD_Symbol_11
 C
 C     **** Top Level Pragmas ****
 C
@@ -171,11 +169,11 @@ C$OPENAD XXX Simple loop
         OpenAD_Symbol_0 = Y(1)%v
         OpenAD_Symbol_1 = X(1)%v
         Y(1)%v = OpenAD_Symbol_2
-        OpenAD_Symbol_4 = OpenAD_Symbol_0
-        OpenAD_Symbol_6 = OpenAD_Symbol_1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_4
+        OpenAD_Symbol_3 = OpenAD_Symbol_0
+        OpenAD_Symbol_4 = OpenAD_Symbol_1
+          double_tape(double_tape_pointer) = OpenAD_Symbol_3
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_6
+          double_tape(double_tape_pointer) = OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer+1
       END DO
       
@@ -197,33 +195,25 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-          if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_8)) then
-            OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y(1)%d
-            Y(1)%d = 0
-          end if
-          Y(1)%d = Y(1)%d+OpenAD_Symbol_8%d
-          OpenAD_Symbol_8%d = 0.0d0
+          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y(1)%d
+          Y(1)%d = 0.0d0
+          Y(1)%d = Y(1)%d+OpenAD_Symbol_6%d
+          OpenAD_Symbol_6%d = 0.0d0
       I = 3 -(-1) *((3 - 1) /(-1))
       DO WHILE(I .LE. 3)
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_12 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y(1)%d*OpenAD_Symbol_12
+          OpenAD_Symbol_10 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(1)%d*OpenAD_Symbol_10
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_13 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(1)%d*OpenAD_Symbol_13
+          OpenAD_Symbol_11 = double_tape(double_tape_pointer)
+          X(1)%d = X(1)%d+Y(1)%d*OpenAD_Symbol_11
           Y(1)%d = 0.0d0
-          X(1)%d = X(1)%d+OpenAD_Symbol_5%d
+          Y(1)%d = Y(1)%d+OpenAD_Symbol_5%d
           OpenAD_Symbol_5%d = 0.0d0
-          Y(1)%d = Y(1)%d+OpenAD_Symbol_7%d
-          OpenAD_Symbol_7%d = 0.0d0
         I = I -(-1)
       END DO
-          if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_3)) then
-            OpenAD_Symbol_3%d = OpenAD_Symbol_3%d+Y(1)%d
-            Y(1)%d = 0
-          end if
-          X(1)%d = X(1)%d+OpenAD_Symbol_3%d
-          OpenAD_Symbol_3%d = 0.0d0
+          X(1)%d = X(1)%d+Y(1)%d
+          Y(1)%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.

@@ -83,9 +83,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      type(active) :: OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
 C
 C     **** Parameters and Result ****
 C
@@ -94,8 +91,8 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_4
+      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Statements ****
 C
@@ -112,31 +109,26 @@ C$OPENAD XXX Template ad_template.f
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_2 = (X(1)%v*X(2)%v)
+      Y%v = (X(1)%v*X(2)%v)
       OpenAD_Symbol_0 = X(2)%v
       OpenAD_Symbol_1 = X(1)%v
-      Y%v = OpenAD_Symbol_2
-      OpenAD_Symbol_3 = OpenAD_Symbol_0
-      OpenAD_Symbol_5 = OpenAD_Symbol_1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_3
+      OpenAD_Symbol_2 = OpenAD_Symbol_0
+      OpenAD_Symbol_3 = OpenAD_Symbol_1
+          double_tape(double_tape_pointer) = OpenAD_Symbol_2
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_5
+          double_tape(double_tape_pointer) = OpenAD_Symbol_3
           double_tape_pointer = double_tape_pointer+1
       
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_8 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y%d*OpenAD_Symbol_8
+          OpenAD_Symbol_4 = double_tape(double_tape_pointer)
+          X(2)%d = X(2)%d+Y%d*OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_9 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_4%d = OpenAD_Symbol_4%d+Y%d*OpenAD_Symbol_9
+          OpenAD_Symbol_5 = double_tape(double_tape_pointer)
+          X(1)%d = X(1)%d+Y%d*OpenAD_Symbol_5
           Y%d = 0.0d0
-          X(1)%d = X(1)%d+OpenAD_Symbol_4%d
-          OpenAD_Symbol_4%d = 0.0d0
-          X(2)%d = X(2)%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============
@@ -206,10 +198,6 @@ C ========== end copyright notice ==============
       use globals
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_7
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X(1 : 2)
@@ -246,12 +234,8 @@ C$OPENAD XXX Template ad_template.f
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-          if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_7)) then
-            OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+Y(1)%d
-            Y(1)%d = 0
-          end if
-          AGLOBAL%d = AGLOBAL%d+OpenAD_Symbol_7%d
-          OpenAD_Symbol_7%d = 0.0d0
+          AGLOBAL%d = AGLOBAL%d+Y(1)%d
+          Y(1)%d = 0.0d0
       CALL foo(X,AGLOBAL)
           end if 
         end subroutine head
