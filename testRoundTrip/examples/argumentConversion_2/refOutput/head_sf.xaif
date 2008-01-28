@@ -64,22 +64,21 @@
   </xaif:ScopeHierarchy>
 
   <xaif:AliasSetMap>
-    <xaif:AliasSet key="0">
-      <xaif:AliasRange from_virtual_address="1" to_virtual_address="1"/>
-    </xaif:AliasSet>
-    <xaif:AliasSet key="1">
+    <xaif:AliasSet key="0"/>
+    <xaif:AliasSet key="1"/>
+    <xaif:AliasSet key="2">
       <xaif:AliasRange from_virtual_address="2" to_virtual_address="2" partial="0"/>
     </xaif:AliasSet>
-    <xaif:AliasSet key="2">
+    <xaif:AliasSet key="3">
       <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="0"/>
     </xaif:AliasSet>
-    <xaif:AliasSet key="3">
+    <xaif:AliasSet key="4">
       <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="0"/>
     </xaif:AliasSet>
-    <xaif:AliasSet key="4">
+    <xaif:AliasSet key="5">
       <xaif:AliasRange from_virtual_address="3" to_virtual_address="3" partial="0"/>
     </xaif:AliasSet>
-    <xaif:AliasSet key="5">
+    <xaif:AliasSet key="6">
       <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="0"/>
       <xaif:AliasRange from_virtual_address="4" to_virtual_address="5" partial="1"/>
     </xaif:AliasSet>
@@ -141,11 +140,11 @@
       <xaif:Marker statement_id="7" annotation="{WHIRL_Id#7} [passive: OPR_PRAGMA]"/>
       <xaif:Marker statement_id="8" annotation="{WHIRL_Id#8} [passive: OPR_PRAGMA]"/>
       <xaif:Assignment statement_id="9" lineNumber="61" do_chain="1">
-        <xaif:AssignmentLHS du_ud="2">
+        <xaif:AssignmentLHS du_ud="2" alias="2">
           <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="Y_2"/>
         </xaif:AssignmentLHS>
         <xaif:AssignmentRHS>
-          <xaif:VariableReference vertex_id="1" du_ud="2">
+          <xaif:VariableReference vertex_id="1" du_ud="2" alias="3">
             <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="X_1"/>
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
@@ -202,12 +201,12 @@
       <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_PRAGMA]"/>
       <xaif:SubroutineCall statement_id="11" scope_id="1" lineNumber="69" symbol_id="foo__21">
         <xaif:Argument position="1">
-          <xaif:VariableReference vertex_id="1" du_ud="2">
+          <xaif:VariableReference vertex_id="1" du_ud="2" alias="4">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="X_1"/>
           </xaif:VariableReference>
         </xaif:Argument>
         <xaif:Argument position="2">
-          <xaif:VariableReference vertex_id="1" du_ud="2">
+          <xaif:VariableReference vertex_id="1" du_ud="2" alias="5">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="Y_2"/>
           </xaif:VariableReference>
         </xaif:Argument>
@@ -217,7 +216,7 @@
           <xaif:Constant vertex_id="1" type="real" value="2.0000000000e+00"/>
         </xaif:Argument>
         <xaif:Argument position="2">
-          <xaif:VariableReference vertex_id="1" du_ud="0">
+          <xaif:VariableReference vertex_id="1" du_ud="0" alias="1">
             <xaif:SymbolReference vertex_id="1" scope_id="4" symbol_id="PY_4"/>
           </xaif:VariableReference>
         </xaif:Argument>

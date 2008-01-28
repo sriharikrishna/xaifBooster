@@ -76,7 +76,7 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      type(active) :: OpenAD_Symbol_0
+      INTEGER(w2f__i8) OpenAD_Symbol_0
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_2
       INTEGER(w2f__i8) OpenAD_Symbol_3
@@ -85,7 +85,6 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_6
       INTEGER(w2f__i8) OpenAD_Symbol_7
       INTEGER(w2f__i8) OpenAD_Symbol_8
-      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -97,7 +96,7 @@ C
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) K
       INTEGER(w2f__i8) OpenAD_Symbol_10
-      INTEGER(w2f__i8) OpenAD_Symbol_11
+      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
 C
@@ -178,13 +177,13 @@ C taping
 C$OPENAD XXX Template ad_template.f
       IF (X(1)%v .eq. 0.0D00) THEN
         K = 1
-        OpenAD_Symbol_2 = 1_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_2
+        OpenAD_Symbol_1 = 1_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_1
           integer_tape_pointer = integer_tape_pointer+1
       ELSE
         K = 2
-        OpenAD_Symbol_3 = 0_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_3
+        OpenAD_Symbol_2 = 0_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_2
           integer_tape_pointer = integer_tape_pointer+1
       ENDIF
 C$OPENAD XXX Simple loop
@@ -216,17 +215,13 @@ C adjoint
           K = integer_tape(integer_tape_pointer)
       I = 1 + 1 *((2 - 1) / 1)
       DO WHILE(I .GE. 1)
-          if (iaddr(Y(I)) .ne. iaddr(OpenAD_Symbol_0)) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(I)%d
-            Y(I)%d = 0
-          end if
-          X(K)%d = X(K)%d+OpenAD_Symbol_0%d
-          OpenAD_Symbol_0%d = 0.0d0
+          X(K)%d = X(K)%d+Y(I)%d
+          Y(I)%d = 0.0d0
         I = I - 1
       END DO
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_1 = integer_tape(integer_tape_pointer)
-      IF(OpenAD_Symbol_1 .ne. 0) THEN
+          OpenAD_Symbol_0 = integer_tape(integer_tape_pointer)
+      IF(OpenAD_Symbol_0 .ne. 0) THEN
       ENDIF
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.

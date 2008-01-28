@@ -28,9 +28,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
-      type(active) :: OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      type(active) :: OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -51,13 +48,10 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       T%v = X(1)%v
-      CALL setderiv(OpenAD_Symbol_3,X(1))
-      CALL setderiv(T,OpenAD_Symbol_3)
+      CALL setderiv(T,X(1))
       CALL foo()
-      OpenAD_Symbol_2 = (T%v*2.0D00)
+      Y%v = (T%v*2.0D00)
       OpenAD_Symbol_0 = 2.0D00
-      Y%v = OpenAD_Symbol_2
-      OpenAD_Symbol_4 = OpenAD_Symbol_0
-      CALL setderiv(OpenAD_Symbol_5,T)
-      CALL sax(OpenAD_Symbol_4,OpenAD_Symbol_5,Y)
+      OpenAD_Symbol_2 = OpenAD_Symbol_0
+      CALL sax(OpenAD_Symbol_2,T,Y)
       END SUBROUTINE

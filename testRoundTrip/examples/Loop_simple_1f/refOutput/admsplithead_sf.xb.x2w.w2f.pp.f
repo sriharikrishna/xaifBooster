@@ -74,10 +74,9 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      type(active) :: OpenAD_Symbol_0
+      INTEGER(w2f__i8) OpenAD_Symbol_0
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_2
-      INTEGER(w2f__i8) OpenAD_Symbol_3
 C
 C     **** Parameters and Result ****
 C
@@ -87,10 +86,10 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i8) OpenAD_Symbol_3
       INTEGER(w2f__i8) OpenAD_Symbol_4
       INTEGER(w2f__i8) OpenAD_Symbol_5
       INTEGER(w2f__i8) OpenAD_Symbol_6
-      INTEGER(w2f__i8) OpenAD_Symbol_7
 C
 C     **** Top Level Pragmas ****
 C
@@ -125,12 +124,8 @@ C$OPENAD XXX Simple loop
 ! adjoint
       I = 0 + 1 *((3 - 0) / 1)
       DO WHILE(I .GE. 0)
-          if (iaddr(Y(I+1)) .ne. iaddr(OpenAD_Symbol_0)) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(I+1)%d
-            Y(I+1)%d = 0
-          end if
-          X(I+1)%d = X(I+1)%d+OpenAD_Symbol_0%d
-          OpenAD_Symbol_0%d = 0.0d0
+          X(I+1)%d = X(I+1)%d+Y(I+1)%d
+          Y(I+1)%d = 0.0d0
         I = I - 1
       END DO
           end if 

@@ -20,12 +20,10 @@ C
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
-      type(active) :: OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
-      type(active) :: OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_4
+      type(active) :: OpenAD_Symbol_5
+      REAL(w2f__8) OpenAD_Symbol_6
+      type(active) :: OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -46,16 +44,14 @@ C$OPENAD XXX Template ad_template.f
       CALL zero_deriv(Y(1))
       IF (X(1)%v .GT. 0.0D00) THEN
         Y(1)%v = X(1)%v
-        CALL setderiv(OpenAD_Symbol_3,X(1))
-        CALL setderiv(Y(1),OpenAD_Symbol_3)
+        CALL setderiv(Y(1),X(1))
         IF (X(1)%v .GT. 1.0D00) THEN
-          CALL setderiv(OpenAD_Symbol_4,Y(1))
-          CALL setderiv(Y(1),OpenAD_Symbol_4)
+          CALL setderiv(OpenAD_Symbol_3,Y(1))
+          CALL setderiv(Y(1),OpenAD_Symbol_3)
         ELSE
           IF (X(1)%v .GT. 0.0D00) THEN
             Y(1)%v = X(1)%v
-            CALL setderiv(OpenAD_Symbol_9,X(1))
-            CALL setderiv(Y(1),OpenAD_Symbol_9)
+            CALL setderiv(Y(1),X(1))
           ENDIF
         ENDIF
       ENDIF
@@ -63,10 +59,10 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_0 = Y(1)%v
       OpenAD_Symbol_1 = Y(1)%v
       Y(1)%v = OpenAD_Symbol_2
-      OpenAD_Symbol_5 = OpenAD_Symbol_0
-      OpenAD_Symbol_7 = OpenAD_Symbol_1
-      CALL setderiv(OpenAD_Symbol_8,Y(1))
-      CALL setderiv(OpenAD_Symbol_6,Y(1))
-      CALL sax(OpenAD_Symbol_5,OpenAD_Symbol_6,Y(1))
-      CALL saxpy(OpenAD_Symbol_7,OpenAD_Symbol_8,Y(1))
+      OpenAD_Symbol_4 = OpenAD_Symbol_0
+      OpenAD_Symbol_6 = OpenAD_Symbol_1
+      CALL setderiv(OpenAD_Symbol_7,Y(1))
+      CALL setderiv(OpenAD_Symbol_5,Y(1))
+      CALL sax(OpenAD_Symbol_4,OpenAD_Symbol_5,Y(1))
+      CALL saxpy(OpenAD_Symbol_6,OpenAD_Symbol_7,Y(1))
       END SUBROUTINE

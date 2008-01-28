@@ -67,13 +67,12 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      type(active) :: OpenAD_Symbol_0
+      INTEGER(w2f__i8) OpenAD_Symbol_0
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_2
       INTEGER(w2f__i8) OpenAD_Symbol_3
       INTEGER(w2f__i8) OpenAD_Symbol_4
       INTEGER(w2f__i8) OpenAD_Symbol_5
-      INTEGER(w2f__i8) OpenAD_Symbol_6
 C
 C     **** Parameters and Result ****
 C
@@ -162,12 +161,12 @@ C$OPENAD XXX Template ad_template.f
       select_expr_temp_0 = I
       IF(I .ne. 0) THEN
         Y(1)%v = X(1)%v
-        OpenAD_Symbol_2 = 1_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_2
+        OpenAD_Symbol_1 = 1_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_1
           integer_tape_pointer = integer_tape_pointer+1
       ELSE
-        OpenAD_Symbol_3 = 0_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_3
+        OpenAD_Symbol_2 = 0_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_2
           integer_tape_pointer = integer_tape_pointer+1
       ENDIF
       
@@ -190,14 +189,10 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_1 = integer_tape(integer_tape_pointer)
-      IF(OpenAD_Symbol_1 .ne. 0) THEN
-          if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_0)) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(1)%d
-            Y(1)%d = 0
-          end if
-          X(1)%d = X(1)%d+OpenAD_Symbol_0%d
-          OpenAD_Symbol_0%d = 0.0d0
+          OpenAD_Symbol_0 = integer_tape(integer_tape_pointer)
+      IF(OpenAD_Symbol_0 .ne. 0) THEN
+          X(1)%d = X(1)%d+Y(1)%d
+          Y(1)%d = 0.0d0
       ENDIF
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.

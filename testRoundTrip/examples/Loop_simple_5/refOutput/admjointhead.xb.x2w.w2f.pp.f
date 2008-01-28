@@ -68,16 +68,13 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
-      INTEGER(w2f__i8) OpenAD_Symbol_10
-      INTEGER(w2f__i8) OpenAD_Symbol_11
       REAL(w2f__8) OpenAD_Symbol_2
-      type(active) :: OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      type(active) :: OpenAD_Symbol_5
+      INTEGER(w2f__i8) OpenAD_Symbol_3
+      INTEGER(w2f__i8) OpenAD_Symbol_4
+      INTEGER(w2f__i8) OpenAD_Symbol_5
       INTEGER(w2f__i8) OpenAD_Symbol_6
       INTEGER(w2f__i8) OpenAD_Symbol_7
       INTEGER(w2f__i8) OpenAD_Symbol_8
-      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -87,11 +84,11 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i8) OpenAD_Symbol_10
+      INTEGER(w2f__i8) OpenAD_Symbol_11
       INTEGER(w2f__i8) OpenAD_Symbol_12
-      INTEGER(w2f__i8) OpenAD_Symbol_13
-      INTEGER(w2f__i8) OpenAD_Symbol_14
-      REAL(w2f__8) OpenAD_Symbol_15
-      INTEGER(w2f__i8) OpenAD_Symbol_16
+      REAL(w2f__8) OpenAD_Symbol_13
+      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
 C
@@ -174,11 +171,10 @@ C$OPENAD XXX Simple loop\t
         IF(I .eq. INT(2_w2f__i8)) THEN
           Y(INT(I))%v = X(I)%v
         ELSE
-          OpenAD_Symbol_2 = (X(I)%v*2.0D00)
+          Y(INT(I))%v = (X(I)%v*2.0D00)
           OpenAD_Symbol_0 = 2.0D00
-          Y(INT(I))%v = OpenAD_Symbol_2
-          OpenAD_Symbol_4 = OpenAD_Symbol_0
-          double_tape(double_tape_pointer) = OpenAD_Symbol_4
+          OpenAD_Symbol_2 = OpenAD_Symbol_0
+          double_tape(double_tape_pointer) = OpenAD_Symbol_2
           double_tape_pointer = double_tape_pointer+1
         ENDIF
       END DO
@@ -204,19 +200,13 @@ C adjoint
       I = 1 + 1 *((3 - 1) / 1)
       DO WHILE(I .GE. 1)
         IF(I .eq. INT(2_w2f__i8)) THEN
-          if (iaddr(Y(I)) .ne. iaddr(OpenAD_Symbol_3)) then
-            OpenAD_Symbol_3%d = OpenAD_Symbol_3%d+Y(I)%d
-            Y(I)%d = 0
-          end if
-          X(I)%d = X(I)%d+OpenAD_Symbol_3%d
-          OpenAD_Symbol_3%d = 0.0d0
+          X(I)%d = X(I)%d+Y(I)%d
+          Y(I)%d = 0.0d0
         ELSE
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_15 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(I)%d*OpenAD_Symbol_15
+          OpenAD_Symbol_13 = double_tape(double_tape_pointer)
+          X(I)%d = X(I)%d+Y(I)%d*OpenAD_Symbol_13
           Y(I)%d = 0.0d0
-          X(I)%d = X(I)%d+OpenAD_Symbol_5%d
-          OpenAD_Symbol_5%d = 0.0d0
         ENDIF
         I = I - 1
       END DO

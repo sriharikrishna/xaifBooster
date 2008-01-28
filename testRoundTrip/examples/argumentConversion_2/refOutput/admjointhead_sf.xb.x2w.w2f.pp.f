@@ -74,10 +74,6 @@ C ========== end copyright notice ==============
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_2
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X
@@ -172,12 +168,8 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-          if (iaddr(Y) .ne. iaddr(OpenAD_Symbol_2)) then
-            OpenAD_Symbol_2%d = OpenAD_Symbol_2%d+Y%d
-            Y%d = 0
-          end if
-          X%d = X%d+OpenAD_Symbol_2%d
-          OpenAD_Symbol_2%d = 0.0d0
+          X%d = X%d+Y%d
+          Y%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.
@@ -262,8 +254,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
       type(active) :: OpenAD_Symbol_1
+      type(active) :: OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
-      type(active) :: OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
@@ -378,7 +370,7 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-      CALL foo(OpenAD_Symbol_3,OpenAD_Symbol_4)
+      CALL foo(OpenAD_Symbol_2,OpenAD_Symbol_3)
       CALL foo(X,Y)
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.

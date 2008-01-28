@@ -231,9 +231,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
-      type(active) :: OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      type(active) :: OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -244,7 +241,7 @@ C     **** Local Variables and Functions ****
 C
       EXTERNAL foo
       type(active) :: T
-      REAL(w2f__8) OpenAD_Symbol_6
+      REAL(w2f__8) OpenAD_Symbol_3
 C
 C     **** Top Level Pragmas ****
 C
@@ -319,11 +316,10 @@ C taping
 C$OPENAD XXX Template ad_template.f
       T%v = X(1)%v
       CALL foo()
-      OpenAD_Symbol_2 = (T%v*2.0D00)
+      Y%v = (T%v*2.0D00)
       OpenAD_Symbol_0 = 2.0D00
-      Y%v = OpenAD_Symbol_2
-      OpenAD_Symbol_4 = OpenAD_Symbol_0
-          double_tape(double_tape_pointer) = OpenAD_Symbol_4
+      OpenAD_Symbol_2 = OpenAD_Symbol_0
+          double_tape(double_tape_pointer) = OpenAD_Symbol_2
           double_tape_pointer = double_tape_pointer+1
       
             our_rev_mode%arg_store=.FALSE.
@@ -345,18 +341,12 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_6 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y%d*OpenAD_Symbol_6
+          OpenAD_Symbol_3 = double_tape(double_tape_pointer)
+          T%d = T%d+Y%d*OpenAD_Symbol_3
           Y%d = 0.0d0
-          T%d = T%d+OpenAD_Symbol_5%d
-          OpenAD_Symbol_5%d = 0.0d0
       CALL foo()
-          if (iaddr(T) .ne. iaddr(OpenAD_Symbol_3)) then
-            OpenAD_Symbol_3%d = OpenAD_Symbol_3%d+T%d
-            T%d = 0
-          end if
-          X(1)%d = X(1)%d+OpenAD_Symbol_3%d
-          OpenAD_Symbol_3%d = 0.0d0
+          X(1)%d = X(1)%d+T%d
+          T%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.

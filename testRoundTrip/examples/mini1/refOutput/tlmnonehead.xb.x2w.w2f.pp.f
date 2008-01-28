@@ -13,8 +13,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -32,14 +30,12 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_0 = (X%v*X%v)
-      OpenAD_Symbol_4 = SIN(OpenAD_Symbol_0)
+      Y%v = SIN(OpenAD_Symbol_0)
       OpenAD_Symbol_2 = X%v
       OpenAD_Symbol_3 = X%v
       OpenAD_Symbol_1 = COS(OpenAD_Symbol_0)
-      Y%v = OpenAD_Symbol_4
-      OpenAD_Symbol_5 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
-      OpenAD_Symbol_7 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
-      CALL setderiv(OpenAD_Symbol_6,X)
-      CALL sax(OpenAD_Symbol_5,OpenAD_Symbol_6,Y)
-      CALL saxpy(OpenAD_Symbol_7,OpenAD_Symbol_6,Y)
+      OpenAD_Symbol_4 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
+      OpenAD_Symbol_5 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+      CALL sax(OpenAD_Symbol_4,X,Y)
+      CALL saxpy(OpenAD_Symbol_5,X,Y)
       END SUBROUTINE
