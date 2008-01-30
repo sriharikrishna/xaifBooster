@@ -61,6 +61,16 @@
 #include "xaifBooster/algorithms/TraceDiff/inc/Helpers.hpp"
 
 namespace xaifBoosterTraceDiff {  
+  
+  bool Helpers::argumentsHaveArrayAccess(const Expression::CArgumentPList& arguments) {
+    for (Expression::CArgumentPList::const_iterator i=arguments.begin();
+	 i!=arguments.end();
+	 ++i) { 
+      if ((*i)->getVariable().hasArrayAccess())
+	return true; 
+    }
+    return false; 
+  }
 
   void Helpers::traceArguments(const Expression::CArgumentPList& arguments,
 			       BasicBlock& aBasicBlock) { 
@@ -80,21 +90,22 @@ namespace xaifBoosterTraceDiff {
   void Helpers::traceArgument(const Argument& anArgument,
 			      PlainBasicBlock::BasicBlockElementList& aTraceList,
 			      Scope& aScope) { 
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p=
-      new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_arg");
-    theSubroutineCall_p->setId("TraceDiff::Helpers::traceArgument");
-    aTraceList.push_back(theSubroutineCall_p);
-    ConcreteArgument& theName(theSubroutineCall_p->addConcreteArgument(1));
-    theName.makeConstant(SymbolType::STRING_STYPE);
-    theName.getConstant().setFromString(anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName());
+    // if there are no array indices we can just look at the line in question
     if (anArgument.getVariable().hasArrayAccess()) {
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p=
+	new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_arg");
+      theSubroutineCall_p->setId("TraceDiff::Helpers::traceArgument");
+      aTraceList.push_back(theSubroutineCall_p);
+      ConcreteArgument& theName(theSubroutineCall_p->addConcreteArgument(1));
+      theName.makeConstant(SymbolType::STRING_STYPE);
+      theName.getConstant().setFromString(anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName());
       handleArrayAccessIndices(anArgument,
 			       aTraceList,
 			       aScope); 
+      theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_earg");
+      theSubroutineCall_p->setId("TraceDiff::SubroutineCallAlg::algorithm_action_2");
+      aTraceList.push_back(theSubroutineCall_p);
     }
-    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_earg");
-    theSubroutineCall_p->setId("TraceDiff::SubroutineCallAlg::algorithm_action_2");
-    aTraceList.push_back(theSubroutineCall_p);
   } 
 
   void Helpers::handleArrayAccessIndices(const Argument& anArgument,

@@ -67,8 +67,9 @@ namespace xaifBoosterTraceDiff {
   class Helpers  {
 
   public:
-    
 
+    static bool argumentsHaveArrayAccess(const Expression::CArgumentPList& arguments); 
+    
     static void traceArguments(const Expression::CArgumentPList& arguments,
 			       BasicBlock& aBasicBlock);
 

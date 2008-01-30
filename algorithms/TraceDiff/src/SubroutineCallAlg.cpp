@@ -167,6 +167,7 @@ namespace xaifBoosterTraceDiff {
 				 myCallTraces,
 				 xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get().getContaining().getScope());
 	}
+	/* 
  	if ((*aConcreteArgumentPListI)->isConstant()) { 
 	  theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_arg");
 	  theSubroutineCall_p->setId("TraceDiff::SubroutineCallAlg::algorithm_action_2");
@@ -178,6 +179,7 @@ namespace xaifBoosterTraceDiff {
 	  theSubroutineCall_p->setId("TraceDiff::SubroutineCallAlg::algorithm_action_2");
 	  myCallTraces.push_back(theSubroutineCall_p);
 	}
+	*/
       } // end for
       // trace the return 
       theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_ecall");
