@@ -161,30 +161,36 @@ namespace xaifBoosterTraceDiff {
 	      ConcreteArgument& theOriginalLine(theSubroutineCall_p->addConcreteArgument(1));
 	      theOriginalLine.makeConstant(SymbolType::INTEGER_STYPE);
 	      theOriginalLine.getConstant().setint(lineNumber);
-	      theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_initialization");
-	      theSubroutineCall_p->setId("traceActiveControlFlow");
-	      theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
-	      Helpers::traceArguments(initList,
-				      theBasicBlock_r);
-	      theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_einitialization");
-	      theSubroutineCall_p->setId("traceActiveControlFlow");
-	      theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
-	      theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_condition");
-	      theSubroutineCall_p->setId("traceActiveControlFlow");
-	      theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
-	      Helpers::traceArguments(conditionList,
-				      theBasicBlock_r);
-	      theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_econdition");
-	      theSubroutineCall_p->setId("traceActiveControlFlow");
-	      theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
-	      theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_update");
-	      theSubroutineCall_p->setId("traceActiveControlFlow");
-	      theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
-	      Helpers::traceArguments(updateList,
-				      theBasicBlock_r);
-	      theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_eupdate");
-	      theSubroutineCall_p->setId("traceActiveControlFlow");
-	      theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
+	      if (Helpers::argumentsHaveArrayAccess(initList)) { 
+		theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_initialization");
+		theSubroutineCall_p->setId("traceActiveControlFlow");
+		theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
+		Helpers::traceArguments(initList,
+					theBasicBlock_r);
+		theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_einitialization");
+		theSubroutineCall_p->setId("traceActiveControlFlow");
+		theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
+	      }
+	      if (Helpers::argumentsHaveArrayAccess(conditionList)) { 
+		theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_condition");
+		theSubroutineCall_p->setId("traceActiveControlFlow");
+		theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
+		Helpers::traceArguments(conditionList,
+					theBasicBlock_r);
+		theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_econdition");
+		theSubroutineCall_p->setId("traceActiveControlFlow");
+		theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
+	      }
+	      if (Helpers::argumentsHaveArrayAccess(updateList)) { 
+		theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_update");
+		theSubroutineCall_p->setId("traceActiveControlFlow");
+		theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
+		Helpers::traceArguments(updateList,
+					theBasicBlock_r);
+		theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_eupdate");
+		theSubroutineCall_p->setId("traceActiveControlFlow");
+		theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
+	      }
 	    }  
 	    else {
 	      // store index of corresponding ENDLOOP node
@@ -252,7 +258,6 @@ namespace xaifBoosterTraceDiff {
 	// get the corresponding branch node
 	const Branch& theBranch(dynamic_cast<const Branch&>((*the_mySortedVertices_p_l_it)->getCounterPart().getOriginalVertex())); 
 	Expression::CArgumentPList conditionList;
-	int lineNumber=0;
 	theBranch.getCondition().getExpression().appendActiveArguments(conditionList);
 	if (!conditionList.empty()) { 
 	  // first trace the branch: 
@@ -271,15 +276,17 @@ namespace xaifBoosterTraceDiff {
 	  theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
 	  ConcreteArgument& theOriginalLine(theSubroutineCall_p->addConcreteArgument(1));
 	  theOriginalLine.makeConstant(SymbolType::INTEGER_STYPE);
-	  theOriginalLine.getConstant().setint(lineNumber);
-	  theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_condition");
-	  theSubroutineCall_p->setId("traceActiveControlFlow");
-	  theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
-	  Helpers::traceArguments(conditionList,
-				  theBasicBlock_r);
-	  theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_econdition");
-	  theSubroutineCall_p->setId("traceActiveControlFlow");
-	  theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 	  
+	  theOriginalLine.getConstant().setint(theBranch.getLineNumber());
+	  if (Helpers::argumentsHaveArrayAccess(conditionList)) { 
+	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_condition");
+	    theSubroutineCall_p->setId("traceActiveControlFlow");
+	    theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 
+	    Helpers::traceArguments(conditionList,
+				    theBasicBlock_r);
+	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_econdition");
+	    theSubroutineCall_p->setId("traceActiveControlFlow");
+	    theBasicBlock_r.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p); 	  
+	  }
 	  // now trace the respective end:
 	  InEdgeIteratorPair pie(getInEdgesOf(*(*the_mySortedVertices_p_l_it)));
 	  InEdgeIterator beginItie(pie.first),endItie(pie.second);
