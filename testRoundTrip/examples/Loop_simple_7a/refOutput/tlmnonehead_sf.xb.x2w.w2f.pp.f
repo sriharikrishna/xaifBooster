@@ -14,10 +14,6 @@ C
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X(1 : 3)
@@ -29,17 +25,14 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      INTEGER(w2f__i4) t__1
 C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
-      t__1 = MIN(K, 3)
       DO I = 1, MIN(K, 3), 1
         Y(INT(I))%v = X(I)%v
-        CALL setderiv(OpenAD_Symbol_0,X(I))
-        CALL setderiv(Y(I),OpenAD_Symbol_0)
+        CALL setderiv(Y(I),X(I))
       END DO
       END SUBROUTINE
 

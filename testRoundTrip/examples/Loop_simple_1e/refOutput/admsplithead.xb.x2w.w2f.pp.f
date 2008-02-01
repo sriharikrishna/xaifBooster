@@ -63,10 +63,6 @@ C ========== end copyright notice ==============
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X
@@ -81,21 +77,15 @@ C
          if (our_rev_mode%plain) then
 ! original function
       Y%v = X%v
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
       Y%v = X%v
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-          if (iaddr(Y) .ne. iaddr(OpenAD_Symbol_0)) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y%d
-            Y%d = 0
-          end if
-          X%d = X%d+OpenAD_Symbol_0%d
-          OpenAD_Symbol_0%d = 0.0d0
+          X%d = X%d+Y%d
+          Y%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============
@@ -164,12 +154,12 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
+      INTEGER(w2f__i8) OpenAD_Symbol_0
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_2
       INTEGER(w2f__i8) OpenAD_Symbol_3
       INTEGER(w2f__i8) OpenAD_Symbol_4
       INTEGER(w2f__i8) OpenAD_Symbol_5
-      INTEGER(w2f__i8) OpenAD_Symbol_6
 C
 C     **** Parameters and Result ****
 C
@@ -201,34 +191,32 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         CALL foo(X(J),Y(J))
       END DO
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       J = 1
-      OpenAD_Symbol_3 = 0_w2f__i8
+      OpenAD_Symbol_2 = 0_w2f__i8
       DO I = 1, 2, 1
         CALL foo(X(J),Y(J))
           integer_tape(integer_tape_pointer) = J
           integer_tape_pointer = integer_tape_pointer+1
-        OpenAD_Symbol_3 = (INT(OpenAD_Symbol_3) + INT(1_w2f__i8))
+        OpenAD_Symbol_2 = (INT(OpenAD_Symbol_2) + INT(1_w2f__i8))
       END DO
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_3
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_2
           integer_tape_pointer = integer_tape_pointer+1
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_1 = integer_tape(integer_tape_pointer)
-      OpenAD_Symbol_2 = 1
-      DO WHILE(INT(OpenAD_Symbol_2) .LE. INT(OpenAD_Symbol_1))
+          OpenAD_Symbol_0 = integer_tape(integer_tape_pointer)
+      OpenAD_Symbol_1 = 1
+      DO WHILE(INT(OpenAD_Symbol_1) .LE. INT(OpenAD_Symbol_0))
           integer_tape_pointer = integer_tape_pointer-1
           J = integer_tape(integer_tape_pointer)
         CALL foo(X(J),Y(J))
-        OpenAD_Symbol_2 = INT(OpenAD_Symbol_2) + 1
+        OpenAD_Symbol_1 = INT(OpenAD_Symbol_1) + 1
       END DO
           end if 
         end subroutine head

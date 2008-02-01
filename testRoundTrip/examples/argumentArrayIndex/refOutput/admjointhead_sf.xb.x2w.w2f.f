@@ -33,7 +33,6 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       __value__(Y) = (__value__(X) * 2.0D00)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -43,7 +42,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_3 = OpenAD_Symbol_0
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_3)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
@@ -102,7 +100,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_3 = OpenAD_Symbol_0
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_3)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE Pop(subst)
@@ -145,7 +142,6 @@ C$OPENAD XXX Template ad_template.f
       K = 1
       CALL foo(__deriv__(X(K)), __deriv__(X(K + 1)))
       CALL foo(__deriv__(X(K)), __deriv__(Y))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -156,7 +152,6 @@ C     $OpenAD$ INLINE push_i(subst)
       CALL foo(__deriv__(X(K)), __deriv__(Y))
 C     $OpenAD$ INLINE push_i(subst)
       CALL push_i(K)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE pop_i(subst)
@@ -187,7 +182,6 @@ C     $OpenAD$ INLINE push_i(subst)
       CALL foo(__deriv__(X(K)), __deriv__(Y))
 C     $OpenAD$ INLINE push_i(subst)
       CALL push_i(K)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE pop_i(subst)

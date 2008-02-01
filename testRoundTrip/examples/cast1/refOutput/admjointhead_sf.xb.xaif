@@ -67,12 +67,13 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetMap>
       <xaif:AliasSet key="0">
-        <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="1"/>
       </xaif:AliasSet>
       <xaif:AliasSet key="1">
-        <xaif:AliasRange from_virtual_address="3" to_virtual_address="4" partial="1"/>
       </xaif:AliasSet>
       <xaif:AliasSet key="2">
+        <xaif:AliasRange from_virtual_address="3" to_virtual_address="4" partial="1"/>
+      </xaif:AliasSet>
+      <xaif:AliasSet key="3">
         <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="1"/>
       </xaif:AliasSet>
     </xaif:AliasSetMap>
@@ -165,7 +166,7 @@
           <xaif:Marker statement_id="9" annotation="{WHIRL_Id#9} [passive: OPR_PRAGMA]"/>
           <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_PRAGMA]"/>
           <xaif:Assignment statement_id="11">
-            <xaif:AssignmentLHS active="true" du_ud="2" deriv="0" constant="0">
+            <xaif:AssignmentLHS active="true" alias="2" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -179,7 +180,7 @@
             <xaif:AssignmentRHS>
               <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
               <xaif:Intrinsic vertex_id="2" annotation="{IntrinsicKey#1_INT}" name="int_scal"/>
-              <xaif:VariableReference vertex_id="3" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="3" active="true" alias="2" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
@@ -196,7 +197,6 @@
               <xaif:ExpressionEdge edge_id="3" source="4" target="1" position="2"/>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
-          <xaif:Marker statement_id="25" annotation="{WHIRL_Id#25} [passive: OPR_RETURN]"/>
         </xaif:BasicBlock>
         <xaif:Exit vertex_id="6" annotation=""/>
         <xaif:ControlFlowEdge edge_id="1" source="4" target="5" has_condition_value="0"/>
@@ -208,7 +208,7 @@
           <xaif:Marker statement_id="9" annotation="{WHIRL_Id#9} [passive: OPR_PRAGMA]"/>
           <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_PRAGMA]"/>
           <xaif:Assignment statement_id="11">
-            <xaif:AssignmentLHS active="true" du_ud="2" deriv="0" constant="0">
+            <xaif:AssignmentLHS active="true" alias="2" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -222,7 +222,7 @@
             <xaif:AssignmentRHS>
               <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
               <xaif:Intrinsic vertex_id="2" annotation="{IntrinsicKey#1_INT}" name="int_scal"/>
-              <xaif:VariableReference vertex_id="3" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="3" active="true" alias="2" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
@@ -239,7 +239,6 @@
               <xaif:ExpressionEdge edge_id="3" source="4" target="1" position="2"/>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
-          <xaif:Marker statement_id="25" annotation="{WHIRL_Id#25} [passive: OPR_RETURN]"/>
         </xaif:BasicBlock>
         <xaif:Exit vertex_id="6" annotation=""/>
         <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="4" target="5" has_condition_value="0"/>
@@ -250,7 +249,7 @@
         <xaif:BasicBlock vertex_id="5" annotation="" scope_id="3">
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="1" active="true" alias="2" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
@@ -322,7 +321,7 @@
           <xaif:Marker statement_id="9" annotation="{WHIRL_Id#9} [passive: OPR_PRAGMA]"/>
           <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_PRAGMA]"/>
           <xaif:Assignment statement_id="11">
-            <xaif:AssignmentLHS active="true" du_ud="2" deriv="0" constant="0">
+            <xaif:AssignmentLHS active="true" alias="2" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -336,7 +335,7 @@
             <xaif:AssignmentRHS>
               <xaif:Intrinsic vertex_id="1" annotation="" name="mul_scal_scal"/>
               <xaif:Intrinsic vertex_id="2" annotation="{IntrinsicKey#1_INT}" name="int_scal"/>
-              <xaif:VariableReference vertex_id="3" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="3" active="true" alias="2" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
@@ -353,7 +352,6 @@
               <xaif:ExpressionEdge edge_id="3" source="4" target="1" position="2"/>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
-          <xaif:Marker statement_id="25" annotation="{WHIRL_Id#25} [passive: OPR_RETURN]"/>
         </xaif:BasicBlock>
         <xaif:Exit vertex_id="6" annotation=""/>
         <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="4" target="5" has_condition_value="0"/>
@@ -364,7 +362,7 @@
         <xaif:BasicBlock vertex_id="5" annotation="" scope_id="3">
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:VariableReference vertex_id="1" active="true" alias="2" du_ud="2" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>

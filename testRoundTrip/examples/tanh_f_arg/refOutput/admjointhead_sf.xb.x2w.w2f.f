@@ -38,7 +38,6 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       __value__(Y(1)) = TANH(__value__(X(1)))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -49,7 +48,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_2 = OpenAD_Symbol_1
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_2)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
@@ -85,7 +83,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_2 = OpenAD_Symbol_1
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_2)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE Pop(subst)

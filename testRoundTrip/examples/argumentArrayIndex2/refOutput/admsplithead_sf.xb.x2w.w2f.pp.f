@@ -76,8 +76,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
 C
 C     **** Parameters and Result ****
 C
@@ -86,7 +84,7 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_7
+      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Statements ****
 C
@@ -98,27 +96,22 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y%v = (X%v*2.0D00)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_4 = (X%v*2.0D00)
+      Y%v = (X%v*2.0D00)
       OpenAD_Symbol_2 = 2.0D00
-      Y%v = OpenAD_Symbol_4
-      OpenAD_Symbol_5 = OpenAD_Symbol_2
-          double_tape(double_tape_pointer) = OpenAD_Symbol_5
+      OpenAD_Symbol_4 = OpenAD_Symbol_2
+          double_tape(double_tape_pointer) = OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_7 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y%d*OpenAD_Symbol_7
+          OpenAD_Symbol_5 = double_tape(double_tape_pointer)
+          X%d = X%d+Y%d*OpenAD_Symbol_5
           Y%d = 0.0d0
-          X%d = X%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============
@@ -189,8 +182,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
       type(active) :: OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_8
-      type(active) :: OpenAD_Symbol_9
+      type(active) :: OpenAD_Symbol_6
+      type(active) :: OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -232,7 +225,6 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(P(K),OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(Q(L),OpenAD_Symbol_1)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -256,7 +248,6 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = L
           integer_tape_pointer = integer_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -264,7 +255,7 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           K = integer_tape(integer_tape_pointer)
           integer_tape_pointer = integer_tape_pointer-1
           L = integer_tape(integer_tape_pointer)
-      CALL foo(OpenAD_Symbol_8,OpenAD_Symbol_9)
+      CALL foo(OpenAD_Symbol_6,OpenAD_Symbol_7)
           integer_tape_pointer = integer_tape_pointer-1
           K = integer_tape(integer_tape_pointer)
       CALL foo(X(K),Y)

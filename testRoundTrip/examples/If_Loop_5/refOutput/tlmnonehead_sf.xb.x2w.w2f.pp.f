@@ -40,7 +40,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      LOGICAL(w2f__i4) t__1
 C
 C     **** Top Level Pragmas ****
 C
@@ -51,7 +50,6 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       I = 1
-      t__1 = I .LT. 3
       DO WHILE(I .LT. 3)
         IF(I .LT. 2) THEN
           OpenAD_Symbol_1 = SIN(X(1)%v)
@@ -69,7 +67,6 @@ C$OPENAD XXX Template ad_template.f
           CALL sax(OpenAD_Symbol_9,OpenAD_Symbol_10,Y(1))
         ENDIF
         I = I + 1
-        t__1 = I .LT. 3
       END DO
       OpenAD_Symbol_6 = (Y(1)%v*Y(2)%v)
       OpenAD_Symbol_4 = Y(2)%v

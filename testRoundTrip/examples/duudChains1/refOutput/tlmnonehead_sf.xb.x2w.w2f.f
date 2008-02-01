@@ -16,12 +16,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_3
+      REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_6
-      TYPE (OpenADTy_active) OpenAD_Symbol_7
-      REAL(w2f__8) OpenAD_Symbol_8
-      TYPE (OpenADTy_active) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -42,19 +38,13 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
-        OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
+        __value__(T(INT(I))) = (__value__(X(I)) * 2.0D00)
         OpenAD_Symbol_0 = 2.0D00
-        __value__(T(INT(I))) = OpenAD_Symbol_2
-        OpenAD_Symbol_6 = OpenAD_Symbol_0
-        CALL setderiv(__deriv__(OpenAD_Symbol_7), __deriv__(X(I)))
-        CALL sax(OpenAD_Symbol_6, __deriv__(OpenAD_Symbol_7), __deriv__
-     > (T(I)))
-        OpenAD_Symbol_5 = (__value__(T(I)) * 4.0D00)
-        OpenAD_Symbol_3 = 4.0D00
-        __value__(Y(INT(I))) = OpenAD_Symbol_5
-        OpenAD_Symbol_8 = OpenAD_Symbol_3
-        CALL setderiv(__deriv__(OpenAD_Symbol_9), __deriv__(T(I)))
-        CALL sax(OpenAD_Symbol_8, __deriv__(OpenAD_Symbol_9), __deriv__
-     > (Y(I)))
+        OpenAD_Symbol_4 = OpenAD_Symbol_0
+        CALL sax(OpenAD_Symbol_4, __deriv__(X(I)), __deriv__(T(I)))
+        __value__(Y(INT(I))) = (__value__(T(I)) * 4.0D00)
+        OpenAD_Symbol_2 = 4.0D00
+        OpenAD_Symbol_5 = OpenAD_Symbol_2
+        CALL sax(OpenAD_Symbol_5, __deriv__(T(I)), __deriv__(Y(I)))
       END DO
       END SUBROUTINE
