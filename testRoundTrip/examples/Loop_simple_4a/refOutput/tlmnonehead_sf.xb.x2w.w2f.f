@@ -12,10 +12,6 @@ C
       use w2f__types
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      TYPE (OpenADTy_active) OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       INTEGER(w2f__i4) J
@@ -39,7 +35,6 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         __value__(Y(INT(J))) = __value__(X(J))
-        CALL setderiv(__deriv__(OpenAD_Symbol_0), __deriv__(X(J)))
-        CALL setderiv(__deriv__(Y(J)), __deriv__(OpenAD_Symbol_0))
+        CALL setderiv(__deriv__(Y(J)), __deriv__(X(J)))
       END DO
       END SUBROUTINE

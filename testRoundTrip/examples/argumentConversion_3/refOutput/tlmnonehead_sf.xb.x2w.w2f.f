@@ -76,9 +76,8 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      TYPE (OpenADTy_active) OpenAD_Symbol_2
+      REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
@@ -96,12 +95,9 @@ C$OPENAD XXX Template ad_template.f
       __value__(GX) = __value__(X(1))
       __value__(GY) = __value__(GX)
       __value__(Y(1)) = __value__(GY)
-      OpenAD_Symbol_3 = (INT(1_w2f__i8) * INT(1_w2f__i8))
-      OpenAD_Symbol_4 = 1_w2f__i8
-      CALL setderiv(__deriv__(OpenAD_Symbol_2), __deriv__(X(1)))
-      CALL setderiv(__deriv__(GX), __deriv__(OpenAD_Symbol_2))
-      CALL sax(OpenAD_Symbol_3, __deriv__(OpenAD_Symbol_2), __deriv__(Y
-     > (1)))
-      CALL sax(OpenAD_Symbol_4, __deriv__(OpenAD_Symbol_2), __deriv__(
-     > GY))
+      OpenAD_Symbol_2 = (INT(1_w2f__i8) * INT(1_w2f__i8))
+      OpenAD_Symbol_3 = 1_w2f__i8
+      CALL setderiv(__deriv__(GX), __deriv__(X(1)))
+      CALL sax(OpenAD_Symbol_2, __deriv__(X(1)), __deriv__(Y(1)))
+      CALL sax(OpenAD_Symbol_3, __deriv__(X(1)), __deriv__(GY))
       END SUBROUTINE

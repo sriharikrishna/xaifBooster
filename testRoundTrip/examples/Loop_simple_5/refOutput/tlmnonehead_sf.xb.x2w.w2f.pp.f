@@ -18,9 +18,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
-      type(active) :: OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      type(active) :: OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -45,15 +42,12 @@ C$OPENAD XXX Simple loop\t
       DO I = 1, 3, 1
         IF(I .eq. 2) THEN
           Y(INT(I))%v = X(I)%v
-          CALL setderiv(OpenAD_Symbol_3,X(I))
-          CALL setderiv(Y(I),OpenAD_Symbol_3)
+          CALL setderiv(Y(I),X(I))
         ELSE
-          OpenAD_Symbol_2 = (X(I)%v*2.0D00)
+          Y(INT(I))%v = (X(I)%v*2.0D00)
           OpenAD_Symbol_0 = 2.0D00
-          Y(INT(I))%v = OpenAD_Symbol_2
-          OpenAD_Symbol_4 = OpenAD_Symbol_0
-          CALL setderiv(OpenAD_Symbol_5,X(I))
-          CALL sax(OpenAD_Symbol_4,OpenAD_Symbol_5,Y(I))
+          OpenAD_Symbol_2 = OpenAD_Symbol_0
+          CALL sax(OpenAD_Symbol_2,X(I),Y(I))
         ENDIF
       END DO
       END SUBROUTINE

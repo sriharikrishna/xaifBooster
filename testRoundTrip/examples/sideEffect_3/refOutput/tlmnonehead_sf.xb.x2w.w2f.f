@@ -18,8 +18,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      TYPE (OpenADTy_active) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -29,17 +27,13 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_2 = (__value__(C) * __value__(C))
+      __value__(D) = (__value__(C) * __value__(C))
       OpenAD_Symbol_0 = __value__(C)
       OpenAD_Symbol_1 = __value__(C)
-      __value__(D) = OpenAD_Symbol_2
-      OpenAD_Symbol_3 = OpenAD_Symbol_0
-      OpenAD_Symbol_5 = OpenAD_Symbol_1
-      CALL setderiv(__deriv__(OpenAD_Symbol_4), __deriv__(C))
-      CALL sax(OpenAD_Symbol_3, __deriv__(OpenAD_Symbol_4), __deriv__(D
-     > ))
-      CALL saxpy(OpenAD_Symbol_5, __deriv__(OpenAD_Symbol_4), __deriv__
-     > (D))
+      OpenAD_Symbol_2 = OpenAD_Symbol_0
+      OpenAD_Symbol_3 = OpenAD_Symbol_1
+      CALL sax(OpenAD_Symbol_2, __deriv__(C), __deriv__(D))
+      CALL saxpy(OpenAD_Symbol_3, __deriv__(C), __deriv__(D))
       END SUBROUTINE
 
       SUBROUTINE foo(A, B)

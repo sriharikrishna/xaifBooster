@@ -38,7 +38,6 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
-      LOGICAL(w2f__i4) t__1
 C
 C     **** Top Level Pragmas ****
 C
@@ -49,7 +48,6 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       I = 1
-      t__1 = I .LT. 3
       DO WHILE(I .LT. 3)
         IF(I .LT. 2) THEN
           OpenAD_Symbol_1 = SIN(__value__(X(1)))
@@ -69,7 +67,6 @@ C$OPENAD XXX Template ad_template.f
      >  __deriv__(Y(1)))
         ENDIF
         I = I + 1
-        t__1 = I .LT. 3
       END DO
       OpenAD_Symbol_6 = (__value__(Y(1)) * __value__(Y(2)))
       OpenAD_Symbol_4 = __value__(Y(2))

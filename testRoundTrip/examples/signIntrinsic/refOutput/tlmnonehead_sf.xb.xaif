@@ -79,12 +79,13 @@
     </xaif:ScopeHierarchy>
     <xaif:AliasSetMap>
       <xaif:AliasSet key="0">
-        <xaif:AliasRange from_virtual_address="1" to_virtual_address="1" partial="1"/>
       </xaif:AliasSet>
       <xaif:AliasSet key="1">
-        <xaif:AliasRange from_virtual_address="3" to_virtual_address="4" partial="1"/>
       </xaif:AliasSet>
       <xaif:AliasSet key="2">
+        <xaif:AliasRange from_virtual_address="3" to_virtual_address="4" partial="1"/>
+      </xaif:AliasSet>
+      <xaif:AliasSet key="3">
         <xaif:AliasRange from_virtual_address="1" to_virtual_address="2" partial="1"/>
       </xaif:AliasSet>
     </xaif:AliasSetMap>
@@ -143,7 +144,7 @@
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="3" annotation="" name="minus_scal"/>
-            <xaif:VariableReference vertex_id="4" active="true" du_ud="2" deriv="0" constant="0">
+            <xaif:VariableReference vertex_id="4" active="true" alias="3" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -163,7 +164,7 @@
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" annotation="{IntrinsicKey#1_SIGN}" name="sign_scal_scal"/>
-            <xaif:VariableReference vertex_id="2" active="true" du_ud="2" deriv="0" constant="0">
+            <xaif:VariableReference vertex_id="2" active="true" alias="2" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -190,7 +191,7 @@
             <xaif:Intrinsic vertex_id="2" name="sign_scal_scal"/>
             <xaif:Intrinsic vertex_id="3" name="sign_scal_scal"/>
             <xaif:Constant vertex_id="4" type="real" feType="" value="1.00000000000000000000e+00"/>
-            <xaif:VariableReference vertex_id="5" active="true" du_ud="2" deriv="0" constant="0">
+            <xaif:VariableReference vertex_id="5" active="true" alias="2" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="X_1" annotation="" scope_id="3"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -213,7 +214,7 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="11: delayed LHS assignment for correct partials">
-          <xaif:AssignmentLHS active="true" du_ud="2" deriv="0" constant="0">
+          <xaif:AssignmentLHS active="true" alias="2" du_ud="2" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="Y_2" annotation="" scope_id="3"/>
             <xaif:ArrayElementReference vertex_id="2">
               <xaif:IndexTriplet>
@@ -281,7 +282,6 @@
             </xaif:Y>
           </xaif:Sax>
         </xaif:DerivativePropagator>
-        <xaif:Marker statement_id="29" annotation="{WHIRL_Id#29} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="6" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="4" target="5" has_condition_value="0"/>

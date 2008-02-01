@@ -63,10 +63,6 @@ C ========== end copyright notice ==============
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_2
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X
@@ -82,22 +78,16 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y%v = X%v
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
       Y%v = X%v
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-          if (iaddr(Y) .ne. iaddr(OpenAD_Symbol_2)) then
-            OpenAD_Symbol_2%d = OpenAD_Symbol_2%d+Y%d
-            Y%d = 0
-          end if
-          X%d = X%d+OpenAD_Symbol_2%d
-          OpenAD_Symbol_2%d = 0.0d0
+          X%d = X%d+Y%d
+          Y%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============
@@ -168,8 +158,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
       type(active) :: OpenAD_Symbol_1
+      type(active) :: OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
-      type(active) :: OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
@@ -203,7 +193,6 @@ C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -216,11 +205,10 @@ C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-      CALL foo(OpenAD_Symbol_3,OpenAD_Symbol_4)
+      CALL foo(OpenAD_Symbol_2,OpenAD_Symbol_3)
       CALL foo(X,Y)
           end if 
         end subroutine head

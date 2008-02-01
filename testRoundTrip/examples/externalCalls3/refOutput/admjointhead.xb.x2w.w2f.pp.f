@@ -133,7 +133,6 @@ C$OPENAD XXX Template ad_template.f
       T1 = X
       CALL barext(X, T2)
       Y = T2
-      
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -150,7 +149,6 @@ C$OPENAD XXX Template ad_template.f
       T1 = X
       CALL barext(X, T2)
       Y = T2
-      
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.

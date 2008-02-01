@@ -76,10 +76,9 @@ C ========== end copyright notice ==============
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      type(active) :: OpenAD_Symbol_0
+      INTEGER(w2f__i8) OpenAD_Symbol_0
       INTEGER(w2f__i8) OpenAD_Symbol_1
       INTEGER(w2f__i8) OpenAD_Symbol_2
-      INTEGER(w2f__i8) OpenAD_Symbol_3
 C
 C     **** Parameters and Result ****
 C
@@ -90,8 +89,8 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i8) OpenAD_Symbol_3
       INTEGER(w2f__i8) OpenAD_Symbol_4
-      INTEGER(w2f__i8) OpenAD_Symbol_5
 C
 C     **** Statements ****
 C
@@ -154,7 +153,6 @@ C$OPENAD XXX Simple loop\t
       DO I = 1, (K * 2), 1
         Y(INT(I))%v = X(I)%v
       END DO
-      RETURN
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -172,7 +170,6 @@ C$OPENAD XXX Simple loop\t
       DO I = 1, (K * 2), 1
         Y(INT(I))%v = X(I)%v
       END DO
-      RETURN
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -193,12 +190,8 @@ C            print*, " adjoint    ", our_rev_mode
 C adjoint
       I = 1 + 1 *((K * 2 - 1) / 1)
       DO WHILE(I .GE. 1)
-          if (iaddr(Y(I)) .ne. iaddr(OpenAD_Symbol_0)) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(I)%d
-            Y(I)%d = 0
-          end if
-          X(I)%d = X(I)%d+OpenAD_Symbol_0%d
-          OpenAD_Symbol_0%d = 0.0d0
+          X(I)%d = X(I)%d+Y(I)%d
+          Y(I)%d = 0.0d0
         I = I - 1
       END DO
             our_rev_mode%arg_store=.FALSE.
@@ -345,7 +338,6 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       CALL bar(X,Y,2)
-      RETURN
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -360,7 +352,6 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
       CALL bar(X,Y,2)
-      RETURN
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.

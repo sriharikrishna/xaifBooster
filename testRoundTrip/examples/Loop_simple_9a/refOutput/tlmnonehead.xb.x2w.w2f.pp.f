@@ -5,10 +5,6 @@
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X(1 : 2)
@@ -33,7 +29,6 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         K = I
         Y(INT(I))%v = X(K)%v
-        CALL setderiv(OpenAD_Symbol_0,X(K))
-        CALL setderiv(Y(I),OpenAD_Symbol_0)
+        CALL setderiv(Y(I),X(K))
       END DO
       END SUBROUTINE
