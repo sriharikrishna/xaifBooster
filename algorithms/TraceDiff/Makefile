@@ -51,20 +51,7 @@
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
 objs test clean:
-	cd CrossCountryInterface && $(MAKE) $@
-	cd InlinableXMLRepresentation && $(MAKE) $@
-	cd CodeReplacement && $(MAKE) $@
-	cd DerivativePropagator && $(MAKE) $@
-	cd AdjointUtils && $(MAKE) $@
-	cd TypeChange && $(MAKE) $@
-	cd Linearization && $(MAKE) $@
-	cd BasicBlockPreaccumulation && $(MAKE) $@
-	cd MemOpsTradeoffPreaccumulation && $(MAKE) $@
-	cd BasicBlockPreaccumulationTape && $(MAKE) $@
-	cd BasicBlockPreaccumulationTapeAdjoint && $(MAKE) $@
-	cd ControlFlowReversal && $(MAKE) $@
-	cd TraceDiff && $(MAKE) $@
-	cd AddressArithmetic && $(MAKE) $@
-	cd BasicBlockPreaccumulationReverse && $(MAKE) $@
+	cd src && $(MAKE) $@
+	cd test && $(MAKE) $@
 
 .PHONY: objs test clean
