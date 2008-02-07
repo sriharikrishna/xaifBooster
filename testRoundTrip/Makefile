@@ -99,6 +99,8 @@ MODULES= w2f__types.o active_module.o
 
 ifeq ($(MAJOR_MODE),adm)
 MODULES+=                       \
+checkpoint_module.o             \
+graph_module.o                  \
 OpenAD_checkpoints.o            \
 OpenAD_dct.o                    \
 OpenAD_rev.o                    \
