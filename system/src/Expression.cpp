@@ -316,4 +316,15 @@ namespace xaifBooster {
     return (numVertices()==1 && !(getMaxVertex().isArgument()));
   } 
 
-} // end of namespace xaifBooster 
+  void Expression::appendActiveArguments(CArgumentPList& listToBeAppended) const { 
+    CArgumentPList aList;
+    appendArguments(aList);
+    for (CArgumentPList::const_iterator argumentI=aList.begin();
+	 argumentI!=aList.end();
+	 ++argumentI) { 
+      if ((*argumentI)->getVariable().getActiveType())
+	listToBeAppended.push_back(*argumentI); 
+    }
+  } 
+
+} 

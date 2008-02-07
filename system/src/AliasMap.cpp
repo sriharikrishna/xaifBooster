@@ -95,11 +95,17 @@ namespace xaifBooster {
        << ourXAIFName 
        << ">" 
        << std::endl; 
-    for(AAVector::const_iterator it=myAAVector.begin();
-	it!=myAAVector.end();
-	it++)
-      if (*it)
-	(*it)->printXMLHierarchy(os);       
+    if (PrintManager::isVerbose()) { 
+      for(AAVector::const_iterator it=myAAVector.begin();
+	  it!=myAAVector.end();
+	  it++)
+	if (*it)
+	  (*it)->printXMLHierarchy(os);       
+    }
+    else { // print only the first one for referential integrity:
+      if (myAAVector.begin()!=myAAVector.end()) 
+	(*(myAAVector.begin()))->printXMLHierarchy(os);
+    }  
     os << pm.indent() 
        << "</"
        << ourXAIFName

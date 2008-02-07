@@ -25,6 +25,6 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      __value__(Y(1)) = (INT(INT(__value__(X(1)))) * 2.5D00)
+      __value__(Y(1)) = (INT(INT(__value__(X(1)))) * DBLE(2.5))
       CALL zero_deriv(__deriv__(Y(1)))
       END SUBROUTINE

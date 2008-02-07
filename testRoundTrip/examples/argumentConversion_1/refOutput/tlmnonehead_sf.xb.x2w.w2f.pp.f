@@ -16,13 +16,10 @@ C
 C
 C     **** Global Variables & Derived Type Definitions ****
 C
-      type(active) :: OpenAD_Symbol_10
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -32,16 +29,13 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_6 = (X(1)%v*X(2)%v)
+      Y%v = (X(1)%v*X(2)%v)
       OpenAD_Symbol_4 = X(2)%v
       OpenAD_Symbol_5 = X(1)%v
-      Y%v = OpenAD_Symbol_6
-      OpenAD_Symbol_7 = OpenAD_Symbol_4
-      OpenAD_Symbol_9 = OpenAD_Symbol_5
-      CALL setderiv(OpenAD_Symbol_10,X(2))
-      CALL setderiv(OpenAD_Symbol_8,X(1))
-      CALL sax(OpenAD_Symbol_7,OpenAD_Symbol_8,Y)
-      CALL saxpy(OpenAD_Symbol_9,OpenAD_Symbol_10,Y)
+      OpenAD_Symbol_6 = OpenAD_Symbol_4
+      OpenAD_Symbol_7 = OpenAD_Symbol_5
+      CALL sax(OpenAD_Symbol_6,X(1),Y)
+      CALL saxpy(OpenAD_Symbol_7,X(2),Y)
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -75,8 +69,8 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      PX(1) = 1.0D00
-      PX(2) = 2.0D00
+      PX(1) = 1.0
+      PX(2) = 2.0
       CALL foo(X,Y)
 C     $OpenAD$ INLINE convert_p2a_vector(subst,subst)
       CALL convert_p2a_vector(OpenAD_Symbol_0,PX)

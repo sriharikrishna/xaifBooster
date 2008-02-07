@@ -16,9 +16,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
-      TYPE (OpenADTy_active) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      TYPE (OpenADTy_active) OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -41,18 +38,14 @@ C
 C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop\t
       DO I = 1, 3, 1
-        IF(I .eq. INT(2_w2f__i8)) THEN
+        IF(I .eq. 2) THEN
           __value__(Y(INT(I))) = __value__(X(I))
-          CALL setderiv(__deriv__(OpenAD_Symbol_3), __deriv__(X(I)))
-          CALL setderiv(__deriv__(Y(I)), __deriv__(OpenAD_Symbol_3))
+          CALL setderiv(__deriv__(Y(I)), __deriv__(X(I)))
         ELSE
-          OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
+          __value__(Y(INT(I))) = (__value__(X(I)) * 2.0D00)
           OpenAD_Symbol_0 = 2.0D00
-          __value__(Y(INT(I))) = OpenAD_Symbol_2
-          OpenAD_Symbol_4 = OpenAD_Symbol_0
-          CALL setderiv(__deriv__(OpenAD_Symbol_5), __deriv__(X(I)))
-          CALL sax(OpenAD_Symbol_4, __deriv__(OpenAD_Symbol_5),
-     >  __deriv__(Y(I)))
+          OpenAD_Symbol_2 = OpenAD_Symbol_0
+          CALL sax(OpenAD_Symbol_2, __deriv__(X(I)), __deriv__(Y(I)))
         ENDIF
       END DO
       END SUBROUTINE

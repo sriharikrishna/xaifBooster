@@ -92,32 +92,26 @@ C
       REAL(w2f__8) OpenAD_Symbol_13
       type(active) :: OpenAD_Symbol_14
       REAL(w2f__8) OpenAD_Symbol_15
-      type(active) :: OpenAD_Symbol_16
+      REAL(w2f__8) OpenAD_Symbol_16
       REAL(w2f__8) OpenAD_Symbol_17
-      type(active) :: OpenAD_Symbol_18
-      REAL(w2f__8) OpenAD_Symbol_19
+      REAL(w2f__8) OpenAD_Symbol_18
+      type(active) :: OpenAD_Symbol_19
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_20
-      type(active) :: OpenAD_Symbol_21
-      REAL(w2f__8) OpenAD_Symbol_22
-      type(active) :: OpenAD_Symbol_23
-      REAL(w2f__8) OpenAD_Symbol_24
-      type(active) :: OpenAD_Symbol_25
+      INTEGER(w2f__i8) OpenAD_Symbol_20
+      INTEGER(w2f__i8) OpenAD_Symbol_21
+      INTEGER(w2f__i8) OpenAD_Symbol_22
+      INTEGER(w2f__i8) OpenAD_Symbol_23
+      INTEGER(w2f__i8) OpenAD_Symbol_24
+      INTEGER(w2f__i8) OpenAD_Symbol_25
       INTEGER(w2f__i8) OpenAD_Symbol_26
       INTEGER(w2f__i8) OpenAD_Symbol_27
       INTEGER(w2f__i8) OpenAD_Symbol_28
-      INTEGER(w2f__i8) OpenAD_Symbol_29
       REAL(w2f__8) OpenAD_Symbol_3
-      INTEGER(w2f__i8) OpenAD_Symbol_30
-      INTEGER(w2f__i8) OpenAD_Symbol_31
-      INTEGER(w2f__i8) OpenAD_Symbol_32
-      INTEGER(w2f__i8) OpenAD_Symbol_33
-      INTEGER(w2f__i8) OpenAD_Symbol_34
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
-      REAL(w2f__8) OpenAD_Symbol_8
+      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -128,24 +122,24 @@ C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
       CHARACTER(3) LOCALSTRING
+      INTEGER(w2f__i8) OpenAD_Symbol_29
+      REAL(w2f__8) OpenAD_Symbol_30
+      INTEGER(w2f__i8) OpenAD_Symbol_31
+      INTEGER(w2f__i8) OpenAD_Symbol_32
+      REAL(w2f__8) OpenAD_Symbol_33
+      INTEGER(w2f__i8) OpenAD_Symbol_34
       INTEGER(w2f__i8) OpenAD_Symbol_35
       REAL(w2f__8) OpenAD_Symbol_36
       INTEGER(w2f__i8) OpenAD_Symbol_37
-      REAL(w2f__8) OpenAD_Symbol_38
-      INTEGER(w2f__i8) OpenAD_Symbol_39
-      REAL(w2f__8) OpenAD_Symbol_40
+      INTEGER(w2f__i8) OpenAD_Symbol_38
+      REAL(w2f__8) OpenAD_Symbol_39
+      INTEGER(w2f__i8) OpenAD_Symbol_40
       INTEGER(w2f__i8) OpenAD_Symbol_41
-      INTEGER(w2f__i8) OpenAD_Symbol_42
+      REAL(w2f__8) OpenAD_Symbol_42
       INTEGER(w2f__i8) OpenAD_Symbol_43
       INTEGER(w2f__i8) OpenAD_Symbol_44
       REAL(w2f__8) OpenAD_Symbol_45
       INTEGER(w2f__i8) OpenAD_Symbol_46
-      REAL(w2f__8) OpenAD_Symbol_47
-      INTEGER(w2f__i8) OpenAD_Symbol_48
-      REAL(w2f__8) OpenAD_Symbol_49
-      INTEGER(w2f__i8) OpenAD_Symbol_50
-      INTEGER(w2f__i8) OpenAD_Symbol_51
-      INTEGER(w2f__i8) OpenAD_Symbol_52
 C
 C     **** Statements ****
 C
@@ -227,7 +221,6 @@ C$OPENAD XXX Simple loop
       END DO
       GLOBALSTRING = 'either'
       LOCALSTRING = GLOBALSTRING
-      
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -244,40 +237,38 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         IF(GLOBALSTRING .EQ. 'yes') THEN
-          OpenAD_Symbol_4 = (Y(I)%v+X(I)%v*X(I)%v)
+          Y(INT(I))%v = (Y(I)%v+X(I)%v*X(I)%v)
           OpenAD_Symbol_0 = 1_w2f__i8
           OpenAD_Symbol_2 = X(I)%v
           OpenAD_Symbol_3 = X(I)%v
           OpenAD_Symbol_1 = 1_w2f__i8
-          Y(INT(I))%v = OpenAD_Symbol_4
-          OpenAD_Symbol_13 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
-          OpenAD_Symbol_15 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
-          OpenAD_Symbol_17 = OpenAD_Symbol_0
+          OpenAD_Symbol_11 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
+          OpenAD_Symbol_12 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+          OpenAD_Symbol_13 = OpenAD_Symbol_0
+          double_tape(double_tape_pointer) = OpenAD_Symbol_11
+          double_tape_pointer = double_tape_pointer+1
+          double_tape(double_tape_pointer) = OpenAD_Symbol_12
+          double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_13
-          double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_15
-          double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_17
           double_tape_pointer = double_tape_pointer+1
         ENDIF
         IF(GLOBALSTRING .EQ. 'no') THEN
-          OpenAD_Symbol_7 = (X(I)%v*X(I)%v)
-          OpenAD_Symbol_12 = (Y(I)%v+OpenAD_Symbol_7*2.0D00)
-          OpenAD_Symbol_5 = 1_w2f__i8
+          OpenAD_Symbol_6 = (X(I)%v*X(I)%v)
+          Y(INT(I))%v = (Y(I)%v+OpenAD_Symbol_6*2.0D00)
+          OpenAD_Symbol_4 = 1_w2f__i8
+          OpenAD_Symbol_9 = X(I)%v
           OpenAD_Symbol_10 = X(I)%v
-          OpenAD_Symbol_11 = X(I)%v
-          OpenAD_Symbol_8 = 2.0D00
-          OpenAD_Symbol_6 = 1_w2f__i8
-          Y(INT(I))%v = OpenAD_Symbol_12
-          OpenAD_Symbol_19 = (OpenAD_Symbol_8 * OpenAD_Symbol_6)
-          OpenAD_Symbol_20 = (OpenAD_Symbol_10 * OpenAD_Symbol_19)
-          OpenAD_Symbol_22 = (OpenAD_Symbol_11 * OpenAD_Symbol_19)
-          OpenAD_Symbol_24 = OpenAD_Symbol_5
-          double_tape(double_tape_pointer) = OpenAD_Symbol_20
+          OpenAD_Symbol_7 = 2.0D00
+          OpenAD_Symbol_5 = 1_w2f__i8
+          OpenAD_Symbol_15 = (OpenAD_Symbol_7 * OpenAD_Symbol_5)
+          OpenAD_Symbol_16 = (OpenAD_Symbol_9 * OpenAD_Symbol_15)
+          OpenAD_Symbol_17 = (OpenAD_Symbol_10 * OpenAD_Symbol_15)
+          OpenAD_Symbol_18 = OpenAD_Symbol_4
+          double_tape(double_tape_pointer) = OpenAD_Symbol_16
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_22
+          double_tape(double_tape_pointer) = OpenAD_Symbol_17
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_24
+          double_tape(double_tape_pointer) = OpenAD_Symbol_18
           double_tape_pointer = double_tape_pointer+1
         ENDIF
       END DO
@@ -290,7 +281,6 @@ C$OPENAD XXX Simple loop
      +NG)
       GLOBALSTRING = 'either'
       LOCALSTRING = GLOBALSTRING
-      
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -319,45 +309,33 @@ C adjoint
       DO WHILE(I .GE. 1)
         IF(GLOBALSTRING .EQ. 'no') THEN
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_45 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_25%d = OpenAD_Symbol_25%d+Y(I)%d*OpenAD_Symbol_4
-     +5
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_47 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_23%d = OpenAD_Symbol_23%d+Y(I)%d*OpenAD_Symbol_4
-     +7
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_49 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_21%d = OpenAD_Symbol_21%d+Y(I)%d*OpenAD_Symbol_4
+          OpenAD_Symbol_39 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_19%d = OpenAD_Symbol_19%d+Y(I)%d*OpenAD_Symbol_3
      +9
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_42 = double_tape(double_tape_pointer)
+          X(I)%d = X(I)%d+Y(I)%d*OpenAD_Symbol_42
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_45 = double_tape(double_tape_pointer)
+          X(I)%d = X(I)%d+Y(I)%d*OpenAD_Symbol_45
           Y(I)%d = 0.0d0
-          X(I)%d = X(I)%d+OpenAD_Symbol_21%d
-          OpenAD_Symbol_21%d = 0.0d0
-          X(I)%d = X(I)%d+OpenAD_Symbol_23%d
-          OpenAD_Symbol_23%d = 0.0d0
-          Y(I)%d = Y(I)%d+OpenAD_Symbol_25%d
-          OpenAD_Symbol_25%d = 0.0d0
+          Y(I)%d = Y(I)%d+OpenAD_Symbol_19%d
+          OpenAD_Symbol_19%d = 0.0d0
         ENDIF
         IF(GLOBALSTRING .EQ. 'yes') THEN
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_36 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_18%d = OpenAD_Symbol_18%d+Y(I)%d*OpenAD_Symbol_3
-     +6
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_38 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_16%d = OpenAD_Symbol_16%d+Y(I)%d*OpenAD_Symbol_3
-     +8
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_40 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_14%d = OpenAD_Symbol_14%d+Y(I)%d*OpenAD_Symbol_4
+          OpenAD_Symbol_30 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_14%d = OpenAD_Symbol_14%d+Y(I)%d*OpenAD_Symbol_3
      +0
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_33 = double_tape(double_tape_pointer)
+          X(I)%d = X(I)%d+Y(I)%d*OpenAD_Symbol_33
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_36 = double_tape(double_tape_pointer)
+          X(I)%d = X(I)%d+Y(I)%d*OpenAD_Symbol_36
           Y(I)%d = 0.0d0
-          X(I)%d = X(I)%d+OpenAD_Symbol_14%d
+          Y(I)%d = Y(I)%d+OpenAD_Symbol_14%d
           OpenAD_Symbol_14%d = 0.0d0
-          X(I)%d = X(I)%d+OpenAD_Symbol_16%d
-          OpenAD_Symbol_16%d = 0.0d0
-          Y(I)%d = Y(I)%d+OpenAD_Symbol_18%d
-          OpenAD_Symbol_18%d = 0.0d0
         ENDIF
         I = I - 1
       END DO
@@ -511,12 +489,11 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
       GLOBALSTRING = 'yes'
       CALL foo(X,Y)
       GLOBALSTRING = 'both'
-      
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -530,12 +507,11 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
       GLOBALSTRING = 'yes'
       CALL foo(X,Y)
       GLOBALSTRING = 'both'
-      
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.

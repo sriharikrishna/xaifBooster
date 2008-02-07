@@ -63,6 +63,7 @@
 #include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/SymbolKind.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
+#include "xaifBooster/system/inc/FrontEndType.hpp"
 #include "xaifBooster/system/inc/SymbolShape.hpp"
 #include "xaifBooster/system/inc/DimensionBounds.hpp"
 #include "xaifBooster/system/inc/SymbolAlgBase.hpp"
@@ -164,6 +165,10 @@ namespace xaifBooster {
      */
     bool samePlainName(const std::string& aPlainName) const; 
 
+    const FrontEndType& getFrontEndType() const;
+
+    void setFrontEndType(const FrontEndType&);
+
   private:
 
     friend class SymbolTable;
@@ -183,6 +188,7 @@ namespace xaifBooster {
 
     const SymbolKind::SymbolKind_E myKind;
     const SymbolType::SymbolType_E myType;
+    FrontEndType myFrontEndType;
     const SymbolShape::SymbolShape_E myShape;
 
     /**

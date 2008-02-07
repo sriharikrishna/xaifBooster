@@ -94,7 +94,6 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y(1)%v = TANH(X(1)%v)
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -106,7 +105,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_2 = OpenAD_Symbol_1
           double_tape(double_tape_pointer) = OpenAD_Symbol_2
           double_tape_pointer = double_tape_pointer+1
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint

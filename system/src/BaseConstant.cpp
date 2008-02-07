@@ -64,6 +64,7 @@ namespace xaifBooster {
     std::ostringstream out;
     out << "BaseConstant[" << this 
 	<< ",myType=" << SymbolType::toString(myType)
+	<< ",myFrontEndType=" << myFrontEndType.c_str()
 	<< ",myValue=" << toString().c_str()
 	<< "]" << std::ends;  
     return out.str();
@@ -197,4 +198,14 @@ namespace xaifBooster {
     return myType;
   }
 
-} // end of namespace 
+  const FrontEndType& BaseConstant::getFrontEndType() const { 
+    return myFrontEndType;
+  }
+  
+  void BaseConstant::setFrontEndType(const FrontEndType& aFrontEndType) {
+    if (!myFrontEndType.empty())
+      THROW_LOGICEXCEPTION_MACRO("BaseConstant::setFrontEndType: already set");
+    myFrontEndType=aFrontEndType;
+  }
+
+} 

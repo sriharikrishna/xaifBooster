@@ -123,7 +123,7 @@ namespace xaifBoosterControlFlowReversal {
 
     void donotRetainUserReversalFlag(); 
 
-  private:
+  protected:
 
     /** 
      * no def

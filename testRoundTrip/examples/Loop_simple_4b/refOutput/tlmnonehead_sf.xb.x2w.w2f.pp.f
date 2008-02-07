@@ -18,15 +18,12 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_10
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_6
+      type(active) :: OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -46,21 +43,18 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         J = K
-        OpenAD_Symbol_4 = (Y(J)%v+X(I)%v*X(I)%v)
+        Y(INT(J))%v = (Y(J)%v+X(I)%v*X(I)%v)
         OpenAD_Symbol_0 = 1_w2f__i8
         OpenAD_Symbol_2 = X(I)%v
         OpenAD_Symbol_3 = X(I)%v
         OpenAD_Symbol_1 = 1_w2f__i8
-        Y(INT(J))%v = OpenAD_Symbol_4
-        OpenAD_Symbol_5 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
-        OpenAD_Symbol_7 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
-        OpenAD_Symbol_9 = OpenAD_Symbol_0
-        CALL setderiv(OpenAD_Symbol_10,Y(J))
-        CALL setderiv(OpenAD_Symbol_8,X(I))
-        CALL setderiv(OpenAD_Symbol_6,X(I))
-        CALL sax(OpenAD_Symbol_5,OpenAD_Symbol_6,Y(J))
-        CALL saxpy(OpenAD_Symbol_7,OpenAD_Symbol_8,Y(J))
-        CALL saxpy(OpenAD_Symbol_9,OpenAD_Symbol_10,Y(J))
+        OpenAD_Symbol_4 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
+        OpenAD_Symbol_5 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
+        OpenAD_Symbol_6 = OpenAD_Symbol_0
+        CALL setderiv(OpenAD_Symbol_7,Y(J))
+        CALL sax(OpenAD_Symbol_4,X(I),Y(J))
+        CALL saxpy(OpenAD_Symbol_5,X(I),Y(J))
+        CALL saxpy(OpenAD_Symbol_6,OpenAD_Symbol_7,Y(J))
       END DO
       END SUBROUTINE
 
@@ -88,10 +82,10 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = 1.0D00
-      Y(2)%v = 1.0D00
+      Y(1)%v = 1.0
+      Y(2)%v = 1.0
       CALL zero_deriv(Y(1))
       CALL zero_deriv(Y(2))
-      CALL foo(X,Y,1 _w2f__i8)
-      CALL foo(X,Y,2 _w2f__i8)
+      CALL foo(X,Y,1)
+      CALL foo(X,Y,2)
       END SUBROUTINE

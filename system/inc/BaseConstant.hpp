@@ -54,6 +54,7 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/FrontEndType.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/utils/inc/Debuggable.hpp"
 
@@ -86,9 +87,15 @@ namespace xaifBooster {
 
     std::string toString() const; 
 
+    const FrontEndType& getFrontEndType() const;
+
+    void setFrontEndType(const FrontEndType&);
+
   protected: 
 
     const SymbolType::SymbolType_E myType;
+
+    FrontEndType myFrontEndType;
 
   private : 
 

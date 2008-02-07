@@ -94,14 +94,14 @@ function printSep {
   done
   echo ""
 }
-
+ 
 askAll="n"
-mode="none"
-SUB_MODE="none"
+MAJOR_MODE="none"
+MINOR_MODE="none"
 if [ -f .lastRun ] 
 then 
-  read mode SUB_MODE < .lastRun 
-  echo -n "reuse last settings (${mode} ${SUB_MODE})? [y]/n "
+  read MAJOR_MODE MINOR_MODE < .lastRun 
+  echo -n "reuse last settings (${MAJOR_MODE} ${MINOR_MODE})? [y]/n "
   if [ -z "$BATCHMODE" ] 
   then
     read answer
@@ -110,52 +110,48 @@ then
   then
     ${MAKE} clean 
     askAll="y"
-    SUB_MODE="none"
-  else 
-    if [ "$mode" == "adm" ] 
-    then 
-      export REVERSE_MODE=y
-    fi
+    MINOR_MODE="none"
   fi
 else
   askAll="y"
 fi
 if [ "$askAll" == "y" ] 
 then 
-  echo -n "use reverse mode y/[n] "
+  echo -n "use forward/reverse/trace major mode [f]/r/t: "
   read answer
-  if [ "$answer" == "y" ]
+  if [ "$answer" == "r" ]
   then
-    export REVERSE_MODE=y
-    mode="adm"
-    SUB_MODE="split"
-    echo -n "use SUB_MODE [split]/joint "
+    MAJOR_MODE="adm"
+    MINOR_MODE="split"
+    echo -n "use minor mode [split]/joint "
     read answer
     if [ "$answer" == "joint" ]
     then
-	SUB_MODE="$answer"
+	MINOR_MODE="$answer"
     fi
+  elif [ "$answer" == "t" ]
+  then
+    MAJOR_MODE="trace"
   else
-    mode="tlm"
+    MAJOR_MODE="tlm"
   fi
 fi 
 allOkSoFar="true"
-echo $mode $SUB_MODE > .lastRun
-export SUB_MODE
+echo $MAJOR_MODE $MINOR_MODE > .lastRun
 if [ $# -eq 0 ] 
 then 
   echo "pick from: "
   ls examples
-  echo -n "enter one ore more here or 'all': " 
+  echo -n "enter one ore more here or '[all]': " 
   read answer
-  if [ "$answer" == "all" ] 
+  if [ "$answer" != "all" -a  -n "$answer" ] 
   then 
-    TESTFILES=`ls examples | grep -v CVS`
+    TESTFILES=`ls -d examples/$answer | grep -v CVS | sed 's/examples\///'`
   else 
-    TESTFILES=$answer
+    TESTFILES=`ls examples | grep -v CVS`
   fi
 else
-  if [ $# -eq 1 -a "$1" == "all" ]
+  if [ $# -eq 1 -a "$1" == "-a" ]
   then 
     TESTFILES=`ls examples | grep -v CVS`
   else 
@@ -163,7 +159,7 @@ else
   fi
 fi
 # expand single command line argument with wildcards: 
-if [ $# -eq 1 -a ! -d "examples/$1" -a "$1" != "all" ] 
+if [ $# -eq 1 -a ! -d "examples/$1" -a "$1" != "-a" ] 
 then 
   TESTFILES=`ls -d examples/$1 | grep -v CVS | sed 's/examples\///'`
 fi
@@ -184,7 +180,7 @@ do
   then 
     echo "ERROR: no such test : $i "; allOkSoFar="false"; continue;
   fi
-  if [ -f "examples/$i/FAILREASON_${mode}_${SUB_MODE}" ] 
+  if [ -f "examples/$i/FAILREASON_${MAJOR_MODE}_${MINOR_MODE}" ] 
   then
     if [ -n "$BATCHMODE" ]
     then 
@@ -194,7 +190,7 @@ do
       echo -n "$head"
       let tailLength=sepLength-${#head}
       printSep $tailLength
-      cat examples/$i/FAILREASON_${mode}_${SUB_MODE}
+      cat examples/$i/FAILREASON_${MAJOR_MODE}_${MINOR_MODE}
       printSep $sepLength
       echo -n "run it anyway y/[n] ? "
       read answer
@@ -214,34 +210,33 @@ do
   echo -n "$head"
   let tailLength=sepLength-${#head}
   printSep $tailLength
-  TARGET_DRIVER=driver_${mode}
-  if [ "$REVERSE_MODE" == "y" ] 
+  TARGET_DRIVER=driver_${MAJOR_MODE}
+  if [ "$MAJOR_MODE" == "adm" ] 
   then 
-    TARGET_DRIVER=${TARGET_DRIVER}_${SUB_MODE}
+    TARGET_DRIVER=${TARGET_DRIVER}_${MINOR_MODE}
   fi
   exdir=examples/$i
   copyDefaultBeforeExample $exdir ${TARGET_DRIVER}.f90 driver.f90
   copyDefaultBeforeExample $exdir params.conf params.conf
   copyDefaultBeforeExample $exdir head.f head.f
   copyDefaultBeforeExample $exdir all_globals_mod.f all_globals_mod.f
-  if [ "$REVERSE_MODE" == "y" ] 
+  if [ "$MAJOR_MODE" == "adm" ] 
   then 
-    copyDefaultBeforeExample $exdir ad_template_${SUB_MODE}.f ad_template.f
+    copyDefaultBeforeExample $exdir ad_template_${MINOR_MODE}.f ad_template.f
+  fi  
+  if [ "$MAJOR_MODE" == "trace" ] 
+  then 
+    copyDefaultBeforeExample $exdir ad_template_trace.f ad_template.f
   fi  
     
 ### transform head_sf
+  export MAJOR_MODE
+  export MINOR_MODE
   ${MAKE} 
   if [ $? -ne 0 ] 
   then 
     echo "ERROR in: ${MAKE} "; allOkSoFar="false"; continue;
   fi
-### this is temporary until we got rid of the RETURNs
-  if [ "$REVERSE_MODE" == "y" ] 
-  then 
-    sed 's/RETURN//' head.xb.x2w.w2f.pp.f >| head.xb.x2w.w2f.pp.f.1
-    mv head.xb.x2w.w2f.pp.f.1 head.xb.x2w.w2f.pp.f
-  fi
-### end of temporary fix
 
 ### now we compile all the transformed bits 
   ${MAKE} driver
@@ -254,7 +249,7 @@ do
   fileCompare $exdir head_sf.xaif "" 'file translated from'  
   for tfile in "head_sf.xb.x2w.w2f.f" "head_sf.xb.x2w.w2f.pp.f" "head.xb.x2w.w2f.pp.f" "head_sf.xb.xaif"
   do 
-    fileCompare $exdir $tfile ${mode}${SUB_MODE} 'file translated from' 
+    fileCompare $exdir $tfile ${MAJOR_MODE}${MINOR_MODE} 'file translated from' 
   done
 
   ${MAKE} run
@@ -262,15 +257,17 @@ do
   then 
     echo "ERROR in: ${MAKE} run"; allOkSoFar="false"; continue;
   fi
-
-  echo -n "numerical comparison ... "  
-  echo "\"tmpOutput/dd.out\" \"$exdir/refOutput/dd.out\" \"tmpOutput/ad.out\" \"$exdir/refOutput/ad.out\"" | ./numericalComparison
-
-  if [ $? -eq 0 ] 
+  if [ "$MAJOR_MODE" == "adm" -o "$MAJOR_MODE" == "tlm" ]
   then 
-    echo "no significant differences"
-  else
-    echo " ERROR in: ./numericalComparison for $i"; allOkSoFar="false"; continue;
+    echo -n "numerical comparison ... "  
+    echo "\"tmpOutput/dd.out\" \"$exdir/refOutput/dd.out\" \"tmpOutput/ad.out\" \"$exdir/refOutput/ad.out\"" | ./numericalComparison
+
+    if [ $? -eq 0 ] 
+    then 
+      echo "no significant differences"
+    else
+      echo " ERROR in: ./numericalComparison for $i"; allOkSoFar="false"; continue;
+    fi
   fi
 
 done

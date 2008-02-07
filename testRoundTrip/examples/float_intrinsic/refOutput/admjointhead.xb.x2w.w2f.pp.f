@@ -70,8 +70,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      type(active) :: OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -80,7 +78,7 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_6
+      REAL(w2f__8) OpenAD_Symbol_4
 C
 C     **** Top Level Pragmas ****
 C
@@ -136,8 +134,7 @@ C            print*, " plain      ", our_rev_mode
             our_rev_mode%arg_store=.FALSE.
 C original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = (FLOAT(INT(6 _w2f__i8))*X(1)%v)
-      
+      Y(1)%v = (FLOAT(6)*X(1)%v)
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -151,14 +148,12 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_0 = FLOAT(INT(6_w2f__i8))
-      OpenAD_Symbol_3 = (OpenAD_Symbol_0*X(1)%v)
+      OpenAD_Symbol_0 = FLOAT(6)
+      Y(1)%v = (OpenAD_Symbol_0*X(1)%v)
       OpenAD_Symbol_2 = OpenAD_Symbol_0
-      Y(1)%v = OpenAD_Symbol_3
-      OpenAD_Symbol_4 = OpenAD_Symbol_2
-          double_tape(double_tape_pointer) = OpenAD_Symbol_4
+      OpenAD_Symbol_3 = OpenAD_Symbol_2
+          double_tape(double_tape_pointer) = OpenAD_Symbol_3
           double_tape_pointer = double_tape_pointer+1
-      
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -178,11 +173,9 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_6 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(1)%d*OpenAD_Symbol_6
+          OpenAD_Symbol_4 = double_tape(double_tape_pointer)
+          X(1)%d = X(1)%d+Y(1)%d*OpenAD_Symbol_4
           Y(1)%d = 0.0d0
-          X(1)%d = X(1)%d+OpenAD_Symbol_5%d
-          OpenAD_Symbol_5%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.

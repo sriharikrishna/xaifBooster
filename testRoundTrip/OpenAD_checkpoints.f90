@@ -59,6 +59,7 @@ module OpenAD_checkpoints
   private
 
   integer, parameter :: store_increase=20000
+  integer, parameter :: string_length=80
 
   public ::  cp_store_real_scalar, cp_store_real_vector, &
 & cp_store_int_scalar, cp_store_int_vector, &
@@ -235,9 +236,9 @@ contains
     implicit none
     character(*), intent(in) :: x
     integer :: c,a
-    character(*), dimension(:), allocatable :: s
+    character(string_length), dimension(:), allocatable :: s
     ! temp array for potential reallocation
-    character(len(x)), dimension(:), allocatable :: temp
+    character(string_length), dimension(:), allocatable :: temp
     if(a<c+1) then 
        if (a>0) then 
           allocate(temp(a))

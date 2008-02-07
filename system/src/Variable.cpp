@@ -157,14 +157,14 @@ namespace xaifBooster {
        << "=\"" 
        << ActiveUseType::toString(getActiveUseType()).c_str()
        << "\"";
-    if (getAliasMapKey().getKind()==AliasMapKey::SET) { 
+    if (PrintManager::isVerbose() && getAliasMapKey().getKind()==AliasMapKey::SET) { 
       os << " "
 	 << our_myAliasMapKey_XAIFName.c_str()
 	 << "=\""
 	 << getAliasMapKey().getKey()
 	 << "\"";
     }
-    if (getDuUdMapKey().getKind()==InfoMapKey::SET) { 
+    if (PrintManager::isVerbose() && getDuUdMapKey().getKind()==InfoMapKey::SET) { 
       os << " "
 	 << our_myDuUdMapKey_XAIFName.c_str()
 	 << "=\""

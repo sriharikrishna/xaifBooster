@@ -39,7 +39,6 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       __value__(Y(1)) = SIGN(__value__(X(1)), - __value__(X(2)))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -51,7 +50,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_4 = OpenAD_Symbol_1
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_4)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
@@ -88,7 +86,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_4 = OpenAD_Symbol_1
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_4)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE Pop(subst)

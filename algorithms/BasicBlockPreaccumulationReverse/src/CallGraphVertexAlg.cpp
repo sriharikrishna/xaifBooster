@@ -183,8 +183,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 							theSymbolReference_p->getScope(),
 							getContaining().getControlFlowGraph().getScope(),
 							"reverse_subroutine_template",
-							getContaining().getControlFlowGraph().getArgumentList()),
-	myReplacementList_p->setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
+							getContaining().getControlFlowGraph().getArgumentList());
+    myReplacementList_p->setAnnotation(getContaining().getControlFlowGraph().getAnnotation());
     myReplacementList_p->setId(getContaining().getControlFlowGraph().getId());
     myCFGStoreArguments_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
 					       getContaining().getControlFlowGraph().getSymbolReference().getScope(),

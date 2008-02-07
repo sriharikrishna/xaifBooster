@@ -55,14 +55,19 @@
         use w2f__types
         implicit none
         private
-        public :: active, saxpy, sax, setderiv, zero_deriv, convert_p2a_scalar, &
-convert_a2p_scalar, convert_p2a_vector, convert_a2p_vector, oad_allocateMatching, &
-count_mult, count_add
+        public :: active, saxpy, sax, setderiv, zero_deriv, &
+convert_p2a_scalar, convert_a2p_scalar, &
+convert_p2a_vector, convert_a2p_vector, & 
+convert_p2a_matrix, convert_a2p_matrix, & 
+convert_p2a_three_tensor, convert_a2p_three_tensor, & 
+convert_p2a_four_tensor, convert_a2p_four_tensor, & 
+convert_p2a_five_tensor, convert_a2p_five_tensor, & 
+convert_p2a_six_tensor, convert_a2p_six_tensor, & 
+convert_p2a_seven_tensor, convert_a2p_seven_tensor, & 
+oad_allocateMatching 
 
         integer :: count_mult = 0
-        integer :: count_add = 0
-                
-
+        integer :: count_add = 0                
         
         !
         ! active needs to be a sequence type
@@ -70,12 +75,12 @@ count_mult, count_add
         !
         type active
           sequence
-          double precision :: v 
+          real(w2f__8) :: v 
           ! initialization does not work for active variables
           ! inside of common block, such as in boxmodel
           ! initialization is required for correct adjoint
-          double precision :: d=0.0
-          ! double precision :: d
+          real(w2f__8) :: d=0.0
+          ! real(w2f__8) :: d
         end type active
         
 
@@ -97,16 +102,75 @@ count_mult, count_add
         end interface
 
         interface convert_p2a_scalar
+          module procedure convert_sp2a_scalar_impl
           module procedure convert_p2a_scalar_impl
         end interface
         interface convert_a2p_scalar
+          module procedure convert_a2sp_scalar_impl
           module procedure convert_a2p_scalar_impl
         end interface
+
         interface convert_p2a_vector
+          module procedure convert_sp2a_vector_impl
           module procedure convert_p2a_vector_impl
         end interface
         interface convert_a2p_vector
+          module procedure convert_a2sp_vector_impl
           module procedure convert_a2p_vector_impl
+        end interface
+
+        interface convert_p2a_matrix
+          module procedure convert_sp2a_matrix_impl
+          module procedure convert_p2a_matrix_impl
+        end interface
+        interface convert_a2p_matrix
+          module procedure convert_a2sp_matrix_impl
+          module procedure convert_a2p_matrix_impl
+        end interface
+
+        interface convert_p2a_three_tensor
+          module procedure convert_sp2a_three_tensor_impl
+          module procedure convert_p2a_three_tensor_impl
+        end interface
+        interface convert_a2p_three_tensor
+          module procedure convert_a2sp_three_tensor_impl
+          module procedure convert_a2p_three_tensor_impl
+        end interface
+
+        interface convert_p2a_four_tensor
+          module procedure convert_sp2a_four_tensor_impl
+          module procedure convert_p2a_four_tensor_impl
+        end interface
+        interface convert_a2p_four_tensor
+          module procedure convert_a2sp_four_tensor_impl
+          module procedure convert_a2p_four_tensor_impl
+        end interface
+
+        interface convert_p2a_five_tensor
+          module procedure convert_sp2a_five_tensor_impl
+          module procedure convert_p2a_five_tensor_impl
+        end interface
+        interface convert_a2p_five_tensor
+          module procedure convert_a2sp_five_tensor_impl
+          module procedure convert_a2p_five_tensor_impl
+        end interface
+
+        interface convert_p2a_six_tensor
+          module procedure convert_sp2a_six_tensor_impl
+          module procedure convert_p2a_six_tensor_impl
+        end interface
+        interface convert_a2p_six_tensor
+          module procedure convert_a2sp_six_tensor_impl
+          module procedure convert_a2p_six_tensor_impl
+        end interface
+
+        interface convert_p2a_seven_tensor
+          module procedure convert_sp2a_seven_tensor_impl
+          module procedure convert_p2a_seven_tensor_impl
+        end interface
+        interface convert_a2p_seven_tensor
+          module procedure convert_a2sp_seven_tensor_impl
+          module procedure convert_a2p_seven_tensor_impl
         end interface
 
 	interface oad_allocateMatching
@@ -120,10 +184,9 @@ count_mult, count_add
         !
         
         subroutine saxpy_a_a(a,x,y)
-          double precision, intent(in) :: a
+          real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-        
           y%d=y%d+x%d*a
         end subroutine saxpy_a_a
         
@@ -135,10 +198,9 @@ count_mult, count_add
         !
         
         subroutine sax_d_a_a(a,x,y)
-          double precision, intent(in) :: a
+          real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-        
           y%d=x%d*a
         end subroutine sax_d_a_a
 
@@ -146,7 +208,6 @@ count_mult, count_add
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-        
           y%d=x%d*a
         end subroutine sax_i_a_a
         
@@ -159,7 +220,6 @@ count_mult, count_add
         subroutine setderiv_a_a(y,x)
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
-        
           y%d=x%d
         end subroutine setderiv_a_a
 
@@ -175,46 +235,210 @@ count_mult, count_add
         !
         subroutine zero_deriv_a(x)
           type(active), intent(inout) :: x
-
           x%d=0.0d0
         end subroutine zero_deriv_a
 
-        subroutine convert_a2p_scalar_impl(convertTo, convertFrom)
-          double precision, intent(inout) :: convertTo
+        !
+        ! active/passive conversions
+        !
+        subroutine convert_a2sp_scalar_impl(convertTo, convertFrom)
+          real(w2f__4), intent(out) :: convertTo
           type(active), intent(in) :: convertFrom
           convertTo=convertFrom%v
         end subroutine
 
-        subroutine convert_p2a_scalar_impl(convertTo, convertFrom)
-          double precision, intent(in) :: convertFrom
+        subroutine convert_a2p_scalar_impl(convertTo, convertFrom)
+          real(w2f__8), intent(out) :: convertTo
+          type(active), intent(in) :: convertFrom
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_sp2a_scalar_impl(convertTo, convertFrom)
+          real(w2f__4), intent(in) :: convertFrom
           type(active), intent(inout) :: convertTo
           convertTo%v=convertFrom
         end subroutine 
 
+        subroutine convert_p2a_scalar_impl(convertTo, convertFrom)
+          real(w2f__8), intent(in) :: convertFrom
+          type(active), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine 
+
+        subroutine convert_a2sp_vector_impl(convertTo, convertFrom)
+          type(active), dimension(:), intent(in) :: convertFrom
+          real(w2f__4), dimension(:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
         subroutine convert_a2p_vector_impl(convertTo, convertFrom)
           type(active), dimension(:), intent(in) :: convertFrom
-          double precision, dimension(:), intent(inout) :: convertTo
-          integer i
-          do i=lbound(convertFrom,1),ubound(convertFrom,1)
-             convertTo(i)=convertFrom(i)%v
-          end do
+          real(w2f__8), dimension(:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_sp2a_vector_impl(convertTo, convertFrom)
+          real(w2f__4), dimension(:), intent(in) :: convertFrom
+          type(active), dimension(:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
         end subroutine
 
         subroutine convert_p2a_vector_impl(convertTo, convertFrom)
-          double precision, dimension(:), intent(in) :: convertFrom
+          real(w2f__8), dimension(:), intent(in) :: convertFrom
           type(active), dimension(:), intent(inout) :: convertTo
-          integer i
-          do i=lbound(convertFrom,1),ubound(convertFrom,1)
-             convertTo(i)%v=convertFrom(i)
-          end do
+          convertTo%v=convertFrom
+        end subroutine
+
+        subroutine convert_a2sp_matrix_impl(convertTo, convertFrom)
+          type(active), dimension(:,:), intent(in) :: convertFrom
+          real(w2f__4), dimension(:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_sp2a_matrix_impl(convertTo, convertFrom)
+          real(w2f__4), dimension(:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+
+        subroutine convert_a2p_matrix_impl(convertTo, convertFrom)
+          type(active), dimension(:,:), intent(in) :: convertFrom
+          real(w2f__8), dimension(:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_p2a_matrix_impl(convertTo, convertFrom)
+          real(w2f__8), dimension(:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+
+        subroutine convert_a2sp_three_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:), intent(in) :: convertFrom
+          real(w2f__4), dimension(:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_a2p_three_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:), intent(in) :: convertFrom
+          real(w2f__8), dimension(:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_sp2a_three_tensor_impl(convertTo, convertFrom)
+          real(w2f__4), dimension(:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+        
+        subroutine convert_p2a_three_tensor_impl(convertTo, convertFrom)
+          real(w2f__8), dimension(:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+        
+        subroutine convert_a2sp_four_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:,:), intent(in) :: convertFrom
+          real(w2f__4), dimension(:,:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_a2p_four_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:,:), intent(in) :: convertFrom
+          real(w2f__8), dimension(:,:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_sp2a_four_tensor_impl(convertTo, convertFrom)
+          real(w2f__4), dimension(:,:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+
+        subroutine convert_p2a_four_tensor_impl(convertTo, convertFrom)
+          real(w2f__8), dimension(:,:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+
+        subroutine convert_a2sp_five_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:,:,:), intent(in) :: convertFrom
+          real(w2f__4), dimension(:,:,:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_a2p_five_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:,:,:), intent(in) :: convertFrom
+          real(w2f__8), dimension(:,:,:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_sp2a_five_tensor_impl(convertTo, convertFrom)
+          real(w2f__4), dimension(:,:,:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+
+        subroutine convert_p2a_five_tensor_impl(convertTo, convertFrom)
+          real(w2f__8), dimension(:,:,:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+        
+        subroutine convert_a2sp_six_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:,:,:,:), intent(in) :: convertFrom
+          real(w2f__4), dimension(:,:,:,:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_a2p_six_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:,:,:,:), intent(in) :: convertFrom
+          real(w2f__8), dimension(:,:,:,:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_sp2a_six_tensor_impl(convertTo, convertFrom)
+          real(w2f__4), dimension(:,:,:,:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:,:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+
+        subroutine convert_p2a_six_tensor_impl(convertTo, convertFrom)
+          real(w2f__8), dimension(:,:,:,:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:,:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+        
+        subroutine convert_a2sp_seven_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:,:,:,:,:), intent(in) :: convertFrom
+          real(w2f__4), dimension(:,:,:,:,:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_a2p_seven_tensor_impl(convertTo, convertFrom)
+          type(active), dimension(:,:,:,:,:,:,:), intent(in) :: convertFrom
+          real(w2f__8), dimension(:,:,:,:,:,:,:), intent(out) :: convertTo
+          convertTo=convertFrom%v
+        end subroutine
+
+        subroutine convert_sp2a_seven_tensor_impl(convertTo, convertFrom)
+          real(w2f__4), dimension(:,:,:,:,:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:,:,:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
+        end subroutine
+
+        subroutine convert_p2a_seven_tensor_impl(convertTo, convertFrom)
+          real(w2f__8), dimension(:,:,:,:,:,:,:), intent(in) :: convertFrom
+          type(active), dimension(:,:,:,:,:,:,:), intent(inout) :: convertTo
+          convertTo%v=convertFrom
         end subroutine
 
         subroutine oad_allocateMatchingV(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:), allocatable :: toBeAllocated
-	  type(active), dimension(:) :: allocateMatching
+          type(active), dimension(:) :: allocateMatching
           allocate(toBeAllocated(size(allocateMatching)));
         end subroutine
-       
+
         end module
 

@@ -59,7 +59,6 @@
 namespace xaifBooster { 
 
   const std::string Constant::ourXAIFName("xaif:Constant");
-  const std::string Constant::our_myType_XAIFName("type");
   const std::string Constant::our_myValue_XAIFName("value");
   const std::string Constant::our_myId_XAIFName("vertex_id");
 
@@ -105,6 +104,7 @@ namespace xaifBooster {
     } // end switch
     aNewConstant_p->setId(getId());
     //    aNewConstant_p->passivate();
+    aNewConstant_p->setFrontEndType(getFrontEndType());
     return *aNewConstant_p;
   } 
   
@@ -129,17 +129,21 @@ namespace xaifBooster {
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
-       << ourXAIFName 
+       << ourXAIFName.c_str() 
        << " " 
-       << our_myId_XAIFName 
+       << our_myId_XAIFName.c_str() 
        << "=\"" 
        << getId().c_str()
        << "\" " 
-       << our_myType_XAIFName
+       << SymbolType::our_attribute_XAIFName.c_str()
        << "=\""
        << SymbolType::toString(myType).c_str()
        << "\" " 
-       << our_myValue_XAIFName
+       << FrontEndType::our_attribute_XAIFName.c_str()
+       << "=\""
+       << myFrontEndType.c_str()
+       << "\" " 
+       << our_myValue_XAIFName.c_str()
        << "=\""
        << toString().c_str()
        << "\"/>" 
