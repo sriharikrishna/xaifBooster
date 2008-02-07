@@ -74,10 +74,6 @@ C ========== end copyright notice ==============
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X(1 : 1)
@@ -86,8 +82,8 @@ C
 C
 C     **** Local Variables and Functions ****
 C
+      INTEGER(w2f__i8) OpenAD_Symbol_0
       INTEGER(w2f__i8) OpenAD_Symbol_1
-      INTEGER(w2f__i8) OpenAD_Symbol_2
 C
 C     **** Statements ****
 C
@@ -152,7 +148,6 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       Y(INT(A))%v = X(A)%v
-      RETURN
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -171,7 +166,6 @@ C$OPENAD XXX Template ad_template.f
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = A
           integer_tape_pointer = integer_tape_pointer+1
-      RETURN
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -191,18 +185,12 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_1 = integer_tape(integer_tape_pointer)
-          if (iaddr(Y(INT(OpenAD_Symbol_1))) .ne. iaddr(OpenAD_Symbol_0)
-     +) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(INT(OpenAD_Symbol_1)
-     +)%d
-            Y(INT(OpenAD_Symbol_1))%d = 0
-          end if
+          OpenAD_Symbol_0 = integer_tape(integer_tape_pointer)
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_2 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_2))%d = X(INT(OpenAD_Symbol_2))%d+OpenAD_S
-     +ymbol_0%d
-          OpenAD_Symbol_0%d = 0.0d0
+          OpenAD_Symbol_1 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_1))%d = X(INT(OpenAD_Symbol_1))%d+Y(INT(Op
+     +enAD_Symbol_0))%d
+          Y(INT(OpenAD_Symbol_0))%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.
@@ -350,7 +338,6 @@ C$OPENAD XXX Template ad_template.f
       A = 1
       CALL foo(X,Y,A)
       A = 20000
-      RETURN
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -367,7 +354,6 @@ C$OPENAD XXX Template ad_template.f
       A = 1
       CALL foo(X,Y,A)
       A = 20000
-      RETURN
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.

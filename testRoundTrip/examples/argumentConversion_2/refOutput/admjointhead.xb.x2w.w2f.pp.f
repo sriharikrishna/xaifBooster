@@ -65,10 +65,6 @@ C ========== end copyright notice ==============
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_2
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X
@@ -129,7 +125,6 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       Y%v = X%v
-      
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -144,7 +139,6 @@ C            print*, " tape       ", our_rev_mode
 C taping
 C$OPENAD XXX Template ad_template.f
       Y%v = X%v
-      
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -163,12 +157,8 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-          if (iaddr(Y) .ne. iaddr(OpenAD_Symbol_2)) then
-            OpenAD_Symbol_2%d = OpenAD_Symbol_2%d+Y%d
-            Y%d = 0
-          end if
-          X%d = X%d+OpenAD_Symbol_2%d
-          OpenAD_Symbol_2%d = 0.0d0
+          X%d = X%d+Y%d
+          Y%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.
@@ -253,8 +243,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
       type(active) :: OpenAD_Symbol_1
+      type(active) :: OpenAD_Symbol_2
       type(active) :: OpenAD_Symbol_3
-      type(active) :: OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
@@ -322,13 +312,12 @@ C original function
 C$OPENAD XXX Template ad_template.f
       CALL foo(X,Y)
 C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_0,2.0D00)
+      CALL convert_p2a_scalar(OpenAD_Symbol_0,2.0)
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(OpenAD_Symbol_1,PY)
       CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -344,13 +333,12 @@ C taping
 C$OPENAD XXX Template ad_template.f
       CALL foo(X,Y)
 C!! requested inline of 'convert_p2a_scalar' has no defn
-      CALL convert_p2a_scalar(OpenAD_Symbol_0,2.0D00)
+      CALL convert_p2a_scalar(OpenAD_Symbol_0,2.0)
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(OpenAD_Symbol_1,PY)
       CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -369,7 +357,7 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-      CALL foo(OpenAD_Symbol_3,OpenAD_Symbol_4)
+      CALL foo(OpenAD_Symbol_2,OpenAD_Symbol_3)
       CALL foo(X,Y)
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.

@@ -78,8 +78,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -88,8 +86,8 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_21
-      REAL(w2f__8) OpenAD_Symbol_22
+      REAL(w2f__8) OpenAD_Symbol_18
+      REAL(w2f__8) OpenAD_Symbol_19
 C
 C     **** Statements ****
 C
@@ -101,34 +99,29 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y%v = (X%v*X%v)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_4 = (X%v*X%v)
+      Y%v = (X%v*X%v)
       OpenAD_Symbol_2 = X%v
       OpenAD_Symbol_3 = X%v
-      Y%v = OpenAD_Symbol_4
-      OpenAD_Symbol_5 = OpenAD_Symbol_2
-      OpenAD_Symbol_7 = OpenAD_Symbol_3
+      OpenAD_Symbol_4 = OpenAD_Symbol_2
+      OpenAD_Symbol_5 = OpenAD_Symbol_3
+          double_tape(double_tape_pointer) = OpenAD_Symbol_4
+          double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_5
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_7
-          double_tape_pointer = double_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_21 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y%d*OpenAD_Symbol_21
+          OpenAD_Symbol_18 = double_tape(double_tape_pointer)
+          X%d = X%d+Y%d*OpenAD_Symbol_18
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_22 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y%d*OpenAD_Symbol_22
+          OpenAD_Symbol_19 = double_tape(double_tape_pointer)
+          X%d = X%d+Y%d*OpenAD_Symbol_19
           Y%d = 0.0d0
-          X%d = X%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============
@@ -207,14 +200,13 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_15
       INTEGER(w2f__i8) OpenAD_Symbol_16
       INTEGER(w2f__i8) OpenAD_Symbol_17
-      INTEGER(w2f__i8) OpenAD_Symbol_18
-      INTEGER(w2f__i8) OpenAD_Symbol_19
-      INTEGER(w2f__i8) OpenAD_Symbol_20
+      type(active) :: OpenAD_Symbol_23
+      type(active) :: OpenAD_Symbol_24
+      type(active) :: OpenAD_Symbol_25
       type(active) :: OpenAD_Symbol_26
-      type(active) :: OpenAD_Symbol_27
-      type(active) :: OpenAD_Symbol_28
-      type(active) :: OpenAD_Symbol_29
-      type(active) :: OpenAD_Symbol_8
+      INTEGER(w2f__i8) OpenAD_Symbol_6
+      INTEGER(w2f__i8) OpenAD_Symbol_7
+      INTEGER(w2f__i8) OpenAD_Symbol_8
       INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
@@ -230,9 +222,9 @@ C
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
       REAL(w2f__8) PY
-      INTEGER(w2f__i8) OpenAD_Symbol_23
-      INTEGER(w2f__i8) OpenAD_Symbol_24
-      INTEGER(w2f__i8) OpenAD_Symbol_25
+      INTEGER(w2f__i8) OpenAD_Symbol_20
+      INTEGER(w2f__i8) OpenAD_Symbol_21
+      INTEGER(w2f__i8) OpenAD_Symbol_22
 C
 C     **** Top Level Pragmas ****
 C
@@ -252,7 +244,7 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           AX(INT(I),INT(J))%v = X(I)%v
-          APX(INT(I), INT(J)) = (I * 4.0D00)
+          APX(INT(I), INT(J)) = (I * DBLE(4.0))
         END DO
       END DO
 C$OPENAD XXX Simple loop
@@ -270,7 +262,6 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
         END DO
       END DO
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -279,7 +270,7 @@ C$OPENAD XXX Simple loop
       DO I = 1, 2, 1
         DO J = 1, 2, 1
           AX(INT(I),INT(J))%v = X(I)%v
-          APX(INT(I), INT(J)) = (I * 4.0D00)
+          APX(INT(I), INT(J)) = (I * DBLE(4.0))
         END DO
       END DO
 C$OPENAD XXX Simple loop
@@ -297,7 +288,6 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
         END DO
       END DO
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -305,7 +295,7 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
       DO WHILE(I .GE. 1)
         J = 1 + 1 *((2 - 1) / 1)
         DO WHILE(J .GE. 1)
-          CALL foo(OpenAD_Symbol_28,OpenAD_Symbol_29)
+          CALL foo(OpenAD_Symbol_25,OpenAD_Symbol_26)
           CALL foo(AX(I,J),Y)
           J = J - 1
         END DO
@@ -315,12 +305,8 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
       DO WHILE(I .GE. 1)
         J = 1 + 1 *((2 - 1) / 1)
         DO WHILE(J .GE. 1)
-          if (iaddr(AX(I,J)) .ne. iaddr(OpenAD_Symbol_8)) then
-            OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+AX(I,J)%d
-            AX(I,J)%d = 0
-          end if
-          X(I)%d = X(I)%d+OpenAD_Symbol_8%d
-          OpenAD_Symbol_8%d = 0.0d0
+          X(I)%d = X(I)%d+AX(I,J)%d
+          AX(I,J)%d = 0.0d0
           J = J - 1
         END DO
         I = I - 1

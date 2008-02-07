@@ -510,6 +510,7 @@ namespace xaifBoosterTypeChange {
 						    SymbolShape::lesserShape(formalArgumentSymbol.getSymbolShape(),
 									     (formalMinusConcreteDims<0)?0:formalMinusConcreteDims),
 						    (forcePassive)?false:formalArgumentSymbol.getActiveTypeFlag()));
+    theNewVariableSymbol.setFrontEndType(formalArgumentSymbol.getFrontEndType());
     VariableSymbolReference* 
       theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
 								  theGlobalScope));

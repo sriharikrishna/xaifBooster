@@ -12,10 +12,6 @@ C
       use w2f__types
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      TYPE (OpenADTy_active) OpenAD_Symbol_2
-C
 C     **** Parameters and Result ****
 C
       TYPE (OpenADTy_active) X
@@ -25,8 +21,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       __value__(Y) = __value__(X)
-      CALL setderiv(__deriv__(OpenAD_Symbol_2), __deriv__(X))
-      CALL setderiv(__deriv__(Y), __deriv__(OpenAD_Symbol_2))
+      CALL setderiv(__deriv__(Y), __deriv__(X))
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -58,7 +53,7 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL foo(__deriv__(X), __deriv__(Y))
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_0), 2.0D00)
+      CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_0), 2.0)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(OpenAD_Symbol_1), PY)
       CALL foo(__deriv__(OpenAD_Symbol_0), __deriv__(OpenAD_Symbol_1))

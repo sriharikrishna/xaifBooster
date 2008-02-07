@@ -179,6 +179,8 @@ namespace xaifBooster {
      */
     bool isConstant() const; 
 
+    void appendActiveArguments(CArgumentPList& listToBeAppended) const;
+
   private:
 
     /** 

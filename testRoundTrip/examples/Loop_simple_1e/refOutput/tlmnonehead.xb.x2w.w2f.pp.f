@@ -5,10 +5,6 @@
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X
@@ -17,8 +13,7 @@ C
 C     **** Statements ****
 C
       Y%v = X%v
-      CALL setderiv(OpenAD_Symbol_0,X)
-      CALL setderiv(Y,OpenAD_Symbol_0)
+      CALL setderiv(Y,X)
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)

@@ -77,7 +77,6 @@ namespace xaifBooster {
     virtual std::string equivalenceSignature() const;
 
     static const std::string ourXAIFName;
-    static const std::string our_myType_XAIFName;
     static const std::string our_myValue_XAIFName;
     static const std::string our_myId_XAIFName;
 

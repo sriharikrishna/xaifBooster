@@ -68,11 +68,18 @@ namespace xaifBooster {
        << ourXAIFName 
        << ">" 
        << std::endl; 
-    for(StatementIdSetMapEntryPVector::const_iterator it=getEntries().begin();
-	it!=getEntries().end();
-	it++)
-      if (*it)
-	(*it)->printXMLHierarchy(os);       
+    if (PrintManager::isVerbose()) { 
+      for(StatementIdSetMapEntryPVector::const_iterator it=getEntries().begin();
+	  it!=getEntries().end();
+	  it++)
+	if (*it)
+	  (*it)->printXMLHierarchy(os);       
+    }
+    else { 
+      if (getEntries().begin()!=getEntries().end()) { 
+	(*(getEntries().begin()))->printXMLHierarchy(os);
+      }
+    }
     os << pm.indent() 
        << "</"
        << ourXAIFName

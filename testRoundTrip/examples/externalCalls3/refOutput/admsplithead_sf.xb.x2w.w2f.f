@@ -35,14 +35,12 @@ C$OPENAD XXX Template ad_template.f
       T1 = X
       CALL barext(X, T2)
       Y = T2
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       T1 = X
       CALL barext(X, T2)
       Y = T2
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ END REPLACEMENT
@@ -63,7 +61,6 @@ C$OPENAD XXX Template ad_template.f
       T1 = X
       CALL barext(X, T2)
       Y = T2
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ END REPLACEMENT

@@ -14,10 +14,6 @@ C
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_2
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X
@@ -27,8 +23,7 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       Y%v = X%v
-      CALL setderiv(OpenAD_Symbol_2,X)
-      CALL setderiv(Y,OpenAD_Symbol_2)
+      CALL setderiv(Y,X)
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -61,7 +56,7 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL foo(X,Y)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
-      CALL convert_p2a_scalar(OpenAD_Symbol_0,2.0D00)
+      CALL convert_p2a_scalar(OpenAD_Symbol_0,2.0)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(OpenAD_Symbol_1,PY)
       CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)

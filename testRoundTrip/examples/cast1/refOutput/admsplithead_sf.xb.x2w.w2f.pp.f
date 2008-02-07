@@ -91,14 +91,12 @@ C
          if (our_rev_mode%plain) then
 ! original function
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = (INT(INT(X(1)%v))*2.5D00)
-      RETURN
+      Y(1)%v = (INT(INT(X(1)%v))*DBLE(2.5))
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      Y(1)%v = (INT(INT(X(1)%v))*2.5D00)
-      RETURN
+      Y(1)%v = (INT(INT(X(1)%v))*DBLE(2.5))
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint

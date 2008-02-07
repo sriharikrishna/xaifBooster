@@ -18,18 +18,12 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      REAL(w2f__8) OpenAD_Symbol_10
-      type(active) :: OpenAD_Symbol_11
-      REAL(w2f__8) OpenAD_Symbol_12
-      type(active) :: OpenAD_Symbol_13
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
-      type(active) :: OpenAD_Symbol_7
-      REAL(w2f__8) OpenAD_Symbol_8
-      type(active) :: OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -52,29 +46,23 @@ C
 C$OPENAD XXX Template ad_template.f
       IF (X(1)%v .LT. X(2)%v) THEN
         DO I = 1, 2, 1
-          OpenAD_Symbol_2 = (X(I)%v*X(I)%v)
+          Y(INT(I))%v = (X(I)%v*X(I)%v)
           OpenAD_Symbol_0 = X(I)%v
           OpenAD_Symbol_1 = X(I)%v
-          Y(INT(I))%v = OpenAD_Symbol_2
-          OpenAD_Symbol_6 = OpenAD_Symbol_0
-          OpenAD_Symbol_8 = OpenAD_Symbol_1
-          CALL setderiv(OpenAD_Symbol_9,X(I))
-          CALL setderiv(OpenAD_Symbol_7,X(I))
-          CALL sax(OpenAD_Symbol_6,OpenAD_Symbol_7,Y(I))
-          CALL saxpy(OpenAD_Symbol_8,OpenAD_Symbol_9,Y(I))
+          OpenAD_Symbol_4 = OpenAD_Symbol_0
+          OpenAD_Symbol_5 = OpenAD_Symbol_1
+          CALL sax(OpenAD_Symbol_4,X(I),Y(I))
+          CALL saxpy(OpenAD_Symbol_5,X(I),Y(I))
         END DO
       ELSE
         DO I = 1, 2, 1
-          OpenAD_Symbol_5 = (X(I)%v*X(I)%v)
+          Y(INT(I))%v = (X(I)%v*X(I)%v)
+          OpenAD_Symbol_2 = X(I)%v
           OpenAD_Symbol_3 = X(I)%v
-          OpenAD_Symbol_4 = X(I)%v
-          Y(INT(I))%v = OpenAD_Symbol_5
-          OpenAD_Symbol_10 = OpenAD_Symbol_3
-          OpenAD_Symbol_12 = OpenAD_Symbol_4
-          CALL setderiv(OpenAD_Symbol_13,X(I))
-          CALL setderiv(OpenAD_Symbol_11,X(I))
-          CALL sax(OpenAD_Symbol_10,OpenAD_Symbol_11,Y(I))
-          CALL saxpy(OpenAD_Symbol_12,OpenAD_Symbol_13,Y(I))
+          OpenAD_Symbol_6 = OpenAD_Symbol_2
+          OpenAD_Symbol_7 = OpenAD_Symbol_3
+          CALL sax(OpenAD_Symbol_6,X(I),Y(I))
+          CALL saxpy(OpenAD_Symbol_7,X(I),Y(I))
         END DO
       ENDIF
       END SUBROUTINE

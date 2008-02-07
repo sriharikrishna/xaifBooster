@@ -9,8 +9,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      type(active) :: OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -20,12 +18,10 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_3 = (X%v*2.0D00)
+      Y%v = (X%v*2.0D00)
       OpenAD_Symbol_1 = 2.0D00
-      Y%v = OpenAD_Symbol_3
-      OpenAD_Symbol_4 = OpenAD_Symbol_1
-      CALL setderiv(OpenAD_Symbol_5,X)
-      CALL sax(OpenAD_Symbol_4,OpenAD_Symbol_5,Y)
+      OpenAD_Symbol_3 = OpenAD_Symbol_1
+      CALL sax(OpenAD_Symbol_3,X,Y)
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -36,8 +32,8 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
-      type(active) :: OpenAD_Symbol_6
-      type(active) :: OpenAD_Symbol_7
+      type(active) :: OpenAD_Symbol_4
+      type(active) :: OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -63,12 +59,12 @@ C$OPENAD XXX Template ad_template.f
       K = 1
       CALL foo(X(K),Y)
       Q(1)%v = Y%v
-      CALL setderiv(OpenAD_Symbol_6,Y)
-      CALL setderiv(Q(1),OpenAD_Symbol_6)
+      CALL setderiv(OpenAD_Symbol_4,Y)
+      CALL setderiv(Q(1),OpenAD_Symbol_4)
       Y%v = Q(1)%v
-      P(1) = 1.0D00
-      CALL setderiv(OpenAD_Symbol_7,Q(1))
-      CALL setderiv(Y,OpenAD_Symbol_7)
+      P(1) = 1.0
+      CALL setderiv(OpenAD_Symbol_5,Q(1))
+      CALL setderiv(Y,OpenAD_Symbol_5)
       L = 1
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(OpenAD_Symbol_0,P(K))

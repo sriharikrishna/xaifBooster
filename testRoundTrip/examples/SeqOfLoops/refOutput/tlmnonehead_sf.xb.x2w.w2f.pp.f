@@ -19,11 +19,9 @@ C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
-      type(active) :: OpenAD_Symbol_3
+      REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       type(active) :: OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_6
-      type(active) :: OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -46,19 +44,17 @@ C
 C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
         Y(INT(I))%v = X(I)%v
-        CALL setderiv(OpenAD_Symbol_3,X(I))
-        CALL setderiv(Y(I),OpenAD_Symbol_3)
+        CALL setderiv(Y(I),X(I))
       END DO
       DO I = 1, 2, 1
         OpenAD_Symbol_2 = (X(I)%v*Y(I)%v)
         OpenAD_Symbol_0 = Y(I)%v
         OpenAD_Symbol_1 = X(I)%v
         Y(INT(I))%v = OpenAD_Symbol_2
-        OpenAD_Symbol_4 = OpenAD_Symbol_0
-        OpenAD_Symbol_6 = OpenAD_Symbol_1
-        CALL setderiv(OpenAD_Symbol_7,Y(I))
-        CALL setderiv(OpenAD_Symbol_5,X(I))
-        CALL sax(OpenAD_Symbol_4,OpenAD_Symbol_5,Y(I))
-        CALL saxpy(OpenAD_Symbol_6,OpenAD_Symbol_7,Y(I))
+        OpenAD_Symbol_3 = OpenAD_Symbol_0
+        OpenAD_Symbol_4 = OpenAD_Symbol_1
+        CALL setderiv(OpenAD_Symbol_5,Y(I))
+        CALL sax(OpenAD_Symbol_3,X(I),Y(I))
+        CALL saxpy(OpenAD_Symbol_4,OpenAD_Symbol_5,Y(I))
       END DO
       END SUBROUTINE
