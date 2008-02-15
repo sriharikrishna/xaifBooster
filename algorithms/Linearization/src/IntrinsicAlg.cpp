@@ -59,8 +59,8 @@ namespace xaifBoosterLinearization {
 
   IntrinsicAlg::IntrinsicAlg(Intrinsic& theContainingIntrinsic) : 
     ExpressionVertexAlgBase(theContainingIntrinsic),
-    ExpressionVertexAlg(theContainingIntrinsic),
-    IntrinsicAlgBase(theContainingIntrinsic) {
+    IntrinsicAlgBase(theContainingIntrinsic),
+    ExpressionVertexAlg(theContainingIntrinsic) {
   }
 
   IntrinsicAlg::~IntrinsicAlg() {}

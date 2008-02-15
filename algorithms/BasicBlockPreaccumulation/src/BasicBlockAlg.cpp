@@ -994,13 +994,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    if (theOriginalSourceV.hasOriginalVariable() && theOriginalTargetV.hasOriginalVariable()
 	     && theAliasMap.mayAlias(theOriginalSourceV.getOriginalVariable().getAliasMapKey(),
 				     theOriginalTargetV.getOriginalVariable().getAliasMapKey())) {
-	      // AL: THIS IS A HACK.  WITH PROPER ALIAS ANALYSIS WE WOULD CREATE/REPLACE NO MATTER WHAT
-	      if (!theRemainderLCG.numInEdgesOf(*anLCGVertI)) {
-		theOriginalSourceV.createOrReplacePropagationVariable();
-		// set the deriv of the new prop variable to that of the original variable if the source vertex is an independent
-		aSequence.myDerivativePropagator.addSetDerivToEntryPList(theOriginalSourceV.getPropagationVariable(),
-									 theOriginalSourceV.getOriginalVariable());
-	      } // end if the source is an independent
+	      theOriginalSourceV.createOrReplacePropagationVariable();
+	      // set the deriv of the new prop variable to that of the original variable
+	      aSequence.myDerivativePropagator.addSetDerivToEntryPList(theOriginalSourceV.getPropagationVariable(),
+								       theOriginalSourceV.getOriginalVariable());
 	      break; // no need to continue with this vertex once the propagation vertex has been replaced
             } // end if possible alias conflict
 	  } // end all successors

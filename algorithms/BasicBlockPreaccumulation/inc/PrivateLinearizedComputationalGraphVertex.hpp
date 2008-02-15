@@ -56,7 +56,6 @@
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ExpressionVertexAlg.hpp"
 
 namespace xaifBooster { 
   class Variable;
