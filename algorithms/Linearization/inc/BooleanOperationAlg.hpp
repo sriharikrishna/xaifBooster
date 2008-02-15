@@ -64,7 +64,7 @@ namespace xaifBoosterLinearization {
    * class to implement linearization steps
    */
   class BooleanOperationAlg : public BooleanOperationAlgBase,
-			      public virtual ExpressionVertexAlg { 
+			      public ExpressionVertexAlg { 
 
   public:
     

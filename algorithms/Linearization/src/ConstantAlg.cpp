@@ -59,8 +59,8 @@ namespace xaifBoosterLinearization {
 
   ConstantAlg::ConstantAlg(Constant& theContainingConstant) : 
     ExpressionVertexAlgBase(theContainingConstant),
-    ExpressionVertexAlg(theContainingConstant),
-    ConstantAlgBase(theContainingConstant) {
+    ConstantAlgBase(theContainingConstant),
+    ExpressionVertexAlg(theContainingConstant) {
     passivate();
   }
 

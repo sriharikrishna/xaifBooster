@@ -52,10 +52,6 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ArgumentAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BooleanOperationAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ConstantAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/IntrinsicAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
@@ -85,10 +81,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end of AlgFactoryManager::instance
 
   void AlgFactoryManager::resets() {
-    resetArgumentAlgFactory(new ArgumentAlgFactory());
-    resetBooleanOperationAlgFactory(new BooleanOperationAlgFactory());
-    resetConstantAlgFactory(new ConstantAlgFactory());
-    resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
   }
