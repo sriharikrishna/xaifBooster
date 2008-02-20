@@ -59,7 +59,7 @@ namespace xaifBooster {
   
   class BooleanOperation;
 
-  class BooleanOperationAlgBase: public ExpressionVertexAlgBase { 
+  class BooleanOperationAlgBase: public virtual ExpressionVertexAlgBase { 
 
   public: 
 

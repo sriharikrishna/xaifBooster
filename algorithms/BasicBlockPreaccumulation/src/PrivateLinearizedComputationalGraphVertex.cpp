@@ -50,72 +50,109 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+
 #include "xaifBooster/utils/inc/LogicException.hpp"
-#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() : 
-    myRHSVariable_p(0), 
-    myLHSVariable_p(0) {
+  PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() :
+    myOriginalVariable_p (0),
+    myPropagationVariable_p (0),
+    mySAX_p (0) {
   }
+
+  PrivateLinearizedComputationalGraphVertex::~PrivateLinearizedComputationalGraphVertex() {
+    if (myPropagationVariable_p)
+      delete myPropagationVariable_p;
+  }
+
+  bool PrivateLinearizedComputationalGraphVertex::hasOriginalVariable() const {
+   return (myOriginalVariable_p) ? true : false;
+  } // end PrivateLinearizedComputationalGraphVertex::hasOriginalVariable() 
+
+  const Variable& PrivateLinearizedComputationalGraphVertex::getOriginalVariable() const {
+    if (!myOriginalVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getOriginalVariable: not set");
+    return *myOriginalVariable_p;
+  } // end PrivateLinearizedComputationalGraphVertex::getOriginalVariable()
+
+  void PrivateLinearizedComputationalGraphVertex::zeroOriginalVariable() {
+    myOriginalVariable_p = 0;
+  } // end PrivateLinearizedComputationalGraphVertex::zeroOriginalVariable()
+
+  void PrivateLinearizedComputationalGraphVertex::setOriginalVariable(const Variable& aVariable,
+								      const ObjectWithId::Id& aStatementId) {
+    if (myOriginalVariable_p)
+//      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setOriginalVariable: already set to " << myOriginalVariable_p << " while trying to set to " << &aVariable);
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setOriginalVariable: already set to " << myOriginalVariable_p->debug().c_str()
+                                 << " while trying to set to " << aVariable.debug().c_str());
+    myOriginalVariable_p = &aVariable;
+    myStatementId = aStatementId;
+  } // end PrivateLinearizedComputationalGraphVertex::setOriginalVariable()
+
+  const Variable& PrivateLinearizedComputationalGraphVertex::getPropagationVariable() const {
+    if (myPropagationVariable_p)
+      return *myPropagationVariable_p;
+
+    if (myOriginalVariable_p)
+      return *myOriginalVariable_p;
+
+    // if we havent already created a propagation variable, and there is no LHS variable, then make a new one
+    createOrReplacePropagationVariable();
+    return *myPropagationVariable_p;
+  } // end PrivateLinearizedComputationalGraphVertex::getPropagationVariable()
+
+  void PrivateLinearizedComputationalGraphVertex::createOrReplacePropagationVariable() const {
+    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+    myPropagationVariable_p  = new Variable();
+    VariableSymbolReference* theVariableSymbolReference_p = new VariableSymbolReference(theGlobalScope.getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
+                                                                                                                                           SymbolType::REAL_STYPE,
+                                                                                                                                           SymbolShape::SCALAR,
+                                                                                                                                           true),
+                                                                                        theGlobalScope);
+    theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg::getPropagationVariable");
+    myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+    myPropagationVariable_p->getAliasMapKey().setTemporary();
+    myPropagationVariable_p->getDuUdMapKey().setTemporary();
+  } // end PrivateLinearizedComputationalGraphVertex::createOrReplacePropagationVariable()
+
+  const ObjectWithId::Id& PrivateLinearizedComputationalGraphVertex::getStatementId() const {
+    if (!myStatementId.size())
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getStatementId: not set");
+    return myStatementId;
+  } // end PrivateLinearizedComputationalGraphVertex::getStatementId()
+
+  bool PrivateLinearizedComputationalGraphVertex::hasSAX() const {
+    return (mySAX_p) ? true : false;
+  } // end PrivateLinearizedComputationalGraphVertex::hasSAX()
+
+  xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& PrivateLinearizedComputationalGraphVertex::getSAX() const {
+    if (!mySAX_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getSAX: not set");
+    return *mySAX_p;
+  } // end PrivateLinearizedComputationalGraphVertex::getSAX()
+
+  void PrivateLinearizedComputationalGraphVertex::setSAX(xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& aSAX) const {
+    if (mySAX_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setSAX: already set");
+    mySAX_p = &aSAX;
+  } // end PrivateLinearizedComputationalGraphVertex::setSAX()
 
   std::string PrivateLinearizedComputationalGraphVertex::debug() const { 
     std::ostringstream out;
     out << "PrivateLinearizedComputationalGraphVertex[" << this 
+	<< ",myOriginalVariable_p=" << myOriginalVariable_p
+	<< ",myPropagationVariable_p=" << myPropagationVariable_p
 	<< "]" << std::ends;  
     return out.str();
-  } 
+  } // end PrivateLinearizedComputationalGraphVertex::debug()
 
-  void PrivateLinearizedComputationalGraphVertex::setRHSVariable(const Variable& aRHSVariable,
-								 const ObjectWithId::Id& statementId) {
-    if (myRHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setRHSVariable: already set to "
-				 << myRHSVariable_p->debug().c_str()
-				 << " while trying to set for " 
-				 << aRHSVariable.debug().c_str());
-    myRHSVariable_p=&aRHSVariable;
-    myStatementId=statementId;
-  }
+} // end namespace xaifBoosterBasicBlockPreaccumulation
 
-  const Variable& 
-  PrivateLinearizedComputationalGraphVertex::getRHSVariable() const { 
-    if (!myRHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getRHSVariable: not set");
-    return *myRHSVariable_p;
-  } 
-
-  void PrivateLinearizedComputationalGraphVertex::setLHSVariable(const Variable& aLHSVariable,
-								 const ObjectWithId::Id& statementId) {
-    if (myLHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setLHSVariable: already set to "
-				 << myLHSVariable_p->debug().c_str()
-				 << " while trying to set for " 
-				 << aLHSVariable.debug().c_str());
-    myLHSVariable_p=&aLHSVariable;
-    myStatementId=statementId;
-  }
-
-  const Variable& 
-  PrivateLinearizedComputationalGraphVertex::getLHSVariable() const { 
-    if (!myLHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getLHSVariable: not set");
-    return *myLHSVariable_p;
-  } 
-
-  bool
-  PrivateLinearizedComputationalGraphVertex::hasLHSVariable() const { 
-    return (myLHSVariable_p)?true:false;
-  } 
-
-  const ObjectWithId::Id& 
-  PrivateLinearizedComputationalGraphVertex::getStatementId() const { 
-    if (!myStatementId.size())
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getStatementId: not set");
-    return myStatementId; 
-  } 
-
-} 
