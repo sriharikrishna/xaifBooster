@@ -59,7 +59,7 @@ namespace xaifBooster {
   
   class Argument;
 
-  class ArgumentAlgBase: public ExpressionVertexAlgBase { 
+  class ArgumentAlgBase: public virtual ExpressionVertexAlgBase { 
 
   public: 
 

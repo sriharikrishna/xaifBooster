@@ -79,9 +79,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
  
     void setLinearizedExpressionEdge(ExpressionEdge& anExpressionEdge);
 
-    void setUnitExpressionEdge();
+    void setDirectCopyEdge();
 
-    bool isUnitExpressionEdge() const;
+    bool isDirectCopyEdge() const;
 
     const ExpressionEdge& getLinearizedExpressionEdge() const;
     bool hasLinearizedExpressionEdge() const;
@@ -128,7 +128,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * i.e. something for which we don't have an edge in the 
      * Expression
      */
-    bool myUnitExpressionEdgeFlag;
+    bool myDirectCopyEdgeFlag;
 
   }; // end of class LinearizedComputationalGraphEdge
  

@@ -55,6 +55,7 @@
 
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -115,6 +116,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     bool vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence);
     
+    /**
+     * the logic for algorithm_action_2
+     */
+    void algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
+					BasicBlockAlg::SequenceHolder& aSequenceHolder);
+
   }; // end of class AssignmentAlg
  
 } 

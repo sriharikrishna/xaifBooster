@@ -77,7 +77,8 @@ namespace xaifBoosterCrossCountryInterface {
     getInternalReference() const;
     
     enum Operation_E { ADD_OP,
-		       MULT_OP };
+		       MULT_OP,
+		       DIV_OP };
       
     void setOperation(Operation_E);
 

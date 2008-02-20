@@ -58,6 +58,7 @@
 namespace xaifBoosterLinearization { 
 
   ArgumentAlg::ArgumentAlg(Argument& theContainingArgument) : 
+    ExpressionVertexAlgBase(theContainingArgument),
     ArgumentAlgBase(theContainingArgument),
     ExpressionVertexAlg(theContainingArgument) {
   }

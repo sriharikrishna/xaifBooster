@@ -53,7 +53,8 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 
 namespace xaifBooster { 
@@ -64,65 +65,60 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
   
-  class PrivateLinearizedComputationalGraphVertex : 
-    public xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex {
+  class PrivateLinearizedComputationalGraphVertex : public xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex {
 
   public:
 
     PrivateLinearizedComputationalGraphVertex();
+    ~PrivateLinearizedComputationalGraphVertex();
 
-    ~PrivateLinearizedComputationalGraphVertex(){}
+    bool hasOriginalVariable() const;
+    const Variable& getOriginalVariable() const;
+    void zeroOriginalVariable();
+    void setOriginalVariable(const Variable& aVariable,
+			     const ObjectWithId::Id& aStatementId);
 
-    void setRHSVariable(const Variable& aVariable,
-			const ObjectWithId::Id& statementId);
+    const Variable& getPropagationVariable() const;
+    void createOrReplacePropagationVariable() const;
 
-    void setLHSVariable(const Variable& aVariable,
-			const ObjectWithId::Id& statementId);
+    const ObjectWithId::Id& getStatementId() const;
+
+    bool hasSAX() const;
+    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& getSAX() const;
+    void setSAX(xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& aSAX) const;
+
+    std::string debug() const;
     
-    const Variable& getRHSVariable() const;
-
-    const Variable& getLHSVariable() const;
-
-    bool hasLHSVariable() const; 
-
-    std::string debug() const ;
-    
-    const ObjectWithId::Id& getStatementId() const; 
-
-  private:
-    
-    /**
-     * this refers to some Variable in
-     * right hand side of an assignment in a 
-     * basic block for independent variables.
-     * see also myLHSVariable_p.
-     * this class doesn't own the Variable pointed 
-     * to by myRHSVariable_p
-     */
-    const Variable* myRHSVariable_p;
+  private: 
 
     /**
-     * this refers to the Variable in
-     * the left hand side of an Assignment.
-     * LHS and RHS while normally mutually 
-     * exclusive cannot use the same data member because 
-     * we have to account for 
-     * something like y=x where this vertex needs to 
-     * keep a reference to both y and x 
-     * this class doesn't own the Variable pointed 
-     * to by myLHSVariable_p
+     * Pointer to the variable that originally corresponds to this vertex.
+     * The variable is not owned by this class.
      */
-    const Variable* myLHSVariable_p;
+    const Variable* myOriginalVariable_p;
 
-    /** 
-     * set to the respective statement id 
-     * if  myRHSVariable_p
-     * or myLHSVariable_p is set
+    /**
+     * Pointer to the variable that will be used for propagation in case there is no original variable,
+     * or the original variable had to be replaced because of possible aliasing issues.
+     * This variable is owned by this class, and is deleted in the dtor.
      */
-    ObjectWithId::Id myStatementId; 
+    mutable Variable* myPropagationVariable_p;
+
+    /**
+     * set to the respective statement id if myOriginalVariable_p is set
+     */
+    ObjectWithId::Id myStatementId;
+
+    /**
+     * Used to keep track of whether this vertex has been involved in a sax yet.
+     * In case it has, this pointer is used to find the SAX.
+     * The sax is not owned by this class.
+     */
+    mutable xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* mySAX_p;
  
   }; // end of class PrivateLinearizedComputationalGraphVertex
  
-} 
+} // end namespace xaifBoosterBasicBlockPreaccumulation 
                                                                      
 #endif
+
