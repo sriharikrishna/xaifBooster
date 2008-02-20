@@ -55,9 +55,13 @@
 
 #include <list>
 
+#include "xaifBooster/utils/inc/MemCounter.hpp"
+
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 
 #include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ReplacementId.hpp"
 
@@ -85,7 +89,12 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     virtual void algorithm_action_4();
 
     static void checkPointToFiles();
- 
+    
+    /**
+     * Sets flag to insert runtime conuters into the code.
+     */
+    static void setRuntimeCounters();
+
   private:
     
     /** 
@@ -136,9 +145,28 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     ControlFlowGraph* myCFGTimeStepRestoreArguments_p;
 
     /**
+     * static memory counter
+     */
+    MemCounter myMemCounter;
+
+    /**
+     * static preaccumulation counter
+     */
+    PreaccumulationCounter myPreaccumulationCounter;
+
+    /**
      * make entry, exit and a basic block which is returned
      */
     BasicBlock& initCheckPointCFG(ControlFlowGraph& aCheckPointCFG); 
+
+    /**
+     * Says whether runtime counter information should be output
+     */
+    static bool runtimeCounters;
+
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;//IK
+        PlainBasicBlock::BasicBlockElementList myBasicBlockElementList;//IK
+
     
     /** 
      * append type and shape strings to aSubroutineNameBase 
@@ -147,14 +175,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     void handleCheckPointing(const std::string& aSubroutineNameBase,
 			     SideEffectListType::SideEffectListType_E theSideEffectListType,
 			     BasicBlock& theBasicBlock,
-			     bool reverse);
+			     bool reverse, MemCounter& count);
 
     /** 
      * called by handleCheckPointing to deal with one argument
      */
     void handleCheckPoint(const std::string& aSubroutineNameBase,
 			  BasicBlock& theBasicBlock,
-			  const Variable& theVariable); 
+			  const Variable& theVariable, MemCounter& count); 
     /** 
      * add the InlinableSubroutineCall with name  aSubroutineName
      * to theBasicBlock which pushes or pops to/from a Variable 

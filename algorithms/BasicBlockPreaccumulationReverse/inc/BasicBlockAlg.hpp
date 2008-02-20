@@ -81,7 +81,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
   private:
-
+    
     /** 
      * no def
      */

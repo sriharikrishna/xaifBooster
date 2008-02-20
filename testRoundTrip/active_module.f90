@@ -66,6 +66,8 @@ convert_p2a_six_tensor, convert_a2p_six_tensor, &
 convert_p2a_seven_tensor, convert_a2p_seven_tensor, & 
 oad_allocateMatching 
 
+        integer :: count_mult = 0
+        integer :: count_add = 0                
         
         !
         ! active needs to be a sequence type
@@ -80,6 +82,7 @@ oad_allocateMatching
           real(w2f__8) :: d=0.0
           ! real(w2f__8) :: d
         end type active
+        
 
         interface saxpy
           module procedure saxpy_a_a
