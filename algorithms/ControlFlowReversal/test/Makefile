@@ -69,19 +69,15 @@ include ../../../Makefile.incl
 # pick up all algorithm specific obj files
 ALG_OBJ_SET=$(wildcard ../src/obj/*.o)
 
-VPATH+=../../InlinableXMLRepresentation/lib
-LIBS+=-lxaifBoosterInlinableXMLRepresentation
-
-VPATH+=../../AdjointUtils/lib
-LIBS+=-lxaifBoosterAdjointUtils
+LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
+LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
 
 # setup for ANGEL
 ifndef ANGELROOT
   $(error "Error:  environment variable ANGELROOT not defined!")
 endif
 
-VPATH+=$(ANGELROOT)/lib
-LIBS+=-langel
+LIBS+=$(ANGELROOT)/lib/libangel.a
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS) 
 	$(CC) $^ $(LFLAGS) -o $@
