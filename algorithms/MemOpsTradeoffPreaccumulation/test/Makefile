@@ -74,11 +74,12 @@ LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
 LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
 
 # setup for ANGEL
-ifndef ANGELROOT
-  $(error "Error:  environment variable ANGELROOT not defined!")
-endif
+#ifndef ANGELROOT
+#  $(error "Error:  environment variable ANGELROOT not defined!")
+#endif
 
-LIBS+=$(ANGELROOT)/lib/libangel.a
+#VPATH+=$(ANGELROOT)/lib
+#LIBS+=-langel
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
 	$(CC) $^ $(LFLAGS) -o $@

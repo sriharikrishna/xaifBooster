@@ -59,7 +59,7 @@ namespace xaifBooster {
   
   class Intrinsic;
 
-  class IntrinsicAlgBase: public ExpressionVertexAlgBase { 
+  class IntrinsicAlgBase: public virtual ExpressionVertexAlgBase { 
 
   public: 
 
