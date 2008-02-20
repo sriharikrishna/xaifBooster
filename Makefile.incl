@@ -73,8 +73,7 @@ export ROOTDIR=xaifBooster
 
 export FLIST=$(basename $(wildcard *.cpp))
 
-export XERCESC_LIB=-lxerces-c
-export XERCESC_LIB_DIR=$(XERCESCROOT)/lib 
+export XERCESC_LIB=$(XERCESCROOT)/lib/libxerces-c.a
 export XERCESC_INCLUDE_DIR=$(XERCESCROOT)/include
 
 export BOOST_INCLUDE_DIR=$(BOOSTROOT)
@@ -82,9 +81,10 @@ export BOOST_INCLUDE_DIR=$(BOOSTROOT)
 export SYSTEM_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src/obj/*.o)
 
 export SYSTEM_INC_DIR=$(XAIFBOOSTERROOT)
+
 export UTILS_LIB_NAME=xaifBoosterutils
-export UTILS_LIB=-l$(UTILS_LIB_NAME)
 export UTILS_LIB_DIR=$(XAIFBOOSTERROOT)/$(ROOTDIR)/utils/lib
+export UTILS_LIB=$(UTILS_LIB_DIR)/lib$(UTILS_LIB_NAME).a
 
 export IPATH= \
 -I$(SYSTEM_INC_DIR) \
@@ -111,21 +111,7 @@ ifndef CC
   $(error "Error:  platform $(PLATFORM) not configured!")
 endif
 
-# NOTE: Using VPATH to find xercesc will not work on Cygwin. Therefore,
-# the library should be included in LFLAGS and not LIBS (prerequisites).
-LFLAGS=
-LIBS= $(UTILS_LIB)
-ifdef BUILD_OS_CYGWIN
-  LFLAGS += -L$(XERCESC_LIB_DIR) $(XERCESC_LIB)
-else
-  LIBS += $(XERCESC_LIB)
-endif
-export LFLAGS
-export LIBS
-
-# replaced by using LIBS as prerequisiste together with VPATH
-# export LPATH= -L$(XERCESC_LIB_DIR) -L$(UTILS_LIB_DIR)
-export VPATH= $(XERCESC_LIB_DIR):$(UTILS_LIB_DIR)
+export LIBS += $(XERCESC_LIB) $(UTILS_LIB)
 
 export OBJS=$(addprefix obj/, $(addsuffix .o, $(FLIST)))
 
