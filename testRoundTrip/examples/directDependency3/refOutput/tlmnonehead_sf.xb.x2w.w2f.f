@@ -25,9 +25,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
-      TYPE (OpenADTy_active) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      TYPE (OpenADTy_active) OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -48,14 +45,10 @@ C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
       __value__(T) = __value__(X(1))
-      CALL setderiv(__deriv__(OpenAD_Symbol_3), __deriv__(X(1)))
-      CALL setderiv(__deriv__(T), __deriv__(OpenAD_Symbol_3))
+      CALL setderiv(__deriv__(T), __deriv__(X(1)))
       CALL foo()
-      OpenAD_Symbol_2 = (__value__(T) * 2.0D00)
+      __value__(Y) = (__value__(T) * 2.0D00)
       OpenAD_Symbol_0 = 2.0D00
-      __value__(Y) = OpenAD_Symbol_2
-      OpenAD_Symbol_4 = OpenAD_Symbol_0
-      CALL setderiv(__deriv__(OpenAD_Symbol_5), __deriv__(T))
-      CALL sax(OpenAD_Symbol_4, __deriv__(OpenAD_Symbol_5), __deriv__(Y
-     > ))
+      OpenAD_Symbol_2 = OpenAD_Symbol_0
+      CALL sax(OpenAD_Symbol_2, __deriv__(T), __deriv__(Y))
       END SUBROUTINE

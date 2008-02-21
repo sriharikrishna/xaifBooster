@@ -83,9 +83,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
 C
 C     **** Parameters and Result ****
 C
@@ -94,8 +91,8 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_11
+      REAL(w2f__8) OpenAD_Symbol_6
+      REAL(w2f__8) OpenAD_Symbol_7
 C
 C     **** Statements ****
 C
@@ -107,36 +104,29 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y%v = (X(1)%v*X(2)%v)
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_4 = (X(1)%v*X(2)%v)
+      Y%v = (X(1)%v*X(2)%v)
       OpenAD_Symbol_2 = X(2)%v
       OpenAD_Symbol_3 = X(1)%v
-      Y%v = OpenAD_Symbol_4
-      OpenAD_Symbol_5 = OpenAD_Symbol_2
-      OpenAD_Symbol_7 = OpenAD_Symbol_3
+      OpenAD_Symbol_4 = OpenAD_Symbol_2
+      OpenAD_Symbol_5 = OpenAD_Symbol_3
+          double_tape(double_tape_pointer) = OpenAD_Symbol_4
+          double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_5
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_7
-          double_tape_pointer = double_tape_pointer+1
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_10 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y%d*OpenAD_Symbol_10
+          OpenAD_Symbol_6 = double_tape(double_tape_pointer)
+          X(2)%d = X(2)%d+Y%d*OpenAD_Symbol_6
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_11 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y%d*OpenAD_Symbol_11
+          OpenAD_Symbol_7 = double_tape(double_tape_pointer)
+          X(1)%d = X(1)%d+Y%d*OpenAD_Symbol_7
           Y%d = 0.0d0
-          X(1)%d = X(1)%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
-          X(2)%d = X(2)%d+OpenAD_Symbol_8%d
-          OpenAD_Symbol_8%d = 0.0d0
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============
@@ -206,10 +196,6 @@ C ========== end copyright notice ==============
       use globals
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_9
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X(1 : 2)
@@ -235,23 +221,17 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL foo(X,AGLOBAL)
       Y(1)%v = AGLOBAL%v
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
       CALL foo(X,AGLOBAL)
       Y(1)%v = AGLOBAL%v
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-          if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_9)) then
-            OpenAD_Symbol_9%d = OpenAD_Symbol_9%d+Y(1)%d
-            Y(1)%d = 0
-          end if
-          AGLOBAL%d = AGLOBAL%d+OpenAD_Symbol_9%d
-          OpenAD_Symbol_9%d = 0.0d0
+          AGLOBAL%d = AGLOBAL%d+Y(1)%d
+          Y(1)%d = 0.0d0
       CALL foo(X,AGLOBAL)
           end if 
         end subroutine head
@@ -323,8 +303,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0(1 : 2)
       type(active) :: OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_12(1 : 2)
-      type(active) :: OpenAD_Symbol_13
+      type(active) :: OpenAD_Symbol_8(1 : 2)
+      type(active) :: OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -353,7 +333,6 @@ C!! requested inline of 'convert_a2p_vector' has no defn
       CALL convert_a2p_vector(X,OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(Y,OpenAD_Symbol_1)
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -367,10 +346,9 @@ C!! requested inline of 'convert_a2p_vector' has no defn
       CALL convert_a2p_vector(X,OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(Y,OpenAD_Symbol_1)
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-      CALL foo(OpenAD_Symbol_12,OpenAD_Symbol_13)
+      CALL foo(OpenAD_Symbol_8,OpenAD_Symbol_9)
           end if 
         end subroutine bar

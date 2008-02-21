@@ -34,9 +34,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
 C
 C     **** Parameters and Result ****
 C
@@ -46,16 +43,13 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_4 = (X(1)%v*X(2)%v)
+      Y%v = (X(1)%v*X(2)%v)
       OpenAD_Symbol_2 = X(2)%v
       OpenAD_Symbol_3 = X(1)%v
-      Y%v = OpenAD_Symbol_4
-      OpenAD_Symbol_5 = OpenAD_Symbol_2
-      OpenAD_Symbol_7 = OpenAD_Symbol_3
-      CALL setderiv(OpenAD_Symbol_8,X(2))
-      CALL setderiv(OpenAD_Symbol_6,X(1))
-      CALL sax(OpenAD_Symbol_5,OpenAD_Symbol_6,Y)
-      CALL saxpy(OpenAD_Symbol_7,OpenAD_Symbol_8,Y)
+      OpenAD_Symbol_4 = OpenAD_Symbol_2
+      OpenAD_Symbol_5 = OpenAD_Symbol_3
+      CALL sax(OpenAD_Symbol_4,X(1),Y)
+      CALL saxpy(OpenAD_Symbol_5,X(2),Y)
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)
@@ -63,10 +57,6 @@ C$OPENAD XXX Template ad_template.f
       use active_module
       use globals
       IMPLICIT NONE
-C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -87,8 +77,7 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL foo(X,AGLOBAL)
       Y(1)%v = AGLOBAL%v
-      CALL setderiv(OpenAD_Symbol_9,AGLOBAL)
-      CALL setderiv(Y(1),OpenAD_Symbol_9)
+      CALL setderiv(Y(1),AGLOBAL)
       END SUBROUTINE
 
       SUBROUTINE bar(X, Y)
