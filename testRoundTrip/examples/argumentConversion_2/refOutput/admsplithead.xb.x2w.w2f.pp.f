@@ -82,13 +82,11 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y%v = X%v
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
 C$OPENAD XXX Template ad_template.f
       Y%v = X%v
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -203,7 +201,6 @@ C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -216,7 +213,6 @@ C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL foo(OpenAD_Symbol_0,OpenAD_Symbol_1)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint

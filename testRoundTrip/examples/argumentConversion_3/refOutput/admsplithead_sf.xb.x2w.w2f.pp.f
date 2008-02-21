@@ -107,14 +107,12 @@ C
       T = BARX
       BARX = BARY
       BARY = T
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
       T = BARX
       BARX = BARY
       BARY = T
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -215,7 +213,6 @@ C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(GX,OpenAD_Symbol_0)
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(GY,OpenAD_Symbol_1)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -228,7 +225,6 @@ C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(GX,OpenAD_Symbol_0)
 C!! requested inline of 'convert_p2a_scalar' has no defn
       CALL convert_p2a_scalar(GY,OpenAD_Symbol_1)
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -335,7 +331,6 @@ C$OPENAD XXX Template ad_template.f
       GX%v = X(1)%v
       GY%v = GX%v
       Y(1)%v = GY%v
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -349,7 +344,6 @@ C$OPENAD XXX Template ad_template.f
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint

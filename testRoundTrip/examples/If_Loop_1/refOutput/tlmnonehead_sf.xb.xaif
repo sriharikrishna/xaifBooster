@@ -507,7 +507,6 @@
       <xaif:EndLoop vertex_id="31" annotation=""/>
       <xaif:EndBranch vertex_id="11" annotation=""/>
       <xaif:BasicBlock vertex_id="32" annotation="" scope_id="3">
-        <xaif:Marker statement_id="75" annotation="{WHIRL_Id#75} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="12" annotation=""/>
       <xaif:BasicBlock vertex_id="10" annotation="" scope_id="3">

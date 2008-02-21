@@ -2224,7 +2224,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="41" annotation=""/>
       <xaif:BasicBlock vertex_id="12" annotation="" scope_id="3">
-        <xaif:Marker statement_id="337" annotation="{WHIRL_Id#337} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="13" annotation=""/>
       <xaif:BasicBlock vertex_id="7" annotation="" scope_id="3">

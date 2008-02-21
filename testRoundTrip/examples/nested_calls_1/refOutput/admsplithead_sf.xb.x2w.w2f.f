@@ -58,7 +58,6 @@ C$OPENAD XXX Template ad_template.f
       __value__(Y(2)) = SIN(__value__(X(1)) * __value__(X(2)))
       __value__(Y(3)) = SIN(__value__(X(3)))
       __value__(Y(4)) = COS(__value__(X(4)))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -87,7 +86,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_23)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_25)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
@@ -173,7 +171,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_23)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_25)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE Pop(subst)
@@ -258,7 +255,6 @@ C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       CALL bar(__deriv__(B))
       __value__(C) = (__value__(B) + __value__(A) * __value__(A))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -278,7 +274,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_29)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_30)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
@@ -366,7 +361,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_29)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_30)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE Pop(subst)
@@ -427,7 +421,6 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       __value__(A) = COS(__value__(A) * __value__(A))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -443,7 +436,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_32)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_34)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
@@ -501,7 +493,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_32)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_34)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE Pop(subst)

@@ -171,9 +171,7 @@
 
     <xaif:EndBranch vertex_id="8"/>
 
-    <xaif:BasicBlock vertex_id="24" scope_id="3">
-      <xaif:Marker statement_id="41" annotation="{WHIRL_Id#41} [passive: OPR_RETURN]"/>
-    </xaif:BasicBlock>
+    <xaif:BasicBlock vertex_id="24" scope_id="3"/>
 
     <xaif:Exit vertex_id="9"/>
 

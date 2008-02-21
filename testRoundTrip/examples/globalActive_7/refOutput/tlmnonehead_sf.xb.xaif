@@ -363,7 +363,6 @@
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
-        <xaif:Marker statement_id="21" annotation="{WHIRL_Id#21} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="9" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="7" target="8" has_condition_value="0"/>
@@ -464,7 +463,6 @@
             </xaif:Src>
           </xaif:SetDeriv>
         </xaif:DerivativePropagator>
-        <xaif:Marker statement_id="24" annotation="{WHIRL_Id#24} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="12" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="10" target="11" has_condition_value="0"/>
@@ -560,7 +558,6 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:Marker statement_id="15" annotation="{WHIRL_Id#15} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="15" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="13" target="14" has_condition_value="0"/>

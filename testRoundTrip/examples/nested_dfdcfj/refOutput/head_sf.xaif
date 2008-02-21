@@ -993,9 +993,7 @@
 
     <xaif:EndLoop vertex_id="222"/>
 
-    <xaif:BasicBlock vertex_id="10" scope_id="3">
-      <xaif:Marker statement_id="120" annotation="{WHIRL_Id#120} [passive: OPR_RETURN]"/>
-    </xaif:BasicBlock>
+    <xaif:BasicBlock vertex_id="10" scope_id="3"/>
 
     <xaif:Exit vertex_id="12"/>
 
@@ -2408,9 +2406,7 @@
 
     <xaif:EndLoop vertex_id="234"/>
 
-    <xaif:BasicBlock vertex_id="59" scope_id="4">
-      <xaif:Marker statement_id="585" annotation="{WHIRL_Id#585} [passive: OPR_RETURN]"/>
-    </xaif:BasicBlock>
+    <xaif:BasicBlock vertex_id="59" scope_id="4"/>
 
     <xaif:Exit vertex_id="61"/>
 
@@ -2945,7 +2941,6 @@
           <xaif:ExpressionEdge edge_id="18" source="11" target="1" position="2"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Marker statement_id="137" annotation="{WHIRL_Id#137} [passive: OPR_RETURN]"/>
     </xaif:BasicBlock>
 
     <xaif:Exit vertex_id="65"/>

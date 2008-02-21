@@ -284,7 +284,6 @@
               <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
-          <xaif:Marker statement_id="21" annotation="{WHIRL_Id#21} [passive: OPR_RETURN]"/>
         </xaif:BasicBlock>
         <xaif:Exit vertex_id="6" annotation=""/>
         <xaif:ControlFlowEdge edge_id="1" source="4" target="5" has_condition_value="0"/>
@@ -407,7 +406,6 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
-          <xaif:Marker statement_id="21" annotation="{WHIRL_Id#21} [passive: OPR_RETURN]"/>
         </xaif:BasicBlock>
         <xaif:Exit vertex_id="6" annotation=""/>
         <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="4" target="5" has_condition_value="0"/>
@@ -737,7 +735,6 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
-          <xaif:Marker statement_id="21" annotation="{WHIRL_Id#21} [passive: OPR_RETURN]"/>
         </xaif:BasicBlock>
         <xaif:Exit vertex_id="6" annotation=""/>
         <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="4" target="5" has_condition_value="0"/>
@@ -1035,7 +1032,6 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
-          <xaif:Marker statement_id="41" annotation="{WHIRL_Id#41} [passive: OPR_RETURN]"/>
         </xaif:BasicBlock>
         <xaif:Exit vertex_id="9" annotation=""/>
         <xaif:ControlFlowEdge edge_id="1" source="7" target="8" has_condition_value="0"/>
@@ -1210,7 +1206,6 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
-          <xaif:Marker statement_id="41" annotation="{WHIRL_Id#41} [passive: OPR_RETURN]"/>
         </xaif:BasicBlock>
         <xaif:Exit vertex_id="9" annotation=""/>
         <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="7" target="8" has_condition_value="0"/>
@@ -1477,7 +1472,6 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
-          <xaif:Marker statement_id="41" annotation="{WHIRL_Id#41} [passive: OPR_RETURN]"/>
         </xaif:BasicBlock>
         <xaif:Exit vertex_id="9" annotation=""/>
         <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="7" target="8" has_condition_value="0"/>

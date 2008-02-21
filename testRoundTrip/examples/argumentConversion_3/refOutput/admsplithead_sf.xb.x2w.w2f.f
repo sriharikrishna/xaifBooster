@@ -41,13 +41,11 @@ C     $OpenAD$ BEGIN REPLACEMENT 1
       T = BARX
       BARX = BARY
       BARY = T
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
       T = BARX
       BARX = BARY
       BARY = T
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ END REPLACEMENT
@@ -91,7 +89,6 @@ C     $OpenAD$ BEGIN REPLACEMENT 10
       T = BARX
       BARX = BARY
       BARY = T
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ END REPLACEMENT
@@ -127,7 +124,6 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(GX), OpenAD_Symbol_0)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(GY), OpenAD_Symbol_1)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
@@ -139,7 +135,6 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(GX), OpenAD_Symbol_0)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(GY), OpenAD_Symbol_1)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
       CALL bar(OpenAD_Symbol_5, OpenAD_Symbol_6)
@@ -182,7 +177,6 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(GX), OpenAD_Symbol_0)
 C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL convert_p2a_scalar(__deriv__(GY), OpenAD_Symbol_1)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
       CALL bar(OpenAD_Symbol_5, OpenAD_Symbol_6)
@@ -224,7 +218,6 @@ C$OPENAD XXX Template ad_template.f
       __value__(GX) = __value__(X(1))
       __value__(GY) = __value__(GX)
       __value__(Y(1)) = __value__(GY)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -237,7 +230,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_3)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_4)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
@@ -308,7 +300,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_3)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_4)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE Pop(subst)

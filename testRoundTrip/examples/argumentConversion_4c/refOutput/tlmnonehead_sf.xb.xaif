@@ -357,7 +357,6 @@
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
-        <xaif:Marker statement_id="13" annotation="{WHIRL_Id#13} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="6" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="4" target="5" has_condition_value="0"/>
@@ -779,7 +778,6 @@
       <xaif:EndLoop vertex_id="73" annotation=""/>
       <xaif:EndLoop vertex_id="22" annotation=""/>
       <xaif:BasicBlock vertex_id="24" annotation="" scope_id="4">
-        <xaif:Marker statement_id="104" annotation="{WHIRL_Id#104} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="25" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="7" target="8" has_condition_value="0"/>

@@ -296,8 +296,6 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      INTEGER(w2f__i8) t__1
-      INTEGER(w2f__i8) t__2
       TYPE (OpenADTy_active) DPDX
       TYPE (OpenADTy_active) DPDY
       REAL(w2f__8) FOUR
@@ -338,8 +336,6 @@ C
       PARAMETER ( TWO = 2.0D00)
       REAL(w2f__8) ZERO
       PARAMETER ( ZERO = 0.0D00)
-      INTEGER(w2f__i4) t__3
-      INTEGER(w2f__i4) t__4
 C
 C     **** Top Level Pragmas ****
 C
@@ -349,8 +345,6 @@ C
 C     **** Statements ****
 C
 C$OPENAD XXX Template ad_template.f
-      t__1 = INT(NX * NY)
-      t__2 = MAX(INT(NX * NY), 0_w2f__i8)
       N = NX * NY
       NXP1 = (NX + 1)
       NYP1 = (NY + 1)
@@ -358,9 +352,7 @@ C$OPENAD XXX Template ad_template.f
       HY = (1.0D00 / NYP1)
       HY2 = (HY * HY)
       HX2 = (HX * HX)
-      t__3 = NY
       DO I = 1, NY, 1
-        t__4 = NX
         DO J = 1, NX, 1
           K = J + NX *(I +(-1))
           IF((I .eq. 1) .OR.(J .eq. 1)) THEN

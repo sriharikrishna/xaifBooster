@@ -266,7 +266,6 @@
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="8" annotation=""/>
       <xaif:BasicBlock vertex_id="24" annotation="" scope_id="3">
-        <xaif:Marker statement_id="41" annotation="{WHIRL_Id#41} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="9" annotation=""/>
       <xaif:BasicBlock vertex_id="7" annotation="" scope_id="3">
