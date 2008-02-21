@@ -2137,7 +2137,6 @@
       <xaif:BasicBlock vertex_id="9" annotation="" scope_id="3">
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="12" annotation="" scope_id="3">
-        <xaif:Marker statement_id="116" annotation="{WHIRL_Id#116} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="13" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_9" annotation="_cfr_" scope_id="1">
@@ -2230,7 +2229,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_23" source="_aug__cfr_v_14" target="387" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="12" annotation="" scope_id="3">
-        <xaif:Marker statement_id="116" annotation="{WHIRL_Id#116} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_90">
@@ -2700,7 +2698,6 @@
       <xaif:BasicBlock vertex_id="9" annotation="" scope_id="3">
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="12" annotation="" scope_id="3">
-        <xaif:Marker statement_id="116" annotation="{WHIRL_Id#116} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="13" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_9" annotation="_cfr_" scope_id="1">
@@ -2793,7 +2790,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_23" source="_aug__cfr_v_14" target="387" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="12" annotation="" scope_id="3">
-        <xaif:Marker statement_id="116" annotation="{WHIRL_Id#116} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_90">
@@ -3146,7 +3142,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="403" annotation=""/>
       <xaif:BasicBlock vertex_id="98" annotation="" scope_id="8">
-        <xaif:Marker statement_id="43" annotation="{WHIRL_Id#43} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="99" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
@@ -3196,7 +3191,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_13" source="_aug__cfr_v_8" target="403" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="98" annotation="" scope_id="8">
-        <xaif:Marker statement_id="43" annotation="{WHIRL_Id#43} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_13">
@@ -3418,7 +3412,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="403" annotation=""/>
       <xaif:BasicBlock vertex_id="98" annotation="" scope_id="8">
-        <xaif:Marker statement_id="43" annotation="{WHIRL_Id#43} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="99" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
@@ -3468,7 +3461,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_13" source="_aug__cfr_v_8" target="403" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="98" annotation="" scope_id="8">
-        <xaif:Marker statement_id="43" annotation="{WHIRL_Id#43} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_13">
@@ -3670,7 +3662,6 @@
             <xaif:ExpressionEdge edge_id="13" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Marker statement_id="39" annotation="{WHIRL_Id#39} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="102" annotation=""/>
       <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="100" target="101" has_condition_value="0"/>
@@ -3750,7 +3741,6 @@
             <xaif:ExpressionEdge edge_id="13" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Marker statement_id="39" annotation="{WHIRL_Id#39} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="_adj__cfr_v_2" annotation="_cfr_"/>
       <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="_adj__cfr_v_1" target="101" has_condition_value="0"/>
@@ -3830,7 +3820,6 @@
             <xaif:ExpressionEdge edge_id="13" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Marker statement_id="39" annotation="{WHIRL_Id#39} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="102" annotation=""/>
       <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="100" target="101" has_condition_value="0"/>
@@ -3910,7 +3899,6 @@
             <xaif:ExpressionEdge edge_id="13" source="2" target="1" position="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Marker statement_id="39" annotation="{WHIRL_Id#39} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="_adj__cfr_v_2" annotation="_cfr_"/>
       <xaif:ControlFlowEdge edge_id="_cfr_e_1" source="_adj__cfr_v_1" target="101" has_condition_value="0"/>
@@ -4268,7 +4256,6 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:Marker statement_id="294" annotation="{WHIRL_Id#294} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="129" annotation=""/>
       <xaif:BasicBlock vertex_id="127" annotation="" scope_id="13">
@@ -4645,7 +4632,6 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:Marker statement_id="294" annotation="{WHIRL_Id#294} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Branch vertex_id="_adj__cfr_v_2" annotation="_cfr_">
         <xaif:Condition>
@@ -5635,7 +5621,6 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:Marker statement_id="294" annotation="{WHIRL_Id#294} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="129" annotation=""/>
       <xaif:BasicBlock vertex_id="127" annotation="" scope_id="13">
@@ -6012,7 +5997,6 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:Marker statement_id="294" annotation="{WHIRL_Id#294} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Branch vertex_id="_adj__cfr_v_2" annotation="_cfr_">
         <xaif:Condition>
@@ -6798,7 +6782,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="404" annotation=""/>
       <xaif:BasicBlock vertex_id="108" annotation="" scope_id="10">
-        <xaif:Marker statement_id="56" annotation="{WHIRL_Id#56} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="109" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
@@ -6848,7 +6831,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_13" source="_aug__cfr_v_8" target="404" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="108" annotation="" scope_id="10">
-        <xaif:Marker statement_id="56" annotation="{WHIRL_Id#56} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_13">
@@ -7130,7 +7112,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="404" annotation=""/>
       <xaif:BasicBlock vertex_id="108" annotation="" scope_id="10">
-        <xaif:Marker statement_id="56" annotation="{WHIRL_Id#56} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="109" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
@@ -7180,7 +7161,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_13" source="_aug__cfr_v_8" target="404" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="108" annotation="" scope_id="10">
-        <xaif:Marker statement_id="56" annotation="{WHIRL_Id#56} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_13">
@@ -7496,7 +7476,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="405" annotation=""/>
       <xaif:BasicBlock vertex_id="115" annotation="" scope_id="11">
-        <xaif:Marker statement_id="60" annotation="{WHIRL_Id#60} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="116" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
@@ -7546,7 +7525,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_13" source="_aug__cfr_v_8" target="405" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="115" annotation="" scope_id="11">
-        <xaif:Marker statement_id="60" annotation="{WHIRL_Id#60} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_10">
@@ -7892,7 +7870,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="405" annotation=""/>
       <xaif:BasicBlock vertex_id="115" annotation="" scope_id="11">
-        <xaif:Marker statement_id="60" annotation="{WHIRL_Id#60} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="116" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
@@ -7942,7 +7919,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_13" source="_aug__cfr_v_8" target="405" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="115" annotation="" scope_id="11">
-        <xaif:Marker statement_id="60" annotation="{WHIRL_Id#60} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_10">
@@ -8290,7 +8266,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="389" annotation=""/>
       <xaif:BasicBlock vertex_id="23" annotation="" scope_id="4">
-        <xaif:Marker statement_id="60" annotation="{WHIRL_Id#60} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="24" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_9" annotation="_cfr_" scope_id="1">
@@ -8383,7 +8358,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_24" source="_aug__cfr_v_14" target="389" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="23" annotation="" scope_id="4">
-        <xaif:Marker statement_id="60" annotation="{WHIRL_Id#60} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_28">
@@ -8746,7 +8720,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="389" annotation=""/>
       <xaif:BasicBlock vertex_id="23" annotation="" scope_id="4">
-        <xaif:Marker statement_id="60" annotation="{WHIRL_Id#60} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="24" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_9" annotation="_cfr_" scope_id="1">
@@ -8839,7 +8812,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_24" source="_aug__cfr_v_14" target="389" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="23" annotation="" scope_id="4">
-        <xaif:Marker statement_id="60" annotation="{WHIRL_Id#60} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_28">
@@ -9788,7 +9760,6 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Marker statement_id="262" annotation="{WHIRL_Id#262} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="39" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_12" annotation="_cfr_" scope_id="1">
@@ -9934,7 +9905,6 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Marker statement_id="262" annotation="{WHIRL_Id#262} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_190">
@@ -11472,7 +11442,6 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Marker statement_id="262" annotation="{WHIRL_Id#262} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="39" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_12" annotation="_cfr_" scope_id="1">
@@ -11618,7 +11587,6 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Marker statement_id="262" annotation="{WHIRL_Id#262} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_190">
@@ -14009,7 +13977,6 @@
       <xaif:EndLoop vertex_id="397" annotation=""/>
       <xaif:EndLoop vertex_id="70" annotation=""/>
       <xaif:BasicBlock vertex_id="72" annotation="" scope_id="6">
-        <xaif:Marker statement_id="577" annotation="{WHIRL_Id#577} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="73" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_27" annotation="_cfr_" scope_id="1">
@@ -14358,7 +14325,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_87" source="_aug__cfr_v_50" target="70" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="72" annotation="" scope_id="6">
-        <xaif:Marker statement_id="577" annotation="{WHIRL_Id#577} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_539">
@@ -17684,7 +17650,6 @@
       <xaif:EndLoop vertex_id="397" annotation=""/>
       <xaif:EndLoop vertex_id="70" annotation=""/>
       <xaif:BasicBlock vertex_id="72" annotation="" scope_id="6">
-        <xaif:Marker statement_id="577" annotation="{WHIRL_Id#577} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="73" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_27" annotation="_cfr_" scope_id="1">
@@ -18033,7 +17998,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_87" source="_aug__cfr_v_50" target="70" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="72" annotation="" scope_id="6">
-        <xaif:Marker statement_id="577" annotation="{WHIRL_Id#577} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_539">
@@ -19791,7 +19755,6 @@
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="91" annotation=""/>
       <xaif:BasicBlock vertex_id="402" annotation="" scope_id="7">
-        <xaif:Marker statement_id="88" annotation="{WHIRL_Id#88} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="92" annotation=""/>
       <xaif:BasicBlock vertex_id="77" annotation="" scope_id="7">
@@ -20135,7 +20098,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_56" source="_aug__cfr_v_32" target="402" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="402" annotation="" scope_id="7">
-        <xaif:Marker statement_id="88" annotation="{WHIRL_Id#88} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Branch vertex_id="_adj__cfr_v_2" annotation="_cfr_">
         <xaif:Condition>
@@ -20376,7 +20338,6 @@
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="91" annotation=""/>
       <xaif:BasicBlock vertex_id="402" annotation="" scope_id="7">
-        <xaif:Marker statement_id="88" annotation="{WHIRL_Id#88} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="92" annotation=""/>
       <xaif:BasicBlock vertex_id="77" annotation="" scope_id="7">
@@ -20720,7 +20681,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_56" source="_aug__cfr_v_32" target="402" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="402" annotation="" scope_id="7">
-        <xaif:Marker statement_id="88" annotation="{WHIRL_Id#88} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Branch vertex_id="_adj__cfr_v_2" annotation="_cfr_">
         <xaif:Condition>
@@ -21039,7 +20999,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="406" annotation=""/>
       <xaif:BasicBlock vertex_id="122" annotation="" scope_id="12">
-        <xaif:Marker statement_id="43" annotation="{WHIRL_Id#43} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="123" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
@@ -21089,7 +21048,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_13" source="_aug__cfr_v_8" target="406" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="122" annotation="" scope_id="12">
-        <xaif:Marker statement_id="43" annotation="{WHIRL_Id#43} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_13">
@@ -21307,7 +21265,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="406" annotation=""/>
       <xaif:BasicBlock vertex_id="122" annotation="" scope_id="12">
-        <xaif:Marker statement_id="43" annotation="{WHIRL_Id#43} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="123" annotation=""/>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
@@ -21357,7 +21314,6 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_13" source="_aug__cfr_v_8" target="406" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="122" annotation="" scope_id="12">
-        <xaif:Marker statement_id="43" annotation="{WHIRL_Id#43} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_13">
