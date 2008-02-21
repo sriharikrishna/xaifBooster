@@ -540,46 +540,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static PreaccumulationMode::PreaccumulationMode_E ourPreaccumulationMode;
 
     void fillIndependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph); 
-    
-    void fillDependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph,
-			    VariableCPList& theDepVertexPListCopyWithoutRemovals);
+    void fillDependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph);
 
-    void 
-    generate(VariableHashTable& theListOfAlreadyAssignedSources,
-	     Sequence& aSequence, 
-	     VariableCPList& theDepVertexPListCopyWithoutRemovals, 
-	     SequenceHolder& aSequenceHolder,
-	     PreaccumulationMode::PreaccumulationMode_E thisMode); 
-
-    typedef std::pair<const Variable*,
-		      xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy*> VarDevPropPPair;
-    typedef std::list<VarDevPropPPair> VarDevPropPPairList;
-
-    /** 
-     * requires theIndepVariable to be alias checked
-     */
-    void 
-    generateSimplePropagator(const Variable& theIndepVariable,
-			     const Variable& theDependent,
-			     Sequence& aSequence,
-			     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
-			     const Variable& theLocalJacobianEntry);
-
-    /** 
-     * requires theIndepVariable to be alias checked
-     */
-    void 
-    generateSimplePropagatorFromEdge(const Variable& theSourceVariable,
-				     const Variable& theTargetVariable,
-				     Sequence& aSequence,
-				     VarDevPropPPairList& theListOfAlreadyAssignedDependents,
-				     const Variable& theLocalJacobianEntry,
-				     const PrivateLinearizedComputationalGraphEdge& thePrivateEdge);
-    
-    const Variable& getVariableWithAliasCheck(VariableHashTable& theListOfAlreadyAssignedSources,
-					      VariableCPList& theDepVertexPListCopyWithoutRemovals,
-					      const Variable& theIndepVariable,
-					      Sequence& aSequence); 
+    void generate(Sequence& aSequence,
+		  SequenceHolder& aSequenceHolder,
+		  PreaccumulationMode::PreaccumulationMode_E thisMode); 
 
     /**
      * Traverse the remainder graph and check all edges for possible aliasing conflicts
