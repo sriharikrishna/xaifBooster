@@ -74,7 +74,6 @@ C$OPENAD XXX Template ad_template.f
         I = I + 1
       END DO
       __value__(Y(2)) = (__value__(Y(1)) * __value__(Y(2)))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -117,7 +116,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_11)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_13)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
@@ -227,7 +225,6 @@ C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_11)
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_13)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE Pop(subst)

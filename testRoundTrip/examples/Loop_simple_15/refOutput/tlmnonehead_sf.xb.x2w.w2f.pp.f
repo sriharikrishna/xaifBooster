@@ -22,7 +22,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_5
       type(active) :: OpenAD_Symbol_6
       REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
 C
 C     **** Parameters and Result ****
 C
@@ -63,7 +62,6 @@ C$OPENAD XXX Simple loop
         Y(INT(I))%v = (X(I)%v+S)
         OpenAD_Symbol_3 = 1_w2f__i8
         OpenAD_Symbol_7 = OpenAD_Symbol_3
-        CALL setderiv(OpenAD_Symbol_8,X(I))
-        CALL sax(OpenAD_Symbol_7,OpenAD_Symbol_8,Y(I))
+        CALL sax(OpenAD_Symbol_7,X(I),Y(I))
       END DO
       END SUBROUTINE

@@ -37,13 +37,11 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      TYPE (OpenADTy_active) OpenAD_Symbol_10
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_7
       REAL(w2f__8) OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -60,14 +58,11 @@ C
 C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_2 = (__value__(X(1)) * 3.141592653589793116D00)
       OpenAD_Symbol_0 = (OpenAD_Symbol_2 * 2.0D00)
-      OpenAD_Symbol_7 = SIN(OpenAD_Symbol_0)
+      __value__(Y(1)) = SIN(OpenAD_Symbol_0)
       OpenAD_Symbol_5 = 3.141592653589793116D00
       OpenAD_Symbol_3 = 2.0D00
       OpenAD_Symbol_1 = COS(OpenAD_Symbol_0)
-      __value__(Y(1)) = OpenAD_Symbol_7
-      OpenAD_Symbol_8 = (OpenAD_Symbol_5 * OpenAD_Symbol_3)
-      OpenAD_Symbol_9 = (OpenAD_Symbol_8 * OpenAD_Symbol_1)
-      CALL setderiv(__deriv__(OpenAD_Symbol_10), __deriv__(X(1)))
-      CALL sax(OpenAD_Symbol_9, __deriv__(OpenAD_Symbol_10), __deriv__(
-     > Y(1)))
+      OpenAD_Symbol_7 = (OpenAD_Symbol_5 * OpenAD_Symbol_3)
+      OpenAD_Symbol_8 = (OpenAD_Symbol_7 * OpenAD_Symbol_1)
+      CALL sax(OpenAD_Symbol_8, __deriv__(X(1)), __deriv__(Y(1)))
       END SUBROUTINE

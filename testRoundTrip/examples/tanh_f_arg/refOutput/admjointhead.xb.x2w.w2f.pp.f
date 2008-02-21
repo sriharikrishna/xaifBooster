@@ -136,7 +136,6 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       Y(1)%v = TANH(X(1)%v)
-      
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -157,7 +156,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_2 = OpenAD_Symbol_1
           double_tape(double_tape_pointer) = OpenAD_Symbol_2
           double_tape_pointer = double_tape_pointer+1
-      
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.

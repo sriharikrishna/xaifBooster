@@ -71,9 +71,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
       REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      type(active) :: OpenAD_Symbol_8
 C
 C     **** Parameters and Result ****
 C
@@ -82,8 +79,8 @@ C
 C
 C     **** Local Variables and Functions ****
 C
-      REAL(w2f__8) OpenAD_Symbol_10
-      REAL(w2f__8) OpenAD_Symbol_9
+      REAL(w2f__8) OpenAD_Symbol_6
+      REAL(w2f__8) OpenAD_Symbol_7
 C
 C     **** Statements ****
 C
@@ -147,7 +144,6 @@ C            print*, " plain      ", our_rev_mode
 C original function
 C$OPENAD XXX Template ad_template.f
       Y%v = (X(1,1)%v*X(2,1)%v)
-      
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -161,17 +157,15 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_4 = (X(1,1)%v*X(2,1)%v)
+      Y%v = (X(1,1)%v*X(2,1)%v)
       OpenAD_Symbol_2 = X(2,1)%v
       OpenAD_Symbol_3 = X(1,1)%v
-      Y%v = OpenAD_Symbol_4
-      OpenAD_Symbol_5 = OpenAD_Symbol_2
-      OpenAD_Symbol_7 = OpenAD_Symbol_3
+      OpenAD_Symbol_4 = OpenAD_Symbol_2
+      OpenAD_Symbol_5 = OpenAD_Symbol_3
+          double_tape(double_tape_pointer) = OpenAD_Symbol_4
+          double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_5
           double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_7
-          double_tape_pointer = double_tape_pointer+1
-      
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -191,16 +185,12 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_9 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_8%d = OpenAD_Symbol_8%d+Y%d*OpenAD_Symbol_9
+          OpenAD_Symbol_6 = double_tape(double_tape_pointer)
+          X(2,1)%d = X(2,1)%d+Y%d*OpenAD_Symbol_6
           double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_10 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+Y%d*OpenAD_Symbol_10
+          OpenAD_Symbol_7 = double_tape(double_tape_pointer)
+          X(1,1)%d = X(1,1)%d+Y%d*OpenAD_Symbol_7
           Y%d = 0.0d0
-          X(1,1)%d = X(1,1)%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
-          X(2,1)%d = X(2,1)%d+OpenAD_Symbol_8%d
-          OpenAD_Symbol_8%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.
@@ -285,8 +275,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0(1 : 2)
       type(active) :: OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_11(1 : 2)
-      type(active) :: OpenAD_Symbol_12
+      type(active) :: OpenAD_Symbol_8(1 : 2)
+      type(active) :: OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -363,7 +353,6 @@ C!! requested inline of 'convert_a2p_vector' has no defn
       CALL convert_a2p_vector(PX,OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -387,7 +376,6 @@ C!! requested inline of 'convert_a2p_vector' has no defn
       CALL convert_a2p_vector(PX,OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -406,7 +394,7 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-      CALL foo(OpenAD_Symbol_11,OpenAD_Symbol_12)
+      CALL foo(OpenAD_Symbol_8,OpenAD_Symbol_9)
       CALL foo(X,Y)
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.

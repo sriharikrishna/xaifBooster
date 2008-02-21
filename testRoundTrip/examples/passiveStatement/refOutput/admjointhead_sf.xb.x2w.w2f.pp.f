@@ -74,10 +74,6 @@ C ========== end copyright notice ==============
       use active_module
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      type(active) :: OpenAD_Symbol_0
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X(1 : 1)
@@ -143,7 +139,6 @@ C original function
 C$OPENAD XXX Template ad_template.f
       Y(1)%v = X(1)%v
       I = INT(X(1)%v+(-1.0D00))+1
-      RETURN
             our_rev_mode=our_orig_mode
           end if 
           if (our_rev_mode%tape) then
@@ -159,7 +154,6 @@ C taping
 C$OPENAD XXX Template ad_template.f
       Y(1)%v = X(1)%v
       I = INT(X(1)%v+(-1.0D00))+1
-      RETURN
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -178,12 +172,8 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-          if (iaddr(Y(1)) .ne. iaddr(OpenAD_Symbol_0)) then
-            OpenAD_Symbol_0%d = OpenAD_Symbol_0%d+Y(1)%d
-            Y(1)%d = 0
-          end if
-          X(1)%d = X(1)%d+OpenAD_Symbol_0%d
-          OpenAD_Symbol_0%d = 0.0d0
+          X(1)%d = X(1)%d+Y(1)%d
+          Y(1)%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
             our_rev_mode%res_store=.FALSE.
