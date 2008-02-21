@@ -123,7 +123,6 @@ C$OPENAD XXX Template ad_template.f
       Y(2)%v = SIN(X(1)%v*X(2)%v)
       Y(3)%v = SIN(X(3)%v)
       Y(4)%v = COS(X(4)%v)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -153,7 +152,6 @@ C$OPENAD XXX Template ad_template.f
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_25
           double_tape_pointer = double_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -288,7 +286,6 @@ C
 C$OPENAD XXX Template ad_template.f
       CALL bar(B)
       C%v = (B%v+A%v*A%v)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -309,7 +306,6 @@ C$OPENAD XXX Template ad_template.f
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_30
           double_tape_pointer = double_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -424,7 +420,6 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       A%v = COS(A%v*A%v)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -441,7 +436,6 @@ C$OPENAD XXX Template ad_template.f
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_34
           double_tape_pointer = double_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint

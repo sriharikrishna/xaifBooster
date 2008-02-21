@@ -164,7 +164,6 @@
           <xaif:ExpressionEdge edge_id="5" source="2" target="1" position="1"/>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Marker statement_id="28" annotation="{WHIRL_Id#28} [passive: OPR_RETURN]"/>
     </xaif:BasicBlock>
 
     <xaif:Exit vertex_id="9"/>

@@ -98,7 +98,6 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y%v = (X%v*2.0D00)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -109,7 +108,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_3 = OpenAD_Symbol_0
           double_tape(double_tape_pointer) = OpenAD_Symbol_3
           double_tape_pointer = double_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -212,7 +210,6 @@ C$OPENAD XXX Template ad_template.f
       K = 1
       CALL foo(X(K),X(K+1))
       CALL foo(X(K),Y)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -224,7 +221,6 @@ C$OPENAD XXX Template ad_template.f
       CALL foo(X(K),Y)
           integer_tape(integer_tape_pointer) = K
           integer_tape_pointer = integer_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint

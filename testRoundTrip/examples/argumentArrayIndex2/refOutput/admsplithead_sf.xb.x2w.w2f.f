@@ -33,7 +33,6 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       __value__(Y) = (__value__(X) * 2.0D00)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -43,7 +42,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_5 = OpenAD_Symbol_2
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_5)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE Pop(subst)
@@ -90,7 +88,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_5 = OpenAD_Symbol_2
 C     $OpenAD$ INLINE push(subst)
       CALL push(OpenAD_Symbol_5)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE Pop(subst)
@@ -153,7 +150,6 @@ C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       CALL convert_a2p_scalar(P(K), __deriv__(OpenAD_Symbol_0))
 C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       CALL convert_a2p_scalar(Q(L), __deriv__(OpenAD_Symbol_1))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -176,7 +172,6 @@ C     $OpenAD$ INLINE push_i(subst)
       CALL push_i(K)
 C     $OpenAD$ INLINE push_i(subst)
       CALL push_i(L)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE pop_i(subst)
@@ -221,7 +216,6 @@ C     $OpenAD$ INLINE push_i(subst)
       CALL push_i(K)
 C     $OpenAD$ INLINE push_i(subst)
       CALL push_i(L)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE pop_i(subst)

@@ -150,7 +150,6 @@
           </xaif:VariableReference>
         </xaif:AssignmentRHS>
       </xaif:Assignment>
-      <xaif:Marker statement_id="11" annotation="{WHIRL_Id#11} [passive: OPR_RETURN]"/>
     </xaif:BasicBlock>
 
     <xaif:Exit vertex_id="6"/>
@@ -222,7 +221,6 @@
           </xaif:VariableReference>
         </xaif:Argument>
       </xaif:SubroutineCall>
-      <xaif:Marker statement_id="21" annotation="{WHIRL_Id#21} [passive: OPR_RETURN]"/>
     </xaif:BasicBlock>
 
     <xaif:Exit vertex_id="9"/>

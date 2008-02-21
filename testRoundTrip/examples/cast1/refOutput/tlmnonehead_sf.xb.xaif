@@ -170,7 +170,6 @@
             <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
           </xaif:ZeroDeriv>
         </xaif:DerivativePropagator>
-        <xaif:Marker statement_id="25" annotation="{WHIRL_Id#25} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="6" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="4" target="5" has_condition_value="0"/>

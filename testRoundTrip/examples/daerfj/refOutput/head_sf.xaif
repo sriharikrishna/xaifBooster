@@ -918,9 +918,7 @@
 
     <xaif:EndLoop vertex_id="30"/>
 
-    <xaif:BasicBlock vertex_id="9" scope_id="3">
-      <xaif:Marker statement_id="219" annotation="{WHIRL_Id#219} [passive: OPR_RETURN]"/>
-    </xaif:BasicBlock>
+    <xaif:BasicBlock vertex_id="9" scope_id="3"/>
 
     <xaif:Exit vertex_id="10"/>
 

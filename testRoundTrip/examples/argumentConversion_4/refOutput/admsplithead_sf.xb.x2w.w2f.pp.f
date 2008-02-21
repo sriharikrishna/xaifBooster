@@ -101,7 +101,6 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y%v = (X%v*X%v)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -116,7 +115,6 @@ C$OPENAD XXX Template ad_template.f
           double_tape_pointer = double_tape_pointer+1
           double_tape(double_tape_pointer) = OpenAD_Symbol_7
           double_tape_pointer = double_tape_pointer+1
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -237,7 +235,6 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PX(1),OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      RETURN
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -252,7 +249,6 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PX(1),OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(PY,OpenAD_Symbol_1)
-      RETURN
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint

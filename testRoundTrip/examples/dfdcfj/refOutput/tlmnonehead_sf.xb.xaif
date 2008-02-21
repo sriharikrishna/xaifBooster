@@ -7662,7 +7662,6 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="169" annotation=""/>
       <xaif:BasicBlock vertex_id="55" annotation="" scope_id="3">
-        <xaif:Marker statement_id="718" annotation="{WHIRL_Id#718} [passive: OPR_RETURN]"/>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="57" annotation=""/>
       <xaif:ControlFlowEdge edge_id="1" source="4" target="5" has_condition_value="0"/>

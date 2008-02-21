@@ -89,7 +89,6 @@ C
 ! original function
 C$OPENAD XXX Template ad_template.f
       Y%v = (X%v*2.0D00)
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -100,7 +99,6 @@ C$OPENAD XXX Template ad_template.f
       OpenAD_Symbol_5 = OpenAD_Symbol_2
           double_tape(double_tape_pointer) = OpenAD_Symbol_5
           double_tape_pointer = double_tape_pointer+1
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
@@ -223,7 +221,6 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(P(K),OpenAD_Symbol_0)
 C!! requested inline of 'convert_a2p_scalar' has no defn
       CALL convert_a2p_scalar(Q(L),OpenAD_Symbol_1)
-      
           end if
           if (our_rev_mode%tape) then
 ! taping
@@ -247,7 +244,6 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = L
           integer_tape_pointer = integer_tape_pointer+1
-      
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint

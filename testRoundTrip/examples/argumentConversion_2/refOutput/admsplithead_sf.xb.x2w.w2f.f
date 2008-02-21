@@ -26,12 +26,10 @@ C
 C     $OpenAD$ BEGIN REPLACEMENT 1
 C$OPENAD XXX Template ad_template.f
       __value__(Y) = __value__(X)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
       __value__(Y) = __value__(X)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE CondIncZeroDeriv(subst,subst)
@@ -68,7 +66,6 @@ C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 10
 C$OPENAD XXX Template ad_template.f
       __value__(Y) = __value__(X)
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE CondIncZeroDeriv(subst,subst)
@@ -118,7 +115,6 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL foo(__deriv__(OpenAD_Symbol_0), __deriv__(OpenAD_Symbol_1))
 C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_1))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 2
 C$OPENAD XXX Template ad_template.f
@@ -130,7 +126,6 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL foo(__deriv__(OpenAD_Symbol_0), __deriv__(OpenAD_Symbol_1))
 C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_1))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
       CALL foo(__deriv__(OpenAD_Symbol_3), __deriv__(OpenAD_Symbol_4))
@@ -158,7 +153,6 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       CALL foo(__deriv__(OpenAD_Symbol_0), __deriv__(OpenAD_Symbol_1))
 C     $OpenAD$ INLINE convert_a2p_scalar(subst,subst)
       CALL convert_a2p_scalar(PY, __deriv__(OpenAD_Symbol_1))
-      RETURN
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
       CALL foo(__deriv__(OpenAD_Symbol_3), __deriv__(OpenAD_Symbol_4))
