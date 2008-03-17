@@ -62,6 +62,9 @@ namespace xaifBooster {
     throw (PrintingIntException) { 
     std::string returnString;
     switch(aKind) {
+    case NOT_SET: 
+      returnString="not_set";
+      break;
     case PASSIVE:
       returnString="passive";
       break;
@@ -87,7 +90,9 @@ namespace xaifBooster {
   const PartialDerivativeKind::PartialDerivativeKind_E
   PartialDerivativeKind::fromString(const std::string& aName) { 
     PartialDerivativeKind_E returnValue;
-    if (aName=="passive")
+    if (aName=="not_set")
+      returnValue=NOT_SET;
+    else if (aName=="passive")
       returnValue=PASSIVE;
     else if (aName=="linear_one")
       returnValue=LINEAR_ONE;
