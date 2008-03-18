@@ -85,7 +85,7 @@ oad_allocateMatching
         
 
         interface saxpy
-          module procedure saxpy_a_a
+          module procedure saxpy_d_a_a, saxpy_i8_a_a, saxpy_i4_a_a
         end interface
         
         interface setderiv
@@ -98,7 +98,7 @@ oad_allocateMatching
         end interface
         
         interface sax
-          module procedure sax_d_a_a, sax_i_a_a
+          module procedure sax_d_a_a, sax_i8_a_a, sax_i4_a_a
         end interface
 
         interface convert_p2a_scalar
@@ -183,12 +183,26 @@ oad_allocateMatching
         ! chain rule saxpy to be used in forward and reverse modes
         !
         
-        subroutine saxpy_a_a(a,x,y)
+        subroutine saxpy_d_a_a(a,x,y)
           real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
           y%d=y%d+x%d*a
-        end subroutine saxpy_a_a
+        end subroutine saxpy_d_a_a
+        
+        subroutine saxpy_i8_a_a(a,x,y)
+          integer(kind=w2f__i8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+          y%d=y%d+x%d*a
+        end subroutine saxpy_i8_a_a
+        
+        subroutine saxpy_i4_a_a(a,x,y)
+          integer(kind=w2f__i4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+          y%d=y%d+x%d*a
+        end subroutine saxpy_i4_a_a
         
         !
         ! chain rule saxpy to be used in forward and reverse modes
@@ -204,12 +218,19 @@ oad_allocateMatching
           y%d=x%d*a
         end subroutine sax_d_a_a
 
-        subroutine sax_i_a_a(a,x,y)
+        subroutine sax_i8_a_a(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
           y%d=x%d*a
-        end subroutine sax_i_a_a
+        end subroutine sax_i8_a_a
+        
+        subroutine sax_i4_a_a(a,x,y)
+          integer(kind=w2f__i4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+          y%d=x%d*a
+        end subroutine sax_i4_a_a
         
         !
         ! set derivative of y to be equal to derivative of x
