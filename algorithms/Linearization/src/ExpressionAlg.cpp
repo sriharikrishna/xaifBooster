@@ -125,10 +125,11 @@ namespace xaifBoosterLinearization {
     DBG_MACRO(DbgGroup::CALLSTACK, "ExpressionAlg::createPartialExpressions: for " 
 	      << debug().c_str());
     Expression::ConstVertexIteratorPair p(getContaining().vertices());
-    Expression::ConstVertexIterator anExpressionVertexI(p.first),anExpressionVertexIEnd(p.second);
     Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getScopeTree().getGlobalScope());
-    for (; anExpressionVertexI!=anExpressionVertexIEnd ;++anExpressionVertexI) {  // outer loop over all vertices
+    Expression::ConstVertexIterator anExpressionVertexIEnd(p.second);
+    // outer loop over all vertices
+    for (Expression::ConstVertexIterator anExpressionVertexI(p.first); anExpressionVertexI != anExpressionVertexIEnd; ++anExpressionVertexI) {
       if (!getContaining().numInEdgesOf(*anExpressionVertexI)
 	  ||
 	  !dynamic_cast<ExpressionVertexAlg&>((*anExpressionVertexI).getExpressionVertexAlgBase()).isActive())
@@ -165,9 +166,8 @@ namespace xaifBoosterLinearization {
 													 false),
 						      theGlobalScope);
       } // end if
-      // now we need to go through all arguments
-      Expression::ConstInEdgeIterator anExpressionEdgeI2(pE.first); 
-      for (;anExpressionEdgeI2!=anExpressionEdgeIEnd;++anExpressionEdgeI2) { // inner loop over all arguments to determine auxilliaries
+      // now we need to loop over all arguments to determine auxilliaries
+      for (Expression::ConstInEdgeIterator anExpressionEdgeI2(pE.first); anExpressionEdgeI2 != anExpressionEdgeIEnd; ++anExpressionEdgeI2) {
 	const ExpressionVertex& theSource(getContaining().getSourceOf(*anExpressionEdgeI2));
 	ExpressionVertexAlg& theSourceAlg(dynamic_cast<ExpressionVertexAlg&>(getContaining().getSourceOf(*anExpressionEdgeI2).getExpressionVertexAlgBase()));
 	ExpressionEdgeAlg& theI2EdgeAlg(dynamic_cast<ExpressionEdgeAlg&>((*anExpressionEdgeI2).getExpressionEdgeAlgBase()));
@@ -179,7 +179,7 @@ namespace xaifBoosterLinearization {
 	    && 
 	    getContaining().numInEdgesOf(theSource)) {
 	  // we need to make a temporary variable. see
-	  // ExpressionVertex::myAuxilliaryArgument_p
+	  // ExpressionVertexAlg::myAuxilliaryArgument_p
 	  // however it is not needed if this is a leaf vertex, i.e. 
 	  // a variable reference itself or a constant (no in edges)
 	  // we create this for the time being in the global scope
@@ -211,13 +211,13 @@ namespace xaifBoosterLinearization {
 							thePartialExpression.getPartialArgumentAt((*anExpressionEdgeI2_1).getPosition()));
 	} // end for 
       } // end inner loop
-      // in the first pass through all arguments we made sure that we make 
-      // all necessary auxilliary variables, 
-      // in a second pass we can now deal with the partial expressions, but we 
-      // had to make sure that all potential arguments are already auxilliarized,
-      // therefore two passes are needed. 
-      Expression::ConstInEdgeIterator anExpressionEdgeI3(pE.first);
-      for (;anExpressionEdgeI3!=anExpressionEdgeIEnd;++anExpressionEdgeI3) {  // second inner loop over all arguments to create concrete expressions
+
+      // in the first pass through all arguments we made sure that we make all necessary auxilliary variables, 
+      // in a second pass we can now deal with the partial expressions, but we had to make sure that all potential
+      // arguments are already auxilliarized, therefore two passes are needed. 
+      // In this pass we also determine whether the ExpressionEdgeAlg has a constant PDK (the default is nonlinear)
+      // second inner loop over all arguments to create concrete expressions
+      for (Expression::ConstInEdgeIterator anExpressionEdgeI3(pE.first); anExpressionEdgeI3!=anExpressionEdgeIEnd; ++anExpressionEdgeI3) {
 	// now copy the expression for the partial, i.e. make a concrete 
 	// Expression for the abstract Expression given as InlinableIntrinsicsExpression
 	// make a list for vertex mapping
@@ -232,9 +232,10 @@ namespace xaifBoosterLinearization {
 	theI3ExpressionEdgeAlg.makeConcretePartialAssignment();
 	Expression& theNewConcretePartial(theI3ExpressionEdgeAlg.getConcretePartialAssignment().getRHS());
 	theI3ExpressionEdgeAlg.getConcretePartialAssignment().setId(makeUniqueId());
+	bool allConst = true;
 	InlinableIntrinsicsExpression::ConstVertexIteratorPair anAbstractvertexPair(thePartialExpression.vertices());
-	InlinableIntrinsicsExpression::ConstVertexIterator abstractVertexIt(anAbstractvertexPair.first), abstractVertexEndIt(anAbstractvertexPair.second);
-	for(;abstractVertexIt!=abstractVertexEndIt; ++abstractVertexIt) { 
+	for(InlinableIntrinsicsExpression::ConstVertexIterator abstractVertexIt(anAbstractvertexPair.first), abstractVertexEndIt(anAbstractvertexPair.second);
+	    abstractVertexIt!=abstractVertexEndIt; ++abstractVertexIt) { 
 	  // if we find it in the list of vertices known to be 
 	  // arguments to the partial expressions,
 	  // then the following would be a vertex in 'this' expression
@@ -257,9 +258,9 @@ namespace xaifBoosterLinearization {
 	      Argument* aNewArgument_p=new Argument();
 	      theNewVertex_p=aNewArgument_p;
 	      theArgumentVertexAlg.getAuxilliaryVariable().copyMyselfInto(aNewArgument_p->getVariable());
+	      allConst = false;
 	    }
-	    else { 
-	      // this is a Argument or a Constant
+	    else { // this is an Argument or a Constant
 	      theNewVertex_p=&(theArgumentVertex_p->createCopyOfMyself());
 	      // we need to mark any Arguments used in a partial expression
 	      // so we can figure out later 
@@ -270,11 +271,12 @@ namespace xaifBoosterLinearization {
 	      // if the following cast fails then we have a constant which we can 
 	      // just skip: 
 	      const Argument* theArgument_p=dynamic_cast<const Argument*>(theArgumentVertex_p);
-	      if (theArgument_p) 
+	      if (theArgument_p) { 
 		markUsedInPartial(*theArgument_p);
-	      // else cast failed.
-	    } 
-	  } // end if 
+		allConst = false;
+	      } // else cast failed: it must be a constant
+	    } // end argument or constant
+	  } // end if
 	  else { 
 	    // this is not referring to 
 	    // a vertex in 'this'
@@ -288,6 +290,11 @@ namespace xaifBoosterLinearization {
 	  theAbstractToConcreteVertexPairList.push_back(VertexPointerPair(&(*abstractVertexIt),
 									  theNewVertex_p));
 	} // end for all abstract vertices
+
+	// only make it LINEAR if all vertices were constants and it's currently NONLINEAR (don't want to undo a passivate!)
+	if (allConst && theI3ExpressionEdgeAlg.getPartialDerivativeKind() == PartialDerivativeKind::NONLINEAR)
+	  theI3ExpressionEdgeAlg.linearate();
+
 	// now take care of all abstract edges
 	InlinableIntrinsicsExpression::ConstEdgeIteratorPair anAbstractEdgePair(thePartialExpression.edges());
 	InlinableIntrinsicsExpression::ConstEdgeIterator abstractEdgeIt(anAbstractEdgePair.first), abstractEdgeEndIt(anAbstractEdgePair.second);
@@ -344,8 +351,8 @@ namespace xaifBoosterLinearization {
 	theLHS.getAliasMapKey().setTemporary();
 	theLHS.getDuUdMapKey().setTemporary();
       } // end for
-    } // end for 
-  } // end of ExpressionAlg::createPartialExpressions
+    } // end for all expression vertices (outer loop)
+  } // end of ExpressionAlg::createPartialExpressions()
 
   void ExpressionAlg::activityAnalysisBottomUpPass(const ExpressionVertex& theVertex) { 
     Expression::ConstInEdgeIteratorPair pE(getContaining().getInEdgesOf(theVertex));

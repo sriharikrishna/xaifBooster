@@ -114,7 +114,7 @@ namespace xaifBoosterDerivativePropagator {
 						const Variable& theSource) { 
     DerivativePropagatorSetDeriv* theDPSD_p= new DerivativePropagatorSetDeriv(theTarget,
 									      theSource);
-    myEntryPList.push_front(theDPSD_p);
+    myEntryPList.push_back(theDPSD_p);
     return *theDPSD_p;
   } 
 
