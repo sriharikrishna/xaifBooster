@@ -54,6 +54,7 @@
 // ========== end copyright notice ==============
 
 #include <list>
+#include <map>
 
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 
@@ -67,6 +68,7 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMode.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
@@ -465,26 +467,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) {
       xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
     }; 
-    
-    
-    typedef std::pair<const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex*,
-		      const Variable*> InternalReferenceConcretization; 
-    typedef std::list<InternalReferenceConcretization> InternalReferenceConcretizationList;
-
-    typedef std::pair<const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex*,
-		      const ExpressionVertex*> VertexPair; 
-    typedef std::list<VertexPair> VertexPairList;
-    
-    /**
-     * \todo JU: here we just make up positions for the + and * operations because
-     * they don't matter for scalars. In the future for vector valued Jacobian 
-     * accumulations ANGEL needs to return the positions. 
-     */
-    void traverseAndBuildJacobianAccumulationsFromBottomUp(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& theVertex,
-							   const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression,
-							   Assignment& theNewAssignment,
-							   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
-							   VertexPairList& theVertexPairList);
 
     /** 
      * determines variables in IN and OUT
@@ -502,8 +484,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * the list of all Assignment statement Ids
      */ 
     StatementIdList myAssignmentIdList;
-
-    typedef HashTable<const Variable*> VariableHashTable;
 
     /*
      * performs the core of algorithm_action_3();
@@ -542,9 +522,48 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void fillIndependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph); 
     void fillDependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph);
 
-    void generate(Sequence& aSequence,
-		  SequenceHolder& aSequenceHolder,
-		  PreaccumulationMode::PreaccumulationMode_E thisMode); 
+    /**
+     * used for propagation
+     */
+    typedef std::map<const LinearizedComputationalGraphEdge*, const AccumulationGraphVertex*> RemainderEdge2AccumulationVertex_map;
+
+    /**
+     * used for building the Accumulation graph from the JAEs
+     */
+    typedef std::map<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*,
+		     AccumulationGraphVertex*> LCGe_to_ACCv_map;
+    typedef std::map<const JacobianAccumulationExpressionVertex*,
+		     AccumulationGraphVertex*> JAEv_to_ACCv_map;
+
+    /**
+     * Flattens the JAEs into a single Accumulation graph and populates a mapping from remainder graph edges to
+     * accumulation graph vertices, which will be used in the generation of propagators.
+     */
+    void buildAccumulationGraph(const Sequence& aSequence,
+				AccumulationGraph& theAccumulationGraph,
+				RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap);
+
+    /**
+     * Traverses \p theAccumulationGraph in topological order, generating assignments for all non-leaf vertices
+     * that are either maximal or have >1 outedges (these represent intermediate values used more than once).
+     */
+    void generateAccumulationExpressions(Sequence& aSequence,
+					 AccumulationGraph& theAccumulationGraph,
+					 const RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap);
+
+    /**
+     * Determines the PDK for a non-leaf vertex and, if applicable, also pre-computes it's value.
+     * (This is where the magic of constant folding happens!)
+     */
+    void evaluateAccVertex(AccumulationGraphVertex& theAccVertex,
+			   const AccumulationGraph& theAccumulationGraph);
+
+    /**
+     * Recursively builds a single accumulation assignment from the subtree rooted at \p theAccVertex
+     */
+    const ExpressionVertex& buildAccumulationAssignmentRecursively(const AccumulationGraph& theAccumulationGraph,
+								   Assignment& theNewAssignment,
+								   const AccumulationGraphVertex& theAccVertex);
 
     /**
      * Traverse the remainder graph and check all edges for possible aliasing conflicts
@@ -554,38 +573,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void makePropagationVariables(Sequence& aSequence);
 
+    /**
+     *
+     */
     void generateRemainderGraphPropagators(Sequence& aSequence, 
-					   const InternalReferenceConcretizationList& theInternalReferenceConcretizationList); 
-
-    void generateRemainderGraphEdgePropagator(const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV, 
-					      const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV, 
-					      const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
-					      Sequence& aSequence,
-					      const InternalReferenceConcretizationList& theInternalReferenceConcretizationList); 
-
-    void generateSimpleRemainderPropagatorFromEdge(const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV,
-						   const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV,
-						   Sequence& aSequence,
-						   const Variable& theLocalJacobianEntry,
-						   const PrivateLinearizedComputationalGraphEdge& thePrivateEdge);
-
-    void generateSimpleRemainderPropagator(const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV,
-					   const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV,
-					   Sequence& aSequence,
-					   const Variable& theLocalJacobianEntry);
-
-    const Variable& getEdgeLabel(const xaifBoosterCrossCountryInterface::EdgeCorrelationEntry& theEdge,
-				 const InternalReferenceConcretizationList& theInternalReferenceConcretizationList,
-				 Sequence& aSequence);
-    
+					   const RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap); 
+    /**
+     *
+     */
+    void propagateOnRemainderGraphEdge(const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV,
+				       const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV,
+				       Sequence& aSequence,
+				       const AccumulationGraphVertex& theAccVertex);
 
     /** 
      * to satisfy schema uniqueness constraints
      */
     static std::string makeUniqueId(); 
 
-  };
+  }; // end class BasicBlockAlg
  
-} // end of namespace xaifBoosterAngelInterfaceAlgorithms
+} // end namespace xaifBoosterBasicBlockPreaccumulation
                                                                      
 #endif
