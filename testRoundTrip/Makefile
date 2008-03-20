@@ -219,10 +219,7 @@ xaifBooster:
 driver: $(MODULES) head.xb.x2w.w2f.pp.o driver.o 
 	$(F90C) $(F90FLAGS) $^ -o $@ 
 
-numericalComparison: numericalComparison.o
-	$(F90C) $(F90FLAGS) $^ -o $@ 
-
-run: params.conf tmpOutput driver numericalComparison 
+run: params.conf tmpOutput driver 
 	./driver
 
 %.o:%.f
@@ -246,7 +243,7 @@ testAllclean:
 
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif whirl2sexp sexp2whirl ir_b2a xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
+	$(RM) mfef90 whirl2xaif whirl2sexp sexp2whirl ir_b2a xaif2whirl whirl2f_be whirl2f *.pl xaifBooster .lastRun
 	$(RM) *.mod *.o
 
 objs test : 

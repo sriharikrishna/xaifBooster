@@ -259,13 +259,17 @@ do
   fi
   if [ "$MAJOR_MODE" == "adm" -o "$MAJOR_MODE" == "tlm" ]
   then 
-    echo -n "numerical comparison ... "  
-    echo "\"tmpOutput/dd.out\" \"$exdir/refOutput/dd.out\" \"tmpOutput/ad.out\" \"$exdir/refOutput/ad.out\"" | ./numericalComparison
-
-    if [ $? -eq 0 ] 
+    numFiles="tmpOutput/dd.out $exdir/refOutput/dd.out tmpOutput/ad.out $exdir/refOutput/ad.out"
+    if [ -z "$BATCHMODE" ] 
     then 
-      echo "no significant differences"
+      testFlags='-g -v'
     else
+      testFlags='-b'
+    fi
+    echo ./numericalComparison.py ${testFlags} -n $i $numFiles
+    ./numericalComparison.py ${testFlags} -n $i $numFiles
+    if [ $? -ne 0 ] 
+    then
       echo " ERROR in: ./numericalComparison for $i"; allOkSoFar="false"; continue;
     fi
   fi
