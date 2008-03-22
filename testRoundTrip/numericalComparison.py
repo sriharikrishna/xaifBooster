@@ -7,14 +7,15 @@ def showGraphs(errDict,errLimDict,name):
     import tempfile
     plotFileName=tempfile.mktemp()
     plotFile=open(plotFileName,"w")
-    plotFile.write('set multiplot layout 3, 2 title \"'+str(name)+'\"\n')
+    plotFile.write('set multiplot layout 2, 3 title \"'+str(name)+'\"\n')
     plotFile.write('set noxlabel\n')
     plotFile.write('set noxtics\n')
     plotFile.write('set noylabel\n')
     plotFile.write('set logscale y\n')
     plotFile.write('set nokey\n')
     datFileNames=[]
-    for errName,errValList in errDict.items():
+    for errName in sorted(errDict.keys()):
+	errValList=errDict[errName]
         plotFile.write('set title \"'+errName+'\"\n')
         datFileName=tempfile.mktemp()
         datFileNames.append(datFileName)
@@ -25,8 +26,9 @@ def showGraphs(errDict,errLimDict,name):
         plotFile.write('plot \"'+datFileName+'\" with points pt 3, \\\n')
         plotFile.write(str(errLimDict[errName])+' with lines lt 1\n')
     plotFile.close()
-    print plotFileName
-    os.system("gnuplot -persist "+plotFileName)
+    rc=os.system("gnuplot -persist "+plotFileName+" 2>/dev/null")
+    if (rc) :
+        sys.stderr.write("gnuplot failed\n")
     os.remove(plotFileName)
     map(os.remove,datFileNames)
 
@@ -95,7 +97,7 @@ def compareFiles (fileDict,doBatch, graphs,name, verbose):
              sys.stderr.write(" "+errKey+" > "+str(errLimDict[errKey])+" for:\n")     
              for index,val in enumerate(errDict[errKey]) :
                 if (val > errLimDict[errKey]) :
-                  sys.stderr.write("  F["+str(index/m+1)+"]["+str(index%m)+"]: "+str(val)+"\n")
+                  sys.stderr.write("  F["+str(index/m+1)+"]["+str(index%m)+"]: %r\n" % (val))
     if (returnValue and graphs) :
         showGraphs(errDict,errLimDict,name)
     return returnValue
