@@ -721,6 +721,13 @@ namespace xaifBooster {
     return;
   }
 
+  void
+  XAIFBaseParserHandlers::onOnEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onOnEntry"); 
+    passingOut.setSideEffectList(passingIn.getControlFlowGraph().getSideEffectList(SideEffectListType::ON_ENTRY_LIST));
+    return;
+  }
+
   void 
   XAIFBaseParserHandlers::onRead(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onRead"); 

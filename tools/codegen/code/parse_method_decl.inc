@@ -40,6 +40,7 @@ void onLabel(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passin
 void onMarker(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onMod(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onModLocal(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
+void onOnEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onPostLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onPreLoop(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
 void onRead(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut);
