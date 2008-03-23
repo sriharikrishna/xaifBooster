@@ -168,6 +168,16 @@ namespace xaifBooster {
   SubroutineCall::getConcreteArgumentPList() const { 
     return myConcreteArgumentPList;
   } 
+
+  const ConcreteArgument& SubroutineCall::getConcreteArgument(unsigned int aPosition) const { 
+    for(ConcreteArgumentPList::const_iterator i = myConcreteArgumentPList.begin();
+	i!=myConcreteArgumentPList.end();
+	++i) { 
+      if ((*i)->getPosition()==aPosition)
+	return **i;
+    }
+    THROW_LOGICEXCEPTION_MACRO("SubroutineCall::getConcreteArgument: invalid position" << aPosition);
+  } 
   
   const SymbolReference& 
   SubroutineCall::getSymbolReference() const { 
