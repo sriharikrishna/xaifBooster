@@ -90,6 +90,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     const Expression::VariablePVariableSRPPairList& getIndexVariablesPushed() const; 
 
+    void checkAndPush(const Variable& theVariable);  
+
   private: 
 
     /** 
