@@ -3,11 +3,11 @@
 import os
 import sys
 
-def showGraphs(errDict,errLimDict,name):
+def showGraphs(errDict,errLimDict,name,n,m):
     import tempfile
     plotFileName=tempfile.mktemp()
     plotFile=open(plotFileName,"w")
-    plotFile.write('set multiplot layout 2, 3 title \"'+str(name)+'\"\n')
+    plotFile.write('set multiplot layout 2, 3 title \"'+str(name)+' n='+str(n)+',m='+str(m)+'\"\n')
     plotFile.write('set noxlabel\n')
     plotFile.write('set noxtics\n')
     plotFile.write('set noylabel\n')
@@ -17,20 +17,40 @@ def showGraphs(errDict,errLimDict,name):
     for errName in sorted(errDict.keys()):
 	errValList=errDict[errName]
         plotFile.write('set title \"'+errName+'\"\n')
-        datFileName=tempfile.mktemp()
-        datFileNames.append(datFileName)
-        datFile=open(datFileName,"w")
+        datOverFileName=tempfile.mktemp()
+        datFileNames.append(datOverFileName)
+        datOverFile=open(datOverFileName,"w")
+        datUnderFileName=tempfile.mktemp()
+        datFileNames.append(datUnderFileName)
+        datUnderFile=open(datUnderFileName,"w")
+	errMin=errLimDict[errName]
         for (x,y) in enumerate(errValList):
-            datFile.write(str(x)+' '+str(y)+'\n')
-        datFile.close()
-        plotFile.write('plot \"'+datFileName+'\" with points pt 3, \\\n')
-        plotFile.write(str(errLimDict[errName])+' with lines lt 1\n')
+            if (y>errLimDict[errName] ) :
+                datOverFile.write(str(x)+' '+str(y)+'\n')
+            else :     
+                datUnderFile.write(str(x)+' '+str(y)+'\n')
+            if (y>0 and y<errMin) :
+                errMin=y
+        if (errMin==errLimDict[errName]) :
+            plotFile.write('set yrange ['+str(errMin/10)+':] \n')
+        errMax=max(max(errDict[errName]),errLimDict[errName])
+        if (errMax==errLimDict[errName]) :
+            plotFile.write('set yrange [:'+str(errMax*10)+'] \n')
+        datOverFile.close()
+        datUnderFile.close()
+        plotFile.write('plot\\\n')
+        plotFile.write('\"'+datOverFileName+'\" with points pt 3 lc 1, \\\n')
+        plotFile.write('\"'+datUnderFileName+'\" with points pt 3 lc 2, \\\n')
+        plotFile.write(str(errLimDict[errName])+' with lines lt 3 lc 3\n')
+        plotFile.write('set yrange [*:*] \n')
     plotFile.close()
     rc=os.system("gnuplot -persist "+plotFileName+" 2>/dev/null")
     if (rc) :
         sys.stderr.write("gnuplot failed\n")
-    os.remove(plotFileName)
-    map(os.remove,datFileNames)
+        sys.stderr.write("file "+plotFileName+"\n")
+    else :     
+        os.remove(plotFileName)
+        map(os.remove,datFileNames)
 
 def compareFiles (fileDict,doBatch, graphs,name, verbose):
     paramsFile=open("params.conf","r")
@@ -99,7 +119,7 @@ def compareFiles (fileDict,doBatch, graphs,name, verbose):
                 if (val > errLimDict[errKey]) :
                   sys.stderr.write("  F["+str(index/m+1)+"]["+str(index%m)+"]: %r\n" % (val))
     if (returnValue and graphs) :
-        showGraphs(errDict,errLimDict,name)
+        showGraphs(errDict,errLimDict,name,n,m)
     return returnValue
           
 def main():
