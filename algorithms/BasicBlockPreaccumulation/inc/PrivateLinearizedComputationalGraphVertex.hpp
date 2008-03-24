@@ -74,7 +74,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     bool hasOriginalVariable() const;
     const Variable& getOriginalVariable() const;
-    void zeroOriginalVariable();
     void setOriginalVariable(const Variable& aVariable,
 			     const ObjectWithId::Id& aStatementId);
 
