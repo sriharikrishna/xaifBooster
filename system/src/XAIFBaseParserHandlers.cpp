@@ -721,6 +721,13 @@ namespace xaifBooster {
     return;
   }
 
+  void
+  XAIFBaseParserHandlers::onOnEntry(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onOnEntry"); 
+    passingOut.setSideEffectList(passingIn.getControlFlowGraph().getSideEffectList(SideEffectListType::ON_ENTRY_LIST));
+    return;
+  }
+
   void 
   XAIFBaseParserHandlers::onRead(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onRead"); 
@@ -738,7 +745,16 @@ namespace xaifBooster {
   void 
   XAIFBaseParserHandlers::onSideEffectReference(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onSideEffectReference"); 
-    passingOut.setVariable(passingIn.getSideEffectList().addSideEffectReference());
+    Variable& theVariable(passingIn.getSideEffectList().addSideEffectReference());
+    theVariable.getAliasMapKey().
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Variable::our_myAliasMapKey_XAIFName)));
+    theVariable.getDuUdMapKey().
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Variable::our_myDuUdMapKey_XAIFName)));
+    theVariable.
+      setActiveUseType(ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
+    if (XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(Variable::our_myConstantUseFlag_XAIFName)))
+      theVariable.setConstantUseFlag();
+    passingOut.setVariable(theVariable);
   }
 
   void 

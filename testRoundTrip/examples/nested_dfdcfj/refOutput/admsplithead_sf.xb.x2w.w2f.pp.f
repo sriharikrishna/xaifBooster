@@ -156,6 +156,10 @@ C$OPENAD XXX Template ad_template.f
       HY2 = (HY * HY)
       HX2 = (HX * HX)
       CALL foo(NX,NY,X,FVEC,R,N,HX,HY,HY2,HX2)
+          integer_tape(integer_tape_pointer) = NX
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = NY
+          integer_tape_pointer = integer_tape_pointer+1
       OpenAD_Symbol_259 = 0_w2f__i8
       DO K = 1, N, 1
         OpenAD_Symbol_0 = (HX2 * HY2)
@@ -194,6 +198,10 @@ C$OPENAD XXX Template ad_template.f
           OpenAD_Symbol_164%d = 0.0d0
         OpenAD_Symbol_258 = INT(OpenAD_Symbol_258) + 1
       END DO
+          integer_tape_pointer = integer_tape_pointer-1
+          NX = integer_tape(integer_tape_pointer)
+          integer_tape_pointer = integer_tape_pointer-1
+          NY = integer_tape(integer_tape_pointer)
       CALL foo(NX,NY,X,FVEC,R,N,HX,HY,HY2,HX2)
           end if 
         end subroutine head
