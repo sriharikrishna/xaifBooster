@@ -192,6 +192,11 @@
         <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="Y_5"/>
       </xaif:SideEffectReference>
     </xaif:Read>
+    <xaif:OnEntry>
+      <xaif:SideEffectReference vertex_id="1">
+        <xaif:SymbolReference vertex_id="1" scope_id="3" symbol_id="J_1"/>
+      </xaif:SideEffectReference>
+    </xaif:OnEntry>
 
     <xaif:Entry vertex_id="4"/>
 

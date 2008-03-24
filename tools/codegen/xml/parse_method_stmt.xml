@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="2" nr_templates="2" outfile="parse_method_stmt.inc">
 
-  <CodeGen:RepeatableCode nr_versions="58">
+  <CodeGen:RepeatableCode nr_versions="59">
     <CodeGen:CodeTemplate nr_entries="9">
       <CodeGen:StaticCode text="ourStartActionCatalogue.addElement("/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -217,6 +217,11 @@
       <CodeGen:DynamicCode hook_ref="1" text="SideEffectListType"/>
       <CodeGen:DynamicCode hook_ref="2" text="our_ModLocal_XAIFName"/>
       <CodeGen:DynamicCode hook_ref="3" text="ModLocal"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="SideEffectListType"/>
+      <CodeGen:DynamicCode hook_ref="2" text="our_OnEntry_XAIFName"/>
+      <CodeGen:DynamicCode hook_ref="3" text="OnEntry"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="PostLoop"/>
