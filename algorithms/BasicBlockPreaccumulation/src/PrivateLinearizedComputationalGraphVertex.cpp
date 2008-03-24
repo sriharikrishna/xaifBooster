@@ -62,9 +62,9 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
   PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() :
-    myOriginalVariable_p (0),
-    myPropagationVariable_p (0),
-    mySAX_p (0) {
+    myOriginalVariable_p (NULL),
+    myPropagationVariable_p (NULL),
+    mySAX_p (NULL) {
   }
 
   PrivateLinearizedComputationalGraphVertex::~PrivateLinearizedComputationalGraphVertex() {
@@ -82,14 +82,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *myOriginalVariable_p;
   } // end PrivateLinearizedComputationalGraphVertex::getOriginalVariable()
 
-  void PrivateLinearizedComputationalGraphVertex::zeroOriginalVariable() {
-    myOriginalVariable_p = 0;
-  } // end PrivateLinearizedComputationalGraphVertex::zeroOriginalVariable()
-
   void PrivateLinearizedComputationalGraphVertex::setOriginalVariable(const Variable& aVariable,
 								      const ObjectWithId::Id& aStatementId) {
     if (myOriginalVariable_p)
-//      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setOriginalVariable: already set to " << myOriginalVariable_p << " while trying to set to " << &aVariable);
       THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setOriginalVariable: already set to " << myOriginalVariable_p->debug().c_str()
                                  << " while trying to set to " << aVariable.debug().c_str());
     myOriginalVariable_p = &aVariable;
@@ -117,7 +112,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                                                                                                                                            true),
                                                                                         theGlobalScope);
     theVariableSymbolReference_p->setId("1");
-    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::ExpressionVertexAlg::getPropagationVariable");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex::createOrReplacePropagationVariable");
     myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     myPropagationVariable_p->getAliasMapKey().setTemporary();
     myPropagationVariable_p->getDuUdMapKey().setTemporary();
@@ -150,6 +145,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     out << "PrivateLinearizedComputationalGraphVertex[" << this 
 	<< ",myOriginalVariable_p=" << myOriginalVariable_p
 	<< ",myPropagationVariable_p=" << myPropagationVariable_p
+	<< ",myStatementId=" << myStatementId
+	<< ",mySAX_p=" << mySAX_p
 	<< "]" << std::ends;  
     return out.str();
   } // end PrivateLinearizedComputationalGraphVertex::debug()

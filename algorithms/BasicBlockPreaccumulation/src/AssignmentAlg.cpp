@@ -403,7 +403,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       theVertexIdentificationListActiveLHS.addElement(theLHS,
 					     	      theLHSLCGVertex_p,
 						      getContainingAssignment().getId());
-      //theLHSLCGVertex_p->zeroOriginalVariable();
       theLHSLCGVertex_p->setOriginalVariable(theLHS,
 					     getContainingAssignment().getId());
       // as we step through the assignments we add all the left hand sides as dependendents
