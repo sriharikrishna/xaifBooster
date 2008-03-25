@@ -157,9 +157,9 @@ C     $OpenAD$ INLINE push_i(subst)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(K)
-C     $OpenAD$ INLINE pop_i(subst)
       CALL pop_i(L)
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(K)
       CALL foo(__deriv__(OpenAD_Symbol_7), __deriv__(Q(L)))
 C     $OpenAD$ INLINE IncDeriv(subst,subst)
       CALL IncDeriv(__deriv__(Y), __deriv__(OpenAD_Symbol_5))
@@ -215,9 +215,9 @@ C     $OpenAD$ INLINE push_i(subst)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(K)
-C     $OpenAD$ INLINE pop_i(subst)
       CALL pop_i(L)
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(K)
       CALL foo(__deriv__(OpenAD_Symbol_7), __deriv__(Q(L)))
 C     $OpenAD$ INLINE IncDeriv(subst,subst)
       CALL IncDeriv(__deriv__(Y), __deriv__(OpenAD_Symbol_5))

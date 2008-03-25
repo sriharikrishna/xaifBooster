@@ -202,7 +202,7 @@ contains
     end if
     c=c+1
     s(c)=x
-!    write(*,'(A,I5)') "store(s)  ", x
+!    write(*,'(A,I5,I5)') "store(s)  ", x,c
   end subroutine cp_store_int_scalar_impl
 
   subroutine cp_store_int_vector_impl(x,n,s,c,a)

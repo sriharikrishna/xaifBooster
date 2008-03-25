@@ -2067,6 +2067,20 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:SubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="SRcall_inline_push_i">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" alias="3" du_ud="2" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="NX_1" annotation="" scope_id="3"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="SRcall_inline_push_i">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" alias="4" du_ud="2" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="NY_2" annotation="" scope_id="3"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
           <xaif:Marker statement_id="81" annotation="{WHIRL_Id#81} [passive: OPR_STID]"/>
         </xaif:BasicBlock>
         <xaif:ForLoop vertex_id="6" annotation="" reversal="anonymous">
@@ -2402,6 +2416,20 @@
         </xaif:BasicBlock>
         <xaif:EndLoop vertex_id="_adj__cfr_v_3" annotation="_cfr_"/>
         <xaif:BasicBlock vertex_id="5" annotation="" scope_id="3">
+          <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" alias="4" du_ud="2" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="NY_2" annotation="" scope_id="3"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" alias="3" du_ud="2" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="NX_1" annotation="" scope_id="3"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
           <xaif:SubroutineCall statement_id="reverse_call" symbol_id="foo__22" scope_id="1" active="undefined">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" alias="3" du_ud="2" deriv="0" constant="0">
@@ -2673,6 +2701,20 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:SubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="SRcall_inline_push_i">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" alias="3" du_ud="2" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="NX_1" annotation="" scope_id="3"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="SRcall_inline_push_i">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" alias="4" du_ud="2" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="NY_2" annotation="" scope_id="3"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
           <xaif:Marker statement_id="81" annotation="{WHIRL_Id#81} [passive: OPR_STID]"/>
         </xaif:BasicBlock>
         <xaif:ForLoop vertex_id="6" annotation="" reversal="anonymous">
@@ -3008,6 +3050,20 @@
         </xaif:BasicBlock>
         <xaif:EndLoop vertex_id="_adj__cfr_v_3" annotation="_cfr_"/>
         <xaif:BasicBlock vertex_id="5" annotation="" scope_id="3">
+          <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" alias="4" du_ud="2" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="NY_2" annotation="" scope_id="3"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" alias="3" du_ud="2" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="NX_1" annotation="" scope_id="3"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
           <xaif:SubroutineCall statement_id="reverse_call" symbol_id="foo__22" scope_id="1" active="undefined">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" alias="3" du_ud="2" deriv="0" constant="0">

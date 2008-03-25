@@ -198,6 +198,10 @@ C$OPENAD XXX Template ad_template.f
       HY2 = (HY * HY)
       HX2 = (HX * HX)
       CALL foo(NX,NY,X,FVEC,R,N,HX,HY,HY2,HX2)
+          integer_tape(integer_tape_pointer) = NX
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = NY
+          integer_tape_pointer = integer_tape_pointer+1
       OpenAD_Symbol_259 = 0_w2f__i8
       DO K = 1, N, 1
         OpenAD_Symbol_0 = (HX2 * HY2)
@@ -251,6 +255,10 @@ C adjoint
           OpenAD_Symbol_164%d = 0.0d0
         OpenAD_Symbol_258 = INT(OpenAD_Symbol_258) + 1
       END DO
+          integer_tape_pointer = integer_tape_pointer-1
+          NY = integer_tape(integer_tape_pointer)
+          integer_tape_pointer = integer_tape_pointer-1
+          NX = integer_tape(integer_tape_pointer)
       CALL foo(NX,NY,X,FVEC,R,N,HX,HY,HY2,HX2)
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
@@ -690,11 +698,11 @@ C write(*,'(A,EN26.16E3)')"restore(s)  ",HX
 C write(*,'(A,EN26.16E3)')"restore(s)  ",R
           theArgFStackoffset = theArgFStackoffset-1
           NY = theArgIStack(theArgIStackoffset)
+C write(*,'(A,I5,I5)')"restore(s)  ",NY,theArgIStackOffset
           theArgIStackoffset = theArgIStackoffset-1
-C write(*,'(A,I5)')"restore(s)  ",NY
           NX = theArgIStack(theArgIStackoffset)
+C write(*,'(A,I5,I5)')"restore(s)  ",NX,theArgIStackOffset
           theArgIStackoffset = theArgIStackoffset-1
-C write(*,'(A,I5)')"restore(s)  ",NX
           HX2 = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",HX2
           theArgFStackoffset = theArgFStackoffset-1
