@@ -348,8 +348,8 @@ C write(*,'(A,EN26.16E3)')"restore(v)  ",
 C+FW(cp_loop_variable_1)
           end do
           ILEV1 = theArgIStack(theArgIStackoffset)
+C write(*,'(A,I5,I5)')"restore(s)  ",ILEV1,theArgIStackOffset
           theArgIStackoffset = theArgIStackoffset-1
-C write(*,'(A,I5)')"restore(s)  ",ILEV1
           UVEL%v = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",UVEL%v
           theArgFStackoffset = theArgFStackoffset-1
@@ -2222,8 +2222,8 @@ C write(*,'(A,EN26.16E3)')"restore(s)  ",SV
 C write(*,'(A,EN26.16E3)')"restore(s)  ",ROBERT_FILTER_COEFF
           theArgFStackoffset = theArgFStackoffset-1
           N_MAX = theArgIStack(theArgIStackoffset)
+C write(*,'(A,I5,I5)')"restore(s)  ",N_MAX,theArgIStackOffset
           theArgIStackoffset = theArgIStackoffset-1
-C write(*,'(A,I5)')"restore(s)  ",N_MAX
           HUNDRED = theArgFStack(theArgFStackoffset)
 C write(*,'(A,EN26.16E3)')"restore(s)  ",HUNDRED
           theArgFStackoffset = theArgFStackoffset-1

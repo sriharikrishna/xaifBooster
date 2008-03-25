@@ -92,6 +92,10 @@ C$OPENAD XXX Template ad_template.f
       HX2 = (HX * HX)
       CALL foo(NX, NY, __deriv__(X), __deriv__(FVEC), R, N, HX, HY, HY2
      > , HX2)
+C     $OpenAD$ INLINE push_i(subst)
+      CALL push_i(NX)
+C     $OpenAD$ INLINE push_i(subst)
+      CALL push_i(NY)
       OpenAD_Symbol_259 = 0_w2f__i8
       DO K = 1, N, 1
         OpenAD_Symbol_0 = (HX2 * HY2)
@@ -133,6 +137,10 @@ C       $OpenAD$ INLINE ZeroDeriv(subst)
         CALL ZeroDeriv(__deriv__(OpenAD_Symbol_164))
         OpenAD_Symbol_258 = INT(OpenAD_Symbol_258) + 1
       END DO
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(NY)
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(NX)
       CALL foo(NX, NY, __deriv__(X), __deriv__(FVEC), R, N, HX, HY, HY2
      > , HX2)
 C     $OpenAD$ END REPLACEMENT
@@ -159,6 +167,10 @@ C$OPENAD XXX Template ad_template.f
       HX2 = (HX * HX)
       CALL foo(NX, NY, __deriv__(X), __deriv__(FVEC), R, N, HX, HY, HY2
      > , HX2)
+C     $OpenAD$ INLINE push_i(subst)
+      CALL push_i(NX)
+C     $OpenAD$ INLINE push_i(subst)
+      CALL push_i(NY)
       OpenAD_Symbol_262 = 0_w2f__i8
       DO K = 1, N, 1
         OpenAD_Symbol_0 = (HX2 * HY2)
@@ -200,6 +212,10 @@ C       $OpenAD$ INLINE ZeroDeriv(subst)
         CALL ZeroDeriv(__deriv__(OpenAD_Symbol_164))
         OpenAD_Symbol_261 = INT(OpenAD_Symbol_261) + 1
       END DO
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(NY)
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(NX)
       CALL foo(NX, NY, __deriv__(X), __deriv__(FVEC), R, N, HX, HY, HY2
      > , HX2)
 C     $OpenAD$ END REPLACEMENT

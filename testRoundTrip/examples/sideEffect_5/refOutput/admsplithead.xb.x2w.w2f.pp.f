@@ -317,9 +317,9 @@ C$OPENAD XXX Template ad_template.f
       END DO
           Y(1)%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          G = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
           I = integer_tape(integer_tape_pointer)
+          integer_tape_pointer = integer_tape_pointer-1
+          G = integer_tape(integer_tape_pointer)
       CALL foo(X,I)
           integer_tape_pointer = integer_tape_pointer-1
           G = integer_tape(integer_tape_pointer)

@@ -190,9 +190,9 @@ C$OPENAD XXX Template ad_template.f
         OpenAD_Symbol_258 = INT(OpenAD_Symbol_258) + 1
       END DO
           integer_tape_pointer = integer_tape_pointer-1
-          NX = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
           NY = integer_tape(integer_tape_pointer)
+          integer_tape_pointer = integer_tape_pointer-1
+          NX = integer_tape(integer_tape_pointer)
       CALL foo(NX,NY,X,FVEC,R,N,HX,HY,HY2,HX2)
           end if 
         end subroutine head

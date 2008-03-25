@@ -388,9 +388,9 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          K = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
           L = integer_tape(integer_tape_pointer)
+          integer_tape_pointer = integer_tape_pointer-1
+          K = integer_tape(integer_tape_pointer)
       CALL foo(OpenAD_Symbol_7,Q(L))
           OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y%d
           Y%d = 0.0d0

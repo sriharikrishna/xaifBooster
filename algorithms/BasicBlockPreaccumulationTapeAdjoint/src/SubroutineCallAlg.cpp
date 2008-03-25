@@ -156,8 +156,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void SubroutineCallAlg::handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg) { 
     // pop all the indices: 
     const Expression::VariablePVariableSRPPairList& theTypeChangePairs(orignalCallAlg.getIndexVariablesPushed()); 
-    for (Expression::VariablePVariableSRPPairList::const_iterator pairIt=theTypeChangePairs.begin();
-	 pairIt!=theTypeChangePairs.end();
+    for (Expression::VariablePVariableSRPPairList::const_reverse_iterator pairIt=theTypeChangePairs.rbegin();
+	 pairIt!=theTypeChangePairs.rend();
 	 ++pairIt) { 
       // make the subroutine call: 
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* thePopCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i"));
