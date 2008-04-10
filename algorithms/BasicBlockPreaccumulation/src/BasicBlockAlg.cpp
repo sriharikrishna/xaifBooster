@@ -1632,8 +1632,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator iei (iei_pair.first), ie_end (iei_pair.second);
 	for (; iei != ie_end; ++iei)
 	  if (!theRemainderLCG.getSourceOf(*iei).wasVisited()) break;
-	// visit this vertex if all predecessors have been visited
-	if (iei == ie_end) {
+	if (iei != ie_end) // skip this vertex if a predecessor hasn't been visited
+	  done = false;
+	else { // all preds visited, so visit this vertex
 	  (*anLCGVertI).setVisited();
 	  const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV = aSequence.getBestElimination().rVertex2oVertex(*anLCGVertI);
 	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair oei_pair (theRemainderLCG.getOutEdgesOf(*anLCGVertI));
@@ -1649,8 +1650,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      break; // no need to continue with this vertex once the propagation vertex has been replaced
             } // end if possible alias conflict
 	  } // end all successors
-	} // end if all preds are visited
-	else done = false; // there is still an unvisited vertex
+	} // end visit this vertex
       } // end all vertices
     } // end while (!done)
     theRemainderLCG.finishVisit();
@@ -1677,13 +1677,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// check whether predecessors have been visited
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
-	for (; iei != ie_end; ++iei) { 
-	  if (!theRemainderGraph.getSourceOf(*iei).wasVisited())
-	    break; // break on unvisited predecessor
-	} // end for all inedges
-
-	// VISIT THIS VERTEX (propagate on inedges)
-	if (iei == ie_end) {
+	for (; iei != ie_end; ++iei) // break on unvisited predecessor
+	  if (!theRemainderGraph.getSourceOf(*iei).wasVisited()) break;
+	if (iei != ie_end) // skip this vertex if a predecessor hasn't been visited
+	  done = false;
+	else { // all preds visited, so visit this vertex
 	  theRemainderTargetV.setVisited();
 	  const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV (aSequence.getBestElimination().rVertex2oVertex(theRemainderTargetV));
 	  bool foundNonzeroFactor = false;
@@ -1715,7 +1713,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  if (!foundNonzeroFactor)
 	    aSequence.myDerivativePropagator.addZeroDerivToEntryPList(theOriginalTargetV.getPropagationVariable());
 	} // end visit
-	else done = false;
       } // end iterate over all vertices
     } // end while(!done)
     aSequence.getBestResult().myRemainderLCG.finishVisit();
@@ -1886,20 +1883,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      << debug().c_str());
     return *(theSequence_p->myComputationalGraph_p);
   } 
-
-  bool BasicBlockAlg::isAliased(const Variable& theIndepVariable,
-				const BasicBlockAlg::VariableCPList& theDependentList) { 
-    AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
-			  getCallGraph().getAliasMap());
-    for (VariableCPList::const_iterator li=theDependentList.begin();
-	 li!=theDependentList.end();
-	 ++li) { 
-      if (theAliasMap.mayAlias(theIndepVariable.getAliasMapKey(),
-			       (*li)->getAliasMapKey()))
-	return true;
-    } // end for 
-    return false;
-  } // end of BasicBlockAlg::isAliased
 
   const BasicBlock&
   BasicBlockAlg::getContaining() const {

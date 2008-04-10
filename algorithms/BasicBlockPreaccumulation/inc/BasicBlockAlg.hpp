@@ -119,8 +119,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static int ourIterationsParameter;
     static double ourGamma;
 
-    typedef std::list<const Variable*> VariableCPList;
-    
     /**
      * Sets flag to run all algorithms and choose the best one if a flag is set.
      */
@@ -468,12 +466,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
     }; 
 
-    /** 
-     * determines variables in IN and OUT
-     */
-    bool isAliased(const Variable& theIndepVariable,
-		   const VariableCPList& theDependentList);
-    
     /** 
      * if this flag is true we attempt to collect 
      * all 'ax' factors ordered by 'y'
