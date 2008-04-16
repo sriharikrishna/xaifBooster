@@ -97,9 +97,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   VertexIdentificationListActive::IdentificationResult 
-  VertexIdentificationListActive::canIdentify(const Variable& theVariable) const { 
-    if (isDuUdMapBased())
-      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::canIdentify: should ot be invoked for DuUd map based lists");
+  VertexIdentificationListActive::aliasIdentify(const Variable& theVariable) const { 
     AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getAliasMap());
     AliasMap::AliasMapKeyPList anAliasMapKeyPList;
@@ -121,7 +119,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end for 
     } // end if aliased
     return IdentificationResult(NOT_IDENTIFIED,0);
-  } 
+  } // end VertexIdentificationListActive::aliasIdentify()
+
+  VertexIdentificationListActive::IdentificationResult 
+  VertexIdentificationListActive::canIdentify(const Variable& theVariable) const { 
+    if (isDuUdMapBased())
+      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::canIdentify: should not be invoked for DuUd map based lists");
+    return aliasIdentify(theVariable);
+  } // end VertexIdentificationListActive::canIdentify()
 
   void VertexIdentificationListActive::removeIfIdentifiable(const Variable& theVariable) { 
     if (myList.empty())
