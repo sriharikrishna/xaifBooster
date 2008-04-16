@@ -78,7 +78,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			     const ObjectWithId::Id& aStatementId);
 
     const Variable& getPropagationVariable() const;
-    void createOrReplacePropagationVariable() const;
+
+    /**
+     * Replace the original variable with one used exclusively for propagation.
+     * Needed only for independents, which always have an original variable.
+     * (see BasicBlockAlg::makePropagationVariables())
+     */
+    void replacePropagationVariable() const;
 
     const ObjectWithId::Id& getStatementId() const;
 
@@ -89,6 +95,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     std::string debug() const;
     
   private: 
+
+    void createPropagationVariable() const;
 
     /**
      * Pointer to the variable that originally corresponds to this vertex.
