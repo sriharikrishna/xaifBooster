@@ -54,6 +54,7 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
@@ -65,7 +66,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches()+"SnaCAm");
+    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches()+"SnaCAmQ");
   } 
 
   void AlgConfig::config() { 
@@ -82,6 +83,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterCrossCountryInterface::Elimination::setAwarenessLevel(xaifBoosterCrossCountryInterface::Elimination::AwarenessLevel_E(argAsInt('A')));
     if (isSet('m'))
       xaifBoosterCrossCountryInterface::Elimination::setAllowMaintainingFlag();
+    if (isSet('Q')) 
+      xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::permitAliasedLHSs();
   }
 
   void AlgConfig::usage() { 
@@ -92,7 +95,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
               << "             [-a] also run LSA graph eliminations and pick the best result" << std::endl
               << "             [-C] turn on runtime counters"  << std::endl
 	      << "             [-A <level>] set heuristic awareness of unit/constant edges (0: no awareness, 1: unit awareness, 2: constant awareness), defaults to no awareness" << std::endl
-              << "             [-m] allow scarcity-preserving operations that maintain the nontrivial edge count (default is strict reduction)"  << std::endl;
+              << "             [-m] allow scarcity-preserving operations that maintain the nontrivial edge count (default is strict reduction)"  << std::endl
+              << "             [-Q] turn off alias checking among LHSs in the same sequence (meant to be temporary, waiting on better alias analysis)"  << std::endl;
   } 
 
 } // end of namespace xaifBooster

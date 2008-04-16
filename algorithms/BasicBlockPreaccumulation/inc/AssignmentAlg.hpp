@@ -72,6 +72,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     virtual ~AssignmentAlg(){};
 
+    static void permitAliasedLHSs();
+
+    static bool doesPermitAliasedLHSs();
+
     virtual void printXMLHierarchy(std::ostream& os) const;
 
     virtual std::string debug() const ;
@@ -121,6 +125,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
 					BasicBlockAlg::SequenceHolder& aSequenceHolder);
+
+    static bool ourPermitAliasedLHSsFlag;
 
   }; // end of class AssignmentAlg
  

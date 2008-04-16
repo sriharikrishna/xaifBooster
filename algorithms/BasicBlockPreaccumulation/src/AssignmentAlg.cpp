@@ -78,8 +78,18 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
+  bool AssignmentAlg::ourPermitAliasedLHSsFlag = false;
+
   AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
     xaifBoosterLinearization::AssignmentAlg(theContainingAssignment) { 
+  }
+
+  void AssignmentAlg::permitAliasedLHSs() {
+    ourPermitAliasedLHSsFlag = true;
+  }
+
+  bool AssignmentAlg::doesPermitAliasedLHSs() {
+    return ourPermitAliasedLHSsFlag;
   }
 
   void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
@@ -154,7 +164,25 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  // flattening paper
 	  return false;
       } // end else (no unique identification)
-    } // end for all vertices in this LHS 
+    } // end for all vertices in this RHS
+
+    // check whether the LHS possibly overlaps with a previous LHS in this graph
+    if (!doesPermitAliasedLHSs()) {
+      // We must split into a new computational graph when a LHS is determined to possibly alias with a previous LHS.
+      // If we didn't, we would have a graph with two vertices that may correspond to the same variable,
+      // and thus the graph would not properly represent the dependences in the code.
+      // Consider the following case, where there is a possibility that p and q point to the same memory location:
+      //   *q = a*b
+      //   *p = b*c
+      // When it comes time to propagate, both *p and *q will get a SAX along one inedge and a SAXPY along the other.
+      // In the case where p = q, the second SAX applied will erase the contribution from the first SAX (along with any SAXPY applied in between).
+      // As a computational graph encapsulates precedence information exclusively, the type of complication described above is not representable as part of the graph.
+      // This is our motivation for stipulating that a new graph must be created.
+      VertexIdentificationListActive::IdentificationResult theLHSAliasIdResult (theVertexIdentificationListActiveLHS.aliasIdentify(getContainingAssignment().getLHS()));
+      if (theLHSAliasIdResult.getAnswer() != VertexIdentificationList::NOT_IDENTIFIED)
+	return false;
+    }
+
     return true;
   } // end of AssignmentAlg::vertexIdentification 
 
