@@ -558,10 +558,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 								   const AccumulationGraphVertex& theAccVertex);
 
     /**
-     * Traverse the remainder graph and check all edges for possible aliasing conflicts
-     * between the source and the target.  If a possible conflict is detected, then a
-     * new propagation variable is created for the source vertex.
-     * If the source vertex is an independent, then the RHS variable is replaced and a new setderiv is created.
+     * Check all independents against all dependents for possible aliasing conflicts,
+     * creating a replacement propagation variables independents that possibly conflict.
      */
     void makePropagationVariables(Sequence& aSequence);
 

@@ -91,19 +91,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myStatementId = aStatementId;
   } // end PrivateLinearizedComputationalGraphVertex::setOriginalVariable()
 
-  const Variable& PrivateLinearizedComputationalGraphVertex::getPropagationVariable() const {
-    if (myPropagationVariable_p)
-      return *myPropagationVariable_p;
-
-    if (myOriginalVariable_p)
-      return *myOriginalVariable_p;
-
-    // if we havent already created a propagation variable, and there is no LHS variable, then make a new one
-    createOrReplacePropagationVariable();
-    return *myPropagationVariable_p;
-  } // end PrivateLinearizedComputationalGraphVertex::getPropagationVariable()
-
-  void PrivateLinearizedComputationalGraphVertex::createOrReplacePropagationVariable() const {
+  void PrivateLinearizedComputationalGraphVertex::createPropagationVariable() const {
     Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
     myPropagationVariable_p  = new Variable();
     VariableSymbolReference* theVariableSymbolReference_p = new VariableSymbolReference(theGlobalScope.getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
@@ -112,11 +100,30 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                                                                                                                                            true),
                                                                                         theGlobalScope);
     theVariableSymbolReference_p->setId("1");
-    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex::createOrReplacePropagationVariable");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex::replacePropagationVariable");
     myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     myPropagationVariable_p->getAliasMapKey().setTemporary();
     myPropagationVariable_p->getDuUdMapKey().setTemporary();
-  } // end PrivateLinearizedComputationalGraphVertex::createOrReplacePropagationVariable()
+  } // end PrivateLinearizedComputationalGraphVertex::createPropagationVariable()
+
+  const Variable& PrivateLinearizedComputationalGraphVertex::getPropagationVariable() const {
+    if (myPropagationVariable_p)
+      return *myPropagationVariable_p;
+
+    if (myOriginalVariable_p)
+      return *myOriginalVariable_p;
+
+    // if we havent already created a propagation variable, and there is no LHS variable, then make a new one
+    createPropagationVariable();
+    return *myPropagationVariable_p;
+  } // end PrivateLinearizedComputationalGraphVertex::getPropagationVariable()
+
+  void PrivateLinearizedComputationalGraphVertex::replacePropagationVariable() const {
+    if (!myOriginalVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::replacePropagationVariable: vertex has no original variable to replace");
+
+    createPropagationVariable();
+  } // end PrivateLinearizedComputationalGraphVertex::replacePropagationVariable()
 
   const ObjectWithId::Id& PrivateLinearizedComputationalGraphVertex::getStatementId() const {
     if (!myStatementId.size())

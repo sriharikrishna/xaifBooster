@@ -856,7 +856,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // advance the iterator before we delete anything:
       ++aDepVertexPListI;
       // all the dependent ones should have the LHS set
-	const StatementIdSetMapKey& aDuUdMapKey(myPrivateVertex.getOriginalVariable().getDuUdMapKey()); 
+      const StatementIdSetMapKey& aDuUdMapKey(myPrivateVertex.getOriginalVariable().getDuUdMapKey()); 
       if (aDuUdMapKey.getKind()==InfoMapKey::TEMP_VAR) { 
 	// now the assumption is that temporaries are local to the flattened Sequence
 	// and we can remove: 
@@ -1614,46 +1614,34 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::buildAccumulationAssignmentRecursively()
 
   void BasicBlockAlg::makePropagationVariables(Sequence& aSequence) {
+    // Here we determine which independent vertices need to have replacement propagation variables.
+    // See AssignmentAlg::vertexIdentification for an explanation of why we only need to worry about replacing independents.
+
     const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderLCG (aSequence.getBestResult().myRemainderLCG);
     const AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->getCallGraph().getAliasMap());
 
-    // Traverse remainder graph in topological order, checking each edge for aliasing conflicts between the source and the target
-    theRemainderLCG.initVisit();
-    bool done = false; 
-    while (!done) {
-      done = true;
-      //iterate over all vertices
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair aVertexIP (theRemainderLCG.vertices());
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator anLCGVertI (aVertexIP.first), anLCGvertEndI (aVertexIP.second);
-      for(; anLCGVertI != anLCGvertEndI; ++anLCGVertI) {
-	if ((*anLCGVertI).wasVisited()) continue;
-	// check whether all predecessors have been visited
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair iei_pair (theRemainderLCG.getInEdgesOf(*anLCGVertI));
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator iei (iei_pair.first), ie_end (iei_pair.second);
-	for (; iei != ie_end; ++iei)
-	  if (!theRemainderLCG.getSourceOf(*iei).wasVisited()) break;
-	if (iei != ie_end) // skip this vertex if a predecessor hasn't been visited
-	  done = false;
-	else { // all preds visited, so visit this vertex
-	  (*anLCGVertI).setVisited();
-	  const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV = aSequence.getBestElimination().rVertex2oVertex(*anLCGVertI);
-	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIteratorPair oei_pair (theRemainderLCG.getOutEdgesOf(*anLCGVertI));
-	  for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstOutEdgeIterator oei (oei_pair.first), oe_end (oei_pair.second); oei != oe_end; ++oei) {
-	    const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV = aSequence.getBestElimination().rVertex2oVertex(theRemainderLCG.getTargetOf(*oei));
-	    if (theOriginalSourceV.hasOriginalVariable() && theOriginalTargetV.hasOriginalVariable()
-	     && theAliasMap.mayAlias(theOriginalSourceV.getOriginalVariable().getAliasMapKey(),
-				     theOriginalTargetV.getOriginalVariable().getAliasMapKey())) {
-	      theOriginalSourceV.createOrReplacePropagationVariable();
-	      // set the deriv of the new prop variable to that of the original variable
-	      aSequence.myDerivativePropagator.addSetDerivToEntryPList(theOriginalSourceV.getPropagationVariable(),
-								       theOriginalSourceV.getOriginalVariable());
-	      break; // no need to continue with this vertex once the propagation vertex has been replaced
-            } // end if possible alias conflict
-	  } // end all successors
-	} // end visit this vertex
-      } // end all vertices
-    } // end while (!done)
-    theRemainderLCG.finishVisit();
+    // check every independent for overlap (aliasing) with every non-independent.
+    LinearizedComputationalGraph::ConstVertexIteratorPair anLCGvertIP (theRemainderLCG.vertices());
+    for (LinearizedComputationalGraph::ConstVertexIterator rIndepI (anLCGvertIP.first), rIndepI_end (anLCGvertIP.second); rIndepI != rIndepI_end; ++rIndepI) {
+      if (!theRemainderLCG.numInEdgesOf(*rIndepI)) {
+	const PrivateLinearizedComputationalGraphVertex& originalIndep (aSequence.getBestElimination().rVertex2oVertex(*rIndepI));
+	LinearizedComputationalGraph::ConstVertexIteratorPair anLCGvertIP2 (theRemainderLCG.vertices());
+	// iterate over all (non-indep) vertices to check for alias conflicts
+	for (LinearizedComputationalGraph::ConstVertexIterator rVertI (anLCGvertIP2.first), rVertI_end (anLCGvertIP2.second); rVertI != rVertI_end; ++rVertI) {
+	  if (!theRemainderLCG.numInEdgesOf(*rVertI)) continue; // skip other indeps
+	  const PrivateLinearizedComputationalGraphVertex& aNonIndep (aSequence.getBestElimination().rVertex2oVertex(*rVertI));
+	  if (aNonIndep.hasOriginalVariable() && theAliasMap.mayAlias(originalIndep.getOriginalVariable().getAliasMapKey(),
+								    aNonIndep.getOriginalVariable().getAliasMapKey())) {
+	    originalIndep.replacePropagationVariable();
+	    // set the deriv of the new propagation variable to that of the original variable
+	    aSequence.myDerivativePropagator.addSetDerivToEntryPList(originalIndep.getPropagationVariable(),
+								     originalIndep.getOriginalVariable());
+	    break; // no need to continue with this indep vertex once the propagation vertex has been replaced
+	  } // end if other vertex has variable and alias conflict possible
+	} // end iterate over all vertices 
+      } // end if independent (no inedges)
+    } // end iterate over remainder vertices
+
   } // end BasicBlockAlg::makePropagationVariables()
 
   void BasicBlockAlg::generateRemainderGraphPropagators(Sequence& aSequence, 
