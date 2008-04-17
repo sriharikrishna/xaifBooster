@@ -64,12 +64,10 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  class PrivateLinearizedComputationalGraphVertex;
-
   /**
    * the default representation for PrivateLinearizedComputationalGraph
-   * the edges/vertices will be instances of subclasses of 
-   * LinearizedComputationalGraphVertex / LinearizedComputationalGraphEdge
+   * the edges will be instances of a subclass of LinearizedComputationalGraphEdge,
+   * and the vertices will be instances of a subclass of LinearizedComputationalGraphVertex, though this subclass no longer serves any purpose
    */
   class PrivateLinearizedComputationalGraph : public xaifBoosterCrossCountryInterface::LinearizedComputationalGraph,
 					      public virtual Debuggable {

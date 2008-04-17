@@ -54,6 +54,13 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/boostWrapper/inc/Vertex.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
+
+//namespace xaifBooster { 
+//  class Variable;
+//}
 
 using namespace xaifBooster;
 
@@ -62,12 +69,61 @@ namespace xaifBoosterCrossCountryInterface {
   class LinearizedComputationalGraphVertex : public Vertex {
   public:
 
-    LinearizedComputationalGraphVertex(){};
+    LinearizedComputationalGraphVertex();
+    ~LinearizedComputationalGraphVertex();
 
-    ~LinearizedComputationalGraphVertex(){};
- 
+    std::string debug() const;
+
+    bool hasOriginalVariable() const;
+    void setOriginalVariable(const Variable& aVariable,
+			     const ObjectWithId::Id& aStatementId);
+    const Variable& getOriginalVariable() const;
+
+    const ObjectWithId::Id& getStatementId() const;
+
+    /**
+     * Used to replace the original variable in the case where we have an independent that may alias with some non-independent.
+     * In this case, we use this new variable for propagation exclusively. (see BasicBlockAlg::makePropagationVariables())
+     * Also used for the case of a vertex that has no oroginal variable (some temporary)
+     */
+    void createNewPropagationVariable();
+
+    const Variable& getPropagationVariable() const;
+
+    bool hasSAX() const;
+    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& getSAX() const;
+    void setSAX(xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& aSAX);
+
+  private:
+
+    /**
+     * Pointer to the variable that originally corresponds to this vertex, in the case where one exists.
+     * The variable is not owned by this class.
+     */
+    const Variable* myOriginalVariable_p;
+
+    /**
+     * Pointer to the variable that will be used for propagation in case there is no original variable,
+     * or the original variable for an independent had to be replaced because of possible aliasing issues.
+     * This variable is owned by this class, and is deleted in the dtor.
+     */
+    Variable* myPropagationVariable_p;
+
+    /**
+     * set to the respective statement id if myOriginalVariable_p is set
+     */
+    ObjectWithId::Id myStatementId;
+
+    /**
+     * Used to keep track of whether this vertex has been involved in a sax yet.
+     * In case it has, this pointer is used to find the SAX.
+     * The sax is not owned by this class.
+     */
+    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* mySAX_p;
+
   }; // end of class LinearizedComputationalGraphVertex
  
-} 
+} // end namespace xaifBoosterCrossCountryInterface
                                                                      
 #endif
+

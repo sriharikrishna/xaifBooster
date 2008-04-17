@@ -210,7 +210,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   const xaifBoosterCrossCountryInterface::Elimination& BasicBlockAlg::Sequence::getBestElimination() const {
     if (!myBestElimination_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestElimination: myBestElimination_p not set");
     return *myBestElimination_p;
   }
 
@@ -218,7 +218,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (!myBestElimination_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
     return myBestElimination_p->getEliminationResult();
-  } 
+  }
+
+  xaifBoosterCrossCountryInterface::Elimination::EliminationResult& BasicBlockAlg::Sequence::getBestResult() {
+    if (!myBestElimination_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
+    return myBestElimination_p->getEliminationResult();
+  }
 
   BasicBlockAlg::Sequence::EliminationPList& BasicBlockAlg::Sequence::getEliminationPList() {
     if (myEliminationPList.empty())
@@ -1614,34 +1620,39 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::buildAccumulationAssignmentRecursively()
 
   void BasicBlockAlg::makePropagationVariables(Sequence& aSequence) {
-    // Here we determine which independent vertices need to have replacement propagation variables.
-    // See AssignmentAlg::vertexIdentification for an explanation of why we only need to worry about replacing independents.
-
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderLCG (aSequence.getBestResult().myRemainderLCG);
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderLCG (aSequence.getBestResult().myRemainderLCG);
     const AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->getCallGraph().getAliasMap());
-
-    // check every independent for overlap (aliasing) with every non-independent.
-    LinearizedComputationalGraph::ConstVertexIteratorPair anLCGvertIP (theRemainderLCG.vertices());
-    for (LinearizedComputationalGraph::ConstVertexIterator rIndepI (anLCGvertIP.first), rIndepI_end (anLCGvertIP.second); rIndepI != rIndepI_end; ++rIndepI) {
-      if (!theRemainderLCG.numInEdgesOf(*rIndepI)) {
-	const PrivateLinearizedComputationalGraphVertex& originalIndep (aSequence.getBestElimination().rVertex2oVertex(*rIndepI));
-	LinearizedComputationalGraph::ConstVertexIteratorPair anLCGvertIP2 (theRemainderLCG.vertices());
-	// iterate over all (non-indep) vertices to check for alias conflicts
-	for (LinearizedComputationalGraph::ConstVertexIterator rVertI (anLCGvertIP2.first), rVertI_end (anLCGvertIP2.second); rVertI != rVertI_end; ++rVertI) {
-	  if (!theRemainderLCG.numInEdgesOf(*rVertI)) continue; // skip other indeps
-	  const PrivateLinearizedComputationalGraphVertex& aNonIndep (aSequence.getBestElimination().rVertex2oVertex(*rVertI));
-	  if (aNonIndep.hasOriginalVariable() && theAliasMap.mayAlias(originalIndep.getOriginalVariable().getAliasMapKey(),
-								    aNonIndep.getOriginalVariable().getAliasMapKey())) {
-	    originalIndep.replacePropagationVariable();
+    LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP (theRemainderLCG.vertices());
+    for (LinearizedComputationalGraph::VertexIterator rvi (rLCGvertIP.first), rvi_end (rLCGvertIP.second); rvi != rvi_end; ++rvi) {
+      const PrivateLinearizedComputationalGraphVertex& theOriginalVertex (aSequence.getBestElimination().rVertex2oVertex(*rvi));
+      // for independents, check against all non-independents for alias conflicts, making new propagation variable in that case
+      // See AssignmentAlg::vertexIdentification for an explanation of why we only need to worry about replacing independents.
+      if (!theRemainderLCG.numInEdgesOf(*rvi)) {
+	LinearizedComputationalGraph::VertexIterator rvi2 (rLCGvertIP.first), rvi2_end (rLCGvertIP.second);
+	for (; rvi2 != rvi2_end; ++rvi2) { // inner iteration over all remainder vertices
+	  if (!theRemainderLCG.numInEdgesOf(*rvi2)) continue; // skip other indeps
+	  const PrivateLinearizedComputationalGraphVertex& theOriginalNonIndep (aSequence.getBestElimination().rVertex2oVertex(*rvi2));
+	  if (theOriginalNonIndep.hasOriginalVariable() && theAliasMap.mayAlias(theOriginalVertex.getOriginalVariable().getAliasMapKey(),
+										theOriginalNonIndep.getOriginalVariable().getAliasMapKey())) {
+	    (*rvi).createNewPropagationVariable();
 	    // set the deriv of the new propagation variable to that of the original variable
-	    aSequence.myDerivativePropagator.addSetDerivToEntryPList(originalIndep.getPropagationVariable(),
-								     originalIndep.getOriginalVariable());
+	    aSequence.myDerivativePropagator.addSetDerivToEntryPList((*rvi).getPropagationVariable(),
+								     theOriginalVertex.getOriginalVariable());
 	    break; // no need to continue with this indep vertex once the propagation vertex has been replaced
-	  } // end if other vertex has variable and alias conflict possible
-	} // end iterate over all vertices 
-      } // end if independent (no inedges)
-    } // end iterate over remainder vertices
-
+	  } // end if alias conflict possible
+	} // end inner iteration over remainder vertices
+	if (rvi2 == rvi2_end) // we made it through without any conflicts (no new variable had to be created)
+	  (*rvi).setOriginalVariable(theOriginalVertex.getOriginalVariable(),
+				     theOriginalVertex.getStatementId());
+      } // end if this vertex is an independent
+      else {
+	if (theOriginalVertex.hasOriginalVariable())
+	  (*rvi).setOriginalVariable(theOriginalVertex.getOriginalVariable(),
+				     theOriginalVertex.getStatementId());
+	else
+	  (*rvi).createNewPropagationVariable();
+      } // end non-independent
+    } // end iterate over all remainder vertices
   } // end BasicBlockAlg::makePropagationVariables()
 
   void BasicBlockAlg::generateRemainderGraphPropagators(Sequence& aSequence, 
@@ -1671,7 +1682,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  done = false;
 	else { // all preds visited, so visit this vertex
 	  theRemainderTargetV.setVisited();
-	  const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV (aSequence.getBestElimination().rVertex2oVertex(theRemainderTargetV));
 	  bool foundNonzeroFactor = false;
 	  //reset inedge iterators and make propagator for every inedge
 	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
@@ -1681,7 +1691,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    if ((map_it = theRemainderEdge2AccumulationVertexMap.find(&*iei)) == theRemainderEdge2AccumulationVertexMap.end())
 	      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphPropagators: could not find AccumulationGraphVertex for RemaindergraphEdge in theRemainderEdge2AccumulationVertexMap");
 	    const AccumulationGraphVertex& theAccVertex (*map_it->second);
-            const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV (aSequence.getBestElimination().rVertex2oVertex(theRemainderGraph.getSourceOf(*iei)));
+            const LinearizedComputationalGraphVertex& theRemainderSourceV (theRemainderGraph.getSourceOf(*iei));
 
 	    // check whether the factor is PASSIVE
 	    if (theAccVertex.getPartialDerivativeKind() == PartialDerivativeKind::PASSIVE) continue;
@@ -1690,38 +1700,39 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // we can do a setderiv iff the factor is unit and theRemainderTargetV has only one inedge
 	    if (theAccVertex.getPartialDerivativeKind() == PartialDerivativeKind::LINEAR_ONE
 	     && theRemainderGraph.numInEdgesOf(theRemainderTargetV) == 1)
-	      aSequence.myDerivativePropagator.addSetDerivToEntryPList(theOriginalTargetV.getPropagationVariable(),
-								       theOriginalSourceV.getPropagationVariable());
+	      aSequence.myDerivativePropagator.addSetDerivToEntryPList(theRemainderTargetV.getPropagationVariable(),
+								       theRemainderSourceV.getPropagationVariable());
 	    else // we'll do a sax/saxpy
-	      propagateOnRemainderGraphEdge(theOriginalSourceV,
-					    theOriginalTargetV,
+	      propagateOnRemainderGraphEdge(*iei,
 					    aSequence,
 					    theAccVertex);
 	  } // end all inedges
 	  if (!foundNonzeroFactor)
-	    aSequence.myDerivativePropagator.addZeroDerivToEntryPList(theOriginalTargetV.getPropagationVariable());
+	    aSequence.myDerivativePropagator.addZeroDerivToEntryPList(theRemainderTargetV.getPropagationVariable());
 	} // end visit
       } // end iterate over all vertices
     } // end while(!done)
     aSequence.getBestResult().myRemainderLCG.finishVisit();
   } // end BasicBlockAlg::generateRemainderGraphPropagators()
 
-  void BasicBlockAlg::propagateOnRemainderGraphEdge(const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV,
-						    const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV,
+  void BasicBlockAlg::propagateOnRemainderGraphEdge(const LinearizedComputationalGraphEdge& theRemainderEdge,
 						    Sequence& aSequence,
 						    const AccumulationGraphVertex& theAccVertex) {
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph (aSequence.getBestResult().myRemainderLCG);
+    LinearizedComputationalGraphVertex& theSourceV (theRemainderGraph.getSourceOf(theRemainderEdge));
+    LinearizedComputationalGraphVertex& theTargetV (theRemainderGraph.getTargetOf(theRemainderEdge));
     xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* theSaxpy_p (0);
 
     // make a new SAX if there's no SAX yet or if there is one and we can't add to it
-    if (!theOriginalTargetV.hasSAX() || !doesPermitNarySax()) {
+    if (!theTargetV.hasSAX() || !doesPermitNarySax()) {
       switch (theAccVertex.getPartialDerivativeKind()) {
 	case PartialDerivativeKind::LINEAR_ONE: {
 	  Constant theTempConstant (SymbolType::INTEGER_STYPE, false);
 	  theTempConstant.setId(1);
 	  theTempConstant.setint(1);
 	  theSaxpy_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
-									       theOriginalSourceV.getPropagationVariable(),
-									       theOriginalTargetV.getPropagationVariable()));
+									       theSourceV.getPropagationVariable(),
+									       theTargetV.getPropagationVariable()));
 	  break;
 	} // end case LINEAR_ONE
 	case PartialDerivativeKind::LINEAR_MINUS_ONE: {
@@ -1729,8 +1740,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theTempConstant.setId(1);
 	  theTempConstant.setint(-1);
 	  theSaxpy_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
-									       theOriginalSourceV.getPropagationVariable(),
-									       theOriginalTargetV.getPropagationVariable()));
+									       theSourceV.getPropagationVariable(),
+									       theTargetV.getPropagationVariable()));
 	  break;
 	} // end case LINEAR_MINUS_ONE
 	case PartialDerivativeKind::LINEAR: {
@@ -1738,14 +1749,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theTempConstant.setId(1);
 	  theTempConstant.setdouble(theAccVertex.getValue());
 	  theSaxpy_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
-									       theOriginalSourceV.getPropagationVariable(),
-									       theOriginalTargetV.getPropagationVariable()));
+									       theSourceV.getPropagationVariable(),
+									       theTargetV.getPropagationVariable()));
 	  break;
 	} // end case LINEAR
 	case PartialDerivativeKind::NONLINEAR: {
 	  theSaxpy_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theAccVertex.getLHSVariable(),
-									       theOriginalSourceV.getPropagationVariable(),
-									       theOriginalTargetV.getPropagationVariable()));
+									       theSourceV.getPropagationVariable(),
+									       theTargetV.getPropagationVariable()));
 	  break;
 	} // end case NONLINEAR
 	default:
@@ -1756,14 +1767,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end switch on PDK
     } // end no SAX yet or if there is one and we can't add to it
     else { // there is already a SAX and we allow nary SAX
-      theSaxpy_p = &theOriginalTargetV.getSAX();
+      theSaxpy_p = &theTargetV.getSAX();
       switch (theAccVertex.getPartialDerivativeKind()) {
 	case PartialDerivativeKind::LINEAR_ONE: {
 	  Constant theTempConstant (SymbolType::INTEGER_STYPE, false);
 	  theTempConstant.setId(1);
 	  theTempConstant.setint(1);
 	  theSaxpy_p->addAX(theTempConstant,
-			    theOriginalSourceV.getPropagationVariable());
+			    theSourceV.getPropagationVariable());
 	  break;
 	} // end case LINEAR_ONE
 	case PartialDerivativeKind::LINEAR_MINUS_ONE: {
@@ -1771,7 +1782,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theTempConstant.setId(1);
 	  theTempConstant.setint(-1);
 	  theSaxpy_p->addAX(theTempConstant,
-			    theOriginalSourceV.getPropagationVariable());
+			    theSourceV.getPropagationVariable());
 	  break;
 	} // end case LINEAR_MINUS_ONE
 	case PartialDerivativeKind::LINEAR: {
@@ -1779,12 +1790,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theTempConstant.setId(1);
 	  theTempConstant.setdouble(theAccVertex.getValue());
 	  theSaxpy_p->addAX(theTempConstant,
-			    theOriginalSourceV.getPropagationVariable());
+			    theSourceV.getPropagationVariable());
 	  break;
 	} // end case LINEAR
 	case PartialDerivativeKind::NONLINEAR: {
 	  theSaxpy_p->addAX(theAccVertex.getLHSVariable(),
-			    theOriginalSourceV.getPropagationVariable());
+			    theSourceV.getPropagationVariable());
 	  break;
 	} // end case NONLINEAR
 	default:
@@ -1796,9 +1807,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end there is already a SAX and we allow nary SAX
 
     // if this SAX is the first one, set it as SAX (as opposed to SAXPY)
-    if (!theOriginalTargetV.hasSAX()) { 
+    if (!theTargetV.hasSAX()) { 
       theSaxpy_p->useAsSax();
-      theOriginalTargetV.setSAX(*theSaxpy_p);
+      theTargetV.setSAX(*theSaxpy_p);
     }
   } // end BasicBlockAlg::propagateOnRemainderGraphEdge()
 
