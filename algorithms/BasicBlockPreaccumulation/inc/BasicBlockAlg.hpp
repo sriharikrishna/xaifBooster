@@ -284,6 +284,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       const xaifBoosterCrossCountryInterface::Elimination& getBestElimination() const;
 
       const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& getBestResult() const;
+      xaifBoosterCrossCountryInterface::Elimination::EliminationResult& getBestResult();
      
       EliminationPList& getEliminationPList();
     private: 
@@ -571,8 +572,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /**
      *
      */
-    void propagateOnRemainderGraphEdge(const PrivateLinearizedComputationalGraphVertex& theOriginalSourceV,
-				       const PrivateLinearizedComputationalGraphVertex& theOriginalTargetV,
+    void propagateOnRemainderGraphEdge(const LinearizedComputationalGraphEdge& theRemainderEdge,
 				       Sequence& aSequence,
 				       const AccumulationGraphVertex& theAccVertex);
 
