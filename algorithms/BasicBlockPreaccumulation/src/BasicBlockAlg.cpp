@@ -534,7 +534,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
 											     myG.getInternalBoostGraph()),
 										  v));
-      std::string theVertexKind("");
       std::string theVertexShape("ellipse");
       std::string theVertexGroupname("intermediates");
       std::string vertexFixedSize("false");
@@ -543,15 +542,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	   aDepVertexPListI!=theDepVertexPList.end();
 	   ++aDepVertexPListI) { 
 	if (thePrivateLinearizedComputationalGraphVertex_p==*(aDepVertexPListI)) {
-	  // cast it first
-	  const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
-	  std::ostringstream oss;
-	  oss << myPrivateVertex.getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str();
-	  if (myPrivateVertex.getOriginalVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
-	    oss  << " k=" 
-		 << myPrivateVertex.getOriginalVariable().getDuUdMapKey().getKey();
-	  oss << " d" << std::ends;
-	  theVertexKind=oss.str();
 	  theVertexShape = "invtriangle";
           theVertexGroupname = "dependents";
           vertexFixedSize = "true";
@@ -563,21 +553,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	   aIndepVertexPListI!=theIndepVertexPList.end();
 	   ++aIndepVertexPListI) { 
 	if (thePrivateLinearizedComputationalGraphVertex_p==*(aIndepVertexPListI)) {
-	  // cast it first
-	  const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aIndepVertexPListI));
-	  std::ostringstream oss;
-	  oss << myPrivateVertex.getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str();
-	  if (myPrivateVertex.getOriginalVariable().getDuUdMapKey().getKind()==InfoMapKey::SET)
-	    oss  << " k=" 
-		 << myPrivateVertex.getOriginalVariable().getDuUdMapKey().getKey();
-	  oss << " i" << std::ends;
-	  theVertexKind=oss.str();
 	  theVertexShape = "triangle";
           theVertexGroupname = "independents";
           vertexFixedSize = "true";
 	  break;
 	}
       }
+
+      // set label
+      std::string theVertexKind("");
+      std::ostringstream oss;
+      if (thePrivateLinearizedComputationalGraphVertex_p->hasOriginalVariable()) {
+	oss << thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+	if (thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getDuUdMapKey().getKind() == InfoMapKey::SET)
+	  oss  << " k=" << thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getDuUdMapKey().getKey();
+	theVertexKind = oss.str();
+      }
+
       out << "["
 	  << "fixedsize=" << vertexFixedSize.c_str() << ","
 	  << "fontsize=8,"
@@ -631,6 +623,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, 
 		    const BoostIntenalVertexDescriptor& v) const {
+      const LinearizedComputationalGraphVertex* theLCGVertex_p =
+	dynamic_cast<const LinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
+										      myG.getInternalBoostGraph()),
+									   v));
+      if (theLCGVertex_p->hasOriginalVariable())
+	out << "[label=\"" << theLCGVertex_p->getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str() << "\"]";
     }
     const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
   }; // end class LinearizedComputationalGraphVertexLabelWriter
@@ -951,6 +949,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	generateRemainderGraphPropagators(currentSequence, 
 					  theRemainderEdge2AccumulationVertexMap);
 
+	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+	  GraphVizDisplay::show(currentSequence.getBestResult().myRemainderLCG,
+				"RemainderLCG",
+				LinearizedComputationalGraphVertexLabelWriter(currentSequence.getBestResult().myRemainderLCG),
+				LinearizedComputationalGraphEdgeLabelWriter(currentSequence.getBestResult().myRemainderLCG),
+				LinearizedComputationalGraphPropertiesWriter(currentSequence.getBestResult().myRemainderLCG));
+
 	//debuging print statements with results
 	DBG_MACRO(DbgGroup::METRIC, "SeqeunceHolder metrics: " << aSequenceHolder.myBasicBlockOperations.debug().c_str()
 				 << " for " << aSequenceHolder.debug().c_str()
@@ -984,13 +989,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				   << e.getReason().c_str());
       }
       aSequence.setBestResult(); 
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-	GraphVizDisplay::show(anElimination.getEliminationResult().myRemainderLCG,
-			      "RemainderLCG",
-			      LinearizedComputationalGraphVertexLabelWriter(anElimination.getEliminationResult().myRemainderLCG),
-			      LinearizedComputationalGraphEdgeLabelWriter(anElimination.getEliminationResult().myRemainderLCG),
-			      LinearizedComputationalGraphPropertiesWriter(anElimination.getEliminationResult().myRemainderLCG));
-      }
       DBG_MACRO(DbgGroup::METRIC, "Sequence metrics: compute_partial_elimination_sequence " 
 		<< anElimination.getEliminationResult().getCounter().debug().c_str()
 		<< "  number of JAE: " << anElimination.getEliminationResult().myJAEList.getGraphList().size() 
@@ -1011,13 +1009,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				   << e.getReason().c_str());
       }
       aSequence.setBestResult(); 
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-	GraphVizDisplay::show(anElimination.getEliminationResult().myRemainderLCG,
-			      "RemainderLCG",
-			      LinearizedComputationalGraphVertexLabelWriter(anElimination.getEliminationResult().myRemainderLCG),
-			      LinearizedComputationalGraphEdgeLabelWriter(anElimination.getEliminationResult().myRemainderLCG),
-			      LinearizedComputationalGraphPropertiesWriter(anElimination.getEliminationResult().myRemainderLCG));
-      }
       DBG_MACRO(DbgGroup::METRIC, "Sequence metrics: compute_partial_transformation_sequence " << anElimination.getEliminationResult().getCounter().debug().c_str()
 		<< "  number of JAE: " << anElimination.getEliminationResult().myJAEList.getGraphList().size() 
 		<< " R graph edges: " << anElimination.getEliminationResult().myRemainderLCG.numEdges()
@@ -1051,15 +1042,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	//  break;
       }
       aSequence.setBestResult();
-
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-	GraphVizDisplay::show(aSequence.getBestResult().myRemainderLCG,
-			      "RemainderLCG",
-			      LinearizedComputationalGraphVertexLabelWriter(aSequence.getBestResult().myRemainderLCG),
-			      LinearizedComputationalGraphEdgeLabelWriter(aSequence.getBestResult().myRemainderLCG),
-			      LinearizedComputationalGraphPropertiesWriter(aSequence.getBestResult().myRemainderLCG));
-      }
-
       DBG_MACRO(DbgGroup::METRIC, "Sequence metrics: best is: " << aSequence.getBestResult().getCounter().debug().c_str() << " in BasicBlockAlg " << this);
       break;
     } // end default
@@ -1628,7 +1610,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // for independents, check against all non-independents for alias conflicts, making new propagation variable in that case
       // See AssignmentAlg::vertexIdentification for an explanation of why we only need to worry about replacing independents.
       if (!theRemainderLCG.numInEdgesOf(*rvi)) {
-	LinearizedComputationalGraph::VertexIterator rvi2 (rLCGvertIP.first), rvi2_end (rLCGvertIP.second);
+	LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP2 (theRemainderLCG.vertices());
+	LinearizedComputationalGraph::VertexIterator rvi2 (rLCGvertIP2.first), rvi2_end (rLCGvertIP2.second);
 	for (; rvi2 != rvi2_end; ++rvi2) { // inner iteration over all remainder vertices
 	  if (!theRemainderLCG.numInEdgesOf(*rvi2)) continue; // skip other indeps
 	  const PrivateLinearizedComputationalGraphVertex& theOriginalNonIndep (aSequence.getBestElimination().rVertex2oVertex(*rvi2));
@@ -1638,7 +1621,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // set the deriv of the new propagation variable to that of the original variable
 	    aSequence.myDerivativePropagator.addSetDerivToEntryPList((*rvi).getPropagationVariable(),
 								     theOriginalVertex.getOriginalVariable());
-	    break; // no need to continue with this indep vertex once the propagation vertex has been replaced
+	    DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::makePropagationVariables: created propagation variable for independent "
+				      << theOriginalVertex.getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str()); 
+				      //<< theOriginalVertex.debug().c_str()); 
+	    break; // no need to continue with this indep vertex once a replacement propagation vertex has been created
 	  } // end if alias conflict possible
 	} // end inner iteration over remainder vertices
 	if (rvi2 == rvi2_end) // we made it through without any conflicts (no new variable had to be created)
@@ -1657,6 +1643,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::generateRemainderGraphPropagators(Sequence& aSequence, 
 							const RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap) { 
+    // two issues here that deviate from the typical case:
+    // - if none of the inedges has a nonzero factor, we will do a ZERODERIV
+    // - \todo: if there is a one factor on an inedge, do that one first as a SETDERIV, and follow it with a sequece of SAXPY operations
+
     const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph (aSequence.getBestResult().myRemainderLCG);
     aSequence.getBestResult().myRemainderLCG.initVisit();
     bool done = false;
