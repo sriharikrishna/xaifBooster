@@ -9,8 +9,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -33,12 +31,10 @@ C$OPENAD XXX Template ad_template.f
       IF(L) THEN
         Y(1)%v = (X(1)%v*4.0D00)
         OpenAD_Symbol_0 = 4.0D00
-        OpenAD_Symbol_4 = OpenAD_Symbol_0
-        CALL sax(OpenAD_Symbol_4,X(1),Y(1))
+        CALL sax(4.0D00,X(1),Y(1))
       ELSE
         Y(1)%v = (X(1)%v*2.0D00)
         OpenAD_Symbol_2 = 2.0D00
-        OpenAD_Symbol_5 = OpenAD_Symbol_2
-        CALL sax(OpenAD_Symbol_5,X(1),Y(1))
+        CALL sax(2.0D00,X(1),Y(1))
       ENDIF
       END SUBROUTINE

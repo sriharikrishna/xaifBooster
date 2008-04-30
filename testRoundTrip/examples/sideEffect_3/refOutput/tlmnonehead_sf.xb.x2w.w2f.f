@@ -16,8 +16,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_3
 C
 C     **** Parameters and Result ****
 C
@@ -30,10 +28,8 @@ C$OPENAD XXX Template ad_template.f
       __value__(D) = (__value__(C) * __value__(C))
       OpenAD_Symbol_0 = __value__(C)
       OpenAD_Symbol_1 = __value__(C)
-      OpenAD_Symbol_2 = OpenAD_Symbol_0
-      OpenAD_Symbol_3 = OpenAD_Symbol_1
-      CALL sax(OpenAD_Symbol_2, __deriv__(C), __deriv__(D))
-      CALL saxpy(OpenAD_Symbol_3, __deriv__(C), __deriv__(D))
+      CALL sax(OpenAD_Symbol_0, __deriv__(C), __deriv__(D))
+      CALL saxpy(OpenAD_Symbol_1, __deriv__(C), __deriv__(D))
       END SUBROUTINE
 
       SUBROUTINE foo(A, B)

@@ -15,7 +15,6 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
@@ -27,8 +26,7 @@ C
 C$OPENAD XXX Template ad_template.f
       __value__(Y) = (__value__(X) * 2.0D00)
       OpenAD_Symbol_2 = 2.0D00
-      OpenAD_Symbol_4 = OpenAD_Symbol_2
-      CALL sax(OpenAD_Symbol_4, __deriv__(X), __deriv__(Y))
+      CALL sax(2.0D00, __deriv__(X), __deriv__(Y))
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)

@@ -18,10 +18,8 @@ C
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_6
+      TYPE (OpenADTy_active) OpenAD_Symbol_6
       TYPE (OpenADTy_active) OpenAD_Symbol_7
-      REAL(w2f__8) OpenAD_Symbol_8
-      TYPE (OpenADTy_active) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -35,19 +33,15 @@ C$OPENAD XXX Template ad_template.f
         OpenAD_Symbol_2 = (__value__(X) * 2.0D00)
         OpenAD_Symbol_0 = 2.0D00
         __value__(X) = OpenAD_Symbol_2
-        OpenAD_Symbol_6 = OpenAD_Symbol_0
-        CALL setderiv(__deriv__(OpenAD_Symbol_7), __deriv__(X))
-        CALL sax(OpenAD_Symbol_6, __deriv__(OpenAD_Symbol_7), __deriv__
-     > (X))
+        CALL setderiv(__deriv__(OpenAD_Symbol_6), __deriv__(X))
+        CALL sax(2.0D00, __deriv__(OpenAD_Symbol_6), __deriv__(X))
       ENDIF
       IF(A .EQ. 'three') THEN
         OpenAD_Symbol_5 = (__value__(X) * 3.0D00)
         OpenAD_Symbol_3 = 3.0D00
         __value__(X) = OpenAD_Symbol_5
-        OpenAD_Symbol_8 = OpenAD_Symbol_3
-        CALL setderiv(__deriv__(OpenAD_Symbol_9), __deriv__(X))
-        CALL sax(OpenAD_Symbol_8, __deriv__(OpenAD_Symbol_9), __deriv__
-     > (X))
+        CALL setderiv(__deriv__(OpenAD_Symbol_7), __deriv__(X))
+        CALL sax(3.0D00, __deriv__(OpenAD_Symbol_7), __deriv__(X))
       ENDIF
       END SUBROUTINE
 

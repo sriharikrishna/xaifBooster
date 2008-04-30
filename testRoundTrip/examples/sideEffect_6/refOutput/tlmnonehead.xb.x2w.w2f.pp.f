@@ -11,10 +11,8 @@ C
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_6
+      type(active) :: OpenAD_Symbol_6
       type(active) :: OpenAD_Symbol_7
-      REAL(w2f__8) OpenAD_Symbol_8
-      type(active) :: OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
@@ -28,17 +26,15 @@ C$OPENAD XXX Template ad_template.f
         OpenAD_Symbol_2 = (X%v*2.0D00)
         OpenAD_Symbol_0 = 2.0D00
         X%v = OpenAD_Symbol_2
-        OpenAD_Symbol_6 = OpenAD_Symbol_0
-        CALL setderiv(OpenAD_Symbol_7,X)
-        CALL sax(OpenAD_Symbol_6,OpenAD_Symbol_7,X)
+        CALL setderiv(OpenAD_Symbol_6,X)
+        CALL sax(2.0D00,OpenAD_Symbol_6,X)
       ENDIF
       IF(A .EQ. 'three') THEN
         OpenAD_Symbol_5 = (X%v*3.0D00)
         OpenAD_Symbol_3 = 3.0D00
         X%v = OpenAD_Symbol_5
-        OpenAD_Symbol_8 = OpenAD_Symbol_3
-        CALL setderiv(OpenAD_Symbol_9,X)
-        CALL sax(OpenAD_Symbol_8,OpenAD_Symbol_9,X)
+        CALL setderiv(OpenAD_Symbol_7,X)
+        CALL sax(3.0D00,OpenAD_Symbol_7,X)
       ENDIF
       END SUBROUTINE
 

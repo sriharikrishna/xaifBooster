@@ -77,24 +77,17 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_18
       INTEGER(w2f__i8) OpenAD_Symbol_19
       REAL(w2f__8) OpenAD_Symbol_2
-      INTEGER(w2f__i8) OpenAD_Symbol_20
-      INTEGER(w2f__i8) OpenAD_Symbol_21
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_6
+      type(active) :: OpenAD_Symbol_6
       type(active) :: OpenAD_Symbol_7
-      REAL(w2f__8) OpenAD_Symbol_8
-      type(active) :: OpenAD_Symbol_9
+      INTEGER(w2f__i8) OpenAD_Symbol_8
+      INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
 C
       CHARACTER(*) A
       type(active) :: X
-C
-C     **** Local Variables and Functions ****
-C
-      REAL(w2f__8) OpenAD_Symbol_22
-      REAL(w2f__8) OpenAD_Symbol_23
 C
 C     **** Statements ****
 C
@@ -119,9 +112,18 @@ C$OPENAD XXX Template ad_template.f
         OpenAD_Symbol_2 = (X%v*2.0D00)
         OpenAD_Symbol_0 = 2.0D00
         X%v = OpenAD_Symbol_2
-        OpenAD_Symbol_6 = OpenAD_Symbol_0
-          double_tape(double_tape_pointer) = OpenAD_Symbol_6
-          double_tape_pointer = double_tape_pointer+1
+        OpenAD_Symbol_10 = 1_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_10
+          integer_tape_pointer = integer_tape_pointer+1
+      ELSE
+        OpenAD_Symbol_11 = 0_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_11
+          integer_tape_pointer = integer_tape_pointer+1
+      ENDIF
+      IF(A .EQ. 'three') THEN
+        OpenAD_Symbol_5 = (X%v*3.0D00)
+        OpenAD_Symbol_3 = 3.0D00
+        X%v = OpenAD_Symbol_5
         OpenAD_Symbol_12 = 1_w2f__i8
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_12
           integer_tape_pointer = integer_tape_pointer+1
@@ -130,43 +132,24 @@ C$OPENAD XXX Template ad_template.f
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_13
           integer_tape_pointer = integer_tape_pointer+1
       ENDIF
-      IF(A .EQ. 'three') THEN
-        OpenAD_Symbol_5 = (X%v*3.0D00)
-        OpenAD_Symbol_3 = 3.0D00
-        X%v = OpenAD_Symbol_5
-        OpenAD_Symbol_8 = OpenAD_Symbol_3
-          double_tape(double_tape_pointer) = OpenAD_Symbol_8
-          double_tape_pointer = double_tape_pointer+1
-        OpenAD_Symbol_14 = 1_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_14
-          integer_tape_pointer = integer_tape_pointer+1
-      ELSE
-        OpenAD_Symbol_15 = 0_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_15
-          integer_tape_pointer = integer_tape_pointer+1
-      ENDIF
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_10 = integer_tape(integer_tape_pointer)
-      IF(OpenAD_Symbol_10 .ne. 0) THEN
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_23 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_9%d = OpenAD_Symbol_9%d+X%d*OpenAD_Symbol_23
-          X%d = 0.0d0
-          X%d = X%d+OpenAD_Symbol_9%d
-          OpenAD_Symbol_9%d = 0.0d0
-      ENDIF
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_11 = integer_tape(integer_tape_pointer)
-      IF(OpenAD_Symbol_11 .ne. 0) THEN
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_22 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+X%d*OpenAD_Symbol_22
+          OpenAD_Symbol_8 = integer_tape(integer_tape_pointer)
+      IF(OpenAD_Symbol_8 .ne. 0) THEN
+          OpenAD_Symbol_7%d = OpenAD_Symbol_7%d+X%d*3.0D00
           X%d = 0.0d0
           X%d = X%d+OpenAD_Symbol_7%d
           OpenAD_Symbol_7%d = 0.0d0
+      ENDIF
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_9 = integer_tape(integer_tape_pointer)
+      IF(OpenAD_Symbol_9 .ne. 0) THEN
+          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+X%d*2.0D00
+          X%d = 0.0d0
+          X%d = X%d+OpenAD_Symbol_6%d
+          OpenAD_Symbol_6%d = 0.0d0
       ENDIF
           end if 
         end subroutine foo

@@ -18,7 +18,6 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
-      REAL(w2f__8) OpenAD_Symbol_2
 C
 C     **** Parameters and Result ****
 C
@@ -43,6 +42,5 @@ C$OPENAD XXX Template ad_template.f
       CALL foo()
       Y%v = (T%v*2.0D00)
       OpenAD_Symbol_0 = 2.0D00
-      OpenAD_Symbol_2 = OpenAD_Symbol_0
-      CALL sax(OpenAD_Symbol_2,T,Y)
+      CALL sax(2.0D00,T,Y)
       END SUBROUTINE

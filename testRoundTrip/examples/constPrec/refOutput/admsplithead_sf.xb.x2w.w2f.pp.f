@@ -115,7 +115,7 @@ C$OPENAD XXX Template ad_template.f
       Y(1)%v = COS(OpenAD_Symbol_0)
       OpenAD_Symbol_2 = 1.74532925199432954744D-02
       OpenAD_Symbol_1 = (- SIN(OpenAD_Symbol_0))
-      OpenAD_Symbol_4 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
+      OpenAD_Symbol_4 = (1.74532925199432954744D-02 * OpenAD_Symbol_1)
           double_tape(double_tape_pointer) = OpenAD_Symbol_4
           double_tape_pointer = double_tape_pointer+1
           end if 

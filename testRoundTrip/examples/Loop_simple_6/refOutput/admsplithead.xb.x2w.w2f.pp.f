@@ -70,8 +70,7 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_11
       INTEGER(w2f__i8) OpenAD_Symbol_12
       INTEGER(w2f__i8) OpenAD_Symbol_13
-      INTEGER(w2f__i8) OpenAD_Symbol_14
-      REAL(w2f__8) OpenAD_Symbol_2
+      INTEGER(w2f__i8) OpenAD_Symbol_2
       INTEGER(w2f__i8) OpenAD_Symbol_3
       INTEGER(w2f__i8) OpenAD_Symbol_4
       INTEGER(w2f__i8) OpenAD_Symbol_5
@@ -88,11 +87,10 @@ C
 C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
+      INTEGER(w2f__i8) OpenAD_Symbol_14
       INTEGER(w2f__i8) OpenAD_Symbol_15
       INTEGER(w2f__i8) OpenAD_Symbol_16
       INTEGER(w2f__i8) OpenAD_Symbol_17
-      INTEGER(w2f__i8) OpenAD_Symbol_18
-      REAL(w2f__8) OpenAD_Symbol_19
 C
 C     **** Top Level Pragmas ****
 C
@@ -128,28 +126,25 @@ C$OPENAD XXX Simple loop\t
         DO I = 1, 3, 1
           Y(INT(I))%v = X(I)%v
         END DO
-        OpenAD_Symbol_4 = 1_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_4
+        OpenAD_Symbol_3 = 1_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_3
           integer_tape_pointer = integer_tape_pointer+1
       ELSE
 C$OPENAD XXX Simple loop\t
         DO I = 1, 3, 1
           Y(INT(I))%v = (X(I)%v*2.0D00)
           OpenAD_Symbol_0 = 2.0D00
-          OpenAD_Symbol_2 = OpenAD_Symbol_0
-          double_tape(double_tape_pointer) = OpenAD_Symbol_2
-          double_tape_pointer = double_tape_pointer+1
         END DO
-        OpenAD_Symbol_5 = 0_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_5
+        OpenAD_Symbol_4 = 0_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_4
           integer_tape_pointer = integer_tape_pointer+1
       ENDIF
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_3 = integer_tape(integer_tape_pointer)
-      IF(OpenAD_Symbol_3 .ne. 0) THEN
+          OpenAD_Symbol_2 = integer_tape(integer_tape_pointer)
+      IF(OpenAD_Symbol_2 .ne. 0) THEN
         I = 1 + 1 *((3 - 1) / 1)
         DO WHILE(I .GE. 1)
           X(I)%d = X(I)%d+Y(I)%d
@@ -159,9 +154,7 @@ C$OPENAD XXX Simple loop\t
       ELSE
         I = 1 + 1 *((3 - 1) / 1)
         DO WHILE(I .GE. 1)
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_19 = double_tape(double_tape_pointer)
-          X(I)%d = X(I)%d+Y(I)%d*OpenAD_Symbol_19
+          X(I)%d = X(I)%d+Y(I)%d*2.0D00
           Y(I)%d = 0.0d0
           I = I - 1
         END DO
