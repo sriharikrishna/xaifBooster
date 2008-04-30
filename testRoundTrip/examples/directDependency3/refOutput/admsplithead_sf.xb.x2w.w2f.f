@@ -48,7 +48,6 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
-      REAL(w2f__8) OpenAD_Symbol_2
 C
 C     **** Parameters and Result ****
 C
@@ -59,7 +58,6 @@ C     **** Local Variables and Functions ****
 C
       EXTERNAL foo
       TYPE (OpenADTy_active) T
-      REAL(w2f__8) OpenAD_Symbol_3
 C
 C     **** Top Level Pragmas ****
 C
@@ -80,15 +78,10 @@ C$OPENAD XXX Template ad_template.f
       CALL foo()
       __value__(Y) = (__value__(T) * 2.0D00)
       OpenAD_Symbol_0 = 2.0D00
-      OpenAD_Symbol_2 = OpenAD_Symbol_0
-C     $OpenAD$ INLINE push(subst)
-      CALL push(OpenAD_Symbol_2)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 3
-C     $OpenAD$ INLINE Pop(subst)
-      CALL Pop(OpenAD_Symbol_3)
 C     $OpenAD$ INLINE Saxpy(subst,subst,subst)
-      CALL Saxpy(OpenAD_Symbol_3, __deriv__(Y), __deriv__(T))
+      CALL Saxpy(2.0D00, __deriv__(Y), __deriv__(T))
 C     $OpenAD$ INLINE ZeroDeriv(subst)
       CALL ZeroDeriv(__deriv__(Y))
       CALL foo()
@@ -115,15 +108,10 @@ C$OPENAD XXX Template ad_template.f
       CALL foo()
       __value__(Y) = (__value__(T) * 2.0D00)
       OpenAD_Symbol_0 = 2.0D00
-      OpenAD_Symbol_2 = OpenAD_Symbol_0
-C     $OpenAD$ INLINE push(subst)
-      CALL push(OpenAD_Symbol_2)
 C     $OpenAD$ END REPLACEMENT
 C     $OpenAD$ BEGIN REPLACEMENT 11
-C     $OpenAD$ INLINE Pop(subst)
-      CALL Pop(OpenAD_Symbol_3)
 C     $OpenAD$ INLINE Saxpy(subst,subst,subst)
-      CALL Saxpy(OpenAD_Symbol_3, __deriv__(Y), __deriv__(T))
+      CALL Saxpy(2.0D00, __deriv__(Y), __deriv__(T))
 C     $OpenAD$ INLINE ZeroDeriv(subst)
       CALL ZeroDeriv(__deriv__(Y))
       CALL foo()

@@ -18,8 +18,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -42,11 +40,9 @@ C$OPENAD XXX Template ad_template.f
       DO I = 1, 2, 1
         T(INT(I))%v = (X(I)%v*2.0D00)
         OpenAD_Symbol_0 = 2.0D00
-        OpenAD_Symbol_4 = OpenAD_Symbol_0
-        CALL sax(OpenAD_Symbol_4,X(I),T(I))
+        CALL sax(2.0D00,X(I),T(I))
         Y(INT(I))%v = (T(I)%v*4.0D00)
         OpenAD_Symbol_2 = 4.0D00
-        OpenAD_Symbol_5 = OpenAD_Symbol_2
-        CALL sax(OpenAD_Symbol_5,T(I),Y(I))
+        CALL sax(4.0D00,T(I),Y(I))
       END DO
       END SUBROUTINE

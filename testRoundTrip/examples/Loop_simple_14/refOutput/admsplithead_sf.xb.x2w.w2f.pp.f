@@ -80,16 +80,13 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_12
       INTEGER(w2f__i8) OpenAD_Symbol_13
       INTEGER(w2f__i8) OpenAD_Symbol_14
-      INTEGER(w2f__i8) OpenAD_Symbol_15
-      INTEGER(w2f__i8) OpenAD_Symbol_16
-      INTEGER(w2f__i8) OpenAD_Symbol_17
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
-      REAL(w2f__8) OpenAD_Symbol_8
+      type(active) :: OpenAD_Symbol_5
+      INTEGER(w2f__i8) OpenAD_Symbol_6
+      INTEGER(w2f__i8) OpenAD_Symbol_7
+      INTEGER(w2f__i8) OpenAD_Symbol_8
       INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Parameters and Result ****
@@ -101,15 +98,12 @@ C     **** Local Variables and Functions ****
 C
       INTEGER(w2f__i4) I
       type(active) :: S
+      INTEGER(w2f__i8) OpenAD_Symbol_15
+      INTEGER(w2f__i8) OpenAD_Symbol_16
+      INTEGER(w2f__i8) OpenAD_Symbol_17
       INTEGER(w2f__i8) OpenAD_Symbol_18
       INTEGER(w2f__i8) OpenAD_Symbol_19
-      REAL(w2f__8) OpenAD_Symbol_20
-      INTEGER(w2f__i8) OpenAD_Symbol_21
-      INTEGER(w2f__i8) OpenAD_Symbol_22
-      REAL(w2f__8) OpenAD_Symbol_23
-      INTEGER(w2f__i8) OpenAD_Symbol_24
-      INTEGER(w2f__i8) OpenAD_Symbol_25
-      REAL(w2f__8) OpenAD_Symbol_26
+      INTEGER(w2f__i8) OpenAD_Symbol_20
 C
 C     **** Top Level Pragmas ****
 C
@@ -152,49 +146,34 @@ C$OPENAD XXX Simple loop
           OpenAD_Symbol_2 = (X(I)%v*2.0D00)
           OpenAD_Symbol_0 = 2.0D00
           X(INT(I))%v = OpenAD_Symbol_2
-          OpenAD_Symbol_5 = OpenAD_Symbol_0
-          double_tape(double_tape_pointer) = OpenAD_Symbol_5
-          double_tape_pointer = double_tape_pointer+1
-          OpenAD_Symbol_10 = 1_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_10
+          OpenAD_Symbol_7 = 1_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_7
           integer_tape_pointer = integer_tape_pointer+1
         ELSE
           S%v = 0.0D00
-          OpenAD_Symbol_11 = 0_w2f__i8
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_11
+          OpenAD_Symbol_8 = 0_w2f__i8
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_8
           integer_tape_pointer = integer_tape_pointer+1
         ENDIF
         Y(INT(I))%v = (X(I)%v+S%v)
         OpenAD_Symbol_3 = 1_w2f__i8
         OpenAD_Symbol_4 = 1_w2f__i8
-        OpenAD_Symbol_7 = OpenAD_Symbol_3
-        OpenAD_Symbol_8 = OpenAD_Symbol_4
-          double_tape(double_tape_pointer) = OpenAD_Symbol_7
-          double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_8
-          double_tape_pointer = double_tape_pointer+1
       END DO
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
       I = 1 + 1 *((2 - 1) / 1)
       DO WHILE(I .GE. 1)
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_23 = double_tape(double_tape_pointer)
-          S%d = S%d+Y(I)%d*OpenAD_Symbol_23
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_26 = double_tape(double_tape_pointer)
-          X(I)%d = X(I)%d+Y(I)%d*OpenAD_Symbol_26
+          S%d = S%d+Y(I)%d*1 _w2f__i8
+          X(I)%d = X(I)%d+Y(I)%d*1 _w2f__i8
           Y(I)%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_9 = integer_tape(integer_tape_pointer)
-        IF(OpenAD_Symbol_9 .ne. 0) THEN
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_20 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_6%d = OpenAD_Symbol_6%d+X(I)%d*OpenAD_Symbol_20
+          OpenAD_Symbol_6 = integer_tape(integer_tape_pointer)
+        IF(OpenAD_Symbol_6 .ne. 0) THEN
+          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+X(I)%d*2.0D00
           X(I)%d = 0.0d0
-          X(I)%d = X(I)%d+OpenAD_Symbol_6%d
-          OpenAD_Symbol_6%d = 0.0d0
+          X(I)%d = X(I)%d+OpenAD_Symbol_5%d
+          OpenAD_Symbol_5%d = 0.0d0
         ELSE
           S%d = 0.0d0
         ENDIF

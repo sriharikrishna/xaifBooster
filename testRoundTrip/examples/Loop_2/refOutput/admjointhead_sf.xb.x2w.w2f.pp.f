@@ -65,6 +65,8 @@ C ========== end copyright notice ==============
           use OpenAD_tape
           use OpenAD_rev
           use OpenAD_checkpoints
+C          use checkpoint_module
+          use graph_module
 
           ! original arguments get inserted before version
           ! and declared here together with all local variables
@@ -97,11 +99,9 @@ C
       INTEGER(w2f__i8) OpenAD_Symbol_25
       INTEGER(w2f__i8) OpenAD_Symbol_26
       INTEGER(w2f__i8) OpenAD_Symbol_27
-      INTEGER(w2f__i8) OpenAD_Symbol_28
-      INTEGER(w2f__i8) OpenAD_Symbol_29
-      REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      type(active) :: OpenAD_Symbol_5
+      type(active) :: OpenAD_Symbol_3
+      INTEGER(w2f__i8) OpenAD_Symbol_4
+      INTEGER(w2f__i8) OpenAD_Symbol_5
       INTEGER(w2f__i8) OpenAD_Symbol_6
       INTEGER(w2f__i8) OpenAD_Symbol_7
       INTEGER(w2f__i8) OpenAD_Symbol_8
@@ -117,14 +117,14 @@ C
       INTEGER(w2f__i4) I
       INTEGER(w2f__i4) J
       INTEGER(w2f__i4) K
+      INTEGER(w2f__i8) OpenAD_Symbol_28
+      INTEGER(w2f__i8) OpenAD_Symbol_29
       INTEGER(w2f__i8) OpenAD_Symbol_30
-      INTEGER(w2f__i8) OpenAD_Symbol_31
+      REAL(w2f__8) OpenAD_Symbol_31
       INTEGER(w2f__i8) OpenAD_Symbol_32
-      REAL(w2f__8) OpenAD_Symbol_33
-      INTEGER(w2f__i8) OpenAD_Symbol_34
+      INTEGER(w2f__i8) OpenAD_Symbol_33
+      REAL(w2f__8) OpenAD_Symbol_34
       INTEGER(w2f__i8) OpenAD_Symbol_35
-      REAL(w2f__8) OpenAD_Symbol_36
-      INTEGER(w2f__i8) OpenAD_Symbol_37
 C
 C     **** Top Level Pragmas ****
 C
@@ -135,6 +135,16 @@ C     **** Statements ****
 C
 
 
+          !counters
+          integer, save :: theSwitch = 0
+
+          !Graph variables
+          integer, save :: prevint = 1
+          integer, save :: prevdouble = 1
+          integer, save :: prevBStack = 0
+          integer, save :: prevIStack = 0
+          integer, save :: prevFStack = 0
+          
           ! checkpointing stacks and offsets
           integer :: cp_loop_variable_1,cp_loop_variable_2,
      +cp_loop_variable_3,cp_loop_variable_4,cp_loop_variable_5
@@ -157,15 +167,35 @@ C
 
           type(modeType) :: our_orig_mode
 
+          !Variables for making graphs
+
+         type (list), pointer :: prev => NULL()
+         integer :: ierror, counter, counter2, counter3
+         
+         character (len = 20) itoa 
+         character (len = 20) itoa2
+
+         !end graph varibables
+
 	  ! call external C function used in inlined code
-          integer iaddr
-          external iaddr
+          !integer iaddr
+          !external iaddr
+
+           ! call external Fortran function used in inlined code
+          external makelines
 
 C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+
+!function to make graphs
+          if (our_rev_mode%tape) then
+            Call makelinks('head', prev)
+          endif
+!end function to make graphs
+       
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
@@ -203,52 +233,50 @@ C            print*, " tape       ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C taping
 C$OPENAD XXX Template ad_template.f
-      OpenAD_Symbol_14 = 0_w2f__i8
+      OpenAD_Symbol_12 = 0_w2f__i8
       DO I = 1, 3, 1
         Y(INT(I))%v = X(I)%v
           integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
-        OpenAD_Symbol_14 = (INT(OpenAD_Symbol_14) + INT(1_w2f__i8))
+        OpenAD_Symbol_12 = (INT(OpenAD_Symbol_12) + INT(1_w2f__i8))
       END DO
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_14
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_12
           integer_tape_pointer = integer_tape_pointer+1
-      OpenAD_Symbol_15 = 0_w2f__i8
+      OpenAD_Symbol_13 = 0_w2f__i8
       DO I = 1, 3, 1
-        OpenAD_Symbol_16 = 0_w2f__i8
+        OpenAD_Symbol_14 = 0_w2f__i8
         DO J = 1, 3, 1
-          OpenAD_Symbol_17 = 0_w2f__i8
+          OpenAD_Symbol_15 = 0_w2f__i8
           DO K = 1, 3, 1
             OpenAD_Symbol_2 = (X(J)%v*Y(I)%v)
             OpenAD_Symbol_0 = Y(I)%v
             OpenAD_Symbol_1 = X(J)%v
             Y(INT(I))%v = OpenAD_Symbol_2
-            OpenAD_Symbol_3 = OpenAD_Symbol_0
-            OpenAD_Symbol_4 = OpenAD_Symbol_1
           integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_3
+          double_tape(double_tape_pointer) = OpenAD_Symbol_0
           double_tape_pointer = double_tape_pointer+1
           integer_tape(integer_tape_pointer) = J
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_4
+          double_tape(double_tape_pointer) = OpenAD_Symbol_1
           double_tape_pointer = double_tape_pointer+1
           integer_tape(integer_tape_pointer) = I
           integer_tape_pointer = integer_tape_pointer+1
-            OpenAD_Symbol_17 = (INT(OpenAD_Symbol_17) + INT(1_w2f__i8))
+            OpenAD_Symbol_15 = (INT(OpenAD_Symbol_15) + INT(1_w2f__i8))
           END DO
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_17
-          integer_tape_pointer = integer_tape_pointer+1
-          OpenAD_Symbol_16 = (INT(OpenAD_Symbol_16) + INT(1_w2f__i8))
-        END DO
-          integer_tape(integer_tape_pointer) = OpenAD_Symbol_16
-          integer_tape_pointer = integer_tape_pointer+1
-        OpenAD_Symbol_15 = (INT(OpenAD_Symbol_15) + INT(1_w2f__i8))
-      END DO
           integer_tape(integer_tape_pointer) = OpenAD_Symbol_15
+          integer_tape_pointer = integer_tape_pointer+1
+          OpenAD_Symbol_14 = (INT(OpenAD_Symbol_14) + INT(1_w2f__i8))
+        END DO
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_14
+          integer_tape_pointer = integer_tape_pointer+1
+        OpenAD_Symbol_13 = (INT(OpenAD_Symbol_13) + INT(1_w2f__i8))
+      END DO
+          integer_tape(integer_tape_pointer) = OpenAD_Symbol_13
           integer_tape_pointer = integer_tape_pointer+1
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
@@ -257,6 +285,33 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%plain=.FALSE.
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
+
+            !Part of making graphs
+              if (.not. associated(prev)) then
+                tree%doubles = double_tape_pointer - prevdouble-1
+                tree%integers = integer_tape_pointer - prevint-1
+                tree%argInts = -1*(theArgIStackOffset - prevIStack)
+                tree%argFloats = -1*(theArgFStackOffset - prevFStack)
+                tree%argBools =  -1*(theArgBStackOffset - prevBStack)
+                prevdouble = integer_tape_pointer
+                prevint = double_tape_pointer
+                prevBStack = -1*theArgBStackOffset
+                prevIStack = -1*theArgIStackOffset
+                prevFStack = -1*theArgFStackOffset                
+              else
+                prev%called%doubles = double_tape_pointer - prevdouble
+                prev%called%integers = integer_tape_pointer- prevint
+                prev%called%argInts =-1*(theArgIStackOffset-prevIStack)
+                prev%called%argFloats=-1*(theArgFStackOffset-prevFStack)
+                prev%called%argBools= -1*(theArgBStackOffset-prevBStack)
+                prevdouble = integer_tape_pointer
+                prevint = double_tape_pointer
+                prevBStack = -1*theArgBStackOffset
+                prevIStack = -1*theArgIStackOffset
+                prevFStack = -1*theArgFStackOffset
+              endif
+             !end Graph code
+C                call diff tape storage only once flag
           end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
@@ -269,55 +324,55 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_4 = integer_tape(integer_tape_pointer)
+      OpenAD_Symbol_5 = 1
+      DO WHILE(INT(OpenAD_Symbol_5) .LE. INT(OpenAD_Symbol_4))
+          integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_6 = integer_tape(integer_tape_pointer)
-      OpenAD_Symbol_7 = 1
-      DO WHILE(INT(OpenAD_Symbol_7) .LE. INT(OpenAD_Symbol_6))
+        OpenAD_Symbol_7 = 1
+        DO WHILE(INT(OpenAD_Symbol_7) .LE. INT(OpenAD_Symbol_6))
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_8 = integer_tape(integer_tape_pointer)
-        OpenAD_Symbol_9 = 1
-        DO WHILE(INT(OpenAD_Symbol_9) .LE. INT(OpenAD_Symbol_8))
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_10 = integer_tape(integer_tape_pointer)
-          OpenAD_Symbol_11 = 1
-          DO WHILE(INT(OpenAD_Symbol_11) .LE. INT(OpenAD_Symbol_10))
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_32 = integer_tape(integer_tape_pointer)
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_33 = double_tape(double_tape_pointer)
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y(INT(OpenAD_Symbol_32))
-     +%d*OpenAD_Symbol_33
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_34 = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_35 = integer_tape(integer_tape_pointer)
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_36 = double_tape(double_tape_pointer)
-          X(INT(OpenAD_Symbol_35))%d = X(INT(OpenAD_Symbol_35))%d+Y(INT(
-     +OpenAD_Symbol_34))%d*OpenAD_Symbol_36
-          Y(INT(OpenAD_Symbol_34))%d = 0.0d0
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_37 = integer_tape(integer_tape_pointer)
-          Y(INT(OpenAD_Symbol_37))%d = Y(INT(OpenAD_Symbol_37))%d+OpenAD
-     +_Symbol_5%d
-          OpenAD_Symbol_5%d = 0.0d0
-            OpenAD_Symbol_11 = INT(OpenAD_Symbol_11) + 1
-          END DO
-          OpenAD_Symbol_9 = INT(OpenAD_Symbol_9) + 1
-        END DO
-        OpenAD_Symbol_7 = INT(OpenAD_Symbol_7) + 1
-      END DO
-          integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_12 = integer_tape(integer_tape_pointer)
-      OpenAD_Symbol_13 = 1
-      DO WHILE(INT(OpenAD_Symbol_13) .LE. INT(OpenAD_Symbol_12))
+          OpenAD_Symbol_9 = 1
+          DO WHILE(INT(OpenAD_Symbol_9) .LE. INT(OpenAD_Symbol_8))
           integer_tape_pointer = integer_tape_pointer-1
           OpenAD_Symbol_30 = integer_tape(integer_tape_pointer)
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_31 = double_tape(double_tape_pointer)
+          OpenAD_Symbol_3%d = OpenAD_Symbol_3%d+Y(INT(OpenAD_Symbol_30))
+     +%d*OpenAD_Symbol_31
           integer_tape_pointer = integer_tape_pointer-1
-          OpenAD_Symbol_31 = integer_tape(integer_tape_pointer)
-          X(INT(OpenAD_Symbol_31))%d = X(INT(OpenAD_Symbol_31))%d+Y(INT(
-     +OpenAD_Symbol_30))%d
-          Y(INT(OpenAD_Symbol_30))%d = 0.0d0
-        OpenAD_Symbol_13 = INT(OpenAD_Symbol_13) + 1
+          OpenAD_Symbol_32 = integer_tape(integer_tape_pointer)
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_33 = integer_tape(integer_tape_pointer)
+          double_tape_pointer = double_tape_pointer-1
+          OpenAD_Symbol_34 = double_tape(double_tape_pointer)
+          X(INT(OpenAD_Symbol_33))%d = X(INT(OpenAD_Symbol_33))%d+Y(INT(
+     +OpenAD_Symbol_32))%d*OpenAD_Symbol_34
+          Y(INT(OpenAD_Symbol_32))%d = 0.0d0
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_35 = integer_tape(integer_tape_pointer)
+          Y(INT(OpenAD_Symbol_35))%d = Y(INT(OpenAD_Symbol_35))%d+OpenAD
+     +_Symbol_3%d
+          OpenAD_Symbol_3%d = 0.0d0
+            OpenAD_Symbol_9 = INT(OpenAD_Symbol_9) + 1
+          END DO
+          OpenAD_Symbol_7 = INT(OpenAD_Symbol_7) + 1
+        END DO
+        OpenAD_Symbol_5 = INT(OpenAD_Symbol_5) + 1
+      END DO
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_10 = integer_tape(integer_tape_pointer)
+      OpenAD_Symbol_11 = 1
+      DO WHILE(INT(OpenAD_Symbol_11) .LE. INT(OpenAD_Symbol_10))
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_28 = integer_tape(integer_tape_pointer)
+          integer_tape_pointer = integer_tape_pointer-1
+          OpenAD_Symbol_29 = integer_tape(integer_tape_pointer)
+          X(INT(OpenAD_Symbol_29))%d = X(INT(OpenAD_Symbol_29))%d+Y(INT(
+     +OpenAD_Symbol_28))%d
+          Y(INT(OpenAD_Symbol_28))%d = 0.0d0
+        OpenAD_Symbol_11 = INT(OpenAD_Symbol_11) + 1
       END DO
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
@@ -332,4 +387,54 @@ C     +"a:AF:", theArgFStackoffset,
 C     +" AI:",theArgIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+
+         !graph code
+         prevint = integer_tape_pointer
+         prevdouble = double_tape_pointer
+         prevBStack = theArgBStackOffset
+         prevIStack = theArgIStackOffset
+         prevFStack = theArgFStackOffset
+         if (our_rev_mode%tape) then
+          if( associated(prev)) then
+             cur => prev
+           else  
+             !if(tree%first%called%value .eq. cur%called%value) then
+           Open (Unit=10, File='/tmp/calltree.out', status='replace', 
+     + action='write', iostat=ierror)
+           write(10, *) 'digraph G {'
+           write(10, *) 'nodesep=.05;'
+           write(10, *) 'ranksep=.05;'
+           graph%value = tree%value
+           graph%doubles = tree%doubles
+           graph%integers = tree%integers
+           write(itoa, '(I)') tree%doubles
+           itoa = adjustl(itoa)
+           write(itoa2, '(I)') tree%integers
+           itoa2 = adjustl(itoa2)
+           write(10, '(I, A, A, A, A, A, A, A)'), iaddr(tree),
+     + '[shape="box" height=.25 label="', trim(tree%value), ' ', 
+     + trim(itoa), ':', trim(itoa2), '"];'
+            Call graphprint(tree)
+            write(10, *) '1[ height=.25 label="SubroutineName',
+     + ' double:integer"];'
+            write(10, '(A,A)') '2[height=.25 label="Edge checkpoint',
+     + ' double:integer:boolean"];'
+            write(10, *) '}'
+            close(10)
+            Open (Unit=11, File='/tmp/callgraph.out', status='replace',
+     + action='write', iostat=ierror)
+            write(11, *) 'digraph G {'
+            write(11, *) 'nodesep=.05;'
+            write(11, *) 'ranksep=.05;'
+            call graph2print()
+            write(11, '(A,A)') '1[ height=.25 label="SubroutineName',
+     + ' tape double:integer checkpoint double:integer:boolean"];'
+            write(11, *) '}'
+            close(11)
+             !read *, five
+             !endif
+             endif
+           endif    
+         !end graph code
+
         end subroutine head

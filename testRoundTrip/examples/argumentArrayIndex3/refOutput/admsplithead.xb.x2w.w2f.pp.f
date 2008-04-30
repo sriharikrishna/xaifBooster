@@ -66,16 +66,11 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_1
-      REAL(w2f__8) OpenAD_Symbol_3
 C
 C     **** Parameters and Result ****
 C
       type(active) :: X
       type(active) :: Y
-C
-C     **** Local Variables and Functions ****
-C
-      REAL(w2f__8) OpenAD_Symbol_6
 C
 C     **** Statements ****
 C
@@ -93,15 +88,10 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Template ad_template.f
       Y%v = (X%v*2.0D00)
       OpenAD_Symbol_1 = 2.0D00
-      OpenAD_Symbol_3 = OpenAD_Symbol_1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_3
-          double_tape_pointer = double_tape_pointer+1
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_6 = double_tape(double_tape_pointer)
-          X%d = X%d+Y%d*OpenAD_Symbol_6
+          X%d = X%d+Y%d*2.0D00
           Y%d = 0.0d0
           end if 
         end subroutine foo
@@ -172,9 +162,9 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
+      type(active) :: OpenAD_Symbol_3
       type(active) :: OpenAD_Symbol_4
       type(active) :: OpenAD_Symbol_5
-      type(active) :: OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -242,15 +232,15 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           K = integer_tape(integer_tape_pointer)
           integer_tape_pointer = integer_tape_pointer-1
           L = integer_tape(integer_tape_pointer)
-      CALL foo(OpenAD_Symbol_7,Q(L))
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y%d
+      CALL foo(OpenAD_Symbol_5,Q(L))
+          OpenAD_Symbol_4%d = OpenAD_Symbol_4%d+Y%d
           Y%d = 0.0d0
-          Q(1)%d = Q(1)%d+OpenAD_Symbol_5%d
-          OpenAD_Symbol_5%d = 0.0d0
-          OpenAD_Symbol_4%d = OpenAD_Symbol_4%d+Q(1)%d
-          Q(1)%d = 0.0d0
-          Y%d = Y%d+OpenAD_Symbol_4%d
+          Q(1)%d = Q(1)%d+OpenAD_Symbol_4%d
           OpenAD_Symbol_4%d = 0.0d0
+          OpenAD_Symbol_3%d = OpenAD_Symbol_3%d+Q(1)%d
+          Q(1)%d = 0.0d0
+          Y%d = Y%d+OpenAD_Symbol_3%d
+          OpenAD_Symbol_3%d = 0.0d0
           integer_tape_pointer = integer_tape_pointer-1
           K = integer_tape(integer_tape_pointer)
       CALL foo(X(K),Y)
