@@ -316,8 +316,8 @@ C         $OpenAD$ INLINE pop_i(subst)
           CALL pop_i(J)
 C         $OpenAD$ INLINE pop_i(subst)
           CALL pop_i(I)
-          CALL foo(__deriv__(OpenAD_Symbol_23), __deriv__(
-     > OpenAD_Symbol_24))
+          CALL foo(__deriv__(OpenAD_Symbol_21), __deriv__(
+     > OpenAD_Symbol_22))
 C         $OpenAD$ INLINE pop_i(subst)
           CALL pop_i(J)
 C         $OpenAD$ INLINE pop_i(subst)
