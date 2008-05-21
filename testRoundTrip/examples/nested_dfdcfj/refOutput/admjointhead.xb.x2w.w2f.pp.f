@@ -313,8 +313,6 @@ C adjoint
         OpenAD_Symbol_188 = INT(OpenAD_Symbol_188) + 1
       END DO
           integer_tape_pointer = integer_tape_pointer-1
-          NX = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
           NY = integer_tape(integer_tape_pointer)
           integer_tape_pointer = integer_tape_pointer-1
           NX = integer_tape(integer_tape_pointer)
