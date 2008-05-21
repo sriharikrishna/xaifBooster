@@ -838,8 +838,8 @@ C $OpenAD$ INLINE DECLS
           integer :: i
 C $OpenAD$ END DECLS
           i=theArgIStack(theArgIStackoffset)
+C          write(*,'(A,I5,I5)') "restore(s)  ", i, theArgIStackOffset
           theArgIStackoffset=theArgIStackoffset-1
-C          write(*,'(A,I5)') "restore(s)  ", i
         end subroutine 
 
 

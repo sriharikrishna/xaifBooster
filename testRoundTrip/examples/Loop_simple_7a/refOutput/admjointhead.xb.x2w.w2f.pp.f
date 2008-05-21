@@ -168,8 +168,8 @@ C write(*,'(A,EN26.16E3)')"restore(v)  ",
 C+X(cp_loop_variable_1)%v
           end do
           K = theArgIStack(theArgIStackoffset)
+C write(*,'(A,I5,I5)')"restore(s)  ",K,theArgIStackOffset
           theArgIStackoffset = theArgIStackoffset-1
-C write(*,'(A,I5)')"restore(s)  ",K
           end if
           if (our_rev_mode%plain) then
 C            print*, " plain      ", our_rev_mode
