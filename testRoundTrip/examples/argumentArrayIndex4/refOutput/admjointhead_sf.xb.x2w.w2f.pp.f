@@ -575,11 +575,9 @@ C adjoint
           L = integer_tape(integer_tape_pointer)
       CALL foo(OpenAD_Symbol_6,Q(L))
           integer_tape_pointer = integer_tape_pointer-1
-          K = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
           L = integer_tape(integer_tape_pointer)
-      CALL foo(OpenAD_Symbol_8,Q(L))
-          OpenAD_Symbol_5%d = OpenAD_Symbol_5%d+Y%d
+          integer_tape_pointer = integer_tape_pointer-1
+          K = integer_tape(integer_tape_pointer)
           Y%d = 0.0d0
           Q(1)%d = Q(1)%d+OpenAD_Symbol_5%d
           OpenAD_Symbol_5%d = 0.0d0

@@ -555,11 +555,9 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          K = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
           L = integer_tape(integer_tape_pointer)
-      CALL foo(OpenAD_Symbol_5,Q(L))
-          OpenAD_Symbol_4%d = OpenAD_Symbol_4%d+Y%d
+          integer_tape_pointer = integer_tape_pointer-1
+          K = integer_tape(integer_tape_pointer)
           Y%d = 0.0d0
           Q(1)%d = Q(1)%d+OpenAD_Symbol_4%d
           OpenAD_Symbol_4%d = 0.0d0

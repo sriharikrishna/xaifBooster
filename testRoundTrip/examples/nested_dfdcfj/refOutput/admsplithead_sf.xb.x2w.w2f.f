@@ -136,9 +136,9 @@ C       $OpenAD$ INLINE ZeroDeriv(subst)
         OpenAD_Symbol_188 = INT(OpenAD_Symbol_188) + 1
       END DO
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(NX)
-C     $OpenAD$ INLINE pop_i(subst)
       CALL pop_i(NY)
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(NX)
       CALL foo(NX, NY, __deriv__(X), __deriv__(FVEC), R, N, HX, HY, HY2
      > , HX2)
 C     $OpenAD$ END REPLACEMENT
@@ -210,9 +210,9 @@ C       $OpenAD$ INLINE ZeroDeriv(subst)
         OpenAD_Symbol_191 = INT(OpenAD_Symbol_191) + 1
       END DO
 C     $OpenAD$ INLINE pop_i(subst)
-      CALL pop_i(NX)
-C     $OpenAD$ INLINE pop_i(subst)
       CALL pop_i(NY)
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(NX)
       CALL foo(NX, NY, __deriv__(X), __deriv__(FVEC), R, N, HX, HY, HY2
      > , HX2)
 C     $OpenAD$ END REPLACEMENT

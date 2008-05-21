@@ -313,15 +313,15 @@ C       $OpenAD$ INLINE pop_i(subst)
         OpenAD_Symbol_7 = 1
         DO WHILE(INT(OpenAD_Symbol_7) .LE. INT(OpenAD_Symbol_6))
 C         $OpenAD$ INLINE pop_i(subst)
-          CALL pop_i(I)
-C         $OpenAD$ INLINE pop_i(subst)
           CALL pop_i(J)
-          CALL foo(__deriv__(OpenAD_Symbol_21), __deriv__(
-     > OpenAD_Symbol_22))
 C         $OpenAD$ INLINE pop_i(subst)
           CALL pop_i(I)
+          CALL foo(__deriv__(OpenAD_Symbol_23), __deriv__(
+     > OpenAD_Symbol_24))
 C         $OpenAD$ INLINE pop_i(subst)
           CALL pop_i(J)
+C         $OpenAD$ INLINE pop_i(subst)
+          CALL pop_i(I)
           CALL foo(__deriv__(AX(I, J)), __deriv__(Y))
           OpenAD_Symbol_7 = INT(OpenAD_Symbol_7) + 1
         END DO

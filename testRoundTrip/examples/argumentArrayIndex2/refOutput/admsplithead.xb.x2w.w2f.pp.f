@@ -233,10 +233,9 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           if (our_rev_mode%adjoint) then
 ! adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          K = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
           L = integer_tape(integer_tape_pointer)
-      CALL foo(OpenAD_Symbol_4,OpenAD_Symbol_5)
+          integer_tape_pointer = integer_tape_pointer-1
+          K = integer_tape(integer_tape_pointer)
           integer_tape_pointer = integer_tape_pointer-1
           K = integer_tape(integer_tape_pointer)
       CALL foo(X(K),Y)

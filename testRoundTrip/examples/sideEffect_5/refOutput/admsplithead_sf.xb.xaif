@@ -1735,15 +1735,15 @@
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="G_21" annotation="" scope_id="1"/>
+              <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="I_4" annotation="" scope_id="4"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="I_4" annotation="" scope_id="4"/>
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="G_21" annotation="" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -2255,15 +2255,15 @@
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="G_21" annotation="" scope_id="1"/>
+              <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="I_4" annotation="" scope_id="4"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
             <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="I_4" annotation="" scope_id="4"/>
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="G_21" annotation="" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>

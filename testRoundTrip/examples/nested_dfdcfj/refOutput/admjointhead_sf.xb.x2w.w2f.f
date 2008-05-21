@@ -139,6 +139,8 @@ C     $OpenAD$ INLINE pop_i(subst)
       CALL pop_i(NX)
 C     $OpenAD$ INLINE pop_i(subst)
       CALL pop_i(NY)
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(NX)
       CALL foo(NX, NY, __deriv__(X), __deriv__(FVEC), R, N, HX, HY, HY2
      > , HX2)
 C     $OpenAD$ END REPLACEMENT
@@ -213,6 +215,8 @@ C     $OpenAD$ INLINE pop_i(subst)
       CALL pop_i(NX)
 C     $OpenAD$ INLINE pop_i(subst)
       CALL pop_i(NY)
+C     $OpenAD$ INLINE pop_i(subst)
+      CALL pop_i(NX)
       CALL foo(NX, NY, __deriv__(X), __deriv__(FVEC), R, N, HX, HY, HY2
      > , HX2)
 C     $OpenAD$ END REPLACEMENT
