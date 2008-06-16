@@ -167,4 +167,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     }
   } // end of SubroutineCallAlg::handleArrayAccessIndices
 
-} // end of namespace 
+} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+

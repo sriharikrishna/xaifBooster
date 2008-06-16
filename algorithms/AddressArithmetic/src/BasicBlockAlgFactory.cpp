@@ -74,7 +74,7 @@ namespace xaifBoosterAddressArithmetic {
 	<< std::ends; 
     return out.str(); 
   } 
-}
+} // end namespace xaifBoosterAddressArithmetic
 
 // because of the extra cast in makeNewAlg needed to resolve base class ambiguity 
 // we cannot use the following macro:

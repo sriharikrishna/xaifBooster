@@ -338,4 +338,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
-} // end of namespace xaifBoosterAngelInterfaceAlgorithms 
+} // end namespace xaifBoosterBasicBlockPreaccumulationTape
+

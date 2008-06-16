@@ -234,4 +234,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     return myIndexVariablesPushed;
   }
   
-} // end of namespace 
+} // end namespace xaifBoosterBasicBlockPreaccumulationTape
+

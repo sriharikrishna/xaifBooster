@@ -698,5 +698,5 @@ namespace xaifBoosterAddressArithmetic {
     return false;
   } 
 
-} 
+} // end namespace xaifBoosterAddressArithmetic
 
