@@ -84,4 +84,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void BasicBlockElementAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
-}
+} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+
