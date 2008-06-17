@@ -19,8 +19,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
@@ -45,10 +43,8 @@ C     $OpenAD$ INLINE convert_p2a_scalar(subst,subst)
       Y%v = (X(2)%v*T%v)
       OpenAD_Symbol_1 = T%v
       OpenAD_Symbol_2 = X(2)%v
-      OpenAD_Symbol_3 = OpenAD_Symbol_1
-      OpenAD_Symbol_4 = OpenAD_Symbol_2
-      CALL sax(OpenAD_Symbol_3,X(2),Y)
-      CALL saxpy(OpenAD_Symbol_4,T,Y)
+      CALL sax(OpenAD_Symbol_1,X(2),Y)
+      CALL saxpy(OpenAD_Symbol_2,T,Y)
       END SUBROUTINE
 
       SUBROUTINE head(X, Y)

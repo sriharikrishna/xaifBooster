@@ -129,6 +129,8 @@ namespace xaifBooster {
 
     const ConcreteArgumentPList& getConcreteArgumentPList() const;
 
+    const ConcreteArgument& getConcreteArgument(unsigned int aPosition) const;
+
     const SymbolReference& getSymbolReference() const;
 
     /**

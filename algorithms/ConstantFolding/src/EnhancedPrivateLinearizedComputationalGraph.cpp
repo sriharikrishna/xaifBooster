@@ -117,7 +117,7 @@ namespace xaifBoosterConstantFolding {
       Assignment* tempAssignment2;
       Expression* tempExpression2; 
 
-      if(!e.isUnitExpressionEdge()) {
+      if(!e.isDirectCopyEdge()) {
         if (e.hasConstantFoldedAssignment()) {
           tempAssignment1=e.getConstantFoldedAssignment();
           tempExpression1=&(tempAssignment1->getRHS());
@@ -133,7 +133,7 @@ namespace xaifBoosterConstantFolding {
 	tempExpression1=new Expression();
 	Expression1exists=false;
       }
-      if (!(*conn1).isUnitExpressionEdge()) {
+      if (!(*conn1).isDirectCopyEdge()) {
         if((*conn1).hasConstantFoldedAssignment()) {
           tempAssignment2=(*conn1).getConstantFoldedAssignment();
           tempExpression2=&(tempAssignment2->getRHS());
@@ -353,7 +353,7 @@ namespace xaifBoosterConstantFolding {
       Assignment* tempAssignment2;
       Expression* tempExpression2;
 
-      if(!e.isUnitExpressionEdge()) {
+      if(!e.isDirectCopyEdge()) {
         if (e.hasConstantFoldedAssignment()) {
           tempAssignment1=e.getConstantFoldedAssignment();
           tempExpression1=&(tempAssignment1->getRHS());
@@ -370,7 +370,7 @@ namespace xaifBoosterConstantFolding {
 	Expression1exists=false;
       }
       EnhancedPrivateLinearizedComputationalGraphEdge& conn2 = dynamic_cast <EnhancedPrivateLinearizedComputationalGraphEdge&> (*currentEndOutEdge);
-      if (!(conn2.isUnitExpressionEdge())) {
+      if (!(conn2.isDirectCopyEdge())) {
         if (conn2.hasConstantFoldedAssignment()) {
           tempAssignment2=conn2.getConstantFoldedAssignment();
           tempExpression2=&(tempAssignment2->getRHS());
@@ -390,7 +390,7 @@ namespace xaifBoosterConstantFolding {
       Expression* Expression3;
       Assignment* Assignment3;
       if(alreadyconnected) {
-	if(conn1->isUnitExpressionEdge()) {
+	if(conn1->isDirectCopyEdge()) {
 	  cout<<"SomeThing is VERY WRONG HERE\n";
 	}
         //(*conn1).hasConstantFoldedAssignment()) 
@@ -571,7 +571,7 @@ testingVertex) {
 	  return;
       EnhancedPrivateLinearizedComputationalGraphEdge& testingEdge (dynamic_cast <EnhancedPrivateLinearizedComputationalGraphEdge&>(*currentEdge));
       cout<<"0";
-      if(!(testingEdge.isUnitExpressionEdge())) {
+      if(!(testingEdge.isDirectCopyEdge())) {
 	if(testingEdge.hasConstantFoldedAssignment()) {
 	  cout<<"testingEdge has a ConstantFolded Assignment\n";
 	  return;
@@ -599,7 +599,7 @@ testingVertex) {
       EnhancedPrivateLinearizedComputationalGraph::OutEdgeIterator currentEdge = theOutEdges.first, endEdge=theOutEdges.second;
       EnhancedPrivateLinearizedComputationalGraphEdge& testingEdge =dynamic_cast <EnhancedPrivateLinearizedComputationalGraphEdge&>( *currentEdge);
       cout<<"0";
-      if(!(testingEdge.isUnitExpressionEdge())) {
+      if(!(testingEdge.isDirectCopyEdge())) {
 	if(testingEdge.hasConstantFoldedAssignment()) {
           cout<<"testingEdge has a ConstantFolded Assignment\n";
           return;
@@ -645,7 +645,7 @@ testingVertex) {
 	EnhancedPrivateLinearizedComputationalGraphEdge& testingEdge =dynamic_cast <EnhancedPrivateLinearizedComputationalGraphEdge&>( *currentEdge);
 	++currentEdge;
 	cout<<"0";
-	if(!(testingEdge.isUnitExpressionEdge())) {
+	if(!(testingEdge.isDirectCopyEdge())) {
 	  if(testingEdge.hasConstantFoldedAssignment()) {
 	    cout<<"testingEdge has a ConstantFolded Assignment\n";
 	  }
@@ -677,7 +677,7 @@ EnhancedPrivateLinearizedComputationalGraph::CheckOutEdgesForTrivialitySecondRun
 	EnhancedPrivateLinearizedComputationalGraphEdge& testingEdge =dynamic_cast <EnhancedPrivateLinearizedComputationalGraphEdge&>( *currentEdge);
 	++currentEdge;
 	cout<<"0";
-	if(!(testingEdge.isUnitExpressionEdge())) {
+	if(!(testingEdge.isDirectCopyEdge())) {
 	  if(testingEdge.hasConstantFoldedAssignment()) {
 	    cout<<"testingEdge has a ConstantFolded Assignment\n";
 	  }
@@ -713,7 +713,7 @@ testingVertex){
     EnhancedPrivateLinearizedComputationalGraph::InEdgeIterator currentEdge=theInEdges.first, endEdge=theInEdges.second;
     while( currentEdge!=endEdge) {
       EnhancedPrivateLinearizedComputationalGraphEdge& testingEdge (dynamic_cast <EnhancedPrivateLinearizedComputationalGraphEdge&>( *currentEdge));
-      if (!(testingEdge.isUnitExpressionEdge())) {
+      if (!(testingEdge.isDirectCopyEdge())) {
         if(testingEdge.hasConstantFoldedAssignment()) {
           cout<<"testingEdge has a ConstantFolded Assignment\n";
           return false;
@@ -740,7 +740,7 @@ testingVertex){
     EnhancedPrivateLinearizedComputationalGraph::OutEdgeIterator currentEdge=theOutEdges.first, endEdge=theOutEdges.second;
     while(currentEdge!=endEdge) {
       EnhancedPrivateLinearizedComputationalGraphEdge& testingEdge (dynamic_cast <EnhancedPrivateLinearizedComputationalGraphEdge&>( *currentEdge));
-      if (!(testingEdge.isUnitExpressionEdge())) {
+      if (!(testingEdge.isDirectCopyEdge())) {
         if(testingEdge.hasConstantFoldedAssignment()) {
           cout<<"testingEdge has a ConstantFolded Assignment\n";
           return false;
@@ -867,7 +867,7 @@ testingVertex){
       //	ExpressionEdge parallelExpression= (dynamic_cat <ExpressionEdge&> (*startIterator));
       //	/*So I've got an Expression Edge and I need to get an Expression...*/
       //	        const PrivateLinearizedComputationalGraphEdge& thePrivateEdge(dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(theVertex.getExternalReference()));
-      if(!(thePrivateEdge.isUnitExpressionEdge())) {
+      if(!(thePrivateEdge.isDirectCopyEdge())) {
 	Expression& finalExpression = thePrivateEdge.getAssignmentFromEdge().getRHS();
 	ExpressionVertex* v;
 	//find maximal vertex (Ie: vertex that has no out edges)

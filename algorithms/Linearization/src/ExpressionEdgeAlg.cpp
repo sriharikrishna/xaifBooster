@@ -69,7 +69,8 @@ namespace xaifBoosterLinearization {
   std::string ExpressionEdgeAlg::debug () const { 
     std::ostringstream out;
     out << "xaifBoosterLinearization::ExpressionEdgeAlg[" << this
- 	<< "]" << std::ends;  
+	<< ",myConcretePartialDerivativeKind" << PartialDerivativeKind::toString(myConcretePartialDerivativeKind)
+ 	<< "]" << std::ends;
     return out.str();
   } // end of ExpressionEdgeAlg::debug
 
@@ -125,7 +126,7 @@ namespace xaifBoosterLinearization {
 
   void ExpressionEdgeAlg::makeConcretePartialAssignment() { 
     if (myConcretePartialAssignment_p)
-      THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::getConcretePartialAssignment: already set");
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::makeConcretePartialAssignment: already set");
     myConcretePartialAssignment_p=new Assignment(false);
   } 
 
@@ -147,6 +148,10 @@ namespace xaifBoosterLinearization {
 
   void ExpressionEdgeAlg::passivate() { 
     myConcretePartialDerivativeKind=PartialDerivativeKind::PASSIVE;
+  } 
+  
+  void ExpressionEdgeAlg::linearate() { 
+    myConcretePartialDerivativeKind = PartialDerivativeKind::LINEAR;
   } 
   
   const ExpressionEdgeAlg::VertexPairList& ExpressionEdgeAlg::getConcreteArgumentInstancesList() const { 

@@ -56,6 +56,8 @@ C ========== end copyright notice ==============
           use OpenAD_tape
           use OpenAD_rev
           use OpenAD_checkpoints
+C          use checkpoint_module
+          use graph_module
 
           ! original arguments get inserted before version
           ! and declared here together with all local variables
@@ -68,21 +70,26 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
       type(active) :: X
       type(active) :: Y
 C
-C     **** Local Variables and Functions ****
-C
-      REAL(w2f__8) OpenAD_Symbol_5
-C
 C     **** Statements ****
 C
 
 
+          !counters
+          integer, save :: theSwitch = 0
+
+          !Graph variables
+          integer, save :: prevint = 1
+          integer, save :: prevdouble = 1
+          integer, save :: prevBStack = 0
+          integer, save :: prevIStack = 0
+          integer, save :: prevFStack = 0
+          
           ! checkpointing stacks and offsets
           integer :: cp_loop_variable_1,cp_loop_variable_2,
      +cp_loop_variable_3,cp_loop_variable_4,cp_loop_variable_5
@@ -105,15 +112,35 @@ C
 
           type(modeType) :: our_orig_mode
 
+          !Variables for making graphs
+
+         type (list), pointer :: prev => NULL()
+         integer :: ierror, counter, counter2, counter3
+         
+         character (len = 20) itoa 
+         character (len = 20) itoa2
+
+         !end graph varibables
+
 	  ! call external C function used in inlined code
-          integer iaddr
-          external iaddr
+          !integer iaddr
+          !external iaddr
+
+           ! call external Fortran function used in inlined code
+          external makelines
 
 C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+
+!function to make graphs
+          if (our_rev_mode%tape) then
+            Call makelinks('foo', prev)
+          endif
+!end function to make graphs
+       
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
@@ -149,9 +176,6 @@ C taping
 C$OPENAD XXX Template ad_template.f
       Y%v = (X%v*2.0D00)
       OpenAD_Symbol_2 = 2.0D00
-      OpenAD_Symbol_4 = OpenAD_Symbol_2
-          double_tape(double_tape_pointer) = OpenAD_Symbol_4
-          double_tape_pointer = double_tape_pointer+1
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.FALSE.
             our_rev_mode%res_store=.FALSE.
@@ -159,6 +183,33 @@ C$OPENAD XXX Template ad_template.f
             our_rev_mode%plain=.FALSE.
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
+
+            !Part of making graphs
+              if (.not. associated(prev)) then
+                tree%doubles = double_tape_pointer - prevdouble-1
+                tree%integers = integer_tape_pointer - prevint-1
+                tree%argInts = -1*(theArgIStackOffset - prevIStack)
+                tree%argFloats = -1*(theArgFStackOffset - prevFStack)
+                tree%argBools =  -1*(theArgBStackOffset - prevBStack)
+                prevdouble = integer_tape_pointer
+                prevint = double_tape_pointer
+                prevBStack = -1*theArgBStackOffset
+                prevIStack = -1*theArgIStackOffset
+                prevFStack = -1*theArgFStackOffset                
+              else
+                prev%called%doubles = double_tape_pointer - prevdouble
+                prev%called%integers = integer_tape_pointer- prevint
+                prev%called%argInts =-1*(theArgIStackOffset-prevIStack)
+                prev%called%argFloats=-1*(theArgFStackOffset-prevFStack)
+                prev%called%argBools= -1*(theArgBStackOffset-prevBStack)
+                prevdouble = integer_tape_pointer
+                prevint = double_tape_pointer
+                prevBStack = -1*theArgBStackOffset
+                prevIStack = -1*theArgIStackOffset
+                prevFStack = -1*theArgFStackOffset
+              endif
+             !end Graph code
+C                call diff tape storage only once flag
           end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
@@ -170,9 +221,7 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%tape=.TRUE.
             our_rev_mode%adjoint=.FALSE.
 C adjoint
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_5 = double_tape(double_tape_pointer)
-          X%d = X%d+Y%d*OpenAD_Symbol_5
+          X%d = X%d+Y%d*2.0D00
           Y%d = 0.0d0
             our_rev_mode%arg_store=.FALSE.
             our_rev_mode%arg_restore=.TRUE.
@@ -187,6 +236,56 @@ C     +"a:AF:", theArgFStackoffset,
 C     +" AI:",theArgIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+
+         !graph code
+         prevint = integer_tape_pointer
+         prevdouble = double_tape_pointer
+         prevBStack = theArgBStackOffset
+         prevIStack = theArgIStackOffset
+         prevFStack = theArgFStackOffset
+         if (our_rev_mode%tape) then
+          if( associated(prev)) then
+             cur => prev
+           else  
+             !if(tree%first%called%value .eq. cur%called%value) then
+           Open (Unit=10, File='/tmp/calltree.out', status='replace', 
+     + action='write', iostat=ierror)
+           write(10, *) 'digraph G {'
+           write(10, *) 'nodesep=.05;'
+           write(10, *) 'ranksep=.05;'
+           graph%value = tree%value
+           graph%doubles = tree%doubles
+           graph%integers = tree%integers
+           write(itoa, '(I)') tree%doubles
+           itoa = adjustl(itoa)
+           write(itoa2, '(I)') tree%integers
+           itoa2 = adjustl(itoa2)
+           write(10, '(I, A, A, A, A, A, A, A)'), iaddr(tree),
+     + '[shape="box" height=.25 label="', trim(tree%value), ' ', 
+     + trim(itoa), ':', trim(itoa2), '"];'
+            Call graphprint(tree)
+            write(10, *) '1[ height=.25 label="SubroutineName',
+     + ' double:integer"];'
+            write(10, '(A,A)') '2[height=.25 label="Edge checkpoint',
+     + ' double:integer:boolean"];'
+            write(10, *) '}'
+            close(10)
+            Open (Unit=11, File='/tmp/callgraph.out', status='replace',
+     + action='write', iostat=ierror)
+            write(11, *) 'digraph G {'
+            write(11, *) 'nodesep=.05;'
+            write(11, *) 'ranksep=.05;'
+            call graph2print()
+            write(11, '(A,A)') '1[ height=.25 label="SubroutineName',
+     + ' tape double:integer checkpoint double:integer:boolean"];'
+            write(11, *) '}'
+            close(11)
+             !read *, five
+             !endif
+             endif
+           endif    
+         !end graph code
+
         end subroutine foo
 C ========== begin copyright notice ==============
 C This file is part of 
@@ -245,6 +344,8 @@ C ========== end copyright notice ==============
           use OpenAD_tape
           use OpenAD_rev
           use OpenAD_checkpoints
+C          use checkpoint_module
+          use graph_module
 
           ! original arguments get inserted before version
           ! and declared here together with all local variables
@@ -258,8 +359,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
       type(active) :: OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_6
-      type(active) :: OpenAD_Symbol_7
+      type(active) :: OpenAD_Symbol_4
+      type(active) :: OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -283,6 +384,16 @@ C     **** Statements ****
 C
 
 
+          !counters
+          integer, save :: theSwitch = 0
+
+          !Graph variables
+          integer, save :: prevint = 1
+          integer, save :: prevdouble = 1
+          integer, save :: prevBStack = 0
+          integer, save :: prevIStack = 0
+          integer, save :: prevFStack = 0
+          
           ! checkpointing stacks and offsets
           integer :: cp_loop_variable_1,cp_loop_variable_2,
      +cp_loop_variable_3,cp_loop_variable_4,cp_loop_variable_5
@@ -305,15 +416,35 @@ C
 
           type(modeType) :: our_orig_mode
 
+          !Variables for making graphs
+
+         type (list), pointer :: prev => NULL()
+         integer :: ierror, counter, counter2, counter3
+         
+         character (len = 20) itoa 
+         character (len = 20) itoa2
+
+         !end graph varibables
+
 	  ! call external C function used in inlined code
-          integer iaddr
-          external iaddr
+          !integer iaddr
+          !external iaddr
+
+           ! call external Fortran function used in inlined code
+          external makelines
 
 C          write(*,'(A,I6,A,I6,A,I5,A,I5)')
 C     +"b:AF:", theArgFStackoffset, 
 C     +" AI:",theArgIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+
+!function to make graphs
+          if (our_rev_mode%tape) then
+            Call makelinks('head', prev)
+          endif
+!end function to make graphs
+       
           if (our_rev_mode%arg_store) then 
 C            print*, " arg_store  ", our_rev_mode
 C store arguments
@@ -380,6 +511,33 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
             our_rev_mode%plain=.FALSE.
             our_rev_mode%tape=.FALSE.
             our_rev_mode%adjoint=.TRUE.
+
+            !Part of making graphs
+              if (.not. associated(prev)) then
+                tree%doubles = double_tape_pointer - prevdouble-1
+                tree%integers = integer_tape_pointer - prevint-1
+                tree%argInts = -1*(theArgIStackOffset - prevIStack)
+                tree%argFloats = -1*(theArgFStackOffset - prevFStack)
+                tree%argBools =  -1*(theArgBStackOffset - prevBStack)
+                prevdouble = integer_tape_pointer
+                prevint = double_tape_pointer
+                prevBStack = -1*theArgBStackOffset
+                prevIStack = -1*theArgIStackOffset
+                prevFStack = -1*theArgFStackOffset                
+              else
+                prev%called%doubles = double_tape_pointer - prevdouble
+                prev%called%integers = integer_tape_pointer- prevint
+                prev%called%argInts =-1*(theArgIStackOffset-prevIStack)
+                prev%called%argFloats=-1*(theArgFStackOffset-prevFStack)
+                prev%called%argBools= -1*(theArgBStackOffset-prevBStack)
+                prevdouble = integer_tape_pointer
+                prevint = double_tape_pointer
+                prevBStack = -1*theArgBStackOffset
+                prevIStack = -1*theArgIStackOffset
+                prevFStack = -1*theArgFStackOffset
+              endif
+             !end Graph code
+C                call diff tape storage only once flag
           end if 
           if (our_rev_mode%adjoint) then
 C            print*, " adjoint    ", our_rev_mode
@@ -392,10 +550,10 @@ C            print*, " adjoint    ", our_rev_mode
             our_rev_mode%adjoint=.FALSE.
 C adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          K = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
           L = integer_tape(integer_tape_pointer)
-      CALL foo(OpenAD_Symbol_6,OpenAD_Symbol_7)
+          integer_tape_pointer = integer_tape_pointer-1
+          K = integer_tape(integer_tape_pointer)
+      CALL foo(OpenAD_Symbol_4,OpenAD_Symbol_5)
           integer_tape_pointer = integer_tape_pointer-1
           K = integer_tape(integer_tape_pointer)
       CALL foo(X(K),Y)
@@ -412,4 +570,54 @@ C     +"a:AF:", theArgFStackoffset,
 C     +" AI:",theArgIStackoffset, 
 C     +" DT:",double_tape_pointer, 
 C     +" IT:",integer_tape_pointer
+
+         !graph code
+         prevint = integer_tape_pointer
+         prevdouble = double_tape_pointer
+         prevBStack = theArgBStackOffset
+         prevIStack = theArgIStackOffset
+         prevFStack = theArgFStackOffset
+         if (our_rev_mode%tape) then
+          if( associated(prev)) then
+             cur => prev
+           else  
+             !if(tree%first%called%value .eq. cur%called%value) then
+           Open (Unit=10, File='/tmp/calltree.out', status='replace', 
+     + action='write', iostat=ierror)
+           write(10, *) 'digraph G {'
+           write(10, *) 'nodesep=.05;'
+           write(10, *) 'ranksep=.05;'
+           graph%value = tree%value
+           graph%doubles = tree%doubles
+           graph%integers = tree%integers
+           write(itoa, '(I)') tree%doubles
+           itoa = adjustl(itoa)
+           write(itoa2, '(I)') tree%integers
+           itoa2 = adjustl(itoa2)
+           write(10, '(I, A, A, A, A, A, A, A)'), iaddr(tree),
+     + '[shape="box" height=.25 label="', trim(tree%value), ' ', 
+     + trim(itoa), ':', trim(itoa2), '"];'
+            Call graphprint(tree)
+            write(10, *) '1[ height=.25 label="SubroutineName',
+     + ' double:integer"];'
+            write(10, '(A,A)') '2[height=.25 label="Edge checkpoint',
+     + ' double:integer:boolean"];'
+            write(10, *) '}'
+            close(10)
+            Open (Unit=11, File='/tmp/callgraph.out', status='replace',
+     + action='write', iostat=ierror)
+            write(11, *) 'digraph G {'
+            write(11, *) 'nodesep=.05;'
+            write(11, *) 'ranksep=.05;'
+            call graph2print()
+            write(11, '(A,A)') '1[ height=.25 label="SubroutineName',
+     + ' tape double:integer checkpoint double:integer:boolean"];'
+            write(11, *) '}'
+            close(11)
+             !read *, five
+             !endif
+             endif
+           endif    
+         !end graph code
+
         end subroutine head

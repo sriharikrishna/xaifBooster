@@ -93,7 +93,7 @@ namespace xaifBoosterAddressArithmetic {
 	      << "                top level procedure <name> is checked for quasi-constant data" << std::endl;
   } 
 
-} // end of namespace xaifBooster
+} // end namespace xaifBoosterAddressArithmetic
                                                                      
 
 

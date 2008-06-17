@@ -527,28 +527,36 @@ namespace boost {
 #include <fstream>
 #include <cerrno>
 
-namespace xaifBooster { 
+namespace xaifBooster {
 
-  
   template <class Graph>
-  void GraphVizDisplay::show(const Graph& g, 
-			     const std::string& aFileName) { 
-    show(g,aFileName,DefaultVertexLabelWriter());
-  } 
+  void GraphVizDisplay::show(const Graph& g,
+			     const std::string& aFileName) {
+    show(g, aFileName, DefaultVertexLabelWriter());
+  }
 
   template <class Graph, class VertexLabelWriter>
-  void GraphVizDisplay::show(const Graph& g, 
-			     const std::string& aFileName, 
-			     const VertexLabelWriter& aVertexLabelWriter) { 
-    show(g,aFileName,aVertexLabelWriter, DefaultEdgeLabelWriter());
-  } 
+  void GraphVizDisplay::show(const Graph& g,
+			     const std::string& aFileName,
+			     const VertexLabelWriter& aVertexLabelWriter) {
+    show(g, aFileName, aVertexLabelWriter, DefaultEdgeLabelWriter());
+  }
 
   template <class Graph, class VertexLabelWriter, class EdgeLabelWriter>
   void GraphVizDisplay::show(const Graph& g,
-			     const std::string& aFileName, 
-			     const VertexLabelWriter& aVertexLabelWriter, 
-			     const EdgeLabelWriter& anEdgeLabelWriter) { 
-    std::string theFileName("/tmp/GraphVizDisplay.dot");    
+			     const std::string& aFileName,
+			     const VertexLabelWriter& aVertexLabelWriter,
+			     const EdgeLabelWriter& anEdgeLabelWriter) {
+    show(g, aFileName, aVertexLabelWriter, anEdgeLabelWriter, DefaultGraphPropertiesWriter());
+  }
+
+  template <class Graph, class VertexLabelWriter, class EdgeLabelWriter, class GraphPropertiesWriter>
+  void GraphVizDisplay::show(const Graph& g,
+			     const std::string& aFileName,
+			     const VertexLabelWriter& aVertexLabelWriter,
+			     const EdgeLabelWriter& anEdgeLabelWriter,
+			     const GraphPropertiesWriter& aGraphPropertiesWriter) {
+    std::string theFileName("/tmp/GraphVizDisplay.dot");
     if (!aFileName.empty())
       theFileName="/tmp/"+aFileName+".dot";
     std::ofstream anOutFileStream;
@@ -557,20 +565,21 @@ namespace xaifBooster {
     if(!anOutFileStream)
       THROW_LOGICEXCEPTION_MACRO("GraphVizDisplay<Vertex,Edge>::show : cannot open file >"
 				 << theFileName.c_str()
-				 << "< , system error: " 
+				 << "< , system error: "
 				 << strerror(errno));
     boost::write_graphviz(anOutFileStream,
-			  g.getInternalBoostGraph() ,
+			  g.getInternalBoostGraph(),
 			  aVertexLabelWriter,
-			  anEdgeLabelWriter);
+			  anEdgeLabelWriter,
+			  aGraphPropertiesWriter);
     anOutFileStream.close();
-    // in case of listS there are hex identifiers in the dot file 
-    // which dot cannot interpret as a hex number so we need to make it a 'name' 
-    // pre prepending HEX
+    // in case of listS there are hex identifiers in the dot file which dot cannot interpret
+    // as a hex number so we need to make it a 'name' pre prepending HEX
     std::string commandString(" sed \"s/0x/HEX/g\" " + theFileName + " >| " + theFileName + ".1;"  +
 			      " sed \"s/digraph G/digraph " + aFileName + "/g\" " + theFileName + ".1" + " >| " + theFileName + ".2;" +
-                              " dot -Tps " + theFileName + ".2 >| " + theFileName + ".ps ; gv " + theFileName + ".ps" );
+                              " dot -q -Tps " + theFileName + ".2 >| " + theFileName + ".ps ; gv " + theFileName + ".ps" );
     system(commandString.c_str());
-  } 
-} 
+  }
+
+} // end namespace xaifBooster
 

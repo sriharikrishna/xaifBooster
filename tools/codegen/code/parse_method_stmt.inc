@@ -38,6 +38,7 @@ ourStartActionCatalogue.addElement(Label::ourXAIFName, ActionItem(&XAIFBaseParse
 ourStartActionCatalogue.addElement(Marker::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onMarker));
 ourStartActionCatalogue.addElement(SideEffectListType::our_Mod_XAIFName, ActionItem(&XAIFBaseParserHandlers::onMod));
 ourStartActionCatalogue.addElement(SideEffectListType::our_ModLocal_XAIFName, ActionItem(&XAIFBaseParserHandlers::onModLocal));
+ourStartActionCatalogue.addElement(SideEffectListType::our_OnEntry_XAIFName, ActionItem(&XAIFBaseParserHandlers::onOnEntry));
 ourStartActionCatalogue.addElement(PostLoop::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onPostLoop));
 ourStartActionCatalogue.addElement(PreLoop::ourXAIFName, ActionItem(&XAIFBaseParserHandlers::onPreLoop));
 ourStartActionCatalogue.addElement(SideEffectListType::our_Read_XAIFName, ActionItem(&XAIFBaseParserHandlers::onRead));

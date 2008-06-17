@@ -57,6 +57,9 @@
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
@@ -116,7 +119,29 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   void SubroutineCallAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
-  
+  void SubroutineCallAlg::checkAndPush(const Variable& theVariable) { 
+    // has it been pushed already? 
+    bool pushedAlready=false; 
+    for (Expression::VariablePVariableSRPPairList::iterator it=myIndexVariablesPushed.begin();
+	 it!=myIndexVariablesPushed.end();
+	 ++it) { 
+      DBG_MACRO(DbgGroup::DATA, "comparing " << theVariable.debug().c_str() << " to " << ((*it).first)->debug().c_str()); 
+      if (theVariable.equivalentTo(*((*it).first))) { 
+	pushedAlready=true; 
+	break; 
+      }
+    }
+    if (!pushedAlready) { 
+      // make the subroutine call: 
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
+      // save it in the list
+      myAfterCallIndexPushes.push_back(theSubroutineCall_p);
+      theSubroutineCall_p->setId("SRcall_inline_push_i");
+      theVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+      myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
+    }
+  }
+
   void SubroutineCallAlg::algorithm_action_4() { 
     xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
 						   (getContainingSubroutineCall().
@@ -152,6 +177,25 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
  	  handleArrayAccessIndices(**aConcreteArgumentPListI); 
  	}
       } // end for
+      // now check if any values are required on entry: 
+      const ControlFlowGraph& theCalleeCFG(ConceptuallyStaticInstances::instance()->getCallGraph().getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).getControlFlowGraph());
+      const SideEffectList& theOnEntryList(theCalleeCFG.getSideEffectList(SideEffectListType::ON_ENTRY_LIST));
+      if (theOnEntryList.getVariablePList().empty())
+	return;
+      for (VariablePList::const_iterator i=theOnEntryList.getVariablePList().begin();
+	   i!=theOnEntryList.getVariablePList().end();
+	   ++i) { 
+	ControlFlowGraph::FormalResult theResult(theCalleeCFG.hasFormal((*i)->getVariableSymbolReference()));
+	if (theResult.first) { // is a formal
+	  const ConcreteArgument& theConcreteArgument(getContainingSubroutineCall().getConcreteArgument(theResult.second));
+	  if (theConcreteArgument.isConstant())
+	    continue; 
+	  checkAndPush(theConcreteArgument.getArgument().getVariable());
+	}
+	else { 
+	  checkAndPush(**i);
+	} 
+      }
     } 
   } 
 
@@ -179,26 +223,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin();
 	       argumentI!=listToBeAppended.end();
 	       ++argumentI) { 
-	    // has it been pushed already? 
-	    bool pushedAlready=false; 
-	    for (Expression::VariablePVariableSRPPairList::iterator it=myIndexVariablesPushed.begin();
-		 it!=myIndexVariablesPushed.end();
-		 ++it) { 
-	      DBG_MACRO(DbgGroup::DATA, "comparing " << (*argumentI)->getVariable().debug().c_str() << " to " << ((*it).first)->debug().c_str()); 
-	      if ((*argumentI)->getVariable().equivalentTo(*((*it).first))) { 
-		pushedAlready=true; 
-		break; 
-	      }
-	    }
-	    if (!pushedAlready) { 
-	      // make the subroutine call: 
-	      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
-	      // save it in the list
-	      myAfterCallIndexPushes.push_back(theSubroutineCall_p);
-	      theSubroutineCall_p->setId("SRcall_inline_push_i");
-	      (*argumentI)->getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-	      myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&(*argumentI)->getVariable(),0));
-	    }
+	    checkAndPush((*argumentI)->getVariable());
 	  }
 	}
       }
@@ -209,4 +234,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     return myIndexVariablesPushed;
   }
   
-} // end of namespace 
+} // end namespace xaifBoosterBasicBlockPreaccumulationTape
+

@@ -113,6 +113,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     };
 
     /**
+     */
+    IdentificationResult aliasIdentify(const Variable& theVariable) const;
+
+    /**
      * this is a fall back method utilizing only alias information 
      * as opposed to the overwriting methods which look at DuUd information 
      * this method should not ever be invoked for duud based lists

@@ -59,11 +59,13 @@
 namespace xaifBooster { 
   class PartialDerivativeKind { 
 public:
-    enum PartialDerivativeKind_E {PASSIVE,
+    enum PartialDerivativeKind_E {NOT_SET,
+				  PASSIVE,
 				  LINEAR_ONE,
 				  LINEAR_MINUS_ONE,
 				  LINEAR,
 				  NONLINEAR};
+
     static std::string toString(const PartialDerivativeKind_E& aKind) throw (PrintingIntException);
 
     static const PartialDerivativeKind_E fromString(const std::string& aName);

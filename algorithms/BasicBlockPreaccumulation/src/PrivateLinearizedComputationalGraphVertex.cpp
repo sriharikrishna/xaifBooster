@@ -50,72 +50,10 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
-#include "xaifBooster/system/inc/Variable.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
-using namespace xaifBooster;
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() : 
-    myRHSVariable_p(0), 
-    myLHSVariable_p(0) {
-  }
+} // end namespace xaifBoosterBasicBlockPreaccumulation
 
-  std::string PrivateLinearizedComputationalGraphVertex::debug() const { 
-    std::ostringstream out;
-    out << "PrivateLinearizedComputationalGraphVertex[" << this 
-	<< "]" << std::ends;  
-    return out.str();
-  } 
-
-  void PrivateLinearizedComputationalGraphVertex::setRHSVariable(const Variable& aRHSVariable,
-								 const ObjectWithId::Id& statementId) {
-    if (myRHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setRHSVariable: already set to "
-				 << myRHSVariable_p->debug().c_str()
-				 << " while trying to set for " 
-				 << aRHSVariable.debug().c_str());
-    myRHSVariable_p=&aRHSVariable;
-    myStatementId=statementId;
-  }
-
-  const Variable& 
-  PrivateLinearizedComputationalGraphVertex::getRHSVariable() const { 
-    if (!myRHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getRHSVariable: not set");
-    return *myRHSVariable_p;
-  } 
-
-  void PrivateLinearizedComputationalGraphVertex::setLHSVariable(const Variable& aLHSVariable,
-								 const ObjectWithId::Id& statementId) {
-    if (myLHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setLHSVariable: already set to "
-				 << myLHSVariable_p->debug().c_str()
-				 << " while trying to set for " 
-				 << aLHSVariable.debug().c_str());
-    myLHSVariable_p=&aLHSVariable;
-    myStatementId=statementId;
-  }
-
-  const Variable& 
-  PrivateLinearizedComputationalGraphVertex::getLHSVariable() const { 
-    if (!myLHSVariable_p) 
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getLHSVariable: not set");
-    return *myLHSVariable_p;
-  } 
-
-  bool
-  PrivateLinearizedComputationalGraphVertex::hasLHSVariable() const { 
-    return (myLHSVariable_p)?true:false;
-  } 
-
-  const ObjectWithId::Id& 
-  PrivateLinearizedComputationalGraphVertex::getStatementId() const { 
-    if (!myStatementId.size())
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getStatementId: not set");
-    return myStatementId; 
-  } 
-
-} 

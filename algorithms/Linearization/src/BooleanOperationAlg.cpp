@@ -58,6 +58,7 @@
 namespace xaifBoosterLinearization { 
 
   BooleanOperationAlg::BooleanOperationAlg(BooleanOperation& theContainingBooleanOperation) : 
+    ExpressionVertexAlgBase(theContainingBooleanOperation),
     BooleanOperationAlgBase(theContainingBooleanOperation),
     ExpressionVertexAlg(theContainingBooleanOperation) {
   }

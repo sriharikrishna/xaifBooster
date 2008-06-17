@@ -72,7 +72,8 @@ namespace xaifBooster {
 				      const Scope& theCFGScope,
 				      const bool activeFlag) :
     ControlFlowGraphCommonAttributes(theSymbol,theScope,theCFGScope),
-    myActiveFlag(activeFlag) { 
+    myActiveFlag(activeFlag),
+    mySideEffectLists(SideEffectListType::numTypes()) { 
     myControlFlowGraphAlgBase_p=ControlFlowGraphAlgFactory::instance()->makeNewAlg(*this);
   } 
 
@@ -111,14 +112,14 @@ namespace xaifBooster {
        << "\">" 
        << std::endl;
     myArgumentList.printXMLHierarchy(os);
-    myModLocalList.printXMLHierarchy(SideEffectListType::our_ModLocal_XAIFName,
-				     os);
-    myModList.printXMLHierarchy(SideEffectListType::our_Mod_XAIFName,
-				os);
-    myReadLocalList.printXMLHierarchy(SideEffectListType::our_ReadLocal_XAIFName,
-				      os);
-    myReadList.printXMLHierarchy(SideEffectListType::our_Read_XAIFName,
-				 os);
+    if (PrintManager::isVerbose()) { 
+      for (std::list<SideEffectListType::SideEffectListType_E>::const_iterator i=SideEffectListType::getTypeList().begin();
+	   i!=SideEffectListType::getTypeList().end();
+	   ++i) { 
+	getSideEffectList(*i).printXMLHierarchy(SideEffectListType::getXAIFNames()[*i],
+						os);
+      }
+    }
     ControlFlowGraph::ConstVertexIteratorPair p(vertices());
     ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt)
@@ -189,47 +190,11 @@ namespace xaifBooster {
   }
 
   SideEffectList& ControlFlowGraph::getSideEffectList(SideEffectListType::SideEffectListType_E aType) { 
-    SideEffectList* aSideEffectList_p=0;
-    switch(aType) { 
-    case SideEffectListType::MOD_LIST : 
-      aSideEffectList_p=&myModList;
-      break;
-    case SideEffectListType::MOD_LOCAL_LIST : 
-      aSideEffectList_p=&myModLocalList;
-      break;
-    case SideEffectListType::READ_LIST : 
-      aSideEffectList_p=&myReadList;
-      break;
-    case SideEffectListType::READ_LOCAL_LIST : 
-      aSideEffectList_p=&myReadLocalList;
-      break;
-    default:
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getSideEffectList: unknown list type >" << aType << "<.");
-      break;
-    }
-    return  *aSideEffectList_p;
+    return mySideEffectLists[aType];
   }
 
   const SideEffectList& ControlFlowGraph::getSideEffectList(SideEffectListType::SideEffectListType_E aType) const { 
-    const SideEffectList* aSideEffectList_p=0;
-    switch(aType) { 
-    case SideEffectListType::MOD_LIST : 
-      aSideEffectList_p=&myModList;
-      break;
-    case SideEffectListType::MOD_LOCAL_LIST : 
-      aSideEffectList_p=&myModLocalList;
-      break;
-    case SideEffectListType::READ_LIST : 
-      aSideEffectList_p=&myReadList;
-      break;
-    case SideEffectListType::READ_LOCAL_LIST : 
-      aSideEffectList_p=&myReadLocalList;
-      break;
-    default:
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraph::getSideEffectList: unknown list type >" << aType << "<.");
-      break;
-    }
-    return  *aSideEffectList_p;
+    return mySideEffectLists[aType];
   }
 
   ControlFlowGraphVertex::FindAssignmentResult ControlFlowGraph::findAssignment(const ObjectWithId::Id& aStatementId) const { 

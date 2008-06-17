@@ -15,7 +15,6 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
-      REAL(w2f__8) OpenAD_Symbol_2
 C
 C     **** Parameters and Result ****
 C
@@ -43,8 +42,7 @@ C$OPENAD XXX Simple loop
         IF(I .eq. 1) THEN
           __value__(Y(INT(I))) = (__value__(X(I)) * 2.0D00)
           OpenAD_Symbol_0 = 2.0D00
-          OpenAD_Symbol_2 = OpenAD_Symbol_0
-          CALL sax(OpenAD_Symbol_2, __deriv__(X(I)), __deriv__(Y(I)))
+          CALL sax(2.0D00, __deriv__(X(I)), __deriv__(Y(I)))
         ENDIF
         __value__(Y(INT(I))) = __value__(X(K))
         CALL setderiv(__deriv__(Y(I)), __deriv__(X(K)))

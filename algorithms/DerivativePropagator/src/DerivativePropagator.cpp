@@ -114,7 +114,7 @@ namespace xaifBoosterDerivativePropagator {
 						const Variable& theSource) { 
     DerivativePropagatorSetDeriv* theDPSD_p= new DerivativePropagatorSetDeriv(theTarget,
 									      theSource);
-    myEntryPList.push_front(theDPSD_p);
+    myEntryPList.push_back(theDPSD_p);
     return *theDPSD_p;
   } 
 
@@ -129,21 +129,21 @@ namespace xaifBoosterDerivativePropagator {
   } 
 
   DerivativePropagatorSaxpy& DerivativePropagator::addSaxpyToEntryPList(const Variable& thePartial,
-									const Variable& theDependent,
-									const Variable& theIndependent) { 
+									const Variable& theIndependent,
+									const Variable& theDependent) {
     DerivativePropagatorSaxpy* aSaxpy_p=new DerivativePropagatorSaxpy(thePartial,
-								      theDependent,
-								      theIndependent);
+								      theIndependent,
+								      theDependent);
     myEntryPList.push_back(aSaxpy_p);
     return *aSaxpy_p;
   } 
 
   DerivativePropagatorSaxpy& DerivativePropagator::addSaxpyToEntryPList(const Constant& thePartial,
-									const Variable& theDependent,
-									const Variable& theIndependent) { 
+									const Variable& theIndependent,
+									const Variable& theDependent) {
     DerivativePropagatorSaxpy* aSaxpy_p=new DerivativePropagatorSaxpy(thePartial,
-								      theDependent,
-								      theIndependent);
+								      theIndependent,
+								      theDependent);
     myEntryPList.push_back(aSaxpy_p);
     return *aSaxpy_p;
   } 

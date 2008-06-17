@@ -11,10 +11,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_6
-      type(active) :: OpenAD_Symbol_7
+      type(active) :: OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
@@ -48,13 +45,10 @@ C$OPENAD XXX Simple loop
           OpenAD_Symbol_2 = X(J)%v
           OpenAD_Symbol_3 = X(I)%v
           OpenAD_Symbol_1 = 1_w2f__i8
-          OpenAD_Symbol_4 = (OpenAD_Symbol_2 * OpenAD_Symbol_1)
-          OpenAD_Symbol_5 = (OpenAD_Symbol_3 * OpenAD_Symbol_1)
-          OpenAD_Symbol_6 = OpenAD_Symbol_0
-          CALL setderiv(OpenAD_Symbol_7,Y(I))
-          CALL sax(OpenAD_Symbol_4,X(I),Y(I))
-          CALL saxpy(OpenAD_Symbol_5,X(J),Y(I))
-          CALL saxpy(OpenAD_Symbol_6,OpenAD_Symbol_7,Y(I))
+          CALL setderiv(OpenAD_Symbol_4,Y(I))
+          CALL sax(OpenAD_Symbol_2,X(I),Y(I))
+          CALL saxpy(OpenAD_Symbol_3,X(J),Y(I))
+          CALL saxpy(1 _w2f__i8,OpenAD_Symbol_4,Y(I))
           J = J + 1
         END DO
       END DO

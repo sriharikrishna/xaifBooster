@@ -16,8 +16,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_3
 C
 C     **** Parameters and Result ****
 C
@@ -53,9 +51,7 @@ C$OPENAD XXX Simple loop
         __value__(Y(INT(I))) = (__value__(X(I)) + __value__(S))
         OpenAD_Symbol_0 = 1_w2f__i8
         OpenAD_Symbol_1 = 1_w2f__i8
-        OpenAD_Symbol_2 = OpenAD_Symbol_0
-        OpenAD_Symbol_3 = OpenAD_Symbol_1
-        CALL sax(OpenAD_Symbol_2, __deriv__(X(I)), __deriv__(Y(I)))
-        CALL saxpy(OpenAD_Symbol_3, __deriv__(S), __deriv__(Y(I)))
+        CALL sax(1_w2f__i8, __deriv__(X(I)), __deriv__(Y(I)))
+        CALL saxpy(1_w2f__i8, __deriv__(S), __deriv__(Y(I)))
       END DO
       END SUBROUTINE
