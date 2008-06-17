@@ -66,16 +66,11 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_4
 C
 C     **** Parameters and Result ****
 C
       type(active) :: X
       type(active) :: Y
-C
-C     **** Local Variables and Functions ****
-C
-      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Statements ****
 C
@@ -93,15 +88,10 @@ C$OPENAD XXX Template ad_template.f
 C$OPENAD XXX Template ad_template.f
       Y%v = (X%v*2.0D00)
       OpenAD_Symbol_2 = 2.0D00
-      OpenAD_Symbol_4 = OpenAD_Symbol_2
-          double_tape(double_tape_pointer) = OpenAD_Symbol_4
-          double_tape_pointer = double_tape_pointer+1
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_5 = double_tape(double_tape_pointer)
-          X%d = X%d+Y%d*OpenAD_Symbol_5
+          X%d = X%d+Y%d*2.0D00
           Y%d = 0.0d0
           end if 
         end subroutine foo
@@ -173,8 +163,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       type(active) :: OpenAD_Symbol_0
       type(active) :: OpenAD_Symbol_1
-      type(active) :: OpenAD_Symbol_6
-      type(active) :: OpenAD_Symbol_7
+      type(active) :: OpenAD_Symbol_4
+      type(active) :: OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -243,10 +233,10 @@ C!! requested inline of 'convert_a2p_scalar' has no defn
           if (our_rev_mode%adjoint) then
 ! adjoint
           integer_tape_pointer = integer_tape_pointer-1
-          K = integer_tape(integer_tape_pointer)
-          integer_tape_pointer = integer_tape_pointer-1
           L = integer_tape(integer_tape_pointer)
-      CALL foo(OpenAD_Symbol_6,OpenAD_Symbol_7)
+          integer_tape_pointer = integer_tape_pointer-1
+          K = integer_tape(integer_tape_pointer)
+      CALL foo(OpenAD_Symbol_4,OpenAD_Symbol_5)
           integer_tape_pointer = integer_tape_pointer-1
           K = integer_tape(integer_tape_pointer)
       CALL foo(X(K),Y)

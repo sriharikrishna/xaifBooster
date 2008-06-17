@@ -8,7 +8,6 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
-      REAL(w2f__8) OpenAD_Symbol_2
 C
 C     **** Parameters and Result ****
 C
@@ -36,8 +35,7 @@ C$OPENAD XXX Simple loop
         IF(I .eq. 1) THEN
           Y(INT(I))%v = (X(I)%v*2.0D00)
           OpenAD_Symbol_0 = 2.0D00
-          OpenAD_Symbol_2 = OpenAD_Symbol_0
-          CALL sax(OpenAD_Symbol_2,X(I),Y(I))
+          CALL sax(2.0D00,X(I),Y(I))
         ENDIF
         Y(INT(I))%v = X(K)%v
         CALL setderiv(Y(I),X(K))

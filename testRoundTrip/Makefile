@@ -94,11 +94,13 @@ CC=opencc
 endif
 
 ######################################################
+#checkpoint_module.o             \
 
 MODULES= w2f__types.o active_module.o                 
 
 ifeq ($(MAJOR_MODE),adm)
 MODULES+=                       \
+graph_module.o                  \
 OpenAD_checkpoints.o            \
 OpenAD_dct.o                    \
 OpenAD_rev.o                    \
@@ -164,7 +166,8 @@ head_sf.xaif : head_sf.B whirl2xaif
 
 # XAIF -> XAIF'
 head_sf.xb.xaif : head_sf.xaif xaif.xsd xaif_base.xsd xaif_inlinable_intrinsics.xsd xaif_derivative_propagator.xsd xaif_output.xsd xaifBooster
-	./xaifBooster -v -V -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG) 
+	./xaifBooster -v -V -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG)  -S 2  
+	./xaifBooster -v -V -i $< -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -o $@ $(CP_FLAG)  
 
 # XAIF' -> WHIRL'
 head_sf.xb.x2w.B : head_sf.xb.xaif xaif2whirl
@@ -217,10 +220,7 @@ xaifBooster:
 driver: $(MODULES) head.xb.x2w.w2f.pp.o driver.o 
 	$(F90C) $(F90FLAGS) $^ -o $@ 
 
-numericalComparison: numericalComparison.o
-	$(F90C) $(F90FLAGS) $^ -o $@ 
-
-run: params.conf tmpOutput driver numericalComparison 
+run: params.conf tmpOutput driver 
 	./driver
 
 %.o:%.f
@@ -244,7 +244,7 @@ testAllclean:
 
 clean: testAllclean
 	$(RM) *.xsd 
-	$(RM) mfef90 whirl2xaif whirl2sexp sexp2whirl ir_b2a xaif2whirl whirl2f_be whirl2f *.pl xaifBooster numericalComparison .lastRun
+	$(RM) mfef90 whirl2xaif whirl2sexp sexp2whirl ir_b2a xaif2whirl whirl2f_be whirl2f *.pl xaifBooster .lastRun
 	$(RM) *.mod *.o
 
 objs test : 

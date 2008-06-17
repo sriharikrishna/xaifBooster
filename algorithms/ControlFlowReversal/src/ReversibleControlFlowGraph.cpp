@@ -1661,10 +1661,10 @@ namespace xaifBoosterControlFlowReversal {
     Intrinsic* theNewUpdateOp_p;
     if (&(theOldUpdateTopIntrinsic_p->getInlinableIntrinsicsCatalogueItem())==
 	&(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement("add_scal_scal"))) 
-      theNewUpdateOp_p=new Intrinsic("sub_scal_scal",false);
+                                                                theNewUpdateOp_p=new Intrinsic("sub_scal_scal",false);
     else if (&(theOldUpdateTopIntrinsic_p->getInlinableIntrinsicsCatalogueItem())==
 	     &(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement("sub_scal_scal")))
-      theNewUpdateOp_p=new Intrinsic("add_scal_scal",false);
+                                                              theNewUpdateOp_p=new Intrinsic("add_scal_scal",false);
     else
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalUpdate: don't know what to do with operation "
                                  << theOldUpdateTopIntrinsic_p->debug().c_str());

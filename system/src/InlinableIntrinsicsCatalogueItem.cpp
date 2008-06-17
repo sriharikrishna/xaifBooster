@@ -108,7 +108,7 @@ namespace xaifBooster {
   const InlinableIntrinsicsExpression& 
   InlinableIntrinsicsCatalogueItem::getExpressionVectorElement(unsigned int aPosition) const { 
     if (!isExpressionVectorElementSet(aPosition))
-      THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsCatalogueItem::addPartial: position not set");
+      THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsCatalogueItem::getExpressionVectorElement: position not set");
     return *(myExpressionVector[aPosition]);
   } 
 

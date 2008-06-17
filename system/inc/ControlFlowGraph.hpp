@@ -191,37 +191,15 @@ namespace xaifBooster {
     ControlFlowGraph();
 
     /**
-     * the list of Variables
-     * modified 
-     * by this subroutine and its callees
-     */
-    SideEffectList myModList;
-
-    /**
-     * the list of Variables
-     * modified 
-     * by this subroutine excluding its calles
-     */
-    SideEffectList myModLocalList;
-
-    /**
-     * the list of Variables
-     * read 
-     * by this subroutine and its callees
-     */
-    SideEffectList myReadList;
-
-    /**
-     * the list of Variables
-     * read 
-     * by this subroutine excluding its calles
-     */
-    SideEffectList myReadLocalList;
-
-    /**
      * the flag indicating that this subroutine is active or passive
      */
     const bool myActiveFlag;
+
+    /**
+     * the various side effect lists
+     * indexed by SideEffectListType
+     */
+    std::vector<SideEffectList> mySideEffectLists;
 
     /**
      * this will be set to point a dynamically instance

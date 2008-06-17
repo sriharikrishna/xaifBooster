@@ -75,13 +75,12 @@ C
 C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
-      REAL(w2f__8) OpenAD_Symbol_2
+      INTEGER(w2f__i8) OpenAD_Symbol_2
       INTEGER(w2f__i8) OpenAD_Symbol_3
       INTEGER(w2f__i8) OpenAD_Symbol_4
       INTEGER(w2f__i8) OpenAD_Symbol_5
       INTEGER(w2f__i8) OpenAD_Symbol_6
       INTEGER(w2f__i8) OpenAD_Symbol_7
-      INTEGER(w2f__i8) OpenAD_Symbol_8
 C
 C     **** Parameters and Result ****
 C
@@ -93,8 +92,7 @@ C
       INTEGER(w2f__i4) I
       INTEGER(w2f__i8) OpenAD_Symbol_10
       INTEGER(w2f__i8) OpenAD_Symbol_11
-      INTEGER(w2f__i8) OpenAD_Symbol_12
-      REAL(w2f__8) OpenAD_Symbol_13
+      INTEGER(w2f__i8) OpenAD_Symbol_8
       INTEGER(w2f__i8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
@@ -130,9 +128,6 @@ C$OPENAD XXX Simple loop\t
         ELSE
           Y(INT(I))%v = (X(I)%v*2.0D00)
           OpenAD_Symbol_0 = 2.0D00
-          OpenAD_Symbol_2 = OpenAD_Symbol_0
-          double_tape(double_tape_pointer) = OpenAD_Symbol_2
-          double_tape_pointer = double_tape_pointer+1
         ENDIF
       END DO
           end if 
@@ -144,9 +139,7 @@ C$OPENAD XXX Simple loop\t
           X(I)%d = X(I)%d+Y(I)%d
           Y(I)%d = 0.0d0
         ELSE
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_13 = double_tape(double_tape_pointer)
-          X(I)%d = X(I)%d+Y(I)%d*OpenAD_Symbol_13
+          X(I)%d = X(I)%d+Y(I)%d*2.0D00
           Y(I)%d = 0.0d0
         ENDIF
         I = I - 1

@@ -101,9 +101,10 @@ namespace xaifBoosterLinearization {
     typedef std::list<VertexPair> VertexPairList;
 
     PartialDerivativeKind::PartialDerivativeKind_E getPartialDerivativeKind() const;
-    //    void setPartialDerivativeKind(PartialDerivativeKind::PartialDerivativeKind_E );
 
     void passivate();
+
+    void linearate();
 
     const VertexPairList& getConcreteArgumentInstancesList() const;
 

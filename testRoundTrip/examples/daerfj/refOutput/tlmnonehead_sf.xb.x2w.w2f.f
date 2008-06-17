@@ -28,11 +28,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_21
       REAL(w2f__8) OpenAD_Symbol_22
       REAL(w2f__8) OpenAD_Symbol_23
-      REAL(w2f__8) OpenAD_Symbol_24
-      REAL(w2f__8) OpenAD_Symbol_25
-      REAL(w2f__8) OpenAD_Symbol_26
-      REAL(w2f__8) OpenAD_Symbol_27
-      REAL(w2f__8) OpenAD_Symbol_28
       REAL(w2f__8) OpenAD_Symbol_3
       REAL(w2f__8) OpenAD_Symbol_5
       REAL(w2f__8) OpenAD_Symbol_6
@@ -102,22 +97,18 @@ C$OPENAD XXX Template ad_template.f
         OpenAD_Symbol_16 = (-(OpenAD_Symbol_14 /(__value__(TEMP2) *
      >  __value__(TEMP2))))
         OpenAD_Symbol_13 = (-1_w2f__i8)
-        OpenAD_Symbol_19 = (OpenAD_Symbol_15 * OpenAD_Symbol_13)
-        OpenAD_Symbol_20 = (OpenAD_Symbol_16 * OpenAD_Symbol_13)
-        OpenAD_Symbol_21 = (OpenAD_Symbol_5 * OpenAD_Symbol_20)
-        OpenAD_Symbol_22 = (OpenAD_Symbol_6 * OpenAD_Symbol_20)
-        OpenAD_Symbol_23 = (OpenAD_Symbol_17 * OpenAD_Symbol_19)
-        OpenAD_Symbol_24 = (OpenAD_Symbol_18 * OpenAD_Symbol_19)
-        OpenAD_Symbol_25 = (OpenAD_Symbol_9 * OpenAD_Symbol_22)
-        OpenAD_Symbol_26 = (OpenAD_Symbol_2 * OpenAD_Symbol_24)
-        OpenAD_Symbol_27 = (OpenAD_Symbol_10 * OpenAD_Symbol_25)
-        OpenAD_Symbol_28 = (OpenAD_Symbol_3 * OpenAD_Symbol_26)
-        CALL sax(OpenAD_Symbol_21, __deriv__(X(4)), __deriv__(FVEC(I)))
-        CALL saxpy(OpenAD_Symbol_23, __deriv__(X(1)), __deriv__(FVEC(I)
+        OpenAD_Symbol_19 = (OpenAD_Symbol_15 * INT((-1_w2f__i8)))
+        OpenAD_Symbol_20 = (OpenAD_Symbol_16 * INT((-1_w2f__i8)))
+        OpenAD_Symbol_21 = (OpenAD_Symbol_17 * OpenAD_Symbol_19)
+        OpenAD_Symbol_22 = (OpenAD_Symbol_9 * OpenAD_Symbol_20)
+        OpenAD_Symbol_23 = (OpenAD_Symbol_2 * OpenAD_Symbol_18 *
+     >  OpenAD_Symbol_19)
+        CALL sax(OpenAD_Symbol_20, __deriv__(X(4)), __deriv__(FVEC(I)))
+        CALL saxpy(OpenAD_Symbol_21, __deriv__(X(1)), __deriv__(FVEC(I)
      > ))
-        CALL saxpy(OpenAD_Symbol_27, __deriv__(X(3)), __deriv__(FVEC(I)
+        CALL saxpy(OpenAD_Symbol_22, __deriv__(X(3)), __deriv__(FVEC(I)
      > ))
-        CALL saxpy(OpenAD_Symbol_28, __deriv__(X(2)), __deriv__(FVEC(I)
+        CALL saxpy(OpenAD_Symbol_23, __deriv__(X(2)), __deriv__(FVEC(I)
      > ))
       END DO
       END SUBROUTINE

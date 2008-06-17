@@ -16,8 +16,6 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -40,12 +38,10 @@ C$OPENAD XXX Template ad_template.f
       IF(L) THEN
         __value__(Y(1)) = (__value__(X(1)) * 4.0D00)
         OpenAD_Symbol_0 = 4.0D00
-        OpenAD_Symbol_4 = OpenAD_Symbol_0
-        CALL sax(OpenAD_Symbol_4, __deriv__(X(1)), __deriv__(Y(1)))
+        CALL sax(4.0D00, __deriv__(X(1)), __deriv__(Y(1)))
       ELSE
         __value__(Y(1)) = (__value__(X(1)) * 2.0D00)
         OpenAD_Symbol_2 = 2.0D00
-        OpenAD_Symbol_5 = OpenAD_Symbol_2
-        CALL sax(OpenAD_Symbol_5, __deriv__(X(1)), __deriv__(Y(1)))
+        CALL sax(2.0D00, __deriv__(X(1)), __deriv__(Y(1)))
       ENDIF
       END SUBROUTINE

@@ -81,4 +81,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void MarkerAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
   
-} // end of namespace 
+} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+

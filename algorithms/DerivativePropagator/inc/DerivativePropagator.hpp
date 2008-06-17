@@ -99,7 +99,7 @@ namespace xaifBoosterDerivativePropagator {
      * we add entries to the DerivativePropagator as
      * addZeroDerivToEntryPList in AssignmentAlg::algorithm_action_2
      * and as Saxpy/SetDeriv in 
-     * BasicBlockAlg::algorihm_action_3
+     * BasicBlockAlg::algorithm_action_3
      * For SetDeriv we either add as a temporary for variables that are 
      * both input and output 
      * OR 
@@ -109,7 +109,7 @@ namespace xaifBoosterDerivativePropagator {
      * else. 
      * For setting temporaries they always come before the saxpy ops but 
      * we have to look at their position relative to the ZeroDeriv entries. 
-     * All ZeroDerivEntries are pushed in algorith_action_2.
+     * All ZeroDerivEntries are pushed in algorithm_action_2.
      * If all SetDeriv entries go before the ZeroDeriv entries we just need to be 
      * sure that none of those should have been zeroed out, meaning that 
      * e.g. a constant assignment is not preceeding any 'active' use of a variable.
@@ -132,12 +132,12 @@ namespace xaifBoosterDerivativePropagator {
 								EntryPList::iterator& insertBefore);
 
     DerivativePropagatorSaxpy& addSaxpyToEntryPList(const Constant& thePartial,
-						    const Variable& theDependent,
-						    const Variable& theIndependent);
+						    const Variable& theIndependent,
+						    const Variable& theDependent);
 
     DerivativePropagatorSaxpy& addSaxpyToEntryPList(const Variable& thePartial,
-						    const Variable& theDependent,
-						    const Variable& theIndependent);
+						    const Variable& theIndependent,
+						    const Variable& theDependent);
 
     void addZeroDerivToEntryPList(const Variable& theTarget);
 

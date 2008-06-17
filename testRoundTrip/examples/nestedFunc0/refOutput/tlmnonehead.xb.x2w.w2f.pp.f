@@ -30,17 +30,13 @@ C       **** Global Variables & Derived Type Definitions ****
 C
         REAL(w2f__8) OpenAD_Symbol_0
         REAL(w2f__8) OpenAD_Symbol_1
-        REAL(w2f__8) OpenAD_Symbol_2
-        REAL(w2f__8) OpenAD_Symbol_3
 C
 C       **** Statements ****
 C
         Y(1)%v = (X(1)%v*X(2)%v)
         OpenAD_Symbol_0 = X(2)%v
         OpenAD_Symbol_1 = X(1)%v
-        OpenAD_Symbol_2 = OpenAD_Symbol_0
-        OpenAD_Symbol_3 = OpenAD_Symbol_1
-        CALL sax(OpenAD_Symbol_2,X(1),Y(1))
-        CALL saxpy(OpenAD_Symbol_3,X(2),Y(1))
+        CALL sax(OpenAD_Symbol_0,X(1),Y(1))
+        CALL saxpy(OpenAD_Symbol_1,X(2),Y(1))
         END SUBROUTINE
       END

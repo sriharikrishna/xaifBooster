@@ -182,6 +182,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 		  const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
     /** 
+     * add the call to the proper BasicBlockElementList based on aReversalType
+     */
+    void addSaxpy_constantFactor(const Variable& theSource,
+				 const Variable& theTarget,
+				 const Constant& theConstantFactor,
+				 const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry,
+				 const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
+
+    /** 
      * add the assignment to the proper BasicBlockElementList based on aReversalType
      */
     const Assignment& addConstantAssignment(const BaseConstant& theConstant,

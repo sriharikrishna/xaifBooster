@@ -180,8 +180,8 @@ C     **** Global Variables & Derived Type Definitions ****
 C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_1
-      REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
+      REAL(w2f__8) OpenAD_Symbol_2
+      REAL(w2f__8) OpenAD_Symbol_3
 C
 C     **** Local Variables and Functions ****
 C
@@ -219,7 +219,7 @@ C!! requested inline of 'convert_p2a_scalar' has no defn
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-      CALL bar(OpenAD_Symbol_4, OpenAD_Symbol_5)
+      CALL bar(OpenAD_Symbol_2, OpenAD_Symbol_3)
           end if 
         end subroutine foo
 C ========== begin copyright notice ==============
@@ -289,20 +289,10 @@ C ========== end copyright notice ==============
       use globals
       IMPLICIT NONE
 C
-C     **** Global Variables & Derived Type Definitions ****
-C
-      REAL(w2f__8) OpenAD_Symbol_2
-      REAL(w2f__8) OpenAD_Symbol_3
-C
 C     **** Parameters and Result ****
 C
       type(active) :: X(1 : 2)
       type(active) :: Y(1 : 1)
-C
-C     **** Local Variables and Functions ****
-C
-      REAL(w2f__8) OpenAD_Symbol_8
-      REAL(w2f__8) OpenAD_Symbol_9
 C
 C     **** Top Level Pragmas ****
 C
@@ -328,23 +318,13 @@ C$OPENAD XXX Template ad_template.f
       GX%v = X(1)%v
       GY%v = GX%v
       Y(1)%v = GY%v
-      OpenAD_Symbol_2 = (INT(1_w2f__i8) * INT(1_w2f__i8))
-      OpenAD_Symbol_3 = 1_w2f__i8
-          double_tape(double_tape_pointer) = OpenAD_Symbol_2
-          double_tape_pointer = double_tape_pointer+1
-          double_tape(double_tape_pointer) = OpenAD_Symbol_3
-          double_tape_pointer = double_tape_pointer+1
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_8 = double_tape(double_tape_pointer)
-          X(1)%d = X(1)%d+GY%d*OpenAD_Symbol_8
-          GY%d = 0.0d0
-          double_tape_pointer = double_tape_pointer-1
-          OpenAD_Symbol_9 = double_tape(double_tape_pointer)
-          X(1)%d = X(1)%d+Y(1)%d*OpenAD_Symbol_9
+          X(1)%d = X(1)%d+Y(1)%d
           Y(1)%d = 0.0d0
+          X(1)%d = X(1)%d+GY%d
+          GY%d = 0.0d0
           X(1)%d = X(1)%d+GX%d
           GX%d = 0.0d0
           end if 

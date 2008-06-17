@@ -11,10 +11,6 @@ C
       REAL(w2f__8) OpenAD_Symbol_1
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_4
-      REAL(w2f__8) OpenAD_Symbol_5
-      REAL(w2f__8) OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
 C
 C     **** Parameters and Result ****
 C
@@ -39,18 +35,14 @@ C$OPENAD XXX Template ad_template.f
           Y(INT(I))%v = (X(I)%v*X(I)%v)
           OpenAD_Symbol_0 = X(I)%v
           OpenAD_Symbol_1 = X(I)%v
-          OpenAD_Symbol_4 = OpenAD_Symbol_0
-          OpenAD_Symbol_5 = OpenAD_Symbol_1
-          CALL sax(OpenAD_Symbol_4,X(I),Y(I))
-          CALL saxpy(OpenAD_Symbol_5,X(I),Y(I))
+          CALL sax(OpenAD_Symbol_0,X(I),Y(I))
+          CALL saxpy(OpenAD_Symbol_1,X(I),Y(I))
         ELSE
           Y(INT(I))%v = (X(I)%v+X(I)%v)
           OpenAD_Symbol_2 = 1_w2f__i8
           OpenAD_Symbol_3 = 1_w2f__i8
-          OpenAD_Symbol_6 = OpenAD_Symbol_2
-          OpenAD_Symbol_7 = OpenAD_Symbol_3
-          CALL sax(OpenAD_Symbol_6,X(I),Y(I))
-          CALL saxpy(OpenAD_Symbol_7,X(I),Y(I))
+          CALL sax(1 _w2f__i8,X(I),Y(I))
+          CALL saxpy(1 _w2f__i8,X(I),Y(I))
         ENDIF
         X(INT(I))%v = 0.0
         CALL zero_deriv(X(INT(I)))

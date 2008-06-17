@@ -17,9 +17,7 @@ C
       REAL(w2f__8) OpenAD_Symbol_0
       REAL(w2f__8) OpenAD_Symbol_2
       REAL(w2f__8) OpenAD_Symbol_3
-      REAL(w2f__8) OpenAD_Symbol_5
-      TYPE (OpenADTy_active) OpenAD_Symbol_6
-      REAL(w2f__8) OpenAD_Symbol_7
+      TYPE (OpenADTy_active) OpenAD_Symbol_5
 C
 C     **** Parameters and Result ****
 C
@@ -51,16 +49,13 @@ C$OPENAD XXX Simple loop
           OpenAD_Symbol_2 = (__value__(X(I)) * 2.0D00)
           OpenAD_Symbol_0 = 2.0D00
           __value__(X(INT(I))) = OpenAD_Symbol_2
-          OpenAD_Symbol_5 = OpenAD_Symbol_0
-          CALL setderiv(__deriv__(OpenAD_Symbol_6), __deriv__(X(I)))
-          CALL sax(OpenAD_Symbol_5, __deriv__(OpenAD_Symbol_6),
-     >  __deriv__(X(I)))
+          CALL setderiv(__deriv__(OpenAD_Symbol_5), __deriv__(X(I)))
+          CALL sax(2.0D00, __deriv__(OpenAD_Symbol_5), __deriv__(X(I)))
         ELSE
           S = 0.0D00
         ENDIF
         __value__(Y(INT(I))) = (__value__(X(I)) + S)
         OpenAD_Symbol_3 = 1_w2f__i8
-        OpenAD_Symbol_7 = OpenAD_Symbol_3
-        CALL sax(OpenAD_Symbol_7, __deriv__(X(I)), __deriv__(Y(I)))
+        CALL setderiv(__deriv__(Y(I)), __deriv__(X(I)))
       END DO
       END SUBROUTINE

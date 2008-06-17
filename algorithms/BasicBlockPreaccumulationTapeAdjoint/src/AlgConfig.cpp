@@ -76,7 +76,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     std::cout << " BasicBlockPreaccumulationTapeAdjoint options: no specific options here" << std::endl; 
   } 
 
-} // end of namespace xaifBooster
-                                                                     
-
+} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
 

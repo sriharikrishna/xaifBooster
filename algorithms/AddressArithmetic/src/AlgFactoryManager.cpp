@@ -105,5 +105,5 @@ namespace xaifBoosterAddressArithmetic {
     xaifBoosterAddressArithmetic::AlgFactoryManager::resets();
   }
 
-}
+} // end namespace xaifBoosterAddressArithmetic
 

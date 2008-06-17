@@ -95,5 +95,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resets();
   }
 
-}
+} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
 

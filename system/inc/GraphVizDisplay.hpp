@@ -92,6 +92,16 @@ namespace xaifBooster {
       }
     };
 
+    /**
+     * labels the graph with nothing
+     */
+    class DefaultGraphPropertiesWriter {
+    public:
+      DefaultGraphPropertiesWriter(){};
+      void operator()(std::ostream& out) const { 
+      }
+    }; // end class DefaultGraphPropertiesWriter
+
 //     
 //   // examples: 
 //     
@@ -128,35 +138,42 @@ namespace xaifBooster {
 
 
     /** 
-     * the name supplied here is the base name 
-     * of a file to be created in /tmp
+     * the name supplied here is the base name of a file to be created in /tmp
      */
     template <class Graph>
     static void show(const Graph& g, 
 		     const std::string& aFileName);
 
     /** 
-     * the name supplied here is the base name 
-     * of a file to be created in /tmp
-     * the label writer can be like the default label writer 
-     * used in this implementation
+     * the name supplied here is the base name of a file to be created in /tmp
+     * the label writer can be like the default label writer used in this implementation
      */
     template <class Graph, class VertexLabelWriter>
     static void show(const Graph& g,
-		     const std::string& aFileName, 
-		     const VertexLabelWriter&);
+		     const std::string& aFileName,
+		     const VertexLabelWriter& aVertexLabelWriter);
 
     /** 
-     * the name supplied here is the base name 
-     * of a file to be created in /tmp
-     * the label writer can be like the default label writer 
-     * used in this implementation
+     * the name supplied here is the base name of a file to be created in /tmp
+     * the label writer can be like the default label writer used in this implementation
      */
     template <class Graph, class VertexLabelWriter, class EdgeLabelWriter>
     static void show(const Graph& g,
-		     const std::string& aFileName, 
-		     const VertexLabelWriter&, 
-		     const EdgeLabelWriter&);
+		     const std::string& aFileName,
+		     const VertexLabelWriter& aVertexLabelWriter,
+		     const EdgeLabelWriter& anEdgeLabelWriter);
+
+    /** 
+     * the name supplied here is the base name of a file to be created in /tmp
+     * the label writer can be like the default label writer used in this implementation
+     */
+    template <class Graph, class VertexLabelWriter, class EdgeLabelWriter, class GraphPropertiesWriter>
+    static void show(const Graph& g,
+		     const std::string& aFileName,
+		     const VertexLabelWriter& aVertexLabelWriter,
+		     const EdgeLabelWriter& anEdgeLabelWriter,
+		     const GraphPropertiesWriter& aGraphPropertiesWriter);
+
   }; 
 
 } 
