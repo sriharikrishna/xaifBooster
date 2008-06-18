@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ -z "${XAIFSCHEMAROOT}" ] 
 then 
-  echo XAIFSCHEMAROOT needs to be set, e.g. /sandbox/BitKeep/xaif-1.0
+  echo XAIFSCHEMAROOT needs to be set, e.g. /sandbox/OpenAD/xaif
   exit -1 
 fi
 rm -rf tmp
