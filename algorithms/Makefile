@@ -59,7 +59,6 @@ objs test clean:
 	cd TypeChange && $(MAKE) $@
 	cd Linearization && $(MAKE) $@
 	cd BasicBlockPreaccumulation && $(MAKE) $@
-	cd MemOpsTradeoffPreaccumulation && $(MAKE) $@
 	cd BasicBlockPreaccumulationTape && $(MAKE) $@
 	cd BasicBlockPreaccumulationTapeAdjoint && $(MAKE) $@
 	cd ControlFlowReversal && $(MAKE) $@
