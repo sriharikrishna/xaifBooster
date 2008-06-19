@@ -1,1 +1,0 @@
-for i in `ls -d */test`; do  echo testing in $i ; cd $i ; ./quickRegression.bash; cd ../../; done

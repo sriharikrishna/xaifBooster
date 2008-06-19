@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 if [ -z "${XAIFSCHEMAROOT}" ] 
 then 
   echo XAIFSCHEMAROOT needs to be set, e.g. /sandbox/OpenAD/xaif
@@ -14,48 +15,53 @@ else
 fi
 for i in `echo ${TESTFILES}`
     do
-    echo "executing: ./t -v -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg"
-    ./t -v -V -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg
-    if [ $? -ne 0 ] 
-    then 
-	echo "ERROR during execution!"; 
-    fi
+    command="./t -v -V -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg"
+    echo $command
+    set +e
+    $($command)
+    set -e
     debugLines=`wc -l tmp/${i}.dbg | awk '{ print $1}'`
     if [ $debugLines -gt 0 ] 
     then 
 	echo "debug messages:"
 	cat tmp/${i}.dbg
-        echo -n "QUESTION: there was a problem - hit <enter> to continue "
+        echo -n "QUESTION: there was a problem - "
 	if [ -z "$BATCHMODE" ] 
           then 
+	  echo -n "hit <enter> to continue "
           read answer
+	else
+	  echo "exiting"
+	  exit -1;
         fi
 	continue
     fi
-    diffs=`diff testOutput/${i}.out tmp/${i}.out`
-    if [ $? -eq 2 ] 
+    diffCommand="diff testOutput/${i}.out tmp/${i}.out"
+    set +e
+    $($diffCommand) > /dev/null
+    ret=$?
+    set -e
+    if [ $ret -eq 2 ] 
     then 
-      echo "ERROR in: diff testOutput/${i}.out tmp/${i}.out"; exit -1;
+      echo "ERROR in: $diffCommand"; exit -1;
     fi
-    if [ -n "$diffs" ] 
+    if [ $ret -eq 1 ] 
     then 
 	echo "diffs base (<) vs. current (>):"
-	diff testOutput/${i}.out tmp/${i}.out
-	echo -n "QUESTION: there was a difference - checkin y/[n] : "
+	$($diffCommand)
 	if [ -z "$BATCHMODE" ] 
           then 
+  	  echo -n "QUESTION: there was a difference - checkin y/[n] : "
           read answer
 	  if [ "${answer}" == "y" ] 
 	  then 
 	    cp tmp/${i}.out testOutput/${i}.out
 	  else
             echo -n "QUESTION: there was a problem - hit <enter> to continue "
- 	    if [ -z "$BATCHMODE" ] 
-            then 
-              read answer
-            fi
+	    read answer
           fi
+	else 
+  	  echo -n "there was a difference"; exit -1;
         fi
     fi
-    echo ""
 done
