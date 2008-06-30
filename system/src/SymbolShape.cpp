@@ -79,6 +79,12 @@ namespace xaifBooster {
     case FIVE_TENSOR:
       returnString="five_tensor";
       break;
+    case SIX_TENSOR:
+      returnString="six_tensor";
+      break;
+    case SEVEN_TENSOR:
+      returnString="seven_tensor";
+      break;
     default: 
       throw PrintingIntException("SymbolShape::toString: unknown value",aShape);
       break;
@@ -101,6 +107,10 @@ namespace xaifBooster {
       returnValue=FOUR_TENSOR;
     else if (aName=="five_tensor")
       returnValue=FIVE_TENSOR;
+    else if (aName=="six_tensor")
+      returnValue=SIX_TENSOR;
+    else if (aName=="seven_tensor")
+      returnValue=SEVEN_TENSOR;
     else  
       THROW_LOGICEXCEPTION_MACRO("SymbolShape::fromString: unknown value >"
 			   << aName.c_str() << "<");
