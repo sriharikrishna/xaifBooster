@@ -53,11 +53,13 @@
 #include <sstream>
 
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/IntrinsicAlg.hpp"
 
 namespace xaifBoosterTraceDiff { 
 
   IntrinsicAlg::IntrinsicAlg(Intrinsic& theContainingIntrinsic) : 
+    ExpressionVertexAlgBase(theContainingIntrinsic),
     IntrinsicAlgBase(theContainingIntrinsic) {
   }
 

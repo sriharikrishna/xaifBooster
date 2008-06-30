@@ -60,7 +60,7 @@ using namespace xaifBooster;
 namespace xaifBoosterTraceDiff { 
 
   /**
-   * class to implement linearization steps
+   * class to implement tracing
    */
   class IntrinsicAlg : public IntrinsicAlgBase { 
 
