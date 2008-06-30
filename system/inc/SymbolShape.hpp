@@ -67,7 +67,9 @@ public:
 	    MATRIX=2,
 	    THREE_TENSOR=3,
 	    FOUR_TENSOR=4,
-	    FIVE_TENSOR=5};
+	    FIVE_TENSOR=5,
+	    SIX_TENSOR=6,
+	    SEVEN_TENSOR=7};
     
     static std::string toString(const SymbolShape_E& aShape) throw (PrintingIntException);
 
