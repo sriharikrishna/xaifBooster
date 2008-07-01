@@ -420,8 +420,12 @@ namespace xaifBoosterTypeChange {
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
-    if (theConcreteArgument.isArgument()) { // no point in copying a constant back.
-      // post call:
+    if (theConcreteArgument.isArgument()) { 
+      // may have to adjust upper bounds
+      theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(aFormalArgumentSymbolReference.
+										    getSymbol().	
+										    getSymbolShape()));
+      // post call only if it is not a constant.
       aSubroutineName=giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
 				   aFormalArgumentSymbolReference,
 				   missingDimensions,
@@ -434,6 +438,9 @@ namespace xaifBoosterTypeChange {
       theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
       Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
       theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes);
+      theInlineVariablePostRes.adjustUpperBounds((int)(aFormalArgumentSymbolReference.
+						       getSymbol().	
+						       getSymbolShape()));
       Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
@@ -457,7 +464,7 @@ namespace xaifBoosterTypeChange {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
       thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
     myPriorAdjustmentsList.push_back(thePriorCall_p);
-    thePriorCall_p->setId("SubroutineCallAlg::addConversion prior");
+    thePriorCall_p->setId("SubroutineCallAlg::addExternalConversion prior");
     // this is the extra temporary that replaces the original argument
     Variable& theTempVar(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
     makeTempSymbol(theConcreteArgument,
@@ -471,8 +478,14 @@ namespace xaifBoosterTypeChange {
     ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
     theConcreteArgumentAlg.makeReplacement(theTempVar);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
-    if (theConcreteArgument.isArgument()) { // no point in copying a constant back.
-      // post call:
+    if (theConcreteArgument.isArgument()) {
+      theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(theConcreteArgument.
+										    getArgument().
+										    getVariable().
+										    getVariableSymbolReference().
+										    getSymbol().
+										    getSymbolShape()));
+      // post call only if not a constant
       aSubroutineName=giveCallName(true, // the concrete parameter is implied to be active
 				   theActualSymbolReference, // we don't have a formal parameter here 
 				   0,
@@ -480,11 +493,17 @@ namespace xaifBoosterTypeChange {
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
 	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
       myPostAdjustmentsList.push_back(thePostCall_p);
-      thePostCall_p->setId("SubroutineCallAlg::addConversion post");
+      thePostCall_p->setId("SubroutineCallAlg::addExternalConversion post");
       ConcreteArgument& theFirstPostConcreteArg(thePostCall_p->addConcreteArgument(1));
       theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
       Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
       theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes);
+      theInlineVariablePostRes.adjustUpperBounds((int)(theConcreteArgument.
+						       getArgument().
+						       getVariable().
+						       getVariableSymbolReference().
+						       getSymbol().
+						       getSymbolShape()));
       Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
