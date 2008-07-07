@@ -85,10 +85,10 @@ public:
 			  const SymbolShape_E& minusTheOtherShape);
 
     /**
-     * the shape that is lesser than aShape by lesserBy
+     * the shape that is offset by offset
      */
-    static const SymbolShape_E lesserShape(const SymbolShape_E& aShape, 
-					   unsigned int lesserBy);
+    static const SymbolShape_E offset(const SymbolShape_E& aShape, 
+				      int offset);
 
   }; // end of class SymbolShape
 
