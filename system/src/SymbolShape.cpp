@@ -122,15 +122,14 @@ namespace xaifBooster {
     return oneShape-minusTheOtherShape;
   } 
 
-  const SymbolShape::SymbolShape_E SymbolShape::lesserShape(const SymbolShape::SymbolShape_E& aShape, 
-							    unsigned int lesserBy) { 
-    if ((aShape-lesserBy)<0)
-      THROW_LOGICEXCEPTION_MACRO("SymbolShape::lesserShape: no shape for inputs "
+  const SymbolShape::SymbolShape_E SymbolShape::offset(const SymbolShape::SymbolShape_E& aShape, 
+						       int offset) { 
+    if ((aShape+offset)<0 || (aShape+offset)>SEVEN_TENSOR)
+      THROW_LOGICEXCEPTION_MACRO("SymbolShape::offset: no shape for inputs "
 				 << toString(aShape).c_str()
-				 << " and  lesserBy="
-				 << lesserBy);
-    
-    return (SymbolShape_E)(aShape-lesserBy);
+				 << " and  offset="
+				 << offset);
+    return (SymbolShape_E)(aShape+offset);
   }
   
 } // end of namespace xaifBooster

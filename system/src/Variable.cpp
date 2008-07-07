@@ -236,8 +236,8 @@ namespace xaifBooster {
 	  ++numDerefs;
       }
     } 
-    return SymbolShape::lesserShape(getVariableSymbolReference().getSymbol().getSymbolShape(),
-				    numDerefs);
+    return SymbolShape::offset(getVariableSymbolReference().getSymbol().getSymbolShape(),
+			       -numDerefs);
   } 
 
   bool Variable::getActiveType() const { 
