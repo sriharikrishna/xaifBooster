@@ -276,7 +276,8 @@ namespace xaifBoosterTypeChange {
 	if (((*concreteArgumentPI)->isArgument())?
 	    (*concreteArgumentPI)->getArgument().getVariable().getActiveType():
 	    false) {
-	  // we need conversion to passive
+	  MissingSubroutinesReport::reportConversion(getContainingSubroutineCall().getSymbolReference());
+       	  // we need conversion to passive
 	  addExternalConversion(**concreteArgumentPI,
 				theBasicBlock);
 	} 
