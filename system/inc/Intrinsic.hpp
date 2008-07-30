@@ -70,7 +70,7 @@ namespace xaifBooster {
 
   public:
 
-    Intrinsic(const std::string& aName, 
+    Intrinsic(const std::string& aName,
 	      bool makeAlgorithm=true);
 
     ~Intrinsic(){};
@@ -78,7 +78,6 @@ namespace xaifBooster {
     void printXMLHierarchy(std::ostream& os) const;
     void printXMLHierarchyImpl(std::ostream& os) const;
     void printXMLHierarchyImpl(std::ostream& os, const Expression& theExpression) const {};
-
 
     std::string debug() const;
 
@@ -98,6 +97,13 @@ namespace xaifBooster {
     IntrinsicAlgBase& getIntrinsicAlgBase() const;
 
     void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+    
+    /** 
+     * looks at the catalogue
+     */
+    bool isNonSmooth() const; 
+
+    const std::string& getName() const; 
 
   private : 
 

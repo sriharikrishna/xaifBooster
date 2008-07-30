@@ -75,7 +75,8 @@ namespace xaifBooster {
      * function but will not fill it. 
      * \todo JU: why do we preallocate the expression for the function?
      */
-    InlinableIntrinsicsCatalogueItem(unsigned int aNumberOfArguments);
+    InlinableIntrinsicsCatalogueItem(unsigned int aNumberOfArguments,
+				     bool aNonSmoothFlag);
 
     ~InlinableIntrinsicsCatalogueItem();
 
@@ -106,6 +107,7 @@ namespace xaifBooster {
     static const std::string ourXAIFName;
     static const std::string our_myName_XAIFName;
     static const std::string our_myNrArgs_XAIFName;
+    static const std::string our_myNonSmoothFlag_XAIFName;
     static const std::string ourFunctionXAIFName;
     static const std::string our_myFunctionType_XAIFName;
     static const std::string our_myFunctionBuiltinName_XAIFName;
@@ -120,6 +122,11 @@ namespace xaifBooster {
      * \todo implementation to be fixed
      */
     const PositionSet& getUsedPositionalArguments(const PositionSet& theActiveArgumentPositions) const;
+
+    /** 
+     * returns flag value
+     */
+    bool isNonSmooth() const; 
 
   private:
     
@@ -170,6 +177,12 @@ namespace xaifBooster {
      * data is complete,i.e. myUsedPositionalArguments was set
      */
     bool myDataComplete;
+
+    /** 
+     * a flag in the intrinsics catalogue indicating a nonsmooth 
+     * behavior
+     */
+    const bool myNonSmoothFlag;
 
   }; // end of class InlinableIntrinsicsCatalogueItem
   
