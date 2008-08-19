@@ -83,29 +83,14 @@ namespace xaifBoosterTypeChange {
   }
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
-    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI=
-	   myPriorToCallAssignments.begin();
-	 aBasicBlockElementListI!=myPriorToCallAssignments.end();
-	 ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI)
-	delete *aBasicBlockElementListI;
-    }
   }
 
   void SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
-    // assignments prior to the call
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI
-	   =myPriorToCallAssignments.begin();
-	 aBasicBlockElementListI!=myPriorToCallAssignments.end();
-	 ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI) { 
-	(*aBasicBlockElementListI)->printXMLHierarchy(os);
-      } 
-    }
     printXMLHierarchyImplWithAdjustments(os);
   }
 
-  void SubroutineCallAlg::printXMLHierarchyImplWithAdjustments(std::ostream& os) const { 
+  void SubroutineCallAlg::printXMLHierarchyImplWithAdjustments(std::ostream& os) const {
+    mySaveValuesAcrossForTypeChange.printXMLHierarchy(os);
     for (PlainBasicBlock::BasicBlockElementList::const_iterator priorI=myPriorAdjustmentsList.begin();
 	 priorI!=myPriorAdjustmentsList.end();
 	 ++priorI) { 
@@ -619,17 +604,7 @@ namespace xaifBoosterTypeChange {
 	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin();
 	       argumentI!=listToBeAppended.end();
 	       ++argumentI) { 
-	    // do we have it saved already?
-	    bool savedAlready=false; 
-	    for (Expression::VariablePVariableSRPPairList::iterator it=myReplacementPairs.begin();
-		 it!=myReplacementPairs.end();
-		 ++it) { 
-	      if ((*argumentI)->getVariable().equivalentTo(*((*it).first))) { 
-		savedAlready=true; 
-		break; 
-	      }
-	    }
-	    if (!savedAlready 
+	    if (!mySaveValuesAcrossForTypeChange.isSavedAcross(**argumentI)
 		&& 
 		(dynamic_cast<const SubroutineCall&>(getContaining())).overwrites((*argumentI)->getVariable())) {
 	      if (theBasicBlock.getReversalType()==ForLoopReversalType::EXPLICIT) { 
@@ -646,28 +621,8 @@ namespace xaifBoosterTypeChange {
 					       << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str());
 		} 
 	      }
-	      Assignment* theIndexExpressionAssignment_p(new Assignment(false));
-	      // save it in the list
-	      myPriorToCallAssignments.push_back(theIndexExpressionAssignment_p);
-	      theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
-	      // create a new symbol and add a new VariableSymbolReference in the Variable
-	      VariableSymbolReference* theNewVariableSymbolReference_p=
-		new VariableSymbolReference(theBasicBlock.getScope().getSymbolTable().
-					    addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							       SymbolType::INTEGER_STYPE,
-							       SymbolShape::SCALAR,
-							       false),
-					    theBasicBlock.getScope());
-	      theNewVariableSymbolReference_p->setId("1");
-	      theNewVariableSymbolReference_p->setAnnotation("xaifBoosterTypeChange::SubroutineCallAlg::handleArrayAccessIndices");
-	      myReplacementPairs.push_back(Expression::VariablePVariableSRPPair(&((*argumentI)->getVariable()),
-										theNewVariableSymbolReference_p));
-	      // pass it on to the LHS and relinquish ownership
-	      theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-	      theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
-	      theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
-	      // set the RHS
-	      theIndexExpressionAssignment_p->getRHS().supplyAndAddVertexInstance((*argumentI)->createCopyOfMyself());
+	      // save the value of the Argument before the subroutine call
+	      mySaveValuesAcrossForTypeChange.saveValue(**argumentI,theBasicBlock);
 	    }
 	  }
 	}
@@ -683,13 +638,9 @@ namespace xaifBoosterTypeChange {
 	   anIndexPairListI!=(*thePostReplacementIndexTripletListI)->getIndexPairList().end();
 	   ++anIndexPairListI) { 
 	Expression& theIndexExpression(*((*anIndexPairListI).second));
-	theIndexExpression.replaceVariables(myReplacementPairs);
+	theIndexExpression.replaceVariables(mySaveValuesAcrossForTypeChange.getReplacementPairsList());
       }
     }
   } // end of SubroutineCallAlg::handleArrayAccessIndices
-
-  const Expression::VariablePVariableSRPPairList& SubroutineCallAlg::getReplacementPairs()const { 
-    return myReplacementPairs;
-  } 
 
 } // end of namespace 

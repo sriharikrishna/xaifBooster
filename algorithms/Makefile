@@ -53,6 +53,7 @@
 objs test clean:
 	cd CrossCountryInterface && $(MAKE) $@
 	cd InlinableXMLRepresentation && $(MAKE) $@
+	cd SaveValuesAcross && $(MAKE) $@
 	cd CodeReplacement && $(MAKE) $@
 	cd DerivativePropagator && $(MAKE) $@
 	cd AdjointUtils && $(MAKE) $@
