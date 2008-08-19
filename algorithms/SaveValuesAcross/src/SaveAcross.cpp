@@ -54,7 +54,7 @@ namespace xaifBoosterSaveValuesAcross {
   SaveValuesAcross::saveValue(const Argument& anArgument,
 			const BasicBlock& theBasicBlock) {
     Assignment* theIndexExpressionAssignment_p(new Assignment(false));
-    theIndexExpressionAssignment_p->setId("assignment_to temporary_for_saving_value_across_statement");
+    theIndexExpressionAssignment_p->setId("assignment_to_temporary_for_saving_value_across_statement");
     // create a new symbol and add a new VariableSymbolReference in the Variable
     VariableSymbolReference* theNewVariableSymbolReference_p =
      new VariableSymbolReference(theBasicBlock.getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
