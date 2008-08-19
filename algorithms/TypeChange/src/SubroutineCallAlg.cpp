@@ -272,7 +272,8 @@ namespace xaifBoosterTypeChange {
     replaceArguments(true);
   }
 
-  void SubroutineCallAlg::replaceArguments(bool withCopy) { 
+  void SubroutineCallAlg::replaceArguments(bool withCopy) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterTypeChange::SubroutineCallAlg::replaceArguments() " << debug().c_str());
     const ArgumentList::ArgumentSymbolReferencePList* anArgumentSymbolReferencePList_p(0); 
     const ControlFlowGraph* aCFG_p(0); 
     const BasicBlock& theBasicBlock(BasicBlockAlgParameter::instance().get().getContaining());  // set in SubroutineCallAlg::algorithm_action_1
@@ -486,26 +487,19 @@ namespace xaifBoosterTypeChange {
 					 int formalMinusConcreteDims,
 					 bool forcePassive) { 
     // create a new symbol and add a new VariableSymbolReference in the Variable
-    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-			  getCallGraph().getScopeTree().getGlobalScope());
-    Symbol& theNewVariableSymbol(theGlobalScope.
-				 getSymbolTable().
+    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+    Symbol& theNewVariableSymbol(theGlobalScope.getSymbolTable().
 				 addUniqueAuxSymbol(SymbolKind::VARIABLE,
 						    formalArgumentSymbol.getSymbolType(),
 						    SymbolShape::lesserShape(formalArgumentSymbol.getSymbolShape(),
 									     (formalMinusConcreteDims<0)?0:formalMinusConcreteDims),
 						    (forcePassive)?false:formalArgumentSymbol.getActiveTypeFlag()));
     theNewVariableSymbol.setFrontEndType(formalArgumentSymbol.getFrontEndType());
-    VariableSymbolReference* 
-      theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
-								  theGlobalScope));
+    VariableSymbolReference* theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
+											 theGlobalScope));
     if (theConcreteArgument.isArgument()){ 
       // preserve dimension information from the concrete argument if any:
-      const Symbol& theConcreteArgumentSymbol(theConcreteArgument.
-					      getArgument().
-					      getVariable().
-					      getVariableSymbolReference().
-					      getSymbol());
+      const Symbol& theConcreteArgumentSymbol(theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol());
       if (theConcreteArgumentSymbol.hasDimensionBounds()) { 
 	const Symbol::DimensionBoundsPList& aDimensionBoundsPList(theConcreteArgumentSymbol.getDimensionBoundsPList());
 	if (formalMinusConcreteDims>0) { 
@@ -558,7 +552,7 @@ namespace xaifBoosterTypeChange {
     aVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
     aVariable.getAliasMapKey().setTemporary();
     aVariable.getDuUdMapKey().setTemporary();
-  } 
+  } // end SubroutineCallAlg::makeTempSymbol()
 
   void SubroutineCallAlg::addWrapperNames(const std::string& theSpaceSeparatedNames) { 
     std::string::size_type startPosition=0,endPosition=0;
@@ -573,10 +567,10 @@ namespace xaifBoosterTypeChange {
   }
 
   void SubroutineCallAlg::handleArrayAccessIndices(const ConcreteArgument& theConcreteArgument,
-						   const BasicBlock& theBasicBlock) { 
+						   const BasicBlock& theBasicBlock) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterTypeChange::SubroutineCallAlg::handleArrayAccessIndices() " << debug().c_str());
     // get the argument algorithm instance 
-    ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.
-										   getConcreteArgumentAlgBase()));
+    ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
     if (!theConcreteArgumentAlg.hasPostConversionConcreteArgument()) { 
       // no post conversion, nothing further to be done here
       return;
@@ -592,13 +586,7 @@ namespace xaifBoosterTypeChange {
 	// (this discounts constant expressions, this is a todo which might be dealt with later or 
 	// it may be completly superceded by a TBR analysis)
 	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
-	if (theIndexExpression.numVertices()==1
-	    && 
-	    (!(*(theIndexExpression.vertices().first)).isArgument())) { 
-	  // this must be a constant
-	  // do nothing
-	}
-	else {  // is not a constant
+	if (!theIndexExpression.isConstant()) {
 	  Expression::CArgumentPList listToBeAppended;
 	  theIndexExpression.appendArguments(listToBeAppended);
 	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin();
@@ -610,16 +598,16 @@ namespace xaifBoosterTypeChange {
 	      if (theBasicBlock.getReversalType()==ForLoopReversalType::EXPLICIT) { 
 	        // for sanity check if we a re about to change a known loop variable 
 		// in this call which we forbid
-		const ControlFlowGraphVertex::VariablePList&  theKnownLoopVariables(theBasicBlock.getKnownLoopVariables());
+		const ControlFlowGraphVertex::VariablePList& theKnownLoopVariables(theBasicBlock.getKnownLoopVariables());
 		for (ControlFlowGraphVertex::VariablePList::const_iterator knownVarsI=theKnownLoopVariables.begin();
 		     knownVarsI!=theKnownLoopVariables.end();
-		     ++knownVarsI) { 
+		     ++knownVarsI) {
 		  if ((*argumentI)->getVariable().equivalentTo(**knownVarsI)) 
 		    THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: analysis determines overwrite of simple loop variable "
 					       << (*argumentI)->getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
 					       << " in call to "
 					       << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str());
-		} 
+		}
 	      }
 	      // save the value of the Argument before the subroutine call
 	      mySaveValuesAcrossForTypeChange.saveValue(**argumentI,theBasicBlock);
@@ -633,14 +621,15 @@ namespace xaifBoosterTypeChange {
     ArrayAccess::IndexTripletListType& thePostReplacementIndexTripletList(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexTripletList());
     for (ArrayAccess::IndexTripletListType::iterator thePostReplacementIndexTripletListI=thePostReplacementIndexTripletList.begin();
 	 thePostReplacementIndexTripletListI!=thePostReplacementIndexTripletList.end();
-	 ++thePostReplacementIndexTripletListI) { 
+	 ++thePostReplacementIndexTripletListI) {
       for (IndexTriplet::IndexPairList::iterator anIndexPairListI=(*thePostReplacementIndexTripletListI)->getIndexPairList().begin();
 	   anIndexPairListI!=(*thePostReplacementIndexTripletListI)->getIndexPairList().end();
-	   ++anIndexPairListI) { 
+	   ++anIndexPairListI) {
 	Expression& theIndexExpression(*((*anIndexPairListI).second));
 	theIndexExpression.replaceVariables(mySaveValuesAcrossForTypeChange.getReplacementPairsList());
       }
     }
   } // end of SubroutineCallAlg::handleArrayAccessIndices
 
-} // end of namespace 
+} // end namespace xaifBoosterTypeChange
+
