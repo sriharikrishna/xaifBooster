@@ -75,6 +75,7 @@ $(wildcard ../../Linearization/src/obj/*.o) \
 $(wildcard ../../TypeChange/src/obj/*.o) 
 
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
+LIBS+=../../SaveValuesAcross/lib/libxaifBoosterSaveValuesAcross.a
 LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
 LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
 LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
