@@ -69,8 +69,8 @@
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraph.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationGoal.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMode.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
 
 namespace xaifBooster { 
@@ -120,11 +120,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static double ourGamma;
 
     /**
-     * Sets flag to run all algorithms and choose the best one if a flag is set.
-     */
-    static void setAllAlgorithms();
-
-    /**
      * Sets flag to insert runtime conuters into the code.
      */
     static void setRuntimeCounters();
@@ -150,9 +145,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     static bool doesPermitNarySax();
 
+    /// command line activated switch for using randomized heuristics
+    static void useRandomizedHeuristics();
+
+    /// command line activated switch for specifying goal (min ops or scarcity)
+    /** the validity of the input is checked in AlgConfig
+     *  \sa AlgConfig
+     */
+    static void setPreaccumulationGoal(PreaccumulationGoal::PreaccumulationGoal_E aGoal); 
+
+    /// command line activated switch for using scarcity heuristics that do reroutings 
+    static void useReroutings();
+
     const PreaccumulationCounter& getBasicBlockOperations() const;
 
     const StatementIdList& getAssignmentIdList()const;
+
+    void addMyselfToAssignmentIdList(const Assignment&); 
 
     /**
      * pointer to printer for DerivativePropagator
@@ -164,17 +173,54 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void printXMLHierarchyImpl(std::ostream& os,
 			       PrintDerivativePropagator_fp aPrintDerivativePropagator_fp) const;
 
+    /** 
+     * returns the DerivativePropagtor to be used by theAssignment
+     * this expects to be called only after a Sequence has been associated with 
+     * theAssignment through a call to getComputationalGraph
+     */
+    xaifBoosterDerivativePropagator::DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
+      
+    /** 
+     * returns the PrivateLinearizedComputationalGraph 
+     * to be used by theAssignment
+     * this expects to be called in the 
+     * sequence order of BasicBlockElements
+     * to work best as it creates the Sequence
+     * instances to be used by sequences of consecutive
+     * assignments. 
+     */
+    PrivateLinearizedComputationalGraph& getComputationalGraph(const Assignment& theAssignment);
+    
+    /// signals a necessary split in the sequence due to an ambiguity
+    void splitComputationalGraph(const Assignment& theAssignment);
+
+    static unsigned int getAssignmentCounter();
+    static unsigned int getSequenceCounter();
+
+    const PreaccumulationCounter& getPreaccumulationCounter() const;
+
   private:
 
     static PrivateLinearizedComputationalGraphAlgFactory* ourPrivateLinearizedComputationalGraphAlgFactory_p;
     static PrivateLinearizedComputationalGraphEdgeAlgFactory* ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p;
     static PrivateLinearizedComputationalGraphVertexAlgFactory* ourPrivateLinearizedComputationalGraphVertexAlgFactory_p;
 
-    static bool ourChooseAlgFlag;
     static bool ourRuntimeCountersFlag; 
+
+    /// if this flag is true we run randomized heuristics in addition to deterministic ones
+    static bool ourUseRandomizedHeuristicsFlag;
+
+    /// indicates whether our goal is to minimize ops or exploit scarcity
+    static PreaccumulationGoal::PreaccumulationGoal_E ourPreaccumulationGoal;
+
+    /// if this flag is set to true we use scarcity heuristics that utilize reroutings
+    static bool ourUseReroutingsFlag;
 
     PlainBasicBlock::BasicBlockElementList myRuntimeCounterCallList;
     
+    /// keep track of metrics associated with the preaccumulation
+    PreaccumulationCounter myPreaccumulationCounter;
+
     /** 
      * no def
      */
@@ -279,7 +325,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       const AssignmentPList& getEndAssignmentList() const;
 
-      void setBestResult();
+      /// choose "best" transformation, based on what our goal is specified to be
+      void setBestResult(PreaccumulationGoal::PreaccumulationGoal_E aGoal);
 
       const xaifBoosterCrossCountryInterface::Elimination& getBestElimination() const;
 
@@ -323,138 +370,35 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       
     }; // end of class Sequence
 
-  private: 
+  public:
 
+    typedef std::list<Sequence*> SequencePList;
+
+    const SequencePList& getUniqueSequencePList() const;
+
+  protected:
+
+    /** 
+     * this list owns all the Sequence instances created by getComputationalGraph
+     * and keeps them in order
+     * it is for convenient ordered traversal over all Sequence instances.
+     * The classes dtor will delete the instances held here
+     */
+    SequencePList myUniqueSequencePList;
+
+  private: 
+    
     typedef std::pair<BasicBlockElement*,
 		      Sequence*> BasicBlockElementSequencePPair;
 
-  public: 
+    typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
 
     /** 
-     * we execute variants of sequences of assignments 
-     * flattened into graphs
-     * and need to keep the data for each variant
+     * this list does not own the Sequence instances it contains.
+     * consecutive assignments may share a Sequence.
+     * BasicBlockElement instances that are not an Assignment will have a 0 pointer.
      */
-    class SequenceHolder : public Debuggable {
-
-    public: 
-      
-      SequenceHolder(bool flatten);
-
-      ~SequenceHolder();
-
-      typedef std::list<Sequence*> SequencePList;
-      
-      SequencePList& getUniqueSequencePList();
-
-      /**
-       * counting all Operations within a basic block
-       */
-      PreaccumulationCounter myBasicBlockOperations;
-
-      typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
-
-      BasicBlockElementSequencePPairList& getBasicBlockElementSequencePPairList();
-      const BasicBlockElementSequencePPairList& getBasicBlockElementSequencePPairList() const;
-
-      /** 
-       * returns the DerivativePropagtor 
-       * to be used by theAssignment
-       * this expects to be called only after 
-       * a Sequence has been associated with 
-       * theAssignment through a call to 
-       * getComputationalGraph
-       */
-      xaifBoosterDerivativePropagator::DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
-      
-      bool doesLimitToStatementLevel() const;
-
-      /** 
-       * signals a necessary split in the sequence due to an 
-       * ambiguity
-       */
-      void splitComputationalGraph(const Assignment& theAssignment);
-
-      static unsigned int getAssignmentCounter();
-      
-      static unsigned int getSequenceCounter();
-
-      virtual std::string debug()const; 
-    
-    private: 
-
-      /** 
-       * this list owns all the Sequence instances
-       * created by getComputationalGraph and keeps them in order
-       * it is for convenient ordered traversal over all 
-       * Sequence instances. 
-       * The classes dtor will delete the instances held here
-       */
-      SequencePList myUniqueSequencePList;
-
-      /** 
-       * this list does not own the Sequence
-       * instances it contains 
-       * consecutive assignments may share 
-       * a Sequence
-       * BasicBlockElement instances that are not an 
-       * Assignment will have a 0 pointer. 
-       */
-      BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
-
-      /** 
-       * if this flag is true each ComputationalGraph 
-       * consists of exactly one assignment
-       */ 
-      bool myLimitToStatementLevelFlag;
-
-    };
-
-    SequenceHolder& getSequenceHolder(PreaccumulationMode::PreaccumulationMode_E aMode);
-
-    /** 
-     * returns the PrivateLinearizedComputationalGraph 
-     * to be used by theAssignment
-     * this expects to be called in the 
-     * sequence order of BasicBlockElements
-     * to work best as it creates the Sequence
-     * instances to be used by sequences of consecutive
-     * assignments. 
-     */
-    PrivateLinearizedComputationalGraph& getComputationalGraph(const Assignment& theAssignment,
-							       SequenceHolder& aSequenceHolder);
-    
-    void addMyselfToAssignmentIdList(const Assignment&, 
-				     const SequenceHolder& aSequenceHolder);
-
-    /** 
-     * determines if the given SequenceHolder is the 
-     * the representative one
-     */
-    bool isRepresentativeSequenceHolder(const SequenceHolder& aSequenceHolder) const;
-    
-    SequenceHolder& getRepresentativeSequenceHolder();
-    
-    static void forcePreaccumulationMode(PreaccumulationMode::PreaccumulationMode_E aMode); 
-
-    static PreaccumulationMode::PreaccumulationMode_E getPreaccumulationMode();
-    
-    const SequenceHolder& getBestSequenceHolder() const;
-
-    SequenceHolder& getBestSequenceHolder();
-
-  private: 
-    
-    /** 
-     * the sequence that we deem best after applying some heuristic 
-     * as criterion to pick between myFlatOn, myFlatOff etc. 
-     * no deletion in dtor
-     */
-    SequenceHolder* myBestSequenceHolder_p;
-
-    typedef std::vector<SequenceHolder*> SequenceHolderPVector;
-
-    SequenceHolderPVector mySequenceHolderPVector;
+    BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
 
     /** 
      * this is just a helper to accomodate 
@@ -478,11 +422,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */ 
     StatementIdList myAssignmentIdList;
 
-    /*
-     * performs the core of algorithm_action_3();
-     */
-    void algorithm_action_3_perSequence(PreaccumulationMode::PreaccumulationMode_E);
-    
     /** 
      * counting all assignments
      */
@@ -493,25 +432,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static unsigned int ourSequenceCounter;
       
-    /**
-     * run the algorithm for creating the elminated graphs using thisMode
-     */
-    virtual void runElimination(Sequence& aSequence, 
-				SequenceHolder& aSequenceHolder,
-				PreaccumulationMode::PreaccumulationMode_E thisMode);
+    /// perform the preaccumulation transformation on the graph for \p aSequence
+    virtual void runElimination(Sequence& aSequence);
+
+    void incrementGlobalAssignmentCounter();
     
-    void incrementGlobalAssignmentCounter(const SequenceHolder& aSequenceHolder);
-    
-    void incrementGlobalSequenceCounter(const SequenceHolder& aSequenceHolder);
+    void incrementGlobalSequenceCounter();
       
-    /** 
-     * one of the SequenceHolder instances should be 
-     * the one for which we do the common tasks
-     */
-    SequenceHolder* myRepresentativeSequence_p;
-
-    static PreaccumulationMode::PreaccumulationMode_E ourPreaccumulationMode;
-
     void fillIndependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph); 
     void fillDependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph);
 

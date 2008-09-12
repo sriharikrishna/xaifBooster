@@ -56,7 +56,8 @@
 namespace xaifBoosterCrossCountryInterface {
 
   // defaults for command-line configurable settings
-  Elimination::AwarenessLevel_E Elimination::ourAwarenessLevel = NO_AWARENESS;
+  xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E Elimination::ourAwarenessLevel = xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::NO_AWARENESS;
+
   bool Elimination::ourAllowMaintainingFlag = false;
 
   // constructor for regular (complete) or scarce elimination modes
@@ -68,66 +69,54 @@ namespace xaifBoosterCrossCountryInterface {
     //  THROW_LOGICEXCEPTION_MACRO("Elimination::Elimination(): incorrect constructor invoked");
   }
 
-  void Elimination::setAwarenessLevel(Elimination::AwarenessLevel_E anAwarenessLevel) {
+  void Elimination::setAwarenessLevel(xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E anAwarenessLevel) {
     ourAwarenessLevel = anAwarenessLevel;
   }
   
-  std::string Elimination::AwarenessLevelToString (const Elimination::AwarenessLevel_E anAwarenessLevel)
-	  //throw (PrintingIntException)
-  {
-    std::string returnString;
-    switch(anAwarenessLevel) {
-    case NO_AWARENESS:
-      returnString="no_awareness";
-      break;
-    case UNIT_AWARENESS:
-      returnString="unit_awareness";
-      break;
-    case CONSTANT_AWARENESS:
-      returnString="constant_awareness";
-      break;
-    default:
-      std::cout << "Error: unknown value passed to AwarenessLevelToString\n";
-      //throw PrintingIntException("Elimination::AwarenessLevelToString(): unknown value", aPreaccumulationMode);
-      break;
-    }
-    return returnString;
-  } // end of toString();
- 
   void Elimination::setAllowMaintainingFlag() {
     ourAllowMaintainingFlag = true;
   }
 
-  void Elimination::initAsRegular() {
-    myType = REGULAR_ELIMTYPE;
-    myDescription = "default vertex / edge elimination";
+  void Elimination::initAsOperations() {
+    myType = OPS_ELIMTYPE;
+    myDescription = "default min. ops vertex / edge elimination";
   }
 
   void Elimination::initAsLSAVertex(int i, double g) {
-    myType = LSA_VERTEX_ELIMTYPE;
-    myDescription = "LSA vertex elimination";
+    myType = OPS_LSA_VERTEX_ELIMTYPE;
+    myDescription = "min. ops LSA vertex elimination";
     myNumIterations = i;
     myGamma = g;
   }
 
   void Elimination::initAsLSAFace(int i, double g) {
-    myType = LSA_FACE_ELIMTYPE;
-    myDescription = "LSA face elimination";
+    myType = OPS_LSA_FACE_ELIMTYPE;
+    myDescription = "min. ops LSA face elimination";
     myNumIterations = i;
     myGamma = g;
   }
 
   void Elimination::initAsScarceElimination() {
     myType = SCARCE_ELIMTYPE;
-    myDescription = "Scarcity-conscious partial elimination";
+    myDescription = "scarcity edge elimination";
   }
+
+  void Elimination::initAsScarceRandomElimination() {
+    myType = SCARCE_RANDOM_ELIMTYPE;
+    myDescription = "randomized scarcity edge elimination";
+  } // end Elimination::initAsScarceRandomElimination()
 
   void Elimination::initAsScarceTransformation() {
-    myType = SCARCE_TRANSFORMATION_TYPE;
-    myDescription = "Scarcity-conscious partial transformation (edge elims and reroutings)";
+    myType = SCARCE_TRANSFORMATIONTYPE;
+    myDescription = "scarcity edge elimination and rerouting";
   }
 
-  std::string Elimination::getDescription() {
+  void Elimination::initAsScarceRandomTransformation() {
+    myType = SCARCE_RANDOM_TRANSFORMATIONTYPE;
+    myDescription = "randomized scarcity edge elimination and rerouting";
+  } // end Elimination::initAsScarceRandomTransformation()
+
+  std::string Elimination::getDescription() const {
     if (myType == UNSET_ELIMTYPE)
       THROW_LOGICEXCEPTION_MACRO("Elimination::getDescription() : cannot return description - Elimination never init'ed");
     return myDescription;
@@ -150,37 +139,51 @@ namespace xaifBoosterCrossCountryInterface {
   }
 
   void Elimination::EliminationResult::countPreaccumulationOperations() const {
-    myCounter.jacInc(myRemainderLCG.numEdges());
-    bool usesRemainderGraph(myCounter.getJacValue()!=0);
-    for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
+   for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator it=
 	  myJAEList.getGraphList().begin();
 	it!=myJAEList.getGraphList().end();
 	++it) {
       const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theExpression(*(*it));
       xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair testPair(theExpression.vertices());
       xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator testVertexI(testPair.first), testVertexIEnd(testPair.second);
-      if(!usesRemainderGraph && theExpression.isJacobianEntry()) {
-	myCounter.jacInc();
-      }
       //goes through every vertex in each graph
       for (;testVertexI!=testVertexIEnd; ++testVertexI) {
 	//if the vertex is an operation then figure out which one it is and increment the counter
 	if ((*testVertexI).getReferenceType() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION) {
 	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP) 
-	    myCounter.mulInc();
+	    myCounter.numMultiplicationsInc();
 	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP) 
-	    myCounter.addInc();
+	    myCounter.numAdditionsInc();
 	  if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::DIV_OP) 
-	    myCounter.divInc();
+	    myCounter.numDivisionsInc();
+          //if ((*testVertexI).getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::SUB_OP) 
+            //myCounter.numSubtractionsInc();
 	}
       }
     }
   }
 
+  void Elimination::EliminationResult::countRemainderGraphEdges() const {
+    if (myRemainderLCG.numEdges() == 0)
+	THROW_LOGICEXCEPTION_MACRO("Elimination::EliminationResult::countRemainderGraphEdges(): The remainder graph is empty!");
+
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIteratorPair anLCGeIPair (myRemainderLCG.edges());
+    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstEdgeIterator LCGeI (anLCGeIPair.first), LCGeIEnd (anLCGeIPair.second);
+         LCGeI != LCGeIEnd;
+         ++LCGeI) {
+      myCounter.numEdgesInc();
+      if ((*LCGeI).getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::VARIABLE_LABEL)
+        myCounter.numNonconstantEdgesInc();
+      if ((*LCGeI).getEdgeLabelType() != xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL)
+        myCounter.numNonunitEdgesInc();
+    } // end iterate over edges
+  } // end Elimination::EliminationResult::countRemainderGraphEdges()
+
   const PreaccumulationCounter& Elimination::EliminationResult::getCounter() const { 
     if (!myCountedFlag) { 
       countPreaccumulationOperations();
-      if (myCounter.getJacValue()+myCounter.getAddValue()+myCounter.getMulValue()==0) 	
+      countRemainderGraphEdges();
+      if (myCounter.getNumMultiplications()+myCounter.getNumAdditions()+myCounter.getNumEdges()==0)
 	THROW_LOGICEXCEPTION_MACRO("Elimination::EliminationResult::getCounter() nothing counted");
       myCountedFlag=true;
     }

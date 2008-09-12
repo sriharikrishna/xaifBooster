@@ -206,55 +206,30 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
     BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()));
-    // we need to do the representative sequence first because we only redo the activity analysis
-    // and linearization once.
-    BasicBlockAlg::SequenceHolder* repSequenceHolder_p=&(aBasicBlockAlg.getRepresentativeSequenceHolder());
-    algorithm_action_2_perSequence(aBasicBlockAlg,*repSequenceHolder_p);
-    if (BasicBlockAlg::getPreaccumulationMode()==PreaccumulationMode::PICK_BEST) { 
-      // do all others: 
-      if (repSequenceHolder_p!=&(aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::STATEMENT)))
-	algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::STATEMENT));
-      if (repSequenceHolder_p!=&(aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::MAX_GRAPH)))
-	algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::MAX_GRAPH));
-      if (repSequenceHolder_p!=&(aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::MAX_GRAPH_SCARSE)))
-	algorithm_action_2_perSequence(aBasicBlockAlg,aBasicBlockAlg.getSequenceHolder(PreaccumulationMode::MAX_GRAPH_SCARSE));
-    }
-  }
-
-  void 
-  AssignmentAlg::algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
-						BasicBlockAlg::SequenceHolder& aSequenceHolder) {
-    PrivateLinearizedComputationalGraph& theComputationalGraph=
-     dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getComputationalGraph(getContainingAssignment(),
-															 aSequenceHolder);
+    PrivateLinearizedComputationalGraph& theComputationalGraph (aBasicBlockAlg.getComputationalGraph(getContainingAssignment()));
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theComputationalGraph)) { 
       // there is an ambiguity, do the split
-      aSequenceHolder.splitComputationalGraph(getContainingAssignment());
+      aBasicBlockAlg.splitComputationalGraph(getContainingAssignment());
       // redo everything for this assignment
-      algorithm_action_2_perSequence(aBasicBlockAlg,
-				     aSequenceHolder);
+      algorithm_action_2();
       // and leave
       return;
     }
-    dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).addMyselfToAssignmentIdList(getContainingAssignment(),
-															      aSequenceHolder);
-    const StatementIdList& theKnownAssignments(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()).getAssignmentIdList());
+    aBasicBlockAlg.addMyselfToAssignmentIdList(getContainingAssignment());
+    const StatementIdList& theKnownAssignments(aBasicBlockAlg.getAssignmentIdList());
     // now redo the activity analysis
     //     if (haveLinearizedRightHandSide() && 
     // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
     //       GraphVizDisplay::show(getLinearizedRightHandSide(),"before",
     // 			    VertexLabelWriter(getLinearizedRightHandSide()));
-    // here is why we need to do the representative SequenceHolder first:
-    if (aBasicBlockAlg.isRepresentativeSequenceHolder(aSequenceHolder)){ 
-      xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
+    xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
     //     if (haveLinearizedRightHandSide() && 
     // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
     //       GraphVizDisplay::show(getLinearizedRightHandSide(),"after",
     // 			    VertexLabelWriter(getLinearizedRightHandSide()));
     // and the second part of the linearization
-      xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
-    }
+    xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theComputationalGraph.getVertexIdentificationListPassive());
     if (!getActiveFlag()) { 
       theComputationalGraph.addToPassiveStatementIdList(getContainingAssignment().getId());
@@ -262,7 +237,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS(),
 						      getContainingAssignment().getId());
 	if (getContainingAssignment().getLHS().getActiveFlag()) // this means the LHS has been passivated 
-	  aSequenceHolder.getDerivativePropagator(getContainingAssignment()).
+	  aBasicBlockAlg.getDerivativePropagator(getContainingAssignment()).
 	    addZeroDerivToEntryPList(getContainingAssignment().getLHS());
       } // end if
     } // end if 
@@ -445,7 +420,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		<< " RHS " 
 		<< theVertexIdentificationListActiveRHS.debug().c_str());
     } // end else 
-  } // end AssignmentAlg::algorithm_action_2_perSequence()
+  } // end AssignmentAlg::algorithm_action_2()
 
   void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 

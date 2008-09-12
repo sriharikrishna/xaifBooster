@@ -56,19 +56,21 @@
 #include "xaifBooster/utils/inc/Debuggable.hpp"
 #include <string>
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AwarenessLevel.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationGoal.hpp"
+
 namespace xaifBooster { 
 
   class PreaccumulationCounter  {
   private:
     
-    /**
-     *  All counters are used to count the number of opperations of their type.
-     *  The operations being counted are defined by their name.
-     */
-    unsigned int myJacobianEntry;
-    unsigned int myMultiply;
-    unsigned int myAdd;
-    unsigned int myNumDivides;
+    unsigned int myNumMultiplications;
+    unsigned int myNumAdditions;
+    unsigned int myNumDivisions;
+    unsigned int myNumSubtractions;
+    unsigned int myNumEdges;
+    unsigned int myNumNonunitEdges;
+    unsigned int myNumNonconstantEdges;
 
     /**
      * no def
@@ -80,45 +82,51 @@ namespace xaifBooster {
      */
     PreaccumulationCounter& operator=(const PreaccumulationCounter&); 
 
-    /** 
-     * if this is true we first weigh by number of 
-     * Jacobian entries or remainderGraph edges resp. 
-     */
-    static bool ourJacobianEntrCountIsPrimaryFlag;  
+    /// the metric by which we measure the quality of a preaccumulation
+    static xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::PreaccumulationGoal_E ourPreaccumulationGoal;
+
+    /// the way we measure the scarcity properties of a remainder graph
+    static xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E ourAwarenessLevel;
+
+    bool isMoreScarceThan(const PreaccumulationCounter& anotherCounter) const;
+    bool hasFewerOpsThan(const PreaccumulationCounter& anotherCounter) const;
 
   public:
-
-    static void setJacobianEntrCountIsPrimary();
 
     /**
      * Initializes the values of all counters to 0.
      */
     PreaccumulationCounter();
 
-    /**
-     * Retrieves values from the data structure as specified by the function name.
+    /// defines the metric by which we measure the quality of a preaccumulation
+    /** The goal of the preaccumulation is set by a command-line flag.
+     *  The current default is to minimize operations (complete preaccumulation).
      */
-    unsigned int getJacValue() const;
-    unsigned int getMulValue() const;
-    unsigned int getAddValue() const;
-    unsigned int getDivValue() const;
+    static void
+    setPreaccumulationGoal(xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::PreaccumulationGoal_E aGoal);
+
+    /// defines the way in which we measure the scarcity properties of a remainder graph
+    /** The awareness (none/unit/constant) of edge properties is set by a command-line flag.
+     *  The current default is to have no awareness (all edges are counted).
+     */
+    static void
+    setAwarenessLevel(xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E anAwarenessLevel);
+
+    unsigned int getNumMultiplications() const;
+    unsigned int getNumAdditions() const;
+    unsigned int getNumDivisions() const;
+    unsigned int getNumSubtractions() const;
+    unsigned int getNumEdges() const;
+    unsigned int getNumNonunitEdges() const;
+    unsigned int getNumNonconstantEdges() const;
     
-    /**
-     * Increments the value of the counter.
-     */
-    void mulInc(unsigned int by=1);
-    /**
-     * Increments the value of the counter.
-     */
-    void jacInc(unsigned int by=1);
-    /**
-     * Increments the value of the counter.
-     */
-    void addInc(unsigned int by=1);
-    /**
-     * Increments the value of the counter.
-     */
-    void divInc(unsigned int by=1);
+    void numMultiplicationsInc(unsigned int by=1);
+    void numAdditionsInc(unsigned int by=1);
+    void numDivisionsInc(unsigned int by = 1);
+    void numSubtractionsInc(unsigned int by = 1);
+    void numEdgesInc(unsigned int by = 1);
+    void numNonunitEdgesInc(unsigned int by = 1);
+    void numNonconstantEdgesInc(unsigned int by = 1);
 
     /**
      * Calls each counter specific reset function.
@@ -128,17 +136,22 @@ namespace xaifBooster {
     /**
      * Resets the value of the specified counter to 0.
      */
-    void addReset();
-    void mulReset();
-    void jacReset();
-    void divReset();
+    void numMultiplicationsReset();
+    void numAdditionsReset();
+    void numDivisionsReset();
+    void numSubtractionsReset();
+    void numEdgesReset();
+    void numNonunitEdgesReset();
+    void numNonconstantEdgesReset();
 
     std::string debug() const ;
     
     /**
      * see definition
      */
-    bool operator<(const PreaccumulationCounter &anotherCounter) const;
+    bool operator<(const PreaccumulationCounter& anotherCounter) const;
+
+    bool operator==(const PreaccumulationCounter& anotherCounter) const;
 
     /**
      * increments this counter by anotherCounter

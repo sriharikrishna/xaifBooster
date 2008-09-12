@@ -66,37 +66,46 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches()+"SnaCAmQ");
+    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches() + "nCAmQaGR");
   } 
 
   void AlgConfig::config() { 
     xaifBoosterLinearization::AlgConfig::config();
-    if (isSet('S')) 
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::forcePreaccumulationMode(xaifBoosterBasicBlockPreaccumulation::PreaccumulationMode::PreaccumulationMode_E(argAsInt('S')));
     if (isSet('n')) 
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
-    if (isSet('a'))
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setAllAlgorithms();
     if (isSet('C'))
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
-    if (isSet('A'))
-      xaifBoosterCrossCountryInterface::Elimination::setAwarenessLevel(xaifBoosterCrossCountryInterface::Elimination::AwarenessLevel_E(argAsInt('A')));
+    if (isSet('A')) {
+      AwarenessLevel::checkValid(AwarenessLevel::AwarenessLevel_E(argAsInt('A')));
+      xaifBoosterCrossCountryInterface::Elimination::setAwarenessLevel(AwarenessLevel::AwarenessLevel_E(argAsInt('A')));
+      PreaccumulationCounter::setAwarenessLevel(AwarenessLevel::AwarenessLevel_E(argAsInt('A')));
+    } // end A
     if (isSet('m'))
       xaifBoosterCrossCountryInterface::Elimination::setAllowMaintainingFlag();
     if (isSet('Q')) 
       xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::permitAliasedLHSs();
+    if (isSet('a'))
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::useRandomizedHeuristics();
+    if (isSet('G')) {
+      PreaccumulationGoal::checkValid(PreaccumulationGoal::PreaccumulationGoal_E(argAsInt('G')));
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setPreaccumulationGoal(PreaccumulationGoal::PreaccumulationGoal_E(argAsInt('G')));
+      PreaccumulationCounter::setPreaccumulationGoal(PreaccumulationGoal::PreaccumulationGoal_E(argAsInt('G')));
+    } // end G
+    if (isSet('R')) 
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::useReroutings();
   }
 
   void AlgConfig::usage() { 
     xaifBoosterLinearization::AlgConfig::usage();
     std::cout << " BasicBlockPreaccumulation options: " << std::endl
-	      << "             [-S <level>] force statement level preaccumulation (0: statement, 1: max. graph, 2: max. graph scarce, 3: max. graph scarce with rerouting mix (experimental!)), defaults to max. graph" << std::endl
 	      << "             [-n] allow n-ary sax operations" << std::endl
-              << "             [-a] also run LSA graph eliminations and pick the best result" << std::endl
               << "             [-C] turn on runtime counters"  << std::endl
 	      << "             [-A <level>] set heuristic awareness of unit/constant edges (0: no awareness, 1: unit awareness, 2: constant awareness), defaults to no awareness" << std::endl
               << "             [-m] allow scarcity-preserving operations that maintain the nontrivial edge count (default is strict reduction)"  << std::endl
-              << "             [-Q] turn off alias checking among LHSs in the same sequence (meant to be temporary, waiting on better alias analysis)"  << std::endl;
+              << "             [-Q] turn off alias checking among LHSs in the same sequence (meant to be temporary, waiting on better alias analysis)"  << std::endl
+              << "             [-a] run randomized heuristics in addition to deterministic ones" << std::endl
+	      << "             [-G <0|1>] set the goal of the preaccumulation (0: minimize operations, 1: scarcity exploitation), defaults to min. operations" << std::endl
+	      << "             [-R] activate preaccumulation heuristics that use reroutings (for scarcity exploitation only)" << std::endl;
   } 
 
 } // end of namespace xaifBooster
