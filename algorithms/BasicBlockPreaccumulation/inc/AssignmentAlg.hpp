@@ -120,12 +120,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     bool vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence);
     
-    /**
-     * the logic for algorithm_action_2
-     */
-    void algorithm_action_2_perSequence(BasicBlockAlg& aBasicBlockAlg,
-					BasicBlockAlg::SequenceHolder& aSequenceHolder);
-
     static bool ourPermitAliasedLHSsFlag;
 
   }; // end of class AssignmentAlg

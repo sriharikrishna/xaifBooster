@@ -121,10 +121,8 @@ int main(int argc,char** argv) {
     return -1;
   } // end catch 
   DBG_MACRO(DbgGroup::TIMING,"done");
-  DBG_MACRO(DbgGroup::METRIC,"total number of assignments: "
-	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::getAssignmentCounter()
-	    << " total number of Sequences: "
-	    << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::SequenceHolder::getSequenceCounter());
+  DBG_MACRO(DbgGroup::METRIC,"total number of assignments: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getAssignmentCounter()
+                         << " total number of Sequences: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getSequenceCounter());
   // output the cumulative (over all basic blocks) counter, which belongs to the callgraph
 
   return 0;

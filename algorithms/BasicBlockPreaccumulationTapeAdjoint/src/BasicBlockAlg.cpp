@@ -259,8 +259,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     xaifBoosterTypeChange::BasicBlockAlgParameter::instance().set(*this); // in BasicBlockAlg::algorithm_action_5()
     // mesh the BasicBlockElements with the Sequences
     PlainBasicBlock::BasicBlockElementList::const_reverse_iterator aBasicBlockElementListRI=getContaining().getBasicBlockElementList().rbegin();
-    SequenceHolder::SequencePList::const_reverse_iterator aSequencePListRI=getBestSequenceHolder().getUniqueSequencePList().rbegin();
-    SequenceHolder::SequencePList::const_reverse_iterator aSequencePListRend=getBestSequenceHolder().getUniqueSequencePList().rend();
+    SequencePList::const_reverse_iterator aSequencePListRI = myUniqueSequencePList.rbegin();
+    SequencePList::const_reverse_iterator aSequencePListRend = myUniqueSequencePList.rend();
     bool noSequence=false;
     if (aSequencePListRI==aSequencePListRend)
       // we don't have any sequence left, meaning there is either no sequence at all 

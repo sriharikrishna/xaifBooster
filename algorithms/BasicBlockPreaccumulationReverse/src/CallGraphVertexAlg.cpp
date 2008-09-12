@@ -167,7 +167,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 	if(tester != NULL)
 	  {
 	    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg& tester2(dynamic_cast<xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg&>(tester->getBasicBlockAlgBase()));
-	    myPreaccumulationCounter.incrementBy(tester2.getBasicBlockOperations());
+	    myPreaccumulationCounter.incrementBy(tester2.getPreaccumulationCounter());
 	  }
       }
     DBG_MACRO(DbgGroup::METRIC, "Subroutine Operations "

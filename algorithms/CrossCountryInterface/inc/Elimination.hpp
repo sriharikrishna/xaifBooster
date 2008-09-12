@@ -55,6 +55,7 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AwarenessLevel.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
@@ -72,35 +73,36 @@ namespace xaifBoosterCrossCountryInterface {
 
     public:
     
-    enum EliminationType_E {UNSET_ELIMTYPE,
-			    REGULAR_ELIMTYPE,
-	                    LSA_VERTEX_ELIMTYPE,
-	                    LSA_FACE_ELIMTYPE,
-			    SCARCE_ELIMTYPE,
-			    SCARCE_TRANSFORMATION_TYPE};
+    enum EliminationType_E {
+      UNSET_ELIMTYPE,
+      OPS_ELIMTYPE,
+      OPS_LSA_VERTEX_ELIMTYPE,
+      OPS_LSA_FACE_ELIMTYPE,
+      SCARCE_ELIMTYPE,
+      SCARCE_RANDOM_ELIMTYPE,
+      SCARCE_TRANSFORMATIONTYPE,
+      SCARCE_RANDOM_TRANSFORMATIONTYPE};
 
-    enum AwarenessLevel_E { NO_AWARENESS=0,
-			    UNIT_AWARENESS=1,
-			    CONSTANT_AWARENESS=2};
-    
     Elimination (LinearizedComputationalGraph& lcg);
     ~Elimination(){};
 
     // init functions allow for a generic constructor for all elimination types
-    void initAsRegular();
+    void initAsOperations();
     void initAsLSAVertex(int i, double g);
     void initAsLSAFace(int i, double g);
     void initAsScarceElimination();
+    void initAsScarceRandomElimination();
     void initAsScarceTransformation();
+    void initAsScarceRandomTransformation();
     
     void eliminate();
 
-    static void setAwarenessLevel (AwarenessLevel_E anAwarenessLevel);
-    static std::string AwarenessLevelToString (const AwarenessLevel_E anAwarenessLevel);
+    static void
+    setAwarenessLevel(xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E anAwarenessLevel);
    
     static void setAllowMaintainingFlag();
     
-    std::string getDescription();
+    std::string getDescription() const;
     
      const LinearizedComputationalGraph& getLCG () const {
       if (!myLCG_p)
@@ -151,6 +153,9 @@ namespace xaifBoosterCrossCountryInterface {
        */
       void countPreaccumulationOperations() const;
 
+      /// sets the three counters that measure scarcity in the remainder graph
+      void countRemainderGraphEdges() const;
+
       /**
        * have we counted the elimination operations
        */
@@ -172,7 +177,7 @@ namespace xaifBoosterCrossCountryInterface {
     
     LinearizedComputationalGraph* myLCG_p;
 
-    static AwarenessLevel_E ourAwarenessLevel;
+    static xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E ourAwarenessLevel;
     static bool ourAllowMaintainingFlag;
     
     int myNumIterations;
