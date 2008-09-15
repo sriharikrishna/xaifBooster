@@ -192,22 +192,22 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   xaifBoosterCrossCountryInterface::Elimination& BasicBlockAlg::Sequence::addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg) { 
-	  Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination (lcg);
+	  xaifBoosterCrossCountryInterface::Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination (lcg);
     myEliminationPList.push_back(theElimination_p);
     return *theElimination_p;
   }
 
-  void BasicBlockAlg::Sequence::setBestResult(PreaccumulationGoal::PreaccumulationGoal_E aGoal) {
+  void BasicBlockAlg::Sequence::determineBestElimination(PreaccumulationGoal::PreaccumulationGoal_E aGoal) {
     if (myEliminationPList.empty())
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::setBestResult() : no eliminations, thus no results");
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::determineBestElimination() : no eliminations, thus no results");
     if (myBestElimination_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::setBestResult() : myBestElimination_p already set");
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::determineBestElimination() : myBestElimination_p already set");
     myBestElimination_p = *(myEliminationPList.begin());
     for (EliminationPList::iterator i = ++(myEliminationPList.begin()); i != myEliminationPList.end(); ++i) { 
-      if ((*i)->getEliminationResult().getCounter() < myBestElimination_p->getEliminationResult().getCounter())
+      if ((*i)->getCounter() < myBestElimination_p->getCounter())
         myBestElimination_p = *i;
     } // end iterate over all Eliminations
-  } // end BasicBlockAlg::Sequence::setBestResult()
+  } // end BasicBlockAlg::Sequence::determineBestElimination()
 
   const xaifBoosterCrossCountryInterface::Elimination& BasicBlockAlg::Sequence::getBestElimination() const {
     if (!myBestElimination_p)
@@ -215,17 +215,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *myBestElimination_p;
   }
 
-  const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& BasicBlockAlg::Sequence::getBestResult() const {
+  xaifBoosterCrossCountryInterface::Elimination&
+  BasicBlockAlg::Sequence::getBestElimination() {
     if (!myBestElimination_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
-    return myBestElimination_p->getEliminationResult();
-  }
-
-  xaifBoosterCrossCountryInterface::Elimination::EliminationResult& BasicBlockAlg::Sequence::getBestResult() {
-    if (!myBestElimination_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestResult: myBestElimination_p not set");
-    return myBestElimination_p->getEliminationResult();
-  }
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestElimination: myBestElimination_p not set");
+    return *myBestElimination_p;
+  } // end BasicBlockAlg::Sequence::getBestElimination()
 
   BasicBlockAlg::Sequence::EliminationPList& BasicBlockAlg::Sequence::getEliminationPList() {
     if (myEliminationPList.empty())
@@ -538,9 +533,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 											     myG.getInternalBoostGraph()),
 										  v));
       std::string theColor ("");
-      if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == LinearizedComputationalGraphEdge::UNIT_LABEL)
+      if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL)
 	theColor = "red";
-      else if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == LinearizedComputationalGraphEdge::CONSTANT_LABEL)
+      else if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL)
 	theColor = "blue";
       else
 	theColor = "black";
@@ -570,10 +565,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, 
 		    const BoostIntenalVertexDescriptor& v) const {
-      const LinearizedComputationalGraphVertex* theLCGVertex_p =
-	dynamic_cast<const LinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
-										      myG.getInternalBoostGraph()),
-									   v));
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* theLCGVertex_p =
+	dynamic_cast<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
+                                                                                                                        myG.getInternalBoostGraph()),
+                                                                                                             v));
       if (theLCGVertex_p->hasOriginalVariable())
 	out << "[label=\"" << theLCGVertex_p->getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str() << "\"]";
     }
@@ -582,28 +577,28 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   class LinearizedComputationalGraphEdgeLabelWriter {
   public:
-    LinearizedComputationalGraphEdgeLabelWriter(const LinearizedComputationalGraph& g) : myG(g) {};
+    LinearizedComputationalGraphEdgeLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
     template <class BoostIntenalEdgeDescriptor>
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
-      const LinearizedComputationalGraphEdge* theLCGEdge_p =
-	dynamic_cast<const LinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
-										    myG.getInternalBoostGraph()),
-									 v));
-      if (theLCGEdge_p->getEdgeLabelType() == LinearizedComputationalGraphEdge::UNIT_LABEL)
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge* theLCGEdge_p =
+	dynamic_cast<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
+                                                                                                                      myG.getInternalBoostGraph()),
+									                                   v));
+      if (theLCGEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL)
 	out << "[color=\"red\"]";
-      else if (theLCGEdge_p->getEdgeLabelType() == LinearizedComputationalGraphEdge::CONSTANT_LABEL)
+      else if (theLCGEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL)
 	out << "[color=\"blue\"]";
     }
-    const LinearizedComputationalGraph& myG;
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
   }; // end class LinearizedComputationalGraphEdgeLabelWriter
 
   class LinearizedComputationalGraphPropertiesWriter {
   public:
-    LinearizedComputationalGraphPropertiesWriter(const LinearizedComputationalGraph& g) : myG(g) {};
+    LinearizedComputationalGraphPropertiesWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
     void operator()(std::ostream& out) const {
       out << "rankdir=BT;" << std::endl;
     }
-    const LinearizedComputationalGraph& myG;
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
   }; // end class LinearizedComputationalGraphPropertiesWriter
 
   class AccumulationGraphVertexLabelWriter {
@@ -815,37 +810,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
 	// hand off to transformation engine, which will make JAEs and a remainder graph
 	runElimination(currentSequence);
-
-	AccumulationGraph theAccumulationGraph;
-	RemainderEdge2AccumulationVertex_map theRemainderEdge2AccumulationVertexMap;
-
-	// Populate the accumulation graph and theRemainderEdge2AccumulationVertexMap,
-	buildAccumulationGraph(currentSequence,
-			       theAccumulationGraph,
-			       theRemainderEdge2AccumulationVertexMap);
-
-	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && theAccumulationGraph.numVertices())
-	  GraphVizDisplay::show(theAccumulationGraph,
-				"AccumulationGraph",
-				AccumulationGraphVertexLabelWriter(theAccumulationGraph),
-				AccumulationGraphEdgeLabelWriter(theAccumulationGraph),
-				AccumulationGraphPropertiesWriter(theAccumulationGraph));
-
-	generateAccumulationExpressions(currentSequence,
-					theAccumulationGraph,
-					theRemainderEdge2AccumulationVertexMap);
-
-	// generate propagators from the remainder graph
+	generateAccumulationExpressions(currentSequence);
 	makePropagationVariables(currentSequence);
-	generateRemainderGraphPropagators(currentSequence, 
-					  theRemainderEdge2AccumulationVertexMap);
+	generateRemainderGraphPropagators(currentSequence);
 
-	if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
-	  GraphVizDisplay::show(currentSequence.getBestResult().myRemainderLCG,
-				"RemainderLCG",
-				LinearizedComputationalGraphVertexLabelWriter(currentSequence.getBestResult().myRemainderLCG),
-				LinearizedComputationalGraphEdgeLabelWriter(currentSequence.getBestResult().myRemainderLCG),
-				LinearizedComputationalGraphPropertiesWriter(currentSequence.getBestResult().myRemainderLCG));
       } // end if LCG has vertices
     } // end iterate over sequences
     DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
@@ -883,10 +851,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       case PreaccumulationGoal::OPERATIONS: {
         aSequence.addNewElimination(theComputationalGraph).initAsOperations();
         if (ourUseRandomizedHeuristicsFlag) {
-          aSequence.addNewElimination(theComputationalGraph).initAsLSAVertex(ourIterationsParameter,
-                                                                             ourGamma);
-          aSequence.addNewElimination(theComputationalGraph).initAsLSAFace(ourIterationsParameter,
-                                                                           ourGamma);
+          aSequence.addNewElimination(theComputationalGraph).initAsOperationsRandom();
+          aSequence.addNewElimination(theComputationalGraph).initAsLSAVertex(ourIterationsParameter, ourGamma);
+          //aSequence.addNewElimination(theComputationalGraph).initAsLSAFace(ourIterationsParameter, ourGamma);
         } // end randomized heuristics
         break;
       } // end OPERATIONS
@@ -908,7 +875,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end default
     } // end switch (ourPreaccumulationGoal)
 
-    // perform the transformations
+    // perform the transformations and build the accumulation graph
     for (Sequence::EliminationPList::iterator elim_i = aSequence.getEliminationPList().begin();
          elim_i != aSequence.getEliminationPList().end();
          ++elim_i) {
@@ -919,164 +886,40 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: " << (*elim_i)->getDescription()
                                    << ": " << e.getReason().c_str());
       }
+      (*elim_i)->buildAccumulationGraph();
+
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+        if ((*elim_i)->getAccumulationGraph().numVertices()) { // don't show empty AccumulationGraph
+          GraphVizDisplay::show((*elim_i)->getAccumulationGraph(),
+                                "AccumulationGraph",
+                                AccumulationGraphVertexLabelWriter((*elim_i)->getAccumulationGraph()),
+                                AccumulationGraphEdgeLabelWriter((*elim_i)->getAccumulationGraph()),
+                                AccumulationGraphPropertiesWriter((*elim_i)->getAccumulationGraph()));
+        }
+	GraphVizDisplay::show((*elim_i)->getRemainderLCG(),
+                              "RemainderLCG",
+                              LinearizedComputationalGraphVertexLabelWriter((*elim_i)->getRemainderLCG()),
+                              LinearizedComputationalGraphEdgeLabelWriter((*elim_i)->getRemainderLCG()),
+                              LinearizedComputationalGraphPropertiesWriter((*elim_i)->getRemainderLCG()));
+      }
       DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
                                << " Sequence " << &aSequence
                                << " by " << (*elim_i)->getDescription()
-                               << ": " << (*elim_i)->getEliminationResult().getCounter().debug().c_str()
-                               << " with " << (*elim_i)->getEliminationResult().myNumReroutings << " reroutings");
+                               << ": " << (*elim_i)->getCounter().debug().c_str()
+                               << " with " << (*elim_i)->getNumReroutings() << " reroutings");
     } // end iterate over all Eliminations for this Sequence
 
-    aSequence.setBestResult(ourPreaccumulationGoal);
+    aSequence.determineBestElimination(ourPreaccumulationGoal);
     DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
                              << " Sequence " << &aSequence
                              << " best is " << aSequence.getBestElimination().getDescription()
-                             << ": " << aSequence.getBestResult().getCounter().debug().c_str()
-                             << " with " << aSequence.getBestResult().myNumReroutings << " reroutings");
-    myPreaccumulationCounter.incrementBy(aSequence.getBestResult().getCounter());
+                             << ": " << aSequence.getBestElimination().getCounter().debug().c_str()
+                             << " with " << aSequence.getBestElimination().getNumReroutings() << " reroutings");
+    myPreaccumulationCounter.incrementBy(aSequence.getBestElimination().getCounter());
   } // end BasicBlockAlg::runElimination()
 
-  void BasicBlockAlg::buildAccumulationGraph(const Sequence& aSequence,
-					     AccumulationGraph& theAccumulationGraph,
-					     RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap) {
-    theAccumulationGraph.clear();
-
-    LCGe_to_ACCv_map theLCGe_to_ACCv_map;
-    LCGe_to_ACCv_map::const_iterator lcgE2accVMapI;
-
-    // First iterate through the original edges and create corresponding accumulation graph vertices 
-    const PrivateLinearizedComputationalGraph& theOriginalPLCG (*aSequence.myComputationalGraph_p);
-    PrivateLinearizedComputationalGraph::ConstEdgeIteratorPair aPLCGeIPair (theOriginalPLCG.edges());
-    for (PrivateLinearizedComputationalGraph::ConstEdgeIterator PLCGeI (aPLCGeIPair.first), PLCGeIEnd (aPLCGeIPair.second);
-	 PLCGeI != PLCGeIEnd; ++PLCGeI) {
-      const PrivateLinearizedComputationalGraphEdge& currentPLCGEdge (dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*PLCGeI));
-      // handle regular edge (no parallels)
-      if (!currentPLCGEdge.getParallels().size()) {
-	AccumulationGraphVertex* theNewAccVertex_p (NULL);
-	if (currentPLCGEdge.isDirectCopyEdge())
-	  theNewAccVertex_p = new AccumulationGraphVertex;
-	else
-	  theNewAccVertex_p = new AccumulationGraphVertex (currentPLCGEdge.getLinearizedExpressionEdge());
-	// add the new AccVertex to the graph and map this PLCG edge to it
-	theAccumulationGraph.supplyAndAddVertexInstance(*theNewAccVertex_p);
-	theLCGe_to_ACCv_map[&*PLCGeI] = theNewAccVertex_p;
-      } // end regular edge (no parallels)
-      // handle edge with parallels
-      else {
-	//std::cout << "There are parallel edges!" << std::endl;
-	// deal with the initial edge
-	AccumulationGraphVertex* theNewAccVertex_p = new AccumulationGraphVertex (currentPLCGEdge.getLinearizedExpressionEdge());
-	theAccumulationGraph.supplyAndAddVertexInstance(*theNewAccVertex_p);
-	// create the add vertex and connect the initial vertex to it.  also map current PLCGedge to the add vertex
-	AccumulationGraphVertex* theNewAccAddVertex_p = new AccumulationGraphVertex(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP);
-	theAccumulationGraph.supplyAndAddVertexInstance(*theNewAccAddVertex_p);
-	theAccumulationGraph.addEdge(*theNewAccVertex_p, *theNewAccAddVertex_p);
-	theLCGe_to_ACCv_map[&*PLCGeI] = theNewAccAddVertex_p;
-	// iterate over parallels: create the new vertex for the parallel edge and connect it up
-	for (PrivateLinearizedComputationalGraphEdge::ExpressionEdgePList::const_iterator parallelI = currentPLCGEdge.getParallels().begin();
-	     parallelI != currentPLCGEdge.getParallels().end(); ++parallelI) {
-	  AccumulationGraphVertex* theNewParallelAccVertex_p = new AccumulationGraphVertex (**parallelI);
-	  theAccumulationGraph.supplyAndAddVertexInstance(*theNewParallelAccVertex_p);
-	  theAccumulationGraph.addEdge(*theNewParallelAccVertex_p, *theNewAccAddVertex_p);
-	} // end iterate over parallel edges
-      } // end handle edge with parallels
-    } // end all edges in theOriginalPLCG
-
-    // used for references that occur across different JAEs and for resolving remainder graph references
-    JAEv_to_ACCv_map theInterJAEvertexMap;
-    JAEv_to_ACCv_map::const_iterator jaeV2accVMapI;
-
-    // iterate over all JAEs
-    const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList& theJAEList (aSequence.getBestResult().myJAEList);
-    for(xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionList::GraphList::const_iterator JAEit = theJAEList.getGraphList().begin();
-	JAEit != theJAEList.getGraphList().end(); ++JAEit) {
-      const xaifBoosterCrossCountryInterface::JacobianAccumulationExpression& theCurrentJAE (*(*JAEit));
-      JAEv_to_ACCv_map theIntraJAEvertexMap; // used for creating the edges that occur within this JAE
-
-      // iterate over all vertices in this JAE
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIteratorPair aJAEvPair (theCurrentJAE.vertices());
-      for (xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstVertexIterator aJAEvI(aJAEvPair.first), aJAEvIEnd(aJAEvPair.second);
-	   aJAEvI != aJAEvIEnd; ++aJAEvI) {
-	const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex& theCurrentJAEVertex (*aJAEvI);
-
-	switch (theCurrentJAEVertex.getReferenceType()) {
-	  case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::INTERNAL_REF: {
-	    // find the source vertex using theInterJAEvertexMap
-	    if ((jaeV2accVMapI = theInterJAEvertexMap.find(&theCurrentJAEVertex.getInternalReference())) == theInterJAEvertexMap.end())
-	      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationGraph: could not find AccumulationGraphVertex for internal JAE vertex reference in theInterJAEvertexMap");
-	    // simply map to the corresponding vertex.  No need to create a new one...
-	    theIntraJAEvertexMap[&theCurrentJAEVertex] = jaeV2accVMapI->second;
-	    break;
-	  } // end INTERNAL_REF
-	  case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::EXTERNAL_REF: {
-	    // find the corresponding AccVertex (it must have been created in the first step
-	    if ((lcgE2accVMapI = theLCGe_to_ACCv_map.find(&theCurrentJAEVertex.getExternalReference())) == theLCGe_to_ACCv_map.end())
-	      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationGraph: could not find AccumulationGraphVertex for PLCG edge referred to by internal JAE vertex reference");
-	    theIntraJAEvertexMap[&theCurrentJAEVertex] = lcgE2accVMapI->second;
-	    // handle maximal JAE vertex
-	    if (!theCurrentJAE.numOutEdgesOf(theCurrentJAEVertex))
-	      theInterJAEvertexMap[&theCurrentJAEVertex] = lcgE2accVMapI->second;
-	    break;
-	  } // end EXTERNAL_REF
-	  case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::OPERATION: {
-	    AccumulationGraphVertex* theNewAccVertex_p = new AccumulationGraphVertex (theCurrentJAEVertex.getOperation());
-	    // create the new AccumulationGraphVertex and add it to the map
-	    theAccumulationGraph.supplyAndAddVertexInstance(*theNewAccVertex_p);
-	    theIntraJAEvertexMap[&theCurrentJAEVertex] = theNewAccVertex_p;
-	    // add to the inter map if this is the maximal vertex
-	    if (!theCurrentJAE.numOutEdgesOf(theCurrentJAEVertex))
-	      theInterJAEvertexMap[&theCurrentJAEVertex] = theNewAccVertex_p;
-	    break;
-	  } // end OPERATION
-	  default :
-	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationGraph: unknown JAE vertex type");
-	    break;
-	} // end switch on (*aJAEvI).getReferenceType()
-      } // end iterate over JAE vertices
-
-      // create edges resulting from connections within this JAE (INTRA)
-      xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstEdgeIteratorPair aJAEePair (theCurrentJAE.edges());
-      for (xaifBoosterCrossCountryInterface::JacobianAccumulationExpression::ConstEdgeIterator aJAEeI(aJAEePair.first), aJAEeIEnd(aJAEePair.second);
-	   aJAEeI != aJAEeIEnd; ++aJAEeI) {
-	// find the source and target of the new edge from theIntraJAEvertexMap
-	if ((jaeV2accVMapI = theIntraJAEvertexMap.find(&theCurrentJAE.getSourceOf(*aJAEeI))) == theIntraJAEvertexMap.end())
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationGraph: could not find AccumulationGraphVertex for internal JAE vertex reference in theInterJAEvertexMap");
-	const AccumulationGraphVertex& theSourceAccVertex (*jaeV2accVMapI->second);
-	if ((jaeV2accVMapI = theIntraJAEvertexMap.find(&theCurrentJAE.getTargetOf(*aJAEeI))) == theIntraJAEvertexMap.end())
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationGraph: could not find AccumulationGraphVertex for internal JAE vertex reference in theInterJAEvertexMap");
-	const AccumulationGraphVertex& theTargetAccVertex (*jaeV2accVMapI->second);
-	// create the edge in the accumulation graph
-	theAccumulationGraph.addEdge(theSourceAccVertex, theTargetAccVertex);
-      } // end iterate over JAE edges
-
-    } // end iterate over JAEs
-
-    // Populate remainder graph map
-    const EdgeCorrelationList& theEdgeCorrelationList = aSequence.getBestResult().myEdgeCorrelationList;
-    for (EdgeCorrelationList::const_iterator ecI = theEdgeCorrelationList.begin(); ecI != theEdgeCorrelationList.end(); ecI++) {
-      AccumulationGraphVertex* theAccVertex_p (NULL);
-      if ((*ecI).myType == EdgeCorrelationEntry::LCG_EDGE) {
-	// find the corresponding AccVertex in thePLCGe_to_ACCv_map
-	if ((lcgE2accVMapI = theLCGe_to_ACCv_map.find((*ecI).myEliminationReference.myOriginalEdge_p)) == theLCGe_to_ACCv_map.end())
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationGraph: could not find AccumulationGraphVertex for external JAE vertex reference (to original PLCG edge) in thePLCGe_to_ACCv_map");
-	theAccVertex_p = lcgE2accVMapI->second;
-      } // end LCG_EDGE ref
-      else if ((*ecI).myType == EdgeCorrelationEntry::JAE_VERT) {
-	// find the corresponding AccVertex in theInterJAEvertexMap
-	if ((jaeV2accVMapI = theInterJAEvertexMap.find((*ecI).myEliminationReference.myJAEVertex_p)) == theInterJAEvertexMap.end())
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationGraph: could not find AccumulationGraphVertex for internal JAE vertex reference in theInterJAEvertexMap");
-	theAccVertex_p = jaeV2accVMapI->second;
-      } // end JAE_VERT ref
-      else THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationGraph: EdgeCorrelationEntry has invalid type");
-
-      theRemainderEdge2AccumulationVertexMap[(*ecI).myRemainderGraphEdge_p] = theAccVertex_p;
-      theAccVertex_p->setRemainderGraphEdge(*(*ecI).myRemainderGraphEdge_p);
-    } // end iterate over theEdgeCorrelationList
-
-  } // end BasicBlockAlg::buildAccumulationGraph()
-
-  void BasicBlockAlg::generateAccumulationExpressions(Sequence& aSequence,
-						      AccumulationGraph& theAccumulationGraph,
-						      const RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap) {
+  void BasicBlockAlg::generateAccumulationExpressions(Sequence& aSequence) {
+    AccumulationGraph& theAccumulationGraph (aSequence.getBestElimination().getAccumulationGraph());
     //traverse graph bottom up
     theAccumulationGraph.initVisit();
     bool done = false; 
@@ -1487,16 +1330,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::buildAccumulationAssignmentRecursively()
 
   void BasicBlockAlg::makePropagationVariables(Sequence& aSequence) {
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderLCG (aSequence.getBestResult().myRemainderLCG);
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderLCG (aSequence.getBestElimination().getRemainderLCG());
     const AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->getCallGraph().getAliasMap());
-    LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP (theRemainderLCG.vertices());
-    for (LinearizedComputationalGraph::VertexIterator rvi (rLCGvertIP.first), rvi_end (rLCGvertIP.second); rvi != rvi_end; ++rvi) {
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP (theRemainderLCG.vertices());
+    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator rvi (rLCGvertIP.first), rvi_end (rLCGvertIP.second); rvi != rvi_end; ++rvi) {
       const PrivateLinearizedComputationalGraphVertex& theOriginalVertex (aSequence.getBestElimination().rVertex2oVertex(*rvi));
       // for independents, check against all non-independents for alias conflicts, making new propagation variable in that case
       // See AssignmentAlg::vertexIdentification for an explanation of why we only need to worry about replacing independents.
       if (!theRemainderLCG.numInEdgesOf(*rvi)) {
-	LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP2 (theRemainderLCG.vertices());
-	LinearizedComputationalGraph::VertexIterator rvi2 (rLCGvertIP2.first), rvi2_end (rLCGvertIP2.second);
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP2 (theRemainderLCG.vertices());
+	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator rvi2 (rLCGvertIP2.first), rvi2_end (rLCGvertIP2.second);
 	for (; rvi2 != rvi2_end; ++rvi2) { // inner iteration over all remainder vertices
 	  if (!theRemainderLCG.numInEdgesOf(*rvi2)) continue; // skip other indeps
 	  const PrivateLinearizedComputationalGraphVertex& theOriginalNonIndep (aSequence.getBestElimination().rVertex2oVertex(*rvi2));
@@ -1526,21 +1369,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end iterate over all remainder vertices
   } // end BasicBlockAlg::makePropagationVariables()
 
-  void BasicBlockAlg::generateRemainderGraphPropagators(Sequence& aSequence, 
-							const RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap) { 
+  void BasicBlockAlg::generateRemainderGraphPropagators(Sequence& aSequence) { 
+    const xaifBoosterCrossCountryInterface::Elimination::RemainderEdge2AccumulationVertexMap& theRemainderEdge2AccumulationVertexMap (aSequence.getBestElimination().getRemainderEdge2AccumulationVertexMap()); 
     // two issues here that deviate from the typical case:
     // - if none of the inedges has a nonzero factor, we will do a ZERODERIV
     // - \todo: if there is a one factor on an inedge, do that one first as a SETDERIV, and follow it with a sequece of SAXPY operations
 
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph (aSequence.getBestResult().myRemainderLCG);
-    aSequence.getBestResult().myRemainderLCG.initVisit();
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph (aSequence.getBestElimination().getRemainderLCG());
+    aSequence.getBestElimination().getRemainderLCG().initVisit();
     bool done = false;
     while(!done) {
       done = true;
       xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair aVertexIP(theRemainderGraph.vertices());
       for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator anLCGVertI(aVertexIP.first),anLCGvertEndI(aVertexIP.second);
 	  anLCGVertI != anLCGvertEndI; ++anLCGVertI) {
-	const LinearizedComputationalGraphVertex& theRemainderTargetV = *anLCGVertI;
+	const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV = *anLCGVertI;
 	// skip visited vertices
 	if (theRemainderTargetV.wasVisited()) continue;
 	// skip minimal vertices
@@ -1562,11 +1405,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
 	  for (; iei != ie_end; ++iei) {
 	    // Find the AccumulationGraphVertex that corresponds to this RemainderGraphEdge
-	    RemainderEdge2AccumulationVertex_map::const_iterator map_it;
+	    xaifBoosterCrossCountryInterface::Elimination::RemainderEdge2AccumulationVertexMap::const_iterator map_it;
 	    if ((map_it = theRemainderEdge2AccumulationVertexMap.find(&*iei)) == theRemainderEdge2AccumulationVertexMap.end())
 	      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::generateRemainderGraphPropagators: could not find AccumulationGraphVertex for RemaindergraphEdge in theRemainderEdge2AccumulationVertexMap");
 	    const AccumulationGraphVertex& theAccVertex (*map_it->second);
-            const LinearizedComputationalGraphVertex& theRemainderSourceV (theRemainderGraph.getSourceOf(*iei));
+            const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderSourceV (theRemainderGraph.getSourceOf(*iei));
 
 	    // check whether the factor is PASSIVE
 	    if (theAccVertex.getPartialDerivativeKind() == PartialDerivativeKind::PASSIVE) continue;
@@ -1587,15 +1430,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	} // end visit
       } // end iterate over all vertices
     } // end while(!done)
-    aSequence.getBestResult().myRemainderLCG.finishVisit();
+    aSequence.getBestElimination().getRemainderLCG().finishVisit();
   } // end BasicBlockAlg::generateRemainderGraphPropagators()
 
-  void BasicBlockAlg::propagateOnRemainderGraphEdge(const LinearizedComputationalGraphEdge& theRemainderEdge,
+  void BasicBlockAlg::propagateOnRemainderGraphEdge(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& theRemainderEdge,
 						    Sequence& aSequence,
 						    const AccumulationGraphVertex& theAccVertex) {
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph (aSequence.getBestResult().myRemainderLCG);
-    LinearizedComputationalGraphVertex& theSourceV (theRemainderGraph.getSourceOf(theRemainderEdge));
-    LinearizedComputationalGraphVertex& theTargetV (theRemainderGraph.getTargetOf(theRemainderEdge));
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph (aSequence.getBestElimination().getRemainderLCG());
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theSourceV (theRemainderGraph.getSourceOf(theRemainderEdge));
+    xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theTargetV (theRemainderGraph.getTargetOf(theRemainderEdge));
     xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* theSaxpy_p (0);
 
     // make a new SAX if there's no SAX yet or if there is one and we can't add to it
