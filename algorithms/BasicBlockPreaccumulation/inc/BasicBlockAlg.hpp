@@ -265,7 +265,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
       xaifBoosterCrossCountryInterface::Elimination& addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg); 
 
-      typedef std::list<Elimination*> EliminationPList;
+      typedef std::list<xaifBoosterCrossCountryInterface::Elimination*> EliminationPList;
 
       /** 
        * the derivative accumulator for this sequence
@@ -326,14 +326,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       const AssignmentPList& getEndAssignmentList() const;
 
       /// choose "best" transformation, based on what our goal is specified to be
-      void setBestResult(PreaccumulationGoal::PreaccumulationGoal_E aGoal);
+      void determineBestElimination(PreaccumulationGoal::PreaccumulationGoal_E aGoal);
 
       const xaifBoosterCrossCountryInterface::Elimination& getBestElimination() const;
+      xaifBoosterCrossCountryInterface::Elimination& getBestElimination();
 
-      const xaifBoosterCrossCountryInterface::Elimination::EliminationResult& getBestResult() const;
-      xaifBoosterCrossCountryInterface::Elimination::EliminationResult& getBestResult();
-     
       EliminationPList& getEliminationPList();
+
     private: 
 
       /**
@@ -366,7 +365,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       EliminationPList myEliminationPList;
 
-      Elimination* myBestElimination_p;
+      xaifBoosterCrossCountryInterface::Elimination* myBestElimination_p;
       
     }; // end of class Sequence
 
@@ -443,33 +442,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void fillDependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph);
 
     /**
-     * used for propagation
+     * Traverses theAccumulationGraph for the best elimination in \p aSequence in topological order,
+     * generating assignments for all non-leaf vertices that are either maximal or have >1 outedges
+     * (those with >1 outedge represent intermediate values used more than once).
      */
-    typedef std::map<const LinearizedComputationalGraphEdge*, const AccumulationGraphVertex*> RemainderEdge2AccumulationVertex_map;
-
-    /**
-     * used for building the Accumulation graph from the JAEs
-     */
-    typedef std::map<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*,
-		     AccumulationGraphVertex*> LCGe_to_ACCv_map;
-    typedef std::map<const JacobianAccumulationExpressionVertex*,
-		     AccumulationGraphVertex*> JAEv_to_ACCv_map;
-
-    /**
-     * Flattens the JAEs into a single Accumulation graph and populates a mapping from remainder graph edges to
-     * accumulation graph vertices, which will be used in the generation of propagators.
-     */
-    void buildAccumulationGraph(const Sequence& aSequence,
-				AccumulationGraph& theAccumulationGraph,
-				RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap);
-
-    /**
-     * Traverses \p theAccumulationGraph in topological order, generating assignments for all non-leaf vertices
-     * that are either maximal or have >1 outedges (these represent intermediate values used more than once).
-     */
-    void generateAccumulationExpressions(Sequence& aSequence,
-					 AccumulationGraph& theAccumulationGraph,
-					 const RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap);
+    void generateAccumulationExpressions(Sequence& aSequence);
 
     /**
      * Determines the PDK for a non-leaf vertex and, if applicable, also pre-computes it's value.
@@ -491,15 +468,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void makePropagationVariables(Sequence& aSequence);
 
-    /**
-     *
-     */
-    void generateRemainderGraphPropagators(Sequence& aSequence, 
-					   const RemainderEdge2AccumulationVertex_map& theRemainderEdge2AccumulationVertexMap); 
-    /**
-     *
-     */
-    void propagateOnRemainderGraphEdge(const LinearizedComputationalGraphEdge& theRemainderEdge,
+    /// traverses the remainder graph and creates a derivative propagator entry for every edge
+    void generateRemainderGraphPropagators(Sequence& aSequence); 
+
+    /// creates the derivative propagator entry for \p theRemainderEdge
+    void propagateOnRemainderGraphEdge(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& theRemainderEdge,
 				       Sequence& aSequence,
 				       const AccumulationGraphVertex& theAccVertex);
 

@@ -53,6 +53,9 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include <map>
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AwarenessLevel.hpp"
@@ -60,9 +63,6 @@
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
-
-using namespace xaifBooster;
-using namespace xaifBoosterCrossCountryInterface;
 
 namespace xaifBoosterCrossCountryInterface { 
 
@@ -76,6 +76,7 @@ namespace xaifBoosterCrossCountryInterface {
     enum EliminationType_E {
       UNSET_ELIMTYPE,
       OPS_ELIMTYPE,
+      OPS_RANDOM_ELIMTYPE,
       OPS_LSA_VERTEX_ELIMTYPE,
       OPS_LSA_FACE_ELIMTYPE,
       SCARCE_ELIMTYPE,
@@ -83,11 +84,13 @@ namespace xaifBoosterCrossCountryInterface {
       SCARCE_TRANSFORMATIONTYPE,
       SCARCE_RANDOM_TRANSFORMATIONTYPE};
 
+    /// just sets graph.  Use initAs* methods for more specific things
     Elimination (LinearizedComputationalGraph& lcg);
     ~Elimination(){};
 
     // init functions allow for a generic constructor for all elimination types
     void initAsOperations();
+    void initAsOperationsRandom();
     void initAsLSAVertex(int i, double g);
     void initAsLSAFace(int i, double g);
     void initAsScarceElimination();
@@ -103,12 +106,6 @@ namespace xaifBoosterCrossCountryInterface {
     static void setAllowMaintainingFlag();
     
     std::string getDescription() const;
-    
-     const LinearizedComputationalGraph& getLCG () const {
-      if (!myLCG_p)
-	THROW_LOGICEXCEPTION_MACRO("Elimination::getLCG(): myLCG_p is NULL");
-      return *myLCG_p;
-    } // end of Elimination::getLCG
 
     const int getNumIterations () const {
       return myNumIterations;
@@ -118,6 +115,22 @@ namespace xaifBoosterCrossCountryInterface {
       return myGamma;
     }
     
+    const LinearizedComputationalGraph& getRemainderLCG() const;
+    LinearizedComputationalGraph& getRemainderLCG();
+
+    const xaifBoosterBasicBlockPreaccumulation::AccumulationGraph& getAccumulationGraph() const;
+    xaifBoosterBasicBlockPreaccumulation::AccumulationGraph& getAccumulationGraph();
+
+    /// used for propagation
+    typedef std::map<const LinearizedComputationalGraphEdge*,
+                     const xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex*> RemainderEdge2AccumulationVertexMap;
+
+    const RemainderEdge2AccumulationVertexMap& getRemainderEdge2AccumulationVertexMap() const;
+
+    const PreaccumulationCounter& getCounter() const;
+
+    unsigned int getNumReroutings() const;
+
     /**
      * returns a reference to the original LCG vertex that corresponds to the passed remainder graph vertex
      */
@@ -125,47 +138,10 @@ namespace xaifBoosterCrossCountryInterface {
     rVertex2oVertex (const LinearizedComputationalGraphVertex& theRemainderVertex) const;
 
     /**
-     * this is the result of applying an elimination to a Sequence
+     * Flattens the JAEs into a single Accumulation graph and populates a mapping from remainder graph edges to
+     * accumulation graph vertices, which will be used in the generation of propagators. 
      */
-    class EliminationResult {
-
-    public:
-
-      EliminationResult();
-
-      JacobianAccumulationExpressionList myJAEList;
-      LinearizedComputationalGraph myRemainderLCG;
-      VertexCorrelationList myVertexCorrelationList;
-      EdgeCorrelationList myEdgeCorrelationList;
-      unsigned int myNumReroutings;
-
-      const PreaccumulationCounter& getCounter() const;
-
-    private:
-      
-      /**
-       * the ensuing operation counts etc.
-       */
-      mutable PreaccumulationCounter myCounter;
-
-      /**
-       * count the number of multiplications and additions in a JacobianAccumulationExpresstionList
-       */
-      void countPreaccumulationOperations() const;
-
-      /// sets the three counters that measure scarcity in the remainder graph
-      void countRemainderGraphEdges() const;
-
-      /**
-       * have we counted the elimination operations
-       */
-      mutable bool myCountedFlag;
-
-    }; // end of class EliminationResult
-
-    EliminationResult& getEliminationResult() {
-      return myEliminationResult;
-    }
+    void buildAccumulationGraph();
 
   private:
 
@@ -182,10 +158,61 @@ namespace xaifBoosterCrossCountryInterface {
     
     int myNumIterations;
     double myGamma;
-   
-    EliminationResult myEliminationResult;
+
+    /// this will be populated by angel during the transformation process
+    JacobianAccumulationExpressionList myJAEList;
+
+    /// this is populated by angel after the elimination process
+    LinearizedComputationalGraph myRemainderLCG;
+
+    /// maps vertices in the remainder graph to vertices in the original graph
+    VertexCorrelationList myVertexCorrelationList;
+
+    /// maps edges in the remainder graph to edges in the original graph
+    EdgeCorrelationList myEdgeCorrelationList;
+
+    /// built subsequent to the angel transformation
+    xaifBoosterBasicBlockPreaccumulation::AccumulationGraph myAccumulationGraph;
+
+    /// maps edges in the remainder graph to thjeiur corresponding vertices in myAccumulationGraph.  used in propagation
+    RemainderEdge2AccumulationVertexMap myRemainderEdge2AccumulationVertexMap;
+
+    /// contains the results of performing the transformation (in terms of ops and remainder graph edges)
+    mutable PreaccumulationCounter myCounter;
+
+    /// for scarcity with rerouting, holds the number of reroutings
+    unsigned int myNumReroutings;
+
+    typedef std::map<const LinearizedComputationalGraphEdge*,
+                     xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex*> LCGe_to_ACCv_map;
+
+    typedef std::map<const JacobianAccumulationExpressionVertex*,
+                     xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex*> JAEv_to_ACCv_map;
+
+    /**
+     * have we counted the elimination operations
+     */
+    mutable bool myCountedFlag;
+
+    /// used for evaluating preaccumulation cost
+    typedef std::map<const xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex*,
+                     bool> AccVertexIsUnitMap;
+
+    /// recursively visits Accumulation graph vertices and counts nontrivial operations (cost)
+    /**
+     * should be called exactly once for every accumulation graph vertex
+     */
+    void evaluateCostRecursively(const xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex& rootAccvertex,
+                                 AccVertexIsUnitMap& theAccVertexIsUnitMap) const;
+
+    /// counts all nontrivial operations in myAccumulationGraph
+    void countPreaccumulationOperations() const;
+
+    /// sets the three counters that measure scarcity in the remainder graph
+    void countRemainderGraphEdges() const;
+
   }; // end of class Elimination
 
-} 
+} // end namespace xaifBoosterCrossCountryInterface
 
 #endif
