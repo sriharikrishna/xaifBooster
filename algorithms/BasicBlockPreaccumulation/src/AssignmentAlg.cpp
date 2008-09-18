@@ -359,9 +359,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// set the back reference
 	theEdge_p->setLinearizedExpressionEdge(*ExpressionEdgeI);
 	if (thePartialDerivativeKind == PartialDerivativeKind::LINEAR_ONE || thePartialDerivativeKind == PartialDerivativeKind::LINEAR_MINUS_ONE)
-	  theEdge_p->setEdgeLabelType(LinearizedComputationalGraphEdge::UNIT_LABEL);
+	  theEdge_p->setEdgeLabelType(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL);
 	else if (thePartialDerivativeKind == PartialDerivativeKind::LINEAR)
-	  theEdge_p->setEdgeLabelType(LinearizedComputationalGraphEdge::CONSTANT_LABEL);
+	  theEdge_p->setEdgeLabelType(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL);
 	theComputationalGraph.supplyAndAddEdgeInstance(*theEdge_p,
 						      *theLCGSource_p,
 						      *theLCGTarget_p);
