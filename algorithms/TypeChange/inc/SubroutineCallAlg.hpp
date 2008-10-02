@@ -207,6 +207,17 @@ namespace xaifBoosterTypeChange {
     void handleArrayAccessIndices(const ConcreteArgument& theConcreteArgument,
 				  const BasicBlock& theBasicBlock);
 
+    /** 
+     * for F77 style pseudo pointer arithmetic
+     * pass in the proper F90 slice
+     * e.g. for a(2,3) passed to foo(fa)
+     * where the formal fa is a vector of length 2
+     * we call in F77 foo(a(1,2))  but in F90 
+     * this has to become a proper slice foo(a(1:2,2))
+     */
+    void adjustF77ToF90Indices(Variable& aVariable,
+			       int formalMinusConcreteDims); 
+
   }; // end of class SubroutineCallAlg
  
 } 
