@@ -419,6 +419,9 @@ namespace xaifBoosterTypeChange {
     theTempVar.copyMyselfInto(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg);
+    if (theSecondPriorConcreteArg.isArgument())
+      adjustF77ToF90Indices(theSecondPriorConcreteArg.getArgument().getVariable(),
+			    formalMinusConcreteDims);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
     if (theConcreteArgument.isArgument()) { // no point in copying a constant back.
       // post call:
@@ -434,6 +437,8 @@ namespace xaifBoosterTypeChange {
       theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
       Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
       theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes);
+      adjustF77ToF90Indices(theInlineVariablePostRes,
+			    formalMinusConcreteDims);
       Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
@@ -525,7 +530,7 @@ namespace xaifBoosterTypeChange {
 	const Symbol::DimensionBoundsPList& aDimensionBoundsPList(theConcreteArgumentSymbol.getDimensionBoundsPList());
 	if (formalMinusConcreteDims>0) { 
 	  // this can be the case in Fortran where we pass in a n-tensor for 
-	  // and n+k tensor formal argument.  The k missing dimension then 
+	  // an n+k tensor formal argument.  The k missing dimension then 
 	  // have to be 1 except it is unclear which of the n+k are the missing ones
 	  DBG_MACRO(DbgGroup::ERROR, "SubroutineCallAlg::makeTempSymbol: " 
 		    << formalMinusConcreteDims 
@@ -691,5 +696,74 @@ namespace xaifBoosterTypeChange {
   const Expression::VariablePVariableSRPPairList& SubroutineCallAlg::getReplacementPairs()const { 
     return myReplacementPairs;
   } 
+
+  void SubroutineCallAlg::adjustF77ToF90Indices(Variable& aVariable,
+						int formalMinusConcreteDims) { 
+    if (! (aVariable.getVariableSymbolReference().getSymbol().hasDimensionBounds()))
+      return;
+    const Symbol::DimensionBoundsPList& aDimensionBoundsPList(aVariable.
+							      getVariableSymbolReference().
+							      getSymbol().
+							      getDimensionBoundsPList());
+    if (! (aVariable.hasArrayAccess()))
+      return;
+    ArrayAccess::IndexTripletListType& anIndexTripletList(aVariable.getArrayAccess().getIndexTripletList());
+    if (formalMinusConcreteDims>0) { 
+      // this can be the case in Fortran where we pass in a n-tensor for 
+      // an n+k tensor formal argument.  The k missing dimension then 
+      // have to be 1 except it is unclear which of the n+k are the missing ones
+      DBG_MACRO(DbgGroup::ERROR, "SubroutineCallAlg::adjustF77ToF90Indices: " 
+		<< formalMinusConcreteDims 
+		<< " missing dimension(s) for " 
+		<< aVariable.getVariableSymbolReference().getSymbol().plainName().c_str()
+		<< " in call to " 
+		<< getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str()
+		<< " on line " 
+		<< getContainingSubroutineCall().getLineNumber());
+    }
+    switch(DimensionBounds::getIndexOrder()) { 
+    case IndexOrder::ROWMAJOR: { // c and c++
+      Symbol::DimensionBoundsPList::const_iterator bli=aDimensionBoundsPList.begin();
+      ArrayAccess::IndexTripletListType::iterator ili=anIndexTripletList.begin();
+      for (;
+	   (bli!=aDimensionBoundsPList.end() && ili!=anIndexTripletList.end());
+	   ++ili, ++bli,  ++formalMinusConcreteDims) { 
+	if (formalMinusConcreteDims>=0) { 
+	  // e.g. between the three-tensor vs vector the reduction is 2 so we skip over the 2 leftmost dimensions.
+	  Expression& boundExpression((*ili)->addExpression(IndexTriplet::IT_BOUND));
+	  Constant* newBoundConst=new Constant(SymbolType::INTEGER_STYPE,false);
+	  newBoundConst->setint((*bli)->getUpper());
+	  newBoundConst->setId(1);
+	  boundExpression.supplyAndAddVertexInstance(*newBoundConst);
+	}
+      }
+      break;
+    }
+    case IndexOrder::COLUMNMAJOR: { // fortran
+      int usedDimensions=aDimensionBoundsPList.size()+formalMinusConcreteDims;
+      // formalMinusConcreteDims is negative if we are supposed to use fewer dimensions 
+      // of the concrete Argument.
+      Symbol::DimensionBoundsPList::const_iterator bli=aDimensionBoundsPList.begin();
+      ArrayAccess::IndexTripletListType::iterator ili=anIndexTripletList.begin();
+      for (;
+	   (bli!=aDimensionBoundsPList.end() && ili!=anIndexTripletList.end());
+	   ++bli,++ili,--usedDimensions) { 
+	if (usedDimensions>0) { 
+	  // e.g. between the three-tensor vs vector the reduction is 2 so we skip over the 2 rightmost dimensions.
+	  Expression& boundExpression((*ili)->addExpression(IndexTriplet::IT_BOUND));
+	  Constant* newBoundConst=new Constant(SymbolType::INTEGER_STYPE,false);
+	  newBoundConst->setint((*bli)->getUpper());
+	  newBoundConst->setId(1);
+	  boundExpression.supplyAndAddVertexInstance(*newBoundConst);
+	}
+      }
+      break;
+    }     
+    default:
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::makeTempSymbol: no logic for "
+				 << IndexOrder::toString(DimensionBounds::getIndexOrder()).c_str());
+      break;
+    }
+  }
 
 } // end of namespace 
