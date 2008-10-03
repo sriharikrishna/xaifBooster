@@ -1,1 +1,0 @@
-The interface for foo in the definition of head does not pick up on the activity of the formal parameters <a href="http://koolkat2.cs.rice.edu/bugtracker/bug.php?op=show&bugid=125&pos=4">bug report</a>
