@@ -553,14 +553,15 @@ namespace xaifBoosterTypeChange {
 	  }
 	  break;
 	case IndexOrder::COLUMNMAJOR: { // fortran
-	  int usedDimensions=aDimensionBoundsPList.size()+formalMinusConcreteDims;
+	  int thisDimension=aDimensionBoundsPList.size();
+	  int usedDimensions=thisDimension+formalMinusConcreteDims;
 	  // formalMinusConcreteDims is negative if we are supposed to use fewer dimensions 
 	  // of the concrete Argument.
 	  for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
 	       (li!=aDimensionBoundsPList.end());
-	       ++li,--usedDimensions) { 
-	    if (usedDimensions>0)
-	      // e.g. between the three-tensor vs vector the reduction is 2 so we skip over the 2 rightmost dimensions.
+	       ++li,--thisDimension) { 
+	    if (usedDimensions>=thisDimension)
+	      // e.g. between the three-tensor vs vector the reduction is 2 so we skip over the 2 top-level dimensions.
 	      theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
 						      (*li)->getUpper());
 	  }
@@ -743,10 +744,10 @@ namespace xaifBoosterTypeChange {
       int usedDimensions=aDimensionBoundsPList.size()+formalMinusConcreteDims;
       // formalMinusConcreteDims is negative if we are supposed to use fewer dimensions 
       // of the concrete Argument.
-      Symbol::DimensionBoundsPList::const_iterator bli=aDimensionBoundsPList.begin();
+      Symbol::DimensionBoundsPList::const_reverse_iterator bli=aDimensionBoundsPList.rbegin();
       ArrayAccess::IndexTripletListType::iterator ili=anIndexTripletList.begin();
       for (;
-	   (bli!=aDimensionBoundsPList.end() && ili!=anIndexTripletList.end());
+	   (bli!=aDimensionBoundsPList.rend() && ili!=anIndexTripletList.end());
 	   ++bli,++ili,--usedDimensions) { 
 	if (usedDimensions>0) { 
 	  // e.g. between the three-tensor vs vector the reduction is 2 so we skip over the 2 rightmost dimensions.
