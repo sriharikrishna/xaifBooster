@@ -76,6 +76,8 @@ namespace xaifBoosterTraceDiff {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    virtual void algorithm_action_2(); 
+
   private: 
 
     /** 
@@ -92,6 +94,12 @@ namespace xaifBoosterTraceDiff {
      * no def
      */
     IntrinsicAlg operator=(const IntrinsicAlg&);
+
+    /**
+     * flag to rename this to call a tracing-enabled wrapper for 
+     * the intrinsic
+     */
+    bool myRenameFlag;
 
   } ; 
 

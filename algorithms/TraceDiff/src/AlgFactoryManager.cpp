@@ -53,7 +53,9 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/algorithms/TraceDiff/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/TraceDiff/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/algorithms/TraceDiff/inc/IntrinsicAlgFactory.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/SubroutineCallAlgFactory.hpp"
 
@@ -83,8 +85,10 @@ namespace xaifBoosterTraceDiff {
 
   void AlgFactoryManager::resets() {
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+    resetAssignmentAlgFactory(new AssignmentAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
+    resetIntrinsicAlgFactory(new IntrinsicAlgFactory());
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "at the end of xaifBoosterTraceDiff::AlgFactoryManager::resets: " 
 	      << debug().c_str());

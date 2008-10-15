@@ -52,9 +52,12 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
+#include "xaifBooster/system/inc/Assignment.hpp"
+
 #include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/TraceDiff/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/TraceDiff/inc/AssignmentAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -94,6 +97,18 @@ namespace xaifBoosterTraceDiff {
       // In order to pass parameters through BasicBlockParameter
       // we have to make sure that this method is never invoked recursively
       xaifBoosterTypeChange::BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_2()
+      // for every assignment check the RHS
+      const PlainBasicBlock::BasicBlockElementList& theContainingBBEelemtList(dynamic_cast<const BasicBlock&>(xaifBoosterTypeChange::BasicBlockAlg::getContaining()).
+									      getBasicBlockElementList());
+      for (PlainBasicBlock::BasicBlockElementList::const_iterator li=theContainingBBEelemtList.begin();
+	   li!=theContainingBBEelemtList.end();
+	   li++) { 
+	// see if this is an assignment
+	const Assignment* anAssignment_p=dynamic_cast<const Assignment*>(*li);
+	if (anAssignment_p) { 
+	  dynamic_cast<AssignmentAlg&>(anAssignment_p->getAssignmentAlgBase()).trace();
+	}
+      } 
     } 
     catch (...) { 
       recursionGuard--;

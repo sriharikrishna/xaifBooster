@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERTRACEDIFF_ASSIGNMENTALG_INCLUDE_
+#define _XAIFBOOSTERTRACEDIFF_ASSIGNMENTALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,42 +52,56 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <sstream>
-#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 
-namespace xaifBooster { 
+#include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 
-  ExpressionVertex::ExpressionVertex() : 
-    myExpressionVertexAlgBase_p(0)  {
-  } 
+using namespace xaifBooster; 
 
-  ExpressionVertex::~ExpressionVertex(){
-    if (myExpressionVertexAlgBase_p) delete myExpressionVertexAlgBase_p;
-  }
-  
-  ExpressionVertexAlgBase&
-  ExpressionVertex::getExpressionVertexAlgBase() const {
-    if (!myExpressionVertexAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("ExpressionVertex::getExpressionVertexAlgBase: not set");
-    return *myExpressionVertexAlgBase_p;
-  } // end getExpressionVertexAlgBase
+namespace xaifBoosterTraceDiff { 
 
-  std::string ExpressionVertex::debug () const { 
-    std::ostringstream out;
-    out << "ExpressionVertex[" << this << "]" << std::ends;  
-    return out.str();
-  } // end debug
+  /**
+   * class to implement TraceDiff steps
+   * AssignmentAlgBase
+   */
+  class AssignmentAlg : public AssignmentAlgBase {
 
-  const InlinableIntrinsicsCatalogueItem& 
-  ExpressionVertex::getInlinableIntrinsicsCatalogueItem() const { 
-    THROW_LOGICEXCEPTION_MACRO("ExpressionVertex::getInlinableIntrinsicsCatalogueItem: is not valid for this instance");
-    // make up a dummy to satisfy the compiler
-    // we never reach this, so...
-    return *(new InlinableIntrinsicsCatalogueItem(1,false));
-  } 
+  public:
+    
+    AssignmentAlg(Assignment& theContainingAssignment);
 
-  bool ExpressionVertex::isArgument() const { 
-    return false;
-  } // end ExpressionVertex::isArgument
+    virtual ~AssignmentAlg(){};
 
-} // end of namespace xaifBooster 
+    virtual void printXMLHierarchy(std::ostream& os) const;
+
+    virtual std::string debug() const ;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    void trace();
+
+  private: 
+
+    /** 
+     * no def
+     */
+    AssignmentAlg();
+
+    /** 
+     * no def
+     */
+    AssignmentAlg(const AssignmentAlg&);
+
+    /** 
+     * no def
+     */
+    AssignmentAlg operator=(const AssignmentAlg&);
+
+    PlainBasicBlock::BasicBlockElementList myTracingCalls;
+
+  }; // end of class Assignment
+ 
+} 
+                                                                     
+#endif
