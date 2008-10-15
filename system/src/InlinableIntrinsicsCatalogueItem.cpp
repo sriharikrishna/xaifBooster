@@ -58,6 +58,7 @@ namespace xaifBooster {
   const std::string InlinableIntrinsicsCatalogueItem::ourXAIFName("xaifii:InlinableIntrinsic");
   const std::string InlinableIntrinsicsCatalogueItem::our_myName_XAIFName("name");
   const std::string InlinableIntrinsicsCatalogueItem::our_myNrArgs_XAIFName("nr_arguments");
+  const std::string InlinableIntrinsicsCatalogueItem::our_myNonSmoothFlag_XAIFName("nonSmooth");
   const std::string InlinableIntrinsicsCatalogueItem::ourFunctionXAIFName("xaifii:Function");
   const std::string InlinableIntrinsicsCatalogueItem::our_myFunctionType_XAIFName("type");
   const std::string InlinableIntrinsicsCatalogueItem::our_myFunctionBuiltinName_XAIFName("builtin_name");
@@ -65,10 +66,12 @@ namespace xaifBooster {
   const std::string InlinableIntrinsicsCatalogueItem::our_myPartialId_XAIFName("partial_id");
   const std::string InlinableIntrinsicsCatalogueItem::our_myPartialType_XAIFName("partial_type");
 
-  InlinableIntrinsicsCatalogueItem::InlinableIntrinsicsCatalogueItem(unsigned int aNumberOfArguments) :
+  InlinableIntrinsicsCatalogueItem::InlinableIntrinsicsCatalogueItem(unsigned int aNumberOfArguments,
+								     bool aNonSmoothFlag) :
     myNumberOfArguments(aNumberOfArguments),
     myExpressionVector(aNumberOfArguments+1),
-    myDataComplete(false) { 
+    myDataComplete(false),
+    myNonSmoothFlag(aNonSmoothFlag) { 
     InlinableIntrinsicsExpression* theFunction_p=new InlinableIntrinsicsExpression(myNumberOfArguments,
 										   PartialDerivativeKind::PASSIVE); // this is for the function itself
     myExpressionVector[0]=theFunction_p;
@@ -132,5 +135,10 @@ namespace xaifBooster {
     }
     return myUsedPositionalArguments; 
   } 
+
+  bool 
+  InlinableIntrinsicsCatalogueItem::isNonSmooth() const { 
+    return myNonSmoothFlag;
+  }
 
 } 

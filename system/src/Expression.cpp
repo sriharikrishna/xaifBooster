@@ -119,6 +119,7 @@ namespace xaifBooster {
 
   void Expression::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {        
     getExpressionAlgBase().genericTraversal(anAction_c);
+    GraphWrapperTraversable<ExpressionVertex,ExpressionEdge>::traverseToChildren(anAction_c);
   } // end traversalToChildren
 
   void 

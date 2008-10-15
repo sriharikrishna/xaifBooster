@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERTRACEDIFF_ASSIGNMENTALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERTRACEDIFF_ASSIGNMENTALGFACTORY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,42 +52,12 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <sstream>
-#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 
-namespace xaifBooster { 
+#include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/algorithms/TraceDiff/inc/AlgFactoryManager.hpp"
 
-  ExpressionVertex::ExpressionVertex() : 
-    myExpressionVertexAlgBase_p(0)  {
-  } 
 
-  ExpressionVertex::~ExpressionVertex(){
-    if (myExpressionVertexAlgBase_p) delete myExpressionVertexAlgBase_p;
-  }
-  
-  ExpressionVertexAlgBase&
-  ExpressionVertex::getExpressionVertexAlgBase() const {
-    if (!myExpressionVertexAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("ExpressionVertex::getExpressionVertexAlgBase: not set");
-    return *myExpressionVertexAlgBase_p;
-  } // end getExpressionVertexAlgBase
+  DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,xaifBooster::AssignmentAlgFactory,xaifBoosterTraceDiff)
 
-  std::string ExpressionVertex::debug () const { 
-    std::ostringstream out;
-    out << "ExpressionVertex[" << this << "]" << std::ends;  
-    return out.str();
-  } // end debug
 
-  const InlinableIntrinsicsCatalogueItem& 
-  ExpressionVertex::getInlinableIntrinsicsCatalogueItem() const { 
-    THROW_LOGICEXCEPTION_MACRO("ExpressionVertex::getInlinableIntrinsicsCatalogueItem: is not valid for this instance");
-    // make up a dummy to satisfy the compiler
-    // we never reach this, so...
-    return *(new InlinableIntrinsicsCatalogueItem(1,false));
-  } 
-
-  bool ExpressionVertex::isArgument() const { 
-    return false;
-  } // end ExpressionVertex::isArgument
-
-} // end of namespace xaifBooster 
+#endif

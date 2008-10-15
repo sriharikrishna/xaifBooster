@@ -53,6 +53,7 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 #include "xaifBooster/system/inc/AliasRange.hpp"
 
 namespace xaifBooster { 
@@ -129,7 +130,7 @@ namespace xaifBooster {
     if (min()==theOther.min() && 
 	max()==theOther.max()) { 
       if (isPartial()!=theOther.isPartial())
-	THROW_LOGICEXCEPTION_MACRO("AliasRange::sameAs: identical ranges with different partial settings");
+	DBG_MACRO(DbgGroup::ERROR,"AliasRange::sameAs: identical ranges with different partial settings");
       return true;
     }
     return false;
