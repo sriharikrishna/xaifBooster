@@ -72,42 +72,50 @@ namespace xaifBooster {
   } 
 
   void 
-  Variable::copyMyselfInto(Variable& theTarget) const { 
+  Variable::copyMyselfInto(Variable& theTarget,
+			   bool deep) const { 
     Variable::ConstVertexIteratorPair p(vertices());
     Variable::ConstVertexIterator beginIt(p.first),endIt(p.second);
     typedef std::pair<const VariableVertex*, const VariableVertex*> PointerPair;
     typedef std::list<PointerPair> PointerPairList;
     PointerPairList theList; // first original, second copy
+    const VariableSymbolReference& theVariableSymbolReference(getVariableSymbolReference());
     for (;beginIt!=endIt ;++beginIt) {
+      if (!deep) { 
+	if (&(*beginIt)!=&theVariableSymbolReference)
+	  continue;
+      }
       VariableVertex& theCopy((*beginIt).createCopyOfMyself());
       theTarget.supplyAndAddVertexInstance(theCopy);
       theList.push_back(PointerPair(&(*beginIt),&theCopy));
     }
-    Variable::ConstEdgeIteratorPair pe=edges();
-    Variable::ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
-    for (;beginIte!=endIte ;++beginIte) { 
-      const VariableVertex 
-	*theOriginalSource_p(&(getSourceOf(*beginIte))), 
-	*theOriginalTarget_p(&(getTargetOf(*beginIte)));
-      const VariableVertex 
-	*theCopySource_p(0), 
-	*theCopyTarget_p(0);
-      for (PointerPairList::const_iterator li=theList.begin();
-	   li!=theList.end() 
-	     && 
-	     !(theCopySource_p && theCopyTarget_p);
-	   ++li) { 
-	if (!theCopySource_p && (*li).first==theOriginalSource_p)
-	  theCopySource_p=(*li).second;
-	if (!theCopyTarget_p && (*li).first==theOriginalTarget_p)
-	  theCopyTarget_p=(*li).second;
+    if (deep) { 
+      Variable::ConstEdgeIteratorPair pe=edges();
+      Variable::ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
+      for (;beginIte!=endIte ;++beginIte) { 
+	const VariableVertex 
+	  *theOriginalSource_p(&(getSourceOf(*beginIte))), 
+	  *theOriginalTarget_p(&(getTargetOf(*beginIte)));
+	const VariableVertex 
+	  *theCopySource_p(0), 
+	  *theCopyTarget_p(0);
+	for (PointerPairList::const_iterator li=theList.begin();
+	     li!=theList.end() 
+	       && 
+	       !(theCopySource_p && theCopyTarget_p);
+	     ++li) { 
+	  if (!theCopySource_p && (*li).first==theOriginalSource_p)
+	    theCopySource_p=(*li).second;
+	  if (!theCopyTarget_p && (*li).first==theOriginalTarget_p)
+	    theCopyTarget_p=(*li).second;
+	} // end for 
+	if (!theCopySource_p || !theCopyTarget_p) 
+	  THROW_LOGICEXCEPTION_MACRO("Variable::copyMyselfInto: couldn't find source or target");
+	VariableEdge& theEdge(theTarget.addEdge(*theCopySource_p,
+						*theCopyTarget_p));
+	theEdge.setId((*beginIte).getId());
       } // end for 
-      if (!theCopySource_p || !theCopyTarget_p) 
-	THROW_LOGICEXCEPTION_MACRO("Variable::copyMyselfInto: couldn't find source or target");
-      VariableEdge& theEdge(theTarget.addEdge(*theCopySource_p,
-					      *theCopyTarget_p));
-      theEdge.setId((*beginIte).getId());
-    } // end for 
+    }
     if (myAliasMapKey.getKind()==AliasMapKey::NOT_SET)
       THROW_LOGICEXCEPTION_MACRO("Variable::copyMyselfInto: myAliasMapKey not initialized for " 
 				 << debug().c_str());
@@ -377,6 +385,8 @@ namespace xaifBooster {
       return; 
     }
     ArrayAccess::IndexTripletListType& aList(getArrayAccess().getIndexTripletList());
+    if (! (getVariableSymbolReference().getSymbol().hasDimensionBounds()))
+      return;
     const Symbol::DimensionBoundsPList& boundsList(getVariableSymbolReference().getSymbol().getDimensionBoundsPList());
     switch(DimensionBounds::getIndexOrder()) { 
     case IndexOrder::ROWMAJOR: // c and c++ 

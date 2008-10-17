@@ -115,9 +115,13 @@ namespace xaifBooster {
     Constant& makeConstant(const SymbolType::SymbolType_E aType);
 
     /** 
-     * deep copy
+     * copy
+     * the 'deep' argument refers to the AST  
+     * i.e. deep=true means 'a[i]' is copied as 'a[i]'
+     * while deep=false means 'a[i]' is copied as 'a'
      */
-    void copyMyselfInto(ConcreteArgument& theTarget) const;
+    void copyMyselfInto(ConcreteArgument& theTarget, 
+			bool deep=true) const;
 
   private:
     

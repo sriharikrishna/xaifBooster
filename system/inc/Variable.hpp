@@ -117,7 +117,8 @@ namespace xaifBooster {
     /**
      * \todo: JU think about copying duud information
      */
-    void copyMyselfInto(Variable& theTarget) const;
+    void copyMyselfInto(Variable& theTarget,
+			bool deep=true) const;
 
     AliasMapKey& getAliasMapKey();
 
