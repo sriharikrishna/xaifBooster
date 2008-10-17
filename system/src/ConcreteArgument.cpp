@@ -222,9 +222,11 @@ namespace xaifBooster {
     return *myConstant_p;
   } 
 
-  void ConcreteArgument::copyMyselfInto(ConcreteArgument& theTarget) const { 
+  void ConcreteArgument::copyMyselfInto(ConcreteArgument& theTarget,
+					bool deep) const { 
     if (isArgument()) { 
-      getArgument().getVariable().copyMyselfInto(theTarget.getArgument().getVariable());
+      getArgument().getVariable().copyMyselfInto(theTarget.getArgument().getVariable(),
+						 deep);
     } 
     else { 
       Constant& theConstantArg(theTarget.makeConstant(getConstant().getType()));
