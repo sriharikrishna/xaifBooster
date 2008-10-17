@@ -322,17 +322,9 @@ namespace xaifBoosterAddressArithmetic {
 					    theOriginalBasicBlock);
 	}  
       }
-      if (!theUnknownIndexVariables.empty()) {
-	std::ostringstream ostr;
-	ostr<< " ";
-	for (CallGraphVertexAlg::UnknownVarInfoList::const_iterator it= theUnknownIndexVariables.begin();
-	     it!=theUnknownIndexVariables.end();
-	     ++it)
-	  ostr << (*it).myVariable_p->getVariableSymbolReference().getSymbol().plainName().c_str() << " ";
+      if (!theUnknownIndexVariables.empty()) { 
 	DBG_MACRO(DbgGroup::ERROR,
-		  "CallGraphVertexAlg::findUnknownVariablesInBasicBlockElements: array with unknown indices ("
-		  << ostr.str().c_str()
-		  << ") is used in subroutine call to "
+		  "CallGraphVertexAlg::findUnknownVariablesInDerivativePropagatorIndexExpressions: array with unknown indices is used in subroutine call to "
 		  << aSubroutineCall_p->getSymbolReference().getSymbol().getId().c_str()
 		  << " on line "
 		  << aSubroutineCall_p->getLineNumber());

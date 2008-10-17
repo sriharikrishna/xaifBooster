@@ -62,6 +62,7 @@ objs test clean:
 	cd BasicBlockPreaccumulationTape && $(MAKE) $@
 	cd BasicBlockPreaccumulationTapeAdjoint && $(MAKE) $@
 	cd ControlFlowReversal && $(MAKE) $@
+	cd TraceDiff && $(MAKE) $@
 	cd AddressArithmetic && $(MAKE) $@
 	cd BasicBlockPreaccumulationReverse && $(MAKE) $@
 

@@ -66,7 +66,8 @@ namespace xaifBooster {
   public:
 
     InlinableIntrinsicsIntrinsic(const std::string& aName) :
-    myName(aName) {};
+      myName(aName) {};
+
     ~InlinableIntrinsicsIntrinsic(){};
 
     virtual ExpressionVertex& createCopyOfMyself() const;

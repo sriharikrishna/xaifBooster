@@ -53,6 +53,7 @@
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 
@@ -235,8 +236,8 @@ namespace xaifBooster {
 	  ++numDerefs;
       }
     } 
-    return SymbolShape::lesserShape(getVariableSymbolReference().getSymbol().getSymbolShape(),
-				    numDerefs);
+    return SymbolShape::offset(getVariableSymbolReference().getSymbol().getSymbolShape(),
+			       -numDerefs);
   } 
 
   bool Variable::getActiveType() const { 
@@ -370,5 +371,69 @@ namespace xaifBooster {
   bool Variable::getConstantUseFlag() const { 
     return myConstantUseFlag;
   } 
+
+  void Variable::adjustUpperBounds(int count) { 
+    if (!hasArrayAccess()) { 
+      return; 
+    }
+    ArrayAccess::IndexTripletListType& aList(getArrayAccess().getIndexTripletList());
+    const Symbol::DimensionBoundsPList& boundsList(getVariableSymbolReference().getSymbol().getDimensionBoundsPList());
+    switch(DimensionBounds::getIndexOrder()) { 
+    case IndexOrder::ROWMAJOR: // c and c++ 
+      {
+	Symbol::DimensionBoundsPList::const_reverse_iterator bli=boundsList.rbegin();
+	for (unsigned int i=aList.size(); i<boundsList.size(); ++i)
+	  ++bli;
+	for (ArrayAccess::IndexTripletListType::reverse_iterator li=aList.rbegin();
+	     (li!=aList.rend()) && count>0;
+	     ++li, ++bli, --count) { 
+	  if (!((*li)->hasExpression(IndexTriplet::IT_BOUND))){ 
+	    Expression& boundExpr((*li)->addExpression(IndexTriplet::IT_BOUND));
+	    Constant* aNewConstant_p(new Constant(SymbolType::INTEGER_STYPE,false));
+	    aNewConstant_p->setint((*bli)->getUpper());
+	    aNewConstant_p->setId(1);
+	    boundExpr.supplyAndAddVertexInstance(*aNewConstant_p);
+	  }
+	  if (!((*li)->hasExpression(IndexTriplet::IT_STRIDE))){ 
+	    Expression& strideExpr((*li)->addExpression(IndexTriplet::IT_STRIDE));
+	    Constant* aNewConstant_p(new Constant(SymbolType::INTEGER_STYPE,false));
+	    aNewConstant_p->setint(1);
+	    aNewConstant_p->setId(1);
+	    strideExpr.supplyAndAddVertexInstance(*aNewConstant_p);
+	  }
+	}
+	break;
+      }
+    case IndexOrder::COLUMNMAJOR:  // fortran
+      {
+	Symbol::DimensionBoundsPList::const_iterator bli=boundsList.begin();
+	for (unsigned int i=aList.size(); i<boundsList.size(); ++i)
+	  ++bli;
+	for (ArrayAccess::IndexTripletListType::iterator li=aList.begin();
+	     (li!=aList.end()) && count>0;
+	     ++li, ++bli, --count) { 
+	  if (!((*li)->hasExpression(IndexTriplet::IT_BOUND))){ 
+	    Expression& boundExpr((*li)->addExpression(IndexTriplet::IT_BOUND));
+	    Constant* aNewConstant_p(new Constant(SymbolType::INTEGER_STYPE,false));
+	    aNewConstant_p->setint((*bli)->getUpper());
+	    aNewConstant_p->setId(1);
+	    boundExpr.supplyAndAddVertexInstance(*aNewConstant_p);
+	  }
+	  if (!((*li)->hasExpression(IndexTriplet::IT_STRIDE))){ 
+	    Expression& strideExpr((*li)->addExpression(IndexTriplet::IT_STRIDE));
+	    Constant* aNewConstant_p(new Constant(SymbolType::INTEGER_STYPE,false));
+	    aNewConstant_p->setint(1);
+	    aNewConstant_p->setId(1);
+	    strideExpr.supplyAndAddVertexInstance(*aNewConstant_p);
+	  }
+	}
+	break;
+      }     
+    default:
+      THROW_LOGICEXCEPTION_MACRO("Variable::adjustUpperBounds: no logic for "
+				 << IndexOrder::toString(DimensionBounds::getIndexOrder()).c_str());
+      break;
+    }
+  }
 
 } // end of namespace xaifBooster 

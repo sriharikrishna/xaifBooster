@@ -29,7 +29,7 @@ fi
 done
 }
 
-ALGDIRSFULL="BasicBlockPreaccumulationTapeAdjoint BasicBlockPreaccumulation BasicBlockPreaccumulationTape Linearization TypeChange"
+ALGDIRSFULL="BasicBlockPreaccumulationTapeAdjoint BasicBlockPreaccumulation BasicBlockPreaccumulationTape Linearization TypeChange TraceDiff"
 ALGDIRSPARTIAL="AddressArithmetic ControlFlowReversal  BasicBlockPreaccumulationReverse"
 
 doTest "full" $ALGDIRSFULL

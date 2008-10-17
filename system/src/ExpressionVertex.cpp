@@ -81,7 +81,7 @@ namespace xaifBooster {
     THROW_LOGICEXCEPTION_MACRO("ExpressionVertex::getInlinableIntrinsicsCatalogueItem: is not valid for this instance");
     // make up a dummy to satisfy the compiler
     // we never reach this, so...
-    return *(new InlinableIntrinsicsCatalogueItem(1));
+    return *(new InlinableIntrinsicsCatalogueItem(1,false));
   } 
 
   bool ExpressionVertex::isArgument() const { 
