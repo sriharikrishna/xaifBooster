@@ -66,12 +66,15 @@ namespace xaifBoosterTypeChange {
   public: 
 
     static void report(const  SubroutineNotFoundException& e);
+    static void reportConversion(const SymbolReference& srName);
 
   private:
     
     typedef std::list<SymbolReference*> SymbolReferencePList;
 
     static SymbolReferencePList ourReportedList;
+ 
+    static SymbolReferencePList ourConversionReportedList;
 
   }; // end of class MissingSubroutinesReport
 

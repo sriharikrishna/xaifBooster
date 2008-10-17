@@ -111,9 +111,9 @@ namespace xaifBooster {
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent() 
        << "<"
-       << ourXAIFName 
+       << ourXAIFName.c_str() 
        << " " 
-       << our_myId_XAIFName 
+       << our_myId_XAIFName.c_str() 
        << "=\"" 
        << getId().c_str()
        << "\" ";
@@ -122,10 +122,11 @@ namespace xaifBooster {
 	 << "=\""
 	 << getAnnotation().c_str()
 	 << "\" "; 
-    os << our_myName_XAIFName
+    os << our_myName_XAIFName.c_str()
        << "=\""
        << myName.c_str()
-       << "\"/>" 
+       << "\""
+       << "/>" 
        << std::endl; 
     pm.releaseInstance();
   } 
@@ -140,5 +141,13 @@ namespace xaifBooster {
   void Intrinsic::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
     getIntrinsicAlgBase().genericTraversal(anAction_c);
   } 
+
+  const std::string& Intrinsic::getName() const { 
+    return myName;
+  } 
+
+  bool Intrinsic::isNonSmooth() const { 
+    return getInlinableIntrinsicsCatalogueItem().isNonSmooth();
+  }
 
 } // end of namespace 
