@@ -105,7 +105,7 @@ namespace xaifBooster {
 	      << " -i <inputFile> -c <intrinsicsCatalogueFile> " << std::endl
 	      << " common options: " << std::endl
 	      << "             [-s <pathToSchema> ] " << std::endl
-	      << "                 XAIF schema path, defaults to ./" << std::endl
+	      << "                 XAIF schema path, defaults to directory that contains the input file" << std::endl
 	      << "             [-o <outputFile> ] [-d <debugOutputFile> ]" << std::endl
 	      << "                 both default to std::cout" << std::endl
 	      << "             [-g <debugGroup> ]" << std::endl
