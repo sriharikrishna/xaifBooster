@@ -490,6 +490,8 @@ INPUT                  = utils/inc \
                          algorithms/AddressArithmetic/src \
                          algorithms/TypeChange/inc \
                          algorithms/TypeChange/src \
+                         algorithms/TraceDiff/inc \
+                         algorithms/TraceDiff/src \
                          algorithms/Linearization/inc \
                          algorithms/Linearization/src \
                          algorithms/BasicBlockPreaccumulation/inc \
