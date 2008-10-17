@@ -54,6 +54,8 @@
 
 #include "xaifBooster/system/inc/ConcreteArgument.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/system/inc/ArrayAccess.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
@@ -91,11 +93,30 @@ namespace xaifBoosterTypeChange {
     return out.str();
   }
 
-  void ConcreteArgumentAlg::makeReplacement(const Variable& aVariable) { 
+  void ConcreteArgumentAlg::makeReplacement(const Variable& aVariable,
+					    bool entireArrayCopied) { 
     if(myReplacement_p)
       THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::makeReplacement : already have a replacement");
     myReplacement_p=new ConcreteArgument(getContaining().getPosition());
     aVariable.copyMyselfInto(myReplacement_p->getArgument().getVariable());
+    if (entireArrayCopied) { 
+      // this means we have some shape discrepancy
+      // and we need to attach the subscript of the original 
+      // argument to the replacement if there are any subscripts
+      if (getContaining().isArgument() 
+	  && 
+	  getContaining().getArgument().getVariable().hasArrayAccess()) {
+	if (aVariable.hasArrayAccess())
+	  THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::makeReplacement : temp variable already has indices");
+	VariableVertex& newVariableVertex(getContaining().getArgument().getVariable().getArrayAccess().createCopyOfMyself());
+	myReplacement_p->getArgument().getVariable().supplyAndAddVertexInstance(newVariableVertex);
+	VariableEdge& theEdge(myReplacement_p->
+			      getArgument().
+			      getVariable().addEdge(dynamic_cast<const VariableVertex&>(myReplacement_p->getArgument().getVariable().getVariableSymbolReference()),
+						    newVariableVertex));
+	theEdge.setId(1);
+      }
+    }
   }
   
   bool ConcreteArgumentAlg::hasReplacement() const { 
