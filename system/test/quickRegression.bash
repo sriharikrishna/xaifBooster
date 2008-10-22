@@ -15,7 +15,7 @@ else
 fi
 for i in `echo ${TESTFILES}`
     do
-    command="./t -v -V -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg"
+    command="./t -v -V -F NO_STYLE -i ${XAIFSCHEMAROOT}/schema/examples/${i}.xaif -o tmp/${i}.out -c ${XAIFSCHEMAROOT}/schema/examples/inlinable_intrinsics.xaif -d tmp/${i}.dbg"
     echo $command
     set +e
     $($command)
