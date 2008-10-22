@@ -2,9 +2,9 @@
 hg tip > /dev/null 2>&1
 if [ $? -ne 0 ] 
 then 
-  if [ -f ${XAIFBOOSTERROOT}/xaifBooster/hg2cvs.stamp ]
+  if [ -f ${XAIFBOOSTERROOT}/xaifBooster/hg2svn.stamp ]
   then
-    echo "std::string buildStamp=\"${PWD}" $(cat  ${XAIFBOOSTERROOT}/xaifBooster/hg2cvs.stamp) " built by ${USER}\";" >> buildStamp.hpp.new 
+    echo "std::string buildStamp=\"${PWD}" $(cat  ${XAIFBOOSTERROOT}/xaifBooster/hg2svn.stamp) " built by ${USER}\";" >> buildStamp.hpp.new 
   else
     echo "std::string buildStamp=\"${PWD} hg:N/A by ${USER}\";" >> buildStamp.hpp.new 
   fi

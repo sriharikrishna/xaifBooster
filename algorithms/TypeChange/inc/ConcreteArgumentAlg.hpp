@@ -82,7 +82,15 @@ namespace xaifBoosterTypeChange {
 
     virtual std::string debug() const ;
 
-    void makeReplacement(const Variable& aVariable);
+    /**
+     * if @parm entireArrayCopied is true, then 
+     * the symbol supplied by @parm aVariable 
+     * may need to have the subscripts 
+     * that are on the original concrete argument 
+     * applied to it
+     */
+    void makeReplacement(const Variable& aVariable,
+			 bool entireArrayCopied);
 
     bool hasReplacement() const;
 
@@ -118,7 +126,9 @@ namespace xaifBoosterTypeChange {
     ConcreteArgumentAlg operator=(const ConcreteArgumentAlg&);
 
     /** 
-     * my replacement, i.e. the converted argument.
+     * my replacement, i.e. the converted argument
+     * in the orginal call (not necessarily identical 
+     * to the arguments in the conversion routines
      */
     ConcreteArgument* myReplacement_p;
 

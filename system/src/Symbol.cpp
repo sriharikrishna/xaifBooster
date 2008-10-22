@@ -71,6 +71,8 @@ namespace xaifBooster {
 
   bool Symbol::ourCaseSensitiveFlag=false; 
 
+  FrontEndDecorations::FrontEndDecorations_E Symbol::ourFrontEndDecorations=FrontEndDecorations::OPEN64_STYLE;
+
   Symbol::Symbol(const std::string& aName, 
 		 const SymbolKind::SymbolKind_E& aKind,
 		 const SymbolType::SymbolType_E& aType,
@@ -328,29 +330,45 @@ namespace xaifBooster {
     } 
   }
 
+  void Symbol::setFrontEndDecorations(const FrontEndDecorations::FrontEndDecorations_E& aStyle) { 
+    ourFrontEndDecorations=aStyle;
+  } 
+
   std::string Symbol::stripFrontEndDecorations(const std::string& aDecoratedName,
 					       bool isSubroutineName) { 
-    // strip the trailing _[0-9]* appended by mfef90 from the variable Name
-    std::string aPlainName(aDecoratedName,0,aDecoratedName.find_last_of('_'));
-    std::string aDecoration(aDecoratedName,aDecoratedName.find_last_of('_'),aDecoratedName.size());
-    unsigned int position=0;
-    while(position<aDecoration.size() && aDecoration[position]=='_')
-      position++;
-    while(position<aDecoration.size() && std::isdigit(aDecoration[position]))
-      position++;
-    if (position!=aDecoration.size()) {
-      // this doesn't have the proper appendix
-      DBG_MACRO(DbgGroup::ERROR, "Symbol::stripFrontEndDecorations: unexpected decoration string "
-		<< aDecoration.c_str() 
-		<< " in " 
-		<< aDecoratedName.c_str()
-		<< " but we continue");
-      return aDecoratedName;
+    std::string plainName(aDecoratedName);
+    switch (ourFrontEndDecorations) { 
+      case FrontEndDecorations::OPEN64_STYLE : {
+	// strip the trailing _[0-9]* appended by mfef90 from the variable Name
+	std::string open64PlainName(aDecoratedName,0,aDecoratedName.find_last_of('_'));
+	std::string aDecoration(aDecoratedName,aDecoratedName.find_last_of('_'),aDecoratedName.size());
+	unsigned int position=0;
+	while(position<aDecoration.size() && aDecoration[position]=='_')
+	  position++;
+	while(position<aDecoration.size() && std::isdigit(aDecoration[position]))
+	  position++;
+	if (position!=aDecoration.size()) {
+	  // this doesn't have the proper appendix
+	  DBG_MACRO(DbgGroup::ERROR, "Symbol::stripFrontEndDecorations: unexpected decoration string "
+		    << aDecoration.c_str() 
+		    << " in " 
+		    << aDecoratedName.c_str()
+		    << " but we continue");
+	  return aDecoratedName;
+	}
+	if (isSubroutineName && open64PlainName[open64PlainName.size()-1]=='_')
+	  // only user defined subroutine have an extra _
+	  open64PlainName.erase(open64PlainName.size()-1);
+	plainName=open64PlainName;
+      }
+	break;
+      case FrontEndDecorations::NO_STYLE :
+	break;
+      default:
+	THROW_LOGICEXCEPTION_MACRO("Symbol::stripFrontEndDecorations: no logic for "<< FrontEndDecorations::toString(ourFrontEndDecorations).c_str());
+	break;
     }
-    if (isSubroutineName && aPlainName[aPlainName.size()-1]=='_')
-      // only user defined subroutine have an extra _
-      aPlainName.erase(aPlainName.size()-1);
-    return aPlainName;
+    return plainName;
   }
     
   std::string Symbol::plainName() const { 

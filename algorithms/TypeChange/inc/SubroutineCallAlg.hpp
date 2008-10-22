@@ -170,7 +170,7 @@ namespace xaifBoosterTypeChange {
 
     std::string giveCallName(bool concreteArgumentActive,
 			     const SymbolReference &aTempSymbolReference,
-			     unsigned int missingDimensions,
+			     short shapeOffset,
 			     bool prior) const ;
     /**
      * if forcePassive then we create a passive type, 

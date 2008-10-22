@@ -67,9 +67,11 @@ namespace xaifBooster {
 
   InlinableIntrinsicsCatalogueItem& 
   InlinableIntrinsicsCatalogue::addCatalogueItem(const std::string& theKey,
-						 const std::string& theNumberOfArguments) { 
+						 const std::string& theNumberOfArguments,
+						 bool aNonSmoothFlag) { 
     InlinableIntrinsicsCatalogueItem* theItem_p=
-      new InlinableIntrinsicsCatalogueItem(StringConversions::convertToUInt(theNumberOfArguments.c_str()));
+      new InlinableIntrinsicsCatalogueItem(StringConversions::convertToUInt(theNumberOfArguments.c_str()),
+					   aNonSmoothFlag);
     myHashTable.addElement(theKey,
 			   theItem_p);
     return *theItem_p;

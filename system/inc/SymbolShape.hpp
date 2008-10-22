@@ -67,7 +67,9 @@ public:
 	    MATRIX=2,
 	    THREE_TENSOR=3,
 	    FOUR_TENSOR=4,
-	    FIVE_TENSOR=5};
+	    FIVE_TENSOR=5,
+	    SIX_TENSOR=6,
+	    SEVEN_TENSOR=7};
     
     static std::string toString(const SymbolShape_E& aShape) throw (PrintingIntException);
 
@@ -83,10 +85,10 @@ public:
 			  const SymbolShape_E& minusTheOtherShape);
 
     /**
-     * the shape that is lesser than aShape by lesserBy
+     * the shape that is offset by offset
      */
-    static const SymbolShape_E lesserShape(const SymbolShape_E& aShape, 
-					   unsigned int lesserBy);
+    static const SymbolShape_E offset(const SymbolShape_E& aShape, 
+				      int offset);
 
   }; // end of class SymbolShape
 
