@@ -117,7 +117,8 @@ namespace xaifBooster {
     /**
      * \todo: JU think about copying duud information
      */
-    void copyMyselfInto(Variable& theTarget) const;
+    void copyMyselfInto(Variable& theTarget,
+			bool deep=true) const;
 
     AliasMapKey& getAliasMapKey();
 
@@ -221,6 +222,14 @@ namespace xaifBooster {
      */
     const VariableSymbolReference& getVariableSymbolReference() const;
 
+    /** 
+     * in some cases (e.g. in F77) array sections can masquerade 
+     * as an array element access where the unspecified upper bound 
+     * is implied by the calling convention. We need to add the "uppper" bound
+     * explicitly for as many as count indices
+     */
+    void adjustUpperBounds(int count);
+    
   private: 
     
     /** 

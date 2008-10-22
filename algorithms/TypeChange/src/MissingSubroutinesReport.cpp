@@ -59,6 +59,7 @@
 namespace xaifBoosterTypeChange { 
 
   MissingSubroutinesReport::SymbolReferencePList MissingSubroutinesReport::ourReportedList;
+  MissingSubroutinesReport::SymbolReferencePList MissingSubroutinesReport::ourConversionReportedList;
 
   void MissingSubroutinesReport::report(const  SubroutineNotFoundException& e) { 
     const SymbolReference& s(e.getSymbolReference());
@@ -78,6 +79,26 @@ namespace xaifBoosterTypeChange {
 		<< " (xaif name " 
 		<< s.getSymbol().getId().c_str() 
 		<< ") which means the analysis may net be able to track activity through these calls. Consider providing stubs for external routines.");
+    }
+  } 
+
+  void MissingSubroutinesReport::reportConversion(const SymbolReference& srName) { 
+    SymbolReferencePList::iterator i;
+    for (i=ourConversionReportedList.begin();
+	 i!=ourConversionReportedList.end();
+	 ++i) { 
+      if (&((*i)->getScope())==&(srName.getScope()) && &((*i)->getSymbol())==&(srName.getSymbol()))
+	break;
+    }
+    if (i==ourConversionReportedList.end()) { 
+      ourConversionReportedList.push_back(new SymbolReference(srName.getSymbol(),
+							      srName.getScope()));
+      DBG_MACRO(DbgGroup::WARNING, 
+		"black box subroutine " 
+		<< srName.getSymbol().plainName().c_str() 
+		<< " (xaif name " 
+		<< srName.getSymbol().getId().c_str() 
+		<< ") is called with active arguments which are being converted to passive.");
     }
   } 
   

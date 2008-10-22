@@ -81,7 +81,8 @@ namespace xaifBooster {
      * to resolve ambiguities in the signature
      */
     InlinableIntrinsicsCatalogueItem& addCatalogueItem(const std::string& theKey,
-						       const std::string& theNumberOfArguments);
+						       const std::string& theNumberOfArguments,
+						       bool aNonSmoothFlag);
     
     /** 
      * look it up by the name, 

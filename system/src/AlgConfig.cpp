@@ -54,6 +54,7 @@
 
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/utils/inc/FrontEndDecorations.hpp"
 
 #include "xaifBooster/system/inc/AlgConfig.hpp"
 #include "xaifBooster/system/inc/Symbol.hpp"
@@ -71,13 +72,16 @@ namespace xaifBooster {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgsvpbV");
+    return std::string("iocdgsvpbVFh");
   } 
 
   void AlgConfig::config() { 
     if (!myConfiguredFlag) { 
       // avoid doing this twice
       parse(getSwitches());
+      if (isSet('h')){ 
+	usage();
+      }
       myInputFileName=argAsString('i');
       myIntrinsicsFileName=argAsString('c');
       if (isSet('s')) 
@@ -95,6 +99,8 @@ namespace xaifBooster {
       if (isSet('V'))
 	PrintManager::setVerbose();
       myInputValidationFlag=isSet('v');
+      if (isSet('F'))
+	Symbol::setFrontEndDecorations(FrontEndDecorations::fromString(argAsString('F')));
       myConfiguredFlag=true;
     } 
   } 
@@ -105,7 +111,7 @@ namespace xaifBooster {
 	      << " -i <inputFile> -c <intrinsicsCatalogueFile> " << std::endl
 	      << " common options: " << std::endl
 	      << "             [-s <pathToSchema> ] " << std::endl
-	      << "                 XAIF schema path, defaults to ./" << std::endl
+	      << "                 XAIF schema path, defaults to directory that contains the input file" << std::endl
 	      << "             [-o <outputFile> ] [-d <debugOutputFile> ]" << std::endl
 	      << "                 both default to std::cout" << std::endl
 	      << "             [-g <debugGroup> ]" << std::endl
@@ -116,7 +122,13 @@ namespace xaifBooster {
               << "                 space separated list enclosed in double quotes" << std::endl
               << "             [-b] pessimistic assumptions for black box routines" << std::endl 
 	      << "             [-v] validate the input against the schema" << std::endl
-	      << "             [-V] verbose xaif output" << std::endl;
+	      << "             [-V] verbose xaif output" << std::endl
+	      << "             [-F <style> ]" << std::endl
+	      << "                 front-end decoration style, where <style> is one of: " << std::endl
+	      << "                 "<< FrontEndDecorations::printAll().c_str() << std::endl
+	      << "                 defaults to OPEN64_STYLE" << std::endl
+	      << "             [-h] print this help message" << std::endl
+      ;
   } 
 
   const std::string& AlgConfig::getInputFileName() const { 
