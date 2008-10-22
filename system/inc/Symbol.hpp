@@ -59,6 +59,7 @@
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 #include "xaifBooster/utils/inc/HashTable.hpp"
+#include "xaifBooster/utils/inc/FrontEndDecorations.hpp"
 
 #include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/SymbolKind.hpp"
@@ -149,10 +150,8 @@ namespace xaifBooster {
      */
     std::string plainName() const;
 
-    /**
-     * \todo: this method should be reimplemented for 
-     * front-ends with different decorations
-     */
+    static void setFrontEndDecorations(const FrontEndDecorations::FrontEndDecorations_E& aStyle);
+
     static std::string stripFrontEndDecorations(const std::string& aDecoratedName,
 						bool isSubroutineName);
 
@@ -294,6 +293,11 @@ namespace xaifBooster {
      * are symbol names case sensitive?
      */
     static bool ourCaseSensitiveFlag;
+
+    /**
+     * front end decoration style
+     */
+    static FrontEndDecorations::FrontEndDecorations_E ourFrontEndDecorations;
 
   };
  
