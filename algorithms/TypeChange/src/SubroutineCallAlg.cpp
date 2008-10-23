@@ -414,7 +414,7 @@ namespace xaifBoosterTypeChange {
 	  aFormalArgumentSymbolReference.getSymbol().getSymbolShape()!=SymbolShape::SCALAR) { 
 	shapeOffsetFromFormal=-formalMinusConcreteDims;
 	copyEntireArray=true;
-	DBG_MACRO(DbgGroup::ERROR, "SubroutineCallAlg::addConversion: " 
+	DBG_MACRO(DbgGroup::DATA, "SubroutineCallAlg::addConversion: " 
 		  << " cannot decide if shape offset "
 		  << shapeOffsetFromFormal 
 		  << " for " 
@@ -554,6 +554,7 @@ namespace xaifBoosterTypeChange {
 					 int shapeOffsetFromFormal,
 					 bool forcePassive) { 
     // create a new symbol and add a new VariableSymbolReference in the Variable
+    static std::list<std::string> reportShapeMismatchOnce;
     Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
 			  getCallGraph().getScopeTree().getGlobalScope());
     Symbol& theNewVariableSymbol(theGlobalScope.
@@ -594,10 +595,21 @@ namespace xaifBoosterTypeChange {
 	    ostr << " missing";
 	  } 
 	  ostr << " dimension(s) in call to " 
-	       << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str()
-	       << " on line " 
-	       << getContainingSubroutineCall().getLineNumber();
-	  DBG_MACRO(DbgGroup::ERROR, ostr.str().c_str());
+	       << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str();
+	  std::list<std::string>::iterator i=reportShapeMismatchOnce.begin();
+	  for (;
+	       i!=reportShapeMismatchOnce.end();
+	       ++i) { 
+	    if (ostr.str().compare(*i)==0) { 
+	      break;
+	    }
+	  }
+	  if (i==reportShapeMismatchOnce.end()) { 
+	    reportShapeMismatchOnce.push_back(ostr.str());
+	    ostr << " on line " 
+		 << getContainingSubroutineCall().getLineNumber();
+	    DBG_MACRO(DbgGroup::ERROR, ostr.str().c_str());
+	  }
 	}
 	switch(DimensionBounds::getIndexOrder()) { 
 	case IndexOrder::ROWMAJOR: // c and c++
