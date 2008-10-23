@@ -58,4 +58,32 @@ objs test clean:
 doc : 
 	doxygen
 
+ifndef INST_DIR
+INST_DIR=/opt/xaifBooster
+endif
+
+install: uninstall objs
+	mkdir -p ${INST_DIR}/algorithms/TypeChange/test 
+	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/TypeChange/test/t ${INST_DIR}/algorithms/TypeChange/test
+	chmod a+rx ${INST_DIR}/algorithms/TypeChange/test/t
+	strip ${INST_DIR}/algorithms/TypeChange/test/t
+	mkdir -p ${INST_DIR}/algorithms/BasicBlockPreaccumulation/test 
+	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/BasicBlockPreaccumulation/test/t ${INST_DIR}/algorithms/BasicBlockPreaccumulation/test
+	chmod a+rx ${INST_DIR}/algorithms/BasicBlockPreaccumulation/test/t
+	strip ${INST_DIR}/algorithms/BasicBlockPreaccumulation/test/t
+	mkdir -p ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/test 
+	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/BasicBlockPreaccumulationReverse/test/t ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/test
+	chmod a+rx ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/test/t
+	strip ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/test/t
+	mkdir -p ${INST_DIR}/algorithms/TraceDiff/test 
+	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/TraceDiff/test/t ${INST_DIR}/algorithms/TraceDiff/test
+	chmod a+rx ${INST_DIR}/algorithms/TraceDiff/test/t
+	strip ${INST_DIR}/algorithms/TraceDiff/test/t
+
+uninstall:
+	@if [ -d ${INST_DIR} ]; then \
+	  echo "about to uninstall ${INST_DIR}"; \
+	  rm -rI ${INST_DIR}; \
+        fi
+
 .PHONY: objs test clean doc codegen
