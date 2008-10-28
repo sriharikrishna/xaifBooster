@@ -38,7 +38,7 @@ for i in `echo ${TESTFILES}`
     fi
     diffCommand="diff testOutput/${i}.out tmp/${i}.out"
     set +e
-    $($diffCommand) > /dev/null
+    $diffCommand > /dev/null
     ret=$?
     set -e
     if [ $ret -eq 2 ] 
@@ -48,7 +48,9 @@ for i in `echo ${TESTFILES}`
     if [ $ret -eq 1 ] 
     then 
 	echo "diffs base (<) vs. current (>):"
-	$($diffCommand)
+	set +e
+	$diffCommand
+	set -e
 	if [ -z "$BATCHMODE" ] 
           then 
   	  echo -n "QUESTION: there was a difference - checkin y/[n] : "
