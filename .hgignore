@@ -16,3 +16,4 @@ algorithms/*/test/quickRegression.bash
 .resetEnv.last
 doc/html/*
 tools/codegen/classes/*.class
+.cproject
