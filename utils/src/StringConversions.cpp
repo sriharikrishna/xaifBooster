@@ -50,7 +50,9 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <cstdlib>
 #include <cerrno>
+#include <cstring>
 #include "xaifBooster/utils/inc/StringConversions.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
@@ -69,6 +71,14 @@ namespace xaifBooster {
 				 << "The error returned by strtod() is: " 
 				 << strerror(errno)); 
     } 
+    if (strlen(remainder)) {
+      THROW_LOGICEXCEPTION_MACRO("StringConversions::convertToDouble: "
+				 << "the string "
+				 << "\"" << aValue.c_str() << "\" " 
+				 << "cannot be converted to a double. "
+				 << "The remainder is :"
+				 << remainder);
+    } // end if
     return value;
   } 
 
@@ -85,6 +95,14 @@ namespace xaifBooster {
 				 << "The error returned by strtof() is: " 
 				 << strerror(errno)); 
     } 
+    if (strlen(remainder)) {
+      THROW_LOGICEXCEPTION_MACRO("StringConversions::convertToFloat: "
+				 << "the string "
+				 << "\"" << aValue.c_str() << "\" " 
+				 << "cannot be converted to a float. "
+				 << "The remainder is :"
+				 << remainder);
+    } // end if
     return value;
   } 
 
@@ -98,9 +116,17 @@ namespace xaifBooster {
 				 << "the string "
 				 << "\"" << aValue.c_str() << "\" " 
 				 << "cannot be converted to an int. "
-				 << "The error returned by strtof() is: " 
+				 << "The error returned by strtol() is: " 
 				 << strerror(errno)); 
     } 
+    if (strlen(remainder)) {
+      THROW_LOGICEXCEPTION_MACRO("StringConversions::convertToInt: "
+				 << "the string "
+				 << "\"" << aValue.c_str() << "\" " 
+				 << "cannot be converted to an int. "
+				 << "The remainder is :"
+				 << remainder);
+    } // end if
     return value;
   } 
 
@@ -114,9 +140,17 @@ namespace xaifBooster {
 				 << "the string "
 				 << "\"" << aValue.c_str() << "\" " 
 				 << "cannot be converted to an unsigned int. "
-				 << "The error returned by strtof() is: " 
+				 << "The error returned by strtoul() is: " 
 				 << strerror(errno)); 
     } 
+    if (strlen(remainder)) {
+      THROW_LOGICEXCEPTION_MACRO("StringConversions::convertToUInt: "
+				 << "the string "
+				 << "\"" << aValue.c_str() << "\" " 
+				 << "cannot be converted to an unsigned int. "
+				 << "The remainder is :"
+				 << remainder);
+    } // end if
     return value;
   } 
 
