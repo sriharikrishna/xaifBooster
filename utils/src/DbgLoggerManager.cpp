@@ -51,6 +51,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 #include <sys/time.h>
+#include <cstring>
 #include <iomanip>
 #include <cerrno>
 
