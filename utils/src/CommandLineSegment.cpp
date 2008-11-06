@@ -50,6 +50,8 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <cstring>
+
 #include "xaifBooster/utils/inc/CommandLineSegment.hpp"
 #include "xaifBooster/utils/inc/CommandLineArguments.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
