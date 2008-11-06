@@ -50,6 +50,7 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <algorithm>
 #include "xaifBooster/utils/inc/FrontEndDecorations.hpp"
 #include "xaifBooster/utils/inc/LogicException.hpp"
 

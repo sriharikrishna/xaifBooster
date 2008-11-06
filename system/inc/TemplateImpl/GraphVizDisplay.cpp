@@ -526,6 +526,7 @@ namespace boost {
 
 #include <fstream>
 #include <cerrno>
+#include <cstring>
 
 namespace xaifBooster {
 
