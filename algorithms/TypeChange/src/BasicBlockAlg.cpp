@@ -69,12 +69,12 @@ namespace xaifBoosterTypeChange {
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
-  } // end of BasicBlockAlg::~BasicBlockAlg()
+  } // end BasicBlockAlg::~BasicBlockAlg()
 
   void
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
     getContaining().printXMLHierarchyImpl(os);
-  }
+  } // end BasicBlockAlg::printXMLHierarchy()
 
   std::string BasicBlockAlg::debug () const { 
     std::ostringstream out;
@@ -87,7 +87,7 @@ namespace xaifBoosterTypeChange {
 
   void BasicBlockAlg::algorithm_action_1() {
     static unsigned int recursionGuard=0;
-    try { 
+    try {
       recursionGuard++;
       if (recursionGuard>1)
 	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_1: recursive invocation not allowed");
@@ -99,20 +99,21 @@ namespace xaifBoosterTypeChange {
       // In order to pass parameters through BasicBlockParameter
       // we have to make sure that this method is never invoked recursively
       BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_1()
-    } 
-    catch (...) { 
+    }
+    catch (...) {
       recursionGuard--;
       throw;
     }
     recursionGuard--;
-  }
+  } // end BasicBlockAlg::algorithm_action_1()
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
-  } 
+  } // end BasicBlockAlg::traverseToChildren()
 
   const BasicBlock&
   BasicBlockAlg::getContaining() const {
     return dynamic_cast<const BasicBlock&>(myContaining);
-  }
-  
-} // end of namespace xaifBoosterAngelInterfaceAlgorithms 
+  } // end BasicBlockAlg::getContaining()
+
+} // end namespace xaifBoosterTypeChange 
+

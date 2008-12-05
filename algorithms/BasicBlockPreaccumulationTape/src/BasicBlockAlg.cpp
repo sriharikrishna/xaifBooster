@@ -72,7 +72,7 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationTape { 
 
-  BasicBlockAlg::ReinterpretedDerivativePropagator::ReinterpretedDerivativePropagator(const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) : 
+  BasicBlockAlg::ReinterpretedDerivativePropagator::ReinterpretedDerivativePropagator(const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) :
     myOriginalPropagator(aPropagator) { 
   } 
 
@@ -98,7 +98,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   void 
   BasicBlockAlg::ReinterpretedDerivativePropagator::supplyAndAddBasicBlockElementInstance(BasicBlockElement& theBasicBlockElement,
-											  const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
+                                                                                          const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
     switch(aReversalType) { 
     case ForLoopReversalType::ANONYMOUS : 
       myBasicBlockElementListAnonymousReversal.push_back(&theBasicBlockElement);
@@ -110,8 +110,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::supplyAndAddBasicBlockElementInstance: unknown reversal type "
 				 << ForLoopReversalType::toString(aReversalType).c_str());
       break;
-    }      
-  } 
+    } // end switch on aReversalType
+  } // end BasicBlockAlg::ReinterpretedDerivativePropagator::supplyAndAddBasicBlockElementInstance()
 
   const PlainBasicBlock::BasicBlockElementList& 
   BasicBlockAlg::ReinterpretedDerivativePropagator::getBasicBlockElementList(const ForLoopReversalType::ForLoopReversalType_E& aReversalType) const { 
@@ -181,8 +181,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     try { 
       recursionGuard++;
       if (recursionGuard>1)
-	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulartionTape::BasicBlockAlg::algorithm_action_4: recursive invocation not allowed");
-      DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulartionTape::BasicBlockAlg::algorithm_action_4");
+	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4: recursive invocation not allowed");
+      DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4");
       
       // the BasicBlock instance will be used in SubroutineCallAlg::algorithm_action_4():
       // because of virtual function use on the system structural level we cannot 
@@ -227,28 +227,28 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) { 
 	    // make the subroutine call
 	    // ANONYMOUS version
-	   count++;
+            count++;
 	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push"));
 	    theSubroutineCall_p->setId("inline_push");
 	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
 	    // save it in the list
-	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
+	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
 											ForLoopReversalType::ANONYMOUS);
 	    // EXPLICIT version
 	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
 	    theSubroutineCall_p->setId("inline_push");
 	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
 	    // save it in the list
-	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
+	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
 											ForLoopReversalType::EXPLICIT);
-	  }
+	  } // end if the factor is variable
 	  // take care of source the addresses if needed: 
 	  if ((*aFactorListI).getKind()!=xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) { 
 	    // take care of the source address
 	    const Variable& theSource((*aFactorListI).getSource());
 	    if (theSource.hasArrayAccess()) {
 	      reinterpretArrayAccess(*aReinterpretedDerivativePropagator_p,
-				     theSource.getArrayAccess()); 
+				     theSource.getArrayAccess());
 	    } 
 	  } // end if 
 	} // end for (factor list)
@@ -277,53 +277,47 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	// (this discounts constant expressions, this is a todo which might be dealt with later or 
 	// it may be completely superceded by a TBR analysis)
 	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
-	if (theIndexExpression.numVertices()==1) { 
-	  // now it could be either a Constant or an Argument
-	  Expression::ConstVertexIteratorPair p(theIndexExpression.vertices());
-	  // has only one: 
-	  if ((*(p.first)).isArgument()) { 
-	    // it is a variable whose value we want to push
-	    // make it
-	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
-	    // save it in the list
-	    aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
-										     ForLoopReversalType::ANONYMOUS);
-	    theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
-	    dynamic_cast<const Argument&>(*(p.first)).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-	  }
-	} // has one vertex 
-	else {  // has more then one vertex
-	  // make it
-	  Assignment* theIndexExpressionAssignment_p(new Assignment(false));
-	  // save it in the list
-	  aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theIndexExpressionAssignment_p,
-										   ForLoopReversalType::ANONYMOUS);
-	  theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
-	  // create a new symbol and add a new VariableSymbolReference in the Variable
-	  VariableSymbolReference* theNewVariableSymbolReference_p=
-	    new VariableSymbolReference(getContaining().getScope().
-					getSymbolTable().
-					addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							   SymbolType::INTEGER_STYPE,
-							   SymbolShape::SCALAR,
-							   false),
-					getContaining().getScope());
-	  theNewVariableSymbolReference_p->setId("1");
-	  theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess");
-	  // pass it on to the LHS and relinquish ownership
-	  theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-	  theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
-	  theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
-	  // set the RHS
-	  theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
-	  // make the subroutine call: 
-	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
-	  // save it in the list
-	  aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p, 
-										   ForLoopReversalType::ANONYMOUS);
-	theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
-	theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-	}  // end else has more then one vertex   
+        if (!theIndexExpression.isConstant()) {
+          xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
+          if (theIndexExpression.numVertices() == 1) { // only one argument, non-const => push its value
+            const Variable& theVariable (dynamic_cast<const Argument&>(theIndexExpression.getMaxVertex()).getVariable());
+            // make the push and save it in the list
+            theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+            aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+                                                                                     ForLoopReversalType::ANONYMOUS);
+            theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
+            theVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+          } // end one non-const argument
+          else { // more than one argument, and at least one is non-const
+            // make the assignment it and save it in the list
+            Assignment* theIndexExpressionAssignment_p(new Assignment(false));
+            aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theIndexExpressionAssignment_p,
+                                                                                     ForLoopReversalType::ANONYMOUS);
+            theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
+            // create a new symbol and add a new VariableSymbolReference in the Variable
+            VariableSymbolReference* theNewVariableSymbolReference_p =
+             new VariableSymbolReference(getContaining().getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
+                                                                                                        SymbolType::INTEGER_STYPE,
+                                                                                                        SymbolShape::SCALAR,
+                                                                                                        false),
+                                         getContaining().getScope());
+            theNewVariableSymbolReference_p->setId("1");
+            theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess");
+            // pass it on to the LHS and relinquish ownership
+            theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+            theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
+            theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
+            // set the RHS
+            theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
+            // make the subroutine call: 
+            theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+            // save it in the list
+            aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+                                                                                     ForLoopReversalType::ANONYMOUS);
+            theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
+            theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+          } // end >1 argument
+        } // end index expression is non-const
       } // loop for index pairs
     } // end for i
   } // end of BasicBlockAlg::reinterpretArrayAccess

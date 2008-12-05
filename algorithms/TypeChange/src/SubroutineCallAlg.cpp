@@ -292,7 +292,7 @@ namespace xaifBoosterTypeChange {
   void SubroutineCallAlg::replaceArguments(bool withCopy) { 
     const ArgumentList::ArgumentSymbolReferencePList* anArgumentSymbolReferencePList_p(0); 
     const ControlFlowGraph* aCFG_p(0); 
-    const BasicBlock& theBasicBlock(BasicBlockAlgParameter::instance().get().getContaining());  // set in SubroutineCallAlg::algorithm_action_1
+    const BasicBlock& theBasicBlock(BasicBlockAlgParameter::instance().get().getContaining());  // set in BasicBlockAlg::algorithm_action_1
     try { 
       // get the formal argument list; 
       anArgumentSymbolReferencePList_p=
