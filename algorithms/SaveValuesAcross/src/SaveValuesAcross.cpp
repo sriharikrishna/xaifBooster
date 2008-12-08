@@ -53,8 +53,8 @@ namespace xaifBoosterSaveValuesAcross {
   void
   SaveValuesAcross::saveValue(const Argument& anArgument,
 			const BasicBlock& theBasicBlock) {
-    Assignment* theIndexExpressionAssignment_p(new Assignment(false));
-    theIndexExpressionAssignment_p->setId("assignment_to_temporary_for_saving_value_across_statement");
+    Assignment* theNewAssignment_p (new Assignment(false));
+    theNewAssignment_p->setId("assignment_to_temporary_for_saving_value_across_statement");
     // create a new symbol and add a new VariableSymbolReference in the Variable
     VariableSymbolReference* theNewVariableSymbolReference_p =
      new VariableSymbolReference(theBasicBlock.getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
@@ -65,13 +65,13 @@ namespace xaifBoosterSaveValuesAcross {
     theNewVariableSymbolReference_p->setId("1");
     theNewVariableSymbolReference_p->setAnnotation("xaifBoosterSaveValuesAcross::SaveValuesAcross::saveValue");
     // pass it on to the LHS and relinquish ownership
-    theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-    theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
-    theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
+    theNewAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+    theNewAssignment_p->getLHS().getAliasMapKey().setTemporary();
+    theNewAssignment_p->getLHS().getDuUdMapKey().setTemporary();
     // set the RHS
-    theIndexExpressionAssignment_p->getRHS().supplyAndAddVertexInstance(anArgument.createCopyOfMyself());
+    theNewAssignment_p->getRHS().supplyAndAddVertexInstance(anArgument.createCopyOfMyself());
     // save the replacement pairs and the assignment
-    myPriorToCallAssignments.push_back(theIndexExpressionAssignment_p);
+    myPriorToCallAssignments.push_back(theNewAssignment_p);
     mySavedVarsAndReplacementVSRsList.push_back(std::make_pair(&anArgument.getVariable(),theNewVariableSymbolReference_p));
   } // end SaveValuesAcross::saveValue()
 
