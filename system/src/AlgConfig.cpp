@@ -72,7 +72,7 @@ namespace xaifBooster {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgsvpbVFh");
+    return std::string("iocdgGsvpbVFh");
   } 
 
   void AlgConfig::config() { 
@@ -92,6 +92,8 @@ namespace xaifBooster {
 	DbgLoggerManager::instance()->setFile(argAsString('d'));
       if (isSet('g')) 
 	DbgLoggerManager::instance()->setSelection(argAsInt('g'));
+      if (isSet('G')) 
+	DbgLoggerManager::instance()->setGraphicsFormat(argAsString('G'));
       if (isSet('p'))
 	Symbol::addSymbolNamesToPassivate(argAsString('p'));
       if (isSet('b'))
@@ -118,6 +120,9 @@ namespace xaifBooster {
 	      << "                 with debugGroup >=0 the sum of any of: " << std::endl
 	      << "                 "<< DbgGroup::printAll().c_str() << std::endl
 	      << "                 defaults to 0(ERROR)" << std::endl
+              << "             [-G <format>] debugging graphics format, where <format > is one of:" << std::endl
+              << "                 ps - postscript format displayed with ghostview (default)" << std::endl 
+              << "                 svg - scalable vector graphics format displayed in firefox" << std::endl 
               << "             [-p \"<list of symbols to forcibly passivate>\" ]" << std::endl 
               << "                 space separated list enclosed in double quotes" << std::endl
               << "             [-b] pessimistic assumptions for black box routines" << std::endl 

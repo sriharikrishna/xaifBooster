@@ -137,6 +137,12 @@ namespace xaifBooster {
     myBinaryBuildInfo=aBuildInfo_c;
   } 
 
+  void
+  DbgLoggerManager::setGraphicsFormat(const std::string& aGraphicsFormatString) {
+    if (aGraphicsFormatString == "svg")
+      myGraphicsFormat = DbgLoggerManager::SVG_FORMAT;
+  } // end DbgLoggerManager::setGraphicsFormat()
+
   unsigned int
   DbgLoggerManager::getSelection() const {
     return(mySelector);
@@ -147,9 +153,15 @@ namespace xaifBooster {
     return(myDebugOutPutFileName);
   }
 
+  DbgLoggerManager::DBG_Graphics_Format_E
+  DbgLoggerManager::getGraphicsFormat() const {
+    return myGraphicsFormat;
+  } // end DbgLoggerManager::getGraphicsFormat()
+
   DbgLoggerManager::DbgLoggerManager() : 
     myLogger_p(NULL), 
     myDebugOutPutFileName(""),
+    myGraphicsFormat(DbgLoggerManager::PS_FORMAT),
     mySelector(0),
     myPreviousS(0),
     myPreviousMS(0) { 
