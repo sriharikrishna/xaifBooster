@@ -52,6 +52,7 @@
 // ========== end copyright notice ==============
 #include <iostream>
 #include <utility>
+#include <typeinfo>
 
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 

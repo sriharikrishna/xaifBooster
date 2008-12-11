@@ -110,6 +110,8 @@
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
+#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+
 namespace boost {
 
   template <typename directed_category>
@@ -526,6 +528,7 @@ namespace boost {
 
 #include <fstream>
 #include <cerrno>
+#include <cstring>
 
 namespace xaifBooster {
 
@@ -573,11 +576,16 @@ namespace xaifBooster {
 			  anEdgeLabelWriter,
 			  aGraphPropertiesWriter);
     anOutFileStream.close();
+
+    std::string drawString = (DbgLoggerManager::instance()->getGraphicsFormat() == DbgLoggerManager::PS_FORMAT)
+     ? " dot -q -Tps " + theFileName + ".2 >| " + theFileName + ".ps ; gv " + theFileName + ".ps"
+     : " dot -q -Tsvg " + theFileName + ".2 >| " + theFileName + ".svg ; firefox " + theFileName + ".svg";
+
     // in case of listS there are hex identifiers in the dot file which dot cannot interpret
     // as a hex number so we need to make it a 'name' pre prepending HEX
     std::string commandString(" sed \"s/0x/HEX/g\" " + theFileName + " >| " + theFileName + ".1;"  +
 			      " sed \"s/digraph G/digraph " + aFileName + "/g\" " + theFileName + ".1" + " >| " + theFileName + ".2;" +
-                              " dot -q -Tps " + theFileName + ".2 >| " + theFileName + ".ps ; gv " + theFileName + ".ps" );
+                              drawString);
     system(commandString.c_str());
   }
 

@@ -51,6 +51,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 #include <sstream>
+#include <typeinfo>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
