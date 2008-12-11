@@ -79,9 +79,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
-    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI=
-	   myAfterCallIndexPushes.begin();
-	 aBasicBlockElementListI!=myAfterCallIndexPushes.end();
+    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI = myAfterCallIndexPushes.begin();
+	 aBasicBlockElementListI != myAfterCallIndexPushes.end();
 	 ++aBasicBlockElementListI) {
       if (*aBasicBlockElementListI)
 	delete *aBasicBlockElementListI;
@@ -94,10 +93,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     xaifBoosterTypeChange::SubroutineCallAlg::printXMLHierarchy(os);
     if (xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()==ForLoopReversalType::ANONYMOUS) { 
       // pushes after the call
-      for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI
-	     =myAfterCallIndexPushes.begin();
-	   aBasicBlockElementListI!=myAfterCallIndexPushes.end();
-	 ++aBasicBlockElementListI) {
+      for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = myAfterCallIndexPushes.begin();
+	   aBasicBlockElementListI != myAfterCallIndexPushes.end();
+	   ++aBasicBlockElementListI) {
 	if (*aBasicBlockElementListI) { 
 	  (*aBasicBlockElementListI)->printXMLHierarchy(os);
 	} 
@@ -108,10 +106,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   std::string 
   SubroutineCallAlg::debug() const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg["
-	<< this 
-	<< ","
- 	<< SubroutineCallAlgBase::debug().c_str()
+    out << "xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg[" << this 
+	<< "," << SubroutineCallAlgBase::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   }
@@ -140,12 +136,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       theVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
       myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
     }
-  }
+  } // end SubroutineCallAlg::checkAndPush()
 
   void SubroutineCallAlg::algorithm_action_4() { 
     xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
-						   (getContainingSubroutineCall().
-						    getSymbolReference().getSymbol().getSymbolAlgBase()));
+						   (getContainingSubroutineCall().getSymbolReference().getSymbol().getSymbolAlgBase()));
     // we don't do this for external calls: 
     if(!theSymbolAlg.isExternal()) { 
       // for each subroutinecall argument
@@ -167,10 +162,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair((*pairIt)));
       }
       // now figure out if we need to push more than that
-      for (SubroutineCall::ConcreteArgumentPList::const_iterator aConcreteArgumentPListI=
- 	     getContainingSubroutineCall().getConcreteArgumentPList().begin();
- 	   aConcreteArgumentPListI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
- 	   ++aConcreteArgumentPListI) { 
+      for (SubroutineCall::ConcreteArgumentPList::const_iterator aConcreteArgumentPListI = getContainingSubroutineCall().getConcreteArgumentPList().begin();
+ 	   aConcreteArgumentPListI != getContainingSubroutineCall().getConcreteArgumentPList().end();
+ 	   ++aConcreteArgumentPListI) {
  	if ((*aConcreteArgumentPListI)->isArgument()
  	    && 
  	    (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
@@ -178,13 +172,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
  	}
       } // end for
       // now check if any values are required on entry: 
-      const ControlFlowGraph& theCalleeCFG(ConceptuallyStaticInstances::instance()->getCallGraph().getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).getControlFlowGraph());
+      const ControlFlowGraph& theCalleeCFG (ConceptuallyStaticInstances::instance()->getCallGraph().getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).getControlFlowGraph());
       const SideEffectList& theOnEntryList(theCalleeCFG.getSideEffectList(SideEffectListType::ON_ENTRY_LIST));
       if (theOnEntryList.getVariablePList().empty())
 	return;
-      for (VariablePList::const_iterator i=theOnEntryList.getVariablePList().begin();
-	   i!=theOnEntryList.getVariablePList().end();
-	   ++i) { 
+      for (VariablePList::const_iterator i = theOnEntryList.getVariablePList().begin(); i != theOnEntryList.getVariablePList().end(); ++i) {
 	ControlFlowGraph::FormalResult theResult(theCalleeCFG.hasFormal((*i)->getVariableSymbolReference()));
 	if (theResult.first) { // is a formal
 	  const ConcreteArgument& theConcreteArgument(getContainingSubroutineCall().getConcreteArgument(theResult.second));
@@ -192,14 +184,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	    continue; 
 	  checkAndPush(theConcreteArgument.getArgument().getVariable());
 	}
-	else { 
+	else { // not a formal
 	  checkAndPush(**i);
-	} 
-      }
+        } // end if/else formal
+      } // end iterate over theOnEntryList
     } 
-  } 
+  } // end SubroutineCallAlg::algorithm_action_4()
 
-  void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument) { 
+  void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument) {
     const ArrayAccess::IndexTripletListType& theIndexTripletList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexTripletList());
     for (ArrayAccess::IndexTripletListType::const_iterator anIndexTripletListTypeCI=theIndexTripletList.begin();
 	 anIndexTripletListTypeCI!=theIndexTripletList.end();
@@ -211,28 +203,20 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	// (this discounts constant expressions, this is a todo which might be dealt with later or 
 	// it may be completly superceded by a TBR analysis)
 	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
-	if (theIndexExpression.numVertices()==1
-	    && 
-	    (!(*(theIndexExpression.vertices().first)).isArgument())) { 
-	  // this must be a constant
-	  // do nothing
-	}
-	else {  // is not a constant
+	if (!theIndexExpression.isConstant()) {
 	  Expression::CArgumentPList listToBeAppended;
 	  theIndexExpression.appendArguments(listToBeAppended);
-	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin();
-	       argumentI!=listToBeAppended.end();
-	       ++argumentI) { 
+	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin(); argumentI!=listToBeAppended.end(); ++argumentI) {
 	    checkAndPush((*argumentI)->getVariable());
 	  }
-	}
+	} // end if the index expression is non-const
       }
     }
-  }
+  } // end SubroutineCallAlg::handleArrayAccessIndices()
 
   const Expression::VariablePVariableSRPPairList& SubroutineCallAlg::getIndexVariablesPushed() const { 
     return myIndexVariablesPushed;
-  }
+  } // end SubroutineCallAlg::getIndexVariablesPushed()
   
 } // end namespace xaifBoosterBasicBlockPreaccumulationTape
 

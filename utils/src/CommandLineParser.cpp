@@ -50,9 +50,8 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <cerrno>
-
 #include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/utils/inc/StringConversions.hpp"
 
 namespace xaifBooster { 
 
@@ -109,33 +108,16 @@ namespace xaifBooster {
 				 << "has been set or has defaulted to an empty string which cannot " 
 				 << "be converted to an integer!");
     } // end if 
-    errno=0;
-    char *remainder=NULL;
-    value=(int)strtol(temp.c_str(),
-		      &remainder,
-		      10); // atoi does not necessarily set errno
-    if (errno) {
+    try { 
+      value=StringConversions::convertToInt(temp);
+    } catch (BaseException& e) {
       THROW_LOGICEXCEPTION_MACRO("CommandLineParser::argAsInt(): "  
 				 << "The argument for switch \"-" 
 				 << theSwitch 
 				 << "\" is " 
-				 << "\"" << temp << "\" " 
-				 << "which cannot be converted to an integer. "
-				 << "The error returned by strtol() is: " 
-				 << strerror(errno)); 
-    } // end if 
-    // some implementations set errno for strings that contain unconvertable 
-    // substrings, others put the unconvertible rest into the remainder pointer
-    // and return the part that could be converted as number, i.e. 0 if nothing 
-    // in the string could be converted. Such cases we want to catch  
-    if (strlen(remainder)) {
-      THROW_LOGICEXCEPTION_MACRO("Error in CommandLineParser::argAsInt(): "
-				 << "The argument for switch \"-" 
-				 << theSwitch 
-				 << "\" is " 
 				 << "\"" << temp << "\" "
-				 << "which cannot be converted to an integer.");
-    } // end if
+				 << e.getReason());
+    }
     return value;
   } // end CommandLineParser::argAsInteger
 
@@ -153,31 +135,16 @@ namespace xaifBooster {
 				 << "has been set or has defaulted to an empty string which cannot " 
 				 << "be converted to a double!");
     } // end if 
-    errno=0;
-    char *remainder=NULL;
-    value=strtod(temp.c_str(),&remainder);
-    if (errno) {
+    try { 
+      value=StringConversions::convertToDouble(temp);
+    } catch (BaseException& e) {
       THROW_LOGICEXCEPTION_MACRO("CommandLineParser::argAsDouble(): "  
 				 << "The argument for switch \"-" 
 				 << theSwitch 
 				 << "\" is " 
-				 << "\"" << temp << "\" " 
-				 << "which cannot be converted to an double. "
-				 << "The error returned by strtol() is: " 
-				 << strerror(errno)); 
-    } // end if 
-    // some implementations set errno for strings that contain unconvertable 
-    // substrings, others put the unconvertible rest into the remainder pointer
-    // and return the part that could be converted as number, i.e. 0 if nothing 
-    // in the string could be converted. Such cases we want to catch  
-    if (strlen(remainder)) {
-      THROW_LOGICEXCEPTION_MACRO("Error in CommandLineParser::argAsDouble(): "
-				 << "The argument for switch \"-" 
-				 << theSwitch 
-				 << "\" is " 
 				 << "\"" << temp << "\" "
-				 << "which cannot be converted to a double.");
-    } // end if 
+				 << e.getReason());
+    }
     return value;
   } // end CommandLineParser::argAsDouble
 
