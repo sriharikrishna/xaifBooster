@@ -97,7 +97,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   bool BasicBlockAlg::ourRuntimeCountersFlag=false;
   bool BasicBlockAlg::ourUseRandomizedHeuristicsFlag = false;
-  PreaccumulationMetric::PreaccumulationMetric_E BasicBlockAlg::ourPreaccumulationMetric = PreaccumulationMetric::OPERATIONS_METRIC;
+  PreaccumulationMetric::PreaccumulationMetric_E BasicBlockAlg::ourPreaccumulationMetric = PreaccumulationMetric::SCARCITY_METRIC;
   bool BasicBlockAlg::ourUseReroutingsFlag = false;
 
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
