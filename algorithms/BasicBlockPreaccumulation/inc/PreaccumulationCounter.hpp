@@ -57,7 +57,7 @@
 #include <string>
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AwarenessLevel.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationGoal.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMetric.hpp"
 
 namespace xaifBooster { 
 
@@ -83,7 +83,7 @@ namespace xaifBooster {
     PreaccumulationCounter& operator=(const PreaccumulationCounter&); 
 
     /// the metric by which we measure the quality of a preaccumulation
-    static xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::PreaccumulationGoal_E ourPreaccumulationGoal;
+    static xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::PreaccumulationMetric_E ourPreaccumulationMetric;
 
     /// the way we measure the scarcity properties of a remainder graph
     static xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E ourAwarenessLevel;
@@ -103,7 +103,7 @@ namespace xaifBooster {
      *  The current default is to minimize operations (complete preaccumulation).
      */
     static void
-    setPreaccumulationGoal(xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::PreaccumulationGoal_E aGoal);
+    setPreaccumulationMetric(xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::PreaccumulationMetric_E aMetric);
 
     /// defines the way in which we measure the scarcity properties of a remainder graph
     /** The awareness (none/unit/constant) of edge properties is set by a command-line flag.

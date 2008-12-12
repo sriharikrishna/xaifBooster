@@ -69,7 +69,7 @@
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationGoal.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMetric.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
 
@@ -148,11 +148,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /// command line activated switch for using randomized heuristics
     static void useRandomizedHeuristics();
 
-    /// command line activated switch for specifying goal (min ops or scarcity)
+    /// command line activated switch for specifying preaccumulation metric (min ops or scarcity)
     /** the validity of the input is checked in AlgConfig
      *  \sa AlgConfig
      */
-    static void setPreaccumulationGoal(PreaccumulationGoal::PreaccumulationGoal_E aGoal); 
+    static void setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E aMetric); 
 
     /// command line activated switch for using scarcity heuristics that do reroutings 
     static void useReroutings();
@@ -211,7 +211,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static bool ourUseRandomizedHeuristicsFlag;
 
     /// indicates whether our goal is to minimize ops or exploit scarcity
-    static PreaccumulationGoal::PreaccumulationGoal_E ourPreaccumulationGoal;
+    static PreaccumulationMetric::PreaccumulationMetric_E ourPreaccumulationMetric;
 
     /// if this flag is set to true we use scarcity heuristics that utilize reroutings
     static bool ourUseReroutingsFlag;
@@ -325,8 +325,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       const AssignmentPList& getEndAssignmentList() const;
 
-      /// choose "best" transformation, based on what our goal is specified to be
-      void determineBestElimination(PreaccumulationGoal::PreaccumulationGoal_E aGoal);
+      /// choose "best" transformation, based on what our metric for preaccumulation
+      void determineBestElimination(PreaccumulationMetric::PreaccumulationMetric_E aMetric);
 
       const xaifBoosterCrossCountryInterface::Elimination& getBestElimination() const;
       xaifBoosterCrossCountryInterface::Elimination& getBestElimination();

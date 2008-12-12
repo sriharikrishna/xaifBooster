@@ -97,7 +97,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   bool BasicBlockAlg::ourRuntimeCountersFlag=false;
   bool BasicBlockAlg::ourUseRandomizedHeuristicsFlag = false;
-  PreaccumulationGoal::PreaccumulationGoal_E BasicBlockAlg::ourPreaccumulationGoal = PreaccumulationGoal::OPERATIONS;
+  PreaccumulationMetric::PreaccumulationMetric_E BasicBlockAlg::ourPreaccumulationMetric = PreaccumulationMetric::OPERATIONS_METRIC;
   bool BasicBlockAlg::ourUseReroutingsFlag = false;
 
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
@@ -197,7 +197,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *theElimination_p;
   }
 
-  void BasicBlockAlg::Sequence::determineBestElimination(PreaccumulationGoal::PreaccumulationGoal_E aGoal) {
+  void BasicBlockAlg::Sequence::determineBestElimination(PreaccumulationMetric::PreaccumulationMetric_E aMetric) {
     if (myEliminationPList.empty())
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::determineBestElimination() : no eliminations, thus no results");
     if (myBestElimination_p)
@@ -847,8 +847,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
 
     // initialize the graph transformation(s)
-    switch (ourPreaccumulationGoal) {
-      case PreaccumulationGoal::OPERATIONS: {
+    switch (ourPreaccumulationMetric) {
+      case PreaccumulationMetric::OPERATIONS_METRIC: {
         aSequence.addNewElimination(theComputationalGraph).initAsOperations();
         if (ourUseRandomizedHeuristicsFlag) {
           aSequence.addNewElimination(theComputationalGraph).initAsOperationsRandom();
@@ -857,7 +857,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         } // end randomized heuristics
         break;
       } // end OPERATIONS
-      case PreaccumulationGoal::SCARCITY: {
+      case PreaccumulationMetric::SCARCITY_METRIC: {
         aSequence.addNewElimination(theComputationalGraph).initAsScarceElimination();
         if (ourUseRandomizedHeuristicsFlag)
 	  aSequence.addNewElimination(theComputationalGraph).initAsScarceRandomElimination();
@@ -869,11 +869,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         break;
       } // end SCARCITY
       default: {
-          THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: unknown preaccumulation goal "
-                                     << PreaccumulationGoal::toString(ourPreaccumulationGoal));
+          THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: unknown preaccumulation metric "
+                                     << PreaccumulationMetric::toString(ourPreaccumulationMetric));
         break;
       } // end default
-    } // end switch (ourPreaccumulationGoal)
+    } // end switch (ourPreaccumulationMetric)
 
     // perform the transformations and build the accumulation graph
     for (Sequence::EliminationPList::iterator elim_i = aSequence.getEliminationPList().begin();
@@ -909,7 +909,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                                << " with " << (*elim_i)->getNumReroutings() << " reroutings");
     } // end iterate over all Eliminations for this Sequence
 
-    aSequence.determineBestElimination(ourPreaccumulationGoal);
+    aSequence.determineBestElimination(ourPreaccumulationMetric);
     DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
                              << " Sequence " << &aSequence
                              << " best is " << aSequence.getBestElimination().getDescription()
@@ -1612,9 +1612,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     ourUseRandomizedHeuristicsFlag = true;
   }
 
-  void BasicBlockAlg::setPreaccumulationGoal(PreaccumulationGoal::PreaccumulationGoal_E aGoal) {
-    ourPreaccumulationGoal = aGoal;
-  } // end BasicBlockAlg::setPreaccumulationGoal()
+  void BasicBlockAlg::setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E aMetric) {
+    ourPreaccumulationMetric = aMetric;
+  } // end BasicBlockAlg::setPreaccumulationMetric()
 
   void BasicBlockAlg::useReroutings() { 
     ourUseReroutingsFlag = true;
