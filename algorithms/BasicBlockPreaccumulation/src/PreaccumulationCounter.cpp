@@ -60,16 +60,16 @@
 
 namespace xaifBooster { 
  
-  xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::PreaccumulationGoal_E
-  PreaccumulationCounter::ourPreaccumulationGoal = xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::OPERATIONS;
+  xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::PreaccumulationMetric_E
+  PreaccumulationCounter::ourPreaccumulationMetric = xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::OPERATIONS_METRIC;
 
   xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E
   PreaccumulationCounter::ourAwarenessLevel = xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::NO_AWARENESS;
 
   void
-  PreaccumulationCounter::setPreaccumulationGoal(xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::PreaccumulationGoal_E aGoal) {
-    ourPreaccumulationGoal = aGoal;
-  } // end PreaccumulationCounter::setPreaccumulationGoal()
+  PreaccumulationCounter::setPreaccumulationMetric(xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::PreaccumulationMetric_E aMetric) {
+    ourPreaccumulationMetric = aMetric;
+  } // end PreaccumulationCounter::setPreaccumulationMetric()
 
   void
   PreaccumulationCounter::setAwarenessLevel(xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E anAwarenessLevel) {
@@ -243,18 +243,18 @@ namespace xaifBooster {
     if (*this == anotherCounter)
       return false;
     // at this point we know that they are different in some way (ops, scarcity, or both)
-    switch (ourPreaccumulationGoal) {
-      case xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::SCARCITY:
+    switch (ourPreaccumulationMetric) {
+      case xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::SCARCITY_METRIC:
         return this->isMoreScarceThan(anotherCounter);
         break;
-      case xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::OPERATIONS:
+      case xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::OPERATIONS_METRIC:
         return this->hasFewerOpsThan(anotherCounter);
         break;
       default:
-        THROW_LOGICEXCEPTION_MACRO("PreaccumulationCounter::operator<(const PreaccumulationCounter &b): ourPreaccumulationGoal is set to the unknown value "
-                                   << xaifBoosterBasicBlockPreaccumulation::PreaccumulationGoal::toString(ourPreaccumulationGoal));
+        THROW_LOGICEXCEPTION_MACRO("PreaccumulationCounter::operator<(const PreaccumulationCounter &b): ourPreaccumulationMetric is set to the unknown value "
+                                   << xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::toString(ourPreaccumulationMetric));
         break;
-    } // end switch (ourPreaccumulationGoal)
+    } // end switch (ourPreaccumulationMetric)
   }
 
   bool PreaccumulationCounter::operator==(const PreaccumulationCounter& anotherCounter) const {

@@ -66,7 +66,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches() + "nCAmQaGR");
+    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches() + "nCAmQaMR");
   } 
 
   void AlgConfig::config() { 
@@ -86,11 +86,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::permitAliasedLHSs();
     if (isSet('a'))
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::useRandomizedHeuristics();
-    if (isSet('G')) {
-      PreaccumulationGoal::checkValid(PreaccumulationGoal::PreaccumulationGoal_E(argAsInt('G')));
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setPreaccumulationGoal(PreaccumulationGoal::PreaccumulationGoal_E(argAsInt('G')));
-      PreaccumulationCounter::setPreaccumulationGoal(PreaccumulationGoal::PreaccumulationGoal_E(argAsInt('G')));
-    } // end G
+    if (isSet('M')) {
+      PreaccumulationMetric::checkValid(PreaccumulationMetric::PreaccumulationMetric_E(argAsInt('M')));
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E(argAsInt('M')));
+      PreaccumulationCounter::setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E(argAsInt('M')));
+    } // end M
     if (isSet('R')) 
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::useReroutings();
   }
@@ -104,7 +104,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
               << "             [-m] allow scarcity-preserving operations that maintain the nontrivial edge count (default is strict reduction)"  << std::endl
               << "             [-Q] turn off alias checking among LHSs in the same sequence (meant to be temporary, waiting on better alias analysis)"  << std::endl
               << "             [-a] run randomized heuristics in addition to deterministic ones" << std::endl
-	      << "             [-G <0|1>] set the goal of the preaccumulation (0: minimize operations, 1: scarcity exploitation), defaults to min. operations" << std::endl
+	      << "             [-M <0|1>] set the preaccumulation metric (0: minimize operations, 1: scarcity exploitation), defaults to min. operations" << std::endl
 	      << "             [-R] activate preaccumulation heuristics that use reroutings (for scarcity exploitation only)" << std::endl;
   } 
 
