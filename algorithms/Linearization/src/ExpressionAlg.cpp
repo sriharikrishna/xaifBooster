@@ -218,6 +218,12 @@ namespace xaifBoosterLinearization {
       // In this pass we also determine whether the ExpressionEdgeAlg has a constant PDK (the default is nonlinear)
       // second inner loop over all arguments to create concrete expressions
       for (Expression::ConstInEdgeIterator anExpressionEdgeI3(pE.first); anExpressionEdgeI3!=anExpressionEdgeIEnd; ++anExpressionEdgeI3) {
+        ExpressionEdgeAlg& theI3ExpressionEdgeAlg(dynamic_cast<ExpressionEdgeAlg&>((*anExpressionEdgeI3).getExpressionEdgeAlgBase()));
+        // don't make a partial assignment for unit partials
+        if (theI3ExpressionEdgeAlg.getPartialDerivativeKind() == PartialDerivativeKind::LINEAR_ONE
+         || theI3ExpressionEdgeAlg.getPartialDerivativeKind() == PartialDerivativeKind::LINEAR_MINUS_ONE)
+          continue;
+
 	// now copy the expression for the partial, i.e. make a concrete 
 	// Expression for the abstract Expression given as InlinableIntrinsicsExpression
 	// make a list for vertex mapping
@@ -227,11 +233,37 @@ namespace xaifBoosterLinearization {
 	typedef std::pair<const InlinableIntrinsicsExpressionVertex*, const ExpressionVertex*> VertexPointerPair;
 	typedef std::list<VertexPointerPair> AbstractToConcreteVertexPairList;
 	AbstractToConcreteVertexPairList theAbstractToConcreteVertexPairList;
-	ExpressionEdgeAlg& theI3ExpressionEdgeAlg(dynamic_cast<ExpressionEdgeAlg&>((*anExpressionEdgeI3).getExpressionEdgeAlgBase()));
 	const ExpressionEdgeAlg::VertexPairList& theConcreteArgumentInstancesList(theI3ExpressionEdgeAlg.getConcreteArgumentInstancesList());
-	theI3ExpressionEdgeAlg.makeConcretePartialAssignment();
-	Expression& theNewConcretePartial(theI3ExpressionEdgeAlg.getConcretePartialAssignment().getRHS());
-	theI3ExpressionEdgeAlg.getConcretePartialAssignment().setId(makeUniqueId());
+
+        // we don't make an assignment if there's only one partial expression vertex and it's constant
+        if (thePartialExpression.numVertices() == 1) {
+          // if we find it in the list of vertices known to be arguments to the partial expressions, then the following would be a vertex in 'this' expression
+          const ExpressionVertex* theArgumentVertex_p(NULL);
+          for (ExpressionEdgeAlg::VertexPairList::const_iterator li = theConcreteArgumentInstancesList.begin(); li != theConcreteArgumentInstancesList.end(); ++li) { 
+            if ((*li).second == &thePartialExpression.getMaxVertex()) { 
+              theArgumentVertex_p = (*li).first;
+              break;
+            }
+          }
+          if (theArgumentVertex_p) { 
+            // now we know that this is either an argument, a constant, or any kind of vertex with an auxilliary Argument
+            ExpressionVertexAlg& theArgumentVertexAlg (dynamic_cast<ExpressionVertexAlg&>(theArgumentVertex_p->getExpressionVertexAlgBase()));
+            if (!theArgumentVertexAlg.hasAuxilliaryVariable()) { // this is an Argument or a Constant
+              // if the following cast fails then we have a constant which we can just skip: 
+              const Argument* theArgument_p = dynamic_cast<const Argument*>(theArgumentVertex_p);
+              if (!theArgument_p) {
+                theI3ExpressionEdgeAlg.linearate();
+                theI3ExpressionEdgeAlg.setConcreteConstant(dynamic_cast<const Constant&>(*theArgumentVertex_p));
+        	continue;
+              } // end if constant
+            } // end argument or constant
+          } // end if
+        } // end if there's only one vertex in the partial expression
+
+        theI3ExpressionEdgeAlg.makeConcretePartialAssignment();
+        Expression& theNewConcretePartial(theI3ExpressionEdgeAlg.getConcretePartialAssignment().getRHS());
+        theI3ExpressionEdgeAlg.getConcretePartialAssignment().setId(makeUniqueId());
+
 	bool allConst = true;
 	InlinableIntrinsicsExpression::ConstVertexIteratorPair anAbstractvertexPair(thePartialExpression.vertices());
 	for(InlinableIntrinsicsExpression::ConstVertexIterator abstractVertexIt(anAbstractvertexPair.first), abstractVertexEndIt(anAbstractvertexPair.second);

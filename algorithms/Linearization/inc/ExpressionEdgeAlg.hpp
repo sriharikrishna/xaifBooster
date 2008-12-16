@@ -57,6 +57,7 @@
 #include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpression.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
 
 using namespace xaifBooster; 
 
@@ -95,6 +96,10 @@ namespace xaifBoosterLinearization {
     const Assignment& getConcretePartialAssignment() const ;
 
     bool hasConcretePartialAssignment() const;
+
+    void setConcreteConstant(const Constant& aConstant);
+
+    const Constant& getConcreteConstant() const;
 
     typedef std::pair<const ExpressionVertex*,const InlinableIntrinsicsExpressionVertex*> VertexPair;
     
@@ -150,6 +155,15 @@ namespace xaifBoosterLinearization {
      * this class owns this instance
      */
     Assignment* myConcretePartialAssignment_p;
+
+    /// for partials that consist of a single constant expression vertex
+    /**
+     * We do not want to create an assignment for constant partials
+     * that consist of a single (constant) argument.
+     * In such cases, we simply store a pointer to the corresponding Constant.
+     * We do not own this.
+     */ 
+    const Constant* myConcreteConstant_p;
 
     /** 
      * this is initialized to NONLINEAR

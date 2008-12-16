@@ -63,6 +63,7 @@ namespace xaifBoosterLinearization {
     ExpressionEdgeAlgBase(theContainingExpressionEdge),
     myPartialDerivative_p(0),
     myConcretePartialAssignment_p(0),
+    myConcreteConstant_p(0),
     myConcretePartialDerivativeKind(PartialDerivativeKind::NONLINEAR) { 
   }
 
@@ -125,6 +126,8 @@ namespace xaifBoosterLinearization {
   }
 
   void ExpressionEdgeAlg::makeConcretePartialAssignment() { 
+    if (myConcreteConstant_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::makeConcretePartialAssignment: myConcreteConstant_p is already set, and we cannot have both");
     if (myConcretePartialAssignment_p)
       THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::makeConcretePartialAssignment: already set");
     myConcretePartialAssignment_p=new Assignment(false);
@@ -145,6 +148,21 @@ namespace xaifBoosterLinearization {
   bool ExpressionEdgeAlg::hasConcretePartialAssignment() const { 
     return (myConcretePartialAssignment_p!=0);
   } 
+
+  void
+  ExpressionEdgeAlg::setConcreteConstant(const Constant& aConstant) {
+    if (myConcretePartialAssignment_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::setConcreteConstant: myConcretePartialAssignment_p is already set, and we cannot have both");
+    myConcreteConstant_p = &aConstant;
+  } // end ExpressionEdgeAlg::setConcreteConstant()
+
+  const Constant&
+  ExpressionEdgeAlg::getConcreteConstant() const {
+    if (!myConcreteConstant_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::getConcreteConstant: not set, " <<
+                                 "where the PDK is currently set to " << PartialDerivativeKind::toString(myConcretePartialDerivativeKind));
+    return *myConcreteConstant_p;
+  } // end ExpressionEdgeAlg::getConcreteConstant()
 
   void ExpressionEdgeAlg::passivate() { 
     myConcretePartialDerivativeKind=PartialDerivativeKind::PASSIVE;

@@ -98,17 +98,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	break;
       } // end case LINEAR_MINUS_ONE
       case PartialDerivativeKind::LINEAR: {
-	// HACK: set PDK to nonlinear if PDK is linear but not an isolated constant so that no attempt is made to fold in the value
-	if (theLinearizedExpressionEdgeAlg.getConcretePartialAssignment().getRHS().numVertices() > 1) {
+        // (FIXME) HACK: set PDK to nonlinear if PDK is linear but not an isolated constant so that no attempt is made to fold in the value
+        if (theLinearizedExpressionEdgeAlg.hasConcretePartialAssignment()) {
 	  myPartialDerivativeKind = PartialDerivativeKind::NONLINEAR;
 	  myValue = 0;
 	  ValueHasBeenSet = false;
 	  myLHSVariable_p = &theLinearizedExpressionEdgeAlg.getConcretePartialAssignment().getLHS();
-	} // end RHS has >1 vertex
-	else {
+        } // end if there's a concrete partial assignment
+        else { // no partial assignment has been created, so there must be a constant set
 	  myPartialDerivativeKind = PartialDerivativeKind::LINEAR;
-	  const Constant& theConstant (dynamic_cast<const Constant&>(theLinearizedExpressionEdgeAlg.getConcretePartialAssignment().getRHS().getMaxVertex()));
-	  myValue = theConstant.getdouble();
+          myValue = theLinearizedExpressionEdgeAlg.getConcreteConstant().getdouble();
 	  ValueHasBeenSet = true;
 	  myLHSVariable_p = NULL;
 	} // end RHS has 1 vertex (Constant)
