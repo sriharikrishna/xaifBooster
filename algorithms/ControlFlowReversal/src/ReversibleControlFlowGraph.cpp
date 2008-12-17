@@ -1298,15 +1298,16 @@ namespace xaifBoosterControlFlowReversal {
 	    THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: could not find loop update intrinsic");
 	  }
 	  // what is it?
-	  bool countUp=(*myOriginalReverseVertexPPairList_cit).first->getCounterPart().simpleCountUp();
+	  ForLoopDirection::ForLoopDirection_E loopDir=
+	    (*myOriginalReverseVertexPPairList_cit).first->getCounterPart().simpleCountUp();
 	  // the new ForLoop  
 	  ForLoop& theNewForLoop(dynamic_cast<ForLoop&>((*myOriginalReverseVertexPPairList_cit).second->getNewVertex()));
 	  makeLoopExplicitReversalInitialization(theOldForLoop,
 						 theNewForLoop,
-						 countUp);
+						 loopDir);
 	  makeLoopExplicitReversalCondition(theOldForLoop,
 					    theNewForLoop,
-					    countUp);
+					    loopDir);
 	  makeLoopExplicitReversalUpdate(theOldForLoop,
 					 theNewForLoop);
 	}
@@ -1427,7 +1428,7 @@ namespace xaifBoosterControlFlowReversal {
 
   void ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization(const ForLoop& theOldForLoop,
 									  ForLoop& theNewForLoop,
-									  bool countUp) { 
+									  ForLoopDirection::ForLoopDirection_E loopDir) { 
     // initialization depends on the original condition which should be of the form i <operator> e with e as a expression of known variables
     // some setup 
     const Expression& theOldUpdateRHS(theOldForLoop.getUpdate().getAssignment().getRHS());
@@ -1454,7 +1455,7 @@ namespace xaifBoosterControlFlowReversal {
     // add the looping amount which is bound plus/minus init divided by update
     // e.g. reverseInit=oldInit+oldUpdate*((oldBound-oldInit)/update)
     Intrinsic* newInitTop_p;
-    if (countUp)
+    if (loopDir==ForLoopDirection::COUNT_UP || loopDir==ForLoopDirection::COUNT_UNDECIDED )
       newInitTop_p=new Intrinsic("add_scal_scal");
     else 
       newInitTop_p=new Intrinsic("sub_scal_scal");
@@ -1491,11 +1492,29 @@ namespace xaifBoosterControlFlowReversal {
     Intrinsic& aMod(*(new Intrinsic("div_scal_scal")));
     aMod.setId(theNewInitializationRHS.getNextVertexId());
     theNewInitializationRHS.supplyAndAddVertexInstance(aMod);
-    // add an edge from the division to the multiplication
-    newEdge_p=new ExpressionEdge(false);
-    newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
-    newEdge_p->setPosition(2);
-    theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,aMod,aMult);
+    if (loopDir==ForLoopDirection::COUNT_UNDECIDED ) { 
+      // wrap the division part into an ABS call
+      Intrinsic& anAbs(*(new Intrinsic("abs_scal")));
+      anAbs.setId(theNewInitializationRHS.getNextVertexId());
+      theNewInitializationRHS.supplyAndAddVertexInstance(anAbs);
+      // add an edge from the division to the abs
+      newEdge_p=new ExpressionEdge(false);
+      newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
+      newEdge_p->setPosition(1);
+      theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,aMod,anAbs);
+      // add an edge from the abs to the multiplication
+      newEdge_p=new ExpressionEdge(false);
+      newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
+      newEdge_p->setPosition(2);
+      theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,anAbs,aMult);
+    } 
+    else { 
+      // add an edge from the division to the multiplication
+      newEdge_p=new ExpressionEdge(false);
+      newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
+      newEdge_p->setPosition(2);
+      theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,aMod,aMult);
+    }
     // 1st argument to division operation involves initializer and bound
     Intrinsic& aMinus(*(new Intrinsic("sub_scal_scal")));
     aMinus.setId(theNewInitializationRHS.getNextVertexId());
@@ -1524,14 +1543,14 @@ namespace xaifBoosterControlFlowReversal {
     newEdge_p=new ExpressionEdge(false);
     newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
     theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,theTopOftheBound,aMinus);
-    if (countUp)
+    if (loopDir==ForLoopDirection::COUNT_UP)
       newEdge_p->setPosition(1);
     else 
       newEdge_p->setPosition(2);
     newEdge_p=new ExpressionEdge(false);
     newEdge_p->setId(theNewInitializationRHS.getNextEdgeId());
     theNewInitializationRHS.supplyAndAddEdgeInstance(*newEdge_p,theNewInitMaxVertex,aMinus);
-    if (countUp)
+    if (loopDir==ForLoopDirection::COUNT_UP)
       newEdge_p->setPosition(2);
     else 
       newEdge_p->setPosition(1);
@@ -1540,31 +1559,29 @@ namespace xaifBoosterControlFlowReversal {
     bool adjustDown=false;
     switch(theOldConditionBooleanOperation_p->getType()) { 
     case BooleanOperationType::LESS_THAN_OTYPE :
-      if (countUp)  
+      if (loopDir==ForLoopDirection::COUNT_UP)  
 	adjustDown=true;
       else
 	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: loop reversal count down and < condition logic goof up");
       break;
     case BooleanOperationType::NOT_EQUAL_OTYPE :
-      if (countUp)  
+      if (loopDir==ForLoopDirection::COUNT_UP)  
 	adjustDown=true;
-      else
+      else if (loopDir==ForLoopDirection::COUNT_UP) 
 	adjustUp=true;
       break;
     case BooleanOperationType::GREATER_THAN_OTYPE :
-      if (countUp) { 
+      if (loopDir==ForLoopDirection::COUNT_UP) { 
 	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: loop reversal count up and > condition logic goof up");
       }
       else
 	adjustDown=true;
       break;
     case BooleanOperationType::LESS_OR_EQUAL_OTYPE: 
-      if (!countUp)  
+      if (!loopDir==ForLoopDirection::COUNT_UP)  
 	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: loop reversal count down and <= condition logic goof up");
       break;
     case BooleanOperationType::GREATER_OR_EQUAL_OTYPE: 
-      //      if (countUp)  
-      //	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: loop reversal count up and >= condition logic goof up");
       break;
     default:
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::makeLoopExplicitReversalInitialization: don't know what to do with operation "
@@ -1573,13 +1590,14 @@ namespace xaifBoosterControlFlowReversal {
     } 
     if (adjustDown || adjustUp) { 
       Constant& theOne(*(new Constant(SymbolType::INTEGER_STYPE,false)));
+      theOne.setint(1);
       theOne.setId(theNewInitializationRHS.getNextVertexId());
       theNewInitializationRHS.supplyAndAddVertexInstance(theOne);
       Intrinsic* theAdjustmentIntrinsic_p;
       if (adjustDown) 
 	theAdjustmentIntrinsic_p=new Intrinsic("sub_scal_scal");
       else 
-	theAdjustmentIntrinsic_p=new Intrinsic("plus_scal_scal");
+	theAdjustmentIntrinsic_p=new Intrinsic("add_scal_scal");
       theAdjustmentIntrinsic_p->setId(theNewInitializationRHS.getNextVertexId());
       theNewInitializationRHS.supplyAndAddVertexInstance(*theAdjustmentIntrinsic_p);
       // add the 2 edges
@@ -1594,50 +1612,165 @@ namespace xaifBoosterControlFlowReversal {
     }
   } 
 
-  void ReversibleControlFlowGraph::makeLoopExplicitReversalCondition(const ForLoop& theOldForLoop,
-								     ForLoop& theNewForLoop,
-								     bool countUp) { 
-    // the stop condition is determined by the first argument to the boolean of the old condition, 
-    // the old initialization and the up or down count 
-    // find the first argument to the boolean
-    // copy this into the new condition
+  /**
+   *strictly local wrapper to reduce code bloat
+   */
+  ExpressionVertex& undecidedDirectionCondition(const ForLoop& theOldForLoop,
+						ForLoop& theNewForLoop,
+						bool updGTZero) { 
     Expression& theNewConditionExpression(theNewForLoop.getCondition().getExpression());
+    // copy 'i' for i . init
     ExpressionVertex& 
-      theTopOfConditionVarRef(theOldForLoop.getCondition().getExpression().
-			      copySubExpressionInto(theNewForLoop.getCondition().getExpression(),
-						    theOldForLoop.getCondition().getExpression().
-						    findPositionalSubExpressionOf(theOldForLoop.getCondition().
-										  getExpression().getMaxVertex(),1),
-						    true,
-						    false));
-    // copy the old initialization:
-    ExpressionVertex& theTopOftheInit(theOldForLoop.getInitialization().getAssignment().getRHS().
-				      copySubExpressionInto(theNewForLoop.getCondition().getExpression(),
-							    theOldForLoop.getInitialization().getAssignment().getRHS().getMaxVertex(),
-							    true, 
-							    false));
-    BooleanOperation* theNewBooleanOp_p;
-    if(countUp)
-      theNewBooleanOp_p=new BooleanOperation(BooleanOperationType::GREATER_OR_EQUAL_OTYPE,false);
-    else
-      theNewBooleanOp_p=new BooleanOperation(BooleanOperationType::LESS_OR_EQUAL_OTYPE,false);
-    theNewBooleanOp_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
-    theNewForLoop.getCondition().getExpression().supplyAndAddVertexInstance(*theNewBooleanOp_p);
-    // add the 2 edges
+      theLoopVarRef(theOldForLoop.getCondition().getExpression().
+			 copySubExpressionInto(theNewForLoop.getCondition().getExpression(),
+					       theOldForLoop.getCondition().getExpression().
+					       findPositionalSubExpressionOf(theOldForLoop.getCondition().
+									     getExpression().getMaxVertex(),1),
+					       true,
+					       false));
+    // copy  init for i. init
+    ExpressionVertex& 
+      theTopOftheCopiedInit(theOldForLoop.getInitialization().getAssignment().getRHS().
+				 copySubExpressionInto(theNewForLoop.getCondition().getExpression(),
+						       theOldForLoop.getInitialization().getAssignment().getRHS().getMaxVertex(),
+						       true, 
+						       false));
+    BooleanOperation *compInit_p;
+    if (updGTZero) 
+      compInit_p=new BooleanOperation(BooleanOperationType::GREATER_OR_EQUAL_OTYPE,false);
+    else 
+      compInit_p=new BooleanOperation(BooleanOperationType::LESS_OR_EQUAL_OTYPE,false);
+    compInit_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
+    theNewForLoop.getCondition().getExpression().supplyAndAddVertexInstance(*compInit_p);
+    // add the edges
     ExpressionEdge* newEdge_p=new ExpressionEdge(false);
     newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
     newEdge_p->setPosition(1);
-    theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,theTopOfConditionVarRef,*theNewBooleanOp_p);
+    theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,theLoopVarRef,*compInit_p);
     newEdge_p=new ExpressionEdge(false);
     newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
     newEdge_p->setPosition(2);
-    theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,theTopOftheInit,*theNewBooleanOp_p);
-    // update
-    theOldForLoop.getUpdate().getAssignment().getLHS().copyMyselfInto(theNewForLoop.getUpdate().getAssignment().getLHS());
+    theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,theTopOftheCopiedInit,*compInit_p);
+    // copy 'upd' for upd . 0
+    // the update statement is typically of the form i=i+upd
+    const ExpressionVertex* topOfOldUpd_p=0;
+    const ExpressionVertex& oldUpdPlus=theOldForLoop.getUpdate().getAssignment().getRHS().getMaxVertex();
+    // see which child is the same as the loop var:
+    const ExpressionVertex& oldPos1Child=theOldForLoop.getUpdate().getAssignment().getRHS().findPositionalSubExpressionOf(oldUpdPlus,1);
+    if (oldPos1Child.isArgument() && 
+	(dynamic_cast<const Argument&>(oldPos1Child)).getVariable().getVariableSymbolReference().refersToSameSymbolAs((dynamic_cast<const Argument&>(theLoopVarRef)).getVariable().getVariableSymbolReference()))
+      topOfOldUpd_p=&(theOldForLoop.getUpdate().getAssignment().getRHS().findPositionalSubExpressionOf(oldUpdPlus,2));
+    else
+      topOfOldUpd_p=&oldPos1Child;
+    ExpressionVertex& 
+      theTopOftheCopiedUpdate(theOldForLoop.getUpdate().getAssignment().getRHS().
+				   copySubExpressionInto(theNewForLoop.getCondition().getExpression(),
+							 *topOfOldUpd_p,
+							 true, 
+							 false));
+    Constant* theZero_p=new Constant(SymbolType::REAL_STYPE,false);
+    theZero_p->setdouble(0.0);
+    theZero_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
+    theNewForLoop.getCondition().getExpression().supplyAndAddVertexInstance(*theZero_p);
+    BooleanOperation *updComp_p;
+    if (updGTZero)
+      updComp_p=new BooleanOperation(BooleanOperationType::GREATER_THAN_OTYPE,false);
+    else
+      updComp_p=new BooleanOperation(BooleanOperationType::LESS_THAN_OTYPE,false);
+    updComp_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
+    theNewForLoop.getCondition().getExpression().supplyAndAddVertexInstance(*updComp_p);
+    // add the edges
+    newEdge_p=new ExpressionEdge(false);
+    newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
+    newEdge_p->setPosition(1);
+    theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,theTopOftheCopiedUpdate,*updComp_p);
+    newEdge_p=new ExpressionEdge(false);
+    newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
+    newEdge_p->setPosition(2);
+    theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,*theZero_p,*updComp_p);
+    BooleanOperation *and_p;
+    and_p=new BooleanOperation(BooleanOperationType::AND_OTYPE,false);
+    and_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
+    theNewForLoop.getCondition().getExpression().supplyAndAddVertexInstance(*and_p);
+    // add the edges
+    newEdge_p=new ExpressionEdge(false);
+    newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
+    newEdge_p->setPosition(1);
+    theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,*updComp_p,*and_p);
+    newEdge_p=new ExpressionEdge(false);
+    newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
+    newEdge_p->setPosition(2);
+    theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,*compInit_p,*and_p);
+    return *and_p;
+  }
+
+  void ReversibleControlFlowGraph::makeLoopExplicitReversalCondition(const ForLoop& theOldForLoop,
+								     ForLoop& theNewForLoop,
+								     ForLoopDirection::ForLoopDirection_E loopDir) { 
+    Expression& theNewConditionExpression(theNewForLoop.getCondition().getExpression());
+    if (loopDir!=ForLoopDirection::COUNT_UNDECIDED) { 
+      // the stop condition is determined by the first argument to the boolean of the old condition, 
+      // the old initialization and the up or down count 
+      // find the first argument to the boolean
+      // copy this into the new condition
+      ExpressionVertex& 
+	theTopOfConditionVarRef(theOldForLoop.getCondition().getExpression().
+				copySubExpressionInto(theNewForLoop.getCondition().getExpression(),
+						      theOldForLoop.getCondition().getExpression().
+						      findPositionalSubExpressionOf(theOldForLoop.getCondition().
+										    getExpression().getMaxVertex(),1),
+						      true,
+						      false));
+      // copy the old initialization:
+      ExpressionVertex& theTopOftheInit(theOldForLoop.getInitialization().getAssignment().getRHS().
+					copySubExpressionInto(theNewForLoop.getCondition().getExpression(),
+							      theOldForLoop.getInitialization().getAssignment().getRHS().getMaxVertex(),
+							      true, 
+							      false));
+      BooleanOperation* theNewBooleanOp_p;
+      if(loopDir==ForLoopDirection::COUNT_UP)
+	theNewBooleanOp_p=new BooleanOperation(BooleanOperationType::GREATER_OR_EQUAL_OTYPE,false);
+      else if (loopDir==ForLoopDirection::COUNT_DOWN) 
+	theNewBooleanOp_p=new BooleanOperation(BooleanOperationType::LESS_OR_EQUAL_OTYPE,false);
+      theNewBooleanOp_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
+      theNewForLoop.getCondition().getExpression().supplyAndAddVertexInstance(*theNewBooleanOp_p);
+      // add the 2 edges
+      ExpressionEdge* newEdge_p=new ExpressionEdge(false);
+      newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
+      newEdge_p->setPosition(1);
+      theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,theTopOfConditionVarRef,*theNewBooleanOp_p);
+      newEdge_p=new ExpressionEdge(false);
+      newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
+      newEdge_p->setPosition(2);
+      theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,theTopOftheInit,*theNewBooleanOp_p);
+    }
+    else { 
+      // do i=init,cond,upd -> if s is variable we have to have extra tests:  (upd>0 && i>=init) || (upd<0 && i<=init)
+      ExpressionVertex& theGTPart=undecidedDirectionCondition(theOldForLoop,
+							      theNewForLoop,
+							      true);
+      ExpressionVertex& theLTPart=undecidedDirectionCondition(theOldForLoop,
+							      theNewForLoop,
+							      false);
+      BooleanOperation *topLevelOr_p=new BooleanOperation(BooleanOperationType::OR_OTYPE,false);
+      topLevelOr_p->setId(theNewForLoop.getCondition().getExpression().getNextVertexId());
+      theNewForLoop.getCondition().getExpression().supplyAndAddVertexInstance(*topLevelOr_p);
+      // add the 2 edges
+      ExpressionEdge* newEdge_p=new ExpressionEdge(false);
+      newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
+      newEdge_p->setPosition(1);
+      theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,theGTPart,*topLevelOr_p);
+      newEdge_p=new ExpressionEdge(false);
+      newEdge_p->setId(theNewConditionExpression.getNextEdgeId());
+      newEdge_p->setPosition(2);
+      theNewConditionExpression.supplyAndAddEdgeInstance(*newEdge_p,theLTPart,*topLevelOr_p);
+    }
   }
 
   void ReversibleControlFlowGraph::makeLoopExplicitReversalUpdate(const ForLoop& theOldForLoop,
 								  ForLoop& theNewForLoop) { 
+    // LHS
+    theOldForLoop.getUpdate().getAssignment().getLHS().copyMyselfInto(theNewForLoop.getUpdate().getAssignment().getLHS());
     // get the new RHS
     Expression& theNewUpdateRHS(theNewForLoop.getUpdate().getAssignment().getRHS());
     const Expression& theOldUpdateRHS(theOldForLoop.getUpdate().getAssignment().getRHS());

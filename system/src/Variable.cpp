@@ -268,7 +268,8 @@ namespace xaifBooster {
 	} // end catch
       } 
     }
-    THROW_LOGICEXCEPTION_MACRO("Variable::getVariableSymbolReference: no symbol reference available");
+    THROW_LOGICEXCEPTION_MACRO("Variable::getVariableSymbolReference: no symbol reference available for "
+			       << debug().c_str());
   } 
 
   const ArrayAccess& Variable::getArrayAccess() const { 

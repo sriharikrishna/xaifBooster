@@ -69,6 +69,7 @@
 #include "xaifBooster/system/inc/Exit.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphVertex.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphEdge.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ForLoopDirection.hpp"
 
 using namespace xaifBooster;
 
@@ -308,11 +309,11 @@ namespace xaifBoosterControlFlowReversal {
 
     void makeLoopExplicitReversalInitialization(const ForLoop& theOldForLoop,
 						ForLoop& theNewForLoop,
-						bool countUp); 
+						ForLoopDirection::ForLoopDirection_E loopDir); 
 
     void makeLoopExplicitReversalCondition(const ForLoop& theOldForLoop,
 					   ForLoop& theNewForLoop,
-					   bool countUp); 
+					   ForLoopDirection::ForLoopDirection_E loopDir); 
 
     void makeLoopExplicitReversalUpdate(const ForLoop& theOldForLoop,
 					ForLoop& theNewForLoop); 
