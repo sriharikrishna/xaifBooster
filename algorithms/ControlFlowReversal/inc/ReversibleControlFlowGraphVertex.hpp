@@ -60,6 +60,7 @@
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/ForLoopDirection.hpp"
 
 using namespace xaifBooster;
 
@@ -161,9 +162,9 @@ namespace xaifBoosterControlFlowReversal {
 
     /**
      * for explicitly reversible for loops
-     * guess the count direction
+     * determine the count direction
      */
-    bool simpleCountUp() const;
+    ForLoopDirection::ForLoopDirection_E simpleCountUp() const;
     
   private:
 

@@ -357,14 +357,14 @@ namespace xaifBoosterControlFlowReversal {
       myEnclosingControlFlow_p=&theEnclosingControlFlow;	
   } 
 
-  bool ReversibleControlFlowGraphVertex::simpleCountUp() const { 
+  ForLoopDirection::ForLoopDirection_E ReversibleControlFlowGraphVertex::simpleCountUp() const { 
     if (myReversalType!=ForLoopReversalType::EXPLICIT) { 
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::simpleCountUp: the vertex is not explicit");
     } 
     if (getKind()!=ControlFlowGraphVertexAlg::FORLOOP) { 
       THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::simpleCountUp: the vertex is a " << ControlFlowGraphVertexAlg::kindToString(getKind()).c_str());
     } 
-    bool countUp=true;
+    ForLoopDirection::ForLoopDirection_E dir=ForLoopDirection::COUNT_UP;
     const ForLoop& theForLoop(dynamic_cast<const ForLoop&>(getOriginalVertex()));
     const Expression& theConditionExpr(theForLoop.getCondition().getExpression());
     const ExpressionVertex& theConditionMaxVertex(theConditionExpr.getMaxVertex());
@@ -375,19 +375,21 @@ namespace xaifBoosterControlFlowReversal {
     switch(theConditionBooleanOperation_p->getType()) { 
     case BooleanOperationType::LESS_THAN_OTYPE :
     case BooleanOperationType::LESS_OR_EQUAL_OTYPE: 
-      countUp=true;
+      dir=ForLoopDirection::COUNT_UP;
       break;
     case BooleanOperationType::GREATER_THAN_OTYPE :
     case BooleanOperationType::GREATER_OR_EQUAL_OTYPE: 
-      countUp=false;
+      dir=ForLoopDirection::COUNT_DOWN;
       break; 
     case BooleanOperationType::NOT_EQUAL_OTYPE :
+      dir=ForLoopDirection::COUNT_UNDECIDED;
+      break; 
     default:
-      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::simpleCountUp: don't know what to do with operation "
+      THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraphVertex::simpleCountUp: don't know what to do with operation "
 				 << BooleanOperationType::toString(theConditionBooleanOperation_p->getType()));
       break;
     }
-    return countUp;
+    return dir;
   } 
 
 } // end of namespace
