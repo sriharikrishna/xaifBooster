@@ -63,8 +63,8 @@ namespace xaifBooster {
   xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::PreaccumulationMetric_E
   PreaccumulationCounter::ourPreaccumulationMetric = xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::OPERATIONS_METRIC;
 
-  xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E
-  PreaccumulationCounter::ourAwarenessLevel = xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::NO_AWARENESS;
+  xaifBoosterCrossCountryInterface::AwarenessLevel::AwarenessLevel_E
+  PreaccumulationCounter::ourAwarenessLevel = xaifBoosterCrossCountryInterface::AwarenessLevel::NO_AWARENESS;
 
   void
   PreaccumulationCounter::setPreaccumulationMetric(xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::PreaccumulationMetric_E aMetric) {
@@ -72,7 +72,7 @@ namespace xaifBooster {
   } // end PreaccumulationCounter::setPreaccumulationMetric()
 
   void
-  PreaccumulationCounter::setAwarenessLevel(xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E anAwarenessLevel) {
+  PreaccumulationCounter::setAwarenessLevel(xaifBoosterCrossCountryInterface::AwarenessLevel::AwarenessLevel_E anAwarenessLevel) {
     ourAwarenessLevel = anAwarenessLevel;
   } // end PreaccumulationCounter::setAwarenessLevel()
 
@@ -196,17 +196,17 @@ namespace xaifBooster {
   bool PreaccumulationCounter::isMoreScarceThan(const PreaccumulationCounter& anotherCounter) const {
     unsigned int myNumNontrivialEdges, theirNumNontrivialEdges;
     switch (ourAwarenessLevel) {
-      case xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::NO_AWARENESS: {
+      case xaifBoosterCrossCountryInterface::AwarenessLevel::NO_AWARENESS: {
         myNumNontrivialEdges = myNumEdges;
         theirNumNontrivialEdges = anotherCounter.getNumEdges();
         break;
       } // end NO_AWARENESS
-      case xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::UNIT_AWARENESS: {
+      case xaifBoosterCrossCountryInterface::AwarenessLevel::UNIT_AWARENESS: {
         myNumNontrivialEdges = myNumNonunitEdges;
         theirNumNontrivialEdges = anotherCounter.getNumNonunitEdges();
         break;
       } // end UNIT_AWARENESS
-      case xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::CONSTANT_AWARENESS: {
+      case xaifBoosterCrossCountryInterface::AwarenessLevel::CONSTANT_AWARENESS: {
         myNumNontrivialEdges = myNumNonconstantEdges;
         theirNumNontrivialEdges = anotherCounter.getNumNonconstantEdges();
         break;
@@ -260,21 +260,21 @@ namespace xaifBooster {
   bool PreaccumulationCounter::operator==(const PreaccumulationCounter& anotherCounter) const {
     // compare the relevant edge count
     switch (ourAwarenessLevel) {
-      case xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::NO_AWARENESS:
+      case xaifBoosterCrossCountryInterface::AwarenessLevel::NO_AWARENESS:
         if (this->getNumEdges() != anotherCounter.getNumEdges())
           return false;
         break;
-      case xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::UNIT_AWARENESS:
+      case xaifBoosterCrossCountryInterface::AwarenessLevel::UNIT_AWARENESS:
         if (this->getNumNonunitEdges() != anotherCounter.getNumNonunitEdges())
           return false;
         break;
-      case xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::CONSTANT_AWARENESS:
+      case xaifBoosterCrossCountryInterface::AwarenessLevel::CONSTANT_AWARENESS:
         if (this->getNumNonconstantEdges() != anotherCounter.getNumNonconstantEdges())
           return false;
         break;
       default:
         THROW_LOGICEXCEPTION_MACRO("PreaccumulationCounter::operator==(const PreaccumulationCounter& anotherCounter): ourAwarenessLevel is set to the unknown value "
-                                   << xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::toString(ourAwarenessLevel));
+                                   << xaifBoosterCrossCountryInterface::AwarenessLevel::toString(ourAwarenessLevel));
         break;
     } // end switch (ourAwarenessLevel)
 
