@@ -76,9 +76,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (isSet('C'))
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
     if (isSet('A')) {
-      AwarenessLevel::checkValid(AwarenessLevel::AwarenessLevel_E(argAsInt('A')));
-      xaifBoosterCrossCountryInterface::Elimination::setAwarenessLevel(AwarenessLevel::AwarenessLevel_E(argAsInt('A')));
-      PreaccumulationCounter::setAwarenessLevel(AwarenessLevel::AwarenessLevel_E(argAsInt('A')));
+      xaifBoosterCrossCountryInterface::AwarenessLevel::checkValid(xaifBoosterCrossCountryInterface::AwarenessLevel::AwarenessLevel_E(argAsInt('A')));
+      xaifBoosterCrossCountryInterface::Elimination::setAwarenessLevel(xaifBoosterCrossCountryInterface::AwarenessLevel::AwarenessLevel_E(argAsInt('A')));
+      PreaccumulationCounter::setAwarenessLevel(xaifBoosterCrossCountryInterface::AwarenessLevel::AwarenessLevel_E(argAsInt('A')));
     } // end A
     if (isSet('m'))
       xaifBoosterCrossCountryInterface::Elimination::setAllowMaintainingFlag();
