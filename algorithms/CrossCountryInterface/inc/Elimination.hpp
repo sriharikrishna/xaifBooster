@@ -58,8 +58,8 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AwarenessLevel.hpp"
 
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/AwarenessLevel.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
@@ -101,7 +101,7 @@ namespace xaifBoosterCrossCountryInterface {
     void eliminate();
 
     static void
-    setAwarenessLevel(xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E anAwarenessLevel);
+    setAwarenessLevel(AwarenessLevel::AwarenessLevel_E anAwarenessLevel);
    
     static void setAllowMaintainingFlag();
     
@@ -153,7 +153,7 @@ namespace xaifBoosterCrossCountryInterface {
     
     LinearizedComputationalGraph* myLCG_p;
 
-    static xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E ourAwarenessLevel;
+    static AwarenessLevel::AwarenessLevel_E ourAwarenessLevel;
     static bool ourAllowMaintainingFlag;
     
     int myNumIterations;

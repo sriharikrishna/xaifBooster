@@ -56,7 +56,8 @@
 #include "xaifBooster/utils/inc/Debuggable.hpp"
 #include <string>
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AwarenessLevel.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/AwarenessLevel.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMetric.hpp"
 
 namespace xaifBooster { 
@@ -86,7 +87,7 @@ namespace xaifBooster {
     static xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::PreaccumulationMetric_E ourPreaccumulationMetric;
 
     /// the way we measure the scarcity properties of a remainder graph
-    static xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E ourAwarenessLevel;
+    static xaifBoosterCrossCountryInterface::AwarenessLevel::AwarenessLevel_E ourAwarenessLevel;
 
     bool isMoreScarceThan(const PreaccumulationCounter& anotherCounter) const;
     bool hasFewerOpsThan(const PreaccumulationCounter& anotherCounter) const;
@@ -110,7 +111,7 @@ namespace xaifBooster {
      *  The current default is to have no awareness (all edges are counted).
      */
     static void
-    setAwarenessLevel(xaifBoosterBasicBlockPreaccumulation::AwarenessLevel::AwarenessLevel_E anAwarenessLevel);
+    setAwarenessLevel(xaifBoosterCrossCountryInterface::AwarenessLevel::AwarenessLevel_E anAwarenessLevel);
 
     unsigned int getNumMultiplications() const;
     unsigned int getNumAdditions() const;

@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_AWARENESSLEVEL_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_AWARENESSLEVEL_INCLUDE_
+#ifndef _XAIFBOOSTERCROSSCOUNTRYINTERFACE_AWARENESSLEVEL_INCLUDE_
+#define _XAIFBOOSTERCROSSCOUNTRYINTERFACE_AWARENESSLEVEL_INCLUDE_
 
 #include <string>
 
@@ -7,7 +7,7 @@
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation {
+namespace xaifBoosterCrossCountryInterface {
 
   class AwarenessLevel {
   public:
@@ -26,7 +26,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   }; // end class AwarenessLevel
 
-} // end namespace xaifBoosterBasicBlockPreaccumulation
+} // end namespace xaifBoosterCrossCountryInterface
 
 #endif
 

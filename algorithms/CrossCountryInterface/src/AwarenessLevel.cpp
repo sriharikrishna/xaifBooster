@@ -1,10 +1,10 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AwarenessLevel.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/AwarenessLevel.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+namespace xaifBoosterCrossCountryInterface { 
 
   std::string
   AwarenessLevel::toString(const AwarenessLevel_E& anAwarenessLevel)
@@ -40,5 +40,5 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end switch(anAwarenessLevel)
   } // end AwarenessLevel::checkValid()
 
-} // end namespace xaifBoosterBasicBlockPreaccumulation
+} // end namespace xaifBoosterCrossCountryInterface
 
