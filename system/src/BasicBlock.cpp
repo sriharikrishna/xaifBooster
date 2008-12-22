@@ -157,6 +157,9 @@ namespace xaifBooster {
 	const Assignment* anAssignment_p=dynamic_cast<const Assignment*>(*li);
 	if (anAssignment_p)
 	  return ControlFlowGraphVertex::FindAssignmentResult(true,anAssignment_p);
+	const Marker* aMarker_p=dynamic_cast<const Marker*>(*li);
+	if (aMarker_p)
+	  return ControlFlowGraphVertex::FindAssignmentResult(true,anAssignment_p);
       }
     }
     return ControlFlowGraphVertex::FindAssignmentResult(false,0); 
