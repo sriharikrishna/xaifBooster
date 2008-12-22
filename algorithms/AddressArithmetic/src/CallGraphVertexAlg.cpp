@@ -138,7 +138,8 @@ namespace xaifBoosterAddressArithmetic {
 	      definesUnderControlFlowGraphVertex(anArgument.getVariable(),
 						 theContainingVertex.getEnclosingControlFlow().getOriginalVertex())) { 
 	    redefinedInScope=true;
-	    DBG_MACRO(DbgGroup::ERROR,"CallGraphVertexAlg::findUnknownVariablesInArgument: variable "
+	    //	    DBG_MACRO(DbgGroup::ERROR,"CallGraphVertexAlg::findUnknownVariablesInArgument: variable "
+	    THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInArgument: variable "
 				       << anArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
 				       << " redefined in "
 				       << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
@@ -151,7 +152,8 @@ namespace xaifBoosterAddressArithmetic {
 	      definesUnderControlFlowGraphVertex(anArgument.getVariable(),
 						 theContainingVertex.getOriginalVertex())) { 
 	    redefinedInScope=true;
-	    DBG_MACRO(DbgGroup::ERROR,
+	    //	    DBG_MACRO(DbgGroup::ERROR,
+	    THROW_LOGICEXCEPTION_MACRO(
 		      "CallGraphVertexAlg::findUnknownVariablesInArgument:  variable "
 		      << anArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
 		      << " redefined under " 
