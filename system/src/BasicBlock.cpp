@@ -60,6 +60,7 @@
 #include "xaifBooster/system/inc/BasicBlockElement.hpp"
 #include "xaifBooster/system/inc/Scope.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/Marker.hpp"
 
 namespace xaifBooster { 
 
@@ -149,20 +150,20 @@ namespace xaifBooster {
     return false; 
   } 
   
-  ControlFlowGraphVertex::FindAssignmentResult BasicBlock::findAssignment(const ObjectWithId::Id& aStatementId) const { 
+  FindDefinitionResult BasicBlock::findDefinition(const ObjectWithId::Id& aStatementId) const { 
     for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myElementList.begin();
          li!=myElementList.end();
          ++li) {
       if ((*li)->getId()==aStatementId) { 
 	const Assignment* anAssignment_p=dynamic_cast<const Assignment*>(*li);
 	if (anAssignment_p)
-	  return ControlFlowGraphVertex::FindAssignmentResult(true,anAssignment_p);
+	  return FindDefinitionResult(anAssignment_p);
 	const Marker* aMarker_p=dynamic_cast<const Marker*>(*li);
 	if (aMarker_p)
-	  return ControlFlowGraphVertex::FindAssignmentResult(true,anAssignment_p);
+	  return FindDefinitionResult(aMarker_p);
       }
     }
-    return ControlFlowGraphVertex::FindAssignmentResult(false,0); 
+    return FindDefinitionResult(0); 
   } 
   
 } // end of namespace xaifBooster 

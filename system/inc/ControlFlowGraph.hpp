@@ -55,6 +55,7 @@
 
 #include <stack>
 
+#include "xaifBooster/system/inc/FindDefinitionResult.hpp"
 #include "xaifBooster/system/inc/SideEffectList.hpp"
 #include "xaifBooster/system/inc/SideEffectListType.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphCommonAttributes.hpp"
@@ -146,9 +147,9 @@ namespace xaifBooster {
     // Scope& getScope(); 
 
     /**
-     * for aStatementId get the Assignment if it exists
+     * for aStatementId get the definition (may not be found)
      */
-    ControlFlowGraphVertex::FindAssignmentResult findAssignment(const ObjectWithId::Id& aStatementId) const;
+    FindDefinitionResult findDefinition(const ObjectWithId::Id& aStatementId) const;
 
     /**
      * for aStatementId get the containing ControlFlowGraphVertex
