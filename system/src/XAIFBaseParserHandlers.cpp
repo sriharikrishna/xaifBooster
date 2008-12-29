@@ -691,6 +691,8 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onInitialization(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onInitialization"); 
     passingIn.getInitialization().getAssignment().setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
+    passingIn.getInitialization().getAssignment().getDoMapKey().
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Assignment::our_myDoMapKey_XAIFName)));
     passingOut.setAssignment(passingIn.getInitialization().getAssignment());;
   }
 
@@ -704,6 +706,8 @@ namespace xaifBooster {
   XAIFBaseParserHandlers::onUpdate(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onUpdate"); 
     passingIn.getUpdate().getAssignment().setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
+    passingIn.getUpdate().getAssignment().getDoMapKey().
+      setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Assignment::our_myDoMapKey_XAIFName)));
     passingOut.setAssignment(passingIn.getUpdate().getAssignment());;
   }
 

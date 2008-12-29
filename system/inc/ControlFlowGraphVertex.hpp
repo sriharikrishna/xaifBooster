@@ -56,6 +56,7 @@
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
+#include "xaifBooster/system/inc/FindDefinitionResult.hpp"
 #include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/VertexTraversable.hpp"
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
@@ -106,12 +107,10 @@ namespace xaifBooster {
     
     virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
 
-    typedef std::pair<bool,const Assignment*> FindAssignmentResult;
-
     /**
      * for aStatementId get the Assignment if it exists
      */
-    virtual FindAssignmentResult findAssignment(const ObjectWithId::Id& aStatementId) const;
+    virtual FindDefinitionResult  findDefinition(const ObjectWithId::Id& aStatementId) const;
 
     virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const = 0;
 

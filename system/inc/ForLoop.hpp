@@ -60,6 +60,7 @@
 #include "xaifBooster/system/inc/ForLoopAlgBase.hpp"
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 #include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
+#include "xaifBooster/system/inc/FindDefinitionResult.hpp"
 
 namespace xaifBooster { 
 
@@ -121,7 +122,7 @@ namespace xaifBooster {
     /**
      * for aStatementId get the Assignment if it exists
      */
-    virtual ControlFlowGraphVertex::FindAssignmentResult findAssignment(const ObjectWithId::Id& aStatementId) const;
+    virtual FindDefinitionResult findDefinition(const ObjectWithId::Id& aStatementId) const;
 
   private:
 

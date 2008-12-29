@@ -53,6 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include "xaifBooster/system/inc/FindDefinitionResult.hpp"
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 #include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
@@ -93,9 +94,9 @@ namespace xaifBooster {
     virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
 
     /**
-     * for aStatementId get the Assignment if it exists
+     * for aStatementId get the definition
      */
-    virtual ControlFlowGraphVertex::FindAssignmentResult findAssignment(const ObjectWithId::Id& aStatementId) const;
+    virtual FindDefinitionResult findDefinition(const ObjectWithId::Id& aStatementId) const;
 
     virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::BASICBLOCK_VKIND;}
 

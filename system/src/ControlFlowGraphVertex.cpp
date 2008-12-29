@@ -101,8 +101,8 @@ namespace xaifBooster {
     return false;
   }
 
-  ControlFlowGraphVertex::FindAssignmentResult ControlFlowGraphVertex::findAssignment(const ObjectWithId::Id& aStatementId) const { 
-    return FindAssignmentResult(false,0);
+  FindDefinitionResult ControlFlowGraphVertex::findDefinition(const ObjectWithId::Id& aStatementId) const { 
+    return FindDefinitionResult(0);
   }
 
   void ControlFlowGraphVertex::setIndex(int i) {

@@ -52,6 +52,7 @@
 // ========== end copyright notice ==============
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/FindDefinitionResult.hpp"
 #include "xaifBooster/system/inc/ForLoop.hpp"
 #include "xaifBooster/system/inc/ForLoopAlgFactory.hpp"
 
@@ -163,12 +164,12 @@ namespace xaifBooster {
 				     getLHS()));
   }
 
-  ControlFlowGraphVertex::FindAssignmentResult ForLoop::findAssignment(const ObjectWithId::Id& aStatementId) const { 
+  FindDefinitionResult ForLoop::findDefinition(const ObjectWithId::Id& aStatementId) const { 
     if (aStatementId==getInitialization().getAssignment().getId())
-      return FindAssignmentResult(false,&(getInitialization().getAssignment()));
+      return FindDefinitionResult(&(getInitialization().getAssignment()));
     if (aStatementId==getUpdate().getAssignment().getId())
-      return FindAssignmentResult(false,&(getUpdate().getAssignment()));
-    return FindAssignmentResult(false,0);
+      return FindDefinitionResult(&(getUpdate().getAssignment()));
+    return FindDefinitionResult(0);
   }
 
 } // end of namespace xaifBooster 

@@ -197,16 +197,15 @@ namespace xaifBooster {
     return mySideEffectLists[aType];
   }
 
-  ControlFlowGraphVertex::FindAssignmentResult ControlFlowGraph::findAssignment(const ObjectWithId::Id& aStatementId) const { 
-    ControlFlowGraphVertex::FindAssignmentResult aResult(false,0);
+  FindDefinitionResult ControlFlowGraph::findDefinition(const ObjectWithId::Id& aStatementId) const { 
     ControlFlowGraph::ConstVertexIteratorPair p(vertices());
     ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt) { 
-      aResult=(*beginIt).findAssignment(aStatementId);
-      if (aResult.first)
+      FindDefinitionResult aResult((*beginIt).findDefinition(aStatementId));
+      if (aResult.foundIt())
 	return aResult;
     }
-    return aResult;
+    return FindDefinitionResult(0);
   }
 
   const ControlFlowGraphVertex& ControlFlowGraph::getContainingVertex(const ObjectWithId::Id& aStatementId) const { 
@@ -386,10 +385,10 @@ namespace xaifBooster {
 						 theBranch)) { 
 	    // this is not really explicit then...
 	    DBG_MACRO(DbgGroup::ERROR,"::ControlFlowGraph::augmentGraphInfo: condition variable "
-		      << (*theArgIt)->getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+		      << (*theArgIt)->getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
 		      << " in "
 		      << getSymbolReference().getSymbol().plainName().c_str()
-		      << " redefined under Branch contained in loop marked as \'simple\'; we will suppress the flag for this loop");
+		      << " redefined under Branch contained in loop marked as \'simple\'; we will suppress the flag for this branch");
 	    theBranch.setReversalType(ForLoopReversalType::ANONYMOUS);
 	    theBranch.getCounterPart().setReversalType(ForLoopReversalType::ANONYMOUS);
 	  }
@@ -507,13 +506,13 @@ namespace xaifBooster {
 	  else { 
 	    // have outside definition but possibly inside overwrites of that definition
 	    // look at the overwrites of that definition dominated by theControlFlowGraphVertex
-	    ControlFlowGraphVertex::FindAssignmentResult theFinderResult(findAssignment(*defChainI));
-	    if (!theFinderResult.first) { 
-	      DBG_MACRO(DbgGroup::ERROR, "ControlFlowGraph::definesUnderControlFlowGraphVertex: cannot find statement for id "
+	    FindDefinitionResult theFinderResult(findDefinition(*defChainI));
+	    if (!theFinderResult.foundAssignment()) { 
+	      DBG_MACRO(DbgGroup::ERROR, "ControlFlowGraph::definesUnderControlFlowGraphVertex: cannot find assignment for id "
 			<< (*defChainI).c_str());
 	    }
 	    else { 
-	      const Assignment& theDefiningAssignment(*(theFinderResult.second));
+	      const Assignment& theDefiningAssignment(theFinderResult.getAssignment());
 	      DBG_MACRO(DbgGroup::DATA,
 			"ControlFlowGraph::definesUnderControlFlowGraphVertex: the defining assignment is " 
 			<< theDefiningAssignment.debug().c_str());
