@@ -561,26 +561,34 @@ INPUT                  = utils/inc \
                          system/inc \
                          system/inc/TemplateImpl \
                          system/src \
+			 system/driver \
                          algorithms/AddressArithmetic/inc \
                          algorithms/AddressArithmetic/src \
+		         algorithms/AddressArithmetic/driver \
                          algorithms/TypeChange/inc \
                          algorithms/TypeChange/src \
+                         algorithms/TypeChange/driver \
                          algorithms/TraceDiff/inc \
                          algorithms/TraceDiff/src \
+                         algorithms/TraceDiff/driver \
                          algorithms/Linearization/inc \
                          algorithms/Linearization/src \
+                         algorithms/Linearization/driver \
                          algorithms/BasicBlockPreaccumulation/inc \
                          algorithms/BasicBlockPreaccumulation/src \
+                         algorithms/BasicBlockPreaccumulation/driver \
                          algorithms/BasicBlockPreaccumulationTape/inc \
                          algorithms/BasicBlockPreaccumulationTape/src \
+                         algorithms/BasicBlockPreaccumulationTape/driver \
                          algorithms/BasicBlockPreaccumulationTapeAdjoint/inc \
                          algorithms/BasicBlockPreaccumulationTapeAdjoint/src \
+                         algorithms/BasicBlockPreaccumulationTapeAdjoint/driver \
                          algorithms/BasicBlockPreaccumulationReverse/inc \
                          algorithms/BasicBlockPreaccumulationReverse/src \
+                         algorithms/BasicBlockPreaccumulationReverse/driver \
                          algorithms/ControlFlowReversal/inc \
                          algorithms/ControlFlowReversal/src \
-                         algorithms/MemOpsTradeoffPreaccumulation/inc \
-                         algorithms/MemOpsTradeoffPreaccumulation/src \
+                         algorithms/ControlFlowReversal/driver \
                          algorithms/CodeReplacement/inc \
                          algorithms/CodeReplacement/src \
                          algorithms/CrossCountryInterface/inc \

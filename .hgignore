@@ -1,6 +1,7 @@
 syntax: glob
 */src/obj/*
-*/test/obj/*
+*/driver/obj/*
+*/driver/oadDriver
 *.a
 *.o
 *~
@@ -10,10 +11,9 @@ syntax: glob
 *.mod
 *.mod-whirl
 *.xsd
-*/t
 */tmp/*
 */buildStamp.hpp
-algorithms/*/test/quickRegression.bash
+algorithms/*/driver/quickRegression.bash
 .resetEnv.last
 doc/html/*
 tools/codegen/classes/*.class

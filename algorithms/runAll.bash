@@ -13,11 +13,11 @@ fi
 shift 
 for i in $*
 do  
-if [ -f $i/test/t ] 
+if [ -f $i/driver/oadDriver ] 
 then 
   echo "***********************************************************"  
   echo "testing in $i:"
-  cd $i/test  
+  cd $i/driver
   if [ -z $BATCHMODE ] 
   then 
     ./quickRegression.bash $TESTSET

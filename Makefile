@@ -50,7 +50,7 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
-objs test clean: 
+objs driver clean: 
 	cd utils && $(MAKE) $@
 	cd system && $(MAKE) $@
 	cd algorithms && $(MAKE) $@
@@ -63,22 +63,22 @@ INST_DIR=/opt/xaifBooster
 endif
 
 install: uninstall objs
-	mkdir -p ${INST_DIR}/algorithms/TypeChange/test 
-	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/TypeChange/test/t ${INST_DIR}/algorithms/TypeChange/test
-	chmod a+rx ${INST_DIR}/algorithms/TypeChange/test/t
-	strip ${INST_DIR}/algorithms/TypeChange/test/t
-	mkdir -p ${INST_DIR}/algorithms/BasicBlockPreaccumulation/test 
-	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/BasicBlockPreaccumulation/test/t ${INST_DIR}/algorithms/BasicBlockPreaccumulation/test
-	chmod a+rx ${INST_DIR}/algorithms/BasicBlockPreaccumulation/test/t
-	strip ${INST_DIR}/algorithms/BasicBlockPreaccumulation/test/t
-	mkdir -p ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/test 
-	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/BasicBlockPreaccumulationReverse/test/t ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/test
-	chmod a+rx ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/test/t
-	strip ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/test/t
-	mkdir -p ${INST_DIR}/algorithms/TraceDiff/test 
-	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/TraceDiff/test/t ${INST_DIR}/algorithms/TraceDiff/test
-	chmod a+rx ${INST_DIR}/algorithms/TraceDiff/test/t
-	strip ${INST_DIR}/algorithms/TraceDiff/test/t
+	mkdir -p ${INST_DIR}/algorithms/TypeChange/driver 
+	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/TypeChange/driver/oadDriver ${INST_DIR}/algorithms/TypeChange/driver
+	chmod a+rx ${INST_DIR}/algorithms/TypeChange/driver/oadDriver
+	strip ${INST_DIR}/algorithms/TypeChange/driver/oadDriver
+	mkdir -p ${INST_DIR}/algorithms/BasicBlockPreaccumulation/driver 
+	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/BasicBlockPreaccumulation/driver/oadDriver ${INST_DIR}/algorithms/BasicBlockPreaccumulation/driver
+	chmod a+rx ${INST_DIR}/algorithms/BasicBlockPreaccumulation/driver/oadDriver
+	strip ${INST_DIR}/algorithms/BasicBlockPreaccumulation/driver/oadDriver
+	mkdir -p ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/driver 
+	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/BasicBlockPreaccumulationReverse/driver/oadDriver ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/driver
+	chmod a+rx ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/driver/oadDriver
+	strip ${INST_DIR}/algorithms/BasicBlockPreaccumulationReverse/driver/oadDriver
+	mkdir -p ${INST_DIR}/algorithms/TraceDiff/driver 
+	cp -f ${XAIFBOOSTERROOT}/xaifBooster/algorithms/TraceDiff/driver/oadDriver ${INST_DIR}/algorithms/TraceDiff/driver
+	chmod a+rx ${INST_DIR}/algorithms/TraceDiff/driver/oadDriver
+	strip ${INST_DIR}/algorithms/TraceDiff/driver/oadDriver
 
 uninstall:
 	@if [ -d ${INST_DIR} ]; then \
@@ -86,4 +86,4 @@ uninstall:
 	  rm -rI ${INST_DIR}; \
         fi
 
-.PHONY: objs test clean doc codegen
+.PHONY: objs driver clean doc codegen

@@ -30,8 +30,8 @@ before any make do:
 to make all object files, support libraries and the main drivers:  
 	make 
 
-to make all test drivers: 
-	make test
+to make all drivers: 
+	make driver
 
 to create doxygen html files: 
 	make doc

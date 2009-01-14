@@ -50,7 +50,7 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
-objs test clean:
+objs driver clean:
 	cd CrossCountryInterface && $(MAKE) $@
 	cd InlinableXMLRepresentation && $(MAKE) $@
 	cd CodeReplacement && $(MAKE) $@
@@ -66,4 +66,4 @@ objs test clean:
 	cd AddressArithmetic && $(MAKE) $@
 	cd BasicBlockPreaccumulationReverse && $(MAKE) $@
 
-.PHONY: objs test clean
+.PHONY: objs driver clean
