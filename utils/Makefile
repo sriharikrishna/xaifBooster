@@ -50,9 +50,9 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
-default: objs test 
+default: objs driver 
 
-objs test clean:
+objs driver clean:
 	cd src && $(MAKE) $@
 
-.PHONY: default objs test clean
+.PHONY: default objs driver clean

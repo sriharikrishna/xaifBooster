@@ -6,6 +6,6 @@ include ../../../Makefile.incl
 
 objs: obj $(OBJS)
 
-test : ;
+driver : ;
 
-.PHONY: objs test 
+.PHONY: objs driver 

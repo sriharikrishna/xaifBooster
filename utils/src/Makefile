@@ -65,9 +65,9 @@ objs: obj $(THELIB)
 $(THELIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
 
-test : ;
+driver : ;
 
-.PHONY: objs test default
+.PHONY: objs driver default
 
 
 

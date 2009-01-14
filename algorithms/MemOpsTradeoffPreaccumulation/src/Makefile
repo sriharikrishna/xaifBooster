@@ -58,4 +58,4 @@ include ../../../Makefile.incl
 
 objs: obj $(OBJS)
 
-.PHONY: objs test 
+.PHONY: objs driver 
