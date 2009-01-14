@@ -114,9 +114,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   
   bool 
   AssignmentAlg::vertexIdentification(PrivateLinearizedComputationalGraph& theComputationalGraph) { 
-    if (!getActiveFlag()) 
-      // nothing to do here 
+    if (!getActiveFlag()) {
+      // nothing else to do here 
       return true; 
+    }
     Expression& theExpression(getLinearizedRightHandSide());
     VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theComputationalGraph.getVertexIdentificationListActiveLHS());
     VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theComputationalGraph.getVertexIdentificationListActiveRHS());
@@ -182,7 +183,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (theLHSAliasIdResult.getAnswer() != VertexIdentificationList::NOT_IDENTIFIED)
 	return false;
     }
-
     return true;
   } // end of AssignmentAlg::vertexIdentification 
 
@@ -208,7 +208,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()));
     PrivateLinearizedComputationalGraph& theComputationalGraph (aBasicBlockAlg.getComputationalGraph(getContainingAssignment()));
     VertexPPairList theVertexTrackList;
-    if (!vertexIdentification(theComputationalGraph)) { 
+    if (!vertexIdentification(theComputationalGraph)
+	||
+	(!getActiveFlag()
+	 && 
+	 theComputationalGraph.
+	 getVertexIdentificationListIndAct().
+	 overwrittenBy(getContainingAssignment().getLHS(),
+		       getContainingAssignment().getId(),
+		       aBasicBlockAlg.getContaining()))) { 
       // there is an ambiguity, do the split
       aBasicBlockAlg.splitComputationalGraph(getContainingAssignment());
       // redo everything for this assignment
@@ -231,11 +239,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // and the second part of the linearization
     xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theComputationalGraph.getVertexIdentificationListPassive());
+    VertexIdentificationListIndAct& theVertexIdentificationListIndAct(theComputationalGraph.getVertexIdentificationListIndAct());
     if (!getActiveFlag()) { 
       theComputationalGraph.addToPassiveStatementIdList(getContainingAssignment().getId());
       if (getContainingAssignment().getLHS().getActiveType()) {   // but the LHS has active type
 	theVertexIdentificationListPassive.addElement(getContainingAssignment().getLHS(),
 						      getContainingAssignment().getId());
+	theVertexIdentificationListIndAct.addElement(getContainingAssignment().getLHS(),
+						     getContainingAssignment().getId());
 	if (getContainingAssignment().getLHS().getActiveFlag()) // this means the LHS has been passivated 
 	  aBasicBlockAlg.getDerivativePropagator(getContainingAssignment()).
 	    addZeroDerivToEntryPList(getContainingAssignment().getLHS());
@@ -291,6 +302,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 								getContainingAssignment().getId(),
 								theLCGVertex_p,
 								theKnownAssignments);
+		theVertexIdentificationListIndAct.addElement(theVariable,
+							     getContainingAssignment().getId());
 		DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) added to RHS: "
 					  << theVertexIdentificationListActiveRHS.debug().c_str());
 	      }
@@ -406,6 +419,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       theVertexIdentificationListActiveLHS.addElement(theLHS,
 					     	      theLHSLCGVertex_p,
 						      getContainingAssignment().getId());
+      theVertexIdentificationListIndAct.addElement(theLHS,
+						   getContainingAssignment().getId());
       theLHSLCGVertex_p->setOriginalVariable(theLHS,
 					     getContainingAssignment().getId());
       // as we step through the assignments we add all the left hand sides as dependendents

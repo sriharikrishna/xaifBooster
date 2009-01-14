@@ -1557,7 +1557,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // have a predecessor: 
 	    --i;
 	    if(!(*i).second) { 
-	      // othing assigned yet, which means this is not an 
+	      // nothing assigned yet, which means this is not an 
 	      // assignment (unless we call this out of order) this is how 
 	      // we handle splits for subroutine calls
 	      theSequence_p=new Sequence;
