@@ -59,6 +59,7 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveLHS.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveRHS.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListPassive.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListIndAct.hpp"
 
 using namespace xaifBooster;
 
@@ -93,6 +94,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     VertexIdentificationListPassive& getVertexIdentificationListPassive() { 
       return myVertexIdentificationListPassive;
+    };    
+
+    VertexIdentificationListIndAct& getVertexIdentificationListIndAct() { 
+      return myVertexIdentificationListIndAct;
     };    
 
     void addToIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndependentVertex);
@@ -152,6 +157,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * with elements in the active lists.
      */
     VertexIdentificationListPassive myVertexIdentificationListPassive; 
+
+    /**
+     * we need to track the set of 
+     * variables used in address computations 
+     * for active variables (aka indirectly active variables)
+     */
+    VertexIdentificationListIndAct myVertexIdentificationListIndAct; 
 
     /** 
      * this is the list of statementIds for the active statements in which  
