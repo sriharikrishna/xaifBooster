@@ -73,6 +73,9 @@ $(wildcard ../../TypeChange/src/obj/*.o)
 VPATH+=../../InlinableXMLRepresentation/lib
 LIBS+=-lxaifBoosterInlinableXMLRepresentation
 
+VPATH+=../../SaveValuesAcross/lib
+LIBS+=-lxaifBoosterSaveValuesAcross
+
 VPATH+=../../AdjointUtils/lib
 LIBS+=-lxaifBoosterAdjointUtils
 
