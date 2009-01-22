@@ -59,8 +59,9 @@
 #include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
-#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 
+#include "xaifBooster/algorithms/SaveValuesAcross/inc/SaveValuesAcross.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -114,20 +115,17 @@ namespace xaifBoosterTypeChange {
 
     static void addWrapperNames(const std::string& theSpaceSeparatedNames);
 
-    const Expression::VariablePVariableSRPPairList& getReplacementPairs()const; 
+  protected:
+
+    /** 
+     * Class for saving values across the subroutine call, in order to facilitate correct type conversion after the call.
+     * (Imagine, for example, that an array index is changed as a side-effect of the call.  We would need it's pre-call
+     * value in order to do the type change BACK to the earlier type.)
+     */
+    xaifBoosterSaveValuesAcross::SaveValuesAcross mySaveValuesAcrossForTypeChange;
 
   private:
     
-    /** 
-     * for conversions we need to first assign 
-     * any array indices occuring in formal arguments
-     * to temporaries in case they get overwritten during 
-     * the call
-     */
-    PlainBasicBlock::BasicBlockElementList myPriorToCallAssignments;
-    
-    Expression::VariablePVariableSRPPairList myReplacementPairs; 
-
     /** 
      * no def
      */

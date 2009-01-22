@@ -126,7 +126,7 @@ clean:
 
 # compile the objects
 # as part of this we create dependency information 
-# 1: echo complaint about any undefined variable
+# 1: Remove old dependencies
 # 2: invoke compiler to create raw dependencies with processId attached
 # 3: replace target by prepending the 'obj' subdirectory and adding the dependency file itself
 # 4: copy the resulting file back
