@@ -595,6 +595,8 @@ INPUT                  = utils/inc \
                          algorithms/CrossCountryInterface/src \
                          algorithms/DerivativePropagator/inc \
                          algorithms/DerivativePropagator/src \
+                         algorithms/SaveValuesAcross/inc \
+                         algorithms/SaveValuesAcross/src \
                          algorithms/InlinableXMLRepresentation/inc \
                          algorithms/InlinableXMLRepresentation/src
 
