@@ -11,9 +11,10 @@ def main():
 	fout.write("Digraph {\n")
 	fout.write("  rankdir=RL;\n")
 	fout.write("  nodesep=0.1;\n")
-	fout.write("  size=\"20,20\";\n")
-	fout.write("  node [fontsize=10,style=filled,fillcolor=white];\n")
-
+	fout.write("  size=\"30,18\";\n")
+	fout.write("  ratio=fill;\n")
+	fout.write("  edge [penwidth=2];\n")
+	fout.write("  node [penwidth=2,fontsize=14,style=filled,fillcolor=white];\n")
 	os.system(". ./makeAlgGraph")
 
 	vertices = []
@@ -52,13 +53,14 @@ def main():
 	    headerFile.close()
 
 	# Draw clusters
-	for i in [["Base","lightblue"],["CFR","purple"],["AddressArithmetic","beige"],["BBP","lightcyan"],["BBPReverse","lemonchiffon"],["BBPTapeAdjoint","lightgreen"],\
-		  ["BBPTape","lightgoldenrod"],["ConstantFolding","lightgrey"],["Linearization","dimgray"],["TypeChange","palevioletred"],["MemOpsTradeoffPreaccumulation","coral"]]:
+	for i in [["Base","lightblue"],["CFR","plum"],["AddressArithmetic","beige"],["BBP","lightcyan"],["BBPReverse","tomato2"],["BBPTapeAdjoint","lightgreen"],\
+		  ["BBPTape","lightgoldenrod"],["ConstantFolding","lightgrey"],["Linearization","dimgray"],["TypeChange","palevioletred"],["MemOpsTradeoffPreaccumulation","coral"],["TraceDiff","dodgerblue4"]]:
 	    (algName,algColor) = i
 	    fout.write("\n  subgraph cluster_%s {\n" % algName)
+	    fout.write("    fontsize=18;\n")
 	    fout.write("    label=\"%s\";\n" % algName)
 	    fout.write("    style=filled;\n")
-	    fout.write("    color=%s;\n" % algColor)
+	    fout.write("    fillcolor=%s;\n" % algColor)
 	    for vertex in vertices:
 		if (vertex.split("_")[0] == algName):
 		    if (algActions[vertex] != ""):
