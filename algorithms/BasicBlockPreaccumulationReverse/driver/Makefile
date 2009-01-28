@@ -64,7 +64,7 @@ quickRegression.bash:
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
-# pick up all algorith specific obj files
+# pick up all algorithm specific obj files
 ALG_OBJ_SET=  							   \
 $(wildcard ../src/obj/*.o) 					   \
 $(wildcard ../../AddressArithmetic/src/obj/*.o) 		   \
@@ -75,12 +75,23 @@ $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o)            \
 $(wildcard ../../Linearization/src/obj/*.o)			   \
 $(wildcard ../../TypeChange/src/obj/*.o)
 
-LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
-LIBS+=../../SaveValuesAcross/lib/libxaifBoosterSaveValuesAcross.a
-LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
-LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
-LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
-LIBS+=../../CodeReplacement/lib/libxaifBoosterCodeReplacement.a
+VPATH+=../../InlinableXMLRepresentation/lib
+LIBS+=-lxaifBoosterInlinableXMLRepresentation
+
+VPATH+=../../SaveValuesAcross/lib
+LIBS+=-lxaifBoosterSaveValuesAcross
+
+VPATH+=../../CrossCountryInterface/lib
+LIBS+=-lxaifBoosterCrossCountryInterface
+
+VPATH+=../../DerivativePropagator/lib
+LIBS+=-lxaifBoosterDerivativePropagator
+
+VPATH+=../../AdjointUtils/lib
+LIBS+=-lxaifBoosterAdjointUtils
+
+VPATH+=../../CodeReplacement/lib
+LIBS+=-lxaifBoosterCodeReplacement
 
 # setup for ANGEL
 ifndef ANGELROOT
