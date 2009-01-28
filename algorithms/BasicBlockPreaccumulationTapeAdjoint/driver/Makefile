@@ -66,18 +66,25 @@ quickRegression.bash:
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
-# pick up all algorith specific obj files
-ALG_OBJ_SET= \
-$(wildcard ../src/obj/*.o) \
+# pick up all algorithm specific obj files
+ALG_OBJ_SET=                                                \
+$(wildcard ../src/obj/*.o)                                  \
 $(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) \
-$(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) \
-$(wildcard ../../Linearization/src/obj/*.o) \
+$(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o)     \
+$(wildcard ../../Linearization/src/obj/*.o)                 \
 $(wildcard ../../TypeChange/src/obj/*.o) 
 
-LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
-LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
-LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
-LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
+VPATH+=../../InlinableXMLRepresentation/lib
+LIBS+=-lxaifBoosterInlinableXMLRepresentation
+
+VPATH+=../../CrossCountryInterface/lib
+LIBS+=-lxaifBoosterCrossCountryInterface
+
+VPATH+=../../DerivativePropagator/lib
+LIBS+=-lxaifBoosterDerivativePropagator
+
+VPATH+=../../AdjointUtils/lib
+LIBS+=-lxaifBoosterAdjointUtils
 
 # setup for ANGEL
 ifndef ANGELROOT

@@ -66,10 +66,13 @@ quickRegression.bash:
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
-# pick up all algorith specific obj files
-ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../TypeChange/src/obj/*.o)
+# pick up all algorithm specific obj files
+ALG_OBJ_SET=                             \
+$(wildcard ../src/obj/*.o)               \
+$(wildcard ../../TypeChange/src/obj/*.o)
 
-LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
+VPATH+=../../InlinableXMLRepresentation/lib
+LIBS+=-lxaifBoosterInlinableXMLRepresentation
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
 	$(CC) $^ $(LFLAGS) -o $@
