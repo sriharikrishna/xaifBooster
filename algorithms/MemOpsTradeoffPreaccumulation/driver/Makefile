@@ -66,22 +66,22 @@ quickRegression.bash:
 include ../../../Makefile.incl
 -include $(DEPINCL)
 
-# pick up all algorith specific obj files
-ALG_OBJ_SET=$(wildcard ../src/obj/*.o) $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) $(wildcard ../../Linearization/src/obj/*.o) $(wildcard ../../TypeChange/src/obj/*.o) 
+# pick up all algorithm specific obj files
+ALG_OBJ_SET=                                            \
+$(wildcard ../src/obj/*.o)                              \
+$(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) \
+$(wildcard ../../Linearization/src/obj/*.o)             \
+$(wildcard ../../TypeChange/src/obj/*.o)
 
-LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
-LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
-LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
+VPATH+=../../InlinableXMLRepresentation/lib
+LIBS+=-lxaifBoosterInlinableXMLRepresentation
 
-# setup for ANGEL
-#ifndef ANGELROOT
-#  $(error "Error:  environment variable ANGELROOT not defined!")
-#endif
+VPATH+=../../CrossCountryInterface/lib
+LIBS+=-lxaifBoosterCrossCountryInterface
 
-#VPATH+=$(ANGELROOT)/lib
-#LIBS+=-langel
+VPATH+=../../DerivativePropagator/lib
+LIBS+=-lxaifBoosterDerivativePropagator
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
 	$(CC) $^ $(LFLAGS) -o $@
-
 
