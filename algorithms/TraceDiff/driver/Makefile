@@ -70,17 +70,12 @@ $(wildcard ../src/obj/*.o)                        \
 $(wildcard ../../ControlFlowReversal/src/obj/*.o) \
 $(wildcard ../../TypeChange/src/obj/*.o)
 
-VPATH+=../../InlinableXMLRepresentation/lib
-LIBS+=-lxaifBoosterInlinableXMLRepresentation
-
+LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
+LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
+LIBS+=../../CodeReplacement/lib/libxaifBoosterCodeReplacement.a
 VPATH+=../../SaveValuesAcross/lib
 LIBS+=-lxaifBoosterSaveValuesAcross
 
-VPATH+=../../AdjointUtils/lib
-LIBS+=-lxaifBoosterAdjointUtils
-
-VPATH+=../../CodeReplacement/lib
-LIBS+=-lxaifBoosterCodeReplacement
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
 	$(CC) $^ $(LFLAGS) -o $@
