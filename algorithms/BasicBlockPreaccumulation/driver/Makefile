@@ -70,17 +70,12 @@ $(wildcard ../src/obj/*.o)                  \
 $(wildcard ../../Linearization/src/obj/*.o) \
 $(wildcard ../../TypeChange/src/obj/*.o) 
 
-VPATH+=../../InlinableXMLRepresentation/lib
-LIBS+=-lxaifBoosterInlinableXMLRepresentation
-
+LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
+LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
+LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
 VPATH+=../../SaveValuesAcross/lib
 LIBS+=-lxaifBoosterSaveValuesAcross
 
-VPATH+=../../CrossCountryInterface/lib
-LIBS+=-lxaifBoosterCrossCountryInterface
-
-VPATH+=../../DerivativePropagator/lib
-LIBS+=-lxaifBoosterDerivativePropagator
 
 # setup for ANGEL
 ifndef ANGELROOT

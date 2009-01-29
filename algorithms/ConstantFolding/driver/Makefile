@@ -72,14 +72,9 @@ $(wildcard ../src/obj/*.o)                              \
 $(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) \
 $(wildcard ../../Linearization/src/obj/*.o)
 
-VPATH+=../../InlinableXMLRepresentation/lib
-LIBS+=-lxaifBoosterInlinableXMLRepresentation
-
-VPATH+=../../CrossCountryInterface/lib
-LIBS+=-lxaifBoosterCrossCountryInterface
-
-VPATH+=../../DerivativePropagator/lib
-LIBS+=-lxaifBoosterDerivativePropagator
+LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
+LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
+LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
 
 # setup for ANGEL
 ifndef ANGELROOT
