@@ -53,9 +53,9 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/system/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBoosterTypeChange::BasicBlockAlgFactory,xaifBoosterBasicBlockPreaccumulation)
+  DERIVED_ALG_FACTORY_DECL_MACRO(BasicBlock,xaifBooster::BasicBlockAlgFactory,xaifBoosterBasicBlockPreaccumulation)
 
 #endif

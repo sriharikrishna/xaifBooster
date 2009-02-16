@@ -53,7 +53,6 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
@@ -61,16 +60,9 @@ using namespace xaifBooster;
 namespace xaifBoosterTraceDiff {  
 
   /** 
-   * class to pull together 
-   * TypeChange and ControlFlowReversal.
-   * This class is just here to ensure we take 
-   * the proper path for the virtual method 
-   * invocations
-   * this class itself does not contribute to the address arithmetic 
-   * transformation, it just ensure proper calling.
+   * class to ...
    */
-  class BasicBlockAlg : public xaifBoosterControlFlowReversal::BasicBlockAlg, 
-			public xaifBoosterTypeChange::BasicBlockAlg {
+  class BasicBlockAlg : public xaifBoosterControlFlowReversal::BasicBlockAlg { 
 
   public:
     
@@ -79,8 +71,6 @@ namespace xaifBoosterTraceDiff {
     virtual ~BasicBlockAlg() {};
 
     virtual std::string debug() const ;
-
-    virtual void printXMLHierarchy(std::ostream& os) const;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 

@@ -62,8 +62,6 @@
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
-
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
@@ -177,25 +175,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }
 
   void BasicBlockAlg::algorithm_action_4() { 
-    static unsigned int recursionGuard=0;
-    try { 
-      recursionGuard++;
-      if (recursionGuard>1)
-	THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4: recursive invocation not allowed");
-      DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4");
-      
-      // the BasicBlock instance will be used in SubroutineCallAlg::algorithm_action_4():
-      // because of virtual function use on the system structural level we cannot 
-      // invoke directly and need to rely on GenericTraverseInvoke
-      // In order to pass parameters through BasicBlockParameter
-      // we have to make sure that this method is never invoked recursively
-      xaifBoosterTypeChange::BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_4()
-    } 
-    catch (...) { 
-      recursionGuard--;
-      throw;
-    }
-    recursionGuard--;
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4(reinterpret DerivativePropagators as tapings)");
     int count = 0;
     // for each propagator:
     // create an InlinableSubroutinecall for each Variable in each saxpy element in the propagator

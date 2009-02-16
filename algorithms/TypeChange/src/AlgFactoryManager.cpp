@@ -55,7 +55,6 @@
 
 #include "xaifBooster/algorithms/TypeChange/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlgFactory.hpp"
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/ConcreteArgumentAlgFactory.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SubroutineCallAlgFactory.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SymbolAlgFactory.hpp"
@@ -86,7 +85,6 @@ namespace xaifBoosterTypeChange {
 
   void AlgFactoryManager::resets() {
     resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetConcreteArgumentAlgFactory(new ConcreteArgumentAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
     resetSymbolAlgFactory(new SymbolAlgFactory()); 

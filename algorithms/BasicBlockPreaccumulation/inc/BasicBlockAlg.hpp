@@ -58,8 +58,6 @@
 
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlg.hpp"
-
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/Elimination.hpp"
@@ -92,7 +90,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
    * class to implement algorithms relevant for the 
    * angel interface
    */
-  class BasicBlockAlg : public xaifBoosterTypeChange::BasicBlockAlg {
+  class BasicBlockAlg : virtual public BasicBlockAlgBase {
   public:
     
     BasicBlockAlg(BasicBlock& theContaining);
@@ -104,12 +102,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    /**
-     * flatten the Assignment level graphs found here into a graph held by 
-     * myComputationalGraph per sequence of consecutive Assignment instances
-     */
-    virtual void algorithm_action_2();
 
     /**
      * generate code for the elimination sequence returned by Angel

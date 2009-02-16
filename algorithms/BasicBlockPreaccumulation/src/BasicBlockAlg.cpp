@@ -67,8 +67,6 @@
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
-
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
@@ -302,8 +300,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::getUniqueSequencePList()
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
-      xaifBooster::BasicBlockAlgBase(theContaining),
-      xaifBoosterTypeChange::BasicBlockAlg(theContaining) { 
+      xaifBooster::BasicBlockAlgBase(theContaining) {
   } // end BasicBlockAlg::BasicBlockAlg()
 
   BasicBlockAlg::~BasicBlockAlg() {
@@ -442,29 +439,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     out << "]" << std::ends;  
     return out.str();
   } // end of BasicBlockAlg::debug
-
-  void
-  BasicBlockAlg::algorithm_action_2() {
-    static unsigned int recursionGuard=0;
-    try { 
-      recursionGuard++;
-      if (recursionGuard>1)
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_2: recursive invocation not allowed");
-      DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorithm_action_2(flatten)");
-      
-      // the BasicBlock instance will be used in AssignmentAlg::algorithm_action_1:
-      // because of virtual function use on the system structural level we cannot 
-      // invoke directly and need to rely on GenericTraverseInvoke
-      // In order to pass parameters through BasicBlockParameter
-      // we have to make sure that this method is never invoked recursively
-      xaifBoosterTypeChange::BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_2() 
-    } 
-    catch (...) { 
-      recursionGuard--;
-      throw;
-    }
-    recursionGuard--;
-  }
 
   class PrivateLinearizedComputationalGraphVertexLabelWriter {
   public:

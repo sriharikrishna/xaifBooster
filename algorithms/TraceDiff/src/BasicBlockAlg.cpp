@@ -54,8 +54,6 @@
 
 #include "xaifBooster/system/inc/Assignment.hpp"
 
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
-
 #include "xaifBooster/algorithms/TraceDiff/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/AssignmentAlg.hpp"
 
@@ -65,8 +63,7 @@ namespace xaifBoosterTraceDiff {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     BasicBlockAlgBase(theContaining),
-    xaifBoosterControlFlowReversal::BasicBlockAlg(theContaining),
-    xaifBoosterTypeChange::BasicBlockAlg(theContaining) { 
+    xaifBoosterControlFlowReversal::BasicBlockAlg(theContaining) {
   }
 
   std::string BasicBlockAlg::debug () const { 
@@ -76,45 +73,22 @@ namespace xaifBoosterTraceDiff {
     return out.str();
   } // end of BasicBlockAlg::debug
 
-  void BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
-    xaifBoosterTypeChange::BasicBlockAlg::printXMLHierarchy(os);
-  } 
-
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
   void BasicBlockAlg::algorithm_action_2() { 
-    static unsigned int recursionGuard=0;
-    try { 
-      recursionGuard++;
-      if (recursionGuard>1)
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_2: recursive invocation not allowed");
-      DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorithm_action_2(set parameter)");
-      
-      // the BasicBlock instance will be used in SubroutineCallAlg::algorithm_action_2:
-      // because of virtual function use on the system structural level we cannot 
-      // invoke directly and need to rely on GenericTraverseInvoke
-      // In order to pass parameters through BasicBlockParameter
-      // we have to make sure that this method is never invoked recursively
-      xaifBoosterTypeChange::BasicBlockAlgParameter::instance().set(*this);	// in BasicBlockAlg::algorithm_action_2()
-      // for every assignment check the RHS
-      const PlainBasicBlock::BasicBlockElementList& theContainingBBEelemtList(dynamic_cast<const BasicBlock&>(xaifBoosterTypeChange::BasicBlockAlg::getContaining()).
-									      getBasicBlockElementList());
-      for (PlainBasicBlock::BasicBlockElementList::const_iterator li=theContainingBBEelemtList.begin();
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterTraceDiff::BasicBlockAlg::algorithm_action_2()");
+    // for every assignment check the RHS
+    const PlainBasicBlock::BasicBlockElementList& theContainingBBEelemtList(dynamic_cast<const BasicBlock&>(BasicBlockAlgBase::getContaining()).getBasicBlockElementList());
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=theContainingBBEelemtList.begin();
 	   li!=theContainingBBEelemtList.end();
-	   li++) { 
-	// see if this is an assignment
-	const Assignment* anAssignment_p=dynamic_cast<const Assignment*>(*li);
-	if (anAssignment_p) { 
-	  dynamic_cast<AssignmentAlg&>(anAssignment_p->getAssignmentAlgBase()).trace();
-	}
-      } 
+	   li++) {
+      // see if this is an assignment
+      const Assignment* anAssignment_p=dynamic_cast<const Assignment*>(*li);
+      if (anAssignment_p) { 
+        dynamic_cast<AssignmentAlg&>(anAssignment_p->getAssignmentAlgBase()).trace();
+      }
     } 
-    catch (...) { 
-      recursionGuard--;
-      throw;
-    }
-    recursionGuard--;
-  }
+  } // end BasicBlockAlg::algorithm_action_2()
   
 } // end of namespace

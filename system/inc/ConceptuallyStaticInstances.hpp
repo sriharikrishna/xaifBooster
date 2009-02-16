@@ -57,6 +57,7 @@
 
 #include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
 #include "xaifBooster/system/inc/PrintVersion.hpp"
+#include "xaifBooster/system/inc/TraversalStack.hpp"
 
 namespace xaifBooster { 
 
@@ -105,6 +106,9 @@ namespace xaifBooster {
      */
     const NameCreator& getNameCreator() const;
 
+    const TraversalStack& getTraversalStack() const;
+    TraversalStack& getTraversalStack();
+
   private: 
     
     ConceptuallyStaticInstances();
@@ -140,6 +144,11 @@ namespace xaifBooster {
      * the universal name creator
      */
     NameCreator myNameCreator;
+
+    /**
+     * the stack for pointers that allow one to access different parts of the AST
+     */
+    TraversalStack myTraversalStack;
 
   }; // end of ConceptuallyStaticInstances
   
