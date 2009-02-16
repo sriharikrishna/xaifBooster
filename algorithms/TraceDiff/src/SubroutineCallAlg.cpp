@@ -56,6 +56,7 @@
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
@@ -64,7 +65,6 @@
 
 #include "xaifBooster/algorithms/TypeChange/inc/ConcreteArgumentAlg.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
@@ -165,7 +165,7 @@ namespace xaifBoosterTraceDiff {
  	if ((*aConcreteArgumentPListI)->isArgument()) { 
 	  Helpers::traceArgument((*aConcreteArgumentPListI)->getArgument(),
 				 myCallTraces,
-				 xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get().getContaining().getScope());
+                                 ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance().getScope());
 	}
 	/* 
  	if ((*aConcreteArgumentPListI)->isConstant()) { 

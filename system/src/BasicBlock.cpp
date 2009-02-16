@@ -133,11 +133,13 @@ namespace xaifBooster {
     return out.str();
   } // end of BasicBlock::debug
 
-  void BasicBlock::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+  void BasicBlock::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+    ConceptuallyStaticInstances::instance()->getTraversalStack().setCurrentBasicBlockInstance(*this);
     getBasicBlockAlgBase().genericTraversal(anAction_c);
     std::list<BasicBlockElement*>::iterator li=myElementList.begin();
     for (;li!=myElementList.end();li++)
       (*(li))->genericTraversal(anAction_c);
+    ConceptuallyStaticInstances::instance()->getTraversalStack().resetCurrentBasicBlockInstance();
   } 
 
   bool BasicBlock::hasStatement(const ObjectWithId::Id& aStatementId) const { 

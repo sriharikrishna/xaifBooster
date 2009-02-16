@@ -70,7 +70,6 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/Helpers.hpp"
 
@@ -136,7 +135,7 @@ namespace xaifBoosterTraceDiff {
 	      ++argIt) { 
 	    Helpers::traceArgument(**argIt,
 				   myTracingCalls,
-				   xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get().getContaining().getScope());
+                                   ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance().getScope());
 	  }
 	  theIntrinsicCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_ecall");
 	  theIntrinsicCall_p->setId("TraceDiff::SubroutineCallAlg::algorithm_action_2");

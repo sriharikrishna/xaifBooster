@@ -56,11 +56,10 @@
 
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
-
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
@@ -205,7 +204,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
 	      << debug().c_str());
-    BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(xaifBoosterTypeChange::BasicBlockAlgParameter::instance().get()));
+    BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance().getBasicBlockAlgBase()));
     PrivateLinearizedComputationalGraph& theComputationalGraph (aBasicBlockAlg.getComputationalGraph(getContainingAssignment()));
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theComputationalGraph)

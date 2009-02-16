@@ -113,5 +113,13 @@ namespace xaifBooster {
     return myNameCreator;
   }
 
-} 
+  const TraversalStack& ConceptuallyStaticInstances::getTraversalStack() const {
+    return myTraversalStack;
+  } // end ConceptuallyStaticInstances::getTraversalStack() const
+
+  TraversalStack& ConceptuallyStaticInstances::getTraversalStack() {
+    return myTraversalStack;
+  } // end ConceptuallyStaticInstances::getTraversalStack()
+
+} // end namespace xaifBooster
 

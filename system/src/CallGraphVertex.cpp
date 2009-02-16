@@ -126,8 +126,10 @@ namespace xaifBooster {
   } // end of CallGraphVertex::getControlFlowGraph
 
   void CallGraphVertex::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
+    ConceptuallyStaticInstances::instance()->getTraversalStack().setCurrentCallGraphVertexInstance(*this);
     getCallGraphVertexAlgBase().genericTraversal(anAction_c);
     myControlFlowGraph.genericTraversal(anAction_c);
+    ConceptuallyStaticInstances::instance()->getTraversalStack().resetCurrentCallGraphVertexInstance();
   } 
 
 } // end of namespace xaifBooster 

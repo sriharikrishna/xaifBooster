@@ -65,7 +65,6 @@
 
 #include "xaifBooster/algorithms/TypeChange/inc/ConcreteArgumentAlg.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
-#include "xaifBooster/algorithms/TypeChange/inc/BasicBlockAlgParameter.hpp"
 
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
