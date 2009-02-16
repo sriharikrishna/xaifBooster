@@ -78,6 +78,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   }; 
   
-}
-                                                                     
+} // end namespace xaifBoosterBasicBlockPreaccumulationReverse
+
 #endif
+

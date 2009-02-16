@@ -79,7 +79,7 @@ namespace xaifBoosterAddressArithmetic {
       const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex * myContainingVertex_p;
       /** 
        * the vertex determining the taping point (either the top level loop 
-       * or a control flow vertex( not a basic block) under the top level loop
+       * or a control flow vertex (not a basic block) under the top level loop
        * just a reference, do not delete
        */
       xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex * myTapingVertex_p;

@@ -77,7 +77,8 @@ namespace xaifBoosterControlFlowReversal {
     virtual std::string getSwitches();
 
   }; 
-  
-} // end of namespace xaifBooster
-                                                                     
+
+} // end namespace xaifBoosterControlFlowReversal
+
 #endif
+

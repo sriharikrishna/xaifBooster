@@ -77,7 +77,8 @@ namespace xaifBoosterLinearization {
     virtual std::string getSwitches();
 
   }; 
-  
-} // end of namespace xaifBooster
-                                                                     
+
+} // end namespace xaifBoosterLinearization
+
 #endif
+
