@@ -140,8 +140,9 @@ int main(int argc,char** argv) {
 	      "caught something");
     return -1;
   } // end catch 
-  DBG_MACRO(DbgGroup::METRIC,"total number of assignments: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getAssignmentCounter()
-                          << " total number of Sequences: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getSequenceCounter());
+  DBG_MACRO(DbgGroup::METRIC,"total number of assignments: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getAssignmentCounter() << std::endl << "                           "
+                          << "total number of sequences: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getSequenceCounter() << std::endl << "                           "
+                          << "totals for preaccumulation metrics: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getGlobalPreaccumulationCounter().debug().c_str());
   return 0;
 }
   

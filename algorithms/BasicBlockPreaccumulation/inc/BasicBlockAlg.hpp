@@ -116,7 +116,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static void setRuntimeCounters();
 
-
     static PrivateLinearizedComputationalGraphAlgFactory *getPrivateLinearizedComputationalGraphAlgFactory();
     static PrivateLinearizedComputationalGraphEdgeAlgFactory *getPrivateLinearizedComputationalGraphEdgeAlgFactory();
     static PrivateLinearizedComputationalGraphVertexAlgFactory *getPrivateLinearizedComputationalGraphVertexAlgFactory();
@@ -148,8 +147,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     /// command line activated switch for using scarcity heuristics that do reroutings 
     static void useReroutings();
-
-    const PreaccumulationCounter& getBasicBlockOperations() const;
 
     const StatementIdList& getAssignmentIdList()const;
 
@@ -188,6 +185,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     static unsigned int getAssignmentCounter();
     static unsigned int getSequenceCounter();
+    static const PreaccumulationCounter& getGlobalPreaccumulationCounter();
 
     const PreaccumulationCounter& getPreaccumulationCounter() const;
 
@@ -423,6 +421,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static unsigned int ourSequenceCounter;
       
+    /// keep track of (total) metrics associated with all preaccumulation operations
+    static PreaccumulationCounter ourPreaccumulationCounter;
+
     /// perform the preaccumulation transformation on the graph for \p aSequence
     virtual void runElimination(Sequence& aSequence);
 

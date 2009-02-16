@@ -91,6 +91,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   unsigned int BasicBlockAlg::ourAssignmentCounter=0;
   unsigned int BasicBlockAlg::ourSequenceCounter=0;
+  PreaccumulationCounter BasicBlockAlg::ourPreaccumulationCounter;
 
   bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   bool BasicBlockAlg::ourRuntimeCountersFlag=false;
@@ -288,6 +289,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   unsigned int BasicBlockAlg::getSequenceCounter() { 
     return ourSequenceCounter;
   }
+
+  const PreaccumulationCounter&
+  BasicBlockAlg::getGlobalPreaccumulationCounter() { 
+    return ourPreaccumulationCounter;
+  } // end BasicBlockAlg::getGlobalPreaccumulationCounter()
 
   const PreaccumulationCounter&
   BasicBlockAlg::getPreaccumulationCounter() const {
@@ -890,6 +896,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                              << ": " << aSequence.getBestElimination().getCounter().debug().c_str()
                              << " with " << aSequence.getBestElimination().getNumReroutings() << " reroutings");
     myPreaccumulationCounter.incrementBy(aSequence.getBestElimination().getCounter());
+    ourPreaccumulationCounter.incrementBy(aSequence.getBestElimination().getCounter());
   } // end BasicBlockAlg::runElimination()
 
   void BasicBlockAlg::generateAccumulationExpressions(Sequence& aSequence) {
