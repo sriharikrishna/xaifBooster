@@ -77,7 +77,8 @@ namespace xaifBoosterTypeChange {
     virtual std::string getSwitches();
 
   }; 
-  
-} // end of namespace xaifBooster
-                                                                     
+
+} // end namespace xaifBoosterTypeChange
+
 #endif
+

@@ -76,8 +76,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     
     virtual std::string getSwitches();
 
-  }; 
-  
-} // end of namespace xaifBooster
-                                                                     
+  };
+
+} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+
 #endif
+

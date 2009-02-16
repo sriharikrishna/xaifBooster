@@ -155,8 +155,6 @@ namespace xaifBoosterControlFlowReversal {
     /**
      * For a given edge in the original control flow as represented by the initial copy of the CFG, 
      * build the adjoint edge.
-     * For a given edge in the original control flow as represented by the initial copy of the CFG, 
-     * build the adjoint edge.
      * The correspondence between original and adjoint vertices is recorded in
      * theVertexCorrespondence_ppl where the first entry of each pair is the
      * original vertex and the second entry is the adjoint vertex.

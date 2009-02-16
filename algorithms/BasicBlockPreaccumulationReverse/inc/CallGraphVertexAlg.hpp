@@ -70,8 +70,7 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationReverse {  
 
   /** 
-   * class to implement algorithms relevant for the 
-   * angel interface
+   * class to implement algorithms relevant for ... 
    */
   class CallGraphVertexAlg : public xaifBoosterAddressArithmetic::CallGraphVertexAlg {
   public:

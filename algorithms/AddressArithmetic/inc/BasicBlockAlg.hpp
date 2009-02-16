@@ -91,22 +91,22 @@ namespace xaifBoosterAddressArithmetic {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     /**
-     * refering to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2
+     * referring to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2
      */
     virtual void algorithm_action_2();
 
     /**
-     * refering to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3
+     * referring to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3
      */
     virtual void algorithm_action_3();
 
     /**
-     * refering to xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4
+     * referring to xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4
      */
     virtual void algorithm_action_4();
 
     /**
-     * refering to xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5
+     * referring to xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5
      */
     virtual void algorithm_action_5();
 

@@ -78,6 +78,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   }; 
   
-} // end of namespace xaifBooster
-                                                                     
+} // end namespace xaifBoosterBasicBlockPreaccumulationTape
+
 #endif
+

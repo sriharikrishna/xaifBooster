@@ -80,6 +80,7 @@ namespace xaifBoosterAddressArithmetic {
 
   }; 
   
-} // end of namespace xaifBooster
-                                                                     
+} // end namespace xaifBoosterAddressArithmetic
+
 #endif
+
