@@ -14,7 +14,10 @@ syntax: glob
 */tmp/*
 */buildStamp.hpp
 algorithms/*/driver/quickRegression.bash
+algorithms/makeAlgGraph*
+algorithms/algGraph.*
 .resetEnv.last
 doc/html/*
+doc/xaifbooster_doc.ps
 tools/codegen/classes/*.class
 .cproject
