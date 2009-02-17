@@ -72,9 +72,7 @@ $(wildcard ../src/obj/*.o)               \
 $(wildcard ../../TypeChange/src/obj/*.o)
 
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
-
-VPATH+=../../SaveValuesAcross/lib
-LIBS+=-lxaifBoosterSaveValuesAcross
+LIBS+=../../SaveValuesAcross/lib/libxaifBoosterSaveValuesAcross.a
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
 	$(CC) $^ $(LFLAGS) -o $@
