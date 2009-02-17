@@ -62,15 +62,15 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 		       char** argv,
 		       const std::string& buildStamp) :
     xaifBooster::AlgConfig(argc,argv,buildStamp),
-    xaifBoosterAddressArithmetic::AlgConfig(argc,argv,buildStamp) {
+    xaifBoosterPushPop::AlgConfig(argc,argv,buildStamp) {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterAddressArithmetic::AlgConfig::getSwitches()+"fI");
+    return std::string(xaifBoosterPushPop::AlgConfig::getSwitches()+"fI");
   } 
 
   void AlgConfig::config() { 
-    xaifBoosterAddressArithmetic::AlgConfig::config();
+    xaifBoosterPushPop::AlgConfig::config();
     if (isSet('f')) 
       CallGraphVertexAlg::checkPointToFiles();
     if (isSet('I')) 
@@ -78,7 +78,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   } 
 
   void AlgConfig::usage() { 
-    xaifBoosterAddressArithmetic::AlgConfig::usage();
+    xaifBoosterPushPop::AlgConfig::usage();
     std::cout << " BasicBlockPreaccumulationReverse options:" << std::endl
 	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
 	    << "             [-f] checkpoint write order for individual files instead of a memory stack" << std::endl; 

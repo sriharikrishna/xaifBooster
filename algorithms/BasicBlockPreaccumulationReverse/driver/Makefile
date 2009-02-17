@@ -67,6 +67,7 @@ include ../../../Makefile.incl
 # pick up all algorithm specific obj files
 ALG_OBJ_SET=  							   \
 $(wildcard ../src/obj/*.o) 					   \
+$(wildcard ../../PushPop/src/obj/*.o)                              \
 $(wildcard ../../AddressArithmetic/src/obj/*.o) 		   \
 $(wildcard ../../ControlFlowReversal/src/obj/*.o) 		   \
 $(wildcard ../../BasicBlockPreaccumulationTapeAdjoint/src/obj/*.o) \
@@ -81,7 +82,7 @@ LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
 LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
 LIBS+=../../CodeReplacement/lib/libxaifBoosterCodeReplacement.a
 LIBS+=../../SaveValuesAcross/lib/libxaifBoosterSaveValuesAcross.a
-
+LIBS+=../../RequiredValues/lib/libxaifBoosterRequiredValues.a
 
 # setup for ANGEL
 ifndef ANGELROOT

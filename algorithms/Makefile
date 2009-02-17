@@ -56,6 +56,7 @@ objs driver clean:
 	cd SaveValuesAcross && $(MAKE) $@
 	cd CodeReplacement && $(MAKE) $@
 	cd DerivativePropagator && $(MAKE) $@
+	cd RequiredValues && $(MAKE) $@
 	cd AdjointUtils && $(MAKE) $@
 	cd TypeChange && $(MAKE) $@
 	cd Linearization && $(MAKE) $@
@@ -65,6 +66,7 @@ objs driver clean:
 	cd ControlFlowReversal && $(MAKE) $@
 	cd TraceDiff && $(MAKE) $@
 	cd AddressArithmetic && $(MAKE) $@
+	cd PushPop && $(MAKE) $@
 	cd BasicBlockPreaccumulationReverse && $(MAKE) $@
 
 .PHONY: objs driver clean

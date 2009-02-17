@@ -77,7 +77,7 @@ def main():
 	for i in [["Base","lightblue"],["CFR","plum"],["AddressArithmetic","beige"],["BBP","lightcyan"],\
                   ["BBPReverse","tomato2"],["BBPTapeAdjoint","lightgreen"],["BBPTape","lightgoldenrod"],\
                   ["ConstantFolding","lightgrey"],["Linearization","dimgray"],["TypeChange","palevioletred"],\
-                  ["MemOpsTradeoffPreaccumulation","coral"],["TraceDiff","dodgerblue4"]]:
+                  ["MemOpsTradeoffPreaccumulation","coral"],["TraceDiff","dodgerblue4"],["PushPop","wheat2"]]:
 	    (algNamespace,algColor) = i
 	    fout.write("\n  subgraph cluster_%s {\n" % algNamespace)
 	    fout.write("    fontsize=18;\n")

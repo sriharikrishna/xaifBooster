@@ -53,14 +53,14 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/PushPop/inc/AlgConfig.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
 
   /** 
    * configuration and usage for this transformation 
    */
-  class AlgConfig : public xaifBoosterAddressArithmetic::AlgConfig  { 
+  class AlgConfig : public xaifBoosterPushPop::AlgConfig  { 
 
   public:
 
