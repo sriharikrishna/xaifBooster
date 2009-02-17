@@ -252,6 +252,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   } 
 
   void BasicBlockAlg::algorithm_action_5() { // adjoin the DerivativePropagators
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4(adjoin propagators)");
     if (getContaining().getBasicBlockElementList().empty())
       return;
     // mesh the BasicBlockElements with the Sequences

@@ -236,7 +236,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::incrementGlobalSequenceCounter
 
   void BasicBlockAlg::splitComputationalGraph(const Assignment& theAssignment) { 
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::splitComputationalGraph entering");
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::splitComputationalGraph entering");
     if(!myBasicBlockElementSequencePPairList.size()) { 
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitComputationalGraph: must be initialized unless called out of order");
     }
@@ -258,7 +258,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	ourSequenceCounter++;
 	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
 	myUniqueSequencePList.push_back((*i).second);
-	DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::splitComputationalGraph leaving");
+	DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::splitComputationalGraph leaving");
 	return; 
       } 
     } // end if 
@@ -282,11 +282,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return theSequence_p->myDerivativePropagator;
   }
 
-  unsigned int BasicBlockAlg::getAssignmentCounter() { 
+  unsigned int BasicBlockAlg::getAssignmentCounter() {
     return ourAssignmentCounter;
   }
   
-  unsigned int BasicBlockAlg::getSequenceCounter() { 
+  unsigned int BasicBlockAlg::getSequenceCounter() {
     return ourSequenceCounter;
   }
 
@@ -777,7 +777,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   BasicBlockAlg::algorithm_action_3() {
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::algorithm_action_3: invoked for " << debug().c_str());
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3: invoked for " << debug().c_str());
     myPreaccumulationCounter.reset();
     for (SequencePList::iterator aSequencePListI = myUniqueSequencePList.begin();
 	 aSequencePListI != myUniqueSequencePList.end();
@@ -1517,7 +1517,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   PrivateLinearizedComputationalGraph& 
   BasicBlockAlg::getComputationalGraph(const Assignment& theAssignment) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::getComputationalGraph entering with "
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getComputationalGraph entering with "
 	      << debug().c_str());
     Sequence* theSequence_p=0;
     if(myBasicBlockElementSequencePPairList.empty()) { 
@@ -1571,7 +1571,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (!theSequence_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getComputationalGraph: this basic block does not have element "
 				 << theAssignment.debug().c_str());
-    DBG_MACRO(DbgGroup::CALLSTACK, "BasicBlockAlg::getComputationalGraph leaving with "
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getComputationalGraph leaving with "
 	      << debug().c_str());
     return *(theSequence_p->myComputationalGraph_p);
   } 
