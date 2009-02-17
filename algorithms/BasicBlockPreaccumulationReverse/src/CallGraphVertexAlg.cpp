@@ -144,7 +144,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   void 
   CallGraphVertexAlg::algorithm_action_4() { 
-    xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(); 
+    xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4();
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::algorithm_action_4()");
     // see if we have a replacement symbol for this one: 
     const xaifBoosterTypeChange::SymbolAlg& 
       theSymbolAlg(dynamic_cast<const xaifBoosterTypeChange::SymbolAlg&>(getContaining().

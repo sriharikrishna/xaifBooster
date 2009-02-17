@@ -138,10 +138,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } // end SubroutineCallAlg::checkAndPush()
 
   void SubroutineCallAlg::algorithm_action_4() { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4(tape array access in argument)");
     xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
 						   (getContainingSubroutineCall().getSymbolReference().getSymbol().getSymbolAlgBase()));
     // we don't do this for external calls: 
-    if(!theSymbolAlg.isExternal()) { 
+    if(!theSymbolAlg.isExternal()) {
       // for each subroutinecall argument
       // store the index variables via 
       // an InlinableSubroutinecall to push

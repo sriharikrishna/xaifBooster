@@ -75,7 +75,7 @@ namespace xaifBoosterTraceDiff {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     /**
-     * refering to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2
+     * referring to xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2
      */
     virtual void algorithm_action_2();
 
