@@ -1,0 +1,31 @@
+Digraph {
+  graph [size="8,8"];
+  edge [penwidth=2,fontsize=9];
+  node [penwidth=2,fontsize=9,shape=rect,style=filled,fillcolor=white];
+
+  {
+    rank = same;
+    ControlFlowReversal                  [fillcolor=plum,URL="http://www.mcs.anl.gov/OpenAD/xaifBoosterDox/namespacexaifBoosterControlFlowReversal.html"];
+    BasicBlockPreaccumulationTapeAdjoint [fillcolor=lightgreen,URL="http://www.mcs.anl.gov/OpenAD/xaifBoosterDox/namespacexaifBoosterBasicBlockPreaccumulationTapeAdjoint.html"];
+  }
+  PushPop                                [fillcolor=indianred1,URL="http://www.mcs.anl.gov/OpenAD/xaifBoosterDox/namespacexaifBoosterPushPop.html"];
+  BasicBlockPreaccumulationTape          [fillcolor=lightgoldenrod,URL="http://www.mcs.anl.gov/OpenAD/xaifBoosterDox/namespacexaifBoosterBasicBlockPreaccumulationTape.html"];
+  BasicBlockPreaccumulation              [fillcolor=lightcyan,URL="http://www.mcs.anl.gov/OpenAD/xaifBoosterDox/namespacexaifBoosterBasicBlockPreaccumulation.html"];
+  BasicBlockPreaccumulationReverse       [fillcolor=tomato2,URL="http://www.mcs.anl.gov/OpenAD/xaifBoosterDox/namespacexaifBoosterBasicBlockPreaccumulationReverse.html"];
+  AddressArithmetic                      [fillcolor=beige,URL="http://www.mcs.anl.gov/OpenAD/xaifBoosterDox/namespacexaifBoosterAddressArithmetic.html"];
+
+  BasicBlockPreaccumulationReverse->PushPop;
+  PushPop->AddressArithmetic;
+  AddressArithmetic->ControlFlowReversal;
+  ControlFlowReversal->xaifBooster [label="virtual"];
+
+  AddressArithmetic->BasicBlockPreaccumulationTapeAdjoint;
+  BasicBlockPreaccumulationTapeAdjoint->BasicBlockPreaccumulationTape;
+  //MemOpsTradeoffPreaccumulation->BasicBlockPreaccumulation;
+  BasicBlockPreaccumulationTape->BasicBlockPreaccumulation;
+  BasicBlockPreaccumulation->Linearization;
+  Linearization->TypeChange;
+  TypeChange->xaifBooster [label="virtual"];
+
+}
+
