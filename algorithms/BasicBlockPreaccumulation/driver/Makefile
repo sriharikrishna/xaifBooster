@@ -73,9 +73,7 @@ $(wildcard ../../TypeChange/src/obj/*.o)
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
 LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
 LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
-VPATH+=../../SaveValuesAcross/lib
-LIBS+=-lxaifBoosterSaveValuesAcross
-
+LIBS+=../../SaveValuesAcross/lib/libxaifBoosterSaveValuesAcross.a
 
 # setup for ANGEL
 ifndef ANGELROOT
