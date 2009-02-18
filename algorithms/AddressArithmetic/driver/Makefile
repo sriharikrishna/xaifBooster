@@ -1,6 +1,8 @@
 MAIN=oadDriver
 
-driver: obj buildStamp.hpp $(MAIN) quickRegression.bash
+driver: obj $(MAIN) quickRegression.bash
+
+$(MAIN).cpp: buildStamp.hpp
 
 CLEANTARGETS+=buildStamp.hpp tmp $(MAIN) quickRegression.bash
 
