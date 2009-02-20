@@ -31,6 +31,8 @@ LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
 LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
 LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
 LIBS+=../../CodeReplacement/lib/libxaifBoosterCodeReplacement.a
+LIBS+=../../SaveValuesAcross/lib/libxaifBoosterSaveValuesAcross.a
+LIBS+=../../RequiredValues/lib/libxaifBoosterRequiredValues.a
 
 # setup for ANGEL
 ifndef ANGELROOT

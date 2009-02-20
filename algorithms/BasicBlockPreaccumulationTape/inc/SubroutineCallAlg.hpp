@@ -109,6 +109,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      */
     SubroutineCallAlg operator=(const SubroutineCallAlg&);
 
+    /**
+     * Class for saving values across the subroutine call, in order to facilitate correct taping.
+     * (Imagine, for example, that a value is changed as a side-effect of the call,
+     * but it must be pushed after the call, so we have to store it's pre-call value in a variable.)
+     */
+    xaifBoosterSaveValuesAcross::SaveValuesAcross mySaveValuesAcrossForTaping;
+
     /** 
      * for anonymous reversals we need to store 
      * any array indices occuring in formal arguments,

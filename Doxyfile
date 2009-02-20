@@ -589,12 +589,19 @@ INPUT                  = utils/inc \
                          algorithms/ControlFlowReversal/inc \
                          algorithms/ControlFlowReversal/src \
                          algorithms/ControlFlowReversal/driver \
+                         algorithms/PushPop/inc \
+                         algorithms/PushPop/src \
+                         algorithms/PushPop/driver \
+                         algorithms/RequiredValues/inc \
+                         algorithms/RequiredValues/src \
                          algorithms/CodeReplacement/inc \
                          algorithms/CodeReplacement/src \
                          algorithms/CrossCountryInterface/inc \
                          algorithms/CrossCountryInterface/src \
                          algorithms/DerivativePropagator/inc \
                          algorithms/DerivativePropagator/src \
+                         algorithms/SaveValuesAcross/inc \
+                         algorithms/SaveValuesAcross/src \
                          algorithms/InlinableXMLRepresentation/inc \
                          algorithms/InlinableXMLRepresentation/src
 

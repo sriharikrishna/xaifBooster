@@ -73,6 +73,7 @@ ALG_OBJ_SET=               \
 $(wildcard ../src/obj/*.o)
 
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
+LIBS+=../../SaveValuesAcross/lib/libxaifBoosterSaveValuesAcross.a
 
 $(MAIN): $(OBJS) $(ALG_OBJ_SET) $(SYSTEM_OBJ_SET) $(LIBS)
 	$(CC) $^ $(LFLAGS) -o $@

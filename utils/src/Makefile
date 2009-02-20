@@ -50,24 +50,26 @@
 # This work is partially supported by:
 # 	NSF-ITR grant OCE-0205590
 # ========== end copyright notice ==============
+
 # default target
 default: objs
-
-CLEANTARGETS+=$(THELIB)
 
 include ../../Makefile.incl
 -include $(DEPINCL)
 
 THELIB=$(UTILS_LIB_DIR)/lib$(UTILS_LIB_NAME).a
 
-objs: obj $(THELIB)
+CLEANTARGETS+=$(UTILS_LIB_DIR)
+
+objs: obj $(UTILS_LIB_DIR) $(THELIB)
 
 $(THELIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
 
+$(UTILS_LIB_DIR):
+	mkdir $@
+
 driver : ;
 
 .PHONY: objs driver default
-
-
 
