@@ -148,7 +148,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       // an InlinableSubroutinecall to push
       // note that here we don't use the fact that we are or are not in an explicit loop
       // store all the ones we have assigned already because of the conversion
-      const Expression::VariablePVariableSRPPairList& theTypeChangePairs(getReplacementPairs()); 
+      const Expression::VariablePVariableSRPPairList& theTypeChangePairs(mySaveValuesAcrossForTypeChange.getReplacementPairsList()); 
       for (Expression::VariablePVariableSRPPairList::const_iterator pairIt=theTypeChangePairs.begin();
 	   pairIt!=theTypeChangePairs.end();
 	   ++pairIt) { 

@@ -46,8 +46,8 @@ def main():
 	fout.write('  nodesep=0.1;\n')
 	fout.write('  size="30,18";\n')
 	fout.write('  ratio=fill;\n')
-	fout.write('  edge [penwidth=2];\n')
-	fout.write('  node [penwidth=2,fontsize=14,style=filled,fillcolor=white];\n')
+	fout.write('  edge [penwidth=3];\n')
+	fout.write('  node [penwidth=3,fontsize=14,style=filled,fillcolor=white];\n')
 
 	# search for an algorithm_action_# implementation
         if options.verbose: print 'searching for algorithm_actions...'
@@ -74,10 +74,10 @@ def main():
 	    headerFile.close()
 
 	# Draw clusters
-	for i in [["Base","lightblue"],["CFR","plum"],["AddressArithmetic","beige"],["BBP","lightcyan"],\
+        for i in [["Base","lightblue"],["CFR","plum"],["AddressArithmetic","beige"],["BBP","lightcyan"],\
                   ["BBPReverse","tomato2"],["BBPTapeAdjoint","lightgreen"],["BBPTape","lightgoldenrod"],\
                   ["ConstantFolding","lightgrey"],["Linearization","dimgray"],["TypeChange","palevioletred"],\
-                  ["MemOpsTradeoffPreaccumulation","coral"],["TraceDiff","dodgerblue4"]]:
+                  ["MemOpsTradeoffPreaccumulation","coral"],["TraceDiff","dodgerblue4"],["PushPop","wheat2"]]:
 	    (algNamespace,algColor) = i
 	    fout.write("\n  subgraph cluster_%s {\n" % algNamespace)
 	    fout.write("    fontsize=18;\n")

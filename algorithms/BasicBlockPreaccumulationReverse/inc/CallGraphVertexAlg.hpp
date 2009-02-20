@@ -57,13 +57,13 @@
 
 #include "xaifBooster/utils/inc/MemCounter.hpp"
 
-#include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
-
 #include "xaifBooster/algorithms/CodeReplacement/inc/ReplacementList.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ReplacementId.hpp"
+
+#include "xaifBooster/algorithms/PushPop/inc/CallGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -72,7 +72,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   /** 
    * class to implement algorithms relevant for ... 
    */
-  class CallGraphVertexAlg : public xaifBoosterAddressArithmetic::CallGraphVertexAlg {
+  class CallGraphVertexAlg : public xaifBoosterPushPop::CallGraphVertexAlg {
   public:
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);

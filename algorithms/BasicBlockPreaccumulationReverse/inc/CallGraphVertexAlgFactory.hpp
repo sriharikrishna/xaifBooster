@@ -53,11 +53,11 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/PushPop/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 
   DERIVED_ALG_FACTORY_DECL_MACRO(CallGraphVertex,
-				 xaifBoosterAddressArithmetic::CallGraphVertexAlgFactory,
+				 xaifBoosterPushPop::CallGraphVertexAlgFactory,
 				 xaifBoosterBasicBlockPreaccumulationReverse)
 
 #endif

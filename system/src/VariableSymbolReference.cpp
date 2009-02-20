@@ -119,7 +119,7 @@ namespace xaifBooster {
     std::ostringstream out;
     out << "VariableSymbolReference[" << this 
 	<< " mySymbol=" << mySymbol_r.getId().c_str()
-	<< " mySope=" << myScope_r.getId().c_str()
+	<< " myScope=" << myScope_r.getId().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of VariableSymbolReference::debug

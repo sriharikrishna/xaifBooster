@@ -83,29 +83,14 @@ namespace xaifBoosterTypeChange {
   }
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
-    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI=
-	   myPriorToCallAssignments.begin();
-	 aBasicBlockElementListI!=myPriorToCallAssignments.end();
-	 ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI)
-	delete *aBasicBlockElementListI;
-    }
   }
 
   void SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
-    // assignments prior to the call
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI
-	   =myPriorToCallAssignments.begin();
-	 aBasicBlockElementListI!=myPriorToCallAssignments.end();
-	 ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI) { 
-	(*aBasicBlockElementListI)->printXMLHierarchy(os);
-      } 
-    }
     printXMLHierarchyImplWithAdjustments(os);
   }
 
-  void SubroutineCallAlg::printXMLHierarchyImplWithAdjustments(std::ostream& os) const { 
+  void SubroutineCallAlg::printXMLHierarchyImplWithAdjustments(std::ostream& os) const {
+    mySaveValuesAcrossForTypeChange.printXMLHierarchy(os);
     for (PlainBasicBlock::BasicBlockElementList::const_iterator priorI=myPriorAdjustmentsList.begin();
 	 priorI!=myPriorAdjustmentsList.end();
 	 ++priorI) { 
@@ -288,7 +273,8 @@ namespace xaifBoosterTypeChange {
     replaceArguments(true);
   }
 
-  void SubroutineCallAlg::replaceArguments(bool withCopy) { 
+  void SubroutineCallAlg::replaceArguments(bool withCopy) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterTypeChange::SubroutineCallAlg::replaceArguments() " << debug().c_str());
     const ArgumentList::ArgumentSymbolReferencePList* anArgumentSymbolReferencePList_p(0); 
     const ControlFlowGraph* aCFG_p(0); 
     const BasicBlock& theBasicBlock(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance());
@@ -554,26 +540,19 @@ namespace xaifBoosterTypeChange {
 					 bool forcePassive) { 
     // create a new symbol and add a new VariableSymbolReference in the Variable
     static std::list<std::string> reportShapeMismatchOnce;
-    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-			  getCallGraph().getScopeTree().getGlobalScope());
-    Symbol& theNewVariableSymbol(theGlobalScope.
-				 getSymbolTable().
+    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+    Symbol& theNewVariableSymbol(theGlobalScope.getSymbolTable().
 				 addUniqueAuxSymbol(SymbolKind::VARIABLE,
 						    formalArgumentSymbol.getSymbolType(),
 						    SymbolShape::offset(formalArgumentSymbol.getSymbolShape(),
 									shapeOffsetFromFormal),
 						    (forcePassive)?false:formalArgumentSymbol.getActiveTypeFlag()));
     theNewVariableSymbol.setFrontEndType(formalArgumentSymbol.getFrontEndType());
-    VariableSymbolReference* 
-      theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
-								  theGlobalScope));
+    VariableSymbolReference* theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
+											 theGlobalScope));
     if (theConcreteArgument.isArgument()){ 
       // preserve dimension information from the concrete argument if any:
-      const Symbol& theConcreteArgumentSymbol(theConcreteArgument.
-					      getArgument().
-					      getVariable().
-					      getVariableSymbolReference().
-					      getSymbol());
+      const Symbol& theConcreteArgumentSymbol(theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol());
       if (theConcreteArgumentSymbol.hasDimensionBounds()) { 
 	const Symbol::DimensionBoundsPList& aDimensionBoundsPList(theConcreteArgumentSymbol.getDimensionBoundsPList());
 	if (shapeOffsetFromFormal) { 
@@ -642,7 +621,7 @@ namespace xaifBoosterTypeChange {
     aVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
     aVariable.getAliasMapKey().setTemporary();
     aVariable.getDuUdMapKey().setTemporary();
-  } 
+  } // end SubroutineCallAlg::makeTempSymbol()
 
   void SubroutineCallAlg::addWrapperNames(const std::string& theSpaceSeparatedNames) { 
     std::string::size_type startPosition=0,endPosition=0;
@@ -657,10 +636,10 @@ namespace xaifBoosterTypeChange {
   }
 
   void SubroutineCallAlg::handleArrayAccessIndices(const ConcreteArgument& theConcreteArgument,
-						   const BasicBlock& theBasicBlock) { 
+						   const BasicBlock& theBasicBlock) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterTypeChange::SubroutineCallAlg::handleArrayAccessIndices() " << debug().c_str());
     // get the argument algorithm instance 
-    ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.
-										   getConcreteArgumentAlgBase()));
+    ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
     if (!theConcreteArgumentAlg.hasPostConversionConcreteArgument()) { 
       // no post conversion, nothing further to be done here
       return;
@@ -676,67 +655,31 @@ namespace xaifBoosterTypeChange {
 	// (this discounts constant expressions, this is a todo which might be dealt with later or 
 	// it may be completly superceded by a TBR analysis)
 	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
-	if (theIndexExpression.numVertices()==1
-	    && 
-	    (!(*(theIndexExpression.vertices().first)).isArgument())) { 
-	  // this must be a constant
-	  // do nothing
-	}
-	else {  // is not a constant
+	if (!theIndexExpression.isConstant()) {
 	  Expression::CArgumentPList listToBeAppended;
 	  theIndexExpression.appendArguments(listToBeAppended);
 	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin();
 	       argumentI!=listToBeAppended.end();
 	       ++argumentI) { 
-	    // do we have it saved already?
-	    bool savedAlready=false; 
-	    for (Expression::VariablePVariableSRPPairList::iterator it=myReplacementPairs.begin();
-		 it!=myReplacementPairs.end();
-		 ++it) { 
-	      if ((*argumentI)->getVariable().equivalentTo(*((*it).first))) { 
-		savedAlready=true; 
-		break; 
-	      }
-	    }
-	    if (!savedAlready 
+	    if (!mySaveValuesAcrossForTypeChange.isSavedAcross(**argumentI)
 		&& 
 		(dynamic_cast<const SubroutineCall&>(getContaining())).overwrites((*argumentI)->getVariable())) {
 	      if (theBasicBlock.getReversalType()==ForLoopReversalType::EXPLICIT) { 
 	        // for sanity check if we a re about to change a known loop variable 
 		// in this call which we forbid
-		const ControlFlowGraphVertex::VariablePList&  theKnownLoopVariables(theBasicBlock.getKnownLoopVariables());
+		const ControlFlowGraphVertex::VariablePList& theKnownLoopVariables(theBasicBlock.getKnownLoopVariables());
 		for (ControlFlowGraphVertex::VariablePList::const_iterator knownVarsI=theKnownLoopVariables.begin();
 		     knownVarsI!=theKnownLoopVariables.end();
-		     ++knownVarsI) { 
+		     ++knownVarsI) {
 		  if ((*argumentI)->getVariable().equivalentTo(**knownVarsI)) 
 		    THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: analysis determines overwrite of simple loop variable "
 					       << (*argumentI)->getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
 					       << " in call to "
 					       << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str());
-		} 
+		}
 	      }
-	      Assignment* theIndexExpressionAssignment_p(new Assignment(false));
-	      // save it in the list
-	      myPriorToCallAssignments.push_back(theIndexExpressionAssignment_p);
-	      theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
-	      // create a new symbol and add a new VariableSymbolReference in the Variable
-	      VariableSymbolReference* theNewVariableSymbolReference_p=
-		new VariableSymbolReference(theBasicBlock.getScope().getSymbolTable().
-					    addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							       SymbolType::INTEGER_STYPE,
-							       SymbolShape::SCALAR,
-							       false),
-					    theBasicBlock.getScope());
-	      theNewVariableSymbolReference_p->setId("1");
-	      theNewVariableSymbolReference_p->setAnnotation("xaifBoosterTypeChange::SubroutineCallAlg::handleArrayAccessIndices");
-	      myReplacementPairs.push_back(Expression::VariablePVariableSRPPair(&((*argumentI)->getVariable()),
-										theNewVariableSymbolReference_p));
-	      // pass it on to the LHS and relinquish ownership
-	      theIndexExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-	      theIndexExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
-	      theIndexExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
-	      // set the RHS
-	      theIndexExpressionAssignment_p->getRHS().supplyAndAddVertexInstance((*argumentI)->createCopyOfMyself());
+	      // save the value of the Argument before the subroutine call
+	      mySaveValuesAcrossForTypeChange.saveValue(**argumentI,theBasicBlock);
 	    }
 	  }
 	}
@@ -748,19 +691,16 @@ namespace xaifBoosterTypeChange {
       ArrayAccess::IndexTripletListType& thePostReplacementIndexTripletList(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexTripletList());
       for (ArrayAccess::IndexTripletListType::iterator thePostReplacementIndexTripletListI=thePostReplacementIndexTripletList.begin();
 	   thePostReplacementIndexTripletListI!=thePostReplacementIndexTripletList.end();
-	   ++thePostReplacementIndexTripletListI) { 
+	   ++thePostReplacementIndexTripletListI) {
 	for (IndexTriplet::IndexPairList::iterator anIndexPairListI=(*thePostReplacementIndexTripletListI)->getIndexPairList().begin();
 	     anIndexPairListI!=(*thePostReplacementIndexTripletListI)->getIndexPairList().end();
-	     ++anIndexPairListI) { 
+	     ++anIndexPairListI) {
 	  Expression& theIndexExpression(*((*anIndexPairListI).second));
-	  theIndexExpression.replaceVariables(myReplacementPairs);
+	  theIndexExpression.replaceVariables(mySaveValuesAcrossForTypeChange.getReplacementPairsList());
 	}
       }
     }
   } // end of SubroutineCallAlg::handleArrayAccessIndices
 
-  const Expression::VariablePVariableSRPPairList& SubroutineCallAlg::getReplacementPairs()const { 
-    return myReplacementPairs;
-  } 
+} // end namespace xaifBoosterTypeChange
 
-} // end of namespace 
