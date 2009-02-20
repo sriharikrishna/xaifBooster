@@ -4,6 +4,7 @@
 #include <list>
 
 #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 
 using namespace xaifBooster;
 

@@ -78,6 +78,7 @@ LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
 LIBS+=../../DerivativePropagator/lib/libxaifBoosterDerivativePropagator.a
 LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
 LIBS+=../../SaveValuesAcross/lib/libxaifBoosterSaveValuesAcross.a
+LIBS+=../../RequiredValues/lib/libxaifBoosterRequiredValues.a
 
 
 # setup for ANGEL
