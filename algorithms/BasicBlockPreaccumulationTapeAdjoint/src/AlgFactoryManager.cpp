@@ -54,6 +54,7 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/MarkerAlgFactory.hpp"
 
@@ -86,6 +87,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void AlgFactoryManager::resets() {
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
+    resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
     resetMarkerAlgFactory(new MarkerAlgFactory());
   }

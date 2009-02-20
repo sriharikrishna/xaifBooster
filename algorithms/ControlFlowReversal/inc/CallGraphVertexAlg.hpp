@@ -65,7 +65,7 @@ namespace xaifBoosterControlFlowReversal {
    * class to implement algorithms relevant for the 
    * reversal of the control flow
    */
-  class CallGraphVertexAlg : public CallGraphVertexAlgBase {
+  class CallGraphVertexAlg : virtual public CallGraphVertexAlgBase {
   public:
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);

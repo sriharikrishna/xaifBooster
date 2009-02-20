@@ -5,6 +5,7 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
@@ -19,7 +20,8 @@ namespace xaifBoosterAddressArithmetic {
    * is handled in BasicBlockPreaccumulationTape and 
    * BasicBlockPreaccumulationTapeAdjoint resp.
    */
-  class CallGraphVertexAlg : public xaifBoosterControlFlowReversal::CallGraphVertexAlg {
+  class CallGraphVertexAlg : public xaifBoosterControlFlowReversal::CallGraphVertexAlg,
+                             public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::CallGraphVertexAlg {
   public:
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);
