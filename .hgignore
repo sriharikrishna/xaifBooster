@@ -15,9 +15,10 @@ syntax: glob
 */buildStamp.hpp
 algorithms/*/driver/quickRegression.bash
 algorithms/makeAlgGraph*
-algorithms/algGraph.*
+algorithms/algGraph*
 .resetEnv.last
 doc/html/*
 doc/xaifbooster_doc.ps
+doc/AlgConfigInheritance*.svg
 tools/codegen/classes/*.class
 .cproject
