@@ -58,7 +58,7 @@
 
 namespace xaifBoosterTraceDiff { 
   BasicBlockAlgBase* BasicBlockAlgFactory::makeNewAlg(BasicBlock& theContaining) { 
-    return dynamic_cast<xaifBoosterControlFlowReversal::BasicBlockAlg*>(new BasicBlockAlg(theContaining)); 
+    return dynamic_cast<BasicBlockAlg*>(new BasicBlockAlg(theContaining)); 
   } 
   xaifBooster :: BasicBlockAlgFactory* BasicBlockAlgFactory::instance() { 
     return AlgFactoryManager::instance()->getBasicBlockAlgFactory(); 
