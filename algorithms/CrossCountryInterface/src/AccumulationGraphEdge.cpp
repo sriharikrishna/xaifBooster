@@ -51,11 +51,11 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraphEdge.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraphEdge.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation {
+namespace xaifBoosterCrossCountryInterface {
 
   AccumulationGraphEdge::AccumulationGraphEdge() {}
   AccumulationGraphEdge::~AccumulationGraphEdge() {}
@@ -67,5 +67,5 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } // end AccumulationGraphEdge::debug()
 
-} // end namespace xaifBoosterBasicBlockPreaccumulation
+} // end namespace xaifBoosterCrossCountryInterface
 
