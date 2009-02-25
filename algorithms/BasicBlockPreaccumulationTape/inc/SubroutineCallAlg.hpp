@@ -52,14 +52,11 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/TypeChange/inc/SubroutineCallAlg.hpp"
 
 using namespace xaifBooster;
-
-namespace xaifBooster { 
-  class SubroutineCall;
-}
 
 namespace xaifBoosterBasicBlockPreaccumulationTape {  
 
