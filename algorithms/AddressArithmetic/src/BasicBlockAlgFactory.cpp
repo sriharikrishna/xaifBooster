@@ -55,15 +55,20 @@
 #include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
 
-
 namespace xaifBoosterAddressArithmetic { 
-  BasicBlockAlgBase* BasicBlockAlgFactory::makeNewAlg(BasicBlock& theContaining) { 
-    return dynamic_cast<xaifBoosterControlFlowReversal::BasicBlockAlg*>(new BasicBlockAlg(theContaining)); 
+
+  BasicBlockAlgBase*
+  BasicBlockAlgFactory::makeNewAlg(BasicBlock& theContaining) { 
+    return dynamic_cast<BasicBlockAlg*>(new BasicBlockAlg(theContaining)); 
   } 
-  xaifBooster :: BasicBlockAlgFactory* BasicBlockAlgFactory::instance() { 
+
+  xaifBooster::BasicBlockAlgFactory*
+  BasicBlockAlgFactory::instance() { 
     return AlgFactoryManager::instance()->getBasicBlockAlgFactory(); 
   } 
-  std::string BasicBlockAlgFactory::debug() const { 
+
+  std::string
+  BasicBlockAlgFactory::debug() const { 
     std::ostringstream out; 
     out << "xaifBoosterAddressArithmetic" 
 	<< "::" 
