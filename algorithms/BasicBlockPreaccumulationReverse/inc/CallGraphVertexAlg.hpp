@@ -88,6 +88,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     virtual void algorithm_action_4();
 
     static void checkPointToFiles();
+
+    static void forceAllArgumentCheckpoints();
     
     /**
      * Sets flag to insert runtime conuters into the code.
@@ -200,6 +202,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * to the stack model
      */
     static bool ourCheckPointToFilesFlag;
+
+    /** 
+     * used to control if checkpoints should 
+     * forcibly be written for all formal arguments 
+     * including ones for routines that are  never called
+     * or only called with with constant actual arguments 
+     */
+    static bool ourForceAllArgCheckPointFlag;
     
   };
  
