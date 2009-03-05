@@ -78,6 +78,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   
   bool CallGraphVertexAlg::runtimeCounters=false;
   bool CallGraphVertexAlg::ourCheckPointToFilesFlag=false;
+  bool CallGraphVertexAlg::ourForceAllArgCheckPointFlag=false;
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     xaifBoosterAddressArithmetic::CallGraphVertexAlg(theContaining), 
@@ -447,7 +448,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 											 getControlFlowGraphAlgBase()));
       // see if we skip this because of all constant invocations. 
       DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::handleCheckPoint: checking " << aVariable.debug().c_str() << " for " << debug().c_str());
-      if (!theControlFlowGraphAlg.getSomewhereVariablePattern().isTracked(theResult.second)) {
+      if (!ourForceAllArgCheckPointFlag 
+	  && 
+	  !theControlFlowGraphAlg.getSomewhereVariablePattern().isTracked(theResult.second)) {
 	// must always be called with some constant or is head routine or is never called.
 	DBG_MACRO(DbgGroup::DATA,"CallGraphVertexAlg::handleCheckPoint: skipping " << aVariable.debug().c_str() << " for " << debug().c_str());
 	return; 
@@ -532,6 +535,11 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void
   CallGraphVertexAlg::checkPointToFiles() { 
     ourCheckPointToFilesFlag=true;
+  }
+
+  void
+  CallGraphVertexAlg::forceAllArgumentCheckpoints() { 
+    ourForceAllArgCheckPointFlag=true;
   }
 
 } // end of namespace 
