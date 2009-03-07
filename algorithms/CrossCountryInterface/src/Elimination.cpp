@@ -60,7 +60,7 @@ using namespace xaifBoosterBasicBlockPreaccumulation;
 namespace xaifBoosterCrossCountryInterface {
 
   // defaults for command-line configurable settings
-  AwarenessLevel::AwarenessLevel_E Elimination::ourAwarenessLevel = AwarenessLevel::NO_AWARENESS;
+  AwarenessLevel::AwarenessLevel_E Elimination::ourAwarenessLevel = AwarenessLevel::UNIT_AWARENESS;
 
   bool Elimination::ourAllowMaintainingFlag = false;
 
