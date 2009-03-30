@@ -404,19 +404,15 @@ namespace xaifBoosterAddressArithmetic {
     if (ourIgnoranceFlag) { 
       return;
     }
-    // std::cout << "about to push " << anUnknownVariable.equivalenceSignature() << " in " << theTapingVertex.debug().c_str() << std::endl; 
+    DBG_MACRO(DbgGroup::DATA, "about to push " << anUnknownVariable.equivalenceSignature().c_str()
+                           << " in " << theTapingVertex.debug().c_str());
     BasicBlock& thePushBlock(dynamic_cast<BasicBlock&>(theTapingVertex.getStorePlaceholder().getNewVertex()));
     // has it been pushed already?
     for (BasicBlock::BasicBlockElementList::const_iterator pushIterator=thePushBlock.getBasicBlockElementList().begin();
 	 pushIterator!=thePushBlock.getBasicBlockElementList().end();
 	 ++pushIterator) { 
-      /* 
-	 std::cout << "comparing already pushed " 
-	 << (*(dynamic_cast<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&>(**pushIterator).getArgumentList().begin()))->getArgument().getVariable().equivalenceSignature()
-	 << " with to be pushed variable "
-	 << anUnknownVariable.equivalenceSignature() 
-	 << std::endl; 
-      */
+      DBG_MACRO(DbgGroup::DATA, "comparing already pushed " << (*(dynamic_cast<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&>(**pushIterator).getArgumentList().begin()))->getArgument().getVariable().equivalenceSignature().c_str()
+	 << " with to be pushed variable " << anUnknownVariable.equivalenceSignature().c_str());
       if ((*(dynamic_cast<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&>(**pushIterator).getArgumentList().begin()))->getArgument().getVariable().equivalenceSignature()
 	  ==anUnknownVariable.equivalenceSignature()) { 
 	// already pushed, done

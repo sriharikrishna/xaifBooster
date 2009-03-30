@@ -53,6 +53,10 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/BaseConstant.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 
@@ -60,18 +64,9 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
 using namespace xaifBooster;
-
-namespace xaifBooster { 
-  class Assignment;
-  class BaseConstant;
-  class SubroutineCall;
-  class Symbol;
-}
-
-namespace xaifBoosterInlinableXMLRepresentation { 
-  class InlinableSubroutineCall;
-}
 
 namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
 
@@ -106,19 +101,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     
   private:
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg();
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg(const BasicBlockAlg&);
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg operator=(const BasicBlockAlg&);
 
     /** 
@@ -189,17 +178,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 				 const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry,
 				 const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
-    /** 
-     * add the assignment to the proper BasicBlockElementList based on aReversalType
-     */
-    const Assignment& addConstantAssignment(const BaseConstant& theConstant,
-					    const Symbol& aTemporarySymbol,
-					    const Scope& theScopeOfTheTemporarySymbol,
-					    const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-
-  };
+  }; // end class xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg
  
-} // end of namespace 
+} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
                                                                      
 #endif

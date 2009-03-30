@@ -88,21 +88,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   private:
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg();
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg(const BasicBlockAlg&);
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg operator=(const BasicBlockAlg&);
-    
+
     /**
      * need to have something to take a function pointer from
      */
@@ -141,19 +135,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     private: 
 
-      /** 
-       * no def
-       */
+      /// no def
       ReinterpretedDerivativePropagator();
 
-      /** 
-       * no def
-       */
+      /// no def
       ReinterpretedDerivativePropagator(const ReinterpretedDerivativePropagator&);
 
-      /** 
-       * no def
-       */
+      /// no def
       ReinterpretedDerivativePropagator operator=(const ReinterpretedDerivativePropagator&);
 
       /** 
@@ -189,8 +177,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     ReinterpretedDerivativePropagatorPList myReinterpretedDerivativePropagatorPList;
 
-  };
+  }; // end class xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg
  
-} // end of namespace xaifBoosterAngelInterfaceAlgorithms
-                                                                     
+} // end namespace xaifBoosterBasicBlockPreaccumulationTape
+
 #endif
+

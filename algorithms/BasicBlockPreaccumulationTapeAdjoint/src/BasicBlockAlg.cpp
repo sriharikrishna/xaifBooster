@@ -87,7 +87,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       if (*li)
 	delete *li;
     } 
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementListAnonymousReversal.begin();
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementListExplicitReversal.begin();
          li!=myBasicBlockElementListExplicitReversal.end();
          li++) { 
       if (*li)
@@ -158,36 +158,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     aNewCall_p->setId("reverse_call");
     getBasicBlockElementList(aReversalType).push_back(aNewCall_p);
     return *aNewCall_p;									     
-  } 
-
-  const Assignment& 
-  BasicBlockAlg::addConstantAssignment(const BaseConstant& theConstant,
-				       const Symbol& aTemporarySymbol,
-				       const Scope& theScopeOfTheTemporarySymbol,
-				       const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
-    Assignment* theNewAssignment_p(new Assignment(false));
-    theNewAssignment_p->setId("tape_adjoint_constant_assignment");
-    getBasicBlockElementList(aReversalType).push_back(theNewAssignment_p);
-    Constant* theConstantRHS_p(new Constant(theConstant.getType(),false));
-    theConstantRHS_p->setFromString(theConstant.toString());
-    theConstantRHS_p->setId(theNewAssignment_p->getRHS().getNextVertexId());
-    theNewAssignment_p->getRHS().supplyAndAddVertexInstance(*theConstantRHS_p);
-    // create a new symbol and add a new VariableSymbolReference in the Variable
-    VariableSymbolReference* theNewVariableSymbolReference_p=
-      new VariableSymbolReference(getContaining().getScope().
-				  getSymbolTable().
-				  addUniqueAuxSymbol(SymbolKind::VARIABLE,
-						     SymbolType::INTEGER_STYPE,
-						     SymbolShape::SCALAR,
-						     false),
-				  getContaining().getScope());
-    theNewVariableSymbolReference_p->setId("1");
-    theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addConstantAssignment");
-    // pass it on to the LHS and relinquish ownership
-    theNewAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-    theNewAssignment_p->getLHS().getAliasMapKey().setTemporary();
-    theNewAssignment_p->getLHS().getDuUdMapKey().setTemporary();
-    return *theNewAssignment_p;									     
   } 
 
   void BasicBlockAlg::reinterpretArrayAccess(const Variable& theOriginalVariable,
@@ -302,7 +272,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	  noSequence=true;
       } // end of if (!done)
     } // end while (!done)
-  } 
+  } // end BasicBlockAlg::algorithm_action_5()
 
   void BasicBlockAlg::addZeroDeriv(Variable& theTarget,
 				   const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
@@ -345,10 +315,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   const Variable& BasicBlockAlg::addFactorPop(const Symbol& aTemporarySymbol,
 					      const Scope& theScopeOfTheTemporarySymbol,
 					      const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("Pop",
-														aReversalType));
-    theZeroDerivCall.setId("inline_pop");
-    Variable& theInlineVariable(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theFactorPopCall (addInlinableSubroutineCall("Pop",
+                                                                                                                 aReversalType));
+    theFactorPopCall.setId("inline_pop");
+    Variable& theInlineVariable(theFactorPopCall.addConcreteArgument(1).getArgument().getVariable());
     // give it a name etc.
     // create a new symbol and add a new VariableSymbolReference in the Variable
     VariableSymbolReference* theNewVariableSymbolReference_p=

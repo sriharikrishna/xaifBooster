@@ -87,7 +87,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       if (*li)
 	delete *li;
     } 
-  } 
+  }
 
   const xaifBoosterDerivativePropagator::DerivativePropagator& 
   BasicBlockAlg::ReinterpretedDerivativePropagator::getOriginalDerivativePropagator() const { 
@@ -172,7 +172,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     if (!found) 
       // we didn't find it...
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::printDerivativePropagatorAsTape: didn't find proper ReinterpretedDerivativePropagator");
-  }
+  } // end BasicBlockAlg::printDerivativePropagatorAsTape()
 
   void BasicBlockAlg::algorithm_action_4() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4(reinterpret DerivativePropagators as tapings)");
@@ -297,7 +297,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
             theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
             theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
           } // end >1 argument
-        } // end index expression is non-const
+        } // end if index expression is non-constant
       } // loop for index pairs
     } // end for i
   } // end of BasicBlockAlg::reinterpretArrayAccess
