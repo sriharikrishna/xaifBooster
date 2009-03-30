@@ -110,6 +110,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /// no def
     BasicBlockAlg operator=(const BasicBlockAlg&);
 
+    typedef std::pair<const Variable*, const Variable*> VariablePPair;
+    typedef std::list<VariablePPair> VariablePPairList;
+
+    /// This list maps propagation address variables with the corresponding variables that have been popped
+    VariablePPairList myAddressVariableCorList;
+
+    /// This list maps propagation factor variables with the corresponding variables that have been popped
+    VariablePPairList myFactorVariableCorList;
+
     /** 
      * the elements that make up the adjoint code
      * which assumes an anonymous reversal (no knowledge about the original 
@@ -157,8 +166,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
      * add the call to the proper BasicBlockElementList based on aReversalType
      */
     const Variable& addFactorPop(const Symbol& aTemporarySymbol,
-				 const Scope& theScopeOfTheTemporarySymbol,
 				 const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
+
+    /** 
+     * add the call to the proper BasicBlockElementList based on \p aReversalType
+     * Unlike addFactorPop, this method generates its own symbol for the variable to be popped into.
+     */
+    const Variable& addAddressPop(const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
     /** 
      * add the call to the proper BasicBlockElementList based on aReversalType
