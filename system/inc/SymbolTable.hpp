@@ -84,9 +84,6 @@ namespace xaifBooster {
 				const SymbolShape::SymbolShape_E& aShape,
 				bool anActiveTypeFlag);
 
-    Symbol&  addUniqueAuxSymbolMatchingVariable(const Variable& aVariable,
-						bool anActiveTypeFlag);
-
     const Symbol& getSymbol(const std::string& aName) const;
 
     std::string debug() const ; 
