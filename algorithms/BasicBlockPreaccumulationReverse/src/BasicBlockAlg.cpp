@@ -62,7 +62,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     BasicBlockAlgBase(theContaining),
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining),
     xaifBoosterAddressArithmetic::BasicBlockAlg(theContaining) { 
   }
 

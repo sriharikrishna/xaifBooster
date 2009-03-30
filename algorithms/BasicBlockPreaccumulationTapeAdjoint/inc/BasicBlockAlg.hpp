@@ -58,7 +58,7 @@
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -77,10 +77,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   /** 
    * class to implement a reinterpretation of 
-   * the DerivativePropagator instances as 
-   * taping operations
+   * the DerivativePropagator instances as propagators in the adjoint sweep 
    */
-  class BasicBlockAlg : virtual public xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg {
+  class BasicBlockAlg : public xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg {
   public:
     
     BasicBlockAlg(BasicBlock& theContaining);
