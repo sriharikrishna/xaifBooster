@@ -77,7 +77,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     xaifBooster::BasicBlockAlgBase(theContaining),
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) { 
+    xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg(theContaining) { 
   }
 
   BasicBlockAlg::~BasicBlockAlg() { 

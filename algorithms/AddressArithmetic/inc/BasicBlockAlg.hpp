@@ -75,7 +75,6 @@ namespace xaifBoosterAddressArithmetic {
    * transformation, it just ensure proper calling.
    */
   class BasicBlockAlg : public xaifBoosterControlFlowReversal::BasicBlockAlg, 
-			public xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg,
 			public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg {
 
   public:
