@@ -384,25 +384,17 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+          <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
             <xaif:Argument position="1">
-              <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-            </xaif:Argument>
-            <xaif:Argument position="2">
-              <xaif:VariableReference vertex_id="1" active="true" du_ud="3" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
-              </xaif:VariableReference>
-            </xaif:Argument>
-            <xaif:Argument position="3">
-              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -423,13 +415,6 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-            <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
-              </xaif:VariableReference>
-            </xaif:Argument>
-          </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
@@ -444,6 +429,21 @@
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+            <xaif:Argument position="1">
+              <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+            </xaif:Argument>
+            <xaif:Argument position="2">
+              <xaif:VariableReference vertex_id="1" active="true" du_ud="3" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+            <xaif:Argument position="3">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -518,6 +518,13 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
@@ -532,13 +539,6 @@
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:VariableReference>
-            </xaif:Argument>
-          </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-            <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -886,25 +886,17 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+          <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
             <xaif:Argument position="1">
-              <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-            </xaif:Argument>
-            <xaif:Argument position="2">
-              <xaif:VariableReference vertex_id="1" active="true" du_ud="3" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
-              </xaif:VariableReference>
-            </xaif:Argument>
-            <xaif:Argument position="3">
-              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_13" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -925,13 +917,6 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-            <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_14" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
-              </xaif:VariableReference>
-            </xaif:Argument>
-          </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
@@ -946,6 +931,21 @@
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
+            <xaif:Argument position="1">
+              <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+            </xaif:Argument>
+            <xaif:Argument position="2">
+              <xaif:VariableReference vertex_id="1" active="true" du_ud="3" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+            <xaif:Argument position="3">
+              <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -1020,6 +1020,13 @@
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
+          <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
+            <xaif:Argument position="1">
+              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+              </xaif:VariableReference>
+            </xaif:Argument>
+          </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
@@ -1034,13 +1041,6 @@
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:VariableReference>
-            </xaif:Argument>
-          </xaif:InlinableSubroutineCall>
-          <xaif:InlinableSubroutineCall subroutine_name="Pop" statement_id="inline_pop">
-            <xaif:Argument position="1">
-              <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_16" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>

@@ -103,7 +103,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_100" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_101" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_101" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_102" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -113,7 +113,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_105" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_106" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_106" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_107" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -125,21 +125,21 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_110" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_111" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_111" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_112" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_113" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_114" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_114" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_115" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_115" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_116" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_116" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_117" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_117" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_118" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_118" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_119" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
@@ -148,12 +148,6 @@
           <xaif:Symbol symbol_id="OpenAD_Symbol_120" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_121" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_122" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_123" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_124" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_13" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -325,7 +319,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_9" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_90" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_90" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_91" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -333,7 +327,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_93" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_94" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_94" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_95" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -341,7 +335,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_97" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_98" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_98" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_99" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -2676,59 +2670,11 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_2">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_90" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_89" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_3">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_91" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_89" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_4">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_92" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_7" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_89" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:DerivativePropagator>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_90" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-                </xaif:VariableReference>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
               </xaif:A>
               <xaif:X deriv="1">
                 <xaif:SymbolReference vertex_id="1" symbol_id="RHOLOC_1" annotation="" scope_id="9"/>
@@ -2743,37 +2689,14 @@
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_2" annotation="" scope_id="9"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_90" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Y>
           </xaif:Sax>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_91" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-                </xaif:VariableReference>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="RHOLOC_1" annotation="" scope_id="9"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_2" annotation="" scope_id="9"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_92" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_7" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -2789,9 +2712,47 @@
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_2" annotation="" scope_id="9"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_90" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Y>
           </xaif:Saxpy>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_10" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
+                </xaif:VariableReference>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="RHOLOC_1" annotation="" scope_id="9"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_90" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Sax>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_89" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                </xaif:VariableReference>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_90" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="UVELLOC_2" annotation="" scope_id="9"/>
+            </xaif:Y>
+          </xaif:Sax>
         </xaif:DerivativePropagator>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="102" annotation=""/>
@@ -3118,9 +3079,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_5">
+        <xaif:Assignment statement_id="_jacobian_accumulation_2">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_93" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_91" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -3134,9 +3095,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_6">
+        <xaif:Assignment statement_id="_jacobian_accumulation_3">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_94" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_92" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -3150,32 +3111,18 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_7">
+        <xaif:Assignment statement_id="_jacobian_accumulation_4">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_95" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_94" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_8">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_96" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_93" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
             <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="4" active="false" deriv="0" constant="0">
+            <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
+            <xaif:VariableReference vertex_id="5" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_21" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_18" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
@@ -3183,10 +3130,10 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_13" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="7" target="5" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="5" target="3" position="2"/>
+            <xaif:ExpressionEdge edge_id="2" source="5" target="4" position="1"/>
+            <xaif:ExpressionEdge edge_id="3" source="6" target="4" position="2"/>
+            <xaif:ExpressionEdge edge_id="4" source="4" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="5" source="7" target="3" position="2"/>
             <xaif:ExpressionEdge edge_id="6" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
@@ -3194,8 +3141,50 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_94" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_94" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Sax>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_93" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_91" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -3218,19 +3207,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_94" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_92" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_94" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -3249,38 +3230,7 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_95" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-                </xaif:VariableReference>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_9" annotation="" scope_id="13"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:IndexTriplet>
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                  </xaif:Index>
-                </xaif:IndexTriplet>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_96" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_93" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -3540,9 +3490,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_9">
+        <xaif:Assignment statement_id="_jacobian_accumulation_5">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_97" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_95" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -3556,9 +3506,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_10">
+        <xaif:Assignment statement_id="_jacobian_accumulation_6">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_98" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_96" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -3572,32 +3522,18 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_11">
+        <xaif:Assignment statement_id="_jacobian_accumulation_7">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_99" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_98" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_12">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_100" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_97" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
             <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="4" active="false" deriv="0" constant="0">
+            <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
+            <xaif:VariableReference vertex_id="5" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_35" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_32" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
@@ -3605,10 +3541,10 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_27" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="7" target="5" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="5" target="3" position="2"/>
+            <xaif:ExpressionEdge edge_id="2" source="5" target="4" position="1"/>
+            <xaif:ExpressionEdge edge_id="3" source="6" target="4" position="2"/>
+            <xaif:ExpressionEdge edge_id="4" source="4" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="5" source="7" target="3" position="2"/>
             <xaif:ExpressionEdge edge_id="6" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
@@ -3616,8 +3552,50 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_98" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_98" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Sax>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_97" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_95" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -3640,19 +3618,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_98" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_96" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_98" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -3671,38 +3641,7 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_99" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-                </xaif:VariableReference>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_9" annotation="" scope_id="13"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:IndexTriplet>
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                  </xaif:Index>
-                </xaif:IndexTriplet>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_100" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_97" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -3852,9 +3791,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_13">
+        <xaif:Assignment statement_id="_jacobian_accumulation_8">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_101" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_99" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -3868,9 +3807,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_14">
+        <xaif:Assignment statement_id="_jacobian_accumulation_9">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_102" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_100" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -3884,26 +3823,54 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_15">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_103" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_102" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:DerivativePropagator>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_101" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_101" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Sax>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_101" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_99" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -3926,50 +3893,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_102" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_100" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_9" annotation="" scope_id="13"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:IndexTriplet>
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                  </xaif:Index>
-                </xaif:IndexTriplet>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_103" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-                </xaif:VariableReference>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_101" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -4240,9 +4168,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_16">
+        <xaif:Assignment statement_id="_jacobian_accumulation_10">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_104" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_102" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -4254,9 +4182,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_17">
+        <xaif:Assignment statement_id="_jacobian_accumulation_11">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_105" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_103" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -4264,15 +4192,15 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_58" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_104" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_102" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_18">
+        <xaif:Assignment statement_id="_jacobian_accumulation_12">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_106" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_104" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -4280,38 +4208,24 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_59" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_104" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_102" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_19">
+        <xaif:Assignment statement_id="_jacobian_accumulation_13">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_107" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_106" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_20">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_108" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_105" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
             <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="4" active="false" deriv="0" constant="0">
+            <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
+            <xaif:VariableReference vertex_id="5" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_55" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_52" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
@@ -4319,10 +4233,10 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_47" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="7" target="5" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="5" target="3" position="2"/>
+            <xaif:ExpressionEdge edge_id="2" source="5" target="4" position="1"/>
+            <xaif:ExpressionEdge edge_id="3" source="6" target="4" position="2"/>
+            <xaif:ExpressionEdge edge_id="4" source="4" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="5" source="7" target="3" position="2"/>
             <xaif:ExpressionEdge edge_id="6" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
@@ -4330,8 +4244,50 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_106" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_106" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Sax>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_105" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_103" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -4354,19 +4310,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_106" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_104" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_106" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -4385,38 +4333,7 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_107" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-                </xaif:VariableReference>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_9" annotation="" scope_id="13"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:IndexTriplet>
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                  </xaif:Index>
-                </xaif:IndexTriplet>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_108" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_105" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -4676,9 +4593,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_21">
+        <xaif:Assignment statement_id="_jacobian_accumulation_14">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_109" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_107" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -4690,9 +4607,9 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_22">
+        <xaif:Assignment statement_id="_jacobian_accumulation_15">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_110" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_108" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -4700,15 +4617,15 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_72" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_109" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_107" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_23">
+        <xaif:Assignment statement_id="_jacobian_accumulation_16">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_111" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_109" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
@@ -4716,38 +4633,24 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_73" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_109" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_107" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_24">
+        <xaif:Assignment statement_id="_jacobian_accumulation_17">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_112" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_111" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_25">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_113" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_110" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
             <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
             <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="4" active="false" deriv="0" constant="0">
+            <xaif:Intrinsic vertex_id="4" name="mul_scal_scal"/>
+            <xaif:VariableReference vertex_id="5" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_69" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:Intrinsic vertex_id="5" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="6" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_66" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
@@ -4755,10 +4658,10 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_61" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
             <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="3" source="6" target="5" position="1"/>
-            <xaif:ExpressionEdge edge_id="4" source="7" target="5" position="2"/>
-            <xaif:ExpressionEdge edge_id="5" source="5" target="3" position="2"/>
+            <xaif:ExpressionEdge edge_id="2" source="5" target="4" position="1"/>
+            <xaif:ExpressionEdge edge_id="3" source="6" target="4" position="2"/>
+            <xaif:ExpressionEdge edge_id="4" source="4" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="5" source="7" target="3" position="2"/>
             <xaif:ExpressionEdge edge_id="6" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
@@ -4766,8 +4669,50 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_111" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_111" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Sax>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_110" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_108" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -4790,19 +4735,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_111" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_109" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_111" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -4821,38 +4758,7 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_112" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-                </xaif:VariableReference>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_9" annotation="" scope_id="13"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:IndexTriplet>
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                  </xaif:Index>
-                </xaif:IndexTriplet>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_113" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_110" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -5004,72 +4910,94 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_26">
+        <xaif:Assignment statement_id="_jacobian_accumulation_18">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_114" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_112" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_75" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:Constant vertex_id="3" type="integer" feType="" value="-1"/>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_27">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_115" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
+            <xaif:Intrinsic vertex_id="2" name="mul_scal_scal"/>
+            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_78" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_114" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:VariableReference vertex_id="4" active="false" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_75" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
+            <xaif:Constant vertex_id="5" type="integer" feType="" value="-1"/>
+            <xaif:ExpressionEdge edge_id="1" source="3" target="2" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="4" target="2" position="2"/>
+            <xaif:ExpressionEdge edge_id="3" source="2" target="1" position="1"/>
+            <xaif:ExpressionEdge edge_id="4" source="5" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_28">
+        <xaif:Assignment statement_id="_jacobian_accumulation_19">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_116" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_113" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
+            <xaif:Intrinsic vertex_id="2" name="mul_scal_scal"/>
+            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_79" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_114" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+            <xaif:VariableReference vertex_id="4" active="false" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_75" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
             </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_29">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="integer" feType="" value="-1"/>
-            <xaif:VariableReference vertex_id="3" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_116" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
+            <xaif:Constant vertex_id="5" type="integer" feType="" value="-1"/>
+            <xaif:ExpressionEdge edge_id="1" source="3" target="2" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="4" target="2" position="2"/>
+            <xaif:ExpressionEdge edge_id="3" source="2" target="1" position="1"/>
+            <xaif:ExpressionEdge edge_id="4" source="5" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_114" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_114" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Sax>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_115" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_112" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
@@ -5092,50 +5020,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_116" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_113" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_9" annotation="" scope_id="13"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:IndexTriplet>
-                  <xaif:Index>
-                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                  </xaif:Index>
-                </xaif:IndexTriplet>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-                </xaif:VariableReference>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_114" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -5363,28 +5252,10 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="_jacobian_accumulation_30">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_118" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="1" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="2" type="real" feType="" value="2.00000000000000000000e+00"/>
-            <xaif:Intrinsic vertex_id="3" name="mul_scal_scal"/>
-            <xaif:Constant vertex_id="4" type="integer" feType="" value="-1"/>
-            <xaif:VariableReference vertex_id="5" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_82" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="4" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="3" source="5" target="3" position="2"/>
-            <xaif:ExpressionEdge edge_id="4" source="3" target="1" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_119" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_115" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_1" annotation="" scope_id="10"/>
@@ -5402,7 +5273,7 @@
           </xaif:SetDeriv>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_120" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_116" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_1" annotation="" scope_id="10"/>
@@ -5421,9 +5292,7 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_82" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
-                </xaif:VariableReference>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
               </xaif:A>
               <xaif:X deriv="1">
                 <xaif:SymbolReference vertex_id="1" symbol_id="FLDOLD_2" annotation="" scope_id="10"/>
@@ -5437,6 +5306,55 @@
                   </xaif:IndexTriplet>
                 </xaif:ArrayElementReference>
                 <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_3" annotation="" scope_id="10"/>
+                <xaif:ArrayElementReference vertex_id="2">
+                  <xaif:IndexTriplet>
+                    <xaif:Index>
+                      <xaif:VariableReference vertex_id="1" active="false" alias="81" du_ud="89" deriv="0" constant="0">
+                        <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="10"/>
+                      </xaif:VariableReference>
+                    </xaif:Index>
+                  </xaif:IndexTriplet>
+                </xaif:ArrayElementReference>
+                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:Constant vertex_id="1" type="real" feType="" value="-2.00000000000000000000e+00"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_116" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Y>
+          </xaif:Saxpy>
+          <xaif:Sax>
+            <xaif:AX>
+              <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_115" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -5461,65 +5379,7 @@
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_3" annotation="" scope_id="10"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:VariableReference vertex_id="1" active="false" alias="81" du_ud="89" deriv="0" constant="0">
-                        <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="10"/>
-                      </xaif:VariableReference>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_1" annotation="" scope_id="10"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:IndexTriplet>
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" alias="81" du_ud="89" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="10"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
-                </xaif:IndexTriplet>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_118" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
-                </xaif:VariableReference>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_120" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_1" annotation="" scope_id="10"/>
-              <xaif:ArrayElementReference vertex_id="2">
-                <xaif:IndexTriplet>
-                  <xaif:Index>
-                    <xaif:VariableReference vertex_id="1" active="false" alias="81" du_ud="89" deriv="0" constant="0">
-                      <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="10"/>
-                    </xaif:VariableReference>
-                  </xaif:Index>
-                </xaif:IndexTriplet>
-              </xaif:ArrayElementReference>
-              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_119" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -5710,7 +5570,7 @@
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_121" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_118" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_66" annotation="" scope_id="1"/>
@@ -5741,7 +5601,7 @@
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_121" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_118" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Src>
           </xaif:SetDeriv>
           <xaif:SetDeriv>
@@ -5836,7 +5696,7 @@
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_122" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_119" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_56" annotation="" scope_id="1"/>
@@ -5867,7 +5727,7 @@
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_122" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_119" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Src>
           </xaif:SetDeriv>
           <xaif:SetDeriv>
@@ -6899,7 +6759,7 @@
         <xaif:DerivativePropagator>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_123" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_120" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="T_60" annotation="" scope_id="1"/>
@@ -6917,7 +6777,7 @@
           </xaif:SetDeriv>
           <xaif:SetDeriv>
             <xaif:Tgt deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_124" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_121" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Tgt>
             <xaif:Src deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="S_54" annotation="" scope_id="1"/>
@@ -6939,7 +6799,7 @@
                 <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_123" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_120" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -6995,7 +6855,7 @@
                 <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_124" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_121" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -10020,12 +9880,10 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
-                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_86" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
-                </xaif:VariableReference>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_3" annotation="" scope_id="12"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="FLDOLD_2" annotation="" scope_id="12"/>
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
@@ -10055,10 +9913,12 @@
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+                <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
+                  <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_86" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
+                </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDOLD_2" annotation="" scope_id="12"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="DFLDDT_3" annotation="" scope_id="12"/>
                 <xaif:ArrayElementReference vertex_id="2">
                   <xaif:IndexTriplet>
                     <xaif:Index>
