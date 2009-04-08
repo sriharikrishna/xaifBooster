@@ -216,11 +216,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -231,11 +231,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -529,11 +529,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -544,11 +544,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -838,11 +838,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -853,11 +853,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -1151,11 +1151,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -1166,11 +1166,11 @@
             <xaif:AX>
               <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
+                  <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS" scope_id="1"/>
                 </xaif:VariableReference>
               </xaif:A>
               <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_11" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
