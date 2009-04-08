@@ -253,6 +253,19 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
                 </xaif:VariableReference>
@@ -264,7 +277,7 @@
             <xaif:Y deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
             </xaif:Y>
-          </xaif:Sax>
+          </xaif:Saxpy>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
@@ -274,19 +287,6 @@
               </xaif:A>
               <xaif:X deriv="1">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -535,6 +535,19 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
                 </xaif:VariableReference>
@@ -546,7 +559,7 @@
             <xaif:Y deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
             </xaif:Y>
-          </xaif:Sax>
+          </xaif:Saxpy>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
@@ -556,19 +569,6 @@
               </xaif:A>
               <xaif:X deriv="1">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -817,6 +817,19 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
                 </xaif:VariableReference>
@@ -828,7 +841,7 @@
             <xaif:Y deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
             </xaif:Y>
-          </xaif:Sax>
+          </xaif:Saxpy>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
@@ -838,19 +851,6 @@
               </xaif:A>
               <xaif:X deriv="1">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
@@ -1099,6 +1099,19 @@
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
+                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
+              </xaif:A>
+              <xaif:X deriv="1">
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              </xaif:X>
+            </xaif:AX>
+            <xaif:Y deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
+            </xaif:Y>
+          </xaif:Sax>
+          <xaif:Saxpy>
+            <xaif:AX>
+              <xaif:A>
                 <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
                   <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="1"/>
                 </xaif:VariableReference>
@@ -1110,7 +1123,7 @@
             <xaif:Y deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
             </xaif:Y>
-          </xaif:Sax>
+          </xaif:Saxpy>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
@@ -1120,19 +1133,6 @@
               </xaif:A>
               <xaif:X deriv="1">
                 <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t2" annotation="" scope_id="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_10" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
               </xaif:X>
             </xaif:AX>
             <xaif:Y deriv="1">
