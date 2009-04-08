@@ -59,7 +59,6 @@
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
-#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
@@ -315,32 +314,16 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void BasicBlockAlg::addUnitFactor(Variable& theSource,
 				    Variable& theTarget,
 				    const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
-    /** 
-     * The inlinable call incDeriv(y,x) is supposed to do x.d+=y.d
-     * HOWEVER, this should not happen when y and x are the same
-     * so we make an educated guess based on the alias information
-     * and add a checker if we can't decide. 
-     */
-    if (ConceptuallyStaticInstances::instance()->getCallGraph().getAliasMap().mayAlias(theTarget.getAliasMapKey(),
-										       theSource.getAliasMapKey())) { 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("CondIncZeroDeriv",
-														 aReversalType));
-      theSetDerivCall.setId("inline_CondIncZeroDeriv");
-      theTarget.copyMyselfInto(theSetDerivCall.addConcreteArgument(1).getArgument().getVariable());
-      theSource.copyMyselfInto(theSetDerivCall.addConcreteArgument(2).getArgument().getVariable());
-    }
-    else { 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv",
-														 aReversalType));
-      theSetDerivCall.setId("inline_IncDeriv");
-      theTarget.copyMyselfInto(theSetDerivCall.addConcreteArgument(1).getArgument().getVariable());
-      theSource.copyMyselfInto(theSetDerivCall.addConcreteArgument(2).getArgument().getVariable());
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
-														  aReversalType));
-      theZeroDerivCall.setId("inline_zeroderiv");
-      theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
-    }
-  } 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv",
+                                                                                                               aReversalType));
+    theSetDerivCall.setId("inline_IncDeriv");
+    theTarget.copyMyselfInto(theSetDerivCall.addConcreteArgument(1).getArgument().getVariable());
+    theSource.copyMyselfInto(theSetDerivCall.addConcreteArgument(2).getArgument().getVariable());
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
+                                                                                                                aReversalType));
+    theZeroDerivCall.setId("inline_zeroderiv");
+    theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
+  } // end BasicBlockAlg::addUnitFactor()
 
   const Variable& BasicBlockAlg::addFactorPop(const Symbol& aTemporarySymbol,
 					      const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 

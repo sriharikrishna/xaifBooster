@@ -57,7 +57,7 @@
         </xaif:Condition>
       </xaif:Branch>
       <xaif:BasicBlock vertex_id="3" annotation="" scope_id="2">
-        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
@@ -66,6 +66,13 @@
           <xaif:Argument position="2">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:VariableReference>
+          </xaif:Argument>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
+          <xaif:Argument position="1">
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
@@ -90,7 +97,7 @@
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="4" annotation="" scope_id="2">
-        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
@@ -99,6 +106,13 @@
           <xaif:Argument position="2">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:VariableReference>
+          </xaif:Argument>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
+          <xaif:Argument position="1">
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
@@ -123,7 +137,7 @@
         </xaif:InlinableSubroutineCall>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="5" annotation="" scope_id="2">
-        <xaif:InlinableSubroutineCall subroutine_name="CondIncZeroDeriv" statement_id="inline_CondIncZeroDeriv">
+        <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
@@ -132,6 +146,13 @@
           <xaif:Argument position="2">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:VariableReference>
+          </xaif:Argument>
+        </xaif:InlinableSubroutineCall>
+        <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
+          <xaif:Argument position="1">
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
