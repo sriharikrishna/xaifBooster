@@ -56,6 +56,9 @@
 #include <list>
 #include <map>
 
+#include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/BasicBlockElement.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
@@ -70,12 +73,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMetric.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
-
-namespace xaifBooster { 
-  class ExpressionVertex;
-  class Assignment;
-  class BasicBlockElement;
-}
 
 using namespace xaifBooster;
 

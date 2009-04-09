@@ -57,11 +57,8 @@
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
+#include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
-
-namespace xaifBooster { 
-  class Constant; 
-}
 
 using namespace xaifBooster;
 
