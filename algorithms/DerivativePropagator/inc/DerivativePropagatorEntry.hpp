@@ -93,6 +93,7 @@ namespace xaifBoosterDerivativePropagator {
        */
       enum FactorKind_E {  ZERO_FACTOR,
 			   UNIT_FACTOR,
+			   NEGATIVE_UNIT_FACTOR,
 			   CONSTANT_FACTOR,
 			   VARIABLE_FACTOR, 
 			   NOT_SET};
@@ -111,6 +112,11 @@ namespace xaifBoosterDerivativePropagator {
        * fix it to UNIT_FACTOR
        */
       void setUnit(); 
+
+      /** 
+       * fix it to NEGATIVE_UNIT_FACTOR
+       */
+      void setNegativeUnit(); 
 
       /** 
        * fix it to CONSTANT_FACTOR

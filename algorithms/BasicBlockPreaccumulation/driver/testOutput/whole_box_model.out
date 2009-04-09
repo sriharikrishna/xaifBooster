@@ -2671,27 +2671,22 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="RHOLOC_1" annotation="" scope_id="9"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetNegDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_90" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Sax>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="RHOLOC_1" annotation="" scope_id="9"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:SetNegDeriv>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
@@ -3138,48 +3133,38 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_94" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Sax>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
+          <xaif:DecDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_94" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Saxpy>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:DecDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -3549,48 +3534,38 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_98" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Sax>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
+          <xaif:DecDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_98" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Saxpy>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:DecDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -3824,48 +3799,38 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_101" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Sax>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
+          <xaif:DecDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_101" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Saxpy>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:DecDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -4241,48 +4206,38 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_106" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Sax>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
+          <xaif:DecDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_106" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Saxpy>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:DecDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -4666,48 +4621,38 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_111" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Sax>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
+          <xaif:DecDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_111" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Saxpy>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:DecDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -4951,48 +4896,38 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_114" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Sax>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="-1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="1"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
+          <xaif:DecDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_114" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Saxpy>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_5" annotation="" scope_id="13"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Constant vertex_id="1" type="integer" feType="I4" value="3"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:DecDeriv>
           <xaif:Sax>
             <xaif:AX>
               <xaif:A>
@@ -5289,52 +5224,42 @@
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDOLD_2" annotation="" scope_id="10"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:VariableReference vertex_id="1" active="false" alias="81" du_ud="89" deriv="0" constant="0">
-                        <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="10"/>
-                      </xaif:VariableReference>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Sax>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_3" annotation="" scope_id="10"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:VariableReference vertex_id="1" active="false" alias="81" du_ud="89" deriv="0" constant="0">
-                        <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="10"/>
-                      </xaif:VariableReference>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDOLD_2" annotation="" scope_id="10"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:VariableReference vertex_id="1" active="false" alias="81" du_ud="89" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="10"/>
+                    </xaif:VariableReference>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
+          <xaif:IncDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-            </xaif:Y>
-          </xaif:Saxpy>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_3" annotation="" scope_id="10"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:VariableReference vertex_id="1" active="false" alias="81" du_ud="89" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="10"/>
+                    </xaif:VariableReference>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:IncDeriv>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
@@ -5348,16 +5273,8 @@
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_117" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
             </xaif:Y>
           </xaif:Saxpy>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_115" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNOW_1" annotation="" scope_id="10"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -5369,8 +5286,11 @@
                 </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Sax>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_115" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
@@ -6793,16 +6713,8 @@
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
             </xaif:Src>
           </xaif:SetDeriv>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_120" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="T_60" annotation="" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -6814,28 +6726,13 @@
                 </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Sax>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="XX_76" annotation="" scope_id="1"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:VariableReference vertex_id="1" active="false" alias="24" du_ud="13" deriv="0" constant="0">
-                        <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="5"/>
-                      </xaif:VariableReference>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_120" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
+          <xaif:IncDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="T_60" annotation="" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -6847,18 +6744,23 @@
                 </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_121" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="XX_76" annotation="" scope_id="1"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:VariableReference vertex_id="1" active="false" alias="24" du_ud="13" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="5"/>
+                    </xaif:VariableReference>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:IncDeriv>
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="S_54" annotation="" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -6870,32 +6772,13 @@
                 </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Sax>
-          <xaif:Saxpy>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="XX_76" annotation="" scope_id="1"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
-                      <xaif:VariableReference vertex_id="2" active="false" alias="24" du_ud="13" deriv="0" constant="0">
-                        <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="5"/>
-                      </xaif:VariableReference>
-                      <xaif:Constant vertex_id="3" type="integer" feType="I4" value="3"/>
-                      <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
-                      <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_121" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
+          <xaif:IncDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="S_54" annotation="" scope_id="1"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -6907,8 +6790,25 @@
                 </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Saxpy>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="XX_76" annotation="" scope_id="1"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:Intrinsic vertex_id="1" annotation="" name="add_scal_scal"/>
+                    <xaif:VariableReference vertex_id="2" active="false" alias="24" du_ud="13" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="5"/>
+                    </xaif:VariableReference>
+                    <xaif:Constant vertex_id="3" type="integer" feType="I4" value="3"/>
+                    <xaif:ExpressionEdge edge_id="1" source="2" target="1" position="1"/>
+                    <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:IncDeriv>
         </xaif:DerivativePropagator>
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="391" annotation=""/>
@@ -9877,26 +9777,8 @@
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:DerivativePropagator>
-          <xaif:Sax>
-            <xaif:AX>
-              <xaif:A>
-                <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
-              </xaif:A>
-              <xaif:X deriv="1">
-                <xaif:SymbolReference vertex_id="1" symbol_id="FLDOLD_2" annotation="" scope_id="12"/>
-                <xaif:ArrayElementReference vertex_id="2">
-                  <xaif:IndexTriplet>
-                    <xaif:Index>
-                      <xaif:VariableReference vertex_id="1" active="false" alias="90" du_ud="96" deriv="0" constant="0">
-                        <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="12"/>
-                      </xaif:VariableReference>
-                    </xaif:Index>
-                  </xaif:IndexTriplet>
-                </xaif:ArrayElementReference>
-                <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-              </xaif:X>
-            </xaif:AX>
-            <xaif:Y deriv="1">
+          <xaif:SetDeriv>
+            <xaif:Tgt deriv="1">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_1" annotation="" scope_id="12"/>
               <xaif:ArrayElementReference vertex_id="2">
                 <xaif:IndexTriplet>
@@ -9908,8 +9790,21 @@
                 </xaif:IndexTriplet>
               </xaif:ArrayElementReference>
               <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
-            </xaif:Y>
-          </xaif:Sax>
+            </xaif:Tgt>
+            <xaif:Src deriv="1">
+              <xaif:SymbolReference vertex_id="1" symbol_id="FLDOLD_2" annotation="" scope_id="12"/>
+              <xaif:ArrayElementReference vertex_id="2">
+                <xaif:IndexTriplet>
+                  <xaif:Index>
+                    <xaif:VariableReference vertex_id="1" active="false" alias="90" du_ud="96" deriv="0" constant="0">
+                      <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="12"/>
+                    </xaif:VariableReference>
+                  </xaif:Index>
+                </xaif:IndexTriplet>
+              </xaif:ArrayElementReference>
+              <xaif:VariableReferenceEdge edge_id="1" source="1" target="2"/>
+            </xaif:Src>
+          </xaif:SetDeriv>
           <xaif:Saxpy>
             <xaif:AX>
               <xaif:A>
