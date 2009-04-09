@@ -54,13 +54,12 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/boostWrapper/inc/Vertex.hpp"
-#include "xaifBooster/system/inc/Variable.hpp"
-#include "xaifBooster/utils/inc/ObjectWithId.hpp"
-#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 
-//namespace xaifBooster { 
-//  class Variable;
-//}
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+
+#include "xaifBooster/system/inc/Variable.hpp"
+
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 
 using namespace xaifBooster;
 

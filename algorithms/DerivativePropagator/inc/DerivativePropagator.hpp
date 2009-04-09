@@ -54,20 +54,19 @@
 // ========== end copyright notice ==============
 
 #include <list>
-#include "xaifBooster/utils/inc/XMLPrintable.hpp"
-#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
 
-namespace xaifBooster{ 
-  class Variable;
-  class Constant;
-}
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+
+#include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterDerivativePropagator { 
-
-  class DerivativePropagatorSaxpy;
-  class DerivativePropagatorSetDeriv;
 
   class DerivativePropagator : public XMLPrintable {
   public:
