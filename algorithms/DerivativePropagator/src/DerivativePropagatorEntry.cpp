@@ -70,6 +70,12 @@ namespace xaifBoosterDerivativePropagator {
     myFactorKind=UNIT_FACTOR;
   }  
 
+  void DerivativePropagatorEntry::Factor::setNegativeUnit() {
+    if (myFactorKind != NOT_SET)
+      THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorEntry::Factor::setNegativeUnit: already set");
+    myFactorKind = NEGATIVE_UNIT_FACTOR;
+  } // end DerivativePropagatorEntry::Factor::setNegativeUnit()
+
   void DerivativePropagatorEntry::Factor::setConstant(const Constant& theConstant) { 
     if (myFactorKind!=NOT_SET)
       THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorEntry::Factor::setConstant: already set");

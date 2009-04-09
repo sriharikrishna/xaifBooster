@@ -165,6 +165,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /** 
      * add the call to the proper BasicBlockElementList based on aReversalType
      */
+    void addNegativeUnitFactor(Variable& theSource,
+                               Variable& theTarget,
+                               const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
+
+    /** 
+     * add the call to the proper BasicBlockElementList based on aReversalType
+     */
     const Variable& addFactorPop(const Symbol& aTemporarySymbol,
 				 const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
@@ -175,22 +182,20 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     const Variable& addAddressPop(const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
     /** 
-     * add the call to the proper BasicBlockElementList based on aReversalType
+     * add a Saxpy call with variable factor \p theFactor to the proper BasicBlockElementList based on aReversalType
      */
     void addSaxpy(const Variable& theSource,
 		  const Variable& theTarget,
 		  const Variable& theFactor,
-		  const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry,
 		  const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
     /** 
-     * add the call to the proper BasicBlockElementList based on aReversalType
+     * add a Saxpy call with constant factor \p theConstantFactor to the proper BasicBlockElementList based on aReversalType
      */
-    void addSaxpy_constantFactor(const Variable& theSource,
-				 const Variable& theTarget,
-				 const Constant& theConstantFactor,
-				 const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry,
-				 const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
+    void addSaxpy(const Variable& theSource,
+                  const Variable& theTarget,
+                  const Constant& theFactor,
+                  const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
   }; // end class xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg
  

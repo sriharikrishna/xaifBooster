@@ -61,8 +61,6 @@
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 
-#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
-
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
@@ -319,11 +317,17 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     theSetDerivCall.setId("inline_IncDeriv");
     theTarget.copyMyselfInto(theSetDerivCall.addConcreteArgument(1).getArgument().getVariable());
     theSource.copyMyselfInto(theSetDerivCall.addConcreteArgument(2).getArgument().getVariable());
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
-                                                                                                                aReversalType));
-    theZeroDerivCall.setId("inline_zeroderiv");
-    theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
   } // end BasicBlockAlg::addUnitFactor()
+
+  void BasicBlockAlg::addNegativeUnitFactor(Variable& theSource,
+                                            Variable& theTarget,
+                                            const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theDecDerivCall (addInlinableSubroutineCall("DecDeriv",
+                                                                                                                aReversalType));
+    theDecDerivCall.setId("inline_DecDeriv");
+    theTarget.copyMyselfInto(theDecDerivCall.addConcreteArgument(1).getArgument().getVariable());
+    theSource.copyMyselfInto(theDecDerivCall.addConcreteArgument(2).getArgument().getVariable());
+  } // end BasicBlockAlg::addNegativeUnitFactor()
 
   const Variable& BasicBlockAlg::addFactorPop(const Symbol& aTemporarySymbol,
 					      const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
@@ -371,7 +375,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void BasicBlockAlg::addSaxpy(const Variable& theSource,
 			       const Variable& theTarget,
 			       const Variable& theFactor,
-			       const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry,
 			       const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall(addInlinableSubroutineCall("Saxpy",
 													    aReversalType));
@@ -379,36 +382,21 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     theFactor.copyMyselfInto(theSaxpyCall.addConcreteArgument(1).getArgument().getVariable());
     theTarget.copyMyselfInto(theSaxpyCall.addConcreteArgument(2).getArgument().getVariable());
     theSource.copyMyselfInto(theSaxpyCall.addConcreteArgument(3).getArgument().getVariable());
-    if (!aDerivativePropagatorEntry.isIncremental()) { 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
-														  aReversalType));
-      theZeroDerivCall.setId("inline_zeroderiv");
-      theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
-    }
   }
 
-  void BasicBlockAlg::addSaxpy_constantFactor(const Variable& theSource,
-					      const Variable& theTarget,
-					      const Constant& theConstantFactor,
-					      const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry,
-					      const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
+  void BasicBlockAlg::addSaxpy(const Variable& theSource,
+                               const Variable& theTarget,
+                               const Constant& theFactor,
+                               const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall (addInlinableSubroutineCall("Saxpy",
 													     aReversalType));
     theSaxpyCall.setId("inline_saxpy");
-
     ConcreteArgument& theNewArgument (theSaxpyCall.addConcreteArgument(1));
-    theNewArgument.makeConstant(theConstantFactor.getType());
-    theNewArgument.getConstant().setFromString(theConstantFactor.toString());
-
+    theNewArgument.makeConstant(theFactor.getType());
+    theNewArgument.getConstant().setFromString(theFactor.toString());
     theTarget.copyMyselfInto(theSaxpyCall.addConcreteArgument(2).getArgument().getVariable());
     theSource.copyMyselfInto(theSaxpyCall.addConcreteArgument(3).getArgument().getVariable());
-    if (!aDerivativePropagatorEntry.isIncremental()) { 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
-														  aReversalType));
-      theZeroDerivCall.setId("inline_zeroderiv");
-      theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
-    }
-  } // end BasicBlockAlg::addSaxpy_constantFactor()
+  }
 
   void BasicBlockAlg::reinterpretDerivativePropagatorEntry(const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry) { 
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretDerivativePropagatorEntry");
@@ -424,13 +412,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     aDerivativePropagatorEntry.getFactors(aFactorList);
     for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::reverse_iterator aFactorListI=aFactorList.rbegin();
 	 aFactorListI!=aFactorList.rend();
-	 ++aFactorListI) { 
-      if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) { 
-	addZeroDeriv(theActualTargetAnonymous,ForLoopReversalType::ANONYMOUS);
-	addZeroDeriv(theActualTargetExplicit,ForLoopReversalType::EXPLICIT);
-	break; 
-      } // ZERO_FACTOR
-      else { 
+	 ++aFactorListI) {
+      // ZeroDerivs don't really have a factor and thus no source
+      if ((*aFactorListI).getKind() != xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) {
 	const Variable& theOriginalSource((*aFactorListI).getSource());
 	// this is either the original source
 	// or it is the replaced target in case of ArrayAccesses
@@ -438,30 +422,40 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	reinterpretArrayAccess(theOriginalSource,theActualSourceAnonymous,ForLoopReversalType::ANONYMOUS); 
 	reinterpretArrayAccess(theOriginalSource,theActualSourceExplicit,ForLoopReversalType::EXPLICIT); 
 	// deal with the other cases: 
-	switch((*aFactorListI).getKind()) { 
-	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::UNIT_FACTOR: // the SetDeriv in tlm
-	  { 
-	    addUnitFactor(theActualSourceAnonymous,theActualTargetAnonymous,ForLoopReversalType::ANONYMOUS);
-	    addUnitFactor(theActualSourceExplicit,theActualTargetExplicit,ForLoopReversalType::EXPLICIT);
+	switch((*aFactorListI).getKind()) {
+        // SetDeriv or IncDeriv in tangent-linear mode
+	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::UNIT_FACTOR: {
+	    addUnitFactor(theActualSourceAnonymous,
+                          theActualTargetAnonymous,
+                          ForLoopReversalType::ANONYMOUS);
+	    addUnitFactor(theActualSourceExplicit,
+                          theActualTargetExplicit,
+                          ForLoopReversalType::EXPLICIT);
 	    break; 
-	  } 
+	} 
+        // SetNegDeriv or DecDeriv in tangent-linear mode
+	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::NEGATIVE_UNIT_FACTOR: {
+	    addNegativeUnitFactor(theActualSourceAnonymous,
+                                  theActualTargetAnonymous,
+                                  ForLoopReversalType::ANONYMOUS);
+	    addNegativeUnitFactor(theActualSourceExplicit,
+                                  theActualTargetExplicit,
+                                  ForLoopReversalType::EXPLICIT);
+	    break; 
+	}
 	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::CONSTANT_FACTOR: {
 	  /**
 	   * The inlinable call saxpy(a,x,y) is supposed to do y.d=y.d+a*x.d which in reverse means
 	   * we have to switch arguments properly
 	   */
-	  // do the anonymous version
-	  addSaxpy_constantFactor(theActualSourceAnonymous,
-				  theActualTargetAnonymous,
-				  (*aFactorListI).getConstant(),
-				  aDerivativePropagatorEntry,
-				  ForLoopReversalType::ANONYMOUS);
-	  // do the explicit version
-	  addSaxpy_constantFactor(theActualSourceExplicit,
-				  theActualTargetExplicit,
-				  (*aFactorListI).getConstant(),
-				  aDerivativePropagatorEntry,
-				  ForLoopReversalType::EXPLICIT);
+          addSaxpy(theActualSourceAnonymous,
+                   theActualTargetAnonymous,
+                   (*aFactorListI).getConstant(),
+                   ForLoopReversalType::ANONYMOUS);
+          addSaxpy(theActualSourceExplicit,
+                   theActualTargetExplicit,
+                   (*aFactorListI).getConstant(),
+                   ForLoopReversalType::EXPLICIT);
 	  break;
 	} // end case CONSTANT_FACTOR
 	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR: // both represent some saxpy or sax 
@@ -479,17 +473,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	     * The inlinable call saxpy(a,x,y) is supposed to do y.d=y.d+a*x.d which in reverse means
 	     * we have to switch arguments properly
 	     */
-	    // do the anonymous version
 	    addSaxpy(theActualSourceAnonymous,
 		     theActualTargetAnonymous,
 		     thePoppedFactorVariable,
-		     aDerivativePropagatorEntry,
 		     ForLoopReversalType::ANONYMOUS);
-	    // do the explicit version
 	    addSaxpy(theActualSourceExplicit,
 		     theActualTargetExplicit,
 		     thePoppedFactorVariable,
-		     aDerivativePropagatorEntry,
 		     ForLoopReversalType::EXPLICIT);
 	    break; 
 	  } 
@@ -498,7 +488,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 				     << (*aFactorListI).getKind()); 
 	  break; 
 	} // end switch 
-      } // end else (other versions)
+      } // end if NOT ZeroDeriv
+      // we follow all non-incremental propagations with a ZeroDeriv
+      if (!aDerivativePropagatorEntry.isIncremental()) {
+        addZeroDeriv(theActualTargetAnonymous,ForLoopReversalType::ANONYMOUS);
+        addZeroDeriv(theActualTargetExplicit,ForLoopReversalType::EXPLICIT);
+      } // end if non-incremental
     } // end for FactorList
   }
 

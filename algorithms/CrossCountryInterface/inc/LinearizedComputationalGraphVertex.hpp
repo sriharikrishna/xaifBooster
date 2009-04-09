@@ -89,10 +89,6 @@ namespace xaifBoosterCrossCountryInterface {
 
     const Variable& getPropagationVariable() const;
 
-    bool hasSAX() const;
-    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& getSAX() const;
-    void setSAX(xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& aSAX);
-
   private:
 
     /**
@@ -112,13 +108,6 @@ namespace xaifBoosterCrossCountryInterface {
      * set to the respective statement id if myOriginalVariable_p is set
      */
     ObjectWithId::Id myStatementId;
-
-    /**
-     * Used to keep track of whether this vertex has been involved in a sax yet.
-     * In case it has, this pointer is used to find the SAX.
-     * The sax is not owned by this class.
-     */
-    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* mySAX_p;
 
   }; // end of class LinearizedComputationalGraphVertex
  

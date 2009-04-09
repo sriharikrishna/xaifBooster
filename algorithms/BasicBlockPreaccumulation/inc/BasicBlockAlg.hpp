@@ -462,10 +462,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /// traverses the remainder graph and creates a derivative propagator entry for every edge
     void generateRemainderGraphPropagators(Sequence& aSequence); 
 
-    /// creates the derivative propagator entry for \p theRemainderEdge
-    void propagateOnRemainderGraphEdge(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& theRemainderEdge,
-				       Sequence& aSequence,
-				       const xaifBoosterCrossCountryInterface::AccumulationGraphVertex& theAccVertex);
+    /*
+     * Produces all the propagation code relevent to \p theRemainderTargetV.
+     * A separate call is created for every inedge, where the unit edges are processed first.
+     * This lets us start with a setderiv or a setnegderiv whenever possible.
+     * The constant and variable edges are subsequently handled with Sax(py) operations.
+     */
+    void propagateToRemainderVertex(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV,
+                                    Sequence& aSequence);
+
+    /// creates a single n-ary SAX operation for propagating to \p theRemainderTargetV
+    void propagateToRemainderVertex_narySax(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV,
+                                            Sequence& aSequence);
 
     /** 
      * to satisfy schema uniqueness constraints
