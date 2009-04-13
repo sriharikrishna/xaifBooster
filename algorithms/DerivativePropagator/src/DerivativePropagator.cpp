@@ -116,17 +116,34 @@ namespace xaifBoosterDerivativePropagator {
 									      theSource);
     myEntryPList.push_back(theDPSD_p);
     return *theDPSD_p;
-  } 
+  } // end DerivativePropagator::addSetDerivToEntryPList()
 
-  const DerivativePropagatorSetDeriv& 
-  DerivativePropagator::addSetDerivToEntryPList(const Variable& theTarget,
-						const Variable& theSource,
-						EntryPList::iterator& insertBefore) { 
-    DerivativePropagatorSetDeriv* theDPSD_p= new DerivativePropagatorSetDeriv(theTarget,
-									      theSource);
-    myEntryPList.insert(insertBefore,theDPSD_p);
-    return *theDPSD_p;
-  } 
+  const DerivativePropagatorSetNegDeriv&
+  DerivativePropagator::addSetNegDerivToEntryPList(const Variable& theTarget,
+                                                   const Variable& theSource) {
+    DerivativePropagatorSetNegDeriv* theDPSetNegDeriv_p = new DerivativePropagatorSetNegDeriv(theTarget,
+                                                                                              theSource);
+    myEntryPList.push_back(theDPSetNegDeriv_p);
+    return *theDPSetNegDeriv_p;
+  } // end DerivativePropagator::addSetNegDerivToEntryPList()
+
+  const DerivativePropagatorIncDeriv&
+  DerivativePropagator::addIncDerivToEntryPList(const Variable& theTarget,
+                                                const Variable& theSource) {
+    DerivativePropagatorIncDeriv* theDPIncDeriv_p = new DerivativePropagatorIncDeriv(theTarget,
+                                                                                     theSource);
+    myEntryPList.push_back(theDPIncDeriv_p);
+    return *theDPIncDeriv_p;
+  } // end DerivativePropagator::addIncDerivToEntryPList()
+
+  const DerivativePropagatorDecDeriv&
+  DerivativePropagator::addDecDerivToEntryPList(const Variable& theTarget,
+                                                const Variable& theSource) {
+    DerivativePropagatorDecDeriv* theDPDecDeriv_p = new DerivativePropagatorDecDeriv(theTarget,
+                                                                                     theSource);
+    myEntryPList.push_back(theDPDecDeriv_p);
+    return *theDPDecDeriv_p;
+  } // end DerivativePropagator::addDecDerivToEntryPList()
 
   DerivativePropagatorSaxpy& DerivativePropagator::addSaxpyToEntryPList(const Variable& thePartial,
 									const Variable& theIndependent,

@@ -57,14 +57,14 @@
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraphVertex.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraphVertex.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionVertex.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation {
+namespace xaifBoosterCrossCountryInterface {
 
   // Constructor for leaves that correspond to direct copy edges in the LCG
   AccumulationGraphVertex::AccumulationGraphVertex() :
@@ -128,7 +128,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end switch (PDK)
   } // end AccumulationGraphVertex::AccumulationGraphVertex(const ExpressionEdge& theExpressionEdge)
 
-  AccumulationGraphVertex::AccumulationGraphVertex(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::Operation_E& anOpType) :
+  AccumulationGraphVertex::AccumulationGraphVertex(const JacobianAccumulationExpressionVertex::Operation_E& anOpType) :
 	myRemainderGraphEdge_p (NULL),
 	myOperationType (anOpType),
 	myPartialDerivativeKind (PartialDerivativeKind::NOT_SET),
@@ -137,13 +137,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	myLHSVariable_p (NULL) {
   } // end AccumulationGraphVertex::AccumulationGraphVertex(const std::string anOpName)
 
-  void AccumulationGraphVertex::setRemainderGraphEdge(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& anLCGEdge) {
+  void AccumulationGraphVertex::setRemainderGraphEdge(const LinearizedComputationalGraphEdge& anLCGEdge) {
     if (myRemainderGraphEdge_p)
       THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::setRemainderGraphEdge: already set")
     myRemainderGraphEdge_p = &anLCGEdge;
   } // end AccumulationGraphVertex::setRemainderGraphEdge()
 
-  const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& AccumulationGraphVertex::getRemainderGraphEdge() const {
+  const LinearizedComputationalGraphEdge& AccumulationGraphVertex::getRemainderGraphEdge() const {
     if (!myRemainderGraphEdge_p)
       THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getRemainderGraphEdge: not set")
     return *myRemainderGraphEdge_p;
@@ -153,7 +153,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return (myRemainderGraphEdge_p != NULL);
   } // end AccumulationGraphVertex::hasRemainderGraphEdge()
 
-  xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::Operation_E AccumulationGraphVertex::getOperation() const {
+  JacobianAccumulationExpressionVertex::Operation_E AccumulationGraphVertex::getOperation() const {
     return myOperationType;
   } // end AccumulationGraphVertex::getOperation()
 
@@ -211,5 +211,5 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } // end AccumulationGraphVertex::debug()
 
-} // end namespace xaifBoosterBasicBlockPreaccumulation
+} // end namespace xaifBoosterCrossCountryInterface
 

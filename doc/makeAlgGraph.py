@@ -80,6 +80,7 @@ def main():
                   ["MemOpsTradeoffPreaccumulation","coral"],["TraceDiff","dodgerblue4"],["PushPop","wheat2"]]:
 	    (algNamespace,algColor) = i
 	    fout.write("\n  subgraph cluster_%s {\n" % algNamespace)
+	    fout.write('    URL="http://www.mcs.anl.gov/OpenAD/xaifBoosterDox/namespacexaifBooster'+algNamespace+'.html";\n')
 	    fout.write("    fontsize=18;\n")
 	    fout.write("    label=\"%s\";\n" % algNamespace)
 	    fout.write("    style=filled;\n")

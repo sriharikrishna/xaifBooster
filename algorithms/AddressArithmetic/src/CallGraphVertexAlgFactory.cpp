@@ -1,6 +1,5 @@
 #include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
-#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 

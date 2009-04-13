@@ -61,10 +61,10 @@
 namespace xaifBooster { 
  
   xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::PreaccumulationMetric_E
-  PreaccumulationCounter::ourPreaccumulationMetric = xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::OPERATIONS_METRIC;
+  PreaccumulationCounter::ourPreaccumulationMetric = xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::SCARCITY_METRIC;
 
   xaifBoosterCrossCountryInterface::AwarenessLevel::AwarenessLevel_E
-  PreaccumulationCounter::ourAwarenessLevel = xaifBoosterCrossCountryInterface::AwarenessLevel::NO_AWARENESS;
+  PreaccumulationCounter::ourAwarenessLevel = xaifBoosterCrossCountryInterface::AwarenessLevel::UNIT_AWARENESS;
 
   void
   PreaccumulationCounter::setPreaccumulationMetric(xaifBoosterBasicBlockPreaccumulation::PreaccumulationMetric::PreaccumulationMetric_E aMetric) {

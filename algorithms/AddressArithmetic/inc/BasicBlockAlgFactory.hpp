@@ -53,9 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
 
 

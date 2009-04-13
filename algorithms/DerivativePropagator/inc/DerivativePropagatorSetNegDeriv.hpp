@@ -1,0 +1,56 @@
+#ifndef _XAIFBOOSTERDERIVATIVEPROPAGATORSETNEGDERIV_INCLUDE_
+#define _XAIFBOOSTERDERIVATIVEPROPAGATORSETNEGDERIV_INCLUDE_
+
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
+
+using namespace xaifBooster;
+
+namespace xaifBoosterDerivativePropagator {
+
+  class DerivativePropagatorSetNegDeriv : public DerivativePropagatorEntry {
+  public:
+
+    DerivativePropagatorSetNegDeriv(const Variable& theTarget,
+                                    const Variable& theSource);
+
+    ~DerivativePropagatorSetNegDeriv(){};
+
+    void printXMLHierarchy(std::ostream& os) const;
+
+    void printMemberXMLHierarchy(const Variable& theVariable,
+                                 const std::string& aName,
+                                 std::ostream& os) const;
+
+    std::string debug() const;
+
+    /**
+     * name for this class as represented in XAIF schema
+     */
+    static const std::string ourXAIFName;
+
+    static const std::string our_myTarget_XAIFName;
+
+    static const std::string our_mySource_XAIFName;
+
+    virtual void  getFactors(FactorList& theFactorList) const ; 
+
+  private:
+
+    /// no def
+    DerivativePropagatorSetNegDeriv();
+
+    /// no def
+    DerivativePropagatorSetNegDeriv(const DerivativePropagatorSetNegDeriv&);
+
+    /// no def
+    DerivativePropagatorSetNegDeriv operator=(const DerivativePropagatorSetNegDeriv&);
+
+    /// this version only has a single source
+    Variable mySource;
+
+  }; // end class DerivativePropagatorSetNegDeriv
+ 
+} // end namespace xaifBoosterDerivativePropagator
+
+#endif
+
