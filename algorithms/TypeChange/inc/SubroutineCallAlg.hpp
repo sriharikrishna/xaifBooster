@@ -173,6 +173,7 @@ namespace xaifBoosterTypeChange {
     /**
      * if forcePassive then we create a passive type, 
      * otherwise we create the type specified in the formalArgumentSymbol
+     * \todo FIXME (AML): Most of this should be moved to SymbolTable, where it will replace the deprecated (and unused) method "SymbolTable::addUniqueAuxSymbolMatchingVariable", which was removed 3/11/09
      */
     void makeTempSymbol(const ConcreteArgument& theConcreteArgument,
 			const Symbol& formalArgumentSymbol,

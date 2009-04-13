@@ -59,10 +59,7 @@
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
-#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
-
-#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
@@ -77,7 +74,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     xaifBooster::BasicBlockAlgBase(theContaining),
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) { 
+    xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg(theContaining) { 
   }
 
   BasicBlockAlg::~BasicBlockAlg() { 
@@ -87,7 +84,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       if (*li)
 	delete *li;
     } 
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementListAnonymousReversal.begin();
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementListExplicitReversal.begin();
          li!=myBasicBlockElementListExplicitReversal.end();
          li++) { 
       if (*li)
@@ -160,39 +157,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     return *aNewCall_p;									     
   } 
 
-  const Assignment& 
-  BasicBlockAlg::addConstantAssignment(const BaseConstant& theConstant,
-				       const Symbol& aTemporarySymbol,
-				       const Scope& theScopeOfTheTemporarySymbol,
-				       const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
-    Assignment* theNewAssignment_p(new Assignment(false));
-    theNewAssignment_p->setId("tape_adjoint_constant_assignment");
-    getBasicBlockElementList(aReversalType).push_back(theNewAssignment_p);
-    Constant* theConstantRHS_p(new Constant(theConstant.getType(),false));
-    theConstantRHS_p->setFromString(theConstant.toString());
-    theConstantRHS_p->setId(theNewAssignment_p->getRHS().getNextVertexId());
-    theNewAssignment_p->getRHS().supplyAndAddVertexInstance(*theConstantRHS_p);
-    // create a new symbol and add a new VariableSymbolReference in the Variable
-    VariableSymbolReference* theNewVariableSymbolReference_p=
-      new VariableSymbolReference(getContaining().getScope().
-				  getSymbolTable().
-				  addUniqueAuxSymbol(SymbolKind::VARIABLE,
-						     SymbolType::INTEGER_STYPE,
-						     SymbolShape::SCALAR,
-						     false),
-				  getContaining().getScope());
-    theNewVariableSymbolReference_p->setId("1");
-    theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addConstantAssignment");
-    // pass it on to the LHS and relinquish ownership
-    theNewAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-    theNewAssignment_p->getLHS().getAliasMapKey().setTemporary();
-    theNewAssignment_p->getLHS().getDuUdMapKey().setTemporary();
-    return *theNewAssignment_p;									     
-  } 
-
   void BasicBlockAlg::reinterpretArrayAccess(const Variable& theOriginalVariable,
 					     Variable& theNewVariable,
 					     const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess");
     theOriginalVariable.copyMyselfInto(theNewVariable);
     if (!theOriginalVariable.hasArrayAccess() || aReversalType==ForLoopReversalType::EXPLICIT)
       return;
@@ -210,55 +178,55 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	// now we have two cases, essentially the expression is a single vertex with a constant 
 	// (this discounts constant expressions, this is a todo which might be dealt with later or 
 	// it may be completelt superceded by a TBR analysis)
-	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
-	if (theIndexExpression.numVertices()==1
-	    && 
-	    !(*(theIndexExpression.vertices().first)).isArgument()) { 
-	  // do nothing
-	  continue;
-	}
-	// it is a variable or expression whose value we pushed and now want to pop
-	// and replace. First clear the old index expression that we copied into aNewIndexTripletListTypeI
-	(*aNewIndexTripletListTypeI)->getExpression((*anIndexPairListCI).first).clear();
-	// pop the value
-	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& thePopCall(addInlinableSubroutineCall("pop_i",
-													      aReversalType));
-	thePopCall.setId("inline_pop_i");
-	Variable& theInlineVariable(thePopCall.addConcreteArgument(1).getArgument().getVariable());
-	// give it a name etc.
-	// create a new symbol and add a new VariableSymbolReference in the Variable
-	VariableSymbolReference* theNewVariableSymbolReference_p=
-	  new VariableSymbolReference(getContaining().getScope().
-				      getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::INTEGER_STYPE,
-							 SymbolShape::SCALAR,
-							 false),
-				      getContaining().getScope());
-	theNewVariableSymbolReference_p->setId("1");
-	theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess");
-	// pass it on to the variable and relinquish ownership
-	theInlineVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-	theInlineVariable.getAliasMapKey().setTemporary();
-	theInlineVariable.getDuUdMapKey().setTemporary();
-	// create a copy of the variable in the indexExpression: 
-	Argument& theNewArgument(*new Argument);
-	// relinquish ownership to the index expression: 
-	(*aNewIndexTripletListTypeI)->getExpression((*anIndexPairListCI).first).supplyAndAddVertexInstance(theNewArgument);
-	theNewArgument.setId(1);
-	theInlineVariable.copyMyselfInto(theNewArgument.getVariable());
-      } // end for loop through the pairlist
-    } // end for i
-  } 
+	const Expression& theIndexExpression (*((*anIndexPairListCI).second));
+        if (!theIndexExpression.isConstant()) {
+	  // it is a variable or expression whose value we pushed and now want to pop and replace.
+	  // First clear the old index expression that we copied into aNewIndexTripletListTypeI
+	  (*aNewIndexTripletListTypeI)->getExpression((*anIndexPairListCI).first).clear();
+
+          const Variable* thePoppedAddressVariable_p = NULL;
+          if (theIndexExpression.numVertices() == 1) {
+            // In this case, the address variable has already been popped, and so we must just find the variable it has been popped into
+            const Variable& theAddressVariable (dynamic_cast<const Argument&>(theIndexExpression.getMaxVertex()).getVariable());
+            // find the popped factor variable from the correlation list
+            DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess: "
+                                     << "Trying to find " << theAddressVariable.debug() << ":");
+            VariablePPairList::const_iterator avCorI;
+            for (avCorI = myAddressVariableCorList.begin(); avCorI != myAddressVariableCorList.end(); ++avCorI) {
+              DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess: "
+                                       << "      trying " << (*avCorI).first->debug());
+              if (theAddressVariable.equivalentTo(*(*avCorI).first))
+                break;
+            }
+            if (avCorI == myAddressVariableCorList.end())
+              THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess: "
+                                         << "could not correlate pushed address variable with popped address variable");
+            thePoppedAddressVariable_p = (*avCorI).second;
+          } // end if expression has only 1 vertex
+          else { // more than one vertex in index expression => an assignment was created in taping phase and only the LHS was pushed
+            thePoppedAddressVariable_p = &addAddressPop(aReversalType);
+          } // end if >1 vertex
+
+          // create a copy of the variable in the indexExpression: 
+          Argument& theNewArgument (*new Argument);
+          // relinquish ownership to the index expression: 
+          (*aNewIndexTripletListTypeI)->getExpression((*anIndexPairListCI).first).supplyAndAddVertexInstance(theNewArgument);
+          theNewArgument.setId(1);
+          thePoppedAddressVariable_p->copyMyselfInto(theNewArgument.getVariable());
+        } // end if index expression is non-constant
+      } // end for all index pairs
+    } // end for all index triplets
+  } // end BasicBlockAlg::reinterpretArrayAccess()
 
   void BasicBlockAlg::algorithm_action_5() { // adjoin the DerivativePropagators
-    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_4(adjoin propagators)");
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5(adjoin propagators)");
     if (getContaining().getBasicBlockElementList().empty())
       return;
     // mesh the BasicBlockElements with the Sequences
     PlainBasicBlock::BasicBlockElementList::const_reverse_iterator aBasicBlockElementListRI=getContaining().getBasicBlockElementList().rbegin();
     SequencePList::const_reverse_iterator aSequencePListRI = myUniqueSequencePList.rbegin();
     SequencePList::const_reverse_iterator aSequencePListRend = myUniqueSequencePList.rend();
+    std::list<PerSequenceData*>::const_reverse_iterator seqDataPListRI = myPerSequenceDataPList.rbegin();
     bool noSequence=false;
     if (aSequencePListRI==aSequencePListRend)
       // we don't have any sequence left, meaning there is either no sequence at all 
@@ -289,6 +257,34 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	}
       }
       if (!done) { 
+        // pop all of the address variables
+        for (VariablePList::const_reverse_iterator pushedAddVarPrI = (*seqDataPListRI)->myPushedAddressVariablesPList.rbegin();
+             pushedAddVarPrI != (*seqDataPListRI)->myPushedAddressVariablesPList.rend(); ++pushedAddVarPrI) {
+          const Variable& thePoppedAddressVariable (addAddressPop(ForLoopReversalType::ANONYMOUS));
+          DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5: "
+                                   << "Popping address into variable " << thePoppedAddressVariable.debug());
+          //addAddressPop(ForLoopReversalType::EXPLICIT);
+          // we push to the front so that when we search from the beginning we find the most recent addition,
+          // which should be the appropriate one for the occurance of this variable in this sequence
+          myAddressVariableCorList.push_front(std::make_pair(*pushedAddVarPrI,&thePoppedAddressVariable));
+        }
+        // pop all of the factor variables
+        for (VariablePList::const_reverse_iterator pushedFacVarPrI = (*seqDataPListRI)->myPushedFactorVariablesPList.rbegin();
+             pushedFacVarPrI != (*seqDataPListRI)->myPushedFactorVariablesPList.rend(); ++pushedFacVarPrI) {
+          // the inlinable call needs a temporary which contains the factor
+          const Symbol& aTemporarySymbol (getContaining().getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
+                                                                                                         SymbolType::REAL_STYPE,
+                                                                                                         SymbolShape::SCALAR,
+                                                                                                         false));
+          // Anonymous version
+          const Variable& thePoppedFactorVariable (addFactorPop(aTemporarySymbol,
+                                                                ForLoopReversalType::ANONYMOUS));
+          // Explicit version (we can use the same symbol for the popped factor variable)
+          addFactorPop(aTemporarySymbol,
+              	       ForLoopReversalType::EXPLICIT);
+          myFactorVariableCorList.push_back(std::make_pair(*pushedFacVarPrI,&thePoppedFactorVariable));
+        } // end for all pushed factor variables
+
 	const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator((*aSequencePListRI)->myDerivativePropagator);
 	for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_reverse_iterator entryPListI=
 	      aDerivativePropagator.getEntryPList().rbegin();
@@ -297,12 +293,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	  reinterpretDerivativePropagatorEntry(**entryPListI);
 	} // end for DerivativePropagatorEntry list
 	++aSequencePListRI;
+        ++seqDataPListRI;
 	if (aSequencePListRI==aSequencePListRend)
 	  // there is no sequence left
 	  noSequence=true;
       } // end of if (!done)
     } // end while (!done)
-  } 
+  } // end BasicBlockAlg::algorithm_action_5()
 
   void BasicBlockAlg::addZeroDeriv(Variable& theTarget,
 				   const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
@@ -315,40 +312,29 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void BasicBlockAlg::addUnitFactor(Variable& theSource,
 				    Variable& theTarget,
 				    const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
-    /** 
-     * The inlinable call incDeriv(y,x) is supposed to do x.d+=y.d
-     * HOWEVER, this should not happen when y and x are the same
-     * so we make an educated guess based on the alias information
-     * and add a checker if we can't decide. 
-     */
-    if (ConceptuallyStaticInstances::instance()->getCallGraph().getAliasMap().mayAlias(theTarget.getAliasMapKey(),
-										       theSource.getAliasMapKey())) { 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("CondIncZeroDeriv",
-														 aReversalType));
-      theSetDerivCall.setId("inline_CondIncZeroDeriv");
-      theTarget.copyMyselfInto(theSetDerivCall.addConcreteArgument(1).getArgument().getVariable());
-      theSource.copyMyselfInto(theSetDerivCall.addConcreteArgument(2).getArgument().getVariable());
-    }
-    else { 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv",
-														 aReversalType));
-      theSetDerivCall.setId("inline_IncDeriv");
-      theTarget.copyMyselfInto(theSetDerivCall.addConcreteArgument(1).getArgument().getVariable());
-      theSource.copyMyselfInto(theSetDerivCall.addConcreteArgument(2).getArgument().getVariable());
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
-														  aReversalType));
-      theZeroDerivCall.setId("inline_zeroderiv");
-      theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
-    }
-  } 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSetDerivCall(addInlinableSubroutineCall("IncDeriv",
+                                                                                                               aReversalType));
+    theSetDerivCall.setId("inline_IncDeriv");
+    theTarget.copyMyselfInto(theSetDerivCall.addConcreteArgument(1).getArgument().getVariable());
+    theSource.copyMyselfInto(theSetDerivCall.addConcreteArgument(2).getArgument().getVariable());
+  } // end BasicBlockAlg::addUnitFactor()
+
+  void BasicBlockAlg::addNegativeUnitFactor(Variable& theSource,
+                                            Variable& theTarget,
+                                            const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theDecDerivCall (addInlinableSubroutineCall("DecDeriv",
+                                                                                                                aReversalType));
+    theDecDerivCall.setId("inline_DecDeriv");
+    theTarget.copyMyselfInto(theDecDerivCall.addConcreteArgument(1).getArgument().getVariable());
+    theSource.copyMyselfInto(theDecDerivCall.addConcreteArgument(2).getArgument().getVariable());
+  } // end BasicBlockAlg::addNegativeUnitFactor()
 
   const Variable& BasicBlockAlg::addFactorPop(const Symbol& aTemporarySymbol,
-					      const Scope& theScopeOfTheTemporarySymbol,
 					      const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("Pop",
-														aReversalType));
-    theZeroDerivCall.setId("inline_pop");
-    Variable& theInlineVariable(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theFactorPopCall (addInlinableSubroutineCall("Pop",
+                                                                                                                 aReversalType));
+    theFactorPopCall.setId("inline_pop");
+    Variable& theInlineVariable(theFactorPopCall.addConcreteArgument(1).getArgument().getVariable());
     // give it a name etc.
     // create a new symbol and add a new VariableSymbolReference in the Variable
     VariableSymbolReference* theNewVariableSymbolReference_p=
@@ -363,10 +349,32 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     return theInlineVariable;
   } 
 
+  const Variable& BasicBlockAlg::addAddressPop(const ForLoopReversalType::ForLoopReversalType_E& aReversalType) {
+    // pop the value
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theAddressPopCall (addInlinableSubroutineCall("pop_i",
+                                                                                                                  aReversalType));
+    theAddressPopCall.setId("inline_pop_i");
+    Variable& thePoppedAddressVariable (theAddressPopCall.addConcreteArgument(1).getArgument().getVariable());
+    // give it a name etc.
+    // create a new symbol and add a new VariableSymbolReference in the Variable
+    VariableSymbolReference* theNewVariableSymbolReference_p =
+      new VariableSymbolReference(getContaining().getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
+                                                                                                 SymbolType::INTEGER_STYPE,
+                                                                                                 SymbolShape::SCALAR,
+                                                                                                 false),
+                                  getContaining().getScope());
+    theNewVariableSymbolReference_p->setId("1");
+    theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop");
+    // pass it on to the variable and relinquish ownership
+    thePoppedAddressVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+    thePoppedAddressVariable.getAliasMapKey().setTemporary();
+    thePoppedAddressVariable.getDuUdMapKey().setTemporary();
+    return thePoppedAddressVariable;
+  } // end BasicBlockAlg::addAddressPop()
+
   void BasicBlockAlg::addSaxpy(const Variable& theSource,
 			       const Variable& theTarget,
 			       const Variable& theFactor,
-			       const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry,
 			       const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall(addInlinableSubroutineCall("Saxpy",
 													    aReversalType));
@@ -374,38 +382,24 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     theFactor.copyMyselfInto(theSaxpyCall.addConcreteArgument(1).getArgument().getVariable());
     theTarget.copyMyselfInto(theSaxpyCall.addConcreteArgument(2).getArgument().getVariable());
     theSource.copyMyselfInto(theSaxpyCall.addConcreteArgument(3).getArgument().getVariable());
-    if (!aDerivativePropagatorEntry.isIncremental()) { 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
-														  aReversalType));
-      theZeroDerivCall.setId("inline_zeroderiv");
-      theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
-    }
   }
 
-  void BasicBlockAlg::addSaxpy_constantFactor(const Variable& theSource,
-					      const Variable& theTarget,
-					      const Constant& theConstantFactor,
-					      const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry,
-					      const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
+  void BasicBlockAlg::addSaxpy(const Variable& theSource,
+                               const Variable& theTarget,
+                               const Constant& theFactor,
+                               const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSaxpyCall (addInlinableSubroutineCall("Saxpy",
 													     aReversalType));
     theSaxpyCall.setId("inline_saxpy");
-
     ConcreteArgument& theNewArgument (theSaxpyCall.addConcreteArgument(1));
-    theNewArgument.makeConstant(theConstantFactor.getType());
-    theNewArgument.getConstant().setFromString(theConstantFactor.toString());
-
+    theNewArgument.makeConstant(theFactor.getType());
+    theNewArgument.getConstant().setFromString(theFactor.toString());
     theTarget.copyMyselfInto(theSaxpyCall.addConcreteArgument(2).getArgument().getVariable());
     theSource.copyMyselfInto(theSaxpyCall.addConcreteArgument(3).getArgument().getVariable());
-    if (!aDerivativePropagatorEntry.isIncremental()) { 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theZeroDerivCall(addInlinableSubroutineCall("ZeroDeriv",
-														  aReversalType));
-      theZeroDerivCall.setId("inline_zeroderiv");
-      theTarget.copyMyselfInto(theZeroDerivCall.addConcreteArgument(1).getArgument().getVariable());
-    }
-  } // end BasicBlockAlg::addSaxpy_constantFactor()
+  }
 
   void BasicBlockAlg::reinterpretDerivativePropagatorEntry(const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry) { 
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretDerivativePropagatorEntry");
     // retrieve stored index values if needed starting with the target: 
     // take care of target address if needed: 
     const Variable& theOriginalTarget(aDerivativePropagatorEntry.getTarget());
@@ -418,13 +412,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     aDerivativePropagatorEntry.getFactors(aFactorList);
     for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::reverse_iterator aFactorListI=aFactorList.rbegin();
 	 aFactorListI!=aFactorList.rend();
-	 ++aFactorListI) { 
-      if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) { 
-	addZeroDeriv(theActualTargetAnonymous,ForLoopReversalType::ANONYMOUS);
-	addZeroDeriv(theActualTargetExplicit,ForLoopReversalType::EXPLICIT);
-	break; 
-      } // ZERO_FACTOR
-      else { 
+	 ++aFactorListI) {
+      // ZeroDerivs don't really have a factor and thus no source
+      if ((*aFactorListI).getKind() != xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) {
 	const Variable& theOriginalSource((*aFactorListI).getSource());
 	// this is either the original source
 	// or it is the replaced target in case of ArrayAccesses
@@ -432,65 +422,64 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	reinterpretArrayAccess(theOriginalSource,theActualSourceAnonymous,ForLoopReversalType::ANONYMOUS); 
 	reinterpretArrayAccess(theOriginalSource,theActualSourceExplicit,ForLoopReversalType::EXPLICIT); 
 	// deal with the other cases: 
-	switch((*aFactorListI).getKind()) { 
-	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::UNIT_FACTOR: // the SetDeriv in tlm
-	  { 
-	    addUnitFactor(theActualSourceAnonymous,theActualTargetAnonymous,ForLoopReversalType::ANONYMOUS);
-	    addUnitFactor(theActualSourceExplicit,theActualTargetExplicit,ForLoopReversalType::EXPLICIT);
+	switch((*aFactorListI).getKind()) {
+        // SetDeriv or IncDeriv in tangent-linear mode
+	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::UNIT_FACTOR: {
+	    addUnitFactor(theActualSourceAnonymous,
+                          theActualTargetAnonymous,
+                          ForLoopReversalType::ANONYMOUS);
+	    addUnitFactor(theActualSourceExplicit,
+                          theActualTargetExplicit,
+                          ForLoopReversalType::EXPLICIT);
 	    break; 
-	  } 
+	} 
+        // SetNegDeriv or DecDeriv in tangent-linear mode
+	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::NEGATIVE_UNIT_FACTOR: {
+	    addNegativeUnitFactor(theActualSourceAnonymous,
+                                  theActualTargetAnonymous,
+                                  ForLoopReversalType::ANONYMOUS);
+	    addNegativeUnitFactor(theActualSourceExplicit,
+                                  theActualTargetExplicit,
+                                  ForLoopReversalType::EXPLICIT);
+	    break; 
+	}
 	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::CONSTANT_FACTOR: {
 	  /**
 	   * The inlinable call saxpy(a,x,y) is supposed to do y.d=y.d+a*x.d which in reverse means
 	   * we have to switch arguments properly
 	   */
-	  // do the anonymous version
-	  addSaxpy_constantFactor(theActualSourceAnonymous,
-				  theActualTargetAnonymous,
-				  (*aFactorListI).getConstant(),
-				  aDerivativePropagatorEntry,
-				  ForLoopReversalType::ANONYMOUS);
-	  // do the explicit version
-	  addSaxpy_constantFactor(theActualSourceExplicit,
-				  theActualTargetExplicit,
-				  (*aFactorListI).getConstant(),
-				  aDerivativePropagatorEntry,
-				  ForLoopReversalType::EXPLICIT);
+          addSaxpy(theActualSourceAnonymous,
+                   theActualTargetAnonymous,
+                   (*aFactorListI).getConstant(),
+                   ForLoopReversalType::ANONYMOUS);
+          addSaxpy(theActualSourceExplicit,
+                   theActualTargetExplicit,
+                   (*aFactorListI).getConstant(),
+                   ForLoopReversalType::EXPLICIT);
 	  break;
 	} // end case CONSTANT_FACTOR
 	case xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR: // both represent some saxpy or sax 
-	  { 
-	    // the inlinable call needs a temporary which contains the factor
-	    const Symbol& aTemporarySymbol(getContaining().getScope().
-					   getSymbolTable().
-					   addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							      SymbolType::REAL_STYPE,
-							      SymbolShape::SCALAR,
-							      false));
-	    // do the anonymous version
-	    const Variable& theFactorVariable (addFactorPop(aTemporarySymbol,
-							    getContaining().getScope(),			    
-							    ForLoopReversalType::ANONYMOUS));
-	    // do the explicit version - we can of course use the same symbol so 
-	    // theFactorVariable_p is identical
-	    addFactorPop(aTemporarySymbol,
-			 getContaining().getScope(),			    
-			 ForLoopReversalType::EXPLICIT);
+	  {
+            // find the popped factor variable from the correlation list
+            VariablePPairList::const_iterator fvCorI;
+            for (fvCorI = myFactorVariableCorList.begin(); fvCorI != myFactorVariableCorList.end(); ++fvCorI)
+              if ((*aFactorListI).getVariable().equivalentTo(*(*fvCorI).first))
+                break;
+            if (fvCorI == myFactorVariableCorList.end())
+              THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretDerivativePropagatorEntry: "
+                                         << "could not correlate pushed factor variable with popped factor variable");
+            const Variable& thePoppedFactorVariable (*(*fvCorI).second);
 	    /** 
 	     * The inlinable call saxpy(a,x,y) is supposed to do y.d=y.d+a*x.d which in reverse means
 	     * we have to switch arguments properly
 	     */
-	    // do the anonymous version
 	    addSaxpy(theActualSourceAnonymous,
 		     theActualTargetAnonymous,
-		     theFactorVariable,
-		     aDerivativePropagatorEntry,
+		     thePoppedFactorVariable,
 		     ForLoopReversalType::ANONYMOUS);
-	    // do the explicit version
 	    addSaxpy(theActualSourceExplicit,
 		     theActualTargetExplicit,
-		     theFactorVariable,
-		     aDerivativePropagatorEntry,
+		     thePoppedFactorVariable,
 		     ForLoopReversalType::EXPLICIT);
 	    break; 
 	  } 
@@ -499,7 +488,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 				     << (*aFactorListI).getKind()); 
 	  break; 
 	} // end switch 
-      } // end else (other versions)
+      } // end if NOT ZeroDeriv
+      // we follow all non-incremental propagations with a ZeroDeriv
+      if (!aDerivativePropagatorEntry.isIncremental()) {
+        addZeroDeriv(theActualTargetAnonymous,ForLoopReversalType::ANONYMOUS);
+        addZeroDeriv(theActualTargetExplicit,ForLoopReversalType::EXPLICIT);
+      } // end if non-incremental
     } // end for FactorList
   }
 

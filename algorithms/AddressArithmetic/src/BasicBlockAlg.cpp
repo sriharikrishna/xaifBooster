@@ -60,9 +60,7 @@ namespace xaifBoosterAddressArithmetic {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     BasicBlockAlgBase(theContaining),
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining),
     xaifBoosterControlFlowReversal::BasicBlockAlg(theContaining),
-    xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg(theContaining),
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg(theContaining){ 
   }
 

@@ -87,7 +87,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       if (*li)
 	delete *li;
     } 
-  } 
+  }
 
   const xaifBoosterDerivativePropagator::DerivativePropagator& 
   BasicBlockAlg::ReinterpretedDerivativePropagator::getOriginalDerivativePropagator() const { 
@@ -135,13 +135,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }
 
   BasicBlockAlg::~BasicBlockAlg() {
-    for (ReinterpretedDerivativePropagatorPList::iterator aReinterpretedDerivativePropagatorListI=myReinterpretedDerivativePropagatorPList.begin();
-	 aReinterpretedDerivativePropagatorListI!=myReinterpretedDerivativePropagatorPList.end();
-	 ++aReinterpretedDerivativePropagatorListI) { 
-      if (*aReinterpretedDerivativePropagatorListI) 
-	delete *aReinterpretedDerivativePropagatorListI;
-    }
-  }
+    for (std::list<PerSequenceData*>::const_iterator li = myPerSequenceDataPList.begin(); li != myPerSequenceDataPList.end(); li++) {
+      if (*li) {
+        if ((*li)->myReinterpretedDerivativePropagator_p)
+	  delete (*li)->myReinterpretedDerivativePropagator_p;
+        delete *li;
+      }
+    } // end for all PerSequenceData entries
+  } // end BasicBlockAlg::~BasicBlockAlg()
 
   void
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
@@ -153,30 +154,25 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 						      const BasicBlockAlgBase& aBasicBlockAlg, 
 						      const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) { 
     const BasicBlockAlg& ourAlgorithm(dynamic_cast<const BasicBlockAlg&>(aBasicBlockAlg));
-    bool found=false;
-    for (ReinterpretedDerivativePropagatorPList::const_iterator aReinterpretedDerivativePropagatorPListI=ourAlgorithm.myReinterpretedDerivativePropagatorPList.begin();
-	 aReinterpretedDerivativePropagatorPListI!=ourAlgorithm.myReinterpretedDerivativePropagatorPList.end();
-	 ++aReinterpretedDerivativePropagatorPListI) { 
-      if (&((*aReinterpretedDerivativePropagatorPListI)->getOriginalDerivativePropagator())==&aPropagator) { 
+    std::list<PerSequenceData*>::const_iterator seqDataPListI;
+    for (seqDataPListI = ourAlgorithm.myPerSequenceDataPList.begin(); seqDataPListI != ourAlgorithm.myPerSequenceDataPList.end(); ++seqDataPListI) {
+      const ReinterpretedDerivativePropagator& theReinterpretedDerivativePropagator (*(*seqDataPListI)->myReinterpretedDerivativePropagator_p);
+      if (&(theReinterpretedDerivativePropagator.getOriginalDerivativePropagator()) == &aPropagator) { 
 	// this is the right one: 
-	found=true;
 	for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI=
-	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()).begin();
-	     aBasicBlockElementListI!=
-	       (*aReinterpretedDerivativePropagatorPListI)->getBasicBlockElementList(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()).end();
+	       theReinterpretedDerivativePropagator.getBasicBlockElementList(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()).begin();
+	     aBasicBlockElementListI != theReinterpretedDerivativePropagator.getBasicBlockElementList(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()).end();
 	     ++aBasicBlockElementListI)
 	  (*(aBasicBlockElementListI))->printXMLHierarchy(os);
 	break; 
       } // end if 
-    } 
-    if (!found) 
-      // we didn't find it...
+    }
+    if (seqDataPListI == ourAlgorithm.myPerSequenceDataPList.end()) // we didn't find it...
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::printDerivativePropagatorAsTape: didn't find proper ReinterpretedDerivativePropagator");
-  }
+  } // end BasicBlockAlg::printDerivativePropagatorAsTape()
 
   void BasicBlockAlg::algorithm_action_4() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4(reinterpret DerivativePropagators as tapings)");
-    int count = 0;
     // for each propagator:
     // create an InlinableSubroutinecall for each Variable in each saxpy element in the propagator
     // and also one for each index of target or source vertices
@@ -190,62 +186,75 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	 aSequencePListI != myUniqueSequencePList.end();
 	 ++aSequencePListI) {
       // make a reinterpretation instance which refers back to the original one
-      ReinterpretedDerivativePropagator* aReinterpretedDerivativePropagator_p(new ReinterpretedDerivativePropagator((*aSequencePListI)->myDerivativePropagator));
-      // save it in the list
-      myReinterpretedDerivativePropagatorPList.push_back(aReinterpretedDerivativePropagator_p);
-      // now look at the original one: 
-      const xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList& theEntryPList((*aSequencePListI)->myDerivativePropagator.getEntryPList());
-      for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_iterator entryPListI=theEntryPList.begin();
-	   entryPListI!=theEntryPList.end();
-	   ++entryPListI) { 
-	xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList aFactorList;
-	(*entryPListI)->getFactors(aFactorList);
-	for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::iterator aFactorListI=aFactorList.begin();
-	     aFactorListI!=aFactorList.end();
-	     ++aFactorListI) { 
-	  // take care of the value
-	  if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) { 
-	    // make the subroutine call
-	    // ANONYMOUS version
-            count++;
-	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push"));
-	    theSubroutineCall_p->setId("inline_push");
-	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-	    // save it in the list
-	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
-											ForLoopReversalType::ANONYMOUS);
-	    // EXPLICIT version
-	    theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
-	    theSubroutineCall_p->setId("inline_push");
-	    (*aFactorListI).getVariable().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-	    // save it in the list
-	    aReinterpretedDerivativePropagator_p->supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
-											ForLoopReversalType::EXPLICIT);
-	  } // end if the factor is variable
-	  // take care of source the addresses if needed: 
-	  if ((*aFactorListI).getKind()!=xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) { 
-	    // take care of the source address
-	    const Variable& theSource((*aFactorListI).getSource());
-	    if (theSource.hasArrayAccess()) {
-	      reinterpretArrayAccess(*aReinterpretedDerivativePropagator_p,
-				     theSource.getArrayAccess());
-	    } 
-	  } // end if 
-	} // end for (factor list)
-	// take care of target address if needed: 
-	const Variable& theTarget((*entryPListI)->getTarget());
-	if (theTarget.hasArrayAccess()) {
-	  reinterpretArrayAccess(*aReinterpretedDerivativePropagator_p,
-				 theTarget.getArrayAccess()); 
-	} 
-      } // end for (propagator entry list) 
-//      std::cout << "count: " << count << std::endl; //Basic block level taping output
-    } // end for (sequence list) 
-  } 
+      ReinterpretedDerivativePropagator& theReinterpretedDerivativePropagator (*new ReinterpretedDerivativePropagator((*aSequencePListI)->myDerivativePropagator));
+      // build the per sequence data
+      PerSequenceData* thisSequenceData_p (new PerSequenceData);
+      thisSequenceData_p->mySequence_p = *aSequencePListI;
+      thisSequenceData_p->myReinterpretedDerivativePropagator_p = &theReinterpretedDerivativePropagator;
+      myPerSequenceDataPList.push_back(thisSequenceData_p);
+
+      // create a push for each (unique) factor variable and save it in the list
+      const xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList& theEntryPList ((*aSequencePListI)->myDerivativePropagator.getEntryPList());
+      for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_iterator entryPListI = theEntryPList.begin();
+           entryPListI != theEntryPList.end(); ++entryPListI) {
+        xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList aFactorList;
+        (*entryPListI)->getFactors(aFactorList);
+        for (xaifBoosterDerivativePropagator::DerivativePropagatorEntry::FactorList::iterator aFactorListI = aFactorList.begin();
+             aFactorListI != aFactorList.end(); ++aFactorListI) {
+          if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) {
+            const Variable& theFactorVariable ((*aFactorListI).getVariable());
+            // check whether this factor variable has already been pushed
+            VariablePList::const_iterator pushedFacVarPI;
+            for (pushedFacVarPI = thisSequenceData_p->myPushedFactorVariablesPList.begin(); pushedFacVarPI != thisSequenceData_p->myPushedFactorVariablesPList.end(); ++pushedFacVarPI)
+              if (theFactorVariable.equivalentTo(**pushedFacVarPI))
+                break;
+            if (pushedFacVarPI == thisSequenceData_p->myPushedFactorVariablesPList.end()) { // this variable has not yet been pushed
+              // ANONYMOUS version
+              xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push"));
+              theSubroutineCall_p->setId("inline_push");
+              theFactorVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+              theReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+                                                                                         ForLoopReversalType::ANONYMOUS);
+              // EXPLICIT version
+              theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push");
+              theSubroutineCall_p->setId("inline_push");
+              theFactorVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+              theReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+                                                                                         ForLoopReversalType::EXPLICIT);
+              thisSequenceData_p->myPushedFactorVariablesPList.push_back(&theFactorVariable);
+            }
+          } // end if VARIABLE_FACTOR
+          if ((*aFactorListI).getKind() != xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::ZERO_FACTOR) { 
+            if ((*aFactorListI).getSource().hasArrayAccess()) // push addresses for source
+              reinterpretArrayAccess((*aFactorListI).getSource().getArrayAccess(),
+                                     *thisSequenceData_p);
+          } // end if not ZERO_FACTOR
+        } // end for all factors
+        if ((*entryPListI)->getTarget().hasArrayAccess()) // push addresses for target
+          reinterpretArrayAccess((*entryPListI)->getTarget().getArrayAccess(),
+                                 *thisSequenceData_p);
+      } // end for all entries
+      // now push all of the single-variable address variables (so they aren't intermixed with the other ones for which an assignment was created)
+      for (VariablePList::const_iterator pushedAddVarPI = thisSequenceData_p->myPushedAddressVariablesPList.begin();
+           pushedAddVarPI != thisSequenceData_p->myPushedAddressVariablesPList.end(); ++pushedAddVarPI) {
+        // make the push and save it in the list
+        xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+        theReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+                                                                                   ForLoopReversalType::ANONYMOUS);
+        theSubroutineCall_p->setId("BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i");
+        (*pushedAddVarPI)->copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+      } // end for all address variables to be pushed
+    } // end for all sequences
+  } // end BasicBlockAlg::algorithm_action_4()
+
+  const std::list<BasicBlockAlg::PerSequenceData*>&
+  BasicBlockAlg::getPerSequenceDataPList() const {
+    return myPerSequenceDataPList;
+  } // end BasicBlockAlg::getPerSequenceDataPList()
 
   void
-  BasicBlockAlg::reinterpretArrayAccess(BasicBlockAlg::ReinterpretedDerivativePropagator& aReinterpretedDerivativePropagator,
-					const ArrayAccess& theArrayAccess) { 
+  BasicBlockAlg::reinterpretArrayAccess(const ArrayAccess& theArrayAccess,
+                                        PerSequenceData& aPerSequenceData) {
     const ArrayAccess::IndexTripletListType& theIndexTripletList(theArrayAccess.getIndexTripletList());
     for (ArrayAccess::IndexTripletListType::const_iterator anIndexTripletListTypeCI=theIndexTripletList.begin();
 	 anIndexTripletListTypeCI!=theIndexTripletList.end();
@@ -257,22 +266,32 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	// (this discounts constant expressions, this is a todo which might be dealt with later or 
 	// it may be completely superceded by a TBR analysis)
 	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
+        ReinterpretedDerivativePropagator& theReinterpretedDerivativePropagator (*aPerSequenceData.myReinterpretedDerivativePropagator_p);
         if (!theIndexExpression.isConstant()) {
           xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
           if (theIndexExpression.numVertices() == 1) { // only one argument, non-const => push its value
-            const Variable& theVariable (dynamic_cast<const Argument&>(theIndexExpression.getMaxVertex()).getVariable());
-            // make the push and save it in the list
-            theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
-            aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
-                                                                                     ForLoopReversalType::ANONYMOUS);
-            theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
-            theVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+            const Variable& theAddressVariable (dynamic_cast<const Argument&>(theIndexExpression.getMaxVertex()).getVariable());
+            // check whether we've already pushed this variable
+            VariablePList::const_iterator pushedAddVarPI;
+            for (pushedAddVarPI = aPerSequenceData.myPushedAddressVariablesPList.begin(); pushedAddVarPI != aPerSequenceData.myPushedAddressVariablesPList.end(); ++pushedAddVarPI)
+              if (theAddressVariable.equivalentTo(**pushedAddVarPI)) {
+                DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess: "
+                                         << "address variable " << theAddressVariable.debug() << " already pushed => skipping");
+                break;
+              }
+            if (pushedAddVarPI == aPerSequenceData.myPushedAddressVariablesPList.end()) { // this variable has not yet been pushed
+              DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess: "
+                                       << "pushing address variable " << theAddressVariable.debug());
+              aPerSequenceData.myPushedAddressVariablesPList.push_back(&theAddressVariable);
+            }
           } // end one non-const argument
           else { // more than one argument, and at least one is non-const
+            // \todo FIXME: for now we push EVERY address assignment variable.
+            // we don't yet hope to identify things like x(i+j) and x(i+j) this will be fixed by the proper push/pop framework
             // make the assignment it and save it in the list
             Assignment* theIndexExpressionAssignment_p(new Assignment(false));
-            aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theIndexExpressionAssignment_p,
-                                                                                     ForLoopReversalType::ANONYMOUS);
+            theReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theIndexExpressionAssignment_p,
+                                                                                       ForLoopReversalType::ANONYMOUS);
             theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
             // create a new symbol and add a new VariableSymbolReference in the Variable
             VariableSymbolReference* theNewVariableSymbolReference_p =
@@ -292,12 +311,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
             // make the subroutine call: 
             theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
             // save it in the list
-            aReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
-                                                                                     ForLoopReversalType::ANONYMOUS);
+            theReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+                                                                                       ForLoopReversalType::ANONYMOUS);
             theSubroutineCall_p->setId("reinterpretArrayaccess:inline_push_i");
             theIndexExpressionAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
           } // end >1 argument
-        } // end index expression is non-const
+        } // end if index expression is non-constant
       } // loop for index pairs
     } // end for i
   } // end of BasicBlockAlg::reinterpretArrayAccess

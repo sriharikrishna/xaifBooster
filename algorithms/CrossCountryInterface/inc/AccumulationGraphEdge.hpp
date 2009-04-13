@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERCROSSCOUNTRYINTERFACE_ACCUMULATIONGRAPHEDGE_INCLUDE_
+#define _XAIFBOOSTERCROSSCOUNTRYINTERFACE_ACCUMULATIONGRAPHEDGE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -51,21 +53,27 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraph.hpp"
+#include "xaifBooster/boostWrapper/inc/Edge.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation {  
+namespace xaifBoosterCrossCountryInterface {
 
-  AccumulationGraph::AccumulationGraph() {}
-  AccumulationGraph::~AccumulationGraph() {} 
+  /**
+   *
+   */
+  class AccumulationGraphEdge : public Edge {
 
-  std::string AccumulationGraph::debug() const {
-    std::ostringstream out;
-    out << "AccumulationGraph[" << this
-        << "]" << std::ends;
-    return out.str();
-  } // end AccumulationGraph::debug()
+  public:
 
-} // end namespace xaifBoosterBasicBlockPreaccumulation
+    AccumulationGraphEdge();
+    ~AccumulationGraphEdge();
+
+    std::string debug() const;
+
+  }; // end of class AccumulationGraphEdge
+ 
+} // end namespace xaifBoosterCrossCountryInterface
+
+#endif
 

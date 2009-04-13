@@ -52,6 +52,7 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include <list>
 
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
@@ -67,7 +68,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
    * the DerivativePropagator instances as 
    * taping operations
    */
-  class BasicBlockAlg : virtual public xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg {
+  class BasicBlockAlg : public xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg {
   public:
     
     BasicBlockAlg(BasicBlock& theContaining);
@@ -88,21 +89,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   private:
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg();
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg(const BasicBlockAlg&);
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg operator=(const BasicBlockAlg&);
-    
+
     /**
      * need to have something to take a function pointer from
      */
@@ -141,19 +136,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     private: 
 
-      /** 
-       * no def
-       */
+      /// no def
       ReinterpretedDerivativePropagator();
 
-      /** 
-       * no def
-       */
+      /// no def
       ReinterpretedDerivativePropagator(const ReinterpretedDerivativePropagator&);
 
-      /** 
-       * no def
-       */
+      /// no def
       ReinterpretedDerivativePropagator operator=(const ReinterpretedDerivativePropagator&);
 
       /** 
@@ -179,18 +168,33 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     }; // end of class ReinterpretedDerivativePropagator
 
+  protected:
+
+    typedef std::list<const Variable*> VariablePList;
+
+    /// This struct allows us to traverse the list of sequences along with the associated propagators and lists of pushed variables.
+    struct PerSequenceData {
+      const Sequence* mySequence_p;
+      ReinterpretedDerivativePropagator* myReinterpretedDerivativePropagator_p;
+      VariablePList myPushedAddressVariablesPList;
+      VariablePList myPushedFactorVariablesPList;
+    }; // end struct PerSequenceData
+
+    std::list<PerSequenceData*> myPerSequenceDataPList;
+
+    const std::list<PerSequenceData*>& getPerSequenceDataPList() const;
+
+  private:
+
     /** 
      * some helper that deals with pushing computed indices
      */
-    void reinterpretArrayAccess(ReinterpretedDerivativePropagator& aReinterpretedDerivativePropagator,
-				const ArrayAccess& theArrayAccess);
+    void reinterpretArrayAccess(const ArrayAccess& theArrayAccess,
+                                PerSequenceData& aPerSequenceData);
 
-    typedef std::list<ReinterpretedDerivativePropagator*> ReinterpretedDerivativePropagatorPList;
-
-    ReinterpretedDerivativePropagatorPList myReinterpretedDerivativePropagatorPList;
-
-  };
+  }; // end class xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg
  
-} // end of namespace xaifBoosterAngelInterfaceAlgorithms
-                                                                     
+} // end namespace xaifBoosterBasicBlockPreaccumulationTape
+
 #endif
+

@@ -56,8 +56,12 @@
 #include <list>
 #include <map>
 
+#include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/BasicBlockElement.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/Elimination.hpp"
@@ -66,16 +70,9 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMetric.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
-
-namespace xaifBooster { 
-  class ExpressionVertex;
-  class Assignment;
-  class BasicBlockElement;
-}
 
 using namespace xaifBooster;
 
@@ -445,15 +442,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * Determines the PDK for a non-leaf vertex and, if applicable, also pre-computes it's value.
      * (This is where the magic of constant folding happens!)
      */
-    void evaluateAccVertex(AccumulationGraphVertex& theAccVertex,
-			   const AccumulationGraph& theAccumulationGraph);
+    void evaluateAccVertex(xaifBoosterCrossCountryInterface::AccumulationGraphVertex& theAccVertex,
+			   const xaifBoosterCrossCountryInterface::AccumulationGraph& theAccumulationGraph);
 
     /**
      * Recursively builds a single accumulation assignment from the subtree rooted at \p theAccVertex
      */
-    const ExpressionVertex& buildAccumulationAssignmentRecursively(const AccumulationGraph& theAccumulationGraph,
-								   Assignment& theNewAssignment,
-								   const AccumulationGraphVertex& theAccVertex);
+    const ExpressionVertex&
+    buildAccumulationAssignmentRecursively(const xaifBoosterCrossCountryInterface::AccumulationGraph& theAccumulationGraph,
+                                           Assignment& theNewAssignment,
+                                           const xaifBoosterCrossCountryInterface::AccumulationGraphVertex& theAccVertex);
 
     /**
      * Check all independents against all dependents for possible aliasing conflicts,
@@ -464,10 +462,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /// traverses the remainder graph and creates a derivative propagator entry for every edge
     void generateRemainderGraphPropagators(Sequence& aSequence); 
 
-    /// creates the derivative propagator entry for \p theRemainderEdge
-    void propagateOnRemainderGraphEdge(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& theRemainderEdge,
-				       Sequence& aSequence,
-				       const AccumulationGraphVertex& theAccVertex);
+    /*
+     * Produces all the propagation code relevent to \p theRemainderTargetV.
+     * A separate call is created for every inedge, where the unit edges are processed first.
+     * This lets us start with a setderiv or a setnegderiv whenever possible.
+     * The constant and variable edges are subsequently handled with Sax(py) operations.
+     */
+    void propagateToRemainderVertex(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV,
+                                    Sequence& aSequence);
+
+    /// creates a single n-ary SAX operation for propagating to \p theRemainderTargetV
+    void propagateToRemainderVertex_narySax(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV,
+                                            Sequence& aSequence);
 
     /** 
      * to satisfy schema uniqueness constraints

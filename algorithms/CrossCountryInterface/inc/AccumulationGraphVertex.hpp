@@ -1,5 +1,5 @@
-#ifndef _ACCUMULATIONGRAPHVERTEX_INCLUDE_
-#define _ACCUMULATIONGRAPHVERTEX_INCLUDE_
+#ifndef _XAIFBOOSTERCROSSCOUNTRYINTERFACE_ACCUMULATIONGRAPHVERTEX_INCLUDE_
+#define _XAIFBOOSTERCROSSCOUNTRYINTERFACE_ACCUMULATIONGRAPHVERTEX_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -68,7 +68,7 @@
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+namespace xaifBoosterCrossCountryInterface { 
 
   class AccumulationGraphVertex : public Vertex {
 
@@ -92,15 +92,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /**
      * Constructor for vertices for which there is an operation (all non-leaves).
      */
-    AccumulationGraphVertex(const xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::Operation_E& anOpType);
+    AccumulationGraphVertex(const JacobianAccumulationExpressionVertex::Operation_E& anOpType);
 
     ~AccumulationGraphVertex(){};
 
-    void setRemainderGraphEdge(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& anLCGEdge);
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge& getRemainderGraphEdge() const;
+    void setRemainderGraphEdge(const LinearizedComputationalGraphEdge& anLCGEdge);
+    const LinearizedComputationalGraphEdge& getRemainderGraphEdge() const;
     const bool hasRemainderGraphEdge() const;
 
-    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::Operation_E getOperation() const;
+    JacobianAccumulationExpressionVertex::Operation_E getOperation() const;
 
     void setPartialDerivativeKind(const PartialDerivativeKind::PartialDerivativeKind_E aPartialDerivativeKind);
     const PartialDerivativeKind::PartialDerivativeKind_E getPartialDerivativeKind() const;
@@ -124,12 +124,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * Pointer to corresponding edge in the remainder graph.  May or may not be set.
      * When set, this Acc graph vertex must have some LHS set, which is used in propagation.
      */
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge* myRemainderGraphEdge_p;
+    const LinearizedComputationalGraphEdge* myRemainderGraphEdge_p;
 
     /**
      * currently either ADD or MULT, only for non-leaf vertices.
      */
-    xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::Operation_E myOperationType;
+    JacobianAccumulationExpressionVertex::Operation_E myOperationType;
 
     /**
      *  Set either during the constructor (for leaves)
@@ -162,7 +162,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   }; // end of class AccumulationGraphVertex
 
-} // end namespace xaifBoosterBasicBlockPreaccumulation
+} // end namespace xaifBoosterCrossCountryInterface
                        
 #endif
 

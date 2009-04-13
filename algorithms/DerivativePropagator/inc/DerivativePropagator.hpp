@@ -54,20 +54,22 @@
 // ========== end copyright notice ==============
 
 #include <list>
-#include "xaifBooster/utils/inc/XMLPrintable.hpp"
-#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
 
-namespace xaifBooster{ 
-  class Variable;
-  class Constant;
-}
+#include "xaifBooster/utils/inc/XMLPrintable.hpp"
+
+#include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
+
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorDecDeriv.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorIncDeriv.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSaxpy.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetDeriv.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorSetNegDeriv.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterDerivativePropagator { 
-
-  class DerivativePropagatorSaxpy;
-  class DerivativePropagatorSetDeriv;
 
   class DerivativePropagator : public XMLPrintable {
   public:
@@ -95,41 +97,17 @@ namespace xaifBoosterDerivativePropagator {
     
     typedef std::list<DerivativePropagatorEntry*> EntryPList;
 
-    /**
-     * we add entries to the DerivativePropagator as
-     * addZeroDerivToEntryPList in AssignmentAlg::algorithm_action_2
-     * and as Saxpy/SetDeriv in 
-     * BasicBlockAlg::algorithm_action_3
-     * For SetDeriv we either add as a temporary for variables that are 
-     * both input and output 
-     * OR 
-     * for simple assignments, i.e. FlattenedSequences with exactly 1 vertex. 
-     * The question is now where the respective SetDeriv operation should be located.
-     * For FlattenedSequences with one vertex it doesn't matter since there is nothing 
-     * else. 
-     * For setting temporaries they always come before the saxpy ops but 
-     * we have to look at their position relative to the ZeroDeriv entries. 
-     * All ZeroDerivEntries are pushed in algorithm_action_2.
-     * If all SetDeriv entries go before the ZeroDeriv entries we just need to be 
-     * sure that none of those should have been zeroed out, meaning that 
-     * e.g. a constant assignment is not preceeding any 'active' use of a variable.
-     * The basic block level activity analysis takes care of this by removing 
-     * vertices identified as passive, so no contribution comes from that 
-     * passivated vertex. If we cannot identify, then the flattening stops at this 
-     * point and the ZeroDeriv remains with the previous flatten in the correct order.
-     * Therefore we can always do a push_front for SetDeriv.
-     */
     const DerivativePropagatorSetDeriv& addSetDerivToEntryPList(const Variable& theTarget,
 								const Variable& theSource);
 
-    /** 
-     * orderring this list becomes more complicated
-     * we need to determine the insertion point
-     * via supplying an iterator
-     */
-    const DerivativePropagatorSetDeriv& addSetDerivToEntryPList(const Variable& theTarget,
-								const Variable& theSource,
-								EntryPList::iterator& insertBefore);
+    const DerivativePropagatorSetNegDeriv& addSetNegDerivToEntryPList(const Variable& theTarget,
+                                                                      const Variable& theSource);
+
+    const DerivativePropagatorIncDeriv& addIncDerivToEntryPList(const Variable& theTarget,
+                                                                const Variable& theSource);
+
+    const DerivativePropagatorDecDeriv& addDecDerivToEntryPList(const Variable& theTarget,
+                                                                const Variable& theSource);
 
     DerivativePropagatorSaxpy& addSaxpyToEntryPList(const Constant& thePartial,
 						    const Variable& theIndependent,

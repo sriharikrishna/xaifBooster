@@ -55,10 +55,10 @@
 
 #include <map>
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AwarenessLevel.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
@@ -118,12 +118,12 @@ namespace xaifBoosterCrossCountryInterface {
     const LinearizedComputationalGraph& getRemainderLCG() const;
     LinearizedComputationalGraph& getRemainderLCG();
 
-    const xaifBoosterBasicBlockPreaccumulation::AccumulationGraph& getAccumulationGraph() const;
-    xaifBoosterBasicBlockPreaccumulation::AccumulationGraph& getAccumulationGraph();
+    const AccumulationGraph& getAccumulationGraph() const;
+    AccumulationGraph& getAccumulationGraph();
 
     /// used for propagation
     typedef std::map<const LinearizedComputationalGraphEdge*,
-                     const xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex*> RemainderEdge2AccumulationVertexMap;
+                     const AccumulationGraphVertex*> RemainderEdge2AccumulationVertexMap;
 
     const RemainderEdge2AccumulationVertexMap& getRemainderEdge2AccumulationVertexMap() const;
 
@@ -172,7 +172,7 @@ namespace xaifBoosterCrossCountryInterface {
     EdgeCorrelationList myEdgeCorrelationList;
 
     /// built subsequent to the angel transformation
-    xaifBoosterBasicBlockPreaccumulation::AccumulationGraph myAccumulationGraph;
+    AccumulationGraph myAccumulationGraph;
 
     /// maps edges in the remainder graph to thjeiur corresponding vertices in myAccumulationGraph.  used in propagation
     RemainderEdge2AccumulationVertexMap myRemainderEdge2AccumulationVertexMap;
@@ -184,10 +184,10 @@ namespace xaifBoosterCrossCountryInterface {
     unsigned int myNumReroutings;
 
     typedef std::map<const LinearizedComputationalGraphEdge*,
-                     xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex*> LCGe_to_ACCv_map;
+                     AccumulationGraphVertex*> LCGe_to_ACCv_map;
 
     typedef std::map<const JacobianAccumulationExpressionVertex*,
-                     xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex*> JAEv_to_ACCv_map;
+                     AccumulationGraphVertex*> JAEv_to_ACCv_map;
 
     /**
      * have we counted the elimination operations
@@ -195,14 +195,14 @@ namespace xaifBoosterCrossCountryInterface {
     mutable bool myCountedFlag;
 
     /// used for evaluating preaccumulation cost
-    typedef std::map<const xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex*,
+    typedef std::map<const AccumulationGraphVertex*,
                      bool> AccVertexIsUnitMap;
 
     /// recursively visits Accumulation graph vertices and counts nontrivial operations (cost)
     /**
      * should be called exactly once for every accumulation graph vertex
      */
-    void evaluateCostRecursively(const xaifBoosterBasicBlockPreaccumulation::AccumulationGraphVertex& rootAccvertex,
+    void evaluateCostRecursively(const AccumulationGraphVertex& rootAccvertex,
                                  AccVertexIsUnitMap& theAccVertexIsUnitMap) const;
 
     /// counts all nontrivial operations in myAccumulationGraph

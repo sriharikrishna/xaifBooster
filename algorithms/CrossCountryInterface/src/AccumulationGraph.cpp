@@ -1,5 +1,3 @@
-#ifndef _ACCUMULATIONGRAPH_INCLUDE_
-#define _ACCUMULATIONGRAPH_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,34 +51,21 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
-
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraphVertex.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AccumulationGraphEdge.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation {
+namespace xaifBoosterCrossCountryInterface {  
 
-  /**
-   * Class that implements a graph that represents a flattening of JAEs.
-   * Use of this graph allows easier constant folding for Jacobian acumulation
-   * and allows us to create expressions for preaccumulation that involve more than one operation.
-   */
-  class AccumulationGraph : public GraphWrapper<AccumulationGraphVertex,
-						AccumulationGraphEdge>,
-			    public virtual Debuggable {
+  AccumulationGraph::AccumulationGraph() {}
+  AccumulationGraph::~AccumulationGraph() {} 
 
-  public:
+  std::string AccumulationGraph::debug() const {
+    std::ostringstream out;
+    out << "AccumulationGraph[" << this
+        << "]" << std::ends;
+    return out.str();
+  } // end AccumulationGraph::debug()
 
-    AccumulationGraph(); 
-    ~AccumulationGraph();
-
-    std::string debug() const;
-
-  }; // end of class AccumulationGraph
-
-} // end namespace xaifBoosterBasicBlockPreaccumulation
-
-#endif
+} // end namespace xaifBoosterCrossCountryInterface
 

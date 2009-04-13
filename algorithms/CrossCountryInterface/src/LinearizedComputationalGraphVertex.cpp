@@ -61,8 +61,7 @@ namespace xaifBoosterCrossCountryInterface {
 
   LinearizedComputationalGraphVertex::LinearizedComputationalGraphVertex() :
     myOriginalVariable_p (NULL),
-    myPropagationVariable_p (NULL),
-    mySAX_p (NULL) {
+    myPropagationVariable_p (NULL) {
   }
 
   LinearizedComputationalGraphVertex::~LinearizedComputationalGraphVertex() {
@@ -76,7 +75,6 @@ namespace xaifBoosterCrossCountryInterface {
 	<< ",myOriginalVariable_p=" << myOriginalVariable_p
 	<< ",myPropagationVariable_p=" << myPropagationVariable_p
 	<< ",myStatementId=" << myStatementId
-	<< ",mySAX_p=" << mySAX_p
 	<< "]" << std::ends;  
     return out.str();
   } // end LinearizedComputationalGraphVertex::debug()
@@ -129,22 +127,6 @@ namespace xaifBoosterCrossCountryInterface {
     else
       THROW_LOGICEXCEPTION_MACRO("LinearizedComputationalGraphVertex::getPropagationVariable: neither myPropagationVariable_p nor myOriginalVariable_p set");
   } // end LinearizedComputationalGraphVertex::getPropagationVariable()
-
-  bool LinearizedComputationalGraphVertex::hasSAX() const {
-    return (mySAX_p) ? true : false;
-  } // end LinearizedComputationalGraphVertex::hasSAX()
-
-  xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& LinearizedComputationalGraphVertex::getSAX() const {
-    if (!mySAX_p)
-      THROW_LOGICEXCEPTION_MACRO("LinearizedComputationalGraphVertex::getSAX: not set");
-    return *mySAX_p;
-  } // end LinearizedComputationalGraphVertex::getSAX()
-
-  void LinearizedComputationalGraphVertex::setSAX(xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& aSAX) {
-    if (mySAX_p)
-      THROW_LOGICEXCEPTION_MACRO("LinearizedComputationalGraphVertex::setSAX: already set");
-    mySAX_p = &aSAX;
-  } // end LinearizedComputationalGraphVertex::setSAX()
 
 } // end namespace xaifBoosterCrossCountryInterface
 
