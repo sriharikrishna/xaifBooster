@@ -71,6 +71,8 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 
+#include "xaifBooster/algorithms/SaveValuesAcross/inc/SaveValuesAcross.hpp"
+
 namespace xaifBoosterBasicBlockPreaccumulationTape {  
 
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
@@ -147,19 +149,18 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       // store the index variables via 
       // an InlinableSubroutinecall to push
       // note that here we don't use the fact that we are or are not in an explicit loop
-      // store all the ones we have assigned already because of the conversion
-      const Expression::VariablePVariableSRPPairList& theTypeChangePairs(mySaveValuesAcrossForTypeChange.getReplacementPairsList()); 
-      for (Expression::VariablePVariableSRPPairList::const_iterator pairIt=theTypeChangePairs.begin();
-	   pairIt!=theTypeChangePairs.end();
-	   ++pairIt) { 
+
+      // first consider those values that have already been saved by the conversion caused by TypeChange
+      const xaifBoosterSaveValuesAcross::SaveValuesAcross::SavedValueList& theSavedValueList (mySaveValuesAcrossForTypeChange.getSavedValueList());
+      for (xaifBoosterSaveValuesAcross::SaveValuesAcross::SavedValueList::const_iterator svI = theSavedValueList.begin(); svI != theSavedValueList.end(); ++svI) {
 	// make the subroutine call: 
 	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
 	// save it in the list
 	myAfterCallIndexPushes.push_back(theSubroutineCall_p);
 	theSubroutineCall_p->setId("SRcall_inline_push_i");
 	// we need to push what we assigned to the temporary prior to the call 
-	theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable().supplyAndAddVertexInstance((*pairIt).second->createCopyOfMyself());
-	myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair((*pairIt)));
+	theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable().supplyAndAddVertexInstance((*svI)->myTempVarVSR_p->createCopyOfMyself());
+	myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&(*svI)->myArgument_p->getVariable(),(*svI)->myTempVarVSR_p));
       }
       // now figure out if we need to push more than that
       for (SubroutineCall::ConcreteArgumentPList::const_iterator aConcreteArgumentPListI = getContainingSubroutineCall().getConcreteArgumentPList().begin();
