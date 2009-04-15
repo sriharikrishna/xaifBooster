@@ -21,7 +21,7 @@ namespace xaifBoosterRequiredValues {
     void addValueToRequiredSet(const ExpressionVertex& theEV,
 			       const ObjectWithId::Id theStatementId,
 			       const ControlFlowGraphVertex& theControlFlowGraphVertex,
-			       const std::string theOrigin);
+			       const std::string theOriginStr);
 
     /**
      * Marks \p theVariable as required for the reverse mode,
@@ -34,7 +34,7 @@ namespace xaifBoosterRequiredValues {
 			       const ExpressionVertex& theLocationEV,
 			       const ObjectWithId::Id theLocationStatementId,
 			       const ControlFlowGraphVertex& theControlFlowGraphVertex,
-			       const std::string theOrigin);
+			       const std::string theOriginStr);
 
     std::string debug() const;
 
@@ -50,7 +50,7 @@ namespace xaifBoosterRequiredValues {
         	    const ExpressionVertex& aLocationEV,
         	    const ObjectWithId::Id& aLocationStatementId,
         	    const ControlFlowGraphVertex& aControlFlowGraphVertex,
-        	    const std::string& anOrigin);
+        	    const std::string& anOriginStr);
  
       ~RequiredValue();
  
@@ -64,7 +64,7 @@ namespace xaifBoosterRequiredValues {
  
       const ControlFlowGraphVertex& getControlFlowGraphVertex() const;
  
-      std::string getOrigin() const;
+      std::string getOriginStr() const;
  
     private:
  
@@ -96,7 +96,7 @@ namespace xaifBoosterRequiredValues {
       /**
        * String that describes where this value was determined to be required
        */
-      const std::string myOrigin;
+      const std::string myOriginStr;
  
       /*
        * no def
