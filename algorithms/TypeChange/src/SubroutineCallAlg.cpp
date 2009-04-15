@@ -689,6 +689,9 @@ namespace xaifBoosterTypeChange {
     // we need to replace all the saved variable values in the post conversion. 
     if (theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().hasArrayAccess()) { 
       ArrayAccess::IndexTripletListType& thePostReplacementIndexTripletList(theConcreteArgumentAlg.getPostConversionConcreteArgument().getArgument().getVariable().getArrayAccess().getIndexTripletList());
+      //populate the list of replacement pairs
+      Expression::VariablePVariableSRPPairList theReplacementPairsList;
+      mySaveValuesAcrossForTypeChange.populateReplacementPairsList(theReplacementPairsList);
       for (ArrayAccess::IndexTripletListType::iterator thePostReplacementIndexTripletListI=thePostReplacementIndexTripletList.begin();
 	   thePostReplacementIndexTripletListI!=thePostReplacementIndexTripletList.end();
 	   ++thePostReplacementIndexTripletListI) {
@@ -696,7 +699,7 @@ namespace xaifBoosterTypeChange {
 	     anIndexPairListI!=(*thePostReplacementIndexTripletListI)->getIndexPairList().end();
 	     ++anIndexPairListI) {
 	  Expression& theIndexExpression(*((*anIndexPairListI).second));
-	  theIndexExpression.replaceVariables(mySaveValuesAcrossForTypeChange.getReplacementPairsList());
+	  theIndexExpression.replaceVariables(theReplacementPairsList);
 	}
       }
     }

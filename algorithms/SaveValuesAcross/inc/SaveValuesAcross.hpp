@@ -47,32 +47,51 @@ namespace xaifBoosterSaveValuesAcross {
     void saveValue(const Argument& anArgument,
 		   const BasicBlock& theBasicBlock);
 
-    /**
-     * Returns the list that correlates the replaced Variables with their replacement VariableSymbolReferences.
-     */
-    const Expression::VariablePVariableSRPPairList& getReplacementPairsList() const;
+    void populateReplacementPairsList(Expression::VariablePVariableSRPPairList& aListToBePopulated) const;
+
+    //void populatePriorToCallAssignmentsList(PlainBasicBlock::BasicBlockElementList& aListToBePopulated) const;
+
+    struct SavedValue {
+
+      const Argument* myArgument_p;
+
+      VariableSymbolReference* myTempVarVSR_p;
+
+      const Assignment* myAssignment_p;
+
+      SavedValue(const Argument& anArgument,
+                 VariableSymbolReference& aVSR,
+                 const Assignment& anAssignment) :
+        myArgument_p (&anArgument),
+        myTempVarVSR_p (&aVSR),
+        myAssignment_p (&anAssignment) {
+      };
+
+    private:
+       /// no def 
+      SavedValue();
+      
+       /// no def 
+      SavedValue(const SavedValue&);
+      
+       /// no def 
+      SavedValue operator=(const SavedValue&);
+
+    }; // end struct SavedValue
+
+    typedef std::list<SavedValue*> SavedValueList;
+
+    const SavedValueList& getSavedValueList() const;
 
   private: 
     
-    /**
-     * no def 
-     */
+    SavedValueList mySavedValueList;
+
+    /// no def 
     SaveValuesAcross(const SaveValuesAcross&);
 
-    /**
-     * no def 
-     */
+    /// no def 
     SaveValuesAcross operator=(const SaveValuesAcross&);
-
-    /**
-     * The list of pairs that maps a variable to its replacement VariableSymbolReference.
-     */
-    Expression::VariablePVariableSRPPairList mySavedVarsAndReplacementVSRsList;
-
-    /**
-     * The list of created assignments.  We own this.
-     */
-    PlainBasicBlock::BasicBlockElementList myPriorToCallAssignments;
 
   }; // end class SaveValuesAcross
 
