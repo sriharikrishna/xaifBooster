@@ -38,13 +38,13 @@ namespace xaifBoosterRequiredValues {
                                                  const ExpressionVertex& aLocationEV,
                                                  const ObjectWithId::Id& aLocationStatementId,
                                                  const ControlFlowGraphVertex& aControlFlowGraphVertex,
-                                                 const std::string& anOrigin) :
+                                                 const std::string& anOriginStr) :
     myValueEV_p (&aValueEV),
     myValueStatementId (aValueStatementId),
     myLocationEV_p (&aLocationEV),
     myLocationStatementId (aLocationStatementId),
     myControlFlowGraphVertex_p (&aControlFlowGraphVertex),
-    myOrigin (anOrigin) {
+    myOriginStr (anOriginStr) {
   } // end RequiredValueSet::RequiredValue::RequiredValue()
 
   RequiredValueSet::RequiredValue::~RequiredValue() {
@@ -59,7 +59,7 @@ namespace xaifBoosterRequiredValues {
 	<< ",LocationEV=" << myLocationEV_p->debug().c_str() 
 	<< ",LocationStatementId=" << myLocationStatementId
 	<< ",ControlFlowGraphVertex=" << myControlFlowGraphVertex_p->debug().c_str()
-	<< "," << myOrigin;
+	<< "," << myOriginStr;
     return out.str();
   } // end RequiredValueSet::RequiredValue::debug()
 
@@ -89,20 +89,20 @@ namespace xaifBoosterRequiredValues {
   } // end RequiredValueSet::RequiredValue::getControlFlowGraphVertex()
 
   std::string
-  RequiredValueSet::RequiredValue::getOrigin() const {
-    return myOrigin;
+  RequiredValueSet::RequiredValue::getOriginStr() const {
+    return myOriginStr;
   } // end RequiredValueSet::RequiredValue::getOrigin()
 
   void RequiredValueSet::addValueToRequiredSet(const ExpressionVertex& theEV,
 						 const ObjectWithId::Id theStatementId,
 						 const ControlFlowGraphVertex& theControlFlowGraphVertex,
-						 const std::string theOrigin) {
+                                               const std::string theOriginStr) {
     myRequiredValuesPList.push_back(new RequiredValue (theEV,
 						       theStatementId,
 						       theEV,
 						       theStatementId,
 						       theControlFlowGraphVertex,
-						       theOrigin));
+                                                       theOriginStr));
   } // end RequiredValueSet::addValueToRequiredSet()
 
   void RequiredValueSet::addValueToRequiredSet(const ExpressionVertex& theValueEV,
@@ -110,13 +110,13 @@ namespace xaifBoosterRequiredValues {
 						 const ExpressionVertex& theLocationEV,
 						 const ObjectWithId::Id theLocationStatementId,
 						 const ControlFlowGraphVertex& theControlFlowGraphVertex,
-						 const std::string theOrigin) {
+                                               const std::string theOriginStr) {
     myRequiredValuesPList.push_back(new RequiredValue (theValueEV,
 						       theValueStatementId,
 						       theLocationEV,
 						       theLocationStatementId,
 						       theControlFlowGraphVertex,
-						       theOrigin));
+                                                       theOriginStr));
 /*
     // Also include the index expression if this variable is an array reference
     if (theVariable.hasArrayAccess()) {
