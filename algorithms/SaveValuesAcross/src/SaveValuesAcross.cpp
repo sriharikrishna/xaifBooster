@@ -15,21 +15,21 @@ namespace xaifBoosterSaveValuesAcross {
   } // end SaveValuesAcross::SaveValuesAcross()
 
   SaveValuesAcross::~SaveValuesAcross() {
-    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI = myPriorToCallAssignments.begin();
-         aBasicBlockElementListI != myPriorToCallAssignments.end();
-         ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI)
-        delete *aBasicBlockElementListI;
+    // delete the SavedValues and the assignments they own
+    for (SaveValuesAcross::SavedValueList::iterator saI = mySavedValueList.begin(); saI != mySavedValueList.end(); ++saI) {
+      if (*saI) {
+        if ((*saI)->myAssignment_p)
+          delete (*saI)->myAssignment_p;
+        delete *saI;
+      }
     }
   } // end SaveValuesAcross::~SaveValuesAcross()
 
   void
   SaveValuesAcross::printXMLHierarchy(std::ostream& os) const {
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = myPriorToCallAssignments.begin();
-         aBasicBlockElementListI != myPriorToCallAssignments.end();
-         ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI)
-        (*aBasicBlockElementListI)->printXMLHierarchy(os);
+    for (SaveValuesAcross::SavedValueList::const_iterator saI = mySavedValueList.begin(); saI != mySavedValueList.end(); ++saI) {
+      if ((*saI)->myAssignment_p)
+        (*saI)->myAssignment_p->printXMLHierarchy(os);
     }
   } // end SaveValuesAcross::printXMLHierarchy()
 
@@ -43,16 +43,16 @@ namespace xaifBoosterSaveValuesAcross {
 
   bool
   SaveValuesAcross::isSavedAcross(const Argument& anArgument) const {
-    Expression::VariablePVariableSRPPairList::const_iterator pairIt;
-    for (pairIt = mySavedVarsAndReplacementVSRsList.begin(); pairIt != mySavedVarsAndReplacementVSRsList.end(); ++pairIt)
-      if (anArgument.getVariable().equivalentTo(*(*pairIt).first))
+    SaveValuesAcross::SavedValueList::const_iterator saI;
+    for (saI = mySavedValueList.begin(); saI != mySavedValueList.end(); ++saI)
+      if (anArgument.getVariable().equivalentTo((*saI)->myArgument_p->getVariable()))
 	break;
-    return (pairIt != mySavedVarsAndReplacementVSRsList.end());
+    return (saI != mySavedValueList.end());
   } // end SaveValuesAcross::isSavedAcross()
 
   void
   SaveValuesAcross::saveValue(const Argument& anArgument,
-			const BasicBlock& theBasicBlock) {
+                              const BasicBlock& theBasicBlock) {
     Assignment* theNewAssignment_p (new Assignment(false));
     theNewAssignment_p->setId("assignment_to_temporary_for_saving_value_across_statement");
     // create a new symbol and add a new VariableSymbolReference in the Variable
@@ -71,14 +71,22 @@ namespace xaifBoosterSaveValuesAcross {
     // set the RHS
     theNewAssignment_p->getRHS().supplyAndAddVertexInstance(anArgument.createCopyOfMyself());
     // save the replacement pairs and the assignment
-    myPriorToCallAssignments.push_back(theNewAssignment_p);
-    mySavedVarsAndReplacementVSRsList.push_back(std::make_pair(&anArgument.getVariable(),theNewVariableSymbolReference_p));
+    mySavedValueList.push_back(new SavedValue(anArgument, *theNewVariableSymbolReference_p, *theNewAssignment_p));
   } // end SaveValuesAcross::saveValue()
 
-  const Expression::VariablePVariableSRPPairList&
-  SaveValuesAcross::getReplacementPairsList() const {
-    return mySavedVarsAndReplacementVSRsList;
-  } // end SaveValuesAcross::getReplacementPairsList()
+  void
+  SaveValuesAcross::populateReplacementPairsList(Expression::VariablePVariableSRPPairList& aListToBePopulated) const {
+    // this should possibly become deprecated?  It's currently used by typeChange::subroutinecallalg
+    aListToBePopulated.clear();
+    for (SaveValuesAcross::SavedValueList::const_iterator saI = mySavedValueList.begin(); saI != mySavedValueList.end(); ++saI)
+      aListToBePopulated.push_back(std::make_pair(&((*saI)->myArgument_p->getVariable()),
+                                                                  (*saI)->myTempVarVSR_p));
+  } // end SaveValuesAcross::populateReplacementPairsList()
+
+  const SaveValuesAcross::SavedValueList&
+  SaveValuesAcross::getSavedValueList() const {
+    return mySavedValueList;
+  } // end 
 
 } // end namespace xaifBoosterSaveValuesAcross
 
