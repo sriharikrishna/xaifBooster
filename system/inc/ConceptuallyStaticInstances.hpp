@@ -101,10 +101,11 @@ namespace xaifBooster {
      */
     void setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion);
 
-    /** 
-     *  get the NameCreator
-     */
-    const NameCreator& getNameCreator() const;
+    const NameCreator& getUniversalNameCreator() const;
+    const NameCreator& getAccumulationVariableNameCreator() const;
+    const NameCreator& getPropagationVariableNameCreator() const;
+    const NameCreator& getLinearizationVariableNameCreator() const;
+    const NameCreator& getTemporaryVariableNameCreator() const;
 
     const TraversalStack& getTraversalStack() const;
     TraversalStack& getTraversalStack();
@@ -140,10 +141,20 @@ namespace xaifBooster {
      */
     PrintVersion::PrintVersion_E myPrintVersion;
 
-    /** 
-     * the universal name creator
-     */
-    NameCreator myNameCreator;
+    /// used to give unique names for variables created for some purpose not covered by those below
+    NameCreator myUniversalNameCreator;
+
+    /// used to give unique names to variables created for the accumulation
+    NameCreator myAccumulationVariableNameCreator;
+
+    /// used to give unique names to variables created for the propagation
+    NameCreator myPropagationVariableNameCreator;
+
+    /// used to give unique names to variables that get assigned the value of a local partial during linearization
+    NameCreator myLinearizationVariableNameCreator;
+
+    /// used to give unique names to temporary variables created for linearization
+    NameCreator myTemporaryVariableNameCreator;
 
     /**
      * the stack for pointers that allow one to access different parts of the AST

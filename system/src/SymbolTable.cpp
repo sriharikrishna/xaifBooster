@@ -109,7 +109,7 @@ namespace xaifBooster {
 				  const SymbolShape::SymbolShape_E& aShape,
 				  bool anActiveTypeFlag) { 
     // use a unique name
-    std::string aName(ConceptuallyStaticInstances::instance()->getNameCreator().makeName());
+    std::string aName(ConceptuallyStaticInstances::instance()->getUniversalNameCreator().makeName());
     Symbol& theSymbol(addSymbol(aName,
 				aKind,
 				aType,
@@ -119,6 +119,22 @@ namespace xaifBooster {
     theSymbol.setAnnotation("");
     return theSymbol; 
   } // end SymbolTable::addUniqueAuxSymbol()
+
+  Symbol&  
+  SymbolTable::addUniqueSymbol(const NameCreator& aNameCreator,
+                               const SymbolKind::SymbolKind_E& aKind,
+                               const SymbolType::SymbolType_E& aType,
+                               const SymbolShape::SymbolShape_E& aShape,
+                               bool anActiveTypeFlag) {
+    Symbol& theSymbol (addSymbol(aNameCreator.makeName(),
+                                 aKind,
+                                 aType,
+                                 aShape,
+                                 anActiveTypeFlag,
+                                 true));
+    theSymbol.setAnnotation("");
+    return theSymbol; 
+  } // end SymbolTable::addUniqueSymbol()
 
   std::string SymbolTable::debug() const {
     std::ostringstream out;
