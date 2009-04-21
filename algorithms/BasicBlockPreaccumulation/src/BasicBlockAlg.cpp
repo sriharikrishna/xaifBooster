@@ -827,11 +827,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theNewAssignment.setId(makeUniqueId());
 	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
 	  VariableSymbolReference* theVariableSymbolReference_p =
-	   new VariableSymbolReference(theGlobalScope.getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
-											  SymbolType::REAL_STYPE,
-											  SymbolShape::SCALAR,
-											  false),
-				       theGlobalScope);
+	   new VariableSymbolReference (theGlobalScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getAccumulationVariableNameCreator(),
+                                                                                        SymbolKind::VARIABLE,
+                                                                                        SymbolType::REAL_STYPE,
+                                                                                        SymbolShape::SCALAR,
+                                                                                        false),
+				        theGlobalScope);
 	  theVariableSymbolReference_p->setId("1");
 	  theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS");
 	  theNewAssignment.getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
