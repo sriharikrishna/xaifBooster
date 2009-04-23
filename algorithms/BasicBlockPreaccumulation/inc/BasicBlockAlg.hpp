@@ -101,6 +101,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     /**
+     * search through all sequences for \p anExpression.
+     * NOTE: this method may not be neccessary for push/pop algorithms,
+     * as requires values are saved along with their CFG vertex.
+     */ 
+    virtual bool hasExpression(const Expression& anExpression) const;
+
+    /**
      * generate code for the elimination sequence returned by Angel
      */
     virtual void algorithm_action_3();
@@ -319,6 +326,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterCrossCountryInterface::Elimination& getBestElimination();
 
       EliminationPList& getEliminationPList();
+
+      /**
+       * check the front/end assignment lists and the derivative propagator for \p anExpression
+       */
+      bool hasExpression(const Expression& anExpression) const;
 
     private: 
 

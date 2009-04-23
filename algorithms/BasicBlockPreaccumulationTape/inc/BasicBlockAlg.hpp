@@ -82,6 +82,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     /**
+     * check each of the ReinterpretedDerivativePropagators for \p anExpression
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
+    /**
      * \todo : distinction between constant and non-constant index expressions is simplified
      * or we have this fixed by a proper TBR analysis
      */
@@ -133,6 +138,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 						 const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
       const PlainBasicBlock::BasicBlockElementList& getBasicBlockElementList(const ForLoopReversalType::ForLoopReversalType_E& aReversalType) const; 
+
+      /**
+       * check myBasicBlockElementListAnonymousReversal and myBasicBlockElementListExplicitReversal for \p anExpression
+       */
+      bool hasExpression(const Expression& anExpression) const;
 
     private: 
 

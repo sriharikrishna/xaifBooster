@@ -129,6 +129,21 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     return myBasicBlockElementListAnonymousReversal;
   }  
 
+  bool
+  BasicBlockAlg::ReinterpretedDerivativePropagator::hasExpression(const Expression& anExpression) const {
+    // check myBasicBlockElementListAnonymousReversal
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator anonI = myBasicBlockElementListAnonymousReversal.begin();
+         anonI != myBasicBlockElementListAnonymousReversal.end(); ++anonI)
+      if ((*anonI)->hasExpression(anExpression))
+        return true;
+    // check myBasicBlockElementListExplicitReversal
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator explicitI = myBasicBlockElementListExplicitReversal.begin();
+         explicitI != myBasicBlockElementListExplicitReversal.end(); ++explicitI)
+      if ((*explicitI)->hasExpression(anExpression))
+        return true;
+    return false;
+  } // end BasicBlockAlg::ReinterpretedDerivativePropagator::hasExpression()
+
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     xaifBooster::BasicBlockAlgBase(theContaining),
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg(theContaining) { 
@@ -170,6 +185,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     if (seqDataPListI == ourAlgorithm.myPerSequenceDataPList.end()) // we didn't find it...
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::printDerivativePropagatorAsTape: didn't find proper ReinterpretedDerivativePropagator");
   } // end BasicBlockAlg::printDerivativePropagatorAsTape()
+
+  bool
+  BasicBlockAlg::hasExpression(const Expression& anExpression) const {
+    // iterate through the sequence data entries and check their reinterpreted derivative propagators for the expression
+    for (PerSequenceDataPList::const_iterator seqDataPI = myPerSequenceDataPList.begin(); seqDataPI != myPerSequenceDataPList.end(); ++seqDataPI)
+      if ((*seqDataPI)->myReinterpretedDerivativePropagator_p->hasExpression(anExpression))
+        return true;
+    return xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::hasExpression(anExpression);
+  } // end BasicBlockAlg::hasExpression()
 
   void BasicBlockAlg::algorithm_action_4() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4(reinterpret DerivativePropagators as tapings)");

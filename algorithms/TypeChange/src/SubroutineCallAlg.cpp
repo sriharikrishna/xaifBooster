@@ -635,6 +635,25 @@ namespace xaifBoosterTypeChange {
     } 
   }
 
+  bool
+  SubroutineCallAlg::hasExpression(const Expression& anExpression) const {
+    // check myPriorAdjustmentsList
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator priorI = myPriorAdjustmentsList.begin();
+         priorI != myPriorAdjustmentsList.end(); ++priorI)
+      if ((*priorI)->hasExpression(anExpression))
+        return true;
+    // check myPostAdjustmentsList
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator postI = myPostAdjustmentsList.begin();
+         postI != myPostAdjustmentsList.end(); ++postI)
+      if ((*postI)->hasExpression(anExpression))
+        return true;
+    // check values saved across
+    if (mySaveValuesAcrossForTypeChange.hasExpression(anExpression))
+      return true;
+    // pass on to the alg base
+    return xaifBooster::SubroutineCallAlgBase::hasExpression(anExpression);
+  } // end SubroutineCallAlg::hasExpression()
+
   void SubroutineCallAlg::handleArrayAccessIndices(const ConcreteArgument& theConcreteArgument,
 						   const BasicBlock& theBasicBlock) {
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterTypeChange::SubroutineCallAlg::handleArrayAccessIndices() " << debug().c_str());
