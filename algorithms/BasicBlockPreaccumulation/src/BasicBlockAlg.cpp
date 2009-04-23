@@ -224,6 +224,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myEliminationPList;
   }
 
+  bool
+  BasicBlockAlg::Sequence::hasExpression(const Expression& anExpression) const {
+    // NOTE: this currently does not check the original basic block elements.
+    // check the front assignment list
+    for (AssignmentPList::const_iterator frontAssI = myFrontAssignmentList.begin();
+         frontAssI != myFrontAssignmentList.end(); ++frontAssI)
+      if ((*frontAssI)->hasExpression(anExpression))
+        return true;
+    // check the end assignment list
+    for (AssignmentPList::const_iterator endAssI = myEndAssignmentList.begin();
+         endAssI != myEndAssignmentList.end(); ++endAssI)
+      if ((*endAssI)->hasExpression(anExpression))
+        return true;
+    // check the derivative propagator
+    return myDerivativePropagator.hasExpression(anExpression);
+  } // end BasicBlockAlg::Sequence::hasExpression()
+
   void BasicBlockAlg::incrementGlobalAssignmentCounter() { 
     ourAssignmentCounter++;
   } // end BasicBlockAlg::incrementGlobalAssignmentCounter()
@@ -1447,6 +1464,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
+
+  bool
+  BasicBlockAlg::hasExpression(const Expression& anExpression) const {
+    for (SequencePList::const_iterator seqPI = myUniqueSequencePList.begin(); seqPI != myUniqueSequencePList.end(); ++seqPI)
+      if ((*seqPI)->hasExpression(anExpression))
+        return true;
+    return xaifBooster::BasicBlockAlgBase::hasExpression(anExpression);
+  } // end BasicBlockAlg::hasExpression()
 
   PrivateLinearizedComputationalGraph& 
   BasicBlockAlg::getComputationalGraph(const Assignment& theAssignment) {

@@ -115,6 +115,11 @@ namespace xaifBoosterTypeChange {
 
     static void addWrapperNames(const std::string& theSpaceSeparatedNames);
 
+    /**
+     * check mySaveValuesAcrossForTypeChange, myPriorAdjustmentsList, and myPostAdjustmentsList for \p anExpression
+     */
+    virtual bool hasExpression(const Expression& theExpression) const;
+
   protected:
 
     /** 
