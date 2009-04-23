@@ -54,13 +54,36 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/system/inc/AlgBase.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
 
 namespace xaifBooster {  
   
   class BasicBlockElement;
-  
-  typedef AlgBase<BasicBlockElement> BasicBlockElementAlgBase;
 
-} // end of namespace 
+  class BasicBlockElementAlgBase : public AlgBase<BasicBlockElement> {
+
+  public:
+
+    BasicBlockElementAlgBase(const BasicBlockElement& theContaining);
+
+    virtual ~BasicBlockElementAlgBase();
+
+    /// simply returns false (designed to be redefined by the classes that inherit from this)
+    virtual bool hasExpression(const Expression& anExpression) const;
+
+  private:
+
+    /// no def
+    BasicBlockElementAlgBase();
+
+    /// no def
+    BasicBlockElementAlgBase(const BasicBlockElementAlgBase&);
+
+    /// no def
+    BasicBlockElementAlgBase& operator=(const BasicBlockElementAlgBase&);
+
+  }; // end class BasicBlockElementAlgBase
+
+} // end namespace xaifBooster
 
 #endif

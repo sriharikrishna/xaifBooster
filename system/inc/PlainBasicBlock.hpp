@@ -56,10 +56,11 @@
 //UN #include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
 #include <list>
 
-namespace xaifBooster { 
+#include "xaifBooster/system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/BasicBlockElement.hpp"
+#include "xaifBooster/system/inc/Scope.hpp"
 
-  class BasicBlockElement;
-  class Scope;
+namespace xaifBooster { 
 
   /**
    * class PlainBasicBlock describes a block of statements.
@@ -115,6 +116,12 @@ namespace xaifBooster {
      * \todo JU: revisit the const Scope issue
      */
     Scope& getScope() const;
+
+    /**
+     * Checks each element in the element list for \p anExpression.
+     * We don't check the respective algorithm because this class has none
+     */ 
+    virtual bool hasExpression(const Expression& anExpression) const;
 
   protected:
     

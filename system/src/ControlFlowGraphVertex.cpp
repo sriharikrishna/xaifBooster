@@ -101,6 +101,14 @@ namespace xaifBooster {
     return false;
   }
 
+  bool
+  ControlFlowGraphVertex::hasExpression(const Expression& anExpression) const {
+    if (myControlFlowGraphVertexAlgBase_p)
+      return myControlFlowGraphVertexAlgBase_p->hasExpression(anExpression);
+    else
+      return false;
+  } // end ControlFlowGraphVertex::containsExpression()
+
   FindDefinitionResult ControlFlowGraphVertex::findDefinition(const ObjectWithId::Id& aStatementId) const { 
     return FindDefinitionResult(0);
   }

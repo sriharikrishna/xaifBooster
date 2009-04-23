@@ -328,4 +328,20 @@ namespace xaifBooster {
     }
   } 
 
-} 
+  bool
+  Expression::hasExpression(const Expression& anExpression) const {
+    if (&anExpression == this)
+      return true;
+    CArgumentPList theArguments;
+    appendArguments(theArguments);
+    for (CArgumentPList::iterator argI = theArguments.begin(); argI != theArguments.end(); ++argI)
+      if ((*argI)->getVariable().hasExpression(anExpression))
+        return true;
+    if (myExpressionAlgBase_p)
+      return myExpressionAlgBase_p->hasExpression(anExpression);
+    else
+      return false;
+  } // end Expression::hasExpression()
+
+} // end namespace xaifBooster
+

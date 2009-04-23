@@ -152,6 +152,16 @@ namespace xaifBooster {
     return false; 
   } 
   
+  bool
+  BasicBlock::hasExpression(const Expression& anExpression) const {
+    if (PlainBasicBlock::hasExpression(anExpression))
+      return true;
+    if (myControlFlowGraphVertexAlgBase_p)
+      return myControlFlowGraphVertexAlgBase_p->hasExpression(anExpression);
+    else
+      return false;
+  } // end BasicBlock::hasExpression()
+ 
   FindDefinitionResult BasicBlock::findDefinition(const ObjectWithId::Id& aStatementId) const { 
     for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myElementList.begin();
          li!=myElementList.end();

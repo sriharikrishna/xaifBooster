@@ -58,6 +58,7 @@
 #include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
 
 #include "xaifBooster/system/inc/BasicBlockElementAlgBase.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
 
 namespace xaifBooster { 
 
@@ -85,6 +86,11 @@ namespace xaifBooster {
      * always invoked by the graph
      */
     virtual void printXMLHierarchyImpl(std::ostream& os) const {};
+
+    /**
+     * checks the corresponding algorithm (if any) for \p anExpression
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
 
   protected:
     /**

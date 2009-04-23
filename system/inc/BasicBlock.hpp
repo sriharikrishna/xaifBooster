@@ -94,6 +94,12 @@ namespace xaifBooster {
     virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
 
     /**
+     * Searches for \p anExpression by first calling the PlainBasicBlock version of this method,
+     * which checks each of the elements.  If it is not found there, it checks the associated algorithm (if any).
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
+    /**
      * for aStatementId get the definition
      */
     virtual FindDefinitionResult findDefinition(const ObjectWithId::Id& aStatementId) const;

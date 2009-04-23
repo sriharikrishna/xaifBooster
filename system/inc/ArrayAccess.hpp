@@ -106,6 +106,11 @@ namespace xaifBooster {
      */
     IndexTriplet& addIndexTriplet();
 
+    /**
+     * Check whether this array access has \p anExpression anywhere inside the index expressions
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
   private:
     
     /**

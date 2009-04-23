@@ -106,4 +106,13 @@ namespace xaifBooster {
     return myScope_r;
   } 
 
+  bool
+  PlainBasicBlock::hasExpression(const Expression& anExpression) const {
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator li = myElementList.begin();
+         li != myElementList.end(); ++li)
+      if ((*li)->hasExpression(anExpression))
+        return true;
+    return false;
+  } // end PlainBasicBlock::hasExpression()
+ 
 } // end of namespace xaifBooster 

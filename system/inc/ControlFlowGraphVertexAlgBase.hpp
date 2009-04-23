@@ -54,13 +54,36 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/system/inc/AlgBase.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
 
 namespace xaifBooster {  
   
   class ControlFlowGraphVertex;
   
-  typedef AlgBase<ControlFlowGraphVertex> ControlFlowGraphVertexAlgBase;
+  class ControlFlowGraphVertexAlgBase : public AlgBase<ControlFlowGraphVertex> {
 
-} // end of namespace 
+  public:
+
+    ControlFlowGraphVertexAlgBase(const ControlFlowGraphVertex& theContaining);
+
+    virtual ~ControlFlowGraphVertexAlgBase();
+
+    /// simply returns false (designed to be redefined by the classes that inherit from this)
+    virtual bool hasExpression(const Expression& anExpression) const;
+
+  private:
+
+    /// no def
+    ControlFlowGraphVertexAlgBase();
+
+    /// no def
+    ControlFlowGraphVertexAlgBase(const ControlFlowGraphVertexAlgBase&);
+
+    /// no def
+    ControlFlowGraphVertexAlgBase& operator=(const ControlFlowGraphVertexAlgBase&);
+
+  }; // end class ControlFlowGraphVertexAlgBase
+
+} // end namespace xaifBooster
 
 #endif

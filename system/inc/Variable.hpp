@@ -68,6 +68,7 @@ namespace xaifBooster {
 
   class VariableSymbolReference;
   class ArrayAccess;
+  class Expression;
 
   /**
    * the default representation for Variables as a graph
@@ -229,7 +230,14 @@ namespace xaifBooster {
      * explicitly for as many as count indices
      */
     void adjustUpperBounds(int count);
-    
+
+    /**
+     * Check whether this variable contains this expression.
+     * This is the case if and only if this variable is an array access
+     * and the \p anExpression is contained within the array access.
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
   private: 
     
     /** 

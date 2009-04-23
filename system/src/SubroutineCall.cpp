@@ -272,4 +272,16 @@ namespace xaifBooster {
     ourBlackBoxOptimism=false;
   } 
 
+  bool
+  SubroutineCall::hasExpression(const Expression& anExpression) const {
+    for (ConcreteArgumentPList::const_iterator argI = myConcreteArgumentPList.begin();
+         argI != myConcreteArgumentPList.end(); ++argI)
+      if ((*argI)->getArgument().getVariable().hasExpression(anExpression))
+        return true;
+    if (myBasicBlockElementAlgBase_p)
+      return myBasicBlockElementAlgBase_p->hasExpression(anExpression);
+    else
+    return false;
+  } // end SubroutineCall::hasExpression()
+ 
 } // end of namespace xaifBooster 

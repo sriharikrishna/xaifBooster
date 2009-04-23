@@ -124,6 +124,13 @@ namespace xaifBooster {
 
     const StatementIdSetMapKey& getDoMapKey() const;
 
+    /**
+     * this assignment contains \p anExpression if and only if it is in the RHS
+     * or it lies somewhere inside the array access of the LHS.
+     * In addition, we also check the corresponding AssignmentAlg
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
   private: 
 
     /**

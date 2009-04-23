@@ -58,8 +58,30 @@
 namespace xaifBooster {  
   
   class Expression;
-  
-  typedef AlgBase<Expression> ExpressionAlgBase;
+
+  class ExpressionAlgBase : public AlgBase<Expression> {
+
+  public:
+
+    ExpressionAlgBase(const Expression& theContaining);
+
+    virtual ~ExpressionAlgBase();
+
+    /// simply returns false (designed to be redefined by the classes that inherit from this)
+    virtual bool hasExpression(const Expression& anExpression) const;
+
+  private:
+
+    /// no def
+    ExpressionAlgBase();
+
+    /// no def
+    ExpressionAlgBase(const ExpressionAlgBase&);
+
+    /// no def
+    ExpressionAlgBase& operator=(const ExpressionAlgBase&);
+
+  }; // end class ExpressionAlgBase
 
 } // end of namespace 
 

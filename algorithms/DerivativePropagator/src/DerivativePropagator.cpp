@@ -177,4 +177,14 @@ namespace xaifBoosterDerivativePropagator {
     return myEntryPList;
   }
 
-} // end of namespace 
+  bool
+  DerivativePropagator::hasExpression(const Expression& anExpression) const {
+    // iterate through the sequences, which in turn will check their respective derivative propagators
+    for (EntryPList::const_iterator entryPI = myEntryPList.begin(); entryPI != myEntryPList.end(); ++entryPI)
+      if ((*entryPI)->hasExpression(anExpression))
+        return true;
+    return false;
+  } // end DerivativePropagator::hasExpression()
+
+} // end namespace xaifBoosterDerivativePropagator
+
