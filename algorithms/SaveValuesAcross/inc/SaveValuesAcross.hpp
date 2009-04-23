@@ -29,7 +29,7 @@ namespace xaifBoosterSaveValuesAcross {
     ~SaveValuesAcross();
 
     /**
-     * Prints the assignments the temporaries (these assignments are owned by this class).
+     * Calls printXMLHierarchy on each saved value, which prints its assignment
      */
     void printXMLHierarchy(std::ostream& os) const;
 
@@ -51,7 +51,32 @@ namespace xaifBoosterSaveValuesAcross {
 
     //void populatePriorToCallAssignmentsList(PlainBasicBlock::BasicBlockElementList& aListToBePopulated) const;
 
-    struct SavedValue {
+    /**
+     * checks each of the saved values for \p anExpression
+     */
+    bool hasExpression(const Expression& theExpression) const;
+
+    class SavedValue {
+    public:
+      SavedValue(const Argument& anArgument,
+                 VariableSymbolReference& aVSR,
+                 const Assignment& anAssignment);
+
+      ~SavedValue();
+
+      const Argument& getArgument() const;
+      const Assignment& getAssignment() const;
+      const VariableSymbolReference& getVariableSymbolReference() const;
+      VariableSymbolReference& getVariableSymbolReference();
+
+      void printXMLHierarchy(std::ostream& os) const;
+
+      /**
+       * checks the assignment for \p anExpression
+       */
+      bool hasExpression(const Expression& theExpression) const;
+
+    private:
 
       const Argument* myArgument_p;
 
@@ -59,15 +84,6 @@ namespace xaifBoosterSaveValuesAcross {
 
       const Assignment* myAssignment_p;
 
-      SavedValue(const Argument& anArgument,
-                 VariableSymbolReference& aVSR,
-                 const Assignment& anAssignment) :
-        myArgument_p (&anArgument),
-        myTempVarVSR_p (&aVSR),
-        myAssignment_p (&anAssignment) {
-      };
-
-    private:
        /// no def 
       SavedValue();
       
@@ -75,23 +91,23 @@ namespace xaifBoosterSaveValuesAcross {
       SavedValue(const SavedValue&);
       
        /// no def 
-      SavedValue operator=(const SavedValue&);
+      SavedValue& operator=(const SavedValue&);
 
     }; // end struct SavedValue
 
-    typedef std::list<SavedValue*> SavedValueList;
+    typedef std::list<SavedValue*> SavedValuePList;
 
-    const SavedValueList& getSavedValueList() const;
+    const SavedValuePList& getSavedValuePList() const;
 
   private: 
     
-    SavedValueList mySavedValueList;
+    SavedValuePList mySavedValuePList;
 
     /// no def 
     SaveValuesAcross(const SaveValuesAcross&);
 
     /// no def 
-    SaveValuesAcross operator=(const SaveValuesAcross&);
+    SaveValuesAcross& operator=(const SaveValuesAcross&);
 
   }; // end class SaveValuesAcross
 
