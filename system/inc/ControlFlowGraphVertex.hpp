@@ -56,6 +56,7 @@
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
+#include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/system/inc/FindDefinitionResult.hpp"
 #include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/VertexTraversable.hpp"
@@ -106,6 +107,11 @@ namespace xaifBooster {
     ControlFlowGraphVertexAlgBase& getControlFlowGraphVertexAlgBase() const;
     
     virtual bool hasStatement(const ObjectWithId::Id& aStatementId) const; 
+
+    /**
+     * checks the corresponding algorithm (if any) for \p anExpression
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
 
     /**
      * for aStatementId get the Assignment if it exists

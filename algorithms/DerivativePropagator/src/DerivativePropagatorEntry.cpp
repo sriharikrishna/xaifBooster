@@ -137,4 +137,10 @@ namespace xaifBoosterDerivativePropagator {
     return out.str();
   } 
 
-} // end of namespace
+  bool
+  DerivativePropagatorEntry::hasExpression(const Expression& anExpression) const {
+    return myTarget.hasExpression(anExpression);
+  } // end DerivativePropagatorEntry::hasExpression()
+
+} // end namespace xaifBoosterDerivativePropagator
+

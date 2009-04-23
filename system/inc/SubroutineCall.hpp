@@ -170,6 +170,12 @@ namespace xaifBooster {
      */
     static void noBlackBoxOptimism(); 
 
+    /**
+     * Checks each of the arguments for \p anExpression.
+     * If it is not found, the respective algorithm (if any) is subsequently checked.
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
   private: 
     
     /**

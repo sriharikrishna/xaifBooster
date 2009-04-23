@@ -261,4 +261,14 @@ namespace xaifBoosterDerivativePropagator {
     return !useAsSaxFlag;
   }  
 
-} // end of namespace 
+  bool
+  DerivativePropagatorSaxpy::hasExpression(const Expression& anExpression) const {
+    for (AXPList::const_iterator axPI = myAXPList.begin(); axPI != myAXPList.end(); ++axPI)
+      if ((*axPI)->myA.hasExpression(anExpression)
+       || (*axPI)->myX.hasExpression(anExpression))
+        return true;
+    return DerivativePropagatorEntry::hasExpression(anExpression);
+  } // end DerivativePropagatorSaxpy::hasExpression()
+
+} // end namespace xaifBoosterDerivativePropagator
+

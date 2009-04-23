@@ -448,4 +448,9 @@ namespace xaifBooster {
     }
   }
 
+  bool
+  Variable::hasExpression(const Expression& anExpression) const {
+    return (hasArrayAccess() && getArrayAccess().hasExpression(anExpression));
+  } // end Variable::hasExpression()
+
 } // end of namespace xaifBooster 

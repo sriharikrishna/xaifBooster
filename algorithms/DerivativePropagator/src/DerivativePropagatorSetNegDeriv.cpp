@@ -80,5 +80,11 @@ namespace xaifBoosterDerivativePropagator {
     theFactorList.push_back(aFactor);
   }
 
+  bool
+  DerivativePropagatorSetNegDeriv::hasExpression(const Expression& anExpression) const {
+    return (mySource.hasExpression(anExpression)
+         || DerivativePropagatorEntry::hasExpression(anExpression));
+  } // end DerivativePropagatorSetNegDeriv::hasExpression()
+
 } // end namespace xaifBoosterDerivativePropagator
 

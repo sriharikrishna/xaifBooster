@@ -132,4 +132,11 @@ namespace xaifBoosterDerivativePropagator {
     theFactorList.push_back(aFactor);
   } 
 
-} // end of namespace 
+  bool
+  DerivativePropagatorSetDeriv::hasExpression(const Expression& anExpression) const {
+    return (mySource.hasExpression(anExpression)
+         || DerivativePropagatorEntry::hasExpression(anExpression));
+  } // end DerivativePropagatorSetDeriv::hasExpression()
+
+} // end namespace xaifBoosterDerivativePropagator
+

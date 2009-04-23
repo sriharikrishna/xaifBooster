@@ -114,4 +114,19 @@ namespace xaifBooster {
     return *anIndexTriplet_p;
   }
 
-} 
+  bool
+  ArrayAccess::hasExpression(const Expression& anExpression) const {
+    for (IndexTripletListType::const_iterator iTripListCI = myIndexTripletList.begin();
+         iTripListCI != myIndexTripletList.end(); ++iTripListCI) {
+      for (IndexTriplet::IndexPairList::const_iterator anIndexPairListCI = (*iTripListCI)->getIndexPairList().begin();
+           anIndexPairListCI != (*iTripListCI)->getIndexPairList().end(); ++anIndexPairListCI) {
+        const Expression& theIndexExpression(*((*anIndexPairListCI).second));
+        if (theIndexExpression.hasExpression(anExpression))
+          return true;
+      } // end for all index pairs
+    } // end for all index triplets
+    return false;
+  } // end ArrayAccess::hasExpression()
+
+} // end namespace xaifBooster
+

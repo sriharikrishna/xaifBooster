@@ -83,4 +83,12 @@ namespace xaifBooster {
     return out.str();
   } // end of BasicBlockElement::debug
 
+  bool
+  BasicBlockElement::hasExpression(const Expression& anExpression) const {
+    if (myBasicBlockElementAlgBase_p)
+      return myBasicBlockElementAlgBase_p->hasExpression(anExpression);
+    else
+      return false;
+  } // end BasicBlockElement::hasExpression()
+
 } // end of namespace xaifBooster 

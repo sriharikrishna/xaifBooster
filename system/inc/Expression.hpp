@@ -181,6 +181,14 @@ namespace xaifBooster {
 
     void appendActiveArguments(CArgumentPList& listToBeAppended) const;
 
+    /**
+     * This expression is considered to contain \p anExpression if and only if
+     * they are the same or \p anExpression is contained in one of our arguments.
+     * If \p anExpression is not found in any of these places,
+     * the respective algorithm (if any) is subsequently checked
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
   private:
 
     /** 

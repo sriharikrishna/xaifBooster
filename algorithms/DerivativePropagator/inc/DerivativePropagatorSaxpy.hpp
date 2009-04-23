@@ -111,6 +111,12 @@ namespace xaifBoosterDerivativePropagator {
 
     virtual bool isIncremental()const; 
 
+    /**
+     * redefined from DerivativePropagatorEntry::hasExpression to also check
+     * the factor and source for each AX
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
   private:
 
     /**

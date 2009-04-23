@@ -127,6 +127,11 @@ namespace xaifBoosterDerivativePropagator {
      */
     EntryPList& getEntryPList();
 
+    /**
+     * check for \p anExpression in every entry
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
   private:
 
     /**

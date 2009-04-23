@@ -172,6 +172,11 @@ namespace xaifBoosterDerivativePropagator {
 
     std::string debug() const;
 
+    /**
+     * checks the target for \p anExpression (intended to be redefined by subclasses)
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
   private:
 
     /**
@@ -194,7 +199,7 @@ namespace xaifBoosterDerivativePropagator {
     /**
      * all versions have a single target
      * but we need this to be a copy
-     * \todo: does it really need to be a copy?
+     * \todo: does it really need to be a copy? AL: probably not
      */
     Variable myTarget;
 

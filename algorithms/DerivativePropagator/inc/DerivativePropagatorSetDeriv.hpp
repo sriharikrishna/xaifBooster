@@ -86,6 +86,9 @@ namespace xaifBoosterDerivativePropagator {
 
     virtual void  getFactors(FactorList& theFactorList) const ; 
 
+    /// redefined from DerivativePropagatorEntry::hasExpression to also check the source
+    virtual bool hasExpression(const Expression& anExpression) const;
+
   private:
 
     /**

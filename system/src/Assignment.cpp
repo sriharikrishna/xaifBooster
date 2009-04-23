@@ -200,5 +200,17 @@ namespace xaifBooster {
     return myDoMapKey;
   }
 
+  bool
+  Assignment::hasExpression(const Expression& anExpression) const {
+    // first check whether the assignment itself contains the expression
+    if (getLHS().hasExpression(anExpression)
+     || getRHS().hasExpression(anExpression))
+      return true;
+    // check the AssignmentAlg
+    if (myBasicBlockElementAlgBase_p)
+      return getAssignmentAlgBase().hasExpression(anExpression);
+    else
+      return false;
+  } // end Assignment::hasExpression
 
 } // end of namespace xaifBooster 
