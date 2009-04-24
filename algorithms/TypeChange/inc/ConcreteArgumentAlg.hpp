@@ -123,7 +123,7 @@ namespace xaifBoosterTypeChange {
     /** 
      * no def
      */
-    ConcreteArgumentAlg operator=(const ConcreteArgumentAlg&);
+    ConcreteArgumentAlg& operator=(const ConcreteArgumentAlg&);
 
     /** 
      * my replacement, i.e. the converted argument

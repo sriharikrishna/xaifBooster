@@ -126,7 +126,7 @@ namespace xaifBoosterDerivativePropagator {
     /**
      * no def
      */
-    DerivativePropagatorSaxpy operator=(const DerivativePropagatorSaxpy&);
+    DerivativePropagatorSaxpy& operator=(const DerivativePropagatorSaxpy&);
 
     struct AX { 
       Expression myA;

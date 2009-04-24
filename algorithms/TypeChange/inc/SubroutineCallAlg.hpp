@@ -138,7 +138,7 @@ namespace xaifBoosterTypeChange {
     /** 
      * no def
      */
-    SubroutineCallAlg operator=(const SubroutineCallAlg&);
+    SubroutineCallAlg& operator=(const SubroutineCallAlg&);
 
     /** 
      * prior call argument adjustments

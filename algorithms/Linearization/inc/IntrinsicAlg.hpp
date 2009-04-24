@@ -93,7 +93,7 @@ namespace xaifBoosterLinearization {
     /** 
      * no def
      */
-    IntrinsicAlg operator=(const IntrinsicAlg&);
+    IntrinsicAlg& operator=(const IntrinsicAlg&);
 
   } ; 
 

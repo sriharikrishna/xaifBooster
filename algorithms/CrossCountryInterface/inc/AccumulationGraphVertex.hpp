@@ -118,7 +118,7 @@ namespace xaifBoosterCrossCountryInterface {
   private:
 
     AccumulationGraphVertex (const AccumulationGraphVertex&);
-    AccumulationGraphVertex operator=(const AccumulationGraphVertex&);
+    AccumulationGraphVertex& operator=(const AccumulationGraphVertex&);
 
     /**
      * Pointer to corresponding edge in the remainder graph.  May or may not be set.

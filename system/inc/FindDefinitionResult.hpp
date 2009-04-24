@@ -94,7 +94,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    FindDefinitionResult operator=(const FindDefinitionResult&);
+    FindDefinitionResult& operator=(const FindDefinitionResult&);
 
     /**
      * if this is null we haven't found anything

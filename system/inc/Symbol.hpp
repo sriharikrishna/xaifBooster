@@ -198,7 +198,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    Symbol operator=(const Symbol&);
+    Symbol& operator=(const Symbol&);
 
     /**
      * is it an active data type?

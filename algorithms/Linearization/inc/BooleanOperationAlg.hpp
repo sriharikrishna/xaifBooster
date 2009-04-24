@@ -93,7 +93,7 @@ namespace xaifBoosterLinearization {
     /** 
      * no def
      */
-    BooleanOperationAlg operator=(const BooleanOperationAlg&);
+    BooleanOperationAlg& operator=(const BooleanOperationAlg&);
 
   } ; 
 

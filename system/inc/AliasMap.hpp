@@ -138,7 +138,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    AliasMap operator=(const AliasMap&);
+    AliasMap& operator=(const AliasMap&);
 
     /** 
      * this key is a regular key

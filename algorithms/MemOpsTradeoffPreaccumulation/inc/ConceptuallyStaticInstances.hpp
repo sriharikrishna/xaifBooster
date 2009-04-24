@@ -84,7 +84,7 @@ namespace MemOpsTradeoffPreaccumulation {
     /** 
      * no def
      */
-    ConceptuallyStaticInstances operator=(const ConceptuallyStaticInstances&);
+    ConceptuallyStaticInstances& operator=(const ConceptuallyStaticInstances&);
 
     void createList();
 

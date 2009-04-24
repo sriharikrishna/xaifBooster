@@ -104,7 +104,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     /** 
      * no def
      */
-    SubroutineCallAlg operator=(const SubroutineCallAlg&);
+    SubroutineCallAlg& operator=(const SubroutineCallAlg&);
 
     /** 
      * for anonymous reversals we need to store 

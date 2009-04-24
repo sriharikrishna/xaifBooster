@@ -90,7 +90,7 @@ namespace xaifBoosterTraceDiff {
     /** 
      * no def
      */
-    TraceableControlFlowGraph operator=(const TraceableControlFlowGraph&);
+    TraceableControlFlowGraph& operator=(const TraceableControlFlowGraph&);
 
   }; 
 

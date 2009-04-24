@@ -99,7 +99,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    CallGraphAlg operator=(const CallGraphAlg&);
+    CallGraphAlg& operator=(const CallGraphAlg&);
 
         /**
      * signature used in annotations of objects generated

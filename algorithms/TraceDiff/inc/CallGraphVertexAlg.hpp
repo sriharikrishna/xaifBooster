@@ -104,7 +104,7 @@ namespace xaifBoosterTraceDiff {
     /** 
      * no def
      */
-    CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
+    CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
 
     /**
      * CFG copy that traces for detecting potential non-smooth behavior

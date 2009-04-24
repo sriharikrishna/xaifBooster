@@ -148,7 +148,7 @@ namespace xaifBooster {
      * not defined
      */
     ExpressionEdge(const ExpressionEdge&);
-    ExpressionEdge operator=(const ExpressionEdge&);
+    ExpressionEdge& operator=(const ExpressionEdge&);
 
     /**
      * this indicates the position 

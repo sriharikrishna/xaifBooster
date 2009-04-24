@@ -109,7 +109,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    ReversibleControlFlowGraphEdge operator=(const ReversibleControlFlowGraphEdge&);
+    ReversibleControlFlowGraphEdge& operator=(const ReversibleControlFlowGraphEdge&);
     
     bool myConditionValueFlag;
     

@@ -132,7 +132,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    DuUdMap operator=(const DuUdMap&);
+    DuUdMap& operator=(const DuUdMap&);
 
   };
 

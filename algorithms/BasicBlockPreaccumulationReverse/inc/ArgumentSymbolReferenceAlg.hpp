@@ -97,7 +97,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     /** 
      * no def
      */
-    ArgumentSymbolReferenceAlg operator=(const ArgumentSymbolReferenceAlg&);
+    ArgumentSymbolReferenceAlg& operator=(const ArgumentSymbolReferenceAlg&);
 
     /** 
      * the intent to be changed

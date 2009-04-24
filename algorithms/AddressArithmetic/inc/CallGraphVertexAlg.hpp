@@ -61,7 +61,7 @@ namespace xaifBoosterAddressArithmetic {
     /** 
      * no def
      */
-    CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
+    CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
 
     /**
      * information on the unknown variables

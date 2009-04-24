@@ -109,7 +109,7 @@ namespace xaifBooster{
     /**
      * no def
      */
-    StatementIdSetMapEntry operator=(const StatementIdSetMapEntry&);
+    StatementIdSetMapEntry& operator=(const StatementIdSetMapEntry&);
 
     StatementIdSet myStatementIdSet;
     

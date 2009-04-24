@@ -94,7 +94,7 @@ namespace xaifBooster {
     /** 
      * no def
      */
-    NameCreator operator=(const NameCreator&);
+    NameCreator& operator=(const NameCreator&);
 
     /** 
      * my counter starts with 0
