@@ -190,9 +190,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       VariablePList myPushedFactorVariablesPList;
     }; // end struct PerSequenceData
 
-    std::list<PerSequenceData*> myPerSequenceDataPList;
+    typedef std::list<PerSequenceData*> PerSequenceDataPList;
 
-    const std::list<PerSequenceData*>& getPerSequenceDataPList() const;
+    PerSequenceDataPList myPerSequenceDataPList;
+
+    const PerSequenceDataPList& getPerSequenceDataPList() const;
 
   private:
 
