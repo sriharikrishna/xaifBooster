@@ -93,7 +93,7 @@ namespace xaifBoosterTraceDiff {
     /** 
      * no def
      */
-    IntrinsicAlg operator=(const IntrinsicAlg&);
+    IntrinsicAlg& operator=(const IntrinsicAlg&);
 
     /**
      * flag to rename this to call a tracing-enabled wrapper for 

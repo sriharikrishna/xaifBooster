@@ -97,7 +97,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /** 
      * no def
      */
-    AssignmentAlg operator=(const AssignmentAlg&);
+    AssignmentAlg& operator=(const AssignmentAlg&);
 
   }; // end of class AssignmentAlg
  

@@ -97,7 +97,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /** 
      * no def
      */
-    MarkerAlg operator=(const MarkerAlg&);
+    MarkerAlg& operator=(const MarkerAlg&);
 
   }; // end of class MarkerAlg
  

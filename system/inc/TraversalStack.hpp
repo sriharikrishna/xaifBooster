@@ -42,7 +42,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    TraversalStack operator=(const TraversalStack&);
+    TraversalStack& operator=(const TraversalStack&);
 
   }; // end class TraversalStack
 

@@ -101,7 +101,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /** 
      * no def
      */
-    BasicBlockElementAlg operator=(const BasicBlockElementAlg&);
+    BasicBlockElementAlg& operator=(const BasicBlockElementAlg&);
 
   };
  

@@ -103,7 +103,7 @@ namespace xaifBoosterTypeChange {
     /** 
      * no def
      */
-    ControlFlowGraphAlg operator=(const ControlFlowGraphAlg&);
+    ControlFlowGraphAlg& operator=(const ControlFlowGraphAlg&);
 
     /** 
      * force renames of all subroutine calls/definitions

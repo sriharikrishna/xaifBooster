@@ -128,7 +128,7 @@ namespace xaifBoosterLinearization {
     /** 
      * no def
      */
-    ExpressionEdgeAlg operator=(const ExpressionEdgeAlg&);
+    ExpressionEdgeAlg& operator=(const ExpressionEdgeAlg&);
 
     /**
      * a reference to the partial derivative

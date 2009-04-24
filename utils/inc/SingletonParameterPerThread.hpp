@@ -85,7 +85,7 @@ namespace xaifBooster {
     /** 
      * no def 
      */
-    SingletonParameterPerThread operator=(const SingletonParameterPerThread&);
+    SingletonParameterPerThread& operator=(const SingletonParameterPerThread&);
 
     ParameterType* myParameter_p;
 

@@ -45,7 +45,7 @@ namespace xaifBoosterDerivativePropagator {
     DerivativePropagatorDecDeriv(const DerivativePropagatorDecDeriv&);
 
     /// no def
-    DerivativePropagatorDecDeriv operator=(const DerivativePropagatorDecDeriv&);
+    DerivativePropagatorDecDeriv& operator=(const DerivativePropagatorDecDeriv&);
 
     /// this version only has a single source
     Variable mySource;

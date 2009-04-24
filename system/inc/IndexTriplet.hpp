@@ -138,7 +138,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    IndexTriplet operator=(const IndexTriplet&);
+    IndexTriplet& operator=(const IndexTriplet&);
 
     /** 
      * the list containingg the index and optionally  bound and stride

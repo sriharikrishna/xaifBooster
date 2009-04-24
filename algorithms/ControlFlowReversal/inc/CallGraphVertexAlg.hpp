@@ -114,7 +114,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
+    CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
 
     /**
      * CFG copy that tapes for partially explicit reversal

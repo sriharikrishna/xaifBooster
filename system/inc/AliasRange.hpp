@@ -155,7 +155,7 @@ namespace xaifBooster{
     /**
      * no def
      */
-    AliasRange operator=(const AliasRange&);
+    AliasRange& operator=(const AliasRange&);
 
     /** 
      * indicates if this is a full 

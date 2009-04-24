@@ -88,7 +88,7 @@ namespace xaifBoosterCodeReplacement {
     /** 
      * no def
      */
-    ConceptuallyStaticInstances operator=(const ConceptuallyStaticInstances&);
+    ConceptuallyStaticInstances& operator=(const ConceptuallyStaticInstances&);
 
     static ConceptuallyStaticInstances* ourInstance_p;
     

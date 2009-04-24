@@ -108,7 +108,7 @@ namespace xaifBoosterMemOpsTradeoffPreaccumulation {
     /** 
      * no def
      */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
+    BasicBlockAlg& operator=(const BasicBlockAlg&);
 
     /**
      * run the algorithm for creating the elminated graphs using thisMode

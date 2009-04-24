@@ -97,7 +97,7 @@ namespace xaifBoosterTraceDiff {
     /** 
      * no def
      */
-    SubroutineCallAlg operator=(const SubroutineCallAlg&);
+    SubroutineCallAlg& operator=(const SubroutineCallAlg&);
 
     void handleArrayAccessIndices(const ConcreteArgument& theConcreteArgument); 
 

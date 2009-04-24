@@ -97,7 +97,7 @@ namespace xaifBoosterDerivativePropagator {
     /**
      * no def
      */
-    DerivativePropagatorZeroDeriv operator=(const DerivativePropagatorZeroDeriv&);
+    DerivativePropagatorZeroDeriv& operator=(const DerivativePropagatorZeroDeriv&);
 
   }; // end of class DerivativePropagatorZeroDeriv
  
