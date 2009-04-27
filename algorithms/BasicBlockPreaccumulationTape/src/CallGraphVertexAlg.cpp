@@ -17,19 +17,24 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   CallGraphVertexAlg::debug() const {
     std::ostringstream out;
     out << "xaifBoosterBasicBlockPreaccumulationTape::CallGraphVertexAlg[" << this
-	<< ",myContaining=" << getContaining().debug().c_str()
-        << ",myRequiredValueSets=";
-    for(RequiredValueSetsList::const_iterator rvsI = myRequiredValueSetsList.begin();
-        rvsI != myRequiredValueSetsList.end(); ++rvsI) {
-      out << rvsI->debug().c_str();
-    }
-    out << "]" << std::ends;
+        << ",myContaining=" << getContaining().debug().c_str()
+        << ",myRequiredValueSet=" << myRequiredValueSet.debug().c_str()
+        << "]" << std::ends;
     return out.str();
   } // end CallGraphVertexAlg::debug()
 
   void
   CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
   } // end CallGraphVertexAlg::traverseToChildren()
+
+  void
+  CallGraphVertexAlg::markRequiredValue(const Expression& theExpression,
+                                        const ControlFlowGraphVertex& theControlFlowGraphVertex,
+                                        const std::string theOriginStr) {
+    myRequiredValueSet.addValueToRequiredSet(theExpression,
+                                             theControlFlowGraphVertex,
+                                             theOriginStr);
+  } // end CallGraphVertexAlg::markRequiredValue()
 
 } // end namespace xaifBoosterBasicBlockPreaccumulationTape
 

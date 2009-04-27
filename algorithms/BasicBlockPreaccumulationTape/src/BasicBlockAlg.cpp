@@ -56,6 +56,7 @@
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/Scope.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
@@ -65,6 +66,7 @@
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/CallGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -292,6 +294,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	const Expression& theIndexExpression(*((*anIndexPairListCI).second));
         ReinterpretedDerivativePropagator& theReinterpretedDerivativePropagator (*aPerSequenceData.myReinterpretedDerivativePropagator_p);
         if (!theIndexExpression.isConstant()) {
+          CallGraphVertexAlg& theCallerCallGraphVertexAlg (dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
+          theCallerCallGraphVertexAlg.markRequiredValue(theIndexExpression,
+                                                        getContaining(),
+                                                        "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess");
           xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
           if (theIndexExpression.numVertices() == 1) { // only one argument, non-const => push its value
             const Variable& theAddressVariable (dynamic_cast<const Argument&>(theIndexExpression.getMaxVertex()).getVariable());

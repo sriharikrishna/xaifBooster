@@ -70,6 +70,7 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/CallGraphVertexAlg.hpp"
 
 #include "xaifBooster/algorithms/SaveValuesAcross/inc/SaveValuesAcross.hpp"
 
@@ -86,7 +87,17 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       if (*aBasicBlockElementListI)
 	delete *aBasicBlockElementListI;
     }
-  } 
+    for (std::list<const Expression*>::iterator expListI = myOnEntryFormalExpressionPList.begin();
+         expListI != myOnEntryFormalExpressionPList.end(); ++expListI) {
+      if (*expListI)
+        delete *expListI;
+    }
+    for (std::list<const Expression*>::iterator expListI = myOnEntryNonFormalExpressionPList.begin();
+         expListI != myOnEntryNonFormalExpressionPList.end(); ++expListI) {
+      if (*expListI)
+        delete *expListI;
+    }
+  } // end SubroutineCallAlg::~SubroutineCallAlg()
 
   void
   SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
@@ -149,50 +160,93 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       // store the index variables via 
       // an InlinableSubroutinecall to push
       // note that here we don't use the fact that we are or are not in an explicit loop
+      // NOTE: we actually DONT have to consider those values that have already been saved by
+      // the conversion caused by TypeChange, because they're for passive arguments exclusively.
 
-      // first consider those values that have already been saved by the conversion caused by TypeChange
-      const xaifBoosterSaveValuesAcross::SaveValuesAcross::SavedValueList& theSavedValueList (mySaveValuesAcrossForTypeChange.getSavedValueList());
-      for (xaifBoosterSaveValuesAcross::SaveValuesAcross::SavedValueList::const_iterator svI = theSavedValueList.begin(); svI != theSavedValueList.end(); ++svI) {
-	// make the subroutine call: 
-	xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
-	// save it in the list
-	myAfterCallIndexPushes.push_back(theSubroutineCall_p);
-	theSubroutineCall_p->setId("SRcall_inline_push_i");
-	// we need to push what we assigned to the temporary prior to the call 
-	theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable().supplyAndAddVertexInstance((*svI)->myTempVarVSR_p->createCopyOfMyself());
-	myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&(*svI)->myArgument_p->getVariable(),(*svI)->myTempVarVSR_p));
-      }
-      // now figure out if we need to push more than that
+      CallGraphVertexAlg& theCallerCallGraphVertexAlg
+       (dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
+      const BasicBlock& theCallerBasicBlock (dynamic_cast<const BasicBlock&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance()));
+
+      // mark array access indices for all arguments that are
+      // (1) arguments
+      // (2) active
+      // (3) array accesses
       for (SubroutineCall::ConcreteArgumentPList::const_iterator aConcreteArgumentPListI = getContainingSubroutineCall().getConcreteArgumentPList().begin();
- 	   aConcreteArgumentPListI != getContainingSubroutineCall().getConcreteArgumentPList().end();
- 	   ++aConcreteArgumentPListI) {
- 	if ((*aConcreteArgumentPListI)->isArgument()
- 	    && 
- 	    (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
- 	  handleArrayAccessIndices(**aConcreteArgumentPListI); 
- 	}
+           aConcreteArgumentPListI != getContainingSubroutineCall().getConcreteArgumentPList().end();
+           ++aConcreteArgumentPListI) {
+        if ((*aConcreteArgumentPListI)->isArgument()
+            && 
+            (*aConcreteArgumentPListI)->getArgument().getVariable().getActiveType()
+            &&
+            (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
+          handleArrayAccessIndices(**aConcreteArgumentPListI); 
+        }
       } // end for
       // now check if any values are required on entry: 
       const ControlFlowGraph& theCalleeCFG (ConceptuallyStaticInstances::instance()->getCallGraph().getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).getControlFlowGraph());
       const SideEffectList& theOnEntryList(theCalleeCFG.getSideEffectList(SideEffectListType::ON_ENTRY_LIST));
-      if (theOnEntryList.getVariablePList().empty())
-	return;
       for (VariablePList::const_iterator i = theOnEntryList.getVariablePList().begin(); i != theOnEntryList.getVariablePList().end(); ++i) {
+        Expression* theDummyExpression_p (NULL); // dummy expression for marking as required
+        std::string theOriginStr;
 	ControlFlowGraph::FormalResult theResult(theCalleeCFG.hasFormal((*i)->getVariableSymbolReference()));
 	if (theResult.first) { // is a formal
 	  const ConcreteArgument& theConcreteArgument(getContainingSubroutineCall().getConcreteArgument(theResult.second));
 	  if (theConcreteArgument.isConstant())
 	    continue; 
 	  checkAndPush(theConcreteArgument.getArgument().getVariable());
+          theDummyExpression_p = new Expression (false);
+          Argument* theNewArgument_p = new Argument();
+          theConcreteArgument.getArgument().getVariable().copyMyselfInto(theNewArgument_p->getVariable());
+          theNewArgument_p->setId(1);
+          theDummyExpression_p->supplyAndAddVertexInstance(*theNewArgument_p);
+          myOnEntryFormalExpressionPList.push_back(theDummyExpression_p);
+          theOriginStr = "BasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4: on entry formal";
 	}
 	else { // not a formal
 	  checkAndPush(**i);
+          // make a dummy expression for marking as required. The sole ExpressionVertex is an argument
+          theDummyExpression_p = new Expression (false);
+          Argument* theNewArgument_p = new Argument();
+          (*i)->copyMyselfInto(theNewArgument_p->getVariable());
+          theNewArgument_p->setId(1);
+          theDummyExpression_p->supplyAndAddVertexInstance(*theNewArgument_p);
+          myOnEntryNonFormalExpressionPList.push_back(theDummyExpression_p);
+          theOriginStr = "BasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4: on entry non formal";
         } // end if/else formal
+        theCallerCallGraphVertexAlg.markRequiredValue(*theDummyExpression_p,
+                                                      theCallerBasicBlock,
+                                                      theOriginStr);
       } // end iterate over theOnEntryList
-    } 
+    } // end if not external
   } // end SubroutineCallAlg::algorithm_action_4()
 
+  bool
+  SubroutineCallAlg::hasExpression(const Expression& anExpression) const {
+    // check on entry formals
+    for (std::list<const Expression*>::const_iterator expPListI = myOnEntryFormalExpressionPList.begin();
+         expPListI != myOnEntryFormalExpressionPList.end(); ++expPListI)
+      if ((*expPListI)->hasExpression(anExpression))
+        return true;
+    // check on entry non-formals
+    for (std::list<const Expression*>::const_iterator expPListI = myOnEntryNonFormalExpressionPList.begin();
+         expPListI != myOnEntryNonFormalExpressionPList.end(); ++expPListI)
+      if ((*expPListI)->hasExpression(anExpression))
+        return true;
+    // check myAfterCallIndexPushes
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator pushI = myAfterCallIndexPushes.begin();
+         pushI != myAfterCallIndexPushes.end(); ++pushI)
+      if ((*pushI)->hasExpression(anExpression))
+        return true;
+    // pass on to the typechange version of this routine, which will look through the list of saveacross values
+    return xaifBoosterTypeChange::SubroutineCallAlg::hasExpression(anExpression);
+  } // end SubroutineCallAlg::hasExpression()
+
   void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument) {
+    // get the CallGraphVertexAlg and BasicBlock from the traversal stack
+    CallGraphVertexAlg& theCallerCallGraphVertexAlg
+     (dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
+    const BasicBlock& theCallerBasicBlock (dynamic_cast<const BasicBlock&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance()));
+
     const ArrayAccess::IndexTripletListType& theIndexTripletList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexTripletList());
     for (ArrayAccess::IndexTripletListType::const_iterator anIndexTripletListTypeCI=theIndexTripletList.begin();
 	 anIndexTripletListTypeCI!=theIndexTripletList.end();
@@ -210,6 +264,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin(); argumentI!=listToBeAppended.end(); ++argumentI) {
 	    checkAndPush((*argumentI)->getVariable());
 	  }
+          theCallerCallGraphVertexAlg.markRequiredValue(theIndexExpression,
+                                                        theCallerBasicBlock,
+                                                        "xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices");
 	} // end if the index expression is non-const
       }
     }
