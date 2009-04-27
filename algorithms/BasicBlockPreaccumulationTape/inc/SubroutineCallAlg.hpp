@@ -71,7 +71,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     virtual ~SubroutineCallAlg();
 
-    //    virtual void printXMLHierarchy(std::ostream& os) const;
+    virtual void printXMLHierarchy(std::ostream& os) const;
 
     virtual std::string debug() const ;
 
@@ -83,11 +83,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      */
     virtual void algorithm_action_4();
 
-    void printXMLHierarchy(std::ostream& os) const;
-
     const Expression::VariablePVariableSRPPairList& getIndexVariablesPushed() const; 
 
     void checkAndPush(const Variable& theVariable);  
+
+    /**
+     * check myAfterCallIndexPushes,myOnEntryFormalExpressionPList, and myOnEntryNonFormalExpressionPList for \p anExpression
+     */
+    virtual bool hasExpression(const Expression& theExpression) const;
 
   private: 
 
@@ -107,11 +110,21 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     SubroutineCallAlg operator=(const SubroutineCallAlg&);
 
     /**
-     * Class for saving values across the subroutine call, in order to facilitate correct taping.
-     * (Imagine, for example, that a value is changed as a side-effect of the call,
-     * but it must be pushed after the call, so we have to store it's pre-call value in a variable.)
+     * This is a list of formal parameters that are required on entry.
+     * this class owns the dummy expressions that were created for the purpose of marking them
+     * as required for the push/pop algorithm(s), and this is where they reside.
+     * They are deleted in the destructor.
      */
-    xaifBoosterSaveValuesAcross::SaveValuesAcross mySaveValuesAcrossForTaping;
+    std::list<const Expression*> myOnEntryFormalExpressionPList;
+
+    /**
+     * Values required on entry that are not formal parameters.
+     * These may also have to be restored, but they cannot be restored inside
+     * the called context (they must be restored in the calling context)
+     * We create fake expressions for these (for the sake of pointing to as required values).
+     * We own these fake expressions and delete them in the destructor
+     */
+    std::list<const Expression*> myOnEntryNonFormalExpressionPList;
 
     /** 
      * for anonymous reversals we need to store 

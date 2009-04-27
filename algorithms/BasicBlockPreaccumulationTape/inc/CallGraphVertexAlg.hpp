@@ -26,29 +26,27 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-  private:
+    void markRequiredValue(const Expression& theExpression,
+                           const ControlFlowGraphVertex& theControlFlowGraphVertex,
+                           const std::string theOriginStr);
 
-    typedef std::list<xaifBoosterRequiredValues::RequiredValueSet> RequiredValueSetsList;
+  protected:
 
     /// this is where we keep the set of values that are marked as required by various algorithms
-    RequiredValueSetsList myRequiredValueSetsList;
+    xaifBoosterRequiredValues::RequiredValueSet myRequiredValueSet;
 
-    /**
-     * no def
-     */
+  private:
+
+    /// no def
     CallGraphVertexAlg();
 
-    /**
-     * no def
-     */
+    /// no def
     CallGraphVertexAlg(const CallGraphVertexAlg&);
 
-    /**
-     * no def
-     */
-    CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
+    /// no def
+    CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
 
-  };  // end class xaifBoosterBasicBlockPreaccumulationTape::CallGraphVertexAlg
+  }; // end class xaifBoosterBasicBlockPreaccumulationTape::CallGraphVertexAlg
 
 } // end namespace xaifBoosterBasicBlockPreaccumulationTape
 
