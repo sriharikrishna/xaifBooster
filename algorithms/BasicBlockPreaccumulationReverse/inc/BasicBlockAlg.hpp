@@ -53,7 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/PushPop/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -66,7 +66,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
    * are already considered at the AddressArithmetic transformation
    * we just need to reimplement printing
    */
-  class BasicBlockAlg : public xaifBoosterAddressArithmetic::BasicBlockAlg {
+  class BasicBlockAlg : public xaifBoosterPushPop::BasicBlockAlg {
 
   public:
     

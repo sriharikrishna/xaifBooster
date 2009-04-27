@@ -2,6 +2,7 @@
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 #include "xaifBooster/algorithms/PushPop/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/PushPop/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/PushPop/inc/CallGraphVertexAlgFactory.hpp"
 
 using namespace xaifBooster;
@@ -29,6 +30,7 @@ namespace xaifBoosterPushPop {
   } // end of AlgFactoryManager::instance()
 
   void AlgFactoryManager::resets() {
+    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
     DBG_MACRO(DbgGroup::CALLSTACK,"at the end of xaifBoosterPushPop::AlgFactoryManager::resets: " << debug().c_str());
   } // end AlgFactoryManager::resets()
