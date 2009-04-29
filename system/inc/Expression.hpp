@@ -187,7 +187,7 @@ namespace xaifBooster {
      * If \p anExpression is not found in any of these places,
      * the respective algorithm (if any) is subsequently checked
      */
-    virtual bool hasExpression(const Expression& anExpression) const;
+    bool hasExpression(const Expression& anExpression) const;
 
   private:
 
