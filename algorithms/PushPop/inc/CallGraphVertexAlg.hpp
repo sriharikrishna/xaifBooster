@@ -3,6 +3,8 @@
 
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 
+#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
+
 using namespace xaifBooster;
 
 namespace xaifBoosterPushPop {  
@@ -29,6 +31,12 @@ namespace xaifBoosterPushPop {
 
   private:
 
+    typedef std::list<xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList*> RequiredValuePListPList;
+
+    typedef std::map<const ControlFlowGraphVertex*,
+                     xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList>
+       CFGVertexP2RequiredValuePListMap;
+
     /**
      * no def
      */
@@ -42,7 +50,7 @@ namespace xaifBoosterPushPop {
     /**
      * no def
      */
-    CallGraphVertexAlg operator=(const CallGraphVertexAlg&);
+    CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
 
   };  // end class CallGraphVertexAlg
 
