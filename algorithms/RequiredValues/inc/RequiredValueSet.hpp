@@ -20,6 +20,9 @@ namespace xaifBoosterRequiredValues {
                              EQUAL,
                              INCOMPARABLE};
 
+    static std::string
+    comparisonResultToString(ComparisonResult_E aComparisonResult);
+
     /**
      * 
      */
