@@ -99,7 +99,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     /** 
      * no def
      */
-    SubroutineCallAlg operator=(const SubroutineCallAlg&);
+    SubroutineCallAlg& operator=(const SubroutineCallAlg&);
 
   };
  

@@ -84,7 +84,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    DoMap operator=(const DoMap&);
+    DoMap& operator=(const DoMap&);
 
   }; // end of class DoMap
 

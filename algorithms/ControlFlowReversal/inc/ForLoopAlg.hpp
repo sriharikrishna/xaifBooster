@@ -93,7 +93,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    ForLoopAlg operator=(const ForLoopAlg&);
+    ForLoopAlg& operator=(const ForLoopAlg&);
 
   };  // end of class
 

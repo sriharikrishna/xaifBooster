@@ -104,7 +104,7 @@ namespace xaifBoosterDerivativePropagator {
     /**
      * no def
      */
-    DerivativePropagatorSetDeriv operator=(const DerivativePropagatorSetDeriv&);
+    DerivativePropagatorSetDeriv& operator=(const DerivativePropagatorSetDeriv&);
 
     /**
      * this version only has a single source

@@ -84,6 +84,12 @@ namespace xaifBooster {
 				const SymbolShape::SymbolShape_E& aShape,
 				bool anActiveTypeFlag);
 
+    Symbol& addUniqueSymbol(const NameCreator& aNameCreator,
+                            const SymbolKind::SymbolKind_E& aKind,
+                            const SymbolType::SymbolType_E& aType,
+                            const SymbolShape::SymbolShape_E& aShape,
+                            bool anActiveTypeFlag);
+
     const Symbol& getSymbol(const std::string& aName) const;
 
     std::string debug() const ; 

@@ -92,7 +92,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    StatementIdSetMap operator=(const StatementIdSetMap&);
+    StatementIdSetMap& operator=(const StatementIdSetMap&);
 
     /** 
      * the vector containing all the entries

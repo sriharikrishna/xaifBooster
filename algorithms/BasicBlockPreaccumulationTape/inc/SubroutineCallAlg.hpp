@@ -110,7 +110,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     /** 
      * no def
      */
-    SubroutineCallAlg operator=(const SubroutineCallAlg&);
+    SubroutineCallAlg& operator=(const SubroutineCallAlg&);
 
     /**
      * This is a list of formal parameters that are required on entry.

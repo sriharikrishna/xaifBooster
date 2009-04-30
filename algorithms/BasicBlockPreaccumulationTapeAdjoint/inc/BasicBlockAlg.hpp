@@ -108,7 +108,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     BasicBlockAlg(const BasicBlockAlg&);
 
     /// no def
-    BasicBlockAlg operator=(const BasicBlockAlg&);
+    BasicBlockAlg& operator=(const BasicBlockAlg&);
 
     typedef std::pair<const Variable*, const Variable*> VariablePPair;
     typedef std::list<VariablePPair> VariablePPairList;

@@ -100,7 +100,7 @@ def main():
 
 	fout.write("\n}\n")
 	fout.close()
-	os.system("dot -T svg algGraph.dot > algGraph.svg && firefox algGraph.svg")
+	os.system("dot -T svg algGraph.dot > algGraph.svg")
 
     except RuntimeError, errtxt:
 	print 'caught exception: ',errtxt

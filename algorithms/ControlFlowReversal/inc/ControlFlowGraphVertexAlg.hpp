@@ -95,7 +95,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    ControlFlowGraphVertexAlg operator=(const ControlFlowGraphVertexAlg&);
+    ControlFlowGraphVertexAlg& operator=(const ControlFlowGraphVertexAlg&);
 
   };  // end of class
 

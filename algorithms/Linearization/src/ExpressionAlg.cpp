@@ -160,10 +160,11 @@ namespace xaifBoosterLinearization {
 	// ExpressionVertex::myAuxilliaryArgument_p
 	// we create this for the time being in the global scope
 	// JU: \todo bad assumption: and always assume a scalar double.
-	theExpressionVertexAlg.makeAuxilliaryVariable(theGlobalScope.getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
-													 SymbolType::REAL_STYPE,
-													 SymbolShape::SCALAR,
-													 false),
+	theExpressionVertexAlg.makeAuxilliaryVariable(theGlobalScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getTemporaryVariableNameCreator(),
+                                                                                                      SymbolKind::VARIABLE,
+                                                                                                      SymbolType::REAL_STYPE,
+                                                                                                      SymbolShape::SCALAR,
+                                                                                                      false),
 						      theGlobalScope);
       } // end if
       // now we need to loop over all arguments to determine auxilliaries
@@ -184,10 +185,11 @@ namespace xaifBoosterLinearization {
 	  // a variable reference itself or a constant (no in edges)
 	  // we create this for the time being in the global scope
 	  // JU: \todo bad assumption: and always assume a scalar double.
-	  theSourceAlg.makeAuxilliaryVariable(theGlobalScope.getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
-												 SymbolType::REAL_STYPE,
-												 SymbolShape::SCALAR,
-												 false),
+	  theSourceAlg.makeAuxilliaryVariable(theGlobalScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getTemporaryVariableNameCreator(),
+                                                                                              SymbolKind::VARIABLE,
+                                                                                              SymbolType::REAL_STYPE,
+                                                                                              SymbolShape::SCALAR,
+                                                                                              false),
 					      theGlobalScope);
 	} // end if  
 	// match the abstract arguments in thePartialExpression
@@ -370,10 +372,11 @@ namespace xaifBoosterLinearization {
 			      getCallGraph().getScopeTree().getGlobalScope());
 	VariableSymbolReference* theVariableSymbolReference_p=
 	  new VariableSymbolReference(theGlobalScope.getSymbolTable().
-				      addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							 SymbolType::REAL_STYPE,
-							 SymbolShape::SCALAR,
-							 false),
+				      addUniqueSymbol(ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
+                                                      SymbolKind::VARIABLE,
+                                                      SymbolType::REAL_STYPE,
+                                                      SymbolShape::SCALAR,
+                                                      false),
 				      theGlobalScope);
 	// JU: this assignment of the vertex Id might have to change 
 	// if we create vector assignments as auxilliary variables...

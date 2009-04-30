@@ -96,7 +96,7 @@ namespace xaifBoosterTraceDiff {
     /** 
      * no def
      */
-    AssignmentAlg operator=(const AssignmentAlg&);
+    AssignmentAlg& operator=(const AssignmentAlg&);
 
     PlainBasicBlock::BasicBlockElementList myTracingCalls;
 

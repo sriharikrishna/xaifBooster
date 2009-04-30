@@ -102,7 +102,7 @@ namespace xaifBooster {
     /**
      * disallowed (no implementation)
      */
-     XMLParserErrorHandler operator=(const XMLParserErrorHandler&);
+     XMLParserErrorHandler& operator=(const XMLParserErrorHandler&);
 
   }; // end of class XMLParserErrorHandler
 

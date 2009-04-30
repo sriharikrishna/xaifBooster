@@ -124,7 +124,7 @@ namespace xaifBoosterAddressArithmetic {
     /** 
      * no def
      */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
+    BasicBlockAlg& operator=(const BasicBlockAlg&);
 
   };
  

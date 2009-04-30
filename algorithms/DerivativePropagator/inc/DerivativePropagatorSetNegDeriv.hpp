@@ -46,7 +46,7 @@ namespace xaifBoosterDerivativePropagator {
     DerivativePropagatorSetNegDeriv(const DerivativePropagatorSetNegDeriv&);
 
     /// no def
-    DerivativePropagatorSetNegDeriv operator=(const DerivativePropagatorSetNegDeriv&);
+    DerivativePropagatorSetNegDeriv& operator=(const DerivativePropagatorSetNegDeriv&);
 
     /// this version only has a single source
     Variable mySource;

@@ -7,7 +7,6 @@
 #include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
 
 using namespace xaifBooster;
-
 namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   /**
@@ -70,7 +69,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     BasicBlockElementAlg(const BasicBlockElementAlg&);
 
     /// no def
-    BasicBlockElementAlg operator=(const BasicBlockElementAlg&);
+    BasicBlockElementAlg& operator=(const BasicBlockElementAlg&);
 
   }; // end class BasicBlockElementAlg
  

@@ -122,7 +122,7 @@ namespace xaifBooster{
     /**
      * no def
      */
-    AliasMapEntry operator=(const AliasMapEntry&);
+    AliasMapEntry& operator=(const AliasMapEntry&);
     
   }; // end of class AliasMapEntry
 

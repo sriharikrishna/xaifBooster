@@ -95,7 +95,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
+    BasicBlockAlg& operator=(const BasicBlockAlg&);
 
   };  // end of class
 

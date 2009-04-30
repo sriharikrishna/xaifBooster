@@ -93,7 +93,7 @@ namespace xaifBoosterLinearization {
     /** 
      * no def
      */
-    ArgumentAlg operator=(const ArgumentAlg&);
+    ArgumentAlg& operator=(const ArgumentAlg&);
 
   } ; 
 

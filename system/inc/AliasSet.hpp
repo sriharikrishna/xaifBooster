@@ -101,7 +101,7 @@ namespace xaifBooster{
     /**
      * no def
      */
-    AliasSet operator=(const AliasSet&);
+    AliasSet& operator=(const AliasSet&);
     
   }; // end of class AliasSet
 

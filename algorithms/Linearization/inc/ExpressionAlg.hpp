@@ -119,7 +119,7 @@ namespace xaifBoosterLinearization {
     /** 
      * no def
      */
-    ExpressionAlg operator=(const ExpressionAlg&);
+    ExpressionAlg& operator=(const ExpressionAlg&);
 
     /**
      * the list of input variables, i.e. instances
