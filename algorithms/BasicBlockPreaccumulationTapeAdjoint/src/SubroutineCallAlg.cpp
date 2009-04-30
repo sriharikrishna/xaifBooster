@@ -70,7 +70,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
     xaifBoosterTypeChange::SubroutineCallAlg(theContainingSubroutineCall),
     xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg(theContainingSubroutineCall),
-    BasicBlockElementAlg(theContainingSubroutineCall) { 
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockElementAlg(theContainingSubroutineCall) { 
   }
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
