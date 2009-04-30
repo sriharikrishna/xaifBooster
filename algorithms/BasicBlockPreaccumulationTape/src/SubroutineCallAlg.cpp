@@ -77,7 +77,8 @@
 namespace xaifBoosterBasicBlockPreaccumulationTape {  
 
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
-    xaifBoosterTypeChange::SubroutineCallAlg(theContainingSubroutineCall) { 
+    xaifBoosterTypeChange::SubroutineCallAlg(theContainingSubroutineCall),
+    BasicBlockElementAlg(theContainingSubroutineCall) { 
   }
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
@@ -109,7 +110,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	   aBasicBlockElementListI != myAfterCallIndexPushes.end();
 	   ++aBasicBlockElementListI) {
 	if (*aBasicBlockElementListI) { 
+          // print any assignments in myAssignmentsforPush
+          for (std::list<const BasicBlockElement*>::const_iterator assignI = myAssignmentsforPush.begin();
+               assignI != myAssignmentsforPush.end(); ++assignI)
+            (*assignI)->printXMLHierarchy(os);
 	  (*aBasicBlockElementListI)->printXMLHierarchy(os);
+          // print any push calls in myPushBlock
+          for (std::list<const BasicBlockElement*>::const_iterator pushI = myPushBlock.begin();
+               pushI != myPushBlock.end(); ++pushI)
+            (*pushI)->printXMLHierarchy(os);
 	} 
       }
     }

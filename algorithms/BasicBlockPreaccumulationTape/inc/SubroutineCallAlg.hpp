@@ -56,6 +56,8 @@
 
 #include "xaifBooster/algorithms/TypeChange/inc/SubroutineCallAlg.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockElementAlg.hpp"
+
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationTape {  
@@ -63,7 +65,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   /** 
    * class to implement taping array access in arguments
    */
-  class SubroutineCallAlg : virtual public xaifBoosterTypeChange::SubroutineCallAlg {
+  class SubroutineCallAlg : virtual public xaifBoosterTypeChange::SubroutineCallAlg,
+                            public BasicBlockElementAlg {
 
   public:
     

@@ -70,6 +70,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   /** 
    * class to implement reversal of BasicBlockElements
+   * NOTE: once the push/pop stuff is complete, this possibly should no longer inherit from xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg
    */
   class SubroutineCallAlg : virtual public xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg,
 			    public BasicBlockElementAlg {
