@@ -53,13 +53,10 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/BasicBlockElementAlgBase.hpp"
 
 using namespace xaifBooster; 
-
-namespace xaifBooster { 
-  class BasicBlock;
-}
 
 namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint { 
 

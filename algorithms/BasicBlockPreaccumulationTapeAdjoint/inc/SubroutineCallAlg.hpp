@@ -54,6 +54,7 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlg.hpp"
 
@@ -61,10 +62,6 @@
 
 
 using namespace xaifBooster;
-
-namespace xaifBooster { 
-  class SubroutineCall;
-}
 
 namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
 
@@ -80,7 +77,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual ~SubroutineCallAlg();
 
-    //    virtual void printXMLHierarchy(std::ostream& os) const;
+    virtual void printXMLHierarchy(std::ostream& os) const;
 
     virtual std::string debug() const ;
 
@@ -90,8 +87,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     void insertYourself(const BasicBlock& theBasicBlock,
 			ForLoopReversalType::ForLoopReversalType_E aReversalType);
-
-    void printXMLHierarchy(std::ostream& os) const;
 
   private: 
 
