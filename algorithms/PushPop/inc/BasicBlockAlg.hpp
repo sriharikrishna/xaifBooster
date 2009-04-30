@@ -24,9 +24,13 @@ namespace xaifBoosterPushPop {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-  private:
+    /**
+     * creates a push for a value from \p aRequiredValuePList that occurs no later than any other,
+     * where the resolution is currently on the level of basic block elements and sequences
+     */
+    void pushSupremum(xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList aRequiredValuePList);
 
-    const BasicBlock& getContaining() const;
+  private:
 
     /// no def
     BasicBlockAlg();
@@ -36,6 +40,25 @@ namespace xaifBoosterPushPop {
 
     /// no def
     BasicBlockAlg& operator=(const BasicBlockAlg&);
+
+    /**
+     * determine the order relation between \p firstExpression and \p secondExpression by
+     * stepping through all basic block elements.  We check the data inside each sequence
+     * after we've reached the last element in that sequence.
+     */
+    xaifBoosterRequiredValues::RequiredValueSet::ComparisonResult_E
+    compareExpressions(const Expression& firstExpression,
+                       const Expression& secondExpression) const;
+
+    /**
+     * add a push call for \p aRequiredValue in the appropriate place,
+     * which is currently defined as the push block associated with
+     * the subroutine call or sequence that this value is associated with
+     * \todo take another parameter which is an upper limit to the push range, and possibly a lower limit as well
+     */
+    void pushRequiredValue(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue);
+
+    const BasicBlock& getContaining() const;
 
   }; // end class xaifBoosterPushPop::BasicBlockAlg
  
