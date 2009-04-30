@@ -71,6 +71,26 @@ namespace xaifBoosterRequiredValues {
     return myOriginStr;
   } // end RequiredValueSet::RequiredValue::getOrigin()
 
+  bool
+  RequiredValueSet::RequiredValue::isArgument() const {
+    if (myExpression_p->numVertices() > 1)
+      return false;
+    return myExpression_p->getMaxVertex().isArgument();
+  } // end RequiredValueSet::RequiredValue::isArgument()
+
+  const Argument&
+  RequiredValueSet::RequiredValue::getArgument() const {
+    if (!isArgument())
+      THROW_LOGICEXCEPTION_MACRO("RequiredValueSet::RequiredValue::getArgument:"
+                                 << "the expression for this required value does not consist of just a single argument");
+    return dynamic_cast<const Argument&>(myExpression_p->getMaxVertex());
+  } // end RequiredValueSet::RequiredValue::getArgument()
+
+  void
+  RequiredValueSet::RequiredValue::populateArgumentPList(std::list<const Argument*> argumentListToBePopulated) const {
+    myExpression_p->appendArguments(argumentListToBePopulated);
+  } // end RequiredValueSet::RequiredValue::populateArgumentPList
+
   void RequiredValueSet::addValueToRequiredSet(const Expression& anExpression,
                                                const ControlFlowGraphVertex& aControlFlowGraphVertex,
                                                const std::string anOriginStr) {

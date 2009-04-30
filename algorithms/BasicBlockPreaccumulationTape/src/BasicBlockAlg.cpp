@@ -159,6 +159,19 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
         delete *li;
       }
     } // end for all PerSequenceData entries
+    // delete the push blocks and their contents (one per sequence) 
+    for (CSequenceP2CBasicBlockElementPListMap::const_iterator mapI = myCSequenceP2CBasicBlockElementPListMap.begin();
+         mapI != myCSequenceP2CBasicBlockElementPListMap.end(); ++mapI) {
+      if (mapI->second) {
+        // delete all the push calls in the list
+        for (CBasicBlockElementPList::const_iterator pushBlockI = mapI->second->begin();
+             pushBlockI != mapI->second->end(); ++pushBlockI)
+          if (*pushBlockI)
+            delete *pushBlockI;
+        // delete the list itself
+        delete mapI->second;
+      }
+    }
   } // end BasicBlockAlg::~BasicBlockAlg()
 
   void
@@ -277,6 +290,65 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   BasicBlockAlg::getPerSequenceDataPList() const {
     return myPerSequenceDataPList;
   } // end BasicBlockAlg::getPerSequenceDataPList()
+
+  void
+  BasicBlockAlg::assignAndPushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+                                                         const Sequence& aSequence) {
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::assignAndPushRequiredValueAfterSequence");
+    Assignment* theNewExpressionAssignment_p (new Assignment(false));
+    theNewExpressionAssignment_p->setId("index_expression_assignment_for_taping");
+    // create a new symbol and add a new VariableSymbolReference in the Variable
+    //ConceptuallyStaticInstances::instance()->getTapingVariableNameCreator(),
+    VariableSymbolReference* theNewVariableSymbolReference_p
+      (new VariableSymbolReference(getContaining().getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
+                                                                                                  SymbolType::INTEGER_STYPE,
+                                                                                                  SymbolShape::SCALAR,
+                                                                                                  false),
+                                   getContaining().getScope())
+      );
+    theNewVariableSymbolReference_p->setId("1");
+    theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockElementAlg::assignAndPushRequiredValue");
+    // pass it on to the LHS and relinquish ownership
+    theNewExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+    theNewExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
+    theNewExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
+    // set the RHS
+    aRequiredValue.getExpression().copyMyselfInto(theNewExpressionAssignment_p->getRHS(),
+                                                  false,
+                                                  false);
+    addElementToSequencePushBlock(*theNewExpressionAssignment_p,
+                                  aSequence);
+    // now create the push
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theNewPushSubroutineCall_p
+     (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
+    theNewPushSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockElementAlg::pushRequiredValueAfterSequence:inline_push_i");
+    theNewExpressionAssignment_p->getLHS().copyMyselfInto(theNewPushSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+    addElementToSequencePushBlock(*theNewPushSubroutineCall_p,
+                                  aSequence);
+  } // end BasicBlockAlg::assignAndPushRequiredValueAfterSequence
+
+  void
+  BasicBlockAlg::pushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+                                                const Sequence& aSequence) {
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::pushRequiredValueAfterSequence");
+    if (!aRequiredValue.isArgument())
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::pushRequiredValueAfterSequence:"
+                                 << " required value " << aRequiredValue.debug() << " is not an argument (it's some expression");
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theNewPushSubroutineCall_p
+     (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
+    theNewPushSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockElementAlg::pushRequiredValueAfterSequence:inline_push_i");
+    aRequiredValue.getArgument().getVariable().copyMyselfInto(theNewPushSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+    addElementToSequencePushBlock(*theNewPushSubroutineCall_p,
+                                  aSequence);
+  } // end BasicBlockAlg::pushRequiredValueAfterSequence()
+
+  void
+  BasicBlockAlg::addElementToSequencePushBlock(const BasicBlockElement& aBasicBlockElement,
+                                               const Sequence& aSequence) {
+    if (!myCSequenceP2CBasicBlockElementPListMap[&aSequence])
+      myCSequenceP2CBasicBlockElementPListMap[&aSequence] = new CBasicBlockElementPList;
+    myCSequenceP2CBasicBlockElementPListMap[&aSequence]->push_back(&aBasicBlockElement);
+  } // end BasicBlockAlg::addElementToSequencePushBlock()
 
   void
   BasicBlockAlg::reinterpretArrayAccess(const ArrayAccess& theArrayAccess,

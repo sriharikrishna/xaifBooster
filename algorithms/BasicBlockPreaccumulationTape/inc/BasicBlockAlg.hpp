@@ -59,6 +59,8 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
+#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
+
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationTape {  
@@ -196,7 +198,25 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     const PerSequenceDataPList& getPerSequenceDataPList() const;
 
+    void assignAndPushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+                                                 const Sequence& aSequence);
+
+    void pushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+                                        const Sequence& aSequence);
+
+    typedef std::list<const BasicBlockElement*> CBasicBlockElementPList;
+
+    // \todo FIXME: do the lists need to be pointers?  or can they just be lists?
+    typedef std::map<const Sequence*,
+                     CBasicBlockElementPList*> CSequenceP2CBasicBlockElementPListMap;
+
+    CSequenceP2CBasicBlockElementPListMap myCSequenceP2CBasicBlockElementPListMap;
+
   private:
+
+    /// we assume ownership of \p aBasicBlockElement
+    void addElementToSequencePushBlock(const BasicBlockElement& aBasicBlockElement,
+                                       const Sequence& aSequence);
 
     /** 
      * some helper that deals with pushing computed indices

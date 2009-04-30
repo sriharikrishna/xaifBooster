@@ -50,6 +50,12 @@ namespace xaifBoosterRequiredValues {
  
       std::string getOriginStr() const;
 
+      bool isArgument() const;
+
+      const Argument& getArgument() const;
+
+      void populateArgumentPList(Expression::CArgumentPList argumentListToBePopulated) const;
+
     private:
  
       /// the expression whose value is required
