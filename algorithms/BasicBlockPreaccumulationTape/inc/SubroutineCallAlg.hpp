@@ -71,7 +71,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     virtual ~SubroutineCallAlg();
 
-    //    virtual void printXMLHierarchy(std::ostream& os) const;
+    virtual void printXMLHierarchy(std::ostream& os) const;
 
     virtual std::string debug() const ;
 
@@ -82,8 +82,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      * or we have this fixed by a proper TBR analysis
      */
     virtual void algorithm_action_4();
-
-    void printXMLHierarchy(std::ostream& os) const;
 
     const Expression::VariablePVariableSRPPairList& getIndexVariablesPushed() const; 
 
