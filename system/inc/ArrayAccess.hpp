@@ -121,7 +121,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    ArrayAccess operator=(const ArrayAccess&);
+    ArrayAccess& operator=(const ArrayAccess&);
 
     /**
      * Array indeces

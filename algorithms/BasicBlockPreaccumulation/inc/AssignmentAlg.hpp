@@ -107,7 +107,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /** 
      * no def
      */
-    AssignmentAlg operator=(const AssignmentAlg&);
+    AssignmentAlg& operator=(const AssignmentAlg&);
 
     typedef std::pair<const ExpressionVertex*, 
 		      const PrivateLinearizedComputationalGraphVertex*> VertexPPair;

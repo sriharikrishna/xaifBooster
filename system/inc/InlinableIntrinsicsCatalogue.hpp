@@ -105,7 +105,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    InlinableIntrinsicsCatalogue operator=(const InlinableIntrinsicsCatalogue&);    
+    InlinableIntrinsicsCatalogue& operator=(const InlinableIntrinsicsCatalogue&);    
 
 
     /**

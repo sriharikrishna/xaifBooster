@@ -138,7 +138,7 @@ namespace xaifBoosterTypeChange {
     /** 
      * no def
      */
-    SymbolAlg operator=(const SymbolAlg&);
+    SymbolAlg& operator=(const SymbolAlg&);
 
     /** 
      * true if this symbol refers to an 

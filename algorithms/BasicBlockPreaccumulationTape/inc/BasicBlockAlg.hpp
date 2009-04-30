@@ -103,7 +103,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     BasicBlockAlg(const BasicBlockAlg&);
 
     /// no def
-    BasicBlockAlg operator=(const BasicBlockAlg&);
+    BasicBlockAlg& operator=(const BasicBlockAlg&);
 
     /**
      * need to have something to take a function pointer from
@@ -155,7 +155,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       ReinterpretedDerivativePropagator(const ReinterpretedDerivativePropagator&);
 
       /// no def
-      ReinterpretedDerivativePropagator operator=(const ReinterpretedDerivativePropagator&);
+      ReinterpretedDerivativePropagator& operator=(const ReinterpretedDerivativePropagator&);
 
       /** 
        * the elements that the reinterpretation consists of

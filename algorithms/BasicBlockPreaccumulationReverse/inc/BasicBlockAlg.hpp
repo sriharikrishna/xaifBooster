@@ -95,7 +95,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     /** 
      * no def
      */
-    BasicBlockAlg operator=(const BasicBlockAlg&);
+    BasicBlockAlg& operator=(const BasicBlockAlg&);
 
   };
  

@@ -565,6 +565,8 @@ INPUT                  = utils/inc \
                          algorithms/AddressArithmetic/inc \
                          algorithms/AddressArithmetic/src \
 		         algorithms/AddressArithmetic/driver \
+                         algorithms/AdjointUtils/inc \
+                         algorithms/AdjointUtils/src \
                          algorithms/TypeChange/inc \
                          algorithms/TypeChange/src \
                          algorithms/TypeChange/driver \

@@ -104,7 +104,7 @@ namespace xaifBooster { \
  \
     AlgContaining##AlgFactory(const AlgContaining##AlgFactory&); \
  \
-    AlgContaining##AlgFactory operator=(const AlgContaining##AlgFactory&); \
+    AlgContaining##AlgFactory& operator=(const AlgContaining##AlgFactory&); \
  \
   }; \
 }
@@ -142,7 +142,7 @@ namespace OurNameSpace { \
  \
     AlgContaining##AlgFactory(const AlgContaining##AlgFactory&); \
  \
-    AlgContaining##AlgFactory operator=(const AlgContaining##AlgFactory&); \
+    AlgContaining##AlgFactory& operator=(const AlgContaining##AlgFactory&); \
  \
   }; \
 }  

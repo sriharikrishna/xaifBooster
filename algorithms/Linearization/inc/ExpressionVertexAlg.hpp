@@ -122,7 +122,7 @@ namespace xaifBoosterLinearization {
     /** 
      * no def
      */
-    ExpressionVertexAlg operator=(const ExpressionVertexAlg&);
+    ExpressionVertexAlg& operator=(const ExpressionVertexAlg&);
 
     /**
      * this is used for static single assignment code 

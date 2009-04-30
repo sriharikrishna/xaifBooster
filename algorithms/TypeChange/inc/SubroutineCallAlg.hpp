@@ -57,21 +57,18 @@
 #include <list> 
 
 #include "xaifBooster/system/inc/SubroutineCallAlgBase.hpp"
+#include "xaifBooster/system/inc/ArgumentSymbolReference.hpp"
+#include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/system/inc/ConcreteArgument.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
 
 #include "xaifBooster/algorithms/SaveValuesAcross/inc/SaveValuesAcross.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 
 using namespace xaifBooster;
-
-namespace xaifBooster { 
-  class SubroutineCall;
-  class ArgumentSymbolReference;
-  class Variable;
-  class ConcreteArgument;
-  class ArrayAccess;
-}
 
 namespace xaifBoosterTypeChange {  
 
@@ -144,7 +141,7 @@ namespace xaifBoosterTypeChange {
     /** 
      * no def
      */
-    SubroutineCallAlg operator=(const SubroutineCallAlg&);
+    SubroutineCallAlg& operator=(const SubroutineCallAlg&);
 
     /** 
      * prior call argument adjustments

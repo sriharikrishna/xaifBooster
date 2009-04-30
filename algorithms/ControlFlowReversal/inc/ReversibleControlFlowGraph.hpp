@@ -139,7 +139,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    ReversibleControlFlowGraph operator=(const ReversibleControlFlowGraph&);
+    ReversibleControlFlowGraph& operator=(const ReversibleControlFlowGraph&);
 
     /**
      * Insert edge from theAdjointSource_cr to theAdjointTarget_cr as specfied by 

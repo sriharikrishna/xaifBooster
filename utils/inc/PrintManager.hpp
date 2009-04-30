@@ -117,7 +117,7 @@ namespace xaifBooster {
     /** 
      * no def
      */
-    PrintManager operator=(const PrintManager&);
+    PrintManager& operator=(const PrintManager&);
 
     ~PrintManager(){};
 

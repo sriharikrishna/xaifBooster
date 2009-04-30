@@ -107,10 +107,11 @@ namespace xaifBoosterCrossCountryInterface {
   void LinearizedComputationalGraphVertex::createNewPropagationVariable() {
     Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
     myPropagationVariable_p  = new Variable();
-    VariableSymbolReference* theVariableSymbolReference_p = new VariableSymbolReference(theGlobalScope.getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
-                                                                                                                                           SymbolType::REAL_STYPE,
-                                                                                                                                           SymbolShape::SCALAR,
-                                                                                                                                           true),
+    VariableSymbolReference* theVariableSymbolReference_p = new VariableSymbolReference(theGlobalScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getPropagationVariableNameCreator(),
+                                                                                                                                        SymbolKind::VARIABLE,
+                                                                                                                                        SymbolType::REAL_STYPE,
+                                                                                                                                        SymbolShape::SCALAR,
+                                                                                                                                        true),
                                                                                         theGlobalScope);
     theVariableSymbolReference_p->setId("1");
     theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable");

@@ -176,7 +176,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * no def
      */
-    ReversibleControlFlowGraphVertex operator=(const ReversibleControlFlowGraphVertex&);
+    ReversibleControlFlowGraphVertex& operator=(const ReversibleControlFlowGraphVertex&);
 
     /** 
      * indicates if this is a reference to an original ControlFlowGraphVertex

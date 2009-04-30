@@ -141,7 +141,7 @@ namespace xaifBooster {
     /**
      * no def
      */
-    Assignment operator=(const Assignment&);
+    Assignment& operator=(const Assignment&);
 
     /**
      * left hand side 
