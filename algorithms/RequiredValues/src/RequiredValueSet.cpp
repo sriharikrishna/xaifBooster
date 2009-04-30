@@ -6,8 +6,6 @@
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-
 #include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
 
 using namespace xaifBooster;
@@ -24,12 +22,36 @@ namespace xaifBoosterRequiredValues {
   } // end RequiredValueSet::~RequiredValueSet()
 
   std::string
+  RequiredValueSet::comparisonResultToString(ComparisonResult_E aComparisonResult) {
+    std::ostringstream out;
+    switch (aComparisonResult) {
+      case LESSTHAN:
+        out << "less_than" << std::ends;
+        break;
+      case GREATERTHAN:
+        out << "greater_than" << std::ends;
+        break;
+      case EQUAL:
+        out << "equal" << std::ends;
+        break;
+      case INCOMPARABLE:
+        out << "incomparable" << std::ends;
+        break;
+      default:
+        THROW_LOGICEXCEPTION_MACRO("RequiredValueSet::comparisonResultToString:"
+                                   << " unknown comparison result");
+        break;
+    } // end switch
+    return out.str();
+  } // end RequiredValueSet::comparisonResultToString()
+
+  std::string
   RequiredValueSet::debug() const {
     std::ostringstream out;
     out << "xaifBoosterRequiredValues::RequiredValueSet[" << this
 	<< ", reqVals=";
     for (RequiredValuePList::const_iterator reqValI = myRequiredValuesPList.begin(); reqValI != myRequiredValuesPList.end(); ++reqValI)
-      out << std::endl << "  (" << (*reqValI)->debug().c_str() << ")";
+      out << std::endl << "\t(" << (*reqValI)->debug().c_str() << ")";
     out << std::endl << "]" << std::ends;
     return out.str();
   } // end RequiredValueSet::debug()
