@@ -292,7 +292,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } // end BasicBlockAlg::getPerSequenceDataPList()
 
   void
-  BasicBlockAlg::assignAndPushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+  BasicBlockAlg::assignAndPushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
                                                          const Sequence& aSequence) {
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::assignAndPushRequiredValueAfterSequence");
     Assignment* theNewExpressionAssignment_p (new Assignment(false));
@@ -328,7 +328,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } // end BasicBlockAlg::assignAndPushRequiredValueAfterSequence
 
   void
-  BasicBlockAlg::pushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+  BasicBlockAlg::pushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
                                                 const Sequence& aSequence) {
     DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::pushRequiredValueAfterSequence");
     if (!aRequiredValue.isArgument())

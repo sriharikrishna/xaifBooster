@@ -4,7 +4,7 @@
 #include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/BasicBlockElementAlgBase.hpp"
 
-#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
+#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValue.hpp"
 
 using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulationTape {
@@ -33,7 +33,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      * specified by \p aRequiredValue and adds it to myAssignmentsforPush
      * and then adds a call in myPushBlock that pushes the temporary
      */
-    void assignAndPushRequiredValue(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+    void assignAndPushRequiredValue(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
                                     Scope& aScope);
 
     /**

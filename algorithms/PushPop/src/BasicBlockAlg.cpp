@@ -111,7 +111,7 @@ namespace xaifBoosterPushPop {
   } // end BasicBlockAlg::compareExpressions()
 
   void
-  BasicBlockAlg::pushRequiredValue(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue) {
+  BasicBlockAlg::pushRequiredValue(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue) {
     // first iterate through the elements
     for (PlainBasicBlock::BasicBlockElementList::const_iterator bbeI = getContaining().getBasicBlockElementList().begin();
          bbeI != getContaining().getBasicBlockElementList().end(); ++bbeI) {

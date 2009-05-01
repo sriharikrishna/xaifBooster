@@ -59,7 +59,7 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
-#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
+#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValue.hpp"
 
 using namespace xaifBooster;
 
@@ -198,10 +198,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     const PerSequenceDataPList& getPerSequenceDataPList() const;
 
-    void assignAndPushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+    void assignAndPushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
                                                  const Sequence& aSequence);
 
-    void pushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+    void pushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
                                         const Sequence& aSequence);
 
     typedef std::list<const BasicBlockElement*> CBasicBlockElementPList;

@@ -1,11 +1,5 @@
 #include <sstream>
 
-#include "xaifBooster/utils/inc/PrintManager.hpp"
-#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
-
-#include "xaifBooster/system/inc/ArrayAccess.hpp"
-#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
-
 #include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
 
 using namespace xaifBooster;
@@ -55,63 +49,6 @@ namespace xaifBoosterRequiredValues {
     out << std::endl << "]" << std::ends;
     return out.str();
   } // end RequiredValueSet::debug()
-
-  RequiredValueSet::RequiredValue::RequiredValue(const Expression& anExpression,
-                                                 const ControlFlowGraphVertex& aControlFlowGraphVertex,
-                                                 const std::string& anOriginStr) :
-    myExpression_p (&anExpression),
-    myControlFlowGraphVertex_p (&aControlFlowGraphVertex),
-    myOriginStr (anOriginStr) {
-  } // end RequiredValueSet::RequiredValue::RequiredValue()
-
-  RequiredValueSet::RequiredValue::~RequiredValue() {
-  } // end RequiredValueSet::RequiredValue::~RequiredValue()
-
-  std::string
-  RequiredValueSet::RequiredValue::debug() const {
-    std::ostringstream out;
-    out << "RequiredValue[" << this
-        << ",Expression=" << myExpression_p->debug().c_str() 
-        << ",ControlFlowGraphVertex=" << myControlFlowGraphVertex_p->debug().c_str()
-        << ",origin=" << myOriginStr;
-    out << "]" << std::ends;
-    return out.str();
-  } // end RequiredValueSet::RequiredValue::debug()
-
-  const Expression&
-  RequiredValueSet::RequiredValue::getExpression() const {
-    return *myExpression_p;
-  } // end RequiredValueSet::RequiredValue::getValueEV()
-
-  const ControlFlowGraphVertex&
-  RequiredValueSet::RequiredValue::getControlFlowGraphVertex() const {
-    return *myControlFlowGraphVertex_p;
-  } // end RequiredValueSet::RequiredValue::getControlFlowGraphVertex()
-
-  std::string
-  RequiredValueSet::RequiredValue::getOriginStr() const {
-    return myOriginStr;
-  } // end RequiredValueSet::RequiredValue::getOrigin()
-
-  bool
-  RequiredValueSet::RequiredValue::isArgument() const {
-    if (myExpression_p->numVertices() > 1)
-      return false;
-    return myExpression_p->getMaxVertex().isArgument();
-  } // end RequiredValueSet::RequiredValue::isArgument()
-
-  const Argument&
-  RequiredValueSet::RequiredValue::getArgument() const {
-    if (!isArgument())
-      THROW_LOGICEXCEPTION_MACRO("RequiredValueSet::RequiredValue::getArgument:"
-                                 << "the expression for this required value does not consist of just a single argument");
-    return dynamic_cast<const Argument&>(myExpression_p->getMaxVertex());
-  } // end RequiredValueSet::RequiredValue::getArgument()
-
-  void
-  RequiredValueSet::RequiredValue::populateArgumentPList(std::list<const Argument*> argumentListToBePopulated) const {
-    myExpression_p->appendArguments(argumentListToBePopulated);
-  } // end RequiredValueSet::RequiredValue::populateArgumentPList
 
   void RequiredValueSet::addValueToRequiredSet(const Expression& anExpression,
                                                const ControlFlowGraphVertex& aControlFlowGraphVertex,
