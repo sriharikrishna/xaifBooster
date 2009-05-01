@@ -3,6 +3,7 @@
 
 #include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
 
+#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValue.hpp"
 #include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
 
 using namespace xaifBooster;
@@ -56,7 +57,7 @@ namespace xaifBoosterPushPop {
      * the subroutine call or sequence that this value is associated with
      * \todo take another parameter which is an upper limit to the push range, and possibly a lower limit as well
      */
-    void pushRequiredValue(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue);
+    void pushRequiredValue(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue);
 
     const BasicBlock& getContaining() const;
 

@@ -52,7 +52,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } // end BasicBlockElementAlg::traverseToChildren()
 
   void
-  BasicBlockElementAlg::assignAndPushRequiredValue(const xaifBoosterRequiredValues::RequiredValueSet::RequiredValue& aRequiredValue,
+  BasicBlockElementAlg::assignAndPushRequiredValue(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
                                                    Scope& aScope) {
     Assignment* theNewExpressionAssignment_p (new Assignment(false));
     theNewExpressionAssignment_p->setId("BasicBlockPreaccumulationTape::BasicBlockElementAlg::assignAndPushRequiredValue:index_expression_assignment_for_taping");
