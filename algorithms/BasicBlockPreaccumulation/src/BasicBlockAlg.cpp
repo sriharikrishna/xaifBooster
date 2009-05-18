@@ -1305,10 +1305,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end switch on PDK
     } // end for all inedges
 
-    if (LinearOneInedges.empty() && LinearMinusOneInedges.empty() && LinearInedges.empty() && NonlinearInedges.empty())
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::BasicBlockAlg::propagateToRemainderVertex:"
-                                 << " There are no inedges with non-passive partial derivative kind");
-
     bool isZero = true;
 
     // LINEAR_ONE: SetDeriv and IncDeriv
