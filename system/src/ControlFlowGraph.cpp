@@ -52,6 +52,8 @@
 // ========== end copyright notice ==============
 #include <sstream>
 #include "xaifBooster/utils/inc/PrintManager.hpp"
+
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraph.hpp"
 #include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
@@ -66,6 +68,37 @@ namespace xaifBooster {
   const std::string ControlFlowGraph::ourXAIFName("xaif:ControlFlowGraph");
   const std::string ControlFlowGraph::our_myId_XAIFName("vertex_id");
   const std::string ControlFlowGraph::our_myActiveFlag_XAIFName("active");
+  const std::string ControlFlowGraph::our_myStructuredFlag_XAIFName("structured");
+
+  class ControlFlowGraphVertexLabelWriter {
+  public:
+    ControlFlowGraphVertexLabelWriter(const ControlFlowGraph& g) : myG(g) {}
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      ControlFlowGraphVertex* theControlFlowGraphVertex_p=boost::get(boost::get(BoostVertexContentType(),myG.getInternalBoostGraph()),v);
+      out << "[label=\"" 
+	  << boost::get(boost::get(BoostVertexContentType(), myG.getInternalBoostGraph()), v)->getIndex() 
+	  << " (" << theControlFlowGraphVertex_p->getId().c_str() << "): " 
+	  << ControlFlowGraphVertexKind::toString(theControlFlowGraphVertex_p->getKind()).c_str() << "\"]";
+    }
+    const ControlFlowGraph& myG;
+  };
+
+  class ControlFlowGraphEdgeLabelWriter {
+  public:
+    ControlFlowGraphEdgeLabelWriter(const ControlFlowGraph& g) : myG(g) {}
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
+      ControlFlowGraphEdge* theControlFlowGraphEdge_p=boost::get(boost::get(BoostEdgeContentType(),myG.getInternalBoostGraph()),v);
+      if (theControlFlowGraphEdge_p->hasConditionValue()) { 
+	out << "[label=\"";
+	if (theControlFlowGraphEdge_p->hasConditionValue())
+	  out << theControlFlowGraphEdge_p->getConditionValue();
+	out << "\"]";
+      }
+    }
+    const ControlFlowGraph& myG;
+  };
 
   ControlFlowGraph::ControlFlowGraph (const Symbol& theSymbol,
 				      const Scope& theScope,
@@ -73,7 +106,8 @@ namespace xaifBooster {
 				      const bool activeFlag) :
     ControlFlowGraphCommonAttributes(theSymbol,theScope,theCFGScope),
     myActiveFlag(activeFlag),
-    mySideEffectLists(SideEffectListType::numTypes()) { 
+    mySideEffectLists(SideEffectListType::numTypes()),
+    myStructuredFlag(true) { 
     myControlFlowGraphAlgBase_p=ControlFlowGraphAlgFactory::instance()->makeNewAlg(*this);
   } 
 
@@ -109,6 +143,10 @@ namespace xaifBooster {
        << our_myActiveFlag_XAIFName.c_str() 
        << "=\"" 
        << myActiveFlag
+       << "\" " 
+       << our_myStructuredFlag_XAIFName.c_str() 
+       << "=\"" 
+       << myStructuredFlag
        << "\">" 
        << std::endl;
     myArgumentList.printXMLHierarchy(os);
@@ -174,7 +212,15 @@ namespace xaifBooster {
   ControlFlowGraph::getArgumentList() const { 
     return myArgumentList;
   } 
+   
+  void ControlFlowGraph::setStructured(bool aFlag) { 
+    myStructuredFlag=aFlag;
+  }
   
+  bool ControlFlowGraph::isStructured() const { 
+    return myStructuredFlag;
+  } 
+
   // non-const return is a temporary hack
   Scope& ControlFlowGraph::getScope() const { 
     return const_cast<Scope&>(myScope);
@@ -334,6 +380,13 @@ namespace xaifBooster {
     }
     // if branch node then handle corresponding end node
     if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::BRANCH_VKIND) {
+      if (endNodes_p_s_r.empty()) { 
+	DBG_MACRO(DbgGroup::WARNING,
+		  "ControlFlowGraph::augmentGraphInfoRecursively: detected unstructured control flow in routine "
+		  << getSymbolReference().getSymbol().plainName().c_str());
+	setStructured(false);
+	throw StructureException();
+      } 
       ControlFlowGraphVertex* the_endBranch_p=endNodes_p_s_r.top();
       endNodes_p_s_r.pop();
       the_endBranch_p->setIndex(idx++);
@@ -359,13 +412,24 @@ namespace xaifBooster {
   }
 
   void ControlFlowGraph::augmentGraphInfo() {
-    // do this only for non-null graphs
-    if (isNull())
+    // do this only for non-null, structured graphs
+    if (isNull() || !isStructured())
       return; 
+    DBG_MACRO(DbgGroup::CALLSTACK,"::ControlFlowGraph::augmentGraphInfo: for  " << getSymbolReference().getSymbol().plainName().c_str());
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      GraphVizDisplay::show(*this,getSymbolReference().getSymbol().plainName()+"_cfg", ControlFlowGraphVertexLabelWriter(*this),ControlFlowGraphEdgeLabelWriter(*this));
+    }
     initVisit();
     int idx=1;
     std::stack<ControlFlowGraphVertex*> endNodes_p_s;
-    augmentGraphInfoRecursively(getEntry(),idx,endNodes_p_s, ForLoopReversalType::ANONYMOUS,0,0);
+    try { 
+      augmentGraphInfoRecursively(getEntry(),idx,endNodes_p_s, ForLoopReversalType::ANONYMOUS,0,0);
+    }
+    catch (StructureException& e) {
+      DBG_MACRO(DbgGroup::WARNING,"::ControlFlowGraph::augmentGraphInfo: unstructured control flow detected for  " << getSymbolReference().getSymbol().plainName().c_str())
+      finishVisit();
+      return;
+    }
     finishVisit();
     // do a little preliminary test to see if the condition variables are 
     // modified under the branch and if so the branch is definitely not explicit: 

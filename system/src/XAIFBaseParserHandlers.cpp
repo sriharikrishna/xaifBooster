@@ -154,6 +154,7 @@ namespace xaifBooster {
     passingOut.setControlFlowGraph(theCallGraphVertex_p->getControlFlowGraph());
     theCallGraphVertex_p->getControlFlowGraph().setId(XMLParser::getAttributeValueByName(ControlFlowGraph::our_myId_XAIFName));
     theCallGraphVertex_p->getControlFlowGraph().setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    theCallGraphVertex_p->getControlFlowGraph().setStructured(XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ControlFlowGraph::our_myStructuredFlag_XAIFName)));
   }
 
   void 
