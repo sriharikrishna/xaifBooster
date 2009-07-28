@@ -66,7 +66,7 @@
       <xaif:StmtIdSet key="0">
       </xaif:StmtIdSet>
     </xaif:DOSetMap>
-    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" active="1">
+    <xaif:ControlFlowGraph vertex_id="1" symbol_id="head" scope_id="1" controlflowgraph_scope_id="2" annotation="" active="1" structured="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="x" scope_id="2" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="y" scope_id="2" annotation="" intent="inout"/>
@@ -254,7 +254,7 @@
       <xaif:ControlFlowEdge edge_id="4" source="4" target="2" has_condition_value="0"/>
       <xaif:ControlFlowEdge edge_id="5" source="2" target="5" has_condition_value="0"/>
     </xaif:ControlFlowGraph>
-    <xaif:ControlFlowGraph vertex_id="2" symbol_id="my_add" scope_id="1" controlflowgraph_scope_id="3" annotation="" active="1">
+    <xaif:ControlFlowGraph vertex_id="2" symbol_id="my_add" scope_id="1" controlflowgraph_scope_id="3" annotation="" active="1" structured="1">
       <xaif:ArgumentList>
         <xaif:ArgumentSymbolReference position="1" symbol_id="u1" scope_id="3" annotation="" intent="inout"/>
         <xaif:ArgumentSymbolReference position="2" symbol_id="u2" scope_id="3" annotation="" intent="inout"/>
