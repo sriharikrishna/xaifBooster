@@ -115,6 +115,11 @@ namespace xaifBooster {
      */
     static const std::string our_myActiveFlag_XAIFName;
 
+    /**
+     * name for member myStructuredFlag as represented in XAIF schema
+     */
+    static const std::string our_myStructuredFlag_XAIFName;
+
     Variable& addSideEffectReference(SideEffectListType::SideEffectListType_E aType);
 
     const SideEffectList& getSideEffectList(SideEffectListType::SideEffectListType_E aType) const;
@@ -184,7 +189,13 @@ namespace xaifBooster {
 
     std::list<const ControlFlowGraphVertex*> getSOrtedVertexList() const; 
 
+    void setStructured(bool aFlag);
+
+    bool isStructured() const; 
+
   private: 
+
+    class StructureException {};
     
     /** 
      * no def
@@ -241,6 +252,14 @@ namespace xaifBooster {
     std::list<const ControlFlowGraphVertex*> mySortedVertices_p_l;
 
     ControlFlowGraphVertex& getEntry();
+
+    /** 
+     * structured control flow
+     * (every control path through loop/branch
+     * needs to also go through the (unique) corresponding 
+     * endloop/endbranch vertex
+     */
+    bool myStructuredFlag; 
 
   }; // end of class ControlFlowGraph
   
