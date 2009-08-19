@@ -147,10 +147,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   BasicBlockAlg::addSubroutineCall(const Symbol& aSubroutineNameSymbol,
 				   const Scope& aSubroutineNameScope,
 				   ActiveUseType::ActiveUseType_E anActiveUse,
-				   const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
+				   const ForLoopReversalType::ForLoopReversalType_E& aReversalType,
+                                   unsigned short formalArgCount) { 
     SubroutineCall* aNewCall_p(new SubroutineCall(aSubroutineNameSymbol,
 						  aSubroutineNameScope,
 						  anActiveUse,
+                                                  formalArgCount, 
 						  true));
     aNewCall_p->setId("reverse_call");
     getBasicBlockElementList(aReversalType).push_back(aNewCall_p);
