@@ -659,6 +659,7 @@ namespace xaifBooster {
     SubroutineCall& theSubroutineCall(passingIn.getSubroutineCall());
     ConcreteArgument* theNewConcreteArgument_p=
       new ConcreteArgument(StringConversions::convertToInt(XMLParser::getAttributeValueByName(ConcreteArgument::our_myPosition_XAIFName)));
+    theNewConcreteArgument_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
     theSubroutineCall.getConcreteArgumentPList().push_back(theNewConcreteArgument_p);
     passingOut.setConcreteArgument(*theNewConcreteArgument_p);
   }

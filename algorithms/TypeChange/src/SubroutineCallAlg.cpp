@@ -311,18 +311,28 @@ namespace xaifBoosterTypeChange {
       handleExternalCall(theBasicBlock);
       return;
     } // end catch
-    if (anArgumentSymbolReferencePList_p->size()!=getContainingSubroutineCall().getConcreteArgumentPList().size())
-      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch ("
+    if (anArgumentSymbolReferencePList_p->size()!=getContainingSubroutineCall().getFormalArgCount())
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch "
 				 << anArgumentSymbolReferencePList_p->size() 
-				 << " formal vs. "
-				 << getContainingSubroutineCall().getConcreteArgumentPList().size()
-				 << " concrete ) for "
+				 << " (formal argument list length) vs. "
+				 << getContainingSubroutineCall().getFormalArgCount()
+				 << " (formalArgCount given for  the call) for "
 				 << getContainingSubroutineCall().getSymbolReference().debug().c_str());
     ControlFlowGraphAlg& theControlFlowGraphAlg(dynamic_cast<ControlFlowGraphAlg&>(aCFG_p->getControlFlowGraphAlgBase()));
     for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
 	   getContainingSubroutineCall().getConcreteArgumentPList().begin();
 	 concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
 	 ++concreteArgumentPI) { 
+      if ((*concreteArgumentPI)->getPosition()>getContainingSubroutineCall().getFormalArgCount() 
+	  || 
+	  (*concreteArgumentPI)->getPosition()<1) { 
+	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument position "
+				   << (*concreteArgumentPI)->getPosition()
+				   << " out of range [1,"
+				   << getContainingSubroutineCall().getFormalArgCount()
+				   << "] in the call to "
+				   << getContainingSubroutineCall().getSymbolReference().debug().c_str());
+      }
       bool concreteArgumentActive=((*concreteArgumentPI)->isArgument())?
 	(*concreteArgumentPI)->getArgument().getVariable().getActiveType():false;
       bool formalArgumentActive=false; 
@@ -362,9 +372,9 @@ namespace xaifBoosterTypeChange {
 					      short shapeOffset,
 					      bool prior) const { 
     std::string aSubroutineName("convert_");
-    if (prior && concreteArgumentActive 
+    if ((prior && concreteArgumentActive)
 	|| 
-	!prior && !concreteArgumentActive)
+	(!prior && !concreteArgumentActive))
       aSubroutineName.append("a2p_");
     else
       aSubroutineName.append("p2a_");
