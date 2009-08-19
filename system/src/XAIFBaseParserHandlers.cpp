@@ -635,7 +635,8 @@ namespace xaifBooster {
     SubroutineCall* theNewSubroutineCall_p=
       new SubroutineCall(theSymbol,
 			 theScope,
-			 ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
+			 ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()),
+			 StringConversions::convertToUInt(XMLParser::getAttributeValueByName(SubroutineCall::our_myFormalArgCount_XAIFName).c_str()));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theNewSubroutineCall_p);
     theNewSubroutineCall_p->setId(XMLParser::getAttributeValueByName(SubroutineCall::our_myId_XAIFName));
     theNewSubroutineCall_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
