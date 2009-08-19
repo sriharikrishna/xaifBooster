@@ -148,6 +148,10 @@ namespace xaifBoosterTypeChange {
        << ActiveUseType::our_attribute_XAIFName.c_str() 
        << "=\"" 
        << ActiveUseType::toString(getContainingSubroutineCall().getActiveUse()).c_str()
+       << "\" " 
+       << SubroutineCall::our_myFormalArgCount_XAIFName.c_str() 
+       << "=\"" 
+       << getContainingSubroutineCall().getFormalArgCount()
        << "\">" 
        << std::endl;
     for (SubroutineCall::ConcreteArgumentPList::const_iterator i=
