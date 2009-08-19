@@ -374,7 +374,7 @@
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
-        <xaif:SubroutineCall statement_id="my_add_1" symbol_id="my_add" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="my_add_1" symbol_id="my_add" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
@@ -708,7 +708,7 @@
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
-        <xaif:SubroutineCall statement_id="my_add_1" symbol_id="my_add" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="my_add_1" symbol_id="my_add" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
@@ -1012,7 +1012,7 @@
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
-        <xaif:SubroutineCall statement_id="my_add_1" symbol_id="my_add" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="my_add_1" symbol_id="my_add" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
@@ -1346,7 +1346,7 @@
             </xaif:Y>
           </xaif:Saxpy>
         </xaif:DerivativePropagator>
-        <xaif:SubroutineCall statement_id="my_add_1" symbol_id="my_add" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="my_add_1" symbol_id="my_add" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>

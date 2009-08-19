@@ -2244,7 +2244,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:SubroutineCall statement_id="11" symbol_id="box_density__81" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="11" symbol_id="box_density__81" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_66" annotation="" scope_id="1"/>
@@ -2261,7 +2261,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="21" symbol_id="box_transport__84" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="21" symbol_id="box_transport__84" scope_id="1" active="undefined" formalArgCount="2">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="RHO_50" annotation="" scope_id="1"/>
@@ -2273,7 +2273,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="27" symbol_id="box_timestep__83" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="27" symbol_id="box_timestep__83" scope_id="1" active="undefined" formalArgCount="7">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_T_36" annotation="" scope_id="1"/>
@@ -2310,7 +2310,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="47" symbol_id="box_timestep__83" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="47" symbol_id="box_timestep__83" scope_id="1" active="undefined" formalArgCount="7">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_S_35" annotation="" scope_id="1"/>
@@ -2347,7 +2347,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="67" symbol_id="box_robert_filter__82" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="67" symbol_id="box_robert_filter__82" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_66" annotation="" scope_id="1"/>
@@ -2364,7 +2364,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="77" symbol_id="box_robert_filter__82" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="77" symbol_id="box_robert_filter__82" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_56" annotation="" scope_id="1"/>
@@ -2381,7 +2381,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="87" symbol_id="box_cycle_fields__80" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="87" symbol_id="box_cycle_fields__80" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="6" annotation="" reversal="anonymous">
@@ -2666,7 +2666,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:SubroutineCall statement_id="11" symbol_id="box_density__81" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="11" symbol_id="box_density__81" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_66" annotation="" scope_id="1"/>
@@ -2683,7 +2683,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="21" symbol_id="box_transport__84" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="21" symbol_id="box_transport__84" scope_id="1" active="undefined" formalArgCount="2">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="RHO_50" annotation="" scope_id="1"/>
@@ -2695,7 +2695,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="27" symbol_id="box_timestep__83" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="27" symbol_id="box_timestep__83" scope_id="1" active="undefined" formalArgCount="7">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_T_36" annotation="" scope_id="1"/>
@@ -2732,7 +2732,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="47" symbol_id="box_timestep__83" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="47" symbol_id="box_timestep__83" scope_id="1" active="undefined" formalArgCount="7">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_S_35" annotation="" scope_id="1"/>
@@ -2769,7 +2769,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="67" symbol_id="box_robert_filter__82" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="67" symbol_id="box_robert_filter__82" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_66" annotation="" scope_id="1"/>
@@ -2786,7 +2786,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="77" symbol_id="box_robert_filter__82" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="77" symbol_id="box_robert_filter__82" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_56" annotation="" scope_id="1"/>
@@ -2803,7 +2803,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="87" symbol_id="box_cycle_fields__80" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="87" symbol_id="box_cycle_fields__80" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="_adj__cfr_v_6" annotation="_cfr_"/>
@@ -2853,7 +2853,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:SubroutineCall statement_id="11" symbol_id="box_density__81" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="11" symbol_id="box_density__81" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_66" annotation="" scope_id="1"/>
@@ -2870,7 +2870,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="21" symbol_id="box_transport__84" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="21" symbol_id="box_transport__84" scope_id="1" active="undefined" formalArgCount="2">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="RHO_50" annotation="" scope_id="1"/>
@@ -2882,7 +2882,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="27" symbol_id="box_timestep__83" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="27" symbol_id="box_timestep__83" scope_id="1" active="undefined" formalArgCount="7">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_T_36" annotation="" scope_id="1"/>
@@ -2919,7 +2919,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="47" symbol_id="box_timestep__83" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="47" symbol_id="box_timestep__83" scope_id="1" active="undefined" formalArgCount="7">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_S_35" annotation="" scope_id="1"/>
@@ -2956,7 +2956,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="67" symbol_id="box_robert_filter__82" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="67" symbol_id="box_robert_filter__82" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_66" annotation="" scope_id="1"/>
@@ -2973,7 +2973,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="77" symbol_id="box_robert_filter__82" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="77" symbol_id="box_robert_filter__82" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_56" annotation="" scope_id="1"/>
@@ -2990,7 +2990,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="87" symbol_id="box_cycle_fields__80" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="87" symbol_id="box_cycle_fields__80" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="6" annotation="" reversal="anonymous">
@@ -3275,7 +3275,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:SubroutineCall statement_id="11" symbol_id="box_density__81" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="11" symbol_id="box_density__81" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_66" annotation="" scope_id="1"/>
@@ -3292,7 +3292,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="21" symbol_id="box_transport__84" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="21" symbol_id="box_transport__84" scope_id="1" active="undefined" formalArgCount="2">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="RHO_50" annotation="" scope_id="1"/>
@@ -3304,7 +3304,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="27" symbol_id="box_timestep__83" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="27" symbol_id="box_timestep__83" scope_id="1" active="undefined" formalArgCount="7">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_T_36" annotation="" scope_id="1"/>
@@ -3341,7 +3341,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="47" symbol_id="box_timestep__83" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="47" symbol_id="box_timestep__83" scope_id="1" active="undefined" formalArgCount="7">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GAMMA_S_35" annotation="" scope_id="1"/>
@@ -3378,7 +3378,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="67" symbol_id="box_robert_filter__82" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="67" symbol_id="box_robert_filter__82" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="TNOW_66" annotation="" scope_id="1"/>
@@ -3395,7 +3395,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="77" symbol_id="box_robert_filter__82" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="77" symbol_id="box_robert_filter__82" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="SNOW_56" annotation="" scope_id="1"/>
@@ -3412,7 +3412,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:SubroutineCall>
-        <xaif:SubroutineCall statement_id="87" symbol_id="box_cycle_fields__80" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="87" symbol_id="box_cycle_fields__80" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="_adj__cfr_v_6" annotation="_cfr_"/>
@@ -6380,7 +6380,7 @@
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="128" annotation=""/>
       <xaif:BasicBlock vertex_id="408" annotation="" scope_id="13">
-        <xaif:SubroutineCall statement_id="284" symbol_id="box_update__139" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="284" symbol_id="box_update__139" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="102" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_7" annotation="" scope_id="13"/>
@@ -7524,7 +7524,7 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_14" source="_aug__cfr_v_8" target="408" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="408" annotation="" scope_id="13">
-        <xaif:SubroutineCall statement_id="284" symbol_id="box_update__139" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="284" symbol_id="box_update__139" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="102" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_7" annotation="" scope_id="13"/>
@@ -10745,7 +10745,7 @@
       </xaif:BasicBlock>
       <xaif:EndBranch vertex_id="128" annotation=""/>
       <xaif:BasicBlock vertex_id="408" annotation="" scope_id="13">
-        <xaif:SubroutineCall statement_id="284" symbol_id="box_update__139" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="284" symbol_id="box_update__139" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="102" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_7" annotation="" scope_id="13"/>
@@ -11889,7 +11889,7 @@
       <xaif:ControlFlowEdge edge_id="_cfr_e_14" source="_aug__cfr_v_8" target="408" has_condition_value="0"/>
       <xaif:Entry vertex_id="_adj__cfr_v_1" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="408" annotation="" scope_id="13">
-        <xaif:SubroutineCall statement_id="284" symbol_id="box_update__139" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="284" symbol_id="box_update__139" scope_id="1" active="undefined" formalArgCount="3">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" alias="102" du_ud="2" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="FLDNEW_7" annotation="" scope_id="13"/>
@@ -29937,7 +29937,7 @@
         <xaif:Marker statement_id="8" annotation="{WHIRL_Id#8} [passive: OPR_PRAGMA]"/>
         <xaif:Marker statement_id="9" annotation="{WHIRL_Id#9} [passive: OPR_PRAGMA]"/>
         <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_USE]"/>
-        <xaif:SubroutineCall statement_id="11" symbol_id="box_ini_fields__93" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="11" symbol_id="box_ini_fields__93" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
         <xaif:Assignment statement_id="12">
           <xaif:AssignmentLHS active="false" alias="67" du_ud="83" deriv="0" constant="0">
@@ -30102,7 +30102,7 @@
         </xaif:Condition>
       </xaif:Branch>
       <xaif:BasicBlock vertex_id="83" annotation="" scope_id="7">
-        <xaif:SubroutineCall statement_id="82" symbol_id="box_forward__79" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="82" symbol_id="box_forward__79" scope_id="1" active="undefined" formalArgCount="1">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ILEV1_6" annotation="" scope_id="7"/>
@@ -30119,7 +30119,7 @@
       <xaif:BasicBlock vertex_id="87" annotation="" scope_id="7">
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="90" annotation="" scope_id="7">
-        <xaif:SubroutineCall statement_id="87" symbol_id="box_final_state__91" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="87" symbol_id="box_final_state__91" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_18" annotation="_cfr_" scope_id="1">
@@ -30352,7 +30352,7 @@
         </xaif:Condition>
       </xaif:Branch>
       <xaif:BasicBlock vertex_id="90" annotation="" scope_id="7">
-        <xaif:SubroutineCall statement_id="87" symbol_id="box_final_state__91" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="87" symbol_id="box_final_state__91" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_3" annotation="_cfr_" reversal="anonymous">
@@ -30444,7 +30444,7 @@
       <xaif:BasicBlock vertex_id="84" annotation="" scope_id="7">
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="83" annotation="" scope_id="7">
-        <xaif:SubroutineCall statement_id="82" symbol_id="box_forward__79" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="82" symbol_id="box_forward__79" scope_id="1" active="undefined" formalArgCount="1">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ILEV1_6" annotation="" scope_id="7"/>
@@ -30497,7 +30497,7 @@
         <xaif:Marker statement_id="8" annotation="{WHIRL_Id#8} [passive: OPR_PRAGMA]"/>
         <xaif:Marker statement_id="9" annotation="{WHIRL_Id#9} [passive: OPR_PRAGMA]"/>
         <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_USE]"/>
-        <xaif:SubroutineCall statement_id="11" symbol_id="box_ini_fields__93" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="11" symbol_id="box_ini_fields__93" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
         <xaif:Assignment statement_id="12">
           <xaif:AssignmentLHS active="false" alias="67" du_ud="83" deriv="0" constant="0">
@@ -30600,7 +30600,7 @@
         <xaif:Marker statement_id="8" annotation="{WHIRL_Id#8} [passive: OPR_PRAGMA]"/>
         <xaif:Marker statement_id="9" annotation="{WHIRL_Id#9} [passive: OPR_PRAGMA]"/>
         <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_USE]"/>
-        <xaif:SubroutineCall statement_id="11" symbol_id="box_ini_fields__93" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="11" symbol_id="box_ini_fields__93" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
         <xaif:Assignment statement_id="12">
           <xaif:AssignmentLHS active="false" alias="67" du_ud="83" deriv="0" constant="0">
@@ -30765,7 +30765,7 @@
         </xaif:Condition>
       </xaif:Branch>
       <xaif:BasicBlock vertex_id="83" annotation="" scope_id="7">
-        <xaif:SubroutineCall statement_id="82" symbol_id="box_forward__79" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="82" symbol_id="box_forward__79" scope_id="1" active="undefined" formalArgCount="1">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ILEV1_6" annotation="" scope_id="7"/>
@@ -30782,7 +30782,7 @@
       <xaif:BasicBlock vertex_id="87" annotation="" scope_id="7">
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="90" annotation="" scope_id="7">
-        <xaif:SubroutineCall statement_id="87" symbol_id="box_final_state__91" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="87" symbol_id="box_final_state__91" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_18" annotation="_cfr_" scope_id="1">
@@ -31015,7 +31015,7 @@
         </xaif:Condition>
       </xaif:Branch>
       <xaif:BasicBlock vertex_id="90" annotation="" scope_id="7">
-        <xaif:SubroutineCall statement_id="87" symbol_id="box_final_state__91" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="87" symbol_id="box_final_state__91" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
       </xaif:BasicBlock>
       <xaif:ForLoop vertex_id="_adj__cfr_v_3" annotation="_cfr_" reversal="anonymous">
@@ -31107,7 +31107,7 @@
       <xaif:BasicBlock vertex_id="84" annotation="" scope_id="7">
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="83" annotation="" scope_id="7">
-        <xaif:SubroutineCall statement_id="82" symbol_id="box_forward__79" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="82" symbol_id="box_forward__79" scope_id="1" active="undefined" formalArgCount="1">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="1" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="ILEV1_6" annotation="" scope_id="7"/>
@@ -31160,7 +31160,7 @@
         <xaif:Marker statement_id="8" annotation="{WHIRL_Id#8} [passive: OPR_PRAGMA]"/>
         <xaif:Marker statement_id="9" annotation="{WHIRL_Id#9} [passive: OPR_PRAGMA]"/>
         <xaif:Marker statement_id="10" annotation="{WHIRL_Id#10} [passive: OPR_USE]"/>
-        <xaif:SubroutineCall statement_id="11" symbol_id="box_ini_fields__93" scope_id="1" active="undefined">
+        <xaif:SubroutineCall statement_id="11" symbol_id="box_ini_fields__93" scope_id="1" active="undefined" formalArgCount="0">
         </xaif:SubroutineCall>
         <xaif:Assignment statement_id="12">
           <xaif:AssignmentLHS active="false" alias="67" du_ud="83" deriv="0" constant="0">
