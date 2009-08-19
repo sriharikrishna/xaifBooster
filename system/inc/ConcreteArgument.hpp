@@ -55,6 +55,7 @@
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 
+#include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/ConcreteArgumentAlgBase.hpp"
@@ -70,7 +71,8 @@ namespace xaifBooster {
    * The front-end achieves this through 
    * canonicalization.
    */
-  class ConcreteArgument: XMLPrintable { 
+  class ConcreteArgument: public XMLPrintable, 
+			  public ObjectWithAnnotation { 
   public:
     
     ConcreteArgument (unsigned int thePosition,
