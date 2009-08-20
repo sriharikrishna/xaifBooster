@@ -206,7 +206,7 @@ namespace xaifBooster {
       break;
     case ActiveUseType::UNDEFINEDUSE:
       { 
-	if (theAnswer=getActiveType())
+	if ((theAnswer=getActiveType())) // The assignment here is on purpose and not a typo
 	  myActiveUse=ActiveUseType::ACTIVEUSE;
 	else 
 	  myActiveUse=ActiveUseType::PASSIVEUSE;
