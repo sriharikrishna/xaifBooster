@@ -68,7 +68,6 @@ namespace xaifBooster {
   const std::string ControlFlowGraph::ourXAIFName("xaif:ControlFlowGraph");
   const std::string ControlFlowGraph::our_myId_XAIFName("vertex_id");
   const std::string ControlFlowGraph::our_myActiveFlag_XAIFName("active");
-  const std::string ControlFlowGraph::our_myStructuredFlag_XAIFName("structured");
 
   class ControlFlowGraphVertexLabelWriter {
   public:
@@ -106,8 +105,7 @@ namespace xaifBooster {
 				      const bool activeFlag) :
     ControlFlowGraphCommonAttributes(theSymbol,theScope,theCFGScope),
     myActiveFlag(activeFlag),
-    mySideEffectLists(SideEffectListType::numTypes()),
-    myStructuredFlag(true) { 
+    mySideEffectLists(SideEffectListType::numTypes()) { 
     myControlFlowGraphAlgBase_p=ControlFlowGraphAlgFactory::instance()->makeNewAlg(*this);
   } 
 
@@ -143,11 +141,15 @@ namespace xaifBooster {
        << our_myActiveFlag_XAIFName.c_str() 
        << "=\"" 
        << myActiveFlag
-       << "\" " 
-       << our_myStructuredFlag_XAIFName.c_str() 
-       << "=\"" 
-       << myStructuredFlag
-       << "\">" 
+       << "\"";
+    if (!isStructured()) { 
+      os << " "
+	 << our_myStructuredFlag_XAIFName.c_str() 
+	 << "=\"" 
+	 << false
+	 << "\"";
+    }
+    os << ">" 
        << std::endl;
     myArgumentList.printXMLHierarchy(os);
     if (PrintManager::isVerbose()) { 
@@ -213,14 +215,6 @@ namespace xaifBooster {
     return myArgumentList;
   } 
    
-  void ControlFlowGraph::setStructured(bool aFlag) { 
-    myStructuredFlag=aFlag;
-  }
-  
-  bool ControlFlowGraph::isStructured() const { 
-    return myStructuredFlag;
-  } 
-
   // non-const return is a temporary hack
   Scope& ControlFlowGraph::getScope() const { 
     return const_cast<Scope&>(myScope);

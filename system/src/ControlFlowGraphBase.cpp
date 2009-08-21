@@ -1,5 +1,3 @@
-#ifndef _CONTROLFLOWGRAPHBASE_INCLUDE_
-#define _CONTROLFLOWGRAPHBASE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,38 +51,24 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraphEdge.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphBase.hpp"
 
 namespace xaifBooster { 
 
-  class ControlFlowGraphBase : public GraphWrapperTraversable<ControlFlowGraphVertex, ControlFlowGraphEdge> {  
-  public:
+  const std::string ControlFlowGraphBase::our_myStructuredFlag_XAIFName("structured");
 
-    ControlFlowGraphBase();
 
-    /**
-     * name for member myStructuredFlag as represented in XAIF schema
-     */
-    static const std::string our_myStructuredFlag_XAIFName;
+  ControlFlowGraphBase::ControlFlowGraphBase () :
+    myStructuredFlag(true) { 
+  } 
 
-    void setStructured(bool aFlag);
+  void ControlFlowGraphBase::setStructured(bool aFlag) { 
+    myStructuredFlag=aFlag;
+  }
+  
+  bool ControlFlowGraphBase::isStructured() const { 
+    return myStructuredFlag;
+  } 
 
-    bool isStructured() const; 
 
-  private:
-
-    /** 
-     * structured control flow
-     * (every control path through loop/branch
-     * needs to also go through the (unique) corresponding 
-     * endloop/endbranch vertex
-     */
-    bool myStructuredFlag; 
-
-  }; 
-
-} // end of namespace xaifBooster
-                                                                     
-#endif
+} // end of namespace xaifBooster 
