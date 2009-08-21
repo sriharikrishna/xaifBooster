@@ -107,8 +107,17 @@ namespace xaifBoosterCodeReplacement {
        << our_myPlaceHolder_XAIFName.c_str() 
        << "=\"" 
        << myPlaceHolder
-       << "\""
-       << ">" 
+       << "\"";
+    if (myReversibleControlFlowGraph_p && !myReversibleControlFlowGraph_p->isStructured()
+	|| 
+	myControlFlowGraphBase_p && !myControlFlowGraphBase_p->isStructured()) { 
+      os << " "
+	 << ControlFlowGraph::our_myStructuredFlag_XAIFName.c_str() 
+	 << "=\"" 
+	 << false
+	 << "\"";
+    }
+    os << ">" 
        << std::endl;
     if (myControlFlowGraphBase_p) { 
       ControlFlowGraphBase::ConstVertexIteratorPair p(getControlFlowGraphBase().vertices());

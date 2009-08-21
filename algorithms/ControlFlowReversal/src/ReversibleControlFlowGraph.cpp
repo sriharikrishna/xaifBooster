@@ -78,7 +78,8 @@ namespace xaifBoosterControlFlowReversal {
 
   ReversibleControlFlowGraph::ReversibleControlFlowGraph(const ControlFlowGraph& theOriginal_r) : 
     myOriginalGraph_r(theOriginal_r),
-    myRetainUserReversalFlag(true) {
+    myRetainUserReversalFlag(true),
+    myStructuredFlag(true) {
   }
 
   class ReversibleControlFlowGraphVertexLabelWriter {
@@ -163,15 +164,19 @@ namespace xaifBoosterControlFlowReversal {
 	 vertexCopyListIt!=vertexCopy_l.end();
 	 ++vertexCopyListIt) {
       ControlFlowGraphVertexAlg::ControlFlowGraphVertexKind_E theKind((*vertexCopyListIt).second->getKind());
-      if (theKind==ControlFlowGraphVertexAlg::FORLOOP 
-	  || 
-	  theKind==ControlFlowGraphVertexAlg::PRELOOP
-	  ||
-	  theKind==ControlFlowGraphVertexAlg::BRANCH
-	  ||
- 	  theKind==ControlFlowGraphVertexAlg::ENDLOOP
-	  ||
- 	  theKind==ControlFlowGraphVertexAlg::ENDBRANCH)
+      if (myOriginalGraph_r.isStructured()
+	  && 
+	  (
+	   theKind==ControlFlowGraphVertexAlg::FORLOOP 
+	   || 
+	   theKind==ControlFlowGraphVertexAlg::PRELOOP
+	   ||
+	   theKind==ControlFlowGraphVertexAlg::BRANCH
+	   ||
+	   theKind==ControlFlowGraphVertexAlg::ENDLOOP
+	   ||
+	   theKind==ControlFlowGraphVertexAlg::ENDBRANCH
+	   ))
 	(*vertexCopyListIt).second->setCounterPart(getReversibleFromOriginal(vertexCopy_l,
 									     (*vertexCopyListIt).first->getCounterPart()));
       (*vertexCopyListIt).second->setLoopVariables((*vertexCopyListIt).first->getKnownLoopVariables());
@@ -347,7 +352,7 @@ namespace xaifBoosterControlFlowReversal {
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
-  ReversibleControlFlowGraphVertex* ReversibleControlFlowGraph::new_preloop(const PreLoop& theOriginalPreLoop) {
+  ReversibleControlFlowGraphVertex* ReversibleControlFlowGraph::new_preloop(const std::string& theOriginalPreLoopId) {
     ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex();
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     // a preloop is handled by an anonymous FORLOOP
@@ -355,12 +360,12 @@ namespace xaifBoosterControlFlowReversal {
     aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*aNewForLoop_p);
     aNewForLoop_p->getInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
 							     +
-							     theOriginalPreLoop.getId()
+							     theOriginalPreLoopId
 							     +
 							     "_init");
     aNewForLoop_p->getUpdate().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
 						     +
-						     theOriginalPreLoop.getId()
+						     theOriginalPreLoopId
 						     +
 						     "_update");
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
@@ -386,7 +391,7 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   const Symbol* ReversibleControlFlowGraph::makeAuxilliaryIntegerLHS(Assignment& theAssignment, 
-								     BasicBlock& theBasicBlock_r) {
+								     PlainBasicBlock& theBasicBlock_r) {
     const Symbol& theLhsSymbol_r(theBasicBlock_r.getScope().getSymbolTable().
 				 addUniqueAuxSymbol(SymbolKind::VARIABLE,SymbolType::INTEGER_STYPE,SymbolShape::SCALAR,false));
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(theLhsSymbol_r,theBasicBlock_r.getScope());
@@ -444,7 +449,7 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   const Symbol* ReversibleControlFlowGraph::insert_init_integer(int value, 
-								BasicBlock& theBasicBlock_r) {
+								PlainBasicBlock& theBasicBlock_r) {
     // not active, no algorithm
     Assignment* theAssignment_p=new Assignment(false);
     theAssignment_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().
@@ -461,7 +466,7 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void ReversibleControlFlowGraph::insert_push_integer(const Symbol* theIntegerSymbol_p, 
-						       BasicBlock& theBasicBlock_r) {
+						       PlainBasicBlock& theBasicBlock_r) {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
     theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().
 									  getCallGraphAlgBase()).getAlgorithmSignature() + "push_i");
@@ -677,6 +682,193 @@ namespace xaifBoosterControlFlowReversal {
 	  (*the_mySortedVertices_p_l_it)->setStorePlaceholder((*the_mySortedVertices_p_l_it)->getEnclosingControlFlow().getStorePlaceholder());
       }
     }
+  } 
+
+  void ReversibleControlFlowGraph::storeEnumeratedBB() {
+    setUnstructured();
+    unsigned short bbEnum=1; // 0 is reserved for the ENTRY
+    ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
+    ReversibleControlFlowGraph::VertexIterator it(p.first),endIt(p.second);
+    for (;it!=endIt ;++it) { 
+      if (!(*it).isOriginal())
+	continue;
+      if((*it).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENTRY) {
+	// get the out edge from the ENTRY
+	ReversibleControlFlowGraphEdge& theEntryOutEdge(*(getOutEdgesOf(*it).first));
+	BasicBlock& thePushBasicBlock_r(dynamic_cast<BasicBlock&>(insertBasicBlock(getSourceOf(theEntryOutEdge),
+										   getTargetOf(theEntryOutEdge),
+										   theEntryOutEdge,
+										   false).getNewVertex()));
+	removeAndDeleteEdge(theEntryOutEdge);
+	thePushBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
+	const Symbol* enumSymb_p=insert_init_integer(0,thePushBasicBlock_r);
+	insert_push_integer(enumSymb_p,thePushBasicBlock_r);
+      }
+      if((*it).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BASICBLOCK) {
+	BasicBlockAlg& theBasicBlockAlg=dynamic_cast<BasicBlockAlg&>((*it).getOriginalControlFlowGraphVertexAlg());
+	theBasicBlockAlg.setEnumVal(bbEnum++);
+	const Symbol* enumSymb_p=insert_init_integer(theBasicBlockAlg.getEnumVal(),
+						     theBasicBlockAlg.getEnumPushContainer());
+	insert_push_integer(enumSymb_p,
+			    theBasicBlockAlg.getEnumPushContainer());
+      }
+    }
+  } 
+
+  void ReversibleControlFlowGraph::reverseFromEnumeratedBB(ReversibleControlFlowGraph& theAdjointGraph) { 
+    // set up structure 
+    // new entry
+    ReversibleControlFlowGraphVertex* theAdjointEntry_p=theAdjointGraph.new_entry();
+    theAdjointEntry_p->getNewVertex().setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
+    // new exit
+    ReversibleControlFlowGraphVertex* theAdjointExit_p=theAdjointGraph.new_exit();
+    theAdjointExit_p->getNewVertex().setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
+    // new pre loop
+    ReversibleControlFlowGraphVertex* theAdjointLoop_p=new ReversibleControlFlowGraphVertex();
+    supplyAndAddVertexInstance(*theAdjointLoop_p);
+    PreLoop* aNewPreLoop_p=new PreLoop();
+    theAdjointLoop_p->supplyAndAddNewVertex(*aNewPreLoop_p);
+    aNewPreLoop_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    theAdjointLoop_p->getNewVertex().setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
+    // new end loop
+    ReversibleControlFlowGraphVertex* theAdjointEndLoop_p=theAdjointGraph.new_endloop();
+    theAdjointEndLoop_p->getNewVertex().setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
+    // new initial pop block
+    ReversibleControlFlowGraphVertex* initialPopBlockVertex_p=new ReversibleControlFlowGraphVertex();
+    theAdjointGraph.supplyAndAddVertexInstance(*initialPopBlockVertex_p);
+    BasicBlock* initialPopBlock_p=new BasicBlock(myOriginalGraph_r.getScope());
+    initialPopBlock_p->setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
+    initialPopBlockVertex_p->supplyAndAddNewVertex(*initialPopBlock_p);
+    initialPopBlockVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    const Symbol& thePopSymb=insert_pop_integer(*initialPopBlock_p);
+    // set up pre loop condition which is thePopSymb!=0
+    Expression& theConditionExpression=aNewPreLoop_p->getCondition().getExpression();
+    BooleanOperation* notEqualOp_p=new BooleanOperation(BooleanOperationType::NOT_EQUAL_OTYPE,false);
+    notEqualOp_p->setId(theConditionExpression.getNextVertexId());
+    theConditionExpression.supplyAndAddVertexInstance(*notEqualOp_p);
+    Argument* theArg_p=new Argument(false);
+    theArg_p->setId(theConditionExpression.getNextVertexId());
+    theConditionExpression.supplyAndAddVertexInstance(*theArg_p);
+    VariableSymbolReference* newVarSymRef_p=new VariableSymbolReference(thePopSymb,
+									initialPopBlock_p->getScope());
+    theArg_p->getVariable().supplyAndAddVertexInstance(*newVarSymRef_p);
+    newVarSymRef_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    newVarSymRef_p->setId(1);
+    Constant* theConst_p=new Constant(SymbolType::INTEGER_STYPE,false);
+    theConst_p->setId(theConditionExpression.getNextVertexId());
+    theConditionExpression.supplyAndAddVertexInstance(*theConst_p);
+    theConst_p->setint(0);
+    ExpressionEdge* aNewEdge_p=0;
+    aNewEdge_p=new ExpressionEdge(false);
+    aNewEdge_p->setPosition(1);
+    aNewEdge_p->setId(theConditionExpression.getNextEdgeId());
+    theConditionExpression.supplyAndAddEdgeInstance(*aNewEdge_p,
+						    *theArg_p,
+						    *notEqualOp_p);
+    aNewEdge_p=new ExpressionEdge(false);
+    aNewEdge_p->setPosition(2);
+    aNewEdge_p->setId(theConditionExpression.getNextEdgeId());
+    theConditionExpression.supplyAndAddEdgeInstance(*aNewEdge_p,
+						    *theConst_p,
+						    *notEqualOp_p);
+    // updating pop block at the end of the loop body
+    ReversibleControlFlowGraphVertex* updatingPopBlockVertex_p=new ReversibleControlFlowGraphVertex();
+    updatingPopBlockVertex_p->setIndex(theAdjointGraph.numVertices()+1);
+    theAdjointGraph.supplyAndAddVertexInstance(*updatingPopBlockVertex_p);
+    BasicBlock* updatingPopBlock_p=new BasicBlock(myOriginalGraph_r.getScope());
+    updatingPopBlock_p->setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
+    updatingPopBlockVertex_p->supplyAndAddNewVertex(*updatingPopBlock_p);
+    updatingPopBlockVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    // replicate the pop call now as an update
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i");
+    theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().
+									  getCallGraphAlgBase()).getAlgorithmSignature() + "pop_i");
+    VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(thePopSymb,updatingPopBlock_p->getScope());
+    theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_pop_integer");
+    Variable theSubstitutionArgument;
+    theSubstitutionArgument.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+    theSubstitutionArgument.getAliasMapKey().setTemporary();
+    theSubstitutionArgument.getDuUdMapKey().setTemporary();
+    theSubstitutionArgument.copyMyselfInto(theInlinableSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+    updatingPopBlock_p->supplyAndAddBasicBlockElementInstance(*theInlinableSubroutineCall_p);
+    // construct the select statement that is the loop body
+    // branch node
+    ReversibleControlFlowGraphVertex* theAdjointBranch_p=theAdjointGraph.new_branch();
+    theAdjointBranch_p->getNewVertex().setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
+    // end branch node
+    ReversibleControlFlowGraphVertex* theAdjointEndBranch_p=theAdjointGraph.new_endbranch();
+    theAdjointEndBranch_p->getNewVertex().setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
+    // take care of all basic blocks now and connect then to branch and end branch
+    ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
+    ReversibleControlFlowGraph::VertexIterator it(p.first),endIt(p.second);
+    for (;it!=endIt ;++it) { 
+      if (!(*it).isOriginal())
+	continue;
+      if((*it).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BASICBLOCK) {
+	BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>((*it).getOriginalControlFlowGraphVertexAlg()));
+	ReversibleControlFlowGraphVertex* adjointBlock_p=
+	  theAdjointGraph.old_basic_block(dynamic_cast<const BasicBlock&>(aBasicBlockAlg.BasicBlockAlgBase::getContaining()));
+	// branch to block
+	ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+	aNewReversibleControlFlowGraphEdge_p->setId(theAdjointGraph.makeUniqueEdgeId());
+	aNewReversibleControlFlowGraphEdge_p->setConditionValue(aBasicBlockAlg.getEnumVal());
+	theAdjointGraph.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,
+						 *theAdjointBranch_p,
+						 *adjointBlock_p);
+	// block to end branch
+	aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+	aNewReversibleControlFlowGraphEdge_p->setId(theAdjointGraph.makeUniqueEdgeId());
+	theAdjointGraph.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,
+						 *adjointBlock_p,
+						 *theAdjointEndBranch_p);
+      }
+    }
+    // connect the other CFG vertices
+    // entry to initial pop block
+    ReversibleControlFlowGraphEdge* aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+    aNewReversibleControlFlowGraphEdge_p->setId(theAdjointGraph.makeUniqueEdgeId());
+    theAdjointGraph.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,
+					     *theAdjointEntry_p,
+					     *initialPopBlockVertex_p);
+    // initial pop block to loop
+    aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+    aNewReversibleControlFlowGraphEdge_p->setId(theAdjointGraph.makeUniqueEdgeId());
+    theAdjointGraph.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,
+					     *initialPopBlockVertex_p,
+					     *theAdjointLoop_p);
+    // loop to branch
+    aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+    aNewReversibleControlFlowGraphEdge_p->setId(theAdjointGraph.makeUniqueEdgeId());
+    aNewReversibleControlFlowGraphEdge_p->setConditionValue(1);
+    theAdjointGraph.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,
+					     *theAdjointLoop_p,
+					     *theAdjointBranch_p);
+    // end branch to update pop
+    aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+    aNewReversibleControlFlowGraphEdge_p->setId(theAdjointGraph.makeUniqueEdgeId());
+    theAdjointGraph.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,
+					     *theAdjointEndBranch_p,
+					     *updatingPopBlockVertex_p);
+    // update pop to end loop
+    aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+    aNewReversibleControlFlowGraphEdge_p->setId(theAdjointGraph.makeUniqueEdgeId());
+    theAdjointGraph.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,
+					     *updatingPopBlockVertex_p,
+					     *theAdjointEndLoop_p);
+    // end loop to loop
+    aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+    aNewReversibleControlFlowGraphEdge_p->setId(theAdjointGraph.makeUniqueEdgeId());
+    theAdjointGraph.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,
+					     *theAdjointEndLoop_p,
+					     *theAdjointLoop_p);
+    // loop to exit
+    aNewReversibleControlFlowGraphEdge_p=new ReversibleControlFlowGraphEdge();
+    aNewReversibleControlFlowGraphEdge_p->setId(theAdjointGraph.makeUniqueEdgeId());
+    aNewReversibleControlFlowGraphEdge_p->setConditionValue(0);
+    theAdjointGraph.supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphEdge_p,
+					     *theAdjointLoop_p,
+					     *theAdjointExit_p);
   } 
 
   const ReversibleControlFlowGraphEdge& ReversibleControlFlowGraph::find_corresponding_branch_entry_edge_rec(const ReversibleControlFlowGraphEdge& theCurrentEdge_r, 
@@ -1077,7 +1269,7 @@ namespace xaifBoosterControlFlowReversal {
       case ControlFlowGraphVertexAlg::ENDLOOP : {
 	switch ((*the_mySortedVertices_p_l_rit)->getCounterPart().getKind()) { 
 	case ControlFlowGraphVertexAlg::PRELOOP : { 
-	  theAdjointVertex_p=theAdjointControlFlowGraph_r.new_preloop(dynamic_cast<const PreLoop&>((*the_mySortedVertices_p_l_rit)->getCounterPart().getOriginalVertex()));
+	  theAdjointVertex_p=theAdjointControlFlowGraph_r.new_preloop(dynamic_cast<const PreLoop&>((*the_mySortedVertices_p_l_rit)->getCounterPart().getOriginalVertex()).getId());
 	  break;
 	}
 	case ControlFlowGraphVertexAlg::FORLOOP : { 
@@ -1823,6 +2015,14 @@ namespace xaifBoosterControlFlowReversal {
 
   void ReversibleControlFlowGraph::donotRetainUserReversalFlag() { 
     myRetainUserReversalFlag=false;
+  } 
+
+  void ReversibleControlFlowGraph::setUnstructured() { 
+    myStructuredFlag=false;
+  }
+
+  bool ReversibleControlFlowGraph::isStructured() const { 
+    return myStructuredFlag;
   } 
 
 } // end of namespace
