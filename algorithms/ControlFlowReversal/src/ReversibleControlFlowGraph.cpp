@@ -725,7 +725,7 @@ namespace xaifBoosterControlFlowReversal {
     theAdjointExit_p->getNewVertex().setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
     // new pre loop
     ReversibleControlFlowGraphVertex* theAdjointLoop_p=new ReversibleControlFlowGraphVertex();
-    supplyAndAddVertexInstance(*theAdjointLoop_p);
+    theAdjointGraph.supplyAndAddVertexInstance(*theAdjointLoop_p);
     PreLoop* aNewPreLoop_p=new PreLoop();
     theAdjointLoop_p->supplyAndAddNewVertex(*aNewPreLoop_p);
     aNewPreLoop_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
@@ -796,6 +796,15 @@ namespace xaifBoosterControlFlowReversal {
     // branch node
     ReversibleControlFlowGraphVertex* theAdjointBranch_p=theAdjointGraph.new_branch();
     theAdjointBranch_p->getNewVertex().setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
+    Expression& theBranchConditionExpression=dynamic_cast<Branch&>(theAdjointBranch_p->getNewVertex()).getCondition().getExpression();
+    Argument* theBranchArg_p=new Argument(false);
+    theBranchArg_p->setId(theBranchConditionExpression.getNextVertexId());
+    theBranchConditionExpression.supplyAndAddVertexInstance(*theBranchArg_p);
+    VariableSymbolReference* newBranchVarSymRef_p=new VariableSymbolReference(thePopSymb,
+									      initialPopBlock_p->getScope());
+    theBranchArg_p->getVariable().supplyAndAddVertexInstance(*newBranchVarSymRef_p);
+    newBranchVarSymRef_p->setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+    newBranchVarSymRef_p->setId(1);
     // end branch node
     ReversibleControlFlowGraphVertex* theAdjointEndBranch_p=theAdjointGraph.new_endbranch();
     theAdjointEndBranch_p->getNewVertex().setId(std::string("_adj_")+theAdjointGraph.makeUniqueVertexId());
