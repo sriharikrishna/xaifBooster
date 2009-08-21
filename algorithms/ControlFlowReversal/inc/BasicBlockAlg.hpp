@@ -80,6 +80,12 @@ namespace xaifBoosterControlFlowReversal {
       return ControlFlowGraphVertexAlg::BASICBLOCK;
     };
 
+    void setEnumVal(unsigned short);
+
+    unsigned short getEnumVal() const;
+
+    PlainBasicBlock& getEnumPushContainer();
+
   private:
     
     /** 
@@ -96,6 +102,14 @@ namespace xaifBoosterControlFlowReversal {
      * no def
      */
     BasicBlockAlg& operator=(const BasicBlockAlg&);
+
+    /** 
+     * used to enumerate BasicBlocks for unstructured control flow 
+     * reversal
+     */
+    unsigned short myEnumVal;
+
+    PlainBasicBlock* myEnumPushContainer_p;
 
   };  // end of class
 

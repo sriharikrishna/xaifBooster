@@ -61,10 +61,15 @@ namespace xaifBoosterControlFlowReversal {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     BasicBlockAlgBase(theContaining),
-    ControlFlowGraphVertexAlg(theContaining) {
+    ControlFlowGraphVertexAlg(theContaining),
+    myEnumVal(0),
+    myEnumPushContainer_p(0) {
   }
 
-  BasicBlockAlg::~BasicBlockAlg() {}
+  BasicBlockAlg::~BasicBlockAlg() {
+    if (myEnumPushContainer_p)
+      delete myEnumPushContainer_p;
+  }
   
   std::string
   BasicBlockAlg::debug() const {
@@ -73,6 +78,24 @@ namespace xaifBoosterControlFlowReversal {
         << "]" << std::ends;
     return out.str();
   }
+
+  void BasicBlockAlg::setEnumVal(unsigned short anEnumVal) { 
+    myEnumVal=anEnumVal;
+  }
+
+  unsigned short BasicBlockAlg::getEnumVal() const { 
+    return myEnumVal;
+  }
+
+  PlainBasicBlock& BasicBlockAlg::getEnumPushContainer() { 
+    if (!myEnumVal) { 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getEnumPushContainer: no enum val set");
+    }
+    if (!myEnumPushContainer_p) { 
+      myEnumPushContainer_p=new PlainBasicBlock(dynamic_cast<const BasicBlock&>(BasicBlockAlgBase::getContaining()).getScope());
+    }
+    return *myEnumPushContainer_p;
+  } 
 
 } // end of namespace
 
