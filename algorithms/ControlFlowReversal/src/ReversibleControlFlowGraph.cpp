@@ -707,10 +707,16 @@ namespace xaifBoosterControlFlowReversal {
       if((*it).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::BASICBLOCK) {
 	BasicBlockAlg& theBasicBlockAlg=dynamic_cast<BasicBlockAlg&>((*it).getOriginalControlFlowGraphVertexAlg());
 	theBasicBlockAlg.setEnumVal(bbEnum++);
-	const Symbol* enumSymb_p=insert_init_integer(theBasicBlockAlg.getEnumVal(),
-						     theBasicBlockAlg.getEnumPushContainer());
-	insert_push_integer(enumSymb_p,
-			    theBasicBlockAlg.getEnumPushContainer());
+	// get the out edge from the BasicBlock
+	ReversibleControlFlowGraphEdge& theOutEdge(*(getOutEdgesOf(*it).first));
+	BasicBlock& thePushBasicBlock_r(dynamic_cast<BasicBlock&>(insertBasicBlock(getSourceOf(theOutEdge),
+										   getTargetOf(theOutEdge),
+										   theOutEdge,
+										   false).getNewVertex()));
+	removeAndDeleteEdge(theOutEdge);
+	thePushBasicBlock_r.setId(std::string("_aug_")+makeUniqueVertexId());
+	const Symbol* enumSymb_p=insert_init_integer(theBasicBlockAlg.getEnumVal(),thePushBasicBlock_r);
+	insert_push_integer(enumSymb_p,thePushBasicBlock_r);
       }
     }
   } 

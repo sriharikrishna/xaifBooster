@@ -84,8 +84,6 @@ namespace xaifBoosterControlFlowReversal {
 
     unsigned short getEnumVal() const;
 
-    PlainBasicBlock& getEnumPushContainer();
-
   private:
     
     /** 
@@ -108,8 +106,6 @@ namespace xaifBoosterControlFlowReversal {
      * reversal
      */
     unsigned short myEnumVal;
-
-    PlainBasicBlock* myEnumPushContainer_p;
 
   };  // end of class
 
