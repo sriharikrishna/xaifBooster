@@ -1,5 +1,5 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
+#ifndef _NONINLINABLEINTRINSICSCATALOGUEITEM_INCLUDE_
+#define _NONINLINABLEINTRINSICSCATALOGUEITEM_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,62 +53,90 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include <vector>
+#include "xaifBooster/system/inc/ExplicitJacobian.hpp"
+#include "xaifBooster/system/inc/DirectAction.hpp"
 
 namespace xaifBooster { 
 
-  /** 
-   * configuration and usage for this transformation 
+  /**
+   * a class that contains all the 
+   * definitions for a particular 
+   * intrinsic
    */
-  class AlgConfig : public CommandLineParser { 
-
-  public:
-
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
-
-    virtual void usage();
+  class NonInlinableIntrinsicsCatalogueItem { 
+    
+  public: 
 
     /**
-     * We separate the parsing/configuration 
-     * step from the construction because 
-     * we want to throw exceptions when 
-     * something is not correctly specified
-     * and we should not throw exceptions from the constructor.
-     * On the other hand we have to avoid running config twice 
-     * because we populate hashmaps etc.  We do have virtual 
-     * inheritance though and if it wasn't for the need 
-     * to throw exceptions it could easily be done in the 
-     * constructor. Here we resort to a static guard 
-     * to avoid running things twice. 
+     * we preallocate the vector with the resp. size
+     * and check any argument position against this size
+     * the ctor will also preallocate an Expression for the 
+     * function but will not fill it. 
+     * \todo JU: why do we preallocate the expression for the function?
      */
-    virtual void config();
+    NonInlinableIntrinsicsCatalogueItem(bool aNonSmoothFlag);
 
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getNIIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
+    ~NonInlinableIntrinsicsCatalogueItem();
 
-  protected:
+    static const std::string our_myNonSmoothFlag_XAIFName;
+    static const std::string our_myName_XAIFName;
 
-    virtual std::string getSwitches();
+    /** 
+     * returns flag value
+     */
+    bool isNonSmooth() const; 
 
-  private: 
+    bool isExplicitJacobian() const; 
 
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string myNIIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
+    bool isDirectAction() const; 
+
+    ExplicitJacobian& getExplicitJacobian(); 
+
+    DirectAction& getDirectAction(); 
+
+    ExplicitJacobian& makeExplicitJacobian(); 
+
+    DirectAction& makeDirectAction(); 
+  private:
     
+    /**
+     * no def
+     */
+    NonInlinableIntrinsicsCatalogueItem();
+
+    /**
+     * no def
+     */
+    NonInlinableIntrinsicsCatalogueItem(const NonInlinableIntrinsicsCatalogueItem&);
+
+    /**
+     * no def
+     */
+    NonInlinableIntrinsicsCatalogueItem& operator=(const NonInlinableIntrinsicsCatalogueItem&);
+
+    /** 
+     * a flag in the intrinsics catalogue indicating a nonsmooth 
+     * behavior
+     */
+    const bool myNonSmoothFlag;
+
+    /** 
+     * if this is an ExplicitJacobian
+     * this points to it;
+     * we own the instance
+     */
+    ExplicitJacobian *myExplicitJacobian_p;
+
+    /** 
+     * if this is a DirectAction
+     * this points to it;
+     * we own the instance
+     */
+    DirectAction *myDirectAction_p;
+
   }; 
   
-} // end of namespace xaifBooster
-                                                                     
+} 
+
 #endif

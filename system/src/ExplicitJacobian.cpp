@@ -1,5 +1,3 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,63 +50,27 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/system/inc/ExplicitJacobian.hpp"
 
 namespace xaifBooster { 
 
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public CommandLineParser { 
+  const std::string ExplicitJacobian::ourXAIFName("xaifnii:ExplicitJacobian");
+  const std::string ExplicitJacobian::our_myJacobian_XAIFName("jacobian");
 
-  public:
+  ExplicitJacobian::ExplicitJacobian() { 
+  } 
 
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
+  ExplicitJacobian::~ExplicitJacobian() { 
+    for(ExplicitJacobianPartialPList::iterator it= myExplicitJacobianPartialList.begin();
+	it!=myExplicitJacobianPartialList.end();
+	++it) 
+      if (*it)
+	delete (*it);
+  } 
 
-    virtual void usage();
+  ExplicitJacobianPartial& ExplicitJacobian::addExplicitJacobianPartial() { 
+    myExplicitJacobianPartialList.push_back(new ExplicitJacobianPartial());
+    return *(myExplicitJacobianPartialList.back());
+  } 
 
-    /**
-     * We separate the parsing/configuration 
-     * step from the construction because 
-     * we want to throw exceptions when 
-     * something is not correctly specified
-     * and we should not throw exceptions from the constructor.
-     * On the other hand we have to avoid running config twice 
-     * because we populate hashmaps etc.  We do have virtual 
-     * inheritance though and if it wasn't for the need 
-     * to throw exceptions it could easily be done in the 
-     * constructor. Here we resort to a static guard 
-     * to avoid running things twice. 
-     */
-    virtual void config();
-
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getNIIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
-  protected:
-
-    virtual std::string getSwitches();
-
-  private: 
-
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string myNIIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
-    
-  }; 
-  
-} // end of namespace xaifBooster
-                                                                     
-#endif
+} 

@@ -1,5 +1,3 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,63 +50,33 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/utils/inc/StringConversions.hpp"
+#include "xaifBooster/system/inc/NonInlinableIntrinsicsCatalogue.hpp"
 
 namespace xaifBooster { 
 
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public CommandLineParser { 
+  const std::string NonInlinableIntrinsicsCatalogue::ourXAIFName("xaifnii:NonInlinableIntrinsicDefinitions");
 
-  public:
-
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
-
-    virtual void usage();
-
-    /**
-     * We separate the parsing/configuration 
-     * step from the construction because 
-     * we want to throw exceptions when 
-     * something is not correctly specified
-     * and we should not throw exceptions from the constructor.
-     * On the other hand we have to avoid running config twice 
-     * because we populate hashmaps etc.  We do have virtual 
-     * inheritance though and if it wasn't for the need 
-     * to throw exceptions it could easily be done in the 
-     * constructor. Here we resort to a static guard 
-     * to avoid running things twice. 
-     */
-    virtual void config();
-
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getNIIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
-  protected:
-
-    virtual std::string getSwitches();
-
-  private: 
-
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string myNIIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
+  NonInlinableIntrinsicsCatalogue::NonInlinableIntrinsicsCatalogue(){
     
-  }; 
-  
-} // end of namespace xaifBooster
-                                                                     
-#endif
+  }
+
+  NonInlinableIntrinsicsCatalogue::~NonInlinableIntrinsicsCatalogue(){
+  }
+
+  NonInlinableIntrinsicsCatalogueItem& 
+  NonInlinableIntrinsicsCatalogue::addCatalogueItem(const std::string& theKey,
+						    bool aNonSmoothFlag) { 
+    NonInlinableIntrinsicsCatalogueItem* theItem_p=
+      new NonInlinableIntrinsicsCatalogueItem(aNonSmoothFlag);
+    myHashTable.addElement(theKey,
+			   theItem_p);
+    return *theItem_p;
+  }
+
+  const NonInlinableIntrinsicsCatalogueItem& 
+  NonInlinableIntrinsicsCatalogue::getElement(const std::string& theKey) const { 
+    return *(myHashTable.getElement(theKey));
+  } 
+
+} 

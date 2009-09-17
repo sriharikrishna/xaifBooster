@@ -1,5 +1,3 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,63 +50,51 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/system/inc/ExplicitJacobianPartial.hpp"
 
 namespace xaifBooster { 
 
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public CommandLineParser { 
+  const std::string ExplicitJacobianPartial::ourXAIFName("xaifnii:Partial");
+  const std::string ExplicitJacobianPartial::our_myDep_XAIFName("dep");
+  const std::string ExplicitJacobianPartial::our_myInDep_XAIFName("indep");
+  const std::string ExplicitJacobianPartial::our_myPartial_XAIFName("partial");
 
-  public:
+  ExplicitJacobianPartial::ExplicitJacobianPartial() : 
+    myDep(0),
+    myInDep(0),
+    myPartial(0) { 
+  } 
 
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
+  ExplicitJacobianPartial::~ExplicitJacobianPartial() { 
+  } 
 
-    virtual void usage();
-
-    /**
-     * We separate the parsing/configuration 
-     * step from the construction because 
-     * we want to throw exceptions when 
-     * something is not correctly specified
-     * and we should not throw exceptions from the constructor.
-     * On the other hand we have to avoid running config twice 
-     * because we populate hashmaps etc.  We do have virtual 
-     * inheritance though and if it wasn't for the need 
-     * to throw exceptions it could easily be done in the 
-     * constructor. Here we resort to a static guard 
-     * to avoid running things twice. 
-     */
-    virtual void config();
-
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getNIIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
-  protected:
-
-    virtual std::string getSwitches();
-
-  private: 
-
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string myNIIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
+  void ExplicitJacobianPartial::setInfo(unsigned short dep,
+					unsigned short indep,
+					unsigned short partial) {
+    if (myDep || myInDep || myPartial)
+      THROW_LOGICEXCEPTION_MACRO("ExplicitJacobianPartial::setInfo: already set");
+    myDep=dep;
+    myInDep=indep;
+    myPartial=partial;
+  } 
     
-  }; 
+  unsigned short ExplicitJacobianPartial::getDep() const { 
+    if (! myDep)
+      THROW_LOGICEXCEPTION_MACRO("ExplicitJacobianPartial::getDep: not set");
+    return myDep;
+  }
   
-} // end of namespace xaifBooster
-                                                                     
-#endif
+  unsigned short ExplicitJacobianPartial::getInDep() const { 
+    if (! myInDep)
+      THROW_LOGICEXCEPTION_MACRO("ExplicitJacobianPartial::getInDep: not set");
+    return myInDep;
+  }
+  
+  unsigned short ExplicitJacobianPartial::getPartial() const { 
+    if (! myPartial)
+      THROW_LOGICEXCEPTION_MACRO("ExplicitJacobianPartial::getPartial: not set");
+    return myPartial;
+  }
+
+} 

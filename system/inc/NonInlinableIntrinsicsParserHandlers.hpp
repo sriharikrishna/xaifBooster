@@ -1,5 +1,5 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
+#ifndef _NONINLINABLEINTRINSICSPARSERHANDLERS_INCLUDE_
+#define _NONINLINABLEINTRINSICSPARSERHANDLERS_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,62 +53,51 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/utils/inc/NonInlinableIntrinsicsParserHelper.hpp"
+#include "xaifBooster/system/inc/NonInlinableIntrinsicsCatalogue.hpp"
+#include "xaifBooster/system/inc/NonInlinableIntrinsicsCatalogueItem.hpp"
 
-namespace xaifBooster { 
+namespace xaifBooster {
 
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public CommandLineParser { 
-
+  class NonInlinableIntrinsicsParserHandlers {
   public:
+    /** 
+     * method for NonInlinableIntrinsicDefinitions which is 
+     * added to ourActionCatalogue
+     */  
+    void onNonInlinableIntrinsicsCatalogue(const NonInlinableIntrinsicsParserHelper& passingIn,
+					   NonInlinableIntrinsicsParserHelper& passingOut);
 
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
-
-    virtual void usage();
-
-    /**
-     * We separate the parsing/configuration 
-     * step from the construction because 
-     * we want to throw exceptions when 
-     * something is not correctly specified
-     * and we should not throw exceptions from the constructor.
-     * On the other hand we have to avoid running config twice 
-     * because we populate hashmaps etc.  We do have virtual 
-     * inheritance though and if it wasn't for the need 
-     * to throw exceptions it could easily be done in the 
-     * constructor. Here we resort to a static guard 
-     * to avoid running things twice. 
-     */
-    virtual void config();
-
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getNIIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
-  protected:
-
-    virtual std::string getSwitches();
-
-  private: 
-
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string myNIIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
+    /** 
+     * method for Function which is 
+     * added to ourActionCatalogue
+     */  
+    void onExplicitJacobian(const NonInlinableIntrinsicsParserHelper& passingIn,
+			    NonInlinableIntrinsicsParserHelper& passingOut);
     
-  }; 
-  
-} // end of namespace xaifBooster
-                                                                     
+    /** 
+     * method for Partial which is 
+     * added to ourActionCatalogue
+     */  
+    void onPartial(const NonInlinableIntrinsicsParserHelper& passingIn,
+		   NonInlinableIntrinsicsParserHelper& passingOut);
+
+    /** 
+     * method for DirectAction which is 
+     * added to ourActionCatalogue
+     */  
+    void onDirectAction(const NonInlinableIntrinsicsParserHelper& passingIn,
+			NonInlinableIntrinsicsParserHelper& passingOut);
+
+    /*
+     * currently don't deal with 
+     * added to ourActionCatalogue
+     */  
+    void onDummy(const NonInlinableIntrinsicsParserHelper& passingIn,
+		 NonInlinableIntrinsicsParserHelper& passingOut);
+
+  }; // end of class NonInlinableIntrinsicsParserHandlers
+
+} // end of namespace 
+
 #endif
