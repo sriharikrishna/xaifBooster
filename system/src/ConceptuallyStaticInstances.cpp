@@ -87,6 +87,11 @@ namespace xaifBooster {
     return myInlinableIntrinsicsCatalogue;
   }
 
+  NonInlinableIntrinsicsCatalogue& 
+  ConceptuallyStaticInstances::getNonInlinableIntrinsicsCatalogue() { 
+    return myNonInlinableIntrinsicsCatalogue;
+  }
+
   void ConceptuallyStaticInstances::createCallGraph(const std::string& aSchemaInstance,
 						    const std::string& anXAIFInstance,
 						    const std::string& aSchemaLocation,

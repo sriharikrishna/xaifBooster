@@ -1,5 +1,3 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,63 +50,36 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/utils/inc/LogicException.hpp"
+#include "xaifBooster/utils/inc/NonInlinableIntrinsicsParserHelper.hpp"
 
 namespace xaifBooster { 
 
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public CommandLineParser { 
+#define NONINLINABLEINTRINSICSPARSERHELPER_INITIALIZATION(x)  \
+my##x##_p(0)
 
-  public:
+#define NONINLINABLEINTRINSICSPARSERHELPER_DEFINITION(x)  \
+void \
+NonInlinableIntrinsicsParserHelper::set##x(x& whatToSet){ \
+if( my##x##_p ) \
+THROW_LOGICEXCEPTION_MACRO("NonInlinableIntrinsicsParserHelper::set" << #x << " item already set"); \
+my##x##_p=&whatToSet; \
+} \
+x& \
+NonInlinableIntrinsicsParserHelper::get##x() const { \
+if(! my##x##_p ) \
+THROW_LOGICEXCEPTION_MACRO("NonInlinableIntrinsicsParserHelper::get" << #x << " item not set"); \
+return *my##x##_p; \
+}
 
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
+  NonInlinableIntrinsicsParserHelper::NonInlinableIntrinsicsParserHelper() :
+    NONINLINABLEINTRINSICSPARSERHELPER_INITIALIZATION(NonInlinableIntrinsicsCatalogue),
+    NONINLINABLEINTRINSICSPARSERHELPER_INITIALIZATION(ExplicitJacobian)
+  {} // end of   NonInlinableIntrinsicsParserHelper::NonInlinableIntrinsicsParserHelper
 
-    virtual void usage();
-
-    /**
-     * We separate the parsing/configuration 
-     * step from the construction because 
-     * we want to throw exceptions when 
-     * something is not correctly specified
-     * and we should not throw exceptions from the constructor.
-     * On the other hand we have to avoid running config twice 
-     * because we populate hashmaps etc.  We do have virtual 
-     * inheritance though and if it wasn't for the need 
-     * to throw exceptions it could easily be done in the 
-     * constructor. Here we resort to a static guard 
-     * to avoid running things twice. 
-     */
-    virtual void config();
-
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getNIIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
-  protected:
-
-    virtual std::string getSwitches();
-
-  private: 
-
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string myNIIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
     
-  }; 
-  
-} // end of namespace xaifBooster
-                                                                     
-#endif
+  NONINLINABLEINTRINSICSPARSERHELPER_DEFINITION(NonInlinableIntrinsicsCatalogue)
+  NONINLINABLEINTRINSICSPARSERHELPER_DEFINITION(ExplicitJacobian)
+
+} // end of namespace
+

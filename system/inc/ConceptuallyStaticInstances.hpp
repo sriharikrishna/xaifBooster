@@ -56,6 +56,7 @@
 #include "xaifBooster/utils/inc/NameCreator.hpp"
 
 #include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
+#include "xaifBooster/system/inc/NonInlinableIntrinsicsCatalogue.hpp"
 #include "xaifBooster/system/inc/PrintVersion.hpp"
 #include "xaifBooster/system/inc/TraversalStack.hpp"
 
@@ -81,6 +82,7 @@ namespace xaifBooster {
     CallGraph& getCallGraph();
 
     InlinableIntrinsicsCatalogue& getInlinableIntrinsicsCatalogue();
+    NonInlinableIntrinsicsCatalogue& getNonInlinableIntrinsicsCatalogue();
 
     void createCallGraph(const std::string& aSchemaInstance,
 			 const std::string& anXAIFInstance,
@@ -134,6 +136,7 @@ namespace xaifBooster {
     CallGraph* myCallGraph_p;
 
     InlinableIntrinsicsCatalogue myInlinableIntrinsicsCatalogue;
+    NonInlinableIntrinsicsCatalogue myNonInlinableIntrinsicsCatalogue;
 
     /**
      * initialized to 

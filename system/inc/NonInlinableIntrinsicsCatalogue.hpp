@@ -1,5 +1,5 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
+#ifndef _NONINLINABLEINTRINSICSCATALOGUE_INCLUDE_
+#define _NONINLINABLEINTRINSICSCATALOGUE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,62 +53,69 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include "xaifBooster/system/inc/NonInlinableIntrinsicsCatalogueItem.hpp"
+#include "xaifBooster/utils/inc/HashTable.hpp"
 
 namespace xaifBooster { 
-
-  /** 
-   * configuration and usage for this transformation 
+  
+  /**
+   * the catalogue of all noninlinable intrinsics
    */
-  class AlgConfig : public CommandLineParser { 
-
-  public:
-
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
-
-    virtual void usage();
+  class NonInlinableIntrinsicsCatalogue { 
+    
+  public: 
+    
+    NonInlinableIntrinsicsCatalogue();
 
     /**
-     * We separate the parsing/configuration 
-     * step from the construction because 
-     * we want to throw exceptions when 
-     * something is not correctly specified
-     * and we should not throw exceptions from the constructor.
-     * On the other hand we have to avoid running config twice 
-     * because we populate hashmaps etc.  We do have virtual 
-     * inheritance though and if it wasn't for the need 
-     * to throw exceptions it could easily be done in the 
-     * constructor. Here we resort to a static guard 
-     * to avoid running things twice. 
+     * deletes the pointers in 
+     * myHashTable
+     * \todo JU needs to implement the deletion
      */
-    virtual void config();
+    ~NonInlinableIntrinsicsCatalogue();
+    
+    /**
+     * the key should be a unique name, 
+     * e.g. think of mangled names in C++
+     * to resolve ambiguities in the signature
+     */
+    NonInlinableIntrinsicsCatalogueItem& addCatalogueItem(const std::string& theKey,
+							  bool aNonSmoothFlag);
+    
+    /** 
+     * look it up by the name, 
+     * will throw an exception if not found
+     */
+    const NonInlinableIntrinsicsCatalogueItem& getElement(const std::string& theKey) const;
 
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getNIIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
-  protected:
-
-    virtual std::string getSwitches();
+    /**
+     * name as specified in XAIF schema
+     */
+    static const std::string ourXAIFName;
 
   private: 
 
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string myNIIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
+    /**
+     * no def
+     */
+    NonInlinableIntrinsicsCatalogue(const NonInlinableIntrinsicsCatalogue&);
+
+    /**
+     * no def
+     */
+    NonInlinableIntrinsicsCatalogue& operator=(const NonInlinableIntrinsicsCatalogue&);    
+
+
+    /**
+     * the actual container
+     * this class instance owns the pointers,
+     * the are allocated in addCatalogueItem
+     * and deleted in the class' dtor
+     */
+    HashTable<NonInlinableIntrinsicsCatalogueItem*> myHashTable;
     
   }; 
   
-} // end of namespace xaifBooster
-                                                                     
+} 
+
 #endif

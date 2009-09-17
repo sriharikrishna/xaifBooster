@@ -72,7 +72,7 @@ namespace xaifBooster {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgGsvpbVFh");
+    return std::string("iocdgGNsvpbVFh");
   } 
 
   void AlgConfig::config() { 
@@ -94,6 +94,8 @@ namespace xaifBooster {
 	DbgLoggerManager::instance()->setSelection(argAsInt('g'));
       if (isSet('G')) 
 	DbgLoggerManager::instance()->setGraphicsFormat(argAsString('G'));
+      if (isSet('N')) 
+	myNIIntrinsicsFileName=argAsString('N');
       if (isSet('p'))
 	Symbol::addSymbolNamesToPassivate(argAsString('p'));
       if (isSet('b'))
@@ -116,6 +118,7 @@ namespace xaifBooster {
 	      << "                 XAIF schema path, defaults to directory that contains the input file" << std::endl
 	      << "             [-o <outputFile> ] [-d <debugOutputFile> ]" << std::endl
 	      << "                 both default to std::cout" << std::endl
+	      << "             [-N <nonInlinableIntrinsicsCatalogueFile> ]" << std::endl
 	      << "             [-g <debugGroup> ]" << std::endl
 	      << "                 with debugGroup >=0 the sum of any of: " << std::endl
 	      << "                 "<< DbgGroup::printAll().c_str() << std::endl
@@ -152,6 +155,12 @@ namespace xaifBooster {
     if (!myConfiguredFlag)
       THROW_LOGICEXCEPTION_MACRO("AlgConfig::config() has not been called"); 
     return myIntrinsicsFileName; 
+  } 
+
+  const std::string& AlgConfig::getNIIntrinsicsFileName() const { 
+    if (!myConfiguredFlag)
+      THROW_LOGICEXCEPTION_MACRO("AlgConfig::config() has not been called"); 
+    return myNIIntrinsicsFileName; 
   } 
 
   const std::string& AlgConfig::getSchemaPath() const { 

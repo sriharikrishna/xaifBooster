@@ -1,5 +1,5 @@
-#ifndef _ALGCONFIG_INCLUDE_
-#define _ALGCONFIG_INCLUDE_
+#ifndef _NONINLINABLEINTRINSICSPARSER_INCLUDE_
+#define _NONINLINABLEINTRINSICSPARSER_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,62 +53,68 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/utils/inc/CommandLineParser.hpp"
+#include  <xercesc/sax2/DefaultHandler.hpp>
+                                                           
+#include "xaifBooster/system/inc/XMLParser.hpp"
+#include "xaifBooster/system/inc/NonInlinableIntrinsicsParserHandlers.hpp"
+#include "xaifBooster/utils/inc/NonInlinableIntrinsicsParserHelper.hpp"
 
-namespace xaifBooster { 
+namespace xaifBooster {
 
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public CommandLineParser { 
-
+  class NonInlinableIntrinsicsParser : public XERCES_CPP_NAMESPACE::DefaultHandler, public XMLParser, public NonInlinableIntrinsicsParserHandlers {
   public:
+    NonInlinableIntrinsicsParser(NonInlinableIntrinsicsCatalogue& theNonInlinableIntrinsicsCatalogue_r);
 
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
+    void initialize();
 
-    virtual void usage();
+    void startDocument();
+    void endDocument();
+    void startElement(const XMLCh*, const XMLCh*, const XMLCh*, const XERCES_CPP_NAMESPACE::Attributes&);
+    void endElement(const XMLCh*, const XMLCh*, const XMLCh*);
+ 
+    virtual void setExternalSchemaLocation(const std::string& theSchemaLocation);
+
+  private:
+
+    NonInlinableIntrinsicsCatalogue& myNonInlinableIntrinsicsCatalogue;
+
+    struct ActionItem { 
+      typedef 
+      void (NonInlinableIntrinsicsParser::* ActionFPType)(const NonInlinableIntrinsicsParserHelper& passingIn,
+							  NonInlinableIntrinsicsParserHelper& passingOut);
+      ActionFPType myAction;
+      ActionItem(const ActionFPType& anAction): myAction(anAction){};
+    }; 
 
     /**
-     * We separate the parsing/configuration 
-     * step from the construction because 
-     * we want to throw exceptions when 
-     * something is not correctly specified
-     * and we should not throw exceptions from the constructor.
-     * On the other hand we have to avoid running config twice 
-     * because we populate hashmaps etc.  We do have virtual 
-     * inheritance though and if it wasn't for the need 
-     * to throw exceptions it could easily be done in the 
-     * constructor. Here we resort to a static guard 
-     * to avoid running things twice. 
+     * the action catalogue 
+     * keyed by the DOM node names as specified 
+     * in the XAIF schema
      */
-    virtual void config();
-
-    const std::string& getInputFileName() const; 
-    bool getInputValidationFlag() const; 
-    const std::string& getIntrinsicsFileName() const; 
-    const std::string& getNIIntrinsicsFileName() const; 
-    const std::string& getSchemaPath() const; 
-    const std::string& getOutFileName() const; 
-
-  protected:
-
-    virtual std::string getSwitches();
-
-  private: 
-
-    std::string myInputFileName; 
-    std::string myIntrinsicsFileName; 
-    std::string myNIIntrinsicsFileName; 
-    std::string mySchemaPath; 
-    std::string myOutFileName;
-    std::string myBuildStamp;
-    bool myConfiguredFlag; 
-    bool myInputValidationFlag; 
+    static HashTable<ActionItem> ourActionCatalogue;
     
+    /**
+     * flag guarding the onetime initialization of
+     * ourActionCatalogue
+     */
+    static bool ourStaticInitFlag;
+
+    /**
+     * method that contains calls which 
+     * add individual actions to 
+     * ourActionCatalogue
+     */
+    static void staticInitialize();
+
+    /**
+     * method used by * startElement.
+     * selects action method appropriate for node name
+     * from ourActionCatalogue
+     */
+    void actionInvocation(const XMLCh* const);
+
   }; 
-  
-} // end of namespace xaifBooster
-                                                                     
+
+} // end of namespace 
+
 #endif
