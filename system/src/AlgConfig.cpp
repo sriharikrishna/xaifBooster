@@ -72,7 +72,7 @@ namespace xaifBooster {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgGNsvpbVFh");
+    return std::string("iocdgGNsTvpbVFh");
   } 
 
   void AlgConfig::config() { 
@@ -102,6 +102,8 @@ namespace xaifBooster {
 	SubroutineCall::noBlackBoxOptimism();
       if (isSet('V'))
 	PrintManager::setVerbose();
+      if (isSet('T'))
+	DbgLoggerManager::instance()->addTags(argAsString('T'));
       myInputValidationFlag=isSet('v');
       if (isSet('F'))
 	Symbol::setFrontEndDecorations(FrontEndDecorations::fromString(argAsString('F')));
@@ -126,6 +128,8 @@ namespace xaifBooster {
               << "             [-G <format>] debugging graphics format, where <format > is one of:" << std::endl
               << "                 ps - postscript format displayed with ghostview (default)" << std::endl 
               << "                 svg - scalable vector graphics format displayed in firefox" << std::endl 
+              << "             [-T \"<list of tags to narrow debug output>\" ]" << std::endl 
+              << "                 space separated list enclosed in double quotes" << std::endl
               << "             [-p \"<list of symbols to forcibly passivate>\" ]" << std::endl 
               << "                 space separated list enclosed in double quotes" << std::endl
               << "             [-b] pessimistic assumptions for black box routines" << std::endl 

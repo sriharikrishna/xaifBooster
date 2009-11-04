@@ -263,11 +263,11 @@ namespace xaifBoosterControlFlowReversal {
   } // end CallGraphVertexAlg::algorithm_action_4() 
 
   void CallGraphVertexAlg::structuredReversal() {
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
     myTapingControlFlowGraph_p->markBranchExitEdges();
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
     // buildAdjointControlFlowGraph() should always be based on the
@@ -275,20 +275,20 @@ namespace xaifBoosterControlFlowReversal {
     // storeControlFlow()
     // but we should have found out how to label branch edges...
     myTapingControlFlowGraph_p->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph_p);
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myAdjointControlFlowGraph_p,"cfg_adjoint", AdjointControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph_p));
     }
     myTapingControlFlowGraph_p->storeControlFlow();
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph_p,"cfg_taping", ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
     // GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
     //    myStrictAnonymousTapingControlFlowGraph_p->topologicalSort();
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_strict_anonymous_topologically_sorted", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
     }
     myStrictAnonymousTapingControlFlowGraph_p->markBranchExitEdges();
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_strict_anonymous_branch_marked", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
     }
     // buildAdjointControlFlowGraph() should always be based on the
@@ -296,31 +296,31 @@ namespace xaifBoosterControlFlowReversal {
     // storeControlFlow()
     // but we should have found out how to label branch edges...
     myStrictAnonymousTapingControlFlowGraph_p->buildAdjointControlFlowGraph(*myStrictAnonymousAdjointControlFlowGraph_p);
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myStrictAnonymousAdjointControlFlowGraph_p,"cfg_strict_anonymous_adjoint", AdjointControlFlowGraphVertexLabelWriter(*myStrictAnonymousAdjointControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousAdjointControlFlowGraph_p));
     }
     myStrictAnonymousTapingControlFlowGraph_p->storeControlFlow();
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myStrictAnonymousTapingControlFlowGraph_p,"cfg_strict_anonymous_taping", ControlFlowGraphVertexLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousTapingControlFlowGraph_p));
     }
   }
 
   void CallGraphVertexAlg::unstructuredReversal() {
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph_p,
 			    "cfg_unstructured", 
 			    ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),
 			    ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
     myTapingControlFlowGraph_p->storeEnumeratedBB();
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myTapingControlFlowGraph_p,
 			    "cfg_unstructured_taping", 
 			    ControlFlowGraphVertexLabelWriter(*myTapingControlFlowGraph_p),
 			    ControlFlowGraphEdgeLabelWriter(*myTapingControlFlowGraph_p));
     }
     myTapingControlFlowGraph_p->reverseFromEnumeratedBB(*myAdjointControlFlowGraph_p);
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myAdjointControlFlowGraph_p,
 			    "cfg_unstructured_adjoint", 
 			    ControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph_p),
