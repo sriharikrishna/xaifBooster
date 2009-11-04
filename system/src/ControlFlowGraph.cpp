@@ -410,7 +410,9 @@ namespace xaifBooster {
     if (isNull() || !isStructured())
       return; 
     DBG_MACRO(DbgGroup::CALLSTACK,"::ControlFlowGraph::augmentGraphInfo: for  " << getSymbolReference().getSymbol().plainName().c_str());
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)
+	&& 
+	DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*this,getSymbolReference().getSymbol().plainName()+"_cfg", ControlFlowGraphVertexLabelWriter(*this),ControlFlowGraphEdgeLabelWriter(*this));
     }
     initVisit();

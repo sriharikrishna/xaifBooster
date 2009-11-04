@@ -694,7 +694,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::runElimination(Sequence& aSequence) { 
     PrivateLinearizedComputationalGraph& theComputationalGraph=*(aSequence.myComputationalGraph_p);
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {     
       GraphVizDisplay::show(theComputationalGraph,
 			    "OriginalFlattenedPLCG",
 			    PrivateLinearizedComputationalGraphVertexLabelWriter(theComputationalGraph),
@@ -744,7 +744,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       }
       (*elim_i)->buildAccumulationGraph();
 
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
         if ((*elim_i)->getAccumulationGraph().numVertices()) { // don't show empty AccumulationGraph
           GraphVizDisplay::show((*elim_i)->getAccumulationGraph(),
                                 "AccumulationGraph",
