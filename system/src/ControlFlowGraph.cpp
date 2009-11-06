@@ -413,7 +413,7 @@ namespace xaifBooster {
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)
 	&& 
 	DbgLoggerManager::instance()->wantTag("cfg")) {     
-      GraphVizDisplay::show(*this,getSymbolReference().getSymbol().plainName()+"_cfg", ControlFlowGraphVertexLabelWriter(*this),ControlFlowGraphEdgeLabelWriter(*this));
+      GraphVizDisplay::show(*this,"cfg_"+getSymbolReference().getSymbol().plainName(), ControlFlowGraphVertexLabelWriter(*this),ControlFlowGraphEdgeLabelWriter(*this));
     }
     initVisit();
     int idx=1;
