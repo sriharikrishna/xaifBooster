@@ -411,7 +411,7 @@ namespace xaifBooster {
       return; 
     DBG_MACRO(DbgGroup::CALLSTACK,"::ControlFlowGraph::augmentGraphInfo: for  " << getSymbolReference().getSymbol().plainName().c_str());
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
-      GraphVizDisplay::show(*this,getSymbolReference().getSymbol().plainName()+"_cfg", ControlFlowGraphVertexLabelWriter(*this),ControlFlowGraphEdgeLabelWriter(*this));
+      GraphVizDisplay::show(*this,"cfg_"+getSymbolReference().getSymbol().plainName(), ControlFlowGraphVertexLabelWriter(*this),ControlFlowGraphEdgeLabelWriter(*this));
     }
     initVisit();
     int idx=1;
