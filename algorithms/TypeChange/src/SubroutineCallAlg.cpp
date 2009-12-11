@@ -465,13 +465,27 @@ namespace xaifBoosterTypeChange {
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,!copyEntireArray);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
-    if (theConcreteArgument.isArgument()) { 
+    if (theConcreteArgument.isArgument()) {  // postcall only if it is not a constant
+      // see if it is a formal argument with IN_ITYPE
+      const ControlFlowGraph& theCFG(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph());
+      ControlFlowGraph::FormalResult aFormalResult;
+      if ((aFormalResult=theCFG.hasFormal(theConcreteArgument.getArgument().getVariable().getVariableSymbolReference())).first) { // have it 
+	// get the positional argument  from the list 
+	for (ArgumentList::ArgumentSymbolReferencePList::const_iterator listI=theCFG.getArgumentList().getArgumentSymbolReferencePList().begin();
+          listI!=theCFG.getArgumentList().getArgumentSymbolReferencePList().end();
+          ++listI) {
+	  if (aFormalResult.second==(*listI)->getPosition() // match the position
+ 	      && 
+	      IntentType::IN_ITYPE==(*listI)->getIntent()) { // look at its itype
+	    return;
+	  }
+	}
+      }
       // may have to adjust upper bounds
       if (!copyEntireArray)
 	theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(aFormalArgumentSymbolReference.
 										      getSymbol().	
 										      getSymbolShape())+shapeOffsetFromFormal);
-      // post call only if it is not a constant.
       aSubroutineName=giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
 				   aFormalArgumentSymbolReference,
 				   shapeOffsetFromFormal,
