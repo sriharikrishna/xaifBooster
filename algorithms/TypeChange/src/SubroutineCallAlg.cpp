@@ -383,6 +383,17 @@ namespace xaifBoosterTypeChange {
     return aSubroutineName;
   } 
 
+  void SubroutineCallAlg::addAllocation(const Variable& toBeAllocated,
+					const ConcreteArgument& argumentToMatch) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
+    theSRCall_p->setId("TypeChange::SubroutineCallAlg::addAllocation");
+    myPriorAdjustmentsList.push_back(theSRCall_p);
+    // first argument
+    toBeAllocated.copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
+    // second argument
+    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2));
+  }
+
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
 					const ArgumentSymbolReference& aFormalArgumentSymbolReference,
 					const BasicBlock& theBasicBlock,
@@ -451,6 +462,11 @@ namespace xaifBoosterTypeChange {
     theConcreteArgumentAlg.makeReplacement(theTempVar,copyEntireArray);
     if (!withCopy)
       return; 
+    if (theTempVar.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR
+	&&
+	!(theTempVar.getVariableSymbolReference().getSymbol().hasDimensionBounds())) {
+      addAllocation(theTempVar,theConcreteArgument);
+    }
     // prior call
     std::string 
       aSubroutineName(giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
@@ -516,6 +532,7 @@ namespace xaifBoosterTypeChange {
 						const BasicBlock& theBasicBlock) { 
     const SymbolReference& theActualSymbolReference(theConcreteArgument.getArgument().getVariable().
 						    getVariableSymbolReference());
+
     // prior call
     std::string 
       aSubroutineName(giveCallName(true, // the concrete parameter is implied to be active
@@ -524,7 +541,6 @@ namespace xaifBoosterTypeChange {
 				   true));
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
       thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
-    myPriorAdjustmentsList.push_back(thePriorCall_p);
     thePriorCall_p->setId("SubroutineCallAlg::addExternalConversion prior");
     // this is the extra temporary that replaces the original argument
     Variable& theTempVar(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
@@ -534,6 +550,13 @@ namespace xaifBoosterTypeChange {
 		   theTempVar,
 		   0,
 		   true);
+    if (theTempVar.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR
+	&&
+	!(theTempVar.getVariableSymbolReference().getSymbol().hasDimensionBounds())) {
+      addAllocation(theTempVar,theConcreteArgument);
+    }
+    // now that we have the allocation call - if needed - we can push the conversion to the list
+    myPriorAdjustmentsList.push_back(thePriorCall_p);
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,false);
     ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
