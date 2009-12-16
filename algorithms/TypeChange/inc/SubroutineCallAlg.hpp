@@ -205,6 +205,12 @@ namespace xaifBoosterTypeChange {
     void handleArrayAccessIndices(const ConcreteArgument& theConcreteArgument,
 				  const BasicBlock& theBasicBlock);
 
+    /** 
+     * add allocation calls for type change temps without fixed bounds
+     */
+    void addAllocation(const Variable& toBeAllocated,
+		       const ConcreteArgument& variableToMatch);
+
   }; // end of class SubroutineCallAlg
  
 } 
