@@ -390,8 +390,9 @@ namespace xaifBoosterTypeChange {
     myPriorAdjustmentsList.push_back(theSRCall_p);
     // first argument
     toBeAllocated.copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
-    // second argument
-    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2));
+    // second argument 
+    // this one needs to strip array indices if there are any
+    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2),false);
   }
 
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
