@@ -169,6 +169,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * this is the list of statementIds for the active statements in which  
      * the resp. dependent is the right hand side
      * myDependentStatementIdList and myPassiveStatementIdList are supposed to be disjoint
+     * the list initially contains all active assignments but later all assignments 
+     * where the LHS variables are not dependent variables are removed.
      */
     StatementIdList myDependentStatementIdList;
     
@@ -180,6 +182,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * myDependentStatementIdList and myPassiveStatementIdList are supposed to be disjoint
      */
     StatementIdList myPassiveStatementIdList;
+
+    /** 
+     * all statements to establish order between the elements of myPassiveStatementIdList
+     * and myDependentStatementIdList
+     */
+    StatementIdList myStatementIdList;
     
   }; // end of class PrivateLinearizedComputationalGraph 
 

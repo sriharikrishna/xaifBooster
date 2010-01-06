@@ -67,6 +67,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 							       const ObjectWithId::Id& aStatementId) { 
     myDependentList.push_back(&theDependentVertex);
     myDependentStatementIdList.push_back(aStatementId);
+    myStatementIdList.push_back(aStatementId);
   } 
 
   void PrivateLinearizedComputationalGraph::removeFromIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndependentVertex) { 
@@ -102,11 +103,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   const DuUdMapUseResult::StatementIdLists PrivateLinearizedComputationalGraph::getStatementIdLists()const { 
-    return DuUdMapUseResult::StatementIdLists(myDependentStatementIdList, myPassiveStatementIdList);
+    return DuUdMapUseResult::StatementIdLists(myDependentStatementIdList, 
+					      myPassiveStatementIdList,
+					      myStatementIdList);
   }
 
   void PrivateLinearizedComputationalGraph::addToPassiveStatementIdList(const ObjectWithId::Id& aStatementId) { 
     myPassiveStatementIdList.push_back(aStatementId);
+    myStatementIdList.push_back(aStatementId);
   } 
 
 } // end of namespace 

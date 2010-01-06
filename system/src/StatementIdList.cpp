@@ -50,30 +50,25 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
+#include <sstream>
+
+#include "xaifBooster/system/inc/StatementIdList.hpp"
 
 namespace xaifBooster { 
 
-  DuUdMapUseResult::StatementIdLists::StatementIdLists(const StatementIdList& aDependentStatementIdList,
-						       const StatementIdList& aPassiveStatementIdList,
-						       const StatementIdList& aStatementIdList) :
-    myDependentStatementIdList(aDependentStatementIdList),
-    myPassiveStatementIdList(aPassiveStatementIdList),
-    myStatementIdList(aStatementIdList) {
-  }
-
-  std::string DuUdMapUseResult::StatementIdLists::debug() const { 
+  std::string StatementIdList::debug() const {
     std::ostringstream out;
-    out << "StatementIdLists[" << this 
-	<< " myDependentStatementIdList=" << myDependentStatementIdList.debug().c_str() 
-	<< ",myPassiveStatementIdList=" << myPassiveStatementIdList.debug().c_str()
-	<< "]" << std::ends;  
+    out << "StatementIdList[" << this 
+	<< ":";
+    for (const_iterator i = begin();
+	 i!=end();) {
+      out << i->c_str(); 
+      ++i; 
+      if (i!=end())
+	out << ",";
+    }
+    out << "]" << std::ends; 
     return out.str();
-  } // end of Variable::debug
-
-
-  DuUdMapUseResult::DuUdMapUseResult() { 
-    myActiveUse=ActiveUseType::UNDEFINEDUSE;
   }
-    
+
 } // end of namespace  

@@ -66,12 +66,13 @@ namespace xaifBooster {
     /** 
      * helper container for use queries
      */
-    class StatementIdLists { 
+    class StatementIdLists : public Debuggable { 
 
     public: 
  
      StatementIdLists(const StatementIdList& aDependentStatementIdList,
-		      const StatementIdList& aPassiveStatementIdList);
+		      const StatementIdList& aPassiveStatementIdList,
+		      const StatementIdList& aStatementIdList);
       /** 
        * this is to contain
        * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myDependentStatementIdList
@@ -83,6 +84,14 @@ namespace xaifBooster {
        * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myPassiveStatementIdList
        */
       const StatementIdList& myPassiveStatementIdList;
+
+      /** 
+       * this is to contain
+       * xaifBooster::BasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::myStatementIdList
+       */
+      const StatementIdList& myStatementIdList;
+
+      std::string debug() const ;
 
     private:
       /** 
