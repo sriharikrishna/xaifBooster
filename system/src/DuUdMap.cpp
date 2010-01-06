@@ -197,49 +197,57 @@ namespace xaifBooster {
       unsigned int aSize(theEntry.getStatementIdSet().size());
       unsigned int matchNumber=0;
       bool hasOutOfScope=false;
-      bool passedDef=false;
+      bool passedDef=false; // did we come across the definition?
       bool loopCarried=false;
+      ActiveUseType::ActiveUseType_E thisUse(ActiveUseType::UNDEFINEDUSE);
       for(StatementIdSet::const_iterator chainI=theEntry.getStatementIdSet().begin();
 	  chainI!=theEntry.getStatementIdSet().end();
-	  ++chainI) {
-	// first test against the active statements
-	for(StatementIdList::const_iterator dependentStatementIdListI=idLists.myDependentStatementIdList.begin();
-	    dependentStatementIdListI!=idLists.myDependentStatementIdList.end();
-	    ++dependentStatementIdListI) { 
-	  if (*dependentStatementIdListI=="")
+	  ++chainI) { // for each chain entry:
+	for(StatementIdList::const_iterator statementIdListI=idLists.myStatementIdList.begin();
+	    statementIdListI!=idLists.myStatementIdList.end();
+	    ++statementIdListI) { 
+	  if (*statementIdListI=="")
 	    THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: StatementIds in the active statement id list cannot be empty");
-	  if (*dependentStatementIdListI==*chainI) { 
+	  if (*statementIdListI==*chainI) { // found a use
 	    matchNumber++;
-	    if (!passedDef)
-	      loopCarried=true;
+	    if (!passedDef) // we didn't come across a definition but it is used
+	      loopCarried=true; //so it may be loop carried
+	    // is it an active or a passive use:
+	    for(StatementIdList::const_iterator dependentStatementIdListI=idLists.myDependentStatementIdList.begin();
+		dependentStatementIdListI!=idLists.myDependentStatementIdList.end();
+		++dependentStatementIdListI) {
+	      if (*dependentStatementIdListI==*chainI) { 
+		thisUse=ActiveUseType::ACTIVEUSE;
+		break;
+	      }
+	    }
+	    if (!thisUse==ActiveUseType::ACTIVEUSE) { 
+	      for(StatementIdList::const_iterator passiveStatementIdListI=idLists.myPassiveStatementIdList.begin();
+		  passiveStatementIdListI!=idLists.myPassiveStatementIdList.end();
+		  ++passiveStatementIdListI) {
+		if (*passiveStatementIdListI==*chainI) { 
+		  thisUse=ActiveUseType::PASSIVEUSE;
+		  break;
+		}
+	      }
+	    }
+	    if (thisUse==ActiveUseType::UNDEFINEDUSE)
+	      // we have a problem - the statement id is in myStatementIdList but not in either of the other lists
+	      THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: statement id " << *chainI->c_str() << " not found");
 	  }
 	  if (matchNumber==1) { 
-	    theResult.myStatementId=*chainI;
-	    theResult.myActiveUse=ActiveUseType::ACTIVEUSE;
+	    theResult.myStatementId=*chainI; // the (first) use
+	    theResult.myActiveUse=thisUse;
 	  }
-	  if (*dependentStatementIdListI==statementId)
-	    passedDef=true;
-	}
-	// second test against the passive statements
-	passedDef=false;
-	for(StatementIdList::const_iterator passiveStatementIdListI=idLists.myPassiveStatementIdList.begin();
-	    passiveStatementIdListI!=idLists.myPassiveStatementIdList.end();
-	    ++passiveStatementIdListI) { 
-	  if (*passiveStatementIdListI=="")
-	    THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: StatementIds in the passive statement id list cannot be empty");
-	  if (*passiveStatementIdListI==*chainI) { 
-	    matchNumber++;
-	    if (theResult.myActiveUse==ActiveUseType::ACTIVEUSE) { 
+	  else { 
+	    if (theResult.myActiveUse!=ActiveUseType::UNDEFINEDUSE 
+		&& 
+		theResult.myActiveUse!=thisUse) { 
+	      // so the use was active or passive but now it is not the same: 
 	      theResult.myActiveUse=ActiveUseType::UNDEFINEDUSE;
 	    }
-	    if (!passedDef) 
-	      loopCarried=true;
-	  }
-	  if (matchNumber==1) { 
-	    theResult.myStatementId=*chainI;
-	    theResult.myActiveUse=ActiveUseType::PASSIVEUSE;
-	  }
-	  if (*passiveStatementIdListI==statementId)
+	  } 
+	  if (*statementIdListI==statementId) // we reached the definition statement
 	    passedDef=true;
 	}
 	if (*chainI=="") 

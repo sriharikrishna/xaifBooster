@@ -633,19 +633,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	}
 	else { 
 	  // we only use it in the scope of this flattened sequence, therefore remove it
-	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: removing dependent " 
-		    << myPrivateVertex.getOriginalVariable().debug().c_str()
-		    << " list size: " << theDepVertexPList.size()); 
+	  DBG_TAG_MACRO(DbgGroup::DATA, "depList", "BasicBlockAlg::fixUpDependentsList: removing dependent " 
+			<< myPrivateVertex.getOriginalVariable().debug().c_str()
+			<< " list size: " << theDepVertexPList.size()); 
 	  theComputationalGraph.removeFromDependentList(myPrivateVertex);
 	  continue;
 	}
       }
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
-	if (theComputationalGraph.numOutEdgesOf(myPrivateVertex)) { 
-	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: non-maximal dependent " << myPrivateVertex.getOriginalVariable().debug().c_str()); 
-	}
-	else { 
-	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: keeping regular dependent " << myPrivateVertex.getOriginalVariable().debug().c_str()); 
+      else { 
+	if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
+	  if (theComputationalGraph.numOutEdgesOf(myPrivateVertex)) { 
+	    DBG_TAG_MACRO(DbgGroup::DATA,  "depList",  "BasicBlockAlg::fixUpDependentsList: keeping non-maximal dependent " << myPrivateVertex.getOriginalVariable().debug().c_str() << " key is " << aDuUdMapKey.debug().c_str() << " use result is " << theDuUdMapUseResult.myAnswer << " lists are " << theComputationalGraph.getStatementIdLists().debug().c_str()); 
+	  }
+	  else { 
+	    DBG_TAG_MACRO(DbgGroup::DATA,  "depList", "BasicBlockAlg::fixUpDependentsList: keeping regular dependent " << myPrivateVertex.getOriginalVariable().debug().c_str() << " key is " << aDuUdMapKey.debug().c_str()); 
+	  }
 	}
       } 
     }

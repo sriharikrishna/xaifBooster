@@ -205,7 +205,7 @@ namespace xaifBooster {
       (*beginIte).printXMLHierarchy(os,*this);
   } // end of Variable::printXMLHierarchy
 
-  std::string Variable::debug () const { 
+  std::string Variable::debug() const { 
     std::ostringstream out;
     out << "Variable[" << this 
 	<< " " << equivalenceSignature().c_str() 
@@ -353,7 +353,7 @@ namespace xaifBooster {
       break;
     case ActiveUseType::UNDEFINEDUSE:
       { 
-	if (theAnswer=getActiveType())
+	if ((theAnswer=getActiveType()))
 	  myActiveUseType=ActiveUseType::ACTIVEUSE;
 	else 
 	  myActiveUseType=ActiveUseType::PASSIVEUSE;
