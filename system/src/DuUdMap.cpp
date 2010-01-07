@@ -199,7 +199,7 @@ namespace xaifBooster {
       bool hasOutOfScope=false;
       bool passedDef=false; // did we come across the definition?
       bool loopCarried=false;
-      ActiveUseType::ActiveUseType_E thisUse(ActiveUseType::UNDEFINEDUSE);
+      ActiveUseType::ActiveUseType_E thisUse(ActiveUseType::ACTIVEUSE);
       for(StatementIdSet::const_iterator chainI=theEntry.getStatementIdSet().begin();
 	  chainI!=theEntry.getStatementIdSet().end();
 	  ++chainI) { // for each chain entry:
@@ -212,28 +212,17 @@ namespace xaifBooster {
 	    matchNumber++;
 	    if (!passedDef) // we didn't come across a definition but it is used
 	      loopCarried=true; //so it may be loop carried
-	    // is it an active or a passive use:
-	    for(StatementIdList::const_iterator dependentStatementIdListI=idLists.myDependentStatementIdList.begin();
-		dependentStatementIdListI!=idLists.myDependentStatementIdList.end();
-		++dependentStatementIdListI) {
-	      if (*dependentStatementIdListI==*chainI) { 
-		thisUse=ActiveUseType::ACTIVEUSE;
+	    // if it is a passive use if we find it in the passive list...
+	    // note, we do not look at the depdentList bc by now some active statements may have been removed and 
+	    // we wouldn't find it there and so the default remains "active" use
+	    for(StatementIdList::const_iterator passiveStatementIdListI=idLists.myPassiveStatementIdList.begin();
+		passiveStatementIdListI!=idLists.myPassiveStatementIdList.end();
+		++passiveStatementIdListI) {
+	      if (*passiveStatementIdListI==*chainI) { 
+		thisUse=ActiveUseType::PASSIVEUSE;
 		break;
 	      }
 	    }
-	    if (!thisUse==ActiveUseType::ACTIVEUSE) { 
-	      for(StatementIdList::const_iterator passiveStatementIdListI=idLists.myPassiveStatementIdList.begin();
-		  passiveStatementIdListI!=idLists.myPassiveStatementIdList.end();
-		  ++passiveStatementIdListI) {
-		if (*passiveStatementIdListI==*chainI) { 
-		  thisUse=ActiveUseType::PASSIVEUSE;
-		  break;
-		}
-	      }
-	    }
-	    if (thisUse==ActiveUseType::UNDEFINEDUSE)
-	      // we have a problem - the statement id is in myStatementIdList but not in either of the other lists
-	      THROW_LOGICEXCEPTION_MACRO("DuUdMapEntry::use: statement id " << *chainI->c_str() << " not found");
 	  }
 	  if (matchNumber==1) { 
 	    theResult.myStatementId=*chainI; // the (first) use
