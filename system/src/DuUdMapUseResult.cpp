@@ -67,6 +67,7 @@ namespace xaifBooster {
     out << "StatementIdLists[" << this 
 	<< " myDependentStatementIdList=" << myDependentStatementIdList.debug().c_str() 
 	<< ",myPassiveStatementIdList=" << myPassiveStatementIdList.debug().c_str()
+	<< ",myStatementIdList=" << myStatementIdList.debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of Variable::debug
