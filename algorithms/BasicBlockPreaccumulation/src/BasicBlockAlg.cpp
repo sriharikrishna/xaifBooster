@@ -744,22 +744,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: " << (*elim_i)->getDescription()
                                    << ": " << e.getReason().c_str());
       }
-      (*elim_i)->buildAccumulationGraph();
-
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
-        if ((*elim_i)->getAccumulationGraph().numVertices()) { // don't show empty AccumulationGraph
-          GraphVizDisplay::show((*elim_i)->getAccumulationGraph(),
-                                "AccumulationGraph",
-                                xaifBoosterCrossCountryInterface::AccumulationGraphVertexLabelWriter((*elim_i)->getAccumulationGraph()),
-                                xaifBoosterCrossCountryInterface::AccumulationGraphEdgeLabelWriter((*elim_i)->getAccumulationGraph()),
-                                xaifBoosterCrossCountryInterface::AccumulationGraphPropertiesWriter((*elim_i)->getAccumulationGraph()));
-        }
-	GraphVizDisplay::show((*elim_i)->getRemainderLCG(),
-                              "RemainderLCG",
-                              LinearizedComputationalGraphVertexLabelWriter((*elim_i)->getRemainderLCG()),
-                              LinearizedComputationalGraphEdgeLabelWriter((*elim_i)->getRemainderLCG()),
-                              LinearizedComputationalGraphPropertiesWriter((*elim_i)->getRemainderLCG()));
-      }
       DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
                                << " Sequence " << &aSequence
                                << " by " << (*elim_i)->getDescription()
@@ -768,6 +752,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end iterate over all Eliminations for this Sequence
 
     aSequence.determineBestElimination(ourPreaccumulationMetric);
+    aSequence.getBestElimination().buildAccumulationGraph();
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
+      if (aSequence.getBestElimination().getAccumulationGraph().numVertices()) { // don't show empty AccumulationGraph
+	GraphVizDisplay::show(aSequence.getBestElimination().getAccumulationGraph(),
+			      "AccumulationGraph",
+			      xaifBoosterCrossCountryInterface::AccumulationGraphVertexLabelWriter(aSequence.getBestElimination().getAccumulationGraph()),
+			      xaifBoosterCrossCountryInterface::AccumulationGraphEdgeLabelWriter(aSequence.getBestElimination().getAccumulationGraph()),
+			      xaifBoosterCrossCountryInterface::AccumulationGraphPropertiesWriter(aSequence.getBestElimination().getAccumulationGraph()));
+      }
+      GraphVizDisplay::show(aSequence.getBestElimination().getRemainderLCG(),
+			    "RemainderLCG",
+			    LinearizedComputationalGraphVertexLabelWriter(aSequence.getBestElimination().getRemainderLCG()),
+			    LinearizedComputationalGraphEdgeLabelWriter(aSequence.getBestElimination().getRemainderLCG()),
+			    LinearizedComputationalGraphPropertiesWriter(aSequence.getBestElimination().getRemainderLCG()));
+    }
     DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
                              << " Sequence " << &aSequence
                              << " best is " << aSequence.getBestElimination().getDescription()
