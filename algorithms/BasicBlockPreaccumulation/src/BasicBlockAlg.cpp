@@ -744,6 +744,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: " << (*elim_i)->getDescription()
                                    << ": " << e.getReason().c_str());
       }
+      (*elim_i)->buildAccumulationGraph();
       DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
                                << " Sequence " << &aSequence
                                << " by " << (*elim_i)->getDescription()
@@ -752,7 +753,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end iterate over all Eliminations for this Sequence
 
     aSequence.determineBestElimination(ourPreaccumulationMetric);
-    aSequence.getBestElimination().buildAccumulationGraph();
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
       if (aSequence.getBestElimination().getAccumulationGraph().numVertices()) { // don't show empty AccumulationGraph
 	GraphVizDisplay::show(aSequence.getBestElimination().getAccumulationGraph(),
