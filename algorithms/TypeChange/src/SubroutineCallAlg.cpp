@@ -395,6 +395,18 @@ namespace xaifBoosterTypeChange {
     argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2),false);
   }
 
+  void SubroutineCallAlg::addShapeTest(const Variable& toBeAllocated,
+					const ConcreteArgument& argumentToMatch) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_ShapeTest");
+    theSRCall_p->setId("TypeChange::SubroutineCallAlg::addShapeTest");
+    myPostAdjustmentsList.push_back(theSRCall_p);
+    // first argument
+    toBeAllocated.copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
+    // second argument 
+    // this one needs to strip array indices if there are any
+    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2),false);
+  }
+
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
 					const ArgumentSymbolReference& aFormalArgumentSymbolReference,
 					const BasicBlock& theBasicBlock,
@@ -463,10 +475,12 @@ namespace xaifBoosterTypeChange {
     theConcreteArgumentAlg.makeReplacement(theTempVar,copyEntireArray);
     if (!withCopy)
       return; 
+    bool haveAllocation=false;
     if (theTempVar.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR
 	&&
 	!(theTempVar.getVariableSymbolReference().getSymbol().hasDimensionBounds())) {
       addAllocation(theTempVar,theConcreteArgument);
+      haveAllocation=true;
     }
     // prior call
     std::string 
@@ -507,6 +521,9 @@ namespace xaifBoosterTypeChange {
 				   aFormalArgumentSymbolReference,
 				   shapeOffsetFromFormal,
 				   false);
+      if (haveAllocation) { 
+	addShapeTest(theTempVar,theConcreteArgument);
+      } 
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
 	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
       myPostAdjustmentsList.push_back(thePostCall_p);
@@ -551,10 +568,12 @@ namespace xaifBoosterTypeChange {
 		   theTempVar,
 		   0,
 		   true);
+    bool haveAllocation=false;
     if (theTempVar.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR
 	&&
 	!(theTempVar.getVariableSymbolReference().getSymbol().hasDimensionBounds())) {
       addAllocation(theTempVar,theConcreteArgument);
+      haveAllocation=true;
     }
     // now that we have the allocation call - if needed - we can push the conversion to the list
     myPriorAdjustmentsList.push_back(thePriorCall_p);
@@ -570,6 +589,9 @@ namespace xaifBoosterTypeChange {
 // 										    getVariableSymbolReference().
 // 										    getSymbol().
 // 										    getSymbolShape()));
+      if (haveAllocation) { 
+	addShapeTest(theTempVar,theConcreteArgument);
+      } 
       // post call only if not a constant
       aSubroutineName=giveCallName(true, // the concrete parameter is implied to be active
 				   theActualSymbolReference, // we don't have a formal parameter here 

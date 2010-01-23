@@ -211,6 +211,12 @@ namespace xaifBoosterTypeChange {
     void addAllocation(const Variable& toBeAllocated,
 		       const ConcreteArgument& variableToMatch);
 
+    /** 
+     * add shape test for type change temps without fixed bounds
+     */
+    void addShapeTest(const Variable& toBeAllocated,
+		      const ConcreteArgument& variableToMatch);
+
   }; // end of class SubroutineCallAlg
  
 } 
