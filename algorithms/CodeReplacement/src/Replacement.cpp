@@ -108,9 +108,9 @@ namespace xaifBoosterCodeReplacement {
        << "=\"" 
        << myPlaceHolder
        << "\"";
-    if (myReversibleControlFlowGraph_p && !myReversibleControlFlowGraph_p->isStructured()
+    if ((myReversibleControlFlowGraph_p && !myReversibleControlFlowGraph_p->isStructured())
 	|| 
-	myControlFlowGraphBase_p && !myControlFlowGraphBase_p->isStructured()) { 
+	(myControlFlowGraphBase_p && !myControlFlowGraphBase_p->isStructured())) { 
       os << " "
 	 << ControlFlowGraph::our_myStructuredFlag_XAIFName.c_str() 
 	 << "=\"" 
