@@ -343,6 +343,8 @@ namespace xaifBooster {
       theVertexEnds=boost::vertices(myBoostGraph);
     InternalBoostVertexIteratorType vi_begin(theVertexEnds.first),
       vi_end(theVertexEnds.second);
+    if (vi_begin==vi_end)
+      THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: no vertices found");
     for (;vi_begin!=vi_end;++vi_begin) {
       if (!boost::out_degree(*vi_begin,
 			     myBoostGraph))
@@ -527,8 +529,7 @@ namespace xaifBooster {
 				*(ei_begin)); // get the descriptor
       if ( anEdge_p) // this should always be true
 	anEdge_p->resetVisited();
-    } // end for
-    // delete all the vertices
+    }
     std::pair < 
       InternalBoostVertexIteratorType,
       InternalBoostVertexIteratorType 
