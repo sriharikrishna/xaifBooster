@@ -103,7 +103,7 @@ namespace xaifBooster {
     myBuiltinFunctionName=name;
   } 
   
-  std::string InlinableIntrinsicsExpression::getBuiltinFunctionName() const {
+  const std::string& InlinableIntrinsicsExpression::getBuiltinFunctionName() const {
     return myBuiltinFunctionName;
   }
 
