@@ -488,7 +488,7 @@ namespace xaifBooster {
       InternalBoostVertexIteratorType,
       InternalBoostVertexIteratorType 
       > 
-    theVertexEnds=boost::vertices(myBoostGraph);
+      theVertexEnds=boost::vertices(myBoostGraph);
     return (theVertexEnds.first==theVertexEnds.second);
   }
 
