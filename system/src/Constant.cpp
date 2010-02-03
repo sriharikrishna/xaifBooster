@@ -91,20 +91,20 @@ namespace xaifBooster {
     Constant* aNewConstant_p=new Constant(myType);
     switch(myType) { 
     case SymbolType::INTEGER_STYPE : 
-	aNewConstant_p->setint(getint());
-	break;
+      aNewConstant_p->setint(getint());
+      break;
     case SymbolType::REAL_STYPE : 
-	aNewConstant_p->setdouble(getdouble());
-	break;
+      aNewConstant_p->setdouble(getdouble());
+      break;
     case SymbolType::BOOL_STYPE : 
-	aNewConstant_p->setbool(getbool());
-	break;
+      aNewConstant_p->setbool(getbool());
+      break;
     case SymbolType::STRING_STYPE : 
-	aNewConstant_p->setFromString(toString());
-	break;
+      aNewConstant_p->setFromString(toString());
+      break;
     case SymbolType::CHAR_STYPE : 
-	aNewConstant_p->setchar(getchar());
-	break;
+      aNewConstant_p->setchar(getchar());
+      break;
     default: 
       THROW_LOGICEXCEPTION_MACRO("Constant::createCopyOfMyself: cannot handle " <<
 				 SymbolType::toString(myType).c_str());
