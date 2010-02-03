@@ -69,6 +69,14 @@ namespace xaifBooster {
       myExpressionVertexAlgBase_p=ConstantAlgFactory::instance()->makeNewAlg(*this); 
   }
 
+  Constant::Constant(int anIntVal,
+		     bool makeAlgorithm) :
+    BaseConstant(SymbolType::INTEGER_STYPE) {
+    setint(anIntVal);
+    if (makeAlgorithm)
+      myExpressionVertexAlgBase_p=ConstantAlgFactory::instance()->makeNewAlg(*this);
+  }
+
   std::string Constant::debug () const { 
     std::ostringstream out;
     out << "Constant[" << this 
