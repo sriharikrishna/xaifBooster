@@ -632,4 +632,44 @@ namespace xaifBooster {
     return true; 
   }
 
+
+  template <class Vertex, class Edge>
+  bool
+  GraphWrapper<Vertex,Edge>::has(const Vertex& aVertex_cr) const {
+    std::pair <
+      InternalBoostVertexIteratorType,
+      InternalBoostVertexIteratorType
+      >
+      theVertexEnds=boost::vertices(myBoostGraph);
+    InternalBoostVertexIteratorType vi_begin(theVertexEnds.first), vi_end(theVertexEnds.second);
+    for (;vi_begin!=vi_end;++vi_begin) {
+      Vertex* aVertex_p=boost::get(boost::get(BoostVertexContentType(),
+					      myBoostGraph), // get the Vertex property map
+				   *(vi_begin)); // get the descriptor
+      if ( aVertex_p==&aVertex_cr)
+	return true;
+    }
+    return false;
+  }
+
+
+  template <class Vertex, class Edge>
+  bool
+  GraphWrapper<Vertex,Edge>::has(const Edge& anEdge_cr) const {
+    std::pair <
+      InternalBoostEdgeIteratorType,
+      InternalBoostEdgeIteratorType
+      >
+      theEdgeEnds=boost::edges(myBoostGraph);
+    InternalBoostEdgeIteratorType ei_begin(theEdgeEnds.first), ei_end(theEdgeEnds.second);
+    for (;ei_begin!=ei_end;++ei_begin) {
+      Edge* anEdge_p=boost::get(boost::get(BoostEdgeContentType(),
+					   myBoostGraph), // get the Edge property map
+				*(ei_begin)); // get the descriptor
+      if ( anEdge_p==&anEdge_cr) // this should always be true
+	return true;
+    }
+    return false;
+  }
+
 } // end of namespace
