@@ -55,6 +55,7 @@
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 
@@ -234,14 +235,14 @@ namespace xaifBooster {
     return getVariableSymbolReference().getSymbol().getSymbolType();
   }
 
-  const SymbolShape::SymbolShape_E Variable::getShape() const { 
+  const SymbolShape::SymbolShape_E Variable::getEffectiveShape() const{
     unsigned short numDerefs=0;
     if (hasArrayAccess()) { 
       const ArrayAccess::IndexTripletListType& theIndexTripletList(getArrayAccess().getIndexTripletList());
       for(ArrayAccess::IndexTripletListType::const_iterator it=theIndexTripletList.begin();
 	  it!=theIndexTripletList.end();
 	  ++it) { 
-	if ((*it)->isDeref())
+	if((*it)->isScalarDeref())
 	  ++numDerefs;
       }
     } 

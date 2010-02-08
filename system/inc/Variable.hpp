@@ -61,6 +61,7 @@
 #include "xaifBooster/system/inc/AliasMapKey.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/SymbolShape.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
 #include "xaifBooster/system/inc/StatementIdSetMapKey.hpp"
 
@@ -135,9 +136,9 @@ namespace xaifBooster {
     const SymbolType::SymbolType_E& getType() const;
 
     /**
-     * the actual shape, e.g. scalar for vector element
+     * the effective shape, e.g. scalar for vector element
      */
-    const SymbolShape::SymbolShape_E getShape() const;
+    const SymbolShape::SymbolShape_E getEffectiveShape() const;
 
     /**
      * get the data type active flag from the SymbolReference
