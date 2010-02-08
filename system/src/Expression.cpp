@@ -55,6 +55,7 @@
 
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/system/inc/ExpressionAlgBase.hpp"
 #include "xaifBooster/system/inc/ExpressionAlgFactory.hpp"
@@ -63,9 +64,74 @@
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/system/inc/Intrinsic.hpp"
 
 
 namespace xaifBooster { 
+
+  class ExpressionVertexLabelWriter {
+  public:
+
+    ExpressionVertexLabelWriter(const Expression& g) : myG(g) {
+    };
+
+    template <class BoostInternalDescriptor>
+    void operator()(std::ostream& out,
+		    const BoostInternalDescriptor& v) const {
+      const ExpressionVertex* theExprVertex_p =
+	      dynamic_cast<const ExpressionVertex*> (boost::get(boost::get(BoostVertexContentType(),
+									   myG.getInternalBoostGraph()),
+								v));
+      if (theExprVertex_p->isArgument())
+	out << "[label=\"" << dynamic_cast<const Argument&> (*theExprVertex_p).getVariable().getVariableSymbolReference().getSymbol().getId().c_str() << "\"]";
+      else {
+	if (myG.numInEdgesOf(*theExprVertex_p)) { // is an intrinsic
+	  out << "[label=\"" << dynamic_cast<const Intrinsic&> (*theExprVertex_p).getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName().c_str() << "\"]";
+	} else { // must be a constant then
+	  out << "[label=\"" << dynamic_cast<const Constant&> (*theExprVertex_p).toString().c_str() << "\"]";
+	}
+      }
+    }
+    const Expression& myG;
+  };
+
+  class ExpressionEdgeLabelWriter {
+  public:
+
+    ExpressionEdgeLabelWriter(const Expression& g) : myG(g) {
+    };
+
+    template <class BoostInternalDescriptor>
+    void operator()(std::ostream& out, const BoostInternalDescriptor& v) const {
+      const ExpressionEdge* theExprEdge_p =
+	      dynamic_cast<const ExpressionEdge*> (boost::get(boost::get(BoostEdgeContentType(),
+									 myG.getInternalBoostGraph()),
+							      v));
+      out << "[label=\"" << theExprEdge_p->getPosition() << "\"]";
+    }
+    const Expression& myG;
+  };
+
+  class ExpressionPropertiesWriter {
+  public:
+
+    ExpressionPropertiesWriter(const Expression& g) : myG(g) {
+    };
+
+    void operator()(std::ostream& out) const {
+      out << "rankdir=BT;" << std::endl;
+    }
+    const Expression& myG;
+  };
+
+  void Expression::show(const std::string& outputName) const {
+    GraphVizDisplay::show(*this,
+			  outputName,
+			  ExpressionVertexLabelWriter(*this),
+			  ExpressionEdgeLabelWriter(*this),
+			  ExpressionPropertiesWriter(*this));
+  }
 
   Expression::Expression(bool hasAlgorithm) : 
     myExpressionAlgBase_p(0) {
@@ -122,13 +188,16 @@ namespace xaifBooster {
     GraphWrapperTraversable<ExpressionVertex,ExpressionEdge>::traverseToChildren(anAction_c);
   } // end traversalToChildren
 
-  void 
+  ExpressionVertex&
   Expression::copyMyselfInto(Expression& theTarget,
 			     bool withNewId,
 			     bool withAlgorithm) const { 
     ConstVertexIteratorPair p(vertices());
     ConstVertexIterator beginIt(p.first),endIt(p.second);
     typedef std::pair<const ExpressionVertex*, const ExpressionVertex*> PointerPair;
+    const ExpressionVertex *maxOrigVertexP;
+    ExpressionVertex *maxCopiedVertexP;
+    maxOrigVertexP = &(getMaxVertex());
     typedef std::list<PointerPair> PointerPairList;
     PointerPairList theList; // first original, second copy
     for (;beginIt!=endIt ;++beginIt) {
@@ -136,6 +205,8 @@ namespace xaifBooster {
       if(withNewId)
 	theCopy.overWriteId(theTarget.getNextVertexId());
       theTarget.supplyAndAddVertexInstance(theCopy);
+      if (maxOrigVertexP == &(*beginIt))
+	maxCopiedVertexP = &theCopy;
       theList.push_back(PointerPair(&(*beginIt),&theCopy));
     }
     ConstEdgeIteratorPair pe=edges();
@@ -165,6 +236,7 @@ namespace xaifBooster {
 	(*theCopy).overWriteId(theTarget.getNextEdgeId());
       theTarget.supplyAndAddEdgeInstance(*theCopy,*theCopySource_p, *theCopyTarget_p);
     } // end for 
+    return *maxCopiedVertexP;
   } // end of Expression::copyMyselfInto
 
   ExpressionVertex&
@@ -313,8 +385,58 @@ namespace xaifBooster {
     }
   } 
 
+  bool Expression::isConstantR(const ExpressionVertex& theTopVertex) const {
+    ConstInEdgeIteratorPair theInEdgesP = getInEdgesOf(theTopVertex);
+    ConstInEdgeIterator inEdgeIt = theInEdgesP.first, inEdgeEndIt = theInEdgesP.second;
+    if (inEdgeIt == inEdgeEndIt) {
+      return !(theTopVertex.isArgument());
+    }
+    for (; inEdgeIt != inEdgeEndIt; ++inEdgeIt) {
+      if (!isConstantR(getSourceOf(*inEdgeIt)))
+	return false;
+    }
+    return true;
+  }
+
   bool Expression::isConstant() const { 
-    return (numVertices()==1 && !(getMaxVertex().isArgument()));
+    return isConstantR(getMaxVertex());
+  }
+
+  int Expression::constIntEvalR(const ExpressionVertex& theTopVertex) const {
+    ConstInEdgeIteratorPair theInEdgesP = getInEdgesOf(theTopVertex);
+    ConstInEdgeIterator inEdgeIt = theInEdgesP.first, inEdgeEndIt = theInEdgesP.second;
+    if (inEdgeIt == inEdgeEndIt) {
+      const Constant *theConstant_p = dynamic_cast<const Constant*> (&theTopVertex);
+      if (theConstant_p) {
+	return theConstant_p->getint();
+      }
+    }
+    const Intrinsic* theIntrinsic_p = dynamic_cast<const Intrinsic*> (&theTopVertex);
+    if (!theIntrinsic_p)
+      THROW_LOGICEXCEPTION_MACRO("Expression::constIntEvalR: non-leaf vertex " << theTopVertex.debug().c_str() << " is not an intrinsic");
+    int arg[2];
+    for (; inEdgeIt != inEdgeEndIt; ++inEdgeIt) {
+      arg[(*inEdgeIt).getPosition() - 1] = constIntEvalR(getSourceOf(*inEdgeIt));
+    }
+    if (theIntrinsic_p->getName() == "plus_scal_scal") {
+      return arg[0] + arg[1];
+    } else if (theIntrinsic_p->getName() == "minus_scal_scal") {
+      return arg[0] - arg[1];
+    } else if (theIntrinsic_p->getName() == "div_scal_scal") {
+      return arg[0] / arg[1];
+    } else if (theIntrinsic_p->getName() == "unary_minus") {
+      return -arg[0];
+    } else {
+      THROW_LOGICEXCEPTION_MACRO("Expression::constIntEvalR: no logic implemented for " << theIntrinsic_p->getName().c_str());
+    }
+    return 0;
+  }
+
+  int Expression::constIntEval() const {
+    if (!isConstant())
+      THROW_LOGICEXCEPTION_MACRO("Expression::constIntEval: not a constant");
+    const ExpressionVertex& theMaxVertex = getMaxVertex();
+    return constIntEvalR(theMaxVertex);
   } 
 
   void Expression::appendActiveArguments(CArgumentPList& listToBeAppended) const { 
@@ -327,5 +449,27 @@ namespace xaifBooster {
 	listToBeAppended.push_back(*argumentI); 
     }
   } 
+
+  ExpressionVertex& Expression::addBinaryOpByName(const std::string& opName,
+						  const ExpressionVertex& arg1TopVertex,
+						  const ExpressionVertex& arg2TopVertex) {
+    Intrinsic* theNewInt_p = new Intrinsic(opName);
+    supplyAndAddVertexInstance(*theNewInt_p);
+    if (!has(arg1TopVertex))
+      THROW_LOGICEXCEPTION_MACRO("Expression::addBinaryOpByName: arg1TopVertex " << arg1TopVertex.debug().c_str() << " is not in the Expression");
+    if (!has(arg2TopVertex))
+      THROW_LOGICEXCEPTION_MACRO("Expression::addBinaryOpByName: arg2TopVertex " << arg2TopVertex.debug().c_str() << " is not in the Expression");
+    ExpressionEdge* aNewEdge_p = new ExpressionEdge(false);
+    supplyAndAddEdgeInstance(*aNewEdge_p,
+			     arg1TopVertex,
+			     *theNewInt_p);
+    aNewEdge_p->setPosition(1);
+    aNewEdge_p = new ExpressionEdge(false);
+    supplyAndAddEdgeInstance(*aNewEdge_p,
+			     arg2TopVertex,
+			     *theNewInt_p);
+    aNewEdge_p->setPosition(2);
+    return *theNewInt_p;
+  }
 
 } 
