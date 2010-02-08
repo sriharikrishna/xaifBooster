@@ -18,3 +18,4 @@ algorithms/*/driver/quickRegression.bash
 doc/html/*
 tools/codegen/classes/*.class
 .cproject
+nbproject/*
