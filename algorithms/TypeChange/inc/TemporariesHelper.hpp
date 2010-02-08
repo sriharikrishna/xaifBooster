@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERTYPECHANGE_TEMPORARIESHELPER_INCLUDE_
+#define _XAIFBOOSTERTYPECHANGE_TEMPORARIESHELPER_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,42 +52,88 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <sstream>
-#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 
-namespace xaifBooster { 
+#include <string> 
+#include <vector>
 
-  ExpressionVertex::ExpressionVertex() : 
-    myExpressionVertexAlgBase_p(0)  {
-  } 
+#include "xaifBooster/system/inc/ArrayAccess.hpp"
+#include "xaifBooster/system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
 
-  ExpressionVertex::~ExpressionVertex(){
-    if (myExpressionVertexAlgBase_p) delete myExpressionVertexAlgBase_p;
-  }
-  
-  ExpressionVertexAlgBase&
-  ExpressionVertex::getExpressionVertexAlgBase() const {
-    if (!myExpressionVertexAlgBase_p)
-      THROW_LOGICEXCEPTION_MACRO("ExpressionVertex::getExpressionVertexAlgBase: not set");
-    return *myExpressionVertexAlgBase_p;
-  } // end getExpressionVertexAlgBase
+using namespace xaifBooster;
 
-  std::string ExpressionVertex::debug () const { 
-    std::ostringstream out;
-    out << "ExpressionVertex[" << this << " " << Vertex::debug().c_str() << "]" << std::ends;
-    return out.str();
-  } // end debug
+namespace xaifBoosterTypeChange {
 
-  const InlinableIntrinsicsCatalogueItem& 
-  ExpressionVertex::getInlinableIntrinsicsCatalogueItem() const { 
-    THROW_LOGICEXCEPTION_MACRO("ExpressionVertex::getInlinableIntrinsicsCatalogueItem: is not valid for this instance");
-    // make up a dummy to satisfy the compiler
-    // we never reach this, so...
-    return *(new InlinableIntrinsicsCatalogueItem(1,false));
-  } 
+  /**
+   * class to support creation of temporary variables
+   */
+  class TemporariesHelper {
+  public:
 
-  bool ExpressionVertex::isArgument() const { 
-    return false;
-  } // end ExpressionVertex::isArgument
+    TemporariesHelper(const std::string& contextAnnotation,
+                      const Expression& theExpression,
+                      const ExpressionVertex& theTopVertex);
 
-} // end of namespace xaifBooster 
+    ~TemporariesHelper();
+
+    /**
+     * makes a temporary variable for a given formal argument symbol
+     */
+    const Variable& makeTempVariable(const Symbol& formalArgument);
+
+    /**
+     * \param aVariable - make a symbol that can take the value from aVariable
+     * \param aScope - Scope in which the symbol is made
+     */
+    Symbol& makeTempSymbol(Scope& aScope);
+
+  private:
+
+    /**
+     * no def
+     */
+    TemporariesHelper();
+
+    /**
+     * no def
+     */
+    TemporariesHelper(const TemporariesHelper&);
+
+    /**
+     * no def
+     */
+    TemporariesHelper & operator=(const TemporariesHelper&);
+
+    typedef std::vector<DimensionBounds*> DimensionBoundsPVector;
+
+    void typeInfo(const ExpressionVertex& theTopVertex);
+
+    /**
+     * populate the effective dimension bounds
+     * \param aTempSymbol in the dimension bounds are set
+     */
+    void populateDimensionBounds(const Variable& aVariable);
+
+    void setDimensionBounds(Symbol& aNewSymbol);
+
+    const std::string myContextAnnnotation;
+
+    const Expression& myExpression;
+
+    const ExpressionVertex& myTopVertex;
+
+    SymbolShape::SymbolShape_E myShape;
+
+    SymbolType::SymbolType_E myType;
+
+    FrontEndType myFrontEndType;
+
+    DimensionBoundsPVector myDimensionBoundsPVector;
+
+    bool myTypeInfo;
+
+  }; // end of class TemporariesHelper
+
+}
+
+#endif

@@ -57,13 +57,23 @@ namespace xaifBooster {
   
   const std::string SymbolType::our_attribute_XAIFName("type");
 
+  static const SymbolType::SymbolType_E typesList[]={
+    SymbolType::INTEGER_STYPE,
+    SymbolType::REAL_STYPE,
+    SymbolType::COMPLEX_STYPE,
+    SymbolType::VOID_STYPE,
+    SymbolType::BOOL_STYPE,
+    SymbolType::CHAR_STYPE,
+    SymbolType::STRING_STYPE,
+    SymbolType::OPAQUE_STYPE
+  };
+  
+  const std::set<SymbolType::SymbolType_E> SymbolType::ourNonPromotables(&(typesList[SymbolType::VOID_STYPE]),&(typesList[SymbolType::OPAQUE_STYPE])+1);
+
   std::string SymbolType::toString(const SymbolType_E& aType)
     throw (PrintingIntException) { 
     std::string returnString;
     switch(aType) {
-    case VOID_STYPE:
-      returnString="void";
-      break;
     case INTEGER_STYPE: 
       returnString="integer";
       break;
@@ -72,6 +82,9 @@ namespace xaifBooster {
       break;
     case COMPLEX_STYPE:
       returnString="complex";
+      break;
+    case VOID_STYPE:
+      returnString="void";
       break;
     case BOOL_STYPE: 
       returnString="bool";
@@ -95,14 +108,14 @@ namespace xaifBooster {
   const SymbolType::SymbolType_E
   SymbolType::fromString(const std::string& aName) { 
     SymbolType_E returnValue;
-    if (aName=="void")
-      returnValue=VOID_STYPE;
-    else if (aName=="integer")
+    if (aName=="integer")
       returnValue=INTEGER_STYPE;
     else if (aName=="real")
       returnValue=REAL_STYPE;
     else if (aName=="complex")
       returnValue=COMPLEX_STYPE;
+    else if (aName=="void")
+      returnValue=VOID_STYPE;
     else if (aName=="bool")
       returnValue=BOOL_STYPE;
     else if (aName=="char")
@@ -112,9 +125,20 @@ namespace xaifBooster {
     else if (aName=="opaque")
       returnValue=OPAQUE_STYPE;
     else  
-      THROW_LOGICEXCEPTION_MACRO("SymbolType::fromString: unknown value >"
-				 << aName.c_str() << "<");
+      THROW_LOGICEXCEPTION_MACRO("SymbolType::fromString: unknown value >" << aName.c_str() << "<");
     return returnValue;
   } // end of std::string SymbolType::fromString
-  
+
+  SymbolType::SymbolType_E SymbolType::genericPromotion(const SymbolType::SymbolType_E& aType,
+							const SymbolType::SymbolType_E& anotherType) {
+    if (aType==anotherType)
+      return aType;
+    if (ourNonPromotables.find(aType)!=ourNonPromotables.end()
+	||
+	ourNonPromotables.find(anotherType)!=ourNonPromotables.end()) {
+      THROW_LOGICEXCEPTION_MACRO("SymbolType::genericPromotion: not between " << toString(aType) << " and " << toString(anotherType));
+    }
+    return (aType>anotherType)?aType:anotherType;
+  }
+
 } // end of namespace xaifBooster

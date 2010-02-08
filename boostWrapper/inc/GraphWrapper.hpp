@@ -180,6 +180,16 @@ namespace xaifBooster {
 				const Vertex& aDominatorVertex,
 				bool sameDirection) const;
 
+    /**
+     * tries to find \param anEdge by address
+     */
+    bool has(const Edge& anEdge) const;
+
+    /**
+     * tries to find \param aVertex by address
+     */
+    bool has(const Vertex& aVertex) const;
+
   protected:
 
     /** 

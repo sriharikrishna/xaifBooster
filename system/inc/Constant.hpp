@@ -65,7 +65,8 @@ namespace xaifBooster {
 
     Constant(const SymbolType::SymbolType_E aType,
 	     bool makeAlgorithm=true);
-
+    Constant(int anIntVal,
+	     bool makeAlgorithm=true);
     ~Constant(){};
 
     void printXMLHierarchy(std::ostream& os) const;

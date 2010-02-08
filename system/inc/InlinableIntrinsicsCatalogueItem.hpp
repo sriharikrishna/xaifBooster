@@ -102,6 +102,8 @@ namespace xaifBooster {
 
     InlinableIntrinsicsExpression& getFunction();
     
+    const InlinableIntrinsicsExpression& getFunction() const;
+
     unsigned int getNumberOfArguments() const;
 
     static const std::string ourXAIFName;
