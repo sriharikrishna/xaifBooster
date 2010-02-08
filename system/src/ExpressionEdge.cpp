@@ -1,3 +1,4 @@
+
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -126,7 +127,7 @@ namespace xaifBooster {
 
   std::string ExpressionEdge::debug () const { 
     std::ostringstream out;
-    out << "ExpressionEdge[" << this << "]" << std::ends;  
+    out << "ExpressionEdge[" << this << " " << Edge::debug().c_str() << "myPosition=" << myPosition << "]" << std::ends;
     return out.str();
   } // end debug
 
