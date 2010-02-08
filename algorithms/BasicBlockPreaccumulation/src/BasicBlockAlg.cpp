@@ -703,7 +703,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			    PrivateLinearizedComputationalGraphEdgeLabelWriter(theComputationalGraph),
 			    PrivateLinearizedComputationalGraphPropertiesWriter(theComputationalGraph));
     }
-
     // initialize the graph transformation(s)
     switch (ourPreaccumulationMetric) {
       case PreaccumulationMetric::OPERATIONS_METRIC: {

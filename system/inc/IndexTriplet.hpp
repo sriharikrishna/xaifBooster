@@ -126,7 +126,7 @@ namespace xaifBooster {
      * if the extent of the slice is 1 
      * this returns true
      */
-    bool isDeref() const; 
+    bool isScalarDeref() const; 
 
   private:
     
