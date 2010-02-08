@@ -68,64 +68,65 @@
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 
 
-namespace xaifBooster { 
+namespace xaifBooster{
 
-  class ExpressionVertexLabelWriter {
+  class ExpressionVertexLabelWriter{
   public:
 
-    ExpressionVertexLabelWriter(const Expression& g) : myG(g) {
+    ExpressionVertexLabelWriter(const Expression& g): myG(g){
     };
 
     template <class BoostInternalDescriptor>
     void operator()(std::ostream& out,
-		    const BoostInternalDescriptor& v) const {
-      const ExpressionVertex* theExprVertex_p =
-	      dynamic_cast<const ExpressionVertex*> (boost::get(boost::get(BoostVertexContentType(),
-									   myG.getInternalBoostGraph()),
-								v));
-      if (theExprVertex_p->isArgument())
-	out << "[label=\"" << dynamic_cast<const Argument&> (*theExprVertex_p).getVariable().getVariableSymbolReference().getSymbol().getId().c_str() << "\"]";
+		    const BoostInternalDescriptor& v) const{
+      const ExpressionVertex* theExprVertex_p=
+	      dynamic_cast<const ExpressionVertex*>(boost::get(boost::get(BoostVertexContentType(),
+								      myG.getInternalBoostGraph()),
+							      v));
+      if(theExprVertex_p->isArgument())
+	out<<"[label=\""<<dynamic_cast<const Argument&>(*theExprVertex_p).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()<<"\"]";
       else {
-	if (myG.numInEdgesOf(*theExprVertex_p)) { // is an intrinsic
-	  out << "[label=\"" << dynamic_cast<const Intrinsic&> (*theExprVertex_p).getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName().c_str() << "\"]";
-	} else { // must be a constant then
-	  out << "[label=\"" << dynamic_cast<const Constant&> (*theExprVertex_p).toString().c_str() << "\"]";
+	if(myG.numInEdgesOf(*theExprVertex_p)) { // is an intrinsic
+	  out<<"[label=\""<<dynamic_cast<const Intrinsic&>(*theExprVertex_p).getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName().c_str()<<"\"]";
+	}
+	else { // must be a constant then
+	  out<<"[label=\""<<dynamic_cast<const Constant&>(*theExprVertex_p).toString().c_str()<<"\"]";
 	}
       }
     }
     const Expression& myG;
   };
 
-  class ExpressionEdgeLabelWriter {
+  class ExpressionEdgeLabelWriter{
   public:
 
-    ExpressionEdgeLabelWriter(const Expression& g) : myG(g) {
+    ExpressionEdgeLabelWriter(const Expression& g): myG(g){
     };
 
     template <class BoostInternalDescriptor>
-    void operator()(std::ostream& out, const BoostInternalDescriptor& v) const {
-      const ExpressionEdge* theExprEdge_p =
-	      dynamic_cast<const ExpressionEdge*> (boost::get(boost::get(BoostEdgeContentType(),
-									 myG.getInternalBoostGraph()),
-							      v));
-      out << "[label=\"" << theExprEdge_p->getPosition() << "\"]";
+    void operator()(std::ostream& out, const BoostInternalDescriptor& v) const{
+      const ExpressionEdge* theExprEdge_p=
+	      dynamic_cast<const ExpressionEdge*>(boost::get(boost::get(BoostEdgeContentType(),
+								      myG.getInternalBoostGraph()),
+						      v));
+      out<<"[label=\""<<theExprEdge_p->getPosition()<<"\"]";
     }
     const Expression& myG;
   };
 
-  class ExpressionPropertiesWriter {
+  class ExpressionPropertiesWriter{
   public:
 
-    ExpressionPropertiesWriter(const Expression& g) : myG(g) {
+    ExpressionPropertiesWriter(const Expression& g): myG(g){
     };
 
-    void operator()(std::ostream& out) const {
-      out << "rankdir=BT;" << std::endl;
+    void operator()(std::ostream& out) const{
+      out<<"rankdir=BT;"<<std::endl;
     }
     const Expression& myG;
   };
 
-  void Expression::show(const std::string& outputName) const {
+  void Expression::show(const std::string& outputName) const{
     GraphVizDisplay::show(*this,
 			  outputName,
 			  ExpressionVertexLabelWriter(*this),
@@ -133,108 +134,106 @@ namespace xaifBooster {
 			  ExpressionPropertiesWriter(*this));
   }
 
-  Expression::Expression(bool hasAlgorithm) : 
-    myExpressionAlgBase_p(0) {
-    if (hasAlgorithm)
-      myExpressionAlgBase_p=ExpressionAlgFactory::instance()->makeNewAlg(*this); 
+  Expression::Expression(bool hasAlgorithm):
+  myExpressionAlgBase_p(0){
+    if(hasAlgorithm)
+      myExpressionAlgBase_p=ExpressionAlgFactory::instance()->makeNewAlg(*this);
   }
 
-  Expression::~Expression() {
-    if (myExpressionAlgBase_p)
+  Expression::~Expression(){
+    if(myExpressionAlgBase_p)
       delete myExpressionAlgBase_p;
   }
 
   ExpressionAlgBase&
-  Expression::getExpressionAlgBase() const {
-    if (!myExpressionAlgBase_p)
+  Expression::getExpressionAlgBase() const{
+    if(!myExpressionAlgBase_p)
       THROW_LOGICEXCEPTION_MACRO("Expression::getExpressionAlgBase: not set");
     return *myExpressionAlgBase_p;
   }
 
   void
-  Expression::printXMLHierarchy(std::ostream& os) const { 
-    if (myExpressionAlgBase_p
-	&& 
-	! ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
+  Expression::printXMLHierarchy(std::ostream& os) const{
+    if(myExpressionAlgBase_p
+       &&
+       !ConceptuallyStaticInstances::instance()->getPrintVersion()==PrintVersion::SYSTEM_ONLY)
       getExpressionAlgBase().printXMLHierarchy(os);
     else
       printXMLHierarchyImpl(os);
   } // end of Expression::printXMLHierarchy
 
-
-  void 
-  Expression::printXMLHierarchyImpl(std::ostream& os) const { 
+  void
+  Expression::printXMLHierarchyImpl(std::ostream& os) const{
     ConstVertexIteratorPair p(vertices());
-    ConstVertexIterator beginIt(p.first),endIt(p.second);
-    for (;beginIt!=endIt ;++beginIt)
+    ConstVertexIterator beginIt(p.first), endIt(p.second);
+    for(; beginIt!=endIt; ++beginIt)
       (*beginIt).printXMLHierarchy(os);
     ConstEdgeIteratorPair pe=edges();
-    ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
-    for (;beginIte!=endIte ;++beginIte) 
-      (*beginIte).printXMLHierarchy(os,*this);
+    ConstEdgeIterator beginIte(pe.first), endIte(pe.second);
+    for(; beginIte!=endIte; ++beginIte)
+      (*beginIte).printXMLHierarchy(os, *this);
   } // end of Expression::printXMLHierarchyImpl
 
-
-  std::string Expression::debug () const { 
+  std::string Expression::debug() const{
     std::ostringstream out;
-    out << "Expression[" << this
-	<< ", numVertices=" << numVertices()
-	<< "]" << std::ends;  
+    out<<"Expression["<<this
+	    <<", numVertices="<<numVertices()
+	    <<"]"<<std::ends;
     return out.str();
   } // end of Expression::debug
 
-  void Expression::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {        
+  void Expression::traverseToChildren(const GenericAction::GenericAction_E anAction_c){
     getExpressionAlgBase().genericTraversal(anAction_c);
-    GraphWrapperTraversable<ExpressionVertex,ExpressionEdge>::traverseToChildren(anAction_c);
+    GraphWrapperTraversable<ExpressionVertex, ExpressionEdge>::traverseToChildren(anAction_c);
   } // end traversalToChildren
 
   ExpressionVertex&
   Expression::copyMyselfInto(Expression& theTarget,
 			     bool withNewId,
-			     bool withAlgorithm) const { 
+			     bool withAlgorithm) const{
     ConstVertexIteratorPair p(vertices());
-    ConstVertexIterator beginIt(p.first),endIt(p.second);
+    ConstVertexIterator beginIt(p.first), endIt(p.second);
     typedef std::pair<const ExpressionVertex*, const ExpressionVertex*> PointerPair;
     const ExpressionVertex *maxOrigVertexP;
     ExpressionVertex *maxCopiedVertexP;
-    maxOrigVertexP = &(getMaxVertex());
+    maxOrigVertexP= &(getMaxVertex());
     typedef std::list<PointerPair> PointerPairList;
     PointerPairList theList; // first original, second copy
-    for (;beginIt!=endIt ;++beginIt) {
-      ExpressionVertex& theCopy((*beginIt).createCopyOfMyself(withAlgorithm));
+    for(; beginIt!=endIt; ++beginIt) {
+      ExpressionVertex&theCopy((*beginIt).createCopyOfMyself(withAlgorithm));
       if(withNewId)
 	theCopy.overWriteId(theTarget.getNextVertexId());
       theTarget.supplyAndAddVertexInstance(theCopy);
-      if (maxOrigVertexP == &(*beginIt))
-	maxCopiedVertexP = &theCopy;
-      theList.push_back(PointerPair(&(*beginIt),&theCopy));
+      if(maxOrigVertexP== &(*beginIt))
+	maxCopiedVertexP= &theCopy;
+      theList.push_back(PointerPair(&(*beginIt), &theCopy));
     }
     ConstEdgeIteratorPair pe=edges();
-    ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
-    for (;beginIte!=endIte ;++beginIte) { 
-      const ExpressionVertex 
-	*theOriginalSource_p(&(getSourceOf(*beginIte))), 
-	*theOriginalTarget_p(&(getTargetOf(*beginIte)));
-      const ExpressionVertex 
-	*theCopySource_p(0), 
-	*theCopyTarget_p(0);
-      for (PointerPairList::const_iterator li=theList.begin();
-	   li!=theList.end() 
-	     && 
-	     !(theCopySource_p && theCopyTarget_p);
-	   ++li) { 
-	if (!theCopySource_p && (*li).first==theOriginalSource_p)
+    ConstEdgeIterator beginIte(pe.first), endIte(pe.second);
+    for(; beginIte!=endIte; ++beginIte) {
+      const ExpressionVertex
+	      *theOriginalSource_p(&(getSourceOf(*beginIte))),
+	      *theOriginalTarget_p(&(getTargetOf(*beginIte)));
+      const ExpressionVertex
+	      *theCopySource_p(0),
+	      *theCopyTarget_p(0);
+      for(PointerPairList::const_iterator li=theList.begin();
+	  li!=theList.end()
+	  &&
+	  !(theCopySource_p&&theCopyTarget_p);
+	  ++li) {
+	if(!theCopySource_p&&(*li).first==theOriginalSource_p)
 	  theCopySource_p=(*li).second;
-	if (!theCopyTarget_p && (*li).first==theOriginalTarget_p)
+	if(!theCopyTarget_p&&(*li).first==theOriginalTarget_p)
 	  theCopyTarget_p=(*li).second;
       } // end for 
-      if (!theCopySource_p || !theCopyTarget_p) 
+      if(!theCopySource_p|| !theCopyTarget_p)
 	THROW_LOGICEXCEPTION_MACRO("Expression::copyMyselfInto: couldn't find source or target");
-      ExpressionEdge* theCopy = new ExpressionEdge(withAlgorithm);
+      ExpressionEdge* theCopy=new ExpressionEdge(withAlgorithm);
       (*beginIte).copyMyselfInto(*theCopy);
-      if(withNewId) 
+      if(withNewId)
 	(*theCopy).overWriteId(theTarget.getNextEdgeId());
-      theTarget.supplyAndAddEdgeInstance(*theCopy,*theCopySource_p, *theCopyTarget_p);
+      theTarget.supplyAndAddEdgeInstance(*theCopy, *theCopySource_p, *theCopyTarget_p);
     } // end for 
     return *maxCopiedVertexP;
   } // end of Expression::copyMyselfInto
@@ -243,10 +242,10 @@ namespace xaifBooster {
   Expression::copySubExpressionInto(Expression& theTarget,
 				    const ExpressionVertex& theTopVertex,
 				    bool withNewId,
-				    bool withAlgorithm) const { 
+				    bool withAlgorithm) const{
     typedef std::list<const ExpressionVertex*> ExpressionVertexPList;
     ExpressionVertexPList theList;
-    ExpressionVertex& theTopCopy(theTopVertex.createCopyOfMyself(withAlgorithm));
+    ExpressionVertex&theTopCopy(theTopVertex.createCopyOfMyself(withAlgorithm));
     if(withNewId)
       theTopCopy.overWriteId(theTarget.getNextVertexId());
     theTarget.supplyAndAddVertexInstance(theTopCopy);
@@ -266,33 +265,33 @@ namespace xaifBooster {
 				    ExpressionVertex& theTopCopy,
 				    bool withNewId,
 				    bool withAlgorithm,
-				    Expression::ExpressionVertexPList theList) const { 
+				    Expression::ExpressionVertexPList theList) const{
     ConstInEdgeIteratorPair pe=getInEdgesOf(theTopVertex);
-    ConstInEdgeIterator beginIte(pe.first),endIte(pe.second);
-    for (;beginIte!=endIte ;++beginIte) { 
-      const ExpressionVertex& theOriginalSource(getSourceOf(*beginIte));
+    ConstInEdgeIterator beginIte(pe.first), endIte(pe.second);
+    for(; beginIte!=endIte; ++beginIte) {
+      const ExpressionVertex&theOriginalSource(getSourceOf(*beginIte));
       // check if we created the target already
       bool haveIt=false;
-      for (ExpressionVertexPList::iterator i=theList.begin();
-	   i!=theList.end();
-	   ++i) { 
-	if (&theOriginalSource==*i){ 
+      for(ExpressionVertexPList::iterator i=theList.begin();
+	  i!=theList.end();
+	  ++i) {
+	if(&theOriginalSource==*i) {
 	  haveIt=true;
 	  break;
 	}
       }
-      if (haveIt)
+      if(haveIt)
 	continue;
-      ExpressionVertex& theCopy(theOriginalSource.createCopyOfMyself(withAlgorithm));
+      ExpressionVertex&theCopy(theOriginalSource.createCopyOfMyself(withAlgorithm));
       if(withNewId)
 	theCopy.overWriteId(theTarget.getNextVertexId());
       theTarget.supplyAndAddVertexInstance(theCopy);
       theList.push_back(&theOriginalSource);
-      ExpressionEdge* theEdgeCopy = new ExpressionEdge(withAlgorithm);
+      ExpressionEdge* theEdgeCopy=new ExpressionEdge(withAlgorithm);
       (*beginIte).copyMyselfInto(*theEdgeCopy);
-      if(withNewId) 
+      if(withNewId)
 	(*theEdgeCopy).overWriteId(theTarget.getNextEdgeId());
-      theTarget.supplyAndAddEdgeInstance(*theEdgeCopy,theCopy, theTopCopy );
+      theTarget.supplyAndAddEdgeInstance(*theEdgeCopy, theCopy, theTopCopy);
       copySubExpressionInto(theTarget,
 			    theOriginalSource,
 			    theCopy,
@@ -300,171 +299,175 @@ namespace xaifBooster {
 			    withAlgorithm,
 			    theList);
     } // end for 
-  } 
+  }
 
   const ExpressionVertex& Expression::findPositionalSubExpressionOf(const ExpressionVertex& aVertex,
-								    unsigned int aPosition) const { 
+								    unsigned int aPosition) const{
     ConstInEdgeIteratorPair p=getInEdgesOf(aVertex);
-    ConstInEdgeIterator vI(p.first),vIE(p.second);
-    for(; vI!=vIE; ++vI) 
+    ConstInEdgeIterator vI(p.first), vIE(p.second);
+    for(; vI!=vIE; ++vI)
       if(aPosition==(*vI).getPosition())
 	return getSourceOf(*vI);
     THROW_LOGICEXCEPTION_MACRO("Expression::findPositionalSubExpressionOf: no such subexpression");
     return aVertex;
   }
 
-  void Expression::appendArguments(Expression::ArgumentPList& listToBeAppended) { 
+  void Expression::appendArguments(Expression::ArgumentPList& listToBeAppended){
     Expression::VertexIteratorPair expVertItPair(vertices());
     Expression::VertexIterator expVertIt(expVertItPair.first), expVertItEnd(expVertItPair.second);
-    for (; expVertIt!=expVertItEnd; ++expVertIt) {
+    for(; expVertIt!=expVertItEnd; ++expVertIt) {
       Expression::InEdgeIteratorPair expInEdgeItPair(getInEdgesOf(*expVertIt));
-      if (expInEdgeItPair.first==expInEdgeItPair.second // no in edges
-	  && 
-	  (*expVertIt).isArgument()) { 
+      if(expInEdgeItPair.first==expInEdgeItPair.second // no in edges
+	 &&
+	 (*expVertIt).isArgument()) {
 	listToBeAppended.push_back(&(dynamic_cast<Argument&>(*expVertIt)));
       }
     }
-  } 
+  }
 
-  void Expression::appendArguments(Expression::CArgumentPList& listToBeAppended)const { 
+  void Expression::appendArguments(Expression::CArgumentPList& listToBeAppended)const{
     Expression::ConstVertexIteratorPair expVertItPair(vertices());
     Expression::ConstVertexIterator expVertIt(expVertItPair.first), expVertItEnd(expVertItPair.second);
-    for (; expVertIt!=expVertItEnd; ++expVertIt) {
+    for(; expVertIt!=expVertItEnd; ++expVertIt) {
       Expression::ConstInEdgeIteratorPair expInEdgeItPair(getInEdgesOf(*expVertIt));
-      if (expInEdgeItPair.first==expInEdgeItPair.second // no in edges
-	  && 
-	  (*expVertIt).isArgument()) { 
+      if(expInEdgeItPair.first==expInEdgeItPair.second // no in edges
+	 &&
+	 (*expVertIt).isArgument()) {
 	listToBeAppended.push_back(&(dynamic_cast<const Argument&>(*expVertIt)));
       }
     }
-  } 
+  }
 
-  void Expression::replaceVariables(const Expression::VariablePVariableSRPPairList& replacementList) {
+  void Expression::replaceVariables(const Expression::VariablePVariableSRPPairList& replacementList){
     ArgumentPList listToBeAppended;
     appendArguments(listToBeAppended);
-    for (ArgumentPList::iterator argumentI=listToBeAppended.begin();
-	 argumentI!=listToBeAppended.end();
-	 ++argumentI) { 
-      for (VariablePVariableSRPPairList::const_iterator replacementI=replacementList.begin();
-	   replacementI!=replacementList.end();
-	   ++replacementI) {
-	if ((*replacementI).first->equivalentTo((*argumentI)->getVariable())) { 
-	  DBG_MACRO(DbgGroup::DATA,"Expression::replaceVariables: replacing :"
-		    << (*argumentI)->getVariable().debug().c_str() ); 
+    for(ArgumentPList::iterator argumentI=listToBeAppended.begin();
+	argumentI!=listToBeAppended.end();
+	++argumentI) {
+      for(VariablePVariableSRPPairList::const_iterator replacementI=replacementList.begin();
+	  replacementI!=replacementList.end();
+	  ++replacementI) {
+	if((*replacementI).first->equivalentTo((*argumentI)->getVariable())) {
+	  DBG_MACRO(DbgGroup::DATA, "Expression::replaceVariables: replacing :"
+		  <<(*argumentI)->getVariable().debug().c_str());
 	  // make the replacement vertex in this expression
 	  Argument* newArgument_p=new Argument(false);
 	  newArgument_p->getVariable().supplyAndAddVertexInstance((*replacementI).second->createCopyOfMyself());
 	  supplyAndAddVertexInstance(*newArgument_p);
 	  Expression::OutEdgeIteratorPair expOutEdgeItPair(getOutEdgesOf(**argumentI));
 	  Expression::OutEdgeIterator expOutEdgeIt(expOutEdgeItPair.first), expOutEdgeItEnd(expOutEdgeItPair.second);
-	  typedef std::pair<ExpressionEdge*,ExpressionVertex*> TargetPair;
-	  typedef std::list<TargetPair> TargetPairList; 
-	  TargetPairList targetList; 
+	  typedef std::pair<ExpressionEdge*, ExpressionVertex*> TargetPair;
+	  typedef std::list<TargetPair> TargetPairList;
+	  TargetPairList targetList;
 	  // save the targets separately because insertion 
 	  // etc. confuses the graph iterators
-	  for ( ; expOutEdgeIt!=expOutEdgeItEnd; ++expOutEdgeIt) { 
-	    targetList.push_back(TargetPair(&(*expOutEdgeIt),&getTargetOf(*expOutEdgeIt)));
-	  } 
+	  for(; expOutEdgeIt!=expOutEdgeItEnd; ++expOutEdgeIt) {
+	    targetList.push_back(TargetPair(&(*expOutEdgeIt), &getTargetOf(*expOutEdgeIt)));
+	  }
 	  // now make the new edges
-	  for (TargetPairList::iterator it=targetList.begin();
-	       it!=targetList.end();
-	       ++it) { 
-	    DBG_MACRO(DbgGroup::DATA,"Expression::replaceVariables: replacing edge "
-		      << (*it).first->debug().c_str()
-		      << " with target "
-		      << (*it).second->debug().c_str()); 
+	  for(TargetPairList::iterator it=targetList.begin();
+	  it!=targetList.end();
+	  ++it) {
+	    DBG_MACRO(DbgGroup::DATA, "Expression::replaceVariables: replacing edge "
+		    <<(*it).first->debug().c_str()
+		    <<" with target "
+		    <<(*it).second->debug().c_str());
 	    supplyAndAddEdgeInstance((*it).first->createCopyOfMyself(),
-				     *newArgument_p,
-				     *((*it).second));
+				    *newArgument_p,
+				    *((*it).second));
 	  }
 	  newArgument_p->setId((*argumentI)->getId());
 	  removeAndDeleteVertex(**argumentI);
-	  break; 
-	} 
-      } 
+	  break;
+	}
+      }
     }
-  } 
+  }
 
-  bool Expression::isConstantR(const ExpressionVertex& theTopVertex) const {
-    ConstInEdgeIteratorPair theInEdgesP = getInEdgesOf(theTopVertex);
-    ConstInEdgeIterator inEdgeIt = theInEdgesP.first, inEdgeEndIt = theInEdgesP.second;
-    if (inEdgeIt == inEdgeEndIt) {
+  bool Expression::isConstantR(const ExpressionVertex& theTopVertex) const{
+    ConstInEdgeIteratorPair theInEdgesP=getInEdgesOf(theTopVertex);
+    ConstInEdgeIterator inEdgeIt=theInEdgesP.first, inEdgeEndIt=theInEdgesP.second;
+    if(inEdgeIt==inEdgeEndIt) {
       return !(theTopVertex.isArgument());
     }
-    for (; inEdgeIt != inEdgeEndIt; ++inEdgeIt) {
-      if (!isConstantR(getSourceOf(*inEdgeIt)))
+    for(; inEdgeIt!=inEdgeEndIt; ++inEdgeIt) {
+      if(!isConstantR(getSourceOf(*inEdgeIt)))
 	return false;
     }
     return true;
   }
 
-  bool Expression::isConstant() const { 
+  bool Expression::isConstant() const{
     return isConstantR(getMaxVertex());
   }
 
-  int Expression::constIntEvalR(const ExpressionVertex& theTopVertex) const {
-    ConstInEdgeIteratorPair theInEdgesP = getInEdgesOf(theTopVertex);
-    ConstInEdgeIterator inEdgeIt = theInEdgesP.first, inEdgeEndIt = theInEdgesP.second;
-    if (inEdgeIt == inEdgeEndIt) {
-      const Constant *theConstant_p = dynamic_cast<const Constant*> (&theTopVertex);
-      if (theConstant_p) {
+  int Expression::constIntEvalR(const ExpressionVertex& theTopVertex) const{
+    ConstInEdgeIteratorPair theInEdgesP=getInEdgesOf(theTopVertex);
+    ConstInEdgeIterator inEdgeIt=theInEdgesP.first, inEdgeEndIt=theInEdgesP.second;
+    if(inEdgeIt==inEdgeEndIt) {
+      const Constant *theConstant_p=dynamic_cast<const Constant*>(&theTopVertex);
+      if(theConstant_p) {
 	return theConstant_p->getint();
       }
     }
-    const Intrinsic* theIntrinsic_p = dynamic_cast<const Intrinsic*> (&theTopVertex);
-    if (!theIntrinsic_p)
-      THROW_LOGICEXCEPTION_MACRO("Expression::constIntEvalR: non-leaf vertex " << theTopVertex.debug().c_str() << " is not an intrinsic");
+    const Intrinsic* theIntrinsic_p=dynamic_cast<const Intrinsic*>(&theTopVertex);
+    if(!theIntrinsic_p)
+      THROW_LOGICEXCEPTION_MACRO("Expression::constIntEvalR: non-leaf vertex "<<theTopVertex.debug().c_str()<<" is not an intrinsic");
     int arg[2];
-    for (; inEdgeIt != inEdgeEndIt; ++inEdgeIt) {
-      arg[(*inEdgeIt).getPosition() - 1] = constIntEvalR(getSourceOf(*inEdgeIt));
+    for(; inEdgeIt!=inEdgeEndIt; ++inEdgeIt) {
+      arg[(*inEdgeIt).getPosition()-1]=constIntEvalR(getSourceOf(*inEdgeIt));
     }
-    if (theIntrinsic_p->getName() == "plus_scal_scal") {
-      return arg[0] + arg[1];
-    } else if (theIntrinsic_p->getName() == "minus_scal_scal") {
-      return arg[0] - arg[1];
-    } else if (theIntrinsic_p->getName() == "div_scal_scal") {
-      return arg[0] / arg[1];
-    } else if (theIntrinsic_p->getName() == "unary_minus") {
+    if(theIntrinsic_p->getName()=="plus_scal_scal") {
+      return arg[0]+arg[1];
+    }
+    else if(theIntrinsic_p->getName()=="minus_scal_scal") {
+      return arg[0]-arg[1];
+    }
+    else if(theIntrinsic_p->getName()=="div_scal_scal") {
+      return arg[0]/arg[1];
+    }
+    else if(theIntrinsic_p->getName()=="unary_minus") {
       return -arg[0];
-    } else {
-      THROW_LOGICEXCEPTION_MACRO("Expression::constIntEvalR: no logic implemented for " << theIntrinsic_p->getName().c_str());
+    }
+    else {
+      THROW_LOGICEXCEPTION_MACRO("Expression::constIntEvalR: no logic implemented for "<<theIntrinsic_p->getName().c_str());
     }
     return 0;
   }
 
-  int Expression::constIntEval() const {
-    if (!isConstant())
+  int Expression::constIntEval() const{
+    if(!isConstant())
       THROW_LOGICEXCEPTION_MACRO("Expression::constIntEval: not a constant");
-    const ExpressionVertex& theMaxVertex = getMaxVertex();
+    const ExpressionVertex& theMaxVertex=getMaxVertex();
     return constIntEvalR(theMaxVertex);
-  } 
+  }
 
-  void Expression::appendActiveArguments(CArgumentPList& listToBeAppended) const { 
+  void Expression::appendActiveArguments(CArgumentPList& listToBeAppended) const{
     CArgumentPList aList;
     appendArguments(aList);
-    for (CArgumentPList::const_iterator argumentI=aList.begin();
-	 argumentI!=aList.end();
-	 ++argumentI) { 
-      if ((*argumentI)->getVariable().getActiveType())
-	listToBeAppended.push_back(*argumentI); 
+    for(CArgumentPList::const_iterator argumentI=aList.begin();
+	argumentI!=aList.end();
+	++argumentI) {
+      if((*argumentI)->getVariable().getActiveType())
+	listToBeAppended.push_back(*argumentI);
     }
-  } 
+  }
 
   ExpressionVertex& Expression::addBinaryOpByName(const std::string& opName,
 						  const ExpressionVertex& arg1TopVertex,
-						  const ExpressionVertex& arg2TopVertex) {
-    Intrinsic* theNewInt_p = new Intrinsic(opName);
+						  const ExpressionVertex& arg2TopVertex){
+    Intrinsic* theNewInt_p=new Intrinsic(opName);
     supplyAndAddVertexInstance(*theNewInt_p);
-    if (!has(arg1TopVertex))
-      THROW_LOGICEXCEPTION_MACRO("Expression::addBinaryOpByName: arg1TopVertex " << arg1TopVertex.debug().c_str() << " is not in the Expression");
-    if (!has(arg2TopVertex))
-      THROW_LOGICEXCEPTION_MACRO("Expression::addBinaryOpByName: arg2TopVertex " << arg2TopVertex.debug().c_str() << " is not in the Expression");
-    ExpressionEdge* aNewEdge_p = new ExpressionEdge(false);
+    if(!has(arg1TopVertex))
+      THROW_LOGICEXCEPTION_MACRO("Expression::addBinaryOpByName: arg1TopVertex "<<arg1TopVertex.debug().c_str()<<" is not in the Expression");
+    if(!has(arg2TopVertex))
+      THROW_LOGICEXCEPTION_MACRO("Expression::addBinaryOpByName: arg2TopVertex "<<arg2TopVertex.debug().c_str()<<" is not in the Expression");
+    ExpressionEdge* aNewEdge_p=new ExpressionEdge(false);
     supplyAndAddEdgeInstance(*aNewEdge_p,
 			     arg1TopVertex,
 			     *theNewInt_p);
     aNewEdge_p->setPosition(1);
-    aNewEdge_p = new ExpressionEdge(false);
+    aNewEdge_p=new ExpressionEdge(false);
     supplyAndAddEdgeInstance(*aNewEdge_p,
 			     arg2TopVertex,
 			     *theNewInt_p);
@@ -472,4 +475,4 @@ namespace xaifBooster {
     return *theNewInt_p;
   }
 
-} 
+}
