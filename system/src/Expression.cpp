@@ -67,7 +67,6 @@
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 
-
 namespace xaifBooster{
 
   class ExpressionVertexLabelWriter{
@@ -83,14 +82,18 @@ namespace xaifBooster{
 	      dynamic_cast<const ExpressionVertex*>(boost::get(boost::get(BoostVertexContentType(),
 								      myG.getInternalBoostGraph()),
 							      v));
-      if(theExprVertex_p->isArgument())
-	out<<"[label=\""<<dynamic_cast<const Argument&>(*theExprVertex_p).getVariable().getVariableSymbolReference().getSymbol().getId().c_str()<<"\"]";
+      if(theExprVertex_p->isArgument()) { 
+        const Argument& theArgument(dynamic_cast<const Argument&>(*theExprVertex_p));
+	out<<"[label=\""<<theArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()<<"\"]";
+      }
       else {
 	if(myG.numInEdgesOf(*theExprVertex_p)) { // is an intrinsic
-	  out<<"[label=\""<<dynamic_cast<const Intrinsic&>(*theExprVertex_p).getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName().c_str()<<"\"]";
+          const Intrinsic& theIntrinsic(dynamic_cast<const Intrinsic&>(*theExprVertex_p));
+	  out<<"[label=\""<<theIntrinsic.getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName().c_str()<<"\"]";
 	}
 	else { // must be a constant then
-	  out<<"[label=\""<<dynamic_cast<const Constant&>(*theExprVertex_p).toString().c_str()<<"\"]";
+          const Constant& theConstant(dynamic_cast<const Constant&>(*theExprVertex_p));
+	  out<<"[label=\""<<theConstant.toString().c_str()<<"\"]";
 	}
       }
     }
