@@ -55,19 +55,21 @@
 
 #include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlg.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+using namespace xaifBooster;
+
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
   /** 
    * class to implement renaming of subroutine definitions
    * if enforced
    */
-  class ControlFlowGraphAlg : public xaifBoosterTypeChange::ControlFlowGraphAlg  {
+  class ControlFlowGraphAlg : public xaifBoosterTypeChange::ControlFlowGraphAlg {
 
   public:
     
     ControlFlowGraphAlg(const ControlFlowGraph& theContaining);
 
-    virtual ~ControlFlowGraphAlg(){};
+    virtual ~ControlFlowGraphAlg();
 
     virtual void printXMLHierarchy(std::ostream& os) const;
 

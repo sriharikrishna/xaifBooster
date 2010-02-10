@@ -74,6 +74,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void 
   ControlFlowGraphAlg::algorithm_action_1() { 
     xaifBoosterTypeChange::ControlFlowGraphAlg::algorithm_action_1();
+    // add inert basic block
   }
 
   std::string
