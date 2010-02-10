@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CONTROLFLOWGRAPHALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CONTROLFLOWGRAPHALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,47 +52,50 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ControlFlowGraphAlgFactory.hpp"
-
-using namespace xaifBooster;
+#include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlg.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  /** 
+   * class to implement renaming of subroutine definitions
+   * if enforced
+   */
+  class ControlFlowGraphAlg : public xaifBoosterTypeChange::ControlFlowGraphAlg  {
 
-  void AlgFactoryManager::resets() {
-    resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
-  }
+  public:
+    
+    ControlFlowGraphAlg(const ControlFlowGraph& theContaining);
 
-  void AlgFactoryManager::init() {
-    xaifBoosterLinearization::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
-  }
+    virtual ~ControlFlowGraphAlg(){};
+
+    virtual void printXMLHierarchy(std::ostream& os) const;
+
+    virtual void algorithm_action_1();
+                                                                                
+    virtual std::string debug() const ;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+  private:
+    
+    /** 
+     * no def
+     */
+    ControlFlowGraphAlg();
+
+    /** 
+     * no def
+     */
+    ControlFlowGraphAlg(const ControlFlowGraphAlg&);
+
+    /** 
+     * no def
+     */
+    ControlFlowGraphAlg& operator=(const ControlFlowGraphAlg&);
+
+  }; // end of class ControlFlowGraphAlg
 
 }
 
+#endif

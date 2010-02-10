@@ -50,47 +50,44 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ControlFlowGraphAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ControlFlowGraphAlg.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+namespace xaifBoosterBasicBlockPreaccumulation {
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  bool ControlFlowGraphAlg::ourForceNonExternalRenamesFlag(false);
 
-  void AlgFactoryManager::resets() {
-    resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
+  ControlFlowGraphAlg::ControlFlowGraphAlg(const ControlFlowGraph& theContaining) :
+    xaifBoosterTypeChange::ControlFlowGraphAlg(theContaining) {
   }
 
-  void AlgFactoryManager::init() {
-    xaifBoosterLinearization::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
+  ControlFlowGraphAlg::~ControlFlowGraphAlg() {
   }
 
-}
+  void
+  ControlFlowGraphAlg::printXMLHierarchy(std::ostream& os) const {
+    xaifBoosterTypeChange::ControlFlowGraphAlg::printXMLHierarchy(os);
+  }
 
+  void 
+  ControlFlowGraphAlg::algorithm_action_1() { 
+    xaifBoosterTypeChange::ControlFlowGraphAlg::algorithm_action_1();
+  }
+
+  std::string
+  ControlFlowGraphAlg::debug() const {
+    std::ostringstream out;
+    out << "xaifBoosterBasicBlockPreaccumulation::ControlFlowGraphAlg["
+        << this
+	<< ","
+	<< xaifBoosterTypeChange::ControlFlowGraphAlg::debug().c_str()
+        << "]" << std::ends;
+    return out.str();
+  }
+
+  void ControlFlowGraphAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+  }
+  
+} // end namespace xaifBoosterBasicBlockPreaccumulation
