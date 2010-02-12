@@ -57,13 +57,8 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {
 
-  bool ControlFlowGraphAlg::ourForceNonExternalRenamesFlag(false);
-
   ControlFlowGraphAlg::ControlFlowGraphAlg(const ControlFlowGraph& theContaining) :
     xaifBoosterTypeChange::ControlFlowGraphAlg(theContaining) {
-  }
-
-  ControlFlowGraphAlg::~ControlFlowGraphAlg() {
   }
 
   void
@@ -89,6 +84,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void ControlFlowGraphAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+    xaifBoosterTypeChange::traverseToChildren(anAction_c);
   }
   
 } // end namespace xaifBoosterBasicBlockPreaccumulation
