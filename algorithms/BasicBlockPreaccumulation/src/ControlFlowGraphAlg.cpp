@@ -84,7 +84,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void ControlFlowGraphAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
-    xaifBoosterTypeChange::traverseToChildren(anAction_c);
+    xaifBoosterTypeChange::ControlFlowGraphAlg::traverseToChildren(anAction_c);
   }
   
 } // end namespace xaifBoosterBasicBlockPreaccumulation
