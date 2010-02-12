@@ -69,7 +69,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     ControlFlowGraphAlg(const ControlFlowGraph& theContaining);
 
-    virtual ~ControlFlowGraphAlg();
+    virtual ~ControlFlowGraphAlg(){};
 
     virtual void printXMLHierarchy(std::ostream& os) const;
 
