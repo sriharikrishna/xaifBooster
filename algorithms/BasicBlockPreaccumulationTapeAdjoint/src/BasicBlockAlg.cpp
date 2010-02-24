@@ -65,6 +65,8 @@
 
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
@@ -273,11 +275,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
         // pop all of the factor variables
         for (VariablePList::const_reverse_iterator pushedFacVarPrI = (*seqDataPListRI)->myPushedFactorVariablesPList.rbegin();
              pushedFacVarPrI != (*seqDataPListRI)->myPushedFactorVariablesPList.rend(); ++pushedFacVarPrI) {
-          // the inlinable call needs a temporary which contains the factor
-          const Symbol& aTemporarySymbol (getContaining().getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
-                                                                                                         SymbolType::REAL_STYPE,
-                                                                                                         SymbolShape::SCALAR,
-                                                                                                         false));
+	  xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5",
+								      **pushedFacVarPrI);
+          const Symbol& aTemporarySymbol (aTemporariesHelper.makeTempSymbol(getContaining().getScope()));
           // Anonymous version
           const Variable& thePoppedFactorVariable (addFactorPop(aTemporarySymbol,
                                                                 ForLoopReversalType::ANONYMOUS));
@@ -333,7 +333,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   const Variable& BasicBlockAlg::addFactorPop(const Symbol& aTemporarySymbol,
 					      const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theFactorPopCall (addInlinableSubroutineCall("Pop",
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theFactorPopCall (addInlinableSubroutineCall("pop_"+SymbolShape::toShortString(aTemporarySymbol.getSymbolShape()),
                                                                                                                  aReversalType));
     theFactorPopCall.setId("inline_pop");
     Variable& theInlineVariable(theFactorPopCall.addConcreteArgument(1).getArgument().getVariable());
