@@ -69,8 +69,20 @@ namespace xaifBoosterTypeChange{
 				       const Expression& theExpression,
 				       const ExpressionVertex& theTopVertex):
   myContextAnnnotation(contextAnnotation),
-  myExpression(theExpression),
-  myTopVertex(theTopVertex),
+  myExpression_p(&theExpression),
+  myTopVertex_p(&theTopVertex),
+  myVariable_p(NULL),
+  myShape(SymbolShape::SCALAR),
+  myType(SymbolType::INTEGER_STYPE),
+  myTypeInfo(false){
+  }
+
+  TemporariesHelper::TemporariesHelper(const std::string& contextAnnotation,
+				       const Variable& variableToMatch):
+  myContextAnnnotation(contextAnnotation),
+  myExpression_p(NULL),
+  myTopVertex_p(NULL),
+  myVariable_p(&variableToMatch),
   myShape(SymbolShape::SCALAR),
   myType(SymbolType::INTEGER_STYPE),
   myTypeInfo(false){
@@ -86,10 +98,15 @@ namespace xaifBoosterTypeChange{
   }
 
   Symbol& TemporariesHelper::makeTempSymbol(Scope& aScope){
-    typeInfo(myTopVertex);
+    if(myTopVertex_p) {
+      typeInfo(*myTopVertex_p);
+    }
+    else {
+      typeInfo(*myVariable_p);
+    }
     if(!myTypeInfo) {
       if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)&&DbgLoggerManager::instance()->wantTag("expr"))
-	myExpression.show("ExpressionForMakeTempSymbol");
+	myExpression_p->show("ExpressionForMakeTempSymbol");
       THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::makeTempSymbol: no type info found");
     }
     Symbol&theNewVariableSymbol(aScope.getSymbolTable().
@@ -124,29 +141,32 @@ namespace xaifBoosterTypeChange{
 
   void TemporariesHelper::typeInfo(const ExpressionVertex & theTopVertex){
     if(theTopVertex.isArgument()) {
-      const Variable&argumentVariable(dynamic_cast<const Argument&>(theTopVertex).getVariable());
-      myTypeInfo=true;
-      myType=SymbolType::genericPromotion(myType, argumentVariable.getVariableSymbolReference().getSymbol().getSymbolType());
-      if(myType==argumentVariable.getVariableSymbolReference().getSymbol().getSymbolType())
-	myFrontEndType=argumentVariable.getVariableSymbolReference().getSymbol().getFrontEndType();
-      SymbolShape::SymbolShape_E argShape=argumentVariable.getEffectiveShape();
-      if (myShape!=SymbolShape::SCALAR && argShape!=SymbolShape::SCALAR && myShape!=argShape)
-	THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::typeInfo: effective shape change between " 
-		<< SymbolShape::toString(myShape)
-		<< " and "
-		<< SymbolShape::toString(argShape));
-      myShape=(myShape>argShape)?myShape:argShape;
-      if(myShape==argShape) {
-	if (!myDimensionBoundsPVector.size())
-	  myDimensionBoundsPVector.resize(myShape,NULL);
-	populateDimensionBounds(argumentVariable);
-      }
+      typeInfo(dynamic_cast<const Argument&>(theTopVertex).getVariable());
     }
     else {
-      Expression::ConstInEdgeIteratorPair theInEdgesP=myExpression.getInEdgesOf(theTopVertex);
+      Expression::ConstInEdgeIteratorPair theInEdgesP=myExpression_p->getInEdgesOf(theTopVertex);
       Expression::ConstInEdgeIterator inEdgeIt=theInEdgesP.first, inEdgeEndIt=theInEdgesP.second;
       for(; inEdgeIt!=inEdgeEndIt; ++inEdgeIt)
-	typeInfo(myExpression.getSourceOf(*inEdgeIt));
+	typeInfo(myExpression_p->getSourceOf(*inEdgeIt));
+    }
+  }
+
+  void TemporariesHelper::typeInfo(const Variable & theVariable){
+    myTypeInfo=true;
+    myType=SymbolType::genericPromotion(myType, theVariable.getVariableSymbolReference().getSymbol().getSymbolType());
+    if(myType==theVariable.getVariableSymbolReference().getSymbol().getSymbolType())
+      myFrontEndType=theVariable.getVariableSymbolReference().getSymbol().getFrontEndType();
+    SymbolShape::SymbolShape_E argShape=theVariable.getEffectiveShape();
+    if(myShape!=SymbolShape::SCALAR&&argShape!=SymbolShape::SCALAR&&myShape!=argShape)
+      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::typeInfo: effective shape change between "
+				 <<SymbolShape::toString(myShape)
+				 <<" and "
+				 <<SymbolShape::toString(argShape));
+    myShape=(myShape>argShape)?myShape:argShape;
+    if(myShape==argShape) {
+      if(!myDimensionBoundsPVector.size())
+	myDimensionBoundsPVector.resize(myShape, NULL);
+      populateDimensionBounds(theVariable);
     }
   }
 
@@ -175,7 +195,7 @@ namespace xaifBoosterTypeChange{
 	      indexExprP= &theExpr;
 	    }
 	  }
-	  else {
+	  if(!indexExprP) {
 	    if(symbolDimensionBoundsP) {
 	      indexExpr.supplyAndAddVertexInstance(*(new Constant((*symbolDBIt)->getLower())));
 	      indexExprP= &indexExpr;
@@ -188,11 +208,11 @@ namespace xaifBoosterTypeChange{
 	      boundExprP= &theExpr;
 	    }
 	  }
-	  else {
-	    if(symbolDimensionBoundsP)
+	  if(!boundExprP) {
+	    if(symbolDimensionBoundsP) {
 	      boundExpr.supplyAndAddVertexInstance(*(new Constant((*symbolDBIt)->getUpper())));
-
-	    boundExprP= &boundExpr;
+	      boundExprP= &boundExpr;
+	    }
 	  }
 	  if((*it)->hasExpression(IndexTriplet::IT_STRIDE)) {
 	    const Expression& theExpr=(*it)->getExpression(IndexTriplet::IT_STRIDE);
@@ -234,6 +254,17 @@ namespace xaifBoosterTypeChange{
 	  ++symbolDBIt;
       }
     }
+    else { // no array access
+      if(symbolDimensionBoundsP) {
+	unsigned short theDimension=0;
+	for(Symbol::DimensionBoundsPList::const_iterator symbolDBIt=symbolDimensionBoundsP->begin();
+	    symbolDBIt!=symbolDimensionBoundsP->end();
+	    ++symbolDBIt) {
+	  ++theDimension; // 1-based counting
+	  myDimensionBoundsPVector[theDimension-1]=new DimensionBounds((*symbolDBIt)->getLower(), (*symbolDBIt)->getUpper());
+	}
+      }
+    }
   }
 
-} // end of namespace 
+}
