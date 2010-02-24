@@ -73,6 +73,8 @@ public:
     
     static std::string toString(const SymbolShape_E& aShape) throw (PrintingIntException);
 
+    static std::string toShortString(const SymbolShape_E& aShape) throw (PrintingIntException);
+
     static const SymbolShape_E fromString(const std::string& aName);
     
     static const std::string our_attribute_XAIFName;
