@@ -92,6 +92,41 @@ namespace xaifBooster {
     return returnString;
   } // end of std::string SymbolShape::toString
 
+  std::string SymbolShape::toShortString(const SymbolShape_E& aShape)
+    throw (PrintingIntException) {
+    std::string returnString;
+    switch(aShape) {
+    case SCALAR:
+      returnString="s0";
+      break;
+    case VECTOR:
+      returnString="s1";
+      break;
+    case MATRIX:
+      returnString="s2";
+      break;
+    case THREE_TENSOR:
+      returnString="s3";
+      break;
+    case FOUR_TENSOR:
+      returnString="s4";
+      break;
+    case FIVE_TENSOR:
+      returnString="s5";
+      break;
+    case SIX_TENSOR:
+      returnString="s6";
+      break;
+    case SEVEN_TENSOR:
+      returnString="s7";
+      break;
+    default:
+      throw PrintingIntException("SymbolShape::toShortString: unknown value",aShape);
+      break;
+    } // end switch
+    return returnString;
+  }
+
   const SymbolShape::SymbolShape_E
   SymbolShape::fromString(const std::string& aName) { 
     SymbolShape_E returnValue;
