@@ -70,19 +70,21 @@ namespace xaifBoosterTypeChange {
   class TemporariesHelper {
   public:
 
+    /** 
+     * \param contextAnnotation so we can identify in the xaif file who made the temporary
+     * \param theExpression whose value is supposed to be held in the temporary
+     * \param theTopVertex is the top vertex in theExpression (i.e. specifying a sub expression)
+     */
     TemporariesHelper(const std::string& contextAnnotation,
                       const Expression& theExpression,
                       const ExpressionVertex& theTopVertex);
 
+    TemporariesHelper(const std::string& contextAnnotation,
+                      const Variable& variableToMatch);
+
     ~TemporariesHelper();
 
     /**
-     * makes a temporary variable for a given formal argument symbol
-     */
-    const Variable& makeTempVariable(const Symbol& formalArgument);
-
-    /**
-     * \param aVariable - make a symbol that can take the value from aVariable
      * \param aScope - Scope in which the symbol is made
      */
     Symbol& makeTempSymbol(Scope& aScope);
@@ -108,9 +110,11 @@ namespace xaifBoosterTypeChange {
 
     void typeInfo(const ExpressionVertex& theTopVertex);
 
+    void typeInfo(const Variable& aVariable);
+
     /**
      * populate the effective dimension bounds
-     * \param aTempSymbol in the dimension bounds are set
+     * \param aVariable in the dimension bounds are set
      */
     void populateDimensionBounds(const Variable& aVariable);
 
@@ -118,9 +122,11 @@ namespace xaifBoosterTypeChange {
 
     const std::string myContextAnnnotation;
 
-    const Expression& myExpression;
+    const Expression* myExpression_p;
 
-    const ExpressionVertex& myTopVertex;
+    const ExpressionVertex* myTopVertex_p;
+
+    const Variable* myVariable_p;
 
     SymbolShape::SymbolShape_E myShape;
 
