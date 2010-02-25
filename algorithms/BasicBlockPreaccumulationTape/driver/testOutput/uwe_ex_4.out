@@ -118,14 +118,14 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
+        <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
+        <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
@@ -184,14 +184,14 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
+        <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="push" statement_id="inline_push">
+        <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
