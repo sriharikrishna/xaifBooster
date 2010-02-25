@@ -104,7 +104,6 @@ namespace xaifBooster {
     void setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion);
 
     const NameCreator& getUniversalNameCreator() const;
-    const NameCreator& getAccumulationVariableNameCreator() const;
     const NameCreator& getPropagationVariableNameCreator() const;
     const NameCreator& getLinearizationVariableNameCreator() const;
     const NameCreator& getTemporaryVariableNameCreator() const;
@@ -146,9 +145,6 @@ namespace xaifBooster {
 
     /// used to give unique names for variables created for some purpose not covered by those below
     NameCreator myUniversalNameCreator;
-
-    /// used to give unique names to variables created for the accumulation
-    NameCreator myAccumulationVariableNameCreator;
 
     /// used to give unique names to variables created for the propagation
     NameCreator myPropagationVariableNameCreator;
