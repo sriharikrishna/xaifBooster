@@ -67,6 +67,8 @@
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
+
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
@@ -825,22 +827,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 || currentAccV.hasRemainderGraphEdge()) {
 	  Assignment& theNewAssignment = aSequence.appendEndAssignment();
 	  theNewAssignment.setId(makeUniqueId());
-	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+	  // make the RHS
+	  buildAccumulationAssignmentRecursively(theAccumulationGraph,
+						 theNewAssignment,
+						 currentAccV);
+	  Scope&theScope(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
 	  VariableSymbolReference* theVariableSymbolReference_p =
-	   new VariableSymbolReference (theGlobalScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getAccumulationVariableNameCreator(),
-                                                                                        SymbolKind::VARIABLE,
-                                                                                        SymbolType::REAL_STYPE,
-                                                                                        SymbolShape::SCALAR,
-                                                                                        false),
-				        theGlobalScope);
+	    new VariableSymbolReference (xaifBoosterTypeChange::TemporariesHelper("ExpressionAlg::generateAccumulationExpressions",
+										  theNewAssignment.getRHS(),
+										  theNewAssignment.getRHS().getMaxVertex()).makeTempSymbol(theScope),
+					 theScope);
 	  theVariableSymbolReference_p->setId("1");
 	  theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS");
 	  theNewAssignment.getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	  theNewAssignment.getLHS().getAliasMapKey().setTemporary();
 	  theNewAssignment.getLHS().getDuUdMapKey().setTemporary();
-	  buildAccumulationAssignmentRecursively(theAccumulationGraph,
-						 theNewAssignment,
-						 currentAccV);
 	  currentAccV.setLHSVariable(theNewAssignment.getLHS());
 	} // end if assignment needs to be created
       } // end iterate over all vertices
