@@ -103,7 +103,6 @@ namespace xaifBooster {
 				aSchemaLocation,
 				aPrefix);
     myUniversalNameCreator.setBaseName(aPrefix+"Symbol");
-    myAccumulationVariableNameCreator.setBaseName(aPrefix+"acc");
     myPropagationVariableNameCreator.setBaseName(aPrefix+"prop");
     myLinearizationVariableNameCreator.setBaseName(aPrefix+"lin");
     myTemporaryVariableNameCreator.setBaseName(aPrefix+"tmp");
@@ -122,11 +121,6 @@ namespace xaifBooster {
   ConceptuallyStaticInstances::getUniversalNameCreator() const {
     return myUniversalNameCreator;
   } // end ConceptuallyStaticInstances::getUniversalNameCreator()
-
-  const NameCreator&
-  ConceptuallyStaticInstances::getAccumulationVariableNameCreator() const { 
-    return myAccumulationVariableNameCreator;
-  } // end ConceptuallyStaticInstances::getAccumulationVariableNameCreator()
 
   const NameCreator&
   ConceptuallyStaticInstances::getPropagationVariableNameCreator() const { 
