@@ -218,8 +218,8 @@ namespace xaifBoosterTypeChange {
       // now we we know this has a handwritten wrapper.
       aSymbolAlg.setHandCodedWrapper(getContainingSubroutineCall().getSymbolReference());
       aSymbolAlg.getActivityPattern().setSize(getContainingSubroutineCall().
-						getConcreteArgumentPList().
-						size());
+					      getConcreteArgumentPList().
+					      size());
       for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
 	     getContainingSubroutineCall().getConcreteArgumentPList().begin();
 	   concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
@@ -381,7 +381,7 @@ namespace xaifBoosterTypeChange {
   }
 
   void SubroutineCallAlg::addShapeTest(const Variable& toBeAllocated,
-					const ConcreteArgument& argumentToMatch) {
+				       const ConcreteArgument& argumentToMatch) {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_ShapeTest");
     theSRCall_p->setId("TypeChange::SubroutineCallAlg::addShapeTest");
     myPostAdjustmentsList.push_back(theSRCall_p);
@@ -483,8 +483,8 @@ namespace xaifBoosterTypeChange {
       if ((aFormalResult=theCFG.hasFormal(theConcreteArgument.getArgument().getVariable().getVariableSymbolReference())).first) { // have it 
 	// get the positional argument  from the list 
 	for (ArgumentList::ArgumentSymbolReferencePList::const_iterator listI=theCFG.getArgumentList().getArgumentSymbolReferencePList().begin();
-          listI!=theCFG.getArgumentList().getArgumentSymbolReferencePList().end();
-          ++listI) {
+	     listI!=theCFG.getArgumentList().getArgumentSymbolReferencePList().end();
+	     ++listI) {
 	  if (aFormalResult.second==(*listI)->getPosition() // match the position
  	      && 
 	      IntentType::IN_ITYPE==(*listI)->getIntent()) { // look at its itype
@@ -554,12 +554,12 @@ namespace xaifBoosterTypeChange {
     theConcreteArgumentAlg.makeReplacement(theTempVar,true);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
     if (theConcreteArgument.isArgument()) {
-//       theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(theConcreteArgument.
-// 										    getArgument().
-// 										    getVariable().
-// 										    getVariableSymbolReference().
-// 										    getSymbol().
-// 										    getSymbolShape()));
+      //       theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(theConcreteArgument.
+      // 										    getArgument().
+      // 										    getVariable().
+      // 										    getVariableSymbolReference().
+      // 										    getSymbol().
+      // 										    getSymbolShape()));
       if (haveAllocation) { 
 	addShapeTest(theTempVar,theConcreteArgument);
       } 
@@ -572,12 +572,12 @@ namespace xaifBoosterTypeChange {
       theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
       Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
       theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes,false);
-//       theInlineVariablePostRes.adjustUpperBounds((int)(theConcreteArgument.
-// 						       getArgument().
-// 						       getVariable().
-// 						       getVariableSymbolReference().
-// 						       getSymbol().
-// 						       getSymbolShape()));
+      //       theInlineVariablePostRes.adjustUpperBounds((int)(theConcreteArgument.
+      // 						       getArgument().
+      // 						       getVariable().
+      // 						       getVariableSymbolReference().
+      // 						       getSymbol().
+      // 						       getSymbolShape()));
       Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
