@@ -165,10 +165,6 @@ namespace xaifBoosterTypeChange {
 		       const BasicBlock& theBasicBlock,
 		       bool withCopy);
 
-    std::string giveCallName(bool concreteArgumentActive,
-			     const SymbolReference &aTempSymbolReference,
-			     short shapeOffset,
-			     bool prior) const ;
     /**
      * if forcePassive then we create a passive type, 
      * otherwise we create the type specified in the formalArgumentSymbol
@@ -216,6 +212,8 @@ namespace xaifBoosterTypeChange {
      */
     void addShapeTest(const Variable& toBeAllocated,
 		      const ConcreteArgument& variableToMatch);
+
+    static  const std::string ourConversionRoutineName;
 
   }; // end of class SubroutineCallAlg
  
