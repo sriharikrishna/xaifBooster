@@ -716,7 +716,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_241" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_242" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_242" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_3" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -749,9 +749,9 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_243" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_244" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_244" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_245" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_245" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_4" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -795,7 +795,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_262" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_263" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_263" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_80" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -848,7 +848,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_272" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_273" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_273" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_85" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
