@@ -51,24 +51,70 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
+#include "xaifBooster/utils/inc/PrintManager.hpp"
+#include "xaifBooster/system/inc/SideEffectListType.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ControlFlowGraphAlg.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {
 
+ std::string ControlFlowGraphAlg::myAlgorithmSignature(std::string("_bbp_"));
+
   ControlFlowGraphAlg::ControlFlowGraphAlg(const ControlFlowGraph& theContaining) :
-    xaifBoosterTypeChange::ControlFlowGraphAlg(theContaining) {
+    ControlFlowGraphAlgBase(theContaining),
+    myBasicControlFlowGraph_p(NULL) {
+  }
+
+  ControlFlowGraphAlg::~ControlFlowGraphAlg() {
+  }
+
+  const std::string&
+  ControlFlowGraphAlg::getAlgorithmSignature() const {
+    return myAlgorithmSignature;
   }
 
   void
   ControlFlowGraphAlg::printXMLHierarchy(std::ostream& os) const {
-    xaifBoosterTypeChange::ControlFlowGraphAlg::printXMLHierarchy(os);
+    PrintManager& pm=PrintManager::getInstance();
+    os << pm.indent()
+       << "<"
+       << getContaining().ourXAIFName.c_str()
+       << " ";
+    getContaining().printAttributes(os,getContaining().
+				    getSymbolReference());
+    os << " "
+       << getContaining().our_myActiveFlag_XAIFName.c_str()
+       << "=\""
+       << getContaining().getActiveFlag()
+       << "\">"
+       << std::endl;
+    getContaining().getArgumentList().printXMLHierarchy(os);
+
+    SideEffectList modList = getContaining().getSideEffectList(SideEffectListType::MOD_LIST);
+    modList.printXMLHierarchy(SideEffectListType::our_Mod_XAIFName,os);
+    SideEffectList readList = getContaining().getSideEffectList(SideEffectListType::READ_LIST);
+    readList.printXMLHierarchy(SideEffectListType::our_Read_XAIFName,os);
+
+    myBasicControlFlowGraph_p->printXMLHierarchy(os);
+
+    os << pm.indent()
+       << "</"
+       << getContaining().ourXAIFName
+       << ">"
+       << std::endl;
+    pm.releaseInstance();
+
+    //ControlFlowGraphAlgBase::printXMLHierarchy(os);
+
   }
 
   void 
   ControlFlowGraphAlg::algorithm_action_1() { 
-    xaifBoosterTypeChange::ControlFlowGraphAlg::algorithm_action_1();
+    const ControlFlowGraph& theContaining = getContaining();
+    myBasicControlFlowGraph_p = new BasicControlFlowGraph(theContaining);
+    myBasicControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
+    myBasicControlFlowGraph_p->insertBasicBlock();
     // add inert basic block
   }
 
@@ -77,14 +123,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     std::ostringstream out;
     out << "xaifBoosterBasicBlockPreaccumulation::ControlFlowGraphAlg["
         << this
-	<< ","
-	<< xaifBoosterTypeChange::ControlFlowGraphAlg::debug().c_str()
+	<< ", containing="
+	<< getContaining().debug().c_str()
         << "]" << std::ends;
     return out.str();
   }
 
   void ControlFlowGraphAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
-    xaifBoosterTypeChange::ControlFlowGraphAlg::traverseToChildren(anAction_c);
   }
   
 } // end namespace xaifBoosterBasicBlockPreaccumulation
