@@ -96,7 +96,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /** 
      * insert a new basic block between after and before and return it
      */
-    BasicControlFlowGraphVertex& insertBasicBlock();
+    void insertBasicBlock();
 
 
   protected:

@@ -195,37 +195,40 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   // direction indicates if the characteristics of the replaceEdge should
   // be preserved by the new in (false) or outedge (true)
-  BasicControlFlowGraphVertex&
+  void
   BasicControlFlowGraph::insertBasicBlock() {
 
-    BasicControlFlowGraphVertex* newVertex_p = new BasicControlFlowGraphVertex();
-    newVertex_p->setIndex(numVertices()+1);
-    supplyAndAddVertexInstance(*newVertex_p);
-
-    BasicBlock* theNewBasicBlock=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
-    newVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
-
-    newVertex_p->getNewVertex().setId(makeUniqueVertexId());
-    newVertex_p->getNewVertex().setAnnotation(ControlFlowGraphAlg(myOriginalGraph_r).getAlgorithmSignature());
-
-    BasicControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new BasicControlFlowGraphEdge();    
-    aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
-    BasicControlFlowGraphEdge* aNewControlFlowGraphOutEdge_p=new BasicControlFlowGraphEdge();    
-    aNewControlFlowGraphOutEdge_p->setId(makeUniqueEdgeId());
-
-    BasicControlFlowGraphEdge& replacedEdge_r = BasicControlFlowGraph::getLastEdge();
-    if (replacedEdge_r.hasConditionValue()) {
-      aNewControlFlowGraphInEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
-      aNewControlFlowGraphOutEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
-    }
-
-    BasicControlFlowGraphVertex& beforeVertex = getSourceOf(replacedEdge_r);
-    BasicControlFlowGraphVertex& exitVertex = getTargetOf(replacedEdge_r);
-    removeAndDeleteEdge(replacedEdge_r);
-    supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
-    supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
+    try {
+      BasicControlFlowGraphEdge& replacedEdge_r = BasicControlFlowGraph::getLastEdge();
+      BasicControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new BasicControlFlowGraphEdge();    
+      aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
+      BasicControlFlowGraphEdge* aNewControlFlowGraphOutEdge_p=new BasicControlFlowGraphEdge();    
+      aNewControlFlowGraphOutEdge_p->setId(makeUniqueEdgeId());      
+      if (replacedEdge_r.hasConditionValue()) {
+	aNewControlFlowGraphInEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
+	aNewControlFlowGraphOutEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
+      }
+      
+      BasicControlFlowGraphVertex* newVertex_p = new BasicControlFlowGraphVertex();
+      newVertex_p->setIndex(numVertices()+1);
+      supplyAndAddVertexInstance(*newVertex_p);
+      
+      BasicBlock* theNewBasicBlock=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+      newVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
+      
+      newVertex_p->getNewVertex().setId(makeUniqueVertexId());
+      newVertex_p->getNewVertex().setAnnotation(ControlFlowGraphAlg(myOriginalGraph_r).getAlgorithmSignature());
+      
+      BasicControlFlowGraphVertex& beforeVertex = getSourceOf(replacedEdge_r);
+      BasicControlFlowGraphVertex& exitVertex = getTargetOf(replacedEdge_r);
+      removeAndDeleteEdge(replacedEdge_r);
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
     
-    return *newVertex_p;
+      return;
+    } catch (LogicException){
+      return;
+    }
   }
 
   void BasicControlFlowGraph::printXMLHierarchy(std::ostream& os) const {
