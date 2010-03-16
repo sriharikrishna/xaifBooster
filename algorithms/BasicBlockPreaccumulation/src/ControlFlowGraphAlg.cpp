@@ -104,9 +104,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        << ">"
        << std::endl;
     pm.releaseInstance();
-
-    //ControlFlowGraphAlgBase::printXMLHierarchy(os);
-
   }
 
   void 
