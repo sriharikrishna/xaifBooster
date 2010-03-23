@@ -50,9 +50,13 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ControlFlowGraphAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ControlFlowGraphAlg.hpp"
+#include "xaifBooster/system/inc/CallGraphAlgBase.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphAlg.hpp"
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(ControlFlowGraph,xaifBoosterBasicBlockPreaccumulation)
+
+  DERIVED_ALG_FACTORY_DEF_MACRO(CallGraph,xaifBoosterBasicBlockPreaccumulation)
+
+
+

@@ -69,7 +69,7 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphEdge.hpp" 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphVertex.hpp" 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ControlFlowGraphAlg.hpp" 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphAlg.hpp" 
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
@@ -86,13 +86,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   // depends on prefix
   std::string BasicControlFlowGraph::makeUniqueVertexId() {
     std::ostringstream oss;
-    oss << ControlFlowGraphAlg(myOriginalGraph_r).getAlgorithmSignature().c_str() << "v_" << getNextVertexId() << std::ends;
+    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).
+      getAlgorithmSignature().c_str() << "v_" << getNextVertexId() << std::ends;
     return (oss.str());
   }
 
   std::string BasicControlFlowGraph::makeUniqueEdgeId() {
     std::ostringstream oss;
-    oss << ControlFlowGraphAlg(myOriginalGraph_r).getAlgorithmSignature().c_str() << "e_" << getNextEdgeId() << std::ends;
+    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).
+      getAlgorithmSignature().c_str() << "e_" << getNextEdgeId() << std::ends;
     return (oss.str());
   }
 
@@ -217,7 +219,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       newVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
       
       newVertex_p->getNewVertex().setId(makeUniqueVertexId());
-      newVertex_p->getNewVertex().setAnnotation(ControlFlowGraphAlg(myOriginalGraph_r).getAlgorithmSignature());
+      newVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
       
       BasicControlFlowGraphVertex& beforeVertex = getSourceOf(replacedEdge_r);
       BasicControlFlowGraphVertex& exitVertex = getTargetOf(replacedEdge_r);

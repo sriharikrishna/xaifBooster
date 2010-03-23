@@ -1,5 +1,3 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICCONTROLFLOWGRAPH_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICCONTROLFLOWGRAPH_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -52,70 +50,9 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
+#include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
+#include "xaifBooster/system/inc/CallGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlg.hpp"
 
-#include <stack>
-#include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
-#include "xaifBooster/system/inc/Symbol.hpp"
-#include "xaifBooster/system/inc/Assignment.hpp"
-#include "xaifBooster/system/inc/BasicBlock.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphVertex.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphEdge.hpp"
-
-using namespace xaifBooster;
-
-namespace xaifBoosterBasicBlockPreaccumulation {  
-
-  /** 
-   * class to implement a control flow graph
-   */
-  class BasicControlFlowGraph : public GraphWrapperTraversable<BasicControlFlowGraphVertex,BasicControlFlowGraphEdge> {
-
-  public:
-    
-    BasicControlFlowGraph(const ControlFlowGraph&);
-
-    std::string makeUniqueVertexId();
-    std::string makeUniqueEdgeId();
-
-    const ControlFlowGraph& myOriginalGraph_r;
- 
-    std::list<ControlFlowGraphVertex*> mySortedVertices_p_l;
-
-    void makeThisACopyOfOriginalControlFlowGraph();
-
-    virtual void printXMLHierarchy(std::ostream& os) const;
-                                                                                
-    virtual std::string debug() const ;
-
-    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    BasicControlFlowGraphEdge& getLastEdge();
-    /** 
-     * insert a new basic block between after and before and return it
-     */
-    void insertBasicBlock();
-
-
-  protected:
-
-    /** 
-     * no def
-     */
-    BasicControlFlowGraph();
-
-    /** 
-     * no def
-     */
-    BasicControlFlowGraph(const BasicControlFlowGraph&);
-
-    /** 
-     * no def
-     */
-    ControlFlowGraph& operator=(const ControlFlowGraph&);
-
-  };  // end of class
-
-} // end of namespace 
-                                                                     
-#endif
+  DERIVED_ALG_FACTORY_DEF_MACRO(CallGraphVertex,xaifBoosterBasicBlockPreaccumulation)
