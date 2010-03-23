@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CONTROLFLOWGRAPHALG_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CONTROLFLOWGRAPHALG_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,61 +53,59 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/ControlFlowGraphAlgBase.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/CallGraphAlgBase.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
   /** 
-   * class to implement renaming of subroutine definitions
-   * if enforced
+   * class to implement algorithms relevant for the 
+   * reversal of the control flow
    */
-  class ControlFlowGraphAlg : public ControlFlowGraphAlgBase {
-
+  class CallGraphAlg : public CallGraphAlgBase {
   public:
     
-    ControlFlowGraphAlg(const ControlFlowGraph& theContaining);
-
-    virtual ~ControlFlowGraphAlg();
-
-    virtual void printXMLHierarchy(std::ostream& os) const;
+    CallGraphAlg(CallGraph& theContaining);
+                                                                                
+    ~CallGraphAlg();
 
     virtual void algorithm_action_1();
+                                                                                
+    virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     const std::string& getAlgorithmSignature() const;
-    //BasicControlFlowGraph& getBasicControlFlowGraph();
-    //const BasicControlFlowGraph& getBasicControlFlowGraph() const;    
 
   private:
     
     /** 
      * no def
      */
-    ControlFlowGraphAlg();
+    CallGraphAlg();
 
     /** 
      * no def
      */
-    ControlFlowGraphAlg(const ControlFlowGraphAlg&);
-
-    BasicControlFlowGraph* myBasicControlFlowGraph_p;
+    CallGraphAlg(const CallGraphAlg&);
 
     /** 
      * no def
      */
-    ControlFlowGraphAlg& operator=(const ControlFlowGraphAlg&);
+    CallGraphAlg& operator=(const CallGraphAlg&);
 
+        /**
+     * signature used in annotations of objects generated
+     * by the algorithm
+     */
     static std::string myAlgorithmSignature;
+                                                                                
+  };  // end of class
 
-  }; // end of class ControlFlowGraphAlg
-
-}
-
+} // end of namespace 
+                                                                     
 #endif

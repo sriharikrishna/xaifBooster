@@ -55,7 +55,8 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ControlFlowGraphAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -84,7 +85,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void AlgFactoryManager::resets() {
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetControlFlowGraphAlgFactory(new ControlFlowGraphAlgFactory());
+    resetCallGraphAlgFactory(new CallGraphAlgFactory());
+    resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
   }
 
   void AlgFactoryManager::init() {

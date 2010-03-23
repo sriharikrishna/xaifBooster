@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHVERTEXALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHVERTEXALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -51,82 +53,61 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/utils/inc/PrintManager.hpp"
-#include "xaifBooster/system/inc/SideEffectListType.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/ControlFlowGraphAlg.hpp"
+#include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
+#include "xaifBooster/system/inc/CallGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraph.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation {
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
- std::string ControlFlowGraphAlg::myAlgorithmSignature(std::string("_bbp_"));
+  /** 
+   * class to implement renaming of subroutine definitions
+   * if enforced
+   */
+  class CallGraphVertexAlg : public CallGraphVertexAlgBase {
 
-  ControlFlowGraphAlg::ControlFlowGraphAlg(const ControlFlowGraph& theContaining) :
-    ControlFlowGraphAlgBase(theContaining),
-    myBasicControlFlowGraph_p(NULL) {
-  }
+  public:
+    
+    CallGraphVertexAlg(const CallGraphVertex& theContaining);
 
-  ControlFlowGraphAlg::~ControlFlowGraphAlg() {
-  }
+    virtual ~CallGraphVertexAlg();
 
-  const std::string&
-  ControlFlowGraphAlg::getAlgorithmSignature() const {
-    return myAlgorithmSignature;
-  }
+    virtual void printXMLHierarchy(std::ostream& os) const;
 
-  void
-  ControlFlowGraphAlg::printXMLHierarchy(std::ostream& os) const {
-    PrintManager& pm=PrintManager::getInstance();
-    os << pm.indent()
-       << "<"
-       << getContaining().ourXAIFName.c_str()
-       << " ";
-    getContaining().printAttributes(os,getContaining().
-				    getSymbolReference());
-    os << " "
-       << getContaining().our_myActiveFlag_XAIFName.c_str()
-       << "=\""
-       << getContaining().getActiveFlag()
-       << "\">"
-       << std::endl;
-    getContaining().getArgumentList().printXMLHierarchy(os);
+    virtual void algorithm_action_1();
+                                                                                
+    virtual std::string debug() const ;
 
-    SideEffectList modList = getContaining().getSideEffectList(SideEffectListType::MOD_LIST);
-    modList.printXMLHierarchy(SideEffectListType::our_Mod_XAIFName,os);
-    SideEffectList readList = getContaining().getSideEffectList(SideEffectListType::READ_LIST);
-    readList.printXMLHierarchy(SideEffectListType::our_Read_XAIFName,os);
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    myBasicControlFlowGraph_p->printXMLHierarchy(os);
+    const std::string& getAlgorithmSignature() const;
+    //BasicControlFlowGraph& getBasicControlFlowGraph();
+    //const BasicControlFlowGraph& getBasicControlFlowGraph() const;    
 
-    os << pm.indent()
-       << "</"
-       << getContaining().ourXAIFName
-       << ">"
-       << std::endl;
-    pm.releaseInstance();
-  }
+  private:
+    
+    /** 
+     * no def
+     */
+    CallGraphVertexAlg();
 
-  void 
-  ControlFlowGraphAlg::algorithm_action_1() { 
-    const ControlFlowGraph& theContaining = getContaining();
-    myBasicControlFlowGraph_p = new BasicControlFlowGraph(theContaining);
-    myBasicControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
-    myBasicControlFlowGraph_p->insertBasicBlock();
-    // add inert basic block
-  }
+    /** 
+     * no def
+     */
+    CallGraphVertexAlg(const CallGraphVertexAlg&);
 
-  std::string
-  ControlFlowGraphAlg::debug() const {
-    std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulation::ControlFlowGraphAlg["
-        << this
-	<< ", containing="
-	<< getContaining().debug().c_str()
-        << "]" << std::ends;
-    return out.str();
-  }
+    BasicControlFlowGraph* myBasicControlFlowGraph_p;
 
-  void ControlFlowGraphAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
-  }
-  
-} // end namespace xaifBoosterBasicBlockPreaccumulation
+    /** 
+     * no def
+     */
+    CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
+
+    static std::string myAlgorithmSignature;
+
+  }; // end of class CallGraphVertexAlg
+
+}
+
+#endif

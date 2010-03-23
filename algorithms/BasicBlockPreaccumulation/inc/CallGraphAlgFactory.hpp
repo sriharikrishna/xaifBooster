@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CONTROLFLOWGRAPHALGFACTORY_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CONTROLFLOWGRAPHALGFACTORY_INCLUDE_
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHALGFACTORY_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,10 +53,11 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/system/inc/ControlFlowGraphAlgFactory.hpp"
+#include "xaifBooster/system/inc/CallGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(ControlFlowGraph,xaifBooster::ControlFlowGraphAlgFactory,xaifBoosterBasicBlockPreaccumulation)
+
+  DERIVED_ALG_FACTORY_DECL_MACRO(CallGraph,xaifBooster::CallGraphAlgFactory,xaifBoosterBasicBlockPreaccumulation)
 
 
 #endif
