@@ -90,7 +90,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    BasicControlFlowGraphEdge& getLastEdge();
+    BasicControlFlowGraphVertex& getExit();
     /** 
      * insert a new basic block between after and before and return it
      */
