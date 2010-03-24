@@ -184,24 +184,25 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
   }
 
-  BasicControlFlowGraphEdge& BasicControlFlowGraph::getLastEdge() {
-    BasicControlFlowGraph::EdgeIteratorPair pe(edges());
-    BasicControlFlowGraph::EdgeIterator beginIte(pe.first),endIte(pe.second);
-    for (;beginIte!=endIte ;++beginIte) {
-      BasicControlFlowGraphVertex& theTarget = getTargetOf(*beginIte);
-      if (theTarget.getKind() == ControlFlowGraphVertexKind::EXIT_VKIND)
-	return *beginIte;
-    }
-    THROW_LOGICEXCEPTION_MACRO("Missing a final edge in control flow graph"); 
+  BasicControlFlowGraphVertex& BasicControlFlowGraph::getExit() {
+    BasicControlFlowGraph::VertexIteratorPair p(vertices());
+    BasicControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
+    for (;beginIt!=endIt ;++beginIt) 
+      if ((*beginIt).getKind() == ControlFlowGraphVertexKind::EXIT_VKIND) 
+	return *beginIt;
+    THROW_LOGICEXCEPTION_MACRO("Missing EXIT node in control flow graph"); 
   }
-
+  
   // direction indicates if the characteristics of the replaceEdge should
   // be preserved by the new in (false) or outedge (true)
   void
   BasicControlFlowGraph::insertBasicBlock() {
 
     try {
-      BasicControlFlowGraphEdge& replacedEdge_r = BasicControlFlowGraph::getLastEdge();
+      BasicControlFlowGraphVertex& exitVertex = BasicControlFlowGraph::getExit();
+      BasicControlFlowGraphEdge& replacedEdge_r(*(getInEdgesOf(exitVertex).first));
+      BasicControlFlowGraphVertex& beforeVertex = getSourceOf(replacedEdge_r);
+
       BasicControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new BasicControlFlowGraphEdge();    
       aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
       BasicControlFlowGraphEdge* aNewControlFlowGraphOutEdge_p=new BasicControlFlowGraphEdge();    
@@ -221,8 +222,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       newVertex_p->getNewVertex().setId(makeUniqueVertexId());
       newVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
       
-      BasicControlFlowGraphVertex& beforeVertex = getSourceOf(replacedEdge_r);
-      BasicControlFlowGraphVertex& exitVertex = getTargetOf(replacedEdge_r);
       removeAndDeleteEdge(replacedEdge_r);
       supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
       supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
