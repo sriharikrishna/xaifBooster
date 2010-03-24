@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICCONTROLFLOWGRAPH_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICCONTROLFLOWGRAPH_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,49 +52,70 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlgFactory.hpp"
+#include <stack>
+#include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraph.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphEdge.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  /** 
+   * class to implement a control flow graph
+   */
+  class BasicControlFlowGraph : public GraphWrapperTraversable<BasicControlFlowGraphVertex,BasicControlFlowGraphEdge> {
 
-  void AlgFactoryManager::resets() {
-    resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetCallGraphAlgFactory(new CallGraphAlgFactory());
-    resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
-  }
+  public:
+    
+    BasicControlFlowGraph(const ControlFlowGraph&);
 
-  void AlgFactoryManager::init() {
-    xaifBoosterLinearization::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
-  }
+    std::string makeUniqueVertexId();
+    std::string makeUniqueEdgeId();
 
-}
+    const ControlFlowGraph& myOriginalGraph_r;
+ 
+    std::list<ControlFlowGraphVertex*> mySortedVertices_p_l;
 
+    void makeThisACopyOfOriginalControlFlowGraph();
+
+    virtual void printXMLHierarchy(std::ostream& os) const;
+                                                                                
+    virtual std::string debug() const ;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    BasicControlFlowGraphVertex& getExit();
+    /** 
+     * insert a new basic block between after and before and return it
+     */
+    void insertBasicBlock();
+
+
+  protected:
+
+    /** 
+     * no def
+     */
+    BasicControlFlowGraph();
+
+    /** 
+     * no def
+     */
+    BasicControlFlowGraph(const BasicControlFlowGraph&);
+
+    /** 
+     * no def
+     */
+    ControlFlowGraph& operator=(const ControlFlowGraph&);
+
+  };  // end of class
+
+} // end of namespace 
+                                                                     
+#endif
