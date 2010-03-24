@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICCONTROLFLOWGRAPHEDGE_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICCONTROLFLOWGRAPHEDGE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,49 +52,69 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/system/inc/EdgeTraversable.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphEdge.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  class BasicControlFlowGraph;
 
-  void AlgFactoryManager::resets() {
-    resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetCallGraphAlgFactory(new CallGraphAlgFactory());
-    resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
-  }
+  class BasicControlFlowGraphEdge : public ControlFlowGraphEdge {
 
-  void AlgFactoryManager::init() {
-    xaifBoosterLinearization::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
-  }
+  public:
+    
+    BasicControlFlowGraphEdge(const ControlFlowGraphEdge*);
+    BasicControlFlowGraphEdge();
+    ~BasicControlFlowGraphEdge();
 
-}
+    void printXMLHierarchy(std::ostream& os, const BasicControlFlowGraph&) const;
+                                                                                
+    virtual std::string debug() const ;
 
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    bool isOriginal() const;
+
+    const ControlFlowGraphEdge& getOriginalEdge() const;
+
+    bool hasConditionValue() const;
+
+    void setConditionValue(int);
+
+    int getConditionValue() const;
+    
+  private:
+
+    /** 
+     * no def
+     */
+    BasicControlFlowGraphEdge(const BasicControlFlowGraphEdge&);
+
+    /** 
+     * no def
+     */
+    BasicControlFlowGraphEdge& operator=(const BasicControlFlowGraphEdge&);
+    
+    bool myConditionValueFlag;
+    
+    /**
+     * if myConditionValueFlag is false this can be set
+     * otherwise it has the value of the original edge
+     * holds the condition value
+     */
+    int myConditionValue;
+
+    /** 
+     * pointer to original ControlFlowGraphEdge
+     * the edge is owned by the original ControlFlowGraph
+     */
+    const ControlFlowGraphEdge* myOriginalEdge_p;
+
+  };  // end of class
+
+} // end of namespace 
+                                                                     
+#endif

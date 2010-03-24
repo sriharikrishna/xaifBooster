@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHVERTEXALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHVERTEXALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,49 +52,62 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include "xaifBooster/utils/inc/LogicException.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
+#include "xaifBooster/system/inc/CallGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraph.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  xaifBooster::AlgFactoryManager* 
-  AlgFactoryManager::instance() { 
-    if (ourInstance_p)
-      return ourInstance_p;
-    ourInstanceMutex.lock();
-    try { 
-      if (!ourInstance_p)
-	ourInstance_p=new AlgFactoryManager();
-      if (!ourInstance_p) { 
-	THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::instance");
-      } // end if 
-    } // end try 
-    catch (...) { 
-      ourInstanceMutex.unlock();
-      throw;
-    } // end catch
-    ourInstanceMutex.unlock();
-    return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  /** 
+   * class to implement renaming of subroutine definitions
+   * if enforced
+   */
+  class CallGraphVertexAlg : public CallGraphVertexAlgBase {
 
-  void AlgFactoryManager::resets() {
-    resetAssignmentAlgFactory(new AssignmentAlgFactory());
-    resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
-    resetCallGraphAlgFactory(new CallGraphAlgFactory());
-    resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
-  }
+  public:
+    
+    CallGraphVertexAlg(const CallGraphVertex& theContaining);
 
-  void AlgFactoryManager::init() {
-    xaifBoosterLinearization::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
-  }
+    virtual ~CallGraphVertexAlg();
+
+    virtual void printXMLHierarchy(std::ostream& os) const;
+
+    virtual void algorithm_action_1();
+                                                                                
+    virtual std::string debug() const ;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    const std::string& getAlgorithmSignature() const;
+    //BasicControlFlowGraph& getBasicControlFlowGraph();
+    //const BasicControlFlowGraph& getBasicControlFlowGraph() const;    
+
+  private:
+    
+    /** 
+     * no def
+     */
+    CallGraphVertexAlg();
+
+    /** 
+     * no def
+     */
+    CallGraphVertexAlg(const CallGraphVertexAlg&);
+
+    BasicControlFlowGraph* myBasicControlFlowGraph_p;
+
+    /** 
+     * no def
+     */
+    CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
+
+    static std::string myAlgorithmSignature;
+
+  }; // end of class CallGraphVertexAlg
 
 }
 
+#endif
