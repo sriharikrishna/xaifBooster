@@ -1198,6 +1198,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // for independents, check against all non-independents for alias conflicts, making new propagation variable in that case
       // See AssignmentAlg::vertexIdentification for an explanation of why we only need to worry about replacing independents.
       if (!theRemainderLCG.numInEdgesOf(*rvi)) {
+	(*rvi).setOriginalVariable(theOriginalVertex.getOriginalVariable(),
+				   theOriginalVertex.getStatementId());
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP2 (theRemainderLCG.vertices());
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator rvi2 (rLCGvertIP2.first), rvi2_end (rLCGvertIP2.second);
 	for (; rvi2 != rvi2_end; ++rvi2) { // inner iteration over all remainder vertices
@@ -1215,9 +1217,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    break; // no need to continue with this indep vertex once a replacement propagation vertex has been created
 	  } // end if alias conflict possible
 	} // end inner iteration over remainder vertices
-	if (rvi2 == rvi2_end) // we made it through without any conflicts (no new variable had to be created)
-	  (*rvi).setOriginalVariable(theOriginalVertex.getOriginalVariable(),
-				     theOriginalVertex.getStatementId());
       } // end if this vertex is an independent
       else {
 	if (theOriginalVertex.hasOriginalVariable())
