@@ -103,9 +103,12 @@ namespace xaifBooster {
 				aSchemaLocation,
 				aPrefix);
     myUniversalNameCreator.setBaseName(aPrefix+"Symbol");
-    myPropagationVariableNameCreator.setBaseName(aPrefix+"prop");
-    myLinearizationVariableNameCreator.setBaseName(aPrefix+"lin");
     myTemporaryVariableNameCreator.setBaseName(aPrefix+"tmp");
+    myTypeChangeVariableNameCreator.setBaseName(aPrefix+"tyc");
+    myDelayVariableNameCreator.setBaseName(aPrefix+"dly");
+    myLinearizationVariableNameCreator.setBaseName(aPrefix+"lin");
+    myAccumulationVariableNameCreator.setBaseName(aPrefix+"acc");
+    myPropagationVariableNameCreator.setBaseName(aPrefix+"prp");
   } 
 
   PrintVersion::PrintVersion_E 
@@ -123,9 +126,19 @@ namespace xaifBooster {
   } // end ConceptuallyStaticInstances::getUniversalNameCreator()
 
   const NameCreator&
-  ConceptuallyStaticInstances::getPropagationVariableNameCreator() const { 
-    return myPropagationVariableNameCreator;
-  } // end ConceptuallyStaticInstances::getPropagationVariableNameCreator()
+  ConceptuallyStaticInstances::getTemporaryVariableNameCreator() const { 
+    return myTemporaryVariableNameCreator;
+  } // end ConceptuallyStaticInstances::getTemporaryVariableNameCreator()
+
+  const NameCreator&
+  ConceptuallyStaticInstances::getTypeChangeVariableNameCreator() const { 
+    return myTypeChangeVariableNameCreator;
+  } // end ConceptuallyStaticInstances::getTypeChangeVariableNameCreator()
+
+  const NameCreator&
+  ConceptuallyStaticInstances::getDelayVariableNameCreator() const { 
+    return myDelayVariableNameCreator;
+  } // end ConceptuallyStaticInstances::getDelayVariableNameCreator()
 
   const NameCreator&
   ConceptuallyStaticInstances::getLinearizationVariableNameCreator() const { 
@@ -133,9 +146,14 @@ namespace xaifBooster {
   } // end ConceptuallyStaticInstances::getLinearizationVariableNameCreator()
 
   const NameCreator&
-  ConceptuallyStaticInstances::getTemporaryVariableNameCreator() const { 
-    return myTemporaryVariableNameCreator;
-  } // end ConceptuallyStaticInstances::getTemporaryVariableNameCreator()
+  ConceptuallyStaticInstances::getAccumulationVariableNameCreator() const { 
+    return myAccumulationVariableNameCreator;
+  } // end ConceptuallyStaticInstances::getAccumulationVariableNameCreator()
+
+  const NameCreator&
+  ConceptuallyStaticInstances::getPropagationVariableNameCreator() const { 
+    return myPropagationVariableNameCreator;
+  } // end ConceptuallyStaticInstances::getPropagationVariableNameCreator()
 
   const TraversalStack& ConceptuallyStaticInstances::getTraversalStack() const {
     return myTraversalStack;
