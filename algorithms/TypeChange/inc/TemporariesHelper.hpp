@@ -56,6 +56,8 @@
 #include <string> 
 #include <vector>
 
+#include "xaifBooster/utils/inc/NameCreator.hpp"
+
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
@@ -89,21 +91,24 @@ namespace xaifBoosterTypeChange {
      */
     Symbol& makeTempSymbol(Scope& aScope);
 
+    /**
+     * \param aScope - Scope in which the symbol is made
+     * \param aNameCreator - used to determine the name of the new variable
+     * \param isActive - Flag indicating whether or not the new variable is active
+     */
+    Symbol& makeTempSymbol(Scope& aScope,
+                           const NameCreator& aNameCreator,
+                           bool isActive);
+
   private:
 
-    /**
-     * no def
-     */
+    /// no def
     TemporariesHelper();
 
-    /**
-     * no def
-     */
+    /// no def
     TemporariesHelper(const TemporariesHelper&);
 
-    /**
-     * no def
-     */
+    /// no def
     TemporariesHelper & operator=(const TemporariesHelper&);
 
     typedef std::vector<DimensionBounds*> DimensionBoundsPVector;

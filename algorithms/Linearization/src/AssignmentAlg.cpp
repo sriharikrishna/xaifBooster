@@ -64,6 +64,8 @@
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpressionVertex.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
+
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
@@ -251,22 +253,19 @@ namespace xaifBoosterLinearization {
 	  // set the alias key to temporary: 
 	  theDelayVertex_p->getVariable().getAliasMapKey().setTemporary();
 	  theDelayVertex_p->getVariable().getDuUdMapKey().setTemporary();
-	  // get the global scope
-	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-				getCallGraph().getScopeTree().getGlobalScope());
-	  // create a new symbol and add a new VariableSymbolReference in the Variable
-	  VariableSymbolReference* theNewVariableSymbolReference_p=
-	    new VariableSymbolReference(theGlobalScope.
-					getSymbolTable().
-					addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							   SymbolType::REAL_STYPE,
-							   SymbolShape::SCALAR,
-							   false),
-					theGlobalScope);
-	  theNewVariableSymbolReference_p->setId("1");
-	  theNewVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::AssignmentAlg::makeSSACodeList");
-	  theDelayVertex_p->getVariable().
-	    supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+          // add a new symbol for the delay variable
+          Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
+          VariableSymbolReference* delayVariableSymbolReference_p = new VariableSymbolReference (
+            xaifBoosterTypeChange::TemporariesHelper("xaifBoosterLinearization::AssignmentAlg::makeSSACodeList",
+                                                     theContainingAssignment.getLHS()
+                                                    ).makeTempSymbol(theCurrentCfgScope,
+                                                                     ConceptuallyStaticInstances::instance()->getDelayVariableNameCreator(),
+                                                                     false),
+            theCurrentCfgScope
+          );
+	  delayVariableSymbolReference_p->setId("1");
+	  delayVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::AssignmentAlg::makeSSACodeList");
+	  theDelayVertex_p->getVariable().supplyAndAddVertexInstance(*delayVariableSymbolReference_p);
 	  // set the new LHS to the original LHS
 	  theContainingAssignment.getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
 	  // make the temporary the LHS of theReplacementAssignment 
