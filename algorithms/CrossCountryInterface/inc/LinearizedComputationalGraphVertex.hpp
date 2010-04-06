@@ -83,9 +83,13 @@ namespace xaifBoosterCrossCountryInterface {
     /**
      * Used to replace the original variable in the case where we have an independent that may alias with some non-independent.
      * In this case, we use this new variable for propagation exclusively. (see BasicBlockAlg::makePropagationVariables())
-     * Also used for the case of a vertex that has no oroginal variable (some temporary)
      */
-    void createNewPropagationVariable();
+    void replacePropagationVariable();
+
+    /**
+     * Used in the case of a vertex that has no original variable (rather, it is associated with some temporary)
+     */
+    void createNewPropagationVariable(const Variable& variableToMatch);
 
     const Variable& getPropagationVariable() const;
 

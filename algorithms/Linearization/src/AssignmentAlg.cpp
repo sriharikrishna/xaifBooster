@@ -268,7 +268,7 @@ namespace xaifBoosterLinearization {
 	  theDelayVertex_p->getVariable().getDuUdMapKey().setTemporary();
 	  // get the scope
 	  Scope&theScope(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
-	  // create a new symbol and add a new VariableSymbolReference in the Variable
+            xaifBoosterTypeChange::TemporariesHelper("xaifBoosterLinearization::AssignmentAlg::makeSSACodeList",
 	  VariableSymbolReference* theNewVariableSymbolReference_p=NULL;
 	  xaifBoosterTypeChange::TemporariesHelper aLHShelper("AssignmentAlg::makeSSACodeList",
 							      theContainingAssignment.getLHS());
@@ -291,10 +291,6 @@ namespace xaifBoosterLinearization {
 	      needsAllocation=true;
 	    }
 	  }
-	  theNewVariableSymbolReference_p->setId("1");
-	  theNewVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::AssignmentAlg::makeSSACodeList");
-	  theDelayVertex_p->getVariable().
-	    supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
 	  // set the new LHS to the original LHS
 	  theContainingAssignment.getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
 	  // make the temporary the LHS of theReplacementAssignment 

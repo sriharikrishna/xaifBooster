@@ -126,8 +126,8 @@ namespace xaifBoosterLinearization{
   void ExpressionAlg::createPartialExpressions(){
     DBG_MACRO(DbgGroup::CALLSTACK, "ExpressionAlg::createPartialExpressions: for "
 	      <<debug().c_str());
+    Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     Expression::ConstVertexIteratorPair p(getContaining().vertices());
-    Scope&theScope(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     Expression::ConstVertexIterator anExpressionVertexIEnd(p.second);
     // outer loop over all vertices
     for(Expression::ConstVertexIterator anExpressionVertexI(p.first); anExpressionVertexI!=anExpressionVertexIEnd; ++anExpressionVertexI) {
@@ -159,10 +159,14 @@ namespace xaifBoosterLinearization{
 	 !theExpressionVertexAlg.hasAuxilliaryVariable()) {
 	// we need to make a temporary variable. see
 	// ExpressionVertex::myAuxilliaryArgument_p
-	theExpressionVertexAlg.makeAuxilliaryVariable(xaifBoosterTypeChange::TemporariesHelper("ExpressionAlg::createPartialExpressions",
-											getContaining(),
-											*anExpressionVertexI).makeTempSymbol(theScope),
-						theScope);
+	theExpressionVertexAlg.makeAuxilliaryVariable(
+          xaifBoosterTypeChange::TemporariesHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
+                                                   getContaining(),
+                                                   *anExpressionVertexI
+                                                  ).makeTempSymbol(theCurrentCfgScope,
+                                                                   ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
+                                                                   false),
+	  theCurrentCfgScope);
       } // end if
       // now we need to loop over all arguments to determine auxilliaries
       for(Expression::ConstInEdgeIterator anExpressionEdgeI2(pE.first); anExpressionEdgeI2!=anExpressionEdgeIEnd; ++anExpressionEdgeI2) {
@@ -180,19 +184,23 @@ namespace xaifBoosterLinearization{
 	  // ExpressionVertexAlg::myAuxilliaryArgument_p
 	  // however it is not needed if this is a leaf vertex, i.e. 
 	  // a variable reference itself or a constant (no in edges)
-	  theSourceAlg.makeAuxilliaryVariable(xaifBoosterTypeChange::TemporariesHelper("ExpressionAlg::createPartialExpressions",
-										  getContaining(),
-										  *anExpressionVertexI).makeTempSymbol(theScope),
-					  theScope);
+	  theSourceAlg.makeAuxilliaryVariable (
+            xaifBoosterTypeChange::TemporariesHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
+                                                     getContaining(),
+                                                     *anExpressionVertexI
+                                                    ).makeTempSymbol(theCurrentCfgScope,
+                                                                     ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
+                                                                     false),
+            theCurrentCfgScope
+          );
 	} // end if  
 	// match the abstract arguments in thePartialExpression
 	// with the concrete vertices in this Expression
 	// by position
 	const PositionSet&usedByThisPartial(thePartialExpression.getUsedPositionalArguments());
-	DBG_MACRO(DbgGroup::DATA, "ExpressionAlg::createPartialExpressions: for argument "
-		<<(*anExpressionEdgeI2).getPosition()
-		<<" the set of used positions is "
-		<<theUsedPositions.debug().c_str());
+	DBG_MACRO(DbgGroup::DATA, "xaifBoosterLinearization::ExpressionAlg::createPartialExpressions:"
+                               << " for argument " << (*anExpressionEdgeI2).getPosition()
+                               << " the set of used positions is " << theUsedPositions.debug().c_str());
 	Expression::ConstInEdgeIterator anExpressionEdgeI2_1(pE.first);
 	// first add the result (position 0) if needed:
 	if(usedByThisPartial.has(0))
@@ -349,7 +357,7 @@ namespace xaifBoosterLinearization{
 	  if(!theConcreteSourceVertex_p
 	  ||
 	  !theConcreteTargetVertex_p)
-	    THROW_LOGICEXCEPTION_MACRO("ExpressionAlg::createPartialExpressions: could not find source ("
+	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions: could not find source ("
 				    <<theAbstractSourceVertex.debug().c_str()
 				    <<") or target ("
 				    <<theAbstractTargetVertex.debug().c_str()
@@ -361,11 +369,16 @@ namespace xaifBoosterLinearization{
 	} // end for all abstract edges
 	// make a left hand side: 
 	Variable&theLHS(theI3ExpressionEdgeAlg.getConcretePartialAssignment().getLHS());
-	VariableSymbolReference* theVariableSymbolReference_p=
-		new VariableSymbolReference(xaifBoosterTypeChange::TemporariesHelper("ExpressionAlg::createPartialExpressions",
-										getContaining(),
-										*anExpressionVertexI).makeTempSymbol(theScope),
-					theScope);
+	VariableSymbolReference* theVariableSymbolReference_p =
+         new VariableSymbolReference(
+           xaifBoosterTypeChange::TemporariesHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
+                                                    getContaining(),
+                                                    *anExpressionVertexI
+                                                   ).makeTempSymbol(theCurrentCfgScope,
+                                                                    ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
+                                                                    false),
+           theCurrentCfgScope
+        );
 	// JU: this assignment of the vertex Id might have to change 
 	// if we create vector assignments as auxilliary variables...
 	theVariableSymbolReference_p->setId("1");

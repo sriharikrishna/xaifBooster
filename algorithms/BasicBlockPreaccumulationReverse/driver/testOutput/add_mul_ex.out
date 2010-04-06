@@ -4,24 +4,6 @@
         <xaif:SymbolTable>
           <xaif:Symbol symbol_id="head" kind="subroutine" type="void" feType="" shape="scalar" annotation="" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixSymbol_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixSymbol_5" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixprop_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixprop_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixprop_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixprop_3" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixprop_4" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixprop_5" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixprop_6" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
           <xaif:Symbol symbol_id="x" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="0">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="y" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="0">
@@ -38,17 +20,35 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="test_prefixSymbol_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
+          <xaif:Symbol symbol_id="test_prefixSymbol_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          </xaif:Symbol>
           <xaif:Symbol symbol_id="test_prefixSymbol_3" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixSymbol_4" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="test_prefixdly_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixSymbol_6" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="test_prefixdly_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixSymbol_7" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="test_prefixlin_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixSymbol_8" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="test_prefixlin_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixSymbol_9" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="test_prefixlin_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="test_prefixlin_3" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="test_prefixprp_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="test_prefixprp_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="test_prefixprp_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="test_prefixprp_3" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="test_prefixprp_4" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="test_prefixprp_5" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="test_prefixprp_6" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="x" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="0">
           </xaif:Symbol>
@@ -161,7 +161,7 @@
           <xaif:Marker statement_id="nop1" annotation="test nop to be ignored"/>
           <xaif:Assignment statement_id="_replacement_1_for_ass1">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_0" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
@@ -177,7 +177,7 @@
           </xaif:Assignment>
           <xaif:Assignment statement_id="_elementary_partial_0">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
@@ -187,7 +187,7 @@
           </xaif:Assignment>
           <xaif:Assignment statement_id="_elementary_partial_1">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
@@ -201,27 +201,27 @@
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_0" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:Assignment statement_id="_replacement_1_for_sage_2">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_1" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:Intrinsic vertex_id="5" annotation="" name="add_scal_scal"/>
@@ -243,7 +243,7 @@
           </xaif:Assignment>
           <xaif:Assignment statement_id="_elementary_partial_2">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_2" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
@@ -253,7 +253,7 @@
           </xaif:Assignment>
           <xaif:Assignment statement_id="_elementary_partial_3">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
@@ -267,21 +267,21 @@
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_1" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_2" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -317,7 +317,7 @@
             </xaif:Argument>
             <xaif:Argument position="2">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -329,7 +329,7 @@
             </xaif:Argument>
             <xaif:Argument position="2">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -343,7 +343,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -355,14 +355,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -374,28 +374,28 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_s0" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_s0" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -405,14 +405,14 @@
             </xaif:Argument>
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -422,7 +422,7 @@
             </xaif:Argument>
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -434,7 +434,7 @@
             </xaif:Argument>
             <xaif:Argument position="2">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -448,7 +448,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -460,14 +460,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -479,14 +479,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -498,28 +498,28 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_s0" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_s0" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -529,14 +529,14 @@
             </xaif:Argument>
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -546,7 +546,7 @@
             </xaif:Argument>
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -560,7 +560,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -572,14 +572,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -591,7 +591,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -654,7 +654,7 @@
           <xaif:Marker statement_id="nop1" annotation="test nop to be ignored"/>
           <xaif:Assignment statement_id="_replacement_1_for_ass1">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_0" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
@@ -670,7 +670,7 @@
           </xaif:Assignment>
           <xaif:Assignment statement_id="_elementary_partial_0">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
@@ -680,7 +680,7 @@
           </xaif:Assignment>
           <xaif:Assignment statement_id="_elementary_partial_1">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
@@ -694,27 +694,27 @@
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_0" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:Assignment statement_id="_replacement_1_for_sage_2">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_1" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:Intrinsic vertex_id="5" annotation="" name="add_scal_scal"/>
@@ -736,7 +736,7 @@
           </xaif:Assignment>
           <xaif:Assignment statement_id="_elementary_partial_2">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_2" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
@@ -746,7 +746,7 @@
           </xaif:Assignment>
           <xaif:Assignment statement_id="_elementary_partial_3">
             <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
@@ -760,21 +760,21 @@
             </xaif:AssignmentLHS>
             <xaif:AssignmentRHS>
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_1" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:AssignmentRHS>
           </xaif:Assignment>
           <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_2" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="push_s0" statement_id="inline_push">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_4" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_3" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -810,7 +810,7 @@
             </xaif:Argument>
             <xaif:Argument position="2">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -822,7 +822,7 @@
             </xaif:Argument>
             <xaif:Argument position="2">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -836,7 +836,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -848,14 +848,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_6" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -867,28 +867,28 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_5" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_s0" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_s0" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_6" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -898,14 +898,14 @@
             </xaif:Argument>
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_7" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -915,7 +915,7 @@
             </xaif:Argument>
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -927,7 +927,7 @@
             </xaif:Argument>
             <xaif:Argument position="2">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -941,7 +941,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -953,14 +953,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_4" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -972,14 +972,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_3" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -991,28 +991,28 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_s0" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="pop_s0" statement_id="inline_pop">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_8" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -1022,14 +1022,14 @@
             </xaif:Argument>
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="Saxpy" statement_id="inline_saxpy">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_9" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addFactorPop" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -1039,7 +1039,7 @@
             </xaif:Argument>
             <xaif:Argument position="3">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
@@ -1053,7 +1053,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -1065,14 +1065,14 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>
           <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
             <xaif:Argument position="2">
@@ -1084,7 +1084,7 @@
           <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
             <xaif:Argument position="1">
               <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprop_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+                <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixprp_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
               </xaif:VariableReference>
             </xaif:Argument>
           </xaif:InlinableSubroutineCall>

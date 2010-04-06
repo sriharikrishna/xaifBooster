@@ -831,12 +831,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  buildAccumulationAssignmentRecursively(theAccumulationGraph,
 						 theNewAssignment,
 						 currentAccV);
-	  Scope&theScope(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
+	  Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
 	  VariableSymbolReference* theVariableSymbolReference_p =
-	    new VariableSymbolReference (xaifBoosterTypeChange::TemporariesHelper("ExpressionAlg::generateAccumulationExpressions",
-										  theNewAssignment.getRHS(),
-										  theNewAssignment.getRHS().getMaxVertex()).makeTempSymbol(theScope),
-					 theScope);
+	    new VariableSymbolReference (
+              xaifBoosterTypeChange::TemporariesHelper(
+                "xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions",
+                theNewAssignment.getRHS(),
+                theNewAssignment.getRHS().getMaxVertex()
+              ).makeTempSymbol(theCurrentCfgScope,
+                               ConceptuallyStaticInstances::instance()->getAccumulationVariableNameCreator(),
+                               false),
+              theCurrentCfgScope);
 	  theVariableSymbolReference_p->setId("1");
 	  theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS");
 	  theNewAssignment.getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
@@ -1207,7 +1212,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  const PrivateLinearizedComputationalGraphVertex& theOriginalNonIndep (aSequence.getBestElimination().rVertex2oVertex(*rvi2));
 	  if (theOriginalNonIndep.hasOriginalVariable() && theAliasMap.mayAlias(theOriginalVertex.getOriginalVariable().getAliasMapKey(),
 										theOriginalNonIndep.getOriginalVariable().getAliasMapKey())) {
-	    (*rvi).createNewPropagationVariable();
+	    (*rvi).replacePropagationVariable();
 	    // set the deriv of the new propagation variable to that of the original variable
 	    aSequence.myDerivativePropagator.addSetDerivToEntryPList((*rvi).getPropagationVariable(),
 								     theOriginalVertex.getOriginalVariable());
@@ -1219,11 +1224,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	} // end inner iteration over remainder vertices
       } // end if this vertex is an independent
       else {
-	if (theOriginalVertex.hasOriginalVariable())
+	if (theOriginalVertex.hasOriginalVariable()) {
 	  (*rvi).setOriginalVariable(theOriginalVertex.getOriginalVariable(),
 				     theOriginalVertex.getStatementId());
-	else
-	  (*rvi).createNewPropagationVariable();
+        }
+	else {
+          // find a variable to match to
+          xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::InEdgeIteratorPair inEdgeIP (theRemainderLCG.getInEdgesOf(*rvi));
+          xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::InEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
+          for (; iei != ie_end; ++iei) {
+            // ultimately we may need topsort...
+            //if (!theRemainderGraph.getSourceOf(*iei).wasVisited()) break;
+            (*rvi).createNewPropagationVariable(theRemainderLCG.getSourceOf(*iei).getPropagationVariable());
+            break;
+          }
+        } 
       } // end non-independent
     } // end iterate over all remainder vertices
   } // end BasicBlockAlg::makePropagationVariables()

@@ -593,21 +593,23 @@ namespace xaifBoosterTypeChange {
 					 Variable& aVariable,
 					 int shapeOffsetFromFormal,
 					 bool forcePassive) { 
+    Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     // create a new symbol and add a new VariableSymbolReference in the Variable
     static std::list<std::string> reportShapeMismatchOnce;
-    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-			  getCallGraph().getScopeTree().getGlobalScope());
-    Symbol& theNewVariableSymbol(theGlobalScope.
-				 getSymbolTable().
-				 addUniqueAuxSymbol(SymbolKind::VARIABLE,
-						    formalArgumentSymbol.getSymbolType(),
-						    SymbolShape::offset(formalArgumentSymbol.getSymbolShape(),
-									shapeOffsetFromFormal),
-						    (forcePassive)?false:formalArgumentSymbol.getActiveTypeFlag()));
+    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+    Symbol& theNewVariableSymbol (
+      theCurrentCfgScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getTypeChangeVariableNameCreator(),
+                                                      SymbolKind::VARIABLE,
+                                                      formalArgumentSymbol.getSymbolType(),
+                                                      SymbolShape::offset(formalArgumentSymbol.getSymbolShape(),
+                                                                          shapeOffsetFromFormal),
+                                                      (forcePassive) ? false
+                                                                     : formalArgumentSymbol.getActiveTypeFlag())
+    );
     theNewVariableSymbol.setFrontEndType(formalArgumentSymbol.getFrontEndType());
     VariableSymbolReference* 
       theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
-								  theGlobalScope));
+								  theCurrentCfgScope));
     if (theConcreteArgument.isArgument()){ 
       // preserve dimension information from the concrete argument if any:
       const Symbol& theConcreteArgumentSymbol(theConcreteArgument.
