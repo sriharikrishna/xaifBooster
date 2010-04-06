@@ -104,9 +104,12 @@ namespace xaifBooster {
     void setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion);
 
     const NameCreator& getUniversalNameCreator() const;
-    const NameCreator& getPropagationVariableNameCreator() const;
-    const NameCreator& getLinearizationVariableNameCreator() const;
     const NameCreator& getTemporaryVariableNameCreator() const;
+    const NameCreator& getTypeChangeVariableNameCreator() const;
+    const NameCreator& getDelayVariableNameCreator() const;
+    const NameCreator& getLinearizationVariableNameCreator() const;
+    const NameCreator& getAccumulationVariableNameCreator() const;
+    const NameCreator& getPropagationVariableNameCreator() const;
 
     const TraversalStack& getTraversalStack() const;
     TraversalStack& getTraversalStack();
@@ -115,14 +118,10 @@ namespace xaifBooster {
     
     ConceptuallyStaticInstances();
     
-    /** 
-     * no def
-     */
+    /// no def
     ConceptuallyStaticInstances(const ConceptuallyStaticInstances&);
 
-    /** 
-     * no def
-     */
+    /// no def
     ConceptuallyStaticInstances& operator=(const ConceptuallyStaticInstances&);
 
     static ConceptuallyStaticInstances* ourInstance_p;
@@ -146,14 +145,29 @@ namespace xaifBooster {
     /// used to give unique names for variables created for some purpose not covered by those below
     NameCreator myUniversalNameCreator;
 
-    /// used to give unique names to variables created for the propagation
-    NameCreator myPropagationVariableNameCreator;
+    /// used to give unique names to temporary variables
+    NameCreator myTemporaryVariableNameCreator;
+
+    /**
+     * used to give unique names to variables created for type change
+     * (see ****)
+     */
+    NameCreator myTypeChangeVariableNameCreator;
+
+    /**
+     * used to delay an assignment
+     * (see xaifBoosterLinearization::AssignmentAlg::makeSSACodeList)
+     */
+    NameCreator myDelayVariableNameCreator;
 
     /// used to give unique names to variables that get assigned the value of a local partial during linearization
     NameCreator myLinearizationVariableNameCreator;
 
-    /// used to give unique names to temporary variables created for linearization
-    NameCreator myTemporaryVariableNameCreator;
+    /// used to give unique names to variables created for the propagation
+    NameCreator myAccumulationVariableNameCreator;
+
+    /// used to give unique names to variables created for the propagation
+    NameCreator myPropagationVariableNameCreator;
 
     /**
      * the stack for pointers that allow one to access different parts of the AST
@@ -162,6 +176,6 @@ namespace xaifBooster {
 
   }; // end of ConceptuallyStaticInstances
   
-} 
+} // end namespace xaifBooster
 
 #endif 

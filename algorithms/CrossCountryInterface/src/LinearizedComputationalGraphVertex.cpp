@@ -57,6 +57,8 @@
 #include "xaifBooster/system/inc/Scope.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
+
 namespace xaifBoosterCrossCountryInterface {
 
   LinearizedComputationalGraphVertex::LinearizedComputationalGraphVertex() :
@@ -104,15 +106,38 @@ namespace xaifBoosterCrossCountryInterface {
     return myStatementId;
   } // end LinearizedComputationalGraphVertex::getStatementId()
 
-  void LinearizedComputationalGraphVertex::createNewPropagationVariable() {
-    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+  void LinearizedComputationalGraphVertex::replacePropagationVariable() {
+    if (!myOriginalVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("LinearizedComputationalGraphVertex::replacePropagationVariable: myOriginalVariable_p not set!");
+    Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     myPropagationVariable_p  = new Variable();
-    VariableSymbolReference* theVariableSymbolReference_p = new VariableSymbolReference(theGlobalScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getPropagationVariableNameCreator(),
-                                                                                                                                        SymbolKind::VARIABLE,
-                                                                                                                                        SymbolType::REAL_STYPE,
-                                                                                                                                        SymbolShape::SCALAR,
-                                                                                                                                        true),
-                                                                                        theGlobalScope);
+    VariableSymbolReference* theVariableSymbolReference_p =
+     new VariableSymbolReference (
+        xaifBoosterTypeChange::TemporariesHelper("LinearizedComputationalGraphVertex::replacePropagationVariable",
+                                                 *myOriginalVariable_p
+        ).makeTempSymbol(theCurrentCfgScope,
+                         ConceptuallyStaticInstances::instance()->getPropagationVariableNameCreator(),
+                         true),
+        theCurrentCfgScope);
+    theVariableSymbolReference_p->setId("1");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable");
+    myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
+    myPropagationVariable_p->getAliasMapKey().setTemporary();
+    myPropagationVariable_p->getDuUdMapKey().setTemporary();
+  } // end LinearizedComputationalGraphVertex::replacePropagationVariable()
+
+  void LinearizedComputationalGraphVertex::createNewPropagationVariable(const Variable& variableToMatch) {
+    Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
+    myPropagationVariable_p  = new Variable();
+    VariableSymbolReference* theVariableSymbolReference_p =
+      new VariableSymbolReference(
+        xaifBoosterTypeChange::TemporariesHelper("LinearizedComputationalGraphVertex::createNewPropagationVariable",
+                                                 variableToMatch
+        ).makeTempSymbol(theCurrentCfgScope,
+                         ConceptuallyStaticInstances::instance()->getPropagationVariableNameCreator(),
+                         true),
+        theCurrentCfgScope
+    );
     theVariableSymbolReference_p->setId("1");
     theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable");
     myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
