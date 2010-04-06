@@ -89,6 +89,12 @@ namespace xaifBoosterTypeChange {
      */
     Symbol& makeTempSymbol(Scope& aScope);
 
+    /**
+     * returns true if the temporary would need to be allocated
+     * can be called before makeTempSymbol
+     */
+    bool needsAllocation();
+
   private:
 
     /**
@@ -111,6 +117,8 @@ namespace xaifBoosterTypeChange {
     void typeInfo(const ExpressionVertex& theTopVertex);
 
     void typeInfo(const Variable& aVariable);
+
+    void setTypeInfo();
 
     /**
      * populate the effective dimension bounds

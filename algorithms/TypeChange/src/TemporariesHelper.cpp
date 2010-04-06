@@ -68,24 +68,24 @@ namespace xaifBoosterTypeChange{
   TemporariesHelper::TemporariesHelper(const std::string& contextAnnotation,
 				       const Expression& theExpression,
 				       const ExpressionVertex& theTopVertex):
-  myContextAnnnotation(contextAnnotation),
-  myExpression_p(&theExpression),
-  myTopVertex_p(&theTopVertex),
-  myVariable_p(NULL),
-  myShape(SymbolShape::SCALAR),
-  myType(SymbolType::INTEGER_STYPE),
-  myTypeInfo(false){
+    myContextAnnnotation(contextAnnotation),
+    myExpression_p(&theExpression),
+    myTopVertex_p(&theTopVertex),
+    myVariable_p(NULL),
+    myShape(SymbolShape::SCALAR),
+    myType(SymbolType::INTEGER_STYPE),
+    myTypeInfo(false){
   }
 
   TemporariesHelper::TemporariesHelper(const std::string& contextAnnotation,
 				       const Variable& variableToMatch):
-  myContextAnnnotation(contextAnnotation),
-  myExpression_p(NULL),
-  myTopVertex_p(NULL),
-  myVariable_p(&variableToMatch),
-  myShape(SymbolShape::SCALAR),
-  myType(SymbolType::INTEGER_STYPE),
-  myTypeInfo(false){
+    myContextAnnnotation(contextAnnotation),
+    myExpression_p(NULL),
+    myTopVertex_p(NULL),
+    myVariable_p(&variableToMatch),
+    myShape(SymbolShape::SCALAR),
+    myType(SymbolType::INTEGER_STYPE),
+    myTypeInfo(false){
   }
 
   TemporariesHelper::~TemporariesHelper(){
@@ -98,22 +98,12 @@ namespace xaifBoosterTypeChange{
   }
 
   Symbol& TemporariesHelper::makeTempSymbol(Scope& aScope){
-    if(myTopVertex_p) {
-      typeInfo(*myTopVertex_p);
-    }
-    else {
-      typeInfo(*myVariable_p);
-    }
-    if(!myTypeInfo) {
-      if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)&&DbgLoggerManager::instance()->wantTag("expr"))
-	myExpression_p->show("ExpressionForMakeTempSymbol");
-      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::makeTempSymbol: no type info found");
-    }
+    setTypeInfo();
     Symbol&theNewVariableSymbol(aScope.getSymbolTable().
 				addUniqueAuxSymbol(SymbolKind::VARIABLE,
-						myType,
-						myShape,
-						false));
+						   myType,
+						   myShape,
+						   false));
     theNewVariableSymbol.setFrontEndType(myFrontEndType);
     if(myShape!=SymbolShape::SCALAR) {
       setDimensionBounds(theNewVariableSymbol);
@@ -130,11 +120,23 @@ namespace xaifBoosterTypeChange{
 	++found;
     }
     if(found==myShape&&found==myDimensionBoundsPVector.size()) {
-      for(DimensionBoundsPVector::iterator it=myDimensionBoundsPVector.begin();
-	  it!=myDimensionBoundsPVector.end();
-	  ++it) {
-	if(*it)
-	  aNewSymbol.addDimensionBounds((*it)->getLower(), (*it)->getUpper());
+      switch(DimensionBounds::getIndexOrder()) {
+      case IndexOrder::ROWMAJOR: // c and c++
+	for(DimensionBoundsPVector::iterator it=myDimensionBoundsPVector.begin();
+	    it!=myDimensionBoundsPVector.end();
+	    ++it) {
+	  if(*it)
+	    aNewSymbol.addDimensionBounds((*it)->getLower(), (*it)->getUpper());
+	}
+	break;
+      case IndexOrder::COLUMNMAJOR:  // fortran
+	for(DimensionBoundsPVector::reverse_iterator it=myDimensionBoundsPVector.rbegin();
+	    it!=myDimensionBoundsPVector.rend();
+	    ++it) {
+	  if(*it)
+	    aNewSymbol.addDimensionBounds((*it)->getLower(), (*it)->getUpper());
+	}
+	break;
       }
     }
   }
@@ -238,14 +240,14 @@ namespace xaifBoosterTypeChange{
 	    }
 	    int theBoundVal=effectiveBoundExpression.constIntEval();
 	    if(myDimensionBoundsPVector[theDimension-1]
-	    &&
-	    myDimensionBoundsPVector[theDimension-1]->getUpper()!=theBoundVal) {
+	       &&
+	       myDimensionBoundsPVector[theDimension-1]->getUpper()!=theBoundVal) {
 	      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::populateEffectiveDimensionBounds: conflicting bounds ("
-				      <<myDimensionBoundsPVector[theDimension]
-				      <<" vs. "
-				      <<theBoundVal
-				      <<" for dimension "
-				      <<theDimension);
+					 <<myDimensionBoundsPVector[theDimension]
+					 <<" vs. "
+					 <<theBoundVal
+					 <<" for dimension "
+					 <<theDimension);
 	    }
 	    myDimensionBoundsPVector[theDimension-1]=new DimensionBounds(1, theBoundVal);
 	  }
@@ -264,6 +266,34 @@ namespace xaifBoosterTypeChange{
 	  myDimensionBoundsPVector[theDimension-1]=new DimensionBounds((*symbolDBIt)->getLower(), (*symbolDBIt)->getUpper());
 	}
       }
+    }
+  }
+
+  bool TemporariesHelper::needsAllocation() {
+    setTypeInfo();
+    unsigned short found=0;
+    for(DimensionBoundsPVector::iterator it=myDimensionBoundsPVector.begin();
+	it!=myDimensionBoundsPVector.end();
+	++it) {
+      if(*it)
+	++found;
+    }
+    return !(found==myShape&&found==myDimensionBoundsPVector.size());
+  }
+
+  void TemporariesHelper::setTypeInfo() {
+    if(!myTypeInfo) {
+      if(myTopVertex_p) {
+	typeInfo(*myTopVertex_p);
+      }
+      else {
+	typeInfo(*myVariable_p);
+      }
+    }
+    if(!myTypeInfo) {
+      if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)&&DbgLoggerManager::instance()->wantTag("expr"))
+	myExpression_p->show("ExpressionForMakeTempSymbol");
+      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::setTypeInfo: no type info found");
     }
   }
 
