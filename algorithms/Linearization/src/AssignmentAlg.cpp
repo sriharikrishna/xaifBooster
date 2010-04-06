@@ -268,7 +268,6 @@ namespace xaifBoosterLinearization {
 	  theDelayVertex_p->getVariable().getDuUdMapKey().setTemporary();
 	  // get the scope
 	  Scope&theScope(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
-            xaifBoosterTypeChange::TemporariesHelper("xaifBoosterLinearization::AssignmentAlg::makeSSACodeList",
 	  VariableSymbolReference* theNewVariableSymbolReference_p=NULL;
 	  xaifBoosterTypeChange::TemporariesHelper aLHShelper("AssignmentAlg::makeSSACodeList",
 							      theContainingAssignment.getLHS());
