@@ -4,6 +4,9 @@ syntax: glob
 */driver/oadDriver
 *.a
 *.o
+*~
+*.swp
+*.orig
 *.B
 *.mod
 *.mod-whirl
