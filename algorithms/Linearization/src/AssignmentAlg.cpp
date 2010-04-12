@@ -290,6 +290,9 @@ namespace xaifBoosterLinearization {
 	      needsAllocation=true;
 	    }
 	  }
+	  theNewVariableSymbolReference_p->setId("1");
+	  theNewVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::AssignmentAlg::makeSSACodeList");
+	  theDelayVertex_p->getVariable().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
 	  // set the new LHS to the original LHS
 	  theContainingAssignment.getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
 	  // make the temporary the LHS of theReplacementAssignment 

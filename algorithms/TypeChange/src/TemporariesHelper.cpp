@@ -114,13 +114,7 @@ namespace xaifBoosterTypeChange{
   Symbol& TemporariesHelper::makeTempSymbol(Scope& aScope,
                                             const NameCreator& aNameCreator,
                                             bool isActive){
-    if(myTopVertex_p) typeInfo(*myTopVertex_p);
-    else typeInfo(*myVariable_p);
-    if(!myTypeInfo) {
-      if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)&&DbgLoggerManager::instance()->wantTag("expr"))
-	myExpression_p->show("ExpressionForMakeTempSymbol");
-      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::makeTempSymbol: no type info found");
-    }
+    setTypeInfo();
     Symbol& theNewVariableSymbol (aScope.getSymbolTable().addUniqueSymbol(aNameCreator,
                                                                           SymbolKind::VARIABLE,
                                                                           myType,
