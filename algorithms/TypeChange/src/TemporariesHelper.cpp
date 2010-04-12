@@ -196,9 +196,21 @@ namespace xaifBoosterTypeChange{
     if(aVariable.hasArrayAccess()) {
       unsigned short theDimension=0;
       const ArrayAccess::IndexTripletListType&theIndexTripletList(aVariable.getArrayAccess().getIndexTripletList());
+      DimensionBounds *aDimensionBounds_p=NULL;
       Symbol::DimensionBoundsPList::const_iterator symbolDBIt;
-      if(symbolDimensionBoundsP)
-	symbolDBIt=symbolDimensionBoundsP->begin();
+      Symbol::DimensionBoundsPList::const_reverse_iterator symbolDBRIt;
+      if(symbolDimensionBoundsP) {
+	switch(DimensionBounds::getIndexOrder()) {
+	case IndexOrder::ROWMAJOR: // c and c++
+	  symbolDBIt=symbolDimensionBoundsP->begin();
+	  aDimensionBounds_p=*symbolDBIt;
+	  break;
+	case IndexOrder::COLUMNMAJOR:  // fortran
+	  symbolDBRIt=symbolDimensionBoundsP->rbegin();
+	  aDimensionBounds_p=*symbolDBRIt;
+	  break;
+	}
+      }
       for(ArrayAccess::IndexTripletListType::const_iterator it=theIndexTripletList.begin();
 	  it!=theIndexTripletList.end();
 	  ++it) {
@@ -214,8 +226,8 @@ namespace xaifBoosterTypeChange{
 	    }
 	  }
 	  if(!indexExprP) {
-	    if(symbolDimensionBoundsP) {
-	      indexExpr.supplyAndAddVertexInstance(*(new Constant((*symbolDBIt)->getLower())));
+	    if(aDimensionBounds_p) {
+	      indexExpr.supplyAndAddVertexInstance(*(new Constant(aDimensionBounds_p->getLower())));
 	      indexExprP= &indexExpr;
 	    }
 	  }
@@ -227,8 +239,8 @@ namespace xaifBoosterTypeChange{
 	    }
 	  }
 	  if(!boundExprP) {
-	    if(symbolDimensionBoundsP) {
-	      boundExpr.supplyAndAddVertexInstance(*(new Constant((*symbolDBIt)->getUpper())));
+	    if(aDimensionBounds_p) {
+	      boundExpr.supplyAndAddVertexInstance(*(new Constant(aDimensionBounds_p->getUpper())));
 	      boundExprP= &boundExpr;
 	    }
 	  }
@@ -268,18 +280,40 @@ namespace xaifBoosterTypeChange{
 	    myDimensionBoundsPVector[theDimension-1]=new DimensionBounds(1, theBoundVal);
 	  }
 	}
-	if(symbolDimensionBoundsP)
-	  ++symbolDBIt;
+	if(symbolDimensionBoundsP) { 
+	  switch(DimensionBounds::getIndexOrder()) {
+	  case IndexOrder::ROWMAJOR: // c and c++
+	    ++symbolDBIt;
+	    aDimensionBounds_p=*symbolDBIt;
+	    break;
+	  case IndexOrder::COLUMNMAJOR:  // fortran
+	    ++symbolDBRIt;
+	    aDimensionBounds_p=*symbolDBRIt;
+	    break;
+	  }
+	}
       }
     }
     else { // no array access
       if(symbolDimensionBoundsP) {
 	unsigned short theDimension=0;
-	for(Symbol::DimensionBoundsPList::const_iterator symbolDBIt=symbolDimensionBoundsP->begin();
-	    symbolDBIt!=symbolDimensionBoundsP->end();
-	    ++symbolDBIt) {
-	  ++theDimension; // 1-based counting
-	  myDimensionBoundsPVector[theDimension-1]=new DimensionBounds((*symbolDBIt)->getLower(), (*symbolDBIt)->getUpper());
+	switch(DimensionBounds::getIndexOrder()) {
+	case IndexOrder::ROWMAJOR: // c and c++
+	  for(Symbol::DimensionBoundsPList::const_iterator symbolDBIt=symbolDimensionBoundsP->begin();
+	     symbolDBIt!=symbolDimensionBoundsP->end();
+	     ++symbolDBIt) {
+	    ++theDimension; // 1-based counting
+	    myDimensionBoundsPVector[theDimension-1]=new DimensionBounds((*symbolDBIt)->getLower(), (*symbolDBIt)->getUpper());
+	  }
+	  break;
+	case IndexOrder::COLUMNMAJOR:  // fortran
+	  for(Symbol::DimensionBoundsPList::const_reverse_iterator symbolDBIt=symbolDimensionBoundsP->rbegin();
+	     symbolDBIt!=symbolDimensionBoundsP->rend();
+	     ++symbolDBIt) {
+	    ++theDimension; // 1-based counting
+	    myDimensionBoundsPVector[theDimension-1]=new DimensionBounds((*symbolDBIt)->getLower(), (*symbolDBIt)->getUpper());
+	  }
+	  break;
 	}
       }
     }
