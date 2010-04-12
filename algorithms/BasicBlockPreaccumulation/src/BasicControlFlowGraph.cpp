@@ -144,13 +144,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	   theKind==ControlFlowGraphVertexKind::ENDBRANCH_VKIND
 	   ))
 	(*vertexCopyListIt).second->setCounterPart(getBasicFromOriginal(vertexCopy_l,
-									     (*vertexCopyListIt).first->getCounterPart()));
+									(*vertexCopyListIt).first->getCounterPart()));
       if ((*vertexCopyListIt).first->hasTopExplicitLoop())
 	(*vertexCopyListIt).second->setTopExplicitLoop(getBasicFromOriginal(vertexCopy_l,
-										 (*vertexCopyListIt).first->getTopExplicitLoop()));
+									    (*vertexCopyListIt).first->getTopExplicitLoop()));
       if ((*vertexCopyListIt).first->hasEnclosingControlFlow())
 	(*vertexCopyListIt).second->setEnclosingControlFlow(getBasicFromOriginal(vertexCopy_l,
-										      (*vertexCopyListIt).first->getEnclosingControlFlow()));
+										 (*vertexCopyListIt).first->getEnclosingControlFlow()));
     }
     // the sorted vertex list
     const std::list<const ControlFlowGraphVertex*>& theList(myOriginalGraph_r.getSOrtedVertexList());
@@ -158,7 +158,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 sortListIter!=theList.end();
 	 ++sortListIter) { 
       mySortedVertices_p_l.push_back(&(getBasicFromOriginal(vertexCopy_l,
-								 **sortListIter)));
+							    **sortListIter)));
     }
     ControlFlowGraph::ConstEdgeIteratorPair pe(myOriginalGraph_r.edges());
     ControlFlowGraph::ConstEdgeIterator beginIte(pe.first),endIte(pe.second);
@@ -193,15 +193,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     THROW_LOGICEXCEPTION_MACRO("Missing EXIT node in control flow graph"); 
   }
   
+  BasicControlFlowGraphVertex& BasicControlFlowGraph::getEntry() {
+    BasicControlFlowGraph::VertexIteratorPair p(vertices());
+    BasicControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
+    for (;beginIt!=endIt ;++beginIt) 
+      if ((*beginIt).getKind() == ControlFlowGraphVertexKind::ENTRY_VKIND) 
+	return *beginIt;
+    THROW_LOGICEXCEPTION_MACRO("Missing ENTRY node in control flow graph"); 
+  }
+
   // direction indicates if the characteristics of the replaceEdge should
   // be preserved by the new in (false) or outedge (true)
-  void
+  BasicBlock*
   BasicControlFlowGraph::insertBasicBlock() {
 
     try {
-      BasicControlFlowGraphVertex& exitVertex = BasicControlFlowGraph::getExit();
-      BasicControlFlowGraphEdge& replacedEdge_r(*(getInEdgesOf(exitVertex).first));
-      BasicControlFlowGraphVertex& beforeVertex = getSourceOf(replacedEdge_r);
+      BasicControlFlowGraphVertex& entryVertex = BasicControlFlowGraph::getEntry();
+      BasicControlFlowGraphEdge& replacedEdge_r(*(getOutEdgesOf(entryVertex).first));
 
       BasicControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new BasicControlFlowGraphEdge();    
       aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
@@ -222,14 +230,67 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       newVertex_p->getNewVertex().setId(makeUniqueVertexId());
       newVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
       
-      removeAndDeleteEdge(replacedEdge_r);
-      supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
-      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
-    
-      return;
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,entryVertex);
+
+      BasicControlFlowGraph::initializeDerivComponents(theNewBasicBlock);
+      return theNewBasicBlock;
     } catch (LogicException){
-      return;
+      return NULL;
     }
+  }
+
+  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+  BasicControlFlowGraph::addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* aNewCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+    theBasicBlock->supplyAndAddBasicBlockElementInstance(*aNewCall_p);
+    return *aNewCall_p;									     
+  }
+
+  void BasicControlFlowGraph::addZeroDeriv(Variable& theTarget,BasicBlock* theBasicBlock) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+      theSubroutineCall(BasicControlFlowGraph::addInlinableSubroutineCall("ZeroDeriv",theBasicBlock));
+    theSubroutineCall.setId("inline_zeroderiv");
+    theTarget.copyMyselfInto(theSubroutineCall.addConcreteArgument(1).getArgument().getVariable());
+  }
+
+  void BasicControlFlowGraph::initializeDerivComponents(BasicBlock* theBasicBlock) {
+    // go through symbol table & add zeroDeriv inlinable subroutine calls for every local var not an input arg
+    // iterate through basic blocks
+    BasicControlFlowGraph::VertexIteratorPair p(vertices());
+    BasicControlFlowGraph::VertexIterator vertexIt(p.first),endIt(p.second);
+    for (;vertexIt!=endIt ;++vertexIt) {
+      if ((*vertexIt).getKind() == ControlFlowGraphVertexKind::BASICBLOCK_VKIND) {
+	if ((*vertexIt).isOriginal()) {
+	  const BasicBlock& origBasicBlock(dynamic_cast<const BasicBlock&>((*vertexIt).getOriginalVertex()));
+	  //std::list<BasicBlockElement*>::iterator li=(origBasicBlock).myElementList.begin();
+	  for (PlainBasicBlock::BasicBlockElementList::const_iterator li=origBasicBlock.getBasicBlockElementList().begin();
+	       li!=origBasicBlock.getBasicBlockElementList().end();
+	       li++) { 
+	    // see if this is an assignment
+	    Assignment* anAssignment_p=dynamic_cast<Assignment*>(*li);
+	    if (anAssignment_p) { 
+	      Variable& myLHS = anAssignment_p->getLHS();
+	      if (myLHS.getActiveFlag())
+		BasicControlFlowGraph::addZeroDeriv(myLHS,theBasicBlock);
+	    }
+	    // see if this is a subroutine call
+	    SubroutineCall* aSubroutineCall_p=dynamic_cast<SubroutineCall*>(*li);
+	    if (aSubroutineCall_p) {
+	      const SubroutineCall::ConcreteArgumentPList& aConcreteArgumentPList(aSubroutineCall_p->getConcreteArgumentPList());
+	      for (SubroutineCall::ConcreteArgumentPList::const_iterator argIt=aConcreteArgumentPList.begin();
+		   argIt!=aConcreteArgumentPList.end();
+		   ++argIt) { 
+		if ((*argIt)->isArgument()) {
+		  Variable& myVar = (*argIt)->getArgument().getVariable();
+		  if (myVar.getActiveFlag())
+		    BasicControlFlowGraph::addZeroDeriv(myVar,theBasicBlock);
+		}
+	      }  
+	    }
+	  }
+	}
+      } 
+    } //end for
   }
 
   void BasicControlFlowGraph::printXMLHierarchy(std::ostream& os) const {

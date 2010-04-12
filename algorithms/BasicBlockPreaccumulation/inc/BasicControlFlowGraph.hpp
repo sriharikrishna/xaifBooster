@@ -59,6 +59,8 @@
 #include "xaifBooster/system/inc/Symbol.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphEdge.hpp"
 
@@ -90,12 +92,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    BasicControlFlowGraphVertex& getEntry();
+
     BasicControlFlowGraphVertex& getExit();
     /** 
      * insert a new basic block between after and before and return it
      */
-    void insertBasicBlock();
+    BasicBlock* insertBasicBlock();
 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+    addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock);
+
+    void addZeroDeriv(Variable& theTarget,BasicBlock* theBasicBlock);
+
+    void initializeDerivComponents(BasicBlock* theBasicBlock);
 
   protected:
 
