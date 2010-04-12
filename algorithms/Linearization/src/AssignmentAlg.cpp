@@ -272,8 +272,11 @@ namespace xaifBoosterLinearization {
 	  xaifBoosterTypeChange::TemporariesHelper aLHShelper("AssignmentAlg::makeSSACodeList",
 							      theContainingAssignment.getLHS());
 	  if (!aLHShelper.needsAllocation()) { // use the LHS as a model
-	    theNewVariableSymbolReference_p=new VariableSymbolReference(aLHShelper.makeTempSymbol(theScope),
-									theScope);
+	    theNewVariableSymbolReference_p=
+	      new VariableSymbolReference(aLHShelper.makeTempSymbol(theScope,
+								    ConceptuallyStaticInstances::instance()->getDelayVariableNameCreator(),
+								    false),
+					  theScope);
 	  }
 	  else {
 	    // try the RHS:
@@ -281,12 +284,18 @@ namespace xaifBoosterLinearization {
 								theContainingAssignment.getRHS(),
 								theContainingAssignment.getRHS().getMaxVertex());
 	    if (!(aRHShelper.needsAllocation())) {  // use the RHS as a model
-	      theNewVariableSymbolReference_p=new VariableSymbolReference(aRHShelper.makeTempSymbol(theScope),
-									  theScope);
+	      theNewVariableSymbolReference_p=
+		new VariableSymbolReference(aRHShelper.makeTempSymbol(theScope,
+								      ConceptuallyStaticInstances::instance()->getDelayVariableNameCreator(),
+								      false),
+					    theScope);
 	    }
 	    else { // rather allocate with the LHS as a model because fewer things can fail
-	      theNewVariableSymbolReference_p=new VariableSymbolReference(aLHShelper.makeTempSymbol(theScope),
-									  theScope);
+	      theNewVariableSymbolReference_p=
+		new VariableSymbolReference(aLHShelper.makeTempSymbol(theScope,
+								      ConceptuallyStaticInstances::instance()->getDelayVariableNameCreator(),
+								      false),
+					    theScope);
 	      needsAllocation=true;
 	    }
 	  }
