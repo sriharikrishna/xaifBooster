@@ -70,6 +70,9 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphVertex.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphEdge.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ForLoopDirection.hpp"
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
 
 using namespace xaifBooster;
 
@@ -145,6 +148,18 @@ namespace xaifBoosterControlFlowReversal {
     void setUnstructured(); 
 
     bool isStructured() const; 
+
+    /**
+     * insert a new basic block at beginning of control flow graph
+     */
+    void insertBasicBlockAtEnd();
+
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+    addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock);
+
+    void addZeroDeriv(Variable& theTarget,BasicBlock* theBasicBlock);
+
+    void initializeDerivComponents(BasicBlock* theBasicBlock);
 
   protected:
 
@@ -236,6 +251,7 @@ namespace xaifBoosterControlFlowReversal {
 						       const ReversibleControlFlowGraphVertex& before, 
 						       const ReversibleControlFlowGraphEdge& replacedEdge_r, 
 						       bool direction);
+
 
     /** 
      * make a new entry node

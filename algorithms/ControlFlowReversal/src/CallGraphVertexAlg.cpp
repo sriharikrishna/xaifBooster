@@ -256,6 +256,8 @@ namespace xaifBoosterControlFlowReversal {
     // this flag causes strict anonymity
     myStrictAnonymousTapingControlFlowGraph_p->donotRetainUserReversalFlag();
     myStrictAnonymousTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
+    myTapingControlFlowGraph_p->insertBasicBlockAtEnd();
+    myStrictAnonymousTapingControlFlowGraph_p->insertBasicBlockAtEnd();
     if (getContaining().getControlFlowGraph().isStructured())
       structuredReversal();
     else
