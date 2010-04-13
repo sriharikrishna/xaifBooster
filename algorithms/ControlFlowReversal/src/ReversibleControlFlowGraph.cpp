@@ -316,18 +316,21 @@ namespace xaifBoosterControlFlowReversal {
       }
       
       BasicBlock* theNewBasicBlock=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
-      ReversibleControlFlowGraphVertex* newVertex_p = new ReversibleControlFlowGraphVertex();
+      ReversibleControlFlowGraphVertex* newVertex_p = new ReversibleControlFlowGraphVertex(theNewBasicBlock);
       supplyAndAddVertexInstance(*newVertex_p);
       newVertex_p->setIndex(numVertices()+1);
       newVertex_p->setReversalType((myRetainUserReversalFlag)?(beforeVertex).getReversalType():ForLoopReversalType::ANONYMOUS);
       newVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
       newVertex_p->getNewVertex().setId(makeUniqueVertexId());
       newVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
-      newVertex_p->getNewVertex().printXMLHierarchy(std::cout);
+
+      mySortedVertices_p_l.pop_back();
+      mySortedVertices_p_l.push_back(newVertex_p);
+      mySortedVertices_p_l.push_back(&exitVertex);
       
       removeAndDeleteEdge(replacedEdge_r);
       supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
-      //supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
 
       ReversibleControlFlowGraph::initializeDerivComponents(theNewBasicBlock);
 
