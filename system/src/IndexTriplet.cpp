@@ -198,7 +198,7 @@ namespace xaifBooster {
   }
 
   bool IndexTriplet::isScalarDeref() const {
-    return (!hasExpression(IT_BOUND));
+    return (!hasExpression(IT_BOUND) && !hasExpression(IT_STRIDE));
   } 
 
 } 
