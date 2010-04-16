@@ -70,7 +70,27 @@ namespace xaifBooster {
       if ((*it).second)
 	delete (*it).second;
   }
-  
+
+  std::string IndexTriplet::debug() const {
+    std::ostringstream out;
+    out << "IndexTriplet[" << this;
+    if (hasExpression(IT_INDEX))
+      out << "index";
+    else
+      out << ".";
+    if (hasExpression(IT_BOUND))
+      out << "bound";
+    else
+      out << ".";
+    if (hasExpression(IT_STRIDE))
+      out << "stride";
+    else
+      out << ".";
+    out << "]" << std::ends;
+    return out.str();
+    return std::string("IndexTriplet");
+  }
+
   void
   IndexTriplet::copyMyselfInto(IndexTriplet& anotherIndexTriplet) const { 
     for (IndexPairList::const_iterator i=myIndexPairList.begin();
