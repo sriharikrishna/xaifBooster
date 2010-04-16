@@ -158,6 +158,7 @@ namespace xaifBoosterTypeChange{
   }
 
   void TemporariesHelper::typeInfo(const ExpressionVertex & theTopVertex){
+    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< theTopVertex.debug().c_str())
     if(theTopVertex.isArgument()) {
       typeInfo(dynamic_cast<const Argument&>(theTopVertex).getVariable());
     }
@@ -170,6 +171,7 @@ namespace xaifBoosterTypeChange{
   }
 
   void TemporariesHelper::typeInfo(const Variable & theVariable){
+    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< theVariable.debug().c_str())
     myTypeInfo=true;
     myType=SymbolType::genericPromotion(myType, theVariable.getVariableSymbolReference().getSymbol().getSymbolType());
     if(myType==theVariable.getVariableSymbolReference().getSymbol().getSymbolType())
