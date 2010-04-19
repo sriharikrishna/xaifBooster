@@ -159,14 +159,24 @@ namespace xaifBoosterLinearization{
 	 !theExpressionVertexAlg.hasAuxilliaryVariable()) {
 	// we need to make a temporary variable. see
 	// ExpressionVertex::myAuxilliaryArgument_p
-	theExpressionVertexAlg.makeAuxilliaryVariable(
-          xaifBoosterTypeChange::TemporariesHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
-                                                   getContaining(),
-                                                   *anExpressionVertexI
-                                                  ).makeTempSymbol(theCurrentCfgScope,
-                                                                   ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
-                                                                   false),
-	  theCurrentCfgScope);
+	xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
+							 getContaining(),
+							 *anExpressionVertexI);
+	theExpressionVertexAlg.makeAuxilliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
+									     ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
+									     false),
+						      theCurrentCfgScope);
+	if (aHelper.needsAllocation()) { 
+	  // add the allocation
+	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
+	  theSRCall_p->setId("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
+	  myPartialAllocationsPList.push_back(theSRCall_p);
+	  // first argument
+	  theExpressionVertexAlg.getAuxilliaryVariable().
+	    copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
+	  // second argument 
+	  aHelper.allocationModel().copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
+	}
       } // end if
       // now we need to loop over all arguments to determine auxilliaries
       for(Expression::ConstInEdgeIterator anExpressionEdgeI2(pE.first); anExpressionEdgeI2!=anExpressionEdgeIEnd; ++anExpressionEdgeI2) {
@@ -184,15 +194,24 @@ namespace xaifBoosterLinearization{
 	  // ExpressionVertexAlg::myAuxilliaryArgument_p
 	  // however it is not needed if this is a leaf vertex, i.e. 
 	  // a variable reference itself or a constant (no in edges)
-	  theSourceAlg.makeAuxilliaryVariable (
-            xaifBoosterTypeChange::TemporariesHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
-                                                     getContaining(),
-                                                     *anExpressionVertexI
-                                                    ).makeTempSymbol(theCurrentCfgScope,
-                                                                     ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
-                                                                     false),
-            theCurrentCfgScope
-          );
+	  xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
+							   getContaining(),
+							   theSource);
+	  theSourceAlg.makeAuxilliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
+								     ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
+								     false),
+					      theCurrentCfgScope);
+	  if (aHelper.needsAllocation()) { 
+	    // add the allocation
+	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
+	    theSRCall_p->setId("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
+	    myPartialAllocationsPList.push_back(theSRCall_p);
+	    // first argument
+	    theSourceAlg.getAuxilliaryVariable().
+	      copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
+	    // second argument 
+	    aHelper.allocationModel().copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
+	  }
 	} // end if  
 	// match the abstract arguments in thePartialExpression
 	// with the concrete vertices in this Expression
@@ -473,5 +492,9 @@ namespace xaifBoosterLinearization{
     ostr<<"_elementary_partial_"<<anId++ <<std::ends;
     return ostr.str();
   }
+
+  const ExpressionAlg::AllocationsPList& ExpressionAlg::getPartialAllocationsPList() const { 
+    return myPartialAllocationsPList;
+  } 
 
 }

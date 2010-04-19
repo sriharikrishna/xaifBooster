@@ -56,6 +56,8 @@
 #include "xaifBooster/system/inc/ExpressionAlgBase.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/AssignmentAlg.hpp"
+
 using namespace xaifBooster; 
 
 namespace xaifBoosterLinearization { 
@@ -104,6 +106,10 @@ namespace xaifBoosterLinearization {
      */
     void createPartialExpressions();
 
+    typedef std::list<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall*> AllocationsPList;
+    
+    const AllocationsPList& getPartialAllocationsPList() const;
+
   private: 
 
     /** 
@@ -146,6 +152,11 @@ namespace xaifBoosterLinearization {
      * to satisfy schema uniqueness constraints
      */
     static std::string makeUniqueId(); 
+    
+    /**
+     * list of allocations potentially needed for partial variables
+     */
+    AllocationsPList myPartialAllocationsPList;
 
   };
  
