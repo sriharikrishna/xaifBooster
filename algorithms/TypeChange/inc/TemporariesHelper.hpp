@@ -97,6 +97,11 @@ namespace xaifBoosterTypeChange {
      */
     bool needsAllocation();
 
+    /** 
+     * \return a variable that can serve a s model to allocate the temporary
+     */ 
+    const Variable& allocationModel();
+
     /**
      * \param aScope - Scope in which the symbol is made
      * \param aNameCreator - used to determine the name of the new variable
@@ -150,6 +155,8 @@ namespace xaifBoosterTypeChange {
     DimensionBoundsPVector myDimensionBoundsPVector;
 
     bool myTypeInfo;
+
+    const Variable* myAllocationModel_p;
 
   }; // end of class TemporariesHelper
 
