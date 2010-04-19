@@ -166,9 +166,20 @@ namespace xaifBoosterTypeChange{
     else {
       Expression::ConstInEdgeIteratorPair theInEdgesP=myExpression_p->getInEdgesOf(theTopVertex);
       Expression::ConstInEdgeIterator inEdgeIt=theInEdgesP.first, inEdgeEndIt=theInEdgesP.second;
-      for(; inEdgeIt!=inEdgeEndIt; ++inEdgeIt)
-	typeInfo(myExpression_p->getSourceOf(*inEdgeIt));
+      if(inEdgeIt==inEdgeEndIt) { // must be a constant
+	typeInfo(dynamic_cast<const Constant&>(theTopVertex));
+      }
+      else { 
+	for(; inEdgeIt!=inEdgeEndIt; ++inEdgeIt)
+	  typeInfo(myExpression_p->getSourceOf(*inEdgeIt));
+      }
     }
+  }
+
+  void TemporariesHelper::typeInfo(const Constant& aConstant){
+    myTypeInfo=true;
+    myType=aConstant.getType();
+    myFrontEndType=aConstant.getFrontEndType();
   }
 
   void TemporariesHelper::typeInfo(const Variable & theVariable){
