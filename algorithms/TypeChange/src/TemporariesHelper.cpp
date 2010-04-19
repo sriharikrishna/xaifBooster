@@ -85,7 +85,8 @@ namespace xaifBoosterTypeChange{
     myVariable_p(&variableToMatch),
     myShape(SymbolShape::SCALAR),
     myType(SymbolType::INTEGER_STYPE),
-    myTypeInfo(false){
+    myTypeInfo(false),
+    myAllocationModel_p(NULL) {
   }
 
   TemporariesHelper::~TemporariesHelper(){
@@ -187,6 +188,7 @@ namespace xaifBoosterTypeChange{
       if(!myDimensionBoundsPVector.size())
 	myDimensionBoundsPVector.resize(myShape, NULL);
       populateDimensionBounds(theVariable);
+      myAllocationModel_p=&theVariable;
     }
   }
 
@@ -348,5 +350,13 @@ namespace xaifBoosterTypeChange{
       THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::setTypeInfo: no type info found");
     }
   }
+
+  const Variable& TemporariesHelper::allocationModel() { 
+    setTypeInfo();
+    if(!myAllocationModel_p) {
+      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::allocationModel: no allocation model found");
+    }
+    return *myAllocationModel_p;
+  } 
 
 }
