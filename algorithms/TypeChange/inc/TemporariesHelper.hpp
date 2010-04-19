@@ -61,6 +61,7 @@
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
 
 using namespace xaifBooster;
 
@@ -127,6 +128,8 @@ namespace xaifBoosterTypeChange {
     void typeInfo(const ExpressionVertex& theTopVertex);
 
     void typeInfo(const Variable& aVariable);
+
+    void typeInfo(const Constant & aConstant); 
 
     void setTypeInfo();
 
