@@ -124,6 +124,16 @@ namespace xaifBoosterLinearization {
 	(*li)->printXMLHierarchy(os);
       }
     }
+    ExpressionAlg::AllocationsPList partialAllocationsPList=
+      dynamic_cast<ExpressionAlg&>(myLinearizedRightHandSide.getExpressionAlgBase()).getPartialAllocationsPList();
+    if (partialAllocationsPList.size()) { 
+      for (ExpressionAlg::AllocationsPList::const_iterator li=partialAllocationsPList.begin();
+	   li!=partialAllocationsPList.end();
+	   ++li) { 
+	DBG_MACRO(DbgGroup::DATA, "xaifBoosterLinearization::AssignmentAlg::printXMLHierarchy: printing: " << *li );
+	(*li)->printXMLHierarchy(os);
+      }
+    }
     if (mySSAReplacementAssignmentList.size()) { 
       for (AssignmentPList::const_iterator li=mySSAReplacementAssignmentList.begin();
 	   li!=mySSAReplacementAssignmentList.end();
