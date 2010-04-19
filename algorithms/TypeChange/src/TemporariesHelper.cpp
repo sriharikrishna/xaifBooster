@@ -179,7 +179,8 @@ namespace xaifBoosterTypeChange{
   void TemporariesHelper::typeInfo(const Constant& aConstant){
     myTypeInfo=true;
     myType=aConstant.getType();
-    myFrontEndType=aConstant.getFrontEndType();
+    // don't set this for now or the type promotions is screwed up
+    // myFrontEndType=aConstant.getFrontEndType();  
   }
 
   void TemporariesHelper::typeInfo(const Variable & theVariable){
