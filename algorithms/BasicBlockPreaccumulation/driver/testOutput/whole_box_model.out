@@ -324,7 +324,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="L_9" kind="variable" type="integer" feType="I4" shape="scalar" annotation="{Sym_Id#9}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_acc_0" kind="variable" type="integer" feType="F8" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_acc_0" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_lin_0" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -357,7 +357,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="L_8" kind="variable" type="integer" feType="I4" shape="scalar" annotation="{Sym_Id#8}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_acc_1" kind="variable" type="integer" feType="F8" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_acc_1" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_lin_10" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -518,9 +518,9 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_acc_17" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_acc_18" kind="variable" type="integer" feType="F8" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_acc_18" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_acc_19" kind="variable" type="integer" feType="F8" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_acc_19" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_acc_2" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
