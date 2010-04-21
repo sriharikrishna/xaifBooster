@@ -110,7 +110,7 @@ namespace xaifBoosterTypeChange{
       setDimensionBounds(theNewVariableSymbol);
     }
     return theNewVariableSymbol;
-  } // end TemporariesHelper::makeTempSymbol(aScope)
+  } 
 
   Symbol& TemporariesHelper::makeTempSymbol(Scope& aScope,
                                             const NameCreator& aNameCreator,
@@ -126,7 +126,7 @@ namespace xaifBoosterTypeChange{
       setDimensionBounds(theNewVariableSymbol);
     }
     return theNewVariableSymbol;
-  } // end TemporariesHelper::makeTempSymbol(aScope,aNameCreator,isActive)
+  } 
 
   void TemporariesHelper::setDimensionBounds(Symbol& aNewSymbol){
     unsigned short found=0;
@@ -159,7 +159,7 @@ namespace xaifBoosterTypeChange{
   }
 
   void TemporariesHelper::typeInfo(const ExpressionVertex & theTopVertex){
-    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< theTopVertex.debug().c_str())
+    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< theTopVertex.debug().c_str() << ")")
     if(theTopVertex.isArgument()) {
       typeInfo(dynamic_cast<const Argument&>(theTopVertex).getVariable());
     }
@@ -177,18 +177,35 @@ namespace xaifBoosterTypeChange{
   }
 
   void TemporariesHelper::typeInfo(const Constant& aConstant){
-    myTypeInfo=true;
-    myType=aConstant.getType();
-    // don't set this for now or the type promotions is screwed up
-    // myFrontEndType=aConstant.getFrontEndType();  
+    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< aConstant.debug().c_str() << ")")
+    if (!myTypeInfo) {
+      myTypeInfo=true;
+      myType=aConstant.getType();
+      myFrontEndType=aConstant.getFrontEndType();
+    }
+    else { 
+      SymbolType::SymbolType_E aCType=aConstant.getType();
+      SymbolType::SymbolType_E promotedType=SymbolType::genericPromotion(myType,aCType);
+      if (aCType==promotedType && myType!=promotedType)
+	myFrontEndType=aConstant.getFrontEndType();
+      myType=promotedType;
+    }
   }
 
   void TemporariesHelper::typeInfo(const Variable & theVariable){
-    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< theVariable.debug().c_str())
-    myTypeInfo=true;
-    myType=SymbolType::genericPromotion(myType, theVariable.getVariableSymbolReference().getSymbol().getSymbolType());
-    if(myType==theVariable.getVariableSymbolReference().getSymbol().getSymbolType())
+    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< theVariable.debug().c_str() << ")")
+    if (!myTypeInfo) {
+      myTypeInfo=true;
+      myType=theVariable.getVariableSymbolReference().getSymbol().getSymbolType();
       myFrontEndType=theVariable.getVariableSymbolReference().getSymbol().getFrontEndType();
+    }
+    else {
+      SymbolType::SymbolType_E aVType=theVariable.getVariableSymbolReference().getSymbol().getSymbolType();
+      SymbolType::SymbolType_E promotedType=SymbolType::genericPromotion(myType,aVType);
+      if (aVType==promotedType && myType!=promotedType)
+	myFrontEndType=theVariable.getVariableSymbolReference().getSymbol().getFrontEndType();
+      myType=promotedType;
+    }
     SymbolShape::SymbolShape_E argShape=theVariable.getEffectiveShape();
     if(myShape!=SymbolShape::SCALAR&&argShape!=SymbolShape::SCALAR&&myShape!=argShape)
       THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::typeInfo: effective shape change between "
