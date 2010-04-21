@@ -2,23 +2,23 @@
     <xaif:ScopeHierarchy>
       <xaif:Scope vertex_id="1" annotation="">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id="GetRidOfThisDefaultprop_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="GetRidOfThisDefaultprop_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="GetRidOfThisDefaultprop_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
-          </xaif:Symbol>
           <xaif:Symbol symbol_id="head" kind="subroutine" type="void" feType="" shape="scalar" annotation="" active="1" temp="0">
           </xaif:Symbol>
         </xaif:SymbolTable>
       </xaif:Scope>
       <xaif:Scope vertex_id="2" annotation="">
         <xaif:SymbolTable>
-          <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="GetRidOfThisDefaultlin_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="GetRidOfThisDefaultlin_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="GetRidOfThisDefaultSymbol_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="GetRidOfThisDefaultlin_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="GetRidOfThisDefaultprp_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="GetRidOfThisDefaultprp_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
+          </xaif:Symbol>
+          <xaif:Symbol symbol_id="GetRidOfThisDefaultprp_2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="i" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="1" temp="0">
           </xaif:Symbol>
@@ -65,7 +65,7 @@
           </xaif:Argument>
           <xaif:Argument position="2">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprop_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprp_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
@@ -79,7 +79,7 @@
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprop_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprp_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
           <xaif:Argument position="2">
@@ -91,7 +91,7 @@
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprop_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprp_0" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
@@ -105,7 +105,7 @@
           </xaif:Argument>
           <xaif:Argument position="2">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprop_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprp_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
@@ -119,7 +119,7 @@
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprop_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprp_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
           <xaif:Argument position="2">
@@ -131,7 +131,7 @@
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprop_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprp_1" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
@@ -145,7 +145,7 @@
           </xaif:Argument>
           <xaif:Argument position="2">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprop_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprp_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
@@ -159,7 +159,7 @@
         <xaif:InlinableSubroutineCall subroutine_name="IncDeriv" statement_id="inline_IncDeriv">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprop_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprp_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
           <xaif:Argument position="2">
@@ -171,7 +171,7 @@
         <xaif:InlinableSubroutineCall subroutine_name="ZeroDeriv" statement_id="inline_zeroderiv">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprop_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable" scope_id="1"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultprp_2" annotation="xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
