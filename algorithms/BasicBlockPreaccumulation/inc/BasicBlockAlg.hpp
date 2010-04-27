@@ -73,6 +73,8 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationMetric.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraph.hpp" 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphVertex.hpp" 
 
 using namespace xaifBooster;
 
@@ -317,6 +319,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       const xaifBoosterCrossCountryInterface::Elimination& getBestElimination() const;
       xaifBoosterCrossCountryInterface::Elimination& getBestElimination();
+      RemainderGraph& getBestRemainderGraph();
+      
 
       EliminationPList& getEliminationPList();
 
@@ -353,6 +357,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       EliminationPList myEliminationPList;
 
       xaifBoosterCrossCountryInterface::Elimination* myBestElimination_p;
+
+      /** 
+       * the RemainderGraph corresponding to myBestElimination_p
+       */
+      RemainderGraph* myBestRemainderGraph_p;
       
     }; // end of class Sequence
 
@@ -459,7 +468,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void makePropagationVariables(Sequence& aSequence);
 
-    /// traverses the remainder graph and creates a derivative propagator entry for every edge
+    /**
+     * traverses the remainder graph and creates a derivative propagator entry for every edge
+     */
     void generateRemainderGraphPropagators(Sequence& aSequence); 
 
     /*
@@ -468,11 +479,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * This lets us start with a setderiv or a setnegderiv whenever possible.
      * The constant and variable edges are subsequently handled with Sax(py) operations.
      */
-    void propagateToRemainderVertex(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV,
+    void propagateToRemainderVertex(const RemainderGraphVertex& theRemainderTargetV,
                                     Sequence& aSequence);
 
-    /// creates a single n-ary SAX operation for propagating to \p theRemainderTargetV
-    void propagateToRemainderVertex_narySax(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV,
+    /**
+     * creates a single n-ary SAX operation for propagating to \p theRemainderTargetV
+     */
+    void propagateToRemainderVertex_narySax(const RemainderGraphVertex& theRemainderTargetV,
                                             Sequence& aSequence);
 
     /** 
@@ -480,8 +493,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static std::string makeUniqueId(); 
 
-  }; // end class BasicBlockAlg
+  }; 
  
-} // end namespace xaifBoosterBasicBlockPreaccumulation
+} 
                                                                      
 #endif

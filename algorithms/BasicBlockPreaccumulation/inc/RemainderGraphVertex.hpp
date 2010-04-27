@@ -1,5 +1,5 @@
-#ifndef _PRIVATELINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
-#define _PRIVATELINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
+#ifndef _REMAINDERGRAPHVERTEX_INCLUDE_
+#define _REMAINDERGRAPHVERTEX_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,83 +53,53 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include <list>
+#include "xaifBooster/boostWrapper/inc/Vertex.hpp"
 
-#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
-namespace xaifBooster { 
-  class ExpressionEdge;
-}
+#include "xaifBooster/system/inc/Variable.hpp"
 
-using namespace xaifBooster; 
+#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
+
+using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
-  
-  class PrivateLinearizedComputationalGraphEdge : 
-    public xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge {
 
+  class RemainderGraphVertex : public PrivateLinearizedComputationalGraphVertex {
   public:
 
-    PrivateLinearizedComputationalGraphEdge();
+    RemainderGraphVertex();
+    ~RemainderGraphVertex();
 
-    ~PrivateLinearizedComputationalGraphEdge(){};
- 
-    void setLinearizedExpressionEdge(ExpressionEdge& anExpressionEdge);
+    std::string debug() const;
 
-    void setDirectCopyEdge();
+    /**
+     * Used to replace the original variable in the case where we have an independent that may alias with some non-independent.
+     * In this case, we use this new variable for propagation exclusively. (see BasicBlockAlg::makePropagationVariables())
+     */
+    void replacePropagationVariable();
 
-    bool isDirectCopyEdge() const;
+    /**
+     * Used in the case of a vertex that has no original variable (rather, it is associated with some temporary)
+     */
+    void createNewPropagationVariable(const Variable& variableToMatch);
 
-    const ExpressionEdge& getLinearizedExpressionEdge() const;
-    bool hasLinearizedExpressionEdge() const;
-
-    std::string debug() const ;
-
-    typedef std::list<ExpressionEdge*> ExpressionEdgePList;
-    
-    void addParallel(ExpressionEdge&);
-
-    virtual Assignment& getAssignmentFromEdge() const {
-      return (dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getConcretePartialAssignment());
-    };
-
-    const ExpressionEdgePList& getParallels() const;
+    const Variable& getPropagationVariable() const;
 
   private:
-    
+
     /**
-     * this refers to an edge in the  
-     * right hand side of an assignment in a 
-     * basic block
-     * I.e. this is a reference to a local partial 
-     * derivative
-     * this class doesn't own the ExpressionEdge pointed 
-     * to by myPrivateLinearizedExpressionEdge
-     * the edge we point to is not owned by this class
+     * Pointer to the variable that will be used for propagation in case there is no original variable,
+     * or the original variable for an independent had to be replaced because of possible aliasing issues.
+     * This variable is owned by this class, and is deleted in the dtor.
      */
-    ExpressionEdge* myLinearizedExpressionEdge_p;
+    Variable* myPropagationVariable_p;
 
-    /** 
-     * we keep all references to edges parallel 
-     * to the one referenced in myLinearizedExpressionEdge_p
-     * in here such that the we have only one placeholder 
-     * in here. This implies that all parallel edges are 
-     * added before any reference to this edge
-     * none of the edges are owned by this class
-     */
-    ExpressionEdgePList myParallelEdges;
-
-    /** 
-     * this is a special purpose edge 
-     * that needs to represent an assignment t1=t2, 
-     * i.e. something for which we don't have an edge in the 
-     * Expression
-     */
-    bool myDirectCopyEdgeFlag;
-
-  }; // end of class LinearizedComputationalGraphEdge
+  }; 
  
 } 
                                                                      
 #endif
+

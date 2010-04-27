@@ -77,11 +77,12 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdgeAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphWriters.hpp"
 
 
 using namespace xaifBooster;
@@ -109,7 +110,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::Sequence::Sequence() :
     myFirstElement_p(0),
     myLastElement_p(0),
-    myBestElimination_p(0) {
+    myBestElimination_p(0),
+    myBestRemainderGraph_p(0) {
     myComputationalGraph_p=ourPrivateLinearizedComputationalGraphAlgFactory_p->makeNewPrivateLinearizedComputationalGraph();
   }
   
@@ -190,7 +192,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   xaifBoosterCrossCountryInterface::Elimination& BasicBlockAlg::Sequence::addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg) { 
-	  xaifBoosterCrossCountryInterface::Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination (lcg);
+    xaifBoosterCrossCountryInterface::Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination (lcg);
     myEliminationPList.push_back(theElimination_p);
     return *theElimination_p;
   }
@@ -205,7 +207,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if ((*i)->getCounter() < myBestElimination_p->getCounter())
         myBestElimination_p = *i;
     } // end iterate over all Eliminations
-  } // end BasicBlockAlg::Sequence::determineBestElimination()
+  } 
 
   const xaifBoosterCrossCountryInterface::Elimination& BasicBlockAlg::Sequence::getBestElimination() const {
     if (!myBestElimination_p)
@@ -218,7 +220,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (!myBestElimination_p)
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestElimination: myBestElimination_p not set");
     return *myBestElimination_p;
-  } // end BasicBlockAlg::Sequence::getBestElimination()
+  } 
+
+  RemainderGraph& 
+  BasicBlockAlg::Sequence::getBestRemainderGraph() {
+    if (!myBestElimination_p)
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::Sequence::getBestRemainderGraph: myBestElimination_p not set");
+    if (!myBestRemainderGraph_p) { 
+      myBestRemainderGraph_p=new RemainderGraph();
+      myBestRemainderGraph_p->initFrom(getBestElimination());
+    }
+    return *myBestRemainderGraph_p;
+  } 
 
   BasicBlockAlg::Sequence::EliminationPList& BasicBlockAlg::Sequence::getEliminationPList() {
     if (myEliminationPList.empty())
@@ -305,7 +318,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::getUniqueSequencePList()
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) :
-      xaifBooster::BasicBlockAlgBase(theContaining) {
+    xaifBooster::BasicBlockAlgBase(theContaining) {
   } // end BasicBlockAlg::BasicBlockAlg()
 
   BasicBlockAlg::~BasicBlockAlg() {
@@ -509,8 +522,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
       const PrivateLinearizedComputationalGraphEdge* thePrivateLinearizedComputationalGraphEdge_p=
 	dynamic_cast<const PrivateLinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
-											     myG.getInternalBoostGraph()),
-										  v));
+											   myG.getInternalBoostGraph()),
+										v));
       std::string theColor ("");
       if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL)
 	theColor = "red";
@@ -537,48 +550,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
     const PrivateLinearizedComputationalGraph& myG;
   }; // end class PrivateLinearizedComputationalGraphPropertiesWriter
-
-  class LinearizedComputationalGraphVertexLabelWriter {
-  public:
-    LinearizedComputationalGraphVertexLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
-    template <class BoostIntenalVertexDescriptor>
-    void operator()(std::ostream& out, 
-		    const BoostIntenalVertexDescriptor& v) const {
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex* theLCGVertex_p =
-	dynamic_cast<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
-                                                                                                                        myG.getInternalBoostGraph()),
-                                                                                                             v));
-      if (theLCGVertex_p->hasOriginalVariable())
-	out << "[label=\"" << theLCGVertex_p->getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str() << "\"]";
-    }
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
-  }; // end class LinearizedComputationalGraphVertexLabelWriter
-
-  class LinearizedComputationalGraphEdgeLabelWriter {
-  public:
-    LinearizedComputationalGraphEdgeLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
-    template <class BoostIntenalEdgeDescriptor>
-    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge* theLCGEdge_p =
-	dynamic_cast<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
-                                                                                                                      myG.getInternalBoostGraph()),
-									                                   v));
-      if (theLCGEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL)
-	out << "[color=\"red\"]";
-      else if (theLCGEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL)
-	out << "[color=\"blue\"]";
-    }
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
-  }; // end class LinearizedComputationalGraphEdgeLabelWriter
-
-  class LinearizedComputationalGraphPropertiesWriter {
-  public:
-    LinearizedComputationalGraphPropertiesWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
-    void operator()(std::ostream& out) const {
-      out << "rankdir=BT;" << std::endl;
-    }
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
-  }; // end class LinearizedComputationalGraphPropertiesWriter
 
   void
   BasicBlockAlg::fillIndependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph) {
@@ -621,7 +592,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
 	if (!theComputationalGraph.numOutEdgesOf(myPrivateVertex)) { 
 	  if (theDuUdMapUseResult.myActiveUse!=ActiveUseType::PASSIVEUSE) { 
-	      // if the use is not strictly passive then in case of UNIQUE_INSIDE this vertex 
+	    // if the use is not strictly passive then in case of UNIQUE_INSIDE this vertex 
 	    // should not be maximal and in case of AMBIGUOUS_INSIDE there should have 
 	    // been a split. 
 	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::fixUpDependentsList: attempting to remove a maximal vertex "
@@ -677,7 +648,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end if LCG has vertices
     } // end iterate over sequences
     DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
-                             << ": " << myPreaccumulationCounter.debug().c_str());
+	      << ": " << myPreaccumulationCounter.debug().c_str());
     if (ourRuntimeCountersFlag) {
       //Insert Macros into the code that will be expanded to count multiplications and additions
       //Multiplication counter
@@ -707,31 +678,31 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
     // initialize the graph transformation(s)
     switch (ourPreaccumulationMetric) {
-      case PreaccumulationMetric::OPERATIONS_METRIC: {
-        aSequence.addNewElimination(theComputationalGraph).initAsOperations();
-        if (ourUseRandomizedHeuristicsFlag) {
-          aSequence.addNewElimination(theComputationalGraph).initAsOperationsRandom();
-          aSequence.addNewElimination(theComputationalGraph).initAsLSAVertex(ourIterationsParameter, ourGamma);
-          //aSequence.addNewElimination(theComputationalGraph).initAsLSAFace(ourIterationsParameter, ourGamma);
-        } // end randomized heuristics
-        break;
-      } // end OPERATIONS
-      case PreaccumulationMetric::SCARCITY_METRIC: {
-        aSequence.addNewElimination(theComputationalGraph).initAsScarceElimination();
-        if (ourUseRandomizedHeuristicsFlag)
-	  aSequence.addNewElimination(theComputationalGraph).initAsScarceRandomElimination();
-        if (ourUseReroutingsFlag) {
-          aSequence.addNewElimination(theComputationalGraph).initAsScarceTransformation();
-          if (ourUseRandomizedHeuristicsFlag)
-            aSequence.addNewElimination(theComputationalGraph).initAsScarceRandomTransformation();
-        }
-        break;
-      } // end SCARCITY
-      default: {
-          THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: unknown preaccumulation metric "
-                                     << PreaccumulationMetric::toString(ourPreaccumulationMetric));
-        break;
-      } // end default
+    case PreaccumulationMetric::OPERATIONS_METRIC: {
+      aSequence.addNewElimination(theComputationalGraph).initAsOperations();
+      if (ourUseRandomizedHeuristicsFlag) {
+	aSequence.addNewElimination(theComputationalGraph).initAsOperationsRandom();
+	aSequence.addNewElimination(theComputationalGraph).initAsLSAVertex(ourIterationsParameter, ourGamma);
+	//aSequence.addNewElimination(theComputationalGraph).initAsLSAFace(ourIterationsParameter, ourGamma);
+      } // end randomized heuristics
+      break;
+    } // end OPERATIONS
+    case PreaccumulationMetric::SCARCITY_METRIC: {
+      aSequence.addNewElimination(theComputationalGraph).initAsScarceElimination();
+      if (ourUseRandomizedHeuristicsFlag)
+	aSequence.addNewElimination(theComputationalGraph).initAsScarceRandomElimination();
+      if (ourUseReroutingsFlag) {
+	aSequence.addNewElimination(theComputationalGraph).initAsScarceTransformation();
+	if (ourUseRandomizedHeuristicsFlag)
+	  aSequence.addNewElimination(theComputationalGraph).initAsScarceRandomTransformation();
+      }
+      break;
+    } // end SCARCITY
+    default: {
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: unknown preaccumulation metric "
+				 << PreaccumulationMetric::toString(ourPreaccumulationMetric));
+      break;
+    } // end default
     } // end switch (ourPreaccumulationMetric)
 
     // perform the transformations and build the accumulation graph
@@ -747,10 +718,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       }
       (*elim_i)->buildAccumulationGraph();
       DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
-                               << " Sequence " << &aSequence
-                               << " by " << (*elim_i)->getDescription()
-                               << ": " << (*elim_i)->getCounter().debug().c_str()
-                               << " with " << (*elim_i)->getNumReroutings() << " reroutings");
+		<< " Sequence " << &aSequence
+		<< " by " << (*elim_i)->getDescription()
+		<< ": " << (*elim_i)->getCounter().debug().c_str()
+		<< " with " << (*elim_i)->getNumReroutings() << " reroutings");
     } // end iterate over all Eliminations for this Sequence
 
     aSequence.determineBestElimination(ourPreaccumulationMetric);
@@ -762,17 +733,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			      xaifBoosterCrossCountryInterface::AccumulationGraphEdgeLabelWriter(aSequence.getBestElimination().getAccumulationGraph()),
 			      xaifBoosterCrossCountryInterface::AccumulationGraphPropertiesWriter(aSequence.getBestElimination().getAccumulationGraph()));
       }
-      GraphVizDisplay::show(aSequence.getBestElimination().getRemainderLCG(),
-			    "RemainderLCG",
-			    LinearizedComputationalGraphVertexLabelWriter(aSequence.getBestElimination().getRemainderLCG()),
-			    LinearizedComputationalGraphEdgeLabelWriter(aSequence.getBestElimination().getRemainderLCG()),
-			    LinearizedComputationalGraphPropertiesWriter(aSequence.getBestElimination().getRemainderLCG()));
+      GraphVizDisplay::show(aSequence.getBestRemainderGraph(),
+			    "RemainderGraph",
+			    RemainderGraphVertexLabelWriter(aSequence.getBestRemainderGraph()),
+			    RemainderGraphEdgeLabelWriter(aSequence.getBestRemainderGraph()),
+			    RemainderGraphPropertiesWriter(aSequence.getBestRemainderGraph()));
     }
     DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
-                             << " Sequence " << &aSequence
-                             << " best is " << aSequence.getBestElimination().getDescription()
-                             << ": " << aSequence.getBestElimination().getCounter().debug().c_str()
-                             << " with " << aSequence.getBestElimination().getNumReroutings() << " reroutings");
+	      << " Sequence " << &aSequence
+	      << " best is " << aSequence.getBestElimination().getDescription()
+	      << ": " << aSequence.getBestElimination().getCounter().debug().c_str()
+	      << " with " << aSequence.getBestElimination().getNumReroutings() << " reroutings");
     myPreaccumulationCounter.incrementBy(aSequence.getBestElimination().getCounter());
     ourPreaccumulationCounter.incrementBy(aSequence.getBestElimination().getCounter());
   } // end BasicBlockAlg::runElimination()
@@ -819,12 +790,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	evaluateAccVertex(currentAccV, theAccumulationGraph);
 	// skip this vertex if its value has been determined (either pre-computed constant or LHSVariable)
 	if (currentAccV.getPartialDerivativeKind() != PartialDerivativeKind::NONLINEAR
-	 || currentAccV.hasLHSVariable())
+	    || currentAccV.hasLHSVariable())
 	  continue;
 
 	// we only generate an assignment for vertices that have more than one outedge (intermediate value) or correspond to a remainder graph edge
 	if (theAccumulationGraph.numOutEdgesOf(currentAccV) > 1
-	 || currentAccV.hasRemainderGraphEdge()) {
+	    || currentAccV.hasRemainderGraphEdge()) {
 	  Assignment& theNewAssignment = aSequence.appendEndAssignment();
 	  theNewAssignment.setId(makeUniqueId());
 	  // make the RHS
@@ -832,22 +803,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 						 theNewAssignment,
 						 currentAccV);
 	  Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
+	  xaifBoosterTypeChange::TemporariesHelper aHelper(
+							   "xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions",
+							   theNewAssignment.getRHS(),
+							   theNewAssignment.getRHS().getMaxVertex());
 	  VariableSymbolReference* theVariableSymbolReference_p =
-	    new VariableSymbolReference (
-              xaifBoosterTypeChange::TemporariesHelper(
-                "xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions",
-                theNewAssignment.getRHS(),
-                theNewAssignment.getRHS().getMaxVertex()
-              ).makeTempSymbol(theCurrentCfgScope,
-                               ConceptuallyStaticInstances::instance()->getAccumulationVariableNameCreator(),
-                               false),
-              theCurrentCfgScope);
+	    new VariableSymbolReference (aHelper.makeTempSymbol(theCurrentCfgScope,
+								ConceptuallyStaticInstances::instance()->getAccumulationVariableNameCreator(),
+								false),
+					 theCurrentCfgScope);
 	  theVariableSymbolReference_p->setId("1");
 	  theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS");
 	  theNewAssignment.getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	  theNewAssignment.getLHS().getAliasMapKey().setTemporary();
 	  theNewAssignment.getLHS().getDuUdMapKey().setTemporary();
 	  currentAccV.setLHSVariable(theNewAssignment.getLHS());
+	  if (aHelper.needsAllocation()) {
+	    // add the allocation
+	    aSequence.addAllocation(theNewAssignment.getLHS().getVariableSymbolReference(),
+				    aHelper.allocationModel());
+	  }
 	} // end if assignment needs to be created
       } // end iterate over all vertices
     } // end while (!done)
@@ -865,14 +840,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     // ensure the predecessors have reasonable PDKs
     if (firstPredV.getPartialDerivativeKind() == PartialDerivativeKind::NOT_SET
-     || secondPredV.getPartialDerivativeKind() == PartialDerivativeKind::NOT_SET) {
+	|| secondPredV.getPartialDerivativeKind() == PartialDerivativeKind::NOT_SET) {
       THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor PartialDerivativeKind is NOT_SET"); }
 
     // ADDITION
     if (theAccVertex.getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP) {
       // a vertex with a nonlinear contribution will be nonlinear (value cannot be pre-computed)
       if (firstPredV.getPartialDerivativeKind() == PartialDerivativeKind::NONLINEAR
-       || secondPredV.getPartialDerivativeKind() == PartialDerivativeKind::NONLINEAR) {
+	  || secondPredV.getPartialDerivativeKind() == PartialDerivativeKind::NONLINEAR) {
 	// set the PDK
 	theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::NONLINEAR);
 
@@ -889,106 +864,106 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end result is NONLINEAR
       else { // the value can be computed
 	switch (firstPredV.getPartialDerivativeKind()) {
-	  case PartialDerivativeKind::PASSIVE: {
-	    switch (secondPredV.getPartialDerivativeKind()) {
-	      case PartialDerivativeKind::PASSIVE: {			// (0 + 0)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::PASSIVE);
-		DBG_MACRO(DbgGroup::WARNING, "BasicBlockAlg::evaluateAccVertex: This vertex evaluates to have PASSIVE PDK (0 + 0)");
-		break;
-	      } // end 0 + 0
-	      case PartialDerivativeKind::LINEAR_ONE:			// (0 + 1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE);
-		break;
-	      case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (0 + -1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_MINUS_ONE);
-		break;
-	      case PartialDerivativeKind::LINEAR: {			// (0 + c)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
-		theAccVertex.setValue(secondPredV.getValue());
-		break;
-	      }
-	      default:
-		THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
-		break;
-	    } // end switch (secondPDK) {
+	case PartialDerivativeKind::PASSIVE: {
+	  switch (secondPredV.getPartialDerivativeKind()) {
+	  case PartialDerivativeKind::PASSIVE: {			// (0 + 0)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::PASSIVE);
+	    DBG_MACRO(DbgGroup::WARNING, "BasicBlockAlg::evaluateAccVertex: This vertex evaluates to have PASSIVE PDK (0 + 0)");
 	    break;
-	  } // end case firstPDK == PASSIVE
-	  case PartialDerivativeKind::LINEAR_ONE: {
-	    switch (secondPredV.getPartialDerivativeKind()) {
-	      case PartialDerivativeKind::PASSIVE:			// (1 + 0)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE);
-		break;
-	      case PartialDerivativeKind::LINEAR_ONE: {			// (1 + 1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
-		theAccVertex.setValue(2);
-		break;
-	      }
-	      case PartialDerivativeKind::LINEAR_MINUS_ONE: {		// (1 + -1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::PASSIVE);
-		DBG_MACRO(DbgGroup::WARNING, "BasicBlockAlg::evaluateAccVertex: This vertex evaluates to have PASSIVE PDK (1 + -1)");
-		break;
-	      } // end (1 + -1)
-	      case PartialDerivativeKind::LINEAR: {			// (1 + c)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
-		theAccVertex.setValue(1 + secondPredV.getValue());
-		break;
-	      }
-	      default:
-		THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
-		break;
-	    } // end switch (secondPDK) {
+	  } // end 0 + 0
+	  case PartialDerivativeKind::LINEAR_ONE:			// (0 + 1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE);
 	    break;
-	  } // end case firstPDK == LINEAR_ONE
-	  case PartialDerivativeKind::LINEAR_MINUS_ONE: {
-	    switch (secondPredV.getPartialDerivativeKind()) {
-	      case PartialDerivativeKind::PASSIVE:			// (-1 + 0)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_MINUS_ONE);
-		break;
-	      case PartialDerivativeKind::LINEAR_ONE: {			// (-1 + 1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::PASSIVE);
-		DBG_MACRO(DbgGroup::WARNING, "BasicBlockAlg::evaluateAccVertex: This vertex evaluates to have PASSIVE PDK (-1 + 1)");
-		break;
-	      } // end (-1 + 1)
-	      case PartialDerivativeKind::LINEAR_MINUS_ONE: {		// (-1 + -1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
-		theAccVertex.setValue(-2);
-		break;
-	      }
-	      case PartialDerivativeKind::LINEAR: {			// (-1 + c)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
-		theAccVertex.setValue(-1 + secondPredV.getValue());
-		break;
-	      }
-	      default:
-		THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
-		break;
-	    } // end switch (secondPDK) {
+	  case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (0 + -1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_MINUS_ONE);
 	    break;
-	  } // end case firstPDK == LINEAR_MINUS_ONE
-	  case PartialDerivativeKind::LINEAR: {
+	  case PartialDerivativeKind::LINEAR: {			// (0 + c)
 	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
-	    switch (secondPredV.getPartialDerivativeKind()) {
-	      case PartialDerivativeKind::PASSIVE:			// (c + 0)
-		theAccVertex.setValue(firstPredV.getValue());
-		break;
-	      case PartialDerivativeKind::LINEAR_ONE:			// (c + 1)
-		theAccVertex.setValue(firstPredV.getValue() + 1);
-		break;
-	      case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (c + -1)
-		theAccVertex.setValue(firstPredV.getValue() + -1);
-		break;
-	      case PartialDerivativeKind::LINEAR:			// (c + c)
-		theAccVertex.setValue(firstPredV.getValue() + secondPredV.getValue());
-		break;
-	      default:
-		THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
-		break;
-	    } // end switch (secondPDK) {
+	    theAccVertex.setValue(secondPredV.getValue());
 	    break;
-	  } // end case firstPDK == LINEAR
+	  }
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
 	    break;
+	  } // end switch (secondPDK) {
+	  break;
+	} // end case firstPDK == PASSIVE
+	case PartialDerivativeKind::LINEAR_ONE: {
+	  switch (secondPredV.getPartialDerivativeKind()) {
+	  case PartialDerivativeKind::PASSIVE:			// (1 + 0)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE);
+	    break;
+	  case PartialDerivativeKind::LINEAR_ONE: {			// (1 + 1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
+	    theAccVertex.setValue(2);
+	    break;
+	  }
+	  case PartialDerivativeKind::LINEAR_MINUS_ONE: {		// (1 + -1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::PASSIVE);
+	    DBG_MACRO(DbgGroup::WARNING, "BasicBlockAlg::evaluateAccVertex: This vertex evaluates to have PASSIVE PDK (1 + -1)");
+	    break;
+	  } // end (1 + -1)
+	  case PartialDerivativeKind::LINEAR: {			// (1 + c)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
+	    theAccVertex.setValue(1 + secondPredV.getValue());
+	    break;
+	  }
+	  default:
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
+	    break;
+	  } // end switch (secondPDK) {
+	  break;
+	} // end case firstPDK == LINEAR_ONE
+	case PartialDerivativeKind::LINEAR_MINUS_ONE: {
+	  switch (secondPredV.getPartialDerivativeKind()) {
+	  case PartialDerivativeKind::PASSIVE:			// (-1 + 0)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_MINUS_ONE);
+	    break;
+	  case PartialDerivativeKind::LINEAR_ONE: {			// (-1 + 1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::PASSIVE);
+	    DBG_MACRO(DbgGroup::WARNING, "BasicBlockAlg::evaluateAccVertex: This vertex evaluates to have PASSIVE PDK (-1 + 1)");
+	    break;
+	  } // end (-1 + 1)
+	  case PartialDerivativeKind::LINEAR_MINUS_ONE: {		// (-1 + -1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
+	    theAccVertex.setValue(-2);
+	    break;
+	  }
+	  case PartialDerivativeKind::LINEAR: {			// (-1 + c)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
+	    theAccVertex.setValue(-1 + secondPredV.getValue());
+	    break;
+	  }
+	  default:
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
+	    break;
+	  } // end switch (secondPDK) {
+	  break;
+	} // end case firstPDK == LINEAR_MINUS_ONE
+	case PartialDerivativeKind::LINEAR: {
+	  theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
+	  switch (secondPredV.getPartialDerivativeKind()) {
+	  case PartialDerivativeKind::PASSIVE:			// (c + 0)
+	    theAccVertex.setValue(firstPredV.getValue());
+	    break;
+	  case PartialDerivativeKind::LINEAR_ONE:			// (c + 1)
+	    theAccVertex.setValue(firstPredV.getValue() + 1);
+	    break;
+	  case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (c + -1)
+	    theAccVertex.setValue(firstPredV.getValue() + -1);
+	    break;
+	  case PartialDerivativeKind::LINEAR:			// (c + c)
+	    theAccVertex.setValue(firstPredV.getValue() + secondPredV.getValue());
+	    break;
+	  default:
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
+	    break;
+	  } // end switch (secondPDK) {
+	  break;
+	} // end case firstPDK == LINEAR
+	default:
+	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
+	  break;
 	} // end switch (firstPDK)
       } // end if the value can be computed (not nonlinear)
     } // end ADDITION
@@ -997,13 +972,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     else if (theAccVertex.getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP) {
       // The result is PASSIVE if either PDK is PASSIVE
       if (firstPredV.getPartialDerivativeKind() == PartialDerivativeKind::PASSIVE
-       || secondPredV.getPartialDerivativeKind() == PartialDerivativeKind::PASSIVE) {
+	  || secondPredV.getPartialDerivativeKind() == PartialDerivativeKind::PASSIVE) {
 	theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::PASSIVE);
 	DBG_MACRO(DbgGroup::WARNING, "BasicBlockAlg::evaluateAccVertex: This vertex evaluates to have PASSIVE PDK (0 * x) or (x * 0)");
       } // end result is PASSIVE
       // neither is zero and at least one is nonlinear
       else if (firstPredV.getPartialDerivativeKind() == PartialDerivativeKind::NONLINEAR
-	    || secondPredV.getPartialDerivativeKind() == PartialDerivativeKind::NONLINEAR) {
+	       || secondPredV.getPartialDerivativeKind() == PartialDerivativeKind::NONLINEAR) {
 	theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::NONLINEAR);
 	// determine whether a LHS variable can be determined for this vertex
 	// this will be the case iff one or the other has a PDK of LINEAR_ONE
@@ -1018,65 +993,65 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end result is NONLINEAR
       else { // result can be computed (is nonzero and not nonlinear)
 	switch (firstPredV.getPartialDerivativeKind()) {
-	  case PartialDerivativeKind::LINEAR_ONE: {
-	    switch (secondPredV.getPartialDerivativeKind()) {
-	      case PartialDerivativeKind::LINEAR_ONE:			// (1 * 1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE);
-		break;
-	      case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (1 * -1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_MINUS_ONE);
-		break;
-	      case PartialDerivativeKind::LINEAR: {			// (1 * c)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
-		theAccVertex.setValue(secondPredV.getValue());
-		break;
-	      }
-	      default:
-		THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
-		break;
-	    } // end switch (secondPDK) {
+	case PartialDerivativeKind::LINEAR_ONE: {
+	  switch (secondPredV.getPartialDerivativeKind()) {
+	  case PartialDerivativeKind::LINEAR_ONE:			// (1 * 1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE);
 	    break;
-	  } // end case firstPDK == LINEAR_ONE
-	  case PartialDerivativeKind::LINEAR_MINUS_ONE: {
-	    switch (secondPredV.getPartialDerivativeKind()) {
-	      case PartialDerivativeKind::LINEAR_ONE:			// (-1 * 1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_MINUS_ONE);
-		break;
-	      case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (-1 * -1)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE);
-		break;
-	      case PartialDerivativeKind::LINEAR: {			// (-1 * c)
-		theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
-		theAccVertex.setValue(-1 * secondPredV.getValue());
-		break;
-	      }
-	      default:
-		THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
-		break;
-	    } // end switch (secondPDK) {
+	  case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (1 * -1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_MINUS_ONE);
 	    break;
-	  } // end case firstPDK == LINEAR_MINUS_ONE
-	  case PartialDerivativeKind::LINEAR: {
+	  case PartialDerivativeKind::LINEAR: {			// (1 * c)
 	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
-	    switch (secondPredV.getPartialDerivativeKind()) {
-	      case PartialDerivativeKind::LINEAR_ONE:			// (c * 1)
-		theAccVertex.setValue(firstPredV.getValue());
-		break;
-	      case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (c * -1)
-		theAccVertex.setValue(firstPredV.getValue() * -1);
-		break;
-	      case PartialDerivativeKind::LINEAR:			// (c * c)
-		theAccVertex.setValue(firstPredV.getValue() * secondPredV.getValue());
-		break;
-	      default:
-		THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
-		break;
-	    } // end switch (secondPDK) {
+	    theAccVertex.setValue(secondPredV.getValue());
 	    break;
-	  } // end case firstPDK == LINEAR
+	  }
 	  default:
 	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
 	    break;
+	  } // end switch (secondPDK) {
+	  break;
+	} // end case firstPDK == LINEAR_ONE
+	case PartialDerivativeKind::LINEAR_MINUS_ONE: {
+	  switch (secondPredV.getPartialDerivativeKind()) {
+	  case PartialDerivativeKind::LINEAR_ONE:			// (-1 * 1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_MINUS_ONE);
+	    break;
+	  case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (-1 * -1)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE);
+	    break;
+	  case PartialDerivativeKind::LINEAR: {			// (-1 * c)
+	    theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
+	    theAccVertex.setValue(-1 * secondPredV.getValue());
+	    break;
+	  }
+	  default:
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
+	    break;
+	  } // end switch (secondPDK) {
+	  break;
+	} // end case firstPDK == LINEAR_MINUS_ONE
+	case PartialDerivativeKind::LINEAR: {
+	  theAccVertex.setPartialDerivativeKind(PartialDerivativeKind::LINEAR);
+	  switch (secondPredV.getPartialDerivativeKind()) {
+	  case PartialDerivativeKind::LINEAR_ONE:			// (c * 1)
+	    theAccVertex.setValue(firstPredV.getValue());
+	    break;
+	  case PartialDerivativeKind::LINEAR_MINUS_ONE:		// (c * -1)
+	    theAccVertex.setValue(firstPredV.getValue() * -1);
+	    break;
+	  case PartialDerivativeKind::LINEAR:			// (c * c)
+	    theAccVertex.setValue(firstPredV.getValue() * secondPredV.getValue());
+	    break;
+	  default:
+	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
+	    break;
+	  } // end switch (secondPDK) {
+	  break;
+	} // end case firstPDK == LINEAR
+	default:
+	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::evaluateAccVertex: predecessor has invalid PDK");
+	  break;
 	} // end switch (firstPDK)
       } // end if result is nonzero
     } // end MULTIPLICATION
@@ -1101,31 +1076,31 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     else if (theAccVertex.getPartialDerivativeKind() != PartialDerivativeKind::NONLINEAR) {
       Constant* theNewConstant_p (NULL);
       switch (theAccVertex.getPartialDerivativeKind()) {
-	case PartialDerivativeKind::PASSIVE: {
-	  theNewConstant_p = new Constant(SymbolType::INTEGER_STYPE, false);
-	  theNewConstant_p->setint(0);
-	  break;
-	} // end case PASSIVE
-	case PartialDerivativeKind::LINEAR_ONE: {
-	  theNewConstant_p = new Constant(SymbolType::INTEGER_STYPE, false);
-	  theNewConstant_p->setint(1);
-	  break;
-	} // end case LINEAR_ONE
-	case PartialDerivativeKind::LINEAR_MINUS_ONE: {
-	  theNewConstant_p = new Constant(SymbolType::INTEGER_STYPE, false);
-	  theNewConstant_p->setint(-1);
-	  break;
-	} // end case LINEAR_MINUS_ONE
-	case PartialDerivativeKind::LINEAR: {
-	  theNewConstant_p = new Constant(SymbolType::REAL_STYPE, false);
-	  theNewConstant_p->setdouble(theAccVertex.getValue());
-	  break;
-	} // end case LINEAR
-	default:
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationAssignmentRecursively: predecessor with pre-computed value has unexpected PDK ("
-				     << PartialDerivativeKind::toString(theAccVertex.getPartialDerivativeKind())
-				     << ")");
-	  break;
+      case PartialDerivativeKind::PASSIVE: {
+	theNewConstant_p = new Constant(SymbolType::INTEGER_STYPE, false);
+	theNewConstant_p->setint(0);
+	break;
+      } // end case PASSIVE
+      case PartialDerivativeKind::LINEAR_ONE: {
+	theNewConstant_p = new Constant(SymbolType::INTEGER_STYPE, false);
+	theNewConstant_p->setint(1);
+	break;
+      } // end case LINEAR_ONE
+      case PartialDerivativeKind::LINEAR_MINUS_ONE: {
+	theNewConstant_p = new Constant(SymbolType::INTEGER_STYPE, false);
+	theNewConstant_p->setint(-1);
+	break;
+      } // end case LINEAR_MINUS_ONE
+      case PartialDerivativeKind::LINEAR: {
+	theNewConstant_p = new Constant(SymbolType::REAL_STYPE, false);
+	theNewConstant_p->setdouble(theAccVertex.getValue());
+	break;
+      } // end case LINEAR
+      default:
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::buildAccumulationAssignmentRecursively: predecessor with pre-computed value has unexpected PDK ("
+				   << PartialDerivativeKind::toString(theAccVertex.getPartialDerivativeKind())
+				   << ")");
+	break;
       } // end switch (pred PDK)
       theNewConstant_p->setId(theNewAssignment.getRHS().getNextVertexId());
       theNewAssignment.getRHS().supplyAndAddVertexInstance(*theNewConstant_p);
@@ -1195,47 +1170,49 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::buildAccumulationAssignmentRecursively()
 
   void BasicBlockAlg::makePropagationVariables(Sequence& aSequence) {
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderLCG (aSequence.getBestElimination().getRemainderLCG());
+    RemainderGraph& theRemainderGraph (aSequence.getBestRemainderGraph());
     const AliasMap& theAliasMap(ConceptuallyStaticInstances::instance()->getCallGraph().getAliasMap());
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP (theRemainderLCG.vertices());
-    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator rvi (rLCGvertIP.first), rvi_end (rLCGvertIP.second); rvi != rvi_end; ++rvi) {
-      const PrivateLinearizedComputationalGraphVertex& theOriginalVertex (aSequence.getBestElimination().rVertex2oVertex(*rvi));
+    RemainderGraph::VertexIteratorPair rLCGvertIP (theRemainderGraph.vertices());
+    for (RemainderGraph::VertexIterator rvi (rLCGvertIP.first), rvi_end (rLCGvertIP.second); rvi != rvi_end; ++rvi) {
+      RemainderGraphVertex& theRemainderGraphVertex(dynamic_cast<RemainderGraphVertex&>(*rvi));
+      const PrivateLinearizedComputationalGraphVertex& theOriginalVertex (theRemainderGraph.getOriginalVertexFor(theRemainderGraphVertex));
       // for independents, check against all non-independents for alias conflicts, making new propagation variable in that case
       // See AssignmentAlg::vertexIdentification for an explanation of why we only need to worry about replacing independents.
-      if (!theRemainderLCG.numInEdgesOf(*rvi)) {
-	(*rvi).setOriginalVariable(theOriginalVertex.getOriginalVariable(),
-				   theOriginalVertex.getStatementId());
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP2 (theRemainderLCG.vertices());
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator rvi2 (rLCGvertIP2.first), rvi2_end (rLCGvertIP2.second);
+      if (!theRemainderGraph.numInEdgesOf(theRemainderGraphVertex)) {
+	theRemainderGraphVertex.setOriginalVariable(theOriginalVertex.getOriginalVariable(),
+						    theOriginalVertex.getStatementId());
+	RemainderGraph::VertexIteratorPair rLCGvertIP2 (theRemainderGraph.vertices());
+	RemainderGraph::VertexIterator rvi2 (rLCGvertIP2.first), rvi2_end (rLCGvertIP2.second);
 	for (; rvi2 != rvi2_end; ++rvi2) { // inner iteration over all remainder vertices
-	  if (!theRemainderLCG.numInEdgesOf(*rvi2)) continue; // skip other indeps
-	  const PrivateLinearizedComputationalGraphVertex& theOriginalNonIndep (aSequence.getBestElimination().rVertex2oVertex(*rvi2));
+	  if (!theRemainderGraph.numInEdgesOf(*rvi2)) continue; // skip other indeps
+	  RemainderGraphVertex& theRemainderGraphVertex2(dynamic_cast<RemainderGraphVertex&>(*rvi2));
+	  const PrivateLinearizedComputationalGraphVertex& theOriginalNonIndep (theRemainderGraph.getOriginalVertexFor(theRemainderGraphVertex2));
 	  if (theOriginalNonIndep.hasOriginalVariable() && theAliasMap.mayAlias(theOriginalVertex.getOriginalVariable().getAliasMapKey(),
 										theOriginalNonIndep.getOriginalVariable().getAliasMapKey())) {
-	    (*rvi).replacePropagationVariable();
+	    theRemainderGraphVertex.replacePropagationVariable();
 	    // set the deriv of the new propagation variable to that of the original variable
-	    aSequence.myDerivativePropagator.addSetDerivToEntryPList((*rvi).getPropagationVariable(),
+	    aSequence.myDerivativePropagator.addSetDerivToEntryPList(theRemainderGraphVertex.getPropagationVariable(),
 								     theOriginalVertex.getOriginalVariable());
 	    DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::makePropagationVariables: created propagation variable for independent "
-				      << theOriginalVertex.getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str()); 
-				      //<< theOriginalVertex.debug().c_str()); 
+		      << theOriginalVertex.getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str()); 
+	    //<< theOriginalVertex.debug().c_str()); 
 	    break; // no need to continue with this indep vertex once a replacement propagation vertex has been created
 	  } // end if alias conflict possible
 	} // end inner iteration over remainder vertices
       } // end if this vertex is an independent
       else {
 	if (theOriginalVertex.hasOriginalVariable()) {
-	  (*rvi).setOriginalVariable(theOriginalVertex.getOriginalVariable(),
-				     theOriginalVertex.getStatementId());
+	  theRemainderGraphVertex.setOriginalVariable(theOriginalVertex.getOriginalVariable(),
+						      theOriginalVertex.getStatementId());
         }
 	else {
           // find a variable to match to
-          xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::InEdgeIteratorPair inEdgeIP (theRemainderLCG.getInEdgesOf(*rvi));
-          xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::InEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
+          RemainderGraph::InEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderGraphVertex));
+          RemainderGraph::InEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
           for (; iei != ie_end; ++iei) {
             // ultimately we may need topsort...
             //if (!theRemainderGraph.getSourceOf(*iei).wasVisited()) break;
-            (*rvi).createNewPropagationVariable(theRemainderLCG.getSourceOf(*iei).getPropagationVariable());
+            theRemainderGraphVertex.createNewPropagationVariable((dynamic_cast<RemainderGraphVertex&>(theRemainderGraph.getSourceOf(*iei))).getPropagationVariable());
             break;
           }
         } 
@@ -1244,15 +1221,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::makePropagationVariables()
 
   void BasicBlockAlg::generateRemainderGraphPropagators(Sequence& aSequence) { 
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph (aSequence.getBestElimination().getRemainderLCG());
-    aSequence.getBestElimination().getRemainderLCG().initVisit();
+    const RemainderGraph& theRemainderGraph (aSequence.getBestRemainderGraph());
+    aSequence.getBestRemainderGraph().initVisit();
     bool done = false;
     while(!done) {
       done = true;
-      xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIteratorPair aVertexIP(theRemainderGraph.vertices());
-      for(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstVertexIterator anLCGVertI(aVertexIP.first),anLCGvertEndI(aVertexIP.second);
+      RemainderGraph::ConstVertexIteratorPair aVertexIP(theRemainderGraph.vertices());
+      for(RemainderGraph::ConstVertexIterator anLCGVertI(aVertexIP.first),anLCGvertEndI(aVertexIP.second);
 	  anLCGVertI != anLCGvertEndI; ++anLCGVertI) {
-	const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV = *anLCGVertI;
+	const RemainderGraphVertex& theRemainderTargetV(dynamic_cast<const RemainderGraphVertex&>(*anLCGVertI));
 	// skip visited vertices
 	if (theRemainderTargetV.wasVisited()) continue;
 	// skip minimal vertices
@@ -1261,8 +1238,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  continue;
 	}
 	// check whether predecessors have been visited
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
-	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
+	RemainderGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
+	RemainderGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
 	for (; iei != ie_end; ++iei) // break on unvisited predecessor
 	  if (!theRemainderGraph.getSourceOf(*iei).wasVisited()) break;
 	if (iei != ie_end) // skip this vertex if a predecessor hasn't been visited
@@ -1278,176 +1255,165 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	} // end visit
       } // end iterate over all vertices
     } // end while(!done)
-    aSequence.getBestElimination().getRemainderLCG().finishVisit();
+    aSequence.getBestRemainderGraph().finishVisit();
   } // end BasicBlockAlg::generateRemainderGraphPropagators()
 
-  void BasicBlockAlg::propagateToRemainderVertex(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV,
+  void BasicBlockAlg::propagateToRemainderVertex(const RemainderGraphVertex& theRemainderTargetV,
                                                  Sequence& aSequence) {
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph (aSequence.getBestElimination().getRemainderLCG());
-    const xaifBoosterCrossCountryInterface::Elimination::RemainderEdge2AccumulationVertexMap&
-     theRemainderEdge2AccumulationVertexMap (aSequence.getBestElimination().getRemainderEdge2AccumulationVertexMap()); 
-    xaifBoosterCrossCountryInterface::Elimination::RemainderEdge2AccumulationVertexMap::const_iterator map_it;
-    std::list<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*> PassiveInedges,LinearOneInedges,LinearMinusOneInedges,LinearInedges,NonlinearInedges;
+    const RemainderGraph& theRemainderGraph (aSequence.getBestRemainderGraph());
+    std::list<const RemainderGraphEdge*> passiveInEdges,linearOneInEdges,linearMinusOneInEdges,linearInEdges,nonlinearInEdges;
 
     // first iterate over inedges to build up lists of different types of partial derivative kinds
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
-    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
+    RemainderGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
+    for (RemainderGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
          iei != ie_end; ++iei) {
-      // Find the AccumulationGraphVertex that corresponds to this RemainderGraphEdge
-      if ((map_it = theRemainderEdge2AccumulationVertexMap.find(&*iei)) == theRemainderEdge2AccumulationVertexMap.end())
-        THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::propagateToRemainderVertex:"
-                                << " could not find AccumulationGraphVertex for RemainderGraphEdge in theRemainderEdge2AccumulationVertexMap");
-      switch ((*map_it->second).getPartialDerivativeKind()) {
-        case PartialDerivativeKind::PASSIVE:
-          PassiveInedges.push_back(&*iei);
-          break;
-        case PartialDerivativeKind::LINEAR_ONE:
-          LinearOneInedges.push_back(&*iei);
-          break;
-        case PartialDerivativeKind::LINEAR_MINUS_ONE:
-          LinearMinusOneInedges.push_back(&*iei);
-          break;
-        case PartialDerivativeKind::LINEAR:
-          LinearInedges.push_back(&*iei);
-          break;
-        case PartialDerivativeKind::NONLINEAR:
-          NonlinearInedges.push_back(&*iei);
-          break;
-        default:
-           THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::BasicBlockAlg::propagateToRemainderVertex:"
-                                      << " invalid PDK (" << PartialDerivativeKind::toString((*map_it->second).getPartialDerivativeKind()) << ") for saxpy factor");
-          break;
+      const xaifBoosterCrossCountryInterface::AccumulationGraphVertex& theAccVertex (theRemainderGraph.getAccumulationGraphVertexFor(dynamic_cast<const RemainderGraphEdge&>(*iei)));
+      const RemainderGraphEdge& theRemainderGraphEdge(dynamic_cast<const RemainderGraphEdge&>(*iei));
+      switch (theAccVertex.getPartialDerivativeKind()) {
+      case PartialDerivativeKind::PASSIVE:
+	passiveInEdges.push_back(&theRemainderGraphEdge);
+	break;
+      case PartialDerivativeKind::LINEAR_ONE:
+	linearOneInEdges.push_back(&theRemainderGraphEdge);
+	break;
+      case PartialDerivativeKind::LINEAR_MINUS_ONE:
+	linearMinusOneInEdges.push_back(&theRemainderGraphEdge);
+	break;
+      case PartialDerivativeKind::LINEAR:
+	linearInEdges.push_back(&theRemainderGraphEdge);
+	break;
+      case PartialDerivativeKind::NONLINEAR:
+	nonlinearInEdges.push_back(&theRemainderGraphEdge);
+	break;
+      default:
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::BasicBlockAlg::propagateToRemainderVertex:"
+				   << " invalid PDK (" << PartialDerivativeKind::toString(theAccVertex.getPartialDerivativeKind()) << ") for saxpy factor");
+	break;
       } // end switch on PDK
     } // end for all inedges
 
     bool isZero = true;
 
     // LINEAR_ONE: SetDeriv and IncDeriv
-    for (std::list<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*>::const_iterator loi = LinearOneInedges.begin();
-         loi != LinearOneInedges.end(); ++loi) {
+    for (std::list<const RemainderGraphEdge*>::const_iterator loi = linearOneInEdges.begin();
+         loi != linearOneInEdges.end(); ++loi) {
+      const RemainderGraphVertex& theSourceVertex(dynamic_cast<const RemainderGraphVertex&>(theRemainderGraph.getSourceOf(**loi)));
       if (isZero) // SetDeriv
         aSequence.myDerivativePropagator.addSetDerivToEntryPList(theRemainderTargetV.getPropagationVariable(),
-                                                                 theRemainderGraph.getSourceOf(**loi).getPropagationVariable());
+                                                                 theSourceVertex.getPropagationVariable());
       else // IncDeriv
         aSequence.myDerivativePropagator.addIncDerivToEntryPList(theRemainderTargetV.getPropagationVariable(),
-                                                                 theRemainderGraph.getSourceOf(**loi).getPropagationVariable());
+                                                                 theSourceVertex.getPropagationVariable());
       isZero = false;
     }
     // LINEAR_MINUS_ONE: SetNegDeriv and DecDeriv
-    for (std::list<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*>::const_iterator lmoi = LinearMinusOneInedges.begin();
-         lmoi != LinearMinusOneInedges.end(); ++lmoi) {
+    for (std::list<const RemainderGraphEdge*>::const_iterator lmoi = linearMinusOneInEdges.begin();
+         lmoi != linearMinusOneInEdges.end(); ++lmoi) {
+      const RemainderGraphVertex& theSourceVertex(dynamic_cast<const RemainderGraphVertex&>(theRemainderGraph.getSourceOf(**lmoi)));
       if (isZero) // SetNegDeriv
         aSequence.myDerivativePropagator.addSetNegDerivToEntryPList(theRemainderTargetV.getPropagationVariable(),
-                                                                    theRemainderGraph.getSourceOf(**lmoi).getPropagationVariable());
+                                                                    theSourceVertex.getPropagationVariable());
       else // DecDeriv
         aSequence.myDerivativePropagator.addDecDerivToEntryPList(theRemainderTargetV.getPropagationVariable(),
-                                                                 theRemainderGraph.getSourceOf(**lmoi).getPropagationVariable());
+                                                                 theSourceVertex.getPropagationVariable());
       isZero = false;
     }
     // LINEAR
-    for (std::list<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*>::const_iterator li = LinearInedges.begin();
-         li != LinearInedges.end(); ++li) {
+    for (std::list<const RemainderGraphEdge*>::const_iterator li = linearInEdges.begin();
+         li != linearInEdges.end(); ++li) {
       Constant theConstantFactor (SymbolType::REAL_STYPE, false);
       theConstantFactor.setId(1);
-      theConstantFactor.setdouble((*theRemainderEdge2AccumulationVertexMap.find(*li)->second).getValue());
+      theConstantFactor.setdouble(theRemainderGraph.getAccumulationGraphVertexFor(**li).getValue());
       xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& theNewSaxpy
-       (aSequence.myDerivativePropagator.addSaxpyToEntryPList(theConstantFactor,
-                                                              theRemainderGraph.getSourceOf(**li).getPropagationVariable(),
-                                                              theRemainderTargetV.getPropagationVariable()));
+	(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theConstantFactor,
+							       (dynamic_cast<const RemainderGraphVertex&>(theRemainderGraph.getSourceOf(**li))).getPropagationVariable(),
+							       theRemainderTargetV.getPropagationVariable()));
       if (isZero)
         theNewSaxpy.useAsSax();
       isZero = false;
     }
     // NONLINEAR - sax/saxpy
-    for (std::list<const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge*>::const_iterator nli = NonlinearInedges.begin();
-         nli != NonlinearInedges.end(); ++nli) {
+    for (std::list<const RemainderGraphEdge*>::const_iterator nli = nonlinearInEdges.begin();
+         nli != nonlinearInEdges.end(); ++nli) {
       xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& theNewSaxpy
-       (aSequence.myDerivativePropagator.addSaxpyToEntryPList((*theRemainderEdge2AccumulationVertexMap.find(*nli)->second).getLHSVariable(),
-                                                              theRemainderGraph.getSourceOf(**nli).getPropagationVariable(),
-                                                              theRemainderTargetV.getPropagationVariable()));
+	(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theRemainderGraph.getAccumulationGraphVertexFor(**nli).getLHSVariable(),
+							       (dynamic_cast<const RemainderGraphVertex&>(theRemainderGraph.getSourceOf(**nli))).getPropagationVariable(),
+							       theRemainderTargetV.getPropagationVariable()));
       if (isZero)
         theNewSaxpy.useAsSax();
       isZero = false;
     }
-  } // end BasicBlockAlg::propagateToRemainderVertex()
+  } 
 
-  void BasicBlockAlg::propagateToRemainderVertex_narySax(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderTargetV,
+  void BasicBlockAlg::propagateToRemainderVertex_narySax(const RemainderGraphVertex& theRemainderTargetV,
                                                          Sequence& aSequence) {
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& theRemainderGraph (aSequence.getBestElimination().getRemainderLCG());
-    const xaifBoosterCrossCountryInterface::Elimination::RemainderEdge2AccumulationVertexMap&
-     theRemainderEdge2AccumulationVertexMap (aSequence.getBestElimination().getRemainderEdge2AccumulationVertexMap()); 
-    xaifBoosterCrossCountryInterface::Elimination::RemainderEdge2AccumulationVertexMap::const_iterator map_it;
+    const RemainderGraph& theRemainderGraph (aSequence.getBestRemainderGraph());
     xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* theSax_p (NULL);
-
     // we will create a single SAX operation that encompasses the derivative components from all the inedges
     bool allPassive = true;
-    xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
-    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
+    RemainderGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
+    for (RemainderGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
          iei != ie_end; ++iei) {
-      // Find the AccumulationGraphVertex that corresponds to this RemainderGraphEdge
-      if ((map_it = theRemainderEdge2AccumulationVertexMap.find(&*iei)) == theRemainderEdge2AccumulationVertexMap.end())
-        THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::propagateToRemainderVertex:"
-                                << " could not find AccumulationGraphVertex for RemainderGraphEdge in theRemainderEdge2AccumulationVertexMap");
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theRemainderSourceV (theRemainderGraph.getSourceOf(*iei));
-      const xaifBoosterCrossCountryInterface::AccumulationGraphVertex& theAccVertex (*map_it->second);
+      const RemainderGraphVertex& theRemainderSourceV (dynamic_cast<const RemainderGraphVertex&>(theRemainderGraph.getSourceOf(*iei)));
+      const xaifBoosterCrossCountryInterface::AccumulationGraphVertex& theAccVertex (theRemainderGraph.getAccumulationGraphVertexFor(dynamic_cast<const RemainderGraphEdge&>(*iei)));
       if (theAccVertex.getPartialDerivativeKind() == PartialDerivativeKind::PASSIVE)
         continue; // skip PASSIVE inedges
       allPassive = false;
       switch (theAccVertex.getPartialDerivativeKind()) {
-        case PartialDerivativeKind::LINEAR_ONE: {
-          //LinearOneInedges.push_back(&*iei);
-          Constant theTempConstant (SymbolType::INTEGER_STYPE, false);
-          theTempConstant.setId(1);
-          theTempConstant.setint(1);
-          if (theSax_p)
-            theSax_p->addAX(theTempConstant,
-                            theRemainderSourceV.getPropagationVariable());
-          else
-            theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
-                                                                               theRemainderSourceV.getPropagationVariable(),
-                                                                               theRemainderTargetV.getPropagationVariable()));
-          break;
-        }
-        case PartialDerivativeKind::LINEAR_MINUS_ONE: {
-          Constant theTempConstant (SymbolType::INTEGER_STYPE, false);
-          theTempConstant.setId(1);
-          theTempConstant.setint(-1);
-          if (theSax_p)
-            theSax_p->addAX(theTempConstant,
-                            theRemainderSourceV.getPropagationVariable());
-          else
-            theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
-                                                                               theRemainderSourceV.getPropagationVariable(),
-                                                                               theRemainderTargetV.getPropagationVariable()));
-          break;
-        }
-        case PartialDerivativeKind::LINEAR: {
-          Constant theTempConstant (SymbolType::REAL_STYPE, false);
-          theTempConstant.setId(1);
-          theTempConstant.setdouble(theAccVertex.getValue());
-          if (theSax_p)
-            theSax_p->addAX(theTempConstant,
-                            theRemainderSourceV.getPropagationVariable());
-          else
-            theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
-                                                                               theRemainderSourceV.getPropagationVariable(),
-                                                                               theRemainderTargetV.getPropagationVariable()));
-          break;
-        }
-        case PartialDerivativeKind::NONLINEAR: {
-          if (theSax_p)
-            theSax_p->addAX(theAccVertex.getLHSVariable(),
-                            theRemainderSourceV.getPropagationVariable());
-          else
-            theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theAccVertex.getLHSVariable(),
-                                                                               theRemainderSourceV.getPropagationVariable(),
-                                                                               theRemainderTargetV.getPropagationVariable()));
-          break;
-        }
-        default:
-          THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::BasicBlockAlg::propagateToRemainderVertex:"
-                                     << " invalid PDK (" << PartialDerivativeKind::toString((*map_it->second).getPartialDerivativeKind()) << ") for saxpy factor");
-          break;
+      case PartialDerivativeKind::LINEAR_ONE: {
+	//linearOneInEdges.push_back(&*iei);
+	Constant theTempConstant (SymbolType::INTEGER_STYPE, false);
+	theTempConstant.setId(1);
+	theTempConstant.setint(1);
+	if (theSax_p)
+	  theSax_p->addAX(theTempConstant,
+			  theRemainderSourceV.getPropagationVariable());
+	else
+	  theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
+									     theRemainderSourceV.getPropagationVariable(),
+									     theRemainderTargetV.getPropagationVariable()));
+	break;
+      }
+      case PartialDerivativeKind::LINEAR_MINUS_ONE: {
+	Constant theTempConstant (SymbolType::INTEGER_STYPE, false);
+	theTempConstant.setId(1);
+	theTempConstant.setint(-1);
+	if (theSax_p)
+	  theSax_p->addAX(theTempConstant,
+			  theRemainderSourceV.getPropagationVariable());
+	else
+	  theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
+									     theRemainderSourceV.getPropagationVariable(),
+									     theRemainderTargetV.getPropagationVariable()));
+	break;
+      }
+      case PartialDerivativeKind::LINEAR: {
+	Constant theTempConstant (SymbolType::REAL_STYPE, false);
+	theTempConstant.setId(1);
+	theTempConstant.setdouble(theAccVertex.getValue());
+	if (theSax_p)
+	  theSax_p->addAX(theTempConstant,
+			  theRemainderSourceV.getPropagationVariable());
+	else
+	  theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
+									     theRemainderSourceV.getPropagationVariable(),
+									     theRemainderTargetV.getPropagationVariable()));
+	break;
+      }
+      case PartialDerivativeKind::NONLINEAR: {
+	if (theSax_p)
+	  theSax_p->addAX(theAccVertex.getLHSVariable(),
+			  theRemainderSourceV.getPropagationVariable());
+	else
+	  theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theAccVertex.getLHSVariable(),
+									     theRemainderSourceV.getPropagationVariable(),
+									     theRemainderTargetV.getPropagationVariable()));
+	break;
+      }
+      default:
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::BasicBlockAlg::propagateToRemainderVertex:"
+				   << " invalid PDK (" << PartialDerivativeKind::toString(theAccVertex.getPartialDerivativeKind()) << ") for saxpy factor");
+	break;
       } // end switch on PDK
     } // end for all inedges
     if (!theSax_p)
@@ -1455,7 +1421,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                                  << " remainder vertex " << theRemainderTargetV.debug() << " has no inedges with non-passive partial derivative kind");
     // this will be the sole propagation entry for theRemainderTargetV
     theSax_p->useAsSax();
-  } // end BasicBlockAlg::propagateToRemainderVertex_narySax()
+  } 
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
