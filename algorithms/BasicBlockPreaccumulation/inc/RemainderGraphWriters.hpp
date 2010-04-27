@@ -1,5 +1,5 @@
-#ifndef _PRIVATELINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
-#define _PRIVATELINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
+#ifndef _REMAINDERGRAPHWRITERS_INCLUDE_
+#define _REMAINDERGRAPHWRITERS_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,83 +53,54 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include <list>
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraph.hpp"
 
-#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
-
-namespace xaifBooster { 
-  class ExpressionEdge;
-}
-
-using namespace xaifBooster; 
+using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
-  
-  class PrivateLinearizedComputationalGraphEdge : 
-    public xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge {
 
+  class RemainderGraphVertexLabelWriter {
   public:
+    RemainderGraphVertexLabelWriter(const RemainderGraph& g) : myG(g) {};
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, 
+		    const BoostIntenalVertexDescriptor& v) const {
+      const RemainderGraphVertex* theLCGVertex_p =
+	dynamic_cast<const RemainderGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
+													  myG.getInternalBoostGraph()),
+											       v));
+      if (theLCGVertex_p->hasOriginalVariable())
+	out << "[label=\"" << theLCGVertex_p->getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str() << "\"]";
+    }
+    const RemainderGraph& myG;
+  }; 
 
-    PrivateLinearizedComputationalGraphEdge();
+  class RemainderGraphEdgeLabelWriter {
+  public:
+    RemainderGraphEdgeLabelWriter(const RemainderGraph& g) : myG(g) {};
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
+      const RemainderGraphEdge* theLCGEdge_p =
+	dynamic_cast<const RemainderGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
+													myG.getInternalBoostGraph()),
+											     v));
+      if (theLCGEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL)
+	out << "[color=\"red\"]";
+      else if (theLCGEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL)
+	out << "[color=\"blue\"]";
+    }
+    const RemainderGraph& myG;
+  }; 
 
-    ~PrivateLinearizedComputationalGraphEdge(){};
- 
-    void setLinearizedExpressionEdge(ExpressionEdge& anExpressionEdge);
+  class RemainderGraphPropertiesWriter {
+  public:
+    RemainderGraphPropertiesWriter(const RemainderGraph& g) : myG(g) {};
+    void operator()(std::ostream& out) const {
+      out << "rankdir=BT;" << std::endl;
+    }
+    const RemainderGraph& myG;
+  }; 
 
-    void setDirectCopyEdge();
+}
 
-    bool isDirectCopyEdge() const;
-
-    const ExpressionEdge& getLinearizedExpressionEdge() const;
-    bool hasLinearizedExpressionEdge() const;
-
-    std::string debug() const ;
-
-    typedef std::list<ExpressionEdge*> ExpressionEdgePList;
-    
-    void addParallel(ExpressionEdge&);
-
-    virtual Assignment& getAssignmentFromEdge() const {
-      return (dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getConcretePartialAssignment());
-    };
-
-    const ExpressionEdgePList& getParallels() const;
-
-  private:
-    
-    /**
-     * this refers to an edge in the  
-     * right hand side of an assignment in a 
-     * basic block
-     * I.e. this is a reference to a local partial 
-     * derivative
-     * this class doesn't own the ExpressionEdge pointed 
-     * to by myPrivateLinearizedExpressionEdge
-     * the edge we point to is not owned by this class
-     */
-    ExpressionEdge* myLinearizedExpressionEdge_p;
-
-    /** 
-     * we keep all references to edges parallel 
-     * to the one referenced in myLinearizedExpressionEdge_p
-     * in here such that the we have only one placeholder 
-     * in here. This implies that all parallel edges are 
-     * added before any reference to this edge
-     * none of the edges are owned by this class
-     */
-    ExpressionEdgePList myParallelEdges;
-
-    /** 
-     * this is a special purpose edge 
-     * that needs to represent an assignment t1=t2, 
-     * i.e. something for which we don't have an edge in the 
-     * Expression
-     */
-    bool myDirectCopyEdgeFlag;
-
-  }; // end of class LinearizedComputationalGraphEdge
- 
-} 
-                                                                     
 #endif

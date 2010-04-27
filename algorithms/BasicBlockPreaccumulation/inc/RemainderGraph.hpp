@@ -1,5 +1,5 @@
-#ifndef _PRIVATELINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
-#define _PRIVATELINEARIZEDCOMPUTATIONALGRAPHEDGE_INCLUDE_
+#ifndef _REMAINDERGRAPH_INCLUDE_
+#define _REMAINDERGRAPH_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -53,83 +53,57 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include <list>
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/Elimination.hpp"
 
-#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphEdge.hpp"
 
-namespace xaifBooster { 
-  class ExpressionEdge;
-}
-
-using namespace xaifBooster; 
+using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
-  
-  class PrivateLinearizedComputationalGraphEdge : 
-    public xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge {
 
+  /**
+   * the default representation for the RemainderGraph
+   */
+  class RemainderGraph : public PrivateLinearizedComputationalGraph {
   public:
 
-    PrivateLinearizedComputationalGraphEdge();
+    RemainderGraph(){};
 
-    ~PrivateLinearizedComputationalGraphEdge(){};
- 
-    void setLinearizedExpressionEdge(ExpressionEdge& anExpressionEdge);
+    void initFrom(const xaifBoosterCrossCountryInterface::Elimination& anElimination);
 
-    void setDirectCopyEdge();
-
-    bool isDirectCopyEdge() const;
-
-    const ExpressionEdge& getLinearizedExpressionEdge() const;
-    bool hasLinearizedExpressionEdge() const;
-
-    std::string debug() const ;
-
-    typedef std::list<ExpressionEdge*> ExpressionEdgePList;
-    
-    void addParallel(ExpressionEdge&);
-
-    virtual Assignment& getAssignmentFromEdge() const {
-      return (dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getConcretePartialAssignment());
-    };
-
-    const ExpressionEdgePList& getParallels() const;
-
-  private:
+    virtual ~RemainderGraph(){};
     
     /**
-     * this refers to an edge in the  
-     * right hand side of an assignment in a 
-     * basic block
-     * I.e. this is a reference to a local partial 
-     * derivative
-     * this class doesn't own the ExpressionEdge pointed 
-     * to by myPrivateLinearizedExpressionEdge
-     * the edge we point to is not owned by this class
+     * \todo JU implementation incomplete
      */
-    ExpressionEdge* myLinearizedExpressionEdge_p;
+    std::string debug() const { return std::string("RemainderGraph");};
 
-    /** 
-     * we keep all references to edges parallel 
-     * to the one referenced in myLinearizedExpressionEdge_p
-     * in here such that the we have only one placeholder 
-     * in here. This implies that all parallel edges are 
-     * added before any reference to this edge
-     * none of the edges are owned by this class
+    const PrivateLinearizedComputationalGraphVertex& 
+    getOriginalVertexFor(const RemainderGraphVertex& aRemainderGraphVertex) const;
+    
+    const xaifBoosterCrossCountryInterface::AccumulationGraphVertex& 
+    getAccumulationGraphVertexFor(const RemainderGraphEdge& aRemainderGraphEdge) const; 
+
+  private:
+
+    /**
+     * used for propagation
      */
-    ExpressionEdgePList myParallelEdges;
+    typedef std::map<const RemainderGraphVertex*,
+                     const PrivateLinearizedComputationalGraphVertex*> RemainderVertexP2OriginalVertexPMap;
+    RemainderVertexP2OriginalVertexPMap myRemainderVertexP2OriginalVertexPMap;
 
-    /** 
-     * this is a special purpose edge 
-     * that needs to represent an assignment t1=t2, 
-     * i.e. something for which we don't have an edge in the 
-     * Expression
+    /**
+     * used for propagation
      */
-    bool myDirectCopyEdgeFlag;
+    typedef std::map<const RemainderGraphEdge*,
+                     const xaifBoosterCrossCountryInterface::AccumulationGraphVertex*> RemainderEdgeP2AccumulationVertexPMap;
+    RemainderEdgeP2AccumulationVertexPMap myRemainderEdgeP2AccumulationVertexPMap;
 
-  }; // end of class LinearizedComputationalGraphEdge
- 
+  }; 
+
 } 
                                                                      
 #endif

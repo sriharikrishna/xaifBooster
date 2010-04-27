@@ -68,54 +68,12 @@ namespace xaifBoosterCrossCountryInterface {
   class LinearizedComputationalGraphVertex : public Vertex {
   public:
 
-    LinearizedComputationalGraphVertex();
-    ~LinearizedComputationalGraphVertex();
+    LinearizedComputationalGraphVertex() {};
+    ~LinearizedComputationalGraphVertex() {};
 
-    std::string debug() const;
-
-    bool hasOriginalVariable() const;
-    void setOriginalVariable(const Variable& aVariable,
-			     const ObjectWithId::Id& aStatementId);
-    const Variable& getOriginalVariable() const;
-
-    const ObjectWithId::Id& getStatementId() const;
-
-    /**
-     * Used to replace the original variable in the case where we have an independent that may alias with some non-independent.
-     * In this case, we use this new variable for propagation exclusively. (see BasicBlockAlg::makePropagationVariables())
-     */
-    void replacePropagationVariable();
-
-    /**
-     * Used in the case of a vertex that has no original variable (rather, it is associated with some temporary)
-     */
-    void createNewPropagationVariable(const Variable& variableToMatch);
-
-    const Variable& getPropagationVariable() const;
-
-  private:
-
-    /**
-     * Pointer to the variable that originally corresponds to this vertex, in the case where one exists.
-     * The variable is not owned by this class.
-     */
-    const Variable* myOriginalVariable_p;
-
-    /**
-     * Pointer to the variable that will be used for propagation in case there is no original variable,
-     * or the original variable for an independent had to be replaced because of possible aliasing issues.
-     * This variable is owned by this class, and is deleted in the dtor.
-     */
-    Variable* myPropagationVariable_p;
-
-    /**
-     * set to the respective statement id if myOriginalVariable_p is set
-     */
-    ObjectWithId::Id myStatementId;
-
-  }; // end of class LinearizedComputationalGraphVertex
+  };
  
-} // end namespace xaifBoosterCrossCountryInterface
+} 
                                                                      
 #endif
 

@@ -51,7 +51,6 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/Scope.hpp"
@@ -59,79 +58,55 @@
 
 #include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
 
-namespace xaifBoosterCrossCountryInterface {
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphVertex.hpp"
 
-  LinearizedComputationalGraphVertex::LinearizedComputationalGraphVertex() :
-    myOriginalVariable_p (NULL),
+namespace xaifBoosterBasicBlockPreaccumulation {
+
+  RemainderGraphVertex::RemainderGraphVertex() :
     myPropagationVariable_p (NULL) {
   }
 
-  LinearizedComputationalGraphVertex::~LinearizedComputationalGraphVertex() {
+  RemainderGraphVertex::~RemainderGraphVertex() {
     if (myPropagationVariable_p)
       delete myPropagationVariable_p;
   }
 
-  std::string LinearizedComputationalGraphVertex::debug() const { 
+  std::string RemainderGraphVertex::debug() const { 
     std::ostringstream out;
-    out << "LinearizedComputationalGraphVertex[" << this 
-	<< ",myOriginalVariable_p=" << myOriginalVariable_p
+    out << "RemainderGraphVertex[" << this 
 	<< ",myPropagationVariable_p=" << myPropagationVariable_p
-	<< ",myStatementId=" << myStatementId
 	<< "]" << std::ends;  
     return out.str();
-  } // end LinearizedComputationalGraphVertex::debug()
+  } 
 
-  bool LinearizedComputationalGraphVertex::hasOriginalVariable() const {
-   return (myOriginalVariable_p) ? true : false;
-  } // end LinearizedComputationalGraphVertex::hasOriginalVariable() 
-
-  void LinearizedComputationalGraphVertex::setOriginalVariable(const Variable& aVariable,
-							       const ObjectWithId::Id& aStatementId) {
-    if (myOriginalVariable_p)
-      THROW_LOGICEXCEPTION_MACRO("LinearizedComputationalGraphVertex::setOriginalVariable: already set to " << myOriginalVariable_p->debug().c_str()
-                                 << " while trying to set to " << aVariable.debug().c_str());
-    myOriginalVariable_p = &aVariable;
-    myStatementId = aStatementId;
-  } // end LinearizedComputationalGraphVertex::setOriginalVariable()
-
-  const Variable& LinearizedComputationalGraphVertex::getOriginalVariable() const {
-    if (!myOriginalVariable_p)
-      THROW_LOGICEXCEPTION_MACRO("LinearizedComputationalGraphVertex::getOriginalVariable: not set");
-    return *myOriginalVariable_p;
-  } // end LinearizedComputationalGraphVertex::getOriginalVariable()
-
-  const ObjectWithId::Id& LinearizedComputationalGraphVertex::getStatementId() const {
-    if (!myStatementId.size())
-      THROW_LOGICEXCEPTION_MACRO("LinearizedComputationalGraphVertex::getStatementId: not set");
-    return myStatementId;
-  } // end LinearizedComputationalGraphVertex::getStatementId()
-
-  void LinearizedComputationalGraphVertex::replacePropagationVariable() {
-    if (!myOriginalVariable_p)
-      THROW_LOGICEXCEPTION_MACRO("LinearizedComputationalGraphVertex::replacePropagationVariable: myOriginalVariable_p not set!");
+  void RemainderGraphVertex::replacePropagationVariable() {
+    if (!hasOriginalVariable())
+      THROW_LOGICEXCEPTION_MACRO("RemainderGraphVertex::replacePropagationVariable: myOriginalVariable_p not set!");
     Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     myPropagationVariable_p  = new Variable();
+    xaifBoosterTypeChange::TemporariesHelper aHelper("RemainderGraphVertex::replacePropagationVariable",
+						     getOriginalVariable());
     VariableSymbolReference* theVariableSymbolReference_p =
-     new VariableSymbolReference (
-        xaifBoosterTypeChange::TemporariesHelper("LinearizedComputationalGraphVertex::replacePropagationVariable",
-                                                 *myOriginalVariable_p
-        ).makeTempSymbol(theCurrentCfgScope,
+     new VariableSymbolReference(aHelper.makeTempSymbol(theCurrentCfgScope,
                          ConceptuallyStaticInstances::instance()->getPropagationVariableNameCreator(),
                          true),
         theCurrentCfgScope);
+    if (aHelper.needsAllocation()){
+      
+    }
     theVariableSymbolReference_p->setId("1");
-    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::replacePropagationVariable");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::RemainderGraphVertex::replacePropagationVariable");
     myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     myPropagationVariable_p->getAliasMapKey().setTemporary();
     myPropagationVariable_p->getDuUdMapKey().setTemporary();
-  } // end LinearizedComputationalGraphVertex::replacePropagationVariable()
+  } 
 
-  void LinearizedComputationalGraphVertex::createNewPropagationVariable(const Variable& variableToMatch) {
+  void RemainderGraphVertex::createNewPropagationVariable(const Variable& variableToMatch) {
     Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     myPropagationVariable_p  = new Variable();
     VariableSymbolReference* theVariableSymbolReference_p =
       new VariableSymbolReference(
-        xaifBoosterTypeChange::TemporariesHelper("LinearizedComputationalGraphVertex::createNewPropagationVariable",
+        xaifBoosterTypeChange::TemporariesHelper("RemainderGraphVertex::createNewPropagationVariable",
                                                  variableToMatch
         ).makeTempSymbol(theCurrentCfgScope,
                          ConceptuallyStaticInstances::instance()->getPropagationVariableNameCreator(),
@@ -139,20 +114,20 @@ namespace xaifBoosterCrossCountryInterface {
         theCurrentCfgScope
     );
     theVariableSymbolReference_p->setId("1");
-    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::LinearizedComputationalGraphVertex::createNewPropagationVariable");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::RemainderGraphVertex::createNewPropagationVariable");
     myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     myPropagationVariable_p->getAliasMapKey().setTemporary();
     myPropagationVariable_p->getDuUdMapKey().setTemporary();
-  } // end LinearizedComputationalGraphVertex::createNewPropagationVariable()
+  } 
 
-  const Variable& LinearizedComputationalGraphVertex::getPropagationVariable() const {
+  const Variable& RemainderGraphVertex::getPropagationVariable() const {
     if (myPropagationVariable_p)
       return *myPropagationVariable_p;
-    else if (myOriginalVariable_p)
-      return *myOriginalVariable_p;
+    else if (hasOriginalVariable())
+      return getOriginalVariable();
     else
-      THROW_LOGICEXCEPTION_MACRO("LinearizedComputationalGraphVertex::getPropagationVariable: neither myPropagationVariable_p nor myOriginalVariable_p set");
-  } // end LinearizedComputationalGraphVertex::getPropagationVariable()
+      THROW_LOGICEXCEPTION_MACRO("RemainderGraphVertex::getPropagationVariable: neither myPropagationVariable_p nor myOriginalVariable_p set");
+  } 
 
-} // end namespace xaifBoosterCrossCountryInterface
+} 
 
