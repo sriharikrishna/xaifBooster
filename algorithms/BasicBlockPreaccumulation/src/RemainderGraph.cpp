@@ -102,7 +102,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	THROW_LOGICEXCEPTION_MACRO("RemainderGraph::initFrom: couldn't find remainder edge in map");
       }
       myRemainderEdgeP2AccumulationVertexPMap[theCopy]=aMapIt->second;
-      std::cout << "for " << this << " mapping " << theCopy << " to " <<  aMapIt->second << std::endl; 
+      // std::cout << "for " << this << " mapping " << theCopy << " to " <<  aMapIt->second << std::endl; 
     } 
   }
 
