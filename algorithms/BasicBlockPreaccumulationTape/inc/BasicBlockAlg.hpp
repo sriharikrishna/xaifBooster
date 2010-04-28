@@ -58,6 +58,7 @@
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/Sequence.hpp"
 
 using namespace xaifBooster;
 
@@ -174,7 +175,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     /// This struct allows us to traverse the list of sequences along with the associated propagators and lists of pushed variables.
     struct PerSequenceData {
-      const Sequence* mySequence_p;
+      const xaifBoosterBasicBlockPreaccumulation::Sequence* mySequence_p;
       ReinterpretedDerivativePropagator* myReinterpretedDerivativePropagator_p;
       VariablePList myPushedAddressVariablesPList;
       VariablePList myPushedFactorVariablesPList;

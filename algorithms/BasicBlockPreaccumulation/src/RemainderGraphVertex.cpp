@@ -59,6 +59,7 @@
 #include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/Sequence.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation {
 
@@ -79,7 +80,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
-  void RemainderGraphVertex::replacePropagationVariable() {
+  void RemainderGraphVertex::replacePropagationVariable(Sequence& theSequence) {
     if (!hasOriginalVariable())
       THROW_LOGICEXCEPTION_MACRO("RemainderGraphVertex::replacePropagationVariable: myOriginalVariable_p not set!");
     Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
@@ -91,33 +92,34 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                          ConceptuallyStaticInstances::instance()->getPropagationVariableNameCreator(),
                          true),
         theCurrentCfgScope);
-    if (aHelper.needsAllocation()){
-      
-    }
     theVariableSymbolReference_p->setId("1");
     theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::RemainderGraphVertex::replacePropagationVariable");
     myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     myPropagationVariable_p->getAliasMapKey().setTemporary();
     myPropagationVariable_p->getDuUdMapKey().setTemporary();
+    if (aHelper.needsAllocation()){
+      theSequence.addAllocation(*theVariableSymbolReference_p,getOriginalVariable());
+    }
   } 
 
-  void RemainderGraphVertex::createNewPropagationVariable(const Variable& variableToMatch) {
+  void RemainderGraphVertex::createNewPropagationVariable(Sequence& theSequence, const Variable& variableToMatch) {
     Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     myPropagationVariable_p  = new Variable();
+    xaifBoosterTypeChange::TemporariesHelper aHelper("RemainderGraphVertex::createNewPropagationVariable",
+						     variableToMatch);
     VariableSymbolReference* theVariableSymbolReference_p =
-      new VariableSymbolReference(
-        xaifBoosterTypeChange::TemporariesHelper("RemainderGraphVertex::createNewPropagationVariable",
-                                                 variableToMatch
-        ).makeTempSymbol(theCurrentCfgScope,
+      new VariableSymbolReference(aHelper.makeTempSymbol(theCurrentCfgScope,
                          ConceptuallyStaticInstances::instance()->getPropagationVariableNameCreator(),
                          true),
-        theCurrentCfgScope
-    );
+        theCurrentCfgScope);
     theVariableSymbolReference_p->setId("1");
     theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::RemainderGraphVertex::createNewPropagationVariable");
     myPropagationVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     myPropagationVariable_p->getAliasMapKey().setTemporary();
     myPropagationVariable_p->getDuUdMapKey().setTemporary();
+    if (aHelper.needsAllocation()){
+      theSequence.addAllocation(*theVariableSymbolReference_p,variableToMatch);
+    }
   } 
 
   const Variable& RemainderGraphVertex::getPropagationVariable() const {
