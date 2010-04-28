@@ -65,8 +65,10 @@
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
+namespace xaifBoosterBasicBlockPreaccumulation {
 
+  class Sequence;
+  
   class RemainderGraphVertex : public PrivateLinearizedComputationalGraphVertex {
   public:
 
@@ -79,12 +81,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * Used to replace the original variable in the case where we have an independent that may alias with some non-independent.
      * In this case, we use this new variable for propagation exclusively. (see BasicBlockAlg::makePropagationVariables())
      */
-    void replacePropagationVariable();
+    void replacePropagationVariable(Sequence& theSequence);
 
     /**
      * Used in the case of a vertex that has no original variable (rather, it is associated with some temporary)
      */
-    void createNewPropagationVariable(const Variable& variableToMatch);
+    void createNewPropagationVariable(Sequence& theSequence, const Variable& variableToMatch);
 
     const Variable& getPropagationVariable() const;
 
