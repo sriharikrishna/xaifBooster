@@ -58,7 +58,7 @@
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
-
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/CallGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -66,6 +66,7 @@ namespace xaifBoosterControlFlowReversal {
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     CallGraphVertexAlgBase(theContaining), 
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::CallGraphVertexAlg(theContaining),
     myTapingControlFlowGraph_p(NULL), 
     myAdjointControlFlowGraph_p(NULL),
     myStrictAnonymousTapingControlFlowGraph_p(NULL), 
@@ -239,6 +240,25 @@ namespace xaifBoosterControlFlowReversal {
     }
     const ReversibleControlFlowGraph& myG;
   };
+
+  void CallGraphVertexAlg::algorithm_action_5() {
+    std::cout << "ALGORITHM_ACTION 5: ControlFlowReversal\n";
+    DBG_MACRO(DbgGroup::CALLSTACK,
+	      "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_5(initialize derivative components) called for: "
+	      << debug().c_str());
+    // create a map from CFG vertices to their respective sets of required values
+    CFGVertexP2RequiredValuePListMap theCFGVertexP2RequiredValuePListMap;
+    const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myRequiredValueSet.getRequiredValuesPList());
+    std::cout << myRequiredValueSet.debug();
+    xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
+    std::cout << "***************************\n";
+    for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
+         reqValI != theRequiredValuesPList.end(); ++reqValI) {
+      // add this value to the map
+      std::cout << "********************\n";
+      //theCFGVertexP2RequiredValuePListMap[&(*reqValI)->getControlFlowGraphVertex()].push_back(*reqValI);
+    } // end iterate over required variables
+  }
 
   void CallGraphVertexAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,

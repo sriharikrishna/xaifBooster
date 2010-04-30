@@ -56,6 +56,8 @@
 #include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
+#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/CallGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -65,7 +67,7 @@ namespace xaifBoosterControlFlowReversal {
    * class to implement algorithms relevant for the 
    * reversal of the control flow
    */
-  class CallGraphVertexAlg : public CallGraphVertexAlgBase {
+  class CallGraphVertexAlg : public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::CallGraphVertexAlg {
   public:
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);
@@ -76,6 +78,9 @@ namespace xaifBoosterControlFlowReversal {
      * control flow reversal
      */
     virtual void algorithm_action_4();
+
+    /* insert derivative component initializations */
+    virtual void algorithm_action_5();
                                                                                 
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
@@ -100,6 +105,12 @@ namespace xaifBoosterControlFlowReversal {
     const ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph() const;
 
   private:
+    
+    typedef std::list<xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList*> RequiredValuePListPList;
+
+    typedef std::map<const ControlFlowGraphVertex*,
+                     xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList>
+       CFGVertexP2RequiredValuePListMap;
     
     /** 
      * no def
