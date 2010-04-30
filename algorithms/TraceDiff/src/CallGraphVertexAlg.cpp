@@ -68,6 +68,7 @@ using namespace xaifBooster;
 namespace xaifBoosterTraceDiff { 
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
+    CallGraphVertexAlgBase(theContaining),
     xaifBoosterControlFlowReversal::CallGraphVertexAlg(theContaining),
     myTracingControlFlowGraph_p(0),
     myReplacementList_p(0) {

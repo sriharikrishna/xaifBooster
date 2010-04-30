@@ -332,8 +332,6 @@ namespace xaifBoosterControlFlowReversal {
       supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
       supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
 
-      ReversibleControlFlowGraph::initializeDerivComponents(theNewBasicBlock);
-
       return;
     } catch (LogicException){
       return;
@@ -2111,7 +2109,18 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
     ReversibleControlFlowGraph::VertexIterator vertexIt(p.first),endIt(p.second);
     for (;vertexIt!=endIt ;++vertexIt) {
-      if ((*vertexIt).getKind() == ControlFlowGraphVertexAlg::BASICBLOCK) {
+      switch((*vertexIt).getKind()) {
+      case ControlFlowGraphVertexAlg::ENTRY:
+	break;
+      case ControlFlowGraphVertexAlg::EXIT:
+	break;
+      case ControlFlowGraphVertexAlg::IF:
+	break;
+      case ControlFlowGraphVertexAlg::FORLOOP:
+	break;
+      case ControlFlowGraphVertexAlg::PRELOOP:
+	break;
+      case ControlFlowGraphVertexAlg::BASICBLOCK:
 	if ((*vertexIt).isOriginal()) {
 	  const BasicBlock& origBasicBlock(dynamic_cast<const BasicBlock&>((*vertexIt).getOriginalVertex()));
 	  for (PlainBasicBlock::BasicBlockElementList::const_iterator li=origBasicBlock.getBasicBlockElementList().begin();
@@ -2139,6 +2148,26 @@ namespace xaifBoosterControlFlowReversal {
 	    }
 	  }
 	}
+	break;
+      case ControlFlowGraphVertexAlg::ENDLOOP:
+	break;
+      case ControlFlowGraphVertexAlg::ENDBRANCH:
+	break;
+      case ControlFlowGraphVertexAlg::BRANCH:
+	break;
+      case ControlFlowGraphVertexAlg::LABEL:
+	break;
+      case ControlFlowGraphVertexAlg::GOTO:
+	break;
+      case ControlFlowGraphVertexAlg::UNDEF:
+	THROW_LOGICEXCEPTION_MACRO("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::initializeDerivComponents:"
+				   << "CFG Vertex " << (*vertexIt).debug() << " has kind UNDEF");
+	break;
+      default:
+	THROW_LOGICEXCEPTION_MACRO("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::initializeDerivComponents:"
+				   << "CFG Vertex " << (*vertexIt).debug()
+				   << " has an unrecognized kind " << ControlFlowGraphVertexAlg::kindToString((*vertexIt).getKind()));
+	break;
       } 
     } //end for
   }
