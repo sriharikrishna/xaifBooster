@@ -53,6 +53,7 @@
 #include <iostream> 
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 
 namespace xaifBoosterControlFlowReversal { 
 
@@ -63,16 +64,19 @@ namespace xaifBoosterControlFlowReversal {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBooster::AlgConfig::getSwitches());
+    return std::string(xaifBooster::AlgConfig::getSwitches()+"D");
   } 
 
   void AlgConfig::config() { 
     xaifBooster::AlgConfig::config();
+    if (isSet('D'))
+      CallGraphVertexAlg::initializeDerivativeComponents();
   } 
 
   void AlgConfig::usage() { 
     xaifBooster::AlgConfig::usage();
-    std::cout << " ControlFlowReversal options: no specific options here" << std::endl;
+    std::cout << " ControlFlowReversal options:" << std::endl
+	    << "             [-D] initialize derivative components of active variables" << std::endl; 
   } 
 
 } // end of namespace xaifBooster
