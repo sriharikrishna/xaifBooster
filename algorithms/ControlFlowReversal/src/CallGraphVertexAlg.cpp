@@ -64,6 +64,8 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
+  bool CallGraphVertexAlg::ourInitializeDerivativeComponentsFlag=false;
+
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     CallGraphVertexAlgBase(theContaining), 
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::CallGraphVertexAlg(theContaining),
@@ -242,6 +244,8 @@ namespace xaifBoosterControlFlowReversal {
   };
 
   void CallGraphVertexAlg::algorithm_action_5() {
+    if (!ourInitializeDerivativeComponentsFlag)
+      return;
     std::cout << "ALGORITHM_ACTION 5: ControlFlowReversal\n";
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_5(initialize derivative components) called for: "
@@ -277,7 +281,8 @@ namespace xaifBoosterControlFlowReversal {
     myStrictAnonymousTapingControlFlowGraph_p->donotRetainUserReversalFlag();
     myStrictAnonymousTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
     myTapingControlFlowGraph_p->insertBasicBlockAtEnd();
-    myStrictAnonymousTapingControlFlowGraph_p->insertBasicBlockAtEnd();
+    if (ourInitializeDerivativeComponentsFlag)
+      myStrictAnonymousTapingControlFlowGraph_p->insertBasicBlockAtEnd();
     if (getContaining().getControlFlowGraph().isStructured())
       structuredReversal();
     else
@@ -406,6 +411,11 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+  }
+
+  void
+  CallGraphVertexAlg::initializeDerivativeComponents() { 
+    ourInitializeDerivativeComponentsFlag=true;
   }
 
 } // end of namespace
