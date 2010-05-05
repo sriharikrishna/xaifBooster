@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPE_ASSIGNMENTALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONTAPE_ASSIGNMENTALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,40 +52,52 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <sstream>
 
-#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlg.hpp"
+using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
+namespace xaifBooster { 
+  class Assignment;
+}
 
-  AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg(theContainingAssignment),
-    BasicBlockElementAlg(theContainingAssignment) { 
-  }
+namespace xaifBoosterBasicBlockPreaccumulationTape {  
 
-  void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
-    xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::printXMLHierarchy(os);
-  }
+  class AssignmentAlg : public xaifBoosterBasicBlockPreaccumulation::AssignmentAlg {
 
-  std::string 
-  AssignmentAlg::debug() const { 
-    std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlg["
-	<< this 
-	<< ","
- 	<< xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::debug().c_str()
-	<< "]" << std::ends;  
-    return out.str();
-  }
+  public:
+    
+    AssignmentAlg(Assignment& theContainingAssignment);
 
-  void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
-  } 
-  
-  void AssignmentAlg::algorithm_action_4() {
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4();
-  }
+    virtual ~AssignmentAlg(){};
 
-} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+    virtual void printXMLHierarchy(std::ostream& os) const;
 
+    virtual std::string debug() const ;
+
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    virtual void algorithm_action_4();
+    
+  private: 
+
+    /** 
+     * no def
+     */
+    AssignmentAlg();
+
+    /** 
+     * no def
+     */
+    AssignmentAlg(const AssignmentAlg&);
+
+    /** 
+     * no def
+     */
+    AssignmentAlg& operator=(const AssignmentAlg&);
+
+  }; // end of class AssignmentAlg
+ 
+} 
+                                                                     
+#endif

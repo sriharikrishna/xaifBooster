@@ -332,6 +332,8 @@ namespace xaifBoosterControlFlowReversal {
       supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
       supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
 
+      setDerivInitBasicBlock(theNewBasicBlock);
+
       return;
     } catch (LogicException){
       return;
@@ -2089,21 +2091,20 @@ namespace xaifBoosterControlFlowReversal {
     return myStructuredFlag;
   } 
 
-  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
-  ReversibleControlFlowGraph::addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* aNewCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
-    theBasicBlock->supplyAndAddBasicBlockElementInstance(*aNewCall_p);
-    return *aNewCall_p;									     
+  void ReversibleControlFlowGraph::setDerivInitBasicBlock(BasicBlock* theNewBasicBlock) {
+    derivInitBasicBlock = theNewBasicBlock;
   }
 
-  void ReversibleControlFlowGraph::addZeroDeriv(Variable& theTarget,BasicBlock* theBasicBlock) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
-      theSubroutineCall(ReversibleControlFlowGraph::addInlinableSubroutineCall("ZeroDeriv",theBasicBlock));
-    theSubroutineCall.setId("inline_zeroderiv");
-    theTarget.copyMyselfInto(theSubroutineCall.addConcreteArgument(1).getArgument().getVariable());
+  BasicBlock* ReversibleControlFlowGraph::getDerivInitBasicBlock() {
+    try {
+      return derivInitBasicBlock;
+    }
+    catch (LogicException) {
+      return NULL;
+    }
   }
 
-  void ReversibleControlFlowGraph::initializeDerivComponents(BasicBlock* theBasicBlock) {
+  /*  void ReversibleControlFlowGraph::initializeDerivComponents(BasicBlock* theBasicBlock) {
     // go through symbol table & add zeroDeriv inlinable subroutine calls for every local var not an input arg
     // iterate through basic blocks
     ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
@@ -2170,7 +2171,7 @@ namespace xaifBoosterControlFlowReversal {
 	break;
       } 
     } //end for
-  }
+    }*/
 
 } // end of namespace
 

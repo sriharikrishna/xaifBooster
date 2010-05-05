@@ -54,13 +54,14 @@
 
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlg.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AssignmentAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/CallGraphVertexAlg.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
+namespace xaifBoosterBasicBlockPreaccumulationTape { 
 
   AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg(theContainingAssignment),
-    BasicBlockElementAlg(theContainingAssignment) { 
+    xaifBoosterBasicBlockPreaccumulation::AssignmentAlg(theContainingAssignment) {
   }
 
   void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
@@ -81,8 +82,27 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
   
-  void AssignmentAlg::algorithm_action_4() {
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4();
+  void 
+  AssignmentAlg::algorithm_action_4() {
+    if (getContainingAssignment().getLHS().getActiveFlag()) {
+
+      CallGraphVertexAlg& theCallerCallGraphVertexAlg
+	(dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
+      const BasicBlock& theCallerBasicBlock 
+	(dynamic_cast<const BasicBlock&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance()));
+      Expression* theDummyExpression_p (NULL); // dummy expression for marking as required
+      std::string theOriginStr;
+
+      theDummyExpression_p = new Expression (false);
+      Argument* theNewArgument_p = new Argument();
+      getContainingAssignment().getLHS().copyMyselfInto(theNewArgument_p->getVariable());
+      theNewArgument_p->setId(1);
+      theDummyExpression_p->supplyAndAddVertexInstance(*theNewArgument_p);
+      theOriginStr = "BasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4";
+      theCallerCallGraphVertexAlg.markRequiredValue(*theDummyExpression_p,
+						    theCallerBasicBlock,
+						    theOriginStr);
+    } // end if
   }
 
 } // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
