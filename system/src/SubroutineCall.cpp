@@ -67,15 +67,18 @@ namespace xaifBooster {
   const std::string SubroutineCall::our_myId_XAIFName("statement_id");
   const std::string SubroutineCall::our_symbolId_XAIFName("symbol_id");
   const std::string SubroutineCall::our_scopeId_XAIFName("scope_id");
+  const std::string SubroutineCall::our_myFormalArgCount_XAIFName("formalArgCount");
   bool SubroutineCall::ourBlackBoxOptimism(true);
 
   SubroutineCall::SubroutineCall (const Symbol& theSymbol,
 				  const Scope& theScope,
 				  const ActiveUseType::ActiveUseType_E activeUse,
+				  unsigned short formalArgCount,
 				  bool makeAlgorithm) :
     mySymbolReference(theSymbol,theScope),
     myActiveUse(activeUse),
-    myActiveUseSetFlag(false){ 
+    myActiveUseSetFlag(false),
+    myFormalArgCount(formalArgCount) { 
     if (makeAlgorithm)
       myBasicBlockElementAlgBase_p=SubroutineCallAlgFactory::instance()->makeNewAlg(*this); 
   } 
@@ -129,6 +132,10 @@ namespace xaifBooster {
        << ActiveUseType::our_attribute_XAIFName.c_str() 
        << "=\"" 
        << ActiveUseType::toString(myActiveUse).c_str()
+       << "\" " 
+       << our_myFormalArgCount_XAIFName.c_str() 
+       << "=\"" 
+       << myFormalArgCount
        << "\">" 
        << std::endl;
     for (ConcreteArgumentPList::const_iterator i=myConcreteArgumentPList.begin();
@@ -199,7 +206,7 @@ namespace xaifBooster {
       break;
     case ActiveUseType::UNDEFINEDUSE:
       { 
-	if (theAnswer=getActiveType())
+	if ((theAnswer=getActiveType())) // The assignment here is on purpose and not a typo
 	  myActiveUse=ActiveUseType::ACTIVEUSE;
 	else 
 	  myActiveUse=ActiveUseType::PASSIVEUSE;
@@ -272,6 +279,10 @@ namespace xaifBooster {
     ourBlackBoxOptimism=false;
   } 
 
+  unsigned short SubroutineCall::getFormalArgCount() const { 
+    return myFormalArgCount;
+  } 
+  
   bool
   SubroutineCall::hasExpression(const Expression& anExpression) const {
     for (ConcreteArgumentPList::const_iterator argI = myConcreteArgumentPList.begin();
@@ -283,5 +294,4 @@ namespace xaifBooster {
     else
     return false;
   } // end SubroutineCall::hasExpression()
- 
 } // end of namespace xaifBooster 

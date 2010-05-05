@@ -68,7 +68,7 @@ namespace xaifBooster {
   void 
   GraphElement<VertexOrEdgeDescriptor>::init(const VertexOrEdgeDescriptor& aDescriptor) { 
     if (myInitFlag) 
-      THROW_LOGICEXCEPTION_MACRO("GraphElement<VertexOrEdgeDescriptor>::init already initialized"); 
+      THROW_LOGICEXCEPTION_MACRO("GraphElement<VertexOrEdgeDescriptor>::init already initialized for instance at " << this);
     myInitFlag=true;
     myBoostDescriptor=aDescriptor;
   } // end of GraphElement<VertexOrEdgeDescriptor>::init
@@ -77,7 +77,7 @@ namespace xaifBooster {
   const VertexOrEdgeDescriptor& 
   GraphElement<VertexOrEdgeDescriptor>::getDescriptor() const { 
     if (!myInitFlag) 
-      THROW_LOGICEXCEPTION_MACRO("GraphElement<VertexOrEdgeDescriptor>::getDescriptor not initialized"); 
+      THROW_LOGICEXCEPTION_MACRO("GraphElement<VertexOrEdgeDescriptor>::getDescriptor not initialized for instance at " << this);
     return myBoostDescriptor;
   } // end of GraphElement<VertexOrEdgeDescriptor>::getDescriptor
   

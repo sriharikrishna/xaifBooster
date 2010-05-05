@@ -61,6 +61,7 @@
 #include "xaifBooster/system/inc/AliasMapKey.hpp"
 #include "xaifBooster/system/inc/SymbolType.hpp"
 #include "xaifBooster/system/inc/SymbolShape.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
 #include "xaifBooster/system/inc/ActiveUseType.hpp"
 #include "xaifBooster/system/inc/StatementIdSetMapKey.hpp"
 
@@ -136,9 +137,9 @@ namespace xaifBooster {
     const SymbolType::SymbolType_E& getType() const;
 
     /**
-     * the actual shape, e.g. scalar for vector element
+     * the effective shape, e.g. scalar for vector element
      */
-    const SymbolShape::SymbolShape_E getShape() const;
+    const SymbolShape::SymbolShape_E getEffectiveShape() const;
 
     /**
      * get the data type active flag from the SymbolReference
@@ -192,15 +193,14 @@ namespace xaifBooster {
     void setActiveUseType(ActiveUseType::ActiveUseType_E anActiveUseType); 
 
     /** 
-     * returns the first VariableVertex that is an ArrayAccess
-     * \todo this is a bit of a hack because we might 
-     * conceivably have something with more than one such vertex
+     * \return the first VariableVertex that is an ArrayAccess
+     * \todo this is a bit of a hack because we might conceivably have something with more than one such vertex
      */
     const ArrayAccess& getArrayAccess() const;
     ArrayAccess& getArrayAccess();
 
     /** 
-     * returns true if this has a VariableVertex that is an ArrayAccess
+     * \return true if this has a VariableVertex that is an ArrayAccess
      * \todo see also getArrayAccess 
      */
     bool hasArrayAccess() const;
@@ -256,8 +256,6 @@ namespace xaifBooster {
      * active type
      */
     bool myDerivFlag;
-
-  private:
 
     /** 
      * indicating how a variable is used, 

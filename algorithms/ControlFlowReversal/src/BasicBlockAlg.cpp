@@ -61,10 +61,12 @@ namespace xaifBoosterControlFlowReversal {
 
   BasicBlockAlg::BasicBlockAlg(BasicBlock& theContaining) : 
     BasicBlockAlgBase(theContaining),
-    ControlFlowGraphVertexAlg(theContaining) {
+    ControlFlowGraphVertexAlg(theContaining),
+    myEnumVal(0) {
   }
 
-  BasicBlockAlg::~BasicBlockAlg() {}
+  BasicBlockAlg::~BasicBlockAlg() {
+  }
   
   std::string
   BasicBlockAlg::debug() const {
@@ -72,6 +74,14 @@ namespace xaifBoosterControlFlowReversal {
     out << "xaifBoosterControlFlowReversal::BasicBlockAlg[" << this
         << "]" << std::ends;
     return out.str();
+  }
+
+  void BasicBlockAlg::setEnumVal(unsigned short anEnumVal) { 
+    myEnumVal=anEnumVal;
+  }
+
+  unsigned short BasicBlockAlg::getEnumVal() const { 
+    return myEnumVal;
   }
 
 } // end of namespace

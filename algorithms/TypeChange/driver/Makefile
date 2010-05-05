@@ -52,13 +52,11 @@
 # ========== end copyright notice ==============
 MAIN=oadDriver
 
-driver: obj $(MAIN) quickRegression.bash
+objs driver: obj $(MAIN) quickRegression.bash
 
 $(MAIN).cpp: buildStamp.hpp
 
 CLEANTARGETS+=buildStamp.hpp tmp $(MAIN) quickRegression.bash
-
-objs : ;
 
 .PHONY: objs driver 
 

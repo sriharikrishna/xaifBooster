@@ -154,6 +154,7 @@ namespace xaifBooster {
     passingOut.setControlFlowGraph(theCallGraphVertex_p->getControlFlowGraph());
     theCallGraphVertex_p->getControlFlowGraph().setId(XMLParser::getAttributeValueByName(ControlFlowGraph::our_myId_XAIFName));
     theCallGraphVertex_p->getControlFlowGraph().setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    theCallGraphVertex_p->getControlFlowGraph().setStructured(XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(ControlFlowGraph::our_myStructuredFlag_XAIFName)));
   }
 
   void 
@@ -634,7 +635,8 @@ namespace xaifBooster {
     SubroutineCall* theNewSubroutineCall_p=
       new SubroutineCall(theSymbol,
 			 theScope,
-			 ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()));
+			 ActiveUseType::fromString(XMLParser::getAttributeValueByName(ActiveUseType::our_attribute_XAIFName).c_str()),
+			 StringConversions::convertToUInt(XMLParser::getAttributeValueByName(SubroutineCall::our_myFormalArgCount_XAIFName).c_str()));
     theBasicBlock.supplyAndAddBasicBlockElementInstance(*theNewSubroutineCall_p);
     theNewSubroutineCall_p->setId(XMLParser::getAttributeValueByName(SubroutineCall::our_myId_XAIFName));
     theNewSubroutineCall_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
@@ -657,6 +659,7 @@ namespace xaifBooster {
     SubroutineCall& theSubroutineCall(passingIn.getSubroutineCall());
     ConcreteArgument* theNewConcreteArgument_p=
       new ConcreteArgument(StringConversions::convertToInt(XMLParser::getAttributeValueByName(ConcreteArgument::our_myPosition_XAIFName)));
+    theNewConcreteArgument_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
     theSubroutineCall.getConcreteArgumentPList().push_back(theNewConcreteArgument_p);
     passingOut.setConcreteArgument(*theNewConcreteArgument_p);
   }

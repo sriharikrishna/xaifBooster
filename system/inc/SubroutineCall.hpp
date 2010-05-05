@@ -79,6 +79,7 @@ namespace xaifBooster {
     SubroutineCall (const Symbol& theSymbol,
 		    const Scope& theScope,
 		    const ActiveUseType::ActiveUseType_E activeUseType,
+		    unsigned short formalArgCount,
 		    bool makeAlgorithm=true);
 
     ~SubroutineCall();
@@ -123,6 +124,11 @@ namespace xaifBooster {
      */
     static const std::string our_scopeId_XAIFName;
 
+    /**
+     * name for member myFormalArgCount as represented in XAIF schema
+     */
+    static const std::string our_myFormalArgCount_XAIFName;
+
     typedef std::list<ConcreteArgument*> ConcreteArgumentPList;
 
     ConcreteArgumentPList& getConcreteArgumentPList();
@@ -156,6 +162,8 @@ namespace xaifBooster {
      * for determining activity prefer getActiveFlag
      */
     ActiveUseType::ActiveUseType_E getActiveUse() const; 
+
+    unsigned short getFormalArgCount() const; 
 
     /** 
      * the implementation is incomplete
@@ -210,6 +218,13 @@ namespace xaifBooster {
      * e.g. they don't have side effects
      */
     static bool ourBlackBoxOptimism; 
+
+    /** 
+     * the total count of formal arguments
+     * for this subroutine, i.e. 
+     * the upper bound for ConcreteArgument::myPosition 
+     */
+    unsigned short myFormalArgCount; 
 
   };
  

@@ -104,6 +104,11 @@ namespace xaifBooster {
     std::string debug() const ;
 
     /**
+     * calls GraphvizDisplay::show
+     */
+    void show(const std::string& outputName) const;
+
+    /**
      * \param theTarget where we deep copy the contents of this instance to
      * \param withNewId indicates if the graph 
      * elements will have their own Id's  
@@ -111,16 +116,19 @@ namespace xaifBooster {
      * \param withAlgorithm indicates if the graph 
      * elements will have their algorithm objects 
      * created.
+     * returns the vertex in theTarget that is equivalent to the max vertex of self
      */
-    void copyMyselfInto(Expression& theTarget,
-			bool withNewId,
-			bool withAlgorithm) const;  
+    ExpressionVertex& copyMyselfInto(Expression& theTarget,
+				     bool withNewId,
+				     bool withAlgorithm) const;  
 
     /**
      * similar to copyMyselfInto
      * perform a deep copy of the subexpression  contents 
      * starting with theTopVertex into theTarget
-     * returning the copy of theTopVertex in theTarget
+     * \param theTopVertex is vertex of \this
+     * \param theTarget is the Expression into which we copy
+     * \return the copy of theTopVertex in theTarget
      */
     ExpressionVertex& copySubExpressionInto(Expression& theTarget,
 					    const ExpressionVertex& theTopVertex,
@@ -179,7 +187,23 @@ namespace xaifBooster {
      */
     bool isConstant() const; 
 
+    /**
+     *  if this is a constant integer expression evaluate it
+     */
+    int constIntEval() const;
+
     void appendActiveArguments(CArgumentPList& listToBeAppended) const;
+
+    /**
+     * add an intrinsic node and edges conntecting it
+     * \param opName is the name the intrinsic
+     * \param arg1TopVertex is the maximal vertex of the subexpression used as first argument
+     * \param arg2TopVertex is the maximal vertex of the subexpression used as second argument
+     * \return the new intrinsic vertex
+     */
+    ExpressionVertex& addBinaryOpByName(const std::string& opName,
+					const ExpressionVertex& arg1TopVertex,
+					const ExpressionVertex& arg2TopVertex);
 
     /**
      * This expression is considered to contain \p anExpression if and only if
@@ -205,14 +229,25 @@ namespace xaifBooster {
      * recursively invoked implementation for public copySubExpressionInto
      */
     void copySubExpressionInto(Expression& theTarget,
-					    const ExpressionVertex& theTopVertex,
-					    ExpressionVertex& theTopCopy,
-					    bool withNewId,
-					    bool withAlgorithm,
-					    ExpressionVertexPList theList) const;
+			       const ExpressionVertex& theTopVertex,
+			       ExpressionVertex& theTopCopy,
+			       bool withNewId,
+			       bool withAlgorithm,
+			       ExpressionVertexPList theList) const;
 
+    /**
+     * internal helper to recursively evaluate 
+     * constant integer expressions
+     */
+    int constIntEvalR(const ExpressionVertex& theTopVertex) const;
 
-  }; // end of class Expression
+    /**
+     * internal helper to recursively determine
+     * if an expression is constant
+     */
+    bool isConstantR(const ExpressionVertex& theTopVertex) const;
+
+  }; 
 
 } // end of namespace xaifBooster
                                                                      

@@ -177,7 +177,7 @@ namespace xaifBooster {
     return myIndexPairList;
   }
 
-  bool IndexTriplet::isDeref() const { 
+  bool IndexTriplet::isScalarDeref() const {
     return (!hasExpression(IT_BOUND));
   } 
 

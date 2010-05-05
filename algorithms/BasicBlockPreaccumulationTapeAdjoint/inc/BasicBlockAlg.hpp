@@ -93,7 +93,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     SubroutineCall& addSubroutineCall(const Symbol& aSubroutineNameSymbol,
 				      const Scope& aSubroutineNameScope,
 				      ActiveUseType::ActiveUseType_E anActiveUse,
-				      const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
+				      const ForLoopReversalType::ForLoopReversalType_E& aReversalType,
+                                      unsigned short formalArgCount);
 
     virtual void algorithm_action_5();
 

@@ -56,6 +56,7 @@
 #include "xaifBooster/utils/inc/NameCreator.hpp"
 
 #include "xaifBooster/system/inc/InlinableIntrinsicsCatalogue.hpp"
+#include "xaifBooster/system/inc/NonInlinableIntrinsicsCatalogue.hpp"
 #include "xaifBooster/system/inc/PrintVersion.hpp"
 #include "xaifBooster/system/inc/TraversalStack.hpp"
 
@@ -81,6 +82,7 @@ namespace xaifBooster {
     CallGraph& getCallGraph();
 
     InlinableIntrinsicsCatalogue& getInlinableIntrinsicsCatalogue();
+    NonInlinableIntrinsicsCatalogue& getNonInlinableIntrinsicsCatalogue();
 
     void createCallGraph(const std::string& aSchemaInstance,
 			 const std::string& anXAIFInstance,
@@ -102,7 +104,6 @@ namespace xaifBooster {
     void setPrintVersion(PrintVersion::PrintVersion_E aPrintVersion);
 
     const NameCreator& getUniversalNameCreator() const;
-    const NameCreator& getAccumulationVariableNameCreator() const;
     const NameCreator& getPropagationVariableNameCreator() const;
     const NameCreator& getLinearizationVariableNameCreator() const;
     const NameCreator& getTemporaryVariableNameCreator() const;
@@ -134,6 +135,7 @@ namespace xaifBooster {
     CallGraph* myCallGraph_p;
 
     InlinableIntrinsicsCatalogue myInlinableIntrinsicsCatalogue;
+    NonInlinableIntrinsicsCatalogue myNonInlinableIntrinsicsCatalogue;
 
     /**
      * initialized to 
@@ -143,9 +145,6 @@ namespace xaifBooster {
 
     /// used to give unique names for variables created for some purpose not covered by those below
     NameCreator myUniversalNameCreator;
-
-    /// used to give unique names to variables created for the accumulation
-    NameCreator myAccumulationVariableNameCreator;
 
     /// used to give unique names to variables created for the propagation
     NameCreator myPropagationVariableNameCreator;

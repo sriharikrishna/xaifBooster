@@ -55,6 +55,7 @@
 
 #include <string>
 #include <fstream>
+#include <set>
 #include "xaifBooster/utils/inc/DbgLogger.hpp"
 #include "xaifBooster/utils/inc/DbgGroup.hpp"
 #include "xaifBooster/utils/inc/Mutex.hpp"
@@ -82,10 +83,21 @@ namespace xaifBooster {
    */
 #ifndef DBG_MACRO  
 #define DBG_MACRO(Group,StreamArgs) \
-  if (DbgLoggerManager::instance()->isSelected((Group))) { \
+  if (DbgLoggerManager::instance()->isSelected((Group)) && DbgLoggerManager::instance()->wantTag("")) { \
     std::ostringstream aLoNgAnDwEiRdLoCaLnAmeFoRtHiSmAcRoOnLy; \
     aLoNgAnDwEiRdLoCaLnAmeFoRtHiSmAcRoOnLy << StreamArgs << std::ends; \
     DbgLoggerManager::instance()->logDebug(__FILE__,__LINE__,(Group),aLoNgAnDwEiRdLoCaLnAmeFoRtHiSmAcRoOnLy); \
+  }
+#else
+#error macro name for DBG_MACRO already in use
+#endif
+
+#ifndef DBG_TAG_MACRO  
+#define DBG_TAG_MACRO(Group,Tag,StreamArgs)		   \
+  if (DbgLoggerManager::instance()->isSelected((Group)) && DbgLoggerManager::instance()->wantTag((Tag))) { \
+    std::ostringstream aLoNgAnDwEiRdLoCaLnAmeFoRtHiSmAcRoOnLy; \
+    aLoNgAnDwEiRdLoCaLnAmeFoRtHiSmAcRoOnLy << StreamArgs << std::ends; \
+    DbgLoggerManager::instance()->logDebug(__FILE__,__LINE__,(Group),aLoNgAnDwEiRdLoCaLnAmeFoRtHiSmAcRoOnLy,(Tag)); \
   }
 #else
 #error macro name for DBG_MACRO already in use
@@ -139,12 +151,23 @@ namespace xaifBooster {
     void logDebug(const std::string aFileName_c,
 		  int aLineNumber_c,
 		  const DbgGroup::DbgGroup_E aGroup_c,
-		  std::ostringstream& aMessage_r);
+		  std::ostringstream& aMessage_r,
+		  const std::string& aTag="");
 
     /** 
      * is a certain category currently selected? 
      */
     bool isSelected(const DbgGroup::DbgGroup_E aGroup_c) const; 
+
+    /** 
+     * is a certain tag currently selected? 
+     */
+    bool wantTag(const std::string& aTag) const;
+
+    /** 
+     * adds space separated tags given as a string to myTagSet
+     */
+    void addTags(const std::string& spaceSeparatedTags);
 
   private: 
 
@@ -208,6 +231,8 @@ namespace xaifBooster {
      * previous timer micro seconds
      */
     long myPreviousMS;
+
+    std::set<std::string> myTagSet;
 
   }; // end of class DbgLoggerManager
 

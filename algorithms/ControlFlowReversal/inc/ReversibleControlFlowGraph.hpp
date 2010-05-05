@@ -100,8 +100,26 @@ namespace xaifBoosterControlFlowReversal {
      * and at most two outedges (loops and branches)
      */
     void storeControlFlow();
-
+    
+    /**
+     * makes the adjoint CFG for control flow stored based in the 
+     * logic created with storeControlFlow
+     */
     void buildAdjointControlFlowGraph(ReversibleControlFlowGraph&);
+
+    /** 
+     * if the control flow is unstructured we can in general not
+     * construct a structured adjoint control flow. The fall back 
+     * mechanism is to enumerate the basic blocks, store their 
+     * sequence in forward and use that sequence in the adjoint sweep.
+     */
+    void storeEnumeratedBB();
+
+    /**
+     * makes the adjoint version for unstructured control flow 
+     * based on the enumeration created with storeEnumeratedBB
+     */
+    void reverseFromEnumeratedBB(ReversibleControlFlowGraph&);
  
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
@@ -123,6 +141,10 @@ namespace xaifBoosterControlFlowReversal {
     const VertexPPairList& getOriginalReverseVertexPPairList() const;
 
     void donotRetainUserReversalFlag(); 
+
+    void setUnstructured(); 
+
+    bool isStructured() const; 
 
   protected:
 
@@ -205,7 +227,7 @@ namespace xaifBoosterControlFlowReversal {
      * top down topological sort
      */
     const Symbol* makeAuxilliaryIntegerLHS(Assignment& theAssignment, 
-					   BasicBlock& theBasicBlock); 
+					   PlainBasicBlock& theBasicBlock); 
 
     /** 
      * insert a new basic block between after and before and return it
@@ -254,7 +276,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * make a new anonymous forloop for the given preloop
      */
-    ReversibleControlFlowGraphVertex* new_preloop(const PreLoop& theOriginalPreLoop);
+    ReversibleControlFlowGraphVertex* new_preloop(const std::string& theOriginalPreLoopId);
 
     /** 
      * make a new endloop
@@ -271,13 +293,13 @@ namespace xaifBoosterControlFlowReversal {
      * append "i=value" to theBasicBlock_r and return "i"
      */
     const Symbol* insert_init_integer(int value, 
-				      BasicBlock& theBasicBlock_r);
+				      PlainBasicBlock& theBasicBlock_r);
 
     /** 
      * append "push_cfg(i)" to theBasicBlock_r
      */
     void insert_push_integer(const Symbol* theSymbol_p, 
-			     BasicBlock& theBasicBlock_r);
+			     PlainBasicBlock& theBasicBlock_r);
 
     /** 
      * append "pop_cfg(i)" to theBasicBlock_r
@@ -332,6 +354,14 @@ namespace xaifBoosterControlFlowReversal {
      * throughout
      */
     bool myRetainUserReversalFlag;
+
+    /** 
+     * structured control flow
+     * (every control path through loop/branch
+     * needs to also go through the (unique) corresponding 
+     * endloop/endbranch vertex
+     */
+    bool myStructuredFlag; 
 
   };  // end of class
 

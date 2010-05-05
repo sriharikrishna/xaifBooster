@@ -88,6 +88,7 @@ namespace xaifBooster {
     const std::string& getInputFileName() const; 
     bool getInputValidationFlag() const; 
     const std::string& getIntrinsicsFileName() const; 
+    const std::string& getNIIntrinsicsFileName() const; 
     const std::string& getSchemaPath() const; 
     const std::string& getOutFileName() const; 
 
@@ -99,6 +100,7 @@ namespace xaifBooster {
 
     std::string myInputFileName; 
     std::string myIntrinsicsFileName; 
+    std::string myNIIntrinsicsFileName; 
     std::string mySchemaPath; 
     std::string myOutFileName;
     std::string myBuildStamp;

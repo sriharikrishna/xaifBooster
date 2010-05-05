@@ -110,8 +110,16 @@ namespace xaifBooster {
        << our_myPosition_XAIFName.c_str()
        << "=\""
        << myPosition
-       << "\">" 
-       << std::endl; 
+       << "\"";
+    if (annotationIsSet()) { 
+      os <<  " "
+	 << ObjectWithAnnotation::our_myAnnotation_XAIFName.c_str() 
+	 << "=\""
+	 << getAnnotation().c_str()
+	 << "\"";
+    }
+    os  << ">" 
+	<< std::endl; 
     if (isArgument())
       myArgument_p->printXMLHierarchy(os);
     else if (isConstant())
@@ -232,7 +240,9 @@ namespace xaifBooster {
       Constant& theConstantArg(theTarget.makeConstant(getConstant().getType()));
       theConstantArg.setFromString(getConstant().toString());
       theConstantArg.setFrontEndType(getConstant().getFrontEndType());
-    } 
+    }
+    if (annotationIsSet())
+      theTarget.setAnnotation(getAnnotation());
   } 
 
 } // end of namespace xaifBooster 

@@ -155,15 +155,15 @@ namespace xaifBoosterTraceDiff {
       // for instance modules may have an empty CallGraph
       myTracingControlFlowGraph_p=new TraceableControlFlowGraph(getContaining().getControlFlowGraph());
       myTracingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("")) {     
     	GraphVizDisplay::show(*myTracingControlFlowGraph_p,"cfg_copy", ControlFlowGraphVertexLabelWriter(*myTracingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTracingControlFlowGraph_p));
       }
       myTracingControlFlowGraph_p->markBranchExitEdges();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("")) {     
 	GraphVizDisplay::show(*myTracingControlFlowGraph_p,"cfg_branch_marked", ControlFlowGraphVertexLabelWriter(*myTracingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTracingControlFlowGraph_p));
       }
       myTracingControlFlowGraph_p->traceActiveControlFlow();
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("")) {     
 	GraphVizDisplay::show(*myTracingControlFlowGraph_p,"cfg_tracing", ControlFlowGraphVertexLabelWriter(*myTracingControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myTracingControlFlowGraph_p));
       }
     }

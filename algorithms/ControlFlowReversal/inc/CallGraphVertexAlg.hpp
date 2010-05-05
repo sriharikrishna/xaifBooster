@@ -111,6 +111,10 @@ namespace xaifBoosterControlFlowReversal {
      */
     CallGraphVertexAlg(const CallGraphVertexAlg&);
 
+    void structuredReversal();
+
+    void unstructuredReversal();
+
     /** 
      * no def
      */
