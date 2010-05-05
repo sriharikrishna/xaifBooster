@@ -272,10 +272,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// Is it the first element?
 	if (*li==aSequence_p->myFirstElement_p) { 
 	  // print all the stuff before the first element
-	  for (Sequence::InlinableSubroutineCallPList::const_iterator ali=aSequence_p->getAllocationList().begin();
-	       ali!=aSequence_p->getAllocationList().end();
-	       ++ali) 
-	    (*(ali))->printXMLHierarchy(os);
 	  const Sequence::AssignmentPList& theFrontList(aSequence_p->getFrontAssignmentList());
 	  for(Sequence::AssignmentPList::const_iterator fli=theFrontList.begin();
 	      fli!=theFrontList.end();
@@ -287,6 +283,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// Is it the last element?
 	if (*li==aSequence_p->myLastElement_p) { 
 	  // print all the stuff after the last element
+	  for (Sequence::InlinableSubroutineCallPList::const_iterator ali=aSequence_p->getAllocationList().begin();
+	       ali!=aSequence_p->getAllocationList().end();
+	       ++ali) 
+	    (*(ali))->printXMLHierarchy(os);
 	  const Sequence::AssignmentPList& theEndList(aSequence_p->getEndAssignmentList());
 	  for(Sequence::AssignmentPList::const_iterator eli=theEndList.begin();
 	      eli!=theEndList.end();
