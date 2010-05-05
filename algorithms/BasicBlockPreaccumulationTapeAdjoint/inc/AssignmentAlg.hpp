@@ -53,7 +53,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
 using namespace xaifBooster;
@@ -67,7 +67,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   /** 
    * class to implement reversal of BasicBlockElements
    */
-  class AssignmentAlg : public xaifBoosterBasicBlockPreaccumulation::AssignmentAlg,
+  class AssignmentAlg : public xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg,
 			public BasicBlockElementAlg {
 
   public:
@@ -81,6 +81,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    virtual void algorithm_action_4();
 
   private: 
 

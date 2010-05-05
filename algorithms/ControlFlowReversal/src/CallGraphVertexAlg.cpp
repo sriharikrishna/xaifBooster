@@ -59,6 +59,8 @@
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/CallGraphVertexAlg.hpp"
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 using namespace xaifBooster;
 
@@ -243,25 +245,49 @@ namespace xaifBoosterControlFlowReversal {
     const ReversibleControlFlowGraph& myG;
   };
 
+  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+  CallGraphVertexAlg::addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* aNewCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+    theBasicBlock->supplyAndAddBasicBlockElementInstance(*aNewCall_p);
+    return *aNewCall_p;									     
+  }
+
+  void CallGraphVertexAlg::addZeroDeriv(const Variable& theTarget,BasicBlock* theBasicBlock) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+      theSubroutineCall(CallGraphVertexAlg::addInlinableSubroutineCall("ZeroDeriv",theBasicBlock));
+    theSubroutineCall.setId("inline_zeroderiv");
+    theTarget.copyMyselfInto(theSubroutineCall.addConcreteArgument(1).getArgument().getVariable());
+  }
+
   void CallGraphVertexAlg::algorithm_action_5() {
     if (!ourInitializeDerivativeComponentsFlag)
       return;
-    std::cout << "ALGORITHM_ACTION 5: ControlFlowReversal\n";
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_5(initialize derivative components) called for: "
 	      << debug().c_str());
     // create a map from CFG vertices to their respective sets of required values
-    CFGVertexP2RequiredValuePListMap theCFGVertexP2RequiredValuePListMap;
-    const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myRequiredValueSet.getRequiredValuesPList());
-    std::cout << myRequiredValueSet.debug();
-    xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
-    std::cout << "***************************\n";
-    for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
-         reqValI != theRequiredValuesPList.end(); ++reqValI) {
-      // add this value to the map
-      std::cout << "********************\n";
-      //theCFGVertexP2RequiredValuePListMap[&(*reqValI)->getControlFlowGraphVertex()].push_back(*reqValI);
-    } // end iterate over required variables
+    if (hasTapingControlFlowGraph()) {
+      ReversibleControlFlowGraph& theRCFG = getTapingControlFlowGraph();
+      BasicBlock* theBasicBlock = theRCFG.getDerivInitBasicBlock();
+      CFGVertexP2RequiredValuePListMap theCFGVertexP2RequiredValuePListMap;
+      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myRequiredValueSet.getRequiredValuesPList());
+      for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
+	   reqValI != theRequiredValuesPList.end(); ++reqValI) {
+	CallGraphVertexAlg::addZeroDeriv((*reqValI)->getArgument().getVariable(),theBasicBlock);
+	
+      } // end iterate over required variables
+    }
+    else if (hasAdjointControlFlowGraph()) {
+      ReversibleControlFlowGraph& theRCFG = getAdjointControlFlowGraph();
+      BasicBlock* theBasicBlock = theRCFG.getDerivInitBasicBlock();
+      CFGVertexP2RequiredValuePListMap theCFGVertexP2RequiredValuePListMap;
+      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myRequiredValueSet.getRequiredValuesPList());
+      for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
+	   reqValI != theRequiredValuesPList.end(); ++reqValI) {
+	CallGraphVertexAlg::addZeroDeriv((*reqValI)->getArgument().getVariable(),theBasicBlock);
+	
+      } // end iterate over required variables      
+    }
   }
 
   void CallGraphVertexAlg::algorithm_action_4() {

@@ -154,12 +154,11 @@ namespace xaifBoosterControlFlowReversal {
      */
     void insertBasicBlockAtEnd();
 
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
-    addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock);
+    //void initializeDerivComponents(BasicBlock* theBasicBlock);
 
-    void addZeroDeriv(Variable& theTarget,BasicBlock* theBasicBlock);
+    void setDerivInitBasicBlock(BasicBlock* theNewBasicBlock);
 
-    void initializeDerivComponents(BasicBlock* theBasicBlock);
+    BasicBlock* getDerivInitBasicBlock();
 
   protected:
 
@@ -321,6 +320,9 @@ namespace xaifBoosterControlFlowReversal {
      * append "pop_cfg(i)" to theBasicBlock_r
      */
     const Symbol& insert_pop_integer(BasicBlock& theBasicBlock_r);
+
+
+    BasicBlock* derivInitBasicBlock;
 
     /** 
      * reference to original cfg

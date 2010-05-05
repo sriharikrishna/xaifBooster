@@ -52,6 +52,7 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlgFactory.hpp"
@@ -86,6 +87,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
+    resetAssignmentAlgFactory(new AssignmentAlgFactory());
   }
 
   void AlgFactoryManager::init() {

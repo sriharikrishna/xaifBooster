@@ -106,6 +106,13 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph();
     const ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph() const;
 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+    addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock);    
+
+    void addZeroDeriv(const Variable& theTarget,BasicBlock* theBasicBlock);
+
+    void initializeDerivComponents(BasicBlock* theBasicBlock);
+
   private:
     
     typedef std::list<xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList*> RequiredValuePListPList;
