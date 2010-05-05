@@ -56,6 +56,7 @@
 #include "xaifBooster/system/inc/Scope.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
@@ -148,7 +149,7 @@ namespace xaifBoosterLinearization{
 	  theActivePositions.add((*anExpressionEdgeI).getPosition());
       }
       PositionSet theUsedPositions(theCatalogueItem.getUsedPositionalArguments(theActivePositions));
-      DBG_MACRO(DbgGroup::DATA, "ExpressionAlg::createPartialExpressions: all used positions: "
+      DBG_MACRO(DbgGroup::DATA, "ExpressionAlg::createPartialExpressions: for " << (dynamic_cast<const Intrinsic&>(*anExpressionVertexI)).getName().c_str() << " all used positions: "
 		<<theUsedPositions.debug().c_str());
       // the first one points to the function value, i.e. this vertex
       // however we may not have a special expression specified for 
@@ -159,7 +160,7 @@ namespace xaifBoosterLinearization{
 	 !theExpressionVertexAlg.hasAuxilliaryVariable()) {
 	// we need to make a temporary variable. see
 	// ExpressionVertex::myAuxilliaryArgument_p
-	xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
+	xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions(for intrinsic result)",
 							 getContaining(),
 							 *anExpressionVertexI);
 	theExpressionVertexAlg.makeAuxilliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
@@ -194,7 +195,7 @@ namespace xaifBoosterLinearization{
 	  // ExpressionVertexAlg::myAuxilliaryArgument_p
 	  // however it is not needed if this is a leaf vertex, i.e. 
 	  // a variable reference itself or a constant (no in edges)
-	  xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
+	  xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions(for temp var)",
 							   getContaining(),
 							   theSource);
 	  theSourceAlg.makeAuxilliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
@@ -241,9 +242,12 @@ namespace xaifBoosterLinearization{
       // second inner loop over all arguments to create concrete expressions
       for(Expression::ConstInEdgeIterator anExpressionEdgeI3(pE.first); anExpressionEdgeI3!=anExpressionEdgeIEnd; ++anExpressionEdgeI3) {
 	ExpressionEdgeAlg&theI3ExpressionEdgeAlg(dynamic_cast<ExpressionEdgeAlg&>((*anExpressionEdgeI3).getExpressionEdgeAlgBase()));
-	// don't make a partial assignment for unit partials
+	// don't make a partial assignment for unit or passive partials
 	if(theI3ExpressionEdgeAlg.getPartialDerivativeKind()==PartialDerivativeKind::LINEAR_ONE
-	||theI3ExpressionEdgeAlg.getPartialDerivativeKind()==PartialDerivativeKind::LINEAR_MINUS_ONE)
+	   ||
+	   theI3ExpressionEdgeAlg.getPartialDerivativeKind()==PartialDerivativeKind::LINEAR_MINUS_ONE
+	   ||
+	   theI3ExpressionEdgeAlg.getPartialDerivativeKind()==PartialDerivativeKind::PASSIVE)
 	  continue;
 
 	// now copy the expression for the partial, i.e. make a concrete 
@@ -281,11 +285,9 @@ namespace xaifBoosterLinearization{
 	    } // end argument or constant
 	  } // end if
 	} // end if there's only one vertex in the partial expression
-
 	theI3ExpressionEdgeAlg.makeConcretePartialAssignment();
 	Expression&theNewConcretePartial(theI3ExpressionEdgeAlg.getConcretePartialAssignment().getRHS());
 	theI3ExpressionEdgeAlg.getConcretePartialAssignment().setId(makeUniqueId());
-
 	bool allConst=true;
 	InlinableIntrinsicsExpression::ConstVertexIteratorPair anAbstractvertexPair(thePartialExpression.vertices());
 	for(InlinableIntrinsicsExpression::ConstVertexIterator abstractVertexIt(anAbstractvertexPair.first), abstractVertexEndIt(anAbstractvertexPair.second);
@@ -388,16 +390,14 @@ namespace xaifBoosterLinearization{
 	} // end for all abstract edges
 	// make a left hand side: 
 	Variable&theLHS(theI3ExpressionEdgeAlg.getConcretePartialAssignment().getLHS());
+	xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions(for the LHS)",
+							 theNewConcretePartial,
+							 theNewConcretePartial.getMaxVertex());	
 	VariableSymbolReference* theVariableSymbolReference_p =
-         new VariableSymbolReference(
-           xaifBoosterTypeChange::TemporariesHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions",
-                                                    getContaining(),
-                                                    *anExpressionVertexI
-                                                   ).makeTempSymbol(theCurrentCfgScope,
-                                                                    ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
-                                                                    false),
-           theCurrentCfgScope
-        );
+	  new VariableSymbolReference(aHelper.makeTempSymbol(theCurrentCfgScope,
+							     ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
+							     false),
+				      theCurrentCfgScope);
 	// JU: this assignment of the vertex Id might have to change 
 	// if we create vector assignments as auxilliary variables...
 	theVariableSymbolReference_p->setId("1");
@@ -405,6 +405,17 @@ namespace xaifBoosterLinearization{
 	theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	theLHS.getAliasMapKey().setTemporary();
 	theLHS.getDuUdMapKey().setTemporary();
+	if (aHelper.needsAllocation()) { 
+	  // add the allocation
+	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
+	  theSRCall_p->setId("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
+	  myPartialAllocationsPList.push_back(theSRCall_p);
+	  // first argument
+	  theLHS.
+	    copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
+	  // second argument 
+	  aHelper.allocationModel().copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
+	}
       } // end for
     } // end for all expression vertices (outer loop)
   } // end of ExpressionAlg::createPartialExpressions()
