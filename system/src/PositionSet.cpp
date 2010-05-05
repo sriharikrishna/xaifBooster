@@ -113,7 +113,7 @@ namespace xaifBooster {
 	 i!=myIntList.end();
 	 ++i) 
       out << *i << " ";
-    out << ")]" << std::ends;  
+    out << "}]" << std::ends;  
     return out.str();
   } // end of PositionSet::debug
 
