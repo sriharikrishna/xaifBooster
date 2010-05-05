@@ -67,6 +67,8 @@
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
+
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
@@ -650,19 +652,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	}
 	else { 
 	  // we only use it in the scope of this flattened sequence, therefore remove it
-	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: removing dependent " 
-		    << myPrivateVertex.getOriginalVariable().debug().c_str()
-		    << " list size: " << theDepVertexPList.size()); 
+	  DBG_TAG_MACRO(DbgGroup::DATA, "depList", "BasicBlockAlg::fixUpDependentsList: removing dependent " 
+			<< myPrivateVertex.getOriginalVariable().debug().c_str()
+			<< " list size: " << theDepVertexPList.size()); 
 	  theComputationalGraph.removeFromDependentList(myPrivateVertex);
 	  continue;
 	}
       }
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
-	if (theComputationalGraph.numOutEdgesOf(myPrivateVertex)) { 
-	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: non-maximal dependent " << myPrivateVertex.getOriginalVariable().debug().c_str()); 
-	}
-	else { 
-	  DBG_MACRO(DbgGroup::DATA, "BasicBlockAlg::fixUpDependentsList: keeping regular dependent " << myPrivateVertex.getOriginalVariable().debug().c_str()); 
+      else { 
+	if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
+	  if (theComputationalGraph.numOutEdgesOf(myPrivateVertex)) { 
+	    DBG_TAG_MACRO(DbgGroup::DATA,  "depList",  "BasicBlockAlg::fixUpDependentsList: keeping non-maximal dependent " << myPrivateVertex.getOriginalVariable().debug().c_str() << " key is " << aDuUdMapKey.debug().c_str() << " use result is " << theDuUdMapUseResult.myAnswer << " lists are " << theComputationalGraph.getStatementIdLists().debug().c_str()); 
+	  }
+	  else { 
+	    DBG_TAG_MACRO(DbgGroup::DATA,  "depList", "BasicBlockAlg::fixUpDependentsList: keeping regular dependent " << myPrivateVertex.getOriginalVariable().debug().c_str() << " key is " << aDuUdMapKey.debug().c_str()); 
+	  }
 	}
       } 
     }
@@ -711,14 +715,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void BasicBlockAlg::runElimination(Sequence& aSequence) { 
     PrivateLinearizedComputationalGraph& theComputationalGraph=*(aSequence.myComputationalGraph_p);
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {     
       GraphVizDisplay::show(theComputationalGraph,
 			    "OriginalFlattenedPLCG",
 			    PrivateLinearizedComputationalGraphVertexLabelWriter(theComputationalGraph),
 			    PrivateLinearizedComputationalGraphEdgeLabelWriter(theComputationalGraph),
 			    PrivateLinearizedComputationalGraphPropertiesWriter(theComputationalGraph));
     }
-
     // initialize the graph transformation(s)
     switch (ourPreaccumulationMetric) {
       case PreaccumulationMetric::OPERATIONS_METRIC: {
@@ -760,21 +763,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                                    << ": " << e.getReason().c_str());
       }
       (*elim_i)->buildAccumulationGraph();
-
-      if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {
-        if ((*elim_i)->getAccumulationGraph().numVertices()) { // don't show empty AccumulationGraph
-          GraphVizDisplay::show((*elim_i)->getAccumulationGraph(),
-                                "AccumulationGraph",
-                                xaifBoosterCrossCountryInterface::AccumulationGraphVertexLabelWriter((*elim_i)->getAccumulationGraph()),
-                                xaifBoosterCrossCountryInterface::AccumulationGraphEdgeLabelWriter((*elim_i)->getAccumulationGraph()),
-                                xaifBoosterCrossCountryInterface::AccumulationGraphPropertiesWriter((*elim_i)->getAccumulationGraph()));
-        }
-	GraphVizDisplay::show((*elim_i)->getRemainderLCG(),
-                              "RemainderLCG",
-                              LinearizedComputationalGraphVertexLabelWriter((*elim_i)->getRemainderLCG()),
-                              LinearizedComputationalGraphEdgeLabelWriter((*elim_i)->getRemainderLCG()),
-                              LinearizedComputationalGraphPropertiesWriter((*elim_i)->getRemainderLCG()));
-      }
       DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
                                << " Sequence " << &aSequence
                                << " by " << (*elim_i)->getDescription()
@@ -783,6 +771,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end iterate over all Eliminations for this Sequence
 
     aSequence.determineBestElimination(ourPreaccumulationMetric);
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
+      if (aSequence.getBestElimination().getAccumulationGraph().numVertices()) { // don't show empty AccumulationGraph
+	GraphVizDisplay::show(aSequence.getBestElimination().getAccumulationGraph(),
+			      "AccumulationGraph",
+			      xaifBoosterCrossCountryInterface::AccumulationGraphVertexLabelWriter(aSequence.getBestElimination().getAccumulationGraph()),
+			      xaifBoosterCrossCountryInterface::AccumulationGraphEdgeLabelWriter(aSequence.getBestElimination().getAccumulationGraph()),
+			      xaifBoosterCrossCountryInterface::AccumulationGraphPropertiesWriter(aSequence.getBestElimination().getAccumulationGraph()));
+      }
+      GraphVizDisplay::show(aSequence.getBestElimination().getRemainderLCG(),
+			    "RemainderLCG",
+			    LinearizedComputationalGraphVertexLabelWriter(aSequence.getBestElimination().getRemainderLCG()),
+			    LinearizedComputationalGraphEdgeLabelWriter(aSequence.getBestElimination().getRemainderLCG()),
+			    LinearizedComputationalGraphPropertiesWriter(aSequence.getBestElimination().getRemainderLCG()));
+    }
     DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
                              << " Sequence " << &aSequence
                              << " best is " << aSequence.getBestElimination().getDescription()
@@ -842,22 +844,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 || currentAccV.hasRemainderGraphEdge()) {
 	  Assignment& theNewAssignment = aSequence.appendEndAssignment();
 	  theNewAssignment.setId(makeUniqueId());
-	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+	  // make the RHS
+	  buildAccumulationAssignmentRecursively(theAccumulationGraph,
+						 theNewAssignment,
+						 currentAccV);
+	  Scope&theScope(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
 	  VariableSymbolReference* theVariableSymbolReference_p =
-	   new VariableSymbolReference (theGlobalScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getAccumulationVariableNameCreator(),
-                                                                                        SymbolKind::VARIABLE,
-                                                                                        SymbolType::REAL_STYPE,
-                                                                                        SymbolShape::SCALAR,
-                                                                                        false),
-				        theGlobalScope);
+	    new VariableSymbolReference (xaifBoosterTypeChange::TemporariesHelper("ExpressionAlg::generateAccumulationExpressions",
+										  theNewAssignment.getRHS(),
+										  theNewAssignment.getRHS().getMaxVertex()).makeTempSymbol(theScope),
+					 theScope);
 	  theVariableSymbolReference_p->setId("1");
 	  theVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions::JAE_LHS");
 	  theNewAssignment.getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
 	  theNewAssignment.getLHS().getAliasMapKey().setTemporary();
 	  theNewAssignment.getLHS().getDuUdMapKey().setTemporary();
-	  buildAccumulationAssignmentRecursively(theAccumulationGraph,
-						 theNewAssignment,
-						 currentAccV);
 	  currentAccV.setLHSVariable(theNewAssignment.getLHS());
 	} // end if assignment needs to be created
       } // end iterate over all vertices
@@ -1214,6 +1215,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // for independents, check against all non-independents for alias conflicts, making new propagation variable in that case
       // See AssignmentAlg::vertexIdentification for an explanation of why we only need to worry about replacing independents.
       if (!theRemainderLCG.numInEdgesOf(*rvi)) {
+	(*rvi).setOriginalVariable(theOriginalVertex.getOriginalVariable(),
+				   theOriginalVertex.getStatementId());
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIteratorPair rLCGvertIP2 (theRemainderLCG.vertices());
 	xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexIterator rvi2 (rLCGvertIP2.first), rvi2_end (rLCGvertIP2.second);
 	for (; rvi2 != rvi2_end; ++rvi2) { // inner iteration over all remainder vertices
@@ -1231,9 +1234,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    break; // no need to continue with this indep vertex once a replacement propagation vertex has been created
 	  } // end if alias conflict possible
 	} // end inner iteration over remainder vertices
-	if (rvi2 == rvi2_end) // we made it through without any conflicts (no new variable had to be created)
-	  (*rvi).setOriginalVariable(theOriginalVertex.getOriginalVariable(),
-				     theOriginalVertex.getStatementId());
       } // end if this vertex is an independent
       else {
 	if (theOriginalVertex.hasOriginalVariable())
@@ -1321,10 +1321,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
           break;
       } // end switch on PDK
     } // end for all inedges
-
-    if (LinearOneInedges.empty() && LinearMinusOneInedges.empty() && LinearInedges.empty() && NonlinearInedges.empty())
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::BasicBlockAlg::propagateToRemainderVertex:"
-                                 << " There are no inedges with non-passive partial derivative kind");
 
     bool isZero = true;
 

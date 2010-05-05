@@ -77,6 +77,7 @@
 namespace xaifBoosterTypeChange {  
 
   std::list<std::string> SubroutineCallAlg::ourWrapperSubRoutineNameList;
+  const std::string SubroutineCallAlg::ourConversionRoutineName("oad_convert");
 
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
     SubroutineCallAlgBase(theContainingSubroutineCall) { 
@@ -133,6 +134,10 @@ namespace xaifBoosterTypeChange {
        << ActiveUseType::our_attribute_XAIFName.c_str() 
        << "=\"" 
        << ActiveUseType::toString(getContainingSubroutineCall().getActiveUse()).c_str()
+       << "\" " 
+       << SubroutineCall::our_myFormalArgCount_XAIFName.c_str() 
+       << "=\"" 
+       << getContainingSubroutineCall().getFormalArgCount()
        << "\">" 
        << std::endl;
     for (SubroutineCall::ConcreteArgumentPList::const_iterator i=
@@ -198,8 +203,8 @@ namespace xaifBoosterTypeChange {
       // now we we know this has a handwritten wrapper.
       aSymbolAlg.setHandCodedWrapper(getContainingSubroutineCall().getSymbolReference());
       aSymbolAlg.getActivityPattern().setSize(getContainingSubroutineCall().
-						getConcreteArgumentPList().
-						size());
+					      getConcreteArgumentPList().
+					      size());
       for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
 	     getContainingSubroutineCall().getConcreteArgumentPList().begin();
 	   concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
@@ -293,18 +298,28 @@ namespace xaifBoosterTypeChange {
       handleExternalCall(theBasicBlock);
       return;
     } // end catch
-    if (anArgumentSymbolReferencePList_p->size()!=getContainingSubroutineCall().getConcreteArgumentPList().size())
-      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch ("
+    if (anArgumentSymbolReferencePList_p->size()!=getContainingSubroutineCall().getFormalArgCount())
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument count mismatch "
 				 << anArgumentSymbolReferencePList_p->size() 
-				 << " formal vs. "
-				 << getContainingSubroutineCall().getConcreteArgumentPList().size()
-				 << " concrete ) for "
+				 << " (formal argument list length) vs. "
+				 << getContainingSubroutineCall().getFormalArgCount()
+				 << " (formalArgCount given for  the call) for "
 				 << getContainingSubroutineCall().getSymbolReference().debug().c_str());
     ControlFlowGraphAlg& theControlFlowGraphAlg(dynamic_cast<ControlFlowGraphAlg&>(aCFG_p->getControlFlowGraphAlgBase()));
     for (SubroutineCall::ConcreteArgumentPList::const_iterator concreteArgumentPI=
 	   getContainingSubroutineCall().getConcreteArgumentPList().begin();
 	 concreteArgumentPI!=getContainingSubroutineCall().getConcreteArgumentPList().end();
 	 ++concreteArgumentPI) { 
+      if ((*concreteArgumentPI)->getPosition()>getContainingSubroutineCall().getFormalArgCount() 
+	  || 
+	  (*concreteArgumentPI)->getPosition()<1) { 
+	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::algorithm_action_1: argument position "
+				   << (*concreteArgumentPI)->getPosition()
+				   << " out of range [1,"
+				   << getContainingSubroutineCall().getFormalArgCount()
+				   << "] in the call to "
+				   << getContainingSubroutineCall().getSymbolReference().debug().c_str());
+      }
       bool concreteArgumentActive=((*concreteArgumentPI)->isArgument())?
 	(*concreteArgumentPI)->getArgument().getVariable().getActiveType():false;
       bool formalArgumentActive=false; 
@@ -339,21 +354,29 @@ namespace xaifBoosterTypeChange {
     }// end for 
   } 
   
-  std::string SubroutineCallAlg::giveCallName(bool concreteArgumentActive,
-					      const SymbolReference &aTempSymbolReference,
-					      short shapeOffset,
-					      bool prior) const { 
-    std::string aSubroutineName("convert_");
-    if (prior && concreteArgumentActive 
-	|| 
-	!prior && !concreteArgumentActive)
-      aSubroutineName.append("a2p_");
-    else
-      aSubroutineName.append("p2a_");
-    aSubroutineName.append(SymbolShape::toString(SymbolShape::offset(aTempSymbolReference.getSymbol().getSymbolShape(),
-								     shapeOffset)));
-    return aSubroutineName;
-  } 
+  void SubroutineCallAlg::addAllocation(const Variable& toBeAllocated,
+					const ConcreteArgument& argumentToMatch) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
+    theSRCall_p->setId("TypeChange::SubroutineCallAlg::addAllocation");
+    myPriorAdjustmentsList.push_back(theSRCall_p);
+    // first argument
+    toBeAllocated.copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
+    // second argument 
+    // this one needs to strip array indices if there are any
+    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2),false);
+  }
+
+  void SubroutineCallAlg::addShapeTest(const Variable& toBeAllocated,
+				       const ConcreteArgument& argumentToMatch) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_ShapeTest");
+    theSRCall_p->setId("TypeChange::SubroutineCallAlg::addShapeTest");
+    myPostAdjustmentsList.push_back(theSRCall_p);
+    // first argument
+    toBeAllocated.copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
+    // second argument 
+    // this one needs to strip array indices if there are any
+    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2),false);
+  }
 
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
 					const ArgumentSymbolReference& aFormalArgumentSymbolReference,
@@ -423,33 +446,48 @@ namespace xaifBoosterTypeChange {
     theConcreteArgumentAlg.makeReplacement(theTempVar,copyEntireArray);
     if (!withCopy)
       return; 
+    bool haveAllocation=false;
+    if (theTempVar.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR
+	&&
+	!(theTempVar.getVariableSymbolReference().getSymbol().hasDimensionBounds())) {
+      addAllocation(theTempVar,theConcreteArgument);
+      haveAllocation=true;
+    }
     // prior call
-    std::string 
-      aSubroutineName(giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
-				   aFormalArgumentSymbolReference,
-				   shapeOffsetFromFormal,
-				   true));
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
-      thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+      thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
     myPriorAdjustmentsList.push_back(thePriorCall_p);
     thePriorCall_p->setId("SubroutineCallAlg::addConversion prior");
     theTempVar.copyMyselfInto(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,!copyEntireArray);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
-    if (theConcreteArgument.isArgument()) { 
+    if (theConcreteArgument.isArgument()) {  // postcall only if it is not a constant
+      // see if it is a formal argument with IN_ITYPE
+      const ControlFlowGraph& theCFG(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph());
+      ControlFlowGraph::FormalResult aFormalResult;
+      if ((aFormalResult=theCFG.hasFormal(theConcreteArgument.getArgument().getVariable().getVariableSymbolReference())).first) { // have it 
+	// get the positional argument  from the list 
+	for (ArgumentList::ArgumentSymbolReferencePList::const_iterator listI=theCFG.getArgumentList().getArgumentSymbolReferencePList().begin();
+	     listI!=theCFG.getArgumentList().getArgumentSymbolReferencePList().end();
+	     ++listI) {
+	  if (aFormalResult.second==(*listI)->getPosition() // match the position
+ 	      && 
+	      IntentType::IN_ITYPE==(*listI)->getIntent()) { // look at its itype
+	    return;
+	  }
+	}
+      }
       // may have to adjust upper bounds
       if (!copyEntireArray)
 	theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(aFormalArgumentSymbolReference.
 										      getSymbol().	
 										      getSymbolShape())+shapeOffsetFromFormal);
-      // post call only if it is not a constant.
-      aSubroutineName=giveCallName((theConcreteArgument.isArgument())?theConcreteArgument.getArgument().getVariable().getActiveType():false,
-				   aFormalArgumentSymbolReference,
-				   shapeOffsetFromFormal,
-				   false);
+      if (haveAllocation) { 
+	addShapeTest(theTempVar,theConcreteArgument);
+      } 
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
-	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
       myPostAdjustmentsList.push_back(thePostCall_p);
       thePostCall_p->setId("SubroutineCallAlg::addConversion post");
       ConcreteArgument& theFirstPostConcreteArg(thePostCall_p->addConcreteArgument(1));
@@ -474,15 +512,10 @@ namespace xaifBoosterTypeChange {
 						const BasicBlock& theBasicBlock) { 
     const SymbolReference& theActualSymbolReference(theConcreteArgument.getArgument().getVariable().
 						    getVariableSymbolReference());
+
     // prior call
-    std::string 
-      aSubroutineName(giveCallName(true, // the concrete parameter is implied to be active
-				   theActualSymbolReference, // we don't have a formal parameter here 
-				   0,
-				   true));
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
-      thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
-    myPriorAdjustmentsList.push_back(thePriorCall_p);
+      thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
     thePriorCall_p->setId("SubroutineCallAlg::addExternalConversion prior");
     // this is the extra temporary that replaces the original argument
     Variable& theTempVar(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
@@ -492,37 +525,45 @@ namespace xaifBoosterTypeChange {
 		   theTempVar,
 		   0,
 		   true);
+    bool haveAllocation=false;
+    if (theTempVar.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR
+	&&
+	!(theTempVar.getVariableSymbolReference().getSymbol().hasDimensionBounds())) {
+      addAllocation(theTempVar,theConcreteArgument);
+      haveAllocation=true;
+    }
+    // now that we have the allocation call - if needed - we can push the conversion to the list
+    myPriorAdjustmentsList.push_back(thePriorCall_p);
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,false);
     ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
     theConcreteArgumentAlg.makeReplacement(theTempVar,true);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
     if (theConcreteArgument.isArgument()) {
-//       theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(theConcreteArgument.
-// 										    getArgument().
-// 										    getVariable().
-// 										    getVariableSymbolReference().
-// 										    getSymbol().
-// 										    getSymbolShape()));
+      //       theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(theConcreteArgument.
+      // 										    getArgument().
+      // 										    getVariable().
+      // 										    getVariableSymbolReference().
+      // 										    getSymbol().
+      // 										    getSymbolShape()));
+      if (haveAllocation) { 
+	addShapeTest(theTempVar,theConcreteArgument);
+      } 
       // post call only if not a constant
-      aSubroutineName=giveCallName(true, // the concrete parameter is implied to be active
-				   theActualSymbolReference, // we don't have a formal parameter here 
-				   0,
-				   false);
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
-	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
       myPostAdjustmentsList.push_back(thePostCall_p);
       thePostCall_p->setId("SubroutineCallAlg::addExternalConversion post");
       ConcreteArgument& theFirstPostConcreteArg(thePostCall_p->addConcreteArgument(1));
       theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
       Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
       theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes,false);
-//       theInlineVariablePostRes.adjustUpperBounds((int)(theConcreteArgument.
-// 						       getArgument().
-// 						       getVariable().
-// 						       getVariableSymbolReference().
-// 						       getSymbol().
-// 						       getSymbolShape()));
+      //       theInlineVariablePostRes.adjustUpperBounds((int)(theConcreteArgument.
+      // 						       getArgument().
+      // 						       getVariable().
+      // 						       getVariableSymbolReference().
+      // 						       getSymbol().
+      // 						       getSymbolShape()));
       Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {

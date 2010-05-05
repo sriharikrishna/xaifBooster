@@ -122,6 +122,13 @@ namespace xaifBooster {
     return *(myExpressionVector[0]);
   } 
 
+  const InlinableIntrinsicsExpression& 
+  InlinableIntrinsicsCatalogueItem::getFunction() const { 
+    if (!isExpressionVectorElementSet(0))
+      THROW_LOGICEXCEPTION_MACRO("InlinableIntrinsicsCatalogueItem::getFunction: position 0 in ExpressionVector not set");
+    return *(myExpressionVector[0]);
+  } 
+
   const PositionSet&
   InlinableIntrinsicsCatalogueItem::getUsedPositionalArguments(const PositionSet&) const { 
     if (!myDataComplete) { 

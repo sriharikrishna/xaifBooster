@@ -104,7 +104,7 @@ int main(int argc,char** argv) {
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_4); // use linearized version in 1st replacement
     DBG_MACRO(DbgGroup::TIMING,"before unparse");
     Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_5); // fix up the addresses in simple loops
-    Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_6); // place pushes and pops for required values
+    //Cg.genericTraversal(GenericAction::ALGORITHM_ACTION_6); // place pushes and pops for required values
     const std::string& oldSchemaLocation(Cg.getSchemaLocation());
     std::string newLocation(oldSchemaLocation,0,oldSchemaLocation.find(' '));
     if (algConfig.getSchemaPath().size())

@@ -317,7 +317,7 @@ namespace xaifBooster {
 		     allUpperCase.end(), 
 		     allUpperCase.begin(), 
 		     toupper);
-    std::string::size_type startPosition=0,endPosition=0;
+    std::string::size_type startPosition=0,endPosition=1; // end pos. should at least be 1 or we have an empty string
     std::string::size_type totalSize(allUpperCase.size());
     while (startPosition<=totalSize && endPosition<=totalSize) { 
       startPosition=allUpperCase.find_first_not_of(' ',startPosition);

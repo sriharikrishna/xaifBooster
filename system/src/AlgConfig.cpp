@@ -72,7 +72,7 @@ namespace xaifBooster {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgGsvpbVFh");
+    return std::string("iocdgGNsTvpbVFh");
   } 
 
   void AlgConfig::config() { 
@@ -94,12 +94,16 @@ namespace xaifBooster {
 	DbgLoggerManager::instance()->setSelection(argAsInt('g'));
       if (isSet('G')) 
 	DbgLoggerManager::instance()->setGraphicsFormat(argAsString('G'));
+      if (isSet('N')) 
+	myNIIntrinsicsFileName=argAsString('N');
       if (isSet('p'))
 	Symbol::addSymbolNamesToPassivate(argAsString('p'));
       if (isSet('b'))
 	SubroutineCall::noBlackBoxOptimism();
       if (isSet('V'))
 	PrintManager::setVerbose();
+      if (isSet('T'))
+	DbgLoggerManager::instance()->addTags(argAsString('T'));
       myInputValidationFlag=isSet('v');
       if (isSet('F'))
 	Symbol::setFrontEndDecorations(FrontEndDecorations::fromString(argAsString('F')));
@@ -116,6 +120,7 @@ namespace xaifBooster {
 	      << "                 XAIF schema path, defaults to directory that contains the input file" << std::endl
 	      << "             [-o <outputFile> ] [-d <debugOutputFile> ]" << std::endl
 	      << "                 both default to std::cout" << std::endl
+	      << "             [-N <nonInlinableIntrinsicsCatalogueFile> ]" << std::endl
 	      << "             [-g <debugGroup> ]" << std::endl
 	      << "                 with debugGroup >=0 the sum of any of: " << std::endl
 	      << "                 "<< DbgGroup::printAll().c_str() << std::endl
@@ -123,6 +128,8 @@ namespace xaifBooster {
               << "             [-G <format>] debugging graphics format, where <format > is one of:" << std::endl
               << "                 ps - postscript format displayed with ghostview (default)" << std::endl 
               << "                 svg - scalable vector graphics format displayed in firefox" << std::endl 
+              << "             [-T \"<list of tags to narrow debug output>\" ]" << std::endl 
+              << "                 space separated list enclosed in double quotes" << std::endl
               << "             [-p \"<list of symbols to forcibly passivate>\" ]" << std::endl 
               << "                 space separated list enclosed in double quotes" << std::endl
               << "             [-b] pessimistic assumptions for black box routines" << std::endl 
@@ -152,6 +159,12 @@ namespace xaifBooster {
     if (!myConfiguredFlag)
       THROW_LOGICEXCEPTION_MACRO("AlgConfig::config() has not been called"); 
     return myIntrinsicsFileName; 
+  } 
+
+  const std::string& AlgConfig::getNIIntrinsicsFileName() const { 
+    if (!myConfiguredFlag)
+      THROW_LOGICEXCEPTION_MACRO("AlgConfig::config() has not been called"); 
+    return myNIIntrinsicsFileName; 
   } 
 
   const std::string& AlgConfig::getSchemaPath() const { 

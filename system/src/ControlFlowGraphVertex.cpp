@@ -127,19 +127,19 @@ namespace xaifBooster {
 
   void ControlFlowGraphVertex::setCounterPart(ControlFlowGraphVertex& theCounterPart) { 
     if(myCounterPart_p)
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertexAlg::setCounterPart: already set");
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::setCounterPart: already set");
     myCounterPart_p=&theCounterPart;
   }
       
   ControlFlowGraphVertex& ControlFlowGraphVertex::getCounterPart() { 
     if (!myCounterPart_p)
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertexAlg::getCounterPart: not set");
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::getCounterPart: not set");
     return *myCounterPart_p;
   }
 
   ControlFlowGraphVertex& ControlFlowGraphVertex::getCounterPart() const { 
     if (!myCounterPart_p)
-      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertexAlg::getCounterPart: not set");
+      THROW_LOGICEXCEPTION_MACRO("ControlFlowGraphVertex::getCounterPart: not set");
     return *myCounterPart_p;
   }
 

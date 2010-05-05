@@ -85,7 +85,7 @@ namespace xaifBoosterLinearization {
     out << "xaifBoosterLinearization::AssignmentAlg[" 
 	<< this 
 	<< ","
-	<< "mySSAReplacementAssignmentList.size()="
+	<< "mySSAReplacementAssignmentList.size()"
 	<< "="
 	<< mySSAReplacementAssignmentList.size()
 	<< ","
@@ -100,6 +100,10 @@ namespace xaifBoosterLinearization {
 	<< "myActiveFlag"
 	<< "="
 	<< myActiveFlag
+	<< ","
+	<< "myContaining"
+	<< "="
+	<< getContainingAssignment().debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of AssignmentAlg::debug

@@ -123,10 +123,10 @@ namespace xaifBooster {
     IndexPairList& getIndexPairList();
 
     /** 
-     * if the extent of teh slize is 1 
+     * if the extent of the slice is 1 
      * this returns true
      */
-    bool isDeref() const; 
+    bool isScalarDeref() const; 
 
   private:
     
@@ -141,7 +141,7 @@ namespace xaifBooster {
     IndexTriplet& operator=(const IndexTriplet&);
 
     /** 
-     * the list containingg the index and optionally  bound and stride
+     * the list containing the index,bound,stride (all optional)
      */ 
     IndexPairList myIndexPairList;
 

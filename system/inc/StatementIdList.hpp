@@ -59,7 +59,11 @@
 
 namespace xaifBooster{ 
 
-    typedef std::list<ObjectWithId::Id> StatementIdList;
+  class StatementIdList : public std::list<ObjectWithId::Id>, 
+			  public Debuggable { 
+  public :
+    std::string debug() const ;
+  }; 
 
 } 
 

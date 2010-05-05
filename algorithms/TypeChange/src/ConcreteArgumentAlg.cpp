@@ -98,6 +98,8 @@ namespace xaifBoosterTypeChange {
     if(myReplacement_p)
       THROW_LOGICEXCEPTION_MACRO("ConcreteArgumentAlg::makeReplacement : already have a replacement");
     myReplacement_p=new ConcreteArgument(getContaining().getPosition());
+    if (getContaining().annotationIsSet())
+      myReplacement_p->setAnnotation(getContaining().getAnnotation());
     aVariable.copyMyselfInto(myReplacement_p->getArgument().getVariable());
     if (entireArrayCopied) { 
       // this means we have some shape discrepancy

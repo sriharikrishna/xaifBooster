@@ -183,11 +183,31 @@ namespace xaifBooster {
 
   } // end of DbgLoggerManager::isSelected
 
+  void  
+  DbgLoggerManager::addTags(const std::string& spaceSeparatedTags) { 
+    std::string::size_type startPosition=0,endPosition=1; // end pos. should at least be 1 or we have an empty string
+    std::string::size_type totalSize(spaceSeparatedTags.size());
+    while (startPosition<=totalSize && endPosition<=totalSize) { 
+      startPosition=spaceSeparatedTags.find_first_not_of(' ',startPosition);
+      endPosition=spaceSeparatedTags.find_first_of(' ',startPosition);
+      myTagSet.insert(spaceSeparatedTags.substr(startPosition,
+						endPosition-startPosition));
+      startPosition=endPosition;
+    } 
+  } 
+
+  bool DbgLoggerManager::wantTag(const std::string& aTag) const { 
+    if (myTagSet.empty()) 
+      return true;
+    return (myTagSet.find(aTag)!=myTagSet.end());
+  } 
+
   void 
   DbgLoggerManager::logDebug(const std::string aFileName_c,
 			     const int aLineNumber_c,
 			     const DbgGroup::DbgGroup_E aGroup_c, 
-			     std::ostringstream& aMessage_r) { 
+			     std::ostringstream& aMessage_r,
+			     const std::string& aTag) { 
     if (isSelected(aGroup_c)) { 
       std::ostringstream message; 
       message << Thread::threadId()  
@@ -197,7 +217,9 @@ namespace xaifBooster {
 	      << aLineNumber_c
 	      << ":"
 	      << DbgGroup::toString(aGroup_c)
-	      << ":";
+	      << ":"
+	      << aTag.c_str()
+	      << ":"; 
       if (aGroup_c & DbgGroup::TIMING) {
 	timeval aTimeVal;
 	gettimeofday(&aTimeVal,0);

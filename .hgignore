@@ -22,3 +22,6 @@ doc/xaifbooster_doc.ps
 doc/AlgConfigInheritance*.svg
 tools/codegen/classes/*.class
 .cproject
+nbproject/*
+Makefile-xaifBooster.mk
+.dep.inc

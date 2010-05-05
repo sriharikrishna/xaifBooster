@@ -163,7 +163,11 @@ namespace xaifBooster {
      */
     bool overwrites(const SymbolReference& theSymbolReference) const; 
 
-    typedef std::pair<bool,int> FormalResult;
+    /**
+     * first is true if found
+     * and if found second has the position
+     */
+    typedef std::pair<bool,unsigned int> FormalResult;
 
     /** 
      * determines if theSymbolReference is a formal parameter
@@ -185,6 +189,8 @@ namespace xaifBooster {
     std::list<const ControlFlowGraphVertex*> getSOrtedVertexList() const; 
 
   private: 
+
+    class StructureException {};
     
     /** 
      * no def

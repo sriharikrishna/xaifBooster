@@ -552,60 +552,61 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = utils/inc \
-                         utils/inc/TemplateImpl \
-                         utils/src \
-                         boostWrapper/inc \
-                         boostWrapper/inc/TemplateImpl \
-                         tools/codegen/code \
-                         system/inc \
-                         system/inc/TemplateImpl \
-                         system/src \
-			 system/driver \
+INPUT                  = \
+                         algorithms/AddressArithmetic/driver \
                          algorithms/AddressArithmetic/inc \
                          algorithms/AddressArithmetic/src \
-		         algorithms/AddressArithmetic/driver \
                          algorithms/AdjointUtils/inc \
                          algorithms/AdjointUtils/src \
-                         algorithms/TypeChange/inc \
-                         algorithms/TypeChange/src \
-                         algorithms/TypeChange/driver \
-                         algorithms/TraceDiff/inc \
-                         algorithms/TraceDiff/src \
-                         algorithms/TraceDiff/driver \
-                         algorithms/Linearization/inc \
-                         algorithms/Linearization/src \
-                         algorithms/Linearization/driver \
+                         algorithms/BasicBlockPreaccumulation/driver \
                          algorithms/BasicBlockPreaccumulation/inc \
                          algorithms/BasicBlockPreaccumulation/src \
-                         algorithms/BasicBlockPreaccumulation/driver \
-                         algorithms/BasicBlockPreaccumulationTape/inc \
-                         algorithms/BasicBlockPreaccumulationTape/src \
-                         algorithms/BasicBlockPreaccumulationTape/driver \
-                         algorithms/BasicBlockPreaccumulationTapeAdjoint/inc \
-                         algorithms/BasicBlockPreaccumulationTapeAdjoint/src \
-                         algorithms/BasicBlockPreaccumulationTapeAdjoint/driver \
+                         algorithms/BasicBlockPreaccumulationReverse/driver \
                          algorithms/BasicBlockPreaccumulationReverse/inc \
                          algorithms/BasicBlockPreaccumulationReverse/src \
-                         algorithms/BasicBlockPreaccumulationReverse/driver \
+                         algorithms/BasicBlockPreaccumulationTapeAdjoint/driver \
+                         algorithms/BasicBlockPreaccumulationTapeAdjoint/inc \
+                         algorithms/BasicBlockPreaccumulationTapeAdjoint/src \
+                         algorithms/BasicBlockPreaccumulationTape/driver \
+                         algorithms/BasicBlockPreaccumulationTape/inc \
+                         algorithms/BasicBlockPreaccumulationTape/src \
+                         algorithms/CodeReplacement/inc \
+                         algorithms/CodeReplacement/src \
+                         algorithms/ControlFlowReversal/driver \
                          algorithms/ControlFlowReversal/inc \
                          algorithms/ControlFlowReversal/src \
-                         algorithms/ControlFlowReversal/driver \
+                         algorithms/CrossCountryInterface/inc \
+                         algorithms/CrossCountryInterface/src \
+                         algorithms/DerivativePropagator/inc \
+                         algorithms/DerivativePropagator/src \
+                         algorithms/InlinableXMLRepresentation/inc \
+                         algorithms/InlinableXMLRepresentation/src \
+                         algorithms/Linearization/driver \
+                         algorithms/Linearization/inc \
+                         algorithms/Linearization/src \
                          algorithms/PushPop/inc \
                          algorithms/PushPop/src \
                          algorithms/PushPop/driver \
                          algorithms/RequiredValues/inc \
                          algorithms/RequiredValues/src \
-                         algorithms/CodeReplacement/inc \
-                         algorithms/CodeReplacement/src \
-                         algorithms/CrossCountryInterface/inc \
-                         algorithms/CrossCountryInterface/src \
-                         algorithms/DerivativePropagator/inc \
-                         algorithms/DerivativePropagator/src \
                          algorithms/SaveValuesAcross/inc \
                          algorithms/SaveValuesAcross/src \
-                         algorithms/InlinableXMLRepresentation/inc \
-                         algorithms/InlinableXMLRepresentation/src
+                         algorithms/TraceDiff/driver \
+                         algorithms/TraceDiff/inc \
+                         algorithms/TraceDiff/src \
+                         algorithms/TypeChange/driver \
+                         algorithms/TypeChange/inc \
+                         algorithms/TypeChange/src \
+                         boostWrapper/inc \
+                         boostWrapper/inc/TemplateImpl \
+                         system/driver \
+                         system/inc \
+                         system/inc/TemplateImpl \
+                         system/src \
+                         tools/codegen/code \
+                         utils/inc \
+                         utils/inc/TemplateImpl \
+                         utils/src 
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 

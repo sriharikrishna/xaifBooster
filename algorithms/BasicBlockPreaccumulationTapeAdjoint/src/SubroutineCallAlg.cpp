@@ -134,7 +134,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     SubroutineCall& theNewSubroutineCall(theBasicBlockAlg.addSubroutineCall(getContainingSubroutineCall().getSymbolReference().getSymbol(),
 									    getContainingSubroutineCall().getSymbolReference().getScope(),
 									    getContainingSubroutineCall().getActiveUse(),
-									    aReversalType));
+									    aReversalType,
+                                                                            getContainingSubroutineCall().getFormalArgCount()));
     const SubroutineCall::ConcreteArgumentPList& theOldConcreteArgumentPList(getContainingSubroutineCall().getConcreteArgumentPList());
     SubroutineCall::ConcreteArgumentPList& theNewConcreteArgumentPList(theNewSubroutineCall.getConcreteArgumentPList());
     for (SubroutineCall::ConcreteArgumentPList::const_iterator theOldConcreteArgumentPListI=theOldConcreteArgumentPList.begin();
