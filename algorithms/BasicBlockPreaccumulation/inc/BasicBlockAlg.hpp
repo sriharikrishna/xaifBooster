@@ -233,11 +233,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     BasicBlockAlg& operator=(const BasicBlockAlg&);
 
-
-      /**
-       * check the front/end assignment lists and the derivative propagator for \p anExpression
-       */
-      bool hasExpression(const Expression& anExpression) const;
   public:
 
     typedef std::list<Sequence*> SequencePList;

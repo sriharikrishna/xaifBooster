@@ -351,7 +351,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   void
   BasicBlockAlg::assignAndPushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
-                                                         const Sequence& aSequence) {
+                                                         const xaifBoosterBasicBlockPreaccumulation::Sequence& aSequence) {
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::assignAndPushRequiredValueAfterSequence");
     Assignment* theNewExpressionAssignment_p (new Assignment(false));
     theNewExpressionAssignment_p->setId("index_expression_assignment_for_taping");
@@ -387,7 +387,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   void
   BasicBlockAlg::pushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
-                                                const Sequence& aSequence) {
+                                                const xaifBoosterBasicBlockPreaccumulation::Sequence& aSequence) {
     DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::pushRequiredValueAfterSequence");
     if (!aRequiredValue.isArgument())
       THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::pushRequiredValueAfterSequence:"
@@ -402,7 +402,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   void
   BasicBlockAlg::addElementToSequencePushBlock(const BasicBlockElement& aBasicBlockElement,
-                                               const Sequence& aSequence) {
+                                               const xaifBoosterBasicBlockPreaccumulation::Sequence& aSequence) {
     if (!myCSequenceP2CBasicBlockElementPListMap[&aSequence])
       myCSequenceP2CBasicBlockElementPListMap[&aSequence] = new CBasicBlockElementPList;
     myCSequenceP2CBasicBlockElementPListMap[&aSequence]->push_back(&aBasicBlockElement);

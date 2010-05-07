@@ -222,5 +222,22 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myEliminationPList;
   }
 
+  bool
+  Sequence::hasExpression(const Expression& anExpression) const {
+    // NOTE: this currently does not check the original basic block elements.
+    // check the front assignment list
+    for (AssignmentPList::const_iterator frontAssI = myFrontAssignmentList.begin();
+         frontAssI != myFrontAssignmentList.end(); ++frontAssI)
+      if ((*frontAssI)->hasExpression(anExpression))
+        return true;
+    // check the end assignment list
+    for (AssignmentPList::const_iterator endAssI = myEndAssignmentList.begin();
+         endAssI != myEndAssignmentList.end(); ++endAssI)
+      if ((*endAssI)->hasExpression(anExpression))
+        return true;
+    // check the derivative propagator
+    return myDerivativePropagator.hasExpression(anExpression);
+  } // end BasicBlockAlg::Sequence::hasExpression()
+
 } 
  

@@ -200,15 +200,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     const PerSequenceDataPList& getPerSequenceDataPList() const;
 
     void assignAndPushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
-                                                 const Sequence& aSequence);
+                                                 const xaifBoosterBasicBlockPreaccumulation::Sequence& aSequence);
 
     void pushRequiredValueAfterSequence(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue,
-                                        const Sequence& aSequence);
+                                        const xaifBoosterBasicBlockPreaccumulation::Sequence& aSequence);
 
     typedef std::list<const BasicBlockElement*> CBasicBlockElementPList;
 
     // \todo FIXME: do the lists need to be pointers?  or can they just be lists?
-    typedef std::map<const Sequence*,
+    typedef std::map<const xaifBoosterBasicBlockPreaccumulation::Sequence*,
                      CBasicBlockElementPList*> CSequenceP2CBasicBlockElementPListMap;
 
     CSequenceP2CBasicBlockElementPListMap myCSequenceP2CBasicBlockElementPListMap;
@@ -217,7 +217,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     /// we assume ownership of \p aBasicBlockElement
     void addElementToSequencePushBlock(const BasicBlockElement& aBasicBlockElement,
-                                       const Sequence& aSequence);
+                                       const xaifBoosterBasicBlockPreaccumulation::Sequence& aSequence);
 
     /** 
      * some helper that deals with pushing computed indices
