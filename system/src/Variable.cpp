@@ -209,9 +209,11 @@ namespace xaifBooster{
   std::string Variable::debug() const{
     std::ostringstream out;
     out<<"Variable["<<this
-	    <<" "<<equivalenceSignature().c_str()
-	    <<",myDerivFlag="<<myDerivFlag
-	    <<"]"<<std::ends;
+       <<" "
+       <<equivalenceSignature().c_str()
+       <<",myDerivFlag=" << myDerivFlag
+       <<"]" 
+       <<std::ends;
     return out.str();
   } // end of Variable::debug
 
