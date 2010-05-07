@@ -52,6 +52,7 @@
 // ========== end copyright notice ==============
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/Elimination.hpp"
 
@@ -168,15 +169,15 @@ namespace xaifBoosterCrossCountryInterface {
     return myNumReroutings;
   } // end Elimination::getNumReroutings()
 
-  const PrivateLinearizedComputationalGraphVertex&
+  const LinearizedComputationalGraphVertex&
   Elimination::rVertex2oVertex (const LinearizedComputationalGraphVertex& theRemainderVertex) const {
   VertexCorrelationList::const_iterator vCorrListI;
     for (vCorrListI = myVertexCorrelationList.begin(); vCorrListI != myVertexCorrelationList.end(); ++vCorrListI)
       if ((*vCorrListI).myRemainderVertex_p == &theRemainderVertex) break;
-    if (vCorrListI == myVertexCorrelationList.end())
-      THROW_LOGICEXCEPTION_MACRO("Elimination::remainderVertex2OriginalVertex: correlation could not be found for remainder graph vertex");
-
-    return dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(*vCorrListI->myOriginalVertex_p);
+    if (vCorrListI == myVertexCorrelationList.end()) { 
+      THROW_LOGICEXCEPTION_MACRO("Elimination::rVertex2oVertex: correlation could not be found for remainder graph vertex");
+    }
+    return *(vCorrListI->myOriginalVertex_p);
   }
 
   void

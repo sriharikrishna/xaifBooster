@@ -52,6 +52,8 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
+#include "xaifBooster/system/inc/Symbol.hpp"
+#include "xaifBooster/system/inc/SymbolShape.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/SubroutineNotFoundException.hpp"
 
@@ -163,5 +165,14 @@ namespace xaifBoosterTypeChange {
   bool SymbolAlg::hasReplacementSymbolReference() const { 
     return (myHandCodeWrapperSymbolReference_p)?true:false;
   }
+  
+  bool SymbolAlg::needsAllocation() const { 
+    if (!getContaining().isTemporary()) { 
+      THROW_LOGICEXCEPTION_MACRO("SymbolAlg::needsAllocation: can be called only for temporary variables");
+    }
+    if (getContaining().getSymbolShape()==SymbolShape::SCALAR)
+      return false;
+    return !(getContaining().hasDimensionBounds());
+  } 
     
 } // end of namespace 

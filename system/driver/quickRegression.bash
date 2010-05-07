@@ -50,6 +50,7 @@ for i in `echo ${TESTFILES}`
 	echo "diffs base (<) vs. current (>):"
 	set +e
 	$diffCommand
+	# kdiff3 testOutput/${i}.out tmp/${i}.out
 	set -e
 	if [ -z "$BATCHMODE" ] 
           then 

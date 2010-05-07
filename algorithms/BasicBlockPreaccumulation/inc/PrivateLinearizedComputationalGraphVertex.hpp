@@ -66,12 +66,34 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   public:
 
-    PrivateLinearizedComputationalGraphVertex(){};
+    PrivateLinearizedComputationalGraphVertex();
     ~PrivateLinearizedComputationalGraphVertex(){};
 
-  }; // end of class PrivateLinearizedComputationalGraphVertex
+    bool hasOriginalVariable() const;
+    void setOriginalVariable(const Variable& aVariable,
+			     const ObjectWithId::Id& aStatementId);
+    const Variable& getOriginalVariable() const;
+
+    const ObjectWithId::Id& getStatementId() const;
+
+    std::string debug() const;
+
+  private: 
+    
+    /**
+     * Pointer to the variable that originally corresponds to this vertex, in the case where one exists.
+     * The variable is not owned by this class.
+     */
+    const Variable* myOriginalVariable_p;
+
+    /**
+     * set to the respective statement id if myOriginalVariable_p is set
+     */
+    ObjectWithId::Id myStatementId;
+
+  }; 
  
-} // end namespace xaifBoosterBasicBlockPreaccumulation 
+} 
                                                                      
 #endif
 

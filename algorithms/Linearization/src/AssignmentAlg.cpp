@@ -64,6 +64,8 @@
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpressionVertex.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
+
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionAlg.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
@@ -89,6 +91,10 @@ namespace xaifBoosterLinearization {
 	<< "="
 	<< mySSAReplacementAssignmentList.size()
 	<< ","
+	<< "mySSAAllocationsPList.size()"
+	<< "="
+	<< mySSAAllocationsPList.size()
+	<< ","
 	<< "myHaveLinearizedRightHandSide"
 	<< "="
 	<< myHaveLinearizedRightHandSide
@@ -110,8 +116,26 @@ namespace xaifBoosterLinearization {
 
   void
   AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
+    if (mySSAAllocationsPList.size()) {
+      for (AllocationsPList::const_iterator li=mySSAAllocationsPList.begin();
+	   li!=mySSAAllocationsPList.end();
+	   ++li) { 
+	DBG_MACRO(DbgGroup::DATA, "xaifBoosterLinearization::AssignmentAlg::printXMLHierarchy: printing: " << *li );
+	(*li)->printXMLHierarchy(os);
+      }
+    }
+    ExpressionAlg::AllocationsPList partialAllocationsPList=
+      dynamic_cast<ExpressionAlg&>(myLinearizedRightHandSide.getExpressionAlgBase()).getPartialAllocationsPList();
+    if (partialAllocationsPList.size()) { 
+      for (ExpressionAlg::AllocationsPList::const_iterator li=partialAllocationsPList.begin();
+	   li!=partialAllocationsPList.end();
+	   ++li) { 
+	DBG_MACRO(DbgGroup::DATA, "xaifBoosterLinearization::AssignmentAlg::printXMLHierarchy: printing: " << *li );
+	(*li)->printXMLHierarchy(os);
+      }
+    }
     if (mySSAReplacementAssignmentList.size()) { 
-      for (std::list<Assignment*>::const_iterator li=mySSAReplacementAssignmentList.begin();
+      for (AssignmentPList::const_iterator li=mySSAReplacementAssignmentList.begin();
 	   li!=mySSAReplacementAssignmentList.end();
 	   ++li) { 
 	DBG_MACRO(DbgGroup::DATA, "xaifBoosterLinearization::AssignmentAlg::printXMLHierarchy: printing: " << *li );
@@ -240,6 +264,7 @@ namespace xaifBoosterLinearization {
 	theVertexPointerPairList.push_back(PointerPair(&(*ExpressionVertexI),
 						       &theReplacementTargetVertex));
 	if (needDelay) { // we create a new LHS which is the right hand side of the delay 
+	  bool needsAllocation=false;
 	  // need the extra temporary assignment: 
 	  myDelayedLHSAssignment_p=new Assignment(true);
 	  myDelayedLHSAssignment_p->setId(theContainingAssignment.getId()+ ": delayed LHS assignment for correct partials");
@@ -251,26 +276,56 @@ namespace xaifBoosterLinearization {
 	  // set the alias key to temporary: 
 	  theDelayVertex_p->getVariable().getAliasMapKey().setTemporary();
 	  theDelayVertex_p->getVariable().getDuUdMapKey().setTemporary();
-	  // get the global scope
-	  Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->
-				getCallGraph().getScopeTree().getGlobalScope());
-	  // create a new symbol and add a new VariableSymbolReference in the Variable
-	  VariableSymbolReference* theNewVariableSymbolReference_p=
-	    new VariableSymbolReference(theGlobalScope.
-					getSymbolTable().
-					addUniqueAuxSymbol(SymbolKind::VARIABLE,
-							   SymbolType::REAL_STYPE,
-							   SymbolShape::SCALAR,
-							   false),
-					theGlobalScope);
+	  // get the scope
+	  Scope&theScope(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
+	  VariableSymbolReference* theNewVariableSymbolReference_p=NULL;
+	  xaifBoosterTypeChange::TemporariesHelper aLHShelper("AssignmentAlg::makeSSACodeList",
+							      theContainingAssignment.getLHS());
+	  if (!aLHShelper.needsAllocation()) { // use the LHS as a model
+	    theNewVariableSymbolReference_p=
+	      new VariableSymbolReference(aLHShelper.makeTempSymbol(theScope,
+								    ConceptuallyStaticInstances::instance()->getDelayVariableNameCreator(),
+								    false),
+					  theScope);
+	  }
+	  else {
+	    // try the RHS:
+	    xaifBoosterTypeChange::TemporariesHelper aRHShelper("AssignmentAlg::makeSSACodeList",
+								theContainingAssignment.getRHS(),
+								theContainingAssignment.getRHS().getMaxVertex());
+	    if (!(aRHShelper.needsAllocation())) {  // use the RHS as a model
+	      theNewVariableSymbolReference_p=
+		new VariableSymbolReference(aRHShelper.makeTempSymbol(theScope,
+								      ConceptuallyStaticInstances::instance()->getDelayVariableNameCreator(),
+								      false),
+					    theScope);
+	    }
+	    else { // rather allocate with the LHS as a model because fewer things can fail
+	      theNewVariableSymbolReference_p=
+		new VariableSymbolReference(aLHShelper.makeTempSymbol(theScope,
+								      ConceptuallyStaticInstances::instance()->getDelayVariableNameCreator(),
+								      false),
+					    theScope);
+	      needsAllocation=true;
+	    }
+	  }
 	  theNewVariableSymbolReference_p->setId("1");
 	  theNewVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::AssignmentAlg::makeSSACodeList");
-	  theDelayVertex_p->getVariable().
-	    supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+	  theDelayVertex_p->getVariable().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
 	  // set the new LHS to the original LHS
 	  theContainingAssignment.getLHS().copyMyselfInto(myDelayedLHSAssignment_p->getLHS());
 	  // make the temporary the LHS of theReplacementAssignment 
 	  theDelayVertex_p->getVariable().copyMyselfInto(theReplacementAssignment.getLHS());
+	  if (needsAllocation) { 
+	    // add the allocation
+	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
+	    theSRCall_p->setId("AssignmentAlg::makeSSACodeList");
+	    mySSAAllocationsPList.push_back(theSRCall_p);
+	    // first argument
+	    theDelayVertex_p->getVariable().copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
+	    // second argument 
+	    theContainingAssignment.getLHS().copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
+	  }
 	} // end if 
 	else // no extra temporary needed, we use the original LHS
 	  theContainingAssignment.getLHS().copyMyselfInto(theReplacementAssignment.getLHS());
@@ -430,7 +485,7 @@ namespace xaifBoosterLinearization {
     template <class BoostIntenalVertexDescriptor>
     void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
       ExpressionVertexAlg& va(dynamic_cast<ExpressionVertexAlg&>((*(boost::get(boost::get(BoostVertexContentType(),
-											myE.getInternalBoostGraph()),
+											  myE.getInternalBoostGraph()),
 									       v))).getExpressionVertexAlgBase()));
       out << "[label=\"" << va.isActive() << "\"]";
     }
@@ -521,6 +576,11 @@ namespace xaifBoosterLinearization {
 	  ++aListIterator) 
 	delete *aListIterator;
       mySSAReplacementAssignmentList.clear();
+      for(AllocationsPList::iterator aListIterator=mySSAAllocationsPList.begin();
+	  aListIterator!=mySSAAllocationsPList.end();
+	  ++aListIterator) 
+	delete *aListIterator;
+      mySSAAllocationsPList.clear();
       myLinearizedRightHandSide.clear();
       myHaveLinearizedRightHandSide=false;	
     } // end if 

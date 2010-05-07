@@ -123,6 +123,8 @@ namespace xaifBoosterTypeChange {
 
     bool hasReplacementSymbolReference() const; 
 
+    bool needsAllocation() const;
+
   private: 
 
     /** 

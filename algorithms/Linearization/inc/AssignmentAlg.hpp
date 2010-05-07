@@ -56,6 +56,8 @@
 #include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
 using namespace xaifBooster; 
 
 namespace xaifBoosterLinearization { 
@@ -171,6 +173,12 @@ namespace xaifBoosterLinearization {
      */
     typedef std::list<Assignment*> AssignmentPList;
     AssignmentPList mySSAReplacementAssignmentList;
+
+    /**
+     * list of allocations potentially needed for SSA
+     */
+    typedef std::list<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall*> AllocationsPList;
+    AllocationsPList mySSAAllocationsPList;
 
     /** 
      * This is used by the linerization process. 
