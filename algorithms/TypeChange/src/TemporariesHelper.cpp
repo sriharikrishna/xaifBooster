@@ -68,24 +68,25 @@ namespace xaifBoosterTypeChange{
   TemporariesHelper::TemporariesHelper(const std::string& contextAnnotation,
 				       const Expression& theExpression,
 				       const ExpressionVertex& theTopVertex):
-  myContextAnnnotation(contextAnnotation),
-  myExpression_p(&theExpression),
-  myTopVertex_p(&theTopVertex),
-  myVariable_p(NULL),
-  myShape(SymbolShape::SCALAR),
-  myType(SymbolType::INTEGER_STYPE),
-  myTypeInfo(false){
+    myContextAnnnotation(contextAnnotation),
+    myExpression_p(&theExpression),
+    myTopVertex_p(&theTopVertex),
+    myVariable_p(NULL),
+    myShape(SymbolShape::SCALAR),
+    myType(SymbolType::INTEGER_STYPE),
+    myTypeInfo(false){
   }
 
   TemporariesHelper::TemporariesHelper(const std::string& contextAnnotation,
 				       const Variable& variableToMatch):
-  myContextAnnnotation(contextAnnotation),
-  myExpression_p(NULL),
-  myTopVertex_p(NULL),
-  myVariable_p(&variableToMatch),
-  myShape(SymbolShape::SCALAR),
-  myType(SymbolType::INTEGER_STYPE),
-  myTypeInfo(false){
+    myContextAnnnotation(contextAnnotation),
+    myExpression_p(NULL),
+    myTopVertex_p(NULL),
+    myVariable_p(&variableToMatch),
+    myShape(SymbolShape::SCALAR),
+    myType(SymbolType::INTEGER_STYPE),
+    myTypeInfo(false),
+    myAllocationModel_p(NULL) {
   }
 
   TemporariesHelper::~TemporariesHelper(){
@@ -98,28 +99,34 @@ namespace xaifBoosterTypeChange{
   }
 
   Symbol& TemporariesHelper::makeTempSymbol(Scope& aScope){
-    if(myTopVertex_p) {
-      typeInfo(*myTopVertex_p);
-    }
-    else {
-      typeInfo(*myVariable_p);
-    }
-    if(!myTypeInfo) {
-      if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)&&DbgLoggerManager::instance()->wantTag("expr"))
-	myExpression_p->show("ExpressionForMakeTempSymbol");
-      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::makeTempSymbol: no type info found");
-    }
+    setTypeInfo();
     Symbol&theNewVariableSymbol(aScope.getSymbolTable().
 				addUniqueAuxSymbol(SymbolKind::VARIABLE,
-						myType,
-						myShape,
-						false));
+						   myType,
+						   myShape,
+						   false));
     theNewVariableSymbol.setFrontEndType(myFrontEndType);
     if(myShape!=SymbolShape::SCALAR) {
       setDimensionBounds(theNewVariableSymbol);
     }
     return theNewVariableSymbol;
-  }
+  } 
+
+  Symbol& TemporariesHelper::makeTempSymbol(Scope& aScope,
+                                            const NameCreator& aNameCreator,
+                                            bool isActive){
+    setTypeInfo();
+    Symbol& theNewVariableSymbol (aScope.getSymbolTable().addUniqueSymbol(aNameCreator,
+                                                                          SymbolKind::VARIABLE,
+                                                                          myType,
+                                                                          myShape,
+                                                                          isActive));
+    theNewVariableSymbol.setFrontEndType(myFrontEndType);
+    if(myShape!=SymbolShape::SCALAR) {
+      setDimensionBounds(theNewVariableSymbol);
+    }
+    return theNewVariableSymbol;
+  } 
 
   void TemporariesHelper::setDimensionBounds(Symbol& aNewSymbol){
     unsigned short found=0;
@@ -130,32 +137,75 @@ namespace xaifBoosterTypeChange{
 	++found;
     }
     if(found==myShape&&found==myDimensionBoundsPVector.size()) {
-      for(DimensionBoundsPVector::iterator it=myDimensionBoundsPVector.begin();
-	  it!=myDimensionBoundsPVector.end();
-	  ++it) {
-	if(*it)
-	  aNewSymbol.addDimensionBounds((*it)->getLower(), (*it)->getUpper());
+      switch(DimensionBounds::getIndexOrder()) {
+      case IndexOrder::ROWMAJOR: // c and c++
+	for(DimensionBoundsPVector::iterator it=myDimensionBoundsPVector.begin();
+	    it!=myDimensionBoundsPVector.end();
+	    ++it) {
+	  if(*it)
+	    aNewSymbol.addDimensionBounds((*it)->getLower(), (*it)->getUpper());
+	}
+	break;
+      case IndexOrder::COLUMNMAJOR:  // fortran
+	for(DimensionBoundsPVector::reverse_iterator it=myDimensionBoundsPVector.rbegin();
+	    it!=myDimensionBoundsPVector.rend();
+	    ++it) {
+	  if(*it)
+	    aNewSymbol.addDimensionBounds((*it)->getLower(), (*it)->getUpper());
+	}
+	break;
       }
     }
   }
 
   void TemporariesHelper::typeInfo(const ExpressionVertex & theTopVertex){
+    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< theTopVertex.debug().c_str() << ")")
     if(theTopVertex.isArgument()) {
       typeInfo(dynamic_cast<const Argument&>(theTopVertex).getVariable());
     }
     else {
       Expression::ConstInEdgeIteratorPair theInEdgesP=myExpression_p->getInEdgesOf(theTopVertex);
       Expression::ConstInEdgeIterator inEdgeIt=theInEdgesP.first, inEdgeEndIt=theInEdgesP.second;
-      for(; inEdgeIt!=inEdgeEndIt; ++inEdgeIt)
-	typeInfo(myExpression_p->getSourceOf(*inEdgeIt));
+      if(inEdgeIt==inEdgeEndIt) { // must be a constant
+	typeInfo(dynamic_cast<const Constant&>(theTopVertex));
+      }
+      else { 
+	for(; inEdgeIt!=inEdgeEndIt; ++inEdgeIt)
+	  typeInfo(myExpression_p->getSourceOf(*inEdgeIt));
+      }
+    }
+  }
+
+  void TemporariesHelper::typeInfo(const Constant& aConstant){
+    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< aConstant.debug().c_str() << ")")
+    if (!myTypeInfo) {
+      myTypeInfo=true;
+      myType=aConstant.getType();
+      myFrontEndType=aConstant.getFrontEndType();
+    }
+    else { 
+      SymbolType::SymbolType_E aCType=aConstant.getType();
+      SymbolType::SymbolType_E promotedType=SymbolType::genericPromotion(myType,aCType);
+      if (aCType==promotedType && myType!=promotedType)
+	myFrontEndType=aConstant.getFrontEndType();
+      myType=promotedType;
     }
   }
 
   void TemporariesHelper::typeInfo(const Variable & theVariable){
-    myTypeInfo=true;
-    myType=SymbolType::genericPromotion(myType, theVariable.getVariableSymbolReference().getSymbol().getSymbolType());
-    if(myType==theVariable.getVariableSymbolReference().getSymbol().getSymbolType())
+    DBG_TAG_MACRO(DbgGroup::DATA,"temporaries","typeInfo("<< theVariable.debug().c_str() << ")")
+    if (!myTypeInfo) {
+      myTypeInfo=true;
+      myType=theVariable.getVariableSymbolReference().getSymbol().getSymbolType();
       myFrontEndType=theVariable.getVariableSymbolReference().getSymbol().getFrontEndType();
+    }
+    else {
+      SymbolType::SymbolType_E aVType=theVariable.getVariableSymbolReference().getSymbol().getSymbolType();
+      SymbolType::SymbolType_E promotedType=SymbolType::genericPromotion(myType,aVType);
+      if (aVType==promotedType && myType!=promotedType)
+	myFrontEndType=theVariable.getVariableSymbolReference().getSymbol().getFrontEndType();
+      myType=promotedType;
+    }
     SymbolShape::SymbolShape_E argShape=theVariable.getEffectiveShape();
     if(myShape!=SymbolShape::SCALAR&&argShape!=SymbolShape::SCALAR&&myShape!=argShape)
       THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::typeInfo: effective shape change between "
@@ -167,6 +217,7 @@ namespace xaifBoosterTypeChange{
       if(!myDimensionBoundsPVector.size())
 	myDimensionBoundsPVector.resize(myShape, NULL);
       populateDimensionBounds(theVariable);
+      myAllocationModel_p=&theVariable;
     }
   }
 
@@ -178,9 +229,21 @@ namespace xaifBoosterTypeChange{
     if(aVariable.hasArrayAccess()) {
       unsigned short theDimension=0;
       const ArrayAccess::IndexTripletListType&theIndexTripletList(aVariable.getArrayAccess().getIndexTripletList());
+      DimensionBounds *aDimensionBounds_p=NULL;
       Symbol::DimensionBoundsPList::const_iterator symbolDBIt;
-      if(symbolDimensionBoundsP)
-	symbolDBIt=symbolDimensionBoundsP->begin();
+      Symbol::DimensionBoundsPList::const_reverse_iterator symbolDBRIt;
+      if(symbolDimensionBoundsP) {
+	switch(DimensionBounds::getIndexOrder()) {
+	case IndexOrder::ROWMAJOR: // c and c++
+	  symbolDBIt=symbolDimensionBoundsP->begin();
+	  aDimensionBounds_p=*symbolDBIt;
+	  break;
+	case IndexOrder::COLUMNMAJOR:  // fortran
+	  symbolDBRIt=symbolDimensionBoundsP->rbegin();
+	  aDimensionBounds_p=*symbolDBRIt;
+	  break;
+	}
+      }
       for(ArrayAccess::IndexTripletListType::const_iterator it=theIndexTripletList.begin();
 	  it!=theIndexTripletList.end();
 	  ++it) {
@@ -196,8 +259,8 @@ namespace xaifBoosterTypeChange{
 	    }
 	  }
 	  if(!indexExprP) {
-	    if(symbolDimensionBoundsP) {
-	      indexExpr.supplyAndAddVertexInstance(*(new Constant((*symbolDBIt)->getLower())));
+	    if(aDimensionBounds_p) {
+	      indexExpr.supplyAndAddVertexInstance(*(new Constant(aDimensionBounds_p->getLower())));
 	      indexExprP= &indexExpr;
 	    }
 	  }
@@ -209,8 +272,8 @@ namespace xaifBoosterTypeChange{
 	    }
 	  }
 	  if(!boundExprP) {
-	    if(symbolDimensionBoundsP) {
-	      boundExpr.supplyAndAddVertexInstance(*(new Constant((*symbolDBIt)->getUpper())));
+	    if(aDimensionBounds_p) {
+	      boundExpr.supplyAndAddVertexInstance(*(new Constant(aDimensionBounds_p->getUpper())));
 	      boundExprP= &boundExpr;
 	    }
 	  }
@@ -238,33 +301,91 @@ namespace xaifBoosterTypeChange{
 	    }
 	    int theBoundVal=effectiveBoundExpression.constIntEval();
 	    if(myDimensionBoundsPVector[theDimension-1]
-	    &&
-	    myDimensionBoundsPVector[theDimension-1]->getUpper()!=theBoundVal) {
+	       &&
+	       myDimensionBoundsPVector[theDimension-1]->getUpper()!=theBoundVal) {
 	      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::populateEffectiveDimensionBounds: conflicting bounds ("
-				      <<myDimensionBoundsPVector[theDimension]
-				      <<" vs. "
-				      <<theBoundVal
-				      <<" for dimension "
-				      <<theDimension);
+					 <<myDimensionBoundsPVector[theDimension]
+					 <<" vs. "
+					 <<theBoundVal
+					 <<" for dimension "
+					 <<theDimension);
 	    }
 	    myDimensionBoundsPVector[theDimension-1]=new DimensionBounds(1, theBoundVal);
 	  }
 	}
-	if(symbolDimensionBoundsP)
-	  ++symbolDBIt;
+	if(symbolDimensionBoundsP) { 
+	  switch(DimensionBounds::getIndexOrder()) {
+	  case IndexOrder::ROWMAJOR: // c and c++
+	    ++symbolDBIt;
+	    aDimensionBounds_p=*symbolDBIt;
+	    break;
+	  case IndexOrder::COLUMNMAJOR:  // fortran
+	    ++symbolDBRIt;
+	    aDimensionBounds_p=*symbolDBRIt;
+	    break;
+	  }
+	}
       }
     }
     else { // no array access
       if(symbolDimensionBoundsP) {
 	unsigned short theDimension=0;
-	for(Symbol::DimensionBoundsPList::const_iterator symbolDBIt=symbolDimensionBoundsP->begin();
-	    symbolDBIt!=symbolDimensionBoundsP->end();
-	    ++symbolDBIt) {
-	  ++theDimension; // 1-based counting
-	  myDimensionBoundsPVector[theDimension-1]=new DimensionBounds((*symbolDBIt)->getLower(), (*symbolDBIt)->getUpper());
+	switch(DimensionBounds::getIndexOrder()) {
+	case IndexOrder::ROWMAJOR: // c and c++
+	  for(Symbol::DimensionBoundsPList::const_iterator symbolDBIt=symbolDimensionBoundsP->begin();
+	     symbolDBIt!=symbolDimensionBoundsP->end();
+	     ++symbolDBIt) {
+	    ++theDimension; // 1-based counting
+	    myDimensionBoundsPVector[theDimension-1]=new DimensionBounds((*symbolDBIt)->getLower(), (*symbolDBIt)->getUpper());
+	  }
+	  break;
+	case IndexOrder::COLUMNMAJOR:  // fortran
+	  for(Symbol::DimensionBoundsPList::const_reverse_iterator symbolDBIt=symbolDimensionBoundsP->rbegin();
+	     symbolDBIt!=symbolDimensionBoundsP->rend();
+	     ++symbolDBIt) {
+	    ++theDimension; // 1-based counting
+	    myDimensionBoundsPVector[theDimension-1]=new DimensionBounds((*symbolDBIt)->getLower(), (*symbolDBIt)->getUpper());
+	  }
+	  break;
 	}
       }
     }
   }
+
+  bool TemporariesHelper::needsAllocation() {
+    setTypeInfo();
+    unsigned short found=0;
+    for(DimensionBoundsPVector::iterator it=myDimensionBoundsPVector.begin();
+	it!=myDimensionBoundsPVector.end();
+	++it) {
+      if(*it)
+	++found;
+    }
+    return !(found==myShape&&found==myDimensionBoundsPVector.size());
+  }
+
+  void TemporariesHelper::setTypeInfo() {
+    if(!myTypeInfo) {
+      if(myTopVertex_p) {
+	typeInfo(*myTopVertex_p);
+      }
+      else {
+	typeInfo(*myVariable_p);
+      }
+    }
+    if(!myTypeInfo) {
+      if(DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)&&DbgLoggerManager::instance()->wantTag("expr"))
+	myExpression_p->show("ExpressionForMakeTempSymbol");
+      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::setTypeInfo: no type info found");
+    }
+  }
+
+  const Variable& TemporariesHelper::allocationModel() { 
+    setTypeInfo();
+    if(!myAllocationModel_p) {
+      THROW_LOGICEXCEPTION_MACRO("TemporariesHelper::allocationModel: no allocation model found");
+    }
+    return *myAllocationModel_p;
+  } 
 
 }

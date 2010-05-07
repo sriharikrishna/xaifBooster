@@ -56,11 +56,11 @@
 #include <map>
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AwarenessLevel.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/GraphCorrelations.hpp"
 
@@ -121,7 +121,9 @@ namespace xaifBoosterCrossCountryInterface {
     const AccumulationGraph& getAccumulationGraph() const;
     AccumulationGraph& getAccumulationGraph();
 
-    /// used for propagation
+    /**
+     * used for propagation
+     */
     typedef std::map<const LinearizedComputationalGraphEdge*,
                      const AccumulationGraphVertex*> RemainderEdge2AccumulationVertexMap;
 
@@ -134,7 +136,7 @@ namespace xaifBoosterCrossCountryInterface {
     /**
      * returns a reference to the original LCG vertex that corresponds to the passed remainder graph vertex
      */
-    const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex&
+    const LinearizedComputationalGraphVertex&
     rVertex2oVertex (const LinearizedComputationalGraphVertex& theRemainderVertex) const;
 
     /**
@@ -198,8 +200,8 @@ namespace xaifBoosterCrossCountryInterface {
     typedef std::map<const AccumulationGraphVertex*,
                      bool> AccVertexIsUnitMap;
 
-    /// recursively visits Accumulation graph vertices and counts nontrivial operations (cost)
     /**
+     * \brief recursively visits Accumulation graph vertices and counts nontrivial operations (cost)
      * should be called exactly once for every accumulation graph vertex
      */
     void evaluateCostRecursively(const AccumulationGraphVertex& rootAccvertex,

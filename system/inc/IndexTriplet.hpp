@@ -76,10 +76,7 @@ namespace xaifBooster {
 					     const Expression& theIndex,
 					     const std::string& anXaifName) const;
 
-    /** 
-     * \todo implementation incomplete
-     */
-    std::string debug() const { return std::string("IndexTriplet");} ;
+    std::string debug() const;
 
     /** 
      * \todo implementation incomplete
