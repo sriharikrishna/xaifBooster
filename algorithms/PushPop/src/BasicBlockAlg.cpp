@@ -76,7 +76,7 @@ namespace xaifBoosterPushPop {
         continue;
       }
       else if (&theBasicBlockElement == (*seqDataPI)->mySequence_p->myLastElement_p) { // we are at the end of the current sequence
-        const Sequence& theSequence (*(*seqDataPI)->mySequence_p);
+        const xaifBoosterBasicBlockPreaccumulation::Sequence& theSequence (*(*seqDataPI)->mySequence_p);
         // check the stuff that comes after the sequence
         // (for now we can consider it to all occur at the same time)
         // meaning that everything in accumulation and propagation is considered to occur simultaneously
@@ -84,7 +84,7 @@ namespace xaifBoosterPushPop {
         foundFirst = false;
         foundSecond = false;
         // check the accumulation code
-        for (Sequence::AssignmentPList::const_iterator accAssPI = (*seqDataPI)->mySequence_p->getEndAssignmentList().begin();
+        for (xaifBoosterBasicBlockPreaccumulation::Sequence::AssignmentPList::const_iterator accAssPI = (*seqDataPI)->mySequence_p->getEndAssignmentList().begin();
              accAssPI != (*seqDataPI)->mySequence_p->getEndAssignmentList().end(); ++accAssPI) {
           foundFirst = (*accAssPI)->hasExpression(firstExpression);
           foundSecond = (*accAssPI)->hasExpression(secondExpression);
