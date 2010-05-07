@@ -36,7 +36,7 @@ namespace xaifBoosterPushPop {
   } // end AlgFactoryManager::resets()
 
   void AlgFactoryManager::init() {
-    xaifBooster::AlgFactoryManager::init();
+    xaifBoosterAddressArithmetic::AlgFactoryManager::init();
     xaifBoosterPushPop::AlgFactoryManager::resets();
   } // end AlgFactoryManager::init()
 
