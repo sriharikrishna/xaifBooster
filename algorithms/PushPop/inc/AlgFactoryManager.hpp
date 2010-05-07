@@ -1,14 +1,14 @@
 #ifndef _XAIFBOOSTERPUSHPOP_ALGFACTORYMANAGER_INCLUDE_
 #define _XAIFBOOSTERPUSHPOP_ALGFACTORYMANAGER_INCLUDE_
 
-#include "xaifBooster/system/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
 
 namespace xaifBoosterPushPop {
 
   /**
    * the singleton class for setting algorithm factory pointers
    */
-  class AlgFactoryManager : virtual public xaifBooster::AlgFactoryManager {
+  class AlgFactoryManager : virtual public xaifBoosterAddressArithmetic::AlgFactoryManager {
 
   public:
 
