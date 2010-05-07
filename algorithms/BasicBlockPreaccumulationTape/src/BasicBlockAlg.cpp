@@ -64,6 +64,8 @@
 
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
@@ -203,12 +205,16 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
              aFactorListI != aFactorList.end(); ++aFactorListI) {
           if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) {
             const Variable& theFactorVariable ((*aFactorListI).getVariable());
-            // check whether this factor variable has already been pushed
+	    // check whether this factor variable has already been pushed
             VariablePList::const_iterator pushedFacVarPI;
             for (pushedFacVarPI = thisSequenceData_p->myPushedFactorVariablesPList.begin(); pushedFacVarPI != thisSequenceData_p->myPushedFactorVariablesPList.end(); ++pushedFacVarPI)
               if (theFactorVariable.equivalentTo(**pushedFacVarPI))
                 break;
             if (pushedFacVarPI == thisSequenceData_p->myPushedFactorVariablesPList.end()) { // this variable has not yet been pushed
+	      if (dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>(theFactorVariable.getVariableSymbolReference().getSymbol().getSymbolAlgBase()).needsAllocation()) {
+		pushDimensionsOf(theFactorVariable,theReinterpretedDerivativePropagator,ForLoopReversalType::ANONYMOUS);
+		pushDimensionsOf(theFactorVariable,theReinterpretedDerivativePropagator,ForLoopReversalType::EXPLICIT);
+	      }
               // ANONYMOUS version
               xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString(theFactorVariable.getEffectiveShape())));
               theSubroutineCall_p->setId("inline_push");
@@ -246,6 +252,58 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       } // end for all address variables to be pushed
     } // end for all sequences
   } // end BasicBlockAlg::algorithm_action_4()
+
+  void BasicBlockAlg::pushDimensionsOf(const Variable& theFactorVariable,
+				       ReinterpretedDerivativePropagator& theReinterpretedDerivativePropagator,
+				       ForLoopReversalType::ForLoopReversalType_E aReversalType) { 
+    SymbolShape::SymbolShape_E theShape=theFactorVariable.getEffectiveShape();
+    for(unsigned short dim=1;dim<=theShape;++dim) {
+      // save the size info
+      Assignment* theSizeAssignment_p(new Assignment(false));
+      theReinterpretedDerivativePropagator.
+	supplyAndAddBasicBlockElementInstance(*theSizeAssignment_p,
+					      aReversalType);
+      theSizeAssignment_p->setId("size_assignment_for_taping");
+      // create a new symbol and add a new VariableSymbolReference in the Variable
+      VariableSymbolReference* theNewVariableSymbolReference_p =
+	new VariableSymbolReference(getContaining().
+				    getScope().
+				    getSymbolTable().
+				    addUniqueAuxSymbol(SymbolKind::VARIABLE,
+						       SymbolType::INTEGER_STYPE,
+						       SymbolShape::SCALAR,
+						       false),
+				    getContaining().getScope());
+      theNewVariableSymbolReference_p->setId("1");
+      theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::pushDimensionsOf");
+      // pass it on to the LHS and relinquish ownership
+      theSizeAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+      theSizeAssignment_p->getLHS().getAliasMapKey().setTemporary();
+      theSizeAssignment_p->getLHS().getDuUdMapKey().setTemporary();
+      // make the RHS
+      Expression& theSizeExpression(theSizeAssignment_p->getRHS());
+      Argument& theNewArgument(*(new Argument()));
+      theNewArgument.setId(theSizeExpression.getNextVertexId());
+      theSizeExpression.supplyAndAddVertexInstance(theNewArgument);
+      theFactorVariable.copyMyselfInto(theNewArgument.getVariable());
+      Constant& theConstant(*new Constant(dim));
+      theConstant.setId(theSizeExpression.getNextVertexId());
+      theSizeExpression.supplyAndAddVertexInstance(theConstant);
+      ExpressionVertex& theSizeIntrinsic=theSizeExpression.addBinaryOpByName("size",
+									     theNewArgument,
+									     theConstant);
+      theSizeIntrinsic.setId(theSizeExpression.getNextVertexId());
+      // now make the subroutine call: 
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p = 
+	new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+      // save it in the list
+      theReinterpretedDerivativePropagator.
+	supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
+					      aReversalType);
+      theSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::pushDimensionsOf");
+      theSizeAssignment_p->getLHS().copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
+    }
+  }
 
   const std::list<BasicBlockAlg::PerSequenceData*>&
   BasicBlockAlg::getPerSequenceDataPList() const {
