@@ -193,6 +193,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     void reinterpretArrayAccess(const ArrayAccess& theArrayAccess,
                                 PerSequenceData& aPerSequenceData);
 
+    void pushDimensionsOf(const Variable& theFactorVariable,
+			  ReinterpretedDerivativePropagator& theReinterpretedDerivativePropagator,
+			  ForLoopReversalType::ForLoopReversalType_E aReversalType);
+
   }; // end class xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg
  
 } // end namespace xaifBoosterBasicBlockPreaccumulationTape

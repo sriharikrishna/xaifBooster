@@ -168,6 +168,8 @@ namespace xaifBooster {
 
     void setFrontEndType(const FrontEndType&);
 
+    bool isTemporary() const;
+
   private:
 
     friend class SymbolTable;

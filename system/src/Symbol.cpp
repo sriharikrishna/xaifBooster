@@ -160,10 +160,10 @@ namespace xaifBooster {
   std::string Symbol::debug () const { 
     std::ostringstream out;
     out << "Symbol[" << this 
-	<< ",myName=" << getId() 
-	<< ",myKind=" << SymbolKind::toString(myKind) 
-	<< ",myType=" << SymbolType::toString(myType) 
-	<< ",myShape=" << SymbolShape::toString(myShape)
+	<< ",myName=" << getId().c_str() 
+	<< ",myKind=" << SymbolKind::toString(myKind).c_str() 
+	<< ",myType=" << SymbolType::toString(myType).c_str()
+	<< ",myShape=" << SymbolShape::toString(myShape).c_str()
 	<< ",myActiveTypeFlag=" << myActiveTypeFlag
 	<< ",myTempFlag=" << myTempFlag
 	<< "]" << std::ends;  
@@ -407,5 +407,9 @@ namespace xaifBooster {
       THROW_LOGICEXCEPTION_MACRO("Symbol::setFrontEndType: already set");
     myFrontEndType=aFrontEndType;
   }
+
+  bool Symbol::isTemporary()const { 
+    return myTempFlag;
+  } 
 
 } // end of namespace xaifBooster 

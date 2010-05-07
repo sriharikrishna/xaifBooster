@@ -62,6 +62,8 @@
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
@@ -181,6 +183,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
      * Unlike addFactorPop, this method generates its own symbol for the variable to be popped into.
      */
     const Variable& addAddressPop(const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
+
+    /** 
+     * add the call to allocate the temporary symbol
+     */
+    void addAllocation(const Symbol& aTemporarySymbol,
+		       const Scope& theScope,
+		       xaifBoosterTypeChange::TemporariesHelper& aHelper,
+		       const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
 
     /** 
      * add a Saxpy call with variable factor \p theFactor to the proper BasicBlockElementList based on aReversalType

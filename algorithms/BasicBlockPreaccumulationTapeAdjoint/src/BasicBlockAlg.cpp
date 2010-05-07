@@ -278,6 +278,17 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	  xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5",
 								      **pushedFacVarPrI);
           const Symbol& aTemporarySymbol (aTemporariesHelper.makeTempSymbol(getContaining().getScope()));
+	  // allocation needed?
+	  if (aTemporariesHelper.needsAllocation()) { 
+            addAllocation(aTemporarySymbol,
+			  getContaining().getScope(),
+			  aTemporariesHelper,
+	                  ForLoopReversalType::ANONYMOUS);
+            addAllocation(aTemporarySymbol,
+			  getContaining().getScope(),
+                          aTemporariesHelper,
+                          ForLoopReversalType::EXPLICIT);
+          }
           // Anonymous version
           const Variable& thePoppedFactorVariable (addFactorPop(aTemporarySymbol,
                                                                 ForLoopReversalType::ANONYMOUS));
@@ -373,6 +384,57 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     thePoppedAddressVariable.getDuUdMapKey().setTemporary();
     return thePoppedAddressVariable;
   } // end BasicBlockAlg::addAddressPop()
+
+  void BasicBlockAlg::addAllocation(const Symbol& aTemporarySymbol,
+				    const Scope& theScope,
+				    xaifBoosterTypeChange::TemporariesHelper & aHelper,
+				    const ForLoopReversalType::ForLoopReversalType_E& aReversalType) { 
+    std::list<Variable*> thePoppedVariablePList;
+    // get shape from tape
+    SymbolShape::SymbolShape_E theShape=aTemporarySymbol.getSymbolShape();
+    for(unsigned short dim=theShape;dim>=1;--dim) {
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theShapePopCall (addInlinableSubroutineCall("pop_i",
+														    aReversalType));
+      theShapePopCall.setId("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAllocation");
+      Variable& thePoppedShapeVariable (theShapePopCall.addConcreteArgument(1).getArgument().getVariable());
+      // give it a name etc.
+      // create a new symbol and add a new VariableSymbolReference in the Variable
+      VariableSymbolReference* theNewVariableSymbolReference_p =
+	new VariableSymbolReference(getContaining().getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
+												   SymbolType::INTEGER_STYPE,
+												   SymbolShape::SCALAR,
+												   false),
+				    getContaining().getScope());
+      theNewVariableSymbolReference_p->setId("1");
+      theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAllocation");
+      // pass it on to the variable and relinquish ownership
+      thePoppedShapeVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
+      thePoppedShapeVariable.getAliasMapKey().setTemporary();
+      thePoppedShapeVariable.getDuUdMapKey().setTemporary();
+      // note that thePoppedShapeVariable is a reference to the argument in the pop call
+      thePoppedVariablePList.push_front(&thePoppedShapeVariable);
+    }
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theSRCall(addInlinableSubroutineCall("oad_AllocateShape",
+													 aReversalType)); 
+    theSRCall.setId("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAllocation");
+    // first argument
+    Variable& toBeAllocatedVariable(theSRCall.addConcreteArgument(1).getArgument().getVariable());
+    VariableSymbolReference* 
+      tobeAllocateVariableSymbolReference_p(new VariableSymbolReference(aTemporarySymbol,
+									theScope));
+    tobeAllocateVariableSymbolReference_p->setId("1");
+    tobeAllocateVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulation::Sequence::addAllocation");
+    toBeAllocatedVariable.supplyAndAddVertexInstance(*tobeAllocateVariableSymbolReference_p);
+    toBeAllocatedVariable.getAliasMapKey().setTemporary();
+    toBeAllocatedVariable.getDuUdMapKey().setTemporary();
+    // put the shape arguments as 2nd and following into the allocation call
+    int argPos=2;
+    for (std::list<Variable*>::iterator it=thePoppedVariablePList.begin();
+	 it!=thePoppedVariablePList.end();
+	 ++it,++argPos) { 
+      (*it)->copyMyselfInto(theSRCall.addConcreteArgument(argPos).getArgument().getVariable());
+    }
+  } 
 
   void BasicBlockAlg::addSaxpy(const Variable& theSource,
 			       const Variable& theTarget,

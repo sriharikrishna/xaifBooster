@@ -466,11 +466,13 @@ namespace xaifBooster{
     if(!has(arg2TopVertex))
       THROW_LOGICEXCEPTION_MACRO("Expression::addBinaryOpByName: arg2TopVertex "<<arg2TopVertex.debug().c_str()<<" is not in the Expression");
     ExpressionEdge* aNewEdge_p=new ExpressionEdge(false);
+    aNewEdge_p->setId(getNextEdgeId());
     supplyAndAddEdgeInstance(*aNewEdge_p,
 			     arg1TopVertex,
 			     *theNewInt_p);
     aNewEdge_p->setPosition(1);
     aNewEdge_p=new ExpressionEdge(false);
+    aNewEdge_p->setId(getNextEdgeId());
     supplyAndAddEdgeInstance(*aNewEdge_p,
 			     arg2TopVertex,
 			     *theNewInt_p);
