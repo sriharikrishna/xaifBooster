@@ -596,7 +596,6 @@ namespace xaifBoosterTypeChange {
     Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     // create a new symbol and add a new VariableSymbolReference in the Variable
     static std::list<std::string> reportShapeMismatchOnce;
-    Scope& theGlobalScope(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
     Symbol& theNewVariableSymbol (
       theCurrentCfgScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getTypeChangeVariableNameCreator(),
                                                       SymbolKind::VARIABLE,
