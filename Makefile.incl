@@ -87,7 +87,7 @@ export IPATH= \
 
 CC=
 ifndef PLATFORM
-include $(XAIFBOOSTERROOT)/$(ROOTDIR)/Makefile.incl.x86-Linux
+PLATFORM=${OPENADPLATFORM}
 endif 
 ifeq ($(PLATFORM),i686-Cygwin)
 include $(XAIFBOOSTERROOT)/$(ROOTDIR)/Makefile.incl.x86-Linux
@@ -100,6 +100,10 @@ include $(XAIFBOOSTERROOT)/$(ROOTDIR)/Makefile.incl.x86-Linux
 endif
 ifeq ($(PLATFORM),i686-Linux)
 include $(XAIFBOOSTERROOT)/$(ROOTDIR)/Makefile.incl.x86-Linux
+endif
+ifeq ($(PLATFORM),x86-MacOS)
+include $(XAIFBOOSTERROOT)/$(ROOTDIR)/Makefile.incl.$(PLATFORM)
+export XERCESC_LIB=$(XERCESCROOT)/lib/libxerces-c.dylib
 endif
 ifeq ($(PLATFORM),sparc-SunOS)
 include $(XAIFBOOSTERROOT)/$(ROOTDIR)/Makefile.incl.$(PLATFORM)
