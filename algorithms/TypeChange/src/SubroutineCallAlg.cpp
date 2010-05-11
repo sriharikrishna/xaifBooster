@@ -462,50 +462,62 @@ namespace xaifBoosterTypeChange {
     ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
     theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,!copyEntireArray);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
-    if (theConcreteArgument.isArgument()) {  // postcall only if it is not a constant
-      // see if it is a formal argument with IN_ITYPE
-      const ControlFlowGraph& theCFG(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph());
-      ControlFlowGraph::FormalResult aFormalResult;
-      if ((aFormalResult=theCFG.hasFormal(theConcreteArgument.getArgument().getVariable().getVariableSymbolReference())).first) { // have it 
-	// get the positional argument  from the list 
-	for (ArgumentList::ArgumentSymbolReferencePList::const_iterator listI=theCFG.getArgumentList().getArgumentSymbolReferencePList().begin();
-	     listI!=theCFG.getArgumentList().getArgumentSymbolReferencePList().end();
-	     ++listI) {
-	  if (aFormalResult.second==(*listI)->getPosition() // match the position
- 	      && 
-	      IntentType::IN_ITYPE==(*listI)->getIntent()) { // look at its itype
-	    return;
-	  }
-	}
-      }
-      // may have to adjust upper bounds
-      if (!copyEntireArray)
-	theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(aFormalArgumentSymbolReference.
-										      getSymbol().	
-										      getSymbolShape())+shapeOffsetFromFormal);
-      if (haveAllocation) { 
-	addShapeTest(theTempVar,theConcreteArgument);
-      } 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
-	thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
-      myPostAdjustmentsList.push_back(thePostCall_p);
-      thePostCall_p->setId("SubroutineCallAlg::addConversion post");
-      ConcreteArgument& theFirstPostConcreteArg(thePostCall_p->addConcreteArgument(1));
-      theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
-      Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
-      theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes,!copyEntireArray);
-      if (!copyEntireArray)
-	theInlineVariablePostRes.adjustUpperBounds((int)(aFormalArgumentSymbolReference.
-							 getSymbol().	
-							 getSymbolShape())+shapeOffsetFromFormal);
-      Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
-      theTempVar.copyMyselfInto(theInlineVariablePostArg);
-      if (!copyEntireArray && theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
-	handleArrayAccessIndices(theConcreteArgument,
-				 theBasicBlock);
+
+    // skip post-call back-conversion if
+    // 1) the concrete argument is a constant; or
+    // 2) the formal argument (callee context) has intent in; or
+    // 3) the concrete argument is a formal argument (in caller context) with intent in
+    //
+    //1):
+    if (!theConcreteArgument.isArgument())
+      return;
+    //2):
+    if (aFormalArgumentSymbolReference.getIntent() == IntentType::IN_ITYPE)
+      return;
+    //3):
+    const ControlFlowGraph& theCFG(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph());
+    ControlFlowGraph::FormalResult theCallerFormalResult = theCFG.hasFormal(theConcreteArgument.getArgument().getVariable().getVariableSymbolReference());
+    if (theCallerFormalResult.first) { // this concrete argument happens to be a formal argument in the caller context
+      // get the positional argument  from the list 
+      for (ArgumentList::ArgumentSymbolReferencePList::const_iterator listI=theCFG.getArgumentList().getArgumentSymbolReferencePList().begin();
+           listI!=theCFG.getArgumentList().getArgumentSymbolReferencePList().end();
+           ++listI) {
+        if (theCallerFormalResult.second==(*listI)->getPosition() // match the position
+            && 
+            IntentType::IN_ITYPE==(*listI)->getIntent()) { // look at its itype
+          return;
+        }
       }
     }
-  } 
+
+    // if we successfully get to this point, then create the post-call conversion
+    // may have to adjust upper bounds
+    if (!copyEntireArray)
+      theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(aFormalArgumentSymbolReference.
+                                                                              getSymbol().	
+                                                                              getSymbolShape())+shapeOffsetFromFormal);
+    if (haveAllocation) { 
+      addShapeTest(theTempVar,theConcreteArgument);
+    } 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
+      thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
+    myPostAdjustmentsList.push_back(thePostCall_p);
+    thePostCall_p->setId("SubroutineCallAlg::addConversion post");
+    ConcreteArgument& theFirstPostConcreteArg(thePostCall_p->addConcreteArgument(1));
+    theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
+    Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
+    theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes,!copyEntireArray);
+    if (!copyEntireArray)
+      theInlineVariablePostRes.adjustUpperBounds((int)(aFormalArgumentSymbolReference.
+                                                 getSymbol().	
+                                                 getSymbolShape())+shapeOffsetFromFormal);
+    Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
+    theTempVar.copyMyselfInto(theInlineVariablePostArg);
+    if (!copyEntireArray && theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
+      handleArrayAccessIndices(theConcreteArgument,
+                               theBasicBlock);
+    }
+  } // end SubroutineCallAlg::addConversion()
   
 
   void SubroutineCallAlg::addExternalConversion(const ConcreteArgument& theConcreteArgument,
