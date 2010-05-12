@@ -453,15 +453,25 @@ namespace xaifBoosterTypeChange {
       addAllocation(theTempVar,theConcreteArgument);
       haveAllocation=true;
     }
-    // prior call
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
-      thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
-    myPriorAdjustmentsList.push_back(thePriorCall_p);
-    thePriorCall_p->setId("SubroutineCallAlg::addConversion prior");
-    theTempVar.copyMyselfInto(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
-    ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
-    theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,!copyEntireArray);
-    theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
+
+    // Pre-call conversion
+    // skip if the concrete argument has intent out
+    if (aFormalArgumentSymbolReference.getIntent() != IntentType::OUT_ITYPE) {
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
+        thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
+      myPriorAdjustmentsList.push_back(thePriorCall_p);
+      thePriorCall_p->setId("SubroutineCallAlg::addConversion prior");
+      theTempVar.copyMyselfInto(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
+      ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
+      theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,!copyEntireArray);
+      theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
+      // may have to adjust upper bounds
+      if (theConcreteArgument.isArgument() && !copyEntireArray) {
+        theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds(
+         (int)(aFormalArgumentSymbolReference.getSymbol().getSymbolShape())+shapeOffsetFromFormal
+        );
+      }
+    }
 
     // skip post-call back-conversion if
     // 1) the concrete argument is a constant; or
@@ -491,11 +501,6 @@ namespace xaifBoosterTypeChange {
     }
 
     // if we successfully get to this point, then create the post-call conversion
-    // may have to adjust upper bounds
-    if (!copyEntireArray)
-      theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(aFormalArgumentSymbolReference.
-                                                                              getSymbol().	
-                                                                              getSymbolShape())+shapeOffsetFromFormal);
     if (haveAllocation) { 
       addShapeTest(theTempVar,theConcreteArgument);
     } 
