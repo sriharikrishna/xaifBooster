@@ -314,7 +314,7 @@ namespace xaifBoosterControlFlowReversal {
       if (replacedEdge_r.hasRevConditionValue()) {
 	aNewControlFlowGraphOutEdge_p->setRevConditionValue(replacedEdge_r.getRevConditionValue());
       }
-      
+
       BasicBlock* theNewBasicBlock=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
       ReversibleControlFlowGraphVertex* newVertex_p = new ReversibleControlFlowGraphVertex(theNewBasicBlock);
       supplyAndAddVertexInstance(*newVertex_p);
@@ -324,10 +324,11 @@ namespace xaifBoosterControlFlowReversal {
       newVertex_p->getNewVertex().setId(makeUniqueVertexId());
       newVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
 
-      mySortedVertices_p_l.pop_back();
+      if (!mySortedVertices_p_l.empty())
+	mySortedVertices_p_l.pop_back();
       mySortedVertices_p_l.push_back(newVertex_p);
       mySortedVertices_p_l.push_back(&exitVertex);
-      
+
       removeAndDeleteEdge(replacedEdge_r);
       supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
       supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
