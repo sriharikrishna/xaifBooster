@@ -95,7 +95,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
       theDummyExpression_p = new Expression (false);
       Argument* theNewArgument_p = new Argument();
-      getContainingAssignment().getLHS().copyMyselfInto(theNewArgument_p->getVariable());
+      getContainingAssignment().getLHS().copyMyselfInto(theNewArgument_p->getVariable(),false);
       theNewArgument_p->setId(1);
       theDummyExpression_p->supplyAndAddVertexInstance(*theNewArgument_p);
       theOriginStr = "BasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4";

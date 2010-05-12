@@ -52,12 +52,24 @@ namespace xaifBoosterRequiredValues {
 
   void RequiredValueSet::addValueToRequiredSet(const Expression& anExpression,
                                                const ControlFlowGraphVertex& aControlFlowGraphVertex,
-                                               const std::string anOriginStr) {
+                                               const std::string anOriginStr,
+					       bool addExpressionsWithEquivalentVariables) {
     // ensure that this expression isn't already in the set
     RequiredValuePList::const_iterator reqValPListI;
-    for (reqValPListI = myRequiredValuesPList.begin(); reqValPListI != myRequiredValuesPList.end(); ++reqValPListI) 
+    for (reqValPListI = myRequiredValuesPList.begin(); reqValPListI != myRequiredValuesPList.end(); ++reqValPListI)  {
       if (&(*reqValPListI)->getExpression() == &anExpression)
         break;
+      //compare variable
+      
+      if ((!addExpressionsWithEquivalentVariables) &&((&anExpression)->numVertices() <= 1) && 
+	  (&anExpression)->getMaxVertex().isArgument() && ((*reqValPListI)->isArgument())) {
+	const Argument& newArgument = dynamic_cast<const Argument&>((&anExpression)->getMaxVertex());
+	const Argument& oldArgument = ((*reqValPListI)->getArgument());
+	if (newArgument.equivalenceSignature() == oldArgument.equivalenceSignature()) {
+	  break;
+	}
+      }
+    }
     if (reqValPListI == myRequiredValuesPList.end())
       myRequiredValuesPList.push_back(new RequiredValue (anExpression,
                                                          aControlFlowGraphVertex,
