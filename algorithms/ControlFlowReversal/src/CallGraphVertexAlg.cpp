@@ -269,7 +269,6 @@ namespace xaifBoosterControlFlowReversal {
     if (hasTapingControlFlowGraph()) {
       ReversibleControlFlowGraph& theRCFG = getTapingControlFlowGraph();
       BasicBlock* theBasicBlock = theRCFG.getDerivInitBasicBlock();
-      CFGVertexP2RequiredValuePListMap theCFGVertexP2RequiredValuePListMap;
       const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myRequiredValueSet.getRequiredValuesPList());
       for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
 	   reqValI != theRequiredValuesPList.end(); ++reqValI) {
