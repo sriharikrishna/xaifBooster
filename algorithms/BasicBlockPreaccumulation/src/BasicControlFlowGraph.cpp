@@ -232,65 +232,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       
       supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,entryVertex);
 
-      BasicControlFlowGraph::initializeDerivComponents(theNewBasicBlock);
       return theNewBasicBlock;
     } catch (LogicException){
       return NULL;
     }
-  }
-
-  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
-  BasicControlFlowGraph::addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* aNewCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
-    theBasicBlock->supplyAndAddBasicBlockElementInstance(*aNewCall_p);
-    return *aNewCall_p;									     
-  }
-
-  void BasicControlFlowGraph::addZeroDeriv(Variable& theTarget,BasicBlock* theBasicBlock) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
-      theSubroutineCall(BasicControlFlowGraph::addInlinableSubroutineCall("ZeroDeriv",theBasicBlock));
-    theSubroutineCall.setId("inline_zeroderiv");
-    theTarget.copyMyselfInto(theSubroutineCall.addConcreteArgument(1).getArgument().getVariable());
-  }
-
-  void BasicControlFlowGraph::initializeDerivComponents(BasicBlock* theBasicBlock) {
-    // go through symbol table & add zeroDeriv inlinable subroutine calls for every local var not an input arg
-    // iterate through basic blocks
-    BasicControlFlowGraph::VertexIteratorPair p(vertices());
-    BasicControlFlowGraph::VertexIterator vertexIt(p.first),endIt(p.second);
-    for (;vertexIt!=endIt ;++vertexIt) {
-      if ((*vertexIt).getKind() == ControlFlowGraphVertexKind::BASICBLOCK_VKIND) {
-	if ((*vertexIt).isOriginal()) {
-	  const BasicBlock& origBasicBlock(dynamic_cast<const BasicBlock&>((*vertexIt).getOriginalVertex()));
-	  //std::list<BasicBlockElement*>::iterator li=(origBasicBlock).myElementList.begin();
-	  for (PlainBasicBlock::BasicBlockElementList::const_iterator li=origBasicBlock.getBasicBlockElementList().begin();
-	       li!=origBasicBlock.getBasicBlockElementList().end();
-	       li++) { 
-	    // see if this is an assignment
-	    Assignment* anAssignment_p=dynamic_cast<Assignment*>(*li);
-	    if (anAssignment_p) { 
-	      Variable& myLHS = anAssignment_p->getLHS();
-	      if (myLHS.getActiveFlag())
-		BasicControlFlowGraph::addZeroDeriv(myLHS,theBasicBlock);
-	    }
-	    // see if this is a subroutine call
-	    SubroutineCall* aSubroutineCall_p=dynamic_cast<SubroutineCall*>(*li);
-	    if (aSubroutineCall_p) {
-	      const SubroutineCall::ConcreteArgumentPList& aConcreteArgumentPList(aSubroutineCall_p->getConcreteArgumentPList());
-	      for (SubroutineCall::ConcreteArgumentPList::const_iterator argIt=aConcreteArgumentPList.begin();
-		   argIt!=aConcreteArgumentPList.end();
-		   ++argIt) { 
-		if ((*argIt)->isArgument()) {
-		  Variable& myVar = (*argIt)->getArgument().getVariable();
-		  if (myVar.getActiveFlag())
-		    BasicControlFlowGraph::addZeroDeriv(myVar,theBasicBlock);
-		}
-	      }  
-	    }
-	  }
-	}
-      } 
-    } //end for
   }
 
   void BasicControlFlowGraph::printXMLHierarchy(std::ostream& os) const {
