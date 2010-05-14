@@ -55,6 +55,7 @@ objs driver clean:
 	cd InlinableXMLRepresentation && $(MAKE) $@
 	cd CodeReplacement && $(MAKE) $@
 	cd DerivativePropagator && $(MAKE) $@
+	cd RequiredValues && $(MAKE) $@
 	cd AdjointUtils && $(MAKE) $@
 	cd TypeChange && $(MAKE) $@
 	cd Linearization && $(MAKE) $@
