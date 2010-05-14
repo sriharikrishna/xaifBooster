@@ -209,15 +209,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     try {
       BasicControlFlowGraphVertex& entryVertex = BasicControlFlowGraph::getEntry();
-      BasicControlFlowGraphEdge& replacedEdge_r(*(getOutEdgesOf(entryVertex).first));
-
-      BasicControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new BasicControlFlowGraphEdge();    
-      aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
       BasicControlFlowGraphEdge* aNewControlFlowGraphOutEdge_p=new BasicControlFlowGraphEdge();    
       aNewControlFlowGraphOutEdge_p->setId(makeUniqueEdgeId());      
-      if (replacedEdge_r.hasConditionValue()) {
-	aNewControlFlowGraphInEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
-	aNewControlFlowGraphOutEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
+
+      if (numOutEdgesOf(entryVertex) >= 1) {
+	BasicControlFlowGraphEdge& replacedEdge_r(*(getOutEdgesOf(entryVertex).first));
+	if (replacedEdge_r.hasConditionValue()) {
+	  aNewControlFlowGraphOutEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
+	}
       }
       
       BasicControlFlowGraphVertex* newVertex_p = new BasicControlFlowGraphVertex();
