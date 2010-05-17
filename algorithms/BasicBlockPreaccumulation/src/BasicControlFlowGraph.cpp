@@ -129,22 +129,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     for (vertexCopyListIt=vertexCopy_l.begin();
 	 vertexCopyListIt!=vertexCopy_l.end();
 	 ++vertexCopyListIt) {
-      ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E theKind((*vertexCopyListIt).second->getKind());
-      if (myOriginalGraph_r.isStructured()
-	  && 
-	  (
-	   theKind==ControlFlowGraphVertexKind::FORLOOP_VKIND
-	   || 
-	   theKind==ControlFlowGraphVertexKind::PRELOOP_VKIND
-	   ||
-	   theKind==ControlFlowGraphVertexKind::BRANCH_VKIND
-	   ||
-	   theKind==ControlFlowGraphVertexKind::ENDLOOP_VKIND
-	   ||
-	   theKind==ControlFlowGraphVertexKind::ENDBRANCH_VKIND
-	   ))
-	(*vertexCopyListIt).second->setCounterPart(getBasicFromOriginal(vertexCopy_l,
-									(*vertexCopyListIt).first->getCounterPart()));
+
       if ((*vertexCopyListIt).first->hasTopExplicitLoop())
 	(*vertexCopyListIt).second->setTopExplicitLoop(getBasicFromOriginal(vertexCopy_l,
 									    (*vertexCopyListIt).first->getTopExplicitLoop()));
