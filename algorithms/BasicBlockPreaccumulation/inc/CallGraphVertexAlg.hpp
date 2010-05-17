@@ -85,6 +85,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     //BasicControlFlowGraph& getBasicControlFlowGraph();
     //const BasicControlFlowGraph& getBasicControlFlowGraph() const;    
 
+    static void initializeDerivativeComponents();
+
   private:
     
     /** 
@@ -96,6 +98,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * no def
      */
     CallGraphVertexAlg(const CallGraphVertexAlg&);
+
+    static bool ourInitializeDerivativeComponentsFlag;
 
     BasicControlFlowGraph* myBasicControlFlowGraph_p;
 
