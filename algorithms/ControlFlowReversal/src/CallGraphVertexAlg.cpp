@@ -58,14 +58,19 @@
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
-
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/CallGraphVertexAlg.hpp"
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
+  bool CallGraphVertexAlg::ourInitializeDerivativeComponentsFlag=false;
+
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     CallGraphVertexAlgBase(theContaining), 
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::CallGraphVertexAlg(theContaining),
     myTapingControlFlowGraph_p(NULL), 
     myAdjointControlFlowGraph_p(NULL),
     myStrictAnonymousTapingControlFlowGraph_p(NULL), 
@@ -240,6 +245,50 @@ namespace xaifBoosterControlFlowReversal {
     const ReversibleControlFlowGraph& myG;
   };
 
+  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+  CallGraphVertexAlg::addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* aNewCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
+    theBasicBlock->supplyAndAddBasicBlockElementInstance(*aNewCall_p);
+    return *aNewCall_p;									     
+  }
+
+  void CallGraphVertexAlg::addZeroDeriv(const Variable& theTarget,BasicBlock* theBasicBlock) {
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+      theSubroutineCall(CallGraphVertexAlg::addInlinableSubroutineCall("ZeroDeriv",theBasicBlock));
+    theSubroutineCall.setId("inline_zeroderiv");
+    theTarget.copyMyselfInto(theSubroutineCall.addConcreteArgument(1).getArgument().getVariable());
+  }
+
+  void CallGraphVertexAlg::algorithm_action_5() {
+    if (!ourInitializeDerivativeComponentsFlag)
+      return;
+    DBG_MACRO(DbgGroup::CALLSTACK,
+	      "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_5(initialize derivative components) called for: "
+	      << debug().c_str());
+    // create a map from CFG vertices to their respective sets of required values
+    if (hasTapingControlFlowGraph()) {
+      ReversibleControlFlowGraph& theRCFG = getTapingControlFlowGraph();
+      BasicBlock* theBasicBlock = theRCFG.getDerivInitBasicBlock();
+      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myCFRRequiredValueSet.getRequiredValuesPList());
+      for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
+	   reqValI != theRequiredValuesPList.end(); ++reqValI) {
+	CallGraphVertexAlg::addZeroDeriv((*reqValI)->getArgument().getVariable(),theBasicBlock);
+	
+      } // end iterate over required variables
+    }
+    else if (hasAdjointControlFlowGraph()) {
+      ReversibleControlFlowGraph& theRCFG = getAdjointControlFlowGraph();
+      BasicBlock* theBasicBlock = theRCFG.getDerivInitBasicBlock();
+      CFGVertexP2RequiredValuePListMap theCFGVertexP2RequiredValuePListMap;
+      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myCFRRequiredValueSet.getRequiredValuesPList());
+      for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
+	   reqValI != theRequiredValuesPList.end(); ++reqValI) {
+	CallGraphVertexAlg::addZeroDeriv((*reqValI)->getArgument().getVariable(),theBasicBlock);
+	
+      } // end iterate over required variables      
+    }
+  }
+
   void CallGraphVertexAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,
               "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(reverse control flow) called for: "
@@ -256,6 +305,10 @@ namespace xaifBoosterControlFlowReversal {
     // this flag causes strict anonymity
     myStrictAnonymousTapingControlFlowGraph_p->donotRetainUserReversalFlag();
     myStrictAnonymousTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
+    if (ourInitializeDerivativeComponentsFlag) {
+      myTapingControlFlowGraph_p->insertBasicBlockAtEnd();
+      myStrictAnonymousTapingControlFlowGraph_p->insertBasicBlockAtEnd();
+    }
     if (getContaining().getControlFlowGraph().isStructured())
       structuredReversal();
     else
@@ -384,6 +437,11 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+  }
+
+  void
+  CallGraphVertexAlg::initializeDerivativeComponents() { 
+    ourInitializeDerivativeComponentsFlag=true;
   }
 
 } // end of namespace

@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHVERTEXALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHVERTEXALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,40 +52,66 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <sstream>
 
-#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
+#include "xaifBooster/system/inc/CallGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraph.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlg.hpp"
+using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg(theContainingAssignment),
-    BasicBlockElementAlg(theContainingAssignment) { 
-  }
+  /** 
+   * class to implement renaming of subroutine definitions
+   * if enforced
+   */
+  class CallGraphVertexAlg : public CallGraphVertexAlgBase {
 
-  void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
-    xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::printXMLHierarchy(os);
-  }
+  public:
+    
+    CallGraphVertexAlg(const CallGraphVertex& theContaining);
 
-  std::string 
-  AssignmentAlg::debug() const { 
-    std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlg["
-	<< this 
-	<< ","
- 	<< xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::debug().c_str()
-	<< "]" << std::ends;  
-    return out.str();
-  }
+    virtual ~CallGraphVertexAlg();
 
-  void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
-  } 
-  
-  void AssignmentAlg::algorithm_action_4() {
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4();
-  }
+    virtual void printXMLHierarchy(std::ostream& os) const;
 
-} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+    virtual void algorithm_action_1();
+                                                                                
+    virtual std::string debug() const ;
 
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
+
+    const std::string& getAlgorithmSignature() const;
+    //BasicControlFlowGraph& getBasicControlFlowGraph();
+    //const BasicControlFlowGraph& getBasicControlFlowGraph() const;    
+
+    static void initializeDerivativeComponents();
+
+  private:
+    
+    /** 
+     * no def
+     */
+    CallGraphVertexAlg();
+
+    /** 
+     * no def
+     */
+    CallGraphVertexAlg(const CallGraphVertexAlg&);
+
+    static bool ourInitializeDerivativeComponentsFlag;
+
+    BasicControlFlowGraph* myBasicControlFlowGraph_p;
+
+    /** 
+     * no def
+     */
+    CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
+
+    static std::string myAlgorithmSignature;
+
+  }; // end of class CallGraphVertexAlg
+
+}
+
+#endif
