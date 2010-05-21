@@ -93,10 +93,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        << std::endl;
     getContaining().getControlFlowGraph().getArgumentList().printXMLHierarchy(os);
 
-    SideEffectList modList = getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LIST);
-    modList.printXMLHierarchy(SideEffectListType::our_Mod_XAIFName,os);
-    SideEffectList readList = getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST);
-    readList.printXMLHierarchy(SideEffectListType::our_Read_XAIFName,os);
+    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LOCAL_LIST).printXMLHierarchy(SideEffectListType::our_ModLocal_XAIFName,os);
+    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LIST).printXMLHierarchy(SideEffectListType::our_Mod_XAIFName,os);
+    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LOCAL_LIST).printXMLHierarchy(SideEffectListType::our_ReadLocal_XAIFName,os);
+    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST).printXMLHierarchy(SideEffectListType::our_Read_XAIFName,os);
+    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::ON_ENTRY_LIST).printXMLHierarchy(SideEffectListType::our_OnEntry_XAIFName,os);
 
     myBasicControlFlowGraph_p->printXMLHierarchy(os);
 

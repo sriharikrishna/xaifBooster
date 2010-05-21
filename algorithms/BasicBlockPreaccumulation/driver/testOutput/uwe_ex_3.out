@@ -372,11 +372,11 @@
       </xaif:BasicBlock>
       <xaif:EndLoop vertex_id="4" annotation=""/>
       <xaif:Exit vertex_id="5" annotation=""/>
-      <xaif:ControlFlowEdge edge_id="1" source="1" target="2" has_condition_value="0"/>
-      <xaif:ControlFlowEdge edge_id="2" source="2" target="3" has_condition_value="0"/>
-      <xaif:ControlFlowEdge edge_id="3" source="3" target="4" has_condition_value="0"/>
-      <xaif:ControlFlowEdge edge_id="4" source="4" target="2" has_condition_value="0"/>
-      <xaif:ControlFlowEdge edge_id="5" source="2" target="5" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_bbp_e_1" source="1" target="2" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_bbp_e_2" source="2" target="3" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_bbp_e_3" source="3" target="4" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_bbp_e_4" source="4" target="2" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_bbp_e_5" source="2" target="5" has_condition_value="0"/>
     </xaif:ControlFlowGraph>
     <xaif:ControlFlowGraph vertex_id="2" symbol_id="my_add" scope_id="1" controlflowgraph_scope_id="3" annotation="" active="1">
       <xaif:ArgumentList>
