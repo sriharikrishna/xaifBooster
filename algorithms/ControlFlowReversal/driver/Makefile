@@ -82,6 +82,7 @@ $(wildcard ../../TypeChange/src/obj/*.o)
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
 LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
 LIBS+=../../CodeReplacement/lib/libxaifBoosterCodeReplacement.a
+LIBS+=../../SaveValuesAcross/lib/libxaifBoosterSaveValuesAcross.a
 LIBS+=../../RequiredValues/lib/libxaifBoosterRequiredValues.a
 
 # setup for ANGEL

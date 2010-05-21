@@ -370,7 +370,7 @@
         </xaif:DerivativePropagator>
       </xaif:BasicBlock>
       <xaif:Exit vertex_id="3" annotation=""/>
-      <xaif:ControlFlowEdge edge_id="1" source="1" target="2" has_condition_value="0"/>
-      <xaif:ControlFlowEdge edge_id="2" source="2" target="3" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_bbp_e_1" source="1" target="2" has_condition_value="0"/>
+      <xaif:ControlFlowEdge edge_id="_bbp_e_2" source="2" target="3" has_condition_value="0"/>
     </xaif:ControlFlowGraph>
   </xaif:CallGraph>

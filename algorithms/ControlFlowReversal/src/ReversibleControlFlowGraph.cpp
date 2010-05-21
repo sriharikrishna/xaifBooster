@@ -302,7 +302,6 @@ namespace xaifBoosterControlFlowReversal {
       ReversibleControlFlowGraphEdge& replacedEdge_r(*(getInEdgesOf(exitVertex).first));
       ReversibleControlFlowGraphVertex& beforeVertex = getSourceOf(replacedEdge_r);
 
-      const ControlFlowGraphEdge& theOriginalEdge = replacedEdge_r.getOriginalEdge();
       ReversibleControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
       aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
       ReversibleControlFlowGraphEdge* aNewControlFlowGraphOutEdge_p=new ReversibleControlFlowGraphEdge();
