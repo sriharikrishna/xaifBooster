@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHALG_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_CALLGRAPHALG_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,40 +52,60 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <sstream>
 
-#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/system/inc/CallGraphAlgBase.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlg.hpp"
+using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg(theContainingAssignment),
-    BasicBlockElementAlg(theContainingAssignment) { 
-  }
+  /** 
+   * class to implement algorithms relevant for the 
+   * reversal of the control flow
+   */
+  class CallGraphAlg : public CallGraphAlgBase {
+  public:
+    
+    CallGraphAlg(CallGraph& theContaining);
+                                                                                
+    ~CallGraphAlg();
 
-  void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
-    xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::printXMLHierarchy(os);
-  }
+    virtual void algorithm_action_1();
+                                                                                
+    virtual void printXMLHierarchy(std::ostream& os) const;
+                                                                                
+    virtual std::string debug() const ;
 
-  std::string 
-  AssignmentAlg::debug() const { 
-    std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlg["
-	<< this 
-	<< ","
- 	<< xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::debug().c_str()
-	<< "]" << std::ends;  
-    return out.str();
-  }
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-  void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
-  } 
-  
-  void AssignmentAlg::algorithm_action_4() {
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4();
-  }
+    const std::string& getAlgorithmSignature() const;
 
-} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+  private:
+    
+    /** 
+     * no def
+     */
+    CallGraphAlg();
 
+    /** 
+     * no def
+     */
+    CallGraphAlg(const CallGraphAlg&);
+
+    /** 
+     * no def
+     */
+    CallGraphAlg& operator=(const CallGraphAlg&);
+
+        /**
+     * signature used in annotations of objects generated
+     * by the algorithm
+     */
+    static std::string myAlgorithmSignature;
+                                                                                
+  };  // end of class
+
+} // end of namespace 
+                                                                     
+#endif

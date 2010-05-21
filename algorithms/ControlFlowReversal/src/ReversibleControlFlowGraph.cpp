@@ -72,6 +72,8 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
+#include "xaifBooster/boostWrapper/inc/GraphElement.hpp"
+
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
@@ -238,7 +240,7 @@ namespace xaifBoosterControlFlowReversal {
           return *beginIt;
     THROW_LOGICEXCEPTION_MACRO("Missing EXIT node in control flow graph"); 
   }
-
+  
   // this does not guarantee uniqueness in the case of an existing
   // graph getting expanded
   // depends on prefix
@@ -293,6 +295,52 @@ namespace xaifBoosterControlFlowReversal {
     supplyAndAddEdgeInstance(*aNewReversibleControlFlowGraphOutEdge_p,*aNewReversibleControlFlowGraphVertex_p,before);
     return *aNewReversibleControlFlowGraphVertex_p;
   }
+
+  void ReversibleControlFlowGraph::insertBasicBlockAtEnd() {
+    try {
+      ReversibleControlFlowGraphVertex& exitVertex = ReversibleControlFlowGraph::getExit();
+      ReversibleControlFlowGraphEdge& replacedEdge_r(*(getInEdgesOf(exitVertex).first));
+      ReversibleControlFlowGraphVertex& beforeVertex = getSourceOf(replacedEdge_r);
+
+      const ControlFlowGraphEdge& theOriginalEdge = replacedEdge_r.getOriginalEdge();
+      ReversibleControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
+      aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
+      ReversibleControlFlowGraphEdge* aNewControlFlowGraphOutEdge_p=new ReversibleControlFlowGraphEdge();
+      aNewControlFlowGraphOutEdge_p->setId(makeUniqueEdgeId());
+
+      if (replacedEdge_r.hasConditionValue()) {
+	aNewControlFlowGraphOutEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
+      }
+      if (replacedEdge_r.hasRevConditionValue()) {
+	aNewControlFlowGraphOutEdge_p->setRevConditionValue(replacedEdge_r.getRevConditionValue());
+      }
+
+      BasicBlock* theNewBasicBlock=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+      ReversibleControlFlowGraphVertex* newVertex_p = new ReversibleControlFlowGraphVertex(theNewBasicBlock);
+      supplyAndAddVertexInstance(*newVertex_p);
+      newVertex_p->setIndex(numVertices()+1);
+      newVertex_p->setReversalType((myRetainUserReversalFlag)?(beforeVertex).getReversalType():ForLoopReversalType::ANONYMOUS);
+      newVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
+      newVertex_p->getNewVertex().setId(makeUniqueVertexId());
+      newVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+
+      if (!mySortedVertices_p_l.empty())
+	mySortedVertices_p_l.pop_back();
+      mySortedVertices_p_l.push_back(newVertex_p);
+      mySortedVertices_p_l.push_back(&exitVertex);
+
+      removeAndDeleteEdge(replacedEdge_r);
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
+
+      setDerivInitBasicBlock(theNewBasicBlock);
+
+      return;
+    } catch (LogicException){
+      return;
+    }
+  }
+
 
   ReversibleControlFlowGraphVertex* ReversibleControlFlowGraph::old_basic_block(const BasicBlock& theOriginalBasicBlock) {
     ReversibleControlFlowGraphVertex* aNewReversibleControlFlowGraphVertex_p=new ReversibleControlFlowGraphVertex(&theOriginalBasicBlock);
@@ -1203,7 +1251,9 @@ namespace xaifBoosterControlFlowReversal {
     // reset the target to the corresponding  adjoint FORLOOP
     // this is because the FORLOOP turns into an ENDLOOP but that is not the target of the successor in the 
     // reverse.
-    if ((getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP
+    if (getSourceOf(theOriginalEdge_cr).isOriginal()
+	&&
+	(getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP
 	 ||
 	 getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP)
 	&&
@@ -1220,13 +1270,14 @@ namespace xaifBoosterControlFlowReversal {
 	}
       }
     }
+    theAdjointSource_p->getDescriptor();
     // insert edge from *theAdjointSource_p to *theAdjointTarget_p
     ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,
 													     *theAdjointSource_p,
 													     *theAdjointTarget_p));
     // this gives us values on edges that normally don't have conditions but these values 
     // are needed for the branch matches:
-    if (theOriginalEdge_cr.hasRevConditionValue())
+    if (theOriginalEdge_cr.hasRevConditionValue()) {
       theNewReversibleControlFlowGraphEdge_r.setConditionValue(theOriginalEdge_cr.getRevConditionValue());
     //     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
     //       GraphVizDisplay::show(theAdjointControlFlowGraph_r,
@@ -1234,6 +1285,7 @@ namespace xaifBoosterControlFlowReversal {
     // 			    ReversibleControlFlowGraphVertexLabelWriter(theAdjointControlFlowGraph_r),
     // 			    ReversibleControlFlowGraphEdgeLabelWriter(theAdjointControlFlowGraph_r));
     //     }
+    }
     return theNewReversibleControlFlowGraphEdge_r;
   }
 
@@ -2039,6 +2091,88 @@ namespace xaifBoosterControlFlowReversal {
   bool ReversibleControlFlowGraph::isStructured() const { 
     return myStructuredFlag;
   } 
+
+  void ReversibleControlFlowGraph::setDerivInitBasicBlock(BasicBlock* theNewBasicBlock) {
+    derivInitBasicBlock = theNewBasicBlock;
+  }
+
+  BasicBlock* ReversibleControlFlowGraph::getDerivInitBasicBlock() {
+    try {
+      return derivInitBasicBlock;
+    }
+    catch (LogicException) {
+      return NULL;
+    }
+  }
+
+  /*  void ReversibleControlFlowGraph::initializeDerivComponents(BasicBlock* theBasicBlock) {
+    // go through symbol table & add zeroDeriv inlinable subroutine calls for every local var not an input arg
+    // iterate through basic blocks
+    ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
+    ReversibleControlFlowGraph::VertexIterator vertexIt(p.first),endIt(p.second);
+    for (;vertexIt!=endIt ;++vertexIt) {
+      switch((*vertexIt).getKind()) {
+      case ControlFlowGraphVertexAlg::ENTRY:
+	break;
+      case ControlFlowGraphVertexAlg::EXIT:
+	break;
+      case ControlFlowGraphVertexAlg::IF:
+	break;
+      case ControlFlowGraphVertexAlg::FORLOOP:
+	break;
+      case ControlFlowGraphVertexAlg::PRELOOP:
+	break;
+      case ControlFlowGraphVertexAlg::BASICBLOCK:
+	if ((*vertexIt).isOriginal()) {
+	  const BasicBlock& origBasicBlock(dynamic_cast<const BasicBlock&>((*vertexIt).getOriginalVertex()));
+	  for (PlainBasicBlock::BasicBlockElementList::const_iterator li=origBasicBlock.getBasicBlockElementList().begin();
+	       li!=origBasicBlock.getBasicBlockElementList().end();
+	       li++) {
+	    // see if this is an assignment
+	    Assignment* anAssignment_p=dynamic_cast<Assignment*>(*li);
+	    if (anAssignment_p) { 
+	      Variable& myLHS = anAssignment_p->getLHS();
+	      if (myLHS.getActiveFlag())
+		ReversibleControlFlowGraph::addZeroDeriv(myLHS,theBasicBlock);
+	    }
+	    SubroutineCall* aSubroutineCall_p=dynamic_cast<SubroutineCall*>(*li);
+	    if (aSubroutineCall_p) {
+	      const SubroutineCall::ConcreteArgumentPList& aConcreteArgumentPList(aSubroutineCall_p->getConcreteArgumentPList());
+	      for (SubroutineCall::ConcreteArgumentPList::const_iterator argIt=aConcreteArgumentPList.begin();
+		   argIt!=aConcreteArgumentPList.end();
+		   ++argIt) { 
+		if ((*argIt)->isArgument()) {
+		  Variable& myVar = (*argIt)->getArgument().getVariable();
+		  if (myVar.getActiveFlag())
+		    ReversibleControlFlowGraph::addZeroDeriv(myVar,theBasicBlock);
+		}
+	      }  
+	    }
+	  }
+	}
+	break;
+      case ControlFlowGraphVertexAlg::ENDLOOP:
+	break;
+      case ControlFlowGraphVertexAlg::ENDBRANCH:
+	break;
+      case ControlFlowGraphVertexAlg::BRANCH:
+	break;
+      case ControlFlowGraphVertexAlg::LABEL:
+	break;
+      case ControlFlowGraphVertexAlg::GOTO:
+	break;
+      case ControlFlowGraphVertexAlg::UNDEF:
+	THROW_LOGICEXCEPTION_MACRO("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::initializeDerivComponents:"
+				   << "CFG Vertex " << (*vertexIt).debug() << " has kind UNDEF");
+	break;
+      default:
+	THROW_LOGICEXCEPTION_MACRO("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::initializeDerivComponents:"
+				   << "CFG Vertex " << (*vertexIt).debug()
+				   << " has an unrecognized kind " << ControlFlowGraphVertexAlg::kindToString((*vertexIt).getKind()));
+	break;
+      } 
+    } //end for
+    }*/
 
 } // end of namespace
 

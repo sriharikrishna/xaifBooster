@@ -52,38 +52,71 @@
 // ========== end copyright notice ==============
 #include <sstream>
 
+#include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlg.hpp"
+#include "xaifBooster/system/inc/CallGraph.hpp"
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphAlg.hpp"
 
-  AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg(theContainingAssignment),
-    BasicBlockElementAlg(theContainingAssignment) { 
+
+using namespace xaifBooster;
+
+namespace xaifBoosterBasicBlockPreaccumulation { 
+ 
+ std::string CallGraphAlg::myAlgorithmSignature(std::string("_bbp_"));
+
+
+  CallGraphAlg::CallGraphAlg(CallGraph& theContaining) : CallGraphAlgBase(theContaining) {
   }
 
-  void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
-    xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::printXMLHierarchy(os);
+  CallGraphAlg::~CallGraphAlg() {
   }
 
-  std::string 
-  AssignmentAlg::debug() const { 
+  const std::string&
+  CallGraphAlg::getAlgorithmSignature() const {
+    return myAlgorithmSignature;
+  }
+
+  class CallGraphVertexLabelWriter {
+  public:
+    CallGraphVertexLabelWriter(const CallGraph& g) : myG(g) {}
+    template <class BoostIntenalVertexDescriptor>
+    void operator()(std::ostream& out, const BoostIntenalVertexDescriptor& v) const {
+      out << "[label=\"" << boost::get(boost::get(BoostVertexContentType(),
+                                                  myG.getInternalBoostGraph()),
+                                       v)->getSubroutineName() << "\"]";
+    }
+    const CallGraph& myG;
+  };
+
+  void CallGraphAlg::algorithm_action_1() {
+    DBG_MACRO(DbgGroup::CALLSTACK,
+              "xaifBoosterControlFlowReversal::CallGraphAlg::algorithm_action_1(basic block preaccumulation) called for: "
+              << debug().c_str());
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("callGraph")) {     
+       GraphVizDisplay::show(getContaining(),"call_graph",
+ 			    CallGraphVertexLabelWriter(getContaining()));
+    }
+  } // end CallGraphAlg::algorithm_action_1() 
+
+  void
+  CallGraphAlg::printXMLHierarchy(std::ostream& os) const {
+    getContaining().printXMLHierarchyImpl(os);
+  }
+
+  std::string
+  CallGraphAlg::debug() const {
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlg["
-	<< this 
-	<< ","
- 	<< xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::debug().c_str()
-	<< "]" << std::ends;  
+    out << "xaifBoosterControlFlowReversal::CallGraphAlg["
+        << this
+        << "]" << std::ends;
     return out.str();
   }
 
-  void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
-  } 
-  
-  void AssignmentAlg::algorithm_action_4() {
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4();
+  void CallGraphAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
   }
 
-} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+} // end of namespace
 

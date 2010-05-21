@@ -1,3 +1,5 @@
+#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICCONTROLFLOWGRAPHEDGE_INCLUDE_
+#define _XAIFBOOSTERBASICBLOCKPREACCUMULATION_BASICCONTROLFLOWGRAPHEDGE_INCLUDE_
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -50,40 +52,69 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <sstream>
 
-#include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
+#include "xaifBooster/system/inc/EdgeTraversable.hpp"
+#include "xaifBooster/system/inc/ControlFlowGraphEdge.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlg.hpp"
+using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
+namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg(theContainingAssignment),
-    BasicBlockElementAlg(theContainingAssignment) { 
-  }
+  class BasicControlFlowGraph;
 
-  void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
-    xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::printXMLHierarchy(os);
-  }
+  class BasicControlFlowGraphEdge : public ControlFlowGraphEdge {
 
-  std::string 
-  AssignmentAlg::debug() const { 
-    std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlg["
-	<< this 
-	<< ","
- 	<< xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::debug().c_str()
-	<< "]" << std::ends;  
-    return out.str();
-  }
+  public:
+    
+    BasicControlFlowGraphEdge(const ControlFlowGraphEdge*);
+    BasicControlFlowGraphEdge();
+    ~BasicControlFlowGraphEdge();
 
-  void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
-  } 
-  
-  void AssignmentAlg::algorithm_action_4() {
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4();
-  }
+    void printXMLHierarchy(std::ostream& os, const BasicControlFlowGraph&) const;
+                                                                                
+    virtual std::string debug() const ;
 
-} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+    virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    bool isOriginal() const;
+
+    const ControlFlowGraphEdge& getOriginalEdge() const;
+
+    bool hasConditionValue() const;
+
+    void setConditionValue(int);
+
+    int getConditionValue() const;
+    
+  private:
+
+    /** 
+     * no def
+     */
+    BasicControlFlowGraphEdge(const BasicControlFlowGraphEdge&);
+
+    /** 
+     * no def
+     */
+    BasicControlFlowGraphEdge& operator=(const BasicControlFlowGraphEdge&);
+    
+    bool myConditionValueFlag;
+    
+    /**
+     * if myConditionValueFlag is false this can be set
+     * otherwise it has the value of the original edge
+     * holds the condition value
+     */
+    int myConditionValue;
+
+    /** 
+     * pointer to original ControlFlowGraphEdge
+     * the edge is owned by the original ControlFlowGraph
+     */
+    const ControlFlowGraphEdge* myOriginalEdge_p;
+
+  };  // end of class
+
+} // end of namespace 
+                                                                     
+#endif

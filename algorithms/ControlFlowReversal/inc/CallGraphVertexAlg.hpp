@@ -56,6 +56,8 @@
 #include "xaifBooster/system/inc/CallGraphVertexAlgBase.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
+#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/CallGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -65,7 +67,7 @@ namespace xaifBoosterControlFlowReversal {
    * class to implement algorithms relevant for the 
    * reversal of the control flow
    */
-  class CallGraphVertexAlg : virtual public CallGraphVertexAlgBase {
+  class CallGraphVertexAlg : public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::CallGraphVertexAlg {
   public:
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);
@@ -76,6 +78,9 @@ namespace xaifBoosterControlFlowReversal {
      * control flow reversal
      */
     virtual void algorithm_action_4();
+
+    /* insert derivative component initializations */
+    virtual void algorithm_action_5();
                                                                                 
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
@@ -83,6 +88,8 @@ namespace xaifBoosterControlFlowReversal {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    static void initializeDerivativeComponents();
+    
     bool hasTapingControlFlowGraph() const;
     ReversibleControlFlowGraph& getTapingControlFlowGraph();
     const ReversibleControlFlowGraph& getTapingControlFlowGraph() const;
@@ -99,7 +106,20 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph();
     const ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph() const;
 
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+    addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock);    
+
+    void addZeroDeriv(const Variable& theTarget,BasicBlock* theBasicBlock);
+
+    void initializeDerivComponents(BasicBlock* theBasicBlock);
+
   private:
+    
+    typedef std::list<xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList*> RequiredValuePListPList;
+
+    typedef std::map<const ControlFlowGraphVertex*,
+                     xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList>
+       CFGVertexP2RequiredValuePListMap;
     
     /** 
      * no def
@@ -119,6 +139,8 @@ namespace xaifBoosterControlFlowReversal {
      * no def
      */
     CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
+
+    static bool ourInitializeDerivativeComponentsFlag;
 
     /**
      * CFG copy that tapes for partially explicit reversal

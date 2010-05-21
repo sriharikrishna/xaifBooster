@@ -81,7 +81,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   bool CallGraphVertexAlg::ourForceAllArgCheckPointFlag=false;
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
-    CallGraphVertexAlgBase(theContaining),
+	CallGraphVertexAlgBase(theContaining),
     xaifBoosterPushPop::CallGraphVertexAlg(theContaining), 
     myReplacementList_p(0),
     myCFGStoreArguments_p(0),
@@ -143,6 +143,12 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void 
   CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
+
+  void 
+  CallGraphVertexAlg::algorithm_action_5() {
+    xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_5();
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::algorithm_action_5()");
+  }
 
   void 
   CallGraphVertexAlg::algorithm_action_4() { 

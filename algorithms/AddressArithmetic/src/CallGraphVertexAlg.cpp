@@ -42,7 +42,6 @@ namespace xaifBoosterAddressArithmetic {
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     CallGraphVertexAlgBase(theContaining),
     xaifBoosterControlFlowReversal::CallGraphVertexAlg(theContaining),
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::CallGraphVertexAlg(theContaining),
     myOnlyUnderTopLevelRoutineFlag(false) {
   }
 
