@@ -81,7 +81,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
-  
+
   void 
   AssignmentAlg::algorithm_action_4() {
     if (getContainingAssignment().getLHS().getActiveFlag()) {
@@ -99,9 +99,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       theNewArgument_p->setId(1);
       theDummyExpression_p->supplyAndAddVertexInstance(*theNewArgument_p);
       theOriginStr = "BasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4";
-      theCallerCallGraphVertexAlg.markRequiredValue(*theDummyExpression_p,
-						    theCallerBasicBlock,
-						    theOriginStr);
+      theCallerCallGraphVertexAlg.markCFRRequiredValue(*theDummyExpression_p,
+						       theCallerBasicBlock,
+						       theOriginStr);
     } // end if
   }
 

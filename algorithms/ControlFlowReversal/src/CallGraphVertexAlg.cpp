@@ -269,7 +269,7 @@ namespace xaifBoosterControlFlowReversal {
     if (hasTapingControlFlowGraph()) {
       ReversibleControlFlowGraph& theRCFG = getTapingControlFlowGraph();
       BasicBlock* theBasicBlock = theRCFG.getDerivInitBasicBlock();
-      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myRequiredValueSet.getRequiredValuesPList());
+      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myCFRRequiredValueSet.getRequiredValuesPList());
       for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
 	   reqValI != theRequiredValuesPList.end(); ++reqValI) {
 	CallGraphVertexAlg::addZeroDeriv((*reqValI)->getArgument().getVariable(),theBasicBlock);
@@ -280,7 +280,7 @@ namespace xaifBoosterControlFlowReversal {
       ReversibleControlFlowGraph& theRCFG = getAdjointControlFlowGraph();
       BasicBlock* theBasicBlock = theRCFG.getDerivInitBasicBlock();
       CFGVertexP2RequiredValuePListMap theCFGVertexP2RequiredValuePListMap;
-      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myRequiredValueSet.getRequiredValuesPList());
+      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myCFRRequiredValueSet.getRequiredValuesPList());
       for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
 	   reqValI != theRequiredValuesPList.end(); ++reqValI) {
 	CallGraphVertexAlg::addZeroDeriv((*reqValI)->getArgument().getVariable(),theBasicBlock);
