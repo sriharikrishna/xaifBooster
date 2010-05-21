@@ -110,10 +110,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   CallGraphVertexAlg::algorithm_action_1() { 
+    myBasicControlFlowGraph_p = new BasicControlFlowGraph(getContaining().getControlFlowGraph());
+    myBasicControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
     if (ourInitializeDerivativeComponentsFlag) {
       // add inert basic block
-      myBasicControlFlowGraph_p = new BasicControlFlowGraph(getContaining().getControlFlowGraph());
-      myBasicControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
       myBasicControlFlowGraph_p->insertBasicBlock();
     }
   }
