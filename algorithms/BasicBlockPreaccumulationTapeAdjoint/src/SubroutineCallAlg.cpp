@@ -160,10 +160,22 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     for (Expression::VariablePVariableSRPPairList::const_reverse_iterator pairIt=theTypeChangePairs.rbegin();
 	 pairIt!=theTypeChangePairs.rend();
 	 ++pairIt) { 
-      // make the subroutine call: 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* thePopCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i"));
+      // make the subroutine call:    
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* thePopCall_p;
+      if ((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE 
+	  &&
+	  (*pairIt).first->getEffectiveShape()==SymbolShape::SCALAR)
+	thePopCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i");
+      else if ((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::REAL_STYPE)
+	thePopCall_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString((*pairIt).first->getEffectiveShape())));
+      else
+	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: no logic to pop things of type " 
+				   << SymbolType::toString((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()).c_str()
+				   << " and shape "
+				   << SymbolShape::toString((*pairIt).first->getEffectiveShape()).c_str())
+
       myPops.push_back(thePopCall_p);
-      thePopCall_p->setId("inline_pop_i");
+      thePopCall_p->setId("SubroutineCallAlg::handleArrayAccessIndices");
       (*pairIt).first->copyMyselfInto(thePopCall_p->addConcreteArgument(1).getArgument().getVariable());
     }
   } // end of SubroutineCallAlg::handleArrayAccessIndices
