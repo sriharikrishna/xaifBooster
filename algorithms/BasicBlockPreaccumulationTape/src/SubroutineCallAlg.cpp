@@ -150,10 +150,19 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     }
     if (!pushedAlready) { 
       // make the subroutine call: 
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
+      if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE && theVariable.getEffectiveShape()==SymbolShape::SCALAR)
+	theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+      else if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::REAL_STYPE)
+	theSubroutineCall_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString(theVariable.getEffectiveShape())));
+      else
+	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::checkAndPush: no logic to push things of type " 
+				   << SymbolType::toString(theVariable.getVariableSymbolReference().getSymbol().getSymbolType()).c_str()
+				   << " and shape "
+				   << SymbolShape::toString(theVariable.getEffectiveShape()).c_str())
       // save it in the list
       myAfterCallIndexPushes.push_back(theSubroutineCall_p);
-      theSubroutineCall_p->setId("SRcall_inline_push_i");
+      theSubroutineCall_p->setId("SubroutineCallAlg::checkAndPush");
       theVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
       myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
     }
