@@ -1269,7 +1269,6 @@ namespace xaifBoosterControlFlowReversal {
 	}
       }
     }
-    theAdjointSource_p->getDescriptor();
     // insert edge from *theAdjointSource_p to *theAdjointTarget_p
     ReversibleControlFlowGraphEdge& theNewReversibleControlFlowGraphEdge_r(insertAdjointControlFlowGraphEdge(theAdjointControlFlowGraph_r,
 													     *theAdjointSource_p,
