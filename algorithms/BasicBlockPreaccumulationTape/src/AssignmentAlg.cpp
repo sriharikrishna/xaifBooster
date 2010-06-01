@@ -103,6 +103,33 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 						       theCallerBasicBlock,
 						       theOriginStr);
     } // end if
+
+
+    // iterate through vertices & find active variables
+
+    Expression::ConstVertexIteratorPair p(getContainingAssignment().getRHS().vertices());
+    Expression::ConstVertexIterator vertexIt(p.first),endIt(p.second);
+    for (;vertexIt!=endIt ;++vertexIt) {
+      if ((*vertexIt).isArgument() && 
+	  (dynamic_cast<const Argument&>(*vertexIt).getVariable().getActiveFlag())) {
+	CallGraphVertexAlg& theCallerCallGraphVertexAlg
+	  (dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
+	const BasicBlock& theCallerBasicBlock 
+	  (dynamic_cast<const BasicBlock&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance()));
+	Expression* theDummyExpression_p (NULL); // dummy expression for marking as required
+	std::string theOriginStr;
+	
+	theDummyExpression_p = new Expression (false);
+	Argument* theNewArgument_p = new Argument();
+	dynamic_cast<const Argument&>(*vertexIt).getVariable().copyMyselfInto(theNewArgument_p->getVariable(),false);
+	theNewArgument_p->setId(1);
+	theDummyExpression_p->supplyAndAddVertexInstance(*theNewArgument_p);
+	theOriginStr = "BasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4";
+	theCallerCallGraphVertexAlg.markCFRRequiredValue(*theDummyExpression_p,
+							 theCallerBasicBlock,
+							 theOriginStr);
+      }
+    }
   }
 
 } // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
