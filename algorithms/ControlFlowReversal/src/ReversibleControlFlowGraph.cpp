@@ -296,11 +296,11 @@ namespace xaifBoosterControlFlowReversal {
     return *aNewReversibleControlFlowGraphVertex_p;
   }
 
-  void ReversibleControlFlowGraph::insertBasicBlockAtEnd() {
+  void ReversibleControlFlowGraph::insertBasicBlockAtBeginning() {
     try {
-      ReversibleControlFlowGraphVertex& exitVertex = ReversibleControlFlowGraph::getExit();
-      ReversibleControlFlowGraphEdge& replacedEdge_r(*(getInEdgesOf(exitVertex).first));
-      ReversibleControlFlowGraphVertex& beforeVertex = getSourceOf(replacedEdge_r);
+      ReversibleControlFlowGraphVertex& entryVertex = ReversibleControlFlowGraph::getEntry();
+      ReversibleControlFlowGraphEdge& replacedEdge_r(*(getOutEdgesOf(entryVertex).first));
+      ReversibleControlFlowGraphVertex& afterVertex = getTargetOf(replacedEdge_r);
 
       ReversibleControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
       aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
@@ -318,19 +318,19 @@ namespace xaifBoosterControlFlowReversal {
       ReversibleControlFlowGraphVertex* newVertex_p = new ReversibleControlFlowGraphVertex(theNewBasicBlock);
       supplyAndAddVertexInstance(*newVertex_p);
       newVertex_p->setIndex(numVertices()+1);
-      newVertex_p->setReversalType((myRetainUserReversalFlag)?(beforeVertex).getReversalType():ForLoopReversalType::ANONYMOUS);
+      newVertex_p->setReversalType((myRetainUserReversalFlag)?(afterVertex).getReversalType():ForLoopReversalType::ANONYMOUS);
       newVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
       newVertex_p->getNewVertex().setId(makeUniqueVertexId());
       newVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
 
       if (!mySortedVertices_p_l.empty())
-	mySortedVertices_p_l.pop_back();
+	mySortedVertices_p_l.pop_front();
       mySortedVertices_p_l.push_back(newVertex_p);
-      mySortedVertices_p_l.push_back(&exitVertex);
+      mySortedVertices_p_l.push_back(&entryVertex);
 
       removeAndDeleteEdge(replacedEdge_r);
-      supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,beforeVertex,*newVertex_p);
-      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,exitVertex);
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,entryVertex,*newVertex_p);
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,afterVertex);
 
       setDerivInitBasicBlock(theNewBasicBlock);
 
