@@ -160,7 +160,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     for (Expression::VariablePVariableSRPPairList::const_reverse_iterator pairIt=theTypeChangePairs.rbegin();
 	 pairIt!=theTypeChangePairs.rend();
 	 ++pairIt) { 
-      // make the subroutine call: 
+      // make the subroutine call:    
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* thePopCall_p;
       if ((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE 
 	  &&
