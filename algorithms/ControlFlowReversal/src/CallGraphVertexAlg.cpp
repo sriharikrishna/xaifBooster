@@ -306,8 +306,10 @@ namespace xaifBoosterControlFlowReversal {
     myStrictAnonymousTapingControlFlowGraph_p->donotRetainUserReversalFlag();
     myStrictAnonymousTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
     if (ourInitializeDerivativeComponentsFlag) {
-      myTapingControlFlowGraph_p->insertBasicBlockAtEnd();
-      myStrictAnonymousTapingControlFlowGraph_p->insertBasicBlockAtEnd();
+      myTapingControlFlowGraph_p->insertBasicBlockAtBeginning();
+      myStrictAnonymousTapingControlFlowGraph_p->insertBasicBlockAtBeginning();
+      myAdjointControlFlowGraph_p->insertBasicBlockAtBeginning();
+      myStrictAnonymousAdjointControlFlowGraph_p->insertBasicBlockAtBeginning();
     }
     if (getContaining().getControlFlowGraph().isStructured())
       structuredReversal();

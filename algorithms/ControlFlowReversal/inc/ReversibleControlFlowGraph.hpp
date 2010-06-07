@@ -152,7 +152,7 @@ namespace xaifBoosterControlFlowReversal {
     /**
      * insert a new basic block at beginning of control flow graph
      */
-    void insertBasicBlockAtEnd();
+    void insertBasicBlockAtBeginning();
 
     //void initializeDerivComponents(BasicBlock* theBasicBlock);
 
