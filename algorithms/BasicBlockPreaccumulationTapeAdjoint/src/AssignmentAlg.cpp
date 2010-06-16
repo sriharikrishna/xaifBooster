@@ -59,7 +59,7 @@
 namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
 
   AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg(theContainingAssignment),
+    xaifBoosterBasicBlockPreaccumulation::AssignmentAlg(theContainingAssignment),
     BasicBlockElementAlg(theContainingAssignment) { 
   }
 
@@ -80,10 +80,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
-  
-  void AssignmentAlg::algorithm_action_4() {
-    xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4();
-  }
 
 } // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
 
