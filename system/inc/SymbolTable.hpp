@@ -92,6 +92,8 @@ namespace xaifBooster {
 
     const Symbol& getSymbol(const std::string& aName) const;
 
+    std::list<Symbol*> getActiveSymbols();
+
     std::string debug() const ; 
 
     void printXMLHierarchy(std::ostream& os) const; 

@@ -56,6 +56,10 @@
 
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
+#include "xaifBooster/system/inc/SymbolKind.hpp"
+#include "xaifBooster/system/inc/SymbolTable.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/CallGraphVertexAlg.hpp"
@@ -265,29 +269,32 @@ namespace xaifBoosterControlFlowReversal {
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_5(initialize derivative components) called for: "
 	      << debug().c_str());
-    // create a map from CFG vertices to their respective sets of required values
-    if (hasTapingControlFlowGraph()) {
-      ReversibleControlFlowGraph& theRCFG = getTapingControlFlowGraph();
-      BasicBlock* theBasicBlock = theRCFG.getDerivInitBasicBlock();
-      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myCFRRequiredValueSet.getRequiredValuesPList());
-      for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
-	   reqValI != theRequiredValuesPList.end(); ++reqValI) {
-	CallGraphVertexAlg::addZeroDeriv((*reqValI)->getArgument().getVariable(),theBasicBlock);
-	
-      } // end iterate over required variables
+
+    std::list<Symbol*> active_symbols = getContaining().getControlFlowGraph().getScope().getSymbolTable().getActiveSymbols();
+    std::list<Symbol*>::const_iterator activeSymbol;
+    for (activeSymbol = active_symbols.begin();
+	 activeSymbol!=active_symbols.end();++activeSymbol) {
+      if ((*activeSymbol)->getSymbolKind() != SymbolKind::VARIABLE)
+	continue;
+
+      VariableSymbolReference* activeVarSym = 
+	new VariableSymbolReference(*(*activeSymbol),getContaining().getControlFlowGraph().getScope());
+      activeVarSym->setId((*activeSymbol)->getId());
+      activeVarSym->setAnnotation((*activeSymbol)->getAnnotation());
+      
+      Variable* activeVar = new Variable();
+      activeVar->supplyAndAddVertexInstance(*(dynamic_cast<VariableVertex*>(activeVarSym)));
+      activeVar->setDerivFlag();
+      activeVar->getAliasMapKey().setTemporary();
+      activeVar->getDuUdMapKey().setTemporary();
+
+      if (hasTapingControlFlowGraph()) {
+	ReversibleControlFlowGraph& theRCFG = getTapingControlFlowGraph();
+	BasicBlock* theTapingBasicBlock = theRCFG.getDerivInitBasicBlock();
+	CallGraphVertexAlg::addZeroDeriv(*activeVar,theTapingBasicBlock);
+      }
     }
-    else if (hasAdjointControlFlowGraph()) {
-      ReversibleControlFlowGraph& theRCFG = getAdjointControlFlowGraph();
-      BasicBlock* theBasicBlock = theRCFG.getDerivInitBasicBlock();
-      CFGVertexP2RequiredValuePListMap theCFGVertexP2RequiredValuePListMap;
-      const xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList& theRequiredValuesPList (myCFRRequiredValueSet.getRequiredValuesPList());
-      for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValI = theRequiredValuesPList.begin();
-	   reqValI != theRequiredValuesPList.end(); ++reqValI) {
-	CallGraphVertexAlg::addZeroDeriv((*reqValI)->getArgument().getVariable(),theBasicBlock);
-	
-      } // end iterate over required variables      
-    }
-  }
+  } // end CallGraphVertexAlg::algorithm_action_5
 
   void CallGraphVertexAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,
@@ -308,13 +315,12 @@ namespace xaifBoosterControlFlowReversal {
     if (ourInitializeDerivativeComponentsFlag) {
       myTapingControlFlowGraph_p->insertBasicBlockAtBeginning();
       myStrictAnonymousTapingControlFlowGraph_p->insertBasicBlockAtBeginning();
-      myAdjointControlFlowGraph_p->insertBasicBlockAtBeginning();
-      myStrictAnonymousAdjointControlFlowGraph_p->insertBasicBlockAtBeginning();
     }
     if (getContaining().getControlFlowGraph().isStructured())
       structuredReversal();
     else
       unstructuredReversal();
+
   } // end CallGraphVertexAlg::algorithm_action_4() 
 
   void CallGraphVertexAlg::structuredReversal() {

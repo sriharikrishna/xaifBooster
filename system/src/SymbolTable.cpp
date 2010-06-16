@@ -167,6 +167,21 @@ namespace xaifBooster {
     return *(myHashTableSymbolP.getElement(aName));
   } 
 
+  std::list<Symbol*> SymbolTable::getActiveSymbols() {
+    std::list<Symbol*> active_symbols;
+    for(HashTableSymbolP::InternalHashMapType::iterator myHashMap_iterator=
+	  myHashTableSymbolP.getInternalHashMap().begin();
+	myHashMap_iterator!=myHashTableSymbolP.getInternalHashMap().end();
+	myHashMap_iterator++) {
+      if ((*myHashMap_iterator).second->getActiveTypeFlag()) {
+	// add to list
+	active_symbols.push_back((*myHashMap_iterator).second);
+      }
+    }
+    // return list
+    return active_symbols;
+  }
+
   void SymbolTable::forcedPassivation() { 
     for(HashTableSymbolP::InternalHashMapType::iterator myHashMap_iterator=
 	  myHashTableSymbolP.getInternalHashMap().begin();
