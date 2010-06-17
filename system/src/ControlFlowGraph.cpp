@@ -51,7 +51,6 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 #include <sstream>
-#include "xaifBooster/utils/inc/PrintManager.hpp"
 
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
@@ -129,9 +128,9 @@ namespace xaifBooster {
   }
 
   void
-  ControlFlowGraph::printXMLHierarchyImpl(std::ostream& os,
-					  const SymbolReference& anAlternativeSymbolReference) const { 
-    PrintManager& pm=PrintManager::getInstance();
+  ControlFlowGraph::printXMLHierarchyImplHead(std::ostream& os,
+					      const SymbolReference& anAlternativeSymbolReference,
+					      PrintManager& pm) const { 
     os << pm.indent() 
        << "<"
        << ourXAIFName.c_str() 
@@ -160,6 +159,25 @@ namespace xaifBooster {
 						os);
       }
     }
+  }
+
+  void
+  ControlFlowGraph::printXMLHierarchyImplTail(std::ostream& os,
+					      PrintManager& pm) const { 
+    os << pm.indent()
+       << "</"
+       << ourXAIFName
+       << ">"
+       << std::endl;
+  }
+
+  void
+  ControlFlowGraph::printXMLHierarchyImpl(std::ostream& os,
+					  const SymbolReference& anAlternativeSymbolReference) const { 
+    PrintManager& pm=PrintManager::getInstance();
+    printXMLHierarchyImplHead(os,
+			      anAlternativeSymbolReference,
+			      pm);
     ControlFlowGraph::ConstVertexIteratorPair p(vertices());
     ControlFlowGraph::ConstVertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt)
@@ -169,11 +187,8 @@ namespace xaifBooster {
     for (;beginIte!=endIte ;++beginIte)
       (*beginIte).printXMLHierarchy(os,
 				    *this);
-    os << pm.indent()
-       << "</"
-       << ourXAIFName
-       << ">"
-       << std::endl;
+    printXMLHierarchyImplTail(os,
+			      pm);
     pm.releaseInstance();
   } // end of ControlFlowGraph::printXMLHierarchyImpl
 
