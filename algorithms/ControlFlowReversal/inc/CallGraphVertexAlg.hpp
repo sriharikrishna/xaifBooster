@@ -79,9 +79,6 @@ namespace xaifBoosterControlFlowReversal {
      */
     virtual void algorithm_action_4();
 
-    /* insert derivative component initializations */
-    virtual void algorithm_action_5();
-                                                                                
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
     virtual std::string debug() const ;
@@ -105,13 +102,6 @@ namespace xaifBoosterControlFlowReversal {
     bool hasStrictAnonymousAdjointControlFlowGraph() const;
     ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph();
     const ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph() const;
-
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
-    addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock);    
-
-    void addZeroDeriv(const Variable& theTarget,BasicBlock* theBasicBlock);
-
-    void initializeDerivComponents(BasicBlock* theBasicBlock);
 
   private:
     
