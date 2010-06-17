@@ -54,6 +54,7 @@
 // ========== end copyright notice ==============
 
 #include <stack>
+#include "xaifBooster/utils/inc/PrintManager.hpp"
 
 #include "xaifBooster/system/inc/FindDefinitionResult.hpp"
 #include "xaifBooster/system/inc/SideEffectList.hpp"
@@ -98,6 +99,18 @@ namespace xaifBooster {
     void printXMLHierarchyImpl(std::ostream& os,
 			       const SymbolReference& anAlternativeSymbolReference) const;
 
+    /** 
+     * head section, split out for reuse
+     */
+    void printXMLHierarchyImplHead(std::ostream& os,
+				   const SymbolReference& anAlternativeSymbolReference,
+				   PrintManager& pm) const; 
+    /** 
+     * tail section, split out for reuse
+     */
+    void printXMLHierarchyImplTail(std::ostream& os,
+				   PrintManager& pm) const;
+ 
     std::string debug() const ;
     
     /**
