@@ -249,53 +249,6 @@ namespace xaifBoosterControlFlowReversal {
     const ReversibleControlFlowGraph& myG;
   };
 
-  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
-  CallGraphVertexAlg::addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* aNewCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
-    theBasicBlock->supplyAndAddBasicBlockElementInstance(*aNewCall_p);
-    return *aNewCall_p;									     
-  }
-
-  void CallGraphVertexAlg::addZeroDeriv(const Variable& theTarget,BasicBlock* theBasicBlock) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
-      theSubroutineCall(CallGraphVertexAlg::addInlinableSubroutineCall("ZeroDeriv",theBasicBlock));
-    theSubroutineCall.setId("inline_zeroderiv");
-    theTarget.copyMyselfInto(theSubroutineCall.addConcreteArgument(1).getArgument().getVariable());
-  }
-
-  void CallGraphVertexAlg::algorithm_action_5() {
-    if (!ourInitializeDerivativeComponentsFlag)
-      return;
-    DBG_MACRO(DbgGroup::CALLSTACK,
-	      "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_5(initialize derivative components) called for: "
-	      << debug().c_str());
-
-    std::list<Symbol*> active_symbols = getContaining().getControlFlowGraph().getScope().getSymbolTable().getActiveSymbols();
-    std::list<Symbol*>::const_iterator activeSymbol;
-    for (activeSymbol = active_symbols.begin();
-	 activeSymbol!=active_symbols.end();++activeSymbol) {
-      if ((*activeSymbol)->getSymbolKind() != SymbolKind::VARIABLE)
-	continue;
-
-      VariableSymbolReference* activeVarSym = 
-	new VariableSymbolReference(*(*activeSymbol),getContaining().getControlFlowGraph().getScope());
-      activeVarSym->setId((*activeSymbol)->getId());
-      activeVarSym->setAnnotation((*activeSymbol)->getAnnotation());
-      
-      Variable* activeVar = new Variable();
-      activeVar->supplyAndAddVertexInstance(*(dynamic_cast<VariableVertex*>(activeVarSym)));
-      activeVar->setDerivFlag();
-      activeVar->getAliasMapKey().setTemporary();
-      activeVar->getDuUdMapKey().setTemporary();
-
-      if (hasTapingControlFlowGraph()) {
-	ReversibleControlFlowGraph& theRCFG = getTapingControlFlowGraph();
-	BasicBlock* theTapingBasicBlock = theRCFG.getDerivInitBasicBlock();
-	CallGraphVertexAlg::addZeroDeriv(*activeVar,theTapingBasicBlock);
-      }
-    }
-  } // end CallGraphVertexAlg::algorithm_action_5
-
   void CallGraphVertexAlg::algorithm_action_4() {
     DBG_MACRO(DbgGroup::CALLSTACK,
               "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4(reverse control flow) called for: "
@@ -313,14 +266,13 @@ namespace xaifBoosterControlFlowReversal {
     myStrictAnonymousTapingControlFlowGraph_p->donotRetainUserReversalFlag();
     myStrictAnonymousTapingControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
     if (ourInitializeDerivativeComponentsFlag) {
-      myTapingControlFlowGraph_p->insertBasicBlockAtBeginning();
-      myStrictAnonymousTapingControlFlowGraph_p->insertBasicBlockAtBeginning();
+      myTapingControlFlowGraph_p->insertDerivInitBasicBlock();
+      myStrictAnonymousTapingControlFlowGraph_p->insertDerivInitBasicBlock();
     }
     if (getContaining().getControlFlowGraph().isStructured())
       structuredReversal();
     else
       unstructuredReversal();
-
   } // end CallGraphVertexAlg::algorithm_action_4() 
 
   void CallGraphVertexAlg::structuredReversal() {
