@@ -53,6 +53,7 @@
 
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 #include "xaifBooster/system/inc/SideEffectListType.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlg.hpp"
 
 using namespace xaifBooster;
@@ -68,6 +69,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() {
+    if (myBasicControlFlowGraph_p) { 
+      delete myBasicControlFlowGraph_p;
+    }
   }
 
   const std::string&
@@ -78,39 +82,28 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void
   CallGraphVertexAlg::printXMLHierarchy(std::ostream& os) const {
     PrintManager& pm=PrintManager::getInstance();
-    os << pm.indent()
-       << "<"
-       << getContaining().getControlFlowGraph().ourXAIFName.c_str()
-       << " ";
-    getContaining().getControlFlowGraph().printAttributes(os,getContaining().
-							  getControlFlowGraph().
-							  getSymbolReference());
-    os << " "
-       << getContaining().getControlFlowGraph().our_myActiveFlag_XAIFName.c_str()
-       << "=\""
-       << getContaining().getControlFlowGraph().getActiveFlag()
-       << "\">"
-       << std::endl;
-    getContaining().getControlFlowGraph().getArgumentList().printXMLHierarchy(os);
-
-    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LOCAL_LIST).printXMLHierarchy(SideEffectListType::our_ModLocal_XAIFName,os);
-    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::MOD_LIST).printXMLHierarchy(SideEffectListType::our_Mod_XAIFName,os);
-    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LOCAL_LIST).printXMLHierarchy(SideEffectListType::our_ReadLocal_XAIFName,os);
-    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::READ_LIST).printXMLHierarchy(SideEffectListType::our_Read_XAIFName,os);
-    getContaining().getControlFlowGraph().getSideEffectList(SideEffectListType::ON_ENTRY_LIST).printXMLHierarchy(SideEffectListType::our_OnEntry_XAIFName,os);
-
+    const xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<const xaifBoosterTypeChange::SymbolAlg&>(getContaining().getControlFlowGraph().
+													       getSymbolReference().
+													       getSymbol().
+													       getSymbolAlgBase()));
+    if (theSymbolAlg.hasReplacementSymbolReference())
+      getContaining().getControlFlowGraph().printXMLHierarchyImplHead(os,
+								      theSymbolAlg.getReplacementSymbolReference(),
+								      pm);
+    else 
+      getContaining().getControlFlowGraph().printXMLHierarchyImplHead(os,
+								      getContaining().getControlFlowGraph().getSymbolReference(),
+								      pm);
     myBasicControlFlowGraph_p->printXMLHierarchy(os);
-
-    os << pm.indent()
-       << "</"
-       << getContaining().getControlFlowGraph().ourXAIFName
-       << ">"
-       << std::endl;
+    getContaining().getControlFlowGraph().printXMLHierarchyImplTail(os,
+								    pm);
     pm.releaseInstance();
   }
 
   void 
-  CallGraphVertexAlg::algorithm_action_1() { 
+  CallGraphVertexAlg::algorithm_action_1() {
+    if (myBasicControlFlowGraph_p)
+      THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_1: already run");
     myBasicControlFlowGraph_p = new BasicControlFlowGraph(getContaining().getControlFlowGraph());
     myBasicControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
     if (ourInitializeDerivativeComponentsFlag) {
