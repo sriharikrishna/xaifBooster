@@ -68,6 +68,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() {
+    if (myBasicControlFlowGraph_p) { 
+      delete myBasicControlFlowGraph_p;
+    }
   }
 
   const std::string&
