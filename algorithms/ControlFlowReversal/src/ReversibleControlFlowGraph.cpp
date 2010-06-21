@@ -1329,7 +1329,7 @@ namespace xaifBoosterControlFlowReversal {
   //  Construct the adjoint control flow graph from this graph
   //
   void
-  ReversibleControlFlowGraph::buildAdjointControlFlowGraph(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r) {
+  ReversibleControlFlowGraph::buildAdjointControlFlowGraph(ReversibleControlFlowGraph& theAdjointControlFlowGraph_r, bool ourInitializeDerivativeComponentsFlag) {
     //    std::list<std::pair<ReversibleControlFlowGraphVertex*,ReversibleControlFlowGraphVertex*> > theVertexCorrespondence_ppl;
     std::list<ReversibleControlFlowGraphVertex*>::reverse_iterator the_mySortedVertices_p_l_rit;
     for (the_mySortedVertices_p_l_rit=mySortedVertices_p_l.rbegin(); 
@@ -1676,6 +1676,28 @@ namespace xaifBoosterControlFlowReversal {
 	THROW_LOGICEXCEPTION_MACRO("ReversibleControlFlowGraph::buildAdjointControlFlowGraph: missing logic to handle ControlFlowGraphVertex of kind "
 				   << ControlFlowGraphVertexAlg::kindToString((*myOriginalReverseVertexPPairList_cit).second->getKind()).c_str());
 	break; 
+      }
+      if (ourInitializeDerivativeComponentsFlag) {
+	if ((*myOriginalReverseVertexPPairList_cit).second->getKind() == ControlFlowGraphVertexAlg::ENTRY) {
+	  try {
+	    ReversibleControlFlowGraphVertex& entryVertex = *((*myOriginalReverseVertexPPairList_cit).second);
+	    ReversibleControlFlowGraphEdge& theOutEdge(*(getOutEdgesOf(entryVertex).first));	  
+	    ReversibleControlFlowGraphVertex& theTargetVertex = getTargetOf(theOutEdge);
+	    ReversibleControlFlowGraphVertex& theInitBlock = 
+	      theAdjointControlFlowGraph_r.insertBasicBlock(entryVertex,
+							    theTargetVertex,
+							    theOutEdge,
+							    false);
+	    removeAndDeleteEdge(theOutEdge);
+	    (*((*myOriginalReverseVertexPPairList_cit).second)).setRestorePlaceholder(theInitBlock);
+	    BasicBlock& theNewBasicBlock_r(dynamic_cast<BasicBlock&>(theInitBlock.getNewVertex()));
+	    theNewBasicBlock_r.setId(std::string("_adj_")+makeUniqueVertexId());
+	    
+	    ReversibleControlFlowGraph::initializeActiveVariables(&theNewBasicBlock_r);
+	  } 
+	  catch (LogicException) {
+	  }
+	}
       }
     }
     // go once more through the basic blocks

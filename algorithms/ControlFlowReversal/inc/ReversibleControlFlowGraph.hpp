@@ -108,7 +108,7 @@ namespace xaifBoosterControlFlowReversal {
      * makes the adjoint CFG for control flow stored based in the 
      * logic created with storeControlFlow
      */
-    void buildAdjointControlFlowGraph(ReversibleControlFlowGraph&);
+    void buildAdjointControlFlowGraph(ReversibleControlFlowGraph&,bool);
 
     /** 
      * if the control flow is unstructured we can in general not
