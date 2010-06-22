@@ -59,6 +59,7 @@
 
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
+#include "xaifBooster/system/inc/ArgumentList.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
@@ -358,16 +359,38 @@ namespace xaifBoosterControlFlowReversal {
 	      << debug().c_str());
 
     std::list<Symbol*> active_symbols = myOriginalGraph_r.getScope().getSymbolTable().getActiveSymbols();
+    std::list<Symbol*> init_symbols;
     std::list<Symbol*>::const_iterator activeSymbol;
     for (activeSymbol = active_symbols.begin();
 	 activeSymbol!=active_symbols.end();++activeSymbol) {
-      if ((*activeSymbol)->getSymbolKind() != SymbolKind::VARIABLE)
-	continue;
-      
+      if ((*activeSymbol)->getSymbolKind() == SymbolKind::VARIABLE)
+	init_symbols.insert(init_symbols.end(),*activeSymbol);
+    }
+
+    const ArgumentList& origArgList = myOriginalGraph_r.getArgumentList();
+    for (ArgumentList::ArgumentSymbolReferencePList::const_iterator anArgumentSymbolReferencePListI=
+	   origArgList.getArgumentSymbolReferencePList().begin();
+	 anArgumentSymbolReferencePListI!=origArgList.getArgumentSymbolReferencePList().end();
+	 ++anArgumentSymbolReferencePListI) { 
+      std::list<Symbol*>::iterator initSymbol;
+      for (initSymbol = init_symbols.begin();
+	   initSymbol != init_symbols.end(); ++initSymbol) {
+	if ((*initSymbol) == &((*anArgumentSymbolReferencePListI)->getSymbol())) {
+	  if ((*anArgumentSymbolReferencePListI)->getIntent() != IntentType::OUT_ITYPE){
+	    init_symbols.remove(*initSymbol);
+	  }
+	  break;
+	}
+      }
+    }
+
+    std::list<Symbol*>::const_iterator initSymbol;
+    for (initSymbol = init_symbols.begin();
+	 initSymbol != init_symbols.end(); ++initSymbol) {
       VariableSymbolReference* activeVarSym = 
-	new VariableSymbolReference(*(*activeSymbol),myOriginalGraph_r.getScope());
-      activeVarSym->setId((*activeSymbol)->getId());
-      activeVarSym->setAnnotation((*activeSymbol)->getAnnotation());
+	new VariableSymbolReference(*(*initSymbol),myOriginalGraph_r.getScope());
+      activeVarSym->setId((*initSymbol)->getId());
+      activeVarSym->setAnnotation((*initSymbol)->getAnnotation());
       
       Variable* activeVar = new Variable();
       activeVar->supplyAndAddVertexInstance(*(dynamic_cast<VariableVertex*>(activeVarSym)));
