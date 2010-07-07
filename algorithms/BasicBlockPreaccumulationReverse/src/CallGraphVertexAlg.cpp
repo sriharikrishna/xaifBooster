@@ -145,13 +145,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   } 
 
   void 
-  CallGraphVertexAlg::algorithm_action_5() {
-    xaifBoosterAddressArithmetic::CallGraphVertexAlg::algorithm_action_5();
-    xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_5();
-    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::algorithm_action_5()");
-  }
-
-  void 
   CallGraphVertexAlg::algorithm_action_4() { 
     xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4();
     DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::algorithm_action_4()");

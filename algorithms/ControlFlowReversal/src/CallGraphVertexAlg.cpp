@@ -62,9 +62,7 @@
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/CallGraphVertexAlg.hpp"
-#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+
 
 using namespace xaifBooster;
 
@@ -74,7 +72,6 @@ namespace xaifBoosterControlFlowReversal {
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     CallGraphVertexAlgBase(theContaining), 
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::CallGraphVertexAlg(theContaining),
     myTapingControlFlowGraph_p(NULL), 
     myAdjointControlFlowGraph_p(NULL),
     myStrictAnonymousTapingControlFlowGraph_p(NULL), 

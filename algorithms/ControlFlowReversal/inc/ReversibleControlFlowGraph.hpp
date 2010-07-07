@@ -149,11 +149,6 @@ namespace xaifBoosterControlFlowReversal {
 
     bool isStructured() const; 
 
-    /**
-     * insert a new basic block at beginning of control flow graph
-     */
-    void insertDerivInitBasicBlock();
-
     virtual void initializeActiveVariables(BasicBlock* derivInitBasicBlock);
 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
@@ -252,7 +247,6 @@ namespace xaifBoosterControlFlowReversal {
 						       const ReversibleControlFlowGraphEdge& replacedEdge_r, 
 						       bool direction);
 
-
     /** 
      * make a new entry node
      */
@@ -321,7 +315,6 @@ namespace xaifBoosterControlFlowReversal {
      * append "pop_cfg(i)" to theBasicBlock_r
      */
     const Symbol& insert_pop_integer(BasicBlock& theBasicBlock_r);
-
 
     /** 
      * reference to original cfg
