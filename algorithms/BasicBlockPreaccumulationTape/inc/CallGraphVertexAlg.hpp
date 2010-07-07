@@ -30,14 +30,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
                            const ControlFlowGraphVertex& theControlFlowGraphVertex,
                            const std::string theOriginStr);
 
-    void markCFRRequiredValue(const Expression& theExpression,
-                           const ControlFlowGraphVertex& theControlFlowGraphVertex,
-                           const std::string theOriginStr);
-
   protected:
-
-    /// this is where we keep the set of values that are marked as required by various algorithms
-    xaifBoosterRequiredValues::RequiredValueSet myCFRRequiredValueSet;
 
     /// this is where we keep the set of values that are marked as required by various algorithms
     xaifBoosterRequiredValues::RequiredValueSet myRequiredValueSet;

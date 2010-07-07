@@ -20,7 +20,8 @@ namespace xaifBoosterAddressArithmetic {
    * is handled in BasicBlockPreaccumulationTape and 
    * BasicBlockPreaccumulationTapeAdjoint resp.
    */
-  class CallGraphVertexAlg : public xaifBoosterControlFlowReversal::CallGraphVertexAlg {
+  class CallGraphVertexAlg : public xaifBoosterControlFlowReversal::CallGraphVertexAlg,
+                             public xaifBoosterBasicBlockPreaccumulationTapeAdjoint::CallGraphVertexAlg {
   public:
     
     CallGraphVertexAlg(CallGraphVertex& theContaining);

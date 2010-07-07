@@ -87,8 +87,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
     virtual void algorithm_action_4();
 
-    virtual void algorithm_action_5();
-
     static void checkPointToFiles();
 
     static void forceAllArgumentCheckpoints();
