@@ -295,50 +295,7 @@ namespace xaifBoosterControlFlowReversal {
     return *aNewReversibleControlFlowGraphVertex_p;
   }
 
-  void ReversibleControlFlowGraph::insertDerivInitBasicBlock() {
-    try {
-      ReversibleControlFlowGraphVertex& entryVertex = ReversibleControlFlowGraph::getEntry();
-      ReversibleControlFlowGraphEdge& replacedEdge_r(*(getOutEdgesOf(entryVertex).first));
-      ReversibleControlFlowGraphVertex& afterVertex = getTargetOf(replacedEdge_r);
-
-      ReversibleControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new ReversibleControlFlowGraphEdge();
-      aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
-      ReversibleControlFlowGraphEdge* aNewControlFlowGraphOutEdge_p=new ReversibleControlFlowGraphEdge();
-      aNewControlFlowGraphOutEdge_p->setId(makeUniqueEdgeId());
-
-      if (replacedEdge_r.hasConditionValue()) {
-	aNewControlFlowGraphOutEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
-      }
-      if (replacedEdge_r.hasRevConditionValue()) {
-	aNewControlFlowGraphOutEdge_p->setRevConditionValue(replacedEdge_r.getRevConditionValue());
-      }
-
-      BasicBlock* theNewBasicBlock=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
-      ReversibleControlFlowGraphVertex* newVertex_p = new ReversibleControlFlowGraphVertex(theNewBasicBlock);
-      supplyAndAddVertexInstance(*newVertex_p);
-      newVertex_p->setIndex(numVertices()+1);
-      newVertex_p->setReversalType((myRetainUserReversalFlag)?(afterVertex).getReversalType():ForLoopReversalType::ANONYMOUS);
-      newVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
-      newVertex_p->getNewVertex().setId(makeUniqueVertexId());
-      newVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
-
-      if (!mySortedVertices_p_l.empty())
-	mySortedVertices_p_l.pop_front();
-      mySortedVertices_p_l.push_front(newVertex_p);
-      mySortedVertices_p_l.push_front(&entryVertex);
-
-      removeAndDeleteEdge(replacedEdge_r);
-      supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,entryVertex,*newVertex_p);
-      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,afterVertex);
-
-      ReversibleControlFlowGraph::initializeActiveVariables(theNewBasicBlock);
-
-      return;
-    } catch (LogicException){
-      return;
-    }
-  }
-
+  /** Add a new subroutine call with the specified name to the specified Basic Block*/
   xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
   ReversibleControlFlowGraph::addInlinableSubroutineCall(const std::string& aSubroutineName,BasicBlock* theBasicBlock) {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* aNewCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(aSubroutineName));
@@ -346,6 +303,7 @@ namespace xaifBoosterControlFlowReversal {
     return *aNewCall_p;									     
   }
 
+  /** Add a ZeroDeriv subroutine call for the specified variable in the specified Basic Block */
   void ReversibleControlFlowGraph::addZeroDeriv(const Variable& theTarget,BasicBlock* theBasicBlock) {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
       theSubroutineCall(ReversibleControlFlowGraph::addInlinableSubroutineCall("ZeroDeriv",theBasicBlock));
@@ -353,26 +311,28 @@ namespace xaifBoosterControlFlowReversal {
     theTarget.copyMyselfInto(theSubroutineCall.addConcreteArgument(1).getArgument().getVariable());
   }
 
+  /** Create ZeroDeriv initialization subroutines for all active variables which are not paramenters with intent IN or intent INOUT */
   void ReversibleControlFlowGraph::initializeActiveVariables(BasicBlock* derivInitBasicBlock) {
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_5(initialize derivative components) called for: "
 	      << debug().c_str());
 
+    /** add all active variable symbols (and not subroutines) to init_symbols list */
     std::list<Symbol*> active_symbols = myOriginalGraph_r.getScope().getSymbolTable().getActiveSymbols();
     std::list<Symbol*> init_symbols;
     std::list<Symbol*>::const_iterator activeSymbol;
+    std::list<Symbol*>::const_iterator initSymbol;
     for (activeSymbol = active_symbols.begin();
 	 activeSymbol!=active_symbols.end();++activeSymbol) {
       if ((*activeSymbol)->getSymbolKind() == SymbolKind::VARIABLE)
 	init_symbols.insert(init_symbols.end(),*activeSymbol);
     }
-
+    /** remove all parameters which have intent INOUT or intent IN from the init_symbols list */
     const ArgumentList& origArgList = myOriginalGraph_r.getArgumentList();
     for (ArgumentList::ArgumentSymbolReferencePList::const_iterator anArgumentSymbolReferencePListI=
 	   origArgList.getArgumentSymbolReferencePList().begin();
 	 anArgumentSymbolReferencePListI!=origArgList.getArgumentSymbolReferencePList().end();
 	 ++anArgumentSymbolReferencePListI) { 
-      std::list<Symbol*>::iterator initSymbol;
       for (initSymbol = init_symbols.begin();
 	   initSymbol != init_symbols.end(); ++initSymbol) {
 	if ((*initSymbol) == &((*anArgumentSymbolReferencePListI)->getSymbol())) {
@@ -383,8 +343,7 @@ namespace xaifBoosterControlFlowReversal {
 	}
       }
     }
-
-    std::list<Symbol*>::const_iterator initSymbol;
+    /** create deriv initialization routines for all symbols in init_symbols list */
     for (initSymbol = init_symbols.begin();
 	 initSymbol != init_symbols.end(); ++initSymbol) {
       VariableSymbolReference* activeVarSym = 
