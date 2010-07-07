@@ -30,8 +30,7 @@ namespace xaifBoosterRequiredValues {
      */
     void addValueToRequiredSet(const Expression& anExpression,
                                const ControlFlowGraphVertex& aControlFlowGraphVertex,
-                               const std::string anOriginStr,
-			       bool addExpressionsWithEquivalentVariables=false);
+                               const std::string anOriginStr);
 
     std::string debug() const;
 
