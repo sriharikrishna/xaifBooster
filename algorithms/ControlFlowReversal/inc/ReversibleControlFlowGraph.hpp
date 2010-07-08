@@ -70,9 +70,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphVertex.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraphEdge.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ForLoopDirection.hpp"
-#include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
-
 
 using namespace xaifBooster;
 

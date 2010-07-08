@@ -69,13 +69,14 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphEdge.hpp" 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicControlFlowGraphVertex.hpp" 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphAlg.hpp" 
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
+
+  std::string BasicControlFlowGraph::myAlgorithmSignature(std::string("_bbp_"));
 
   BasicControlFlowGraph::BasicControlFlowGraph(const ControlFlowGraph& theOriginal_r) : 
     myOriginalGraph_r(theOriginal_r) {
@@ -86,16 +87,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   // depends on prefix
   std::string BasicControlFlowGraph::makeUniqueVertexId() {
     std::ostringstream oss;
-    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).
-      getAlgorithmSignature().c_str() << "v_" << getNextVertexId() << std::ends;
+    oss << getAlgorithmSignature().c_str() << "v_" << getNextVertexId() << std::ends;
     return (oss.str());
   }
 
   std::string BasicControlFlowGraph::makeUniqueEdgeId() {
     std::ostringstream oss;
-    oss << dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).
-      getAlgorithmSignature().c_str() << "e_" << getNextEdgeId() << std::ends;
+    oss << getAlgorithmSignature().c_str() << "e_" << getNextEdgeId() << std::ends;
     return (oss.str());
+  }
+
+  const std::string&
+  BasicControlFlowGraph::getAlgorithmSignature() const {
+    return myAlgorithmSignature;
   }
 
   void
@@ -212,7 +216,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       newVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
       
       newVertex_p->getNewVertex().setId(makeUniqueVertexId());
-      newVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
+      newVertex_p->getNewVertex().setAnnotation(getAlgorithmSignature());
       
       supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,entryVertex);
 

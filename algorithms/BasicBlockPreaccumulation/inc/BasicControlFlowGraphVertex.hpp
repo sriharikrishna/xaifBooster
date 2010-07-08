@@ -61,7 +61,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   /** 
    * class to implement vertices that are used in
-   * ControlFlowGraphAlg::myTransformedControlFlowGraph
+   * the BasicControlFlowGraph
    */
   class BasicControlFlowGraphVertex : public ControlFlowGraphVertex {
 
