@@ -62,6 +62,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   class BasicControlFlowGraph;
 
+  /** class to implement edges that are used in the BasicControlFlowGraph
+  */
+
   class BasicControlFlowGraphEdge : public ControlFlowGraphEdge {
 
   public:

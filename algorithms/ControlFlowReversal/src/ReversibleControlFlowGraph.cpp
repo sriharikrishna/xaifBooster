@@ -73,8 +73,6 @@
 
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
-#include "xaifBooster/boostWrapper/inc/GraphElement.hpp"
-
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
@@ -226,7 +224,8 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
     ReversibleControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt) 
-      if ((*beginIt).getKind()==ControlFlowGraphVertexAlg::ENTRY) 
+      if ((*beginIt).isOriginal()) 
+        if ((*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::ENTRY) 
           return *beginIt;
     THROW_LOGICEXCEPTION_MACRO("Missing ENTRY node in control flow graph"); 
   }
@@ -235,11 +234,12 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraph::VertexIteratorPair p(vertices());
     ReversibleControlFlowGraph::VertexIterator beginIt(p.first),endIt(p.second);
     for (;beginIt!=endIt ;++beginIt) 
-      if ((*beginIt).getKind()==ControlFlowGraphVertexAlg::EXIT) 
+      if ((*beginIt).isOriginal()) 
+        if ((*beginIt).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::EXIT) 
           return *beginIt;
     THROW_LOGICEXCEPTION_MACRO("Missing EXIT node in control flow graph"); 
   }
-  
+
   // this does not guarantee uniqueness in the case of an existing
   // graph getting expanded
   // depends on prefix
@@ -1270,9 +1270,7 @@ namespace xaifBoosterControlFlowReversal {
     // reset the target to the corresponding  adjoint FORLOOP
     // this is because the FORLOOP turns into an ENDLOOP but that is not the target of the successor in the 
     // reverse.
-    if (getSourceOf(theOriginalEdge_cr).isOriginal()
-	&&
-	(getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP
+    if ((getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::FORLOOP
 	 ||
 	 getSourceOf(theOriginalEdge_cr).getOriginalControlFlowGraphVertexAlg().getKind()==ControlFlowGraphVertexAlg::PRELOOP)
 	&&
@@ -1295,7 +1293,7 @@ namespace xaifBoosterControlFlowReversal {
 													     *theAdjointTarget_p));
     // this gives us values on edges that normally don't have conditions but these values 
     // are needed for the branch matches:
-    if (theOriginalEdge_cr.hasRevConditionValue()) {
+    if (theOriginalEdge_cr.hasRevConditionValue())
       theNewReversibleControlFlowGraphEdge_r.setConditionValue(theOriginalEdge_cr.getRevConditionValue());
     //     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS)) {     
     //       GraphVizDisplay::show(theAdjointControlFlowGraph_r,
@@ -1303,7 +1301,6 @@ namespace xaifBoosterControlFlowReversal {
     // 			    ReversibleControlFlowGraphVertexLabelWriter(theAdjointControlFlowGraph_r),
     // 			    ReversibleControlFlowGraphEdgeLabelWriter(theAdjointControlFlowGraph_r));
     //     }
-    }
     return theNewReversibleControlFlowGraphEdge_r;
   }
 

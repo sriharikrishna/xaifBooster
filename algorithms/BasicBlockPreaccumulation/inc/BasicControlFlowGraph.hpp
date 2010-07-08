@@ -69,7 +69,9 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
   /** 
-   * class to implement a control flow graph
+   * class to implement a control flow graph for basic block preaccumulation.
+   * creates a framework for modifying the control flow graph while keeping a pointer 
+   * to the original graph
    */
   class BasicControlFlowGraph : public GraphWrapperTraversable<BasicControlFlowGraphVertex,BasicControlFlowGraphEdge> {
 
@@ -107,6 +109,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     void initializeDerivComponents(BasicBlock* theBasicBlock);
 
+    const std::string& getAlgorithmSignature() const;
+
   protected:
 
     /** 
@@ -123,6 +127,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * no def
      */
     ControlFlowGraph& operator=(const ControlFlowGraph&);
+
+    /**
+     * signature used in annotations of objects generated
+     * by the algorithm
+     */
+    static std::string myAlgorithmSignature;
 
   };  // end of class
 

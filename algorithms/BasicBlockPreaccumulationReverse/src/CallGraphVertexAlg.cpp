@@ -81,7 +81,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   bool CallGraphVertexAlg::ourForceAllArgCheckPointFlag=false;
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
-	CallGraphVertexAlgBase(theContaining),
+    CallGraphVertexAlgBase(theContaining),
     xaifBoosterPushPop::CallGraphVertexAlg(theContaining), 
     myReplacementList_p(0),
     myCFGStoreArguments_p(0),

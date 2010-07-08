@@ -76,7 +76,7 @@ namespace xaifBoosterControlFlowReversal {
      * control flow reversal
      */
     virtual void algorithm_action_4();
-
+                                                                                
     virtual void printXMLHierarchy(std::ostream& os) const;
                                                                                 
     virtual std::string debug() const ;

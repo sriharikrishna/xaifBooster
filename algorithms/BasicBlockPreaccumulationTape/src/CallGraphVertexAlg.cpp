@@ -18,7 +18,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     std::ostringstream out;
     out << "xaifBoosterBasicBlockPreaccumulationTape::CallGraphVertexAlg[" << this
         << ",myContaining=" << getContaining().debug().c_str()
-		<< ",myRequiredValueSet=" << myRequiredValueSet.debug().c_str()
+        << ",myRequiredValueSet=" << myRequiredValueSet.debug().c_str()
         << "]" << std::ends;
     return out.str();
   } // end CallGraphVertexAlg::debug()

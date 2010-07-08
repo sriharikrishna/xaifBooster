@@ -62,8 +62,9 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
   /** 
-   * class to implement renaming of subroutine definitions
-   * if enforced
+   * class to add basic block and active variable derivative initialization
+   * subroutines to a modified BasicControlFlowGraph version of the contained 
+   * control flow graph
    */
   class CallGraphVertexAlg : public CallGraphVertexAlgBase {
 
@@ -80,10 +81,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
-
-    const std::string& getAlgorithmSignature() const;
-    //BasicControlFlowGraph& getBasicControlFlowGraph();
-    //const BasicControlFlowGraph& getBasicControlFlowGraph() const;    
 
     static void initializeDerivativeComponents();
 
@@ -107,8 +104,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * no def
      */
     CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
-
-    static std::string myAlgorithmSignature;
 
   }; // end of class CallGraphVertexAlg
 

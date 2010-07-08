@@ -60,7 +60,6 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {
 
-  std::string CallGraphVertexAlg::myAlgorithmSignature(std::string("_bbp_"));
   bool CallGraphVertexAlg::ourInitializeDerivativeComponentsFlag=false;
 
   CallGraphVertexAlg::CallGraphVertexAlg(const CallGraphVertex& theContaining) :
@@ -72,11 +71,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (myBasicControlFlowGraph_p) { 
       delete myBasicControlFlowGraph_p;
     }
-  }
-
-  const std::string&
-  CallGraphVertexAlg::getAlgorithmSignature() const {
-    return myAlgorithmSignature;
   }
 
   void
