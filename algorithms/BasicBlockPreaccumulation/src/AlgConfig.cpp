@@ -55,7 +55,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlg.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
@@ -67,13 +66,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches() + "nCAmQaMRD");
+    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches() + "nCAmQaMR");
   } 
 
   void AlgConfig::config() { 
     xaifBoosterLinearization::AlgConfig::config();
-    if (isSet('D'))
-      xaifBoosterBasicBlockPreaccumulation::CallGraphVertexAlg::initializeDerivativeComponents();
     if (isSet('n')) 
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
     if (isSet('C'))
@@ -101,7 +98,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   void AlgConfig::usage() { 
     xaifBoosterLinearization::AlgConfig::usage();
     std::cout << " BasicBlockPreaccumulation options: " << std::endl
-	      << "             [-D] insert derivative initializations for active variables" << std::endl
 	      << "             [-n] allow n-ary sax operations" << std::endl
               << "             [-C] turn on runtime counters"  << std::endl
 	      << "             [-A <level>] set heuristic awareness of unit/constant edges (0: no awareness, 1: unit awareness, 2: constant awareness), defaults to unit awareness" << std::endl

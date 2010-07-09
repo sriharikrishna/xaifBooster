@@ -58,6 +58,8 @@
 
 namespace xaifBooster { 
 
+  bool CallGraphVertex::ourInitializeDerivativeComponentsFlag=false;
+
   CallGraphVertex::CallGraphVertex(const Symbol& theSymbol,
 				   const Scope& theScope,
 				   const Scope& theCFGScope,
@@ -131,5 +133,12 @@ namespace xaifBooster {
     myControlFlowGraph.genericTraversal(anAction_c);
     ConceptuallyStaticInstances::instance()->getTraversalStack().resetCurrentCallGraphVertexInstance();
   } 
+
+  void CallGraphVertex::setInitializeDerivativeComponentsFlag() {
+    ourInitializeDerivativeComponentsFlag = true;
+  }
+  bool CallGraphVertex::getInitializeDerivativeComponentsFlag() const {
+    return ourInitializeDerivativeComponentsFlag;
+  }
 
 } // end of namespace xaifBooster 

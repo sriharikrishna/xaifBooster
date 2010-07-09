@@ -56,10 +56,6 @@
 
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
-#include "xaifBooster/system/inc/Symbol.hpp"
-#include "xaifBooster/system/inc/SymbolKind.hpp"
-#include "xaifBooster/system/inc/SymbolTable.hpp"
-#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 
@@ -67,8 +63,6 @@
 using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
-
-  bool CallGraphVertexAlg::ourInitializeDerivativeComponentsFlag=false;
 
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     CallGraphVertexAlgBase(theContaining), 
@@ -280,7 +274,7 @@ namespace xaifBoosterControlFlowReversal {
     // original CFG, that is, it should precede the call to 
     // storeControlFlow()
     // but we should have found out how to label branch edges...
-    myTapingControlFlowGraph_p->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph_p,ourInitializeDerivativeComponentsFlag);
+    myTapingControlFlowGraph_p->buildAdjointControlFlowGraph(*myAdjointControlFlowGraph_p,getContaining().getInitializeDerivativeComponentsFlag());
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myAdjointControlFlowGraph_p,"cfg_adjoint", AdjointControlFlowGraphVertexLabelWriter(*myAdjointControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myAdjointControlFlowGraph_p));
     }
@@ -301,7 +295,7 @@ namespace xaifBoosterControlFlowReversal {
     // original CFG, that is, it should precede the call to 
     // storeControlFlow()
     // but we should have found out how to label branch edges...
-    myStrictAnonymousTapingControlFlowGraph_p->buildAdjointControlFlowGraph(*myStrictAnonymousAdjointControlFlowGraph_p,ourInitializeDerivativeComponentsFlag);
+    myStrictAnonymousTapingControlFlowGraph_p->buildAdjointControlFlowGraph(*myStrictAnonymousAdjointControlFlowGraph_p,getContaining().getInitializeDerivativeComponentsFlag());
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cfg")) {     
       GraphVizDisplay::show(*myStrictAnonymousAdjointControlFlowGraph_p,"cfg_strict_anonymous_adjoint", AdjointControlFlowGraphVertexLabelWriter(*myStrictAnonymousAdjointControlFlowGraph_p),ControlFlowGraphEdgeLabelWriter(*myStrictAnonymousAdjointControlFlowGraph_p));
     }
@@ -390,11 +384,6 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
-  }
-
-  void
-  CallGraphVertexAlg::initializeDerivativeComponents() { 
-    ourInitializeDerivativeComponentsFlag=true;
   }
 
 } // end of namespace

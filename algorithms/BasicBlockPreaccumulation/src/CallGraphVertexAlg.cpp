@@ -60,8 +60,6 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {
 
-  bool CallGraphVertexAlg::ourInitializeDerivativeComponentsFlag=false;
-
   CallGraphVertexAlg::CallGraphVertexAlg(const CallGraphVertex& theContaining) :
     CallGraphVertexAlgBase(theContaining),
     myBasicControlFlowGraph_p(NULL) {
@@ -100,15 +98,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_1: already run");
     myBasicControlFlowGraph_p = new BasicControlFlowGraph(getContaining().getControlFlowGraph());
     myBasicControlFlowGraph_p->makeThisACopyOfOriginalControlFlowGraph();
-    if (ourInitializeDerivativeComponentsFlag) {
+    if (getContaining().getInitializeDerivativeComponentsFlag()) {
       // add inert basic block
       myBasicControlFlowGraph_p->insertBasicBlock();
     }
-  }
-
-  void
-  CallGraphVertexAlg::initializeDerivativeComponents() { 
-    ourInitializeDerivativeComponentsFlag=true;
   }
 
   std::string

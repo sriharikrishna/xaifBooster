@@ -82,8 +82,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    static void initializeDerivativeComponents();
-
   private:
     
     /** 
@@ -95,8 +93,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * no def
      */
     CallGraphVertexAlg(const CallGraphVertexAlg&);
-
-    static bool ourInitializeDerivativeComponentsFlag;
 
     BasicControlFlowGraph* myBasicControlFlowGraph_p;
 

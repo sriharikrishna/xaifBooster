@@ -83,8 +83,6 @@ namespace xaifBoosterControlFlowReversal {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    static void initializeDerivativeComponents();
-    
     bool hasTapingControlFlowGraph() const;
     ReversibleControlFlowGraph& getTapingControlFlowGraph();
     const ReversibleControlFlowGraph& getTapingControlFlowGraph() const;
@@ -121,8 +119,6 @@ namespace xaifBoosterControlFlowReversal {
      * no def
      */
     CallGraphVertexAlg& operator=(const CallGraphVertexAlg&);
-
-    static bool ourInitializeDerivativeComponentsFlag;
 
     /**
      * CFG copy that tapes for partially explicit reversal
