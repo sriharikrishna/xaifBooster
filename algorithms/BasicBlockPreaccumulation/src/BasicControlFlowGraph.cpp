@@ -191,35 +191,37 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     THROW_LOGICEXCEPTION_MACRO("Missing ENTRY node in control flow graph"); 
   }
 
-  // direction indicates if the characteristics of the replaceEdge should
-  // be preserved by the new in (false) or outedge (true)
   BasicBlock*
   BasicControlFlowGraph::insertBasicBlock() {
 
     try {
       BasicControlFlowGraphVertex& entryVertex = BasicControlFlowGraph::getEntry();
-      BasicControlFlowGraphEdge* aNewControlFlowGraphOutEdge_p=new BasicControlFlowGraphEdge();    
-      aNewControlFlowGraphOutEdge_p->setId(makeUniqueEdgeId());      
+      BasicControlFlowGraphEdge& replacedEdge_r(*(getOutEdgesOf(entryVertex).first));
+      BasicControlFlowGraphVertex& afterVertex = getTargetOf(replacedEdge_r);
+
+      BasicControlFlowGraphEdge* aNewControlFlowGraphInEdge_p=new BasicControlFlowGraphEdge();
+      aNewControlFlowGraphInEdge_p->setId(makeUniqueEdgeId());
+      BasicControlFlowGraphEdge* aNewControlFlowGraphOutEdge_p=new BasicControlFlowGraphEdge();
+      aNewControlFlowGraphOutEdge_p->setId(makeUniqueEdgeId());
 
       if (numOutEdgesOf(entryVertex) >= 1) {
-	BasicControlFlowGraphEdge& replacedEdge_r(*(getOutEdgesOf(entryVertex).first));
 	if (replacedEdge_r.hasConditionValue()) {
 	  aNewControlFlowGraphOutEdge_p->setConditionValue(replacedEdge_r.getConditionValue());
 	}
       }
-      
-      BasicControlFlowGraphVertex* newVertex_p = new BasicControlFlowGraphVertex();
-      newVertex_p->setIndex(numVertices()+1);
-      supplyAndAddVertexInstance(*newVertex_p);
-      
+
       BasicBlock* theNewBasicBlock=new BasicBlock(ConceptuallyStaticInstances::instance()->getCallGraph().getScopeTree().getGlobalScope());
+      BasicControlFlowGraphVertex* newVertex_p = new BasicControlFlowGraphVertex(theNewBasicBlock);
+      supplyAndAddVertexInstance(*newVertex_p);
+      newVertex_p->setIndex(numVertices()+1);
       newVertex_p->supplyAndAddNewVertex(*theNewBasicBlock);
-      
       newVertex_p->getNewVertex().setId(makeUniqueVertexId());
       newVertex_p->getNewVertex().setAnnotation(getAlgorithmSignature());
-      
-      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,entryVertex);
 
+      removeAndDeleteEdge(replacedEdge_r);
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphInEdge_p,entryVertex,*newVertex_p);
+      supplyAndAddEdgeInstance(*aNewControlFlowGraphOutEdge_p,*newVertex_p,afterVertex);
+      
       return theNewBasicBlock;
     } catch (LogicException){
       return NULL;
