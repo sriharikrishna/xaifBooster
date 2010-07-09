@@ -99,6 +99,10 @@ namespace xaifBooster {
      */
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c); 
 
+    static void setInitializeDerivativeComponentsFlag();
+    
+    bool getInitializeDerivativeComponentsFlag() const;
+
     /** 
      * algorithm access where the CallGraphVertex may 
      * be const but in difference to the 
@@ -132,6 +136,8 @@ namespace xaifBooster {
      * destruction
      */
     CallGraphVertexAlgBase* myCallGraphVertexAlgBase_p;
+
+    static bool ourInitializeDerivativeComponentsFlag;
 
   }; // end of class CallGraphVertex
  

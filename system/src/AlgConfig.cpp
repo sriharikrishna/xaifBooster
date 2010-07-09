@@ -57,6 +57,7 @@
 #include "xaifBooster/utils/inc/FrontEndDecorations.hpp"
 
 #include "xaifBooster/system/inc/AlgConfig.hpp"
+#include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/Symbol.hpp"
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
 
@@ -72,7 +73,7 @@ namespace xaifBooster {
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgGNsTvpbVFh");
+    return std::string("iocdgGNsTvpbVDFh");
   } 
 
   void AlgConfig::config() { 
@@ -102,6 +103,8 @@ namespace xaifBooster {
 	SubroutineCall::noBlackBoxOptimism();
       if (isSet('V'))
 	PrintManager::setVerbose();
+      if (isSet('D'))
+	CallGraphVertex::setInitializeDerivativeComponentsFlag();
       if (isSet('T'))
 	DbgLoggerManager::instance()->addTags(argAsString('T'));
       myInputValidationFlag=isSet('v');
@@ -135,6 +138,7 @@ namespace xaifBooster {
               << "             [-b] pessimistic assumptions for black box routines" << std::endl 
 	      << "             [-v] validate the input against the schema" << std::endl
 	      << "             [-V] verbose xaif output" << std::endl
+	      << "             [-D] initialize derivative components of active variables" << std::endl
 	      << "             [-F <style> ]" << std::endl
 	      << "                 front-end decoration style, where <style> is one of: " << std::endl
 	      << "                 "<< FrontEndDecorations::printAll().c_str() << std::endl
