@@ -685,6 +685,8 @@ namespace xaifBoosterTypeChange {
   } // end SubroutineCallAlg::makeTempSymbol()
 
   void SubroutineCallAlg::addWrapperNames(const std::string& theSpaceSeparatedNames) { 
+    if (theSpaceSeparatedNames.empty())
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::addWrapperNames: no names given ");
     std::string::size_type startPosition=0,endPosition=0;
     std::string::size_type totalSize(theSpaceSeparatedNames.size());
     while (startPosition<=totalSize && endPosition<=totalSize) { 
