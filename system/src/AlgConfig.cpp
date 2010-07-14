@@ -60,6 +60,7 @@
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 #include "xaifBooster/system/inc/Symbol.hpp"
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
+#include "xaifBooster/system/inc/AlgFactoryManager.hpp"
 
 namespace xaifBooster { 
 
@@ -70,13 +71,49 @@ namespace xaifBooster {
     myBuildStamp(buildStamp),
     myConfiguredFlag(false),
     myInputValidationFlag(false) {
+    registerIt(&ourConfig, &ourUsage,"iocdgGNsTvpbVDFh");
+  } 
+
+  void AlgConfig::registerIt(RegFP theConfig,
+			     RegFP theUsage,
+			     const std::string& switches) { 
+    bool isNew=true;
+    if (std::find(myConfigFPList.begin(),myConfigFPList.end(),theConfig)==myConfigFPList.end())
+      myConfigFPList.push_back(theConfig);
+    else 
+      isNew=false;
+    if (std::find(myUsageFPList.begin(),myUsageFPList.end(),theUsage)==myUsageFPList.end())
+      myUsageFPList.push_back(theUsage);
+    else 
+      isNew=false;
+    for (std::string::const_iterator sit=switches.begin();
+	 sit!=switches.end();
+	 ++sit) { 
+      if (mySwitches.find(*sit)==std::string::npos)
+	mySwitches+=*sit;
+      else {
+	if (isNew)
+	  THROW_LOGICEXCEPTION_MACRO("AlgConfig::register: ambiguous switch '" << *sit << "'" ); 
+      }
+    }
   } 
 
   std::string AlgConfig::getSwitches() { 
-    return std::string("iocdgGNsTvpbVDFh");
+    return mySwitches;
   } 
 
   void AlgConfig::config() { 
+    for (RegFPList::iterator it=myConfigFPList.begin();
+	 it!=myConfigFPList.end();
+	 ++it)
+      (*it)();
+  } 
+
+  void AlgConfig::ourConfig() {
+    AlgFactoryManager::instance()->getAlgConfig()->myConfig();
+  }
+
+  void AlgConfig::myConfig() { 
     if (!myConfiguredFlag) { 
       // avoid doing this twice
       parse(getSwitches());
@@ -115,6 +152,17 @@ namespace xaifBooster {
   } 
 
   void AlgConfig::usage() { 
+    for (RegFPList::iterator it=myUsageFPList.begin();
+	 it!=myUsageFPList.end();
+	 ++it)
+      (*it)();
+  } 
+
+  void AlgConfig::ourUsage() {
+    AlgFactoryManager::instance()->getAlgConfig()->myUsage();
+  }
+
+  void AlgConfig::myUsage() { 
     std::cout << "driver (" << myBuildStamp.c_str() << ") usage:" << std::endl
 	      << myArgv[0]
 	      << " -i <inputFile> -c <intrinsicsCatalogueFile> " << std::endl
@@ -183,7 +231,5 @@ namespace xaifBooster {
     return myOutFileName; 
   } 
 
-} // end of namespace xaifBooster
-                                                                     
-
-
+} 
+                                                                    
