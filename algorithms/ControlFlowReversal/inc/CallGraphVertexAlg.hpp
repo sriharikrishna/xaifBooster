@@ -99,6 +99,10 @@ namespace xaifBoosterControlFlowReversal {
     ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph();
     const ReversibleControlFlowGraph& getStrictAnonymousAdjointControlFlowGraph() const;
 
+    static void changeIntent();
+
+    static bool changesIntent();
+
   private:
     
     /** 
@@ -143,6 +147,15 @@ namespace xaifBoosterControlFlowReversal {
      * CFG copy that performs strictly anonymous reversal 
      */
     ReversibleControlFlowGraph* myStrictAnonymousAdjointControlFlowGraph_p;
+    
+    /** 
+     * change argument intent, this information is needed 
+     * to determine which if any arguments need to be initialized
+     * the intent change is needed for checkpointing; 
+     * there can be cases where intents are specified only for constant arguments 
+     * which explains why the change is not done by default. 
+     */
+    static bool ourChangeIntentFlag;
 
   };  // end of class
 

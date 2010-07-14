@@ -64,6 +64,8 @@ using namespace xaifBooster;
 
 namespace xaifBoosterControlFlowReversal { 
 
+  bool CallGraphVertexAlg::ourChangeIntentFlag=false;
+
   CallGraphVertexAlg::CallGraphVertexAlg(CallGraphVertex& theContaining) : 
     CallGraphVertexAlgBase(theContaining), 
     myTapingControlFlowGraph_p(NULL), 
@@ -384,6 +386,14 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   void CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
+  }
+
+  void CallGraphVertexAlg::changeIntent() { 
+    ourChangeIntentFlag=true;
+  }
+
+  bool CallGraphVertexAlg::changesIntent() { 
+    return ourChangeIntentFlag;
   }
 
 } // end of namespace
