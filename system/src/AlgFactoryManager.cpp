@@ -53,7 +53,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/system/inc/AlgFactoryManager.hpp"
-
+#include "xaifBooster/system/inc/AlgConfig.hpp"
 #include "xaifBooster/system/inc/ArgumentAlgFactory.hpp"
 #include "xaifBooster/system/inc/ArgumentSymbolReferenceAlgFactory.hpp"
 #include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
@@ -105,9 +105,10 @@ namespace xaifBooster {
     } // end catch
     ourInstanceMutex.unlock();
     return ourInstance_p;
-  } // end of AlgFactoryManager::instance
+  } 
 
   AlgFactoryManager::AlgFactoryManager() : 
+    ourAlgConfig_p(0),
     ourArgumentAlgFactory_p(0),
     ourArgumentSymbolReferenceAlgFactory_p(0),
     ourAssignmentAlgFactory_p(0),
@@ -134,11 +135,12 @@ namespace xaifBooster {
     ourMarkerAlgFactory_p(0), 
     ourPreLoopAlgFactory_p(0), 
     ourSubroutineCallAlgFactory_p(0),
-    ourSymbolAlgFactory_p(0) 
+    ourSymbolAlgFactory_p(0)
   {
   }
 
   AlgFactoryManager::~AlgFactoryManager() {
+    if (ourAlgConfig_p) delete ourAlgConfig_p;
     if (ourArgumentAlgFactory_p) delete ourArgumentAlgFactory_p;
     if (ourArgumentSymbolReferenceAlgFactory_p) delete ourArgumentSymbolReferenceAlgFactory_p;
     if (ourAssignmentAlgFactory_p) delete ourAssignmentAlgFactory_p;
@@ -166,7 +168,7 @@ namespace xaifBooster {
     if (ourPreLoopAlgFactory_p) delete ourPreLoopAlgFactory_p;
     if (ourSubroutineCallAlgFactory_p) delete ourSubroutineCallAlgFactory_p;
     if (ourSymbolAlgFactory_p) delete ourSymbolAlgFactory_p;
-  } // end of AlgFactoryManager::~AlgFactoryManager
+  } 
 
   void AlgFactoryManager::resets() {
     resetArgumentAlgFactory(new ArgumentAlgFactory());
@@ -559,7 +561,9 @@ namespace xaifBooster {
     if (ourSymbolAlgFactory_p) out << "ourSymbolAlgFactory_p=" << ourSymbolAlgFactory_p->debug().c_str() << ",";
     out << "]" << std::ends;  
     return out.str();
-  } // end of AlgFactoryManager::~AlgFactoryManager
+  } 
+
+  ALG_CONFIG_ACCESS_DEF_MACRO
 
 }
 

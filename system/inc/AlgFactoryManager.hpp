@@ -56,39 +56,70 @@
 #include "xaifBooster/utils/inc/Mutex.hpp"
 #include "xaifBooster/utils/inc/Debuggable.hpp"
 
+/** 
+ * to be used in in all AlgFactoryManager declarations
+ */
+#define ALG_CONFIG_ACCESS_DECL_MACRO				\
+  AlgConfig* makeAlgConfig(int argc,				\
+			   char** argv,				\
+			   const std::string& buildStamp);	\
+								\
+  AlgConfig* getAlgConfig();
+
+/** 
+ * to be used in in all AlgFactoryManager definitions
+ */
+#define ALG_CONFIG_ACCESS_DEF_MACRO					\
+  AlgConfig* AlgFactoryManager::makeAlgConfig(int argc,			\
+					      char** argv,		\
+					      const std::string& buildStamp) { \
+    if (ourAlgConfig_p)							\
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::makeAlgConfig(): already made"); \
+    return dynamic_cast<AlgConfig*>(ourAlgConfig_p=new AlgConfig(argc,argv,buildStamp)); \
+  }									\
+									\
+  AlgConfig* AlgFactoryManager::getAlgConfig() {			\
+    if (!ourAlgConfig_p)						\
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getAlgConfig(): not set"); \
+    return dynamic_cast<AlgConfig*>(ourAlgConfig_p);			\
+  } 
+
 namespace xaifBooster { 
 
-class ArgumentAlgFactory;
-class ArgumentSymbolReferenceAlgFactory;
-class AssignmentAlgFactory;
-class BasicBlockAlgFactory;
-class BooleanOperationAlgFactory;
-class BranchAlgFactory;
-class CallGraphAlgFactory;
-class CallGraphVertexAlgFactory;
-class ConcreteArgumentAlgFactory;
-class ConstantAlgFactory;
-class ControlFlowGraphAlgFactory;
-class ControlFlowGraphVertexAlgFactory;
-class EndBranchAlgFactory;
-class EndLoopAlgFactory;
-class EntryAlgFactory;
-class ExitAlgFactory;
-class ExpressionAlgFactory;
-class ExpressionEdgeAlgFactory;
-class ForLoopAlgFactory;
-class GotoAlgFactory;
-class IfStatementAlgFactory;
-class IntrinsicAlgFactory;
-class LabelAlgFactory;
-class MarkerAlgFactory;
-class PreLoopAlgFactory;
-class SubroutineCallAlgFactory;
-class SymbolAlgFactory;
+  class ArgumentAlgFactory;
+  class ArgumentSymbolReferenceAlgFactory;
+  class AssignmentAlgFactory;
+  class BasicBlockAlgFactory;
+  class BooleanOperationAlgFactory;
+  class BranchAlgFactory;
+  class CallGraphAlgFactory;
+  class CallGraphVertexAlgFactory;
+  class ConcreteArgumentAlgFactory;
+  class ConstantAlgFactory;
+  class ControlFlowGraphAlgFactory;
+  class ControlFlowGraphVertexAlgFactory;
+  class EndBranchAlgFactory;
+  class EndLoopAlgFactory;
+  class EntryAlgFactory;
+  class ExitAlgFactory;
+  class ExpressionAlgFactory;
+  class ExpressionEdgeAlgFactory;
+  class ForLoopAlgFactory;
+  class GotoAlgFactory;
+  class IfStatementAlgFactory;
+  class IntrinsicAlgFactory;
+  class LabelAlgFactory;
+  class MarkerAlgFactory;
+  class PreLoopAlgFactory;
+  class SubroutineCallAlgFactory;
+  class SymbolAlgFactory;
+
+  class AlgConfig;
 
   /** 
    * the singleton class for 
    * setting algorithm factory pointers
+   * and the config instance
    */
   class AlgFactoryManager : public Debuggable { 
 
@@ -141,6 +172,8 @@ class SymbolAlgFactory;
 
     virtual std::string debug() const; 
 
+    ALG_CONFIG_ACCESS_DECL_MACRO
+
   protected: 
     
     void resetArgumentAlgFactory(ArgumentAlgFactory*);
@@ -181,6 +214,12 @@ class SymbolAlgFactory;
      * the mutex to protect the instance
      */
     static Mutex ourInstanceMutex;
+
+    /** 
+     * to hold the quasi-static (because the Manager is a singleton)
+     * configuration instance
+     */
+    AlgConfig* ourAlgConfig_p;
 
   private: 
 
