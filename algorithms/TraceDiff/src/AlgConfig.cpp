@@ -50,8 +50,6 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <iostream>
-
 #include "xaifBooster/algorithms/TraceDiff/inc/AlgConfig.hpp"
 
 namespace xaifBoosterTraceDiff { 
@@ -62,25 +60,16 @@ namespace xaifBoosterTraceDiff {
     xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterTypeChange::AlgConfig(argc,argv,buildStamp),
     xaifBoosterControlFlowReversal::AlgConfig(argc,argv,buildStamp) {
+    registerIt(&ourConfig,&ourUsage,"");
   } 
 
-  std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterTypeChange::AlgConfig::getSwitches()
-		       +
-		       xaifBoosterControlFlowReversal::AlgConfig::getSwitches());
+  STATIC_ALG_CONFIG_FUNC_DEF_MACRO
+
+  void AlgConfig::myConfig() { 
   } 
 
-  void AlgConfig::config() { 
-    xaifBoosterTypeChange::AlgConfig::config();
-    xaifBoosterControlFlowReversal::AlgConfig::config();
-  } 
-
-  void AlgConfig::usage() { 
-    xaifBoosterTypeChange::AlgConfig::usage();
+  void AlgConfig::myUsage() { 
     std::cout << " TraceDiff options: no specific options here" << std::endl;
   } 
 
-} // end of namespace xaifBooster
-                                                                     
-
-
+} 
