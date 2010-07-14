@@ -50,10 +50,8 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <iostream>
-
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgConfig.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
@@ -63,29 +61,23 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 		       const std::string& buildStamp) :
     xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterPushPop::AlgConfig(argc,argv,buildStamp) {
+    registerIt(&ourConfig,&ourUsage,"fP");
   } 
 
-  std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterPushPop::AlgConfig::getSwitches()+"fPI");
-  } 
+  STATIC_ALG_CONFIG_FUNC_DEF_MACRO
 
-  void AlgConfig::config() { 
-    xaifBoosterPushPop::AlgConfig::config();
+  void AlgConfig::myConfig() { 
     if (isSet('f')) 
       CallGraphVertexAlg::checkPointToFiles();
     if (isSet('P')) 
       CallGraphVertexAlg::forceAllArgumentCheckpoints();
-    if (isSet('I')) 
-      ArgumentSymbolReferenceAlg::changeIntentForCheckPoints();
   } 
 
-  void AlgConfig::usage() { 
-    xaifBoosterPushPop::AlgConfig::usage();
+  void AlgConfig::myUsage() { 
     std::cout << " BasicBlockPreaccumulationReverse options:" << std::endl
 	    << "             [-P] force checkpoints even on formal parameters with constant actual arguments or no calls" << std::endl
-	    << "             [-I] change all argument INTENTs for checkpoints" << std::endl
 	    << "             [-f] checkpoint write order for individual files instead of a memory stack" << std::endl; 
   } 
 
-} // end of namespace xaifBooster
-                                                                     
+} 
+

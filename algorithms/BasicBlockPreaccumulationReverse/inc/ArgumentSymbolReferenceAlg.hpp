@@ -80,8 +80,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
     virtual void algorithm_action_1();
 
-    static void changeIntentForCheckPoints();
-
   private:
 
     /** 
@@ -103,8 +101,6 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
      * the intent to be changed
      */
     IntentType::IntentType_E myIntent;
-
-    static bool ourChangeIntentForCheckPointsFlag;
 
   };
  
