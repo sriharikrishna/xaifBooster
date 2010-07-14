@@ -50,9 +50,8 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <iostream>
-
 #include "xaifBooster/algorithms/AddressArithmetic/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 
 namespace xaifBoosterAddressArithmetic { 
@@ -63,19 +62,12 @@ namespace xaifBoosterAddressArithmetic {
     xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgConfig(argc,argv,buildStamp),
     xaifBoosterControlFlowReversal::AlgConfig(argc,argv,buildStamp) {
+    registerIt(&ourConfig,&ourUsage,"uUt");
   } 
 
-  std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgConfig::getSwitches()
-		       +
-		       xaifBoosterControlFlowReversal::AlgConfig::getSwitches()
-		       +
-		       "uUt");
-  } 
+  STATIC_ALG_CONFIG_FUNC_DEF_MACRO
 
-  void AlgConfig::config() { 
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgConfig::config();
-    xaifBoosterControlFlowReversal::AlgConfig::config();
+  void AlgConfig::myConfig() { 
     if (isSet('u')) 
       CallGraphVertexAlg::setUserDecides();
     if (isSet('U')) 
@@ -84,8 +76,7 @@ namespace xaifBoosterAddressArithmetic {
       CallGraphVertexAlg::setTopLevelRoutine(argAsString('t'));
   } 
 
-  void AlgConfig::usage() { 
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgConfig::usage();
+  void AlgConfig::myUsage() { 
     std::cout << " AddressArithmetic options:" << std::endl
 	      << "             [-u] user decides on all variables violating simple loop restrictions" << std::endl
 	      << "             [-U] ignore all variables violating simple loop restrictions" << std::endl
@@ -93,7 +84,4 @@ namespace xaifBoosterAddressArithmetic {
 	      << "                top level procedure <name> is checked for quasi-constant data" << std::endl;
   } 
 
-} // end namespace xaifBoosterAddressArithmetic
-                                                                     
-
-
+} 

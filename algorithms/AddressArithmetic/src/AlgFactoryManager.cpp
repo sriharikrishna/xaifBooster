@@ -60,6 +60,7 @@
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
 
 #include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlgFactory.hpp"
 
@@ -105,5 +106,7 @@ namespace xaifBoosterAddressArithmetic {
     xaifBoosterAddressArithmetic::AlgFactoryManager::resets();
   }
 
-} // end namespace xaifBoosterAddressArithmetic
+  ALG_CONFIG_ACCESS_DEF_MACRO
+
+}
 
