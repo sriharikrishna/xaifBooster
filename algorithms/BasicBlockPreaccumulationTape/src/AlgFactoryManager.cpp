@@ -52,11 +52,11 @@
 // ========== end copyright notice ==============
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlgFactory.hpp"
-
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
 
 using namespace xaifBooster;
 
@@ -93,5 +93,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     xaifBoosterBasicBlockPreaccumulationTape::AlgFactoryManager::resets();
   }
 
-} // end namespace xaifBoosterBasicBlockPreaccumulationTape
+  ALG_CONFIG_ACCESS_DEF_MACRO
+
+} 
 
