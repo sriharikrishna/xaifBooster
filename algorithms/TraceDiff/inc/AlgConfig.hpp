@@ -66,20 +66,22 @@ namespace xaifBoosterTraceDiff {
 
   public:
 
+    static void ourUsage(); 
+    void myUsage();
+
+    static void ourConfig();
+    void myConfig();
+
+  protected:
+    
+    friend class AlgFactoryManager; 
+
     AlgConfig(int argc, 
 	      char** argv,
 	      const std::string& buildStamp);
 
-    virtual void usage();
-
-    virtual void config();
-
-  protected:
-    
-    virtual std::string getSwitches();
-
   }; 
   
-} // end of namespace xaifBooster
-                                                                     
+}
+
 #endif

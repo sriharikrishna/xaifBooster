@@ -102,5 +102,7 @@ namespace xaifBoosterTraceDiff {
     xaifBoosterTraceDiff::AlgFactoryManager::resets();
   }
 
+  ALG_CONFIG_ACCESS_DEF_MACRO
+
 }
 
