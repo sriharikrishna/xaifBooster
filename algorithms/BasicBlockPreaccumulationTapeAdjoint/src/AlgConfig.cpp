@@ -50,9 +50,8 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <iostream>
-
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AlgFactoryManager.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint { 
 
@@ -61,20 +60,17 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 		       const std::string& buildStamp) :
     xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterBasicBlockPreaccumulationTape::AlgConfig(argc,argv,buildStamp) {
+    registerIt(&ourConfig,&ourUsage,"");
   } 
 
-  std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterBasicBlockPreaccumulationTape::AlgConfig::getSwitches());
+  STATIC_ALG_CONFIG_FUNC_DEF_MACRO
+
+  void AlgConfig::myConfig() { 
   } 
 
-  void AlgConfig::config() { 
-    xaifBoosterBasicBlockPreaccumulationTape::AlgConfig::config();
-  } 
-
-  void AlgConfig::usage() { 
-    xaifBoosterBasicBlockPreaccumulationTape::AlgConfig::usage();
+  void AlgConfig::myUsage() { 
     std::cout << " BasicBlockPreaccumulationTapeAdjoint options: no specific options here" << std::endl; 
   } 
 
-} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+} 
 
