@@ -339,7 +339,9 @@ namespace xaifBoosterControlFlowReversal {
 	if ((*initSymbol) == &((*anArgumentSymbolReferencePListI)->getSymbol())) {
 	  if ((*anArgumentSymbolReferencePListI)->getIntent() != IntentType::OUT_ITYPE 
 	      ||
-	      CallGraphVertexAlg::changesIntent()) {
+	      CallGraphVertexAlg::changesIntent()
+	      ||	
+              (*initSymbol)->getActiveTypeFlag()) {  // this also triggers intent change for the adjoint propagation
 	    init_symbols.remove(*initSymbol);
 	  }
 	  break;
