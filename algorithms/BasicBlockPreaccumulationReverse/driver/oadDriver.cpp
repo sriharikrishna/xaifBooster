@@ -127,11 +127,6 @@ int main(int argc,char** argv) {
 	      "caught exception: " << e.getReason());
     return -1;
   } // end catch 
-  catch (std::bad_cast& e) { 
-    DBG_MACRO(DbgGroup::ERROR,
-	      "caught std::bad_cast exception: " << e.what());
-    return -1;
-  } // end catch 
   catch (std::exception& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught std::exception: " << e.what());
@@ -143,8 +138,7 @@ int main(int argc,char** argv) {
     return -1;
   } // end catch 
   DBG_MACRO(DbgGroup::METRIC,"total number of assignments: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getAssignmentCounter() << std::endl << "                           "
-                          << "total number of sequences: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getSequenceCounter() << std::endl << "                           "
-                          << "totals for preaccumulation metrics: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getGlobalPreaccumulationCounter().debug().c_str());
+	    << "total number of sequences: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getSequenceCounter() << std::endl << "                           "
+	    << "totals for preaccumulation metrics: " << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getGlobalPreaccumulationCounter().debug().c_str());
   return 0;
 }
-  

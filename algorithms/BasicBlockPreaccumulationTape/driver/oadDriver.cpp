@@ -119,11 +119,6 @@ int main(int argc,char** argv) {
 	      "caught exception: " << e.getReason());
     return -1;
   } // end catch 
-  catch (std::bad_cast& e) { 
-    DBG_MACRO(DbgGroup::ERROR,
-	      "caught std::bad_cast exception: " << e.what());
-    return -1;
-  } // end catch 
   catch (std::exception& e) { 
     DBG_MACRO(DbgGroup::ERROR,
 	      "caught std::exception: " << e.what());

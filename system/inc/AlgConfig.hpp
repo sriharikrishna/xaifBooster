@@ -54,6 +54,7 @@
 // ========== end copyright notice ==============
 
 #include <list>
+#include <iostream>
 #include "xaifBooster/utils/inc/CommandLineParser.hpp"
 
 /**  
