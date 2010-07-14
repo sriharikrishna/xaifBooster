@@ -53,6 +53,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlgFactory.hpp"
@@ -91,6 +92,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     xaifBoosterLinearization::AlgFactoryManager::init();
     xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
   }
+
+  ALG_CONFIG_ACCESS_DEF_MACRO
 
 }
 

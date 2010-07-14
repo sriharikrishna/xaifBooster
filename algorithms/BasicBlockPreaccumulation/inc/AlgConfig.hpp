@@ -55,30 +55,7 @@
 
 #include "xaifBooster/algorithms/Linearization/inc/AlgConfig.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulation { 
-
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public xaifBoosterLinearization::AlgConfig  { 
-
-  public:
-
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
-
-    virtual void usage();
-
-    virtual void config();
-
-  protected:
-    
-    virtual std::string getSwitches();
-
-  }; 
-  
-} // end namespace xaifBoosterBasicBlockPreaccumulation
+DERIVED_ALG_CONFIG_DECL_MACRO(xaifBoosterLinearization,xaifBoosterBasicBlockPreaccumulation)
 
 #endif
 
