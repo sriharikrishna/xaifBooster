@@ -53,6 +53,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/algorithms/TraceDiff/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/TraceDiff/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/TraceDiff/inc/IntrinsicAlgFactory.hpp"

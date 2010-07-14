@@ -51,6 +51,7 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 #include "xaifBooster/algorithms/TraceDiff/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/TraceDiff/inc/AlgFactoryManager.hpp"
 
 namespace xaifBoosterTraceDiff { 
 
