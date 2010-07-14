@@ -53,15 +53,17 @@
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
 
-#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/PushPop/inc/AlgFactoryManager.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
+
+  class AlgConfig; 
 
   /** 
    * the singleton class for 
    * setting algorithm factory pointers
    */
-  class AlgFactoryManager : public xaifBoosterAddressArithmetic::AlgFactoryManager { 
+  class AlgFactoryManager : public xaifBoosterPushPop::AlgFactoryManager { 
 
   public: 
 
@@ -70,6 +72,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     virtual void resets(); 
 
     virtual void init(); 
+
+    ALG_CONFIG_ACCESS_DECL_MACRO
 
   }; // end of class AlgFactoryManager
 

@@ -55,13 +55,12 @@
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/ArgumentSymbolReference.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/CodeReplacement/inc/ConceptuallyStaticInstances.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationReverse { 
-
-  bool ArgumentSymbolReferenceAlg::ourChangeIntentForCheckPointsFlag=false;
 
   ArgumentSymbolReferenceAlg::ArgumentSymbolReferenceAlg(ArgumentSymbolReference& theContaining):
     ArgumentSymbolReferenceAlgBase(theContaining) { 
@@ -112,13 +111,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     myIntent=getContaining().getIntent();
     if (getContaining().getSymbol().getActiveTypeFlag()
 	|| 
-	ourChangeIntentForCheckPointsFlag)
+	CallGraphVertexAlg::changesIntent())
       // all active parameters should become inout
       myIntent=IntentType::INOUT_ITYPE;
-  }
-
-  void ArgumentSymbolReferenceAlg::changeIntentForCheckPoints() { 
-    ourChangeIntentForCheckPointsFlag=true;
   }
 
 } // end of namespace

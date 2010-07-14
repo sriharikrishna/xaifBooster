@@ -99,5 +99,4 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   ALG_CONFIG_ACCESS_DEF_MACRO
 
-} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
-
+}

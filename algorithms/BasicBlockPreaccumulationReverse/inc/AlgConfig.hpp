@@ -55,30 +55,7 @@
 
 #include "xaifBooster/algorithms/PushPop/inc/AlgConfig.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulationReverse { 
-
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public xaifBoosterPushPop::AlgConfig  { 
-
-  public:
-
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
-
-    virtual void usage();
-
-    virtual void config();
-
-  protected:
-    
-    virtual std::string getSwitches();
-
-  }; 
-  
-} // end namespace xaifBoosterBasicBlockPreaccumulationReverse
+DERIVED_ALG_CONFIG_DECL_MACRO(xaifBoosterPushPop,xaifBoosterBasicBlockPreaccumulationReverse)
 
 #endif
 
