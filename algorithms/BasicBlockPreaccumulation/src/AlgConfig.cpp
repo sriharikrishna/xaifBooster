@@ -50,9 +50,8 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <iostream>
-
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 
@@ -63,14 +62,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		       const std::string& buildStamp) :
     xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterLinearization::AlgConfig(argc,argv,buildStamp) {
+    registerIt(&ourConfig,&ourUsage,"nCAmQaMR");
   } 
 
-  std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBoosterLinearization::AlgConfig::getSwitches() + "nCAmQaMR");
-  } 
+  STATIC_ALG_CONFIG_FUNC_DEF_MACRO
 
-  void AlgConfig::config() { 
-    xaifBoosterLinearization::AlgConfig::config();
+  void AlgConfig::myConfig() { 
     if (isSet('n')) 
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
     if (isSet('C'))
@@ -95,8 +92,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::useReroutings();
   }
 
-  void AlgConfig::usage() { 
-    xaifBoosterLinearization::AlgConfig::usage();
+  void AlgConfig::myUsage() { 
     std::cout << " BasicBlockPreaccumulation options: " << std::endl
 	      << "             [-n] allow n-ary sax operations" << std::endl
               << "             [-C] turn on runtime counters"  << std::endl
