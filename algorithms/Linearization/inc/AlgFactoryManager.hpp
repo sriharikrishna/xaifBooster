@@ -57,6 +57,8 @@
 
 namespace xaifBoosterLinearization { 
 
+  class AlgConfig; 
+
   /** 
    * the singleton class for 
    * setting algorithm factory pointers
@@ -70,6 +72,8 @@ namespace xaifBoosterLinearization {
     virtual void resets(); 
 
     virtual void init(); 
+
+    ALG_CONFIG_ACCESS_DECL_MACRO
 
   }; // end of class AlgFactoryManager
 

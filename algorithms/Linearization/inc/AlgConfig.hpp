@@ -55,30 +55,7 @@
 
 #include "xaifBooster/algorithms/TypeChange/inc/AlgConfig.hpp"
 
-namespace xaifBoosterLinearization { 
-
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public xaifBoosterTypeChange::AlgConfig  { 
-
-  public:
-
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
-
-    virtual void usage();
-
-    virtual void config();
-
-  protected:
-    
-    virtual std::string getSwitches();
-
-  }; 
-
-} // end namespace xaifBoosterLinearization
+DERIVED_ALG_CONFIG_DECL_MACRO(xaifBoosterTypeChange,xaifBoosterLinearization)
 
 #endif
 
