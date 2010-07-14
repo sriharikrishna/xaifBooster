@@ -53,6 +53,7 @@
 #include "xaifBooster/algorithms/TypeChange/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SubroutineCallAlg.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/AlgFactoryManager.hpp"
 
 namespace xaifBoosterTypeChange { 
 
@@ -60,22 +61,19 @@ namespace xaifBoosterTypeChange {
 		       char** argv,
 		       const std::string& buildStamp) :
     xaifBooster::AlgConfig(argc,argv,buildStamp) {
+    registerIt(&ourConfig,&ourUsage,"wr");
   } 
 
-  std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBooster::AlgConfig::getSwitches()+"wr");
-  } 
+  STATIC_ALG_CONFIG_FUNC_DEF_MACRO
 
-  void AlgConfig::config() { 
-    xaifBooster::AlgConfig::config();
+  void AlgConfig::myConfig() { 
     if (isSet('w')) 
       xaifBoosterTypeChange::SubroutineCallAlg::addWrapperNames(argAsString('w'));
     if (isSet('r')) 
       xaifBoosterTypeChange::ControlFlowGraphAlg::setForceNonExternalRenames();
   } 
 
-  void AlgConfig::usage() { 
-    xaifBooster::AlgConfig::usage();
+  void AlgConfig::myUsage() { 
     std::cout << " TypeChange options: " << std::endl
 	      << "             [-w \"<list of subroutines with wrappers\"> ]" << std::endl
 	      << "                 space separated list enclosed in double quotes" << std::endl

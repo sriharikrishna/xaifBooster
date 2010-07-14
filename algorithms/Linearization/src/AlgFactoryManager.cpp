@@ -53,6 +53,7 @@
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
 #include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/Linearization/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/ArgumentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/Linearization/inc/BooleanOperationAlgFactory.hpp"
@@ -99,6 +100,8 @@ namespace xaifBoosterLinearization {
     xaifBoosterTypeChange::AlgFactoryManager::init();
     xaifBoosterLinearization::AlgFactoryManager::resets();
   }
+
+  ALG_CONFIG_ACCESS_DEF_MACRO
 
 }
 
