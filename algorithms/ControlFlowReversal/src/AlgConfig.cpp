@@ -50,9 +50,9 @@
 // This work is partially supported by:
 // 	NSF-ITR grant OCE-0205590
 // ========== end copyright notice ==============
-#include <iostream> 
-
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgConfig.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 
 namespace xaifBoosterControlFlowReversal { 
 
@@ -60,19 +60,19 @@ namespace xaifBoosterControlFlowReversal {
 		       char** argv,
 		       const std::string& buildStamp) :
     xaifBooster::AlgConfig(argc,argv,buildStamp) {
+    registerIt(&ourConfig,&ourUsage,"I");
   } 
 
-  std::string AlgConfig::getSwitches() { 
-    return std::string(xaifBooster::AlgConfig::getSwitches());
+  STATIC_ALG_CONFIG_FUNC_DEF_MACRO
+
+  void AlgConfig::myConfig() { 
+    if (isSet('I')) 
+      CallGraphVertexAlg::changeIntent();
   } 
 
-  void AlgConfig::config() { 
-    xaifBooster::AlgConfig::config();
+  void AlgConfig::myUsage() { 
+    std::cout << " ControlFlowReversal options:" << std::endl
+	      << "             [-I] change all argument INTENTs for checkpoints and adjoint propagation" << std::endl;
   } 
 
-  void AlgConfig::usage() { 
-    xaifBooster::AlgConfig::usage();
-    std::cout << " ControlFlowReversal options: no specific options here" << std::endl;
-  } 
-
-} // end of namespace xaifBooster
+} 

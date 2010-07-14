@@ -66,6 +66,7 @@
 #include "xaifBooster/system/inc/SubroutineCall.hpp"
 #include "xaifBooster/system/inc/BooleanOperation.hpp"
 
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ReversibleControlFlowGraph.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlg.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlg.hpp"
@@ -336,7 +337,9 @@ namespace xaifBoosterControlFlowReversal {
       for (initSymbol = init_symbols.begin();
 	   initSymbol != init_symbols.end(); ++initSymbol) {
 	if ((*initSymbol) == &((*anArgumentSymbolReferencePListI)->getSymbol())) {
-	  if ((*anArgumentSymbolReferencePListI)->getIntent() != IntentType::OUT_ITYPE){
+	  if ((*anArgumentSymbolReferencePListI)->getIntent() != IntentType::OUT_ITYPE 
+	      ||
+	      CallGraphVertexAlg::changesIntent()) {
 	    init_symbols.remove(*initSymbol);
 	  }
 	  break;

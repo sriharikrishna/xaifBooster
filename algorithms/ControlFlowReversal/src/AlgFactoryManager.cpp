@@ -54,6 +54,7 @@
 #include "xaifBooster/utils/inc/DbgLoggerManager.hpp"
 
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/ControlFlowReversal/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/ControlFlowGraphVertexAlgFactory.hpp"
@@ -108,15 +109,14 @@ namespace xaifBoosterControlFlowReversal {
     resetBranchAlgFactory(new BranchAlgFactory());
     resetGotoAlgFactory(new GotoAlgFactory());
     resetLabelAlgFactory(new LabelAlgFactory());
-    DBG_MACRO(DbgGroup::CALLSTACK,
-	      "in CFR reset: " 
-	      << debug().c_str());
   }
 
   void AlgFactoryManager::init() {
     xaifBooster::AlgFactoryManager::init();
     xaifBoosterControlFlowReversal::AlgFactoryManager::resets();
   }
+
+  ALG_CONFIG_ACCESS_DEF_MACRO
 
 }
 

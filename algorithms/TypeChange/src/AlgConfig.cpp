@@ -80,7 +80,4 @@ namespace xaifBoosterTypeChange {
 	      << "             [-r] force renaming of all non-external routines" << std::endl;
   } 
 
-} // end of namespace xaifBooster
-                                                                     
-
-
+} 
