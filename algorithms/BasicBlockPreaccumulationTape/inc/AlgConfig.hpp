@@ -55,30 +55,7 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgConfig.hpp"
 
-namespace xaifBoosterBasicBlockPreaccumulationTape { 
-
-  /** 
-   * configuration and usage for this transformation 
-   */
-  class AlgConfig : public xaifBoosterBasicBlockPreaccumulation::AlgConfig  { 
-
-  public:
-
-    AlgConfig(int argc, 
-	      char** argv,
-	      const std::string& buildStamp);
-
-    virtual void usage();
-
-    virtual void config();
-
-  protected:
-    
-    virtual std::string getSwitches();
-
-  }; 
-  
-} // end namespace xaifBoosterBasicBlockPreaccumulationTape
+DERIVED_ALG_CONFIG_DECL_MACRO(xaifBoosterBasicBlockPreaccumulation,xaifBoosterBasicBlockPreaccumulationTape)
 
 #endif
 
