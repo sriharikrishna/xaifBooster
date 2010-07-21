@@ -444,8 +444,6 @@ namespace xaifBoosterTypeChange {
 		   false);
     ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
     theConcreteArgumentAlg.makeReplacement(theTempVar,copyEntireArray);
-    if (!withCopy)
-      return; 
     bool haveAllocation=false;
     if (theTempVar.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR
 	&&
@@ -453,7 +451,8 @@ namespace xaifBoosterTypeChange {
       addAllocation(theTempVar,theConcreteArgument);
       haveAllocation=true;
     }
-
+    if (!withCopy)
+      return; 
     // Pre-call conversion
     // skip if the concrete argument has intent out
     if (aFormalArgumentSymbolReference.getIntent() != IntentType::OUT_ITYPE) {
