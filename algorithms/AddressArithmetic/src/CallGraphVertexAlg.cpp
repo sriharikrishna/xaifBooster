@@ -82,7 +82,7 @@ namespace xaifBoosterAddressArithmetic {
     ControlFlowGraph::FormalResult theFormalResult(getContaining().getControlFlowGraph().hasFormal(anArgument.getVariable().getVariableSymbolReference()));
     DBG_MACRO(DbgGroup::DATA, "CallGraphVertexAlg::findUnknownVariablesInArgument: checking on "
 	      << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str() 
-	      << " found as formal parmeter: (found,postion)==(" <<  theFormalResult.first << "," << theFormalResult.second << ") in "
+	      << " test if formal parmeter returns: (found,postion)==(" <<  theFormalResult.first << "," << theFormalResult.second << ") in "
 	      << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true));
     if (theFormalResult.first) { 
       xaifBoosterTypeChange::ControlFlowGraphAlg& 
