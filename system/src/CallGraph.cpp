@@ -241,7 +241,7 @@ namespace xaifBooster {
 	  } 
 	  catch (SubroutineNotFoundException& e) { 
 	    // do nothing here, some symboltables just keep duplicate symbols (with different decorations)
-	    // but there is no actual subrotuine definition assoocated with them
+	    // but there is no actual subrotuine definition associated with them
 	  }
 	}
 	if (aFirstCallGraphVertex_p && aSecondCallGraphVertex_p) { 
