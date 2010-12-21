@@ -9,11 +9,13 @@
 #include "xaifBooster/system/inc/ArrayAccess.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/system/inc/SubroutineNotFoundException.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagatorEntry.hpp"
 
 #include "xaifBooster/algorithms/TypeChange/inc/ControlFlowGraphAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/MissingSubroutinesReport.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 
@@ -362,23 +364,29 @@ namespace xaifBoosterAddressArithmetic {
 		  << aSubroutineCall_p->getLineNumber());
       }
       // now check if any values are required on entry: 
-      const ControlFlowGraph& theCalleeCFG (ConceptuallyStaticInstances::instance()->getCallGraph().getSubroutineBySymbolReference(aSubroutineCall_p->getSymbolReference()).getControlFlowGraph());
-      const SideEffectList& theOnEntryList(theCalleeCFG.getSideEffectList(SideEffectListType::ON_ENTRY_LIST));
-      for (SideEffectList::VariablePList::const_iterator i = theOnEntryList.getVariablePList().begin(); 
-	   i != theOnEntryList.getVariablePList().end(); 
-	   ++i) {
-        std::string theOriginStr;
-	ControlFlowGraph::FormalResult theResult(theCalleeCFG.hasFormal((*i)->getVariableSymbolReference()));
-	if (theResult.first) { // is a formal
-	  const ConcreteArgument& theConcreteArgument(aSubroutineCall_p->getConcreteArgument(theResult.second));
-	  if (theConcreteArgument.isConstant())
-	    continue; 
-	  findUnknownVariablesInArgument(theConcreteArgument.getArgument(),
-					 theKnownVariables,
-					 theUnknownVariables,
-					 false,
-					 theOriginalBasicBlock);
+      try { 
+	const ControlFlowGraph& theCalleeCFG (ConceptuallyStaticInstances::instance()->getCallGraph().getSubroutineBySymbolReference(aSubroutineCall_p->getSymbolReference()).getControlFlowGraph());
+	const SideEffectList& theOnEntryList(theCalleeCFG.getSideEffectList(SideEffectListType::ON_ENTRY_LIST));
+	for (SideEffectList::VariablePList::const_iterator i = theOnEntryList.getVariablePList().begin(); 
+	     i != theOnEntryList.getVariablePList().end(); 
+	     ++i) {
+	  std::string theOriginStr;
+	  ControlFlowGraph::FormalResult theResult(theCalleeCFG.hasFormal((*i)->getVariableSymbolReference()));
+	  if (theResult.first) { // is a formal
+	    const ConcreteArgument& theConcreteArgument(aSubroutineCall_p->getConcreteArgument(theResult.second));
+	    if (theConcreteArgument.isConstant())
+	      continue; 
+	    findUnknownVariablesInArgument(theConcreteArgument.getArgument(),
+					   theKnownVariables,
+					   theUnknownVariables,
+					   false,
+					   theOriginalBasicBlock);
+	  }
 	}
+      }
+      catch (SubroutineNotFoundException& e) {
+	xaifBoosterTypeChange::MissingSubroutinesReport::report(e);
+	// we don't know what the callee is - presumably some black box - nothing else to do here
       }
       if (!theUnknownIndexVariables.empty()) {
 	std::ostringstream ostr;
