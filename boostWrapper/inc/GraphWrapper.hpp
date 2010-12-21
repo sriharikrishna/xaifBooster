@@ -107,7 +107,7 @@ namespace xaifBooster {
      * of the 'Vertex' type used for the 
      * GraphWrapper template instantiation
      */
-    void supplyAndAddVertexInstance(Vertex& theVertex);
+    Vertex& supplyAndAddVertexInstance(Vertex& theVertex);
 
     /** 
      * this removes a vertex and all incident 
@@ -133,7 +133,7 @@ namespace xaifBooster {
      * of the 'Edge' type used for the 
      * GraphWrapper template instantiation
      */
-    void supplyAndAddEdgeInstance(Edge& theEdge,
+    Edge& supplyAndAddEdgeInstance(Edge& theEdge,
 				  const Vertex& theSource_cr,
 				  const Vertex& theTarget_cr);
 

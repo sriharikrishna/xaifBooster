@@ -169,7 +169,7 @@ namespace xaifBooster {
   } // end of GraphWrapper<Vertex,Edge>::addVertex
 
   template <class Vertex, class Edge>
-  void
+  Vertex&
   GraphWrapper<Vertex,Edge>::supplyAndAddVertexInstance(Vertex& theVertex) { 
     // initialize with new vertex descriptor
     // see Vertex
@@ -179,6 +179,7 @@ namespace xaifBooster {
 	       // get the new vertex descriptor
 	       // see Vertex
 	       &theVertex);
+    return theVertex;
   } // end of GraphWrapper<Vertex,Edge>::supplyAndAddVertexInstance
 
   template <class Vertex, class Edge>
@@ -263,7 +264,7 @@ namespace xaifBooster {
   } // end of GraphWrapper<Vertex,Edge>::addEdge
   
   template <class Vertex, class Edge>
-  void
+  Edge&
   GraphWrapper<Vertex,Edge>::supplyAndAddEdgeInstance(Edge& theEdge,
 						      const Vertex& theSource_cr,
 						      const Vertex& theTarget_cr) { 
@@ -286,6 +287,7 @@ namespace xaifBooster {
 	       // get the new vertex descriptor
 	       // see Edge
 	       &theEdge);
+    return theEdge;
   } // end of GraphWrapper<Vertex,Edge>::supplyAndAddEdgeInstance
 
   template <class Vertex, class Edge>
