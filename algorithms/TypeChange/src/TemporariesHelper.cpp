@@ -260,7 +260,7 @@ namespace xaifBoosterTypeChange{
 	  }
 	  if(!indexExprP) {
 	    if(aDimensionBounds_p) {
-	      indexExpr.supplyAndAddVertexInstance(*(new Constant(aDimensionBounds_p->getLower())));
+	      indexExpr.supplyAndAddVertexInstance(*(new Constant(aDimensionBounds_p->getLower()))).setId(1);
 	      indexExprP= &indexExpr;
 	    }
 	  }
@@ -273,7 +273,7 @@ namespace xaifBoosterTypeChange{
 	  }
 	  if(!boundExprP) {
 	    if(aDimensionBounds_p) {
-	      boundExpr.supplyAndAddVertexInstance(*(new Constant(aDimensionBounds_p->getUpper())));
+	      boundExpr.supplyAndAddVertexInstance(*(new Constant(aDimensionBounds_p->getUpper()))).setId(1);
 	      boundExprP= &boundExpr;
 	    }
 	  }
