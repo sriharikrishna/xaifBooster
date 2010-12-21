@@ -456,8 +456,9 @@ namespace xaifBooster {
 	for (Expression::CArgumentPList::const_iterator theArgIt=theArguments.begin();
 	     theArgIt!=theArguments.end();
 	     ++theArgIt) {
-	  if (definesUnderControlFlowGraphVertex((*theArgIt)->getVariable(),
-						 theBranch)) { 
+          ControlFlowGraph::DefineCountingResult definesCount(definesUnderControlFlowGraphVertex((*theArgIt)->getVariable(),
+						              theBranch));
+	  if (!definesCount.myCountedFlag || definesCount.myCount) {
 	    // this is not really explicit then...
 	    DBG_MACRO(DbgGroup::ERROR,"::ControlFlowGraph::augmentGraphInfo: condition variable "
 		      << (*theArgIt)->getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
@@ -548,9 +549,9 @@ namespace xaifBooster {
     return FormalResult(false,0); 
   }
 
-  unsigned int ControlFlowGraph::definesUnderControlFlowGraphVertex(const Variable& theVariable,
+  ControlFlowGraph::DefineCountingResult ControlFlowGraph::definesUnderControlFlowGraphVertex(const Variable& theVariable,
 								    const ControlFlowGraphVertex& theControlFlowGraphVertex) const { 
-    int defCount=0;
+    DefineCountingResult defCount;
     if (theVariable.getDuUdMapKey().getKind()==InfoMapKey::NO_INFO) { 
       DBG_MACRO(DbgGroup::ERROR,
 		"ControlFlowGraph::definesUnderControlFlowGraphVertex: (old OA) skipping definitions check since no duud key for variable " 
@@ -561,6 +562,7 @@ namespace xaifBooster {
 		<< getSymbolReference().getSymbol().plainName().c_str());
     } 
     else {
+      defCount.myCountedFlag=true;
       // check all the definition locations:
       const StatementIdSet& defChain(ConceptuallyStaticInstances::instance()->
 				     getCallGraph().getDuUdMap().getEntry(theVariable.getDuUdMapKey()).getStatementIdSet());
@@ -575,8 +577,8 @@ namespace xaifBooster {
 		    << theControlFlowGraphVertex.debug().c_str());
 	  if (firstDominatedBySecond(getContainingVertex(*defChainI),
 				     theControlFlowGraphVertex,
-				     false)) { 
-	    defCount++;
+				     false)) {
+	    defCount.myCount++;
 	  }
 	  else { 
 	    // have outside definition but possibly inside overwrites of that definition
@@ -605,7 +607,7 @@ namespace xaifBooster {
 		  if (firstDominatedBySecond(getContainingVertex(*overwriteChainI),
 					     theControlFlowGraphVertex,
 					     false)) { 
-		    defCount++;
+		    defCount.myCount++;
 		  }
 		}
 	      }

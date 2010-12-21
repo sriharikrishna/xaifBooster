@@ -194,10 +194,29 @@ namespace xaifBooster {
     void augmentGraphInfo();
 
     /** 
+     * have a boolean if we cannot count
+     */
+    struct DefineCountingResult {
+      /**
+       * true if we have a chain key and can count
+       */
+      bool myCountedFlag;
+      /**
+       * the number of definitions
+       */
+      unsigned short myCount;
+
+      DefineCountingResult() :
+      myCountedFlag(false),
+      myCount(0) {}
+
+    };
+
+    /** 
      * how often is theVariable defined within this CF subtree with theControlFlowGraphVertex as root
      */
-    unsigned int definesUnderControlFlowGraphVertex(const Variable& theVariable,
-						    const ControlFlowGraphVertex& theControlFlowGraphVertex) const;
+    DefineCountingResult definesUnderControlFlowGraphVertex(const Variable& theVariable,
+                            			            const ControlFlowGraphVertex& theControlFlowGraphVertex) const;
 
     std::list<const ControlFlowGraphVertex*> getSOrtedVertexList() const; 
 
