@@ -172,12 +172,13 @@ namespace xaifBoosterTypeChange {
      * if forcePassive then we create a passive type, 
      * otherwise we create the type specified in the formalArgumentSymbol
      * \todo FIXME (AML): Most of this should be moved to SymbolTable, where it will replace the deprecated (and unused) method "SymbolTable::addUniqueAuxSymbolMatchingVariable", which was removed 3/11/09
-     */
-    void makeTempSymbol(const ConcreteArgument& theConcreteArgument,
+     * returns true if the temporary needs to be allocated 
+     *     */
+    bool makeTempSymbol(const ConcreteArgument& theConcreteArgument,
 			const Symbol& formalArgumentSymbol,
 			const Scope& formalArgumentScope,
 			Variable& aVariable,
-			int formalMinusConcreteDims,
+			SymbolShape::SymbolShape_E tmpSymbolShape,
 			bool forcePassive); 
 
     /** 
@@ -208,13 +209,15 @@ namespace xaifBoosterTypeChange {
      * add allocation calls for type change temps without fixed bounds
      */
     void addAllocation(const Variable& toBeAllocated,
-		       const ConcreteArgument& variableToMatch);
+		       const ConcreteArgument& argumentToMatch,
+                       bool allocateSliceOfargumentToMatch);
 
     /** 
      * add shape test for type change temps without fixed bounds
      */
     void addShapeTest(const Variable& toBeAllocated,
-		      const ConcreteArgument& variableToMatch);
+		      const ConcreteArgument& argumentToMatch,
+                      bool testSliceOfargumentToMatch);
 
     static  const std::string ourConversionRoutineName;
 
