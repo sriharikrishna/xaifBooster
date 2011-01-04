@@ -1,4 +1,3 @@
-
 // ========== begin copyright notice ==============
 // This file is part of 
 // ---------------
@@ -355,101 +354,103 @@ namespace xaifBoosterTypeChange {
   } 
   
   void SubroutineCallAlg::addAllocation(const Variable& toBeAllocated,
-					const ConcreteArgument& argumentToMatch) {
+					const ConcreteArgument& argumentToMatch,
+					bool allocateSliceOfargumentToMatch) {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
     theSRCall_p->setId("TypeChange::SubroutineCallAlg::addAllocation");
     myPriorAdjustmentsList.push_back(theSRCall_p);
     // first argument
     toBeAllocated.copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
     // second argument 
-    // this one needs to strip array indices if there are any
-    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2),false);
+    // if allocateSliceOfargumentToMatch is true this is deep copy and preserves the array indices
+    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2),allocateSliceOfargumentToMatch);
   }
 
   void SubroutineCallAlg::addShapeTest(const Variable& toBeAllocated,
-				       const ConcreteArgument& argumentToMatch) {
+				       const ConcreteArgument& argumentToMatch,
+				       bool testSliceOfargumentToMatch) {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_ShapeTest");
     theSRCall_p->setId("TypeChange::SubroutineCallAlg::addShapeTest");
     myPostAdjustmentsList.push_back(theSRCall_p);
     // first argument
     toBeAllocated.copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
     // second argument 
-    // this one needs to strip array indices if there are any
-    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2),false);
+    // if testSliceOfargumentToMatch is true this is deep copy and preserves the array indices
+    argumentToMatch.copyMyselfInto(theSRCall_p->addConcreteArgument(2),testSliceOfargumentToMatch);
   }
 
   void SubroutineCallAlg::addConversion(const ConcreteArgument& theConcreteArgument,
 					const ArgumentSymbolReference& aFormalArgumentSymbolReference,
 					const BasicBlock& theBasicBlock,
 					bool withCopy) { 
-    short formalMinusConcreteDims(0);
-    // we observe the following cases: 
-    // 1. exact shape match where formalMinusConcreteDims == 0 
-    // 2. concrete has lesser shape than the formal, i.e. formalMinusConcreteDims > 0 
+    SymbolShape::SymbolShape_E formalArgumentSymbolShape(aFormalArgumentSymbolReference.getSymbol().getSymbolShape());
+    SymbolShape::SymbolShape_E tmpArgumentSymbolShape(formalArgumentSymbolShape); // to init
+    bool passingPointer=false;
+    bool passingSlice=false;
+    // we handle the following cases (this is in effect FORTRAN specific until we recognize an agreed upon C/C++ array type)
+    //  actual            | formal
+    // ---------------------------------------------------------
+    //  SCALAR            | SCALAR (copy scalar)
+    //  SCALAR deref      | SCALAR (copy scalar)
+    //  SCALAR deref      | non-SCALAR (implies pointer passing, copy entire array)
+    //  F90 array (slice) | array of matching shape (copy slice, if possible)
+    //
+    // in the case of passing a pointer we have the following cases:
+    // 1. concrete has lesser shape than the formal,
     //     call foo(vector,...) 
     //     subroutine foo(matrix,...)
-    //       and the dimension is passed on to foo 
+    //       and the dimension is somehow known in foo
     //       and would refer to matrix(i,1) to reflect that only a vector was passed
-    // 3. formal has lesser shape than the concrete, i.e. formalMinusConcreteDims < 0 
-    //    a: slicing e.g. a  call foo (vector(i))  for a scalar concrete argument
+    // 2. formal has lesser shape than the concrete,
+    //    a: a  call foo (vector(i))  for a scalar concrete argument
     //    b: implicit reshaping, e.g. a call foo (matrix) for a vector concrete argument
     //       where it is assumed that 'matrix' occupies a consecutive 'n x m' bit in memory that can 
     //       be addressed by vector indices up to n*m
     //    in case a: we just convert the reduced data, i.e. vector(i)
     //    in case b: we need to convert all concrete data
-    //    THE PROBLEM: it is not clear how to reliably distinguish cases a and b, in 
-    //                 particular when we have non-constant dimension expressions
-    if (theConcreteArgument.isArgument()) { 
-      // it is possible that the concrete argument has more or less dimensions than the actual one and 
-      // the conversion logic needs to address this problem
-      formalMinusConcreteDims=SymbolShape::difference(aFormalArgumentSymbolReference.
-						      getSymbol().
-						      getSymbolShape(),
-						      theConcreteArgument.
-						      getArgument().
-						      getVariable().
-						      getVariableSymbolReference().
-						      getSymbol().
-						      getSymbolShape());
-    }
-    short shapeOffsetFromFormal(0);
-    bool copyEntireArray=false;
-    if (formalMinusConcreteDims>0)
-      shapeOffsetFromFormal=-formalMinusConcreteDims;
-    else { 
-      if (formalMinusConcreteDims<0 
-	  && 
-	  aFormalArgumentSymbolReference.getSymbol().getSymbolShape()!=SymbolShape::SCALAR) { 
-	shapeOffsetFromFormal=-formalMinusConcreteDims;
-	copyEntireArray=true;
-	DBG_MACRO(DbgGroup::DATA, "SubroutineCallAlg::addConversion: " 
-		  << " cannot decide if shape offset "
-		  << shapeOffsetFromFormal 
-		  << " for " 
-		  << theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
-		  << " in call to " 
-		  << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str()
-		  << " on line " 
-		  << getContainingSubroutineCall().getLineNumber()
-		  << " implies slicing or reshaping so we need to do a full copy");
+    if (theConcreteArgument.isArgument()) {
+      SymbolShape::SymbolShape_E concreteArgumentSymbolShape(theConcreteArgument.
+						             getArgument().
+						             getVariable().
+						             getVariableSymbolReference().
+						             getSymbol().
+						             getSymbolShape());
+      SymbolShape::SymbolShape_E concreteArgumentEffectiveShape(theConcreteArgument.
+								getArgument().
+								getVariable().
+								getEffectiveShape());
+      if (concreteArgumentEffectiveShape==SymbolShape::SCALAR) { 
+	if (formalArgumentSymbolShape!=SymbolShape::SCALAR) {
+	  passingPointer=true;
+	  DBG_MACRO(DbgGroup::DATA, "SubroutineCallAlg::addConversion: passing to formal argument of shape "
+		    << SymbolShape::toString(formalArgumentSymbolShape).c_str()
+		    << " the concrete argument "
+		    << theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
+		    << " dererferenced to a SCALAR on line "
+		    << getContainingSubroutineCall().getLineNumber());	
+	  tmpArgumentSymbolShape=concreteArgumentSymbolShape;
+	}
+	else { 
+	  tmpArgumentSymbolShape=concreteArgumentEffectiveShape; // always SCALAR here
+	}
+      }
+      else{
+	passingSlice=true; // also works when entire arrays are passed
+	tmpArgumentSymbolShape=concreteArgumentEffectiveShape; 
       }
     }
     // this is the extra temporary that replaces the original argument
     Variable theTempVar;
-    makeTempSymbol(theConcreteArgument,
-		   aFormalArgumentSymbolReference.getSymbol(),
-		   aFormalArgumentSymbolReference.getScope(),
-		   theTempVar,
-		   shapeOffsetFromFormal,
-		   false);
+    bool doAllocation=makeTempSymbol(theConcreteArgument,
+				     aFormalArgumentSymbolReference.getSymbol(),
+				     aFormalArgumentSymbolReference.getScope(),
+				     theTempVar,
+				     tmpArgumentSymbolShape,
+				     false);
     ConcreteArgumentAlg& theConcreteArgumentAlg(dynamic_cast<ConcreteArgumentAlg&>(theConcreteArgument.getConcreteArgumentAlgBase()));
-    theConcreteArgumentAlg.makeReplacement(theTempVar,copyEntireArray);
-    bool haveAllocation=false;
-    if (theTempVar.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR
-	&&
-	!(theTempVar.getVariableSymbolReference().getSymbol().hasDimensionBounds())) {
-      addAllocation(theTempVar,theConcreteArgument);
-      haveAllocation=true;
+    theConcreteArgumentAlg.makeReplacement(theTempVar,passingPointer);
+    if (doAllocation) {
+      addAllocation(theTempVar,theConcreteArgument,passingSlice);
     }
     if (!withCopy)
       return; 
@@ -457,19 +458,17 @@ namespace xaifBoosterTypeChange {
     // skip if the concrete argument has intent out
     if (aFormalArgumentSymbolReference.getIntent() != IntentType::OUT_ITYPE) {
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
-        thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
+	thePriorCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
       myPriorAdjustmentsList.push_back(thePriorCall_p);
       thePriorCall_p->setId("SubroutineCallAlg::addConversion prior");
       theTempVar.copyMyselfInto(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
       ConcreteArgument& theSecondPriorConcreteArg(thePriorCall_p->addConcreteArgument(2));
-      theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,!copyEntireArray);
+      theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,!passingPointer);
       theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
       // may have to adjust upper bounds
-      if (theConcreteArgument.isArgument() && !copyEntireArray) {
-        theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds(
-         (int)(aFormalArgumentSymbolReference.getSymbol().getSymbolShape())+shapeOffsetFromFormal
-        );
-      }
+//       if (theConcreteArgument.isArgument() && !passingPointer) {
+// 	theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(tmpArgumentSymbolShape));
+//       }
     }
 
     // skip post-call back-conversion if
@@ -489,19 +488,18 @@ namespace xaifBoosterTypeChange {
     if (theCallerFormalResult.first) { // this concrete argument happens to be a formal argument in the caller context
       // get the positional argument  from the list 
       for (ArgumentList::ArgumentSymbolReferencePList::const_iterator listI=theCFG.getArgumentList().getArgumentSymbolReferencePList().begin();
-           listI!=theCFG.getArgumentList().getArgumentSymbolReferencePList().end();
-           ++listI) {
-        if (theCallerFormalResult.second==(*listI)->getPosition() // match the position
-            && 
-            IntentType::IN_ITYPE==(*listI)->getIntent()) { // look at its itype
-          return;
-        }
+	   listI!=theCFG.getArgumentList().getArgumentSymbolReferencePList().end();
+	   ++listI) {
+	if (theCallerFormalResult.second==(*listI)->getPosition() // match the position
+	    && 
+	    IntentType::IN_ITYPE==(*listI)->getIntent()) { // look at its itype
+	  return;
+	}
       }
     }
-
     // if we successfully get to this point, then create the post-call conversion
-    if (haveAllocation) { 
-      addShapeTest(theTempVar,theConcreteArgument);
+    if (doAllocation) {
+      addShapeTest(theTempVar,theConcreteArgument,passingSlice);
     } 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
       thePostCall_p(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(ourConversionRoutineName));
@@ -510,16 +508,14 @@ namespace xaifBoosterTypeChange {
     ConcreteArgument& theFirstPostConcreteArg(thePostCall_p->addConcreteArgument(1));
     theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
     Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
-    theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes,!copyEntireArray);
-    if (!copyEntireArray)
-      theInlineVariablePostRes.adjustUpperBounds((int)(aFormalArgumentSymbolReference.
-                                                 getSymbol().	
-                                                 getSymbolShape())+shapeOffsetFromFormal);
+    theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes,!passingPointer);
+//     if (!passingPointer)
+//       theInlineVariablePostRes.adjustUpperBounds((int)(tmpArgumentSymbolShape));
     Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
     theTempVar.copyMyselfInto(theInlineVariablePostArg);
-    if (!copyEntireArray && theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
+    if (!passingPointer && theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
       handleArrayAccessIndices(theConcreteArgument,
-                               theBasicBlock);
+			       theBasicBlock);
     }
   } // end SubroutineCallAlg::addConversion()
   
@@ -535,18 +531,14 @@ namespace xaifBoosterTypeChange {
     thePriorCall_p->setId("SubroutineCallAlg::addExternalConversion prior");
     // this is the extra temporary that replaces the original argument
     Variable& theTempVar(thePriorCall_p->addConcreteArgument(1).getArgument().getVariable());
-    makeTempSymbol(theConcreteArgument,
-		   theActualSymbolReference.getSymbol(),
-		   theActualSymbolReference.getScope(),
-		   theTempVar,
-		   0,
-		   true);
-    bool haveAllocation=false;
-    if (theTempVar.getVariableSymbolReference().getSymbol().getSymbolShape()!=SymbolShape::SCALAR
-	&&
-	!(theTempVar.getVariableSymbolReference().getSymbol().hasDimensionBounds())) {
-      addAllocation(theTempVar,theConcreteArgument);
-      haveAllocation=true;
+    bool doAllocation=makeTempSymbol(theConcreteArgument,
+				     theActualSymbolReference.getSymbol(),
+				     theActualSymbolReference.getScope(),
+				     theTempVar,
+				     theActualSymbolReference.getSymbol().getSymbolShape(),
+				     true);
+    if (doAllocation) {
+      addAllocation(theTempVar,theConcreteArgument,false);
     }
     // now that we have the allocation call - if needed - we can push the conversion to the list
     myPriorAdjustmentsList.push_back(thePriorCall_p);
@@ -556,14 +548,8 @@ namespace xaifBoosterTypeChange {
     theConcreteArgumentAlg.makeReplacement(theTempVar,true);
     theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
     if (theConcreteArgument.isArgument()) {
-      //       theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(theConcreteArgument.
-      // 										    getArgument().
-      // 										    getVariable().
-      // 										    getVariableSymbolReference().
-      // 										    getSymbol().
-      // 										    getSymbolShape()));
-      if (haveAllocation) { 
-	addShapeTest(theTempVar,theConcreteArgument);
+      if (doAllocation) {
+	addShapeTest(theTempVar,theConcreteArgument,false);
       } 
       // post call only if not a constant
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* 
@@ -574,12 +560,6 @@ namespace xaifBoosterTypeChange {
       theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
       Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
       theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes,false);
-      //       theInlineVariablePostRes.adjustUpperBounds((int)(theConcreteArgument.
-      // 						       getArgument().
-      // 						       getVariable().
-      // 						       getVariableSymbolReference().
-      // 						       getSymbol().
-      // 						       getSymbolShape()));
       Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
       theTempVar.copyMyselfInto(theInlineVariablePostArg);
       if (theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
@@ -589,83 +569,55 @@ namespace xaifBoosterTypeChange {
     }
   } 
   
-  void SubroutineCallAlg::makeTempSymbol(const ConcreteArgument& theConcreteArgument,
+  bool SubroutineCallAlg::makeTempSymbol(const ConcreteArgument& theConcreteArgument,
 					 const Symbol& formalArgumentSymbol,
 					 const Scope&, // formalArgumentScope  when we finally get around it
 					 Variable& aVariable,
-					 int shapeOffsetFromFormal,
+					 SymbolShape::SymbolShape_E tmpSymbolShape,
 					 bool forcePassive) { 
     Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     // create a new symbol and add a new VariableSymbolReference in the Variable
-    static std::list<std::string> reportShapeMismatchOnce;
-    Symbol& theNewVariableSymbol (
-      theCurrentCfgScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getTypeChangeVariableNameCreator(),
-                                                      SymbolKind::VARIABLE,
-                                                      formalArgumentSymbol.getSymbolType(),
-                                                      SymbolShape::offset(formalArgumentSymbol.getSymbolShape(),
-                                                                          shapeOffsetFromFormal),
-                                                      (forcePassive) ? false
-                                                                     : formalArgumentSymbol.getActiveTypeFlag())
-    );
+    Symbol& theNewVariableSymbol (theCurrentCfgScope.getSymbolTable().addUniqueSymbol(ConceptuallyStaticInstances::instance()->getTypeChangeVariableNameCreator(),
+										      SymbolKind::VARIABLE,
+										      formalArgumentSymbol.getSymbolType(),
+										      tmpSymbolShape,
+										      (forcePassive) ? false
+										      : formalArgumentSymbol.getActiveTypeFlag())
+				  );
     theNewVariableSymbol.setFrontEndType(formalArgumentSymbol.getFrontEndType());
     VariableSymbolReference* theNewVariableSymbolReference_p(new VariableSymbolReference(theNewVariableSymbol,
-								  theCurrentCfgScope));
-    if (theConcreteArgument.isArgument()){ 
+											 theCurrentCfgScope));
+    short addedDimBounds=0;
+    if (theConcreteArgument.isArgument()){
+      short skipDimBoundsCount=SymbolShape::difference(theConcreteArgument.getArgument().getVariable().
+						       getVariableSymbolReference().getSymbol().getSymbolShape(),
+						       tmpSymbolShape);
       // preserve dimension information from the concrete argument if any:
       const Symbol& theConcreteArgumentSymbol(theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol());
       if (theConcreteArgumentSymbol.hasDimensionBounds()) { 
 	const Symbol::DimensionBoundsPList& aDimensionBoundsPList(theConcreteArgumentSymbol.getDimensionBoundsPList());
-	if (shapeOffsetFromFormal) { 
-	  // this can be the case in Fortran where we pass in a n-tensor for 
-	  // an n+k tensor formal argument.  The k missing dimension then 
-	  // have to be 1 except it is unclear which of the n+k are the missing ones
-	  std::ostringstream ostr;
-	  ostr << "SubroutineCallAlg::makeTempSymbol: " 
-	       << "trying to adjust for shape mismatch: actual parameter "
-	       << theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
-	       << " has ";
-	  if (shapeOffsetFromFormal>0) { 
-	    ostr << shapeOffsetFromFormal;
-	    ostr << " extra";
-	  }
-	  else { 
-	    ostr << -shapeOffsetFromFormal;
-	    ostr << " missing";
-	  } 
-	  ostr << " dimension(s) in call to " 
-	       << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str();
-	  std::list<std::string>::iterator i=reportShapeMismatchOnce.begin();
-	  for (;
-	       i!=reportShapeMismatchOnce.end();
-	       ++i) { 
-	    if (ostr.str().compare(*i)==0) { 
-	      break;
-	    }
-	  }
-	  if (i==reportShapeMismatchOnce.end()) { 
-	    reportShapeMismatchOnce.push_back(ostr.str());
-	    ostr << " on line " 
-		 << getContainingSubroutineCall().getLineNumber();
-	    DBG_MACRO(DbgGroup::ERROR, ostr.str().c_str());
-	  }
-	}
 	switch(DimensionBounds::getIndexOrder()) { 
 	case IndexOrder::ROWMAJOR: // c and c++
 	  for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
 	       (li!=aDimensionBoundsPList.end());
-	       ++li, ++shapeOffsetFromFormal) { 
-	    if (shapeOffsetFromFormal>=0)
-	      // e.g. between the three-tensor vs vector the reduction is 2 so we skip over the 2 leftmost dimensions.
+	       ++li, --skipDimBoundsCount) { 
+	    if (skipDimBoundsCount<=0){
+	      // e.g. the difference between a three-tensor and a vector is 2 so we skip over the 2 leftmost dimensions.
 	      theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
 						      (*li)->getUpper());
+              addedDimBounds++;
+            }
 	  }
 	  break;
 	case IndexOrder::COLUMNMAJOR: { // fortran
 	  for (Symbol::DimensionBoundsPList::const_iterator li=aDimensionBoundsPList.begin();
 	       (li!=aDimensionBoundsPList.end());
 	       ++li) { 
-	    theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
-						    (*li)->getUpper());
+	    if (addedDimBounds<tmpSymbolShape) { 
+	      theNewVariableSymbol.addDimensionBounds((*li)->getLower(),
+						      (*li)->getUpper());
+	      addedDimBounds++;
+	    }
 	  }
 	  break;
 	}     
@@ -681,6 +633,7 @@ namespace xaifBoosterTypeChange {
     aVariable.supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
     aVariable.getAliasMapKey().setTemporary();
     aVariable.getDuUdMapKey().setTemporary();
+    return tmpSymbolShape!=addedDimBounds;
   } // end SubroutineCallAlg::makeTempSymbol()
 
   void SubroutineCallAlg::addWrapperNames(const std::string& theSpaceSeparatedNames) { 
@@ -701,14 +654,14 @@ namespace xaifBoosterTypeChange {
   SubroutineCallAlg::hasExpression(const Expression& anExpression) const {
     // check myPriorAdjustmentsList
     for (PlainBasicBlock::BasicBlockElementList::const_iterator priorI = myPriorAdjustmentsList.begin();
-         priorI != myPriorAdjustmentsList.end(); ++priorI)
+	 priorI != myPriorAdjustmentsList.end(); ++priorI)
       if ((*priorI)->hasExpression(anExpression))
-        return true;
+	return true;
     // check myPostAdjustmentsList
     for (PlainBasicBlock::BasicBlockElementList::const_iterator postI = myPostAdjustmentsList.begin();
-         postI != myPostAdjustmentsList.end(); ++postI)
+	 postI != myPostAdjustmentsList.end(); ++postI)
       if ((*postI)->hasExpression(anExpression))
-        return true;
+	return true;
     // check values saved across
     if (mySaveValuesAcrossForTypeChange.hasExpression(anExpression))
       return true;
@@ -746,7 +699,7 @@ namespace xaifBoosterTypeChange {
 		&& 
 		(dynamic_cast<const SubroutineCall&>(getContaining())).overwrites((*argumentI)->getVariable())) {
 	      if (theBasicBlock.getReversalType()==ForLoopReversalType::EXPLICIT) { 
-	        // for sanity check if we a re about to change a known loop variable 
+		// for sanity check if we a re about to change a known loop variable 
 		// in this call which we forbid
 		const ControlFlowGraphVertex::VariablePList& theKnownLoopVariables(theBasicBlock.getKnownLoopVariables());
 		for (ControlFlowGraphVertex::VariablePList::const_iterator knownVarsI=theKnownLoopVariables.begin();
