@@ -124,6 +124,7 @@ namespace xaifBoosterAddressArithmetic {
      * put them in the theUnknownVariables
      */
     void findUnknownVariablesInArgument(const Argument& anArgument,
+                                        bool nonValueInquiryUse,
 					const ControlFlowGraphVertex::VariablePList& theKnownVariables,
 					UnknownVarInfoList& theUnknownVariables,
 					bool thisIsCF,
@@ -151,8 +152,8 @@ namespace xaifBoosterAddressArithmetic {
      * find variables used in aReversibleControlFlowGraphVertex 
      */
     void findUnknownVariablesInReversibleControlFlowGraphVertex( xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& aReversibleControlFlowGraphVertex,
-								const ControlFlowGraphVertex::VariablePList& theKnownVariables,
-								UnknownVarInfoList& theUnknownVariables);
+								 const ControlFlowGraphVertex::VariablePList& theKnownVariables,
+								 UnknownVarInfoList& theUnknownVariables);
 
     /** 
      * push anUnknownVariable

@@ -357,21 +357,21 @@ namespace xaifBooster {
       for (;begin_oei_toLoopBody!=end_oei_toLoopBody;++begin_oei_toLoopBody) 
         if ((*begin_oei_toLoopBody).leadsToLoopBody()) 
           augmentGraphInfoRecursively(getTargetOf(*begin_oei_toLoopBody),
-				     idx,
-				     endNodes_p_s_r,
-				     aNewReversalType,
-				     aNewTopExplicitLoopVertex_p,
-				     aNewEnclosingControlFlowVertex_p); 
+				      idx,
+				      endNodes_p_s_r,
+				      aNewReversalType,
+				      aNewTopExplicitLoopVertex_p,
+				      aNewEnclosingControlFlowVertex_p); 
       // sort nodes after loop
       OutEdgeIterator begin_oei_toAfterLoop(theCurrentVertex_oeip.first),end_oei_toAfterLoop(theCurrentVertex_oeip.second);
       for (;begin_oei_toAfterLoop!=end_oei_toAfterLoop;++begin_oei_toAfterLoop) 
         if (!(*begin_oei_toAfterLoop).leadsToLoopBody()) 
           augmentGraphInfoRecursively(getTargetOf(*begin_oei_toAfterLoop),
-				     idx,
-				     endNodes_p_s_r,
-				     aReversalType,
-				     aTopExplicitLoopVertex_p,
-				     enclosingControlFlowVertex_p); 
+				      idx,
+				      endNodes_p_s_r,
+				      aReversalType,
+				      aTopExplicitLoopVertex_p,
+				      enclosingControlFlowVertex_p); 
     }
     else { // go for all successors otherwise
       ControlFlowGraphVertex* aNewEnclosingControlFlowVertex_p=enclosingControlFlowVertex_p;
@@ -381,11 +381,11 @@ namespace xaifBooster {
       OutEdgeIterator begin_oei(theCurrentVertex_oeip.first),end_oei(theCurrentVertex_oeip.second);
       for (;begin_oei!=end_oei;++begin_oei) 
         augmentGraphInfoRecursively(getTargetOf(*begin_oei),
-				   idx,
-				   endNodes_p_s_r,
-				   aReversalType,
-				   aTopExplicitLoopVertex_p,
-				   aNewEnclosingControlFlowVertex_p); 
+				    idx,
+				    endNodes_p_s_r,
+				    aReversalType,
+				    aTopExplicitLoopVertex_p,
+				    aNewEnclosingControlFlowVertex_p); 
     }
     // if branch node then handle corresponding end node
     if (theCurrentVertex_r.getKind()==ControlFlowGraphVertexKind::BRANCH_VKIND) {
@@ -412,11 +412,11 @@ namespace xaifBooster {
       // sort successor  
       OutEdgeIteratorPair theCurrentVertex_oeip(getOutEdgesOf(*(the_endBranch_p)));
       augmentGraphInfoRecursively(getTargetOf(*(theCurrentVertex_oeip.first)),
- 				 idx,
- 				 endNodes_p_s_r,
- 				 aReversalType,
- 				 aTopExplicitLoopVertex_p,
-				 enclosingControlFlowVertex_p); 
+				  idx,
+				  endNodes_p_s_r,
+				  aReversalType,
+				  aTopExplicitLoopVertex_p,
+				  enclosingControlFlowVertex_p); 
     }
   }
 
@@ -438,7 +438,7 @@ namespace xaifBooster {
     }
     catch (StructureException& e) {
       DBG_MACRO(DbgGroup::WARNING,"::ControlFlowGraph::augmentGraphInfo: unstructured control flow detected for  " << getSymbolReference().getSymbol().plainName().c_str())
-      finishVisit();
+	finishVisit();
       return;
     }
     finishVisit();
@@ -456,12 +456,12 @@ namespace xaifBooster {
 	for (Expression::CArgumentPList::const_iterator theArgIt=theArguments.begin();
 	     theArgIt!=theArguments.end();
 	     ++theArgIt) {
-          ControlFlowGraph::DefineCountingResult definesCount(definesUnderControlFlowGraphVertex((*theArgIt)->getVariable(),
-						              theBranch));
+          ControlFlowGraph::DefineCountingResult definesCount(definesUnderControlFlowGraphVertex((*theArgIt).first->getVariable(),
+												 theBranch));
 	  if (!definesCount.myCountedFlag || definesCount.myCount) {
 	    // this is not really explicit then...
 	    DBG_MACRO(DbgGroup::ERROR,"::ControlFlowGraph::augmentGraphInfo: condition variable "
-		      << (*theArgIt)->getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
+		      << (*theArgIt).first->getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
 		      << " in "
 		      << getSymbolReference().getSymbol().plainName().c_str()
 		      << " redefined under Branch contained in loop marked as \'simple\'; we will suppress the flag for this branch");
@@ -550,7 +550,7 @@ namespace xaifBooster {
   }
 
   ControlFlowGraph::DefineCountingResult ControlFlowGraph::definesUnderControlFlowGraphVertex(const Variable& theVariable,
-								    const ControlFlowGraphVertex& theControlFlowGraphVertex) const { 
+											      const ControlFlowGraphVertex& theControlFlowGraphVertex) const { 
     DefineCountingResult defCount;
     if (theVariable.getDuUdMapKey().getKind()==InfoMapKey::NO_INFO) { 
       DBG_MACRO(DbgGroup::ERROR,

@@ -103,7 +103,12 @@ namespace xaifBooster {
      */
     bool isNonSmooth() const; 
 
-    const std::string& getName() const; 
+    const std::string& getName() const;
+
+    /**
+     * @return true
+     */
+    virtual bool isIntrinsic() const;
 
   private : 
 

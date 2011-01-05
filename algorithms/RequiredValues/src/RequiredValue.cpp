@@ -59,7 +59,7 @@ namespace xaifBoosterRequiredValues {
   } // end RequiredValue::getArgument()
 
   void
-  RequiredValue::populateArgumentPList(std::list<const Argument*> argumentListToBePopulated) const {
+  RequiredValue::populateArgumentPList(Expression::CArgumentPList argumentListToBePopulated) const {
     myExpression_p->appendArguments(argumentListToBePopulated);
   } // end RequiredValue::populateArgumentPList
 

@@ -466,9 +466,9 @@ namespace xaifBoosterTypeChange {
       theConcreteArgument.copyMyselfInto(theSecondPriorConcreteArg,!passingPointer);
       theConcreteArgumentAlg.setPriorConversionConcreteArgument(theSecondPriorConcreteArg);
       // may have to adjust upper bounds
-//       if (theConcreteArgument.isArgument() && !passingPointer) {
-// 	theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(tmpArgumentSymbolShape));
-//       }
+      //       if (theConcreteArgument.isArgument() && !passingPointer) {
+      // 	theSecondPriorConcreteArg.getArgument().getVariable().adjustUpperBounds((int)(tmpArgumentSymbolShape));
+      //       }
     }
 
     // skip post-call back-conversion if
@@ -509,8 +509,8 @@ namespace xaifBoosterTypeChange {
     theConcreteArgumentAlg.setPostConversionConcreteArgument(theFirstPostConcreteArg);
     Variable& theInlineVariablePostRes(theFirstPostConcreteArg.getArgument().getVariable());
     theConcreteArgument.getArgument().getVariable().copyMyselfInto(theInlineVariablePostRes,!passingPointer);
-//     if (!passingPointer)
-//       theInlineVariablePostRes.adjustUpperBounds((int)(tmpArgumentSymbolShape));
+    //     if (!passingPointer)
+    //       theInlineVariablePostRes.adjustUpperBounds((int)(tmpArgumentSymbolShape));
     Variable& theInlineVariablePostArg(thePostCall_p->addConcreteArgument(2).getArgument().getVariable());
     theTempVar.copyMyselfInto(theInlineVariablePostArg);
     if (!passingPointer && theConcreteArgument.getArgument().getVariable().hasArrayAccess()) {
@@ -695,9 +695,9 @@ namespace xaifBoosterTypeChange {
 	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin();
 	       argumentI!=listToBeAppended.end();
 	       ++argumentI) { 
-	    if (!mySaveValuesAcrossForTypeChange.isSavedAcross(**argumentI)
+	    if (!mySaveValuesAcrossForTypeChange.isSavedAcross(*((*argumentI).first))
 		&& 
-		(dynamic_cast<const SubroutineCall&>(getContaining())).overwrites((*argumentI)->getVariable())) {
+		(dynamic_cast<const SubroutineCall&>(getContaining())).overwrites((*argumentI).first->getVariable())) {
 	      if (theBasicBlock.getReversalType()==ForLoopReversalType::EXPLICIT) { 
 		// for sanity check if we a re about to change a known loop variable 
 		// in this call which we forbid
@@ -705,15 +705,15 @@ namespace xaifBoosterTypeChange {
 		for (ControlFlowGraphVertex::VariablePList::const_iterator knownVarsI=theKnownLoopVariables.begin();
 		     knownVarsI!=theKnownLoopVariables.end();
 		     ++knownVarsI) {
-		  if ((*argumentI)->getVariable().equivalentTo(**knownVarsI)) 
+		  if ((*argumentI).first->getVariable().equivalentTo(**knownVarsI))
 		    THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: analysis determines overwrite of simple loop variable "
-					       << (*argumentI)->getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
+					       << (*argumentI).first->getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
 					       << " in call to "
 					       << getContainingSubroutineCall().getSymbolReference().getSymbol().plainName().c_str());
 		}
 	      }
 	      // save the value of the Argument before the subroutine call
-	      mySaveValuesAcrossForTypeChange.saveValue(**argumentI,theBasicBlock);
+	      mySaveValuesAcrossForTypeChange.saveValue(*((*argumentI).first),theBasicBlock);
 	    }
 	  }
 	}

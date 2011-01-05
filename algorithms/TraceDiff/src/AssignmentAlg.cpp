@@ -113,7 +113,7 @@ namespace xaifBoosterTraceDiff {
     Expression::ConstVertexIteratorPair p(theRHS.vertices());
     Expression::ConstVertexIterator it(p.first),endIt(p.second);
     for (;it!=endIt ;++it) {
-      if (theRHS.numInEdgesOf(*it)>0) { 
+      if (theRHS.numInEdgesOf(*it)>0 && (*it).isIntrinsic()) {
 	if ((*it).getInlinableIntrinsicsCatalogueItem().isNonSmooth()) {
 	  // trace the  call: 
 	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theIntrinsicCall_p;
@@ -133,7 +133,7 @@ namespace xaifBoosterTraceDiff {
 	  for(Expression::CArgumentPList::const_iterator argIt=activeArgPList.begin();
 	      argIt!=activeArgPList.end();
 	      ++argIt) { 
-	    Helpers::traceArgument(**argIt,
+	    Helpers::traceArgument(*((*argIt).first),
 				   myTracingCalls,
                                    ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance().getScope());
 	  }

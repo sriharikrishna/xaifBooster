@@ -66,6 +66,8 @@
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
+#include "xaifBooster/system/inc/BooleanOperation.hpp"
+#include "xaifBooster/system/inc/BooleanOperationType.hpp"
 
 namespace xaifBooster{
 
@@ -79,17 +81,23 @@ namespace xaifBooster{
     void operator()(std::ostream& out,
 		    const BoostInternalDescriptor& v) const{
       const ExpressionVertex* theExprVertex_p=
-	      dynamic_cast<const ExpressionVertex*>(boost::get(boost::get(BoostVertexContentType(),
-								      myG.getInternalBoostGraph()),
-							      v));
+	dynamic_cast<const ExpressionVertex*>(boost::get(boost::get(BoostVertexContentType(),
+								    myG.getInternalBoostGraph()),
+							 v));
       if(theExprVertex_p->isArgument()) { 
         const Argument& theArgument(dynamic_cast<const Argument&>(*theExprVertex_p));
 	out<<"[label=\""<<theArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()<<"\"]";
       }
       else {
-	if(myG.numInEdgesOf(*theExprVertex_p)) { // is an intrinsic
-          const Intrinsic& theIntrinsic(dynamic_cast<const Intrinsic&>(*theExprVertex_p));
-	  out<<"[label=\""<<theIntrinsic.getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName().c_str()<<"\"]";
+	if(myG.numInEdgesOf(*theExprVertex_p)) { // is an intrinsic or boolean op
+          if (theExprVertex_p->isIntrinsic()){
+	    const Intrinsic& theIntrinsic(dynamic_cast<const Intrinsic&>(*theExprVertex_p));
+	    out<<"[label=\""<<theIntrinsic.getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName().c_str()<<"\"]";
+          }
+          else { // boolean op
+	    const BooleanOperation& theBO(dynamic_cast<const BooleanOperation&>(*theExprVertex_p));
+	    out<<"[label=\""<<BooleanOperationType::toString(theBO.getType()).c_str()<<"\"]";
+          }
 	}
 	else { // must be a constant then
           const Constant& theConstant(dynamic_cast<const Constant&>(*theExprVertex_p));
@@ -109,9 +117,9 @@ namespace xaifBooster{
     template <class BoostInternalDescriptor>
     void operator()(std::ostream& out, const BoostInternalDescriptor& v) const{
       const ExpressionEdge* theExprEdge_p=
-	      dynamic_cast<const ExpressionEdge*>(boost::get(boost::get(BoostEdgeContentType(),
-								      myG.getInternalBoostGraph()),
-						      v));
+	dynamic_cast<const ExpressionEdge*>(boost::get(boost::get(BoostEdgeContentType(),
+								  myG.getInternalBoostGraph()),
+						       v));
       out<<"[label=\""<<theExprEdge_p->getPosition()<<"\"]";
     }
     const Expression& myG;
@@ -138,7 +146,7 @@ namespace xaifBooster{
   }
 
   Expression::Expression(bool hasAlgorithm):
-  myExpressionAlgBase_p(0){
+    myExpressionAlgBase_p(0){
     if(hasAlgorithm)
       myExpressionAlgBase_p=ExpressionAlgFactory::instance()->makeNewAlg(*this);
   }
@@ -180,8 +188,8 @@ namespace xaifBooster{
   std::string Expression::debug() const{
     std::ostringstream out;
     out<<"Expression["<<this
-	    <<", numVertices="<<numVertices()
-	    <<"]"<<std::ends;
+       <<", numVertices="<<numVertices()
+       <<"]"<<std::ends;
     return out.str();
   } // end of Expression::debug
 
@@ -215,15 +223,15 @@ namespace xaifBooster{
     ConstEdgeIterator beginIte(pe.first), endIte(pe.second);
     for(; beginIte!=endIte; ++beginIte) {
       const ExpressionVertex
-	      *theOriginalSource_p(&(getSourceOf(*beginIte))),
-	      *theOriginalTarget_p(&(getTargetOf(*beginIte)));
+	*theOriginalSource_p(&(getSourceOf(*beginIte))),
+	*theOriginalTarget_p(&(getTargetOf(*beginIte)));
       const ExpressionVertex
-	      *theCopySource_p(0),
-	      *theCopyTarget_p(0);
+	*theCopySource_p(0),
+	*theCopyTarget_p(0);
       for(PointerPairList::const_iterator li=theList.begin();
 	  li!=theList.end()
-	  &&
-	  !(theCopySource_p&&theCopyTarget_p);
+	    &&
+	    !(theCopySource_p&&theCopyTarget_p);
 	  ++li) {
 	if(!theCopySource_p&&(*li).first==theOriginalSource_p)
 	  theCopySource_p=(*li).second;
@@ -323,7 +331,22 @@ namespace xaifBooster{
       if(expInEdgeItPair.first==expInEdgeItPair.second // no in edges
 	 &&
 	 (*expVertIt).isArgument()) {
-	listToBeAppended.push_back(&(dynamic_cast<Argument&>(*expVertIt)));
+        // see if it is non-value inquiry
+        bool nonValueInquiry=false;
+        Expression::OutEdgeIteratorPair expOutEdgeItPair(getOutEdgesOf(*expVertIt));
+        Expression::OutEdgeIterator expOutEdgeIt(expOutEdgeItPair.first), expOutEdgeItEnd(expOutEdgeItPair.second);
+        for(; expOutEdgeIt!=expOutEdgeItEnd; ++expOutEdgeIt) {
+          if (getTargetOf(*expOutEdgeIt).isIntrinsic()){
+            const Intrinsic& theIntrinsic(dynamic_cast<const Intrinsic&>(getTargetOf(*expOutEdgeIt)));
+            if (!(theIntrinsic.getInlinableIntrinsicsCatalogueItem().getExpressionVectorElement((*expOutEdgeIt).getPosition()).isNonValueInquiry())) {
+              nonValueInquiry=false;
+              break;
+            }
+	    else  
+	      nonValueInquiry=true;  // but it needs to be true for all outedges, so we can't break here
+          }
+        }
+	listToBeAppended.push_back(std::make_pair(&(dynamic_cast<Argument&>(*expVertIt)),nonValueInquiry));
       }
     }
   }
@@ -336,7 +359,22 @@ namespace xaifBooster{
       if(expInEdgeItPair.first==expInEdgeItPair.second // no in edges
 	 &&
 	 (*expVertIt).isArgument()) {
-	listToBeAppended.push_back(&(dynamic_cast<const Argument&>(*expVertIt)));
+	// see if it is non-value inquiry
+        bool nonValueInquiry=false;
+        Expression::ConstOutEdgeIteratorPair expOutEdgeItPair(getOutEdgesOf(*expVertIt));
+        Expression::ConstOutEdgeIterator expOutEdgeIt(expOutEdgeItPair.first), expOutEdgeItEnd(expOutEdgeItPair.second);
+        for(; expOutEdgeIt!=expOutEdgeItEnd; ++expOutEdgeIt) {
+          if (getTargetOf(*expOutEdgeIt).isIntrinsic()) {
+	    const Intrinsic& theIntrinsic(dynamic_cast<const Intrinsic&>(getTargetOf(*expOutEdgeIt)));
+	    if (!(theIntrinsic.getInlinableIntrinsicsCatalogueItem().getExpressionVectorElement((*expOutEdgeIt).getPosition()).isNonValueInquiry())) {
+	      nonValueInquiry=false;
+	      break;
+	    }
+	    else  
+	      nonValueInquiry=true;  // but it needs to be true for all outedges, so we can't break here
+          }
+        }
+	listToBeAppended.push_back(std::make_pair(&(dynamic_cast<const Argument&>(*expVertIt)),nonValueInquiry));
       }
     }
   }
@@ -350,14 +388,14 @@ namespace xaifBooster{
       for(VariablePVariableSRPPairList::const_iterator replacementI=replacementList.begin();
 	  replacementI!=replacementList.end();
 	  ++replacementI) {
-	if((*replacementI).first->equivalentTo((*argumentI)->getVariable())) {
+	if((*replacementI).first->equivalentTo((*argumentI).first->getVariable())) {
 	  DBG_MACRO(DbgGroup::DATA, "Expression::replaceVariables: replacing :"
-		  <<(*argumentI)->getVariable().debug().c_str());
+		    <<(*argumentI).first->getVariable().debug().c_str());
 	  // make the replacement vertex in this expression
 	  Argument* newArgument_p=new Argument(false);
 	  newArgument_p->getVariable().supplyAndAddVertexInstance((*replacementI).second->createCopyOfMyself());
 	  supplyAndAddVertexInstance(*newArgument_p);
-	  Expression::OutEdgeIteratorPair expOutEdgeItPair(getOutEdgesOf(**argumentI));
+	  Expression::OutEdgeIteratorPair expOutEdgeItPair(getOutEdgesOf(*((*argumentI).first)));
 	  Expression::OutEdgeIterator expOutEdgeIt(expOutEdgeItPair.first), expOutEdgeItEnd(expOutEdgeItPair.second);
 	  typedef std::pair<ExpressionEdge*, ExpressionVertex*> TargetPair;
 	  typedef std::list<TargetPair> TargetPairList;
@@ -369,18 +407,18 @@ namespace xaifBooster{
 	  }
 	  // now make the new edges
 	  for(TargetPairList::iterator it=targetList.begin();
-	  it!=targetList.end();
-	  ++it) {
+	      it!=targetList.end();
+	      ++it) {
 	    DBG_MACRO(DbgGroup::DATA, "Expression::replaceVariables: replacing edge "
-		    <<(*it).first->debug().c_str()
-		    <<" with target "
-		    <<(*it).second->debug().c_str());
+		      <<(*it).first->debug().c_str()
+		      <<" with target "
+		      <<(*it).second->debug().c_str());
 	    supplyAndAddEdgeInstance((*it).first->createCopyOfMyself(),
-				    *newArgument_p,
-				    *((*it).second));
+				     *newArgument_p,
+				     *((*it).second));
 	  }
-	  newArgument_p->setId((*argumentI)->getId());
-	  removeAndDeleteVertex(**argumentI);
+	  newArgument_p->setId((*argumentI).first->getId());
+	  removeAndDeleteVertex(*((*argumentI).first));
 	  break;
 	}
       }
@@ -451,7 +489,7 @@ namespace xaifBooster{
     for(CArgumentPList::const_iterator argumentI=aList.begin();
 	argumentI!=aList.end();
 	++argumentI) {
-      if((*argumentI)->getVariable().getActiveType())
+      if((*argumentI).first->getVariable().getActiveType())
 	listToBeAppended.push_back(*argumentI);
     }
   }
@@ -487,7 +525,7 @@ namespace xaifBooster{
     CArgumentPList theArguments;
     appendArguments(theArguments);
     for (CArgumentPList::iterator argI = theArguments.begin(); argI != theArguments.end(); ++argI)
-      if ((*argI)->getVariable().hasExpression(anExpression))
+      if ((*argI).first->getVariable().hasExpression(anExpression))
         return true;
     if (myExpressionAlgBase_p)
       return myExpressionAlgBase_p->hasExpression(anExpression);

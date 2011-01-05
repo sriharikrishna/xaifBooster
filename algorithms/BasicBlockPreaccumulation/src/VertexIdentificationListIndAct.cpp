@@ -111,7 +111,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  for(Expression::CArgumentPList::const_iterator cargplIt=cargpl.begin();
 	      cargplIt!=cargpl.end();
 	      ++cargplIt) { 
-	    addElement((*cargplIt)->getVariable(),
+	    addElement((*cargplIt).first->getVariable(),
 		       aStatementId); // recursive descent
 	    // see if we have this definition already 
 	    ListItemPList::const_iterator vilIt=myList.begin();
@@ -119,18 +119,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		vilIt!=myList.end();
 		++vilIt) { 
 	      if (ConceptuallyStaticInstances::instance()->
-		  getCallGraph().getDuUdMap().sameDefinition((*cargplIt)->getVariable().getDuUdMapKey(),
+		  getCallGraph().getDuUdMap().sameDefinition((*cargplIt).first->getVariable().getDuUdMapKey(),
 							     (*vilIt)->getDuUdMapKey()))
 		break;
 	    }
 	    if (vilIt==myList.end()) { 
 	      DBG_MACRO(DbgGroup::DATA,
 			"xaifBoosterBasicBlockPreaccumulation::VertexIdentificationListIndAct::addElement adding: "
-			<< (*cargplIt)->getVariable().debug().c_str()
+			<< (*cargplIt).first->getVariable().debug().c_str()
 			<< " to "
 			<< debug().c_str());
-	      myList.push_back(new ListItem((*cargplIt)->getVariable().getAliasMapKey(),
-					    (*cargplIt)->getVariable().getDuUdMapKey()));
+	      myList.push_back(new ListItem((*cargplIt).first->getVariable().getAliasMapKey(),
+					    (*cargplIt).first->getVariable().getDuUdMapKey()));
 	    }
 	  }
 	}

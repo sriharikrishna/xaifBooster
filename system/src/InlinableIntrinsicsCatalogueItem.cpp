@@ -65,6 +65,7 @@ namespace xaifBooster {
   const std::string InlinableIntrinsicsCatalogueItem::ourPartialXAIFName("xaifii:Partial");
   const std::string InlinableIntrinsicsCatalogueItem::our_myPartialId_XAIFName("partial_id");
   const std::string InlinableIntrinsicsCatalogueItem::our_myPartialType_XAIFName("partial_type");
+  const std::string InlinableIntrinsicsCatalogueItem::our_myNonValueInquiryFlag_XAIFName("nonValueInquiry");
 
   InlinableIntrinsicsCatalogueItem::InlinableIntrinsicsCatalogueItem(unsigned int aNumberOfArguments,
 								     bool aNonSmoothFlag) :
