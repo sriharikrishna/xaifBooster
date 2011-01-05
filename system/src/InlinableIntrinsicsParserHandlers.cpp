@@ -59,18 +59,16 @@
 namespace xaifBooster {
   
   void 
-  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsCatalogue(
-							    const InlinableIntrinsicsParserHelper& passingIn,
-							    InlinableIntrinsicsParserHelper& passingOut) {
+  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsCatalogue(const InlinableIntrinsicsParserHelper& passingIn,
+								    InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onInlinableIntrinsicDefinitions");
     InlinableIntrinsicsCatalogue& theInlinableIntrinsicsCatalogue_r(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue());
     passingOut.setInlinableIntrinsicsCatalogue(theInlinableIntrinsicsCatalogue_r);
   }
 
   void 
-  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsCatalogueItem(
-								const InlinableIntrinsicsParserHelper& passingIn,
-								InlinableIntrinsicsParserHelper& passingOut) {
+  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsCatalogueItem(const InlinableIntrinsicsParserHelper& passingIn,
+									InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onInlinableIntrinsic");
     InlinableIntrinsicsCatalogue& theInlinableIntrinsicsCatalogue_r(passingIn.getInlinableIntrinsicsCatalogue());
     InlinableIntrinsicsCatalogueItem& theItem_r(theInlinableIntrinsicsCatalogue_r.
@@ -81,9 +79,8 @@ namespace xaifBooster {
   }
 
   void 
-  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsFunction(
-							   const InlinableIntrinsicsParserHelper& passingIn,
-							   InlinableIntrinsicsParserHelper& passingOut) {
+  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsFunction(const InlinableIntrinsicsParserHelper& passingIn,
+								   InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsFunction");
     InlinableIntrinsicsCatalogueItem& theItem_r(passingIn.getInlinableIntrinsicsCatalogueItem());
     InlinableIntrinsicsExpression& theFunction_r(theItem_r.getFunction());
@@ -95,21 +92,21 @@ namespace xaifBooster {
   }
 
   void 
-  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsPartial(
-							  const InlinableIntrinsicsParserHelper& passingIn,
-							  InlinableIntrinsicsParserHelper& passingOut) {
+  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsPartial(const InlinableIntrinsicsParserHelper& passingIn,
+								  InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsPartial" ); 
     InlinableIntrinsicsCatalogueItem& theItem_r(passingIn.getInlinableIntrinsicsCatalogueItem());
     PartialDerivativeKind::PartialDerivativeKind_E pdk_e(PartialDerivativeKind::fromString(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myPartialType_XAIFName)));
     InlinableIntrinsicsExpression& thePartial_r(theItem_r.addPartial(StringConversions::convertToInt(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myPartialId_XAIFName)),
 								     pdk_e));
+    if (XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myNonValueInquiryFlag_XAIFName)))
+      thePartial_r.setNonValueInquiry();
     passingOut.setInlinableIntrinsicsExpression(thePartial_r);
   }
 
   void 
-  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsArgumentReference(
-								    const InlinableIntrinsicsParserHelper& passingIn,
-								    InlinableIntrinsicsParserHelper& passingOut) {
+  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsArgumentReference(const InlinableIntrinsicsParserHelper& passingIn,
+									    InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onArgumentReference" ); 
     InlinableIntrinsicsExpression& theExpression_r(passingIn.getInlinableIntrinsicsExpression());
     int argref(StringConversions::convertToInt(XMLParser::getAttributeValueByName(InlinableIntrinsicsArgumentReference::our_myArgRef_XAIFName)));
@@ -120,9 +117,8 @@ namespace xaifBooster {
   }
 
   void 
-  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsConstant(
-							   const InlinableIntrinsicsParserHelper& passingIn,
-							   InlinableIntrinsicsParserHelper& passingOut) {
+  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsConstant(const InlinableIntrinsicsParserHelper& passingIn,
+								   InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsConstant" ); 
     InlinableIntrinsicsExpression& theExpression_r(passingIn.getInlinableIntrinsicsExpression());
     InlinableIntrinsicsConstant* aConstant_p=new InlinableIntrinsicsConstant(
@@ -134,9 +130,8 @@ namespace xaifBooster {
   }
 
   void 
-  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsIntrinsic(
-							    const InlinableIntrinsicsParserHelper& passingIn,
-							    InlinableIntrinsicsParserHelper& passingOut) {
+  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsIntrinsic(const InlinableIntrinsicsParserHelper& passingIn,
+								    InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsIntrinsic" ); 
     InlinableIntrinsicsExpression& theExpression_r(passingIn.getInlinableIntrinsicsExpression());
     InlinableIntrinsicsIntrinsic* aIntrinsic_p=new InlinableIntrinsicsIntrinsic(
@@ -146,15 +141,14 @@ namespace xaifBooster {
   }
 
   void 
-  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsExpressionEdge(
-								 const InlinableIntrinsicsParserHelper& passingIn,
-								 InlinableIntrinsicsParserHelper& passingOut) {
+  InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsExpressionEdge(const InlinableIntrinsicsParserHelper& passingIn,
+									 InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in InlinableIntrinsicsParserHandlers::onInlinableIntrinsicsExpressionEdge" ); 
     InlinableIntrinsicsExpression& theExpression_r(passingIn.getInlinableIntrinsicsExpression());
     std::string sourceId=XMLParser::getAttributeValueByName(
-						 InlinableIntrinsicsExpressionEdge::our_source_XAIFName);
+							    InlinableIntrinsicsExpressionEdge::our_source_XAIFName);
     std::string targetId=XMLParser::getAttributeValueByName(
-						 InlinableIntrinsicsExpressionEdge::our_target_XAIFName);
+							    InlinableIntrinsicsExpressionEdge::our_target_XAIFName);
     InlinableIntrinsicsExpression::VertexIteratorPair p=theExpression_r.vertices();
     InlinableIntrinsicsExpression::VertexIterator beginIt(p.first),endIt(p.second);
     InlinableIntrinsicsExpressionVertex *theSource_p(0), *theTarget_p(0);
@@ -178,9 +172,8 @@ namespace xaifBooster {
   }
 
   void 
-  InlinableIntrinsicsParserHandlers::onDummy(
-				     const InlinableIntrinsicsParserHelper& passingIn,
-				     InlinableIntrinsicsParserHelper& passingOut) {
+  InlinableIntrinsicsParserHandlers::onDummy(const InlinableIntrinsicsParserHelper& passingIn,
+					     InlinableIntrinsicsParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK,
 	      "InlinableIntrinsicsParserHandlers::onDummy");
     // pass all set elements through

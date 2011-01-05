@@ -86,6 +86,10 @@ namespace xaifBooster {
 
   bool ExpressionVertex::isArgument() const { 
     return false;
-  } // end ExpressionVertex::isArgument
+  }
+
+  bool ExpressionVertex::isIntrinsic() const {
+    return false;
+  }
 
 } // end of namespace xaifBooster 

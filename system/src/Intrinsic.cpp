@@ -150,4 +150,8 @@ namespace xaifBooster {
     return getInlinableIntrinsicsCatalogueItem().isNonSmooth();
   }
 
+  bool Intrinsic::isIntrinsic() const {
+    return true;
+  }
+
 } // end of namespace 

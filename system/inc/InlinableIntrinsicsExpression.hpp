@@ -62,7 +62,7 @@
 namespace xaifBooster { 
   
   class InlinableIntrinsicsExpression : public GraphWrapper<InlinableIntrinsicsExpressionVertex,
-					InlinableIntrinsicsExpressionEdge> { 
+							    InlinableIntrinsicsExpressionEdge> { 
     
   public: 
 
@@ -93,7 +93,10 @@ namespace xaifBooster {
     void setBuiltinFunctionName(std::string);
     const std::string& getBuiltinFunctionName() const;
     
-    PartialDerivativeKind::PartialDerivativeKind_E getPartialDerivativeKind() const; 
+    PartialDerivativeKind::PartialDerivativeKind_E getPartialDerivativeKind() const;
+
+    void setNonValueInquiry();
+    bool isNonValueInquiry() const;
 
   private: 
 
@@ -148,6 +151,8 @@ namespace xaifBooster {
      * argument in position aPosition
      */
     bool hasPartialArgumentAt(unsigned int aPosition) const ;
+
+    bool myNonValueInquiryFlag;
 
   }; // end of class InlinableIntrinsicsExpression
   

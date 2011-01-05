@@ -173,11 +173,19 @@ namespace xaifBooster {
      */
     void replaceVariables(const VariablePVariableSRPPairList& replacementList); 
 
-    typedef std::list<Argument*> ArgumentPList;
+    /**
+     * the boolean indicates if the argument in question is used as non-value inquiry
+     * based on the settings in an InlinableIntrinsicsCatalogueItem instance where applicable
+     */
+    typedef std::list<std::pair<Argument*,bool> > ArgumentPList;
 
     void appendArguments(ArgumentPList& listToBeAppended);
 
-    typedef std::list<const Argument*> CArgumentPList;
+    /**
+     * the boolean indicates if the argument in question is used as non-value inquiry
+     * based on the settings in an InlinableIntrinsicsCatalogueItem instance where applicable
+     */
+    typedef std::list<std::pair<const Argument*,bool> > CArgumentPList;
 
     void appendArguments(CArgumentPList& listToBeAppended) const;
 

@@ -106,9 +106,22 @@ namespace xaifBooster {
     virtual std::string equivalenceSignature() const =0;
 
     /**
-     * returns true if this is an Argument
+     * not precisely OO but
+     * want to avoid RTTI queries; rationale:
+     * among the vertices with no inedges can be Argument instances,
+     * the other such vertices must be Constant instances
+     * @return true if this is an Argument
      */
     virtual bool isArgument() const;
+
+    /**
+     * not precisely OO but
+     * want to avoid RTTI queries; rationale:
+     * among the vertices with  inedges can be Intrinsic instances,
+     * the other such vertices must be BooleanOperation instances
+     * @return true if this is an Intrinsic
+     */
+    virtual bool isIntrinsic() const;
 
     /**
      * ExpressionVertex is base class for variety of leaf classes

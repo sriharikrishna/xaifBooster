@@ -160,8 +160,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 				   << SymbolType::toString(theVariable.getVariableSymbolReference().getSymbol().getSymbolType()).c_str()
 				   << " and shape "
 				   << SymbolShape::toString(theVariable.getEffectiveShape()).c_str())
-      // save it in the list
-      myAfterCallIndexPushes.push_back(theSubroutineCall_p);
+	  // save it in the list
+	  myAfterCallIndexPushes.push_back(theSubroutineCall_p);
       theSubroutineCall_p->setId("SubroutineCallAlg::checkAndPush");
       theVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
       myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
@@ -182,7 +182,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       // the conversion caused by TypeChange, because they're for passive arguments exclusively.
 
       CallGraphVertexAlg& theCallerCallGraphVertexAlg
-       (dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
+	(dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
       const BasicBlock& theCallerBasicBlock (dynamic_cast<const BasicBlock&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance()));
 
       // mark array access indices for all arguments that are
@@ -262,7 +262,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument) {
     // get the CallGraphVertexAlg and BasicBlock from the traversal stack
     CallGraphVertexAlg& theCallerCallGraphVertexAlg
-     (dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
+      (dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
     const BasicBlock& theCallerBasicBlock (dynamic_cast<const BasicBlock&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance()));
 
     const ArrayAccess::IndexTripletListType& theIndexTripletList(theConcreteArgument.getArgument().getVariable().getArrayAccess().getIndexTripletList());
@@ -280,7 +280,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  Expression::CArgumentPList listToBeAppended;
 	  theIndexExpression.appendArguments(listToBeAppended);
 	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin(); argumentI!=listToBeAppended.end(); ++argumentI) {
-	    checkAndPush((*argumentI)->getVariable());
+	    checkAndPush((*argumentI).first->getVariable());
 	  }
           theCallerCallGraphVertexAlg.markRequiredValue(theIndexExpression,
                                                         theCallerBasicBlock,

@@ -59,7 +59,8 @@ namespace xaifBooster {
     myPartialArgumentSignature(aNumberOfArguments+1),
     myNumberOfArguments(aNumberOfArguments),
     myIsBuiltinFunction(false), 
-    myPartialDerivativeKind(aPartialDerivativeKind) {
+    myPartialDerivativeKind(aPartialDerivativeKind),
+    myNonValueInquiryFlag(false) {
     for (unsigned int i=0;i<aNumberOfArguments+1;i++)
       myPartialArgumentSignature[i]=0;
   }
@@ -116,5 +117,13 @@ namespace xaifBooster {
   InlinableIntrinsicsExpression::getPartialDerivativeKind() const { 
     return myPartialDerivativeKind;
   } 
+
+  void InlinableIntrinsicsExpression::setNonValueInquiry() {
+    myNonValueInquiryFlag=true;
+  }
+
+  bool InlinableIntrinsicsExpression::isNonValueInquiry() const {
+    return myNonValueInquiryFlag;
+  }
 
 } 

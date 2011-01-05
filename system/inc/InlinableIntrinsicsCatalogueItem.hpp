@@ -116,6 +116,7 @@ namespace xaifBooster {
     static const std::string ourPartialXAIFName;
     static const std::string our_myPartialId_XAIFName;
     static const std::string our_myPartialType_XAIFName;
+    static const std::string our_myNonValueInquiryFlag_XAIFName;
 
     /** 
      * this method is const but on first invocation will fill the 

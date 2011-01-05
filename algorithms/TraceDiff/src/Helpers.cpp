@@ -66,7 +66,7 @@ namespace xaifBoosterTraceDiff {
     for (Expression::CArgumentPList::const_iterator i=arguments.begin();
 	 i!=arguments.end();
 	 ++i) { 
-      if ((*i)->getVariable().hasArrayAccess())
+      if ((*i).first->getVariable().hasArrayAccess())
 	return true; 
     }
     return false; 
@@ -78,7 +78,7 @@ namespace xaifBoosterTraceDiff {
 	 i!=arguments.end();
 	 ++i) { 
       PlainBasicBlock::BasicBlockElementList aList;
-      traceArgument(**i, aList,aBasicBlock.getScope());
+      traceArgument(*((*i).first), aList,aBasicBlock.getScope());
       for (PlainBasicBlock::BasicBlockElementList::iterator i=aList.begin();
 	   i!=aList.end();
 	   ++i) { 
