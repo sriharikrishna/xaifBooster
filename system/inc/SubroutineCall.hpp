@@ -30,7 +30,8 @@ namespace xaifBooster {
     /** 
      * \param theSymbol the name of the subroutine
      * \param theScope  the corresponding scope of theSymbol
-     * \param activeUseType true if this call is active, i.e. has active arguments
+     * \param activeUseType should be true if this call is active, i.e. has active arguments
+     * \param formalArgCount the number of formal arguments
      * \param makeAlgorithm  news up an algorithm object if required which then  is also carried through for the respective members
      */
     SubroutineCall (const Symbol& theSymbol,

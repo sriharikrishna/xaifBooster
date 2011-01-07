@@ -40,11 +40,11 @@ namespace xaifBoosterTypeChange {
     virtual std::string debug() const ;
 
     /**
-     * if @parm entireArrayCopied is true, then 
-     * the symbol supplied by @parm aVariable 
-     * may need to have the subscripts 
-     * that are on the original concrete argument 
-     * applied to it
+     * replaces the Variable in this instance
+     * \param aVariable is the replacement
+     * \param entireArrayCopied if true, then 
+     * the replacement will have all subscripts 
+     * that are on the original instance 
      */
     void makeReplacement(const Variable& aVariable,
 			 bool entireArrayCopied);

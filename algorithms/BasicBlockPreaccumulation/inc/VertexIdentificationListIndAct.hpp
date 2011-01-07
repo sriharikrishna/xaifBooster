@@ -40,8 +40,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual std::string debug() const;
      
     /**
-     * true if any element in this list is overwritten 
-     * by  \param theLHSVariable; false otherwise
+     * test for overwrites
+     * \param theLHSVariable is the variable whose value is overwritten
+     * \param aStatementId of the statement in which theLHSVariable is the LHS (for debugging only)
+     * \param theBasicBlock containing the statement in which theLHSVariable is the LHS (for debugging only)
+     * \return true if any element in this class instance is overwritten by the assignment to theLHSVariable
      */
     bool overwrittenBy(const Variable& theLHSVariable,
 		       const ObjectWithId::Id& aStatementId,

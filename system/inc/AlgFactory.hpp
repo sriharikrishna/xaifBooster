@@ -31,8 +31,9 @@
    * Base classes with virtual functions cannot solve the problem since
    * the template parameter is in the signature. 
    * Hence the macro :-( 
-   * NAMING CONVENTION: AlgContaing = class for which me declare the algorithm
-   *                  : <AlgContaining>AlgBase = base algorithm class
+   * NAMING CONVENTION: value of AlgContaining is the name of the class for which me declare algorithm classes
+   *    the base algorithm class name has the value of AlgContaining as prefix and "AlgBase" as suffix
+   *    the factory class  name has the value of AlgContaining as prefix and "AlgFactory" as suffix
    */
 #define BASE_ALG_FACTORY_DECL_MACRO(AlgContaining) \
 namespace xaifBooster { \
@@ -70,7 +71,7 @@ namespace xaifBooster { \
    * NAMING CONVENTION: AlgContaining = as above, the class for which we declare the algorithm
    *                    ParentAlgFactory = the parent class in the inheritance hierarchy with(!) its namespace
    *                    OurNameSpace  = our own namespace
-   *                    This class is named <AlgContaining>AlgFactory
+   *                    This factory class name has the value of AlgContaining as prefix and "AlgFactory" as suffix
    */
 #define DERIVED_ALG_FACTORY_DECL_MACRO(AlgContaining,ParentAlgFactory,OurNameSpace) \
 using namespace xaifBooster; \
@@ -106,8 +107,8 @@ namespace OurNameSpace { \
 
   /** 
    * NAMING CONVENTION: AlgContaining = as above, the class for which we declare the algorithm
-   *                    This class is named <AlgContaining>AlgFactory
-   *                    The algorithm class is assumed to be named <AlgContaining>AlgBase
+   *                    This factory class  name has the value of AlgContaining as prefix and "AlgFactory" as suffix
+   *                    The algorithm class name has the value of AlgContaining as prefix and "Alg" as suffix
    */
 #define BASE_ALG_FACTORY_DEF_MACRO(AlgContaining) \
 namespace xaifBooster { \
@@ -134,8 +135,8 @@ namespace xaifBooster { \
   /** 
    * NAMING CONVENTION: AlgContaining = as above, the class for which we declare the algorithm
    *                    OurNameSpace  = our own namespace  
-   *                    This class is named <AlgContaining>AlgFactory
-   *                    The algorithm class is assumed to be named <AlgContaining>Alg
+   *                    This factory class  name has the value of AlgContaining as prefix and "AlgFactory" as suffix
+   *                    The algorithm class name has the value of AlgContaining as prefix and "Alg" as suffix
    */
 #define DERIVED_ALG_FACTORY_DEF_MACRO(AlgContaining,OurNameSpace) \
 namespace OurNameSpace { \
