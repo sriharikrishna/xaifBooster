@@ -83,8 +83,10 @@ namespace xaifBooster {
      * similar to copyMyselfInto
      * perform a deep copy of the subexpression  contents 
      * starting with theTopVertex into theTarget
-     * \param theTopVertex is vertex of \this
      * \param theTarget is the Expression into which we copy
+     * \param theTopVertex is vertex of this instance
+     * \param withNewId if true it  receives a new id, if false it inherits the original id
+     * \param withAlgorithm if true a new algorithm instance is made
      * \return the copy of theTopVertex in theTarget
      */
     ExpressionVertex& copySubExpressionInto(Expression& theTarget,
