@@ -69,6 +69,8 @@ namespace xaifBoosterTypeChange {
                            const NameCreator& aNameCreator,
                            bool isActive);
 
+    SymbolShape::SymbolShape_E getSymbolShape();
+
   private:
 
     /// no def
