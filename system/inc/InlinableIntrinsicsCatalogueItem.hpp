@@ -12,6 +12,7 @@
 
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpression.hpp"
 #include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
+#include "xaifBooster/system/inc/ShapeChange.hpp"
 #include <vector>
 
 namespace xaifBooster { 
@@ -33,7 +34,8 @@ namespace xaifBooster {
      * \todo JU: why do we preallocate the expression for the function?
      */
     InlinableIntrinsicsCatalogueItem(unsigned int aNumberOfArguments,
-				     bool aNonSmoothFlag);
+				     bool aNonSmoothFlag,
+				     ShapeChange::ShapeChange_E theShapeChange);
 
     ~InlinableIntrinsicsCatalogueItem();
 
@@ -74,6 +76,7 @@ namespace xaifBooster {
     static const std::string our_myPartialId_XAIFName;
     static const std::string our_myPartialType_XAIFName;
     static const std::string our_myNonValueInquiryFlag_XAIFName;
+    static const std::string our_myShapeChange_XAIFName;
 
     /** 
      * this method is const but on first invocation will fill the 
@@ -87,6 +90,8 @@ namespace xaifBooster {
      * returns flag value
      */
     bool isNonSmooth() const; 
+
+    ShapeChange::ShapeChange_E getShapeChange() const; 
 
   private:
     
@@ -143,6 +148,11 @@ namespace xaifBooster {
      * behavior
      */
     const bool myNonSmoothFlag;
+
+    /** 
+     * indicating a shape change from argument to result
+     */
+    const ShapeChange::ShapeChange_E myShapeChange;
 
   }; // end of class InlinableIntrinsicsCatalogueItem
   
