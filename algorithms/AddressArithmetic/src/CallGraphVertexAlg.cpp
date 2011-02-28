@@ -566,7 +566,7 @@ namespace xaifBoosterAddressArithmetic {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p(0);
     switch(anUnknownVariable.getType()) { 
     case SymbolType::INTEGER_STYPE:
-      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(anUnknownVariable.getEffectiveShape()));
       break;
     case SymbolType::REAL_STYPE:
       if (anUnknownVariable.getActiveFlag())
@@ -607,7 +607,7 @@ namespace xaifBoosterAddressArithmetic {
     const Variable& thePushedVariable((*(aPushCall.getArgumentList().begin()))->getArgument().getVariable());
     switch(thePushedVariable.getType()) { 
     case SymbolType::INTEGER_STYPE:
-      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i");
+      theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i_"+SymbolShape::toShortString(thePushedVariable.getEffectiveShape()));
       break;
     case SymbolType::REAL_STYPE:
       if (thePushedVariable.getActiveFlag())

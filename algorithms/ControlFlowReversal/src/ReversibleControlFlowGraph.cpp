@@ -496,7 +496,7 @@ namespace xaifBoosterControlFlowReversal {
 
   void ReversibleControlFlowGraph::insert_push_integer(const Symbol* theIntegerSymbol_p, 
 						       PlainBasicBlock& theBasicBlock_r) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theIntegerSymbol_p->getSymbolShape()));
     theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().
 									  getCallGraphAlgBase()).getAlgorithmSignature() + "push_i");
     Variable theSubstitutionArgument;
@@ -511,7 +511,7 @@ namespace xaifBoosterControlFlowReversal {
   }
 
   const Symbol& ReversibleControlFlowGraph::insert_pop_integer(BasicBlock& theBasicBlock_r) {
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i");
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i_"+SymbolShape::toShortString(SymbolShape::SCALAR));
     theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().
 									  getCallGraphAlgBase()).getAlgorithmSignature() + "pop_i");
     const Symbol& theIntegerSymbol(theBasicBlock_r.getScope().getSymbolTable().
@@ -815,7 +815,7 @@ namespace xaifBoosterControlFlowReversal {
     updatingPopBlockVertex_p->supplyAndAddNewVertex(*updatingPopBlock_p);
     updatingPopBlockVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     // replicate the pop call now as an update
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i");
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theInlinableSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i_"+SymbolShape::toShortString(thePopSymb.getSymbolShape()));
     theInlinableSubroutineCall_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().
 									  getCallGraphAlgBase()).getAlgorithmSignature() + "pop_i");
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(thePopSymb,updatingPopBlock_p->getScope());

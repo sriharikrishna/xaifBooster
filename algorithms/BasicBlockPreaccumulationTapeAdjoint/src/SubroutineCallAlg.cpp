@@ -119,10 +119,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	 ++pairIt) { 
       // make the subroutine call:    
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* thePopCall_p;
-      if ((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE 
-	  &&
-	  (*pairIt).first->getEffectiveShape()==SymbolShape::SCALAR)
-	thePopCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i");
+      if ((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE)
+	thePopCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i_"+SymbolShape::toShortString((*pairIt).first->getEffectiveShape()));
       else if ((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::REAL_STYPE)
 	thePopCall_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString((*pairIt).first->getEffectiveShape())));
       else

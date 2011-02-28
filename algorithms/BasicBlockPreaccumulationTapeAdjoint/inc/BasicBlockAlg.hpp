@@ -139,7 +139,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
      * add the call to the proper BasicBlockElementList based on \p aReversalType
      * Unlike addFactorPop, this method generates its own symbol for the variable to be popped into.
      */
-    const Variable& addAddressPop(const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
+    const Variable& addAddressPop(const ForLoopReversalType::ForLoopReversalType_E& aReversalType,
+				  xaifBoosterTypeChange::TemporariesHelper& aTemporariesHelper);
 
     /** 
      * add the call to allocate the temporary symbol
