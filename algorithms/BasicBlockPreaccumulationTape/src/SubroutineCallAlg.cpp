@@ -108,8 +108,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     if (!pushedAlready) { 
       // make the subroutine call:    
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
-      if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE && theVariable.getEffectiveShape()==SymbolShape::SCALAR)
-	theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+      if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE)
+	theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theVariable.getEffectiveShape()));
       else if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::REAL_STYPE)
 	theSubroutineCall_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString(theVariable.getEffectiveShape())));
       else

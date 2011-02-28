@@ -99,7 +99,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTape::BasicBlockElementAlg::pushVariable:"
                           << " creating a push call for " << aVariable.debug());
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theNewPushSubroutineCall_p
-     (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
+      (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(aVariable.getEffectiveShape())));
     theNewPushSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockElementAlg::pushRequiredValue:inline_push_i");
     aVariable.copyMyselfInto(theNewPushSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     myPushBlock.push_back(theNewPushSubroutineCall_p);

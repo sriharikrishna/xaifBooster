@@ -23,6 +23,7 @@
 #include "xaifBooster/algorithms/AdjointUtils/inc/BasicBlockPrintVersion.hpp"
 
 #include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/CallGraphVertexAlg.hpp"
@@ -240,7 +241,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       for (VariablePList::const_iterator pushedAddVarPI = thisSequenceData_p->myPushedAddressVariablesPList.begin();
            pushedAddVarPI != thisSequenceData_p->myPushedAddressVariablesPList.end(); ++pushedAddVarPI) {
         // make the push and save it in the list
-        xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+        xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString((*pushedAddVarPI)->getEffectiveShape()));
         theReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
                                                                                    ForLoopReversalType::ANONYMOUS);
         theSubroutineCall_p->setId("BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i");
@@ -291,7 +292,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       theSizeIntrinsic.setId(theSizeExpression.getNextVertexId());
       // now make the subroutine call: 
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p = 
-	new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+	new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theSizeAssignment_p->getLHS().getEffectiveShape()));
       // save it in the list
       theReinterpretedDerivativePropagator.
 	supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
@@ -335,7 +336,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
                                   aSequence);
     // now create the push
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theNewPushSubroutineCall_p
-     (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
+     (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theNewExpressionAssignment_p->getLHS().getEffectiveShape())));
     theNewPushSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockElementAlg::pushRequiredValueAfterSequence:inline_push_i");
     theNewExpressionAssignment_p->getLHS().copyMyselfInto(theNewPushSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     addElementToSequencePushBlock(*theNewPushSubroutineCall_p,
@@ -350,7 +351,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::pushRequiredValueAfterSequence:"
                                  << " required value " << aRequiredValue.debug() << " is not an argument (it's some expression");
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theNewPushSubroutineCall_p
-     (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i"));
+      (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(aRequiredValue.getArgument().getVariable().getEffectiveShape())));
     theNewPushSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockElementAlg::pushRequiredValueAfterSequence:inline_push_i");
     aRequiredValue.getArgument().getVariable().copyMyselfInto(theNewPushSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     addElementToSequencePushBlock(*theNewPushSubroutineCall_p,
@@ -411,12 +412,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
                                                                                        ForLoopReversalType::ANONYMOUS);
             theIndexExpressionAssignment_p->setId("index_expression_assignment_for_taping");
             // create a new symbol and add a new VariableSymbolReference in the Variable
+	    xaifBoosterTypeChange::TemporariesHelper 
+	      aTemporariesHelper("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess",
+				 theIndexExpression,
+				 theIndexExpression.getMaxVertex());
             VariableSymbolReference* theNewVariableSymbolReference_p =
-             new VariableSymbolReference(getContaining().getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
-                                                                                                        SymbolType::INTEGER_STYPE,
-                                                                                                        SymbolShape::SCALAR,
-                                                                                                        false),
-                                         getContaining().getScope());
+	      new VariableSymbolReference(aTemporariesHelper.makeTempSymbol(getContaining().getScope()),
+					  getContaining().getScope());
             theNewVariableSymbolReference_p->setId("1");
             theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess");
             // pass it on to the LHS and relinquish ownership
@@ -426,7 +428,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
             // set the RHS
             theIndexExpression.copyMyselfInto(theIndexExpressionAssignment_p->getRHS(),false,false);
             // make the subroutine call: 
-            theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i");
+            theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theNewVariableSymbolReference_p->getSymbol().getSymbolShape()));
             // save it in the list
             theReinterpretedDerivativePropagator.supplyAndAddBasicBlockElementInstance(*theSubroutineCall_p,
                                                                                        ForLoopReversalType::ANONYMOUS);

@@ -165,7 +165,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
             thePoppedAddressVariable_p = (*avCorI).second;
           } // end if expression has only 1 vertex
           else { // more than one vertex in index expression => an assignment was created in taping phase and only the LHS was pushed
-            thePoppedAddressVariable_p = &addAddressPop(aReversalType);
+	    xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::reinterpretArrayAccess",
+									theIndexExpression,theIndexExpression.getMaxVertex());
+            thePoppedAddressVariable_p = &addAddressPop(aReversalType,aTemporariesHelper);
           } // end if >1 vertex
 
           // create a copy of the variable in the indexExpression: 
@@ -221,7 +223,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
         // pop all of the address variables
         for (VariablePList::const_reverse_iterator pushedAddVarPrI = (*seqDataPListRI)->myPushedAddressVariablesPList.rbegin();
              pushedAddVarPrI != (*seqDataPListRI)->myPushedAddressVariablesPList.rend(); ++pushedAddVarPrI) {
-          const Variable& thePoppedAddressVariable (addAddressPop(ForLoopReversalType::ANONYMOUS));
+	  xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5",
+								      **pushedAddVarPrI);
+          const Variable& thePoppedAddressVariable (addAddressPop(ForLoopReversalType::ANONYMOUS,aTemporariesHelper));
           DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5: "
                                    << "Popping address into variable " << thePoppedAddressVariable.debug());
           //addAddressPop(ForLoopReversalType::EXPLICIT);
@@ -319,19 +323,18 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     return theInlineVariable;
   } 
 
-  const Variable& BasicBlockAlg::addAddressPop(const ForLoopReversalType::ForLoopReversalType_E& aReversalType) {
+  const Variable& BasicBlockAlg::addAddressPop(const ForLoopReversalType::ForLoopReversalType_E& aReversalType,
+					       xaifBoosterTypeChange::TemporariesHelper& aTemporariesHelper) {
     // pop the value
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theAddressPopCall (addInlinableSubroutineCall("pop_i",
-                                                                                                                  aReversalType));
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+      theAddressPopCall (addInlinableSubroutineCall("pop_i_"+SymbolShape::toShortString(aTemporariesHelper.getSymbolShape()),
+						    aReversalType));
     theAddressPopCall.setId("inline_pop_i");
     Variable& thePoppedAddressVariable (theAddressPopCall.addConcreteArgument(1).getArgument().getVariable());
     // give it a name etc.
     // create a new symbol and add a new VariableSymbolReference in the Variable
     VariableSymbolReference* theNewVariableSymbolReference_p =
-      new VariableSymbolReference(getContaining().getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
-                                                                                                 SymbolType::INTEGER_STYPE,
-                                                                                                 SymbolShape::SCALAR,
-                                                                                                 false),
+      new VariableSymbolReference(aTemporariesHelper.makeTempSymbol(getContaining().getScope()),
                                   getContaining().getScope());
     theNewVariableSymbolReference_p->setId("1");
     theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop");
@@ -350,7 +353,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     // get shape from tape
     SymbolShape::SymbolShape_E theShape=aTemporarySymbol.getSymbolShape();
     for(unsigned short dim=theShape;dim>=1;--dim) {
-      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theShapePopCall (addInlinableSubroutineCall("pop_i",
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theShapePopCall (addInlinableSubroutineCall("pop_i_"+SymbolShape::toShortString(SymbolShape::SCALAR),
 														    aReversalType));
       theShapePopCall.setId("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAllocation");
       Variable& thePoppedShapeVariable (theShapePopCall.addConcreteArgument(1).getArgument().getVariable());
