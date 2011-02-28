@@ -266,7 +266,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="L_6" kind="variable" type="integer" feType="I4" shape="scalar" annotation="{Sym_Id#6}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_0" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_0" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_prp_12" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
@@ -2138,7 +2138,7 @@
             <xaif:Constant vertex_id="1" type="real" feType="F8" value="2.00000000000000000000e+00"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="4" du_ud="3" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_12" annotation="" scope_id="3"/>
@@ -2355,7 +2355,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="72" du_ud="87" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="8"/>
@@ -4515,7 +4515,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="81" du_ud="89" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="10"/>
@@ -4692,7 +4692,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="86" du_ud="92" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="11"/>
@@ -4759,7 +4759,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="86" du_ud="92" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="11"/>
@@ -5709,14 +5709,14 @@
             <xaif:ExpressionEdge edge_id="2" source="3" target="1" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="reinterpretArrayaccess:inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="reinterpretArrayaccess:inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_0" annotation="xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::reinterpretArrayAccess" scope_id="5"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="24" du_ud="13" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="5"/>
@@ -5791,7 +5791,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="24" du_ud="16" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="5"/>
@@ -5858,7 +5858,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="24" du_ud="16" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="5"/>
@@ -5925,7 +5925,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="24" du_ud="16" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="5"/>
@@ -5962,7 +5962,7 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="24" du_ud="16" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_6" annotation="" scope_id="5"/>
@@ -8543,7 +8543,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="BasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4():inline_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" alias="90" du_ud="96" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="L_9" annotation="" scope_id="12"/>
