@@ -39,7 +39,8 @@ namespace xaifBooster {
      */
     InlinableIntrinsicsCatalogueItem& addCatalogueItem(const std::string& theKey,
 						       const std::string& theNumberOfArguments,
-						       bool aNonSmoothFlag);
+						       bool aNonSmoothFlag,
+						       ShapeChange::ShapeChange_E aShapeChange);
     
     /** 
      * look it up by the name, 

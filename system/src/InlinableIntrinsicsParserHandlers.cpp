@@ -31,7 +31,8 @@ namespace xaifBooster {
     InlinableIntrinsicsCatalogueItem& theItem_r(theInlinableIntrinsicsCatalogue_r.
 						addCatalogueItem(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myName_XAIFName), 
 								 XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myNrArgs_XAIFName),
-								 XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myNonSmoothFlag_XAIFName))));
+								 XMLParser::convertToBoolean(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myNonSmoothFlag_XAIFName)),
+								 ShapeChange::fromString(XMLParser::getAttributeValueByName(InlinableIntrinsicsCatalogueItem::our_myShapeChange_XAIFName))));
     passingOut.setInlinableIntrinsicsCatalogueItem(theItem_r);
   }
 

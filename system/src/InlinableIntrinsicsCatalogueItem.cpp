@@ -23,13 +23,16 @@ namespace xaifBooster {
   const std::string InlinableIntrinsicsCatalogueItem::our_myPartialId_XAIFName("partial_id");
   const std::string InlinableIntrinsicsCatalogueItem::our_myPartialType_XAIFName("partial_type");
   const std::string InlinableIntrinsicsCatalogueItem::our_myNonValueInquiryFlag_XAIFName("nonValueInquiry");
+  const std::string InlinableIntrinsicsCatalogueItem::our_myShapeChange_XAIFName("shapeChange");
 
   InlinableIntrinsicsCatalogueItem::InlinableIntrinsicsCatalogueItem(unsigned int aNumberOfArguments,
-								     bool aNonSmoothFlag) :
+								     bool aNonSmoothFlag,
+								     ShapeChange::ShapeChange_E theShapeChange) :
     myNumberOfArguments(aNumberOfArguments),
     myExpressionVector(aNumberOfArguments+1),
     myDataComplete(false),
-    myNonSmoothFlag(aNonSmoothFlag) { 
+    myNonSmoothFlag(aNonSmoothFlag),
+    myShapeChange(theShapeChange) { 
     InlinableIntrinsicsExpression* theFunction_p=new InlinableIntrinsicsExpression(myNumberOfArguments,
 										   PartialDerivativeKind::PASSIVE); // this is for the function itself
     myExpressionVector[0]=theFunction_p;
@@ -104,6 +107,11 @@ namespace xaifBooster {
   bool 
   InlinableIntrinsicsCatalogueItem::isNonSmooth() const { 
     return myNonSmoothFlag;
+  }
+
+  ShapeChange::ShapeChange_E 
+  InlinableIntrinsicsCatalogueItem::getShapeChange() const { 
+    return myShapeChange;
   }
 
 } 
