@@ -16,6 +16,8 @@
 #include "xaifBooster/system/inc/DimensionBounds.hpp"
 #include "xaifBooster/system/inc/Scope.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/system/inc/Intrinsic.hpp"
+#include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
@@ -67,6 +69,11 @@ namespace xaifBoosterTypeChange{
       setDimensionBounds(theNewVariableSymbol);
     }
     return theNewVariableSymbol;
+  } 
+
+  SymbolShape::SymbolShape_E TemporariesHelper::getSymbolShape() { 
+    setTypeInfo();
+    return myShape;
   } 
 
   Symbol& TemporariesHelper::makeTempSymbol(Scope& aScope,
@@ -325,6 +332,42 @@ namespace xaifBoosterTypeChange{
     if(!myTypeInfo) {
       if(myTopVertex_p) {
 	typeInfo(*myTopVertex_p);
+	if (myTopVertex_p->isIntrinsic()) { 
+	  switch( (dynamic_cast<const Intrinsic&>(*myTopVertex_p)).getInlinableIntrinsicsCatalogueItem().getShapeChange()) {
+	  case ShapeChange::RANK : { 
+	    unsigned short myRank=myShape;
+	    myShape=SymbolShape::VECTOR;
+	    myType=SymbolType::INTEGER_STYPE;
+	    myFrontEndType=FrontEndType(); // unset it
+	    for(DimensionBoundsPVector::iterator it=myDimensionBoundsPVector.begin();
+		it!=myDimensionBoundsPVector.end();
+		++it) {
+	      if(*it)
+		delete (*it);
+	    }
+	    myDimensionBoundsPVector.resize(1,0);
+	    myDimensionBoundsPVector[0]=new DimensionBounds(1, myRank);
+	    break; 
+	  }
+	  case ShapeChange::SCALAR : { 
+	    unsigned short myRank=myShape;
+	    myShape=SymbolShape::SCALAR;
+	    myType=SymbolType::INTEGER_STYPE;
+	    myFrontEndType=FrontEndType(); // unset it
+	    for(DimensionBoundsPVector::iterator it=myDimensionBoundsPVector.begin();
+		it!=myDimensionBoundsPVector.end();
+		++it) {
+	      if(*it)
+		delete (*it);
+	    }
+	    myDimensionBoundsPVector.resize(0,0);
+	    break; 
+	  }
+	  default: 
+	    // do nothing
+	    break;
+	  } 
+	}
       }
       else {
 	typeInfo(*myVariable_p);
