@@ -228,7 +228,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="L_12" kind="variable" type="integer" feType="I4" shape="scalar" annotation="{Sym_Id#12}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_1" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_1" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="box_cycle_fields__2" kind="subroutine" type="void" feType="" shape="scalar" annotation="{Sym_Id#2}" active="1" temp="0">
           </xaif:Symbol>
@@ -268,19 +268,19 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="L_6" kind="variable" type="integer" feType="I4" shape="scalar" annotation="{Sym_Id#6}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_0" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_0" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_28" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_28" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_29" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_29" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_30" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_30" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_31" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_31" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_32" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_32" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_33" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_33" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_prp_12" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
@@ -340,7 +340,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="L_9" kind="variable" type="integer" feType="I4" shape="scalar" annotation="{Sym_Id#9}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_2" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_2" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_3" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -423,7 +423,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="L_9" kind="variable" type="integer" feType="I4" shape="scalar" annotation="{Sym_Id#9}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_24" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_24" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_25" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -451,9 +451,9 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="L_6" kind="variable" type="integer" feType="I4" shape="scalar" annotation="{Sym_Id#6}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_26" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_26" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_27" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_27" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_prp_10" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="1" temp="1">
           </xaif:Symbol>
@@ -482,7 +482,7 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="L_9" kind="variable" type="integer" feType="I4" shape="scalar" annotation="{Sym_Id#9}" active="0" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="OpenAD_Symbol_34" kind="variable" type="integer" feType="" shape="scalar" annotation="" active="0" temp="1">
+          <xaif:Symbol symbol_id="OpenAD_Symbol_34" kind="variable" type="integer" feType="I4" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="OpenAD_Symbol_35" kind="variable" type="real" feType="F8" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
@@ -2177,7 +2177,7 @@
         </xaif:Condition>
       </xaif:Branch>
       <xaif:BasicBlock vertex_id="8" annotation="" scope_id="3">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_1" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="3"/>
@@ -2302,7 +2302,7 @@
         </xaif:Update>
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="96" annotation="" scope_id="8">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_2" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="8"/>
@@ -3708,7 +3708,7 @@
         </xaif:Update>
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="106" annotation="" scope_id="10">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_24" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="10"/>
@@ -4019,7 +4019,7 @@
         </xaif:Update>
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="113" annotation="" scope_id="11">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_26" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="11"/>
@@ -4143,7 +4143,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_27" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="11"/>
@@ -4760,14 +4760,14 @@
         </xaif:Update>
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="32" annotation="" scope_id="5">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_28" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="5"/>
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_29" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="5"/>
@@ -5012,7 +5012,7 @@
         </xaif:Update>
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="36" annotation="" scope_id="5">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_30" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="5"/>
@@ -5068,7 +5068,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_31" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="5"/>
@@ -5173,7 +5173,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_32" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="5"/>
@@ -5278,7 +5278,7 @@
             </xaif:VariableReference>
           </xaif:Argument>
         </xaif:InlinableSubroutineCall>
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_33" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="5"/>
@@ -6426,7 +6426,7 @@
         </xaif:Update>
       </xaif:ForLoop>
       <xaif:BasicBlock vertex_id="120" annotation="" scope_id="12">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="inline_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="inline_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="OpenAD_Symbol_34" annotation="xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::addAddressPop" scope_id="12"/>

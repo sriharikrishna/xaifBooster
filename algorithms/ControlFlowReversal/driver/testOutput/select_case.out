@@ -119,7 +119,7 @@
             <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="_cfr_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_1" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer" scope_id="1"/>
@@ -136,7 +136,7 @@
             <xaif:Constant vertex_id="1" type="integer" feType="" value="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="_cfr_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_2" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer" scope_id="1"/>
@@ -153,7 +153,7 @@
             <xaif:Constant vertex_id="1" type="integer" feType="" value="3"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="_cfr_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_3" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer" scope_id="1"/>
@@ -234,7 +234,7 @@
       <xaif:EndBranch vertex_id="_adj__cfr_v_3" annotation="_cfr_"/>
       <xaif:Exit vertex_id="_adj__cfr_v_4" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="_adj__cfr_v_5" annotation="_cfr_" scope_id="1">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="_cfr_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="_cfr_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_0" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_pop_integer" scope_id="1"/>
@@ -318,7 +318,7 @@
             <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="_cfr_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_5" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer" scope_id="1"/>
@@ -335,7 +335,7 @@
             <xaif:Constant vertex_id="1" type="integer" feType="" value="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="_cfr_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_6" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer" scope_id="1"/>
@@ -352,7 +352,7 @@
             <xaif:Constant vertex_id="1" type="integer" feType="" value="3"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="_cfr_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_7" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer" scope_id="1"/>
@@ -433,7 +433,7 @@
       <xaif:EndBranch vertex_id="_adj__cfr_v_3" annotation="_cfr_"/>
       <xaif:Exit vertex_id="_adj__cfr_v_4" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="_adj__cfr_v_5" annotation="_cfr_" scope_id="1">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="_cfr_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="_cfr_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="GetRidOfThisDefaultSymbol_4" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_pop_integer" scope_id="1"/>

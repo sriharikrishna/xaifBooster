@@ -157,7 +157,7 @@
         </xaif:Assignment>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_7" annotation="_cfr_" scope_id="1">
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="_cfr_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer" scope_id="1"/>
@@ -286,7 +286,7 @@
       <xaif:EndLoop vertex_id="_adj__cfr_v_3" annotation="_cfr_"/>
       <xaif:Exit vertex_id="_adj__cfr_v_4" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="_adj__cfr_v_5" annotation="_cfr_" scope_id="1">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="_cfr_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="_cfr_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_0" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_pop_integer" scope_id="1"/>
@@ -405,7 +405,7 @@
         </xaif:Assignment>
       </xaif:BasicBlock>
       <xaif:BasicBlock vertex_id="_aug__cfr_v_7" annotation="_cfr_" scope_id="1">
-        <xaif:InlinableSubroutineCall subroutine_name="push_i" statement_id="_cfr_push_i">
+        <xaif:InlinableSubroutineCall subroutine_name="push_i_s0" statement_id="_cfr_push_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_5" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_push_integer" scope_id="1"/>
@@ -534,7 +534,7 @@
       <xaif:EndLoop vertex_id="_adj__cfr_v_3" annotation="_cfr_"/>
       <xaif:Exit vertex_id="_adj__cfr_v_4" annotation="_cfr_"/>
       <xaif:BasicBlock vertex_id="_adj__cfr_v_5" annotation="_cfr_" scope_id="1">
-        <xaif:InlinableSubroutineCall subroutine_name="pop_i" statement_id="_cfr_pop_i">
+        <xaif:InlinableSubroutineCall subroutine_name="pop_i_s0" statement_id="_cfr_pop_i">
           <xaif:Argument position="1">
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_3" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::insert_pop_integer" scope_id="1"/>
