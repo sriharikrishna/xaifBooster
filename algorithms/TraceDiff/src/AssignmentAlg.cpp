@@ -71,7 +71,8 @@ namespace xaifBoosterTraceDiff {
     Expression::ConstVertexIterator it(p.first),endIt(p.second);
     for (;it!=endIt ;++it) {
       if (theRHS.numInEdgesOf(*it)>0 && (*it).isIntrinsic()) {
-	if ((*it).getInlinableIntrinsicsCatalogueItem().isNonSmooth()) {
+        const Intrinsic& theIntrinsic(dynamic_cast<const Intrinsic&>(*it));
+	if (theIntrinsic.isNonSmooth()) {
 	  // trace the  call: 
 	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theIntrinsicCall_p;
 	  theIntrinsicCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_trace_call");
@@ -79,7 +80,7 @@ namespace xaifBoosterTraceDiff {
 	  myTracingCalls.push_back(theIntrinsicCall_p);
 	  ConcreteArgument& theName(theIntrinsicCall_p->addConcreteArgument(1));
 	  theName.makeConstant(SymbolType::STRING_STYPE);
-	  theName.getConstant().setFromString(dynamic_cast<const Intrinsic&>(*it).getName());
+	  theName.getConstant().setFromString(theIntrinsic.getName());
 	  ConcreteArgument& theOriginalLine(theIntrinsicCall_p->addConcreteArgument(2));
 	  theOriginalLine.makeConstant(SymbolType::INTEGER_STYPE);
 	  theOriginalLine.getConstant().setint(getContainingAssignment().getLineNumber());
