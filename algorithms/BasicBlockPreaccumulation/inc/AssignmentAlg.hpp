@@ -27,7 +27,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     AssignmentAlg(Assignment& theContainingAssignment);
 
-    virtual ~AssignmentAlg(){};
+    virtual ~AssignmentAlg();
 
     static void permitAliasedLHSs();
 
@@ -48,6 +48,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * flatten
      */
     virtual void algorithm_action_2();
+
+    /** 
+     * deal with non-inlinable cases
+     */
+    virtual void algorithm_action_3();
 
   private: 
 
@@ -78,6 +83,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     bool vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence);
     
     static bool ourPermitAliasedLHSsFlag;
+
+    /**
+     * if this assignment is an extracted non-inlinable intrinsics RHS
+     * and the non-inlinable intrinsic is a deriv action, then
+     * this assignment contains the deriv action.
+     */
+    Assignment* myDerivAction_p;
 
   }; // end of class AssignmentAlg
  
