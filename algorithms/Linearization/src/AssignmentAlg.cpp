@@ -469,7 +469,8 @@ namespace xaifBoosterLinearization {
     //     GraphVizDisplay::show(getContainingAssignment().getRHS(),"originalBefore",
     //      			  VertexLabelWriter(getContainingAssignment().getRHS()));
     // perform the activity analysis on the original right hand side
-    dynamic_cast<ExpressionAlg&>(getContainingAssignment().getRHS().getExpressionAlgBase()).activityAnalysis(); 
+    if (!getContainingAssignment().isNonInlinable())
+      dynamic_cast<ExpressionAlg&>(getContainingAssignment().getRHS().getExpressionAlgBase()).activityAnalysis();
     //     GraphVizDisplay::show(getContainingAssignment().getRHS(),"originalAfter",
     //      			  VertexLabelWriter(getContainingAssignment().getRHS()));
 
@@ -487,6 +488,8 @@ namespace xaifBoosterLinearization {
     if (!myActiveFlag)
       return;
 
+    if (getContainingAssignment().isNonInlinable())
+      return;
     // copy the right hand side: 
     getContainingAssignment().getRHS().
       copyMyselfInto(myLinearizedRightHandSide,false,
