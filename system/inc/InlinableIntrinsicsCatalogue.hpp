@@ -53,6 +53,8 @@ namespace xaifBooster {
      */
     static const std::string ourXAIFName;
 
+    typedef HashTable<InlinableIntrinsicsCatalogueItem*> HashTableType;
+
   private: 
 
     /**
@@ -72,7 +74,7 @@ namespace xaifBooster {
      * the are allocated in addCatalogueItem
      * and deleted in the class' dtor
      */
-    HashTable<InlinableIntrinsicsCatalogueItem*> myHashTable;
+    HashTableType myHashTable;
     
   }; // end of class InlinableIntrinsicsCatalogue
   
