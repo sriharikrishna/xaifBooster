@@ -37,7 +37,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   bool AssignmentAlg::ourPermitAliasedLHSsFlag = false;
 
   AssignmentAlg::AssignmentAlg(Assignment& theContainingAssignment) : 
-    xaifBoosterLinearization::AssignmentAlg(theContainingAssignment) { 
+    xaifBoosterLinearization::AssignmentAlg(theContainingAssignment),
+    myDerivAction_p(0) {
+  }
+
+  AssignmentAlg::~AssignmentAlg() {
+    if (myDerivAction_p)
+      delete (myDerivAction_p);
   }
 
   void AssignmentAlg::permitAliasedLHSs() {
@@ -48,8 +54,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return ourPermitAliasedLHSsFlag;
   }
 
-  void AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
+  void AssignmentAlg::printXMLHierarchy(std::ostream& os) const {
     xaifBoosterLinearization::AssignmentAlg::printXMLHierarchy(os);
+    if (myDerivAction_p) {
+      myDerivAction_p->printXMLHierarchyImpl(os);
+    }
   }
 
   std::string 
@@ -73,6 +82,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (!getActiveFlag()) {
       // nothing else to do here 
       return true; 
+    }
+    if (getContainingAssignment().isNonInlinable()) { 
+      // can't identify
+      return false;
     }
     Expression& theExpression(getLinearizedRightHandSide());
     VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theComputationalGraph.getVertexIdentificationListActiveLHS());
@@ -172,11 +185,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 getVertexIdentificationListIndAct().
 	 overwrittenBy(getContainingAssignment().getLHS(),
 		       getContainingAssignment().getId(),
-		       aBasicBlockAlg.getContaining()))) { 
+		       aBasicBlockAlg.getContaining()))) {
       // there is an ambiguity, do the split
       aBasicBlockAlg.splitComputationalGraph(getContainingAssignment());
-      // redo everything for this assignment
-      algorithm_action_2();
+      if (!(getContainingAssignment().isNonInlinable())) { 
+	// redo everything for this assignment
+	// if it is non-inlinable we don't do anything here
+	// but implement the logic in the next pass
+	algorithm_action_2();
+      }
       // and leave
       return;
     }
@@ -393,8 +410,46 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end else 
   } // end AssignmentAlg::algorithm_action_2()
 
+  void 
+  AssignmentAlg::algorithm_action_3() {
+    if (!getActiveFlag() || !getContainingAssignment().isNonInlinable())
+      return; 
+    DBG_MACRO(DbgGroup::CALLSTACK,
+	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_3(handle non-inlinable) called for: "
+	      << debug().c_str());
+    const Expression& theOrigRHS(getContainingAssignment().getRHS());
+    const ExpressionVertex& theOrigIntrinsic(theOrigRHS.getMaxVertex());
+    const NonInlinableIntrinsicsCatalogueItem& theNonInlinableIntrinsicsCatalogueItem(theOrigIntrinsic.getNonInlinableIntrinsicsCatalogueItem());
+    if (theNonInlinableIntrinsicsCatalogueItem.isExplicitJacobian()) {
+      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_3: not implemented for explicit Jacobian")
+    }
+    else if (theNonInlinableIntrinsicsCatalogueItem.isDirectAction()) {
+      myDerivAction_p=new Assignment(false);
+      myDerivAction_p->setId(getContainingAssignment().getId());
+      getContainingAssignment().getLHS().copyMyselfInto(myDerivAction_p->getLHS());
+      myDerivAction_p->getLHS().setDerivFlag();
+      Intrinsic* newIntrinsic_p=new Intrinsic(theNonInlinableIntrinsicsCatalogueItem.getDirectAction().getDerivAction(),false);
+      myDerivAction_p->getRHS().supplyAndAddVertexInstance(*newIntrinsic_p);
+      newIntrinsic_p->setId(theOrigIntrinsic.getId());
+      Expression::ConstInEdgeIteratorPair p(getContainingAssignment().getRHS().getInEdgesOf(getContainingAssignment().getRHS().getMaxVertex()));
+      Expression::ConstInEdgeIterator ieIt(p.first), endIt(p.second);
+      for (; ieIt!=endIt; ++ieIt) {
+        ExpressionVertex& newInput(theOrigRHS.getSourceOf(*ieIt).createCopyOfMyself(false));
+        if (newInput.isArgument()) {
+          Argument& theArg(dynamic_cast<Argument&>(newInput));
+          if (theArg.getVariable().getActiveType())
+            theArg.getVariable().setDerivFlag();
+        }
+        myDerivAction_p->getRHS().supplyAndAddVertexInstance(newInput);
+        ExpressionEdge* newEdge_p=new ExpressionEdge(false);
+        myDerivAction_p->getRHS().supplyAndAddEdgeInstance(*newEdge_p,newInput,*newIntrinsic_p);
+        newEdge_p->setPosition((*ieIt).getPosition());
+        newEdge_p->setId((*ieIt).getId());
+      }
+    }
+  }
+
   void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
 } // end namespace xaifBoosterBasicBlockPreaccumulation
-
