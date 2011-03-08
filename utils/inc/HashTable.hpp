@@ -14,12 +14,21 @@
 #include <map>
 
 #include "Debuggable.hpp"
+#include "LogicException.hpp"
 
 namespace xaifBooster { 
 
   template <class HashTableElement> 
   class HashTable : virtual public Debuggable {
   public:
+
+    class NotFound : public LogicException {
+    public:
+        NotFound(std::string aFileName,
+		 int aLineNumber,
+		 std::string what):
+                 LogicException(aFileName,aLineNumber,what){};
+    };
 
     HashTable() {};
 
