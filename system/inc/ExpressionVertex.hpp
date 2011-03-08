@@ -14,6 +14,7 @@
 #include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
 #include "xaifBooster/system/inc/VertexTraversable.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsCatalogueItem.hpp"
+#include "xaifBooster/system/inc/NonInlinableIntrinsicsCatalogueItem.hpp"
 
 namespace xaifBooster { 
 
@@ -88,6 +89,7 @@ namespace xaifBooster {
     virtual ExpressionVertex& createCopyOfMyself(bool withAlgorithm=false) const=0;
 
     virtual const InlinableIntrinsicsCatalogueItem& getInlinableIntrinsicsCatalogueItem() const;
+    virtual const NonInlinableIntrinsicsCatalogueItem& getNonInlinableIntrinsicsCatalogueItem() const;
 
   private: 
 
