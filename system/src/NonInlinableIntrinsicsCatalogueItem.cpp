@@ -53,6 +53,12 @@ namespace xaifBooster {
     return *myDirectAction_p;
   }
 
+  const DirectAction& NonInlinableIntrinsicsCatalogueItem::getDirectAction() const {
+    if (!myDirectAction_p)
+      THROW_LOGICEXCEPTION_MACRO("NonInlinableIntrinsicsCatalogueItem::getDirectAction: not set");
+    return *myDirectAction_p;
+  }
+
   ExplicitJacobian& NonInlinableIntrinsicsCatalogueItem::makeExplicitJacobian() { 
     if (myExplicitJacobian_p)
       THROW_LOGICEXCEPTION_MACRO("NonInlinableIntrinsicsCatalogueItem::makeExplicitJacobian: already set as ExplicitJacobian");

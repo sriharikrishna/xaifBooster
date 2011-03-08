@@ -50,7 +50,8 @@ namespace xaifBooster {
 
     ExplicitJacobian& getExplicitJacobian(); 
 
-    DirectAction& getDirectAction(); 
+    DirectAction& getDirectAction();
+    const DirectAction& getDirectAction()const;
 
     ExplicitJacobian& makeExplicitJacobian(); 
 
