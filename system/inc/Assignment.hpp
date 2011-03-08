@@ -87,6 +87,13 @@ namespace xaifBooster {
      * In addition, we also check the corresponding AssignmentAlg
      */
     virtual bool hasExpression(const Expression& anExpression) const;
+    
+    /**
+     * @return true if this is a non-inlinable statment 
+     * the required format for the RHS is the occurence of a single 
+     * non-inlinable intrinsic with arguments being variable references, 
+     */
+    bool isNonInlinable() const;
 
   private: 
 
@@ -114,6 +121,16 @@ namespace xaifBooster {
      * key into  DoMap
      */
     StatementIdSetMapKey myDoMapKey;
+
+    /**
+     * is this the special format for a non-inlinable intrinsic?
+     */
+    mutable bool myNonInlinableFlag;
+
+    /**
+     * have we checked for non-inlinable
+     */
+    mutable bool myNonInlinableCheckedFlag;
 
   }; // end of class Assignment
  
