@@ -350,7 +350,6 @@ namespace xaifBoosterTypeChange{
 	    break; 
 	  }
 	  case ShapeChange::SCALAR : { 
-	    unsigned short myRank=myShape;
 	    myShape=SymbolShape::SCALAR;
 	    myType=SymbolType::INTEGER_STYPE;
 	    myFrontEndType=FrontEndType(); // unset it
