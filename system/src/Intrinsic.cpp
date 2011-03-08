@@ -6,6 +6,7 @@
 // which is distributed under the BSD license.
 // The full COPYRIGHT notice can be found in the top
 // level directory of the xaifBooster distribution.
+
 // ========== end copyright notice =====================
 #include "xaifBooster/utils/inc/LogicException.hpp"
 #include "xaifBooster/utils/inc/PrintManager.hpp"
@@ -20,7 +21,9 @@ namespace xaifBooster {
   const std::string Intrinsic::our_myId_XAIFName("vertex_id");
 
   Intrinsic::Intrinsic(const std::string& aName, bool makeAlgorithm) :
-    myName(aName) {
+    myName(aName),
+    myInlinableIntrinsicsCatalogueItem_p (0),
+    myNonInlinableIntrinsicsCatalogueItem_p(0) {
     myExpressionVertexAlgBase_p=0;
     if (makeAlgorithm)
       myExpressionVertexAlgBase_p=IntrinsicAlgFactory::instance()->makeNewAlg(*this);
@@ -50,9 +53,22 @@ namespace xaifBooster {
   }
 
   const InlinableIntrinsicsCatalogueItem&
-  Intrinsic::getInlinableIntrinsicsCatalogueItem() const { 
-    return ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement(myName);
+  Intrinsic::getInlinableIntrinsicsCatalogueItem() const {
+    getInfo();
+    if (!myInlinableIntrinsicsCatalogueItem_p) {
+      THROW_LOGICEXCEPTION_MACRO("Intrinsic::getInlinableIntrinsicsCatalogueItem(): >" << myName.c_str() << "< is not an inlinable intrinsic.");
+    }
+    return *myInlinableIntrinsicsCatalogueItem_p;
   } 
+
+  const NonInlinableIntrinsicsCatalogueItem&
+  Intrinsic::getNonInlinableIntrinsicsCatalogueItem() const {
+    getInfo();
+    if (!myNonInlinableIntrinsicsCatalogueItem_p) {
+      THROW_LOGICEXCEPTION_MACRO("Intrinsic::getNonInlinableIntrinsicsCatalogueItem(): >" << myName.c_str() << "< is not a non-inlinable intrinsic.");
+    }
+    return *myNonInlinableIntrinsicsCatalogueItem_p;
+  }
 
   void
   Intrinsic::printXMLHierarchy(std::ostream& os) const {
@@ -103,12 +119,37 @@ namespace xaifBooster {
     return myName;
   } 
 
-  bool Intrinsic::isNonSmooth() const { 
-    return getInlinableIntrinsicsCatalogueItem().isNonSmooth();
+  void Intrinsic::getInfo() const {
+    if (!myInlinableIntrinsicsCatalogueItem_p
+        &&
+        ! myNonInlinableIntrinsicsCatalogueItem_p) {
+      try {
+           myInlinableIntrinsicsCatalogueItem_p=&(ConceptuallyStaticInstances::instance()->getInlinableIntrinsicsCatalogue().getElement(myName));
+      }
+      catch (InlinableIntrinsicsCatalogue::HashTableType::NotFound& ei)  {
+        try {
+          myNonInlinableIntrinsicsCatalogueItem_p=&(ConceptuallyStaticInstances::instance()->getNonInlinableIntrinsicsCatalogue().getElement(myName));
+        }
+        catch (NonInlinableIntrinsicsCatalogue::HashTableType::NotFound& eni) {
+          THROW_LOGICEXCEPTION_MACRO("Intrinsic::getInfo() cannot find catalogue information (inlinable or non-inlinable) for an intrinsic called >" << myName << "<");
+        }
+      }
+    }
+  }
+
+  bool Intrinsic::isNonSmooth() const {
+    getInfo();
+    if (myInlinableIntrinsicsCatalogueItem_p)
+      return myInlinableIntrinsicsCatalogueItem_p->isNonSmooth();
+    return myNonInlinableIntrinsicsCatalogueItem_p->isNonSmooth();
   }
 
   bool Intrinsic::isIntrinsic() const {
     return true;
   }
 
+  bool Intrinsic::isInlinable() const {
+    getInfo();
+    return (myInlinableIntrinsicsCatalogueItem_p!=0);
+  }
 } // end of namespace 

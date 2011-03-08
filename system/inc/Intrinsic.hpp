@@ -13,6 +13,7 @@
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/IntrinsicAlgBase.hpp"
 #include "xaifBooster/system/inc/ObjectWithAnnotation.hpp"
+#include "NonInlinableIntrinsicsCatalogueItem.hpp"
 
 namespace xaifBooster { 
 
@@ -46,8 +47,14 @@ namespace xaifBooster {
 
     /** 
      * the only useful implementation for this virtual
+     * throws an exception if isInlinable() is false
      */
     virtual const InlinableIntrinsicsCatalogueItem& getInlinableIntrinsicsCatalogueItem() const;
+
+    /**
+     * throws an exception if isInlinable() is true
+     */
+    virtual const NonInlinableIntrinsicsCatalogueItem& getNonInlinableIntrinsicsCatalogueItem() const;
 
     ExpressionVertex& createCopyOfMyself(bool withAlgorithm=false) const;
 
@@ -66,6 +73,11 @@ namespace xaifBooster {
      * @return true
      */
     virtual bool isIntrinsic() const;
+
+    /**
+     * inlinable or not
+     */
+    bool isInlinable() const;
 
   private : 
 
@@ -88,6 +100,21 @@ namespace xaifBooster {
      * \todo replace with reference to IntrinsicCatalogue
      */
     const std::string myName;
+
+    /**
+     * sets myInlinableIntrinsicsCatalogueItem_p or myNonInlinableIntrinsicsCatalogueItem_p
+     */
+    void getInfo() const;
+
+    /**
+     * set if this is an inlinable intrinsic
+     */
+    mutable const InlinableIntrinsicsCatalogueItem* myInlinableIntrinsicsCatalogueItem_p;
+
+    /**
+     * set if this is a noninlinable intrinsic
+     */
+    mutable const NonInlinableIntrinsicsCatalogueItem* myNonInlinableIntrinsicsCatalogueItem_p;
 
   }; // end of class Intrinsic
  
