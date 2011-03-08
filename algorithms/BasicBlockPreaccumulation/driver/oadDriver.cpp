@@ -14,6 +14,7 @@
 
 #include "xaifBooster/system/inc/XAIFBaseParser.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsParser.hpp"
+#include "xaifBooster/system/inc/NonInlinableIntrinsicsParser.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgConfig.hpp"
@@ -46,6 +47,12 @@ int main(int argc,char** argv) {
     ip.initialize();
     ip.setExternalSchemaLocation(algConfig_p->getSchemaPath());
     ip.parse(algConfig_p->getIntrinsicsFileName());
+    if (algConfig_p->isSet('N')) {
+      NonInlinableIntrinsicsParser nip(ConceptuallyStaticInstances::instance()->getNonInlinableIntrinsicsCatalogue());
+      nip.initialize();
+      nip.setExternalSchemaLocation(algConfig_p->getSchemaPath());
+      nip.parse(algConfig_p->getNIIntrinsicsFileName());
+    } 
     XAIFBaseParser p;
     p.initialize(algConfig_p->getInputValidationFlag());
     p.setExternalSchemaLocation(algConfig_p->getSchemaPath());
