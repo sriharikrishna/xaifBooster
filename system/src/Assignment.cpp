@@ -16,6 +16,7 @@
 #include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
 #include "xaifBooster/system/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
+#include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
@@ -30,7 +31,9 @@ namespace xaifBooster {
   const std::string Assignment::our_myDoMapKey_XAIFName("do_chain");
 
   Assignment::Assignment(bool makeAlgorithm) : 
-    myRHS(makeAlgorithm) {
+    myRHS(makeAlgorithm),
+    myNonInlinableFlag(false),
+    myNonInlinableCheckedFlag(false) {
     if (makeAlgorithm)
       myBasicBlockElementAlgBase_p=AssignmentAlgFactory::instance()->makeNewAlg(*this); 
   } 
@@ -169,5 +172,42 @@ namespace xaifBooster {
     else
       return false;
   } // end Assignment::hasExpression
+
+  bool
+  Assignment::isNonInlinable() const {
+    if (myNonInlinableCheckedFlag)
+      return myNonInlinableFlag;
+    const ExpressionVertex& maxVertex(getRHS().getMaxVertex());
+    if (maxVertex.isIntrinsic()) {
+      if (!((dynamic_cast<const Intrinsic&>(maxVertex)).isInlinable())) {
+        // check that it is the only one that is not an argument
+        Expression::ConstInEdgeIteratorPair p(getRHS().getInEdgesOf(maxVertex));
+        Expression::ConstInEdgeIterator ieIt(p.first), endIt(p.second);
+        for (;ieIt!=endIt;++ieIt) {
+           if (!(getRHS().getSourceOf(*ieIt).isArgument())) {
+             THROW_LOGICEXCEPTION_MACRO("Assignment::isNonInlinable(): canonicalization should have extracted the non-inlinable intrinsic >"
+                                        << (dynamic_cast<const Intrinsic&>(maxVertex)).getName()
+                                        << "< on line number "<< getLineNumber());
+           }
+
+        }
+        myNonInlinableCheckedFlag=true;
+        return myNonInlinableFlag=true;
+      }
+      else { // none of the intrinsics should be non-inlinable
+         Expression::ConstVertexIteratorPair p(getRHS().vertices());
+         Expression::ConstVertexIterator vIt(p.first), endIt(p.second);
+         for (;vIt!=endIt;++vIt) {
+           if ((*vIt).isIntrinsic() && !(dynamic_cast<const Intrinsic&>(*vIt)).isInlinable()) {
+             THROW_LOGICEXCEPTION_MACRO("Assignment::isNonInlinable(): canonicalization should have extracted the non-inlinable intrinsic >"
+                                        << (dynamic_cast<const Intrinsic&>(*vIt)).getName()
+                                        << "< on line number "<< getLineNumber());
+           }
+         }
+      }
+    }
+    myNonInlinableCheckedFlag=true;
+    return myNonInlinableFlag=false;
+  }
 
 } // end of namespace xaifBooster 
