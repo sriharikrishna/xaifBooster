@@ -323,7 +323,9 @@ namespace xaifBooster{
         for(; expOutEdgeIt!=expOutEdgeItEnd; ++expOutEdgeIt) {
           if (getTargetOf(*expOutEdgeIt).isIntrinsic()) {
 	    const Intrinsic& theIntrinsic(dynamic_cast<const Intrinsic&>(getTargetOf(*expOutEdgeIt)));
-	    if (!(theIntrinsic.getInlinableIntrinsicsCatalogueItem().getExpressionVectorElement((*expOutEdgeIt).getPosition()).isNonValueInquiry())) {
+	    if (theIntrinsic.isInlinable() 
+		&& 
+		!(theIntrinsic.getInlinableIntrinsicsCatalogueItem().getExpressionVectorElement((*expOutEdgeIt).getPosition()).isNonValueInquiry())) {
 	      nonValueInquiry=false;
 	      break;
 	    }
