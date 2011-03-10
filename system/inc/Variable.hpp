@@ -195,6 +195,8 @@ namespace xaifBooster {
      */
     virtual bool hasExpression(const Expression& anExpression) const;
 
+    void markTemporary();
+
   private: 
     
     /** 

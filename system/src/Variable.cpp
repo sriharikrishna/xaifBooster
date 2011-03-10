@@ -413,4 +413,10 @@ namespace xaifBooster{
     return (hasArrayAccess() && getArrayAccess().hasExpression(anExpression));
   } // end Variable::hasExpression()
 
+  void
+  Variable::markTemporary() {
+    getAliasMapKey().setTemporary();
+    getDuUdMapKey().setTemporary();
+  }
+
 } // end of namespace xaifBooster 
