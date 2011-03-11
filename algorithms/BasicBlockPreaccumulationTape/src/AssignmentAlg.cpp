@@ -73,7 +73,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     }
     else 
       xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::printXMLHierarchy(os);
-    } // end of BasicBlockAlg::printXMLHierarchy
+  } // end of BasicBlockAlg::printXMLHierarchy
   
   std::string 
   AssignmentAlg::debug() const { 
@@ -129,7 +129,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
            lIt!=argList.end();
            ++lIt) {
         if ((*lIt).first->getVariable().hasArrayAccess())
-         handleArrayAccessIndices((*lIt).first->getVariable());
+	  handleArrayAccessIndices((*lIt).first->getVariable());
       }
     } 
   } 

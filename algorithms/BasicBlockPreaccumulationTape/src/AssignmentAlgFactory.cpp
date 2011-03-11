@@ -13,6 +13,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AssignmentAlg.hpp"
 
 
-  DERIVED_ALG_FACTORY_DEF_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulationTape)
+DERIVED_ALG_FACTORY_DEF_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulationTape)
 
 
