@@ -24,7 +24,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   /** 
    * class to implement reversal of BasicBlockElements
-   * NOTE: once the push/pop stuff is complete, this possibly should no longer inherit from xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg
+   * NOTE: once the push/pop stuff is complete, 
+   * this possibly should no longer inherit from xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg
    */
   class SubroutineCallAlg : virtual public xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg,
 			    public BasicBlockElementAlg {
@@ -42,9 +43,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     virtual void insertYourself(const BasicBlock& theBasicBlock);
-
-    void insertYourself(const BasicBlock& theBasicBlock,
-			ForLoopReversalType::ForLoopReversalType_E aReversalType);
 
   private: 
 
@@ -74,6 +72,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
      * inserts inlined restores for index values
      */
     void handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg);
+
+    void insertYourself(const BasicBlock& theBasicBlock,
+			ForLoopReversalType::ForLoopReversalType_E aReversalType);
+
 
   }; // end of class SubroutineCallAlg
  
