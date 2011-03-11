@@ -23,6 +23,8 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockAlg.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AdjointAssembly.hpp"
+
 #include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
 
 using namespace xaifBooster;
@@ -33,7 +35,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
    * class to implement a reinterpretation of 
    * the DerivativePropagator instances as propagators in the adjoint sweep 
    */
-  class BasicBlockAlg : public xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg {
+  class BasicBlockAlg : public xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg ,
+			public AdjointAssembly {
   public:
     
     BasicBlockAlg(BasicBlock& theContaining);
@@ -46,18 +49,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
     
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& addInlinableSubroutineCall(const std::string& aSubroutineName,
-											       const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-    SubroutineCall& addSubroutineCall(const Symbol& aSubroutineNameSymbol,
-				      const Scope& aSubroutineNameScope,
-				      ActiveUseType::ActiveUseType_E anActiveUse,
-				      const ForLoopReversalType::ForLoopReversalType_E& aReversalType,
-                                      unsigned short formalArgCount);
-
     virtual void algorithm_action_5();
 
-    const PlainBasicBlock::BasicBlockElementList& getBasicBlockElementList(const ForLoopReversalType::ForLoopReversalType_E& aReversalType) const; 
+    Scope& getScope();
     
   private:
 
@@ -70,104 +64,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /// no def
     BasicBlockAlg& operator=(const BasicBlockAlg&);
 
-    typedef std::pair<const Variable*, const Variable*> VariablePPair;
-    typedef std::list<VariablePPair> VariablePPairList;
-
-    /// This list maps propagation address variables with the corresponding variables that have been popped
-    VariablePPairList myAddressVariableCorList;
-
-    /// This list maps propagation factor variables with the corresponding variables that have been popped
-    VariablePPairList myFactorVariableCorList;
-
-    /** 
-     * the elements that make up the adjoint code
-     * which assumes an anonymous reversal (no knowledge about the original 
-     * loop variables)
-     */
-    PlainBasicBlock::BasicBlockElementList myBasicBlockElementListAnonymousReversal;
-
-    /** 
-     * the elements that make up the adjoint code
-     * under an explicit reversal (loop constructs are reversed explicitly
-     * and we assume all index expressions can be recalculated explcitly 
-     * at reversal time from explicitly reversed loops)
-     */
-    PlainBasicBlock::BasicBlockElementList myBasicBlockElementListExplicitReversal;
-    
-    /** 
-     * popping array index values if we pushed any
-     * based on the reversal type (see also ControlFlowReversal)
-     */
-    void reinterpretArrayAccess(const Variable& theOriginalVariable,
-				Variable& theActualVariable,
-				const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-    /** 
-     * based on the reversal type (see also ControlFlowReversal)
-     */
-    void reinterpretDerivativePropagatorEntry(const xaifBoosterDerivativePropagator::DerivativePropagatorEntry& aDerivativePropagatorEntry);
-
-    PlainBasicBlock::BasicBlockElementList& getBasicBlockElementList(const ForLoopReversalType::ForLoopReversalType_E& aReversalType); 
-
-    /** 
-     * add the call to the proper BasicBlockElementList based on aReversalType
-     */
-    void addZeroDeriv(Variable& theTarget,
-		      const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-    /** 
-     * add the call to the proper BasicBlockElementList based on aReversalType
-     */
-    void addUnitFactor(Variable& theSource,
-		       Variable& theTarget,
-		       const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-    /** 
-     * add the call to the proper BasicBlockElementList based on aReversalType
-     */
-    void addNegativeUnitFactor(Variable& theSource,
-                               Variable& theTarget,
-                               const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-    /** 
-     * add the call to the proper BasicBlockElementList based on aReversalType
-     */
-    const Variable& addFactorPop(const Symbol& aTemporarySymbol,
-				 const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-    /** 
-     * add the call to the proper BasicBlockElementList based on \p aReversalType
-     * Unlike addFactorPop, this method generates its own symbol for the variable to be popped into.
-     */
-    const Variable& addAddressPop(const ForLoopReversalType::ForLoopReversalType_E& aReversalType,
-				  xaifBoosterTypeChange::TemporariesHelper& aTemporariesHelper);
-
-    /** 
-     * add the call to allocate the temporary symbol
-     */
-    void addAllocation(const Symbol& aTemporarySymbol,
-		       const Scope& theScope,
-		       xaifBoosterTypeChange::TemporariesHelper& aHelper,
-		       const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-    /** 
-     * add a Saxpy call with variable factor \p theFactor to the proper BasicBlockElementList based on aReversalType
-     */
-    void addSaxpy(const Variable& theSource,
-		  const Variable& theTarget,
-		  const Variable& theFactor,
-		  const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-    /** 
-     * add a Saxpy call with constant factor \p theConstantFactor to the proper BasicBlockElementList based on aReversalType
-     */
-    void addSaxpy(const Variable& theSource,
-                  const Variable& theTarget,
-                  const Constant& theFactor,
-                  const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-  }; // end class xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg
+  }; 
  
-} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+} 
                                                                      
 #endif

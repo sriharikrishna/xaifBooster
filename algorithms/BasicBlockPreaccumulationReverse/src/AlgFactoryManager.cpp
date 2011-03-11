@@ -15,6 +15,7 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/ArgumentSymbolReferenceAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/SubroutineCallAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AssignmentAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -45,6 +46,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
+    resetAssignmentAlgFactory(new AssignmentAlgFactory());
   }
 
   void AlgFactoryManager::init() {
