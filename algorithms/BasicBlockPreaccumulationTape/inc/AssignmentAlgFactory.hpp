@@ -14,7 +14,7 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AlgFactoryManager.hpp"
 
 
-  DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulation::AssignmentAlgFactory,xaifBoosterBasicBlockPreaccumulationTape)
+DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,xaifBoosterBasicBlockPreaccumulation::AssignmentAlgFactory,xaifBoosterBasicBlockPreaccumulationTape)
 
 
 #endif

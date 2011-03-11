@@ -42,7 +42,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     default: 
       THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::printXMLHierarchy: cannot handle PrintVersion "
 				 << xaifBoosterCodeReplacement::PrintVersion::toString(xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->
-							   getPrintVersion()).c_str());
+										       getPrintVersion()).c_str());
       break;
     } // end switch
   } // end of AssignmentAlg::printXMLHierarchy

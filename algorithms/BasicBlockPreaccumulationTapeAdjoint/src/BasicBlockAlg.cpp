@@ -128,7 +128,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 								      **pushedAddVarPrI);
           const Variable& thePoppedAddressVariable (addAddressPop(ForLoopReversalType::ANONYMOUS,aTemporariesHelper));
           DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5: "
-                                   << "Popping address into variable " << thePoppedAddressVariable.debug());
+		    << "Popping address into variable " << thePoppedAddressVariable.debug());
           //addAddressPop(ForLoopReversalType::EXPLICIT);
           // we push to the front so that when we search from the beginning we find the most recent addition,
           // which should be the appropriate one for the occurance of this variable in this sequence

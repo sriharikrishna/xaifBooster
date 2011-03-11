@@ -66,16 +66,16 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 				     ForLoopReversalType::ForLoopReversalType_E aReversalType) {
     Assignment **theDummy_pp=0;
     switch (aReversalType) {
-      case ForLoopReversalType::ANONYMOUS:
-        theDummy_pp=&myPlaceholderDummyAnonymous_p;
-        break;
-      case ForLoopReversalType::EXPLICIT:
-        theDummy_pp=&myPlaceholderDummyExplicit_p;
-        break;
-      default: {
-        THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::insertYourself: unimplemented logic for reversal type " << ForLoopReversalType::toString(aReversalType).c_str());
-        break;
-      }
+    case ForLoopReversalType::ANONYMOUS:
+      theDummy_pp=&myPlaceholderDummyAnonymous_p;
+      break;
+    case ForLoopReversalType::EXPLICIT:
+      theDummy_pp=&myPlaceholderDummyExplicit_p;
+      break;
+    default: {
+      THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::insertYourself: unimplemented logic for reversal type " << ForLoopReversalType::toString(aReversalType).c_str());
+      break;
+    }
     }
     if (*theDummy_pp) {
       THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::insertYourself: dummy placeholder already set");
@@ -85,8 +85,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     *theDummy_pp=&(theBasicBlockAlg.addAssignment(aReversalType,true)); // here we want the algorithm object to attach things to
     // do the adjoint assembly on the algorithm of the dummy
     dynamic_cast<AssignmentAlg&>((*theDummy_pp)->getAssignmentAlgBase()).adjointAssembly(*this,
-                                                                                        theBasicBlock,
-                                                                                        aReversalType);
+											 theBasicBlock,
+											 aReversalType);
   }
 
   void AssignmentAlg::adjointAssembly(const AssignmentAlg& theOrigAlg, const BasicBlock& theBasicBlock, ForLoopReversalType::ForLoopReversalType_E aReversalType) {
@@ -97,7 +97,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     const NonInlinableIntrinsicsCatalogueItem& theNonInlinableIntrinsicsCatalogueItem(theOrigIntrinsic.getNonInlinableIntrinsicsCatalogueItem());
     if (theNonInlinableIntrinsicsCatalogueItem.isExplicitJacobian()) {
       THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::algorithm_action_3: not implemented for explicit Jacobian")
-    }
+	}
     else if (theNonInlinableIntrinsicsCatalogueItem.isDirectAction()) {
       Expression::ConstInEdgeIteratorPair p(theOrigRHS.getInEdgesOf(theOrigRHS.getMaxVertex()));
       Expression::ConstInEdgeIterator ieIt(p.first),endIt(p.second);
@@ -115,7 +115,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
             Argument* newArgument_p=new Argument(false);
             theSource.copyMyselfInto(newArgument_p->getVariable());
 	    if (newArgument_p->getVariable().getActiveType())
-		newArgument_p->getVariable().setDerivFlag();
+	      newArgument_p->getVariable().setDerivFlag();
 	    derivActionAsgnmt.getRHS().supplyAndAddVertexInstance(*newArgument_p);
             newArgument_p->setId(derivActionAsgnmt.getRHS().getNextVertexId());
 	    ExpressionEdge* newEdge_p=new ExpressionEdge(false);
@@ -166,7 +166,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 				   << " and shape "
 				   << SymbolShape::toString((*pairIt).first->getEffectiveShape()).c_str())
 
-      getBasicBlockElementList(ForLoopReversalType::EXPLICIT).push_back(thePopCall_p);
+	  getBasicBlockElementList(ForLoopReversalType::EXPLICIT).push_back(thePopCall_p);
       thePopCall_p->setId("AssignmentAlg::handleArrayAccessIndices");
       (*pairIt).first->copyMyselfInto(thePopCall_p->addConcreteArgument(1).getArgument().getVariable());
     }
@@ -178,4 +178,3 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   } 
 
 } // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
-
