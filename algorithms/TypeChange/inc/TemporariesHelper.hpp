@@ -47,7 +47,7 @@ namespace xaifBoosterTypeChange {
     /**
      * \param aScope - Scope in which the symbol is made
      */
-    Symbol& makeTempSymbol(Scope& aScope);
+    Symbol& makeTempSymbol(Scope& aScope, bool activeType=false);
 
     /**
      * returns true if the temporary would need to be allocated

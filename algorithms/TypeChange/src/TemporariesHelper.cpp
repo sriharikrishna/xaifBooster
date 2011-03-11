@@ -57,13 +57,13 @@ namespace xaifBoosterTypeChange{
     }
   }
 
-  Symbol& TemporariesHelper::makeTempSymbol(Scope& aScope){
+  Symbol& TemporariesHelper::makeTempSymbol(Scope& aScope, bool activeType){
     setTypeInfo();
     Symbol&theNewVariableSymbol(aScope.getSymbolTable().
 				addUniqueAuxSymbol(SymbolKind::VARIABLE,
 						   myType,
 						   myShape,
-						   false));
+						   activeType));
     theNewVariableSymbol.setFrontEndType(myFrontEndType);
     if(myShape!=SymbolShape::SCALAR) {
       setDimensionBounds(theNewVariableSymbol);
