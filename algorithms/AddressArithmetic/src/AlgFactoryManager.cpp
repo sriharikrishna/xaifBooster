@@ -20,6 +20,7 @@
 #include "xaifBooster/algorithms/AddressArithmetic/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlgFactory.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AssignmentAlgFactory.hpp"
 
 using namespace xaifBooster;
 
@@ -49,6 +50,7 @@ namespace xaifBoosterAddressArithmetic {
     // we have to pick a path
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AlgFactoryManager::resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
+    resetAssignmentAlgFactory(new AssignmentAlgFactory());
   }
 
   void AlgFactoryManager::init() {

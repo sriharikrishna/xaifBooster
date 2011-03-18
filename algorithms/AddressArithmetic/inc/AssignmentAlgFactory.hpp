@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_ASSIGNMENTALGFACTORY_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_ASSIGNMENTALGFACTORY_INCLUDE_
+#ifndef _XAIFBOOSTERADDRESSARITHMETIC_ASSIGNMENTALGFACTORY_INCLUDE_
+#define _XAIFBOOSTERADDRESSARITHMETIC_ASSIGNMENTALGFACTORY_INCLUDE_
 // ========== begin copyright notice ===================
 // This file is part of
 // ---------------
@@ -12,13 +12,13 @@
 
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AssignmentAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AssignmentAlg.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AlgFactoryManager.hpp"
 
 
 DERIVED_ALG_FACTORY_DECL_MACRO(Assignment,
 			       xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlgFactory,
-			       xaifBoosterBasicBlockPreaccumulationReverse)
+			       xaifBoosterAddressArithmetic)
 
 
 #endif
