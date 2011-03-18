@@ -30,6 +30,7 @@ ALG_OBJ_SET=$(wildcard ../src/obj/*.o)
 
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
 LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
+LIBS+=../../CodeReplacement/lib/libxaifBoosterCodeReplacement.a
 
 # setup for ANGEL
 ifndef ANGELROOT

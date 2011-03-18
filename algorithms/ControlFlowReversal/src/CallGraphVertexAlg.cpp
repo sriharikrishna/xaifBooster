@@ -14,6 +14,7 @@
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/CallGraphVertex.hpp"
 
+#include "xaifBooster/algorithms/CodeReplacement/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/ControlFlowReversal/inc/CallGraphVertexAlg.hpp"
 
 
@@ -311,18 +312,22 @@ namespace xaifBoosterControlFlowReversal {
     // This is for testing purposes only,
     // if the following graphs have been created we have multiple ENTRIES and EXITS in one cfg                              
     // they may not have been created for empty graphs as e.g. possible for modules
-    if (myTapingControlFlowGraph_p)
+    if (myTapingControlFlowGraph_p) { 
+      xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::AUGMENTED);
       myTapingControlFlowGraph_p->printXMLHierarchy(os);
-
-    if (myAdjointControlFlowGraph_p)
+    }
+    if (myAdjointControlFlowGraph_p) { 
+      xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
       myAdjointControlFlowGraph_p->printXMLHierarchy(os);
-                                                                                
-    if (myStrictAnonymousTapingControlFlowGraph_p)
+    }
+    if (myStrictAnonymousTapingControlFlowGraph_p) { 
+      xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::AUGMENTED);
       myStrictAnonymousTapingControlFlowGraph_p->printXMLHierarchy(os);
-
-    if (myStrictAnonymousAdjointControlFlowGraph_p)
+    }
+    if (myStrictAnonymousAdjointControlFlowGraph_p) { 
+      xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->setPrintVersion(xaifBoosterCodeReplacement::PrintVersion::ADJOINT);
       myStrictAnonymousAdjointControlFlowGraph_p->printXMLHierarchy(os);
-                                                                                
+    }                          
     os << pm.indent()
        << "</"
        << getContaining().getControlFlowGraph().ourXAIFName
