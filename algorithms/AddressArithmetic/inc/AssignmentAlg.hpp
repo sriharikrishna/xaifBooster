@@ -1,5 +1,5 @@
-#ifndef _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_ASSIGNMENTALG_INCLUDE_
-#define _XAIFBOOSTERBASICBLOCKPREACCUMULATIONREVERSE_ASSIGNMENTALG_INCLUDE_
+#ifndef _XAIFBOOSTERADDRESSARITHMETIC_ASSIGNMENTALG_INCLUDE_
+#define _XAIFBOOSTERADDRESSARITHMETIC_ASSIGNMENTALG_INCLUDE_
 // ========== begin copyright notice ===================
 // This file is part of
 // ---------------
@@ -14,7 +14,7 @@
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationReverse {  
+namespace xaifBoosterAddressArithmetic {  
 
   /** 
    * class to pull together 

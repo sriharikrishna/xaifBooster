@@ -14,12 +14,12 @@
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/SymbolAlg.hpp"
 #include "xaifBooster/algorithms/TypeChange/inc/ConcreteArgumentAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AssignmentAlg.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/CodeReplacement/inc/ConceptuallyStaticInstances.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterBasicBlockPreaccumulationReverse { 
+namespace xaifBoosterAddressArithmetic { 
 
   AssignmentAlg::AssignmentAlg(Assignment& theContaining) : 
     xaifBoosterBasicBlockPreaccumulation::AssignmentAlg(theContaining),
@@ -49,7 +49,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   
   std::string AssignmentAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationReverse::AssignmentAlg[" << this
+    out << "xaifBoosterAddressArithmetic::AssignmentAlg[" << this
  	<< "]" << std::ends;  
     return out.str();
   } // end of AssignmentAlg::debug

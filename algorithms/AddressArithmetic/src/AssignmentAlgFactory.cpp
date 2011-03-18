@@ -9,11 +9,11 @@
 // ========== end copyright notice =====================
 #include "xaifBooster/system/inc/AssignmentAlgBase.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AssignmentAlgFactory.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/AssignmentAlg.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/algorithms/AddressArithmetic/inc/AssignmentAlg.hpp"
 
 
-namespace xaifBoosterBasicBlockPreaccumulationReverse { 
+namespace xaifBoosterAddressArithmetic { 
   AssignmentAlgBase* AssignmentAlgFactory::makeNewAlg(Assignment& theContaining) { 
     return dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlg*>(new AssignmentAlg(theContaining)); 
   }
@@ -24,7 +24,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 
   std::string AssignmentAlgFactory::debug() const { 
     std::ostringstream out; 
-    out << "xaifBoosterBasicBlockPreaccumulationReverse" 
+    out << "xaifBoosterAddressArithmetic" 
 	<< "::" 
 	<< "Assignment" 
 	<< "AlgFactory["
