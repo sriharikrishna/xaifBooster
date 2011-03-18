@@ -9,6 +9,9 @@
 // ========== end copyright notice =====================
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
+#include "xaifBooster/system/inc/PrintVersion.hpp"
+#include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+#include "xaifBooster/algorithms/CodeReplacement/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/algorithms/AddressArithmetic/inc/BasicBlockAlg.hpp"
 
 using namespace xaifBooster;
@@ -29,7 +32,20 @@ namespace xaifBoosterAddressArithmetic {
   } // end of BasicBlockAlg::debug
 
   void BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
-    xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::printXMLHierarchy(os);
+    // this is for testing only!
+    switch(xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->getPrintVersion()) { 
+    case xaifBoosterCodeReplacement::PrintVersion::AUGMENTED: 
+      xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::printXMLHierarchy(os);
+      break;
+    case xaifBoosterCodeReplacement::PrintVersion::ADJOINT: 
+      xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::printXMLHierarchy(os);
+      break;
+    default: 
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::printXMLHierarchy: cannot handle PrintVersion "
+				 << xaifBoosterCodeReplacement::PrintVersion::toString(xaifBoosterCodeReplacement::ConceptuallyStaticInstances::instance()->
+							   getPrintVersion()).c_str());
+      break;
+    } // end switch
   } 
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
