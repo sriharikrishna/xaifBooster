@@ -33,7 +33,7 @@ namespace xaifBooster {
     typename InternalHashMapType::const_iterator theFinder=
       myHashMap.find(aKey);
     if(theFinder==myHashMap.end())
-      THROW_EXCEPTION_MACRO(HashTable<HashTableElement>::NotFound,"HashTable.getElement: no element with key >" << aKey.c_str() << "<");
+      THROW_EXCEPTION_MACRO(NotFound,"HashTable.getElement: no element with key >" << aKey.c_str() << "<");
     return (*theFinder).second;
   }
 
@@ -43,7 +43,7 @@ namespace xaifBooster {
     typename InternalHashMapType::iterator theFinder=
       myHashMap.find(aKey);
     if(theFinder==myHashMap.end())
-      THROW_EXCEPTION_MACRO(HashTable<HashTableElement>::NotFound,"HashTable.getElement: no element with key >" << aKey.c_str() << "<");
+      THROW_EXCEPTION_MACRO(NotFound,"HashTable.getElement: no element with key >" << aKey.c_str() << "<");
     return (*theFinder).second;
   }
 
