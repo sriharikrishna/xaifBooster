@@ -11,11 +11,12 @@
 // ========== end copyright notice =====================
 #include <list>
 
-#include "xaifBooster/system/inc/PlainBasicBlock.hpp"
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/Sequence.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/ReinterpretedDerivativePropagator.hpp"
 
 #include "xaifBooster/algorithms/RequiredValues/inc/RequiredValue.hpp"
 
@@ -70,74 +71,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 						const BasicBlockAlgBase& aBasicBlockAlg, 
  						const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator);
     
-    /** 
-     * here we keep the reinterpreted statements
-     * along with a reference to associate things 
-     * with the respective DerivativePropagator
-     */
-    class ReinterpretedDerivativePropagator { 
-
-    public: 
-
-      /** 
-       * sets myOriginalPropagator
-       */
-      ReinterpretedDerivativePropagator(const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator);
-
-      ~ReinterpretedDerivativePropagator();
-
-      /** 
-       * returns myOriginalPropagator
-       */
-      const xaifBoosterDerivativePropagator::DerivativePropagator& getOriginalDerivativePropagator() const; 
-
-      /** 
-       * adding a reinterpretation element to our list
-       */ 
-      void supplyAndAddBasicBlockElementInstance(BasicBlockElement& theBasicBlockElement,
-						 const ForLoopReversalType::ForLoopReversalType_E& aReversalType);
-
-      const PlainBasicBlock::BasicBlockElementList& getBasicBlockElementList(const ForLoopReversalType::ForLoopReversalType_E& aReversalType) const; 
-
-      /**
-       * check myBasicBlockElementListAnonymousReversal and myBasicBlockElementListExplicitReversal for \p anExpression
-       */
-      bool hasExpression(const Expression& anExpression) const;
-
-    private: 
-
-      /// no def
-      ReinterpretedDerivativePropagator();
-
-      /// no def
-      ReinterpretedDerivativePropagator(const ReinterpretedDerivativePropagator&);
-
-      /// no def
-      ReinterpretedDerivativePropagator& operator=(const ReinterpretedDerivativePropagator&);
-
-      /** 
-       * the elements that the reinterpretation consists of
-       * which assumes an anonymous reversal (no knowledge about the original 
-       * loop variables)
-       */
-      PlainBasicBlock::BasicBlockElementList myBasicBlockElementListAnonymousReversal;
-
-      /** 
-       * the elements that the reinterpretation consists of
-       * under an explicit reversal (loop constructs are reversed explicitly
-       * and we assume all index expressions can be recalculated explcitly 
-       * at reversal time from explicitly reversed loops)
-       */
-      PlainBasicBlock::BasicBlockElementList myBasicBlockElementListExplicitReversal;
-
-      /** 
-       * the xaifBoosterDerivativePropagator::DerivativePropagator
-       * we are reinterpreting
-       */
-      const xaifBoosterDerivativePropagator::DerivativePropagator& myOriginalPropagator;
-
-    }; // end of class ReinterpretedDerivativePropagator
-
   protected:
 
     typedef std::list<const Variable*> VariablePList;
