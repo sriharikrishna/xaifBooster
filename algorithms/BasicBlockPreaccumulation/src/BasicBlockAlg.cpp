@@ -31,6 +31,7 @@
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/EliminationException.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
@@ -91,7 +92,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  (*i).second->myLastElement_p=thePredecessorAssignment_p;
 	}
 	// now make a new one for this assignment
-	(*i).second=new Sequence;
+	(*i).second = AlgFactoryManager::instance()->getSequenceFactory()->makeNewSequence();
 	ourSequenceCounter++;
 	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
 	myUniqueSequencePList.push_back((*i).second);
@@ -1285,7 +1286,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	      // nothing assigned yet, which means this is not an 
 	      // assignment (unless we call this out of order) this is how 
 	      // we handle splits for subroutine calls
-	      theSequence_p=new Sequence;
+	      theSequence_p = AlgFactoryManager::instance()->getSequenceFactory()->makeNewSequence();
 	      incrementGlobalSequenceCounter();
 	      theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	      myUniqueSequencePList.push_back(theSequence_p);
@@ -1301,7 +1302,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    ++i;
 	  } 
 	  else { // have no predecessor
-	    theSequence_p=new Sequence;
+	    theSequence_p = AlgFactoryManager::instance()->getSequenceFactory()->makeNewSequence();
 	    incrementGlobalSequenceCounter();
 	    theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
 	    myUniqueSequencePList.push_back(theSequence_p);
