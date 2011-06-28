@@ -15,7 +15,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   Sequence*
   SequenceFactory::makeNewSequence() {
     return new Sequence();
-  };
+  }
 
   std::string
   SequenceFactory::debug() const {
