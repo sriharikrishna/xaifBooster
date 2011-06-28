@@ -24,6 +24,8 @@
 
 #include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/Sequence.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 
@@ -90,7 +92,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     PlainBasicBlock::BasicBlockElementList::const_reverse_iterator aBasicBlockElementListRI=getContaining().getBasicBlockElementList().rbegin();
     SequencePList::const_reverse_iterator aSequencePListRI = myUniqueSequencePList.rbegin();
     SequencePList::const_reverse_iterator aSequencePListRend = myUniqueSequencePList.rend();
-    std::list<PerSequenceData*>::const_reverse_iterator seqDataPListRI = myPerSequenceDataPList.rbegin();
     bool noSequence=false;
     if (aSequencePListRI==aSequencePListRend)
       // we don't have any sequence left, meaning there is either no sequence at all 
@@ -121,9 +122,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	}
       }
       if (!done) { 
+        const xaifBoosterBasicBlockPreaccumulationTape::Sequence& currentSequence(dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTape::Sequence&>(**aSequencePListRI));
         // pop all of the address variables
-        for (VariablePList::const_reverse_iterator pushedAddVarPrI = (*seqDataPListRI)->myPushedAddressVariablesPList.rbegin();
-             pushedAddVarPrI != (*seqDataPListRI)->myPushedAddressVariablesPList.rend(); ++pushedAddVarPrI) {
+        for (xaifBoosterBasicBlockPreaccumulationTape::Sequence::VariablePList::const_reverse_iterator pushedAddVarPrI = currentSequence.getPushedAddressVariablesPList().rbegin();
+             pushedAddVarPrI != currentSequence.getPushedAddressVariablesPList().rend(); ++pushedAddVarPrI) {
 	  xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5",
 								      **pushedAddVarPrI);
           const Variable& thePoppedAddressVariable (addAddressPop(ForLoopReversalType::ANONYMOUS,aTemporariesHelper));
@@ -135,8 +137,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
           myAddressVariableCorList.push_front(std::make_pair(*pushedAddVarPrI,&thePoppedAddressVariable));
         }
         // pop all of the factor variables
-        for (VariablePList::const_reverse_iterator pushedFacVarPrI = (*seqDataPListRI)->myPushedFactorVariablesPList.rbegin();
-             pushedFacVarPrI != (*seqDataPListRI)->myPushedFactorVariablesPList.rend(); ++pushedFacVarPrI) {
+        for (xaifBoosterBasicBlockPreaccumulationTape::Sequence::VariablePList::const_reverse_iterator pushedFacVarPrI = currentSequence.getPushedFactorVariablesPList().rbegin();
+             pushedFacVarPrI != currentSequence.getPushedFactorVariablesPList().rend(); ++pushedFacVarPrI) {
 	  xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5",
 								      **pushedFacVarPrI);
           const Symbol& aTemporarySymbol (aTemporariesHelper.makeTempSymbol(getContaining().getScope()));
@@ -160,7 +162,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
           myFactorVariableCorList.push_back(std::make_pair(*pushedFacVarPrI,&thePoppedFactorVariable));
         } // end for all pushed factor variables
 
-	const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator((*aSequencePListRI)->myDerivativePropagator);
+	const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator(currentSequence.myDerivativePropagator);
 	for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_reverse_iterator entryPListI=
 	      aDerivativePropagator.getEntryPList().rbegin();
 	    entryPListI!= aDerivativePropagator.getEntryPList().rend();
@@ -168,7 +170,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	  reinterpretDerivativePropagatorEntry(**entryPListI);
 	} // end for DerivativePropagatorEntry list
 	++aSequencePListRI;
-        ++seqDataPListRI;
 	if (aSequencePListRI==aSequencePListRend)
 	  // there is no sequence left
 	  noSequence=true;

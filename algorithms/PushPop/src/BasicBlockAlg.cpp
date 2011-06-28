@@ -9,6 +9,7 @@
 // ========== end copyright notice =====================
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockElementAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/Sequence.hpp"
 
 #include "xaifBooster/algorithms/PushPop/inc/BasicBlockAlg.hpp"
 
@@ -70,8 +71,8 @@ namespace xaifBoosterPushPop {
   BasicBlockAlg::compareExpressions(const Expression& firstExpression,
                                     const Expression& secondExpression) const {
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterPushPop::BasicBlockAlg::compareExpressions");
+    SequencePList::const_iterator CSeqI = myUniqueSequencePList.begin();
     PlainBasicBlock::BasicBlockElementList::const_iterator bbeI = getContaining().getBasicBlockElementList().begin();
-    PerSequenceDataPList::const_iterator seqDataPI = myPerSequenceDataPList.begin();
     for (PlainBasicBlock::BasicBlockElementList::const_iterator bbeI = getContaining().getBasicBlockElementList().begin();
          bbeI != getContaining().getBasicBlockElementList().end(); ++bbeI) {
       const BasicBlockElement& theBasicBlockElement (**bbeI);
@@ -82,11 +83,11 @@ namespace xaifBoosterPushPop {
       else if (foundFirst) return xaifBoosterRequiredValues::RequiredValueSet::LESSTHAN;
       else if (foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::GREATERTHAN;
 
-      if (seqDataPI == myPerSequenceDataPList.end()) { // no more sequences
+      if (CSeqI == myUniqueSequencePList.end()) { // no more sequences
         continue;
       }
-      else if (&theBasicBlockElement == (*seqDataPI)->mySequence_p->myLastElement_p) { // we are at the end of the current sequence
-        const xaifBoosterBasicBlockPreaccumulation::Sequence& theSequence (*(*seqDataPI)->mySequence_p);
+      else if (&theBasicBlockElement == (*CSeqI)->myLastElement_p) { // we are at the end of the current sequence
+        const xaifBoosterBasicBlockPreaccumulationTape::Sequence& currentSequence(dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTape::Sequence&>(**CSeqI));
         // check the stuff that comes after the sequence
         // (for now we can consider it to all occur at the same time)
         // meaning that everything in accumulation and propagation is considered to occur simultaneously
@@ -94,8 +95,8 @@ namespace xaifBoosterPushPop {
         foundFirst = false;
         foundSecond = false;
         // check the accumulation code
-        for (xaifBoosterBasicBlockPreaccumulation::Sequence::AssignmentPList::const_iterator accAssPI = (*seqDataPI)->mySequence_p->getEndAssignmentList().begin();
-             accAssPI != (*seqDataPI)->mySequence_p->getEndAssignmentList().end(); ++accAssPI) {
+        for (xaifBoosterBasicBlockPreaccumulation::Sequence::AssignmentPList::const_iterator accAssPI = currentSequence.getEndAssignmentList().begin();
+             accAssPI != currentSequence.getEndAssignmentList().end(); ++accAssPI) {
           foundFirst = (*accAssPI)->hasExpression(firstExpression);
           foundSecond = (*accAssPI)->hasExpression(secondExpression);
           if (foundFirst && foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::EQUAL;
@@ -103,15 +104,15 @@ namespace xaifBoosterPushPop {
           else if (foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::GREATERTHAN;
         }
         // check the propagation code FIXME?: actually go through the derivative propagator (probably no need)
-        for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_iterator entryI = theSequence.myDerivativePropagator.getEntryPList().begin();
-             entryI != theSequence.myDerivativePropagator.getEntryPList().end(); ++entryI) {
+        for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_iterator entryI = currentSequence.myDerivativePropagator.getEntryPList().begin();
+             entryI != currentSequence.myDerivativePropagator.getEntryPList().end(); ++entryI) {
           foundFirst = (*entryI)->hasExpression(firstExpression);
           foundSecond = (*entryI)->hasExpression(secondExpression);
           if (foundFirst && foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::EQUAL;
           else if (foundFirst) return xaifBoosterRequiredValues::RequiredValueSet::LESSTHAN;
           else if (foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::GREATERTHAN;
         }
-        ++seqDataPI;
+        ++CSeqI;
       } // end if we're at the end of a sequence
     } // end for all original elements
     THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::BasicBlockAlg::compareExpressions:"
@@ -138,13 +139,12 @@ namespace xaifBoosterPushPop {
     }
     // iterate through the sequences
     for (SequencePList::iterator seqI = myUniqueSequencePList.begin(); seqI != myUniqueSequencePList.end(); ++seqI) {
-      if ((*seqI)->hasExpression(aRequiredValue.getExpression())) {
+      xaifBoosterBasicBlockPreaccumulationTape::Sequence& currentSequence(dynamic_cast<xaifBoosterBasicBlockPreaccumulationTape::Sequence&>(**seqI));
+      if (currentSequence.hasExpression(aRequiredValue.getExpression())) {
         if (aRequiredValue.isArgument())
-          pushRequiredValueAfterSequence(aRequiredValue,
-                                         **seqI);
+          currentSequence.pushRequiredValueAfter(aRequiredValue);
         else
-          assignAndPushRequiredValueAfterSequence(aRequiredValue,
-                                                  **seqI);
+          currentSequence.assignAndPushRequiredValueAfter(aRequiredValue);
         return;
       }
     } // end for all sequences

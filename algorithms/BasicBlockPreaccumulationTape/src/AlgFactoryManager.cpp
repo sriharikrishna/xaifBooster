@@ -15,15 +15,16 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/CallGraphVertexAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SubroutineCallAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AssignmentAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/SequenceFactory.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationTape { 
 
-  xaifBooster::AlgFactoryManager* 
+  AlgFactoryManager* 
   AlgFactoryManager::instance() { 
     if (ourInstance_p)
-      return ourInstance_p;
+      return dynamic_cast<AlgFactoryManager*>(ourInstance_p);
     ourInstanceMutex.lock();
     try { 
       if (!ourInstance_p)
@@ -37,7 +38,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       throw;
     } // end catch
     ourInstanceMutex.unlock();
-    return ourInstance_p;
+    return dynamic_cast<AlgFactoryManager*>(ourInstance_p);
   } // end of AlgFactoryManager::instance
 
   void AlgFactoryManager::resets() {
@@ -45,6 +46,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
     resetSubroutineCallAlgFactory(new SubroutineCallAlgFactory());
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
+    resetSequenceFactory(new SequenceFactory());
   }
 
   void AlgFactoryManager::init() {
