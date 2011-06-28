@@ -14,9 +14,7 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulationTape {
 
-  ReinterpretedDerivativePropagator::ReinterpretedDerivativePropagator(const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) :
-    myOriginalPropagator(aPropagator) {
-  }
+  ReinterpretedDerivativePropagator::ReinterpretedDerivativePropagator() {}
 
   ReinterpretedDerivativePropagator::~ReinterpretedDerivativePropagator() {
     for (PlainBasicBlock::BasicBlockElementList::const_iterator li=myBasicBlockElementListAnonymousReversal.begin();
@@ -31,11 +29,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       if (*li)
 	delete *li;
     }
-  }
-
-  const xaifBoosterDerivativePropagator::DerivativePropagator&
-  ReinterpretedDerivativePropagator::getOriginalDerivativePropagator() const {
-    return myOriginalPropagator;
   }
 
   void

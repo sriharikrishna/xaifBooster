@@ -21,25 +21,16 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   /** 
    * here we keep the reinterpreted statements
-   * along with a reference to associate things 
-   * with the respective DerivativePropagator
+   * the association with the respective DerivativePropagator
+   * comes about by virtue of the fact that they are both a part of a sequence
    */
   class ReinterpretedDerivativePropagator {
 
   public:
 
-    /**
-     * sets myOriginalPropagator
-     */
-    ReinterpretedDerivativePropagator(const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator);
+    ReinterpretedDerivativePropagator();
 
     ~ReinterpretedDerivativePropagator();
-
-    /**
-     * returns myOriginalPropagator
-     */
-    const xaifBoosterDerivativePropagator::DerivativePropagator&
-    getOriginalDerivativePropagator() const;
 
     /**
      * adding a reinterpretation element to our list
@@ -58,9 +49,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     hasExpression(const Expression& anExpression) const;
 
   private:
-
-    /// no def
-    ReinterpretedDerivativePropagator();
 
     /// no def
     ReinterpretedDerivativePropagator(const ReinterpretedDerivativePropagator&);
@@ -82,12 +70,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      * at reversal time from explicitly reversed loops)
      */
     PlainBasicBlock::BasicBlockElementList myBasicBlockElementListExplicitReversal;
-
-    /** 
-     * the xaifBoosterDerivativePropagator::DerivativePropagator
-     * we are reinterpreting
-     */
-    const xaifBoosterDerivativePropagator::DerivativePropagator& myOriginalPropagator;
 
   }; // end of class ReinterpretedDerivativePropagator
 

@@ -24,7 +24,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   public: 
 
-    static xaifBooster::AlgFactoryManager* instance();
+    static AlgFactoryManager* instance();
 
     virtual void resets(); 
 
