@@ -37,7 +37,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
     /**
-     * check each of the ReinterpretedDerivativePropagators for \p anExpression
+     * check each Sequence for \p anExpression
      */
     virtual bool hasExpression(const Expression& anExpression) const;
 
