@@ -23,7 +23,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual Sequence* makeNewSequence();
 
     virtual std::string debug() const;
-   
+
   protected:
     friend class AlgFactoryManager;
 
