@@ -9,9 +9,9 @@
 // ========== end copyright notice =====================
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockElementAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/Sequence.hpp"
 
 #include "xaifBooster/algorithms/PushPop/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/PushPop/inc/Sequence.hpp"
 
 #include "xaifBooster/algorithms/DerivativePropagator/inc/DerivativePropagator.hpp"
 
@@ -139,7 +139,7 @@ namespace xaifBoosterPushPop {
     }
     // iterate through the sequences
     for (SequencePList::iterator seqI = myUniqueSequencePList.begin(); seqI != myUniqueSequencePList.end(); ++seqI) {
-      xaifBoosterBasicBlockPreaccumulationTape::Sequence& currentSequence(dynamic_cast<xaifBoosterBasicBlockPreaccumulationTape::Sequence&>(**seqI));
+      Sequence& currentSequence(dynamic_cast<Sequence&>(**seqI));
       if (currentSequence.hasExpression(aRequiredValue.getExpression())) {
         if (aRequiredValue.isArgument())
           currentSequence.pushRequiredValueAfter(aRequiredValue);
