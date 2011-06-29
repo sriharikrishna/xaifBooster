@@ -36,11 +36,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }
 
   Sequence::~Sequence() {
-    // delete all the push calls in the push block
-    for (CBasicBlockElementPList::const_iterator pushBlockI = myPushBlock.begin();
-         pushBlockI != myPushBlock.end(); ++pushBlockI)
-      if (*pushBlockI)
-        delete *pushBlockI;
   }
 
   std::string
@@ -131,53 +126,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       theSubroutineCall_p->setId("BasicBlockPreaccumulationTape::Sequence::reinterpretPropagationsAsTapings:inline_push_i");
       (*pushedAddVarPI)->copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
     } // end for all address variables to be pushed
-  }
-
-  void
-  Sequence::assignAndPushRequiredValueAfter(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::Sequence::assignAndPushRequiredValueAfter");
-    const BasicBlock& theCurrentBasicBlock(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance());
-    Assignment* theNewExpressionAssignment_p (new Assignment(false));
-    theNewExpressionAssignment_p->setId("index_expression_assignment_for_taping");
-    // create a new symbol and add a new VariableSymbolReference in the Variable
-    //ConceptuallyStaticInstances::instance()->getTapingVariableNameCreator(),
-    VariableSymbolReference* theNewVariableSymbolReference_p
-      (new VariableSymbolReference(theCurrentBasicBlock.getScope().getSymbolTable().addUniqueAuxSymbol(SymbolKind::VARIABLE,
-                                                                                                       SymbolType::INTEGER_STYPE,
-                                                                                                       SymbolShape::SCALAR,
-                                                                                                       false),
-                                   theCurrentBasicBlock.getScope())
-      );
-    theNewVariableSymbolReference_p->setId("1");
-    theNewVariableSymbolReference_p->setAnnotation("xaifBoosterBasicBlockPreaccumulationTape::Sequence::assignAndPushRequiredValueAfter");
-    // pass it on to the LHS and relinquish ownership
-    theNewExpressionAssignment_p->getLHS().supplyAndAddVertexInstance(*theNewVariableSymbolReference_p);
-    theNewExpressionAssignment_p->getLHS().getAliasMapKey().setTemporary();
-    theNewExpressionAssignment_p->getLHS().getDuUdMapKey().setTemporary();
-    // set the RHS
-    aRequiredValue.getExpression().copyMyselfInto(theNewExpressionAssignment_p->getRHS(),
-                                                  false,
-                                                  false);
-    myPushBlock.push_back(theNewExpressionAssignment_p);
-    // now create the push
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theNewPushSubroutineCall_p
-     (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theNewExpressionAssignment_p->getLHS().getEffectiveShape())));
-    theNewPushSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::Sequence::assignAndPushRequiredValueAfter:inline_push_i");
-    theNewExpressionAssignment_p->getLHS().copyMyselfInto(theNewPushSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-    myPushBlock.push_back(theNewPushSubroutineCall_p);
-  }
-
-  void
-  Sequence::pushRequiredValueAfter(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue) {
-    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationTape::Sequence::pushRequiredValueAfter");
-    if (!aRequiredValue.isArgument())
-      THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulationTape::Sequence::pushRequiredValueAfter:"
-                                 << " required value " << aRequiredValue.debug() << " is not an argument (it's some expression)");
-    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theNewPushSubroutineCall_p
-      (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(aRequiredValue.getArgument().getVariable().getEffectiveShape())));
-    theNewPushSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::Sequence::pushRequiredValueAfter:inline_push_i");
-    aRequiredValue.getArgument().getVariable().copyMyselfInto(theNewPushSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-    myPushBlock.push_back(theNewPushSubroutineCall_p);
   }
 
   void

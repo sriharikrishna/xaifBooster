@@ -16,8 +16,6 @@
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 
-#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValue.hpp"
-
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/Sequence.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/ReinterpretedDerivativePropagator.hpp"
@@ -56,12 +54,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     void reinterpretPropagationsAsTapings();
 
-  //\TODO FIXME: the following stuff probably belongs in PushPop
-
-    void assignAndPushRequiredValueAfter(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue);
-
-    void pushRequiredValueAfter(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue);
-
   private:
 
     VariablePList myPushedAddressVariablesPList;
@@ -82,13 +74,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
     /// no def
     Sequence& operator= (const Sequence&);
-
-  //\TODO FIXME: the following stuff probably belongs in PushPop
-
-    typedef std::list<const BasicBlockElement*> CBasicBlockElementPList;
-
-    /// we assume ownership of \p aBasicBlockElement
-    CBasicBlockElementPList myPushBlock;
 
   };
 
