@@ -18,7 +18,7 @@
 
 using namespace xaifBooster;
 
-namespace xaifBoosterPushPop { 
+namespace xaifBoosterPushPop {
 
   AlgFactoryManager* 
   AlgFactoryManager::instance() { 
