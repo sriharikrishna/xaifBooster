@@ -21,9 +21,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   SequenceFactory::debug() const {
     std::ostringstream out;
     out << "xaifBoosterBasicBlockPreaccumulation::"
-	<< "SequenceFactory["
-	<< this
-	<<"]"<<std::ends;
+        << "SequenceFactory[" << this
+        << "]" <<std::ends;
     return out.str();
   }
 

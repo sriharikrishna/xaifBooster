@@ -25,7 +25,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     virtual std::string debug() const;
 
   protected:
-
     friend class AlgFactoryManager;
 
     SequenceFactory(){};
