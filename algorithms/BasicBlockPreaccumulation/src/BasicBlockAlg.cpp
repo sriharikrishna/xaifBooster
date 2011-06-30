@@ -38,6 +38,7 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdgeAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphWriters.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp" 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphWriters.hpp"
@@ -283,99 +284,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     out << "]" << std::ends;  
     return out.str();
   } // end of BasicBlockAlg::debug
-
-  class PrivateLinearizedComputationalGraphVertexLabelWriter {
-  public:
-    PrivateLinearizedComputationalGraphVertexLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
-    template <class BoostIntenalVertexDescriptor>
-    void operator()(std::ostream& out, 
-		    const BoostIntenalVertexDescriptor& v) const {
-      const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p=
-	dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
-											     myG.getInternalBoostGraph()),
-										  v));
-      std::string theVertexShape("ellipse");
-      std::string theVertexGroupname("intermediates");
-      std::string vertexFixedSize("false");
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(myG.getDependentList());
-      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
-	   aDepVertexPListI!=theDepVertexPList.end();
-	   ++aDepVertexPListI) { 
-	if (thePrivateLinearizedComputationalGraphVertex_p==*(aDepVertexPListI)) {
-	  theVertexShape = "invtriangle";
-          theVertexGroupname = "dependents";
-          vertexFixedSize = "true";
-	  break;
-	}
-      }
-      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theIndepVertexPList(myG.getIndependentList());
-      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aIndepVertexPListI(theIndepVertexPList.begin());
-	   aIndepVertexPListI!=theIndepVertexPList.end();
-	   ++aIndepVertexPListI) { 
-	if (thePrivateLinearizedComputationalGraphVertex_p==*(aIndepVertexPListI)) {
-	  theVertexShape = "triangle";
-          theVertexGroupname = "independents";
-          vertexFixedSize = "true";
-	  break;
-	}
-      }
-
-      // set label
-      std::string theVertexKind("");
-      std::ostringstream oss;
-      if (thePrivateLinearizedComputationalGraphVertex_p->hasOriginalVariable()) {
-	oss << thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str();
-	if (thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getDuUdMapKey().getKind() == InfoMapKey::SET)
-	  oss  << " k=" << thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getDuUdMapKey().getKey();
-	theVertexKind = oss.str();
-      }
-
-      out << "["
-	  << "fixedsize=" << vertexFixedSize.c_str() << ","
-	  << "fontsize=8,"
-	  << "group=\"" << theVertexGroupname.c_str() << "\","
-	  << "shape=" << theVertexShape.c_str() << ","
-	  << "label=\"" << theVertexKind.c_str() << "\""
-	  << "]";
-    }
-    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
-  }; // end class PrivateLinearizedComputationalGraphVertexLabelWriter
-
-  class PrivateLinearizedComputationalGraphEdgeLabelWriter {
-  public:
-    PrivateLinearizedComputationalGraphEdgeLabelWriter(const PrivateLinearizedComputationalGraph& g) : myG(g) {};
-    template <class BoostIntenalEdgeDescriptor>
-    void operator()(std::ostream& out, const BoostIntenalEdgeDescriptor& v) const {
-      const PrivateLinearizedComputationalGraphEdge* thePrivateLinearizedComputationalGraphEdge_p=
-	dynamic_cast<const PrivateLinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
-											   myG.getInternalBoostGraph()),
-										v));
-      std::string theColor ("");
-      if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL)
-	theColor = "red";
-      else if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL)
-	theColor = "blue";
-      else
-	theColor = "black";
-
-      out << "["
-	  << "color=" << theColor.c_str()
-	  << ",fontsize=8"
-	  << ",labelfloat=false"
-	  << ",label=\"" << thePrivateLinearizedComputationalGraphEdge_p << "\""
-	  << "]";
-    }
-    const PrivateLinearizedComputationalGraph& myG;
-  }; // end class PrivateLinearizedComputationalGraphEdgeLabelWriter
-
-  class PrivateLinearizedComputationalGraphPropertiesWriter {
-  public:
-    PrivateLinearizedComputationalGraphPropertiesWriter(const PrivateLinearizedComputationalGraph& g) : myG(g) {};
-    void operator()(std::ostream& out) const {
-      out << "rankdir=BT;" << std::endl;
-    }
-    const PrivateLinearizedComputationalGraph& myG;
-  }; // end class PrivateLinearizedComputationalGraphPropertiesWriter
 
   void
   BasicBlockAlg::fillIndependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph) {
