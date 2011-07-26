@@ -17,7 +17,8 @@ namespace xaifBooster {
   class SymbolKind { 
 public:
     enum SymbolKind_E {VARIABLE,
-		       SUBROUTINE};
+		       SUBROUTINE,
+                       POINTER};
     static std::string toString(const SymbolKind_E& aKind) throw (PrintingIntException);
 
     static const SymbolKind_E fromString(const std::string& aName);
