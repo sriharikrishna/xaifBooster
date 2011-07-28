@@ -12,12 +12,12 @@
 
 #include <list>
 
-#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
+#include "xaifBooster/system/inc/ExpressionEdge.hpp"
 
-namespace xaifBooster { 
-  class ExpressionEdge;
-}
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
+
+#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
 using namespace xaifBooster; 
 
@@ -32,7 +32,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     ~PrivateLinearizedComputationalGraphEdge(){};
  
-    void setLinearizedExpressionEdge(ExpressionEdge& anExpressionEdge);
+    void setLinearizedExpressionEdge(const ExpressionEdge& anExpressionEdge);
 
     void setDirectCopyEdge();
 
@@ -43,9 +43,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     std::string debug() const ;
 
-    typedef std::list<ExpressionEdge*> ExpressionEdgePList;
+    typedef std::list<const ExpressionEdge*> ExpressionEdgePList;
     
-    void addParallel(ExpressionEdge&);
+    void addParallel(const ExpressionEdge&);
 
     virtual Assignment& getAssignmentFromEdge() const {
       return (dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getConcretePartialAssignment());
@@ -65,7 +65,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * to by myPrivateLinearizedExpressionEdge
      * the edge we point to is not owned by this class
      */
-    ExpressionEdge* myLinearizedExpressionEdge_p;
+    const ExpressionEdge* myLinearizedExpressionEdge_p;
 
     /** 
      * we keep all references to edges parallel 
@@ -87,6 +87,37 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   }; // end of class LinearizedComputationalGraphEdge
  
+  class PrivateLinearizedComputationalGraphEdgeLabelWriter {
+  public:
+    PrivateLinearizedComputationalGraphEdgeLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
+
+    template <class BoostIntenalEdgeDescriptor>
+    void operator()(std::ostream& out,
+                    const BoostIntenalEdgeDescriptor& v) const {
+      const PrivateLinearizedComputationalGraphEdge* thePrivateLinearizedComputationalGraphEdge_p=
+        dynamic_cast<const PrivateLinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
+                                                                                           myG.getInternalBoostGraph()),
+                                                                                v));
+      std::string theColor ("");
+      if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL)
+        theColor = "red";
+      else if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL)
+        theColor = "blue";
+      else
+        theColor = "black";
+
+      out << "["
+          << "color=" << theColor.c_str()
+          << ",fontsize=8"
+          << ",labelfloat=false"
+          << ",label=\"" << thePrivateLinearizedComputationalGraphEdge_p << "\""
+          << "]";
+    }
+
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
+
+  };
+
 } 
                                                                      
 #endif

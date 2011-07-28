@@ -148,6 +148,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
   }; // end of class PrivateLinearizedComputationalGraph 
 
+  class PrivateLinearizedComputationalGraphPropertiesWriter {
+  public:
+    PrivateLinearizedComputationalGraphPropertiesWriter(const PrivateLinearizedComputationalGraph& g) : myG(g) {};
+
+    void operator()(std::ostream& out) const {
+      out << "rankdir=BT;" << std::endl;
+    }
+
+    const PrivateLinearizedComputationalGraph& myG;
+
+  };
+
 } 
                                                                      
 #endif

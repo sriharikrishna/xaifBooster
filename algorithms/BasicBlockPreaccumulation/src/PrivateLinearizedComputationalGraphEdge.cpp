@@ -38,7 +38,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
-  void PrivateLinearizedComputationalGraphEdge::setLinearizedExpressionEdge(ExpressionEdge& anExpressionEdge) {
+  void PrivateLinearizedComputationalGraphEdge::setLinearizedExpressionEdge(const ExpressionEdge& anExpressionEdge) {
     if (myLinearizedExpressionEdge_p || myDirectCopyEdgeFlag) 
       THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphEdge::setLinearizedExpressionEdge: already set");
     myLinearizedExpressionEdge_p=&anExpressionEdge;
@@ -68,7 +68,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return true;
   } 
 
-  void PrivateLinearizedComputationalGraphEdge::addParallel(ExpressionEdge& theParallelEdge ) { 
+  void PrivateLinearizedComputationalGraphEdge::addParallel(const ExpressionEdge& theParallelEdge) {
     myParallelEdges.push_back(&theParallelEdge);
   } 
 
