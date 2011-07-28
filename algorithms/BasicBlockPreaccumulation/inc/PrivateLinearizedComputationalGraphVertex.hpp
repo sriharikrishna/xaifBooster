@@ -10,7 +10,11 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/system/inc/Variable.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphVertex.hpp"
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 
 using namespace xaifBooster; 
 
@@ -50,6 +54,66 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   }; 
  
+  class PrivateLinearizedComputationalGraphVertexLabelWriter {
+  public:
+    PrivateLinearizedComputationalGraphVertexLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
+
+    template <class BoostInternalVertexDescriptor>
+    void operator()(std::ostream& out, 
+                    const BoostInternalVertexDescriptor& v) const {
+      const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p=
+        dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
+                                                                                             myG.getInternalBoostGraph()),
+                                                                                  v));
+      std::string theVertexShape("ellipse");
+      std::string theVertexGroupname("intermediates");
+      std::string vertexFixedSize("false");
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(myG.getDependentList());
+      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
+           aDepVertexPListI!=theDepVertexPList.end();
+           ++aDepVertexPListI) { 
+        if (thePrivateLinearizedComputationalGraphVertex_p==*(aDepVertexPListI)) {
+          theVertexShape = "invtriangle";
+          theVertexGroupname = "dependents";
+          vertexFixedSize = "true";
+          break;
+        }
+      }
+      const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theIndepVertexPList(myG.getIndependentList());
+      for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aIndepVertexPListI(theIndepVertexPList.begin());
+           aIndepVertexPListI!=theIndepVertexPList.end();
+           ++aIndepVertexPListI) { 
+        if (thePrivateLinearizedComputationalGraphVertex_p==*(aIndepVertexPListI)) {
+          theVertexShape = "triangle";
+          theVertexGroupname = "independents";
+          vertexFixedSize = "true";
+          break;
+        }
+      }
+
+      // set label
+      std::string theVertexKind("");
+      std::ostringstream oss;
+      if (thePrivateLinearizedComputationalGraphVertex_p->hasOriginalVariable()) {
+        oss << thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+        if (thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getDuUdMapKey().getKind() == InfoMapKey::SET)
+          oss  << " k=" << thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getDuUdMapKey().getKey();
+        theVertexKind = oss.str();
+      }
+
+      out << "["
+          << "fixedsize=" << vertexFixedSize.c_str()
+          << ",fontsize=7"
+          << ",group=\"" << theVertexGroupname.c_str() << "\""
+          << ",shape=" << theVertexShape.c_str()
+          << ",label=\"" << theVertexKind.c_str() << "\""
+          << "]";
+    }
+
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& myG;
+
+  };
+
 } 
                                                                      
 #endif
