@@ -17,11 +17,10 @@
 #include "xaifBooster/system/inc/ExpressionEdgeAlgBase.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
+#include "xaifBooster/system/inc/Variable.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionVertex.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
-
-#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -44,14 +43,17 @@ namespace xaifBoosterCrossCountryInterface {
      * it's linear but is some constant expression instead of a particular known constant
      * (in other words, if the RHS of the partial expression consists of more than one (Constant) vertex.)
      */
-    AccumulationGraphVertex(const ExpressionEdge& theExpressionEdge);
+    AccumulationGraphVertex(const ExpressionEdge&);
  
     /**
      * Constructor for vertices for which there is an operation (all non-leaves).
      */
-    AccumulationGraphVertex(const JacobianAccumulationExpressionVertex::Operation_E& anOpType);
+    AccumulationGraphVertex(const JacobianAccumulationExpressionVertex::Operation_E&);
 
     ~AccumulationGraphVertex(){};
+
+    const bool hasExpressionEdge() const;
+    const ExpressionEdge& getExpressionEdge() const;
 
     void setRemainderGraphEdge(const LinearizedComputationalGraphEdge& anLCGEdge);
     const LinearizedComputationalGraphEdge& getRemainderGraphEdge() const;
@@ -76,6 +78,12 @@ namespace xaifBoosterCrossCountryInterface {
 
     AccumulationGraphVertex (const AccumulationGraphVertex&);
     AccumulationGraphVertex& operator=(const AccumulationGraphVertex&);
+
+    /**
+     * for accumulation graph inputs that correspond to (computed) edge labels in the computational graph,
+     * this points to the corresponding original ExpressionEdge.  May or may not be set.
+     */
+    const ExpressionEdge* myExpressionEdge_p;
 
     /**
      * Pointer to corresponding edge in the remainder graph.  May or may not be set.
