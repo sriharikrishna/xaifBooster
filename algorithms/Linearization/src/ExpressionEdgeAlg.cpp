@@ -27,7 +27,10 @@ namespace xaifBoosterLinearization {
   std::string ExpressionEdgeAlg::debug () const { 
     std::ostringstream out;
     out << "xaifBoosterLinearization::ExpressionEdgeAlg[" << this
-	<< ",myConcretePartialDerivativeKind" << PartialDerivativeKind::toString(myConcretePartialDerivativeKind)
+        << ",myConcretePartialDerivativeKind=" << PartialDerivativeKind::toString(myConcretePartialDerivativeKind)
+        << ",myPartialDerivative_p=" << myPartialDerivative_p
+        << ",myConcretePartialAssignment_p=" << myConcretePartialAssignment_p
+        << ",myConcreteConstant_p=" << myConcreteConstant_p
  	<< "]" << std::ends;
     return out.str();
   } // end of ExpressionEdgeAlg::debug
@@ -136,5 +139,20 @@ namespace xaifBoosterLinearization {
   PartialDerivativeKind::PartialDerivativeKind_E ExpressionEdgeAlg::getPartialDerivativeKind() const { 
     return myConcretePartialDerivativeKind;
   } 
+
+  void
+  ExpressionEdgeAlg::mapPartialEV2OriginalEV(const ExpressionVertex& aPartialExpressionVertex,
+                                             const ExpressionVertex& aOriginalExpressionVertex) {
+    myPartialEVP2OriginalEVPMap[&aPartialExpressionVertex] = &aOriginalExpressionVertex;
+  }
+
+  const ExpressionVertex&
+  ExpressionEdgeAlg::getOriginalExpressionVertex4ConcretePartialArgument(const ExpressionVertex& aConcretePartialEV) const {
+    CExpressionVertexP2CExpressionVertexPMap::const_iterator mapI = myPartialEVP2OriginalEVPMap.find(&aConcretePartialEV);
+    if(mapI == myPartialEVP2OriginalEVPMap.end())
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::getOriginalExpressionVertex4ConcretePartialArgument: " <<
+                                 "no original ExpressionVertex associated with " << aConcretePartialEV.debug().c_str());
+    return *(mapI->second);
+  }
 
 }
