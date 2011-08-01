@@ -11,6 +11,7 @@
 // ========== end copyright notice =====================
 
 #include "xaifBooster/algorithms/Linearization/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/SequenceFactory.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
@@ -24,13 +25,27 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   public: 
 
-    static xaifBooster::AlgFactoryManager* instance();
+    AlgFactoryManager();
+
+    virtual ~AlgFactoryManager();
+
+    static AlgFactoryManager* instance();
 
     virtual void resets(); 
 
     virtual void init(); 
 
     ALG_CONFIG_ACCESS_DECL_MACRO
+
+    SequenceFactory* getSequenceFactory() const;
+
+  protected:
+
+    void resetSequenceFactory(SequenceFactory*);
+
+  private:
+
+    SequenceFactory* ourSequenceFactory_p;
 
   }; // end of class AlgFactoryManager
 

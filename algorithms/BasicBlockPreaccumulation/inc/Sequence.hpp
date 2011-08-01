@@ -53,6 +53,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     virtual std::string debug() const ;
 
+    /**
+     * check the front/end assignment lists and the derivative propagator for \p anExpression
+     */
+    virtual bool hasExpression(const Expression& anExpression) const;
+
     /** 
      * the graph of all basic block elements combined, 
      * i.e. flattened, however since this is only for 
@@ -132,11 +137,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       
 
     EliminationPList& getEliminationPList();
-
-    /**
-     * check the front/end assignment lists and the derivative propagator for \p anExpression
-     */
-    bool hasExpression(const Expression& anExpression) const;
 
   private: 
 

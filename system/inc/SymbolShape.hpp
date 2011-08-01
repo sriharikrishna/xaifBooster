@@ -26,7 +26,8 @@ public:
 	    FOUR_TENSOR=4,
 	    FIVE_TENSOR=5,
 	    SIX_TENSOR=6,
-	    SEVEN_TENSOR=7};
+	    SEVEN_TENSOR=7,
+            VOID=8};
     
     static std::string toString(const SymbolShape_E& aShape) throw (PrintingIntException);
 

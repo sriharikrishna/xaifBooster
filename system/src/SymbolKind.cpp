@@ -25,6 +25,9 @@ namespace xaifBooster {
     case SUBROUTINE: 
       returnString="subroutine";
       break;
+    case POINTER:
+      returnString="pointer";
+      break;
     default: 
       throw PrintingIntException("SymbolKind::toString: unknown value",aKind);
       break;
@@ -39,6 +42,8 @@ namespace xaifBooster {
       returnValue=VARIABLE;
     else if (aName=="subroutine")
       returnValue=SUBROUTINE;
+    else if (aName=="pointer")
+      returnValue=POINTER;
     else  
       THROW_LOGICEXCEPTION_MACRO("SymbolKind::fromString: unknown value >"
 			   << aName.c_str() << "<");
