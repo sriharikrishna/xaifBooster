@@ -16,9 +16,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myOriginalVariable_p (NULL) {
   }
 
-  std::string PrivateLinearizedComputationalGraphVertex::debug() const { 
+  std::string PrivateLinearizedComputationalGraphVertex::debug() const {
     std::ostringstream out;
-    out << "PrivateLinearizedComputationalGraphVertex[" << this 
+    out << "PrivateLinearizedComputationalGraphVertex[" << Vertex::debug().c_str()
 	<< ",myOriginalVariable_p=" << myOriginalVariable_p
 	<< ",myStatementId=" << myStatementId
 	<< "]" << std::ends;  
