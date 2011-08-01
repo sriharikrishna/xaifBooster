@@ -67,9 +67,8 @@ namespace xaifBooster {
 
   std::string Argument::debug () const { 
     std::ostringstream out;
-    out << "Argument[" << this << ","
-	<< ExpressionVertex::debug().c_str()
-	<< ",myVariable=" << myVariable.debug()
+    out << "Argument[" << ExpressionVertex::debug().c_str()
+	<< ",myVariable=" << myVariable.debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of Argument::debug

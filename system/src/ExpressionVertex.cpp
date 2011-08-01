@@ -29,7 +29,8 @@ namespace xaifBooster {
 
   std::string ExpressionVertex::debug () const { 
     std::ostringstream out;
-    out << "ExpressionVertex[" << this << " " << Vertex::debug().c_str() << "]" << std::ends;
+    out << "ExpressionVertex[" << Vertex::debug().c_str()
+        << "]" << std::ends;
     return out.str();
   } // end debug
 

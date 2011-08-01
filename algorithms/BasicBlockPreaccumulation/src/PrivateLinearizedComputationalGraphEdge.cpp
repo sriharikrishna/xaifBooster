@@ -22,19 +22,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myDirectCopyEdgeFlag(false) {
   }
 
-  std::string PrivateLinearizedComputationalGraphEdge::debug() const { 
+  std::string PrivateLinearizedComputationalGraphEdge::debug() const {
     std::ostringstream out;
-    out << "PrivateLinearizedComputationalGraphEdge[" 
-	<< this 
-	<< ","
-	<< "myLinearizedExpressionEdge_p"
-	<< "="
-	<< myLinearizedExpressionEdge_p
-	<< ","
-	<< "myParallelEdges.size()"
-	<< "="
-	<< myParallelEdges.size()
-	<< "]" << std::ends;  
+    out << "PrivateLinearizedComputationalGraphEdge[" << Edge::debug().c_str()
+        << ",myDirectCopyEdgeFlag=" << myDirectCopyEdgeFlag
+        << ",myLinearizedExpressionEdge_p=" << myLinearizedExpressionEdge_p
+        << ",myParallelEdges.size()=" << myParallelEdges.size()
+        << "]" << std::ends;
     return out.str();
   } 
 

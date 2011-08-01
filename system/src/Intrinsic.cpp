@@ -45,9 +45,8 @@ namespace xaifBooster {
 
   std::string Intrinsic::debug() const { 
     std::ostringstream oss;
-    oss << "Intrinsic[" << this << "," 
-	<< ExpressionVertex::debug().c_str()
-	<< "myName=" << myName.c_str()
+    oss << "Intrinsic[" << ExpressionVertex::debug().c_str()
+	<< ",myName=" << myName.c_str()
 	<< "]" << std::ends;
     return std::string(oss.str());
   }
