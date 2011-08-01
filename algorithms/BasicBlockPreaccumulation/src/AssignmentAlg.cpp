@@ -79,6 +79,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   
   bool 
   AssignmentAlg::vertexIdentification(PrivateLinearizedComputationalGraph& theComputationalGraph) { 
+    if (BasicBlockAlg::isOneGraphPerStatement() && !theComputationalGraph.getStatementIdLists().myStatementIdList.empty()) { 
+      return false ;
+    } 
     if (!getActiveFlag()) {
       // nothing else to do here 
       return true; 
@@ -178,8 +181,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     PrivateLinearizedComputationalGraph& theComputationalGraph (aBasicBlockAlg.getComputationalGraph(getContainingAssignment()));
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theComputationalGraph)
-	||
-	BasicBlockAlg::isOneGraphPerStatement()
 	||
 	(!getActiveFlag()
 	 && 
