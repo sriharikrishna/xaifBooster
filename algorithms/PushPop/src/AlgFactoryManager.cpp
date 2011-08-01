@@ -14,15 +14,16 @@
 #include "xaifBooster/algorithms/PushPop/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/PushPop/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/PushPop/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/PushPop/inc/SequenceFactory.hpp"
 
 using namespace xaifBooster;
 
-namespace xaifBoosterPushPop { 
+namespace xaifBoosterPushPop {
 
-  xaifBooster::AlgFactoryManager* 
+  AlgFactoryManager* 
   AlgFactoryManager::instance() { 
     if (ourInstance_p)
-      return ourInstance_p;
+      return dynamic_cast<AlgFactoryManager*>(ourInstance_p);
     ourInstanceMutex.lock();
     try { 
       if (!ourInstance_p)
@@ -36,17 +37,18 @@ namespace xaifBoosterPushPop {
       throw;
     } // end catch
     ourInstanceMutex.unlock();
-    return ourInstance_p;
+    return dynamic_cast<AlgFactoryManager*>(ourInstance_p);
   } // end of AlgFactoryManager::instance
 
   void AlgFactoryManager::resets() {
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
+    resetSequenceFactory(new SequenceFactory());
   }
 
   void AlgFactoryManager::init() {
     xaifBoosterAddressArithmetic::AlgFactoryManager::init();
-    xaifBoosterPushPop::AlgFactoryManager::resets();
+    AlgFactoryManager::resets();
   } // end AlgFactoryManager::init()
 
   ALG_CONFIG_ACCESS_DEF_MACRO

@@ -14,15 +14,23 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlgFactory.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/CallGraphVertexAlgFactory.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/SequenceFactory.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  xaifBooster::AlgFactoryManager* 
+  AlgFactoryManager::AlgFactoryManager() : ourSequenceFactory_p(0) {
+  }
+
+  AlgFactoryManager::~AlgFactoryManager() {
+    if (ourSequenceFactory_p) delete ourSequenceFactory_p;
+  }
+
+  AlgFactoryManager* 
   AlgFactoryManager::instance() { 
     if (ourInstance_p)
-      return ourInstance_p;
+      return dynamic_cast<AlgFactoryManager*>(ourInstance_p);
     ourInstanceMutex.lock();
     try { 
       if (!ourInstance_p)
@@ -36,21 +44,36 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       throw;
     } // end catch
     ourInstanceMutex.unlock();
-    return ourInstance_p;
+    return dynamic_cast<AlgFactoryManager*>(ourInstance_p);
   } // end of AlgFactoryManager::instance
 
   void AlgFactoryManager::resets() {
     resetAssignmentAlgFactory(new AssignmentAlgFactory());
     resetBasicBlockAlgFactory(new BasicBlockAlgFactory());
     resetCallGraphVertexAlgFactory(new CallGraphVertexAlgFactory());
+    resetSequenceFactory(new SequenceFactory());
   }
 
   void AlgFactoryManager::init() {
     xaifBoosterLinearization::AlgFactoryManager::init();
-    xaifBoosterBasicBlockPreaccumulation::AlgFactoryManager::resets();
+    AlgFactoryManager::resets();
   }
 
   ALG_CONFIG_ACCESS_DEF_MACRO
+
+  SequenceFactory*
+  AlgFactoryManager::getSequenceFactory() const {
+    if (!ourSequenceFactory_p)
+      THROW_LOGICEXCEPTION_MACRO("AlgFactoryManager::getSequenceFactory: not set");
+    return ourSequenceFactory_p;
+  }
+
+  void
+  AlgFactoryManager::resetSequenceFactory(SequenceFactory* anotherSequenceFactory_p) {
+    if(ourSequenceFactory_p)
+      delete ourSequenceFactory_p;
+    ourSequenceFactory_p = anotherSequenceFactory_p;
+  }
 
 }
 
