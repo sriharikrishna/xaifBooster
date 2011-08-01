@@ -55,6 +55,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   bool BasicBlockAlg::ourUseRandomizedHeuristicsFlag = false;
   PreaccumulationMetric::PreaccumulationMetric_E BasicBlockAlg::ourPreaccumulationMetric = PreaccumulationMetric::SCARCITY_METRIC;
   bool BasicBlockAlg::ourUseReroutingsFlag = false;
+  bool BasicBlockAlg::ourOneGraphPerStatementFlag = false;
 
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
@@ -1361,6 +1362,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     std::ostringstream ostr;
     ostr << "_jacobian_accumulation_" << anId++ << std::ends;
     return ostr.str();
+  }
+
+  void BasicBlockAlg::oneGraphPerStatement() { 
+    ourOneGraphPerStatementFlag=true;
+  }
+
+  bool BasicBlockAlg::isOneGraphPerStatement() { 
+    return ourOneGraphPerStatementFlag;
   }
 
 } // end namespace xaifBoosterBasicBlockPreaccumulation

@@ -19,7 +19,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		       const std::string& buildStamp) :
     xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterLinearization::AlgConfig(argc,argv,buildStamp) {
-    registerIt(&ourConfig,&ourUsage,"nCAmQaMR");
+    registerIt(&ourConfig,&ourUsage,"nCAmQaMRS");
   } 
 
   STATIC_ALG_CONFIG_FUNC_DEF_MACRO
@@ -47,6 +47,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end M
     if (isSet('R')) 
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::useReroutings();
+    if (isSet('S')) 
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::oneGraphPerStatement();
   }
 
   void AlgConfig::myUsage() { 
@@ -58,7 +60,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
               << "             [-Q] turn off alias checking among LHSs in the same sequence (meant to be temporary, waiting on better alias analysis)"  << std::endl
               << "             [-a] run randomized heuristics in addition to deterministic ones" << std::endl
 	      << "             [-M <0|1>] set the preaccumulation metric (0: minimize operations, 1: scarcity exploitation), defaults to scarcity" << std::endl
-	      << "             [-R] activate preaccumulation heuristics that use reroutings (for scarcity exploitation only)" << std::endl;
+	      << "             [-R] activate preaccumulation heuristics that use reroutings (for scarcity exploitation only)" << std::endl
+	      << "             [-S] limit computational graphs to single statements" << std::endl;
   } 
 
 } // end of namespace xaifBooster
