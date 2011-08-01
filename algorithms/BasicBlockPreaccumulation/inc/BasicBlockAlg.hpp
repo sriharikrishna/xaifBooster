@@ -153,6 +153,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     const PreaccumulationCounter& getPreaccumulationCounter() const;
 
+    /**
+     * sets ourOneGraphPerStatementFlag to true
+     */
+    static void oneGraphPerStatement();
+
+    /**
+     * returns ourOneGraphPerStatementFlag
+     */
+    static bool isOneGraphPerStatement(); 
+
   private:
 
     static PrivateLinearizedComputationalGraphAlgFactory* ourPrivateLinearizedComputationalGraphAlgFactory_p;
@@ -317,6 +327,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * to satisfy schema uniqueness constraints
      */
     static std::string makeUniqueId(); 
+
+    /**
+     * if this is true then computational graphs will be built only for one 
+     * statement, i.e. the flattening across statements is turned off
+     */
+    static bool ourOneGraphPerStatementFlag;
 
   }; 
  

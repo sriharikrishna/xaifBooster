@@ -179,6 +179,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     VertexPPairList theVertexTrackList;
     if (!vertexIdentification(theComputationalGraph)
 	||
+	BasicBlockAlg::isOneGraphPerStatement()
+	||
 	(!getActiveFlag()
 	 && 
 	 theComputationalGraph.
