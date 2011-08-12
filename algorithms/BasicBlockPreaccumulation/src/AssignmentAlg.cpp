@@ -251,11 +251,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						   theLHSIdResult.getVertexP()));
 	  theLCGVertex_p=theLHSIdResult.getVertexP();
+          theLCGVertex_p->associateExpressionVertex(*ExpressionVertexI);
 	}
 	else if (theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
 	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						   theRHSIdResult.getVertexP()));
 	  theLCGVertex_p=theRHSIdResult.getVertexP();
+          theLCGVertex_p->associateExpressionVertex(*ExpressionVertexI);
 	} // end if 
 	else { // the vertex cannot be uniquely identified
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED
@@ -266,6 +268,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // only important that we don't alias a preceding LHS
 	    // we need to add this vertex
 	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
+            theLCGVertex_p->associateExpressionVertex(*ExpressionVertexI);
 	    theComputationalGraph.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" << theLCGVertex_p->debug().c_str());
 	    if ((*ExpressionVertexI).isArgument()) {
