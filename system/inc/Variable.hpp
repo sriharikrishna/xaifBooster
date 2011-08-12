@@ -10,6 +10,8 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include <set>
+
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include "xaifBooster/system/inc/GraphWrapperTraversable.hpp"
@@ -245,6 +247,8 @@ namespace xaifBooster {
     bool myConstantUseFlag;
 
   }; // end of class Variable
+
+  typedef std::set<const Variable*> CVariablePSet;
 
 } // end of namespace xaifBooster
                                                                      

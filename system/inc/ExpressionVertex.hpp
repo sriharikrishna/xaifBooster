@@ -10,6 +10,8 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include <set>
+
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include "xaifBooster/system/inc/ExpressionVertexAlgBase.hpp"
 #include "xaifBooster/system/inc/VertexTraversable.hpp"
@@ -112,6 +114,8 @@ namespace xaifBooster {
 
   }; // end of class ExpressionVertex
  
+  typedef std::set<const ExpressionVertex*> CExpressionVertexPSet;
+
 } // end of namespace xaifBooster
                                                                      
 #endif
