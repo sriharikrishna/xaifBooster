@@ -100,6 +100,11 @@ namespace xaifBooster {
       myGraphicsFormat = DbgLoggerManager::SVG_FORMAT;
   } // end DbgLoggerManager::setGraphicsFormat()
 
+  void
+  DbgLoggerManager::setSvgViewer(const std::string& aSvgViewerString) {
+    mySvgViewerString = aSvgViewerString;
+  }
+
   unsigned int
   DbgLoggerManager::getSelection() const {
     return(mySelector);
@@ -115,10 +120,16 @@ namespace xaifBooster {
     return myGraphicsFormat;
   } // end DbgLoggerManager::getGraphicsFormat()
 
+  std::string
+  DbgLoggerManager::getSvgViewer() const {
+    return mySvgViewerString;
+  }
+
   DbgLoggerManager::DbgLoggerManager() : 
     myLogger_p(NULL), 
     myDebugOutPutFileName(""),
     myGraphicsFormat(DbgLoggerManager::PS_FORMAT),
+    mySvgViewerString("firefox"),
     mySelector(0),
     myPreviousS(0),
     myPreviousMS(0) { 

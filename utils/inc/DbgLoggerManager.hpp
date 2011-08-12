@@ -92,6 +92,8 @@ namespace xaifBooster {
     /// Set the type of graphics output (ps in gv, svg in firefox, etc.)
     void setGraphicsFormat(const std::string& aGraphicsFormatString);
 
+    void setSvgViewer(const std::string&);
+
     unsigned int getSelection() const ; 
 
     std::string getFileName() const ;
@@ -101,6 +103,8 @@ namespace xaifBooster {
 
     /// retrieve the selected graphics format
     DBG_Graphics_Format_E getGraphicsFormat() const;
+
+    std::string getSvgViewer() const;
 
     /** 
      * used in the DBG_MACRO, see there
@@ -166,6 +170,8 @@ namespace xaifBooster {
     std::string myDebugOutPutFileName; 
 
     DBG_Graphics_Format_E myGraphicsFormat;
+
+    std::string mySvgViewerString;
 
     /**
      * the build info for the binary 
