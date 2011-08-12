@@ -46,6 +46,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     const ObjectWithId::Id& getStatementId() const;
 
+    bool hasAuxiliaryVariable() const;
+    void setAuxiliaryVariable(const Variable& aVariable);
+    const Variable& getAuxiliaryVariable() const;
+
+    /// for GraphViz
+    std::string getLabelString() const;
+
   private: 
 
     /**
@@ -58,6 +65,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * The variable is not owned by this class.
      */
     const Variable* myOriginalVariable_p;
+
+    const Variable* myAuxiliaryVariable_p;
 
     /**
      * set to the respective statement id if myOriginalVariable_p is set
@@ -78,16 +87,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                                                                                              myG.getInternalBoostGraph()),
                                                                                   v));
       std::string theVertexShape("ellipse");
+      std::string orientationString("0");
       std::string theVertexGroupname("intermediates");
       std::string vertexFixedSize("false");
+      std::string labelloc("c");
       const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(myG.getDependentList());
       for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
            aDepVertexPListI!=theDepVertexPList.end();
            ++aDepVertexPListI) { 
         if (thePrivateLinearizedComputationalGraphVertex_p==*(aDepVertexPListI)) {
           theVertexShape = "invtriangle";
+          orientationString = "270";
           theVertexGroupname = "dependents";
           vertexFixedSize = "true";
+          labelloc = "t";
           break;
         }
       }
@@ -97,28 +110,24 @@ namespace xaifBoosterBasicBlockPreaccumulation {
            ++aIndepVertexPListI) { 
         if (thePrivateLinearizedComputationalGraphVertex_p==*(aIndepVertexPListI)) {
           theVertexShape = "triangle";
+          orientationString = "270";
           theVertexGroupname = "independents";
           vertexFixedSize = "true";
+          labelloc = "b";
           break;
         }
       }
 
-      // set label
-      std::string theVertexKind("");
-      std::ostringstream oss;
-      if (thePrivateLinearizedComputationalGraphVertex_p->hasOriginalVariable()) {
-        oss << thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str();
-        if (thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getDuUdMapKey().getKind() == InfoMapKey::SET)
-          oss  << " k=" << thePrivateLinearizedComputationalGraphVertex_p->getOriginalVariable().getDuUdMapKey().getKey();
-        theVertexKind = oss.str();
-      }
-
       out << "["
-          << "fixedsize=" << vertexFixedSize.c_str()
-          << ",fontsize=7"
+          << "penwidth=3.0"
+        //<< ",fontsize=7"
+          << ",fixedsize=" << vertexFixedSize.c_str()
           << ",group=\"" << theVertexGroupname.c_str() << "\""
           << ",shape=" << theVertexShape.c_str()
-          << ",label=\"" << theVertexKind.c_str() << "\""
+          << ",orientation=" << orientationString.c_str()
+          << ",label=\"" << thePrivateLinearizedComputationalGraphVertex_p->getLabelString().c_str() << "\""//theVertexKind.c_str() << "\""
+        //<< ",labelloc=\"" << labelloc.c_str() << "\""
+          << ",tooltip=\"" << thePrivateLinearizedComputationalGraphVertex_p->debug().c_str() << "\""
           << "]";
     }
 

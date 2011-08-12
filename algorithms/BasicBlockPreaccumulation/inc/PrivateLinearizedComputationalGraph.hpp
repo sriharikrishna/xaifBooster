@@ -24,8 +24,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   /**
    * the default representation for PrivateLinearizedComputationalGraph
-   * the edges will be instances of a subclass of LinearizedComputationalGraphEdge,
-   * and the vertices will be instances of a subclass of LinearizedComputationalGraphVertex, though this subclass no longer serves any purpose
+   * the edges will be instances of a subclass of LinearizedComputationalGraphEdge, and
+   * the vertices will be instances of a subclass of LinearizedComputationalGraphVertex
    */
   class PrivateLinearizedComputationalGraph : public xaifBoosterCrossCountryInterface::LinearizedComputationalGraph,
 					      public virtual Debuggable {
@@ -153,7 +153,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     PrivateLinearizedComputationalGraphPropertiesWriter(const PrivateLinearizedComputationalGraph& g) : myG(g) {};
 
     void operator()(std::ostream& out) const {
-      out << "rankdir=BT;" << std::endl;
+      out << "rankdir=LR;" << std::endl;
+      // set independent rank to min
+      out << "{rank=min;";
+      for (PrivateLinearizedComputationalGraph::VertexPointerList::const_iterator aVertexPointerListI(myG.getIndependentList().begin());
+           aVertexPointerListI != myG.getIndependentList().end(); ++aVertexPointerListI) {
+        out << " " << (*aVertexPointerListI)->getDescriptor();
+      }
+      out << ";}" << std::endl;
+      // set dependent rank to max (only for maximal dependents)
+      out << "{rank=max;";
+      PrivateLinearizedComputationalGraph::ConstVertexIteratorPair aPLCGVpair(myG.vertices());
+      for (PrivateLinearizedComputationalGraph::ConstVertexIterator aPLCGVi(aPLCGVpair.first), aPLCGViend(aPLCGVpair.second); aPLCGVi != aPLCGViend; ++aPLCGVi)
+        if (myG.numOutEdgesOf(*aPLCGVi) == 0)
+          out << " " << (*aPLCGVi).getDescriptor();
+      out << ";}" << std::endl;
     }
 
     const PrivateLinearizedComputationalGraph& myG;
