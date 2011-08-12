@@ -11,6 +11,8 @@
 
 #include "xaifBooster/utils/inc/LogicException.hpp"
 
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 
 using namespace xaifBooster;
@@ -31,6 +33,82 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         << "]" << std::ends;
     return out.str();
   } 
+
+  std::string
+  PrivateLinearizedComputationalGraphEdge::getLabelString() const {
+    if (hasLinearizedExpressionEdge()) {
+      switch(getLinearizedExpressionEdgeAlg().getPartialDerivativeKind()) {
+        case PartialDerivativeKind::LINEAR_ONE:
+          return "";//1";
+          break;
+        case PartialDerivativeKind::LINEAR_MINUS_ONE:
+          return "-1";
+          break;
+        case PartialDerivativeKind::LINEAR:
+          return getLinearizedExpressionEdgeAlg().getConcreteConstant().toString();
+          break;
+        default:
+          return getLinearizedExpressionEdgeAlg().hasConcretePartialAssignment()
+                 ? getAssignmentFromEdge().getLHS().getVariableSymbolReference().getSymbol().getId()
+                 : "";
+          break;
+      } // end switch
+    } // end if
+    else {
+      switch(getEdgeLabelType()) {
+        case xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL:
+          return "";
+          break;
+        case xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL:
+          return getLinearizedExpressionEdgeAlg().getConcreteConstant().toString();
+          break;
+        default:
+          return getLinearizedExpressionEdgeAlg().hasConcretePartialAssignment()
+                 ? getAssignmentFromEdge().getLHS().getVariableSymbolReference().getSymbol().getId()
+                 : "";
+          break;
+      } // end switch
+    } // end else
+  }
+
+  std::string
+  PrivateLinearizedComputationalGraphEdge::getColorString() const {
+    if (hasLinearizedExpressionEdge()) {
+      switch(getLinearizedExpressionEdgeAlg().getPartialDerivativeKind()) {
+        case PartialDerivativeKind::LINEAR_ONE:
+          return "red";
+          break;
+        case PartialDerivativeKind::LINEAR_MINUS_ONE:
+          return "pink";
+          break;
+        case PartialDerivativeKind::LINEAR:
+          return "blue";
+          break;
+        default:
+          return "black";
+          break;
+      }
+    }
+    else {
+      switch(getEdgeLabelType()) {
+        case xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL:
+          return "red";
+          break;
+        case xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL:
+          return "blue";
+          break;
+        default:
+          return "black";
+          break;
+      }
+    }
+  }
+
+  std::string
+  PrivateLinearizedComputationalGraphEdge::getStyleString() const {
+    return isDirectCopyEdge() ? "dashed"
+                              : "solid";
+  }
 
   void PrivateLinearizedComputationalGraphEdge::setLinearizedExpressionEdge(const ExpressionEdge& anExpressionEdge) {
     if (myLinearizedExpressionEdge_p || myDirectCopyEdgeFlag) 

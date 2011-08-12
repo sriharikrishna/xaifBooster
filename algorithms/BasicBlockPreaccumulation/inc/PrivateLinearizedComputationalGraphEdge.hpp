@@ -43,9 +43,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     std::string debug() const ;
 
+    /// for GraphViz
+    std::string getLabelString() const;
+    /// for GraphViz
+    std::string getColorString() const;
+    /// for GraphViz
+    std::string getStyleString() const;
+
     typedef std::list<const ExpressionEdge*> ExpressionEdgePList;
     
     void addParallel(const ExpressionEdge&);
+
+    const xaifBoosterLinearization::ExpressionEdgeAlg&
+    getLinearizedExpressionEdgeAlg() const {
+      return dynamic_cast<const xaifBoosterLinearization::ExpressionEdgeAlg&>(getLinearizedExpressionEdge().getExpressionEdgeAlgBase());
+    }
 
     virtual Assignment& getAssignmentFromEdge() const {
       return (dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>(getLinearizedExpressionEdge().getExpressionEdgeAlgBase()).getConcretePartialAssignment());
@@ -91,26 +103,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   public:
     PrivateLinearizedComputationalGraphEdgeLabelWriter(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& g) : myG(g) {};
 
-    template <class BoostIntenalEdgeDescriptor>
+    template <class BoostInternalEdgeDescriptor>
     void operator()(std::ostream& out,
-                    const BoostIntenalEdgeDescriptor& v) const {
-      const PrivateLinearizedComputationalGraphEdge* thePrivateLinearizedComputationalGraphEdge_p=
-        dynamic_cast<const PrivateLinearizedComputationalGraphEdge*>(boost::get(boost::get(BoostEdgeContentType(),
-                                                                                           myG.getInternalBoostGraph()),
-                                                                                v));
-      std::string theColor ("");
-      if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL)
-        theColor = "red";
-      else if (thePrivateLinearizedComputationalGraphEdge_p->getEdgeLabelType() == xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL)
-        theColor = "blue";
-      else
-        theColor = "black";
+                    const BoostInternalEdgeDescriptor& v) const {
+      const PrivateLinearizedComputationalGraphEdge& thePLCGEdge(
+        dynamic_cast<const PrivateLinearizedComputationalGraphEdge&>(*boost::get(boost::get(BoostEdgeContentType(),
+                                                                                            myG.getInternalBoostGraph()),
+                                                                                 v))
+      );
 
       out << "["
-          << "color=" << theColor.c_str()
-          << ",fontsize=8"
+          << "fontsize=7"
+          << ",penwidth=3.0"
+          << ",color=" << thePLCGEdge.getColorString().c_str()
+          << ",style=" << thePLCGEdge.getStyleString().c_str()
+          << ",label=\"" << thePLCGEdge.getLabelString().c_str() << "\""
           << ",labelfloat=false"
-          << ",label=\"" << thePrivateLinearizedComputationalGraphEdge_p << "\""
+          << ",edgetooltip=\"" << thePLCGEdge.debug().c_str() << "\""
           << "]";
     }
 

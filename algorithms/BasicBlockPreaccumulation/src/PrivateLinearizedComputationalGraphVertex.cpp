@@ -8,20 +8,32 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/system/inc/Intrinsic.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() :
-    myOriginalVariable_p (NULL) {
+  PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() : myOriginalVariable_p(NULL),
+                                                                                           myAuxiliaryVariable_p(NULL) {
   }
 
-  std::string PrivateLinearizedComputationalGraphVertex::debug() const {
+  std::string
+  PrivateLinearizedComputationalGraphVertex::debug() const {
     std::ostringstream out;
     out << "PrivateLinearizedComputationalGraphVertex[" << Vertex::debug().c_str()
-	<< ",myOriginalVariable_p=" << myOriginalVariable_p
-	<< ",myStatementId=" << myStatementId
-        << ",myOriginalExpressionVertexPSet={";
+        << ",myStatementId=" << myStatementId;
+    out << ",myOriginalVariable_p=>";
+    if (myOriginalVariable_p)
+      out << myOriginalVariable_p->debug().c_str();
+    else
+      out << myOriginalVariable_p;
+    out << ",myAuxiliaryVariable_p=>";
+    if (myAuxiliaryVariable_p)
+      out << myAuxiliaryVariable_p->debug().c_str();
+    else
+      out << myAuxiliaryVariable_p;
+    out << ",myOriginalExpressionVertexPSet={";
     for (CExpressionVertexPSet::const_iterator setI = myOriginalExpressionVertexPSet.begin(); setI != myOriginalExpressionVertexPSet.end(); ++setI)
       out << (*setI)->debug().c_str();
     out << "}";
@@ -66,6 +78,60 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getStatementId: not set");
     return myStatementId;
   } 
+
+  bool
+  PrivateLinearizedComputationalGraphVertex::hasAuxiliaryVariable() const {
+    return (myAuxiliaryVariable_p) ? true : false;
+  }
+
+  void
+  PrivateLinearizedComputationalGraphVertex::setAuxiliaryVariable(const Variable& aVariable) {
+    if (myAuxiliaryVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setAuxiliaryVariable:"
+                                 << " already set to " << myAuxiliaryVariable_p->debug().c_str()
+                                 << " while trying to set to " << aVariable.debug().c_str());
+    myAuxiliaryVariable_p = &aVariable;
+  }
+
+  const Variable&
+  PrivateLinearizedComputationalGraphVertex::getAuxiliaryVariable() const {
+    if (!myAuxiliaryVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getAuxiliaryVariable: not set");
+    return *myAuxiliaryVariable_p;
+  }
+
+  std::string
+  PrivateLinearizedComputationalGraphVertex::getLabelString() const {
+    std::ostringstream out;
+
+    // search for a (LHS) variable symbol reference
+    if (hasOriginalVariable()) {
+      if (getOriginalVariable().getDuUdMapKey().getKind() == InfoMapKey::SET)
+        out  << "[k=" << getOriginalVariable().getDuUdMapKey().getKey() << "]\\n";
+      out << getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+    }
+    else { // no LHS variable, but maybe an argument?
+      for (CExpressionVertexPSet::const_iterator evpI = myOriginalExpressionVertexPSet.begin();
+           evpI != myOriginalExpressionVertexPSet.end(); ++evpI)
+        if ((*evpI)->isArgument())
+          out << dynamic_cast<const Argument&>(**evpI).getVariable().getVariableSymbolReference().getSymbol().getId();
+    }
+
+    // search for an operation
+    std::string theOpString("");
+    for (CExpressionVertexPSet::const_iterator evpI = myOriginalExpressionVertexPSet.begin();
+         evpI != myOriginalExpressionVertexPSet.end(); ++evpI)
+      if ((*evpI)->isIntrinsic())
+        theOpString = dynamic_cast<const Intrinsic&>(**evpI).getName();
+    if (!theOpString.empty() && hasOriginalVariable())
+      out << " = ";
+    out << theOpString;
+
+    if (hasAuxiliaryVariable())
+      out << "= " << getAuxiliaryVariable().getVariableSymbolReference().getSymbol().getId().c_str();
+
+    return out.str();
+  }
 
 } // end namespace xaifBoosterBasicBlockPreaccumulation
 
