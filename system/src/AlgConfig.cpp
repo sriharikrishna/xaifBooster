@@ -26,7 +26,7 @@ namespace xaifBooster {
     myBuildStamp(buildStamp),
     myConfiguredFlag(false),
     myInputValidationFlag(false) {
-    registerIt(&ourConfig, &ourUsage,"iocdgGNsTvpbVDFh");
+    registerIt(&ourConfig, &ourUsage,"iocdgGBNsTvpbVDFh");
   } 
 
   void AlgConfig::registerIt(RegFP theConfig,
@@ -87,6 +87,8 @@ namespace xaifBooster {
 	DbgLoggerManager::instance()->setSelection(argAsInt('g'));
       if (isSet('G')) 
 	DbgLoggerManager::instance()->setGraphicsFormat(argAsString('G'));
+      if (isSet('B')) 
+	DbgLoggerManager::instance()->setSvgViewer(argAsString('B'));
       if (isSet('N')) 
 	myNIIntrinsicsFileName=argAsString('N');
       if (isSet('p'))
@@ -133,7 +135,10 @@ namespace xaifBooster {
 	      << "                 defaults to 0(ERROR)" << std::endl
               << "             [-G <format>] debugging graphics format, where <format > is one of:" << std::endl
               << "                 ps - postscript format displayed with ghostview (default)" << std::endl 
-              << "                 svg - scalable vector graphics format displayed in firefox" << std::endl 
+              << "                 svg - scalable vector graphics format displayed in firefox unless the -B switch is used to specify another SVG viewer" << std::endl 
+              << "             [-B <executable>] svg viewer program, where <executable> is something like:" << std::endl
+              << "                 firefox (default)" << std::endl 
+              << "                 google-chrome" << std::endl 
               << "             [-T \"<list of tags to narrow debug output>\" ]" << std::endl 
               << "                 space separated list enclosed in double quotes" << std::endl
               << "             [-p \"<list of symbols to forcibly passivate>\" ]" << std::endl 

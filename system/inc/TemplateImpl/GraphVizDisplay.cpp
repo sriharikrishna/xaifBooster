@@ -536,7 +536,7 @@ namespace xaifBooster {
 
     std::string drawString = (DbgLoggerManager::instance()->getGraphicsFormat() == DbgLoggerManager::PS_FORMAT)
      ? " dot -q -Tps " + theFileName + ".2 >| " + theFileName + ".ps ; gv " + theFileName + ".ps"
-     : " dot -q -Tsvg " + theFileName + ".2 >| " + theFileName + ".svg ; firefox " + theFileName + ".svg";
+     : " dot -q -Tsvg " + theFileName + ".2 >| " + theFileName + ".svg ; " + DbgLoggerManager::instance()->getSvgViewer() + " " + theFileName + ".svg";
 
     // in case of listS there are hex identifiers in the dot file which dot cannot interpret
     // as a hex number so we need to make it a 'name' pre prepending HEX
