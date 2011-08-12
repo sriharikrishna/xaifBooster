@@ -10,6 +10,7 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
@@ -21,7 +22,9 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation { 
  
   /**
-   * This class is no longer necessary
+   * Vertices in the linearized computational graph maintain pointers to
+   * the corresponding expression vertices in the linearized RHS and
+   * the corresponding LHSVariable (if there is one)
    */
   class PrivateLinearizedComputationalGraphVertex : public xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex {
 
@@ -30,6 +33,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     PrivateLinearizedComputationalGraphVertex();
     ~PrivateLinearizedComputationalGraphVertex(){};
 
+    virtual std::string debug() const;
+
+    void associateExpressionVertex(const ExpressionVertex&);
+
+    const CExpressionVertexPSet& getAssociatedExpressionVertexPSet() const;
+
     bool hasOriginalVariable() const;
     void setOriginalVariable(const Variable& aVariable,
 			     const ObjectWithId::Id& aStatementId);
@@ -37,10 +46,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     const ObjectWithId::Id& getStatementId() const;
 
-    std::string debug() const;
-
   private: 
-    
+
+    /**
+     * we do not own these expression vertices
+     */
+    CExpressionVertexPSet myOriginalExpressionVertexPSet;
+
     /**
      * Pointer to the variable that originally corresponds to this vertex, in the case where one exists.
      * The variable is not owned by this class.

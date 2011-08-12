@@ -21,9 +21,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     out << "PrivateLinearizedComputationalGraphVertex[" << Vertex::debug().c_str()
 	<< ",myOriginalVariable_p=" << myOriginalVariable_p
 	<< ",myStatementId=" << myStatementId
-	<< "]" << std::ends;  
+        << ",myOriginalExpressionVertexPSet={";
+    for (CExpressionVertexPSet::const_iterator setI = myOriginalExpressionVertexPSet.begin(); setI != myOriginalExpressionVertexPSet.end(); ++setI)
+      out << (*setI)->debug().c_str();
+    out << "}";
+    out << "]" << std::ends;
     return out.str();
   } 
+
+  const CExpressionVertexPSet&
+  PrivateLinearizedComputationalGraphVertex::getAssociatedExpressionVertexPSet() const {
+    return myOriginalExpressionVertexPSet;
+  }
+
+  void
+  PrivateLinearizedComputationalGraphVertex::associateExpressionVertex(const ExpressionVertex& aExpressionVertex) {
+    if (myOriginalExpressionVertexPSet.find(&aExpressionVertex) != myOriginalExpressionVertexPSet.end())
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::associateExpressionVertex: "
+                                 << aExpressionVertex.debug().c_str() << "already associated");
+    myOriginalExpressionVertexPSet.insert(&aExpressionVertex);
+  }
 
   bool PrivateLinearizedComputationalGraphVertex::hasOriginalVariable() const {
    return (myOriginalVariable_p) ? true : false;
