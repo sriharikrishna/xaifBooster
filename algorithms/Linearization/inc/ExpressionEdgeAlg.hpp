@@ -70,6 +70,11 @@ namespace xaifBoosterLinearization {
 
     const VertexPairList& getConcreteArgumentInstancesList() const;
 
+    void mapPartialEV2OriginalEV(const ExpressionVertex&,
+                                 const ExpressionVertex&);
+
+    const ExpressionVertex& getOriginalExpressionVertex4ConcretePartialArgument(const ExpressionVertex&) const;
+
   private: 
 
     /** 
@@ -86,6 +91,15 @@ namespace xaifBoosterLinearization {
      * no def
      */
     ExpressionEdgeAlg& operator=(const ExpressionEdgeAlg&);
+
+    typedef std::map<const ExpressionVertex*,
+                     const ExpressionVertex*> CExpressionVertexP2CExpressionVertexPMap;
+
+    /**
+     * maps expression vertices in the partial expression (arguments and constants)
+     * to the corresp. original ExpressionVertex
+     */
+    CExpressionVertexP2CExpressionVertexPMap myPartialEVP2OriginalEVPMap;
 
     /**
      * a reference to the partial derivative

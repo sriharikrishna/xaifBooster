@@ -289,6 +289,8 @@ namespace xaifBoosterLinearization{
 		allConst=false;
 	      } // else cast failed: it must be a constant
 	    } // end argument or constant
+            theI3ExpressionEdgeAlg.mapPartialEV2OriginalEV(*theNewVertex_p,
+                                                           *theArgumentVertex_p);
 	  } // end if
 	  else {
 	    // this is not referring to 

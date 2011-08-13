@@ -34,6 +34,8 @@ namespace xaifBoosterPushPop {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
+    virtual void algorithm_action_6();
+
     /**
      * creates a push for a value from \p aRequiredValuePList that occurs no later than any other,
      * where the resolution is currently on the level of basic block elements and sequences
