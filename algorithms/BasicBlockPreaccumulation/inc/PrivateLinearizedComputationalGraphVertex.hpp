@@ -120,12 +120,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       out << "["
           << "penwidth=3.0"
-        //<< ",fontsize=7"
+          << ",fontsize=7"
           << ",fixedsize=" << vertexFixedSize.c_str()
           << ",group=\"" << theVertexGroupname.c_str() << "\""
           << ",shape=" << theVertexShape.c_str()
           << ",orientation=" << orientationString.c_str()
-          << ",label=\"" << thePrivateLinearizedComputationalGraphVertex_p->getLabelString().c_str() << "\""//theVertexKind.c_str() << "\""
+          << ",label=\"" << thePrivateLinearizedComputationalGraphVertex_p->getLabelString().c_str() << "\""
         //<< ",labelloc=\"" << labelloc.c_str() << "\""
           << ",tooltip=\"" << thePrivateLinearizedComputationalGraphVertex_p->debug().c_str() << "\""
           << "]";
