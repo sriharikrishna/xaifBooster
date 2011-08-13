@@ -39,6 +39,20 @@ namespace xaifBoosterPushPop {
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
   } // end BasicBlockAlg::traverseToChildren()
 
+  void 
+  BasicBlockAlg::algorithm_action_6() {
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterPushPop::BasicBlockAlg::algorithm_action_6: invoked for " << debug().c_str());
+    // create a CombinedGraph for each sequence
+    for (SequencePList::iterator aSequencePListI = myUniqueSequencePList.begin();
+         aSequencePListI != myUniqueSequencePList.end();
+         ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
+      Sequence& currentSequence(dynamic_cast<Sequence&>(**aSequencePListI));
+      if (currentSequence.myComputationalGraph_p->numVertices()) {
+        currentSequence.populateCombinedGraph();
+      } // end if LCG has vertices
+    } // end iterate over sequences
+  }
+
   void
   BasicBlockAlg::pushSupremum(xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList aRequiredValuePList) {
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterPushPop::BasicBlockAlg::pushSupremum");
@@ -87,7 +101,7 @@ namespace xaifBoosterPushPop {
         continue;
       }
       else if (&theBasicBlockElement == (*CSeqI)->myLastElement_p) { // we are at the end of the current sequence
-        const xaifBoosterBasicBlockPreaccumulationTape::Sequence& currentSequence(dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTape::Sequence&>(**CSeqI));
+        const Sequence& currentSequence(dynamic_cast<const Sequence&>(**CSeqI));
         // check the stuff that comes after the sequence
         // (for now we can consider it to all occur at the same time)
         // meaning that everything in accumulation and propagation is considered to occur simultaneously
@@ -95,7 +109,7 @@ namespace xaifBoosterPushPop {
         foundFirst = false;
         foundSecond = false;
         // check the accumulation code
-        for (xaifBoosterBasicBlockPreaccumulation::Sequence::AssignmentPList::const_iterator accAssPI = currentSequence.getEndAssignmentList().begin();
+        for (Sequence::AssignmentPList::const_iterator accAssPI = currentSequence.getEndAssignmentList().begin();
              accAssPI != currentSequence.getEndAssignmentList().end(); ++accAssPI) {
           foundFirst = (*accAssPI)->hasExpression(firstExpression);
           foundSecond = (*accAssPI)->hasExpression(secondExpression);

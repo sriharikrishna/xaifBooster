@@ -19,25 +19,27 @@
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraphEdge.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/ExpressionEdgeAlg.hpp"
+
 using namespace xaifBooster;
 
 namespace xaifBoosterCrossCountryInterface {
 
   // Constructor for leaves that correspond to direct copy edges in the LCG
-  AccumulationGraphVertex::AccumulationGraphVertex() :
-	myRemainderGraphEdge_p (NULL),
-	myPartialDerivativeKind (PartialDerivativeKind::LINEAR_ONE),
-	myValue (0),
-	ValueHasBeenSet (false),
-	myLHSVariable_p (NULL) {
+  AccumulationGraphVertex::AccumulationGraphVertex() : myExpressionEdge_p(NULL),
+                                                       myRemainderGraphEdge_p(NULL),
+                                                       myPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE),
+                                                       myValue(0),
+                                                       ValueHasBeenSet(false),
+                                                       myLHSVariable_p(NULL) {
   } // end AccumulationGraphVertex::AccumulationGraphVertex()
 
   // Constructor for leaves (those that don't correspond to direct copy edges in the LCG).
-  AccumulationGraphVertex::AccumulationGraphVertex(const ExpressionEdge& theExpressionEdge) :
-	myRemainderGraphEdge_p (NULL) {
-    const xaifBoosterLinearization::ExpressionEdgeAlg& theLinearizedExpressionEdgeAlg =
-     dynamic_cast<const xaifBoosterLinearization::ExpressionEdgeAlg&>(theExpressionEdge.getExpressionEdgeAlgBase());
-
+  AccumulationGraphVertex::AccumulationGraphVertex(const ExpressionEdge& aExpressionEdge) : myExpressionEdge_p(&aExpressionEdge),
+                                                                                            myRemainderGraphEdge_p(NULL) {
+    const xaifBoosterLinearization::ExpressionEdgeAlg& theLinearizedExpressionEdgeAlg(
+     dynamic_cast<const xaifBoosterLinearization::ExpressionEdgeAlg&>(aExpressionEdge.getExpressionEdgeAlgBase())
+    );
     // we must be sure to set (myPartialDerivativeKind, myValue, ValueHasBeenSet, myLHSVariable_p) in each case
     switch (theLinearizedExpressionEdgeAlg.getPartialDerivativeKind()) {
       case PartialDerivativeKind::LINEAR_ONE: {
@@ -85,14 +87,26 @@ namespace xaifBoosterCrossCountryInterface {
     } // end switch (PDK)
   } // end AccumulationGraphVertex::AccumulationGraphVertex(const ExpressionEdge& theExpressionEdge)
 
-  AccumulationGraphVertex::AccumulationGraphVertex(const JacobianAccumulationExpressionVertex::Operation_E& anOpType) :
-	myRemainderGraphEdge_p (NULL),
-	myOperationType (anOpType),
-	myPartialDerivativeKind (PartialDerivativeKind::NOT_SET),
-	myValue (0),
-	ValueHasBeenSet (false),
-	myLHSVariable_p (NULL) {
+  AccumulationGraphVertex::AccumulationGraphVertex(const JacobianAccumulationExpressionVertex::Operation_E& anOpType) : myExpressionEdge_p(NULL),
+                                                                                                                        myRemainderGraphEdge_p(NULL),
+                                                                                                                        myOperationType(anOpType),
+                                                                                                                        myPartialDerivativeKind(PartialDerivativeKind::NOT_SET),
+                                                                                                                        myValue(0),
+                                                                                                                        ValueHasBeenSet(false),
+                                                                                                                        myLHSVariable_p(NULL) {
   } // end AccumulationGraphVertex::AccumulationGraphVertex(const std::string anOpName)
+
+  const bool
+  AccumulationGraphVertex::hasExpressionEdge() const {
+    return (myExpressionEdge_p != NULL);
+  }
+
+  const ExpressionEdge&
+  AccumulationGraphVertex::getExpressionEdge() const {
+    if (!myExpressionEdge_p)
+      THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getExpressionEdge: not set")
+    return *myExpressionEdge_p;
+  }
 
   void AccumulationGraphVertex::setRemainderGraphEdge(const LinearizedComputationalGraphEdge& anLCGEdge) {
     if (myRemainderGraphEdge_p)

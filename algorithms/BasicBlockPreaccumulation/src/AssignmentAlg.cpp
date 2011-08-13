@@ -236,43 +236,52 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				<< " LHS " << theVertexIdentificationListActiveLHS.debug().c_str()
 				<< " RHS " << theVertexIdentificationListActiveRHS.debug().c_str());
       PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p = 0; // LHS representation
-      ExpressionVertex* theMaximalExpressionVertex_p = 0;
-      Expression& theExpression(getLinearizedRightHandSide());
-      Expression::VertexIteratorPair p=theExpression.vertices();
-      for (Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second); ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
+      const ExpressionVertex* theMaximalExpressionVertex_p = 0;
+      const Expression& theExpression(getLinearizedRightHandSide());
+      Expression::ConstVertexIteratorPair p=theExpression.vertices();
+      for (Expression::ConstVertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second); ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
 	VertexIdentificationListActive::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
 							     theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
 	PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=0;
 
 	if ((*ExpressionVertexI).isArgument()) { 
-	  theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable(),
+	  theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<const Argument&>(*ExpressionVertexI).getVariable(),
 									  getContainingAssignment().getId());
-	  theRHSIdResult=theVertexIdentificationListActiveRHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	  theRHSIdResult=theVertexIdentificationListActiveRHS.canIdentify(dynamic_cast<const Argument&>(*ExpressionVertexI).getVariable());
 	} 
 
 	if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
 	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						   theLHSIdResult.getVertexP()));
 	  theLCGVertex_p=theLHSIdResult.getVertexP();
+          theLCGVertex_p->associateExpressionVertex(*ExpressionVertexI);
 	}
 	else if (theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
 	  theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						   theRHSIdResult.getVertexP()));
 	  theLCGVertex_p=theRHSIdResult.getVertexP();
+          theLCGVertex_p->associateExpressionVertex(*ExpressionVertexI);
 	} // end if 
 	else { // the vertex cannot be uniquely identified
+          const xaifBoosterLinearization::ExpressionVertexAlg& theLinearizedExpressionVertexAlg(
+           dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase())
+          );
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED
-	   && dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) {
+	   && theLinearizedExpressionVertexAlg.isActive()) {
 	    // passive bits have not been removed yet since we potentially need them for some partial code generation
 	    // but vertices may have been marked as passive during the previous analysis.
 	    // the RHS identification doesn't really matter since we cannot uniquely identify within the RHSs it is
 	    // only important that we don't alias a preceding LHS
 	    // we need to add this vertex
 	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
+            theLCGVertex_p->associateExpressionVertex(*ExpressionVertexI);
+            if (theLinearizedExpressionVertexAlg.hasAuxilliaryVariable()) {
+              theLCGVertex_p->setAuxiliaryVariable(theLinearizedExpressionVertexAlg.getAuxilliaryVariable());
+            }
 	    theComputationalGraph.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" << theLCGVertex_p->debug().c_str());
 	    if ((*ExpressionVertexI).isArgument()) {
-	      Variable& theVariable(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
+	      const Variable& theVariable(dynamic_cast<const Argument&>(*ExpressionVertexI).getVariable());
 	      if (theRHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) { 
 		theVertexIdentificationListActiveRHS.addElement(theVariable,
 								getContainingAssignment().getId(),
@@ -289,7 +298,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						     theLCGVertex_p));
 	  } // end if NOT_IDENTIFIED
-	  else if (!dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) { 
+	  else if (!theLinearizedExpressionVertexAlg.isActive()) { 
 	    // this is passive stuff  we don't do anything
 	  }
 	  else { // there is an ambiquity, but we should have detected this earlier
@@ -307,14 +316,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	}
       } // end for all expression vertices
 
-      Expression::EdgeIteratorPair pe=theExpression.edges();
-      for (Expression::EdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second); ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) {
-	PartialDerivativeKind::PartialDerivativeKind_E thePartialDerivativeKind(dynamic_cast<xaifBoosterLinearization::ExpressionEdgeAlg&>((*ExpressionEdgeI).getExpressionEdgeAlgBase()).getPartialDerivativeKind());
+      Expression::ConstEdgeIteratorPair pe=theExpression.edges();
+      for (Expression::ConstEdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second); ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) {
+	PartialDerivativeKind::PartialDerivativeKind_E thePartialDerivativeKind(dynamic_cast<const xaifBoosterLinearization::ExpressionEdgeAlg&>((*ExpressionEdgeI).getExpressionEdgeAlgBase()).getPartialDerivativeKind());
 	if (thePartialDerivativeKind == PartialDerivativeKind::PASSIVE) 
 	  continue;
 	const PrivateLinearizedComputationalGraphVertex *theLCGSource_p(0), *theLCGTarget_p(0);
-	ExpressionVertex& theSource(theExpression.getSourceOf(*ExpressionEdgeI));
-	ExpressionVertex& theTarget(theExpression.getTargetOf(*ExpressionEdgeI));
+	const ExpressionVertex& theSource(theExpression.getSourceOf(*ExpressionEdgeI));
+	const ExpressionVertex& theTarget(theExpression.getTargetOf(*ExpressionEdgeI));
 	VertexPPairList::const_iterator listIt;
 	for (listIt=theVertexTrackList.begin();
 	     (listIt!=theVertexTrackList.end()) 
@@ -374,6 +383,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
 	// now we make a new one which will be top node
 	theLHSLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
+        theLHSLCGVertex_p->associateExpressionVertex(*theMaximalExpressionVertex_p);
 	// the new one needs to be added to the graph, the old one is already in there
 	theComputationalGraph.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
 	// we need to add the direct copy edge, we can't set a back reference because there is none
