@@ -260,8 +260,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
           theLCGVertex_p->associateExpressionVertex(*ExpressionVertexI);
 	} // end if 
 	else { // the vertex cannot be uniquely identified
+          const xaifBoosterLinearization::ExpressionVertexAlg& theLinearizedExpressionVertexAlg(
+           dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase())
+          );
 	  if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED
-	   && dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) {
+	   && theLinearizedExpressionVertexAlg.isActive()) {
 	    // passive bits have not been removed yet since we potentially need them for some partial code generation
 	    // but vertices may have been marked as passive during the previous analysis.
 	    // the RHS identification doesn't really matter since we cannot uniquely identify within the RHSs it is
@@ -269,6 +272,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // we need to add this vertex
 	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
             theLCGVertex_p->associateExpressionVertex(*ExpressionVertexI);
+            if (theLinearizedExpressionVertexAlg.hasAuxilliaryVariable()) {
+              theLCGVertex_p->setAuxiliaryVariable(theLinearizedExpressionVertexAlg.getAuxilliaryVariable());
+            }
 	    theComputationalGraph.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" << theLCGVertex_p->debug().c_str());
 	    if ((*ExpressionVertexI).isArgument()) {
@@ -289,7 +295,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    theVertexTrackList.push_back(VertexPPair(&(*ExpressionVertexI),
 						     theLCGVertex_p));
 	  } // end if NOT_IDENTIFIED
-	  else if (!dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).isActive()) { 
+	  else if (!theLinearizedExpressionVertexAlg.isActive()) { 
 	    // this is passive stuff  we don't do anything
 	  }
 	  else { // there is an ambiquity, but we should have detected this earlier
@@ -374,6 +380,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	PrivateLinearizedComputationalGraphVertex* theOldLHSLCGVertex_p(theLHSLCGVertex_p);
 	// now we make a new one which will be top node
 	theLHSLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
+        theLHSLCGVertex_p->associateExpressionVertex(*theMaximalExpressionVertex_p);
 	// the new one needs to be added to the graph, the old one is already in there
 	theComputationalGraph.supplyAndAddVertexInstance(*theLHSLCGVertex_p);
 	// we need to add the direct copy edge, we can't set a back reference because there is none
