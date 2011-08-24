@@ -66,6 +66,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     const Variable* myOriginalVariable_p;
 
+    /// (may not be set) points to the corresp. auxiliary variable if one was created during Linearization
     const Variable* myAuxiliaryVariable_p;
 
     /**
@@ -82,10 +83,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     template <class BoostInternalVertexDescriptor>
     void operator()(std::ostream& out, 
                     const BoostInternalVertexDescriptor& v) const {
-      const PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p=
-        dynamic_cast<const PrivateLinearizedComputationalGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
-                                                                                             myG.getInternalBoostGraph()),
-                                                                                  v));
+      const PrivateLinearizedComputationalGraphVertex& thePLCGV(
+       dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(
+        *boost::get(boost::get(BoostVertexContentType(),
+                               myG.getInternalBoostGraph()),
+                    v))
+      );
       std::string theVertexShape("ellipse");
       std::string orientationString("0");
       std::string theVertexGroupname("intermediates");
@@ -95,7 +98,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
            aDepVertexPListI!=theDepVertexPList.end();
            ++aDepVertexPListI) { 
-        if (thePrivateLinearizedComputationalGraphVertex_p==*(aDepVertexPListI)) {
+        if (&thePLCGV == *(aDepVertexPListI)) {
           theVertexShape = "invtriangle";
           orientationString = "270";
           theVertexGroupname = "dependents";
@@ -108,7 +111,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aIndepVertexPListI(theIndepVertexPList.begin());
            aIndepVertexPListI!=theIndepVertexPList.end();
            ++aIndepVertexPListI) { 
-        if (thePrivateLinearizedComputationalGraphVertex_p==*(aIndepVertexPListI)) {
+        if (&thePLCGV == *(aIndepVertexPListI)) {
           theVertexShape = "triangle";
           orientationString = "270";
           theVertexGroupname = "independents";
@@ -120,14 +123,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
       out << "["
           << "penwidth=3.0"
-          << ",fontsize=7"
-          << ",fixedsize=" << vertexFixedSize.c_str()
+          << ",fontsize=14" // (default)
+        //<< ",fixedsize=" << vertexFixedSize.c_str()
           << ",group=\"" << theVertexGroupname.c_str() << "\""
           << ",shape=" << theVertexShape.c_str()
           << ",orientation=" << orientationString.c_str()
-          << ",label=\"" << thePrivateLinearizedComputationalGraphVertex_p->getLabelString().c_str() << "\""
+          << ",label=\"" << thePLCGV.getLabelString().c_str() << "\""
         //<< ",labelloc=\"" << labelloc.c_str() << "\""
-          << ",tooltip=\"" << thePrivateLinearizedComputationalGraphVertex_p->debug().c_str() << "\""
+          << ",tooltip=\"" << thePLCGV.debug().c_str() << "\""
           << "]";
     }
 

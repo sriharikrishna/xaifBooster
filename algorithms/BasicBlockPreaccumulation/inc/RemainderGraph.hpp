@@ -10,9 +10,10 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/boostWrapper/inc/GraphWrapper.hpp"
+
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/Elimination.hpp"
 
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphEdge.hpp"
 
@@ -23,7 +24,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   /**
    * the default representation for the RemainderGraph
    */
-  class RemainderGraph : public PrivateLinearizedComputationalGraph {
+  class RemainderGraph : public GraphWrapper<RemainderGraphVertex,
+                                             RemainderGraphEdge> {
   public:
 
     RemainderGraph(){};
@@ -37,27 +39,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     std::string debug() const { return std::string("RemainderGraph");};
 
-    const PrivateLinearizedComputationalGraphVertex& 
-    getOriginalVertexFor(const RemainderGraphVertex& aRemainderGraphVertex) const;
-    
-    const xaifBoosterCrossCountryInterface::AccumulationGraphVertex& 
-    getAccumulationGraphVertexFor(const RemainderGraphEdge& aRemainderGraphEdge) const; 
-
   private:
-
-    /**
-     * used for propagation
-     */
-    typedef std::map<const RemainderGraphVertex*,
-                     const PrivateLinearizedComputationalGraphVertex*> RemainderVertexP2OriginalVertexPMap;
-    RemainderVertexP2OriginalVertexPMap myRemainderVertexP2OriginalVertexPMap;
-
-    /**
-     * used for propagation
-     */
-    typedef std::map<const RemainderGraphEdge*,
-                     const xaifBoosterCrossCountryInterface::AccumulationGraphVertex*> RemainderEdgeP2AccumulationVertexPMap;
-    RemainderEdgeP2AccumulationVertexPMap myRemainderEdgeP2AccumulationVertexPMap;
 
   }; 
 

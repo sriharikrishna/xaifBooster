@@ -13,6 +13,7 @@
 #include "xaifBooster/system/inc/ExpressionEdgeAlgBase.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
+#include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraphVertex.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionVertex.hpp"
@@ -26,17 +27,21 @@ using namespace xaifBooster;
 namespace xaifBoosterCrossCountryInterface {
 
   // Constructor for leaves that correspond to direct copy edges in the LCG
-  AccumulationGraphVertex::AccumulationGraphVertex() : myExpressionEdge_p(NULL),
-                                                       myRemainderGraphEdge_p(NULL),
-                                                       myPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE),
-                                                       myValue(0),
-                                                       ValueHasBeenSet(false),
-                                                       myLHSVariable_p(NULL) {
+  AccumulationGraphVertex::AccumulationGraphVertex() :
+   myExpressionEdge_p(NULL),
+   myRemainderGraphEdge_p(NULL),
+   myHasOperationFlag(false),
+   myPartialDerivativeKind(PartialDerivativeKind::LINEAR_ONE),
+   myValue(0),
+   ValueHasBeenSet(false),
+   myLHSVariable_p(NULL) {
   } // end AccumulationGraphVertex::AccumulationGraphVertex()
 
   // Constructor for leaves (those that don't correspond to direct copy edges in the LCG).
-  AccumulationGraphVertex::AccumulationGraphVertex(const ExpressionEdge& aExpressionEdge) : myExpressionEdge_p(&aExpressionEdge),
-                                                                                            myRemainderGraphEdge_p(NULL) {
+  AccumulationGraphVertex::AccumulationGraphVertex(const ExpressionEdge& aExpressionEdge) :
+   myExpressionEdge_p(&aExpressionEdge),
+   myRemainderGraphEdge_p(NULL),
+   myHasOperationFlag(false) {
     const xaifBoosterLinearization::ExpressionEdgeAlg& theLinearizedExpressionEdgeAlg(
      dynamic_cast<const xaifBoosterLinearization::ExpressionEdgeAlg&>(aExpressionEdge.getExpressionEdgeAlgBase())
     );
@@ -87,13 +92,15 @@ namespace xaifBoosterCrossCountryInterface {
     } // end switch (PDK)
   } // end AccumulationGraphVertex::AccumulationGraphVertex(const ExpressionEdge& theExpressionEdge)
 
-  AccumulationGraphVertex::AccumulationGraphVertex(const JacobianAccumulationExpressionVertex::Operation_E& anOpType) : myExpressionEdge_p(NULL),
-                                                                                                                        myRemainderGraphEdge_p(NULL),
-                                                                                                                        myOperationType(anOpType),
-                                                                                                                        myPartialDerivativeKind(PartialDerivativeKind::NOT_SET),
-                                                                                                                        myValue(0),
-                                                                                                                        ValueHasBeenSet(false),
-                                                                                                                        myLHSVariable_p(NULL) {
+  AccumulationGraphVertex::AccumulationGraphVertex(const JacobianAccumulationExpressionVertex::Operation_E& anOpType) :
+   myExpressionEdge_p(NULL),
+   myRemainderGraphEdge_p(NULL),
+   myHasOperationFlag(true),
+   myOperationType(anOpType),
+   myPartialDerivativeKind(PartialDerivativeKind::NOT_SET),
+   myValue(0),
+   ValueHasBeenSet(false),
+   myLHSVariable_p(NULL) {
   } // end AccumulationGraphVertex::AccumulationGraphVertex(const std::string anOpName)
 
   const bool
@@ -124,6 +131,11 @@ namespace xaifBoosterCrossCountryInterface {
     return (myRemainderGraphEdge_p != NULL);
   } // end AccumulationGraphVertex::hasRemainderGraphEdge()
 
+  const bool
+  AccumulationGraphVertex::hasOperation() const {
+    return myHasOperationFlag;
+  }
+
   JacobianAccumulationExpressionVertex::Operation_E AccumulationGraphVertex::getOperation() const {
     return myOperationType;
   } // end AccumulationGraphVertex::getOperation()
@@ -153,6 +165,17 @@ namespace xaifBoosterCrossCountryInterface {
     return ValueHasBeenSet;
   } // end AccumulationGraphVertex::hasValue()
 
+  bool
+  AccumulationGraphVertex::isConstant() const {
+    if (hasValue()
+     || (getPartialDerivativeKind() == PartialDerivativeKind::LINEAR_ONE)
+     || (getPartialDerivativeKind() == PartialDerivativeKind::LINEAR_MINUS_ONE)
+     || (getPartialDerivativeKind() == PartialDerivativeKind::LINEAR)
+    ) return true;
+    else
+      return false;
+  }
+
   void AccumulationGraphVertex::setLHSVariable(const Variable& aVariable) {
     if (myLHSVariable_p)
       THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getLHSVariable: already set")
@@ -171,16 +194,125 @@ namespace xaifBoosterCrossCountryInterface {
 
   std::string AccumulationGraphVertex::debug() const {
     std::ostringstream out;
-    out << "AccumulationGraphVertex[" << this
-	<< ",myRemainderGraphEdge_p=" << myRemainderGraphEdge_p
-	<< ",myOperationType=" << myOperationType
+    out << "AccumulationGraphVertex[" << Vertex::debug().c_str();
+    // ExpressionEdge
+    out << ",myExpressionEdge_p=";
+    if (myExpressionEdge_p) out << ">" << myExpressionEdge_p->debug().c_str();
+    else out << myExpressionEdge_p;
+    // LHSVariable
+    out << ",myLHSVariable_p=";
+    if (myLHSVariable_p) out << ">" << myLHSVariable_p->debug().c_str();
+    else out << myLHSVariable_p;
+    // RemainderGraphEdge
+    out << ",myRemainderGraphEdge_p=";
+    if (myRemainderGraphEdge_p) out << ">" << myRemainderGraphEdge_p->debug().c_str();
+    else out << myRemainderGraphEdge_p;
+    out << ",myOperationType=" << myOperationType
 	<< ",myPartialDerivativeKind=" << PartialDerivativeKind::toString(myPartialDerivativeKind)
 	<< ",myValue=" << myValue
 	<< ",ValueHasBeenSet=" << ValueHasBeenSet
-	<< ",myLHSVariable_p=" << myLHSVariable_p
 	<< "]" << std::ends;
     return out.str();
   } // end AccumulationGraphVertex::debug()
+
+  std::string
+  AccumulationGraphVertex::getColorString() const {
+    switch(getPartialDerivativeKind()) {
+      case PartialDerivativeKind::LINEAR_ONE:
+        return "red";
+      case PartialDerivativeKind::LINEAR_MINUS_ONE:
+        return "pink";
+      case PartialDerivativeKind::LINEAR:
+        return "blue";
+      case PartialDerivativeKind::NONLINEAR:
+        return "black";//"goldenrod4"
+      case PartialDerivativeKind::PASSIVE:
+      //THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getColorString: ACCVertex PDK is PASSIVE");
+        return "grey";
+      case PartialDerivativeKind::NOT_SET:
+        THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getColorString: ACCVertex PDK is NOT_SET");
+      //return "orange";
+      default:
+        THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getColorString: unexpected ACCVertex PDK");
+    } // end switch PDK
+  }
+
+  std::string
+  AccumulationGraphVertex::getValueString() const {
+    std::ostringstream out;
+    switch(getPartialDerivativeKind()) {
+      case PartialDerivativeKind::LINEAR_ONE:
+        out << "1";
+        break;
+      case PartialDerivativeKind::LINEAR_MINUS_ONE:
+        out << "-1";
+        break;
+      case PartialDerivativeKind::LINEAR:
+        out << getValue();
+        break;
+      case PartialDerivativeKind::NONLINEAR:
+        out << this;
+        break;
+      case PartialDerivativeKind::PASSIVE:
+      case PartialDerivativeKind::NOT_SET:
+      default:
+        THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getValueString: unexpected PDK for " << debug().c_str());
+        break;
+    } // end switch PDK
+    return out.str();
+  }
+
+  std::string
+  AccumulationGraphVertex::getOperationString() const {
+    if (hasOperation()) {
+      if (myOperationType == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP)
+        return "+";
+      else if (myOperationType == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP)
+        return "*";
+      else
+        THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getOperationString: invalid operation");
+    }
+    else
+      return "";
+  }
+
+  std::string
+  AccumulationGraphVertex::getLHSString() const {
+    std::ostringstream out;
+    if (!hasLHSVariable())
+      THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getLHSString: no LHS Variable");
+    out << getLHSVariable().getVariableSymbolReference().getSymbol().getId();
+    return out.str();
+  }
+
+  std::string
+  AccumulationGraphVertex::getRHSString() const {
+    std::ostringstream out;
+    if (hasOperation()) {
+      out << getOperationString().c_str();
+      if (isConstant()) out << " = ";
+    }
+    if (isConstant()) {
+      out  << getValueString().c_str();
+    }
+    return out.str();
+  }
+
+  std::string
+  AccumulationGraphVertex::getLabelString() const {
+    std::ostringstream out;
+    if (hasLHSVariable()) {
+      out << getLHSString().c_str();
+      if (hasOperation() || isConstant())
+        out << " = ";
+    }
+    out << getRHSString().c_str();
+    if (getPartialDerivativeKind() == PartialDerivativeKind::PASSIVE) {
+    //THROW_LOGICEXCEPTION_MACRO("AccumulationGraphVertex::getLabelString: unexpected PDK PASSIVE for " << debug().c_str());
+      out << " [PASSIVE]";
+    }
+    return out.str();
+  }
 
 } // end namespace xaifBoosterCrossCountryInterface
 

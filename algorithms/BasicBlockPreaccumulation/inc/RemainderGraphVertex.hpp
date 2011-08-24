@@ -26,13 +26,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   class Sequence;
   
-  class RemainderGraphVertex : public PrivateLinearizedComputationalGraphVertex {
+  class RemainderGraphVertex : public Vertex {
+
   public:
 
-    RemainderGraphVertex();
+
+    RemainderGraphVertex(const PrivateLinearizedComputationalGraphVertex&);
+
     ~RemainderGraphVertex();
 
     std::string debug() const;
+
+    /// for GraphViz
+    std::string
+    getLabelString() const;
+
+    const PrivateLinearizedComputationalGraphVertex&
+    getOriginalVertex() const;
 
     /**
      * Used to replace the original variable in the case where we have an independent that may alias with some non-independent.
@@ -45,9 +55,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     void createNewPropagationVariable(Sequence& theSequence, const Variable& variableToMatch);
 
+    bool hasPropagationVariable() const;
+
     const Variable& getPropagationVariable() const;
 
   private:
+
+    /// no def
+    RemainderGraphVertex();
+    /// no def
+    RemainderGraphVertex(const RemainderGraphVertex&);
+    /// no def
+    RemainderGraphVertex& operator=(const RemainderGraphVertex&);
+
+    /**
+     * Pointer to the corresp. original PLCG vertex.
+     * (Our current elimination methods ensure that such a corresponding vertex will always exist,
+     * but this may not always be true.)
+     * We do not own this.
+     */
+    const PrivateLinearizedComputationalGraphVertex* myOriginalPLCGVertex_p;
 
     /**
      * Pointer to the variable that will be used for propagation in case there is no original variable,

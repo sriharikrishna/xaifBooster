@@ -23,14 +23,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     std::ostringstream out;
     out << "PrivateLinearizedComputationalGraphVertex[" << Vertex::debug().c_str()
         << ",myStatementId=" << myStatementId;
-    out << ",myOriginalVariable_p=>";
+    out << ",myOriginalVariable_p=";
     if (myOriginalVariable_p)
-      out << myOriginalVariable_p->debug().c_str();
+      out << ">" << myOriginalVariable_p->debug().c_str();
     else
       out << myOriginalVariable_p;
-    out << ",myAuxiliaryVariable_p=>";
+    out << ",myAuxiliaryVariable_p=";
     if (myAuxiliaryVariable_p)
-      out << myAuxiliaryVariable_p->debug().c_str();
+      out << ">" << myAuxiliaryVariable_p->debug().c_str();
     else
       out << myAuxiliaryVariable_p;
     out << ",myOriginalExpressionVertexPSet={";
@@ -104,32 +104,37 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   PrivateLinearizedComputationalGraphVertex::getLabelString() const {
     std::ostringstream out;
 
+    // auxiliary variable
+    if (hasAuxiliaryVariable())
+      out << getAuxiliaryVariable().getVariableSymbolReference().getSymbol().getId().c_str() << "=";
+
     // search for a (LHS) variable symbol reference
     if (hasOriginalVariable()) {
-      if (getOriginalVariable().getDuUdMapKey().getKind() == InfoMapKey::SET)
-        out  << "[k=" << getOriginalVariable().getDuUdMapKey().getKey() << "]\\n";
       out << getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str();
     }
     else { // no LHS variable, but maybe an argument?
       for (CExpressionVertexPSet::const_iterator evpI = myOriginalExpressionVertexPSet.begin();
            evpI != myOriginalExpressionVertexPSet.end(); ++evpI)
         if ((*evpI)->isArgument())
-          out << dynamic_cast<const Argument&>(**evpI).getVariable().getVariableSymbolReference().getSymbol().getId();
+          out << dynamic_cast<const Argument&>(**evpI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str() << "=";
     }
 
     // search for an operation
     std::string theOpString("");
     for (CExpressionVertexPSet::const_iterator evpI = myOriginalExpressionVertexPSet.begin();
          evpI != myOriginalExpressionVertexPSet.end(); ++evpI)
-      if ((*evpI)->isIntrinsic())
-        theOpString = dynamic_cast<const Intrinsic&>(**evpI).getName();
+      if ((*evpI)->isIntrinsic()) {
+        theOpString = dynamic_cast<const Intrinsic&>(**evpI).getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName();
+      }
     if (!theOpString.empty() && hasOriginalVariable())
-      out << " = ";
+      out << "=";
     out << theOpString;
 
-    if (hasAuxiliaryVariable())
-      out << "= " << getAuxiliaryVariable().getVariableSymbolReference().getSymbol().getId().c_str();
-
+    // print DuUdMapKey
+    if (hasOriginalVariable()) {
+      if (getOriginalVariable().getDuUdMapKey().getKind() == InfoMapKey::SET)
+        out  << "\\n[k=" << getOriginalVariable().getDuUdMapKey().getKey() << "]";
+    }
     return out.str();
   }
 

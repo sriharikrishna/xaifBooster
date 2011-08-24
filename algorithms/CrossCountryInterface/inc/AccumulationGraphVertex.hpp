@@ -59,6 +59,7 @@ namespace xaifBoosterCrossCountryInterface {
     const LinearizedComputationalGraphEdge& getRemainderGraphEdge() const;
     const bool hasRemainderGraphEdge() const;
 
+    const bool hasOperation() const;
     JacobianAccumulationExpressionVertex::Operation_E getOperation() const;
 
     void setPartialDerivativeKind(const PartialDerivativeKind::PartialDerivativeKind_E aPartialDerivativeKind);
@@ -68,11 +69,38 @@ namespace xaifBoosterCrossCountryInterface {
     double getValue() const;
     const bool hasValue() const;
 
+    /// true iff it's a constant input node (1, -1, or linear) or an operation node with all (both) arguments constant
+    bool isConstant() const;
+
     void setLHSVariable(const Variable& aVariable);
     const Variable& getLHSVariable() const;
     const bool hasLHSVariable() const;
  
     std::string debug() const;
+
+    /// in human-readable format, for GraphViz.
+    std::string
+    getColorString() const;
+
+    /// in human-readable format, for GraphViz.  returns an empty string if it's not const
+    std::string
+    getValueString() const;
+
+    /// in human-readable format, for GraphViz.
+    std::string
+    getOperationString() const;
+
+    /// in human-readable format, for GraphViz.
+    std::string
+    getRHSString() const;
+
+    /// in human-readable format, for GraphViz.
+    std::string
+    getLHSString() const;
+
+    /// in human-readable format, for GraphViz.
+    std::string
+    getLabelString() const;
 
   private:
 
@@ -90,6 +118,8 @@ namespace xaifBoosterCrossCountryInterface {
      * When set, this Acc graph vertex must have some LHS set, which is used in propagation.
      */
     const LinearizedComputationalGraphEdge* myRemainderGraphEdge_p;
+
+    const bool myHasOperationFlag;
 
     /**
      * currently either ADD or MULT, only for non-leaf vertices.
