@@ -51,6 +51,22 @@ namespace xaifBoosterPushPop {
     return out.str();
   } 
 
+  std::string
+  CombinedGraphEdge::getStyleString() const {
+    if (myOriginType == ORIGINAL_EDGE)
+      return myOrigin.myOriginalPLCGEdge_p->getStyleString();
+    else
+      return "solid";
+  }
+
+  std::string
+  CombinedGraphEdge::getColorString() const {
+    if (myOriginType == ORIGINAL_EDGE)
+      return myOrigin.myOriginalPLCGEdge_p->getColorString();
+    else
+      return "black";
+  }
+
   CombinedGraphEdge::EdgeOriginType_E
   CombinedGraphEdge::getOriginType() const {
     return myOriginType;

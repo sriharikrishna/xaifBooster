@@ -10,6 +10,8 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include <set>
+
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/ArgumentAlgBase.hpp"
@@ -80,6 +82,8 @@ namespace xaifBooster {
     Variable myVariable; 
 
   };  
+
+  typedef std::set<const Argument*> CArgumentPSet;
 
 } 
 

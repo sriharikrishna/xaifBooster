@@ -52,6 +52,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const xaifBoosterCrossCountryInterface::AccumulationGraphVertex* myAccumulationGraphVertex_p;
 
   }; 
+
+  typedef std::set<const RemainderGraphEdge*> CRemainderGraphEdgePSet;
  
 } 
                                                                      

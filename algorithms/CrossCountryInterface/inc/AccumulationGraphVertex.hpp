@@ -10,6 +10,8 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include <set>
+
 #include "xaifBooster/boostWrapper/inc/Vertex.hpp"
 
 #include "xaifBooster/system/inc/Constant.hpp"
@@ -156,6 +158,8 @@ namespace xaifBoosterCrossCountryInterface {
     const Variable* myLHSVariable_p;
 
   }; // end of class AccumulationGraphVertex
+
+  typedef std::set<const AccumulationGraphVertex*> CAccumulationGraphVertexPSet;
 
 } // end namespace xaifBoosterCrossCountryInterface
                        

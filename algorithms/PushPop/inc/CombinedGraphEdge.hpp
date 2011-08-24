@@ -36,6 +36,14 @@ namespace xaifBoosterPushPop {
 
     std::string debug() const;
 
+    /// for GraphViz
+    std::string
+    getStyleString() const;
+
+    /// for GraphViz
+    std::string
+    getColorString() const;
+
     enum EdgeOriginType_E {ORIGINAL_EDGE,
                            LINEARIZATION_EDGE,
                            ACCUMULATION_EDGE};
