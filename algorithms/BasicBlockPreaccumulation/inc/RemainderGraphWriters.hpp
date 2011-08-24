@@ -29,8 +29,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                                                              v))
       );
       out << "["
-          << "fontsize=7"
-          << ",penwidth=3.0"
+          << "penwidth=3.0"
+          << ",fontsize=14"  // (default)
+          << ",shape=ellipse"
           << ",label=\"" << theRemainderGraphVertex.getLabelString().c_str() << "\""
           << ",tooltip=\"" << theRemainderGraphVertex.debug().c_str() << "\""
           << "]";
@@ -52,9 +53,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                                                v))
       );
       out << "["
-          << "fontsize=7"
-          << ",penwidth=3.0"
+          << "penwidth=3.0"
+          << ",fontsize=10"
           << ",color=" << theRemainderGraphEdge.getColorString().c_str()
+          << ",style=" << theRemainderGraphEdge.getStyleString().c_str()
+          << ",label=\"" << theRemainderGraphEdge.getLabelString().c_str() << "\""
           << ",tooltip=\"" << theRemainderGraphEdge.debug().c_str() << "\""
           << "]";
     }
@@ -69,6 +72,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     void operator()(std::ostream& out) const {
       out << "rankdir=LR;" << std::endl;
+      RemainderGraph::ConstVertexIteratorPair aRGVpair(myG.vertices());
+      for (RemainderGraph::ConstVertexIterator aRGVi(aRGVpair.first); aRGVi != aRGVpair.second; ++aRGVi)
+        if (myG.numInEdgesOf(*aRGVi) == 0)
+          out << "{rank=min; " << (*aRGVi).getDescriptor() << ";}" << std::endl;
+        else if (myG.numOutEdgesOf(*aRGVi) == 0)
+          out << "{rank=max; " << (*aRGVi).getDescriptor() << ";}" << std::endl;
     }
 
     const RemainderGraph& myG;

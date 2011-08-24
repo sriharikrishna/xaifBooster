@@ -154,20 +154,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     void operator()(std::ostream& out) const {
       out << "rankdir=LR;" << std::endl;
-      // set independent rank to min
-      out << "{rank=min;";
-      for (PrivateLinearizedComputationalGraph::VertexPointerList::const_iterator aVertexPointerListI(myG.getIndependentList().begin());
-           aVertexPointerListI != myG.getIndependentList().end(); ++aVertexPointerListI) {
-        out << " " << (*aVertexPointerListI)->getDescriptor();
-      }
-      out << ";}" << std::endl;
-      // set dependent rank to max (only for maximal dependents)
-      out << "{rank=max;";
+      // fix rank for sources/sinks
       PrivateLinearizedComputationalGraph::ConstVertexIteratorPair aPLCGVpair(myG.vertices());
       for (PrivateLinearizedComputationalGraph::ConstVertexIterator aPLCGVi(aPLCGVpair.first), aPLCGViend(aPLCGVpair.second); aPLCGVi != aPLCGViend; ++aPLCGVi)
         if (myG.numOutEdgesOf(*aPLCGVi) == 0)
-          out << " " << (*aPLCGVi).getDescriptor();
-      out << ";}" << std::endl;
+          out << "{rank=max; " << (*aPLCGVi).getDescriptor() << ";}" << std::endl;
+        else if (myG.numInEdgesOf(*aPLCGVi) == 0)
+          out << "{rank=min; " << (*aPLCGVi).getDescriptor() << ";}" << std::endl;
     }
 
     const PrivateLinearizedComputationalGraph& myG;

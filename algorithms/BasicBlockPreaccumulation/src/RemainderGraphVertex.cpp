@@ -20,8 +20,9 @@
 
 namespace xaifBoosterBasicBlockPreaccumulation {
 
-  RemainderGraphVertex::RemainderGraphVertex() :
-    myPropagationVariable_p (NULL) {
+  RemainderGraphVertex::RemainderGraphVertex(const PrivateLinearizedComputationalGraphVertex& aOriginalPLCGVertex) :
+   myOriginalPLCGVertex_p(&aOriginalPLCGVertex),
+   myPropagationVariable_p(NULL) {
   }
 
   RemainderGraphVertex::~RemainderGraphVertex() {
@@ -31,19 +32,37 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string RemainderGraphVertex::debug() const { 
     std::ostringstream out;
-    out << "RemainderGraphVertex[" << this 
-	<< ",myPropagationVariable_p=" << myPropagationVariable_p
-	<< "]" << std::ends;  
+    out << "RemainderGraphVertex[" << Vertex::debug().c_str()
+        << ",myOriginalPLCGVertex_p=>"<< myOriginalPLCGVertex_p->debug().c_str()
+        << ",myPropagationVariable_p=";
+    if (myPropagationVariable_p) out << ">" << myPropagationVariable_p->debug().c_str();
+    else out << myPropagationVariable_p;
+    out << "]" << std::ends;  
     return out.str();
   } 
 
+  std::string
+  RemainderGraphVertex::getLabelString() const {
+    if (myPropagationVariable_p)
+      return myPropagationVariable_p->getVariableSymbolReference().getSymbol().getId();
+    else if (getOriginalVertex().hasOriginalVariable())
+      return getOriginalVertex().getOriginalVariable().getVariableSymbolReference().getSymbol().getId();
+    else
+      return "";
+  }
+  
+  const PrivateLinearizedComputationalGraphVertex&
+  RemainderGraphVertex::getOriginalVertex() const {
+    return *myOriginalPLCGVertex_p;
+  }
+
   void RemainderGraphVertex::replacePropagationVariable(Sequence& theSequence) {
-    if (!hasOriginalVariable())
-      THROW_LOGICEXCEPTION_MACRO("RemainderGraphVertex::replacePropagationVariable: myOriginalVariable_p not set!");
+    if (!getOriginalVertex().hasOriginalVariable())
+      THROW_LOGICEXCEPTION_MACRO("RemainderGraphVertex::replacePropagationVariable: myOriginalPLCGVertex_p has no original variable");
     Scope& theCurrentCfgScope (ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope());
     myPropagationVariable_p  = new Variable();
     xaifBoosterTypeChange::TemporariesHelper aHelper("RemainderGraphVertex::replacePropagationVariable",
-						     getOriginalVariable());
+						     getOriginalVertex().getOriginalVariable());
     VariableSymbolReference* theVariableSymbolReference_p =
      new VariableSymbolReference(aHelper.makeTempSymbol(theCurrentCfgScope,
                          ConceptuallyStaticInstances::instance()->getPropagationVariableNameCreator(),
@@ -55,7 +74,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myPropagationVariable_p->getAliasMapKey().setTemporary();
     myPropagationVariable_p->getDuUdMapKey().setTemporary();
     if (aHelper.needsAllocation()){
-      theSequence.addAllocation(*theVariableSymbolReference_p,getOriginalVariable());
+      theSequence.addAllocation(*theVariableSymbolReference_p,
+                                getOriginalVertex().getOriginalVariable());
     }
   } 
 
@@ -79,11 +99,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
   } 
 
+  bool
+  RemainderGraphVertex::hasPropagationVariable() const {
+    return (myPropagationVariable_p) ? true
+                                     : false;
+  }
+
   const Variable& RemainderGraphVertex::getPropagationVariable() const {
     if (myPropagationVariable_p)
       return *myPropagationVariable_p;
-    else if (hasOriginalVariable())
-      return getOriginalVariable();
+    else if (getOriginalVertex().hasOriginalVariable())
+      return getOriginalVertex().getOriginalVariable();
     else
       THROW_LOGICEXCEPTION_MACRO("RemainderGraphVertex::getPropagationVariable: neither myPropagationVariable_p nor myOriginalVariable_p set");
   } 

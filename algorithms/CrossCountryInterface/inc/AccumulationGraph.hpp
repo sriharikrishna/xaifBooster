@@ -41,10 +41,19 @@ namespace xaifBoosterCrossCountryInterface {
   class AccumulationGraphPropertiesWriter {
   public:
     AccumulationGraphPropertiesWriter(const AccumulationGraph& g) : myG(g) {};
+
     void operator()(std::ostream& out) const {
       out << "rankdir=BT;" << std::endl;
+      AccumulationGraph::ConstVertexIteratorPair aAGViPair(myG.vertices());
+      for (AccumulationGraph::ConstVertexIterator aAGVi(aAGViPair.first); aAGVi != aAGViPair.second; ++aAGVi)
+        if (myG.numOutEdgesOf(*aAGVi) == 0)
+          out << "{rank=max; " << (*aAGVi).getDescriptor() << ";}" << std::endl;
+        else if (myG.numInEdgesOf(*aAGVi) == 0)
+          out << "{rank=min; " << (*aAGVi).getDescriptor() << ";}" << std::endl;
     }
+
     const AccumulationGraph& myG;
+
   }; // end class AccumulationGraphPropertiesWriter
 
   class AccumulationGraphVertexLabelWriter {
@@ -57,96 +66,51 @@ namespace xaifBoosterCrossCountryInterface {
 	dynamic_cast<const AccumulationGraphVertex*>(boost::get(boost::get(BoostVertexContentType(),
 									   myG.getInternalBoostGraph()),
 								v));
-      std::ostringstream labelStream;
-      std::string FixedSize("false"), theFontSize, theShape, theGroupname, theColor, theLabel;
-
-      // set shape
+      const AccumulationGraphVertex& theAGV(
+	dynamic_cast<const AccumulationGraphVertex&>(
+          *boost::get(boost::get(BoostVertexContentType(),
+	                         myG.getInternalBoostGraph()),
+                      v)
+        )
+      );
+      // set groupname and shape
+      std::string theGroupname, theShape;
       if (theAccumulationGraphVertex_p->hasRemainderGraphEdge()) {
 	theGroupname = "RemainderGraphEdges";
 	theShape = "box";
       }
       else if (myG.numInEdgesOf(*theAccumulationGraphVertex_p)) {
 	theGroupname = "Intermediate ops";
-	theShape = "circle";
+	theShape = "box";//"circle";
       }
       else { // leaves
 	theShape = "egg";
 	theGroupname = "leaves";
       }
 
-      // set label, font size, fixed size
-      if (myG.numInEdgesOf(*theAccumulationGraphVertex_p)) { // ops
-	theFontSize = "25";
-	FixedSize = "true";
-	if (theAccumulationGraphVertex_p->getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::ADD_OP)
-	  labelStream << "+" << std::ends;
-	else if (theAccumulationGraphVertex_p->getOperation() == xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::MULT_OP)
-	  labelStream << "*" << std::ends;
-      }	
-      else { // leaves
-	FixedSize = "false";
-	switch(theAccumulationGraphVertex_p->getPartialDerivativeKind()) {
-	  case PartialDerivativeKind::LINEAR_ONE: {
-	    theFontSize = "16";
-	    labelStream << "1" << std::ends;
-	    break;
-	  } // end case LINEAR_ONE
-	  case PartialDerivativeKind::LINEAR_MINUS_ONE: {
-	    theFontSize = "16";
-	    labelStream << "-1" << std::ends;
-	    break;
-	  } // end case LINEAR_MINUS_ONE
-	  case PartialDerivativeKind::LINEAR: {
-	    theFontSize = "16";
-	    labelStream << theAccumulationGraphVertex_p->getValue() << std::ends;
-	    break;
-	  } // end case LINEAR
-	  case PartialDerivativeKind::NONLINEAR: {
-	    theFontSize = "8";
-	    labelStream << &theAccumulationGraphVertex_p->getLHSVariable() << std::ends;
-	    break;
-	  } // end case NONLINEAR
-	  default:
-	    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::AccumulationGraphVertexLabelWriter: partial derivative type on AccumulationGraphVertex is NOT_SET");
-	    break;
-	} // end switch on PDK
+      // mark outputs
+      std::string styleString("solid,rounded");
+      std::string fontcolorString("black");
+      if (theAGV.hasRemainderGraphEdge()) {
+        styleString = "filled,rounded";
+        fontcolorString = "white";
       }
 
-      // set color according to PartialDerivativeKind
-      switch(theAccumulationGraphVertex_p->getPartialDerivativeKind()) {
-	case PartialDerivativeKind::LINEAR_ONE:
-	  theColor = "red";
-	  break;
-	case PartialDerivativeKind::LINEAR_MINUS_ONE:
-	  theColor = "pink";
-	  break;
-	case PartialDerivativeKind::LINEAR:
-	  theColor = "blue";
-	  break;
-	case PartialDerivativeKind::NONLINEAR:
-	  theColor = "black";
-	  break;
-	case PartialDerivativeKind::PASSIVE:
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::AccumulationGraphVertexLabelWriter: partial derivative type on AccumulationGraph vertex is PASSIVE");
-	  break;
-	case PartialDerivativeKind::NOT_SET:
-	  theColor = "green";
-	  break;
-	default:
-	  THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::AccumulationGraphVertexLabelWriter: unknown partial derivative type on AccumulationGraph vertex");
-	  break;
-      } // end switch on vertex PartialDerivativeKind
-
       out << "["
-          << "group=\"" << theGroupname.c_str() << "\","
-	  << "fixedsize=" << FixedSize.c_str() << ","
-          << "fontsize=" << theFontSize.c_str() << ","
-          << "shape=" << theShape.c_str() << ","
-          << "color=" << theColor.c_str() << ","
-	  << "label=\"" << labelStream.str().c_str() << "\""
-	  << "]";
+          << "group=\"" << theGroupname.c_str() << "\""
+	  << ",fixedsize=false"
+          << ",shape=" << theShape.c_str()
+          << ",color=" << theAGV.getColorString().c_str()
+          << ",style=\"" << styleString.c_str() << "\""
+          << ",fontcolor=" << fontcolorString.c_str()
+          << ",fontsize=14" // (default)
+	  << ",label=\"" << theAGV.getLabelString().c_str() << "\""
+          << ",tooltip=\"" << theAGV.debug().c_str() << "\""
+          << "]";
     }
+
     const AccumulationGraph& myG;
+
   }; // end class AccumulationGraphVertexLabelWriter
 
   class AccumulationGraphEdgeLabelWriter {
