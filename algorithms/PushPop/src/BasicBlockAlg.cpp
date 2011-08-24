@@ -31,7 +31,7 @@ namespace xaifBoosterPushPop {
 
   std::string BasicBlockAlg::debug() const {
     std::ostringstream out;
-    out << "xaifBoosterPushPop::BasicBlockAlg[" << this
+    out << "xaifBoosterPushPop::BasicBlockAlg[" << xaifBoosterAddressArithmetic::BasicBlockAlg::debug()
 	<< "]" << std::ends;
     return out.str();
   } // end BasicBlockAlg::debug()
@@ -47,7 +47,7 @@ namespace xaifBoosterPushPop {
          aSequencePListI != myUniqueSequencePList.end();
          ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
       Sequence& currentSequence(dynamic_cast<Sequence&>(**aSequencePListI));
-      if (currentSequence.myComputationalGraph_p->numVertices()) {
+      if (currentSequence.myComputationalGraph_p->numVertices() > 0) {
         currentSequence.populateCombinedGraph();
       } // end if LCG has vertices
     } // end iterate over sequences
@@ -60,7 +60,7 @@ namespace xaifBoosterPushPop {
     for (xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValPI = aRequiredValuePList.begin();
          reqValPI != aRequiredValuePList.end(); ++reqValPI) {
       if (!getContaining().hasExpression((*reqValPI)->getExpression()))
-        THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::CallGraphVertexAlg::algorithm_action_6:"
+        THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::BasicBlockAlg::pushSupremum:"
                                    << "The expression " << (*reqValPI)->getExpression().debug() << " was not found in " << getContaining().debug());
       xaifBoosterRequiredValues::RequiredValueSet::RequiredValuePList::const_iterator reqValPI2 = aRequiredValuePList.begin();
       for (; reqValPI2 != aRequiredValuePList.end(); ++reqValPI2) {
