@@ -129,10 +129,9 @@ namespace xaifBoosterLinearization {
 					      const Expression& theExpression,
 					      std::ostream& os) const { 
     DBG_MACRO(DbgGroup::CALLSTACK,
-	      "AssignmentAlg::printEdgeAnnotationsBottomUp: entered for " 
-	      << theEdge.debug().c_str() 
-	      << " in " 
-	      << theExpression.debug().c_str());
+	      "xaifBoosterLinearization::AssignmentAlg::printEdgeAnnotationsBottomUp:"
+	      << " entered for " << theEdge.debug().c_str() 
+	      << " in " << theExpression.debug().c_str());
     Expression::ConstInEdgeIteratorPair pi(theExpression.getInEdgesOf(theExpression.getSourceOf(theEdge)));
     Expression::ConstInEdgeIterator ExpressionEdgeI(pi.first),ExpressionEdgeIEnd(pi.second);
     for (;ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI)
