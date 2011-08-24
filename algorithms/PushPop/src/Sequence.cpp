@@ -55,7 +55,7 @@ namespace xaifBoosterPushPop {
   Sequence::debug() const {
     std::ostringstream out;    
     out << "xaifBoosterPushPop::"
-        << "Sequence[" << this
+        << "Sequence[" << xaifBoosterBasicBlockPreaccumulation::Sequence::debug()
         << ",myCombinedGraph=" << myCombinedGraph.debug()
         << "]" << std::ends;  
     return out.str();
@@ -119,7 +119,6 @@ namespace xaifBoosterPushPop {
 
     const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph& theOriginalPLCG(*myComputationalGraph_p);
     // copy the PLCG vertices
-    PLCGVp2CGVpMap thePLCGVp2CGVpMap;
     xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::ConstVertexIteratorPair aPLCGVpair(theOriginalPLCG.vertices());
     for (xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::ConstVertexIterator aPLCGVi(aPLCGVpair.first), aPLCGViend(aPLCGVpair.second);
          aPLCGVi != aPLCGViend;
@@ -127,9 +126,10 @@ namespace xaifBoosterPushPop {
       const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex& theCurrentPLCGV(
         dynamic_cast<const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex&>(*aPLCGVi)
       );
-      CombinedGraphVertex* theNewCGV_p = new CombinedGraphVertex(theCurrentPLCGV);
+      CombinedGraphVertex* theNewCGV_p = new CombinedGraphVertex();
+      theNewCGV_p->setComputationalGraphVertex(theCurrentPLCGV);
       myCombinedGraph.supplyAndAddVertexInstance(*theNewCGV_p);
-      thePLCGVp2CGVpMap[&theCurrentPLCGV] = theNewCGV_p;
+      myPLCGVp2CGVpMap[&theCurrentPLCGV] = theNewCGV_p;
       // map each associated expressionvertex to the PLCGV (for handling the linearization expressions)
       const CExpressionVertexPSet& theAssociatedExpressionVertexPSet(theCurrentPLCGV.getAssociatedExpressionVertexPSet());
       for (CExpressionVertexPSet::const_iterator evI = theAssociatedExpressionVertexPSet.begin(); evI != theAssociatedExpressionVertexPSet.end(); ++evI)
@@ -137,7 +137,7 @@ namespace xaifBoosterPushPop {
     }
 
     // local map to correlate results of linearization expressions with AccumulationGraph inputs
-    CExpressionEdgeP2CCombinedGraphVertexPMap theEEp2CGVpMap;
+    CExpressionEdgeP2CombinedGraphVertexPMap theEEp2CGVpMap;
     // add PLCG edges
     xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::ConstEdgeIteratorPair aPLCGEpair(theOriginalPLCG.edges());
     for (xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::ConstEdgeIterator aPLCGEi(aPLCGEpair.first), aPLCGEi_end(aPLCGEpair.second);
@@ -148,8 +148,8 @@ namespace xaifBoosterPushPop {
       );
       // add the corresp. edge to the combined graph
       myCombinedGraph.supplyAndAddEdgeInstance(*(new CombinedGraphEdge(theCurrentPLCGE)),
-                                               *thePLCGVp2CGVpMap[dynamic_cast<const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex*>(&theOriginalPLCG.getSourceOf(*aPLCGEi))],
-                                               *thePLCGVp2CGVpMap[dynamic_cast<const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex*>(&theOriginalPLCG.getTargetOf(*aPLCGEi))]);
+                                               *myPLCGVp2CGVpMap[dynamic_cast<const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex*>(&theOriginalPLCG.getSourceOf(*aPLCGEi))],
+                                               *myPLCGVp2CGVpMap[dynamic_cast<const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex*>(&theOriginalPLCG.getTargetOf(*aPLCGEi))]);
       // affix the linearization expression graph(s)
       if (theCurrentPLCGE.hasLinearizedExpressionEdge()) {
         theEEp2CGVpMap[&theCurrentPLCGE.getLinearizedExpressionEdge()] = &affixLinearizationExpressionToCombinedGraph(theCurrentPLCGE.getLinearizedExpressionEdge());
@@ -170,34 +170,31 @@ namespace xaifBoosterPushPop {
 
     // include the AccumulationGraph vertices
     const xaifBoosterCrossCountryInterface::AccumulationGraph& theAccumulationGraph(getBestElimination().getAccumulationGraph());
-    std::map<const xaifBoosterCrossCountryInterface::AccumulationGraphVertex*,
-             const CombinedGraphVertex*> aAGVp2CGVpMap;
     xaifBoosterCrossCountryInterface::AccumulationGraph::ConstVertexIteratorPair aAGVpair(theAccumulationGraph.vertices());
     for (xaifBoosterCrossCountryInterface::AccumulationGraph::ConstVertexIterator aAGVi(aAGVpair.first); aAGVi != aAGVpair.second; ++aAGVi) {
       const xaifBoosterCrossCountryInterface::AccumulationGraphVertex& theCurrentAGV(*aAGVi);
+      CombinedGraphVertex* theCorrespCGV_p; // either new or pre-existing
       if (theAccumulationGraph.numInEdgesOf(theCurrentAGV) == 0) { // if it has no children, then it's a local partial
         if (theCurrentAGV.hasExpressionEdge()) {
           // in this case, a vertex should already exist (linearization expression vertex/ PLCG edge)
           const ExpressionEdge& theLinearizedExpressionEdge(theCurrentAGV.getExpressionEdge());
-          //aAGVp2CGVpMap[&theCurrentAGV] = myEEp2CGVpMap[&theCurrentAGV.getExpressionEdge()];
-          CExpressionEdgeP2CCombinedGraphVertexPMap::const_iterator EEp2CGVpMapI = theEEp2CGVpMap.find(&theLinearizedExpressionEdge);
+          CExpressionEdgeP2CombinedGraphVertexPMap::const_iterator EEp2CGVpMapI = theEEp2CGVpMap.find(&theLinearizedExpressionEdge);
           if (EEp2CGVpMapI == theEEp2CGVpMap.end())
             THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::Sequence::populateCombinedGraph: could not find CGV corresp. to " << theLinearizedExpressionEdge.debug().c_str());
-          const CombinedGraphVertex& correspCGV(*theEEp2CGVpMap[&theCurrentAGV.getExpressionEdge()]);
-          aAGVp2CGVpMap[&theCurrentAGV] = &correspCGV;
+          theCorrespCGV_p = theEEp2CGVpMap[&theLinearizedExpressionEdge];
         }
         else { // should ONLY happen in cases where this AGV corresp. to a direct copy edge (riiight??)
           //THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::Sequence::populateCombinedGraph: no ExpressionEdge for " << theCurrentAGV.debug().c_str());
-          CombinedGraphVertex* theNewCGV_p = new CombinedGraphVertex(theCurrentAGV);
-          myCombinedGraph.supplyAndAddVertexInstance(*theNewCGV_p);
-          aAGVp2CGVpMap[&theCurrentAGV] = theNewCGV_p;
+          theCorrespCGV_p = new CombinedGraphVertex();
+          myCombinedGraph.supplyAndAddVertexInstance(*theCorrespCGV_p);
         }
       }
       else {// if it has children, then it's either an ADD or MULT vertex
-        CombinedGraphVertex* theNewCGV_p = new CombinedGraphVertex(theCurrentAGV);
-        myCombinedGraph.supplyAndAddVertexInstance(*theNewCGV_p);
-        aAGVp2CGVpMap[&theCurrentAGV] = theNewCGV_p;
+        theCorrespCGV_p = new CombinedGraphVertex();
+        myCombinedGraph.supplyAndAddVertexInstance(*theCorrespCGV_p);
       }
+      myAGVp2CGVpMap[&theCurrentAGV] = theCorrespCGV_p;
+      theCorrespCGV_p->associateAccumulationGraphVertex(theCurrentAGV);
     } // end iterate over AccumulationGraphVertices
     // incorporate AccumulationGraph edges
     xaifBoosterCrossCountryInterface::AccumulationGraph::ConstEdgeIteratorPair aAGEpair(theAccumulationGraph.edges());
@@ -205,11 +202,29 @@ namespace xaifBoosterPushPop {
       const xaifBoosterCrossCountryInterface::AccumulationGraphVertex
        &theAccSource(theAccumulationGraph.getSourceOf(*aAGEi)),
        &theAccTarget(theAccumulationGraph.getTargetOf(*aAGEi));
-      const CombinedGraphVertex& theCGSource(*aAGVp2CGVpMap[&theAccSource]);
-      const CombinedGraphVertex& theCGTarget(*aAGVp2CGVpMap[&theAccTarget]);
+      const CombinedGraphVertex& theCGSource(*myAGVp2CGVpMap[&theAccSource]);
+      const CombinedGraphVertex& theCGTarget(*myAGVp2CGVpMap[&theAccTarget]);
       myCombinedGraph.supplyAndAddEdgeInstance(*(new CombinedGraphEdge(*aAGEi)),
                                                theCGSource,
                                                theCGTarget);
+    }
+
+    const xaifBoosterBasicBlockPreaccumulation::RemainderGraph& theRemainderGraph(getBestRemainderGraph());
+    // RemainderGraph vertices
+    xaifBoosterBasicBlockPreaccumulation::RemainderGraph::ConstVertexIteratorPair aRGVpair(theRemainderGraph.vertices());
+    for (xaifBoosterBasicBlockPreaccumulation::RemainderGraph::ConstVertexIterator aRGVi(aRGVpair.first); aRGVi != aRGVpair.second; ++aRGVi) {
+      const xaifBoosterBasicBlockPreaccumulation::RemainderGraphVertex& currentRemainderGraphVertex(*aRGVi);
+      CombinedGraphVertex& correspCGV(*myPLCGVp2CGVpMap[&currentRemainderGraphVertex.getOriginalVertex()]);
+      correspCGV.setRemainderGraphVertex(currentRemainderGraphVertex);
+      myRGVp2CGVpMap[&currentRemainderGraphVertex] = &correspCGV;
+    }
+    // RemainderGraph edges
+    xaifBoosterBasicBlockPreaccumulation::RemainderGraph::ConstEdgeIteratorPair aRGEpair(theRemainderGraph.edges());
+    for (xaifBoosterBasicBlockPreaccumulation::RemainderGraph::ConstEdgeIterator aRGEi(aRGEpair.first); aRGEi != aRGEpair.second; ++aRGEi) {
+      const xaifBoosterBasicBlockPreaccumulation::RemainderGraphEdge& currentRGEdge(*aRGEi);
+      CombinedGraphVertex& correspCGV(*myAGVp2CGVpMap[&currentRGEdge.getAccumulationGraphVertex()]);
+      correspCGV.associateRemainderGraphEdge(currentRGEdge);
+      myRGEp2CGVpMap[&currentRGEdge] = &correspCGV;
     }
 
     if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
@@ -219,12 +234,12 @@ namespace xaifBoosterPushPop {
                             aCombinedGraphName.str(),
                             CombinedGraphVertexLabelWriter(myCombinedGraph),
                             CombinedGraphEdgeLabelWriter(myCombinedGraph),
-                            CombinedGraphPropertiesWriter(myCombinedGraph,theOriginalPLCG));
+                            CombinedGraphPropertiesWriter(myCombinedGraph));
     }
 
   }
 
-  const CombinedGraphVertex&
+  CombinedGraphVertex&
   Sequence::affixLinearizationExpressionToCombinedGraph(const ExpressionEdge& aLinearizedExpressionEdge) {
     // the CGV to be returned (corresp. to the maximal partial ExpressionVertex)
     // cannot be const because we set the LHS variable in this part
@@ -239,11 +254,12 @@ namespace xaifBoosterPushPop {
       const Expression& theConcretePartialRHSExpression(theLinearizedExpressionEdgeAlg.getConcretePartialAssignment().getRHS());
     //GraphVizDisplay::show(theConcretePartialRHSExpression,"theConcretePartialRHSExpression");
       // temporary local map for reconstructing the partial assignment expression
-      std::map<const ExpressionVertex*, CombinedGraphVertex*> aEVp2CGVpMap;
+      CExpressionVertexP2CombinedGraphVertexPMap aEVp2CGVpMap;
       // copy the partial expression vertices
       Expression::ConstVertexIteratorPair aEVpair(theConcretePartialRHSExpression.vertices());
       for (Expression::ConstVertexIterator aEVi(aEVpair.first); aEVi != aEVpair.second; ++aEVi) {
         const ExpressionVertex& aPartialExpressionVertex(*aEVi);
+        CombinedGraphVertex* theCorrespCGV_p(NULL);
         if (aPartialExpressionVertex.isArgument()) {// the expression vertex is an argument, and corresponds to an existing PLCGV
           const ExpressionVertex& theOriginalExpressionVertex(
            theLinearizedExpressionEdgeAlg.getOriginalExpressionVertex4ConcretePartialArgument(aPartialExpressionVertex)
@@ -251,22 +267,21 @@ namespace xaifBoosterPushPop {
           CExpressionVertexP2CombinedGraphVertexPMap::const_iterator mapI = myEVp2CGVpMap.find(&theOriginalExpressionVertex);
           // does it corresp. to an existing PLCG vertex?
           if (mapI != myEVp2CGVpMap.end()) {
-            CombinedGraphVertex& correspCGV(*(mapI->second));
-            aEVp2CGVpMap[&aPartialExpressionVertex] = &correspCGV;
+            theCorrespCGV_p = mapI->second;
           }
           else {
-            CombinedGraphVertex* theNewCGV_p = new CombinedGraphVertex(aPartialExpressionVertex);
-            myCombinedGraph.supplyAndAddVertexInstance(*theNewCGV_p);
-            // store the association in the local map
-            aEVp2CGVpMap[&aPartialExpressionVertex] = theNewCGV_p;
+            theCorrespCGV_p = new CombinedGraphVertex();
+            myCombinedGraph.supplyAndAddVertexInstance(*theCorrespCGV_p);
           }
         } // end if aPartialExpressionVertex is an argument
-        else { // if it's not an argument, then we need to make a new vertex
-          CombinedGraphVertex* theNewCGV_p = new CombinedGraphVertex(aPartialExpressionVertex);
-          myCombinedGraph.supplyAndAddVertexInstance(*theNewCGV_p);
-          // store the association in the local map
-          aEVp2CGVpMap[&aPartialExpressionVertex] = theNewCGV_p;
+        else {
+          // if it's not an argument, then it's an intrinsic or a constant,
+          // so we need to make a new vertex
+          theCorrespCGV_p = new CombinedGraphVertex();
+          myCombinedGraph.supplyAndAddVertexInstance(*theCorrespCGV_p);
         }
+        aEVp2CGVpMap[&aPartialExpressionVertex] = theCorrespCGV_p; // store the association in the local map
+        theCorrespCGV_p->associateLinearizationExpressionVertex(aPartialExpressionVertex);
       } // end iterate over partial assignment expression vertices
 
       // add the edges from the linearization assignment expression
@@ -282,14 +297,16 @@ namespace xaifBoosterPushPop {
       switch (theLinearizedExpressionEdgeAlg.getPartialDerivativeKind()) {
         case PartialDerivativeKind::LINEAR_ONE:
         case PartialDerivativeKind::LINEAR_MINUS_ONE: {
-          CombinedGraphVertex* theNewCGV_p = new CombinedGraphVertex(aLinearizedExpressionEdge);
+          CombinedGraphVertex* theNewCGV_p = new CombinedGraphVertex();
           myCombinedGraph.supplyAndAddVertexInstance(*theNewCGV_p);
+          theNewCGV_p->setLinearizedExpressionEdgeAlg(theLinearizedExpressionEdgeAlg);
           theReturnedMaximalCGVertex_p = theNewCGV_p;
           break;
         }
         case PartialDerivativeKind::LINEAR: {
-          CombinedGraphVertex* theNewConcreteConstantCGV_p = new CombinedGraphVertex(theLinearizedExpressionEdgeAlg.getConcreteConstant());
+          CombinedGraphVertex* theNewConcreteConstantCGV_p = new CombinedGraphVertex();
           myCombinedGraph.supplyAndAddVertexInstance(*theNewConcreteConstantCGV_p);
+          theNewConcreteConstantCGV_p->associateLinearizationExpressionVertex(theLinearizedExpressionEdgeAlg.getConcreteConstant());
           theReturnedMaximalCGVertex_p = theNewConcreteConstantCGV_p;
           break;
         }

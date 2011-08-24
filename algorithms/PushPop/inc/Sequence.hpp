@@ -13,12 +13,20 @@
 #include <list>
 
 #include "xaifBooster/system/inc/Expression.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 
 #include "xaifBooster/algorithms/RequiredValues/inc/RequiredValue.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphVertex.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/Sequence.hpp"
 
+#include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraphVertex.hpp"
+
 #include "xaifBooster/algorithms/PushPop/inc/CombinedGraph.hpp" 
+#include "xaifBooster/algorithms/PushPop/inc/CombinedGraphEdge.hpp" 
+#include "xaifBooster/algorithms/PushPop/inc/CombinedGraphVertex.hpp" 
 
 using namespace xaifBooster;
 
@@ -53,6 +61,12 @@ namespace xaifBoosterPushPop {
 
   private:
 
+    /// no def
+    Sequence(const Sequence&);
+
+    /// no def
+    Sequence& operator= (const Sequence&);
+
     typedef std::list<const BasicBlockElement*> CBasicBlockElementPList;
 
     /// a list of pushes (owned by us) that occur after this sequence
@@ -66,11 +80,13 @@ namespace xaifBoosterPushPop {
      */
     CombinedGraph myCombinedGraph;
 
-    typedef std::map<const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex*,
-                     const CombinedGraphVertex*> PLCGVp2CGVpMap;
-
     typedef std::map<const ExpressionEdge*,
-                     const CombinedGraphVertex*> CExpressionEdgeP2CCombinedGraphVertexPMap;
+                     CombinedGraphVertex*> CExpressionEdgeP2CombinedGraphVertexPMap;
+
+    typedef std::map<const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex*,
+                     CombinedGraphVertex*> PLCGVp2CGVpMap;
+    /// maps each computational graph vertex to the corresponding CombinedGraphVertex
+    PLCGVp2CGVpMap myPLCGVp2CGVpMap;
 
     typedef std::map<const ExpressionVertex*,
                      CombinedGraphVertex*> CExpressionVertexP2CombinedGraphVertexPMap;
@@ -81,17 +97,22 @@ namespace xaifBoosterPushPop {
      */
     CExpressionVertexP2CombinedGraphVertexPMap myEVp2CGVpMap;
 
+    typedef std::map<const xaifBoosterCrossCountryInterface::AccumulationGraphVertex*,
+                     CombinedGraphVertex*> CAGVp2CGVpMap;
+    /// maps each AccumulationGraphVertex to the corresponding CombinedGraphVertex
+    CAGVp2CGVpMap myAGVp2CGVpMap;
+
     /**
      * duplicate a partial expression and affix it to the CombinedGraph
      * returns a reference to the CombinedGraphVertex that corresponds to the maximal linearization expression vertex
      */
-    const CombinedGraphVertex& affixLinearizationExpressionToCombinedGraph(const ExpressionEdge&);
+    CombinedGraphVertex& affixLinearizationExpressionToCombinedGraph(const ExpressionEdge&);
 
-    /// no def
-    Sequence(const Sequence&);
+    /// maps each RemainderGraphVertex to the corresponding CombinedGraphVertex
+    CombinedGraph::CRGVp2CCGVpMap myRGVp2CGVpMap;
 
-    /// no def
-    Sequence& operator= (const Sequence&);
+    /// maps each RemainderGraphEdge to the corresponding CombinedGraphVertex
+    CombinedGraph::CRGEp2CCGVpMap myRGEp2CGVpMap;
 
   };
 
