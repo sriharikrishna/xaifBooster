@@ -295,48 +295,48 @@ namespace xaifBooster {
   template <class Vertex, class Edge>
   Vertex&
   GraphWrapper<Vertex,Edge>::getMaxVertex() { 
-    std::pair < 
-      InternalBoostVertexIteratorType,
-      InternalBoostVertexIteratorType 
-      > 
-      theVertexEnds=boost::vertices(myBoostGraph);
-    InternalBoostVertexIteratorType vi_begin(theVertexEnds.first),
-      vi_end(theVertexEnds.second);
-    if (vi_begin==vi_end)
-      THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: no vertices found");
-    for (;vi_begin!=vi_end;++vi_begin) {
-      if (!boost::out_degree(*vi_begin,
-			     myBoostGraph))
-	break;
-    }
-    if (vi_begin==vi_end) 
-      THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: no maximal vertex found");
-    return *(boost::get(boost::get(BoostVertexContentType(),
-				   myBoostGraph), // get the Vertex property map
-			*(vi_begin))); // get the descriptor
+    Vertex* theMaxVertex_p(NULL);
+    std::pair <InternalBoostVertexIteratorType,
+               InternalBoostVertexIteratorType> theVertexEnds(boost::vertices(myBoostGraph));
+    for (InternalBoostVertexIteratorType vi(theVertexEnds.first); vi != theVertexEnds.second; ++vi) {
+      if (boost::out_degree(*vi,myBoostGraph) == 0) {
+        if (theMaxVertex_p != NULL) {
+          THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: more than one vertex with outdegree zero");
+        }
+        else {
+          theMaxVertex_p = boost::get(boost::get(BoostVertexContentType(),
+                                                  myBoostGraph), // get the Vertex property map
+                                      *(vi)); // get the descriptor
+        }
+      } // end if vertex is a sink (no outedges)
+    } // end iterate over all vertices
+    if (theMaxVertex_p == NULL)
+      THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: did not find a vertex with outdegree zero");
+    return *theMaxVertex_p;
   } // end of GraphWrapper<Vertex,Edge>::getMaxVertex
 
   template <class Vertex, class Edge>
   const Vertex&
   GraphWrapper<Vertex,Edge>::getMaxVertex() const  { 
-    std::pair < 
-      InternalBoostVertexIteratorType,
-      InternalBoostVertexIteratorType 
-      > 
-      theVertexEnds=boost::vertices(myBoostGraph);
-    InternalBoostVertexIteratorType vi_begin(theVertexEnds.first),
-      vi_end(theVertexEnds.second);
-    for (;vi_begin!=vi_end;++vi_begin) {
-      if (!boost::out_degree(*vi_begin,
-			     myBoostGraph))
-	break;
-    }
-    if (vi_begin==vi_end) 
-      THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: no maximal vertex found");
-    return *(boost::get(boost::get(BoostVertexContentType(),
-				   myBoostGraph), // get the Vertex property map
-			*(vi_begin))); // get the descriptor
-  } // end of GraphWrapper<Vertex,Edge>::getMaxVertex
+    const Vertex* theMaxVertex_p(NULL);
+    std::pair <InternalBoostVertexIteratorType,
+               InternalBoostVertexIteratorType> theVertexEnds(boost::vertices(myBoostGraph));
+    for (InternalBoostVertexIteratorType vi(theVertexEnds.first); vi != theVertexEnds.second; ++vi) {
+      if (boost::out_degree(*vi,myBoostGraph) == 0) {
+        if (theMaxVertex_p != NULL) {
+          THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: more than one vertex with outdegree zero");
+        }
+        else {
+          theMaxVertex_p = boost::get(boost::get(BoostVertexContentType(),
+                                                  myBoostGraph), // get the Vertex property map
+                                      *(vi)); // get the descriptor
+        }
+      } // end if vertex is a sink (no outedges)
+    } // end iterate over all vertices
+    if (theMaxVertex_p == NULL)
+      THROW_LOGICEXCEPTION_MACRO("GraphWrapper::getMaxVertex: did not find a vertex with outdegree zero");
+    return *theMaxVertex_p;
+  } // end of GraphWrapper<Vertex,Edge>::getMaxVertex const
 
   template <class Vertex, class Edge>
   void
