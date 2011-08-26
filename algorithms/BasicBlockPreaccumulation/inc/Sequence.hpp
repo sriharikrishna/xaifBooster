@@ -111,7 +111,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * in printXMLHierarchy
      * before any element of the sequence
      */
-    Assignment& appendFrontAssignment();
+    Assignment& appendFrontAssignment(bool withAlgorithm=false);
 
     /** 
      * create a new Assignment instance
@@ -120,7 +120,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * after any element of the sequence but 
      * before the DerivativePropagator
      */
-    Assignment& appendEndAssignment();
+    Assignment& appendEndAssignment(bool withAlgorithm=false);
 
     typedef std::list<Assignment*> AssignmentPList;
 
