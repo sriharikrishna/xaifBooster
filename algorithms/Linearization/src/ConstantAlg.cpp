@@ -26,10 +26,7 @@ namespace xaifBoosterLinearization {
   std::string 
   ConstantAlg::debug() const { 
     std::ostringstream out;
-    out << "xaifBoosterLinearization::ConstantAlg["
-	<< this 
-	<< ","
-	<< xaifBoosterLinearization::ExpressionVertexAlg::debug().c_str()
+    out << "xaifBoosterLinearization::ConstantAlg[" << ExpressionVertexAlg::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   }

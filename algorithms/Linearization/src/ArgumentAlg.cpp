@@ -24,7 +24,7 @@ namespace xaifBoosterLinearization {
 
   std::string ArgumentAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterLinearization::ArgumentAlg[" << this
+    out << "xaifBoosterLinearization::ArgumentAlg[" << ExpressionVertexAlg::debug().c_str()
  	<< "]" << std::ends;  
     return out.str();
   } // end of ArgumentAlg::debug
