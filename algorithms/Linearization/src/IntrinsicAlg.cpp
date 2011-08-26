@@ -24,7 +24,7 @@ namespace xaifBoosterLinearization {
 
   std::string IntrinsicAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterLinearization::IntrinsicAlg[" << this
+    out << "xaifBoosterLinearization::IntrinsicAlg[" << ExpressionVertexAlg::debug().c_str()
  	<< "]" << std::ends;  
     return out.str();
   } // end of IntrinsicAlg::debug
