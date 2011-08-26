@@ -98,14 +98,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *theSRCall_p;
   } 
 
-  Assignment& Sequence::appendFrontAssignment() { 
-    Assignment* theAssignment_p=new Assignment(true);
+  Assignment& Sequence::appendFrontAssignment(bool withAlgorithm) { 
+    Assignment* theAssignment_p=new Assignment(withAlgorithm);
     myFrontAssignmentList.push_back(theAssignment_p);
     return *theAssignment_p;
   }
 
-  Assignment& Sequence::appendEndAssignment() { 
-    Assignment* theAssignment_p=new Assignment(true);
+  Assignment& Sequence::appendEndAssignment(bool withAlgorithm) { 
+    Assignment* theAssignment_p=new Assignment(withAlgorithm);
     myEndAssignmentList.push_back(theAssignment_p);
     return *theAssignment_p;
   }
