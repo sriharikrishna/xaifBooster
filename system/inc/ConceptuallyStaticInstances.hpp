@@ -64,6 +64,7 @@ namespace xaifBooster {
     const NameCreator& getTemporaryVariableNameCreator() const;
     const NameCreator& getTypeChangeVariableNameCreator() const;
     const NameCreator& getDelayVariableNameCreator() const;
+    const NameCreator& getAuxiliaryVariableNameCreator() const;
     const NameCreator& getLinearizationVariableNameCreator() const;
     const NameCreator& getAccumulationVariableNameCreator() const;
     const NameCreator& getPropagationVariableNameCreator() const;
@@ -116,6 +117,14 @@ namespace xaifBooster {
      * (see xaifBoosterLinearization::AssignmentAlg::makeSSACodeList)
      */
     NameCreator myDelayVariableNameCreator;
+
+    /**
+     * used to give unique names to variables that are assigned the value of some RHS subexpression
+     * for reasons including
+     * - evaluation of a local partial, and
+     * - taping as part of a push pop strategy
+     */
+    NameCreator myAuxiliaryVariableNameCreator;
 
     /// used to give unique names to variables that get assigned the value of a local partial during linearization
     NameCreator myLinearizationVariableNameCreator;

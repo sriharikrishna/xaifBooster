@@ -63,6 +63,7 @@ namespace xaifBooster {
     myTemporaryVariableNameCreator.setBaseName(aPrefix+"tmp");
     myTypeChangeVariableNameCreator.setBaseName(aPrefix+"tyc");
     myDelayVariableNameCreator.setBaseName(aPrefix+"dly");
+    myAuxiliaryVariableNameCreator.setBaseName(aPrefix+"aux");
     myLinearizationVariableNameCreator.setBaseName(aPrefix+"lin");
     myAccumulationVariableNameCreator.setBaseName(aPrefix+"acc");
     myPropagationVariableNameCreator.setBaseName(aPrefix+"prp");
@@ -96,6 +97,11 @@ namespace xaifBooster {
   ConceptuallyStaticInstances::getDelayVariableNameCreator() const { 
     return myDelayVariableNameCreator;
   } // end ConceptuallyStaticInstances::getDelayVariableNameCreator()
+
+  const NameCreator&
+  ConceptuallyStaticInstances::getAuxiliaryVariableNameCreator() const { 
+    return myAuxiliaryVariableNameCreator;
+  }
 
   const NameCreator&
   ConceptuallyStaticInstances::getLinearizationVariableNameCreator() const { 
