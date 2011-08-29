@@ -16,10 +16,6 @@
           </xaif:Symbol>
           <xaif:Symbol symbol_id="t2" kind="variable" type="real" feType="" shape="scalar" annotation="" active="1" temp="0">
           </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixdly_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
-          </xaif:Symbol>
-          <xaif:Symbol symbol_id="test_prefixdly_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
-          </xaif:Symbol>
           <xaif:Symbol symbol_id="test_prefixlin_0" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
           </xaif:Symbol>
           <xaif:Symbol symbol_id="test_prefixlin_1" kind="variable" type="real" feType="" shape="scalar" annotation="" active="0" temp="1">
@@ -63,22 +59,6 @@
       <xaif:Entry vertex_id="1" annotation=""/>
       <xaif:BasicBlock vertex_id="2" annotation="blabla" scope_id="2">
         <xaif:Marker statement_id="nop1" annotation="test nop to be ignored"/>
-        <xaif:Assignment statement_id="_replacement_1_for_a1">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_0" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
-            </xaif:VariableReference>
-            <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
-            </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
         <xaif:Assignment statement_id="_elementary_partial_0">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_0" annotation="xaifBoosterLinearization::ExpressionAlg::createPartialExpressions" scope_id="2"/>
@@ -99,27 +79,20 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="a1: delayed LHS assignment for correct partials">
+        <xaif:Assignment statement_id="a1">
           <xaif:AssignmentLHS active="true" du_ud="1" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_0" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
+            <xaif:VariableReference vertex_id="1" active="true" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="x" annotation="" scope_id="2"/>
             </xaif:VariableReference>
-          </xaif:AssignmentRHS>
-        </xaif:Assignment>
-        <xaif:Assignment statement_id="_replacement_1_for_a2">
-          <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_1" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
-          </xaif:AssignmentLHS>
-          <xaif:AssignmentRHS>
-            <xaif:Intrinsic vertex_id="2" annotation="" name="mul_scal_scal"/>
-            <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
+            <xaif:VariableReference vertex_id="2" active="true" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
             </xaif:VariableReference>
-            <xaif:ExpressionEdge edge_id="1" source="1" target="2" position="1"/>
-            <xaif:ExpressionEdge edge_id="2" source="1" target="2" position="2"/>
+            <xaif:Intrinsic vertex_id="3" annotation="" name="mul_scal_scal"/>
+            <xaif:ExpressionEdge edge_id="1" source="1" target="3" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="2" target="3" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
         <xaif:Assignment statement_id="_elementary_partial_2">
@@ -142,14 +115,17 @@
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
-        <xaif:Assignment statement_id="a2: delayed LHS assignment for correct partials">
+        <xaif:Assignment statement_id="a2">
           <xaif:AssignmentLHS active="true" deriv="0" constant="0">
             <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
-            <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixdly_1" annotation="xaifBoosterLinearization::AssignmentAlg::makeSSACodeList" scope_id="2"/>
+            <xaif:VariableReference vertex_id="1" active="true" du_ud="2" deriv="0" constant="0">
+              <xaif:SymbolReference vertex_id="1" symbol_id="t1" annotation="" scope_id="2"/>
             </xaif:VariableReference>
+            <xaif:Intrinsic vertex_id="2" annotation="" name="mul_scal_scal"/>
+            <xaif:ExpressionEdge edge_id="1" source="1" target="2" position="1"/>
+            <xaif:ExpressionEdge edge_id="2" source="1" target="2" position="2"/>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
       </xaif:BasicBlock>

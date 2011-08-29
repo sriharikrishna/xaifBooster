@@ -26,7 +26,8 @@
 namespace xaifBoosterLinearization{
 
   ExpressionAlg::ExpressionAlg(Expression& theContainingExpression):
-  ExpressionAlgBase(theContainingExpression){
+   ExpressionAlgBase(theContainingExpression),
+   myAuxiliaryAssignmentCounter(0) { 
   }
 
   std::string ExpressionAlg::debug() const{
@@ -44,41 +45,143 @@ namespace xaifBoosterLinearization{
   void ExpressionAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c){
   }
 
-  const ExpressionAlg::ArgumentPList&
-  ExpressionAlg::getPartialUsageList() const{
-    return myPartialUsageList;
-  }
-
-  void ExpressionAlg::markUsedInPartial(const Argument& theArgument){
-    for(ArgumentPList::iterator i=myPartialUsageList.begin();
-	i!=myPartialUsageList.end();
-	++i)
-      if(&theArgument==(*i))
-	return;
-    myPartialUsageList.push_back(&theArgument);
-  }
-
-  bool ExpressionAlg::isUsedInPartial(const Argument& theArgument) const{
-    for(ArgumentPList::const_iterator i=myPartialUsageList.begin();
-	i!=myPartialUsageList.end();
-	++i)
-      if(&theArgument==(*i))
-	return true;
+  bool
+  ExpressionAlg::needsAuxiliaryExtraction() const {
+    Expression::ConstVertexIteratorPair vip(getContaining().vertices());
+    for(Expression::ConstVertexIterator aEVi(vip.first); aEVi != vip.second; ++aEVi)
+      if (dynamic_cast<const ExpressionVertexAlg&>((*aEVi).getExpressionVertexAlgBase()).hasAuxiliaryVariable())
+        return true;
     return false;
   }
 
+  void
+  ExpressionAlg::extractAuxiliary(const ExpressionVertex& theExpressionVertex) {
+    ExpressionVertexAlg& theEVAlg(
+     dynamic_cast<ExpressionVertexAlg&>(theExpressionVertex.getExpressionVertexAlgBase())
+    );
+    if (!theEVAlg.hasAuxiliaryVariable()) {
+      Scope& theCurrentCfgScope(
+       ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getControlFlowGraph().getScope()
+      );
+      xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::extractAuxiliary",
+                                                       getContaining(),
+                                                       theExpressionVertex);
+      theEVAlg.makeAuxiliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
+                                                             ConceptuallyStaticInstances::instance()->getAuxiliaryVariableNameCreator(),
+                                                             false),
+                                      theCurrentCfgScope);
+      if (aHelper.needsAllocation())
+        theEVAlg.makeAuxiliaryAllocation(aHelper);
+    }
+  }
+
+  void
+  ExpressionAlg::printAuxiliaryAssignmentsSSA(const ObjectWithId::Id& theTopLevelAssignmentId,
+                                              std::ostream& os) const {
+    myAuxiliaryAssignmentCounter = 0;
+    printAuxiliaryAssignmentsSSARecursively(getContaining().getMaxVertex(),
+                                            theTopLevelAssignmentId,
+                                            os);
+  }
+
+  void
+  ExpressionAlg::printAuxiliaryAssignmentsSSARecursively(const ExpressionVertex& theEV,
+                                                         const ObjectWithId::Id& theTopLevelAssignmentId,
+                                                         std::ostream& os) const {
+    // recursive descent (postorder traversal)
+    Expression::ConstInEdgeIteratorPair iep(getContaining().getInEdgesOf(theEV));
+    for (Expression::ConstInEdgeIterator aEEi(iep.first); aEEi != iep.second; ++aEEi)
+      if (getContaining().numInEdgesOf(getContaining().getSourceOf(*aEEi)) > 0)
+        printAuxiliaryAssignmentsSSARecursively(getContaining().getSourceOf(*aEEi),
+                                                theTopLevelAssignmentId,
+                                                os);
+    const ExpressionVertexAlg& theEVAlg(dynamic_cast<const ExpressionVertexAlg&>(theEV.getExpressionVertexAlgBase()));
+    if (theEVAlg.hasAuxiliaryVariable()) {
+      Assignment& theNewAuxiliaryAssignment(*new Assignment(false));
+      theNewAuxiliaryAssignment.setId(makeAuxiliaryAssignmentSSAId(theTopLevelAssignmentId));
+      // set the LHS
+      theEVAlg.getAuxiliaryVariable().copyMyselfInto(theNewAuxiliaryAssignment.getLHS());
+      // populate the RHS
+      ExpressionVertex& theNewMaxEV(theEV.createCopyOfMyself());
+      theNewAuxiliaryAssignment.getRHS().supplyAndAddVertexInstance(theNewMaxEV);
+      for (Expression::ConstInEdgeIterator aEEi(iep.first); aEEi != iep.second; ++aEEi)
+        populateSSASubexpressionRecursively(*aEEi,
+                                            theNewAuxiliaryAssignment.getRHS(),
+                                            theNewMaxEV);
+      if (theEVAlg.hasAuxiliaryAllocation())
+        theEVAlg.getAuxiliaryAllocation().printXMLHierarchy(os);
+      theNewAuxiliaryAssignment.printXMLHierarchy(os);
+    } // end if aux variable
+  }
+
+  void
+  ExpressionAlg::populateSSASubexpressionRecursively(const ExpressionEdge& theEE,
+                                                     Expression& theExpressionToPopulate,
+                                                     const ExpressionVertex& theNewParentEV) const {
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterLinearization::ExpressionAlg::populateSSASubexpressionRecursively"
+                               << " called for " << theEE.debug().c_str());
+    const ExpressionVertex& theSourceEV(getContaining().getSourceOf(theEE));
+    const ExpressionVertexAlg& theSourceEVAlg(dynamic_cast<const ExpressionVertexAlg&>(theSourceEV.getExpressionVertexAlgBase()));
+    if (theSourceEVAlg.hasAuxiliaryVariable()) {
+      Argument& theNewAuxiliaryArgument(*new Argument());
+      theSourceEVAlg.copyAuxiliaryInto(theNewAuxiliaryArgument);
+      // add the new aux argument to the extraction subexpression
+      theExpressionToPopulate.supplyAndAddVertexInstance(theNewAuxiliaryArgument);
+      theEE.copyMyselfInto(theExpressionToPopulate.addEdge(theNewAuxiliaryArgument,
+                                                           theNewParentEV));
+    }
+    else {
+      ExpressionVertex& theNewEV(theSourceEV.createCopyOfMyself());
+      theExpressionToPopulate.supplyAndAddVertexInstance(theNewEV);
+      theEE.copyMyselfInto(theExpressionToPopulate.addEdge(theNewEV,
+                                                           theNewParentEV));
+      Expression::ConstInEdgeIteratorPair iep(getContaining().getInEdgesOf(theSourceEV));
+      for (Expression::ConstInEdgeIterator aEEi(iep.first); aEEi != iep.second; ++aEEi)
+        populateSSASubexpressionRecursively(*aEEi,
+                                            theExpressionToPopulate,
+                                            theNewEV);
+    }
+  }
+
+  void
+  ExpressionAlg::printLocalPartialAssignments(std::ostream& os) const {
+    if (dynamic_cast<const ExpressionVertexAlg&>(getContaining().getMaxVertex().getExpressionVertexAlgBase()).isActive()) {
+      Expression::ConstInEdgeIteratorPair iep(getContaining().getInEdgesOf(getContaining().getMaxVertex()));
+      for (Expression::ConstInEdgeIterator aEEi(iep.first); aEEi != iep.second; ++aEEi)
+        if (dynamic_cast<const ExpressionVertexAlg&>(getContaining().getSourceOf(*aEEi).getExpressionVertexAlgBase()).isActive())
+          printLocalPartialAssignmentsRecursively(*aEEi,
+                                                  os);
+    } // end if the max vertex is active
+  }
+
+  void
+  ExpressionAlg::printLocalPartialAssignmentsRecursively(const ExpressionEdge& theExpressionEdge,
+                                                         std::ostream& os) const {
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterLinearization::ExpressionAlg::printLocalPartialAssignmentsRecursively:"
+                               << " entered for " << theExpressionEdge.debug().c_str() 
+                               << " in " << debug().c_str());
+    // recurse
+    Expression::ConstInEdgeIteratorPair iep(getContaining().getInEdgesOf(getContaining().getSourceOf(theExpressionEdge)));
+    for (Expression::ConstInEdgeIterator aEEi(iep.first); aEEi != iep.second; ++aEEi)
+      if (dynamic_cast<const ExpressionVertexAlg&>(getContaining().getSourceOf(*aEEi).getExpressionVertexAlgBase()).isActive())
+        printLocalPartialAssignmentsRecursively(*aEEi,
+                                                os);
+    // print for this edge
+    const ExpressionEdgeAlg& theEEAlg(dynamic_cast<const ExpressionEdgeAlg&>(theExpressionEdge.getExpressionEdgeAlgBase()));
+    if (theEEAlg.hasConcretePartialAssignment()
+     && theEEAlg.getPartialDerivativeKind()!=PartialDerivativeKind::PASSIVE) {
+      DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterLinearization::ExpressionAlg::printLocalPartialAssignmentsRecursively:"
+                                 << " printing partial assignment for " << theExpressionEdge.debug().c_str() 
+                                 << " in " << debug().c_str());
+      if (theEEAlg.hasPartialAllocation())
+        theEEAlg.getPartialAllocation().printXMLHierarchy(os);
+      theEEAlg.getConcretePartialAssignment().printXMLHierarchy(os);
+    }
+  }
+
   void ExpressionAlg::activityAnalysis(){
-    Expression::ConstVertexIteratorPair pV(getContaining().vertices());
-    Expression::ConstVertexIterator anExpressionVertexI(pV.first), anExpressionVertexIEnd(pV.second);
-    for(; anExpressionVertexI!=anExpressionVertexIEnd; ++anExpressionVertexI)
-      if(!getContaining().numOutEdgesOf(*anExpressionVertexI))
-	break;
-    if(anExpressionVertexI==anExpressionVertexIEnd)
-      THROW_LOGICEXCEPTION_MACRO("ExpressionAlg::activityAnalysis: Expression "
-				 <<getContaining().debug().c_str()
-				 <<" does not have a maximal vertex!");
-    activityAnalysisBottomUpPass(*anExpressionVertexI);
-    activityAnalysisTopDownPass(*anExpressionVertexI);
+    activityAnalysisBottomUpPass(getContaining().getMaxVertex());
+    activityAnalysisTopDownPass(getContaining().getMaxVertex());
   } // end of  ExpressionAlg::activityAnalysis
 
   void ExpressionAlg::createPartialExpressions(){
@@ -111,66 +214,20 @@ namespace xaifBoosterLinearization{
       // the first one points to the function value, i.e. this vertex
       // however we may not have a special expression specified for 
       // the function
-      ExpressionVertexAlg&theExpressionVertexAlg(dynamic_cast<ExpressionVertexAlg&>((*anExpressionVertexI).getExpressionVertexAlgBase()));
-      if(theUsedPositions.has(0)
-	 &&
-	 !theExpressionVertexAlg.hasAuxiliaryVariable()) {
-	// we need to make a temporary variable. see
-	// ExpressionVertex::myAuxiliaryArgument_p
-	xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions(for intrinsic result)",
-							 getContaining(),
-							 *anExpressionVertexI);
-	theExpressionVertexAlg.makeAuxiliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
-                                                                            ConceptuallyStaticInstances::instance()->getAuxiliaryVariableNameCreator(),
-									     false),
-						      theCurrentCfgScope);
-	if (aHelper.needsAllocation()) { 
-	  // add the allocation
-	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
-	  theSRCall_p->setId("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
-	  myPartialAllocationsPList.push_back(theSRCall_p);
-	  // first argument
-	  theExpressionVertexAlg.getAuxiliaryVariable().
-	    copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
-	  // second argument 
-	  aHelper.allocationModel().copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
-	}
+      if(theUsedPositions.has(0)) {
+        extractAuxiliary(*anExpressionVertexI);
       } // end if
       // now we need to loop over all arguments to determine auxiliaries
       for(Expression::ConstInEdgeIterator anExpressionEdgeI2(pE.first); anExpressionEdgeI2!=anExpressionEdgeIEnd; ++anExpressionEdgeI2) {
 	const ExpressionVertex&theSource(getContaining().getSourceOf(*anExpressionEdgeI2));
-	ExpressionVertexAlg&theSourceAlg(dynamic_cast<ExpressionVertexAlg&>(getContaining().getSourceOf(*anExpressionEdgeI2).getExpressionVertexAlgBase()));
-	ExpressionEdgeAlg&theI2EdgeAlg(dynamic_cast<ExpressionEdgeAlg&>((*anExpressionEdgeI2).getExpressionEdgeAlgBase()));
+	if(theUsedPositions.has((*anExpressionEdgeI2).getPosition())
+        && getContaining().numInEdgesOf(theSource)) {
+          extractAuxiliary(theSource);
+        } // end if  
+
 	const InlinableIntrinsicsExpression&
 		thePartialExpression(theCatalogueItem.getExpressionVectorElement((*anExpressionEdgeI2).getPosition()));
-	if(!(theSourceAlg.hasAuxiliaryVariable())
-	&&
-	theUsedPositions.has((*anExpressionEdgeI2).getPosition())
-	&&
-	getContaining().numInEdgesOf(theSource)) {
-	  // we need to make a temporary variable. see
-	  // ExpressionVertexAlg::myAuxiliaryArgument_p
-	  // however it is not needed if this is a leaf vertex, i.e. 
-	  // a variable reference itself or a constant (no in edges)
-	  xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions(for temp var)",
-							   getContaining(),
-							   theSource);
-	  theSourceAlg.makeAuxiliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
-                                                                    ConceptuallyStaticInstances::instance()->getAuxiliaryVariableNameCreator(),
-								     false),
-					      theCurrentCfgScope);
-	  if (aHelper.needsAllocation()) { 
-	    // add the allocation
-	    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
-	    theSRCall_p->setId("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
-	    myPartialAllocationsPList.push_back(theSRCall_p);
-	    // first argument
-	    theSourceAlg.getAuxiliaryVariable().
-	      copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
-	    // second argument 
-	    aHelper.allocationModel().copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
-	  }
-	} // end if  
+	ExpressionEdgeAlg&theI2EdgeAlg(dynamic_cast<ExpressionEdgeAlg&>((*anExpressionEdgeI2).getExpressionEdgeAlgBase()));
 	// match the abstract arguments in thePartialExpression
 	// with the concrete vertices in this Expression
 	// by position
@@ -213,9 +270,9 @@ namespace xaifBoosterLinearization{
 	// from abstract to concrete vertices 
 	const InlinableIntrinsicsExpression&
 		thePartialExpression(theCatalogueItem.getExpressionVectorElement((*anExpressionEdgeI3).getPosition()));
-	typedef std::pair<const InlinableIntrinsicsExpressionVertex*, const ExpressionVertex*> VertexPointerPair;
-	typedef std::list<VertexPointerPair> AbstractToConcreteVertexPairList;
-	AbstractToConcreteVertexPairList theAbstractToConcreteVertexPairList;
+        // maintain a mapping from abstract to concrete vertices to facilitate the expression duplication
+        std::map<const InlinableIntrinsicsExpressionVertex*,
+                 const ExpressionVertex*> theAbstract2ConcreteMap;
 	const ExpressionEdgeAlg::VertexPairList&theConcreteArgumentInstancesList(theI3ExpressionEdgeAlg.getConcreteArgumentInstancesList());
 
 	// we don't make an assignment if there's only one partial expression vertex and it's constant
@@ -244,7 +301,7 @@ namespace xaifBoosterLinearization{
 	} // end if there's only one vertex in the partial expression
 	theI3ExpressionEdgeAlg.makeConcretePartialAssignment();
 	Expression&theNewConcretePartial(theI3ExpressionEdgeAlg.getConcretePartialAssignment().getRHS());
-	theI3ExpressionEdgeAlg.getConcretePartialAssignment().setId(makeUniqueId());
+	theI3ExpressionEdgeAlg.getConcretePartialAssignment().setId(makePartialAssignmentId());
 	bool allConst=true;
 	InlinableIntrinsicsExpression::ConstVertexIteratorPair anAbstractvertexPair(thePartialExpression.vertices());
 	for(InlinableIntrinsicsExpression::ConstVertexIterator abstractVertexIt(anAbstractvertexPair.first), abstractVertexEndIt(anAbstractvertexPair.second);
@@ -270,24 +327,14 @@ namespace xaifBoosterLinearization{
 	    if(theArgumentVertexAlg.hasAuxiliaryVariable()) {
 	      Argument* aNewArgument_p=new Argument();
 	      theNewVertex_p=aNewArgument_p;
-	      theArgumentVertexAlg.getAuxiliaryVariable().copyMyselfInto(aNewArgument_p->getVariable());
+	      theArgumentVertexAlg.copyAuxiliaryInto(*aNewArgument_p);
 	      allConst=false;
 	    }
 	    else { // this is an Argument or a Constant
 	      theNewVertex_p=&(theArgumentVertex_p->createCopyOfMyself());
-	      // we need to mark any Arguments used in a partial expression
-	      // so we can figure out later 
-	      // that if the LHS of the Assignment is also an argument in 
-	      // this expression (the RHS) that we then introduce a temporary 
-	      // to avoid possibly using the wrong value in the partial 
-	      // expression as this comes after the (ssa) code.
-	      // if the following cast fails then we have a constant which we can 
-	      // just skip: 
-	      const Argument* theArgument_p=dynamic_cast<const Argument*>(theArgumentVertex_p);
-	      if(theArgument_p) {
-		markUsedInPartial(*theArgument_p);
-		allConst=false;
-	      } // else cast failed: it must be a constant
+              if (theArgumentVertex_p->isArgument()) {
+                allConst=false;
+	      } // else it must be a constant
 	    } // end argument or constant
             theI3ExpressionEdgeAlg.mapPartialEV2OriginalEV(*theNewVertex_p,
                                                            *theArgumentVertex_p);
@@ -298,12 +345,12 @@ namespace xaifBoosterLinearization{
 	    // we just create a copy of the 
 	    // abstract vertex
 	    theNewVertex_p=&((*abstractVertexIt).createCopyOfMyself());
+            //\TODO FIXME revisit this
 	  } // end else
 	  // in this new graph the potentially copied Ids are useless.
 	  theNewVertex_p->overWriteId(theNewConcretePartial.getNextVertexId());
 	  theNewConcretePartial.supplyAndAddVertexInstance(*theNewVertex_p);
-	  theAbstractToConcreteVertexPairList.push_back(VertexPointerPair(&(*abstractVertexIt),
-									  theNewVertex_p));
+          theAbstract2ConcreteMap[&(*abstractVertexIt)] = theNewVertex_p;
 	} // end for all abstract vertices
 
 	// only make it LINEAR if all vertices were constants and it's currently NONLINEAR (don't want to undo a passivate!)
@@ -314,36 +361,8 @@ namespace xaifBoosterLinearization{
 	InlinableIntrinsicsExpression::ConstEdgeIteratorPair anAbstractEdgePair(thePartialExpression.edges());
 	InlinableIntrinsicsExpression::ConstEdgeIterator abstractEdgeIt(anAbstractEdgePair.first), abstractEdgeEndIt(anAbstractEdgePair.second);
 	for(; abstractEdgeIt!=abstractEdgeEndIt; ++abstractEdgeIt) {
-	  const InlinableIntrinsicsExpressionVertex
-		  &theAbstractSourceVertex(thePartialExpression.getSourceOf(*abstractEdgeIt)),
-		  &theAbstractTargetVertex(thePartialExpression.getTargetOf(*abstractEdgeIt));
-	  const ExpressionVertex
-		  *theConcreteSourceVertex_p(0),
-		  *theConcreteTargetVertex_p(0);
-	  for(AbstractToConcreteVertexPairList::const_iterator li=theAbstractToConcreteVertexPairList.begin();
-	  li!=theAbstractToConcreteVertexPairList.end()
-	  &&
-	  !(theConcreteSourceVertex_p&&theConcreteTargetVertex_p);
-	  ++li) {
-	    if((!theConcreteSourceVertex_p)
-	    &&
-	    (&theAbstractSourceVertex==(*li).first))
-	      theConcreteSourceVertex_p=(*li).second;
-	    if((!theConcreteTargetVertex_p)
-	    &&
-	    (&theAbstractTargetVertex==(*li).first))
-	      theConcreteTargetVertex_p=(*li).second;
-	  } // end for all vertex pairs in vertex map
-	  if(!theConcreteSourceVertex_p
-	  ||
-	  !theConcreteTargetVertex_p)
-	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions: could not find source ("
-				    <<theAbstractSourceVertex.debug().c_str()
-				    <<") or target ("
-				    <<theAbstractTargetVertex.debug().c_str()
-				    <<")");
-	  ExpressionEdge&theNewEdge(theNewConcretePartial.addEdge(*theConcreteSourceVertex_p,
-								  *theConcreteTargetVertex_p));
+          ExpressionEdge& theNewEdge(theNewConcretePartial.addEdge(*theAbstract2ConcreteMap[&thePartialExpression.getSourceOf(*abstractEdgeIt)],
+                                                                   *theAbstract2ConcreteMap[&thePartialExpression.getTargetOf(*abstractEdgeIt)]));
 	  theNewEdge.setId(theNewConcretePartial.getNextEdgeId());
 	  theNewEdge.setPosition((*abstractEdgeIt).getPosition());
 	} // end for all abstract edges
@@ -365,15 +384,7 @@ namespace xaifBoosterLinearization{
 	theLHS.getAliasMapKey().setTemporary();
 	theLHS.getDuUdMapKey().setTemporary();
 	if (aHelper.needsAllocation()) { 
-	  // add the allocation
-	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
-	  theSRCall_p->setId("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
-	  myPartialAllocationsPList.push_back(theSRCall_p);
-	  // first argument
-	  theLHS.
-	    copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
-	  // second argument 
-	  aHelper.allocationModel().copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
+          theI3ExpressionEdgeAlg.makePartialAllocation(aHelper);
 	}
       } // end for
     } // end for all expression vertices (outer loop)
@@ -456,15 +467,20 @@ namespace xaifBoosterLinearization{
     }
   } // end of ExpressionAlg::activityAnalysisTopDownPass
 
-  std::string ExpressionAlg::makeUniqueId(){
+  std::string
+  ExpressionAlg::makeAuxiliaryAssignmentSSAId(const ObjectWithId::Id& theTopLevelAssignmentId) const {
+    std::ostringstream ostr;
+    ostr << "_replacement_" << ++myAuxiliaryAssignmentCounter
+         << "_for_"  << theTopLevelAssignmentId << std::ends;
+    return ostr.str();
+  }
+
+  std::string
+  ExpressionAlg::makePartialAssignmentId(){
     static unsigned anId=0;
     std::ostringstream ostr;
     ostr<<"_elementary_partial_"<<anId++ <<std::ends;
     return ostr.str();
   }
-
-  const ExpressionAlg::AllocationsPList& ExpressionAlg::getPartialAllocationsPList() const { 
-    return myPartialAllocationsPList;
-  } 
 
 }

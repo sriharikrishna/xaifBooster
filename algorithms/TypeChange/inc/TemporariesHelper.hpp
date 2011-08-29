@@ -19,6 +19,8 @@
 #include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/system/inc/Scope.hpp"
+#include "xaifBooster/system/inc/Symbol.hpp"
 
 using namespace xaifBooster;
 

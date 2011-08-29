@@ -90,21 +90,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // can't identify
       return false;
     }
-    Expression& theExpression(getLinearizedRightHandSide());
     VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theComputationalGraph.getVertexIdentificationListActiveLHS());
     VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theComputationalGraph.getVertexIdentificationListActiveRHS());
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theComputationalGraph.getVertexIdentificationListPassive());
-    Expression::VertexIteratorPair p=theExpression.vertices();
-    Expression::VertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second);
-    for (; ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
+    Expression::ConstVertexIteratorPair vip(getContainingAssignment().getRHS().vertices());
+    for (Expression::ConstVertexIterator ExpressionVertexI(vip.first); ExpressionVertexI != vip.second ;++ExpressionVertexI) {
       VertexIdentificationListActive::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
 	theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
       VertexIdentificationList::IdentificationResult_E thePassiveIdResult(VertexIdentificationList::NOT_IDENTIFIED);
       if ((*ExpressionVertexI).isArgument()) { 
-	theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable(),
+	theLHSIdResult=theVertexIdentificationListActiveLHS.canIdentify(dynamic_cast<const Argument&>(*ExpressionVertexI).getVariable(),
 									getContainingAssignment().getId());
-	theRHSIdResult=theVertexIdentificationListActiveRHS.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable());
-	thePassiveIdResult=theVertexIdentificationListPassive.canIdentify(dynamic_cast<Argument&>(*ExpressionVertexI).getVariable(),
+	theRHSIdResult=theVertexIdentificationListActiveRHS.canIdentify(dynamic_cast<const Argument&>(*ExpressionVertexI).getVariable());
+	thePassiveIdResult=theVertexIdentificationListPassive.canIdentify(dynamic_cast<const Argument&>(*ExpressionVertexI).getVariable(),
 									getContainingAssignment().getId());
       } 
       if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED
@@ -119,7 +117,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	// the actual identification is unique to a particular LHS or not as long 
 	// as all possibly identified LHSs are passive.
 	// passivate this: 
-	dynamic_cast<xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).passivate();
+	dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).passivate();
       } // end if 
       else { // the vertex cannot be uniquely identified
 	if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
@@ -237,9 +235,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 				<< " RHS " << theVertexIdentificationListActiveRHS.debug().c_str());
       PrivateLinearizedComputationalGraphVertex* theLHSLCGVertex_p = 0; // LHS representation
       const ExpressionVertex* theMaximalExpressionVertex_p = 0;
-      const Expression& theExpression(getLinearizedRightHandSide());
-      Expression::ConstVertexIteratorPair p=theExpression.vertices();
-      for (Expression::ConstVertexIterator ExpressionVertexI(p.first),ExpressionVertexIEnd(p.second); ExpressionVertexI!=ExpressionVertexIEnd ;++ExpressionVertexI) {
+      Expression::ConstVertexIteratorPair vip(getLinearizedRHS().vertices());
+      for (Expression::ConstVertexIterator ExpressionVertexI(vip.first); ExpressionVertexI != vip.second ;++ExpressionVertexI) {
 	VertexIdentificationListActive::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
 							     theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
 	PrivateLinearizedComputationalGraphVertex* theLCGVertex_p=0;
@@ -307,7 +304,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	} // end else
 
 	// is this the maximal expression vertex?
-	if (theExpression.numOutEdgesOf(*ExpressionVertexI)==0) { 
+	if (getLinearizedRHS().numOutEdgesOf(*ExpressionVertexI)==0) { 
 	  if (theLHSLCGVertex_p)
 	    THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten): we should only find one maximal vertex");
 	  // the maximal vertex in the RHS is the representation of the LHS
@@ -316,14 +313,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	}
       } // end for all expression vertices
 
-      Expression::ConstEdgeIteratorPair pe=theExpression.edges();
-      for (Expression::ConstEdgeIterator ExpressionEdgeI(pe.first),ExpressionEdgeIEnd(pe.second); ExpressionEdgeI!=ExpressionEdgeIEnd ;++ExpressionEdgeI) {
+      Expression::ConstEdgeIteratorPair eip(getLinearizedRHS().edges());
+      for (Expression::ConstEdgeIterator ExpressionEdgeI(eip.first); ExpressionEdgeI != eip.second ;++ExpressionEdgeI) {
 	PartialDerivativeKind::PartialDerivativeKind_E thePartialDerivativeKind(dynamic_cast<const xaifBoosterLinearization::ExpressionEdgeAlg&>((*ExpressionEdgeI).getExpressionEdgeAlgBase()).getPartialDerivativeKind());
 	if (thePartialDerivativeKind == PartialDerivativeKind::PASSIVE) 
 	  continue;
 	const PrivateLinearizedComputationalGraphVertex *theLCGSource_p(0), *theLCGTarget_p(0);
-	const ExpressionVertex& theSource(theExpression.getSourceOf(*ExpressionEdgeI));
-	const ExpressionVertex& theTarget(theExpression.getTargetOf(*ExpressionEdgeI));
+	const ExpressionVertex& theSource(getLinearizedRHS().getSourceOf(*ExpressionEdgeI));
+	const ExpressionVertex& theTarget(getLinearizedRHS().getTargetOf(*ExpressionEdgeI));
 	VertexPPairList::const_iterator listIt;
 	for (listIt=theVertexTrackList.begin();
 	     (listIt!=theVertexTrackList.end()) 

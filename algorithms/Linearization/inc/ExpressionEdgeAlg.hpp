@@ -16,6 +16,10 @@
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
+
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
 using namespace xaifBooster; 
 
 namespace xaifBoosterLinearization { 
@@ -29,7 +33,7 @@ namespace xaifBoosterLinearization {
     
     ExpressionEdgeAlg(ExpressionEdge& theContainingExpressionEdge);
 
-    virtual ~ExpressionEdgeAlg(){};
+    virtual ~ExpressionEdgeAlg();
 
     virtual void printXMLHierarchy(std::ostream& os) const;
 
@@ -53,6 +57,15 @@ namespace xaifBoosterLinearization {
     const Assignment& getConcretePartialAssignment() const ;
 
     bool hasConcretePartialAssignment() const;
+
+    void
+    makePartialAllocation(xaifBoosterTypeChange::TemporariesHelper&);
+
+    bool
+    hasPartialAllocation() const;
+
+    const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+    getPartialAllocation() const;
 
     void setConcreteConstant(const Constant& aConstant);
 
@@ -126,6 +139,8 @@ namespace xaifBoosterLinearization {
      * this class owns this instance
      */
     Assignment* myConcretePartialAssignment_p;
+
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* myPartialAllocation_p;
 
     /// for partials that consist of a single constant expression vertex
     /**
