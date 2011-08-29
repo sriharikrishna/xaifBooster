@@ -17,6 +17,10 @@
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 
+#include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
+
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
 using namespace xaifBooster; 
 
 namespace xaifBoosterLinearization { 
@@ -45,13 +49,17 @@ namespace xaifBoosterLinearization {
 
     const Variable& getAuxiliaryVariable() const ;
 
-    bool hasReplacement() const; 
+    void
+    copyAuxiliaryInto(Argument&) const;
 
-    Assignment& makeReplacementAssignment(); 
+    void
+    makeAuxiliaryAllocation(xaifBoosterTypeChange::TemporariesHelper&);
 
-    Assignment& getReplacementAssignment();
+    bool
+    hasAuxiliaryAllocation() const;
 
-    const Assignment& getReplacementAssignment() const ;
+    const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+    getAuxiliaryAllocation() const;
 
     /** 
      * is this vertex active?
@@ -62,7 +70,7 @@ namespace xaifBoosterLinearization {
      * during clipping of passive subexpressions
      * we may passivate vertices
      */
-    void passivate();
+    void passivate() const;
 
   private: 
 
@@ -93,14 +101,7 @@ namespace xaifBoosterLinearization {
      */
     Variable* myAuxiliaryVariable_p; 
 
-    /**
-     * for each vertex with auxiliary Variable
-     * we will have to built an assignment that replaces 
-     * the subgraph with this vertex as maximal element 
-     * in the original RHS
-     * owned by this, deleted in the dtor
-     */
-    Assignment* myReplacementAssignment_p;
+    xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* myAuxiliaryAllocation_p;
 
     /**
      * we maintain a flag indicating activity; 
@@ -108,6 +109,7 @@ namespace xaifBoosterLinearization {
      * the flag may change from active to 
      * passive using passivate;
      */
+    mutable
     bool myActiveFlag;
 
   };

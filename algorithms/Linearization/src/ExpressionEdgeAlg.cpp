@@ -20,8 +20,15 @@ namespace xaifBoosterLinearization {
     ExpressionEdgeAlgBase(theContainingExpressionEdge),
     myPartialDerivative_p(0),
     myConcretePartialAssignment_p(0),
+    myPartialAllocation_p(0),
     myConcreteConstant_p(0),
     myConcretePartialDerivativeKind(PartialDerivativeKind::NONLINEAR) { 
+  }
+
+  ExpressionEdgeAlg::~ExpressionEdgeAlg() { 
+    if (myConcretePartialAssignment_p) delete myConcretePartialAssignment_p;
+    if (myPartialAllocation_p) delete myPartialAllocation_p;
+    if (myConcreteConstant_p) delete myConcreteConstant_p;
   }
 
   std::string ExpressionEdgeAlg::debug () const { 
@@ -30,6 +37,7 @@ namespace xaifBoosterLinearization {
         << ",myConcretePartialDerivativeKind=" << PartialDerivativeKind::toString(myConcretePartialDerivativeKind)
         << ",myPartialDerivative_p=" << myPartialDerivative_p
         << ",myConcretePartialAssignment_p=" << myConcretePartialAssignment_p
+        << ",myPartialAllocation_p=" << myPartialAllocation_p
         << ",myConcreteConstant_p=" << myConcreteConstant_p
  	<< "]" << std::ends;
     return out.str();
@@ -108,6 +116,30 @@ namespace xaifBoosterLinearization {
   bool ExpressionEdgeAlg::hasConcretePartialAssignment() const { 
     return (myConcretePartialAssignment_p!=0);
   } 
+
+  bool
+  ExpressionEdgeAlg::hasPartialAllocation() const {
+    return (myPartialAllocation_p != NULL);
+  }
+
+  void
+  ExpressionEdgeAlg::makePartialAllocation(xaifBoosterTypeChange::TemporariesHelper& aHelper) {
+    if (hasPartialAllocation())
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::makePartialAllocation: already set");
+    if (!hasConcretePartialAssignment())
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::makePartialAllocation: no partial assignment");
+    myPartialAllocation_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching");
+    myPartialAllocation_p->setId("xaifBoosterLinearization::ExpressionEdgeAlg::makePartialAllocation");
+    myConcretePartialAssignment_p->getLHS().copyMyselfInto(myPartialAllocation_p->addConcreteArgument(1).getArgument().getVariable());
+    aHelper.allocationModel().copyMyselfInto(myPartialAllocation_p->addConcreteArgument(2).getArgument().getVariable());
+  }
+
+  const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
+  ExpressionEdgeAlg::getPartialAllocation() const { 
+    if (!hasPartialAllocation())
+      THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::getPartialAllocation: no partial allocation has been created");
+    return *myPartialAllocation_p;
+  }
 
   void
   ExpressionEdgeAlg::setConcreteConstant(const Constant& aConstant) {
