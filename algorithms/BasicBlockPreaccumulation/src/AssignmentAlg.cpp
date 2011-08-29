@@ -275,8 +275,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // we need to add this vertex
 	    theLCGVertex_p=(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory())->makeNewPrivateLinearizedComputationalGraphVertex();
             theLCGVertex_p->associateExpressionVertex(*ExpressionVertexI);
-            if (theLinearizedExpressionVertexAlg.hasAuxilliaryVariable()) {
-              theLCGVertex_p->setAuxiliaryVariable(theLinearizedExpressionVertexAlg.getAuxilliaryVariable());
+            if (theLinearizedExpressionVertexAlg.hasAuxiliaryVariable()) {
+              theLCGVertex_p->setAuxiliaryVariable(theLinearizedExpressionVertexAlg.getAuxiliaryVariable());
             }
 	    theComputationalGraph.supplyAndAddVertexInstance(*theLCGVertex_p);
 	    DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten):" << theLCGVertex_p->debug().c_str());

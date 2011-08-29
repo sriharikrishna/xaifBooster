@@ -370,7 +370,7 @@
       <xaif:BasicBlock vertex_id="_aug__cfr_v_6" annotation="_cfr_" scope_id="1">
         <xaif:Assignment statement_id="_cfr_init">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxilliaryIntegerLHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_2" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxiliaryIntegerLHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="integer" feType="" value="0"/>
@@ -414,7 +414,7 @@
       <xaif:ForLoop vertex_id="_adj__cfr_v_2" annotation="_cfr_" reversal="anonymous">
         <xaif:Initialization statement_id="_cfr_fi">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxilliaryIntegerLHS" scope_id="1"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixSymbol_1" annotation="xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxiliaryIntegerLHS" scope_id="1"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Constant vertex_id="1" type="integer" feType="" value="1"/>

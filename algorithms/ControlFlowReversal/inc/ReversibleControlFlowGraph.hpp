@@ -191,7 +191,7 @@ namespace xaifBoosterControlFlowReversal {
     /** 
      * top down topological sort
      */
-    const Symbol* makeAuxilliaryIntegerLHS(Assignment& theAssignment, 
+    const Symbol* makeAuxiliaryIntegerLHS(Assignment& theAssignment, 
 					   PlainBasicBlock& theBasicBlock); 
 
     /** 

@@ -419,13 +419,13 @@ namespace xaifBoosterControlFlowReversal {
     return aNewReversibleControlFlowGraphVertex_p;
   }
 
-  const Symbol* ReversibleControlFlowGraph::makeAuxilliaryIntegerLHS(Assignment& theAssignment, 
+  const Symbol* ReversibleControlFlowGraph::makeAuxiliaryIntegerLHS(Assignment& theAssignment, 
 								     PlainBasicBlock& theBasicBlock_r) {
     const Symbol& theLhsSymbol_r(theBasicBlock_r.getScope().getSymbolTable().
 				 addUniqueAuxSymbol(SymbolKind::VARIABLE,SymbolType::INTEGER_STYPE,SymbolShape::SCALAR,false));
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(theLhsSymbol_r,theBasicBlock_r.getScope());
     theVariableSymbolReference_p->setId("1"); 
-    theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxilliaryIntegerLHS"); 
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterControlFlowReversal::ReversibleControlFlowGraph::makeAuxiliaryIntegerLHS"); 
     theAssignment.getLHS().supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theAssignment.getLHS().getAliasMapKey().setTemporary();
     theAssignment.getLHS().getDuUdMapKey().setTemporary();
@@ -484,7 +484,7 @@ namespace xaifBoosterControlFlowReversal {
     theAssignment_p->setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().
 							     getCallGraphAlgBase()).getAlgorithmSignature() + "init");
     // set lhs
-    const Symbol* theLhsSymbol=makeAuxilliaryIntegerLHS(*theAssignment_p,theBasicBlock_r);
+    const Symbol* theLhsSymbol=makeAuxiliaryIntegerLHS(*theAssignment_p,theBasicBlock_r);
     // set rhs
     Constant* theOne=new Constant(SymbolType::INTEGER_STYPE,false);
     theOne->setint(value);
@@ -1430,7 +1430,7 @@ namespace xaifBoosterControlFlowReversal {
 	  ForLoop& theForLoop_r(dynamic_cast<ForLoop&>((*myOriginalReverseVertexPPairList_cit).second->getNewVertex()));
 	  // initialization
 	  // set lhs
-	  const Symbol* theLoopCounterSymbol_p=makeAuxilliaryIntegerLHS(theForLoop_r.getInitialization().getAssignment(),theNewBasicBlock_r);
+	  const Symbol* theLoopCounterSymbol_p=makeAuxiliaryIntegerLHS(theForLoop_r.getInitialization().getAssignment(),theNewBasicBlock_r);
 	  // set rhs
 	  Constant* theOne=new Constant(SymbolType::INTEGER_STYPE,false);
 	  theOne->setint(1);
