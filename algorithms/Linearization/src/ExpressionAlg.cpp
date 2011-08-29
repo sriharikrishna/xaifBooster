@@ -121,7 +121,7 @@ namespace xaifBoosterLinearization{
 							 getContaining(),
 							 *anExpressionVertexI);
 	theExpressionVertexAlg.makeAuxiliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
-									     ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
+                                                                            ConceptuallyStaticInstances::instance()->getAuxiliaryVariableNameCreator(),
 									     false),
 						      theCurrentCfgScope);
 	if (aHelper.needsAllocation()) { 
@@ -156,7 +156,7 @@ namespace xaifBoosterLinearization{
 							   getContaining(),
 							   theSource);
 	  theSourceAlg.makeAuxiliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
-								     ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
+                                                                    ConceptuallyStaticInstances::instance()->getAuxiliaryVariableNameCreator(),
 								     false),
 					      theCurrentCfgScope);
 	  if (aHelper.needsAllocation()) { 
