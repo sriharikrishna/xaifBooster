@@ -330,7 +330,7 @@ namespace xaifBoosterLinearization {
     } // end for
     ExpressionVertex& theTargetVertex(theExpression.getTargetOf(theEdge));
     ExpressionVertexAlg& theTargetVertexAlg(dynamic_cast<ExpressionVertexAlg&>(theTargetVertex.getExpressionVertexAlgBase()));
-    if (theTargetVertexAlg.hasAuxilliaryVariable()) {    
+    if (theTargetVertexAlg.hasAuxiliaryVariable()) {    
       // this is a starting point for the inner iteration
       // as the recusion unwinds we find the vertices closest to 
       // the leafs first.
@@ -346,7 +346,7 @@ namespace xaifBoosterLinearization {
 	theVertexPointerPairList.push_back(PointerPair(&theTargetVertex,
 						       &theReplacementTargetVertex));
 	// set the LHS
-	theTargetVertexAlg.getAuxilliaryVariable().copyMyselfInto(theReplacementAssignment.getLHS());
+	theTargetVertexAlg.getAuxiliaryVariable().copyMyselfInto(theReplacementAssignment.getLHS());
 	// we iterate through all the in edges
 	Expression::InEdgeIteratorPair pInner(theExpression.getInEdgesOf(theTargetVertex));
 	Expression::InEdgeIterator ExpressionInEdgeI(pInner.first), ExpressionInEdgeIEnd(pInner.second);
@@ -384,7 +384,7 @@ namespace xaifBoosterLinearization {
       } // end if 
     } // end for 
     if (!theReplacementSourceVertex_p) { 
-      if (theSourceVertexAlg.hasAuxilliaryVariable()) {    
+      if (theSourceVertexAlg.hasAuxiliaryVariable()) {    
 	// check if we have a subexpression that needs to be dealt with 
 	// first 
 	if (!theSourceVertexAlg.hasReplacement()) { 
@@ -396,18 +396,18 @@ namespace xaifBoosterLinearization {
 	    localRHSExtractionOuter(*ExpressionInEdgeI);
 	  } // end for 
 	} // end if 
-	// if we have an auxilliary Variable
+	// if we have an auxiliary Variable
 	// then the replacement for this vertex needs to be a
-	// variable initialized from the AuxilliaryVariable
+	// variable initialized from the AuxiliaryVariable
 	Argument* theReplacementArgument_p=new Argument();
 	theReplacementSourceVertex_p=theReplacementArgument_p;
 	// here we have to explicitly set the ID while in all other 
 	// cases it is copied through the 'createCopyOfMyself' calls
 	theReplacementSourceVertex_p->setId(theSourceVertex.getId());
-	theSourceVertexAlg.getAuxilliaryVariable().
+	theSourceVertexAlg.getAuxiliaryVariable().
 	  copyMyselfInto(theReplacementArgument_p->getVariable());
-      } // end if (has auxilliary reference)
-      else { // doesn't have auxilliary reference
+      } // end if (has auxiliary reference)
+      else { // doesn't have auxiliary reference
 	// make a simple copy
 	theReplacementSourceVertex_p=&(theSourceVertex.createCopyOfMyself());
       } // end else 
@@ -420,7 +420,7 @@ namespace xaifBoosterLinearization {
     ExpressionEdge& theReplacementEdge(theReplacementAssignment.getRHS().addEdge(*theReplacementSourceVertex_p,
 										 theReplacementTargetVertex));
     theEdge.copyMyselfInto(theReplacementEdge);
-    if (!theSourceVertexAlg.hasAuxilliaryVariable()) {    
+    if (!theSourceVertexAlg.hasAuxiliaryVariable()) {    
       // go through the in edges of the source recursively: 
       Expression::InEdgeIteratorPair pInner(theExpression.getInEdgesOf(theSourceVertex));
       Expression::InEdgeIterator ExpressionInEdgeI(pInner.first), ExpressionInEdgeIEnd(pInner.second);
@@ -555,7 +555,7 @@ namespace xaifBoosterLinearization {
       THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::algorithm_action_2(code generation): need right hand side copy");
     if (mySSAReplacementAssignmentList.size()) 
       THROW_LOGICEXCEPTION_MACRO("xaifBoosterLinearization::AssignmentAlg::algorithm_action_2(code generation): cannot run twice");
-    // create auxilliary variables and 
+    // create auxiliary variables and 
     // attach partial expressionsions
     dynamic_cast<ExpressionAlg&>(myLinearizedRightHandSide.getExpressionAlgBase()).
       createPartialExpressions();

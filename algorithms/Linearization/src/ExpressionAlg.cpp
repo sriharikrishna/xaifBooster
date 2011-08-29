@@ -114,13 +114,13 @@ namespace xaifBoosterLinearization{
       ExpressionVertexAlg&theExpressionVertexAlg(dynamic_cast<ExpressionVertexAlg&>((*anExpressionVertexI).getExpressionVertexAlgBase()));
       if(theUsedPositions.has(0)
 	 &&
-	 !theExpressionVertexAlg.hasAuxilliaryVariable()) {
+	 !theExpressionVertexAlg.hasAuxiliaryVariable()) {
 	// we need to make a temporary variable. see
-	// ExpressionVertex::myAuxilliaryArgument_p
+	// ExpressionVertex::myAuxiliaryArgument_p
 	xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions(for intrinsic result)",
 							 getContaining(),
 							 *anExpressionVertexI);
-	theExpressionVertexAlg.makeAuxilliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
+	theExpressionVertexAlg.makeAuxiliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
 									     ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
 									     false),
 						      theCurrentCfgScope);
@@ -130,32 +130,32 @@ namespace xaifBoosterLinearization{
 	  theSRCall_p->setId("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
 	  myPartialAllocationsPList.push_back(theSRCall_p);
 	  // first argument
-	  theExpressionVertexAlg.getAuxilliaryVariable().
+	  theExpressionVertexAlg.getAuxiliaryVariable().
 	    copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
 	  // second argument 
 	  aHelper.allocationModel().copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
 	}
       } // end if
-      // now we need to loop over all arguments to determine auxilliaries
+      // now we need to loop over all arguments to determine auxiliaries
       for(Expression::ConstInEdgeIterator anExpressionEdgeI2(pE.first); anExpressionEdgeI2!=anExpressionEdgeIEnd; ++anExpressionEdgeI2) {
 	const ExpressionVertex&theSource(getContaining().getSourceOf(*anExpressionEdgeI2));
 	ExpressionVertexAlg&theSourceAlg(dynamic_cast<ExpressionVertexAlg&>(getContaining().getSourceOf(*anExpressionEdgeI2).getExpressionVertexAlgBase()));
 	ExpressionEdgeAlg&theI2EdgeAlg(dynamic_cast<ExpressionEdgeAlg&>((*anExpressionEdgeI2).getExpressionEdgeAlgBase()));
 	const InlinableIntrinsicsExpression&
 		thePartialExpression(theCatalogueItem.getExpressionVectorElement((*anExpressionEdgeI2).getPosition()));
-	if(!(theSourceAlg.hasAuxilliaryVariable())
+	if(!(theSourceAlg.hasAuxiliaryVariable())
 	&&
 	theUsedPositions.has((*anExpressionEdgeI2).getPosition())
 	&&
 	getContaining().numInEdgesOf(theSource)) {
 	  // we need to make a temporary variable. see
-	  // ExpressionVertexAlg::myAuxilliaryArgument_p
+	  // ExpressionVertexAlg::myAuxiliaryArgument_p
 	  // however it is not needed if this is a leaf vertex, i.e. 
 	  // a variable reference itself or a constant (no in edges)
 	  xaifBoosterTypeChange::TemporariesHelper aHelper("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions(for temp var)",
 							   getContaining(),
 							   theSource);
-	  theSourceAlg.makeAuxilliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
+	  theSourceAlg.makeAuxiliaryVariable(aHelper.makeTempSymbol(theCurrentCfgScope,
 								     ConceptuallyStaticInstances::instance()->getLinearizationVariableNameCreator(),
 								     false),
 					      theCurrentCfgScope);
@@ -165,7 +165,7 @@ namespace xaifBoosterLinearization{
 	    theSRCall_p->setId("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
 	    myPartialAllocationsPList.push_back(theSRCall_p);
 	    // first argument
-	    theSourceAlg.getAuxilliaryVariable().
+	    theSourceAlg.getAuxiliaryVariable().
 	      copyMyselfInto(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
 	    // second argument 
 	    aHelper.allocationModel().copyMyselfInto(theSRCall_p->addConcreteArgument(2).getArgument().getVariable());
@@ -192,9 +192,9 @@ namespace xaifBoosterLinearization{
 	} // end for 
       } // end inner loop
 
-      // in the first pass through all arguments we made sure that we make all necessary auxilliary variables, 
+      // in the first pass through all arguments we made sure that we make all necessary auxiliary variables, 
       // in a second pass we can now deal with the partial expressions, but we had to make sure that all potential
-      // arguments are already auxilliarized, therefore two passes are needed. 
+      // arguments are already auxiliarized, therefore two passes are needed. 
       // In this pass we also determine whether the ExpressionEdgeAlg has a constant PDK (the default is nonlinear)
       // second inner loop over all arguments to create concrete expressions
       for(Expression::ConstInEdgeIterator anExpressionEdgeI3(pE.first); anExpressionEdgeI3!=anExpressionEdgeIEnd; ++anExpressionEdgeI3) {
@@ -229,9 +229,9 @@ namespace xaifBoosterLinearization{
 	    }
 	  }
 	  if(theArgumentVertex_p) {
-	    // now we know that this is either an argument, a constant, or any kind of vertex with an auxilliary Argument
+	    // now we know that this is either an argument, a constant, or any kind of vertex with an auxiliary Argument
 	    ExpressionVertexAlg&theArgumentVertexAlg(dynamic_cast<ExpressionVertexAlg&>(theArgumentVertex_p->getExpressionVertexAlgBase()));
-	    if(!theArgumentVertexAlg.hasAuxilliaryVariable()) { // this is an Argument or a Constant
+	    if(!theArgumentVertexAlg.hasAuxiliaryVariable()) { // this is an Argument or a Constant
 	      // if the following cast fails then we have a constant which we can just skip:
 	      const Argument* theArgument_p=dynamic_cast<const Argument*>(theArgumentVertex_p);
 	      if(!theArgument_p) {
@@ -265,12 +265,12 @@ namespace xaifBoosterLinearization{
 	  if(theArgumentVertex_p) {
 	    // now we know that this is either
 	    // a Argument or a Constant
-	    // or any kind of vertex with an auxilliary Argument
+	    // or any kind of vertex with an auxiliary Argument
 	    ExpressionVertexAlg&theArgumentVertexAlg(dynamic_cast<ExpressionVertexAlg&>(theArgumentVertex_p->getExpressionVertexAlgBase()));
-	    if(theArgumentVertexAlg.hasAuxilliaryVariable()) {
+	    if(theArgumentVertexAlg.hasAuxiliaryVariable()) {
 	      Argument* aNewArgument_p=new Argument();
 	      theNewVertex_p=aNewArgument_p;
-	      theArgumentVertexAlg.getAuxilliaryVariable().copyMyselfInto(aNewArgument_p->getVariable());
+	      theArgumentVertexAlg.getAuxiliaryVariable().copyMyselfInto(aNewArgument_p->getVariable());
 	      allConst=false;
 	    }
 	    else { // this is an Argument or a Constant
@@ -358,7 +358,7 @@ namespace xaifBoosterLinearization{
 							     false),
 				      theCurrentCfgScope);
 	// JU: this assignment of the vertex Id might have to change 
-	// if we create vector assignments as auxilliary variables...
+	// if we create vector assignments as auxiliary variables...
 	theVariableSymbolReference_p->setId("1");
 	theVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::ExpressionAlg::createPartialExpressions");
 	theLHS.supplyAndAddVertexInstance(*theVariableSymbolReference_p);

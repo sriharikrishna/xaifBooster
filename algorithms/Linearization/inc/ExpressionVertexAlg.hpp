@@ -38,12 +38,12 @@ namespace xaifBoosterLinearization {
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
 
-    void makeAuxilliaryVariable(const Symbol& aSymbol,
+    void makeAuxiliaryVariable(const Symbol& aSymbol,
 				const Scope& aScope);
 
-    bool hasAuxilliaryVariable() const ;
+    bool hasAuxiliaryVariable() const ;
 
-    const Variable& getAuxilliaryVariable() const ;
+    const Variable& getAuxiliaryVariable() const ;
 
     bool hasReplacement() const; 
 
@@ -84,17 +84,17 @@ namespace xaifBoosterLinearization {
     /**
      * this is used for static single assignment code 
      * when we assign an intermediate result to an 
-     * auxilliary variable to avoid recomputations
+     * auxiliary variable to avoid recomputations
      * for use in partial derivatives
      * this will be set during linearization
      * this is owned by this class 
-     * by means of calling makeAuxilliaryVariable;
+     * by means of calling makeAuxiliaryVariable;
      * deleted in the dtor
      */
-    Variable* myAuxilliaryVariable_p; 
+    Variable* myAuxiliaryVariable_p; 
 
     /**
-     * for each vertex with auxilliary Variable
+     * for each vertex with auxiliary Variable
      * we will have to built an assignment that replaces 
      * the subgraph with this vertex as maximal element 
      * in the original RHS

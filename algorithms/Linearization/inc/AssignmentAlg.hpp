@@ -186,7 +186,7 @@ namespace xaifBoosterLinearization {
 
     /**
      * create replacement assignments that use the 
-     * auxilliary variables for SSA
+     * auxiliary variables for SSA
      */
     void makeSSACodeList();
 

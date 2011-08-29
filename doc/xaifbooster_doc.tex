@@ -744,7 +744,7 @@ classes non-template classes which leads to less type checking at compile time.
 \section{Canonicalization}
 
 The output of function calls and calls to non-inlinable intrinsics
-is assigned to auxilliary variable references.
+is assigned to auxiliary variable references.
 
 \section{Linearization}
 \label{sec:linearization}
@@ -753,7 +753,7 @@ Linearization is applied to right-hand sides of canonicalized
 assignments. Two tasks are performed.
 \begin{enumerate}
 \item The expression is transformed into {\em static single
-assignment} (SSA) form by attaching auxilliary variable references
+assignment} (SSA) form by attaching auxiliary variable references
 to intermediate vertices where needed (see \sect{\ref{ssec:ssa}}).
 \item Expressions for computing the local partial derivatives are
 associated with all edges in the expression (see \sect{\ref{ssec:lin_intr}}).
@@ -764,7 +764,7 @@ associated with all edges in the expression (see \sect{\ref{ssec:lin_intr}}).
 \index{static single assignment form}
 
 For an edge $(i,j)$ the value $v_i$ (resp. $v_j$) is assigned to an 
-auxilliary variable if $\frac{\partial v_j}{\partial v_i}$ takes
+auxiliary variable if $\frac{\partial v_j}{\partial v_i}$ takes
 $v_i$ (resp. $v_j$) as an argument. The link between the
 abstract specification of partial derivatives of some inlinable
 intrinsic and the current contex is established via the position
@@ -878,7 +878,7 @@ $$
 a_k^{\tt ssa}, a_k^{\tt lin}, b^{\tt jac}) \quad .$$
 $a_i^{\tt ssa}$ is the code list of $a_i.$
 $a_i^{\tt lin}$ is the linearization of $a_i,$ that is, each
-local partial derivative is assigned to a unique auxilliary variable.
+local partial derivative is assigned to a unique auxiliary variable.
 $b^{\tt jac}$ denotes the code that accumulates the Jacobian matrix of
 $b$ based on the local partial derivatives that were computed by
 $a_i^{\tt lin}$ for $i=1,\ldots,k.$ This approach takes care of possible
@@ -1025,7 +1025,7 @@ Perform the following steps.
 {\bf outerRecursion$(v,v')$:}\\
 \> $\forall (v'',v)\in E_e$ \\
 \>\> goto {\bf outerRecursion}$(v'',v)$ \\ 
-\> if ($v'$ has auxilliary variable $v'_{aux}$) (see \ref{ssec:ssa}) \\
+\> if ($v'$ has auxiliary variable $v'_{aux}$) (see \ref{ssec:ssa}) \\
 \>\> if $(\exists A^{ssa}(v'))$\\
 \>\>\> return\\
 \>\> create a new 'empty' assignment $A^*$\\
@@ -1037,7 +1037,7 @@ Perform the following steps.
 \> return \\
 \\
 {\bf innerRecursion$(v,v',A^*)$:}\\
-\> if ($v$ has auxilliary variable $v_{aux}$) \\
+\> if ($v$ has auxiliary variable $v_{aux}$) \\
 \>\> if $(\notexists A^{ssa}(v))$\\
 \>\>\> goto {\bf outerRecursion}$(v,v')$ \\
 \>\> $v_{add}:=v_{aux}$\\
@@ -1078,7 +1078,7 @@ Perform the following steps.
 {\bf outerRecursion$(v,v')$:}\\
 \> $\forall (v'',v)\in E_e$ \\
 \>\> goto {\bf outerRecursion}$(v'',v)$ \\ 
-\> if ($v'$ has auxilliary variable $v'_{aux}$) (see \ref{ssec:ssa}) \\
+\> if ($v'$ has auxiliary variable $v'_{aux}$) (see \ref{ssec:ssa}) \\
 \>\> if $(\exists A^{ssa}(v'))$\\
 \>\>\> return\\
 \>\> create a new 'empty' assignment $A^*$\\
@@ -1090,7 +1090,7 @@ Perform the following steps.
 \> return \\
 \\
 {\bf innerRecursion$(v,v',A^*)$:}\\
-\> if ($v$ has auxilliary variable $v_{aux}$) \\
+\> if ($v$ has auxiliary variable $v_{aux}$) \\
 \>\> if $(\notexists A^{ssa}(v))$\\
 \>\>\> goto {\bf outerRecursion}$(v,v')$ \\
 \>\> $v_{add}:=v_{aux}$\\

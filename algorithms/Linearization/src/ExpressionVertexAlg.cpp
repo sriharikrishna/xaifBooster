@@ -19,14 +19,14 @@ namespace xaifBoosterLinearization {
 
   ExpressionVertexAlg::ExpressionVertexAlg(ExpressionVertex& theContainingExpressionVertex) : 
     ExpressionVertexAlgBase(theContainingExpressionVertex),
-    myAuxilliaryVariable_p(0),
+    myAuxiliaryVariable_p(0),
     myReplacementAssignment_p(0), 
     myActiveFlag(true) { 
   }
 
   ExpressionVertexAlg::~ExpressionVertexAlg() { 
-    if (myAuxilliaryVariable_p)
-      delete myAuxilliaryVariable_p;
+    if (myAuxiliaryVariable_p)
+      delete myAuxiliaryVariable_p;
     if (myReplacementAssignment_p)
       delete myReplacementAssignment_p;
   }
@@ -37,9 +37,9 @@ namespace xaifBoosterLinearization {
     out << "xaifBoosterLinearization::ExpressionVertexAlg["
 	<< this 
 	<< ","
-	<< "myAuxilliaryVariable_p="
+	<< "myAuxiliaryVariable_p="
 	<< "="
-	<< myAuxilliaryVariable_p
+	<< myAuxiliaryVariable_p
 	<< ","
 	<< "myReplacementAssignment_p="
 	<< "="
@@ -60,32 +60,32 @@ namespace xaifBoosterLinearization {
   void ExpressionVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
-  void ExpressionVertexAlg::makeAuxilliaryVariable(const Symbol& aSymbol,
+  void ExpressionVertexAlg::makeAuxiliaryVariable(const Symbol& aSymbol,
 						   const Scope& aScope) { 
-    if (myAuxilliaryVariable_p)
-      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::makeAuxilliaryVariable: already set");
+    if (myAuxiliaryVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::makeAuxiliaryVariable: already set");
     Variable* theVariable_p=new Variable();
     VariableSymbolReference* theVariableSymbolReference_p=new VariableSymbolReference(aSymbol,
 										      aScope);
     // JU: this assignment of the vertex Id might have to change 
-    // if we create vector assignments as auxilliary variables...
+    // if we create vector assignments as auxiliary variables...
     theVariableSymbolReference_p->setId("1");
-    theVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::ExpressionVertexAlg::makeAuxilliaryVariable");
+    theVariableSymbolReference_p->setAnnotation("xaifBoosterLinearization::ExpressionVertexAlg::makeAuxiliaryVariable");
     theVariable_p->supplyAndAddVertexInstance(*theVariableSymbolReference_p);
     theVariable_p->getAliasMapKey().setTemporary();
     theVariable_p->getDuUdMapKey().setTemporary();
-    myAuxilliaryVariable_p=theVariable_p;
+    myAuxiliaryVariable_p=theVariable_p;
   }
   
-  bool ExpressionVertexAlg::hasAuxilliaryVariable() const { 
-    return (myAuxilliaryVariable_p!=0);
+  bool ExpressionVertexAlg::hasAuxiliaryVariable() const { 
+    return (myAuxiliaryVariable_p!=0);
   } 
 
   const Variable& 
-  ExpressionVertexAlg::getAuxilliaryVariable() const { 
-    if (!myAuxilliaryVariable_p)
-      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::getAuxilliaryVariable: not set");
-    return *myAuxilliaryVariable_p;
+  ExpressionVertexAlg::getAuxiliaryVariable() const { 
+    if (!myAuxiliaryVariable_p)
+      THROW_LOGICEXCEPTION_MACRO("ExpressionVertexAlg::getAuxiliaryVariable: not set");
+    return *myAuxiliaryVariable_p;
   } 
 
   bool ExpressionVertexAlg::hasReplacement() const { 

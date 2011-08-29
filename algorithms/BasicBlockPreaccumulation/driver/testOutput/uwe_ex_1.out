@@ -114,7 +114,7 @@
         </xaif:Assignment>
         <xaif:Assignment statement_id="_replacement_1_for_sage_1">
           <xaif:AssignmentLHS active="false" deriv="0" constant="0">
-            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionVertexAlg::makeAuxilliaryVariable" scope_id="2"/>
+            <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionVertexAlg::makeAuxiliaryVariable" scope_id="2"/>
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="2" annotation="" name="sin_scal"/>
@@ -131,7 +131,7 @@
           <xaif:AssignmentRHS>
             <xaif:Intrinsic vertex_id="4" annotation="" name="mul_scal_scal"/>
             <xaif:VariableReference vertex_id="2" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionVertexAlg::makeAuxilliaryVariable" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionVertexAlg::makeAuxiliaryVariable" scope_id="2"/>
             </xaif:VariableReference>
             <xaif:VariableReference vertex_id="3" active="true" deriv="0" constant="0">
               <xaif:SymbolReference vertex_id="1" symbol_id="y" annotation="" scope_id="2"/>
@@ -168,7 +168,7 @@
           </xaif:AssignmentLHS>
           <xaif:AssignmentRHS>
             <xaif:VariableReference vertex_id="1" active="false" deriv="0" constant="0">
-              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionVertexAlg::makeAuxilliaryVariable" scope_id="2"/>
+              <xaif:SymbolReference vertex_id="1" symbol_id="test_prefixlin_1" annotation="xaifBoosterLinearization::ExpressionVertexAlg::makeAuxiliaryVariable" scope_id="2"/>
             </xaif:VariableReference>
           </xaif:AssignmentRHS>
         </xaif:Assignment>
