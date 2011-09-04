@@ -66,6 +66,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     PrivateLinearizedComputationalGraph* myComputationalGraph_p;
     
+    void fillLCGIndependentsList(); 
+
+    void fillLCGDependentsList();
+
     xaifBoosterCrossCountryInterface::Elimination& addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg); 
 
     typedef std::list<xaifBoosterCrossCountryInterface::Elimination*> EliminationPList;
