@@ -131,6 +131,83 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
+  void
+  Sequence::fillLCGIndependentsList() {
+    PrivateLinearizedComputationalGraph::VertexIteratorPair p(myComputationalGraph_p->vertices());
+    for (PrivateLinearizedComputationalGraph::VertexIterator it(p.first); it != p.second; ++it)
+      // here we should have constants etc. already removed
+      // JU: this is temporary until we have r/w analysis
+      if (!myComputationalGraph_p->numInEdgesOf(*it))
+	myComputationalGraph_p->addToIndependentList(*it);
+  }
+
+  void
+  Sequence::fillLCGDependentsList() {
+    // now look at all the vertices in the dependent list 
+    // and remove the ones not needed as indicated by 
+    // the duud information:
+    const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList& theDepVertexPList(myComputationalGraph_p->getDependentList());
+    for (xaifBoosterCrossCountryInterface::LinearizedComputationalGraph::VertexPointerList::const_iterator aDepVertexPListI(theDepVertexPList.begin());
+	 aDepVertexPListI!=theDepVertexPList.end();) { 
+      // cast it first
+      const PrivateLinearizedComputationalGraphVertex& myPrivateVertex(dynamic_cast<const PrivateLinearizedComputationalGraphVertex&>(**aDepVertexPListI));
+      // advance the iterator before we delete anything:
+      ++aDepVertexPListI;
+      // all the dependent ones should have the LHS set
+      const StatementIdSetMapKey& aDuUdMapKey(myPrivateVertex.getOriginalVariable().getDuUdMapKey()); 
+      if (aDuUdMapKey.getKind()==InfoMapKey::TEMP_VAR) { 
+        // now the assumption is that temporaries are local to the flattened Sequence
+        // and we can remove: 
+        myComputationalGraph_p->removeFromDependentList(myPrivateVertex);
+        continue;
+      }
+      DuUdMapUseResult theDuUdMapUseResult(
+       ConceptuallyStaticInstances::instance()->getCallGraph().getDuUdMap().use(aDuUdMapKey,
+                                                                                myPrivateVertex.getStatementId(),
+                                                                                myComputationalGraph_p->getStatementIdLists())
+      );
+      if (theDuUdMapUseResult.myAnswer==DuUdMapUseResult::AMBIGUOUS_INSIDE 
+	  || 
+	  theDuUdMapUseResult.myAnswer==DuUdMapUseResult::UNIQUE_INSIDE) { 
+	if (!myComputationalGraph_p->numOutEdgesOf(myPrivateVertex)) { 
+	  if (theDuUdMapUseResult.myActiveUse!=ActiveUseType::PASSIVEUSE) { 
+	    // if the use is not strictly passive then in case of UNIQUE_INSIDE this vertex 
+	    // should not be maximal and in case of AMBIGUOUS_INSIDE there should have 
+	    // been a split. 
+	    THROW_LOGICEXCEPTION_MACRO("Sequence::fillLCGDependentsList: attempting to remove a maximal vertex " << myPrivateVertex.getOriginalVariable().debug().c_str()
+                                       << " key " << aDuUdMapKey.debug().c_str() << " from the dependent list");
+	  }
+	  // else do nothing, just leave it. This may indicate some inconsistency in 
+	  // the activity results
+	}
+	else { 
+          // we only use it in the scope of this flattened sequence, therefore remove it
+          DBG_TAG_MACRO(DbgGroup::DATA,"depList","Sequence::fillLCGDependentsList:"
+                        << " removing dependent " << myPrivateVertex.getOriginalVariable().debug().c_str()
+                        << " list size: " << theDepVertexPList.size()); 
+          myComputationalGraph_p->removeFromDependentList(myPrivateVertex);
+          continue;
+	}
+      }
+      else { 
+        if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
+          if (myComputationalGraph_p->numOutEdgesOf(myPrivateVertex)) { 
+            DBG_TAG_MACRO(DbgGroup::DATA,"depList","Sequence::fillLCGDependentsList:"
+                          << " keeping non-maximal dependent " << myPrivateVertex.getOriginalVariable().debug().c_str()
+                          << " key is " << aDuUdMapKey.debug().c_str()
+                          << " use result is " << theDuUdMapUseResult.myAnswer
+                          << " lists are " << myComputationalGraph_p->getStatementIdLists().debug().c_str()); 
+          }
+          else {
+            DBG_TAG_MACRO(DbgGroup::DATA,"depList","Sequence::fillLCGDependentsList:"
+                          << " keeping regular dependent " << myPrivateVertex.getOriginalVariable().debug().c_str()
+                          << " key is " << aDuUdMapKey.debug().c_str());
+          }
+        }
+      } 
+    }
+  }
+
   xaifBoosterCrossCountryInterface::Elimination& Sequence::addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg) { 
     xaifBoosterCrossCountryInterface::Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination (lcg);
     myEliminationPList.push_back(theElimination_p);

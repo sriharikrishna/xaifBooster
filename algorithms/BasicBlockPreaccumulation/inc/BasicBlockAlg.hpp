@@ -272,9 +272,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     
     void incrementGlobalSequenceCounter();
       
-    void fillIndependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph); 
-    void fillDependentsList(PrivateLinearizedComputationalGraph& theComputationalGraph);
-
     /**
      * Traverses theAccumulationGraph for the best elimination in \p aSequence in topological order,
      * generating assignments for all non-leaf vertices that are either maximal or have >1 outedges
