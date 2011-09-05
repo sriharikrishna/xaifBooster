@@ -54,7 +54,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   unsigned int BasicBlockAlg::ourSequenceCounter=0;
   PreaccumulationCounter BasicBlockAlg::ourPreaccumulationCounter;
 
-  bool BasicBlockAlg::ourPermitNarySaxFlag=false;
   bool BasicBlockAlg::ourRuntimeCountersFlag=false;
   bool BasicBlockAlg::ourUseRandomizedHeuristicsFlag = false;
   PreaccumulationMetric::PreaccumulationMetric_E BasicBlockAlg::ourPreaccumulationMetric = PreaccumulationMetric::SCARCITY_METRIC;
@@ -309,18 +308,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 aSequencePListI != myUniqueSequencePList.end();
 	 ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
       Sequence& currentSequence (**aSequencePListI);
-      currentSequence.fillLCGIndependentsList();
-      currentSequence.fillLCGDependentsList();
       if (currentSequence.myComputationalGraph_p->numVertices()) {
+        currentSequence.fillLCGIndependentsList();
+        currentSequence.fillLCGDependentsList();
 	// hand off to transformation engine, which will make JAEs and a remainder graph
 	runElimination(currentSequence);
 	generateAccumulationExpressions(currentSequence);
 	makePropagationVariables(currentSequence);
-	generateRemainderGraphPropagators(currentSequence);
-        if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
-          currentSequence.getBestElimination().getAccumulationGraph().show("AccumulationGraph");
-          currentSequence.getBestRemainderGraph().show("RemainderGraph");
-        }
+	currentSequence.generateRemainderGraphPropagators();
       } // end if LCG has vertices
     } // end iterate over sequences
     DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
@@ -490,6 +485,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       } // end iterate over all vertices
     } // end while (!done)
     theAccumulationGraph.finishVisit();
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
+      aSequence.getBestElimination().getAccumulationGraph().show("AccumulationGraph");
+    }
   } // end BasicBlockAlg::generateAccumulationExpressions()
 
   void BasicBlockAlg::evaluateAccVertex(xaifBoosterCrossCountryInterface::AccumulationGraphVertex& theAccVertex,
@@ -876,212 +874,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         } // end if there's no original variable
       } // end non-independent
     } // end iterate over all remainder vertices
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
+      aSequence.getBestRemainderGraph().show("RemainderGraph");
+    }
   } // end BasicBlockAlg::makePropagationVariables()
-
-  void BasicBlockAlg::generateRemainderGraphPropagators(Sequence& aSequence) { 
-    const RemainderGraph& theRemainderGraph (aSequence.getBestRemainderGraph());
-    aSequence.getBestRemainderGraph().initVisit();
-    bool done = false;
-    while(!done) {
-      done = true;
-      RemainderGraph::ConstVertexIteratorPair aVertexIP(theRemainderGraph.vertices());
-      for(RemainderGraph::ConstVertexIterator anLCGVertI(aVertexIP.first),anLCGvertEndI(aVertexIP.second);
-	  anLCGVertI != anLCGvertEndI; ++anLCGVertI) {
-	const RemainderGraphVertex& theRemainderTargetV(*anLCGVertI);
-	// skip visited vertices
-	if (theRemainderTargetV.wasVisited()) continue;
-	// skip minimal vertices
-	if (!theRemainderGraph.numInEdgesOf(theRemainderTargetV)) {
-	  theRemainderTargetV.setVisited();
-	  continue;
-	}
-	// check whether predecessors have been visited
-	RemainderGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
-	RemainderGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
-	for (; iei != ie_end; ++iei) // break on unvisited predecessor
-	  if (!theRemainderGraph.getSourceOf(*iei).wasVisited()) break;
-	if (iei != ie_end) // skip this vertex if a predecessor hasn't been visited
-	  done = false;
-	else { // all preds visited, so visit this vertex
-	  theRemainderTargetV.setVisited();
-          if (doesPermitNarySax())
-            propagateToRemainderVertex_narySax(theRemainderTargetV,
-                                               aSequence);
-          else 
-            propagateToRemainderVertex(theRemainderTargetV,
-                                       aSequence);
-	} // end visit
-      } // end iterate over all vertices
-    } // end while(!done)
-    aSequence.getBestRemainderGraph().finishVisit();
-  } // end BasicBlockAlg::generateRemainderGraphPropagators()
-
-  void BasicBlockAlg::propagateToRemainderVertex(const RemainderGraphVertex& theRemainderTargetV,
-                                                 Sequence& aSequence) {
-    const RemainderGraph& theRemainderGraph (aSequence.getBestRemainderGraph());
-    std::list<const RemainderGraphEdge*> passiveInEdges,linearOneInEdges,linearMinusOneInEdges,linearInEdges,nonlinearInEdges;
-
-    // first iterate over inedges to build up lists of different types of partial derivative kinds
-    RemainderGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
-    for (RemainderGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
-         iei != ie_end; ++iei) {
-      const RemainderGraphEdge& theRemainderGraphEdge(*iei);
-      switch (theRemainderGraphEdge.getAccumulationGraphVertex().getPartialDerivativeKind()) {
-      case PartialDerivativeKind::PASSIVE:
-	passiveInEdges.push_back(&theRemainderGraphEdge);
-	break;
-      case PartialDerivativeKind::LINEAR_ONE:
-	linearOneInEdges.push_back(&theRemainderGraphEdge);
-	break;
-      case PartialDerivativeKind::LINEAR_MINUS_ONE:
-	linearMinusOneInEdges.push_back(&theRemainderGraphEdge);
-	break;
-      case PartialDerivativeKind::LINEAR:
-	linearInEdges.push_back(&theRemainderGraphEdge);
-	break;
-      case PartialDerivativeKind::NONLINEAR:
-	nonlinearInEdges.push_back(&theRemainderGraphEdge);
-	break;
-      default:
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::BasicBlockAlg::propagateToRemainderVertex:"
-				   << " invalid PDK (" << PartialDerivativeKind::toString(theRemainderGraphEdge.getAccumulationGraphVertex().getPartialDerivativeKind()) << ") for saxpy factor");
-	break;
-      } // end switch on PDK
-    } // end for all inedges
-
-    bool isZero = true;
-
-    // LINEAR_ONE: SetDeriv and IncDeriv
-    for (std::list<const RemainderGraphEdge*>::const_iterator loi = linearOneInEdges.begin();
-         loi != linearOneInEdges.end(); ++loi) {
-      const RemainderGraphVertex& theSourceVertex(theRemainderGraph.getSourceOf(**loi));
-      if (isZero) // SetDeriv
-        aSequence.myDerivativePropagator.addSetDerivToEntryPList(theRemainderTargetV.getPropagationVariable(),
-                                                                 theSourceVertex.getPropagationVariable());
-      else // IncDeriv
-        aSequence.myDerivativePropagator.addIncDerivToEntryPList(theRemainderTargetV.getPropagationVariable(),
-                                                                 theSourceVertex.getPropagationVariable());
-      isZero = false;
-    }
-    // LINEAR_MINUS_ONE: SetNegDeriv and DecDeriv
-    for (std::list<const RemainderGraphEdge*>::const_iterator lmoi = linearMinusOneInEdges.begin();
-         lmoi != linearMinusOneInEdges.end(); ++lmoi) {
-      const RemainderGraphVertex& theSourceVertex(theRemainderGraph.getSourceOf(**lmoi));
-      if (isZero) // SetNegDeriv
-        aSequence.myDerivativePropagator.addSetNegDerivToEntryPList(theRemainderTargetV.getPropagationVariable(),
-                                                                    theSourceVertex.getPropagationVariable());
-      else // DecDeriv
-        aSequence.myDerivativePropagator.addDecDerivToEntryPList(theRemainderTargetV.getPropagationVariable(),
-                                                                 theSourceVertex.getPropagationVariable());
-      isZero = false;
-    }
-    // LINEAR
-    for (std::list<const RemainderGraphEdge*>::const_iterator li = linearInEdges.begin();
-         li != linearInEdges.end(); ++li) {
-      const RemainderGraphEdge& currentRGE(**li);
-      Constant theConstantFactor (SymbolType::REAL_STYPE, false);
-      theConstantFactor.setId(1);
-      theConstantFactor.setdouble(currentRGE.getAccumulationGraphVertex().getValue());
-      xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& theNewSaxpy
-	(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theConstantFactor,
-							       (theRemainderGraph.getSourceOf(currentRGE)).getPropagationVariable(),
-							       theRemainderTargetV.getPropagationVariable()));
-      if (isZero)
-        theNewSaxpy.useAsSax();
-      isZero = false;
-    }
-    // NONLINEAR - sax/saxpy
-    for (std::list<const RemainderGraphEdge*>::const_iterator nli = nonlinearInEdges.begin();
-         nli != nonlinearInEdges.end(); ++nli) {
-      const RemainderGraphEdge& currentRGE(**nli);
-      xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy& theNewSaxpy
-	(aSequence.myDerivativePropagator.addSaxpyToEntryPList(currentRGE.getAccumulationGraphVertex().getLHSVariable(),
-							       (theRemainderGraph.getSourceOf(currentRGE)).getPropagationVariable(),
-							       theRemainderTargetV.getPropagationVariable()));
-      if (isZero)
-        theNewSaxpy.useAsSax();
-      isZero = false;
-    }
-  } 
-
-  void BasicBlockAlg::propagateToRemainderVertex_narySax(const RemainderGraphVertex& theRemainderTargetV,
-                                                         Sequence& aSequence) {
-    const RemainderGraph& theRemainderGraph (aSequence.getBestRemainderGraph());
-    xaifBoosterDerivativePropagator::DerivativePropagatorSaxpy* theSax_p (NULL);
-    // we will create a single SAX operation that encompasses the derivative components from all the inedges
-    bool allPassive = true;
-    RemainderGraph::ConstInEdgeIteratorPair inEdgeIP (theRemainderGraph.getInEdgesOf(theRemainderTargetV));
-    for (RemainderGraph::ConstInEdgeIterator iei (inEdgeIP.first), ie_end (inEdgeIP.second);
-         iei != ie_end; ++iei) {
-      const RemainderGraphEdge& currentRGE(*iei);
-      const RemainderGraphVertex& theRemainderSourceV(theRemainderGraph.getSourceOf(currentRGE));
-      const xaifBoosterCrossCountryInterface::AccumulationGraphVertex& theAccVertex(currentRGE.getAccumulationGraphVertex());
-      if (theAccVertex.getPartialDerivativeKind() == PartialDerivativeKind::PASSIVE)
-        continue; // skip PASSIVE inedges
-      allPassive = false;
-      switch (theAccVertex.getPartialDerivativeKind()) {
-      case PartialDerivativeKind::LINEAR_ONE: {
-	//linearOneInEdges.push_back(&*iei);
-	Constant theTempConstant (SymbolType::INTEGER_STYPE, false);
-	theTempConstant.setId(1);
-	theTempConstant.setint(1);
-	if (theSax_p)
-	  theSax_p->addAX(theTempConstant,
-			  theRemainderSourceV.getPropagationVariable());
-	else
-	  theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
-									     theRemainderSourceV.getPropagationVariable(),
-									     theRemainderTargetV.getPropagationVariable()));
-	break;
-      }
-      case PartialDerivativeKind::LINEAR_MINUS_ONE: {
-	Constant theTempConstant (SymbolType::INTEGER_STYPE, false);
-	theTempConstant.setId(1);
-	theTempConstant.setint(-1);
-	if (theSax_p)
-	  theSax_p->addAX(theTempConstant,
-			  theRemainderSourceV.getPropagationVariable());
-	else
-	  theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
-									     theRemainderSourceV.getPropagationVariable(),
-									     theRemainderTargetV.getPropagationVariable()));
-	break;
-      }
-      case PartialDerivativeKind::LINEAR: {
-	Constant theTempConstant (SymbolType::REAL_STYPE, false);
-	theTempConstant.setId(1);
-	theTempConstant.setdouble(theAccVertex.getValue());
-	if (theSax_p)
-	  theSax_p->addAX(theTempConstant,
-			  theRemainderSourceV.getPropagationVariable());
-	else
-	  theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theTempConstant,
-									     theRemainderSourceV.getPropagationVariable(),
-									     theRemainderTargetV.getPropagationVariable()));
-	break;
-      }
-      case PartialDerivativeKind::NONLINEAR: {
-	if (theSax_p)
-	  theSax_p->addAX(theAccVertex.getLHSVariable(),
-			  theRemainderSourceV.getPropagationVariable());
-	else
-	  theSax_p = &(aSequence.myDerivativePropagator.addSaxpyToEntryPList(theAccVertex.getLHSVariable(),
-									     theRemainderSourceV.getPropagationVariable(),
-									     theRemainderTargetV.getPropagationVariable()));
-	break;
-      }
-      default:
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::BasicBlockAlg::propagateToRemainderVertex:"
-				   << " invalid PDK (" << PartialDerivativeKind::toString(theAccVertex.getPartialDerivativeKind()) << ") for saxpy factor");
-	break;
-      } // end switch on PDK
-    } // end for all inedges
-    if (!theSax_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockPreaccumulation::BasicBlockAlg::BasicBlockAlg::propagateToRemainderVertex:"
-                                 << " remainder vertex " << theRemainderTargetV.debug() << " has no inedges with non-passive partial derivative kind");
-    // this will be the sole propagation entry for theRemainderTargetV
-    theSax_p->useAsSax();
-  } 
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
@@ -1097,14 +893,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   const BasicBlock&
   BasicBlockAlg::getContaining() const {
     return dynamic_cast<const BasicBlock&>(myContaining);
-  }
-
-  void BasicBlockAlg::permitNarySax() { 
-    ourPermitNarySaxFlag=true;
-  }
-
-  bool BasicBlockAlg::doesPermitNarySax() { 
-    return ourPermitNarySaxFlag;
   }
 
   void BasicBlockAlg::useRandomizedHeuristics() {

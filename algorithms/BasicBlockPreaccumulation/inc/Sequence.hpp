@@ -60,6 +60,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     virtual bool hasExpression(const Expression& anExpression) const;
 
     /**
+     * we can allow to have all 'ax' factors collected 
+     * into one DerivativePropagator per 'y'
+     */
+    static void permitNarySax();
+
+    static bool doesPermitNarySax();
+
+    /**
      * determine whether an inlinable Assignment
      * \p aAssignment can be appended to this sequence
      * @returns true if 
@@ -144,11 +152,23 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void
     printXMLHierarchyImpl(std::ostream&) const;
 
+    /**
+     * traverses the remainder graph and creates a derivative propagator entry for every edge.
+     * created sax operations are n-ary if ourPermitNarySaxFlag is true
+     */
+    void generateRemainderGraphPropagators(); 
+
   protected:
 
     CAssignmentPList myAssignmentPList;
 
   private: 
+
+    /** 
+     * if this flag is true we attempt to collect 
+     * all 'ax' factors ordered by 'y'
+     */ 
+    static bool ourPermitNarySaxFlag;
 
     /**
      * list to hold allocation calls to be added to 
@@ -187,6 +207,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     RemainderGraph* myBestRemainderGraph_p;
       
+    /*
+     * Produces all the propagation code relevent to \p theRemainderTargetV.
+     * A separate call is created for every inedge, where the unit edges are processed first.
+     * This lets us start with a setderiv or a setnegderiv whenever possible.
+     * The constant and variable edges are subsequently handled with Sax(py) operations.
+     */
+    void propagateToRemainderVertex(const RemainderGraphVertex& theRemainderTargetV);
+
+    /**
+     * creates a single n-ary SAX operation for propagating to \p theRemainderTargetV
+     */
+    void propagateToRemainderVertex_narySax(const RemainderGraphVertex& theRemainderTargetV);
+
   }; 
 
 } 
