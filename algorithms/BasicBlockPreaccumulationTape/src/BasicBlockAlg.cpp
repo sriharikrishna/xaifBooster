@@ -80,7 +80,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   std::string BasicBlockAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg[" << xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::debug().c_str()
  	<< "]" << std::ends;  
     return out.str();
   } // end of BasicBlockAlg::debug

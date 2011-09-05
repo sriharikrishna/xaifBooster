@@ -73,12 +73,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     pm.releaseInstance();
   } // end of BasicBlockAlg::printXMLHierarchy
   
-  std::string BasicBlockAlg::debug () const { 
+  std::string
+  BasicBlockAlg::debug () const {
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg[" << this
-	<< "]" << std::ends;  
+    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg[" << xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::debug().c_str()
+        << "]" << std::ends;  
     return out.str();
-  } // end of BasicBlockAlg::debug
+  }
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 

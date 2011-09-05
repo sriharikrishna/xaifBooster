@@ -42,14 +42,13 @@ namespace xaifBoosterLinearization {
     out << "xaifBoosterLinearization::AssignmentAlg[" << AssignmentAlgBase::debug().c_str()
         << ",myHaveLinearizedRHSFlag=" << myHaveLinearizedRHSFlag
         << ",myActiveFlag=" << myActiveFlag
-        << ",myContaining=" << getContainingAssignment().debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of AssignmentAlg::debug
 
   void
   AssignmentAlg::printXMLHierarchy(std::ostream& os) const { 
-    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterLinearization::AssignmentAlg::printXMLHierarchy: entered for " << this);
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterLinearization::AssignmentAlg::printXMLHierarchy: entered for " << debug().c_str());
     // New print order
     //---------------------------------
     // There is some question as to how the aux and lin assignments should be ordered.

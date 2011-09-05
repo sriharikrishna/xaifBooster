@@ -36,9 +36,7 @@ namespace xaifBooster {
 
   std::string Marker::debug () const { 
     std::ostringstream out;
-    out << "Marker[" 
-	<< this 
-	<< BasicBlockElement::debug().c_str()
+    out << "Marker[" << BasicBlockElement::debug().c_str()
 	<< ",myAnnotation=" << myAnnotation.c_str() 
 	<< ",myAnnotationFlag=" << myAnnotationFlag
 	<< "]" << std::ends;  

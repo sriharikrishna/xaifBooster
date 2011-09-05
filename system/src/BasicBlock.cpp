@@ -81,14 +81,14 @@ namespace xaifBooster {
     pm.releaseInstance();
   } // end of BasicBlock::printXMLHierarchyImpl
 
-  std::string BasicBlock::debug () const { 
+  std::string
+  BasicBlock::debug() const {
     std::ostringstream out;
-    out << "BasicBlock[" << this 
-	<< PlainBasicBlock::debug().c_str()
-	<< ControlFlowGraphVertex::debug().c_str()
-	<< "]" << std::ends;  
+    out << "BasicBlock[" << PlainBasicBlock::debug().c_str()
+                  << "," << ControlFlowGraphVertex::debug().c_str()
+        << "]" << std::ends;
     return out.str();
-  } // end of BasicBlock::debug
+  }
 
   void BasicBlock::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
     ConceptuallyStaticInstances::instance()->getTraversalStack().setCurrentBasicBlockInstance(*this);

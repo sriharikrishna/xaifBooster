@@ -24,6 +24,8 @@ namespace xaifBooster {
 
     virtual ~BasicBlockAlgBase();
 
+    virtual std::string debug() const;
+
   private: 
 
     /** 

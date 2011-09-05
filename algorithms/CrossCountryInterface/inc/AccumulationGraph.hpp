@@ -36,6 +36,10 @@ namespace xaifBoosterCrossCountryInterface {
 
     std::string debug() const;
 
+    /// calls GraphVizDisplay::show
+    void
+    show(const std::string&) const;
+
   }; // end of class AccumulationGraph
 
   class AccumulationGraphPropertiesWriter {

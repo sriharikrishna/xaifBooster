@@ -7,9 +7,15 @@
 // The full COPYRIGHT notice can be found in the top
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
+
+#include<sstream>
+
 #include "xaifBooster/utils/inc/PrintManager.hpp"
 
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
+
+#include "xaifBooster/algorithms/PushPop/inc/BasicBlockAlg.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationReverse/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/CodeReplacement/inc/ConceptuallyStaticInstances.hpp"
 
@@ -47,12 +53,13 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     } // end switch
   } // end of BasicBlockAlg::printXMLHierarchy
   
-  std::string BasicBlockAlg::debug () const { 
+  std::string
+  BasicBlockAlg::debug() const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationReverse::BasicBlockAlg[" << this
- 	<< "]" << std::ends;  
+    out << "xaifBoosterBasicBlockPreaccumulationReverse::BasicBlockAlg[" << xaifBoosterPushPop::BasicBlockAlg::debug().c_str()
+        << "]" << std::ends;  
     return out.str();
-  } // end of BasicBlockAlg::debug
+  }
 
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 

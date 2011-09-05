@@ -27,8 +27,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   std::string 
   BasicBlockElementAlg::debug() const { 
     std::ostringstream out;
-    out << "xaifBoosterLinearization::BasicBlockElementAlg["
-	<< this 
+    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockElementAlg["
+        << BasicBlockElementAlgBase::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   }

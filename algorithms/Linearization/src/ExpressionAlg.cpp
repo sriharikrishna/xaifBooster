@@ -32,8 +32,9 @@ namespace xaifBoosterLinearization{
 
   std::string ExpressionAlg::debug() const{
     std::ostringstream out;
-    out<<"xaifBoosterLinearization::ExpressionAlg["<<this
-	    <<"]"<<std::ends;
+    out << "xaifBoosterLinearization::ExpressionAlg[" << ExpressionAlgBase::debug().c_str()
+        << ",needsAuxiliaryExtraction=" << needsAuxiliaryExtraction()
+        << "]" << std::ends;
     return out.str();
   } // end of ExpressionAlg::debug
 
@@ -157,8 +158,9 @@ namespace xaifBoosterLinearization{
   void
   ExpressionAlg::printLocalPartialAssignmentsRecursively(const ExpressionEdge& theExpressionEdge,
                                                          std::ostream& os) const {
+    const ExpressionEdgeAlg& theEEAlg(dynamic_cast<const ExpressionEdgeAlg&>(theExpressionEdge.getExpressionEdgeAlgBase()));
     DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterLinearization::ExpressionAlg::printLocalPartialAssignmentsRecursively:"
-                               << " entered for " << theExpressionEdge.debug().c_str() 
+                               << " entered for " << theEEAlg.debug().c_str() 
                                << " in " << debug().c_str());
     // recurse
     Expression::ConstInEdgeIteratorPair iep(getContaining().getInEdgesOf(getContaining().getSourceOf(theExpressionEdge)));
@@ -167,7 +169,6 @@ namespace xaifBoosterLinearization{
         printLocalPartialAssignmentsRecursively(*aEEi,
                                                 os);
     // print for this edge
-    const ExpressionEdgeAlg& theEEAlg(dynamic_cast<const ExpressionEdgeAlg&>(theExpressionEdge.getExpressionEdgeAlgBase()));
     if (theEEAlg.hasConcretePartialAssignment()
      && theEEAlg.getPartialDerivativeKind()!=PartialDerivativeKind::PASSIVE) {
       DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterLinearization::ExpressionAlg::printLocalPartialAssignmentsRecursively:"

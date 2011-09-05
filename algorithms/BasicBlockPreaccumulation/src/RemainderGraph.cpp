@@ -8,11 +8,25 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraph.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphWriters.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation {
+
+  void
+  RemainderGraph::show(const std::string& namePrefix) const {
+    std::ostringstream nameStream;
+    nameStream << namePrefix << this;
+    GraphVizDisplay::show(*this,
+                          nameStream.str(),
+                          RemainderGraphVertexLabelWriter(*this),
+                          RemainderGraphEdgeLabelWriter(*this),
+                          RemainderGraphPropertiesWriter(*this));
+  }
 
   void RemainderGraph::initFrom(const xaifBoosterCrossCountryInterface::Elimination& anElimination) {
     const xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& aBaseRemainderGraph(anElimination.getRemainderLCG());

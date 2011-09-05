@@ -24,6 +24,8 @@ namespace xaifBooster {
 
     virtual ~ExpressionAlgBase();
 
+    virtual std::string debug() const;
+
     /// simply returns false (designed to be redefined by the classes that inherit from this)
     virtual bool hasExpression(const Expression& anExpression) const;
 

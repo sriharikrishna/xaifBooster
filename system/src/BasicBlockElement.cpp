@@ -30,12 +30,9 @@ namespace xaifBooster {
 
   std::string BasicBlockElement::debug () const { 
     std::ostringstream out;
-    out << "BasicBlockElement[" 
-	<< this 
-	<< ObjectWithId::debug().c_str()
-	<< "myBasicBlockElementAlgBase_p"
-	<< "="
-	<< myBasicBlockElementAlgBase_p
+    out << "BasicBlockElement[" << this 
+	<< "," << ObjectWithId::debug().c_str()
+	<< ",myBasicBlockElementAlgBase_p=" << myBasicBlockElementAlgBase_p
 	<< "]" << std::ends;  
     return out.str();
   } // end of BasicBlockElement::debug

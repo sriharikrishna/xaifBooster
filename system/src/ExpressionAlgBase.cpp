@@ -20,6 +20,15 @@ namespace xaifBooster {
   ExpressionAlgBase::~ExpressionAlgBase() {
   } // end ExpressionAlgBase::~ExpressionAlgBase()
 
+  std::string
+  ExpressionAlgBase::debug() const {
+    std::ostringstream out;
+    out << "ExpressionAlgBase[" << this
+        << ",myContaining=" << getContaining().debug().c_str()
+	<< "]" << std::ends;  
+    return out.str();
+  }
+
   bool
   ExpressionAlgBase::hasExpression(const Expression& anExpression) const {
     return false;
