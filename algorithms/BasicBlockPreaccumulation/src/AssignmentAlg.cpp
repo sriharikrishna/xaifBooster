@@ -76,21 +76,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   
   bool 
   AssignmentAlg::vertexIdentification(PrivateLinearizedComputationalGraph& theComputationalGraph) { 
-    if (BasicBlockAlg::isOneGraphPerStatement() && !theComputationalGraph.getStatementIdLists().myStatementIdList.empty()) { 
-      return false ;
-    } 
-    if (!getActiveFlag()) {
-      // nothing else to do here 
-      return true; 
-    }
-    if (getContainingAssignment().isNonInlinable()) { 
-      // can't identify
-      return false;
-    }
+    if (!getActiveFlag())
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::vertexIdentification: called on inactive assignment " << debug().c_str());
+    if (getContainingAssignment().isNonInlinable())
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::vertexIdentification:"
+                                 << " called on noninlinable assignment " << debug().c_str());
+
     VertexIdentificationListActiveLHS& theVertexIdentificationListActiveLHS(theComputationalGraph.getVertexIdentificationListActiveLHS());
     VertexIdentificationListActiveRHS& theVertexIdentificationListActiveRHS(theComputationalGraph.getVertexIdentificationListActiveRHS());
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theComputationalGraph.getVertexIdentificationListPassive());
-    Expression::ConstVertexIteratorPair vip(getContainingAssignment().getRHS().vertices());
+
+    Expression::ConstVertexIteratorPair vip(getLinearizedRHS().vertices());
     for (Expression::ConstVertexIterator ExpressionVertexI(vip.first); ExpressionVertexI != vip.second ;++ExpressionVertexI) {
       VertexIdentificationListActive::IdentificationResult theLHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0),
 	theRHSIdResult(VertexIdentificationList::NOT_IDENTIFIED,0);
@@ -169,46 +165,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void 
   AssignmentAlg::algorithm_action_2() { 
-    DBG_MACRO(DbgGroup::CALLSTACK,
-	      "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for: "
-	      << debug().c_str());
-    BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance().getBasicBlockAlgBase()));
-    PrivateLinearizedComputationalGraph& theComputationalGraph (aBasicBlockAlg.getComputationalGraph(getContainingAssignment()));
-    VertexPPairList theVertexTrackList;
-    if (!vertexIdentification(theComputationalGraph)
-	||
-	(!getActiveFlag()
-	 && 
-	 theComputationalGraph.
-	 getVertexIdentificationListIndAct().
-	 overwrittenBy(getContainingAssignment().getLHS(),
-		       getContainingAssignment().getId(),
-		       aBasicBlockAlg.getContaining()))) {
-      // there is an ambiguity, do the split
-      aBasicBlockAlg.splitComputationalGraph(getContainingAssignment());
-      if (!(getContainingAssignment().isNonInlinable())) { 
-	// redo everything for this assignment
-	// if it is non-inlinable we don't do anything here
-	// but implement the logic in the next pass
-	algorithm_action_2();
-      }
-      // and leave
-      return;
-    }
-    aBasicBlockAlg.addMyselfToAssignmentIdList(getContainingAssignment());
-    const StatementIdList& theKnownAssignments(aBasicBlockAlg.getAssignmentIdList());
-    // now redo the activity analysis
-    //     if (haveLinearizedRightHandSide() && 
-    // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
-    //       GraphVizDisplay::show(getLinearizedRightHandSide(),"before",
-    // 			    VertexLabelWriter(getLinearizedRightHandSide()));
-    xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
-    //     if (haveLinearizedRightHandSide() && 
-    // 	DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
-    //       GraphVizDisplay::show(getLinearizedRightHandSide(),"after",
-    // 			    VertexLabelWriter(getLinearizedRightHandSide()));
-    // and the second part of the linearization
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::algorithm_action_2(flatten) called for " << debug().c_str());
+    // create the partial expressions
     xaifBoosterLinearization::AssignmentAlg::algorithm_action_2();
+  }
+
+  void
+  AssignmentAlg::incorporateMyselfInto(Sequence& aSequence) {
+    PrivateLinearizedComputationalGraph& theComputationalGraph(*aSequence.myComputationalGraph_p);
+    BasicBlockAlg& aBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance().getBasicBlockAlgBase()));
+    VertexPPairList theVertexTrackList;
+    const StatementIdList& theKnownAssignments(aBasicBlockAlg.getAssignmentIdList());
     VertexIdentificationListPassive& theVertexIdentificationListPassive(theComputationalGraph.getVertexIdentificationListPassive());
     VertexIdentificationListIndAct& theVertexIdentificationListIndAct(theComputationalGraph.getVertexIdentificationListIndAct());
     if (!getActiveFlag()) { 
@@ -219,8 +186,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	theVertexIdentificationListIndAct.addElement(getContainingAssignment().getLHS(),
 						     getContainingAssignment().getId());
 	if (getContainingAssignment().getLHS().getActiveFlag()) // this means the LHS has been passivated 
-	  aBasicBlockAlg.getDerivativePropagator(getContainingAssignment()).
-	    addZeroDerivToEntryPList(getContainingAssignment().getLHS());
+	  aSequence.myDerivativePropagator.addZeroDerivToEntryPList(getContainingAssignment().getLHS());
       } // end if
     } // end if 
     else {
@@ -415,7 +381,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		<< " RHS " 
 		<< theVertexIdentificationListActiveRHS.debug().c_str());
     } // end else 
-  } // end AssignmentAlg::algorithm_action_2()
+  } // end AssignmentAlg::incorporateMyselfInto()
 
   void 
   AssignmentAlg::algorithm_action_3() {

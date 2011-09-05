@@ -28,6 +28,8 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphWriters.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AssignmentAlg.hpp"
+
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionVertex.hpp"
 
@@ -63,6 +65,36 @@ namespace xaifBoosterPushPop {
   bool
   Sequence::hasExpression(const Expression& anExpression) const {
     return xaifBoosterBasicBlockPreaccumulationTape::Sequence::hasExpression(anExpression);
+  }
+
+  xaifBoosterRequiredValues::RequiredValueSet::ComparisonResult_E
+  Sequence::compareExpressions(const Expression& firstExpression,
+                               const Expression& secondExpression) const {
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterPushPop::Sequence::compareExpressions");
+    if (!hasExpression(firstExpression))
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::Sequence::compareExpressions: we don't have " << firstExpression.debug());
+    if (!hasExpression(secondExpression))
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::Sequence::compareExpressions: we don't have " << secondExpression.debug());
+    // check the assignments themselves
+    for (CAssignmentPList::const_iterator ai(myAssignmentPList.begin()); ai != myAssignmentPList.end(); ++ai) {
+      const xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg& theAssignmentAlg(
+       dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg&>(
+        (*ai)->getAssignmentAlgBase()
+       )
+      );
+      // check the original assignments
+      bool foundFirst = theAssignmentAlg.hasExpression(firstExpression);
+      bool foundSecond = theAssignmentAlg.hasExpression(secondExpression);
+      if (foundFirst && foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::EQUAL;
+      else if (foundFirst) return xaifBoosterRequiredValues::RequiredValueSet::LESSTHAN;
+      else if (foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::GREATERTHAN;
+    }
+
+    // check the stuff that comes after the sequence
+    // (for now we can consider it to all occur at the same time)
+    // meaning that everything in accumulation and propagation is considered to occur simultaneously
+    // for the same reason, we can just do all the pushes at the end
+    return xaifBoosterRequiredValues::RequiredValueSet::EQUAL;
   }
 
   void

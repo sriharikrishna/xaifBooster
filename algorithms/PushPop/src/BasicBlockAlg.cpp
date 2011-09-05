@@ -8,7 +8,10 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockElementAlg.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlg.hpp"
 
 #include "xaifBooster/algorithms/PushPop/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/PushPop/inc/Sequence.hpp"
@@ -85,50 +88,61 @@ namespace xaifBoosterPushPop {
   BasicBlockAlg::compareExpressions(const Expression& firstExpression,
                                     const Expression& secondExpression) const {
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterPushPop::BasicBlockAlg::compareExpressions");
-    SequencePList::const_iterator CSeqI = myUniqueSequencePList.begin();
-    PlainBasicBlock::BasicBlockElementList::const_iterator bbeI = getContaining().getBasicBlockElementList().begin();
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator bbeI = getContaining().getBasicBlockElementList().begin();
-         bbeI != getContaining().getBasicBlockElementList().end(); ++bbeI) {
-      const BasicBlockElement& theBasicBlockElement (**bbeI);
-      // check the element itself
-      bool foundFirst = theBasicBlockElement.hasExpression(firstExpression);
-      bool foundSecond = theBasicBlockElement.hasExpression(secondExpression);
-      if (foundFirst && foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::EQUAL;
-      else if (foundFirst) return xaifBoosterRequiredValues::RequiredValueSet::LESSTHAN;
-      else if (foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::GREATERTHAN;
-
-      if (CSeqI == myUniqueSequencePList.end()) { // no more sequences
-        continue;
-      }
-      else if (&theBasicBlockElement == (*CSeqI)->myLastElement_p) { // we are at the end of the current sequence
-        const Sequence& currentSequence(dynamic_cast<const Sequence&>(**CSeqI));
-        // check the stuff that comes after the sequence
-        // (for now we can consider it to all occur at the same time)
-        // meaning that everything in accumulation and propagation is considered to occur simultaneously
-        // for the same reason, we can just do all the pushes at the end
-        foundFirst = false;
-        foundSecond = false;
-        // check the accumulation code
-        for (Sequence::AssignmentPList::const_iterator accAssPI = currentSequence.getEndAssignmentList().begin();
-             accAssPI != currentSequence.getEndAssignmentList().end(); ++accAssPI) {
-          foundFirst = (*accAssPI)->hasExpression(firstExpression);
-          foundSecond = (*accAssPI)->hasExpression(secondExpression);
+    if (!xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::hasExpression(firstExpression))
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::BasicBlockAlg::compareExpressions: we don't have " << firstExpression.debug());
+    if (!xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::hasExpression(secondExpression))
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::BasicBlockAlg::compareExpressions: we don't have " << secondExpression.debug());
+    for (xaifBoosterBasicBlockPreaccumulation::CFlattenedBasicBlockElementPList::const_iterator aFBBEi(myFlattenedBasicBlockElementPList.begin());
+         aFBBEi != myFlattenedBasicBlockElementPList.end(); ++aFBBEi) {
+      const xaifBoosterBasicBlockPreaccumulation::FlattenedBasicBlockElement& theFBBE(**aFBBEi);
+      switch(theFBBE.myType) {
+        case xaifBoosterBasicBlockPreaccumulation::MARKER:
+          break;
+        case xaifBoosterBasicBlockPreaccumulation::SUBROUTINE_CALL: {
+          const xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg& theSubroutineCallAlg(
+           dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg&>(
+            theFBBE.myRef.mySubroutineCall_p->getSubroutineCallAlgBase()
+           )
+          );
+          bool foundFirst(theSubroutineCallAlg.hasExpression(firstExpression));
+          bool foundSecond(theSubroutineCallAlg.hasExpression(secondExpression));
           if (foundFirst && foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::EQUAL;
           else if (foundFirst) return xaifBoosterRequiredValues::RequiredValueSet::LESSTHAN;
           else if (foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::GREATERTHAN;
+          break;
         }
-        // check the propagation code FIXME?: actually go through the derivative propagator (probably no need)
-        for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_iterator entryI = currentSequence.myDerivativePropagator.getEntryPList().begin();
-             entryI != currentSequence.myDerivativePropagator.getEntryPList().end(); ++entryI) {
-          foundFirst = (*entryI)->hasExpression(firstExpression);
-          foundSecond = (*entryI)->hasExpression(secondExpression);
+        case xaifBoosterBasicBlockPreaccumulation::NONINLINABLE_ASSIGNMENT: {
+          const xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg& theAssignmentAlg(
+           dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg&>(
+            theFBBE.myRef.myNonInlinableAssignment_p->getAssignmentAlgBase()
+           )
+          );
+          bool foundFirst(theAssignmentAlg.hasExpression(firstExpression));
+          bool foundSecond(theAssignmentAlg.hasExpression(secondExpression));
           if (foundFirst && foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::EQUAL;
           else if (foundFirst) return xaifBoosterRequiredValues::RequiredValueSet::LESSTHAN;
           else if (foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::GREATERTHAN;
+          break;
         }
-        ++CSeqI;
-      } // end if we're at the end of a sequence
-    } // end for all original elements
+        case xaifBoosterBasicBlockPreaccumulation::SEQUENCE: {
+          const Sequence& theSequence(
+           dynamic_cast<const Sequence&>(*theFBBE.myRef.mySequence_p)
+          );
+          // check the original assignments themselves
+          bool foundFirst(theSequence.hasExpression(firstExpression));
+          bool foundSecond(theSequence.hasExpression(secondExpression));
+          if (foundFirst && foundSecond)
+            return theSequence.compareExpressions(firstExpression,
+                                                  secondExpression);
+          else if (foundFirst) return xaifBoosterRequiredValues::RequiredValueSet::LESSTHAN;
+          else if (foundSecond) return xaifBoosterRequiredValues::RequiredValueSet::GREATERTHAN;
+          break;
+        }
+        default:
+          THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::printXMLHierarchyImpl: unexpected FBBE type")
+          break;
+      } // end switch
+    } // end iterate over myFlattenedBasicBlockElementPList
     THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::BasicBlockAlg::compareExpressions:"
                                << " neither " << firstExpression.debug()
                                << " nor " << secondExpression.debug()

@@ -44,11 +44,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      */
     virtual bool hasExpression(const Expression& anExpression) const;
 
-    typedef std::list<const Variable*> VariablePList;
+    const CVariablePList& getPushedAddressVariablesPList() const;
 
-    const VariablePList& getPushedAddressVariablesPList() const;
-
-    const VariablePList& getPushedFactorVariablesPList() const;
+    const CVariablePList& getPushedFactorVariablesPList() const;
 
     const ReinterpretedDerivativePropagator& getReinterpretedDerivativePropagator() const;
 
@@ -56,8 +54,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   private:
 
-    VariablePList myPushedAddressVariablesPList;
-    VariablePList myPushedFactorVariablesPList;
+    CVariablePList myPushedAddressVariablesPList;
+
+    CVariablePList myPushedFactorVariablesPList;
 
     ReinterpretedDerivativePropagator myReinterpretedDerivativePropagator;
 

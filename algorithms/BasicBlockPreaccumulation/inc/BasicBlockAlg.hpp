@@ -16,7 +16,9 @@
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/BasicBlockElement.hpp"
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
+#include "xaifBooster/system/inc/Marker.hpp"
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
+#include "xaifBooster/system/inc/SubroutineCall.hpp"
 
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/JacobianAccumulationExpressionList.hpp"
@@ -37,6 +39,66 @@
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
+
+  enum FlattenedBasicBlockElementType_E {
+   MARKER,
+   SUBROUTINE_CALL,
+   NONINLINABLE_ASSIGNMENT,
+   SEQUENCE
+  };
+
+  class FlattenedBasicBlockElement {
+  public:
+    FlattenedBasicBlockElement(const Marker& aMarker) : myType(MARKER),
+                                                        myRef(aMarker) {}
+
+    FlattenedBasicBlockElement(const SubroutineCall& aSubroutineCall) : myType(SUBROUTINE_CALL),
+                                                                        myRef(aSubroutineCall) {}
+
+    FlattenedBasicBlockElement(const Assignment& aNonInlinableAssignment) : myType(NONINLINABLE_ASSIGNMENT),
+                                                                            myRef(aNonInlinableAssignment) {
+      if (!aNonInlinableAssignment.isNonInlinable())
+        THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::FlattenedBasicBlockElement:"
+                                   << " expected noninlinable for " << aNonInlinableAssignment.debug().c_str())
+    }
+
+    FlattenedBasicBlockElement(const Sequence& aSequence) : myType(SEQUENCE),
+                                                            myRef(aSequence) {}
+
+    ~FlattenedBasicBlockElement(){
+    //if (myType==SEQUENCE)
+    //  if (myRef.mySequence_p)
+    //    delete myRef.mySequence_p;
+    }
+
+    const FlattenedBasicBlockElementType_E myType;
+
+    /// we do not own the thing that we point to
+    const union FlattenedBasicBlockElementRef {
+      const Marker* myMarker_p;
+      const SubroutineCall* mySubroutineCall_p;
+      const Assignment* myNonInlinableAssignment_p;
+      const Sequence* mySequence_p;
+      
+      FlattenedBasicBlockElementRef(const Marker& aMarker) :
+       myMarker_p(&aMarker){}
+      FlattenedBasicBlockElementRef(const SubroutineCall& aSubroutineCall) :
+       mySubroutineCall_p(&aSubroutineCall){}
+      FlattenedBasicBlockElementRef(const Assignment& aNonInlinableAssignment) :
+       myNonInlinableAssignment_p(&aNonInlinableAssignment){}
+      FlattenedBasicBlockElementRef(const Sequence& aSequence) :
+       mySequence_p(&aSequence){}
+    } myRef;
+
+  private:
+    /// no def
+    FlattenedBasicBlockElement();
+    /// no def
+    FlattenedBasicBlockElement(const FlattenedBasicBlockElement&);
+
+  };
+
+  typedef std::list<const FlattenedBasicBlockElement*> CFlattenedBasicBlockElementPList;
 
   class PrivateLinearizedComputationalGraphAlgFactory;
   class PrivateLinearizedComputationalGraphEdgeAlgFactory;
@@ -66,6 +128,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * as requires values are saved along with their CFG vertex.
      */ 
     virtual bool hasExpression(const Expression& anExpression) const;
+
+    /// flatten assignments into sequences
+    /**
+     * flatten sequential inlinable assignments into sequences,
+     * producing a list of FlattenedBasicBlockElement references
+     * so that each Sequence can be treated atomically
+     * (needed for traversing the transformations withinBasicBlock)
+     */
+    virtual void algorithm_action_2();
 
     /**
      * generate code for the elimination sequence returned by Angel
@@ -125,27 +196,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     void printXMLHierarchyImpl(std::ostream& os,
 			       PrintDerivativePropagator_fp aPrintDerivativePropagator_fp) const;
-
-    /** 
-     * returns the DerivativePropagtor to be used by theAssignment
-     * this expects to be called only after a Sequence has been associated with 
-     * theAssignment through a call to getComputationalGraph
-     */
-    xaifBoosterDerivativePropagator::DerivativePropagator& getDerivativePropagator(const Assignment& theAssignment);
-      
-    /** 
-     * returns the PrivateLinearizedComputationalGraph 
-     * to be used by theAssignment
-     * this expects to be called in the 
-     * sequence order of BasicBlockElements
-     * to work best as it creates the Sequence
-     * instances to be used by sequences of consecutive
-     * assignments. 
-     */
-    PrivateLinearizedComputationalGraph& getComputationalGraph(const Assignment& theAssignment);
-    
-    /// signals a necessary split in the sequence due to an ambiguity
-    void splitComputationalGraph(const Assignment& theAssignment);
 
     static unsigned int getAssignmentCounter();
     static unsigned int getSequenceCounter();
@@ -208,6 +258,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   protected:
 
+    /// currently we dont own anything referred to
+    CFlattenedBasicBlockElementPList myFlattenedBasicBlockElementPList;
+
     /** 
      * this list owns all the Sequence instances created by getComputationalGraph
      * and keeps them in order
@@ -215,20 +268,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * The classes dtor will delete the instances held here
      */
     SequencePList myUniqueSequencePList;
-
-  private: 
-    
-    typedef std::pair<BasicBlockElement*,
-		      Sequence*> BasicBlockElementSequencePPair;
-
-    typedef std::list<BasicBlockElementSequencePPair> BasicBlockElementSequencePPairList;
-
-    /** 
-     * this list does not own the Sequence instances it contains.
-     * consecutive assignments may share a Sequence.
-     * BasicBlockElement instances that are not an Assignment will have a 0 pointer.
-     */
-    BasicBlockElementSequencePPairList myBasicBlockElementSequencePPairList;
 
     /** 
      * this is just a helper to accomodate 

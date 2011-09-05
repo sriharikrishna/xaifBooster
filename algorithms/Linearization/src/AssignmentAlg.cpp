@@ -78,7 +78,8 @@ namespace xaifBoosterLinearization {
                                                        os);
                                                        
     // print the local partial assignments and their allocations, bottom-up
-    theRHSExpressionAlg.printLocalPartialAssignments(os);
+    if (hasLinearizedRHS()) // passivated assignments and noninlinable intrinsics, for example, have no local partial assignments
+      theRHSExpressionAlg.printLocalPartialAssignments(os);
     // print the assignment itself
     if (theRHSExpressionAlg.needsAuxiliaryExtraction())
       printReplacementAssignmentSSA(os);
@@ -195,10 +196,9 @@ namespace xaifBoosterLinearization {
   } // end of AssignmentAlg::activityAnalysis
 
   void AssignmentAlg::algorithm_action_2() { 
-    DBG_MACRO(DbgGroup::CALLSTACK, 
-	      "xaifBoosterLinearization::AssignmentAlg::algorithm_action_2(code generation) called for: "
-	      << debug().c_str());
-    if (!myActiveFlag)
+    DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterLinearization::AssignmentAlg::algorithm_action_2(code generation) called for: " << debug().c_str());
+    if (!myActiveFlag
+     || getContainingAssignment().isNonInlinable())
       return; // nothing to be done here
     // attach partial expressions
     dynamic_cast<ExpressionAlg&>(getContainingAssignment().getRHS().getExpressionAlgBase()).createPartialExpressions();

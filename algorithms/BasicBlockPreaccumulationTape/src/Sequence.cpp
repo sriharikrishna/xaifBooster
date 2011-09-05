@@ -56,12 +56,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     return xaifBoosterBasicBlockPreaccumulation::Sequence::hasExpression(anExpression);
   }
 
-  const Sequence::VariablePList&
+  const CVariablePList&
   Sequence::getPushedAddressVariablesPList() const {
     return myPushedAddressVariablesPList;
   }
 
-  const Sequence::VariablePList&
+  const CVariablePList&
   Sequence::getPushedFactorVariablesPList() const {
     return myPushedFactorVariablesPList;
   }
@@ -84,7 +84,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
         if ((*aFactorListI).getKind()==xaifBoosterDerivativePropagator::DerivativePropagatorEntry::Factor::VARIABLE_FACTOR) {
           const Variable& theFactorVariable ((*aFactorListI).getVariable());
           // check whether this factor variable has already been pushed
-          VariablePList::const_iterator pushedFacVarPI;
+          CVariablePList::const_iterator pushedFacVarPI;
           for (pushedFacVarPI = myPushedFactorVariablesPList.begin(); pushedFacVarPI != myPushedFactorVariablesPList.end(); ++pushedFacVarPI)
             if (theFactorVariable.equivalentTo(**pushedFacVarPI))
               break;
@@ -117,7 +117,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
         reinterpretArrayAccess((*entryPListI)->getTarget().getArrayAccess());
     } // end for all entries
     // now push all of the single-variable address variables (so they aren't intermixed with the other ones for which an assignment was created)
-    for (VariablePList::const_iterator pushedAddVarPI = myPushedAddressVariablesPList.begin();
+    for (CVariablePList::const_iterator pushedAddVarPI = myPushedAddressVariablesPList.begin();
          pushedAddVarPI != myPushedAddressVariablesPList.end(); ++pushedAddVarPI) {
       // make the push and save it in the list
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p = new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString((*pushedAddVarPI)->getEffectiveShape()));
@@ -151,7 +151,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
           if (theIndexExpression.numVertices() == 1) { // only one argument, non-const => push its value
             const Variable& theAddressVariable (dynamic_cast<const Argument&>(theIndexExpression.getMaxVertex()).getVariable());
             // check whether we've already pushed this variable
-            VariablePList::const_iterator pushedAddVarPI;
+            CVariablePList::const_iterator pushedAddVarPI;
             for (pushedAddVarPI = myPushedAddressVariablesPList.begin(); pushedAddVarPI != myPushedAddressVariablesPList.end(); ++pushedAddVarPI)
               if (theAddressVariable.equivalentTo(**pushedAddVarPI)) {
                 DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTape::Sequence::reinterpretArrayAccess: "

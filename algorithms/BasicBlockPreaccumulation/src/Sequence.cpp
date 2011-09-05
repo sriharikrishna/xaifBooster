@@ -31,6 +31,7 @@
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/AccumulationGraph.hpp"
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/EliminationException.hpp"
 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
@@ -47,8 +48,6 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation {
 
   Sequence::Sequence() :
-    myFirstElement_p(0),
-    myLastElement_p(0),
     myBestElimination_p(0),
     myBestRemainderGraph_p(0) {
     myComputationalGraph_p=BasicBlockAlg::getPrivateLinearizedComputationalGraphAlgFactory()->makeNewPrivateLinearizedComputationalGraph();
@@ -75,6 +74,26 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	delete *i;
     if (myComputationalGraph_p)
       delete myComputationalGraph_p;
+  }
+
+  void
+  Sequence::printXMLHierarchyImpl(std::ostream& os) const {
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::Sequence::printXMLHierarchyImpl: invoked for " << debug().c_str());
+    // print all the stuff before the first element
+    for(AssignmentPList::const_iterator fli(getFrontAssignmentList().begin()); fli != getFrontAssignmentList().end(); ++fli)
+      (*fli)->printXMLHierarchy(os);
+
+    // print the assignments themselves
+    for (CAssignmentPList::const_iterator ai(myAssignmentPList.begin()); ai != myAssignmentPList.end(); ++ai)
+      (*ai)->printXMLHierarchy(os);
+
+    // print all the stuff after the last element
+    // allocations
+    for (InlinableSubroutineCallPList::const_iterator ali(getAllocationList().begin()); ali != getAllocationList().end(); ++ali)
+      (*ali)->printXMLHierarchy(os);
+    // assignments
+    for(AssignmentPList::const_iterator eli(getEndAssignmentList().begin()); eli != getEndAssignmentList().end(); ++eli)
+      (*eli)->printXMLHierarchy(os);
   }
 
   xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
@@ -114,22 +133,48 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myAllocationList;
   }
 
-  const Sequence::AssignmentPList& Sequence::getFrontAssignmentList() const { 
+  const AssignmentPList& Sequence::getFrontAssignmentList() const { 
     return myFrontAssignmentList;
   }
 
-  const Sequence::AssignmentPList& Sequence::getEndAssignmentList() const { 
+  const AssignmentPList& Sequence::getEndAssignmentList() const { 
     return myEndAssignmentList;
   }
 
-  std::string Sequence::debug() const { 
-    std::ostringstream out;    
-    out << "Sequence[" << this
-	<< ",myFirstElement_p=" << myFirstElement_p
-	<< ",myLastElement_p=" << myLastElement_p
-	<< "]" << std::ends;  
+  std::string Sequence::debug() const {
+    std::ostringstream out;
+    out << "xaifBoosterBasicBlockPreaccumulation::Sequence[" << this
+        << ",myAssignmentPList.size():" << myAssignmentPList.size()
+        << ",myComputationalGraph_p->" << myComputationalGraph_p->debug().c_str()
+        << ",myAllocationList.size():" << myAllocationList.size()
+        << ",myFrontAssignmentList.size():" << myFrontAssignmentList.size()
+        << ",myEndAssignmentList.size():" << myEndAssignmentList.size()
+        << ",myEliminationPList.size():" << myEliminationPList.size()
+        << ",myBestElimination_p=" << myBestElimination_p
+        << ",myBestRemainderGraph_p=" << myBestRemainderGraph_p
+        << "]" << std::ends;
     return out.str();
-  } 
+  }
+
+  bool
+  Sequence::canIncorporate(const Assignment& aAssignment,
+                           const BasicBlock& theBasicBlock) { //const
+    AssignmentAlg& theAssignmentAlg(dynamic_cast<AssignmentAlg&>(aAssignment.getAssignmentAlgBase()));
+    if (theAssignmentAlg.getActiveFlag())
+      return (theAssignmentAlg.vertexIdentification(*myComputationalGraph_p));
+    else
+      return (!myComputationalGraph_p->getVertexIdentificationListIndAct().overwrittenBy(aAssignment.getLHS(),
+                                                                                         aAssignment.getId(),
+                                                                                         theBasicBlock));
+  }
+
+  void
+  Sequence::incorporateAssignment(const Assignment& aAssignment,
+                                  const StatementIdList& theKnownAssignmentsIdList) {
+    AssignmentAlg& theAssignmentAlg(dynamic_cast<AssignmentAlg&>(aAssignment.getAssignmentAlgBase()));
+    theAssignmentAlg.incorporateMyselfInto(*this);
+    myAssignmentPList.push_back(&aAssignment);
+  }
 
   void
   Sequence::fillLCGIndependentsList() {
