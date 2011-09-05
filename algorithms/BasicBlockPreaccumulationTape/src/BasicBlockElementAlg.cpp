@@ -11,6 +11,7 @@
 #include <sstream>
 
 #include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/BasicBlockElementAlgBase.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/BasicBlockElementAlg.hpp"
@@ -39,7 +40,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   std::string
   BasicBlockElementAlg::debug() const {
     std::ostringstream out;
-    out << "xaifBoosterLinearization::BasicBlockElementAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulationTape::BasicBlockElementAlg[" << BasicBlockElementAlgBase::debug().c_str()
         << "]" << std::ends;  
     return out.str();
   } // end BasicBlockElementAlg::debug()

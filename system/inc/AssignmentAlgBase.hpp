@@ -24,6 +24,8 @@ namespace xaifBooster {
 
     virtual ~AssignmentAlgBase();
 
+    virtual std::string debug() const;
+
     const Assignment& getContainingAssignment() const;
 
   private: 

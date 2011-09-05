@@ -31,7 +31,7 @@ namespace xaifBooster {
 
     ~BasicBlockElement();
 
-    std::string debug() const ;
+    virtual std::string debug() const ;
 
     /**
      * access the algorithm

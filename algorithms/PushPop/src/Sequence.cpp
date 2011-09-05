@@ -54,10 +54,9 @@ namespace xaifBoosterPushPop {
   std::string
   Sequence::debug() const {
     std::ostringstream out;    
-    out << "xaifBoosterPushPop::"
-        << "Sequence[" << xaifBoosterBasicBlockPreaccumulation::Sequence::debug()
+    out << "xaifBoosterPushPop::Sequence[" << xaifBoosterBasicBlockPreaccumulationTape::Sequence::debug()
         << ",myCombinedGraph=" << myCombinedGraph.debug()
-        << "]" << std::ends;  
+        << "]" << std::ends;
     return out.str();
   }
 

@@ -84,7 +84,9 @@ namespace xaifBooster {
 
   std::string ExpressionEdge::debug () const { 
     std::ostringstream out;
-    out << "ExpressionEdge[" << this << " " << Edge::debug().c_str() << "myPosition=" << myPosition << "]" << std::ends;
+    out << "ExpressionEdge[" << Edge::debug().c_str()
+        << ",myPosition=" << myPosition
+        << "]" << std::ends;
     return out.str();
   } // end debug
 

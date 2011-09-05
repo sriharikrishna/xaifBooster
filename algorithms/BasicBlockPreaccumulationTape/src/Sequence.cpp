@@ -40,11 +40,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   std::string
   Sequence::debug() const {
-    std::ostringstream out;    
-    out << "xaifBoosterBasicBlockPreaccumulationTape::Sequence[" << this
-      //<< ",myPushedAddressVariablesPList=" << myPushedAddressVariablesPList.debug()
-      //<< ",myPushedFactorVariablesPList=" << myPushedFactorVariablesPList.debug()
-      //<< ",myReinterpretedDerivativePropagator=" << myReinterpretedDerivativePropagator.debug()
+    std::ostringstream out;
+    out << "xaifBoosterBasicBlockPreaccumulationTape::Sequence[" << xaifBoosterBasicBlockPreaccumulation::Sequence::debug().c_str()
+        << ",myPushedAddressVariablesPList.size():" << myPushedAddressVariablesPList.size()
+        << ",myPushedFactorVariablesPList.size():" << myPushedFactorVariablesPList.size()
+        << ",myReinterpretedDerivativePropagator=" << &myReinterpretedDerivativePropagator
 	<< "]" << std::ends;  
     return out.str();
   }

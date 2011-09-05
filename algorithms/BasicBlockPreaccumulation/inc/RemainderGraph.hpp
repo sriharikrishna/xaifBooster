@@ -39,6 +39,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     std::string debug() const { return std::string("RemainderGraph");};
 
+    /// calls GraphvizDisplay::show
+    void
+    show(const std::string& outputName) const;
+
   private:
 
   }; 

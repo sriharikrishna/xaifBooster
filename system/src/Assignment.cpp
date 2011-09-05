@@ -139,9 +139,11 @@ namespace xaifBooster {
 
   std::string Assignment::debug () const { 
     std::ostringstream out;
-    out << "Assignment[" 
-	<< this 
-	<< BasicBlockElement::debug().c_str()
+    out << "Assignment[" << BasicBlockElement::debug().c_str()
+        << ",myLHS=" << myLHS.debug().c_str()
+        << ",myRHS=" << myRHS.debug().c_str()
+        << ",myNonInlinableFlag=" << myNonInlinableFlag
+        << ",myNonInlinableCheckedFlag=" << myNonInlinableCheckedFlag
 	<< "]" << std::ends;  
     return out.str();
   } // end of Assignment::debug

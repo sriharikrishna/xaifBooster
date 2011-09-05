@@ -44,11 +44,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   std::string 
   AssignmentAlg::debug() const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlg["
-	<< this 
-	<< ","
- 	<< xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::debug().c_str()
-	<< "]" << std::ends;  
+    out << "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlg[" << xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg::debug().c_str()
+        << "]" << std::ends;
     return out.str();
   }
 

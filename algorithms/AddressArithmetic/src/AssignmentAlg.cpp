@@ -47,12 +47,13 @@ namespace xaifBoosterAddressArithmetic {
     } // end switch
   } // end of AssignmentAlg::printXMLHierarchy
   
-  std::string AssignmentAlg::debug () const { 
+  std::string
+  AssignmentAlg::debug() const {
     std::ostringstream out;
-    out << "xaifBoosterAddressArithmetic::AssignmentAlg[" << this
- 	<< "]" << std::ends;  
+    out << "xaifBoosterAddressArithmetic::AssignmentAlg[" << xaifBoosterBasicBlockPreaccumulationTapeAdjoint::AssignmentAlg::debug().c_str()
+        << "]" << std::ends;  
     return out.str();
-  } // end of AssignmentAlg::debug
+  }
 
   void AssignmentAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 

@@ -24,12 +24,14 @@ namespace xaifBoosterAddressArithmetic {
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg(theContaining){ 
   }
 
-  std::string BasicBlockAlg::debug () const { 
+  std::string
+  BasicBlockAlg::debug() const {
     std::ostringstream out;
-    out << "xaifBoosterAddressArithmetic::BasicBlockAlg[" << this
- 	<< "]" << std::ends;  
+    out << "xaifBoosterAddressArithmetic::BasicBlockAlg[" << xaifBoosterControlFlowReversal::BasicBlockAlg::debug().c_str()
+                                                   << "," << xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::debug().c_str()
+        << "]" << std::ends;
     return out.str();
-  } // end of BasicBlockAlg::debug
+  }
 
   void BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
     // this is for testing only!
@@ -52,18 +54,22 @@ namespace xaifBoosterAddressArithmetic {
   } 
 
   void BasicBlockAlg::algorithm_action_2() { 
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterAddressArithmetic::BasicBlockAlg::algorithm_action_2() called for: " << debug().c_str());
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2();
   }
 
   void BasicBlockAlg::algorithm_action_3() { 
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterAddressArithmetic::BasicBlockAlg::algorithm_action_3() called for: " << debug().c_str());
     xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3();
   }
 
   void BasicBlockAlg::algorithm_action_4() { 
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterAddressArithmetic::BasicBlockAlg::algorithm_action_4() called for: " << debug().c_str());
     xaifBoosterBasicBlockPreaccumulationTape::BasicBlockAlg::algorithm_action_4();
   } 
 
   void BasicBlockAlg::algorithm_action_5() { 
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterAddressArithmetic::BasicBlockAlg::algorithm_action_5() called for: " << debug().c_str());
     xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5();
   }
   

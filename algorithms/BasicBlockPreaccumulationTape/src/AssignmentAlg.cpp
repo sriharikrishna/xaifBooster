@@ -76,11 +76,11 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   } // end of BasicBlockAlg::printXMLHierarchy
   
   std::string 
-  AssignmentAlg::debug() const { 
+  AssignmentAlg::debug() const {
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg[" << this 
-	<< "," << AssignmentAlgBase::debug().c_str()
-	<< "]" << std::ends;  
+    out << "xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg[" << xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::debug().c_str()
+                                                               << "," << BasicBlockElementAlg::debug().c_str()
+        << "]" << std::ends;  
     return out.str();
   }
 

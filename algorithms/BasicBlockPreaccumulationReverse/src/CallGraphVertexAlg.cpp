@@ -89,11 +89,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   std::string 
   CallGraphVertexAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg[" 
-	<< this
-	<< ", containing="
-	<< getContaining().debug().c_str()
- 	<< "]" << std::ends;  
+    out << "xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg[" << xaifBoosterPushPop::CallGraphVertexAlg::debug().c_str()
+        << ",myReplacementList_p=" << myReplacementList_p
+        << "]" << std::ends;  
     return out.str();
   } // end of CallGraphVertexAlg::debug
 
@@ -104,7 +102,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void 
   CallGraphVertexAlg::algorithm_action_4() { 
     xaifBoosterControlFlowReversal::CallGraphVertexAlg::algorithm_action_4();
-    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::algorithm_action_4()");
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulationReverse::CallGraphVertexAlg::algorithm_action_4(checkpointing)");
     // see if we have a replacement symbol for this one: 
     const xaifBoosterTypeChange::SymbolAlg& 
       theSymbolAlg(dynamic_cast<const xaifBoosterTypeChange::SymbolAlg&>(getContaining().

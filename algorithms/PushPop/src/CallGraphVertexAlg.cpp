@@ -35,8 +35,7 @@ namespace xaifBoosterPushPop {
   std::string
   CallGraphVertexAlg::debug() const {
     std::ostringstream out;
-    out << "xaifBoosterPushPop::CallGraphVertexAlg[" << this
-        << ",myContaining=" << getContaining().debug()
+    out << "xaifBoosterPushPop::CallGraphVertexAlg[" << xaifBoosterAddressArithmetic::CallGraphVertexAlg::debug()
         << ",myRequiredValueSet=" << myRequiredValueSet.debug()
         << "]" << std::ends;
     return out.str();

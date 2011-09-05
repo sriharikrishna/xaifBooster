@@ -10,15 +10,13 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/system/inc/Assignment.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTape/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AdjointAssembly.hpp"
 
 using namespace xaifBooster;
-
-namespace xaifBooster { 
-  class Assignment;
-}
 
 namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {  
 
