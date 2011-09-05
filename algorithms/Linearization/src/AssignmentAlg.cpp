@@ -89,7 +89,7 @@ namespace xaifBoosterLinearization {
 
   void
   AssignmentAlg::printReplacementAssignmentSSA(std::ostream& os) const {
-    Assignment& theReplacementAssignment(*new Assignment(false));
+    Assignment theReplacementAssignment(false);
     theReplacementAssignment.setId(getContainingAssignment().getId()+": delayed LHS assignment for top level replacement");
     // the LHS is the same as the original Assignment
     getContainingAssignment().getLHS().copyMyselfInto(theReplacementAssignment.getLHS());

@@ -98,7 +98,7 @@ namespace xaifBoosterLinearization{
                                                 os);
     const ExpressionVertexAlg& theEVAlg(dynamic_cast<const ExpressionVertexAlg&>(theEV.getExpressionVertexAlgBase()));
     if (theEVAlg.hasAuxiliaryVariable()) {
-      Assignment& theNewAuxiliaryAssignment(*new Assignment(false));
+      Assignment theNewAuxiliaryAssignment(false);
       theNewAuxiliaryAssignment.setId(makeAuxiliaryAssignmentSSAId(theTopLevelAssignmentId));
       // set the LHS
       theEVAlg.getAuxiliaryVariable().copyMyselfInto(theNewAuxiliaryAssignment.getLHS());
