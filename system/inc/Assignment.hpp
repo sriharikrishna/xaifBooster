@@ -10,6 +10,8 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include<list>
+
 #include "xaifBooster/system/inc/BasicBlockElement.hpp"
 #include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
@@ -133,6 +135,11 @@ namespace xaifBooster {
     mutable bool myNonInlinableCheckedFlag;
 
   }; // end of class Assignment
+
+  typedef std::list<const Assignment*> CAssignmentPList;
+
+  typedef std::list<Assignment*> AssignmentPList;
+ 
  
 } // end of namespace xaifBooster
                                                                      

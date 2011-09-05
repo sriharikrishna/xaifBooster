@@ -54,6 +54,22 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual void algorithm_action_3();
 
+  protected: friend class Sequence;
+
+    /**
+     * method for vertex identification,
+     * returning false in case of ambiguous identification
+     * and true otherwise.
+     * intended to be called on active assignments only
+     * \TODO \FIXME: should probably be const
+     */
+    bool
+    vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence);
+
+    /// \TODO \FIXME should be const??
+    void
+    incorporateMyselfInto(Sequence& aSequence); // const;
+
   private: 
 
     /** 
@@ -75,13 +91,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		      const PrivateLinearizedComputationalGraphVertex*> VertexPPair;
     typedef std::list<VertexPPair> VertexPPairList;
 
-    /**
-     * method for vertex identification
-     * returning false in case of ambiguous identification
-     * and true otherwise
-     */
-    bool vertexIdentification(PrivateLinearizedComputationalGraph& theFlattenedSequence);
-    
     static bool ourPermitAliasedLHSsFlag;
 
     /**

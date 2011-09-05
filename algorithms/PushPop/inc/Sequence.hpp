@@ -16,6 +16,7 @@
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 
 #include "xaifBooster/algorithms/RequiredValues/inc/RequiredValue.hpp"
+#include "xaifBooster/algorithms/RequiredValues/inc/RequiredValueSet.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphVertex.hpp"
@@ -49,6 +50,10 @@ namespace xaifBoosterPushPop {
      * check ... for \p anExpression
      */
     virtual bool hasExpression(const Expression& anExpression) const;
+
+    xaifBoosterRequiredValues::RequiredValueSet::ComparisonResult_E
+    compareExpressions(const Expression& firstExpression,
+                       const Expression& secondExpression) const;
 
     void assignAndPushRequiredValueAfter(const xaifBoosterRequiredValues::RequiredValue& aRequiredValue);
 

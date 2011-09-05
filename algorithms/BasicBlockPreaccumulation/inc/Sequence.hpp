@@ -14,6 +14,7 @@
 #include <map>
 
 #include "xaifBooster/system/inc/Assignment.hpp"
+#include "xaifBooster/system/inc/BasicBlock.hpp"
 #include "xaifBooster/system/inc/BasicBlockElement.hpp"
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/PlainBasicBlock.hpp"
@@ -58,6 +59,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual bool hasExpression(const Expression& anExpression) const;
 
+    /**
+     * determine whether an inlinable Assignment
+     * \p aAssignment can be appended to this sequence
+     * @returns true if 
+     * @returns false if 
+     * \TODO \FIXME should be const
+     */
+    bool
+    canIncorporate(const Assignment& aAssignment,
+                   const BasicBlock& theBasicBlock); //const;
+
+    void
+    incorporateAssignment(const Assignment& aAssignment,
+                          const StatementIdList& theKnownAssignmentsIdList);
+
     /** 
      * the graph of all basic block elements combined, 
      * i.e. flattened, however since this is only for 
@@ -78,22 +94,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * the derivative accumulator for this sequence
      */
     xaifBoosterDerivativePropagator::DerivativePropagator myDerivativePropagator;      
-
-    /**
-     * first original BasicBlockElement 
-     * covered by this Sequence
-     * set in getComputationalGraph
-     * used in printXMLHierarchy
-     */
-    const BasicBlockElement* myFirstElement_p;
-
-    /**
-     * last original BasicBlockElement 
-     * covered by this Sequence
-     * set in getComputationalGraph
-     * used in printXMLHierarchy
-     */
-    const BasicBlockElement* myLastElement_p;
 
     typedef std::list<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall*> InlinableSubroutineCallPList;
 
@@ -126,8 +126,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     Assignment& appendEndAssignment(bool withAlgorithm=false);
 
-    typedef std::list<Assignment*> AssignmentPList;
-
     const AssignmentPList& getFrontAssignmentList() const;
 
     const AssignmentPList& getEndAssignmentList() const;
@@ -138,9 +136,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     const xaifBoosterCrossCountryInterface::Elimination& getBestElimination() const;
     xaifBoosterCrossCountryInterface::Elimination& getBestElimination();
     RemainderGraph& getBestRemainderGraph();
-      
 
     EliminationPList& getEliminationPList();
+
+  protected: friend class BasicBlockAlg;
+
+    void
+    printXMLHierarchyImpl(std::ostream&) const;
+
+  protected:
+
+    CAssignmentPList myAssignmentPList;
 
   private: 
 

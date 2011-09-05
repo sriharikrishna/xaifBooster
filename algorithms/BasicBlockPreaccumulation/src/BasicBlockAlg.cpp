@@ -17,12 +17,14 @@
 #include "xaifBooster/system/inc/GraphVizDisplay.hpp"
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
+#include "xaifBooster/system/inc/BasicBlockAlgBase.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
 #include "xaifBooster/system/inc/Constant.hpp"
+#include "xaifBooster/system/inc/Marker.hpp"
 
 #include "xaifBooster/algorithms/TypeChange/inc/TemporariesHelper.hpp"
 
@@ -32,6 +34,7 @@
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/EliminationException.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
@@ -74,53 +77,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     ourSequenceCounter++;
   } // end BasicBlockAlg::incrementGlobalSequenceCounter
 
-  void BasicBlockAlg::splitComputationalGraph(const Assignment& theAssignment) { 
-    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::splitComputationalGraph entering");
-    if(!myBasicBlockElementSequencePPairList.size()) { 
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitComputationalGraph: must be initialized unless called out of order");
-    }
-    for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
-	 i!=myBasicBlockElementSequencePPairList.end();
-	 ++i) { 
-      if ((*i).first==&theAssignment) { 
-	if((*i).second) { // this should always be true
-	  // reset the current sequence's last element
-	  // which must be by definition the direct predecessor
-	  --i;
-	  BasicBlockElement* thePredecessorAssignment_p=(*i).first;
-	  //reset iterator
-	  ++i;
-	  (*i).second->myLastElement_p=thePredecessorAssignment_p;
-	}
-	// now make a new one for this assignment
-	(*i).second = AlgFactoryManager::instance()->getSequenceFactory()->makeNewSequence();
-	ourSequenceCounter++;
-	(*i).second->myFirstElement_p=(*i).second->myLastElement_p=&theAssignment;
-	myUniqueSequencePList.push_back((*i).second);
-	DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::splitComputationalGraph leaving");
-	return; 
-      } 
-    } // end if 
-    THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::splitComputationalGraph: couldn't find"
-			       << theAssignment.debug().c_str());
-  }
-
-  xaifBoosterDerivativePropagator::DerivativePropagator& 
-  BasicBlockAlg::getDerivativePropagator(const Assignment& theAssignment) { 
-    Sequence* theSequence_p=0;
-    for (BasicBlockElementSequencePPairList::iterator i=myBasicBlockElementSequencePPairList.begin();
-	 i!=myBasicBlockElementSequencePPairList.end();
-	 ++i) 
-      if ((*i).first==&theAssignment) { 
-	if((*i).second)
-	  theSequence_p=(*i).second;
-      } // end if 
-    if (!theSequence_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getDerivativePropagator: no Sequence exists for element "
-				 << theAssignment.debug().c_str());
-    return theSequence_p->myDerivativePropagator;
-  }
-
   unsigned int BasicBlockAlg::getAssignmentCounter() {
     return ourAssignmentCounter;
   }
@@ -149,6 +105,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::BasicBlockAlg()
 
   BasicBlockAlg::~BasicBlockAlg() {
+    for (CFlattenedBasicBlockElementPList::iterator i(myFlattenedBasicBlockElementPList.begin());
+         i != myFlattenedBasicBlockElementPList.end(); ++i)
+      if (*i) // should always be true
+	delete *i;
     for(SequencePList::iterator i = myUniqueSequencePList.begin();
 	i != myUniqueSequencePList.end();
 	++i)
@@ -213,55 +173,33 @@ namespace xaifBoosterBasicBlockPreaccumulation {
        << getContaining().getScope().getId().c_str()
        << "\">" 
        << std::endl;
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator li=getContaining().getBasicBlockElementList().begin();
-	 li!=getContaining().getBasicBlockElementList().end();
-	 li++) { 
-      // do we have a sequence for this element?
-      Sequence* aSequence_p=0;
-      for (BasicBlockElementSequencePPairList::const_iterator pli = myBasicBlockElementSequencePPairList.begin();
-	   pli != myBasicBlockElementSequencePPairList.end();
-	   pli++) { 
-	if((*pli).first==*li) { 
-	  if ((*pli).second) 
-	    aSequence_p=(*pli).second;
-	  break;
-	}
-      }
-      if (aSequence_p) { 
-	// we have a sequence.
-	// Is it the first element?
-	if (*li==aSequence_p->myFirstElement_p) { 
-	  // print all the stuff before the first element
-	  const Sequence::AssignmentPList& theFrontList(aSequence_p->getFrontAssignmentList());
-	  for(Sequence::AssignmentPList::const_iterator fli=theFrontList.begin();
-	      fli!=theFrontList.end();
-	      ++fli) 
-	    (*(fli))->printXMLHierarchy(os);
-	}
-	// print the element 
-	(*(li))->printXMLHierarchy(os);
-	// Is it the last element?
-	if (*li==aSequence_p->myLastElement_p) { 
-	  // print all the stuff after the last element
-	  for (Sequence::InlinableSubroutineCallPList::const_iterator ali=aSequence_p->getAllocationList().begin();
-	       ali!=aSequence_p->getAllocationList().end();
-	       ++ali) 
-	    (*(ali))->printXMLHierarchy(os);
-	  const Sequence::AssignmentPList& theEndList(aSequence_p->getEndAssignmentList());
-	  for(Sequence::AssignmentPList::const_iterator eli=theEndList.begin();
-	      eli!=theEndList.end();
-	      ++eli) 
-	    (*(eli))->printXMLHierarchy(os);
-	  // that includes the accumulator
-	  (aPrintDerivativePropagator_fp)(os,
-					  *this,
-					  aSequence_p->myDerivativePropagator);
-	}
-      }// end if have sequence
-      else 
-	// have no sequence, just print the element
-	(*(li))->printXMLHierarchy(os);
-    } // end for all BasicBlockElement instances
+    for (CFlattenedBasicBlockElementPList::const_iterator aFBBEi(myFlattenedBasicBlockElementPList.begin());
+         aFBBEi != myFlattenedBasicBlockElementPList.end(); ++aFBBEi) {
+      const FlattenedBasicBlockElement& theFBBE(**aFBBEi);
+      switch(theFBBE.myType) {
+        case MARKER:
+          theFBBE.myRef.myMarker_p->printXMLHierarchy(os);
+          break;
+        case SUBROUTINE_CALL:
+          theFBBE.myRef.mySubroutineCall_p->printXMLHierarchy(os);
+          break;
+        case NONINLINABLE_ASSIGNMENT:
+          theFBBE.myRef.myNonInlinableAssignment_p->printXMLHierarchy(os);
+          break;
+        case SEQUENCE: {
+          const Sequence& theSequence(*theFBBE.myRef.mySequence_p);
+          theSequence.printXMLHierarchyImpl(os);
+          // that includes the accumulator
+          (aPrintDerivativePropagator_fp)(os,
+                                          *this,
+                                          theSequence.myDerivativePropagator);
+          break;
+        }
+        default:
+          THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::printXMLHierarchyImpl: unexpected FBBE type")
+          break;
+      } // end switch
+    } // end iterate over myFlattenedBasicBlockElementPList
     if(ourRuntimeCountersFlag) {
       for(PlainBasicBlock::BasicBlockElementList::const_iterator myRuntimeCounterCallListI = myRuntimeCounterCallList.begin();
 	  myRuntimeCounterCallListI != myRuntimeCounterCallList.end();
@@ -286,6 +224,81 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         << ",myAssignmentIdList.size()=" << getAssignmentIdList().size()
         << "]" << std::ends;
     return out.str();
+  }
+
+  void 
+  BasicBlockAlg::algorithm_action_2() {
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_2(flatten elements into sequences): invoked for " << debug().c_str());
+    if (!myFlattenedBasicBlockElementPList.empty())
+      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_2: cannot be run twice")
+    Sequence* currentSequence_p(NULL); // the sequence currently being built
+    // reasons for a split (ending the current sequence and beginning a new one):
+    // (1): any subroutine call (our analysis isn't comprehensive enough)
+    // (2): a nonInlinableIntrinsic Assignment
+    // (3): ourOneGraphPerStatementFlag is true 
+    // (4): an active assignment LHS is possibly aliased with  a previous (active?) LHS within this sequence
+    //     (and ourPermitAliasedLHSsFlag is false)
+    // In other words, assignments are added to the current assignment unless
+    // - they are noninlinable
+    // - they are active and the LHS may alias a preceeding (active?) LHS
+    const PlainBasicBlock::BasicBlockElementList& theBBEList(getContaining().getBasicBlockElementList());
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator aBBEi(theBBEList.begin()); aBBEi != theBBEList.end(); ++aBBEi) {
+      //const BasicBlockElement& currentBBE(**aBBEi);
+      // determine the type of BBE (Assignment, Marker, SubroutineCall, InlinableSubroutineCall)
+      // INLINABLESUBCALL?
+      const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* tryCastInlinable_p(
+        dynamic_cast<const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall*>(*aBBEi)
+      );
+      if (tryCastInlinable_p) { // the last non-assignment type of BBE
+        THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::algorithm_action_2: unexpected BBE type for " << tryCastInlinable_p->debug().c_str())
+      }
+      // MARKER
+      const Marker* tryCastMarker_p(dynamic_cast<const Marker*>(*aBBEi));
+      if (tryCastMarker_p) { // if it's a Marker, just ignore it
+        myFlattenedBasicBlockElementPList.push_back(new FlattenedBasicBlockElement(*tryCastMarker_p));
+        continue;
+      }
+      // SUBROUTINECALL
+      const SubroutineCall* tryCastSubroutineCall_p(dynamic_cast<const SubroutineCall*>(*aBBEi));
+      if (tryCastSubroutineCall_p) { // for subroutines, terminate the current Sequence (if there is one) and continue
+        currentSequence_p = NULL;
+        myFlattenedBasicBlockElementPList.push_back(new FlattenedBasicBlockElement(*tryCastSubroutineCall_p));
+        continue;
+      }
+
+      // ASSIGNMENT
+      const Assignment& theAssignment(dynamic_cast<const Assignment&>(**aBBEi));
+
+      // NONINLINABLE_ASSIGNMENT
+      if (theAssignment.isNonInlinable()) {
+        currentSequence_p = NULL;
+        myFlattenedBasicBlockElementPList.push_back(new FlattenedBasicBlockElement(theAssignment));
+        continue;
+      }
+      // at this point, we know that theAssignment is an inlinable assignment
+
+      if (isOneGraphPerStatement() // the flag, which tells us to always split
+       || (currentSequence_p==NULL) // there is no current sequence
+       || !currentSequence_p->canIncorporate(theAssignment,getContaining())) { // this assignment cant be added
+        Sequence& theNewSequence(*AlgFactoryManager::instance()->getSequenceFactory()->makeNewSequence());
+	incrementGlobalSequenceCounter();
+        myUniqueSequencePList.push_back(&theNewSequence); // we own this Sequence
+        myFlattenedBasicBlockElementPList.push_back(new FlattenedBasicBlockElement(theNewSequence));
+        currentSequence_p = &theNewSequence;
+      }
+      addMyselfToAssignmentIdList(theAssignment);
+
+      // now redo the activity analysis
+    //if (haveLinearizedRightHandSide() && DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+      //GraphVizDisplay::show(getLinearizedRightHandSide(),"before",VertexLabelWriter(getLinearizedRightHandSide()));
+    //xaifBoosterLinearization::AssignmentAlg::activityAnalysis();
+      dynamic_cast<xaifBoosterLinearization::AssignmentAlg&>(theAssignment.getAssignmentAlgBase()).activityAnalysis();
+    //if (haveLinearizedRightHandSide() && DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS))
+      //GraphVizDisplay::show(getLinearizedRightHandSide(),"after",VertexLabelWriter(getLinearizedRightHandSide()));
+
+      currentSequence_p->incorporateAssignment(theAssignment,
+                                               getAssignmentIdList());
+    } // end iterate over BasicBlockElementList
   }
 
   void 
@@ -398,6 +411,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } // end BasicBlockAlg::runElimination()
 
   void BasicBlockAlg::generateAccumulationExpressions(Sequence& aSequence) {
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions: invoked for " << aSequence.debug().c_str());
     xaifBoosterCrossCountryInterface::AccumulationGraph& theAccumulationGraph (aSequence.getBestElimination().getAccumulationGraph());
     //traverse graph bottom up
     theAccumulationGraph.initVisit();
@@ -1079,67 +1093,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         return true;
     return xaifBooster::BasicBlockAlgBase::hasExpression(anExpression);
   } // end BasicBlockAlg::hasExpression()
-
-  PrivateLinearizedComputationalGraph& 
-  BasicBlockAlg::getComputationalGraph(const Assignment& theAssignment) {
-    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getComputationalGraph entering with "
-	      << debug().c_str());
-    Sequence* theSequence_p=0;
-    if(myBasicBlockElementSequencePPairList.empty()) { 
-      // not initialized
-      for (PlainBasicBlock::BasicBlockElementList::const_iterator i=
-	     getContaining().getBasicBlockElementList().begin();
-	   i!=getContaining().getBasicBlockElementList().end();
-	   ++i)
-	myBasicBlockElementSequencePPairList.push_back(BasicBlockElementSequencePPair(*i,0));
-    }
-    for (BasicBlockElementSequencePPairList::iterator i = myBasicBlockElementSequencePPairList.begin();
-	 i != myBasicBlockElementSequencePPairList.end();
-	 ++i) 
-      if ((*i).first==&theAssignment) { 
-	if(!(*i).second) { // nothing assigned yet
-	  incrementGlobalAssignmentCounter();
-	  if(i != myBasicBlockElementSequencePPairList.begin()) { 
-	    // have a predecessor: 
-	    --i;
-	    if(!(*i).second) { 
-	      // nothing assigned yet, which means this is not an 
-	      // assignment (unless we call this out of order) this is how 
-	      // we handle splits for subroutine calls
-	      theSequence_p = AlgFactoryManager::instance()->getSequenceFactory()->makeNewSequence();
-	      incrementGlobalSequenceCounter();
-	      theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
-	      myUniqueSequencePList.push_back(theSequence_p);
-	    } 
-	    else { 
-	      // have something assigned which means this 
-	      // assignment is directly following its predecessor
-	      // so we use the same triple
-	      theSequence_p=(*i).second;
-	      theSequence_p->myLastElement_p=&theAssignment;
-	    }
-	    // go back to the requesting assignment: 
-	    ++i;
-	  } 
-	  else { // have no predecessor
-	    theSequence_p = AlgFactoryManager::instance()->getSequenceFactory()->makeNewSequence();
-	    incrementGlobalSequenceCounter();
-	    theSequence_p->myFirstElement_p=theSequence_p->myLastElement_p=&theAssignment;
-	    myUniqueSequencePList.push_back(theSequence_p);
-	  }
-	  (*i).second=theSequence_p;
-	} // end if nothing assigned
-	else
-	  theSequence_p=(*i).second;
-	break;
-      } // end if 
-    if (!theSequence_p)
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::getComputationalGraph: this basic block does not have element "
-				 << theAssignment.debug().c_str());
-    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::getComputationalGraph leaving with "
-	      << debug().c_str());
-    return *(theSequence_p->myComputationalGraph_p);
-  } 
 
   const BasicBlock&
   BasicBlockAlg::getContaining() const {

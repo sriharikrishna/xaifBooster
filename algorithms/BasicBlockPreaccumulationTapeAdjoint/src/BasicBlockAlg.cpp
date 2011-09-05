@@ -28,6 +28,9 @@
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/BasicBlockElementAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/MarkerAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/AssignmentAlg.hpp"
 
 using namespace xaifBooster;
 
@@ -85,97 +88,78 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   } 
 
 
-  void BasicBlockAlg::algorithm_action_5() { // adjoin the DerivativePropagators
+  void BasicBlockAlg::algorithm_action_5() {
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5(adjoin propagators)");
-    if (getContaining().getBasicBlockElementList().empty())
-      return;
-    // mesh the BasicBlockElements with the Sequences
-    PlainBasicBlock::BasicBlockElementList::const_reverse_iterator aBasicBlockElementListRI=getContaining().getBasicBlockElementList().rbegin();
-    SequencePList::const_reverse_iterator aSequencePListRI = myUniqueSequencePList.rbegin();
-    SequencePList::const_reverse_iterator aSequencePListRend = myUniqueSequencePList.rend();
-    bool noSequence=false;
-    if (aSequencePListRI==aSequencePListRend)
-      // we don't have any sequence left, meaning there is either no sequence at all 
-      // or we are at the end where there is a bit left without a sequence
-      noSequence=true;
-    bool done=false; // are we all done?
-    while (!done) { 
-      // deal with the bit outside the current Sequence
-      while (noSequence ||
-	     (*aSequencePListRI)->myLastElement_p!=(*aBasicBlockElementListRI)) { 
-	// let the stuff outside the sequence insert itself 
-	dynamic_cast<BasicBlockElementAlg&>((**aBasicBlockElementListRI).getBasicBlockElementAlgBase()).insertYourself(getContaining());
-	++aBasicBlockElementListRI;
-	if (aBasicBlockElementListRI==getContaining().getBasicBlockElementList().rend()) { 
-	  done=true;
-	  break;
-	}
-      } // end while
-	// now we are done or (*aSequencePListRI)->myLastElement_p==(*aBasicBlockElementListRI))
-      while (!done  // this implies noSequence=false
-	     && 
-	     (*aSequencePListRI)->myFirstElement_p!=(*aBasicBlockElementListRI)) { 
-	// this should bring us to the begin of the sequence
-	++aBasicBlockElementListRI;
-	if (aBasicBlockElementListRI==getContaining().getBasicBlockElementList().rend()) { 
-	  done=true;
-	  break;
-	}
-      }
-      if (!done) { 
-        const xaifBoosterBasicBlockPreaccumulationTape::Sequence& currentSequence(dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTape::Sequence&>(**aSequencePListRI));
-        // pop all of the address variables
-        for (xaifBoosterBasicBlockPreaccumulationTape::Sequence::VariablePList::const_reverse_iterator pushedAddVarPrI = currentSequence.getPushedAddressVariablesPList().rbegin();
-             pushedAddVarPrI != currentSequence.getPushedAddressVariablesPList().rend(); ++pushedAddVarPrI) {
-	  xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5",
-								      **pushedAddVarPrI);
-          const Variable& thePoppedAddressVariable (addAddressPop(ForLoopReversalType::ANONYMOUS,aTemporariesHelper));
-          DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5: "
-		    << "Popping address into variable " << thePoppedAddressVariable.debug());
-          //addAddressPop(ForLoopReversalType::EXPLICIT);
-          // we push to the front so that when we search from the beginning we find the most recent addition,
-          // which should be the appropriate one for the occurance of this variable in this sequence
-          myAddressVariableCorList.push_front(std::make_pair(*pushedAddVarPrI,&thePoppedAddressVariable));
-        }
-        // pop all of the factor variables
-        for (xaifBoosterBasicBlockPreaccumulationTape::Sequence::VariablePList::const_reverse_iterator pushedFacVarPrI = currentSequence.getPushedFactorVariablesPList().rbegin();
-             pushedFacVarPrI != currentSequence.getPushedFactorVariablesPList().rend(); ++pushedFacVarPrI) {
-	  xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5",
-								      **pushedFacVarPrI);
-          const Symbol& aTemporarySymbol (aTemporariesHelper.makeTempSymbol(getContaining().getScope()));
-	  // allocation needed?
-	  if (aTemporariesHelper.needsAllocation()) { 
-            addAllocation(aTemporarySymbol,
-			  getContaining().getScope(),
-			  aTemporariesHelper,
-	                  ForLoopReversalType::ANONYMOUS);
-            addAllocation(aTemporarySymbol,
-			  getContaining().getScope(),
-                          aTemporariesHelper,
-                          ForLoopReversalType::EXPLICIT);
+    for (xaifBoosterBasicBlockPreaccumulation::CFlattenedBasicBlockElementPList::const_reverse_iterator aFBBEri(myFlattenedBasicBlockElementPList.rbegin());
+         aFBBEri != myFlattenedBasicBlockElementPList.rend(); ++aFBBEri) {
+      const xaifBoosterBasicBlockPreaccumulation::FlattenedBasicBlockElement& theFBBE(**aFBBEri);
+      switch(theFBBE.myType) {
+        case xaifBoosterBasicBlockPreaccumulation::MARKER:
+	  dynamic_cast<MarkerAlg&>(theFBBE.myRef.myMarker_p->getMarkerAlgBase()).insertYourself(getContaining());
+          break;
+        case xaifBoosterBasicBlockPreaccumulation::SUBROUTINE_CALL:
+	  dynamic_cast<SubroutineCallAlg&>(theFBBE.myRef.mySubroutineCall_p->getSubroutineCallAlgBase()).insertYourself(getContaining());
+          break;
+        case xaifBoosterBasicBlockPreaccumulation::NONINLINABLE_ASSIGNMENT:
+	  dynamic_cast<AssignmentAlg&>(theFBBE.myRef.myNonInlinableAssignment_p->getAssignmentAlgBase()).insertYourself(getContaining());
+          break;
+        case xaifBoosterBasicBlockPreaccumulation::SEQUENCE: {
+          const xaifBoosterBasicBlockPreaccumulationTape::Sequence& currentSequence(
+           dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTape::Sequence&>(*theFBBE.myRef.mySequence_p)
+          );
+          // pop all of the address variables
+          for (CVariablePList::const_reverse_iterator pushedAddVarPrI = currentSequence.getPushedAddressVariablesPList().rbegin();
+               pushedAddVarPrI != currentSequence.getPushedAddressVariablesPList().rend(); ++pushedAddVarPrI) {
+            xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5",
+                                                                        **pushedAddVarPrI);
+            const Variable& thePoppedAddressVariable (addAddressPop(ForLoopReversalType::ANONYMOUS,aTemporariesHelper));
+            DBG_MACRO(DbgGroup::DATA,"BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5: "
+                                  << "Popping address into variable " << thePoppedAddressVariable.debug());
+            //addAddressPop(ForLoopReversalType::EXPLICIT);
+            // we push to the front so that when we search from the beginning we find the most recent addition,
+            // which should be the appropriate one for the occurance of this variable in this sequence
+            myAddressVariableCorList.push_front(std::make_pair(*pushedAddVarPrI,&thePoppedAddressVariable));
           }
-          // Anonymous version
-          const Variable& thePoppedFactorVariable (addFactorPop(aTemporarySymbol,
-                                                                ForLoopReversalType::ANONYMOUS));
-          // Explicit version (we can use the same symbol for the popped factor variable)
-          addFactorPop(aTemporarySymbol,
-              	       ForLoopReversalType::EXPLICIT);
-          myFactorVariableCorList.push_back(std::make_pair(*pushedFacVarPrI,&thePoppedFactorVariable));
-        } // end for all pushed factor variables
-
-	const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator(currentSequence.myDerivativePropagator);
-	for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_reverse_iterator entryPListI=
-	      aDerivativePropagator.getEntryPList().rbegin();
-	    entryPListI!= aDerivativePropagator.getEntryPList().rend();
-	    ++entryPListI) {
-	  reinterpretDerivativePropagatorEntry(**entryPListI);
-	} // end for DerivativePropagatorEntry list
-	++aSequencePListRI;
-	if (aSequencePListRI==aSequencePListRend)
-	  // there is no sequence left
-	  noSequence=true;
-      } // end of if (!done)
-    } // end while (!done)
+          // pop all of the factor variables
+          for (CVariablePList::const_reverse_iterator pushedFacVarPrI = currentSequence.getPushedFactorVariablesPList().rbegin();
+               pushedFacVarPrI != currentSequence.getPushedFactorVariablesPList().rend(); ++pushedFacVarPrI) {
+            xaifBoosterTypeChange::TemporariesHelper aTemporariesHelper("BasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5",
+                                                                        **pushedFacVarPrI);
+            const Symbol& aTemporarySymbol (aTemporariesHelper.makeTempSymbol(getContaining().getScope()));
+            // allocation needed?
+            if (aTemporariesHelper.needsAllocation()) { 
+              addAllocation(aTemporarySymbol,
+                            getContaining().getScope(),
+                            aTemporariesHelper,
+                            ForLoopReversalType::ANONYMOUS);
+              addAllocation(aTemporarySymbol,
+                            getContaining().getScope(),
+                            aTemporariesHelper,
+                            ForLoopReversalType::EXPLICIT);
+            }
+            // Anonymous version
+            const Variable& thePoppedFactorVariable(addFactorPop(aTemporarySymbol,
+                                                                 ForLoopReversalType::ANONYMOUS));
+            // Explicit version (we can use the same symbol for the popped factor variable)
+            addFactorPop(aTemporarySymbol,
+                         ForLoopReversalType::EXPLICIT);
+            myFactorVariableCorList.push_back(std::make_pair(*pushedFacVarPrI,&thePoppedFactorVariable));
+          } // end for all pushed factor variables
+          // derivative propagator
+          const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator(currentSequence.myDerivativePropagator);
+          for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_reverse_iterator entryPListI=
+               aDerivativePropagator.getEntryPList().rbegin();
+              entryPListI!= aDerivativePropagator.getEntryPList().rend();
+              ++entryPListI) {
+            reinterpretDerivativePropagatorEntry(**entryPListI);
+          } // end for DerivativePropagatorEntry list
+          break;
+        }
+        default:
+          THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulationTapeAdjoint::algorithm_action_5: unexpected FBBE type")
+          break;
+      } // end switch
+    }
   } // end BasicBlockAlg::algorithm_action_5()
 
   Scope&  

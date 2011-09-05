@@ -11,6 +11,7 @@
 // ========== end copyright notice =====================
 
 #include <set>
+#include <list>
 
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
@@ -249,6 +250,8 @@ namespace xaifBooster {
   }; // end of class Variable
 
   typedef std::set<const Variable*> CVariablePSet;
+
+  typedef std::list<const Variable*> CVariablePList;
 
 } // end of namespace xaifBooster
                                                                      
