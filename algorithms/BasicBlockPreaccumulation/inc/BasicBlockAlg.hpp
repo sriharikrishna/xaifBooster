@@ -158,19 +158,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static void setPrivateLinearizedComputationalGraphEdgeAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphEdgeAlgFactory*);
     static void setPrivateLinearizedComputationalGraphVertexAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertexAlgFactory*);
 
-    /**
-     * access container
-     */
-    const BasicBlock& getContaining() const;
-
-    /** 
-     * we can allow to have all 'ax' factors collected 
-     * into one DerivativePropagator per 'y'
-     */
-    static void permitNarySax();
-    
-    static bool doesPermitNarySax();
-
     /// command line activated switch for using randomized heuristics
     static void useRandomizedHeuristics();
 
@@ -182,6 +169,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     /// command line activated switch for using scarcity heuristics that do reroutings 
     static void useReroutings();
+
+    /// access container
+    const BasicBlock& getContaining() const;
+
+    typedef std::list<Sequence*> SequencePList;
+
+    const SequencePList& getUniqueSequencePList() const;
 
     const StatementIdList& getAssignmentIdList()const;
 
@@ -213,6 +207,28 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static bool isOneGraphPerStatement(); 
 
+  protected:
+
+    /// for traversing with each Sequence treated atomically
+    /**
+     * Created in algorithm_action_2 for easy traversal with respect to sequences.
+     * currently we dont own anything referred to, but
+     * could conceivably take ownership of the Sequence pointers.
+     * Currently used, for example, in
+     * - printXMLHierarchy
+     * - xaifBoosterBasicBlockPreaccumulationTapeAdjoint::algorithm_action_5, and
+     * - PushPop::compareExpressions
+     */
+    CFlattenedBasicBlockElementPList myFlattenedBasicBlockElementPList;
+
+    /** 
+     * this list owns all the Sequence instances created by getComputationalGraph
+     * and keeps them in order
+     * it is for convenient ordered traversal over all Sequence instances.
+     * The classes dtor will delete the instances held here
+     */
+    SequencePList myUniqueSequencePList;
+
   private:
 
     static PrivateLinearizedComputationalGraphAlgFactory* ourPrivateLinearizedComputationalGraphAlgFactory_p;
@@ -235,39 +251,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     /// keep track of metrics associated with the preaccumulation
     PreaccumulationCounter myPreaccumulationCounter;
 
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg();
-
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg(const BasicBlockAlg&);
-
-    /** 
-     * no def
-     */
+    /// no def
     BasicBlockAlg& operator=(const BasicBlockAlg&);
-
-  public:
-
-    typedef std::list<Sequence*> SequencePList;
-
-    const SequencePList& getUniqueSequencePList() const;
-
-  protected:
-
-    /// currently we dont own anything referred to
-    CFlattenedBasicBlockElementPList myFlattenedBasicBlockElementPList;
-
-    /** 
-     * this list owns all the Sequence instances created by getComputationalGraph
-     * and keeps them in order
-     * it is for convenient ordered traversal over all Sequence instances.
-     * The classes dtor will delete the instances held here
-     */
-    SequencePList myUniqueSequencePList;
 
     /** 
      * this is just a helper to accomodate 
@@ -279,12 +268,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 			       const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) {
       xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
     }; 
-
-    /** 
-     * if this flag is true we attempt to collect 
-     * all 'ax' factors ordered by 'y'
-     */ 
-    static bool ourPermitNarySaxFlag;
 
     /*
      * the list of all Assignment statement Ids

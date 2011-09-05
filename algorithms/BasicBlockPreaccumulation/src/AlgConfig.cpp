@@ -11,6 +11,7 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/Sequence.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
@@ -26,7 +27,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void AlgConfig::myConfig() { 
     if (isSet('n')) 
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::permitNarySax();
+      xaifBoosterBasicBlockPreaccumulation::Sequence::permitNarySax();
     if (isSet('C'))
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setRuntimeCounters();
     if (isSet('A')) {
