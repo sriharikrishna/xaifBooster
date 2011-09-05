@@ -49,7 +49,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     Sequence();      
 
-    ~Sequence();
+    virtual ~Sequence();
 
     virtual std::string debug() const ;
 

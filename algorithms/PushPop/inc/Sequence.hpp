@@ -10,7 +10,7 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
-#include <list>
+#include <map>
 
 #include "xaifBooster/system/inc/Expression.hpp"
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
@@ -66,8 +66,6 @@ namespace xaifBoosterPushPop {
 
     /// no def
     Sequence& operator= (const Sequence&);
-
-    typedef std::list<const BasicBlockElement*> CBasicBlockElementPList;
 
     /// a list of pushes (owned by us) that occur after this sequence
     CBasicBlockElementPList myPushBlock;

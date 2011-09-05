@@ -10,6 +10,8 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include <list>
+
 #include "xaifBooster/utils/inc/XMLPrintable.hpp"
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 #include "xaifBooster/utils/inc/GenericTraverseInvoke.hpp"
@@ -57,6 +59,8 @@ namespace xaifBooster {
     BasicBlockElementAlgBase* myBasicBlockElementAlgBase_p;
 
   }; // end of class BasicBlockElement
+
+  typedef std::list<const BasicBlockElement*> CBasicBlockElementPList;
  
 } // end of namespace xaifBooster
                                                                      

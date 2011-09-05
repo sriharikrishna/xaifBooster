@@ -188,6 +188,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   void
   BasicBlockAlg::printXMLHierarchy(std::ostream& os) const { 
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::printXMLHierarchy: invoked for " << debug().c_str());
     printXMLHierarchyImpl(os,
 			  printerWrapper);
   }
@@ -276,18 +277,20 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     pm.releaseInstance();
   } // end of BasicBlockAlg::printXMLHierarchyImpl
 
-  std::string BasicBlockAlg::debug () const { 
+  std::string
+  BasicBlockAlg::debug() const {
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg[" << this
-	<< ",myContaining="
-	<< getContaining().debug().c_str();
-    out << "]" << std::ends;  
+    out << "xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg[" << BasicBlockAlgBase::debug().c_str()
+        << ",myContaining=" << getContaining().debug().c_str()
+        << ",myUniqueSequencePList.size()=" << myUniqueSequencePList.size()
+        << ",myAssignmentIdList.size()=" << getAssignmentIdList().size()
+        << "]" << std::ends;
     return out.str();
-  } // end of BasicBlockAlg::debug
+  }
 
   void 
   BasicBlockAlg::algorithm_action_3() {
-    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3: invoked for " << debug().c_str());
+    DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::algorithm_action_3(perform preaccumulation): invoked for " << debug().c_str());
     myPreaccumulationCounter.reset();
     for (SequencePList::iterator aSequencePListI = myUniqueSequencePList.begin();
 	 aSequencePListI != myUniqueSequencePList.end();
@@ -302,16 +305,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	makePropagationVariables(currentSequence);
 	generateRemainderGraphPropagators(currentSequence);
         if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
-          GraphVizDisplay::show(currentSequence.getBestElimination().getAccumulationGraph(),
-                                "AccumulationGraph",
-                                xaifBoosterCrossCountryInterface::AccumulationGraphVertexLabelWriter(currentSequence.getBestElimination().getAccumulationGraph()),
-                                xaifBoosterCrossCountryInterface::AccumulationGraphEdgeLabelWriter(currentSequence.getBestElimination().getAccumulationGraph()),
-                                xaifBoosterCrossCountryInterface::AccumulationGraphPropertiesWriter(currentSequence.getBestElimination().getAccumulationGraph()));
-          GraphVizDisplay::show(currentSequence.getBestRemainderGraph(),
-                                "RemainderGraph",
-                                RemainderGraphVertexLabelWriter(currentSequence.getBestRemainderGraph()),
-                                RemainderGraphEdgeLabelWriter(currentSequence.getBestRemainderGraph()),
-                                RemainderGraphPropertiesWriter(currentSequence.getBestRemainderGraph()));
+          currentSequence.getBestElimination().getAccumulationGraph().show("AccumulationGraph");
+          currentSequence.getBestRemainderGraph().show("RemainderGraph");
         }
       } // end if LCG has vertices
     } // end iterate over sequences
