@@ -17,6 +17,8 @@
 #include "xaifBooster/system/inc/Constant.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 
+#include "xaifBooster/algorithms/InlinableXMLRepresentation/inc/InlinableSubroutineCall.hpp"
+
 using namespace xaifBooster;
 
 namespace xaifBoosterDerivativePropagator { 
@@ -35,7 +37,7 @@ namespace xaifBoosterDerivativePropagator {
 
     DerivativePropagatorEntry(const Variable& theTarget);
 
-    ~DerivativePropagatorEntry(){};
+    ~DerivativePropagatorEntry();
 
     typedef std::list<const Variable*> VariablePList;
 
@@ -134,6 +136,8 @@ namespace xaifBoosterDerivativePropagator {
      */
     virtual bool hasExpression(const Expression& anExpression) const;
 
+    virtual const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& asInlinableSubroutineCall() const =0 ;
+
   private:
 
     /**
@@ -159,6 +163,11 @@ namespace xaifBoosterDerivativePropagator {
      * \todo: does it really need to be a copy? AL: probably not
      */
     Variable myTarget;
+
+    /**
+     * represent this as an InlinableSubroutineCall
+     */
+    mutable xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* myInlinableSubroutineCall_p;
 
   }; // end of class DerivativePropagatorEntry
  

@@ -60,4 +60,15 @@ namespace xaifBoosterDerivativePropagator {
     theFactorList.push_back(aFactor);
   } 
 
-} // end of namespace 
+  const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+  DerivativePropagatorZeroDeriv::asInlinableSubroutineCall() const {
+	  if (!myInlinableSubroutineCall_p) {
+		  myInlinableSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("zero_deriv");
+		  myInlinableSubroutineCall_p->setId("asInlinableSubroutineCall");
+		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(1);
+		  getTarget().copyMyselfInto(target.getArgument().getVariable());
+	  }
+	  return *myInlinableSubroutineCall_p;
+  }
+
+}

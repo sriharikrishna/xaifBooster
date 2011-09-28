@@ -94,7 +94,20 @@ namespace xaifBoosterDerivativePropagator {
   DerivativePropagatorSetNegDeriv::hasExpression(const Expression& anExpression) const {
     return (mySource.hasExpression(anExpression)
          || DerivativePropagatorEntry::hasExpression(anExpression));
-  } // end DerivativePropagatorSetNegDeriv::hasExpression()
+  }
 
-} // end namespace xaifBoosterDerivativePropagator
+  const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+  DerivativePropagatorSetNegDeriv::asInlinableSubroutineCall() const {
+	  if (!myInlinableSubroutineCall_p) {
+		  myInlinableSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("set_neg_deriv");
+		  myInlinableSubroutineCall_p->setId("asInlinableSubroutineCall");
+		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(1);
+		  getTarget().copyMyselfInto(target.getArgument().getVariable());
+		  ConcreteArgument& source=myInlinableSubroutineCall_p->addConcreteArgument(2);
+		  mySource.copyMyselfInto(source.getArgument().getVariable());
+	  }
+	  return *myInlinableSubroutineCall_p;
+  }
+
+}
 

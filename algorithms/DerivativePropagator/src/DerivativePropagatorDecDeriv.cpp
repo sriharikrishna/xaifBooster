@@ -98,7 +98,18 @@ namespace xaifBoosterDerivativePropagator {
   DerivativePropagatorDecDeriv::hasExpression(const Expression& anExpression) const {
     return (mySource.hasExpression(anExpression)
          || DerivativePropagatorEntry::hasExpression(anExpression));
-  } // end DerivativePropagatorDecDeriv::hasExpression()
+  }
 
-} // end namespace xaifBoosterDerivativePropagator
+  const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+  DerivativePropagatorDecDeriv::asInlinableSubroutineCall() const {
+	  if (!myInlinableSubroutineCall_p) {
+		  myInlinableSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("dec_deriv");
+		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(1);
+		  getTarget().copyMyselfInto(target.getArgument().getVariable());
+		  ConcreteArgument& source=myInlinableSubroutineCall_p->addConcreteArgument(2);
+		  mySource.copyMyselfInto(source.getArgument().getVariable());
+	  }
+	  return *myInlinableSubroutineCall_p;
+  }
 
+}
