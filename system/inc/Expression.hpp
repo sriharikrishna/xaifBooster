@@ -18,6 +18,7 @@
 #include "xaifBooster/system/inc/ExpressionAlgBase.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/Argument.hpp"
+#include "xaifBooster/system/inc/Constant.hpp"
 
 namespace xaifBooster { 
 
@@ -179,6 +180,35 @@ namespace xaifBooster {
      * the respective algorithm (if any) is subsequently checked
      */
     bool hasExpression(const Expression& anExpression) const;
+
+    /**
+     * simple wrapper class so we don't pass around pointers
+     */
+    template<class Vertex>
+    class ReturnOfSingleVertex {
+    private:
+    	Vertex* myVertex_p;
+    	/**
+    	 * no def
+    	 */
+    	ReturnOfSingleVertex();
+    public:
+    	bool hasIt()const {return myVertex_p!=0;}
+    	Vertex& getIt() const {
+    		if (!myVertex_p) {
+    			THROW_LOGICEXCEPTION_MACRO("ReturnOfSingleVertex::getIt: do not have it");
+    		}
+    		return *myVertex_p;
+    	}
+    	ReturnOfSingleVertex(Vertex* theVertex_p) : myVertex_p(theVertex_p){}
+    };
+    typedef ReturnOfSingleVertex<const Variable> ReturnOfSingleVariable;
+
+    ReturnOfSingleVariable singleVariable() const ;
+
+    typedef ReturnOfSingleVertex<const Constant> ReturnOfSingleConstant;
+
+    ReturnOfSingleConstant singleConstant() const;
 
   private:
 
