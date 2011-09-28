@@ -76,11 +76,17 @@ namespace xaifBoosterDerivativePropagator {
     return *mySource_p;
   }  
 
-  DerivativePropagatorEntry::DerivativePropagatorEntry(const Variable& theTarget) {
+  DerivativePropagatorEntry::DerivativePropagatorEntry(const Variable& theTarget) : myInlinableSubroutineCall_p(NULL) {
     theTarget.copyMyselfInto(myTarget);
     myTarget.setId(1);
     myTarget.setDerivFlag();
   }  
+
+  DerivativePropagatorEntry::~DerivativePropagatorEntry() {
+	  if (myInlinableSubroutineCall_p) {
+		  delete myInlinableSubroutineCall_p;
+	  }
+  }
 
   const Variable& DerivativePropagatorEntry::getTarget() const { 
     return myTarget;
