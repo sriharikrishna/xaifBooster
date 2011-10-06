@@ -95,4 +95,9 @@ namespace xaifBoosterInlinableXMLRepresentation {
     return mySubroutineName;
   }
 
+  void 
+  InlinableSubroutineCall::appendSuffix(const std::string& aSuffix) { 
+    mySubroutineName+=aSuffix;
+  } 
+
 } 
