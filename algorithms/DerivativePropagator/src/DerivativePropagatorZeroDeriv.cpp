@@ -64,9 +64,12 @@ namespace xaifBoosterDerivativePropagator {
   DerivativePropagatorZeroDeriv::asInlinableSubroutineCall() const {
 	  if (!myInlinableSubroutineCall_p) {
 		  myInlinableSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("zero_deriv");
+		  std::string suffix;
 		  myInlinableSubroutineCall_p->setId("asInlinableSubroutineCall");
 		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(1);
 		  getTarget().copyMyselfInto(target.getArgument().getVariable());
+		  suffix+="_"+SymbolShape::toShortString(getTarget().getEffectiveShape());
+		  myInlinableSubroutineCall_p->appendSuffix(suffix);
 	  }
 	  return *myInlinableSubroutineCall_p;
   }

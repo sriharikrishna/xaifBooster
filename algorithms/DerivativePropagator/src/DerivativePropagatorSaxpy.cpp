@@ -238,17 +238,21 @@ namespace xaifBoosterDerivativePropagator {
 		  }
 		  myInlinableSubroutineCall_p->setId("asInlinableSubroutineCall");
 		  unsigned short position=1;
+		  std::string suffix;
 		  for (AXPList::const_iterator it=myAXPList.begin();
 				  it!=myAXPList.end(); ++it) {
 			  ConcreteArgument& theA=myInlinableSubroutineCall_p->addConcreteArgument(position++);
 			  Expression::ReturnOfSingleVariable sVar((*it)->myA.singleVariable());
-			  if (sVar.hasIt())
+			  if (sVar.hasIt()) {
 				  sVar.getIt().copyMyselfInto(theA.getArgument().getVariable());
+				  suffix+="_"+SymbolShape::toShortString(theA.getArgument().getVariable().getEffectiveShape());
+			  }
 			  else {
 				  Expression::ReturnOfSingleConstant cVar((*it)->myA.singleConstant());
 				  if (cVar.hasIt()) {
 					  Constant& aConst(theA.makeConstant(cVar.getIt().getType()));
 					  aConst.setFromString(cVar.getIt().toString());
+					  suffix+="_"+SymbolShape::toShortString(SymbolShape::SCALAR);
 				  }
 				  else {
 					  THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorSaxpy::asInlinableSubroutineCall: no logic to handle factor expression");
@@ -256,9 +260,12 @@ namespace xaifBoosterDerivativePropagator {
 			  }
 			  ConcreteArgument& theX=myInlinableSubroutineCall_p->addConcreteArgument(position++);
 			  (*it)->myX.copyMyselfInto(theX.getArgument().getVariable());
+			  suffix+="_"+SymbolShape::toShortString(theX.getArgument().getVariable().getEffectiveShape());
 		  }
 		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(position);
 		  getTarget().copyMyselfInto(target.getArgument().getVariable());
+		  suffix+="_"+SymbolShape::toShortString(getTarget().getEffectiveShape());
+		  myInlinableSubroutineCall_p->appendSuffix(suffix);
 	  }
 	  return *myInlinableSubroutineCall_p;
   }
