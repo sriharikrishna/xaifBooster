@@ -55,18 +55,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   PreaccumulationCounter BasicBlockAlg::ourPreaccumulationCounter;
 
   bool BasicBlockAlg::ourRuntimeCountersFlag=false;
-  bool BasicBlockAlg::ourUseRandomizedHeuristicsFlag = false;
-  PreaccumulationMetric::PreaccumulationMetric_E BasicBlockAlg::ourPreaccumulationMetric = PreaccumulationMetric::SCARCITY_METRIC;
-  bool BasicBlockAlg::ourUseReroutingsFlag = false;
   bool BasicBlockAlg::ourOneGraphPerStatementFlag = false;
 
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
   PrivateLinearizedComputationalGraphVertexAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphVertexAlgFactory_p=PrivateLinearizedComputationalGraphVertexAlgFactory::instance();
-
-  // parameters for simulated annealing
-  int BasicBlockAlg::ourIterationsParameter=5000;
-  double BasicBlockAlg::ourGamma=5.0;
 
   void BasicBlockAlg::incrementGlobalAssignmentCounter() { 
     ourAssignmentCounter++;
@@ -312,8 +305,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         currentSequence.fillLCGIndependentsList();
         currentSequence.fillLCGDependentsList();
 	// hand off to transformation engine, which will make JAEs and a remainder graph
-	runElimination(currentSequence);
+	currentSequence.runElimination();
+        myPreaccumulationCounter.incrementBy(currentSequence.getBestElimination().getCounter());
+        ourPreaccumulationCounter.incrementBy(currentSequence.getBestElimination().getCounter());
+        // generate accumulation code
 	generateAccumulationExpressions(currentSequence);
+        // generate propagation code
 	makePropagationVariables(currentSequence);
 	currentSequence.generateRemainderGraphPropagators();
       } // end if LCG has vertices
@@ -337,73 +334,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       myRuntimeCounterCallList.push_back(theSubroutineCall_p);
     }
   } // end BasicBlockAlg::algorithm_action_3()
-
-  void BasicBlockAlg::runElimination(Sequence& aSequence) { 
-    PrivateLinearizedComputationalGraph& theComputationalGraph=*(aSequence.myComputationalGraph_p);
-    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {     
-      GraphVizDisplay::show(theComputationalGraph,
-			    "OriginalFlattenedPLCG",
-			    PrivateLinearizedComputationalGraphVertexLabelWriter(theComputationalGraph),
-			    PrivateLinearizedComputationalGraphEdgeLabelWriter(theComputationalGraph),
-			    PrivateLinearizedComputationalGraphPropertiesWriter(theComputationalGraph));
-    }
-    // initialize the graph transformation(s)
-    switch (ourPreaccumulationMetric) {
-    case PreaccumulationMetric::OPERATIONS_METRIC: {
-      aSequence.addNewElimination(theComputationalGraph).initAsOperations();
-      if (ourUseRandomizedHeuristicsFlag) {
-	aSequence.addNewElimination(theComputationalGraph).initAsOperationsRandom();
-	aSequence.addNewElimination(theComputationalGraph).initAsLSAVertex(ourIterationsParameter, ourGamma);
-	//aSequence.addNewElimination(theComputationalGraph).initAsLSAFace(ourIterationsParameter, ourGamma);
-      } // end randomized heuristics
-      break;
-    } // end OPERATIONS
-    case PreaccumulationMetric::SCARCITY_METRIC: {
-      aSequence.addNewElimination(theComputationalGraph).initAsScarceElimination();
-      if (ourUseRandomizedHeuristicsFlag)
-	aSequence.addNewElimination(theComputationalGraph).initAsScarceRandomElimination();
-      if (ourUseReroutingsFlag) {
-	aSequence.addNewElimination(theComputationalGraph).initAsScarceTransformation();
-	if (ourUseRandomizedHeuristicsFlag)
-	  aSequence.addNewElimination(theComputationalGraph).initAsScarceRandomTransformation();
-      }
-      break;
-    } // end SCARCITY
-    default: {
-      THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: unknown preaccumulation metric "
-				 << PreaccumulationMetric::toString(ourPreaccumulationMetric));
-      break;
-    } // end default
-    } // end switch (ourPreaccumulationMetric)
-
-    // perform the transformations and build the accumulation graph
-    for (Sequence::EliminationPList::iterator elim_i = aSequence.getEliminationPList().begin();
-         elim_i != aSequence.getEliminationPList().end();
-         ++elim_i) {
-      try {
-	(*elim_i)->eliminate();	
-      }
-      catch(xaifBoosterCrossCountryInterface::EliminationException e) { 
-	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: " << (*elim_i)->getDescription()
-                                   << ": " << e.getReason().c_str());
-      }
-      (*elim_i)->buildAccumulationGraph();
-      DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
-		<< " Sequence " << &aSequence
-		<< " by " << (*elim_i)->getDescription()
-		<< ": " << (*elim_i)->getCounter().debug().c_str()
-		<< " with " << (*elim_i)->getNumReroutings() << " reroutings");
-    } // end iterate over all Eliminations for this Sequence
-
-    aSequence.determineBestElimination(ourPreaccumulationMetric);
-    DBG_MACRO(DbgGroup::METRIC, "BasicBlockAlg " << this
-	      << " Sequence " << &aSequence
-	      << " best is " << aSequence.getBestElimination().getDescription()
-	      << ": " << aSequence.getBestElimination().getCounter().debug().c_str()
-	      << " with " << aSequence.getBestElimination().getNumReroutings() << " reroutings");
-    myPreaccumulationCounter.incrementBy(aSequence.getBestElimination().getCounter());
-    ourPreaccumulationCounter.incrementBy(aSequence.getBestElimination().getCounter());
-  } // end BasicBlockAlg::runElimination()
 
   void BasicBlockAlg::generateAccumulationExpressions(Sequence& aSequence) {
     DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::generateAccumulationExpressions: invoked for " << aSequence.debug().c_str());
@@ -894,18 +824,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   BasicBlockAlg::getContaining() const {
     return dynamic_cast<const BasicBlock&>(myContaining);
   }
-
-  void BasicBlockAlg::useRandomizedHeuristics() {
-    ourUseRandomizedHeuristicsFlag = true;
-  }
-
-  void BasicBlockAlg::setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E aMetric) {
-    ourPreaccumulationMetric = aMetric;
-  } // end BasicBlockAlg::setPreaccumulationMetric()
-
-  void BasicBlockAlg::useReroutings() { 
-    ourUseReroutingsFlag = true;
-  } // end BasicBlockAlg::useReroutings()
 
   const StatementIdList& BasicBlockAlg::getAssignmentIdList()const { 
     return myAssignmentIdList;
