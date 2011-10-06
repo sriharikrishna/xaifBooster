@@ -40,14 +40,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (isSet('Q')) 
       xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::permitAliasedLHSs();
     if (isSet('a'))
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::useRandomizedHeuristics();
+      xaifBoosterBasicBlockPreaccumulation::Sequence::useRandomizedHeuristics();
     if (isSet('M')) {
       PreaccumulationMetric::checkValid(PreaccumulationMetric::PreaccumulationMetric_E(argAsInt('M')));
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E(argAsInt('M')));
+      xaifBoosterBasicBlockPreaccumulation::Sequence::setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E(argAsInt('M')));
       PreaccumulationCounter::setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E(argAsInt('M')));
     } // end M
     if (isSet('R')) 
-      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::useReroutings();
+      xaifBoosterBasicBlockPreaccumulation::Sequence::useReroutings();
     if (isSet('S')) 
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::oneGraphPerStatement();
   }

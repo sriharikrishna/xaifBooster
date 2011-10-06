@@ -49,6 +49,18 @@ using namespace xaifBooster;
 namespace xaifBoosterBasicBlockPreaccumulation {
 
 
+  PreaccumulationMetric::PreaccumulationMetric_E Sequence::ourPreaccumulationMetric = PreaccumulationMetric::SCARCITY_METRIC;
+
+  bool Sequence::ourUseRandomizedHeuristicsFlag = false;
+
+  /// for simulated annealing
+  int Sequence::ourIterationsParameter=5000;
+
+  /// for simulated annealing
+  double Sequence::ourGamma=5.0;
+
+  bool Sequence::ourUseReroutingsFlag = false;
+
   bool Sequence::ourPermitNarySaxFlag = false;
 
   Sequence::Sequence() :
@@ -79,6 +91,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (myComputationalGraph_p)
       delete myComputationalGraph_p;
   }
+
+  void
+  Sequence::useRandomizedHeuristics() {
+    ourUseRandomizedHeuristicsFlag = true;
+  }
+
+  void
+  Sequence::setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E aMetric) {
+    ourPreaccumulationMetric = aMetric;
+  } // end BasicBlockAlg::setPreaccumulationMetric()
+
+  void
+  Sequence::useReroutings() { 
+    ourUseReroutingsFlag = true;
+  } // end BasicBlockAlg::useReroutings()
 
   void
   Sequence::permitNarySax() {
@@ -267,8 +294,61 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     }
   }
 
-  xaifBoosterCrossCountryInterface::Elimination& Sequence::addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg) { 
-    xaifBoosterCrossCountryInterface::Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination (lcg);
+  void Sequence::runElimination() { 
+    // initialize the graph transformation(s)
+    switch (ourPreaccumulationMetric) {
+    case PreaccumulationMetric::OPERATIONS_METRIC: {
+      addNewElimination().initAsOperations();
+      if (ourUseRandomizedHeuristicsFlag) {
+        addNewElimination().initAsOperationsRandom();
+        addNewElimination().initAsLSAVertex(ourIterationsParameter,ourGamma);
+        //addNewElimination().initAsLSAFace(ourIterationsParameter,ourGamma);
+      } // end randomized heuristics
+      break;
+    } // end OPERATIONS
+    case PreaccumulationMetric::SCARCITY_METRIC: {
+      addNewElimination().initAsScarceElimination();
+      if (ourUseRandomizedHeuristicsFlag)
+        addNewElimination().initAsScarceRandomElimination();
+      if (ourUseReroutingsFlag) {
+        addNewElimination().initAsScarceTransformation();
+        if (ourUseRandomizedHeuristicsFlag)
+          addNewElimination().initAsScarceRandomTransformation();
+      }
+      break;
+    } // end SCARCITY
+    default: {
+      THROW_LOGICEXCEPTION_MACRO("Sequence::runElimination: unknown preaccumulation metric "
+                                 << PreaccumulationMetric::toString(ourPreaccumulationMetric));
+      break;
+    } // end default
+    } // end switch (ourPreaccumulationMetric)
+
+    // perform the transformations and build the accumulation graph
+    for (EliminationPList::iterator elim_i = getEliminationPList().begin(); elim_i != getEliminationPList().end(); ++elim_i) {
+      try {
+        (*elim_i)->eliminate();	
+      }
+      catch(xaifBoosterCrossCountryInterface::EliminationException e) { 
+	THROW_LOGICEXCEPTION_MACRO("BasicBlockAlg::runElimination: " << (*elim_i)->getDescription()
+                                   << ": " << e.getReason().c_str());
+      }
+      (*elim_i)->buildAccumulationGraph();
+      DBG_MACRO(DbgGroup::METRIC, " Sequence " << this
+                               << " by " << (*elim_i)->getDescription()
+                               << ": " << (*elim_i)->getCounter().debug().c_str()
+                               << " with " << (*elim_i)->getNumReroutings() << " reroutings");
+    } // end iterate over all Eliminations for this Sequence
+    determineBestElimination(ourPreaccumulationMetric);
+    DBG_MACRO(DbgGroup::METRIC, " Sequence " << this
+                             << " best is " << getBestElimination().getDescription()
+                             << ": " << getBestElimination().getCounter().debug().c_str()
+                             << " with " << getBestElimination().getNumReroutings() << " reroutings");
+  }
+
+  xaifBoosterCrossCountryInterface::Elimination&
+  Sequence::addNewElimination() {
+    xaifBoosterCrossCountryInterface::Elimination* theElimination_p = new xaifBoosterCrossCountryInterface::Elimination(*myComputationalGraph_p);
     myEliminationPList.push_back(theElimination_p);
     return *theElimination_p;
   }

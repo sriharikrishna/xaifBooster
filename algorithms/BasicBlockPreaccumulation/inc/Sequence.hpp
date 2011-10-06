@@ -59,6 +59,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual bool hasExpression(const Expression& anExpression) const;
 
+    /// command line activated switch for specifying preaccumulation metric (min ops or scarcity)
+    /** the validity of the input is checked in AlgConfig
+     *  \sa AlgConfig
+     */
+    static void setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E aMetric); 
+
+    /// command line activated switch for using randomized heuristics
+    static void useRandomizedHeuristics();
+
+    /// command line activated switch for using scarcity heuristics that do reroutings 
+    static void useReroutings();
+
     /**
      * we can allow to have all 'ax' factors collected 
      * into one DerivativePropagator per 'y'
@@ -94,7 +106,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     void fillLCGDependentsList();
 
-    xaifBoosterCrossCountryInterface::Elimination& addNewElimination(xaifBoosterCrossCountryInterface::LinearizedComputationalGraph& lcg); 
+    /// perform the preaccumulation transformation on the linearized computational graph
+    void
+    runElimination();
 
     typedef std::list<xaifBoosterCrossCountryInterface::Elimination*> EliminationPList;
 
@@ -164,6 +178,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   private: 
 
+    /// if this flag is true we run randomized heuristics in addition to deterministic ones
+    static bool ourUseRandomizedHeuristicsFlag;
+
+    /// indicates whether our goal is to minimize ops or exploit scarcity
+    static PreaccumulationMetric::PreaccumulationMetric_E ourPreaccumulationMetric;
+
+    /// if this flag is set to true we use scarcity heuristics that utilize reroutings
+    static bool ourUseReroutingsFlag;
+
+    static int ourIterationsParameter;
+
+    static double ourGamma;
+
     /** 
      * if this flag is true we attempt to collect 
      * all 'ax' factors ordered by 'y'
@@ -199,6 +226,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     Sequence& operator= (const Sequence&);
 
     EliminationPList myEliminationPList;
+
+    xaifBoosterCrossCountryInterface::Elimination&
+    addNewElimination(); 
 
     xaifBoosterCrossCountryInterface::Elimination* myBestElimination_p;
 

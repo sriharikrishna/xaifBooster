@@ -143,9 +143,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     virtual void algorithm_action_3();
 
-    static int ourIterationsParameter;
-    static double ourGamma;
-
     /**
      * Sets flag to insert runtime conuters into the code.
      */
@@ -157,18 +154,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     static void setPrivateLinearizedComputationalGraphAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphAlgFactory*);
     static void setPrivateLinearizedComputationalGraphEdgeAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphEdgeAlgFactory*);
     static void setPrivateLinearizedComputationalGraphVertexAlgFactory(xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertexAlgFactory*);
-
-    /// command line activated switch for using randomized heuristics
-    static void useRandomizedHeuristics();
-
-    /// command line activated switch for specifying preaccumulation metric (min ops or scarcity)
-    /** the validity of the input is checked in AlgConfig
-     *  \sa AlgConfig
-     */
-    static void setPreaccumulationMetric(PreaccumulationMetric::PreaccumulationMetric_E aMetric); 
-
-    /// command line activated switch for using scarcity heuristics that do reroutings 
-    static void useReroutings();
 
     /// access container
     const BasicBlock& getContaining() const;
@@ -237,15 +222,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     static bool ourRuntimeCountersFlag; 
 
-    /// if this flag is true we run randomized heuristics in addition to deterministic ones
-    static bool ourUseRandomizedHeuristicsFlag;
-
-    /// indicates whether our goal is to minimize ops or exploit scarcity
-    static PreaccumulationMetric::PreaccumulationMetric_E ourPreaccumulationMetric;
-
-    /// if this flag is set to true we use scarcity heuristics that utilize reroutings
-    static bool ourUseReroutingsFlag;
-
     PlainBasicBlock::BasicBlockElementList myRuntimeCounterCallList;
     
     /// keep track of metrics associated with the preaccumulation
@@ -286,9 +262,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       
     /// keep track of (total) metrics associated with all preaccumulation operations
     static PreaccumulationCounter ourPreaccumulationCounter;
-
-    /// perform the preaccumulation transformation on the graph for \p aSequence
-    virtual void runElimination(Sequence& aSequence);
 
     void incrementGlobalAssignmentCounter();
     
