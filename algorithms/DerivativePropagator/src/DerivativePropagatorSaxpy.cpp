@@ -239,19 +239,23 @@ namespace xaifBoosterDerivativePropagator {
 		  myInlinableSubroutineCall_p->setId("asInlinableSubroutineCall");
 		  unsigned short position=1;
 		  std::string suffix;
+     	  bool inlinable=true;
 		  for (AXPList::const_iterator it=myAXPList.begin();
 				  it!=myAXPList.end(); ++it) {
 			  ConcreteArgument& theA=myInlinableSubroutineCall_p->addConcreteArgument(position++);
 			  Expression::ReturnOfSingleVariable sVar((*it)->myA.singleVariable());
 			  if (sVar.hasIt()) {
 				  sVar.getIt().copyMyselfInto(theA.getArgument().getVariable());
-				  suffix+="_"+SymbolShape::toShortString(theA.getArgument().getVariable().getEffectiveShape());
+				  SymbolShape::SymbolShape_E effShape=theA.getArgument().getVariable().getEffectiveShape();
+				  if (effShape!=SymbolShape::SCALAR && sVar.getIt().hasArrayAccess())
+					  inlinable=false;
+				  suffix+="_"+SymbolShape::toShortString(effShape);
 			  }
 			  else {
-				  Expression::ReturnOfSingleConstant cVar((*it)->myA.singleConstant());
-				  if (cVar.hasIt()) {
-					  Constant& aConst(theA.makeConstant(cVar.getIt().getType()));
-					  aConst.setFromString(cVar.getIt().toString());
+				  Expression::ReturnOfSingleConstant sCon((*it)->myA.singleConstant());
+				  if (sCon.hasIt()) {
+					  Constant& aConst(theA.makeConstant(sCon.getIt().getType()));
+					  aConst.setFromString(sCon.getIt().toString());
 					  suffix+="_"+SymbolShape::toShortString(SymbolShape::SCALAR);
 				  }
 				  else {
@@ -260,12 +264,19 @@ namespace xaifBoosterDerivativePropagator {
 			  }
 			  ConcreteArgument& theX=myInlinableSubroutineCall_p->addConcreteArgument(position++);
 			  (*it)->myX.copyMyselfInto(theX.getArgument().getVariable());
-			  suffix+="_"+SymbolShape::toShortString(theX.getArgument().getVariable().getEffectiveShape());
+			  SymbolShape::SymbolShape_E effShape=theX.getArgument().getVariable().getEffectiveShape();
+			  if (effShape!=SymbolShape::SCALAR && (*it)->myX.hasArrayAccess())
+				  inlinable=false;
+			  suffix+="_"+SymbolShape::toShortString(effShape);
 		  }
 		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(position);
 		  getTarget().copyMyselfInto(target.getArgument().getVariable());
-		  suffix+="_"+SymbolShape::toShortString(getTarget().getEffectiveShape());
-		  myInlinableSubroutineCall_p->appendSuffix(suffix);
+		  SymbolShape::SymbolShape_E effShape=getTarget().getEffectiveShape();
+		  if (effShape!=SymbolShape::SCALAR && getTarget().hasArrayAccess())
+			  inlinable=false;
+		  suffix+="_"+SymbolShape::toShortString(effShape);
+     	  if (inlinable)
+     		  myInlinableSubroutineCall_p->appendSuffix(suffix);
 	  }
 	  return *myInlinableSubroutineCall_p;
   }

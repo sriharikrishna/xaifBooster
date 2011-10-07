@@ -169,8 +169,14 @@ namespace xaifBoosterDerivativePropagator {
      */
     mutable xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* myInlinableSubroutineCall_p;
 
-  }; // end of class DerivativePropagatorEntry
+    /**
+     * helper method for the entries that have a source and a target
+     */
+    const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+    asSourceTargetInlinableSubroutineCall(const std::string& name, const Variable& theSource) const;
+
+  };
  
-} // end of namespace
+}
                                                                      
 #endif

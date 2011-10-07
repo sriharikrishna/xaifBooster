@@ -102,15 +102,7 @@ namespace xaifBoosterDerivativePropagator {
 
   const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
   DerivativePropagatorIncDeriv::asInlinableSubroutineCall() const {
-	  if (!myInlinableSubroutineCall_p) {
-		  myInlinableSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("inc_deriv");
-		  myInlinableSubroutineCall_p->setId("asInlinableSubroutineCall");
-		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(1);
-		  getTarget().copyMyselfInto(target.getArgument().getVariable());
-		  ConcreteArgument& source=myInlinableSubroutineCall_p->addConcreteArgument(2);
-		  mySource.copyMyselfInto(source.getArgument().getVariable());
-	  }
-	  return *myInlinableSubroutineCall_p;
+	  return asSourceTargetInlinableSubroutineCall("inc_deriv",mySource);
   }
 
 }
