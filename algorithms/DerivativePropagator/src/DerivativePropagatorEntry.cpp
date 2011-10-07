@@ -103,7 +103,32 @@ namespace xaifBoosterDerivativePropagator {
   bool
   DerivativePropagatorEntry::hasExpression(const Expression& anExpression) const {
     return myTarget.hasExpression(anExpression);
-  } // end DerivativePropagatorEntry::hasExpression()
+  }
 
-} // end namespace xaifBoosterDerivativePropagator
+  const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+  DerivativePropagatorEntry::asSourceTargetInlinableSubroutineCall(const std::string& name, const Variable& theSource) const {
+	  if (!myInlinableSubroutineCall_p) {
+		  std::string suffix;
+     	  bool inlinable=true;
+		  myInlinableSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(name);
+		  myInlinableSubroutineCall_p->setId("asInlinableSubroutineCall");
+		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(1);
+		  getTarget().copyMyselfInto(target.getArgument().getVariable());
+		  SymbolShape::SymbolShape_E effShape=getTarget().getEffectiveShape();
+		  if (effShape!=SymbolShape::SCALAR && getTarget().hasArrayAccess())
+			  inlinable=false;
+		  suffix+="_"+SymbolShape::toShortString(effShape);
+		  ConcreteArgument& source=myInlinableSubroutineCall_p->addConcreteArgument(2);
+		  theSource.copyMyselfInto(source.getArgument().getVariable());
+		  effShape=theSource.getEffectiveShape();
+		  if (effShape!=SymbolShape::SCALAR && theSource.hasArrayAccess())
+			  inlinable=false;
+		  suffix+="_"+SymbolShape::toShortString(effShape);
+     	  if (inlinable)
+     		  myInlinableSubroutineCall_p->appendSuffix(suffix);
+	  }
+	  return *myInlinableSubroutineCall_p;
+  }
+
+}
 
