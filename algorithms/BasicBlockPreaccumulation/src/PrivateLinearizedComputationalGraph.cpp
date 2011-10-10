@@ -8,6 +8,7 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 using namespace xaifBooster;
 
@@ -15,6 +16,22 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   PrivateLinearizedComputationalGraph::PrivateLinearizedComputationalGraph() { 
   } 
+
+  void
+  PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV(const Assignment& aAssignment,
+                                                              const PrivateLinearizedComputationalGraphVertex& thePLCGV) {
+    if (myAssignmentLHS2LCGVertexPMap.find(&aAssignment) != myAssignmentLHS2LCGVertexPMap.end())
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV: already mapping " << aAssignment.debug().c_str());
+    myAssignmentLHS2LCGVertexPMap[&aAssignment] = &thePLCGV;
+  }
+
+  const PrivateLinearizedComputationalGraphVertex&
+  PrivateLinearizedComputationalGraph::getLCGVertexForAssignmentLHS(const Assignment& aAssignment) const {
+    CAssignmentP2CPLCGVertexPMap::const_iterator mapI(myAssignmentLHS2LCGVertexPMap.find(&aAssignment));
+    if (mapI == myAssignmentLHS2LCGVertexPMap.end())
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV: no map entry for " << aAssignment.debug().c_str());
+    return *(mapI->second);
+  }
 
   void PrivateLinearizedComputationalGraph::addToIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndependentVertex) { 
     myIndependentList.push_back(&theIndependentVertex);

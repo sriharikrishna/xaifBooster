@@ -10,7 +10,6 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgConfig.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AlgFactoryManager.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/AssignmentAlg.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/Sequence.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
@@ -38,7 +37,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (isSet('m'))
       xaifBoosterCrossCountryInterface::Elimination::setAllowMaintainingFlag();
     if (isSet('Q')) 
-      xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::permitAliasedLHSs();
+      xaifBoosterBasicBlockPreaccumulation::Sequence::permitAliasedLHSs();
     if (isSet('a'))
       xaifBoosterBasicBlockPreaccumulation::Sequence::useRandomizedHeuristics();
     if (isSet('M')) {

@@ -10,6 +10,9 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/utils/inc/ObjectWithId.hpp"
+
+#include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
 #include "xaifBooster/system/inc/VariableSymbolReference.hpp"
@@ -35,25 +38,42 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     virtual std::string debug() const;
 
+    void
+    setOrigin(const ExpressionVertex& aExpressionVertex,
+              const Assignment& aAssignment);
+
+    /**
+     * to be used when this LCG vertex corresp. to the LHS of \p aAssignment
+     * (currently exclusively for direct copy vertices)
+     */
+    void
+    setOrigin(const Assignment& aAssignment);
+
+    const ExpressionVertex&
+    getOriginatingExpressionVertex() const;
+
     void associateExpressionVertex(const ExpressionVertex&);
 
     const CExpressionVertexPSet& getAssociatedExpressionVertexPSet() const;
 
     bool hasOriginalVariable() const;
-    void setOriginalVariable(const Variable& aVariable,
-			     const ObjectWithId::Id& aStatementId);
+
     const Variable& getOriginalVariable() const;
 
     const ObjectWithId::Id& getStatementId() const;
 
     bool hasAuxiliaryVariable() const;
-    void setAuxiliaryVariable(const Variable& aVariable);
+
     const Variable& getAuxiliaryVariable() const;
 
     /// for GraphViz
     std::string getLabelString() const;
 
   private: 
+
+    const ExpressionVertex* myOriginatingExpressionVertex_p;
+
+    const Assignment* myOriginatingAssignment_p;
 
     /**
      * we do not own these expression vertices
@@ -68,11 +88,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     /// (may not be set) points to the corresp. auxiliary variable if one was created during Linearization
     const Variable* myAuxiliaryVariable_p;
-
-    /**
-     * set to the respective statement id if myOriginalVariable_p is set
-     */
-    ObjectWithId::Id myStatementId;
 
   }; 
  

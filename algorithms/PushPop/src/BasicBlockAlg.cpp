@@ -50,7 +50,7 @@ namespace xaifBoosterPushPop {
          aSequencePListI != myUniqueSequencePList.end();
          ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
       Sequence& currentSequence(dynamic_cast<Sequence&>(**aSequencePListI));
-      if (currentSequence.myComputationalGraph_p->numVertices() > 0) {
+      if (currentSequence.getLCG().numVertices() > 0) {
         currentSequence.populateCombinedGraph();
       } // end if LCG has vertices
     } // end iterate over sequences

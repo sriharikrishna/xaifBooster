@@ -10,14 +10,16 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/system/inc/AliasMapKey.hpp"
+#include "xaifBooster/system/inc/StatementIdSetMapKey.hpp"
+#include "xaifBooster/system/inc/ExpressionVertex.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationList.hpp"
 
 using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
-
-  class PrivateLinearizedComputationalGraphVertex;
 
   /**
    * this is for the identification fo active variables   
@@ -37,7 +39,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     public: 
 
       IdentificationResult(IdentificationResult_E,
-			   PrivateLinearizedComputationalGraphVertex*);
+                           const Assignment* aAssignment_p,
+                           const ExpressionVertex* aExpressionVertex_p);
 
       ~IdentificationResult(){};
 
@@ -46,12 +49,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       /**
        *this will be valid only if myAnswer!=NOT_IDENTIFIED
        */
-      const PrivateLinearizedComputationalGraphVertex* getVertexP() const;
+      const Assignment&
+      getAssignment() const;
 
       /**
        *this will be valid only if myAnswer!=NOT_IDENTIFIED
        */
-      PrivateLinearizedComputationalGraphVertex* getVertexP();
+      const ExpressionVertex&
+      getExpressionVertex() const;
 
     private:
 
@@ -65,7 +70,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       /**
        * this is valid only if myAnswer!=NOT_IDENTIFIED
        */
-      PrivateLinearizedComputationalGraphVertex* myPrivateLinearizedComputationalGraphVertex_p;
+      const Assignment* myAssignment_p;
+
+      /**
+       * this is valid only if myAnswer!=NOT_IDENTIFIED
+       */
+      const ExpressionVertex* myExpressionVertex_p;
 
     };
 
@@ -102,17 +112,31 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       
       ListItem(const AliasMapKey& anAliasMapKey,
 	       const StatementIdSetMapKey& aDuUdMapKey,
-	       PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p);
+               const Assignment& aAssignment,
+	       const ExpressionVertex& aExpressionVertex);
 
       virtual std::string debug() const;
 
+      const Assignment&
+      getAssignment() const;
+
+      const ExpressionVertex&
+      getExpressionVertex() const;
+
+    private:
+
       /**
-       * the pointer to a vertex in the PrivateLinearizedComputationalGraph
+       * the pointer to an Assignment; always set; we don't own this pointer
+       */ 
+      const Assignment* myAssignment_p;
+
+      /**
+       * the pointer to an expression vertex;
        * always set, 
        * we don't own this pointer
        */ 
-      PrivateLinearizedComputationalGraphVertex* myPrivateLinearizedComputationalGraphVertex_p;
-      
+      const ExpressionVertex* myExpressionVertex_p;
+
     };
     
   }; // end of class VertexIdentificationListActive  

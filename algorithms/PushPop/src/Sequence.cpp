@@ -76,7 +76,7 @@ namespace xaifBoosterPushPop {
     if (!hasExpression(secondExpression))
       THROW_LOGICEXCEPTION_MACRO("xaifBoosterPushPop::Sequence::compareExpressions: we don't have " << secondExpression.debug());
     // check the assignments themselves
-    for (CAssignmentPList::const_iterator ai(myAssignmentPList.begin()); ai != myAssignmentPList.end(); ++ai) {
+    for (CAssignmentPList::const_iterator ai(getAssignmentPList().begin()); ai != getAssignmentPList().end(); ++ai) {
       const xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg& theAssignmentAlg(
        dynamic_cast<const xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg&>(
         (*ai)->getAssignmentAlgBase()
@@ -148,7 +148,7 @@ namespace xaifBoosterPushPop {
   Sequence::populateCombinedGraph() {
     myCombinedGraph.clear();
 
-    const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph& theOriginalPLCG(*myComputationalGraph_p);
+    const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph& theOriginalPLCG(getLCG());
     // copy the PLCG vertices
     xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::ConstVertexIteratorPair aPLCGVpair(theOriginalPLCG.vertices());
     for (xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::ConstVertexIterator aPLCGVi(aPLCGVpair.first), aPLCGViend(aPLCGVpair.second);

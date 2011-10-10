@@ -32,6 +32,10 @@
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraph.hpp" 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/RemainderGraphVertex.hpp" 
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveLHS.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveRHS.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListPassive.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListIndAct.hpp"
 
 using namespace xaifBooster;
 
@@ -58,6 +62,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * check the front/end assignment lists and the derivative propagator for \p anExpression
      */
     virtual bool hasExpression(const Expression& anExpression) const;
+
+    static void permitAliasedLHSs();
 
     /// command line activated switch for specifying preaccumulation metric (min ops or scarcity)
     /** the validity of the input is checked in AlgConfig
@@ -88,23 +94,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     bool
     canIncorporate(const Assignment& aAssignment,
-                   const BasicBlock& theBasicBlock); //const;
+                   const BasicBlock& theBasicBlock) const;
 
     void
     incorporateAssignment(const Assignment& aAssignment,
                           const StatementIdList& theKnownAssignmentsIdList);
-
-    /** 
-     * the graph of all basic block elements combined, 
-     * i.e. flattened, however since this is only for 
-     * nontrivial derivative computations all zero 
-     * expressions are clipped from the graph
-     */
-    PrivateLinearizedComputationalGraph* myComputationalGraph_p;
-    
-    void fillLCGIndependentsList(); 
-
-    void fillLCGDependentsList();
 
     /// perform the preaccumulation transformation on the linearized computational graph
     void
@@ -148,10 +142,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     Assignment& appendEndAssignment(bool withAlgorithm=false);
 
-    const AssignmentPList& getFrontAssignmentList() const;
-
-    const AssignmentPList& getEndAssignmentList() const;
-
     /// choose "best" transformation, based on what our metric for preaccumulation
     void determineBestElimination(PreaccumulationMetric::PreaccumulationMetric_E aMetric);
 
@@ -161,22 +151,34 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     EliminationPList& getEliminationPList();
 
-  protected: friend class BasicBlockAlg;
-
     void
     printXMLHierarchyImpl(std::ostream&) const;
 
+    /// should be private
+    void
+    buildLinearizedComputationalGraph(); 
+
+    /// should be private
     /**
      * traverses the remainder graph and creates a derivative propagator entry for every edge.
      * created sax operations are n-ary if ourPermitNarySaxFlag is true
      */
     void generateRemainderGraphPropagators(); 
 
+    /// \FIXME \TODO: ought to be private in the future(?)
+    const PrivateLinearizedComputationalGraph&
+    getLCG() const;
+
   protected:
 
-    CAssignmentPList myAssignmentPList;
+    const CAssignmentPList&
+    getAssignmentPList() const;
 
   private: 
+
+    static bool ourPermitAliasedLHSsFlag;
+
+    static bool doesPermitAliasedLHSs();
 
     /// if this flag is true we run randomized heuristics in addition to deterministic ones
     static bool ourUseRandomizedHeuristicsFlag;
@@ -197,6 +199,113 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */ 
     static bool ourPermitNarySaxFlag;
 
+    CAssignmentPList myAssignmentPList;
+
+    /**
+     * we need to track the relation 
+     * between Variables and 
+     * vertices in the linearized graph
+     * in particular to find the connection 
+     * points for new Expressions to be added 
+     * to the flattened graph. 
+     * RHS identification serves the purpose 
+     * of identifying RHSs within or accross RHSs
+     * myVertexIdentificationListActiveRHS and myVertexIdentificationListActiveLHS
+     * are disjoint
+     * RHS identification doesn't preclude 
+     * aliased vertices in the list 
+     * this list doesn't own any elements
+     */
+    VertexIdentificationListActiveRHS myVertexIdentificationListActiveRHS; 
+
+    /**
+     * we need to track the relation 
+     * between Variables and 
+     * vertices in the linearized graph
+     * in particular to find the connection 
+     * points for new Expressions to be added 
+     * to the flattened graph. 
+     * LHS identification serves the purpose 
+     * of identifying a RHS vertex with a preceding LHS
+     * The Vertex for a given Variable
+     * will change from v_old to v_new when the respective variable 
+     * is overwritten by vertex v_new
+     * LHS identification does not allow aliased vertices in the list
+     * this list doesn't own any elements
+     */
+    VertexIdentificationListActiveLHS myVertexIdentificationListActiveLHS; 
+
+    /**
+     * we need to track the set of 
+     * passive vertices to do some
+     * basic block level activity analysis
+     * elements in this list are mutually exclusive 
+     * with elements in the active lists.
+     */
+    VertexIdentificationListPassive myVertexIdentificationListPassive; 
+
+    /**
+     * we need to track the set of 
+     * variables used in address computations 
+     * for active variables (aka indirectly active variables)
+     */
+    VertexIdentificationListIndAct myVertexIdentificationListIndAct; 
+
+    typedef std::map<const Argument*,
+                     const ExpressionVertex*> CArgumentP2CExpressionVertexPMap;
+    /// cross-assignment mapping of assignment RHS arguments to the corresp. LHS (when identifiable)
+    /**
+     *
+     * maps each assignment RHS expression vertex (arguments exclusively) to the corresp. LCGV
+     */
+    CArgumentP2CExpressionVertexPMap myFlatteningMap;
+
+    typedef std::map<const Argument*,
+                     const Assignment*> CArgumentP2CAssignmentPMap;
+    CArgumentP2CAssignmentPMap myLHSFlatteningMap;
+
+    /** 
+     * the graph of all basic block elements combined, 
+     * i.e. flattened, however since this is only for 
+     * nontrivial derivative computations all zero 
+     * expressions are clipped from the graph
+     */
+    PrivateLinearizedComputationalGraph* myComputationalGraph_p;
+
+    /// useful for temporary maps to facilitate LCG construction
+    typedef std::map<const ExpressionVertex*,
+                     const PrivateLinearizedComputationalGraphVertex*> EVp2LCGVpMap;
+
+    /// add \p aAssignment to the LCG
+    /**
+     * \p theEVp2LCGVpMap is the temporary, local (to buildLCG) map used to construct the LCG
+     * should only be called for \p aAssignment where getActiveFlag() is true
+     */
+    const PrivateLinearizedComputationalGraphVertex&
+    affixActiveAssignmentToComputationalGraph(const Assignment& aAssignment,
+                                              EVp2LCGVpMap& theEVp2LCGVpMap);
+
+    /// add \p aAssignment to the LCG
+    /**
+     * for cases like:
+     * t1=<some expression>
+     * t2=t1
+     * where the top vertex is the top vertex of <some expression> which has 't1' as LHS and now we would try to add 't2' as another LHS.
+     * The clean solution is to represent t2=t1 by adding another vertex with a special direct copy edge. the top node becomes the old LHS.
+     *
+     * \p theEVp2LCGVpMap is the temporary, local (to buildLCG) map used to construct the LCG
+     * should only be called for \p aAssignment where getActiveFlag() is true
+     */
+    const PrivateLinearizedComputationalGraphVertex&
+    affixActiveDirectCopyAssignmentToComputationalGraph(const Assignment& aAssignment,
+                                                        EVp2LCGVpMap& theEVp2LCGVpMap);
+
+    void
+    fillLCGIndependentsList(); 
+
+    void
+    fillLCGDependentsList();
+
     /**
      * list to hold allocation calls to be added to 
      * the front of this sequence
@@ -214,6 +323,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * the end of this sequence
      */
     AssignmentPList myEndAssignmentList;
+
+    const AssignmentPList& getFrontAssignmentList() const;
+
+    const AssignmentPList& getEndAssignmentList() const;
 
     /** 
      * no def

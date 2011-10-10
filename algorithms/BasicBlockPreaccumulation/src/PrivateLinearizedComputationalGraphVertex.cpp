@@ -10,11 +10,15 @@
 
 #include "xaifBooster/system/inc/Intrinsic.hpp"
 
+#include "xaifBooster/algorithms/Linearization/inc/ExpressionVertexAlg.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 namespace xaifBoosterBasicBlockPreaccumulation { 
 
-  PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() : myOriginalVariable_p(NULL),
+  PrivateLinearizedComputationalGraphVertex::PrivateLinearizedComputationalGraphVertex() : myOriginatingExpressionVertex_p(NULL),
+                                                                                           myOriginatingAssignment_p(NULL),
+                                                                                           myOriginalVariable_p(NULL),
                                                                                            myAuxiliaryVariable_p(NULL) {
   }
 
@@ -22,7 +26,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   PrivateLinearizedComputationalGraphVertex::debug() const {
     std::ostringstream out;
     out << "PrivateLinearizedComputationalGraphVertex[" << Vertex::debug().c_str()
-        << ",myStatementId=" << myStatementId;
+        << ",myOriginatingExpressionVertex_p=" << myOriginatingExpressionVertex_p
+        << ",myOriginatingAssignment_p=" << myOriginatingAssignment_p;
     out << ",myOriginalVariable_p=";
     if (myOriginalVariable_p)
       out << ">" << myOriginalVariable_p->debug().c_str();
@@ -41,6 +46,45 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return out.str();
   } 
 
+  void
+  PrivateLinearizedComputationalGraphVertex::setOrigin(const ExpressionVertex& aExpressionVertex,
+                                                       const Assignment& aAssignment) {
+    if (myOriginatingExpressionVertex_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setOrigin:"
+                                 << " already set to " << myOriginatingExpressionVertex_p->debug().c_str()
+                                 << " from assignment " << myOriginatingAssignment_p);
+    myOriginatingExpressionVertex_p = &aExpressionVertex;
+    myOriginatingAssignment_p = &aAssignment;
+    // set the original variable
+    // we assume here that this is NOT a direct copy assignment (i.e., if the originating EV is an argument, then it is not the maximal RHS EV)
+    if (getOriginatingExpressionVertex().isArgument())
+      myOriginalVariable_p = &(dynamic_cast<const Argument&>(getOriginatingExpressionVertex()).getVariable());
+    // set the auxiliary variable
+    const xaifBoosterLinearization::ExpressionVertexAlg& theOriginatingEVAlg(
+     dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>(getOriginatingExpressionVertex().getExpressionVertexAlgBase())
+    );
+    if (theOriginatingEVAlg.hasAuxiliaryVariable())
+      myAuxiliaryVariable_p = &theOriginatingEVAlg.getAuxiliaryVariable();
+  }
+
+  void
+  PrivateLinearizedComputationalGraphVertex::setOrigin(const Assignment& aAssignment) {
+    if (myOriginatingAssignment_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setOrigin:"
+                                 << " originating assignment already set to " << myOriginatingAssignment_p->debug().c_str());
+    myOriginatingAssignment_p = &aAssignment;
+    myOriginalVariable_p = &aAssignment.getLHS();
+    // used to get auxiliary variable; should be the ONLY RHS vertex
+    myOriginatingExpressionVertex_p = &aAssignment.getRHS().getMaxVertex(); // used to get auxiliary variable
+  }
+                                                       
+  const ExpressionVertex&
+  PrivateLinearizedComputationalGraphVertex::getOriginatingExpressionVertex() const {
+    if (!myOriginatingExpressionVertex_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getOriginatingExpressionVertex: myOriginatingExpressionVertex_p not set");
+    return *myOriginatingExpressionVertex_p;
+  }
+
   const CExpressionVertexPSet&
   PrivateLinearizedComputationalGraphVertex::getAssociatedExpressionVertexPSet() const {
     return myOriginalExpressionVertexPSet;
@@ -58,15 +102,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
    return (myOriginalVariable_p) ? true : false;
   } 
 
-  void PrivateLinearizedComputationalGraphVertex::setOriginalVariable(const Variable& aVariable,
-							       const ObjectWithId::Id& aStatementId) {
-    if (myOriginalVariable_p)
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setOriginalVariable: already set to " << myOriginalVariable_p->debug().c_str()
-                                 << " while trying to set to " << aVariable.debug().c_str());
-    myOriginalVariable_p = &aVariable;
-    myStatementId = aStatementId;
-  } 
-
   const Variable& PrivateLinearizedComputationalGraphVertex::getOriginalVariable() const {
     if (!myOriginalVariable_p)
       THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getOriginalVariable: not set");
@@ -74,29 +109,22 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   const ObjectWithId::Id& PrivateLinearizedComputationalGraphVertex::getStatementId() const {
-    if (!myStatementId.size())
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getStatementId: not set");
-    return myStatementId;
+    if (!myOriginatingAssignment_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getStatementId: myOriginatingAssignment_p not set");
+    return myOriginatingAssignment_p->getId();
   } 
 
   bool
   PrivateLinearizedComputationalGraphVertex::hasAuxiliaryVariable() const {
+    if (!myOriginatingExpressionVertex_p)
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::hasAuxiliaryVariable: myOriginatingExpressionVertex_p not set");
     return (myAuxiliaryVariable_p) ? true : false;
-  }
-
-  void
-  PrivateLinearizedComputationalGraphVertex::setAuxiliaryVariable(const Variable& aVariable) {
-    if (myAuxiliaryVariable_p)
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::setAuxiliaryVariable:"
-                                 << " already set to " << myAuxiliaryVariable_p->debug().c_str()
-                                 << " while trying to set to " << aVariable.debug().c_str());
-    myAuxiliaryVariable_p = &aVariable;
   }
 
   const Variable&
   PrivateLinearizedComputationalGraphVertex::getAuxiliaryVariable() const {
-    if (!myAuxiliaryVariable_p)
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getAuxiliaryVariable: not set");
+    if (!hasAuxiliaryVariable())
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphVertex::getAuxiliaryVariable: has none");
     return *myAuxiliaryVariable_p;
   }
 
