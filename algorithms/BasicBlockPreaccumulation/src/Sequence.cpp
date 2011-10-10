@@ -48,6 +48,7 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {
 
+  bool Sequence::ourPermitAliasedLHSsFlag = false;
 
   PreaccumulationMetric::PreaccumulationMetric_E Sequence::ourPreaccumulationMetric = PreaccumulationMetric::SCARCITY_METRIC;
 
@@ -93,6 +94,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void
+  Sequence::permitAliasedLHSs() {
+    ourPermitAliasedLHSsFlag = true;
+  }
+
+  bool
+  Sequence::doesPermitAliasedLHSs() {
+    return ourPermitAliasedLHSsFlag;
+  }
+
+  void
   Sequence::useRandomizedHeuristics() {
     ourUseRandomizedHeuristicsFlag = true;
   }
@@ -135,6 +146,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // assignments
     for(AssignmentPList::const_iterator eli(getEndAssignmentList().begin()); eli != getEndAssignmentList().end(); ++eli)
       (*eli)->printXMLHierarchy(os);
+  }
+
+  const PrivateLinearizedComputationalGraph&
+  Sequence::getLCG() const {
+    return *myComputationalGraph_p;
   }
 
   xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
@@ -199,22 +215,360 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   bool
   Sequence::canIncorporate(const Assignment& aAssignment,
-                           const BasicBlock& theBasicBlock) { //const
+                           const BasicBlock& theBasicBlock) const {
+    if (aAssignment.isNonInlinable())
+      THROW_LOGICEXCEPTION_MACRO("xaifBoosterBasicBlockPreaccumulation::Sequence::canIncorporate:"
+                                 << " called on noninlinable assignment " << aAssignment.debug().c_str());
     AssignmentAlg& theAssignmentAlg(dynamic_cast<AssignmentAlg&>(aAssignment.getAssignmentAlgBase()));
-    if (theAssignmentAlg.getActiveFlag())
-      return (theAssignmentAlg.vertexIdentification(*myComputationalGraph_p));
-    else
-      return (!myComputationalGraph_p->getVertexIdentificationListIndAct().overwrittenBy(aAssignment.getLHS(),
-                                                                                         aAssignment.getId(),
-                                                                                         theBasicBlock));
+    if (theAssignmentAlg.getActiveFlag()) {
+      // check for ambiguous identification among the arguments
+      Expression::ConstVertexIteratorPair vip(theAssignmentAlg.getLinearizedRHS().vertices());
+      for (Expression::ConstVertexIterator ExpressionVertexI(vip.first); ExpressionVertexI != vip.second; ++ExpressionVertexI) {
+        if ((*ExpressionVertexI).isArgument()) {
+          const Argument& theArgument(dynamic_cast<const Argument&>(*ExpressionVertexI));
+
+          VertexIdentificationListActive::IdentificationResult
+           theLHSIdResult(myVertexIdentificationListActiveLHS.canIdentify(theArgument.getVariable(),
+                                                                          aAssignment.getId())),
+           theRHSIdResult(myVertexIdentificationListActiveRHS.canIdentify(theArgument.getVariable()));
+          // passivate if all possibly identified LHSs are passive
+          VertexIdentificationList::IdentificationResult_E thePassiveIdResult(
+           myVertexIdentificationListPassive.canIdentify(theArgument.getVariable(),
+                                                         aAssignment.getId())
+          );
+          if (theLHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED
+           || theRHSIdResult.getAnswer()==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
+            // do nothing,  push later
+          } // end if 
+          else if (thePassiveIdResult==VertexIdentificationList::UNIQUELY_IDENTIFIED) { 
+            // note, that for the passive identification we have a misnomer here but 
+            // uniquely identified means positively passive identfied regardless if 
+            // the actual identification is unique to a particular LHS or not as long 
+            // as all possibly identified LHSs are passive.
+            // passivate this: 
+            dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>((*ExpressionVertexI).getExpressionVertexAlgBase()).passivate();
+          } // end if 
+          else { // the vertex cannot be uniquely identified
+            if (theLHSIdResult.getAnswer()==VertexIdentificationList::NOT_IDENTIFIED) {
+              // the RHS identification doesn't really matter since we cannot uniquely identify within the RHSs
+              // it is only important that we don't alias a preceding LHS
+              // don't need to do anything else at this point, just continue
+            } // end if NOT_IDENTIFIED
+            else { // there is an ambiguity
+              // don't continue here. 
+              // Note that this is the point where we cut off somewhat arbitrarily in 
+              // that we decide to break the flattening here because it is convenient
+              // but we could continue to flatten other not connected unambiguous portions 
+              // into this graph at the cost of more maintenance. see the basic block 
+              // flattening paper
+              DBG_MACRO(DbgGroup::DATA,
+                        "xaifBoosterBasicBlockPreaccumulation::Sequence::canIncorporate:"
+                        << " forcing split into new Sequence because RHS argument " << dynamic_cast<const Argument&>(*ExpressionVertexI).debug().c_str()
+                        << "of " << theAssignmentAlg.debug().c_str()
+                        << " is ambiguously identified (may alias a preceeding LHS) according to " << myVertexIdentificationListActiveLHS.debug().c_str());
+              return false;
+            } // end else (theLHSIdResult.getAnswer()==AMBIGUOUSLY_IDENTIFIED)
+          } // end else (no unique identification)
+        } // end if Argument
+      } // end for all vertices in this RHS
+
+      // check whether the LHS possibly overlaps with a previous LHS in this graph
+      if (!doesPermitAliasedLHSs()) {
+        // We must split into a new computational graph when a LHS is determined to possibly alias with a previous LHS.
+        // If we didn't, we would have a graph with two vertices that may correspond to the same variable,
+        // and thus the graph would not properly represent the dependences in the code.
+        // Consider the following case, where there is a possibility that p and q point to the same memory location:
+        //   *q = a*b
+        //   *p = b*c
+        // When it comes time to propagate, both *p and *q will get a SAX along one inedge and a SAXPY along the other.
+        // In the case where p = q, the second SAX applied will erase the contribution from the first SAX (along with any SAXPY applied in between).
+        // As a computational graph encapsulates precedence information exclusively, the type of complication described above is not representable as part of the graph.
+        // This is our motivation for stipulating that a new graph must be created.
+        if (myVertexIdentificationListActiveLHS.aliasIdentify(aAssignment.getLHS()).getAnswer() != VertexIdentificationList::NOT_IDENTIFIED) {
+          DBG_MACRO(DbgGroup::DATA,"xaifBoosterBasicBlockPreaccumulation::Sequence::canIncorporate:"
+                                   << " forcing split into new Sequence because the LHS of " << theAssignmentAlg.debug().c_str()
+                                   << " may alias a preceeding LHS according to : " << myVertexIdentificationListActiveLHS.debug().c_str());
+          return false;
+        }
+      }
+      return true;
+    } // end if aAssignment is active
+    else {
+    //// if it's inactive but its LHS overwrites an indirectly active variable
+      if (myVertexIdentificationListIndAct.overwrittenBy(aAssignment.getLHS(),
+                                                            aAssignment.getId(),
+                                                            theBasicBlock)) {
+        DBG_MACRO(DbgGroup::DATA,"xaifBoosterBasicBlockPreaccumulation::Sequence::canIncorporate:"
+                                 << " forcing split into new Sequence because the LHS of inactive " << theAssignmentAlg.debug().c_str()
+                                 << " overwrites an IndAct according to " << myVertexIdentificationListIndAct.debug().c_str());
+        return false;
+      } // end if the LHS overwrites an IndAct
+      return true;
+    } // end else (the assignment is not active)
   }
 
   void
   Sequence::incorporateAssignment(const Assignment& aAssignment,
                                   const StatementIdList& theKnownAssignmentsIdList) {
-    AssignmentAlg& theAssignmentAlg(dynamic_cast<AssignmentAlg&>(aAssignment.getAssignmentAlgBase()));
-    theAssignmentAlg.incorporateMyselfInto(*this);
+    DBG_MACRO(DbgGroup::DATA,"xaifBoosterBasicBlockPreaccumulation::Sequence::incorporateAssignment:"
+                             << " incorporating " << aAssignment.debug().c_str()
+                             << " into " << debug().c_str());
+    // replace this with an association (map?) between assignments and LCG (or merged graph) vertices
     myAssignmentPList.push_back(&aAssignment);
+
+    // build myFlatteningMap (flatten arguments into previous expression vertices)
+    Expression::ConstVertexIteratorPair vip(aAssignment.getRHS().vertices());
+    for (Expression::ConstVertexIterator evi(vip.first); evi != vip.second; ++evi) {
+      if ((*evi).isArgument()) { 
+        const Argument& theArgument(dynamic_cast<const Argument&>(*evi));
+        VertexIdentificationListActive::IdentificationResult theLHSIdResult(
+         myVertexIdentificationListActiveLHS.canIdentify(theArgument.getVariable(),
+                                                         aAssignment.getId())
+        );
+        VertexIdentificationListActive::IdentificationResult theRHSIdResult(
+         myVertexIdentificationListActiveRHS.canIdentify(theArgument.getVariable())
+        );
+        if (theLHSIdResult.getAnswer() == VertexIdentificationList::UNIQUELY_IDENTIFIED) {
+          myFlatteningMap[&theArgument] = NULL; // to indicate that no RHS identification was found/needed
+          myLHSFlatteningMap[&theArgument] = &theLHSIdResult.getAssignment();
+        }
+        else if (theRHSIdResult.getAnswer() == VertexIdentificationList::UNIQUELY_IDENTIFIED) {
+          myFlatteningMap[&theArgument] = &theRHSIdResult.getExpressionVertex();
+          myLHSFlatteningMap[&theArgument] = NULL; // to indicate that no LHS identification was possible within this sequence
+        }
+        else { // cannot be uniquely identified
+          myFlatteningMap[&theArgument] = &theArgument;
+          myLHSFlatteningMap[&theArgument] = &aAssignment; // to indicate that no LHS identification was possible within this sequence
+          if (theRHSIdResult.getAnswer() == VertexIdentificationList::NOT_IDENTIFIED) { 
+            myVertexIdentificationListActiveRHS.addElement(theArgument,
+                                                               aAssignment,
+                                                               theKnownAssignmentsIdList);
+            myVertexIdentificationListIndAct.addElement(theArgument.getVariable(),
+                                                        aAssignment.getId());
+            DBG_MACRO(DbgGroup::DATA,"xaifBoosterBasicBlockPreaccumulation::Sequence::incorporateAssignment(flatten):"
+                                     << " could not identify " << theArgument.debug().c_str()
+                                     << ", so added to RHS: " << myVertexIdentificationListActiveRHS.debug().c_str());
+          }
+        } // end else (cannot be uniquely identified)
+      } // end if argument
+    } // end for all expression vertices
+
+    AssignmentAlg& theAssignmentAlg(dynamic_cast<AssignmentAlg&>(aAssignment.getAssignmentAlgBase()));
+    if (theAssignmentAlg.getActiveFlag()) {
+      //incorporateAssignmentIntoPLCG(aAssignment);
+      // we need to keep the lists mutually exclusive. a left hand side cannot occur in the right hand side list
+      myVertexIdentificationListActiveRHS.removeIfIdentifiable(aAssignment.getLHS());
+      // an overwritten LHS needs to refer to the respective last definition
+      myVertexIdentificationListActiveLHS.removeIfIdentifiable(aAssignment.getLHS());
+      myVertexIdentificationListActiveLHS.addElement(aAssignment);
+      // a known active lhs cannot have a passive identification
+      myVertexIdentificationListPassive.removeIfIdentifiable(aAssignment.getLHS(),
+                                                             aAssignment.getId());
+    }
+    else { // inactive (passive) assignments
+      if (aAssignment.getLHS().getActiveType()) { // but the LHS has active type
+        myVertexIdentificationListPassive.addElement(aAssignment.getLHS(),
+                                                     aAssignment.getId());
+        if (aAssignment.getLHS().getActiveFlag()) // this means the LHS has been passivated 
+          myDerivativePropagator.addZeroDerivToEntryPList(aAssignment.getLHS());
+      } // end if LHS is active type
+    } // end else (the assignment is not active)
+    myVertexIdentificationListIndAct.addElement(aAssignment.getLHS(),
+                                                aAssignment.getId());
+    DBG_MACRO(DbgGroup::DATA,
+              "xaifBoosterBasicBlockPreaccumulation::Sequence::incorporateAssignment(flatten):"
+              << " passive: " << myVertexIdentificationListPassive.debug().c_str()
+              << " LHSIdList " << myVertexIdentificationListActiveLHS.debug().c_str()
+              << " RHSIdList " << myVertexIdentificationListActiveRHS.debug().c_str()
+              << " IndAct " << myVertexIdentificationListIndAct.debug().c_str()
+             );
+  }
+
+  void
+  Sequence::buildLinearizedComputationalGraph() {
+    PrivateLinearizedComputationalGraph& theLCG(*myComputationalGraph_p);
+    theLCG.clear();
+    EVp2LCGVpMap theEVp2LCGVpMap; // local map to facilitate copy
+    for (CAssignmentPList::const_iterator ai(myAssignmentPList.begin()); ai != myAssignmentPList.end(); ++ai) {
+      const Assignment& aAssignment(**ai);
+      if (dynamic_cast<const AssignmentAlg&>(aAssignment.getAssignmentAlgBase()).getActiveFlag()) {
+        const PrivateLinearizedComputationalGraphVertex* theLHSLCGV_p(NULL);
+        if (aAssignment.getRHS().getMaxVertex().isArgument()) {
+          theLHSLCGV_p = &affixActiveDirectCopyAssignmentToComputationalGraph(aAssignment,
+                                                                              theEVp2LCGVpMap);
+        }
+        else {
+          theLHSLCGV_p = &affixActiveAssignmentToComputationalGraph(aAssignment,
+                                                                    theEVp2LCGVpMap);
+        }
+        // associate the assignment with the LCGV that correspons to the LHS
+        theLCG.mapAssignmentLHS2PLCGV(aAssignment,
+                                      *theLHSLCGV_p);
+        // as we step through the assignments we add all the left hand sides as dependendents
+        // and when we are done with one flattening section we remove the ones not needed
+        // in the future, done on the fly during the PLCG assignment2PLCGVertex mapping?
+        theLCG.addToDependentList(*theLHSLCGV_p,
+                                  aAssignment.getId());
+      } // end if the assignment is active
+      else {
+        theLCG.addToPassiveStatementIdList(aAssignment.getId());
+      }
+    } // end for all assignments in this sequence
+
+    // fill independents/dependents lists (dependents list is built on the fly in the future?)
+    fillLCGIndependentsList();
+    fillLCGDependentsList();
+  }
+
+  const PrivateLinearizedComputationalGraphVertex&
+  Sequence::affixActiveAssignmentToComputationalGraph(const Assignment& aAssignment,
+                                                      EVp2LCGVpMap& theEVp2LCGVpMap) {
+    if (aAssignment.getRHS().getMaxVertex().isArgument()) {
+      THROW_LOGICEXCEPTION_MACRO("Sequence::affixActiveAssignmentToComputationalGraph: called on " << aAssignment.debug().c_str()
+                              << " where the max vertex of the RHS is an argument (i.e., this is a direct copy assignment)");
+    }
+    PrivateLinearizedComputationalGraph& theLCG(*myComputationalGraph_p);
+    // copy RHS expression vertices
+    Expression::ConstVertexIteratorPair vip(aAssignment.getRHS().vertices());
+    for (Expression::ConstVertexIterator evi(vip.first); evi != vip.second; ++evi) {
+      const ExpressionVertex& aExpressionVertex(*evi);
+      if (!dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>(aExpressionVertex.getExpressionVertexAlgBase()).isActive())
+        continue; // skip passive expression vertices
+
+      // find an existing corresp. LCGV or make a new one
+      const PrivateLinearizedComputationalGraphVertex* correspLCGV_p;
+      if (aExpressionVertex.isArgument()
+       && myLHSFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)] != NULL
+       && myLHSFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)] != &aAssignment) {
+        correspLCGV_p = &theLCG.getLCGVertexForAssignmentLHS(*myLHSFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)]);
+      }
+      else if (aExpressionVertex.isArgument() // an Argument that can be uniquely identifed to an existing LCGV
+       && myFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)] != &aExpressionVertex) {
+        correspLCGV_p = theEVp2LCGVpMap[myFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)]];
+      }
+      else { // we must make a new vertex
+        PrivateLinearizedComputationalGraphVertex& theNewLCGV(
+         *BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory()->makeNewPrivateLinearizedComputationalGraphVertex()
+        );
+        theLCG.supplyAndAddVertexInstance(theNewLCGV);
+        // simple rule: if the origin vertex is the maximal one, then we corresp. to the LHS variable (no issue for direct copy edges)
+        if (&aExpressionVertex != &aAssignment.getRHS().getMaxVertex())
+          theNewLCGV.setOrigin(aExpressionVertex,
+                               aAssignment);
+        else // the max expression vertex corresp. to the LHS (we assume we are NOT in a direct copy assignment)
+          theNewLCGV.setOrigin(aAssignment);
+        correspLCGV_p = &theNewLCGV;
+      } // end else (new PLCG vertex)
+      theEVp2LCGVpMap[&aExpressionVertex] = correspLCGV_p;
+      //if (!aExpressionVertex.isArgument())
+      //  THROW_LOGICEXCEPTION_MACRO("Sequence::buildLinearizedComputationalGraph:"
+      //                             << " non-argument " << aExpressionVertex.debug().c_str()
+      //                             << " is not mapped to itself in the flattening map");
+    } // end iterate over RHS expression vertices
+
+    // copy RHS expression edges
+    Expression::ConstEdgeIteratorPair eip(aAssignment.getRHS().edges());
+    for (Expression::ConstEdgeIterator eei(eip.first); eei != eip.second; ++eei) {
+      const ExpressionVertex
+       &theSourceEV(aAssignment.getRHS().getSourceOf(*eei)),
+       &theTargetEV(aAssignment.getRHS().getTargetOf(*eei));
+      if (!dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>(theSourceEV.getExpressionVertexAlgBase()).isActive()
+       || !dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>(theTargetEV.getExpressionVertexAlgBase()).isActive())
+        continue;
+      const xaifBoosterLinearization::ExpressionEdgeAlg& theEEAlg(
+        dynamic_cast<const xaifBoosterLinearization::ExpressionEdgeAlg&>((*eei).getExpressionEdgeAlgBase())
+      );
+      PartialDerivativeKind::PartialDerivativeKind_E thePartialDerivativeKind(theEEAlg.getPartialDerivativeKind());
+      if (thePartialDerivativeKind == PartialDerivativeKind::PASSIVE) 
+        continue;
+      const PrivateLinearizedComputationalGraphVertex
+       &theSourceLCGV(*theEVp2LCGVpMap[&aAssignment.getRHS().getSourceOf(*eei)]),
+       &theTargetLCGV(*theEVp2LCGVpMap[&aAssignment.getRHS().getTargetOf(*eei)]);
+      // filter out parallel edges:
+      PrivateLinearizedComputationalGraph::OutEdgeIteratorPair anOutEdgeItPair(theLCG.getOutEdgesOf(theSourceLCGV));
+      PrivateLinearizedComputationalGraph::OutEdgeIterator aPrivLinCompGEdgeI(anOutEdgeItPair.first), aPrivLinCompGEdgeIEnd(anOutEdgeItPair.second);
+      for (; aPrivLinCompGEdgeI != aPrivLinCompGEdgeIEnd; ++aPrivLinCompGEdgeI) { 
+        if (&theTargetLCGV == &(theLCG.getTargetOf(*aPrivLinCompGEdgeI)))
+          break; // already have such an edge in here
+      } // end for 
+      if (aPrivLinCompGEdgeI != aPrivLinCompGEdgeIEnd) {  // this is an edge parallel to an existing  edge
+        dynamic_cast<PrivateLinearizedComputationalGraphEdge&>(*aPrivLinCompGEdgeI).addParallel(*eei);
+        continue; // we can skip the rest
+      }
+      PrivateLinearizedComputationalGraphEdge& theNewPLCGEdge(
+       *(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory())->makeNewPrivateLinearizedComputationalGraphEdge()
+      );
+      // set the back reference
+      theNewPLCGEdge.setLinearizedExpressionEdge(*eei);
+      if (thePartialDerivativeKind == PartialDerivativeKind::LINEAR_ONE || thePartialDerivativeKind == PartialDerivativeKind::LINEAR_MINUS_ONE)
+        theNewPLCGEdge.setEdgeLabelType(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::UNIT_LABEL);
+      else if (thePartialDerivativeKind == PartialDerivativeKind::LINEAR)
+        theNewPLCGEdge.setEdgeLabelType(xaifBoosterCrossCountryInterface::LinearizedComputationalGraphEdge::CONSTANT_LABEL);
+      theLCG.supplyAndAddEdgeInstance(theNewPLCGEdge,
+                                      theSourceLCGV,
+                                      theTargetLCGV);
+    //DBG_MACRO(DbgGroup::DATA,"xaifBoosterBasicBlockPreaccumulation::Sequence::incorporateAssignmentIntoPLCG(flatten)"
+    //                         << " Edge source:" << theSourceLCGV.debug().c_str()
+    //                         << " target " << theTargetLCGV.debug().c_str());
+    }  // end for all expression edges
+    return *theEVp2LCGVpMap[&aAssignment.getRHS().getMaxVertex()];
+  }
+
+  const PrivateLinearizedComputationalGraphVertex&
+  Sequence::affixActiveDirectCopyAssignmentToComputationalGraph(const Assignment& aAssignment,
+                                                                EVp2LCGVpMap& theEVp2LCGVpMap) {
+    PrivateLinearizedComputationalGraph& theLCG(*myComputationalGraph_p);
+    const ExpressionVertex& theMaxEV(aAssignment.getRHS().getMaxVertex());
+    if (!theMaxEV.isArgument()) {
+      THROW_LOGICEXCEPTION_MACRO("Sequence::affixActiveDirectCopyAssignmentToComputationalGraph:"
+                              << " called on " << aAssignment.debug().c_str()
+                              << " where the max vertex of the RHS is not an argument (i.e., this is not a direct copy assignment)");
+    }
+    if (!dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>(theMaxEV.getExpressionVertexAlgBase()).isActive()) {
+      THROW_LOGICEXCEPTION_MACRO("Sequence::affixActiveDirectCopyAssignmentToComputationalGraph:"
+                              << " called on with inactive maximal RHS vertex "
+                              << dynamic_cast<const xaifBoosterLinearization::ExpressionVertexAlg&>(theMaxEV).debug().c_str());
+    }
+
+    // make a new LCGVertex for the TARGET of the direct copy (in the LCG)
+    PrivateLinearizedComputationalGraphVertex& theTargetLCGV(
+     *(BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory()->makeNewPrivateLinearizedComputationalGraphVertex())
+    );
+    theLCG.supplyAndAddVertexInstance(theTargetLCGV);
+    theTargetLCGV.setOrigin(aAssignment);
+    //theLHSLCGVertex_p->associateExpressionVertex(aAssignment.getRHS().getMaxVertex());
+
+    // determine the LCGVertex for the SOURCE of the direct copy (find an existing corresp. LCGV or make a new one)
+    const Argument& theRHSArgument(dynamic_cast<const Argument&>(theMaxEV));
+    const PrivateLinearizedComputationalGraphVertex* theSourceLCGV_p(NULL);
+    if (myLHSFlatteningMap[&theRHSArgument] != NULL
+     && myLHSFlatteningMap[&theRHSArgument] != &aAssignment) {
+      theSourceLCGV_p = &theLCG.getLCGVertexForAssignmentLHS(*myLHSFlatteningMap[&theRHSArgument]);
+    }
+    else if (myFlatteningMap[&theRHSArgument] != &theRHSArgument) { // the RHS EV flattens to another EV (which should be an existing LCGV)
+      theSourceLCGV_p = theEVp2LCGVpMap[myFlatteningMap[&theRHSArgument]];
+    }
+    else { // we must make a new vertex
+      PrivateLinearizedComputationalGraphVertex& theNewLCGV(
+       *BasicBlockAlg::getPrivateLinearizedComputationalGraphVertexAlgFactory()->makeNewPrivateLinearizedComputationalGraphVertex()
+      );
+      theLCG.supplyAndAddVertexInstance(theNewLCGV);
+      // simple rule: if the origin vertex is the maximal one, then we corresp. to the LHS variable (no issue for direct copy edges)
+      theNewLCGV.setOrigin(theMaxEV,
+                           aAssignment);
+      theSourceLCGV_p = &theNewLCGV;
+    } // end else (new PLCG vertex)
+    theEVp2LCGVpMap[&theMaxEV] = theSourceLCGV_p;
+
+    // we need to add the direct copy edge, we can't set a back reference because there is none
+    PrivateLinearizedComputationalGraphEdge& theNewDCEdge(
+     *(BasicBlockAlg::getPrivateLinearizedComputationalGraphEdgeAlgFactory()->makeNewPrivateLinearizedComputationalGraphEdge())
+    );
+    theNewDCEdge.setDirectCopyEdge();
+    theLCG.supplyAndAddEdgeInstance(theNewDCEdge,
+                                    *theSourceLCGV_p,
+                                    theTargetLCGV);
+    return theTargetLCGV;
   }
 
   void
@@ -410,6 +764,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         return true;
     // check the derivative propagator
     return myDerivativePropagator.hasExpression(anExpression);
+  }
+
+  const CAssignmentPList&
+  Sequence::getAssignmentPList() const {
+    return myAssignmentPList;
   }
 
   void

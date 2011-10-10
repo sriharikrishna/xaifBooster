@@ -10,8 +10,10 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/system/inc/Argument.hpp"
+#include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
-#include "xaifBooster/system/inc/DuUdMapDefinitionResult.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActive.hpp"
 
 using namespace xaifBooster;
@@ -37,10 +39,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * this will only work if canIdentify returns
      * NOT_IDENTIFIED 
      */
-    virtual void addElement(const Variable& theVariable,
-			    const ObjectWithId::Id& statementId,
-			    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
-			    const StatementIdList& theKnownAssignmentsList);
+    virtual void addElement(const Argument& theArgument,
+                            const Assignment& theAssignment,
+                            const StatementIdList& theKnownAssignmentsList);
     
   }; // end of class VertexIdentificationListActiveRHS  
    

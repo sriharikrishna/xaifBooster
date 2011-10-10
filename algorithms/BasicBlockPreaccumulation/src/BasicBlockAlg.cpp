@@ -301,9 +301,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	 aSequencePListI != myUniqueSequencePList.end();
 	 ++aSequencePListI) { // outer loop over all items in myUniqueSequencePList
       Sequence& currentSequence (**aSequencePListI);
-      if (currentSequence.myComputationalGraph_p->numVertices()) {
-        currentSequence.fillLCGIndependentsList();
-        currentSequence.fillLCGDependentsList();
+      currentSequence.buildLinearizedComputationalGraph();
+      if (currentSequence.getLCG().numVertices() > 0) {
 	// hand off to transformation engine, which will make JAEs and a remainder graph
 	currentSequence.runElimination();
         myPreaccumulationCounter.incrementBy(currentSequence.getBestElimination().getCounter());

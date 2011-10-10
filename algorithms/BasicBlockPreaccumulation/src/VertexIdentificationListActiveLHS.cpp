@@ -15,14 +15,12 @@ using namespace xaifBooster;
 
 namespace xaifBoosterBasicBlockPreaccumulation {  
 
-  VertexIdentificationListActiveLHS::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
-							const StatementIdSetMapKey& aDuUdMapKey,
-							PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p,
-							const ObjectWithId::Id& aStatementId) : 
-    VertexIdentificationListActive::ListItem(anAliasMapKey,
-					     aDuUdMapKey,
-					     aPrivateLinearizedComputationalGraphVertex_p), myStatementId(aStatementId) {
- 
+  VertexIdentificationListActiveLHS::ListItem::ListItem(const Assignment& aAssignment) : 
+    VertexIdentificationListActive::ListItem(aAssignment.getLHS().getAliasMapKey(),
+                                             aAssignment.getLHS().getDuUdMapKey(),
+                                             aAssignment,
+                                             aAssignment.getRHS().getMaxVertex()),
+    myStatementId(aAssignment.getId()) {
   }
 
   VertexIdentificationListActiveLHS::IdentificationResult 
@@ -43,7 +41,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	     ++aListIterator) { 
 	  ListItem& theItem(dynamic_cast<ListItem&>(**aListIterator));
 	  if (theResult.myStatementId==theItem.myStatementId) 
-	    return IdentificationResult(UNIQUELY_IDENTIFIED,theItem.myPrivateLinearizedComputationalGraphVertex_p);
+	    return IdentificationResult(UNIQUELY_IDENTIFIED,
+                                        &theItem.getAssignment(),
+                                        &theItem.getExpressionVertex());
 	} // end for
 	// we are in trouble 
 	THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActiveLHS::canIdentify: cannot match statement for "
@@ -54,35 +54,30 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       else if (theResult.myAnswer==DuUdMapDefinitionResult::UNIQUE_OUTSIDE
 	       ||
 	       theResult.myAnswer==DuUdMapDefinitionResult::AMBIGUOUS_OUTSIDE) {
-	return IdentificationResult(NOT_IDENTIFIED,0);
+	return IdentificationResult(NOT_IDENTIFIED,NULL,NULL);
       }
       else if (theResult.myAnswer==DuUdMapDefinitionResult::AMBIGUOUS_INSIDE
 	       ||
 	       theResult.myAnswer==DuUdMapDefinitionResult::AMBIGUOUS_BOTHSIDES) {
-	return IdentificationResult(AMBIGUOUSLY_IDENTIFIED,0);
+	return IdentificationResult(AMBIGUOUSLY_IDENTIFIED,NULL,NULL);
       }
     }
     if (!isDuUdMapBased()){ 
       return VertexIdentificationListActive::canIdentify(theVariable);
     }
-    return IdentificationResult(AMBIGUOUSLY_IDENTIFIED,0);
+    return IdentificationResult(AMBIGUOUSLY_IDENTIFIED,NULL,NULL);
   } 
 
-  void VertexIdentificationListActiveLHS::addElement(const Variable& theVariable,
-						     PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
-						     const ObjectWithId::Id& aStatementId) { 
-    if (theVariable.getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO) 
+  void VertexIdentificationListActiveLHS::addElement(const Assignment& aAssignment) { 
+    if (aAssignment.getLHS().getDuUdMapKey().getKind()!=InfoMapKey::NO_INFO)
       // if we ever encounter a usefull piece of duud information:
       baseOnDuUdMap();
     if (!isDuUdMapBased() 
 	&& 
-	canIdentify(theVariable,
-		    aStatementId).getAnswer()!=NOT_IDENTIFIED) 
+	canIdentify(aAssignment.getLHS(),
+		    aAssignment.getId()).getAnswer()!=NOT_IDENTIFIED) 
       THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::addElement: new element must have a unique address");
-    myList.push_back(new ListItem(theVariable.getAliasMapKey(),
-     				  theVariable.getDuUdMapKey(),
-     				  thePrivateLinearizedComputationalGraphVertex_p,
-     				  aStatementId));
+    myList.push_back(new ListItem(aAssignment));
   } 
 
   std::string VertexIdentificationListActiveLHS::ListItem::debug() const { 

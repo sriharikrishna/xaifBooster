@@ -12,7 +12,9 @@
 
 #include "xaifBooster/utils/inc/ObjectWithId.hpp"
 
+#include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/Variable.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActive.hpp"
 
 using namespace xaifBooster;
@@ -47,9 +49,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * this will only work if canIdentify returns
      * NOT_IDENTIFIED 
      */
-    void addElement(const Variable& theVariable,
-		    PrivateLinearizedComputationalGraphVertex* thePrivateLinearizedComputationalGraphVertex_p,
-		    const ObjectWithId::Id& aStatementId);
+    void addElement(const Assignment& aAssignment);
 
     virtual std::string debug() const;
 
@@ -59,10 +59,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       
     public: 
 
-      ListItem(const AliasMapKey& anAliasMapKey,
-	       const StatementIdSetMapKey& aDuUdMapKey,
-	       PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p,
-	       const ObjectWithId::Id& aStatementId);
+      ListItem(const Assignment& aAssignment);
 
       virtual std::string debug() const;
 

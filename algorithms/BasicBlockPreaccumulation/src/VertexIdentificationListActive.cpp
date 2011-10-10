@@ -7,8 +7,13 @@
 // The full COPYRIGHT notice can be found in the top
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
+
+#include <sstream>
+
 #include "xaifBooster/system/inc/ConceptuallyStaticInstances.hpp"
 #include "xaifBooster/system/inc/CallGraph.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationList.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActive.hpp"
 
 using namespace xaifBooster;
@@ -19,9 +24,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   } 
 
   VertexIdentificationListActive::IdentificationResult::IdentificationResult(IdentificationResult_E anAnswer,
-									     PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p) : 
+                                                                                 const Assignment* aAssignment_p,
+                                                                                 const ExpressionVertex* aExpressionVertex_p) :
     myAnswer(anAnswer),
-    myPrivateLinearizedComputationalGraphVertex_p(aPrivateLinearizedComputationalGraphVertex_p) { 
+    myAssignment_p(aAssignment_p),
+    myExpressionVertex_p(aExpressionVertex_p) { 
   }
 
   VertexIdentificationList::IdentificationResult_E
@@ -29,28 +36,30 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return myAnswer;
   } 
 
-  const PrivateLinearizedComputationalGraphVertex*
-  VertexIdentificationListActive::IdentificationResult::getVertexP() const { 
+  const ExpressionVertex&
+  VertexIdentificationListActive::IdentificationResult::getExpressionVertex() const { 
     if (myAnswer==NOT_IDENTIFIED ||
-	!myPrivateLinearizedComputationalGraphVertex_p) 
-      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::getVertexP: vertex not uniquely identified");
-    return myPrivateLinearizedComputationalGraphVertex_p;
+        !myExpressionVertex_p) 
+      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::getExpressionVertex: vertex not uniquely identified");
+    return *myExpressionVertex_p;
   } 
 
-  PrivateLinearizedComputationalGraphVertex*
-  VertexIdentificationListActive::IdentificationResult::getVertexP() { 
+  const Assignment&
+  VertexIdentificationListActive::IdentificationResult::getAssignment() const { 
     if (myAnswer==NOT_IDENTIFIED ||
-	!myPrivateLinearizedComputationalGraphVertex_p) 
-      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::getVertexP: vertex not uniquely identified");
-    return myPrivateLinearizedComputationalGraphVertex_p;
+        !myAssignment_p) 
+      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::getAssignment: vertex not uniquely identified");
+    return *myAssignment_p;
   } 
 
   VertexIdentificationListActive::ListItem::ListItem(const AliasMapKey& anAliasMapKey,
 						     const StatementIdSetMapKey& aDuUdMapKey,
-						     PrivateLinearizedComputationalGraphVertex* aPrivateLinearizedComputationalGraphVertex_p) : 
+                                                         const Assignment& aAssignment,
+                                                         const ExpressionVertex& aExpressionVertex) : 
     VertexIdentificationList::ListItem(anAliasMapKey,
 				       aDuUdMapKey),
-    myPrivateLinearizedComputationalGraphVertex_p(aPrivateLinearizedComputationalGraphVertex_p) { 
+    myAssignment_p(&aAssignment),
+    myExpressionVertex_p(&aExpressionVertex) {
   }
 
   VertexIdentificationListActive::IdentificationResult 
@@ -69,13 +78,17 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	ListItem& theItem(dynamic_cast<ListItem&>(**aListIterator));
 	if (theAliasMap.mustAlias(theVariable.getAliasMapKey(),
 				  theItem.getAliasMapKey())) 
-	  return IdentificationResult(UNIQUELY_IDENTIFIED,theItem.myPrivateLinearizedComputationalGraphVertex_p);
+	  return IdentificationResult(UNIQUELY_IDENTIFIED,
+                                      &theItem.getAssignment(),
+                                      &theItem.getExpressionVertex());
 	if (theAliasMap.mayAlias(theVariable.getAliasMapKey(),
 				 theItem.getAliasMapKey())) 
-	  return IdentificationResult(AMBIGUOUSLY_IDENTIFIED,theItem.myPrivateLinearizedComputationalGraphVertex_p);
+	  return IdentificationResult(AMBIGUOUSLY_IDENTIFIED,
+                                      &theItem.getAssignment(),
+                                      &theItem.getExpressionVertex());
       } // end for 
     } // end if aliased
-    return IdentificationResult(NOT_IDENTIFIED,0);
+    return IdentificationResult(NOT_IDENTIFIED,NULL,NULL);
   } // end VertexIdentificationListActive::aliasIdentify()
 
   VertexIdentificationListActive::IdentificationResult 
@@ -96,7 +109,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       for (;
 	   aListIterator!=myList.end(); 
 	   ++aListIterator) { 
-	if (dynamic_cast<ListItem&>(**aListIterator).myPrivateLinearizedComputationalGraphVertex_p==idResult.getVertexP()) { 
+	if (&dynamic_cast<VertexIdentificationListActive::ListItem&>(**aListIterator).getExpressionVertex()==&idResult.getExpressionVertex()) { 
 	  myList.erase(aListIterator);
 	  break;
 	} // end if 
@@ -111,11 +124,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	<< this
 	<< ","
 	<< VertexIdentificationList::ListItem::debug().c_str()
-	<< "myPrivateLinearizedComputationalGraphVertex_p="
-	<< myPrivateLinearizedComputationalGraphVertex_p
+        << ",myAssignment_p=" << myAssignment_p
+        << ",myExpressionVertex_p=" << myExpressionVertex_p
 	<< "]" 
 	<< std::ends;
     return out.str();
+  }
+
+  const ExpressionVertex&
+  VertexIdentificationListActive::ListItem::getExpressionVertex() const {
+    return *myExpressionVertex_p;
+  }
+
+  const Assignment&
+  VertexIdentificationListActive::ListItem::getAssignment() const {
+    return *myAssignment_p;
   }
 
   std::string VertexIdentificationListActive::debug () const { 

@@ -10,13 +10,16 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include <map>
+
 #include "xaifBooster/utils/inc/HashTable.hpp"
+
+#include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
+
 #include "xaifBooster/algorithms/CrossCountryInterface/inc/LinearizedComputationalGraph.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveLHS.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListActiveRHS.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListPassive.hpp"
-#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/VertexIdentificationListIndAct.hpp"
+
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
 
 using namespace xaifBooster;
 
@@ -41,21 +44,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     std::string debug() const { return std::string("PrivateLinearizedComputationalGraph");};
 
-    VertexIdentificationListActiveRHS& getVertexIdentificationListActiveRHS() { 
-      return myVertexIdentificationListActiveRHS;
-    };    
 
-    VertexIdentificationListActiveLHS& getVertexIdentificationListActiveLHS() { 
-      return myVertexIdentificationListActiveLHS;
-    };    
+    void
+    mapAssignmentLHS2PLCGV(const Assignment& aAssignment,
+                           const PrivateLinearizedComputationalGraphVertex& thePLCGV);
 
-    VertexIdentificationListPassive& getVertexIdentificationListPassive() { 
-      return myVertexIdentificationListPassive;
-    };    
-
-    VertexIdentificationListIndAct& getVertexIdentificationListIndAct() { 
-      return myVertexIdentificationListIndAct;
-    };    
+    const PrivateLinearizedComputationalGraphVertex&
+    getLCGVertexForAssignmentLHS(const Assignment& aAssignment) const;
 
     void addToIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndependentVertex);
 
@@ -71,56 +66,6 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     void addToPassiveStatementIdList(const ObjectWithId::Id& aStatementId);
 
   private: 
-
-    /**
-     * we need to track the relation 
-     * between Variables and 
-     * vertices in the linearized graph
-     * in particular to find the connection 
-     * points for new Expressions to be added 
-     * to the flattened graph. 
-     * RHS identification serves the purpose 
-     * of identifying RHSs within or accross RHSs
-     * myVertexIdentificationListActiveRHS and myVertexIdentificationListActiveLHS
-     * are disjoint
-     * RHS identification doesn't preclude 
-     * aliased vertices in the list 
-     * this list doesn't own any elements
-     */
-    VertexIdentificationListActiveRHS myVertexIdentificationListActiveRHS; 
-
-    /**
-     * we need to track the relation 
-     * between Variables and 
-     * vertices in the linearized graph
-     * in particular to find the connection 
-     * points for new Expressions to be added 
-     * to the flattened graph. 
-     * LHS identification serves the purpose 
-     * of identifying a RHS vertex with a preceding LHS
-     * The Vertex for a given Variable
-     * will change from v_old to v_new when the respective variable 
-     * is overwritten by vertex v_new
-     * LHS identification does not allow aliased vertices in the list
-     * this list doesn't own any elements
-     */
-    VertexIdentificationListActiveLHS myVertexIdentificationListActiveLHS; 
-
-    /**
-     * we need to track the set of 
-     * passive vertices to do some
-     * basic block level activity analysis
-     * elements in this list are mutually exclusive 
-     * with elements in the active lists.
-     */
-    VertexIdentificationListPassive myVertexIdentificationListPassive; 
-
-    /**
-     * we need to track the set of 
-     * variables used in address computations 
-     * for active variables (aka indirectly active variables)
-     */
-    VertexIdentificationListIndAct myVertexIdentificationListIndAct; 
 
     /** 
      * this is the list of statementIds for the active statements in which  
@@ -145,6 +90,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * and myDependentStatementIdList
      */
     StatementIdList myStatementIdList;
+
+    typedef std::map<const Assignment*,
+                     const PrivateLinearizedComputationalGraphVertex*> CAssignmentP2CPLCGVertexPMap;
+    /** 
+     * keep track of correspondence between each (active) assignment and
+     * the PLCG vertex that corresponds to the LHS
+     */
+    CAssignmentP2CPLCGVertexPMap myAssignmentLHS2LCGVertexPMap;
     
   }; // end of class PrivateLinearizedComputationalGraph 
 
