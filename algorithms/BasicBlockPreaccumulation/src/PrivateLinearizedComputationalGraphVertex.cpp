@@ -99,7 +99,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   bool PrivateLinearizedComputationalGraphVertex::hasOriginalVariable() const {
-   return (myOriginalVariable_p) ? true : false;
+    return (myOriginalVariable_p) ? true : false;
   } 
 
   const Variable& PrivateLinearizedComputationalGraphVertex::getOriginalVariable() const {
@@ -140,23 +140,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     if (hasOriginalVariable()) {
       out << getOriginalVariable().getVariableSymbolReference().getSymbol().getId().c_str();
     }
-    else { // no LHS variable, but maybe an argument?
-      for (CExpressionVertexPSet::const_iterator evpI = myOriginalExpressionVertexPSet.begin();
-           evpI != myOriginalExpressionVertexPSet.end(); ++evpI)
-        if ((*evpI)->isArgument())
-          out << dynamic_cast<const Argument&>(**evpI).getVariable().getVariableSymbolReference().getSymbol().getId().c_str() << "=";
-    }
 
-    // search for an operation
-    std::string theOpString("");
-    for (CExpressionVertexPSet::const_iterator evpI = myOriginalExpressionVertexPSet.begin();
-         evpI != myOriginalExpressionVertexPSet.end(); ++evpI)
-      if ((*evpI)->isIntrinsic()) {
-        theOpString = dynamic_cast<const Intrinsic&>(**evpI).getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName();
-      }
-    if (!theOpString.empty() && hasOriginalVariable())
-      out << "=";
-    out << theOpString;
+    // print the operation
+    if (getOriginatingExpressionVertex().isIntrinsic()) {
+      if (hasOriginalVariable())
+        out << "=";
+      out << dynamic_cast<const Intrinsic&>(getOriginatingExpressionVertex()).getInlinableIntrinsicsCatalogueItem().getFunction().getBuiltinFunctionName();
+    }
 
     // print DuUdMapKey
     if (hasOriginalVariable()) {

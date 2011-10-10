@@ -44,10 +44,21 @@ namespace xaifBoosterBasicBlockPreaccumulation {
         case PartialDerivativeKind::LINEAR_MINUS_ONE:
           return "-1";
           break;
-        default:
+        case PartialDerivativeKind::LINEAR:
           return getLinearizedExpressionEdgeAlg().hasConcretePartialAssignment()
                  ? getAssignmentFromEdge().getLHS().getVariableSymbolReference().getSymbol().getId()
                  : getLinearizedExpressionEdgeAlg().getConcreteConstant().toString();
+          break;
+        case PartialDerivativeKind::NONLINEAR:
+          return getLinearizedExpressionEdgeAlg().hasConcretePartialAssignment()
+                  ? getAssignmentFromEdge().getLHS().getVariableSymbolReference().getSymbol().getId()
+                  : getLinearizedExpressionEdgeAlg().getConcreteConstant().toString();
+          break;
+        case PartialDerivativeKind::PASSIVE:
+          return "PASSIVE";
+          break;
+        default:
+          THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraphEdge::getLabelString: unexpected PDK");
           break;
       } // end switch
     } // end if

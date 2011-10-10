@@ -44,6 +44,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     std::string debug() const { return std::string("PrivateLinearizedComputationalGraph");};
 
+    /// calls GraphvizDisplay::show
+    void
+    show(const std::string& outputName) const;
 
     void
     mapAssignmentLHS2PLCGV(const Assignment& aAssignment,

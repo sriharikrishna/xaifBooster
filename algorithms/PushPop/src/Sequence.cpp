@@ -151,9 +151,7 @@ namespace xaifBoosterPushPop {
     const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph& theOriginalPLCG(getLCG());
     // copy the PLCG vertices
     xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::ConstVertexIteratorPair aPLCGVpair(theOriginalPLCG.vertices());
-    for (xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::ConstVertexIterator aPLCGVi(aPLCGVpair.first), aPLCGViend(aPLCGVpair.second);
-         aPLCGVi != aPLCGViend;
-         ++aPLCGVi) {
+    for (xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraph::ConstVertexIterator aPLCGVi(aPLCGVpair.first); aPLCGVi != aPLCGVpair.second; ++aPLCGVi) {
       const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex& theCurrentPLCGV(
         dynamic_cast<const xaifBoosterBasicBlockPreaccumulation::PrivateLinearizedComputationalGraphVertex&>(*aPLCGVi)
       );

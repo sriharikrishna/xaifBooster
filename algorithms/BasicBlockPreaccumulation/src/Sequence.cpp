@@ -64,31 +64,24 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   bool Sequence::ourPermitNarySaxFlag = false;
 
-  Sequence::Sequence() :
-    myBestElimination_p(0),
-    myBestRemainderGraph_p(0) {
-    myComputationalGraph_p=BasicBlockAlg::getPrivateLinearizedComputationalGraphAlgFactory()->makeNewPrivateLinearizedComputationalGraph();
+  Sequence::Sequence() : myBestElimination_p(0),
+                         myBestRemainderGraph_p(0) {
+    myComputationalGraph_p = BasicBlockAlg::getPrivateLinearizedComputationalGraphAlgFactory()->makeNewPrivateLinearizedComputationalGraph();
   }
   
   Sequence::~Sequence() { 
-    for (InlinableSubroutineCallPList::iterator i=myAllocationList.begin();
-	 i!=myAllocationList.end();
-	 ++i) 
+    for (InlinableSubroutineCallPList::iterator i(myAllocationList.begin()); i != myAllocationList.end(); ++i)
       if (*i)
-	delete *i;
-    for (AssignmentPList::iterator i=myFrontAssignmentList.begin();
-	 i!=myFrontAssignmentList.end();
-	 ++i) 
+        delete *i;
+    for (AssignmentPList::iterator i(myFrontAssignmentList.begin()); i != myFrontAssignmentList.end(); ++i)
       if (*i)
-	delete *i;
-    for (AssignmentPList::iterator i=myEndAssignmentList.begin();
-	 i!=myEndAssignmentList.end();
-	 ++i) 
+        delete *i;
+    for (AssignmentPList::iterator i(myEndAssignmentList.begin()); i != myEndAssignmentList.end(); ++i) 
       if (*i)
-	delete *i;
-    for (EliminationPList::iterator i = myEliminationPList.begin(); i != myEliminationPList.end(); ++i)
+        delete *i;
+    for (EliminationPList::iterator i(myEliminationPList.begin()); i != myEliminationPList.end(); ++i)
       if (*i)
-	delete *i;
+        delete *i;
     if (myComputationalGraph_p)
       delete myComputationalGraph_p;
   }
@@ -375,6 +368,9 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     } // end else (the assignment is not active)
     myVertexIdentificationListIndAct.addElement(aAssignment.getLHS(),
                                                 aAssignment.getId());
+    // debug output
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg"))
+      getLCG().show("PartialSequencePLCG");
     DBG_MACRO(DbgGroup::DATA,
               "xaifBoosterBasicBlockPreaccumulation::Sequence::incorporateAssignment(flatten):"
               << " passive: " << myVertexIdentificationListPassive.debug().c_str()
@@ -418,6 +414,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // fill independents/dependents lists (dependents list is built on the fly in the future?)
     fillLCGIndependentsList();
     fillLCGDependentsList();
+
+    if (DbgLoggerManager::instance()->isSelected(DbgGroup::GRAPHICS) && DbgLoggerManager::instance()->wantTag("cg")) {
+      theLCG.show("flattenedPLCG");
+    }
   }
 
   const PrivateLinearizedComputationalGraphVertex&
@@ -614,13 +614,13 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	    // if the use is not strictly passive then in case of UNIQUE_INSIDE this vertex 
 	    // should not be maximal and in case of AMBIGUOUS_INSIDE there should have 
 	    // been a split. 
-	    THROW_LOGICEXCEPTION_MACRO("Sequence::fillLCGDependentsList: attempting to remove a maximal vertex " << myPrivateVertex.getOriginalVariable().debug().c_str()
+	    THROW_LOGICEXCEPTION_MACRO("Sequence::fillLCGDependentsList: attempting to remove a maximal vertex " << myPrivateVertex.debug().c_str()
                                        << " key " << aDuUdMapKey.debug().c_str() << " from the dependent list");
 	  }
 	  // else do nothing, just leave it. This may indicate some inconsistency in 
 	  // the activity results
-	}
-	else { 
+	} // end if maximal
+	else { // has outedges
           // we only use it in the scope of this flattened sequence, therefore remove it
           DBG_TAG_MACRO(DbgGroup::DATA,"depList","Sequence::fillLCGDependentsList:"
                         << " removing dependent " << myPrivateVertex.getOriginalVariable().debug().c_str()
@@ -628,7 +628,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
           myComputationalGraph_p->removeFromDependentList(myPrivateVertex);
           continue;
 	}
-      }
+      } // end if unique or ambiguous (inside) identification
       else { 
         if (DbgLoggerManager::instance()->isSelected(DbgGroup::DATA)) { 
           if (myComputationalGraph_p->numOutEdgesOf(myPrivateVertex)) { 
@@ -644,8 +644,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                           << " key is " << aDuUdMapKey.debug().c_str());
           }
         }
-      } 
-    }
+      } // end else (neither ambiguous nor UNIQUE_INSIDE)
+    } // end for all vertices
   }
 
   void Sequence::runElimination() { 

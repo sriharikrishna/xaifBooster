@@ -105,10 +105,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       return;
     IdentificationResult idResult(canIdentify(theVariable));
     while(idResult.getAnswer()!=NOT_IDENTIFIED) { 
-      ListItemPList::iterator aListIterator=myList.begin();
-      for (;
-	   aListIterator!=myList.end(); 
-	   ++aListIterator) { 
+      for (ListItemPList::iterator aListIterator=myList.begin(); aListIterator!=myList.end(); ++aListIterator) {
 	if (&dynamic_cast<VertexIdentificationListActive::ListItem&>(**aListIterator).getExpressionVertex()==&idResult.getExpressionVertex()) { 
 	  myList.erase(aListIterator);
 	  break;
@@ -120,14 +117,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string VertexIdentificationListActive::ListItem::debug() const { 
     std::ostringstream out;
-    out << "VertexIdentificationListActive::ListItem[" 
-	<< this
-	<< ","
-	<< VertexIdentificationList::ListItem::debug().c_str()
-        << ",myAssignment_p=" << myAssignment_p
-        << ",myExpressionVertex_p=" << myExpressionVertex_p
-	<< "]" 
-	<< std::ends;
+    out << "VertexIdentificationListActive::ListItem[" << VertexIdentificationList::ListItem::debug().c_str()
+	<< ",myAssignment_p=" << myAssignment_p
+	<< ",myExpressionVertex_p=" << myExpressionVertex_p
+	<< "]" << std::ends;
     return out.str();
   }
 
@@ -143,13 +136,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string VertexIdentificationListActive::debug () const { 
     std::ostringstream out;
-    out << "VertexIdentificationListActive[" << this 
-	<< ","
-	<< VertexIdentificationList::debug().c_str()
-	<< "]" 
-	<< std::ends;
+    out << "VertexIdentificationListActive[" << VertexIdentificationList::debug().c_str()
+	<< "]" << std::ends;
     return out.str();
-  } // end of Symbol::debug
+  }
 
 } // end of namespace 
 

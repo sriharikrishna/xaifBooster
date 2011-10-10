@@ -55,7 +55,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   AssignmentAlg::debug() const { 
     std::ostringstream out;
     out << "xaifBoosterBasicBlockPreaccumulation::AssignmentAlg[" << xaifBoosterLinearization::AssignmentAlg::debug().c_str()
-	<< "]" << std::ends;  
+        << ",myDerivAction_p=" << myDerivAction_p
+        << "]" << std::ends;  
     return out.str();
   }
 

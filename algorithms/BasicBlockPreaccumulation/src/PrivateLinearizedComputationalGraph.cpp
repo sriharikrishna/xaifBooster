@@ -7,8 +7,12 @@
 // The full COPYRIGHT notice can be found in the top
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
+
+#include "xaifBooster/system/inc/GraphVizDisplay.hpp"
+
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraph.hpp"
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphVertex.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PrivateLinearizedComputationalGraphEdge.hpp"
 
 using namespace xaifBooster;
 
@@ -16,6 +20,16 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   PrivateLinearizedComputationalGraph::PrivateLinearizedComputationalGraph() { 
   } 
+
+  void
+  PrivateLinearizedComputationalGraph::show(const std::string& outputName) const {
+    if (numVertices() > 0)
+      GraphVizDisplay::show(*this,
+                            outputName,
+                            PrivateLinearizedComputationalGraphVertexLabelWriter(*this),
+                            PrivateLinearizedComputationalGraphEdgeLabelWriter(*this),
+                            PrivateLinearizedComputationalGraphPropertiesWriter(*this));
+  }
 
   void
   PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV(const Assignment& aAssignment,

@@ -77,12 +77,6 @@ namespace xaifBoosterLinearization {
      */
     AssignmentAlg& operator=(const AssignmentAlg&);
 
-    /**
-     * determines whether the assignment needs to be replaced because
-     * some subexpression on the RHS has been assigned to an auxiliary variable
-     */
-    bool
-    needsReplacement() const;
 
     /**
      * constructs and then (XML) prints the actual assignment to the LHS,

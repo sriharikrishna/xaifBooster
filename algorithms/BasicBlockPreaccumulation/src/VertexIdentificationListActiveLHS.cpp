@@ -76,17 +76,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	&& 
 	canIdentify(aAssignment.getLHS(),
 		    aAssignment.getId()).getAnswer()!=NOT_IDENTIFIED) 
-      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActive::addElement: new element must have a unique address");
+      THROW_LOGICEXCEPTION_MACRO("VertexIdentificationListActiveLHS::addElement: new element must have a unique address");
     myList.push_back(new ListItem(aAssignment));
   } 
 
   std::string VertexIdentificationListActiveLHS::ListItem::debug() const { 
     std::ostringstream out;
-    out << "VertexIdentificationListActiveLHS::ListItem[" 
-	<< this
-	<< ","
-	<< VertexIdentificationListActive::ListItem::debug().c_str()
-	<< "myStatementId="
+    out << "VertexIdentificationListActiveLHS::ListItem[" << VertexIdentificationListActive::ListItem::debug().c_str()
+	<< ",myStatementId="
 	<< myStatementId
 	<< "]" 
 	<< std::ends;
@@ -95,10 +92,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   std::string VertexIdentificationListActiveLHS::debug () const { 
     std::ostringstream out;
-    out << "VertexIdentificationListActiveLHS[" 
-	<< this 
-	<< ","
-	<< VertexIdentificationListActive::debug().c_str()
+    out << "VertexIdentificationListActiveLHS[" << VertexIdentificationListActive::debug().c_str()
 	<< "]" 
 	<< std::ends;
     return out.str();
