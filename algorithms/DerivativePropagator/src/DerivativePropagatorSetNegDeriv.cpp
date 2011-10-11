@@ -94,7 +94,12 @@ namespace xaifBoosterDerivativePropagator {
   DerivativePropagatorSetNegDeriv::hasExpression(const Expression& anExpression) const {
     return (mySource.hasExpression(anExpression)
          || DerivativePropagatorEntry::hasExpression(anExpression));
-  } // end DerivativePropagatorSetNegDeriv::hasExpression()
+  }
 
-} // end namespace xaifBoosterDerivativePropagator
+  const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+  DerivativePropagatorSetNegDeriv::asInlinableSubroutineCall() const {
+	  return asSourceTargetInlinableSubroutineCall("set_neg_deriv",mySource);
+  }
+
+}
 

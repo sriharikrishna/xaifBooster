@@ -19,7 +19,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 		       const std::string& buildStamp) :
     xaifBooster::AlgConfig(argc,argv,buildStamp),
     xaifBoosterLinearization::AlgConfig(argc,argv,buildStamp) {
-    registerIt(&ourConfig,&ourUsage,"nCAmQaMRS");
+    registerIt(&ourConfig,&ourUsage,"nCAmQaHMRS");
   } 
 
   STATIC_ALG_CONFIG_FUNC_DEF_MACRO
@@ -49,11 +49,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       xaifBoosterBasicBlockPreaccumulation::Sequence::useReroutings();
     if (isSet('S')) 
       xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::oneGraphPerStatement();
+    if (isSet('H'))
+      xaifBoosterBasicBlockPreaccumulation::BasicBlockAlg::hideDPsAsICs();
   }
 
   void AlgConfig::myUsage() { 
     std::cout << " BasicBlockPreaccumulation options: " << std::endl
 	      << "             [-n] allow n-ary sax operations" << std::endl
+	      << "             [-H] hide derivative propagators as inlinable calls" << std::endl
               << "             [-C] turn on runtime counters"  << std::endl
 	      << "             [-A <level>] set heuristic awareness of unit/constant edges (0: no awareness, 1: unit awareness, 2: constant awareness), defaults to unit awareness" << std::endl
               << "             [-m] allow scarcity-preserving operations that maintain the nontrivial edge count (default is strict reduction)"  << std::endl

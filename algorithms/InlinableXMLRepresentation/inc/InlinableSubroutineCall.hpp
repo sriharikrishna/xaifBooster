@@ -45,6 +45,11 @@ namespace xaifBoosterInlinableXMLRepresentation {
     const SubroutineCall::ConcreteArgumentPList&  getArgumentList() const;
 
     const std::string& getSubroutineName() const;
+
+    /** 
+     * \param aSuffix is appended to mySubroutineName
+     */
+    void appendSuffix(const std::string& aSuffix); 
     
   private: 
     
@@ -60,7 +65,7 @@ namespace xaifBoosterInlinableXMLRepresentation {
      */
     SubroutineCall::ConcreteArgumentPList myConcreteArgumentPList;
 
-    const std::string mySubroutineName;
+    std::string mySubroutineName;
     
   }; // end of class InlinableSubroutineCall
  

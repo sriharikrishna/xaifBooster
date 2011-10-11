@@ -39,6 +39,8 @@ namespace xaifBoosterDerivativePropagator {
 
     virtual void  getFactors(FactorList& theFactorList) const ; 
 
+    virtual const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& asInlinableSubroutineCall() const;
+
   private:
 
     /**

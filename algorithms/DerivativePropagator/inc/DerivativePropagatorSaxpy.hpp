@@ -74,6 +74,8 @@ namespace xaifBoosterDerivativePropagator {
      */
     virtual bool hasExpression(const Expression& anExpression) const;
 
+    virtual const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& asInlinableSubroutineCall() const;
+
   private:
 
     /**

@@ -225,7 +225,61 @@ namespace xaifBoosterDerivativePropagator {
        || (*axPI)->myX.hasExpression(anExpression))
         return true;
     return DerivativePropagatorEntry::hasExpression(anExpression);
-  } // end DerivativePropagatorSaxpy::hasExpression()
+  }
 
-} // end namespace xaifBoosterDerivativePropagator
+  const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+  DerivativePropagatorSaxpy::asInlinableSubroutineCall() const {
+	  if (!myInlinableSubroutineCall_p) {
+		  if (isIncremental()) {
+			  myInlinableSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("saxpy");
+		  }
+		  else {
+			  myInlinableSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("sax");
+		  }
+		  myInlinableSubroutineCall_p->setId("asInlinableSubroutineCall");
+		  unsigned short position=1;
+		  std::string suffix;
+     	  bool inlinable=true;
+		  for (AXPList::const_iterator it=myAXPList.begin();
+				  it!=myAXPList.end(); ++it) {
+			  ConcreteArgument& theA=myInlinableSubroutineCall_p->addConcreteArgument(position++);
+			  Expression::ReturnOfSingleVariable sVar((*it)->myA.singleVariable());
+			  if (sVar.hasIt()) {
+				  sVar.getIt().copyMyselfInto(theA.getArgument().getVariable());
+				  SymbolShape::SymbolShape_E effShape=theA.getArgument().getVariable().getEffectiveShape();
+				  if (effShape!=SymbolShape::SCALAR && sVar.getIt().hasArrayAccess())
+					  inlinable=false;
+				  suffix+="_"+SymbolShape::toShortString(effShape);
+			  }
+			  else {
+				  Expression::ReturnOfSingleConstant sCon((*it)->myA.singleConstant());
+				  if (sCon.hasIt()) {
+					  Constant& aConst(theA.makeConstant(sCon.getIt().getType()));
+					  aConst.setFromString(sCon.getIt().toString());
+					  suffix+="_"+SymbolShape::toShortString(SymbolShape::SCALAR);
+				  }
+				  else {
+					  THROW_LOGICEXCEPTION_MACRO("DerivativePropagatorSaxpy::asInlinableSubroutineCall: no logic to handle factor expression");
+				  }
+			  }
+			  ConcreteArgument& theX=myInlinableSubroutineCall_p->addConcreteArgument(position++);
+			  (*it)->myX.copyMyselfInto(theX.getArgument().getVariable());
+			  SymbolShape::SymbolShape_E effShape=theX.getArgument().getVariable().getEffectiveShape();
+			  if (effShape!=SymbolShape::SCALAR && (*it)->myX.hasArrayAccess())
+				  inlinable=false;
+			  suffix+="_"+SymbolShape::toShortString(effShape);
+		  }
+		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(position);
+		  getTarget().copyMyselfInto(target.getArgument().getVariable());
+		  SymbolShape::SymbolShape_E effShape=getTarget().getEffectiveShape();
+		  if (effShape!=SymbolShape::SCALAR && getTarget().hasArrayAccess())
+			  inlinable=false;
+		  suffix+="_"+SymbolShape::toShortString(effShape);
+     	  if (inlinable)
+     		  myInlinableSubroutineCall_p->appendSuffix(suffix);
+	  }
+	  return *myInlinableSubroutineCall_p;
+  }
+
+}
 

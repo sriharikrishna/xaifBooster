@@ -93,7 +93,11 @@ namespace xaifBoosterDerivativePropagator {
   DerivativePropagatorSetDeriv::hasExpression(const Expression& anExpression) const {
     return (mySource.hasExpression(anExpression)
          || DerivativePropagatorEntry::hasExpression(anExpression));
-  } // end DerivativePropagatorSetDeriv::hasExpression()
+  }
 
-} // end namespace xaifBoosterDerivativePropagator
+  const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+  DerivativePropagatorSetDeriv::asInlinableSubroutineCall() const {
+	  return asSourceTargetInlinableSubroutineCall("setderiv",mySource);
+  }
 
+}
