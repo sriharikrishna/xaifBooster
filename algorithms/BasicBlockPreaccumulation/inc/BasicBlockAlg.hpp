@@ -192,6 +192,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static bool isOneGraphPerStatement(); 
 
+    /**
+     * sets ourHideDPsAsICsFlag to true
+     */
+    static void hideDPsAsICs();
+
   protected:
 
     /// for traversing with each Sequence treated atomically
@@ -241,10 +246,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     static void printerWrapper(std::ostream& os,
 			       const BasicBlockAlgBase&, 
-			       const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) {
-      xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
-    }; 
-
+			       const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator);
     /*
      * the list of all Assignment statement Ids
      */ 
@@ -305,6 +307,11 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * statement, i.e. the flattening across statements is turned off
      */
     static bool ourOneGraphPerStatementFlag;
+
+    /**
+     * if this is true then we dump derivative propagators as inlinable calls
+     */
+    static bool ourHideDPsAsICs;
 
   }; 
  

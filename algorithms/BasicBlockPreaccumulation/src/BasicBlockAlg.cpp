@@ -56,6 +56,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   bool BasicBlockAlg::ourRuntimeCountersFlag=false;
   bool BasicBlockAlg::ourOneGraphPerStatementFlag = false;
+  bool BasicBlockAlg::ourHideDPsAsICs=false;
 
   PrivateLinearizedComputationalGraphAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphAlgFactory_p= PrivateLinearizedComputationalGraphAlgFactory::instance();
   PrivateLinearizedComputationalGraphEdgeAlgFactory* BasicBlockAlg::ourPrivateLinearizedComputationalGraphEdgeAlgFactory_p= PrivateLinearizedComputationalGraphEdgeAlgFactory::instance();
@@ -849,6 +850,25 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   bool BasicBlockAlg::isOneGraphPerStatement() { 
     return ourOneGraphPerStatementFlag;
   }
+
+  void BasicBlockAlg::hideDPsAsICs() {
+	  ourHideDPsAsICs=true;
+  }
+
+  void BasicBlockAlg::printerWrapper(std::ostream& os,
+		  const BasicBlockAlgBase&,
+		  const xaifBoosterDerivativePropagator::DerivativePropagator& aPropagator) {
+	  if (ourHideDPsAsICs) {
+		// reinterpret as inlinable calls
+		for (xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_iterator dPEntryIt=aPropagator.getEntryPList().begin();
+			dPEntryIt!=aPropagator.getEntryPList().end(); ++dPEntryIt) {
+			(*dPEntryIt)->asInlinableSubroutineCall().printXMLHierarchy(os);
+		}
+	  }
+	  else {
+		  xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
+	  }
+  };
 
 } // end namespace xaifBoosterBasicBlockPreaccumulation
  

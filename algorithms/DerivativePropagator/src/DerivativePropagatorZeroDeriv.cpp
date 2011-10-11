@@ -60,4 +60,21 @@ namespace xaifBoosterDerivativePropagator {
     theFactorList.push_back(aFactor);
   } 
 
-} // end of namespace 
+  const xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall&
+  DerivativePropagatorZeroDeriv::asInlinableSubroutineCall() const {
+	  if (!myInlinableSubroutineCall_p) {
+		  myInlinableSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("zero_deriv");
+		  std::string suffix;
+		  myInlinableSubroutineCall_p->setId("asInlinableSubroutineCall");
+		  ConcreteArgument& target=myInlinableSubroutineCall_p->addConcreteArgument(1);
+		  getTarget().copyMyselfInto(target.getArgument().getVariable());
+		  SymbolShape::SymbolShape_E effShape=getTarget().getEffectiveShape();
+		  if (effShape==SymbolShape::SCALAR || !(getTarget().hasArrayAccess())) {
+			  suffix+="_"+SymbolShape::toShortString(effShape);
+			  myInlinableSubroutineCall_p->appendSuffix(suffix);
+		  }
+	  }
+	  return *myInlinableSubroutineCall_p;
+  }
+
+}

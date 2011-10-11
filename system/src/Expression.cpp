@@ -490,6 +490,36 @@ namespace xaifBooster{
       return myExpressionAlgBase_p->hasExpression(anExpression);
     else
       return false;
-  } // end Expression::hasExpression()
+  }
 
-} // end namespace xaifBooste
+  Expression::ReturnOfSingleVariable Expression::singleVariable() const {
+	  Expression::ConstVertexIteratorPair itP=vertices();
+	  const Variable* theVar_p=0;
+	  if (itP.first!=itP.second) {
+		  if ((*(itP.first)).isArgument()) {
+			  theVar_p=&(dynamic_cast<const Argument&>((*(itP.first))).getVariable());
+			  ++(itP.first);
+		  }
+	  }
+	  if (theVar_p && itP.first==itP.second)
+		  return ReturnOfSingleVariable(theVar_p);
+	  return ReturnOfSingleVariable(NULL);
+  }
+
+  Expression::ReturnOfSingleConstant Expression::singleConstant() const {
+	  Expression::ConstVertexIteratorPair itP=vertices();
+	  const Constant* theConst_p=0;
+	  if (itP.first!=itP.second) {
+		  if (!(*(itP.first)).isArgument()) {
+			  // if not an Argument and the only vertex this should be a constant
+			  // if it is not (intrinsic w/o arguments?)  then the case will return a 0 and we are still ok
+			  theConst_p=dynamic_cast<const Constant*>(&(*(itP.first)));
+			  ++(itP.first);
+		  }
+	  }
+	  if (theConst_p && itP.first==itP.second)
+		  return ReturnOfSingleConstant(theConst_p);
+	  return ReturnOfSingleConstant(NULL);
+  }
+
+}
