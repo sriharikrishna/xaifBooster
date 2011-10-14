@@ -26,7 +26,7 @@ include ../../../Makefile.incl
 -include $(DEPINCL)
 
 # pick up all algorithm specific obj files
-ALG_OBJ_SET=$(wildcard ../src/obj/*.o)
+ALG_OBJ_SET=$(addsuffix .o, $(addprefix ../src/obj/, $(basename $(notdir $(wildcard ../src/*.cpp)))))
 
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
 LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a

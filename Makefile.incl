@@ -29,7 +29,7 @@ export XERCESC_INCLUDE_DIR=$(XERCESCROOT)/include
 
 export BOOST_INCLUDE_DIR=$(BOOSTROOT)
 
-export SYSTEM_OBJ_SET=$(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src/obj/*.o)
+export SYSTEM_OBJ_SET=$(addsuffix .o, $(addprefix $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src/obj/, $(basename $(notdir $(wildcard $(XAIFBOOSTERROOT)/$(ROOTDIR)/system/src/*.cpp)))))
 
 export SYSTEM_INC_DIR=$(XAIFBOOSTERROOT)
 
