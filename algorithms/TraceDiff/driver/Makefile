@@ -24,10 +24,10 @@ include ../../../Makefile.incl
 -include $(DEPINCL)
 
 # pick up all algorithm specific obj files
-ALG_OBJ_SET=                                      \
-$(wildcard ../src/obj/*.o)                        \
-$(wildcard ../../ControlFlowReversal/src/obj/*.o) \
-$(wildcard ../../TypeChange/src/obj/*.o)
+ALG_OBJ_SET= \
+$(addsuffix .o, $(addprefix ../src/obj/, $(basename $(notdir $(wildcard ../src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../ControlFlowReversal/src/obj/, $(basename $(notdir $(wildcard ../../ControlFlowReversal/src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../TypeChange/src/obj/, $(basename $(notdir $(wildcard ../../TypeChange/src/*.cpp)))))
 
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
 LIBS+=../../AdjointUtils/lib/libxaifBoosterAdjointUtils.a
