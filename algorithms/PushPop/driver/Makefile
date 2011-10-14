@@ -25,15 +25,15 @@ include ../../../Makefile.incl
 -include $(DEPINCL)
 
 # pick up all algorithm specific obj files
-ALG_OBJ_SET=  							   \
-$(wildcard ../src/obj/*.o) 					   \
-$(wildcard ../../AddressArithmetic/src/obj/*.o) 		   \
-$(wildcard ../../ControlFlowReversal/src/obj/*.o) 		   \
-$(wildcard ../../BasicBlockPreaccumulationTapeAdjoint/src/obj/*.o) \
-$(wildcard ../../BasicBlockPreaccumulationTape/src/obj/*.o) 	   \
-$(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o)            \
-$(wildcard ../../Linearization/src/obj/*.o)			   \
-$(wildcard ../../TypeChange/src/obj/*.o)
+ALG_OBJ_SET= \
+$(addsuffix .o, $(addprefix ../src/obj/, $(basename $(notdir $(wildcard ../src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../AddressArithmetic/src/obj/, $(basename $(notdir $(wildcard ../../AddressArithmetic/src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../ControlFlowReversal/src/obj/, $(basename $(notdir $(wildcard ../../ControlFlowReversal/src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../BasicBlockPreaccumulationTapeAdjoint/src/obj/, $(basename $(notdir $(wildcard ../../BasicBlockPreaccumulationTapeAdjoint/src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../BasicBlockPreaccumulationTape/src/obj/, $(basename $(notdir $(wildcard ../../BasicBlockPreaccumulationTape/src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../BasicBlockPreaccumulation/src/obj/, $(basename $(notdir $(wildcard ../../BasicBlockPreaccumulation/src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../Linearization/src/obj/, $(basename $(notdir $(wildcard ../../Linearization/src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../TypeChange/src/obj/, $(basename $(notdir $(wildcard ../../TypeChange/src/*.cpp)))))
 
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
 LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
