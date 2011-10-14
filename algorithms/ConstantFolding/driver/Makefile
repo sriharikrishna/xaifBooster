@@ -26,10 +26,10 @@ include ../../../Makefile.incl
 -include $(DEPINCL)
 
 # pick up all algorithm specific obj files
-ALG_OBJ_SET=                                            \
-$(wildcard ../src/obj/*.o)                              \
-$(wildcard ../../BasicBlockPreaccumulation/src/obj/*.o) \
-$(wildcard ../../Linearization/src/obj/*.o)
+ALG_OBJ_SET= \
+$(addsuffix .o, $(addprefix ../src/obj/, $(basename $(notdir $(wildcard ../src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../BasicBlockPreaccumulation/src/obj/, $(basename $(notdir $(wildcard ../../BasicBlockPreaccumulation/src/*.cpp))))) \
+$(addsuffix .o, $(addprefix ../../Linearization/src/obj/, $(basename $(notdir $(wildcard ../../Linearization/src/*.cpp)))))
 
 LIBS+=../../InlinableXMLRepresentation/lib/libxaifBoosterInlinableXMLRepresentation.a
 LIBS+=../../CrossCountryInterface/lib/libxaifBoosterCrossCountryInterface.a
