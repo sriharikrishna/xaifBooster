@@ -64,6 +64,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /// no def
     BasicBlockAlg& operator=(const BasicBlockAlg&);
 
+    void replicateAllocationWrapper(const xaifBoosterBasicBlockPreaccumulation::Sequence& currentSequence,
+                                    ForLoopReversalType::ForLoopReversalType_E aReversalType);
+
   }; 
  
 } 
