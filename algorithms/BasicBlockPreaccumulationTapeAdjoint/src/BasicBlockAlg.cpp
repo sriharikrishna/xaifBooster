@@ -87,6 +87,20 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void BasicBlockAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
+  void BasicBlockAlg::replicateAllocationWrapper(const xaifBoosterBasicBlockPreaccumulation::Sequence& currentSequence,
+                                                 ForLoopReversalType::ForLoopReversalType_E aReversalType) {
+    for (xaifBoosterDerivativePropagator::DerivativePropagator::InlinableSubroutineCallPList::const_iterator ali=currentSequence.myDerivativePropagator.getPropagationAllocationList().begin();
+        ali!=currentSequence.myDerivativePropagator.getPropagationAllocationList().end();
+        ++ali) {
+      xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theCopy=addInlinableSubroutineCall((*ali)->getSubroutineName(),aReversalType);
+      theCopy.setId((*ali)->getId());
+      for (SubroutineCall::ConcreteArgumentPList::const_iterator aali=(*ali)->getArgumentList().begin();
+          aali!=(*ali)->getArgumentList().end();
+          ++aali) {
+        (*aali)->copyMyselfInto(theCopy.addConcreteArgument((*aali)->getPosition()));
+      }
+    }
+  }
 
   void BasicBlockAlg::algorithm_action_5() {
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockAlg::algorithm_action_5(adjoin propagators)");
@@ -146,17 +160,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
             myFactorVariableCorList.push_back(std::make_pair(*pushedFacVarPrI,&thePoppedFactorVariable));
           } // end for all pushed factor variables
           // replicate derivative propagator allocationshere
-          for (xaifBoosterDerivativePropagator::DerivativePropagator::InlinableSubroutineCallPList::const_iterator ali=currentSequence.myDerivativePropagator.getPropagationAllocationList().begin();
-              ali!=currentSequence.myDerivativePropagator.getPropagationAllocationList().end();
-                  ++ali) {
-            xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theCopy=addInlinableSubroutineCall((*ali)->getSubroutineName(),ForLoopReversalType::ANONYMOUS);
-            theCopy.setId((*ali)->getId());
-            for (SubroutineCall::ConcreteArgumentPList::const_iterator aali=(*ali)->getArgumentList().begin();
-                aali!=(*ali)->getArgumentList().end();
-                ++aali) {
-                (*aali)->copyMyselfInto(theCopy.addConcreteArgument((*aali)->getPosition()));
-            }
-          }
+          replicateAllocationWrapper(currentSequence,ForLoopReversalType::ANONYMOUS);
+          replicateAllocationWrapper(currentSequence,ForLoopReversalType::EXPLICIT);
           const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator(currentSequence.myDerivativePropagator);
           for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_reverse_iterator entryPListI=
                aDerivativePropagator.getEntryPList().rbegin();
