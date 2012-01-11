@@ -113,17 +113,19 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     typedef std::list<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall*> InlinableSubroutineCallPList;
 
-    const InlinableSubroutineCallPList& getAllocationList() const;
+    const InlinableSubroutineCallPList& getPreaccumulationAllocationList() const;
 
     /** 
      * create a new Allocation instance
      * and append it to the list to be printed 
      * in printXMLHierarchy
      * before any element of the sequence
+     * \param forPreaccumulation  if true adds to myPreaccumulationAllocationList else to myPropagationAllocationList
      */
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
     addAllocation(const VariableSymbolReference& toBeAllocated,
-		  const Variable& variableToMatch);
+		  const Variable& variableToMatch,
+		  bool forPreaccmulation);
 
     /** 
      * create a new Assignment instance
@@ -164,6 +166,12 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * created sax operations are n-ary if ourPermitNarySaxFlag is true
      */
     void generateRemainderGraphPropagators(); 
+
+    /**
+     * allocations for the preaccumulation phase and the propagation phase end up
+     * in different contexts for reverse mode; hence the separation.
+     */
+    void printPropagatorAllocations(std::ostream&) const;
 
     /// \FIXME \TODO: ought to be private in the future(?)
     const PrivateLinearizedComputationalGraph&
@@ -310,7 +318,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      * list to hold allocation calls to be added to 
      * the front of this sequence
      */
-    InlinableSubroutineCallPList myAllocationList;
+    InlinableSubroutineCallPList myPreaccumulationAllocationList;
 
     /**
      * list to hold statements to be added to 

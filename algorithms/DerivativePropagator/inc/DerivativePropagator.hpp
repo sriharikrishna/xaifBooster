@@ -89,6 +89,14 @@ namespace xaifBoosterDerivativePropagator {
      */
     virtual bool hasExpression(const Expression& anExpression) const;
 
+    typedef std::list<xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall*> InlinableSubroutineCallPList;
+
+    InlinableSubroutineCallPList& getPropagationAllocationList();
+
+    const InlinableSubroutineCallPList& getPropagationAllocationList() const;
+
+    void printPropagationAllocationList(std::ostream&) const;
+
   private:
 
     /**
@@ -96,6 +104,12 @@ namespace xaifBoosterDerivativePropagator {
      * instances pointed to in myEntryPList
      */
     EntryPList myEntryPList;
+
+    /**
+      * list to hold allocation calls to be added for
+      * the propagation phase
+      */
+    InlinableSubroutineCallPList myPropagationAllocationList;
 
   }; // end of class DerivativePropagator
  

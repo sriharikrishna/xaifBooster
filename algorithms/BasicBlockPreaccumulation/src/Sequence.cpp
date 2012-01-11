@@ -70,7 +70,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
   
   Sequence::~Sequence() { 
-    for (InlinableSubroutineCallPList::iterator i(myAllocationList.begin()); i != myAllocationList.end(); ++i)
+    for (InlinableSubroutineCallPList::iterator i(myPreaccumulationAllocationList.begin()); i != myPreaccumulationAllocationList.end(); ++i)
       if (*i)
         delete *i;
     for (AssignmentPList::iterator i(myFrontAssignmentList.begin()); i != myFrontAssignmentList.end(); ++i)
@@ -134,7 +134,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
     // print all the stuff after the last element
     // allocations
-    for (InlinableSubroutineCallPList::const_iterator ali(getAllocationList().begin()); ali != getAllocationList().end(); ++ali)
+    for (InlinableSubroutineCallPList::const_iterator ali(getPreaccumulationAllocationList().begin()); ali != getPreaccumulationAllocationList().end(); ++ali)
       (*ali)->printXMLHierarchy(os);
     // assignments
     for(AssignmentPList::const_iterator eli(getEndAssignmentList().begin()); eli != getEndAssignmentList().end(); ++eli)
@@ -148,10 +148,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 
   xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& 
   Sequence::addAllocation(const VariableSymbolReference& toBeAllocated,
-			  const Variable& variableToMatch) { 
+			  const Variable& variableToMatch,
+	                  bool forPreaccmulation) {
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSRCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("oad_AllocateMatching"); 
     theSRCall_p->setId("xaifBoosterBasicBlockPreaccumulation::Sequence::addAllocation");
-    myAllocationList.push_back(theSRCall_p);
+    if (forPreaccmulation)
+      myPreaccumulationAllocationList.push_back(theSRCall_p);
+    else
+      myDerivativePropagator.getPropagationAllocationList().push_back(theSRCall_p);
     // first argument
     Variable& toBeAllocatedVariable(theSRCall_p->addConcreteArgument(1).getArgument().getVariable());
     VariableSymbolReference* 
@@ -179,8 +183,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     return *theAssignment_p;
   }
 
-  const Sequence::InlinableSubroutineCallPList& Sequence::getAllocationList() const { 
-    return myAllocationList;
+  const Sequence::InlinableSubroutineCallPList& Sequence::getPreaccumulationAllocationList() const { 
+    return myPreaccumulationAllocationList;
   }
 
   const AssignmentPList& Sequence::getFrontAssignmentList() const { 
@@ -196,7 +200,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     out << "xaifBoosterBasicBlockPreaccumulation::Sequence[" << this
         << ",myAssignmentPList.size():" << myAssignmentPList.size()
         << ",myComputationalGraph_p->" << myComputationalGraph_p->debug().c_str()
-        << ",myAllocationList.size():" << myAllocationList.size()
+        << ",myPreaccumulationAllocationList.size():" << myPreaccumulationAllocationList.size()
         << ",myFrontAssignmentList.size():" << myFrontAssignmentList.size()
         << ",myEndAssignmentList.size():" << myEndAssignmentList.size()
         << ",myEliminationPList.size():" << myEliminationPList.size()

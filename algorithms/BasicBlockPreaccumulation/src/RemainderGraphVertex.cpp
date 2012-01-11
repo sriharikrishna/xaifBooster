@@ -75,7 +75,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myPropagationVariable_p->getDuUdMapKey().setTemporary();
     if (aHelper.needsAllocation()){
       theSequence.addAllocation(*theVariableSymbolReference_p,
-                                getOriginalVertex().getOriginalVariable());
+                                getOriginalVertex().getOriginalVariable(),
+                                false);
     }
   } 
 
@@ -95,7 +96,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     myPropagationVariable_p->getAliasMapKey().setTemporary();
     myPropagationVariable_p->getDuUdMapKey().setTemporary();
     if (aHelper.needsAllocation()){
-      theSequence.addAllocation(*theVariableSymbolReference_p,variableToMatch);
+      theSequence.addAllocation(*theVariableSymbolReference_p,variableToMatch,false);
     }
   } 
 

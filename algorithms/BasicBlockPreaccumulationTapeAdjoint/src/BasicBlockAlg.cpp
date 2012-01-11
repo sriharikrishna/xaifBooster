@@ -145,7 +145,18 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
                          ForLoopReversalType::EXPLICIT);
             myFactorVariableCorList.push_back(std::make_pair(*pushedFacVarPrI,&thePoppedFactorVariable));
           } // end for all pushed factor variables
-          // derivative propagator
+          // replicate derivative propagator allocationshere
+          for (xaifBoosterDerivativePropagator::DerivativePropagator::InlinableSubroutineCallPList::const_iterator ali=currentSequence.myDerivativePropagator.getPropagationAllocationList().begin();
+              ali!=currentSequence.myDerivativePropagator.getPropagationAllocationList().end();
+                  ++ali) {
+            xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& theCopy=addInlinableSubroutineCall((*ali)->getSubroutineName(),ForLoopReversalType::ANONYMOUS);
+            theCopy.setId((*ali)->getId());
+            for (SubroutineCall::ConcreteArgumentPList::const_iterator aali=(*ali)->getArgumentList().begin();
+                aali!=(*ali)->getArgumentList().end();
+                ++aali) {
+                (*aali)->copyMyselfInto(theCopy.addConcreteArgument((*aali)->getPosition()));
+            }
+          }
           const xaifBoosterDerivativePropagator::DerivativePropagator& aDerivativePropagator(currentSequence.myDerivativePropagator);
           for(xaifBoosterDerivativePropagator::DerivativePropagator::EntryPList::const_reverse_iterator entryPListI=
                aDerivativePropagator.getEntryPList().rbegin();
