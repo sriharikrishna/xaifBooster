@@ -23,6 +23,9 @@ namespace xaifBoosterDerivativePropagator {
   const std::string DerivativePropagator::ourXAIFName("xaif:DerivativePropagator");
 
   DerivativePropagator::~DerivativePropagator(){
+    for (InlinableSubroutineCallPList::iterator i(myPropagationAllocationList.begin()); i != myPropagationAllocationList.end(); ++i)
+        if (*i)
+          delete *i;
     for(EntryPList::const_iterator  entryList_iterator= myEntryPList.begin();
 	entryList_iterator!= myEntryPList.end();
 	++entryList_iterator)
@@ -35,6 +38,7 @@ namespace xaifBoosterDerivativePropagator {
 					      const DerivativePropagator& aDerivativePropagator) { 
     if (!aDerivativePropagator.myEntryPList.size())
       return;
+    aDerivativePropagator.printPropagationAllocationList(os);
     PrintManager& pm=PrintManager::getInstance();
     os << pm.indent()
        << "<"
@@ -141,7 +145,24 @@ namespace xaifBoosterDerivativePropagator {
       if ((*entryPI)->hasExpression(anExpression))
         return true;
     return false;
-  } // end DerivativePropagator::hasExpression()
+  }
 
-} // end namespace xaifBoosterDerivativePropagator
+  DerivativePropagator::InlinableSubroutineCallPList&
+  DerivativePropagator::getPropagationAllocationList() {
+    return myPropagationAllocationList;
+  }
 
+  const DerivativePropagator::InlinableSubroutineCallPList&
+  DerivativePropagator::getPropagationAllocationList() const {
+    return myPropagationAllocationList;
+  }
+
+  void
+  DerivativePropagator::printPropagationAllocationList(std::ostream& os) const {
+    for (InlinableSubroutineCallPList::const_iterator ali(myPropagationAllocationList.begin());
+           ali != myPropagationAllocationList.end();
+           ++ali)
+          (*ali)->printXMLHierarchy(os);
+  }
+
+}

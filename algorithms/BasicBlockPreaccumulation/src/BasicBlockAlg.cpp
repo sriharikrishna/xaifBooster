@@ -409,7 +409,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  if (aHelper.needsAllocation()) {
 	    // add the allocation
 	    aSequence.addAllocation(theNewAssignment.getLHS().getVariableSymbolReference(),
-				    aHelper.allocationModel());
+				    aHelper.allocationModel(),
+				    true);
 	  }
 	} // end if assignment needs to be created
       } // end iterate over all vertices
@@ -868,7 +869,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
 	  else {
 		  xaifBoosterDerivativePropagator::DerivativePropagator::printXMLHierarchyImpl(os,aPropagator);
 	  }
-  };
+  }
 
 } // end namespace xaifBoosterBasicBlockPreaccumulation
  
