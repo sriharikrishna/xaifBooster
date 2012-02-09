@@ -122,7 +122,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       if ((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE)
 	thePopCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_i_"+SymbolShape::toShortString((*pairIt).first->getEffectiveShape()));
       else if ((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::REAL_STYPE)
-	thePopCall_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString((*pairIt).first->getEffectiveShape())));
+	thePopCall_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("pop_"+SymbolShape::toShortString((*pairIt).first->getEffectiveShape())));
       else
 	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::handleArrayAccessIndices: no logic to pop things of type " 
 				   << SymbolType::toString((*pairIt).first->getVariableSymbolReference().getSymbol().getSymbolType()).c_str()
