@@ -39,8 +39,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }
 
   AssignmentAlg::~AssignmentAlg() { 
-    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI = myIndexPushes.begin();
-	 aBasicBlockElementListI != myIndexPushes.end();
+    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI = myIndexPostPushes.begin();
+	 aBasicBlockElementListI != myIndexPostPushes.end();
 	 ++aBasicBlockElementListI) {
       if (*aBasicBlockElementListI)
 	delete *aBasicBlockElementListI;
@@ -54,8 +54,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       getContainingAssignment().printXMLHierarchyImpl(os);
       if (xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()==ForLoopReversalType::ANONYMOUS) { 
 	// pushes after the call
-	for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = myIndexPushes.begin();
-	     aBasicBlockElementListI != myIndexPushes.end();
+	for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = myIndexPostPushes.begin();
+	     aBasicBlockElementListI != myIndexPostPushes.end();
 	     ++aBasicBlockElementListI) {
 	  if (*aBasicBlockElementListI) { 
 	    // print any assignments in myAssignmentsforPush
@@ -112,7 +112,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 				   << " and shape "
 				   << SymbolShape::toString(theVariable.getEffectiveShape()).c_str())
 	  // save it in the list
-	  myIndexPushes.push_back(theAssignment_p);
+	  myIndexPostPushes.push_back(theAssignment_p);
       theAssignment_p->setId("AssignmentAlg::checkAndPush");
       theVariable.copyMyselfInto(theAssignment_p->addConcreteArgument(1).getArgument().getVariable());
       myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
@@ -137,8 +137,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   bool
   AssignmentAlg::hasExpression(const Expression& anExpression) const {
     // check myIndexPushes
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator pushI = myIndexPushes.begin();
-         pushI != myIndexPushes.end(); ++pushI)
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator pushI = myIndexPostPushes.begin();
+         pushI != myIndexPostPushes.end(); ++pushI)
       if ((*pushI)->hasExpression(anExpression))
         return true;
     // pass on to the typechange version of this routine, which will look through the list of saveacross values
