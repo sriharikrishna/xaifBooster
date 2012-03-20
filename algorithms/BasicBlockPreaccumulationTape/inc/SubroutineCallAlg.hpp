@@ -100,14 +100,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      */
     void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument);
     
-    /** 
-     * list of all index variables pushed
-     * where the second of the pair 
-     * is non-null pointer if the value was saved 
-     * in a temporary, pointing to that temporary.
-     */
-    Expression::VariablePVariableSRPPairList myIndexVariablesPushed; 
-
   }; // end of class SubroutineCallAlg
  
 } 
