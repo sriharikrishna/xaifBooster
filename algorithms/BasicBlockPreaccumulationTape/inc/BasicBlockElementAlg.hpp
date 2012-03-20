@@ -63,11 +63,21 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     std::list<const BasicBlockElement*> myAssignmentsforPush;
 
     /**
-     * a list for storing inlinable push subroutine calls.
+     * a list for storing inlinable push subroutine calls
+     * as determined by PushPop.
      * The content is printed after this statement.
      * We own the contents of this list and delete them in the dtor.
      */
-    std::list<const BasicBlockElement*> myPushBlock;
+    std::list<const BasicBlockElement*> myGeneralPushList;
+
+    /**
+     * for anonymous reversals we need to store
+     * any array indices occuring in formal arguments,
+     * we had first assigned them and now after the call
+     * is made we tape them so we can restore them
+     * prior to the call in reverse mode.
+     */
+    PlainBasicBlock::BasicBlockElementList myIndexPostPushes;
 
     /**
       * list of all index variables pushed
