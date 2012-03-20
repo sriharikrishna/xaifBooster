@@ -164,10 +164,10 @@ namespace xaifBoosterAddressArithmetic {
 	  if (definesCount.myCount) {
 	    DBG_MACRO(DbgGroup::ERROR,"CallGraphVertexAlg::findUnknownVariablesInArgument: variable "
 		      // THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInArgument: variable "
-		      << anArgument.getVariable().getVariableSymbolReference().getSymbol().getId().c_str()
+		      << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
 		      << " redefined in "
 		      << Symbol::stripFrontEndDecorations(getContaining().getSubroutineName().c_str(),true)
-		      << " under the enclosing control flow vertex");
+		      << " under the enclosing control flow vertex, violating asserted simple loop properties");
 	  }
         }
 	else {
@@ -365,10 +365,14 @@ namespace xaifBoosterAddressArithmetic {
       if (!theUnknownIndexVariables.empty()) {
 	std::ostringstream ostr;
 	ostr<< " ";
-	for (CallGraphVertexAlg::UnknownVarInfoList::const_iterator it= theUnknownIndexVariables.begin();
+	for (CallGraphVertexAlg::UnknownVarInfoList::iterator it= theUnknownIndexVariables.begin();
 	     it!=theUnknownIndexVariables.end();
-	     ++it)
+	     ++it) {
 	  ostr << (*it).myVariable_p->getVariableSymbolReference().getSymbol().plainName().c_str() << " ";
+	  UnknownVarInfo anUnresolvedVar(*((*it).myVariable_p),*((*it).myContainingVertex_p),*((*it).myTapingVertex_p));
+	  anUnresolvedVar.myRequiredBy_p=aSubroutineCall_p;
+	  myUnresolvedVariablesList.push_back(anUnresolvedVar);
+	}
 	DBG_MACRO(DbgGroup::ERROR,
 		  "CallGraphVertexAlg::findUnknownVariablesInBasicBlockElements: array with unknown indices ("
 		  << ostr.str().c_str()
