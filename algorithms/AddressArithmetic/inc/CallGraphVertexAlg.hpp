@@ -98,19 +98,25 @@ namespace xaifBoosterAddressArithmetic {
        * how many references have we encountered
        */
       unsigned int myRefCount;
+      /**
+       * TEMPORARY: optional info who requires this variable
+       */
+      const BasicBlockElement* myRequiredBy_p;
 
       UnknownVarInfo() : 
 	myVariable_p(0),
 	myContainingVertex_p(0),
 	myTapingVertex_p(0),
-	myRefCount(0) { };
+	myRefCount(0),
+	myRequiredBy_p(0){ };
       UnknownVarInfo(const Variable& theVariable,
 		     const xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theContainingVertex,
 		     xaifBoosterControlFlowReversal::ReversibleControlFlowGraphVertex& theTapingVertex) : 
 	myVariable_p(&theVariable),
 	myContainingVertex_p(&theContainingVertex),
 	myTapingVertex_p(&theTapingVertex),
-	myRefCount(0) { };
+	myRefCount(0),
+	myRequiredBy_p(0){ };
 
     }; 
 
@@ -235,7 +241,17 @@ namespace xaifBoosterAddressArithmetic {
     /**
      * check if the variable is quasi-constant
      */
-    bool isQuasiConstant(const Variable& theVariable); 
+    bool isQuasiConstant(const Variable& theVariable);
+
+    /**
+     * list of unknown variables not resolved here
+     */
+    UnknownVarInfoList myUnresolvedVariablesList;
+
+    /**
+     * TEMPORARY: handle required values not resolved in the simple loop case
+     */
+    void handleUnresolved();
 
   };  // end of class
 
