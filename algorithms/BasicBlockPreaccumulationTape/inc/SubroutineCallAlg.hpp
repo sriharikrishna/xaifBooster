@@ -93,14 +93,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      * is made we tape them so we can restore them 
      * prior to the call in reverse mode.
      */
-    PlainBasicBlock::BasicBlockElementList myAfterCallIndexPushes;
+    PlainBasicBlock::BasicBlockElementList myIndexPostPushes;
 
     /** 
      * inserts inlined stores for index values
      */
     void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument);
-    
-    typedef std::list<Variable*> VariablePList; 
     
     /** 
      * list of all index variables pushed

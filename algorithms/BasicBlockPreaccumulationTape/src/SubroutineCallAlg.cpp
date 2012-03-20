@@ -39,8 +39,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
-    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI = myAfterCallIndexPushes.begin();
-	 aBasicBlockElementListI != myAfterCallIndexPushes.end();
+    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI = myIndexPostPushes.begin();
+	 aBasicBlockElementListI != myIndexPostPushes.end();
 	 ++aBasicBlockElementListI) {
       if (*aBasicBlockElementListI)
 	delete *aBasicBlockElementListI;
@@ -63,8 +63,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     xaifBoosterTypeChange::SubroutineCallAlg::printXMLHierarchy(os);
     if (xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()==ForLoopReversalType::ANONYMOUS) { 
       // pushes after the call
-      for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = myAfterCallIndexPushes.begin();
-	   aBasicBlockElementListI != myAfterCallIndexPushes.end();
+      for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = myIndexPostPushes.begin();
+	   aBasicBlockElementListI != myIndexPostPushes.end();
 	   ++aBasicBlockElementListI) {
 	if (*aBasicBlockElementListI) { 
           // print any assignments in myAssignmentsforPush
@@ -118,7 +118,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 				   << " and shape "
 				   << SymbolShape::toString(theVariable.getEffectiveShape()).c_str())
 	  // save it in the list
-	  myAfterCallIndexPushes.push_back(theSubroutineCall_p);
+	  myIndexPostPushes.push_back(theSubroutineCall_p);
       theSubroutineCall_p->setId("SubroutineCallAlg::checkAndPush");
       theVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
       myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
@@ -160,7 +160,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       // now check if any values are required on entry: 
       const ControlFlowGraph& theCalleeCFG (ConceptuallyStaticInstances::instance()->getCallGraph().getSubroutineBySymbolReference(getContainingSubroutineCall().getSymbolReference()).getControlFlowGraph());
       const SideEffectList& theOnEntryList(theCalleeCFG.getSideEffectList(SideEffectListType::ON_ENTRY_LIST));
-      for (VariablePList::const_iterator i = theOnEntryList.getVariablePList().begin(); i != theOnEntryList.getVariablePList().end(); ++i) {
+      for (SideEffectList::VariablePList::const_iterator i = theOnEntryList.getVariablePList().begin(); i != theOnEntryList.getVariablePList().end(); ++i) {
         Expression* theDummyExpression_p (NULL); // dummy expression for marking as required
         std::string theOriginStr;
 	ControlFlowGraph::FormalResult theResult(theCalleeCFG.hasFormal((*i)->getVariableSymbolReference()));
@@ -208,8 +208,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       if ((*expPListI)->hasExpression(anExpression))
         return true;
     // check myAfterCallIndexPushes
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator pushI = myAfterCallIndexPushes.begin();
-         pushI != myAfterCallIndexPushes.end(); ++pushI)
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator pushI = myIndexPostPushes.begin();
+         pushI != myIndexPostPushes.end(); ++pushI)
       if ((*pushI)->hasExpression(anExpression))
         return true;
     // pass on to the typechange version of this routine, which will look through the list of saveacross values
