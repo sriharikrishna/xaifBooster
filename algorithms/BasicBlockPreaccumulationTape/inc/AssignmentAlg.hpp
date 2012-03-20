@@ -83,16 +83,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      */
     void handleArrayAccessIndices(const Variable& theVariable);
     
-    typedef std::list<Variable*> VariablePList; 
-    
-    /** 
-     * list of all index variables pushed
-     * where the second of the pair 
-     * is non-null pointer if the value was saved 
-     * in a temporary, pointing to that temporary.
-     */
-    Expression::VariablePVariableSRPPairList myIndexVariablesPushed; 
-
   }; 
  
 } 

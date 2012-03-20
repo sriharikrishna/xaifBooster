@@ -69,6 +69,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      */
     std::list<const BasicBlockElement*> myPushBlock;
 
+    /**
+      * list of all index variables pushed
+      * where the second of the pair
+      * is non-null pointer if the value was saved
+      * in a temporary, pointing to that temporary.
+      */
+     Expression::VariablePVariableSRPPairList myIndexVariablesPushed;
+
   private:
 
     /// no def
