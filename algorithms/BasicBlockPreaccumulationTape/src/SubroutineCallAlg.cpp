@@ -62,23 +62,20 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     // the call
     xaifBoosterTypeChange::SubroutineCallAlg::printXMLHierarchy(os);
     if (xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()==ForLoopReversalType::ANONYMOUS) { 
-      // pushes after the call
+      // print any assignments in myAssignmentsforPush
+      for (std::list<const BasicBlockElement*>::const_iterator assignI = myAssignmentsforPush.begin();
+          assignI != myAssignmentsforPush.end(); ++assignI)
+        (*assignI)->printXMLHierarchy(os);     // pushes after the call
       for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = myIndexPostPushes.begin();
-	   aBasicBlockElementListI != myIndexPostPushes.end();
-	   ++aBasicBlockElementListI) {
-	if (*aBasicBlockElementListI) { 
-          // print any assignments in myAssignmentsforPush
-          for (std::list<const BasicBlockElement*>::const_iterator assignI = myAssignmentsforPush.begin();
-               assignI != myAssignmentsforPush.end(); ++assignI)
-            (*assignI)->printXMLHierarchy(os);
-	  (*aBasicBlockElementListI)->printXMLHierarchy(os);
-          // print any push calls in myPushBlock
-          for (std::list<const BasicBlockElement*>::const_iterator pushI = myPushBlock.begin();
-               pushI != myPushBlock.end(); ++pushI)
-            (*pushI)->printXMLHierarchy(os);
-	} 
+          aBasicBlockElementListI != myIndexPostPushes.end();
+          ++aBasicBlockElementListI) {
+        (*aBasicBlockElementListI)->printXMLHierarchy(os);
       }
     }
+    // print any push calls in myGeneralPushList
+    for (std::list<const BasicBlockElement*>::const_iterator pushI = myGeneralPushList.begin();
+        pushI != myGeneralPushList.end(); ++pushI)
+      (*pushI)->printXMLHierarchy(os);
   } // end of BasicBlockAlg::printXMLHierarchy
   
   std::string 

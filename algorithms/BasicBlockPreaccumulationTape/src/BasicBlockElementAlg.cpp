@@ -31,8 +31,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       if (*assignI)
         delete *assignI;
     // delete the contents of myPushBlock
-    for (std::list<const BasicBlockElement*>::const_iterator pushI = myPushBlock.begin();
-         pushI != myPushBlock.end(); ++pushI)
+    for (std::list<const BasicBlockElement*>::const_iterator pushI = myGeneralPushList.begin();
+         pushI != myGeneralPushList.end(); ++pushI)
       if (*pushI)
         delete *pushI;
   } // end BasicBlockElementAlg::~BasicBlockElementAlg()
@@ -103,7 +103,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(aVariable.getEffectiveShape())));
     theNewPushSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockElementAlg::pushRequiredValue:inline_push_i");
     aVariable.copyMyselfInto(theNewPushSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-    myPushBlock.push_back(theNewPushSubroutineCall_p);
+    myGeneralPushList.push_back(theNewPushSubroutineCall_p);
   } // end BasicBlockElementAlg::pushVariable()
 
 } // end namespace xaifBoosterBasicBlockPreaccumulationTape

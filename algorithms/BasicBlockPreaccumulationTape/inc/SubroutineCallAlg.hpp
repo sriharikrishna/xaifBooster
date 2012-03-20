@@ -87,15 +87,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     std::list<const Expression*> myOnEntryNonFormalExpressionPList;
 
     /** 
-     * for anonymous reversals we need to store 
-     * any array indices occurring in formal arguments,
-     * we had first assigned them and now after the call 
-     * is made we tape them so we can restore them 
-     * prior to the call in reverse mode.
-     */
-    PlainBasicBlock::BasicBlockElementList myIndexPostPushes;
-
-    /** 
      * inserts inlined stores for index values
      */
     void handleArrayAccessIndices(ConcreteArgument& theConcreteArgument);
