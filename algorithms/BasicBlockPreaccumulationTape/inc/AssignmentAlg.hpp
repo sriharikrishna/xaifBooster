@@ -76,7 +76,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      * is made we tape them so we can restore them 
      * prior to the call in reverse mode.
      */
-    PlainBasicBlock::BasicBlockElementList myIndexPushes;
+    PlainBasicBlock::BasicBlockElementList myIndexPostPushes;
 
     /** 
      * inserts inlined stores for index values
