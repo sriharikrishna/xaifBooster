@@ -697,8 +697,14 @@ namespace xaifBoosterAddressArithmetic {
 	} 
       } 
     } 
-    handleExplicitUnresolved();
   } 
+
+  void CallGraphVertexAlg::algorithm_action_6() {
+    DBG_MACRO(DbgGroup::CALLSTACK,
+        "xaifBoosterAddressArithmetic::CallGraphVertexAlg::algorithm_action_6(fix simple loop offenders) called for: "
+        << debug().c_str());
+    handleExplicitUnresolved();
+  }
 
   void CallGraphVertexAlg::handleExplicitUnresolved() {
     std::set<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*> theSubroutineCallAlgSet;
