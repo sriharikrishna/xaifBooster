@@ -80,12 +80,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   void SubroutineCallAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
-  void SubroutineCallAlg::checkAndPush(const Variable& theVariable) { 
+  void SubroutineCallAlg::checkAndPush(const Variable& theVariable,
+                                       ForLoopReversalType::ForLoopReversalType_E aReversalType) {
     // has it been pushed already? 
     bool pushedAlready=false; 
-    PushContainer& aPushContainer(myPushContainerMap[ForLoopReversalType::ANONYMOUS]);
-    for (Expression::VariablePVariableSRPPairList::iterator it=aPushContainer.myIndexVariablesPushed.begin();
-        it!=aPushContainer.myIndexVariablesPushed.end();
+    PushContainer& aPushContainer(myPushContainerMap[aReversalType]);
+    for (Expression::VariablePVariableSRPPairList::iterator it=aPushContainer.myVariablesPushed.begin();
+        it!=aPushContainer.myVariablesPushed.end();
         ++it) {
       DBG_MACRO(DbgGroup::DATA, "comparing " << theVariable.debug().c_str() << " to " << ((*it).first)->debug().c_str()); 
       if (theVariable.equivalentTo(*((*it).first))) { 
@@ -109,7 +110,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
             aPushContainer.myPostStatementPushList.push_back(theSubroutineCall_p);
       theSubroutineCall_p->setId("SubroutineCallAlg::checkAndPush");
       theVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-      aPushContainer.myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
+      aPushContainer.myVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
     }
   }
 
@@ -156,7 +157,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  const ConcreteArgument& theConcreteArgument(getContainingSubroutineCall().getConcreteArgument(theResult.second));
 	  if (theConcreteArgument.isConstant())
 	    continue; 
-	  checkAndPush(theConcreteArgument.getArgument().getVariable());
+	  checkAndPush(theConcreteArgument.getArgument().getVariable(), ForLoopReversalType::ANONYMOUS);
           theDummyExpression_p = new Expression (false);
           Argument* theNewArgument_p = new Argument();
           theConcreteArgument.getArgument().getVariable().copyMyselfInto(theNewArgument_p->getVariable());
@@ -166,7 +167,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
           theOriginStr = "BasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4: on entry formal";
 	}
 	else { // not a formal
-	  checkAndPush(**i);
+	  checkAndPush(**i, ForLoopReversalType::ANONYMOUS);
           // make a dummy expression for marking as required. The sole ExpressionVertex is an argument
           theDummyExpression_p = new Expression (false);
           Argument* theNewArgument_p = new Argument();
@@ -225,7 +226,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 	  Expression::CArgumentPList listToBeAppended;
 	  theIndexExpression.appendArguments(listToBeAppended);
 	  for (Expression::CArgumentPList::const_iterator argumentI=listToBeAppended.begin(); argumentI!=listToBeAppended.end(); ++argumentI) {
-	    checkAndPush((*argumentI).first->getVariable());
+	    checkAndPush((*argumentI).first->getVariable(), ForLoopReversalType::ANONYMOUS);
 	  }
           theCallerCallGraphVertexAlg.markRequiredValue(theIndexExpression,
                                                         theCallerBasicBlock,

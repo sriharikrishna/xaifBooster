@@ -63,7 +63,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     /** 
      * inserts inlined restores for index values
      */
-    void handleArrayAccessIndices(AssignmentAlg& orignalAssignmentAlg);
+    void handleArrayAccessIndices(AssignmentAlg& orignalAssignmentAlg,
+                                  ForLoopReversalType::ForLoopReversalType_E aReversalType);
 
     /**
      * inserts myPlaceholderDummy_p for non-inlinable assignments

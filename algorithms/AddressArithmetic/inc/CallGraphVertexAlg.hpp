@@ -244,14 +244,14 @@ namespace xaifBoosterAddressArithmetic {
     bool isQuasiConstant(const Variable& theVariable);
 
     /**
-     * list of unknown variables not resolved here
+     * list of unknown variables not resolved for explicit reversal
      */
-    UnknownVarInfoList myUnresolvedVariablesList;
+    UnknownVarInfoList myExplicitReversalUnresolvedVariablesList;
 
     /**
      * TEMPORARY: handle required values not resolved in the simple loop case
      */
-    void handleUnresolved();
+    void handleExplicitUnresolved();
 
   };  // end of class
 

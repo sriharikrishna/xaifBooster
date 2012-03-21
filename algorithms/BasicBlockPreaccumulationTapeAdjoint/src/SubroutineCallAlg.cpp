@@ -27,7 +27,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   SubroutineCallAlg::SubroutineCallAlg(const SubroutineCall& theContainingSubroutineCall) : 
     xaifBoosterTypeChange::SubroutineCallAlg(theContainingSubroutineCall),
     xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg(theContainingSubroutineCall),
-    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockElementAlg(theContainingSubroutineCall) { 
+    xaifBoosterBasicBlockPreaccumulationTapeAdjoint::BasicBlockElementAlg(theContainingSubroutineCall),
+    myAdjointCounterpart_p(NULL),
+    myOriginalCounterpart_p(NULL) {
   }
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
@@ -105,15 +107,18 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     // reapply any argument changes we may need
     // but for the adjoint we can skip the copy calls
     SubroutineCallAlg& theNewSubroutineCallAlg(dynamic_cast<SubroutineCallAlg&>(theNewSubroutineCall.getSubroutineCallAlgBase()));
+    theNewSubroutineCallAlg.myOriginalCounterpart_p=this;
+    myAdjointCounterpart_p=&(theNewSubroutineCallAlg);
     theNewSubroutineCallAlg.replaceArguments(false);
-    if (aReversalType==ForLoopReversalType::ANONYMOUS) { 
-      theNewSubroutineCallAlg.handleArrayAccessIndices(*this);
+    if (aReversalType==ForLoopReversalType::ANONYMOUS) {
+      theNewSubroutineCallAlg.handleArrayAccessIndices(*this,aReversalType);
     }
   } 
 
-  void SubroutineCallAlg::handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg) { 
+  void SubroutineCallAlg::handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg,
+                                                   ForLoopReversalType::ForLoopReversalType_E aReversalType) {
     // pop all the indices: 
-    const Expression::VariablePVariableSRPPairList& theTypeChangePairs(orignalCallAlg.getIndexVariablesPushed()); 
+    const Expression::VariablePVariableSRPPairList& theTypeChangePairs(orignalCallAlg.getVariablesPushed(aReversalType));
     for (Expression::VariablePVariableSRPPairList::const_reverse_iterator pairIt=theTypeChangePairs.rbegin();
 	 pairIt!=theTypeChangePairs.rend();
 	 ++pairIt) { 
@@ -133,7 +138,21 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
       thePopCall_p->setId("SubroutineCallAlg::handleArrayAccessIndices");
       (*pairIt).first->copyMyselfInto(thePopCall_p->addConcreteArgument(1).getArgument().getVariable());
     }
-  } // end of SubroutineCallAlg::handleArrayAccessIndices
+  }
 
-} // end namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint
+  SubroutineCallAlg& SubroutineCallAlg::getAdjointCounterPart() {
+    if (!myAdjointCounterpart_p) {
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::getAdjointCounterPart: not set");
+    }
+    return *myAdjointCounterpart_p;
+  }
+
+  SubroutineCallAlg& SubroutineCallAlg::getOriginalCounterPart() {
+    if (!myOriginalCounterpart_p) {
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::getOriginalCounterPart: not set");
+    }
+    return *myOriginalCounterpart_p;
+  }
+
+}
 

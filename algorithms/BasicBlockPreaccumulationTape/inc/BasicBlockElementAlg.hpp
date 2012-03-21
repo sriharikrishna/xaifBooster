@@ -80,12 +80,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
           * is non-null pointer if the value was saved
           * in a temporary, pointing to that temporary.
           */
-         Expression::VariablePVariableSRPPairList myIndexVariablesPushed;
+         Expression::VariablePVariableSRPPairList myVariablesPushed;
     };
 
     typedef std::map<const ForLoopReversalType::ForLoopReversalType_E,PushContainer> PushContainerMap;
 
-    const Expression::VariablePVariableSRPPairList& getIndexVariablesPushed() const;
+    const Expression::VariablePVariableSRPPairList& getVariablesPushed(ForLoopReversalType::ForLoopReversalType_E) const;
 
   protected:
 

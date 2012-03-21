@@ -106,8 +106,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     myPushContainerMap.find(ForLoopReversalType::HEURISTIC)->second.myPostStatementPushList.push_back(theNewPushSubroutineCall_p);
   }
 
-  const Expression::VariablePVariableSRPPairList& BasicBlockElementAlg::getIndexVariablesPushed() const {
-    return myPushContainerMap.find(ForLoopReversalType::ANONYMOUS)->second.myIndexVariablesPushed;
+  const Expression::VariablePVariableSRPPairList& BasicBlockElementAlg::getVariablesPushed(ForLoopReversalType::ForLoopReversalType_E aReversalType) const {
+    return myPushContainerMap.find(aReversalType)->second.myVariablesPushed;
   }
 
 } // end namespace xaifBoosterBasicBlockPreaccumulationTape

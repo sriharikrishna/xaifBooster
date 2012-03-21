@@ -28,6 +28,7 @@
 #include "xaifBooster/algorithms/TypeChange/inc/MissingSubroutinesReport.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/BasicBlockAlg.hpp"
+#include "xaifBooster/algorithms/BasicBlockPreaccumulationTapeAdjoint/inc/SubroutineCallAlg.hpp"
 
 #include "xaifBooster/algorithms/AddressArithmetic/inc/CallGraphVertexAlg.hpp"
 
@@ -371,7 +372,7 @@ namespace xaifBoosterAddressArithmetic {
 	  ostr << (*it).myVariable_p->getVariableSymbolReference().getSymbol().plainName().c_str() << " ";
 	  UnknownVarInfo anUnresolvedVar(*((*it).myVariable_p),*((*it).myContainingVertex_p),*((*it).myTapingVertex_p));
 	  anUnresolvedVar.myRequiredBy_p=aSubroutineCall_p;
-	  myUnresolvedVariablesList.push_back(anUnresolvedVar);
+	  myExplicitReversalUnresolvedVariablesList.push_back(anUnresolvedVar);
 	}
 	DBG_MACRO(DbgGroup::ERROR,
 		  "CallGraphVertexAlg::findUnknownVariablesInBasicBlockElements: array with unknown indices ("
@@ -696,7 +697,29 @@ namespace xaifBoosterAddressArithmetic {
 	} 
       } 
     } 
+    handleExplicitUnresolved();
   } 
+
+  void CallGraphVertexAlg::handleExplicitUnresolved() {
+    std::set<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*> theSubroutineCallAlgSet;
+    for (UnknownVarInfoList::iterator it=myExplicitReversalUnresolvedVariablesList.begin();
+        it!=myExplicitReversalUnresolvedVariablesList.end();
+        ++it) {
+      if (!(*it).myRequiredBy_p) {
+        THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::handleExplicitUnresolved: NULL for myRequiredBy_p");
+      }
+      xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg&
+      theSubroutineCallAlg(dynamic_cast<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg&>((*it).
+          myRequiredBy_p->getBasicBlockElementAlgBase()));
+      theSubroutineCallAlgSet.insert(&theSubroutineCallAlg);
+      theSubroutineCallAlg.checkAndPush(*((*it).myVariable_p), ForLoopReversalType::EXPLICIT);
+    }
+    for(std::set<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>::iterator it=theSubroutineCallAlgSet.begin();
+    it!=theSubroutineCallAlgSet.end();
+    ++it) {
+      (*it)->getAdjointCounterPart().handleArrayAccessIndices(**it,ForLoopReversalType::EXPLICIT);
+    }
+  }
 
   std::string
   CallGraphVertexAlg::debug() const {

@@ -78,8 +78,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     // has it been pushed already? 
     bool pushedAlready=false; 
     PushContainer& thePushContainer(myPushContainerMap[ForLoopReversalType::ANONYMOUS]);
-    for (Expression::VariablePVariableSRPPairList::iterator it=thePushContainer.myIndexVariablesPushed.begin();
-        it!=thePushContainer.myIndexVariablesPushed.end();
+    for (Expression::VariablePVariableSRPPairList::iterator it=thePushContainer.myVariablesPushed.begin();
+        it!=thePushContainer.myVariablesPushed.end();
         ++it) {
       DBG_MACRO(DbgGroup::DATA, "comparing " << theVariable.debug().c_str() << " to " << ((*it).first)->debug().c_str()); 
       if (theVariable.equivalentTo(*((*it).first))) { 
@@ -103,7 +103,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
             thePushContainer.myPostStatementPushList.push_back(theAssignment_p);
       theAssignment_p->setId("AssignmentAlg::checkAndPush");
       theVariable.copyMyselfInto(theAssignment_p->addConcreteArgument(1).getArgument().getVariable());
-      thePushContainer.myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
+      thePushContainer.myVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
     }
   }
 

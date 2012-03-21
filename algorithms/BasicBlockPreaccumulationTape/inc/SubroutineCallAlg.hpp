@@ -43,7 +43,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      */
     virtual void algorithm_action_4();
 
-    void checkAndPush(const Variable& theVariable);  
+    void checkAndPush(const Variable& theVariable,ForLoopReversalType::ForLoopReversalType_E aReversalType);
 
     /**
      * check myAfterCallIndexPushes,myOnEntryFormalExpressionPList, and myOnEntryNonFormalExpressionPList for \p anExpression

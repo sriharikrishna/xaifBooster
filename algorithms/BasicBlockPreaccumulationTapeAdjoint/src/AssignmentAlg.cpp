@@ -140,14 +140,13 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 	}
       }
     }
-    if (aReversalType==ForLoopReversalType::ANONYMOUS) { 
-      handleArrayAccessIndices(*this);
-    }
+    handleArrayAccessIndices(*this,aReversalType);
   } 
 
-  void AssignmentAlg::handleArrayAccessIndices(AssignmentAlg& orignalCallAlg) { 
+  void AssignmentAlg::handleArrayAccessIndices(AssignmentAlg& orignalCallAlg,
+                                               ForLoopReversalType::ForLoopReversalType_E aReversalType) {
     // pop all the indices: 
-    const Expression::VariablePVariableSRPPairList& theTypeChangePairs(orignalCallAlg.getIndexVariablesPushed()); 
+    const Expression::VariablePVariableSRPPairList& theTypeChangePairs(orignalCallAlg.getVariablesPushed(aReversalType));
     for (Expression::VariablePVariableSRPPairList::const_reverse_iterator pairIt=theTypeChangePairs.rbegin();
 	 pairIt!=theTypeChangePairs.rend();
 	 ++pairIt) { 
