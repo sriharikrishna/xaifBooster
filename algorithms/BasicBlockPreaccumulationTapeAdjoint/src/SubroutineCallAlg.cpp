@@ -142,14 +142,14 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   SubroutineCallAlg& SubroutineCallAlg::getAdjointCounterPart() {
     if (!myAdjointCounterpart_p) {
-      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::getAdjointCounterPart: not set");
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::getAdjointCounterPart: not set for " << debug().c_str());
     }
     return *myAdjointCounterpart_p;
   }
 
   SubroutineCallAlg& SubroutineCallAlg::getOriginalCounterPart() {
     if (!myOriginalCounterpart_p) {
-      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::getOriginalCounterPart: not set");
+      THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::getOriginalCounterPart: not set for " << debug().c_str());
     }
     return *myOriginalCounterpart_p;
   }
