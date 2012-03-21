@@ -14,6 +14,14 @@ namespace xaifBooster {
   
   const std::string ForLoopReversalType::our_attribute_XAIFName("reversal");
 
+  static const ForLoopReversalType::ForLoopReversalType_E typeList[]={
+      ForLoopReversalType::EXPLICIT,
+      ForLoopReversalType::ANONYMOUS,
+      ForLoopReversalType::HEURISTIC
+  };
+
+  const ForLoopReversalType::TypeList ForLoopReversalType::ourTypeList(typeList,typeList+sizeof(typeList)/sizeof(ForLoopReversalType::ForLoopReversalType_E));
+
   std::string ForLoopReversalType::toString(const ForLoopReversalType_E& aType)
     throw (PrintingIntException) { 
     std::string returnString;
@@ -23,6 +31,9 @@ namespace xaifBooster {
       break;
     case ANONYMOUS: 
       returnString="anonymous";
+      break;
+    case HEURISTIC:
+      returnString="heuristic";
       break;
     default: 
       throw PrintingIntException("ForLoopReversalType::toString: unknown value",aType);
@@ -38,6 +49,8 @@ namespace xaifBooster {
       returnValue=EXPLICIT;
     else if (aName=="anonymous")
       returnValue=ANONYMOUS;
+    else if (aName=="heuristic")
+       returnValue=HEURISTIC;
     else  
       THROW_LOGICEXCEPTION_MACRO("ForLoopReversalType::fromString: unknown value >"
 				 << aName.c_str() << "<");
