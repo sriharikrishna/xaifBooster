@@ -39,12 +39,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }
 
   SubroutineCallAlg::~SubroutineCallAlg() { 
-    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI = myIndexPostPushes.begin();
-	 aBasicBlockElementListI != myIndexPostPushes.end();
-	 ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI)
-	delete *aBasicBlockElementListI;
-    }
     for (std::list<const Expression*>::iterator expListI = myOnEntryFormalExpressionPList.begin();
          expListI != myOnEntryFormalExpressionPList.end(); ++expListI) {
       if (*expListI)
@@ -55,28 +49,24 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       if (*expListI)
         delete *expListI;
     }
-  } // end SubroutineCallAlg::~SubroutineCallAlg()
+  }
 
   void
   SubroutineCallAlg::printXMLHierarchy(std::ostream& os) const { 
     // the call
     xaifBoosterTypeChange::SubroutineCallAlg::printXMLHierarchy(os);
-    if (xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()==ForLoopReversalType::ANONYMOUS) { 
-      // print any assignments in myAssignmentsforPush
-      for (std::list<const BasicBlockElement*>::const_iterator assignI = myAssignmentsforPush.begin();
-          assignI != myAssignmentsforPush.end(); ++assignI)
-        (*assignI)->printXMLHierarchy(os);     // pushes after the call
-      for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = myIndexPostPushes.begin();
-          aBasicBlockElementListI != myIndexPostPushes.end();
-          ++aBasicBlockElementListI) {
-        (*aBasicBlockElementListI)->printXMLHierarchy(os);
-      }
-    }
-    // print any push calls in myGeneralPushList
-    for (std::list<const BasicBlockElement*>::const_iterator pushI = myGeneralPushList.begin();
-        pushI != myGeneralPushList.end(); ++pushI)
+    const PushContainer& thePushContainer(myPushContainerMap.find(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get())->second);
+    for (std::list<const BasicBlockElement*>::const_iterator assignI = thePushContainer.myAssignmentsforPush.begin();
+        assignI != thePushContainer.myAssignmentsforPush.end(); ++assignI)
+      (*assignI)->printXMLHierarchy(os);
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = thePushContainer.myPostStatementPushList.begin();
+        aBasicBlockElementListI != thePushContainer.myPostStatementPushList.end(); ++aBasicBlockElementListI)
+      (*aBasicBlockElementListI)->printXMLHierarchy(os);
+    const PushContainer& thePushContainer2(myPushContainerMap.find(ForLoopReversalType::HEURISTIC)->second);
+    for (std::list<BasicBlockElement*>::const_iterator pushI = thePushContainer2.myPostStatementPushList.begin();
+        pushI != thePushContainer2.myPostStatementPushList.end(); ++pushI)
       (*pushI)->printXMLHierarchy(os);
-  } // end of BasicBlockAlg::printXMLHierarchy
+  }
   
   std::string 
   SubroutineCallAlg::debug() const { 
@@ -93,34 +83,35 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   void SubroutineCallAlg::checkAndPush(const Variable& theVariable) { 
     // has it been pushed already? 
     bool pushedAlready=false; 
-    for (Expression::VariablePVariableSRPPairList::iterator it=myIndexVariablesPushed.begin();
-	 it!=myIndexVariablesPushed.end();
-	 ++it) { 
+    PushContainer& aPushContainer(myPushContainerMap[ForLoopReversalType::ANONYMOUS]);
+    for (Expression::VariablePVariableSRPPairList::iterator it=aPushContainer.myIndexVariablesPushed.begin();
+        it!=aPushContainer.myIndexVariablesPushed.end();
+        ++it) {
       DBG_MACRO(DbgGroup::DATA, "comparing " << theVariable.debug().c_str() << " to " << ((*it).first)->debug().c_str()); 
       if (theVariable.equivalentTo(*((*it).first))) { 
-	pushedAlready=true; 
-	break; 
+        pushedAlready=true;
+        break;
       }
     }
     if (!pushedAlready) { 
       // make the subroutine call:    
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theSubroutineCall_p;
       if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE)
-	theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theVariable.getEffectiveShape()));
+        theSubroutineCall_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theVariable.getEffectiveShape()));
       else if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::REAL_STYPE)
-	theSubroutineCall_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString(theVariable.getEffectiveShape())));
+        theSubroutineCall_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString(theVariable.getEffectiveShape())));
       else
-	THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::checkAndPush: no logic to push things of type " 
-				   << SymbolType::toString(theVariable.getVariableSymbolReference().getSymbol().getSymbolType()).c_str()
-				   << " and shape "
-				   << SymbolShape::toString(theVariable.getEffectiveShape()).c_str())
-	  // save it in the list
-	  myIndexPostPushes.push_back(theSubroutineCall_p);
+        THROW_LOGICEXCEPTION_MACRO("SubroutineCallAlg::checkAndPush: no logic to push things of type "
+            << SymbolType::toString(theVariable.getVariableSymbolReference().getSymbol().getSymbolType()).c_str()
+            << " and shape "
+            << SymbolShape::toString(theVariable.getEffectiveShape()).c_str())
+            // save it in the list
+            aPushContainer.myPostStatementPushList.push_back(theSubroutineCall_p);
       theSubroutineCall_p->setId("SubroutineCallAlg::checkAndPush");
       theVariable.copyMyselfInto(theSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-      myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
+      aPushContainer.myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
     }
-  } // end SubroutineCallAlg::checkAndPush()
+  }
 
   void SubroutineCallAlg::algorithm_action_4() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4(tape array access in argument)");
@@ -204,12 +195,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
          expPListI != myOnEntryNonFormalExpressionPList.end(); ++expPListI)
       if ((*expPListI)->hasExpression(anExpression))
         return true;
-    // check myAfterCallIndexPushes
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator pushI = myIndexPostPushes.begin();
-         pushI != myIndexPostPushes.end(); ++pushI)
+    const PushContainer& thePushContainer(myPushContainerMap.find(ForLoopReversalType::ANONYMOUS)->second);
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator pushI = thePushContainer.myPostStatementPushList.begin();
+         pushI != thePushContainer.myPostStatementPushList.end(); ++pushI)
       if ((*pushI)->hasExpression(anExpression))
         return true;
-    // pass on to the typechange version of this routine, which will look through the list of saveacross values
+    // pass on to the typechange version of this routine, which will look through the list of saved-across values
     return xaifBoosterTypeChange::SubroutineCallAlg::hasExpression(anExpression);
   } // end SubroutineCallAlg::hasExpression()
 
@@ -244,9 +235,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     }
   } // end SubroutineCallAlg::handleArrayAccessIndices()
 
-  const Expression::VariablePVariableSRPPairList& SubroutineCallAlg::getIndexVariablesPushed() const { 
-    return myIndexVariablesPushed;
-  } // end SubroutineCallAlg::getIndexVariablesPushed()
-  
 } // end namespace xaifBoosterBasicBlockPreaccumulationTape
 

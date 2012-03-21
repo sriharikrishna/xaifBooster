@@ -52,40 +52,44 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
      */
     void pushVariable(const Variable& aVariable);
 
+    class PushContainer {
+      public:
+
+        ~PushContainer();
+
+        /**
+         * a list for storing assignments that are used for assigning
+         * expressions to temporaries in order to facilitate taping.
+         * These assignments are printed before this statement.
+         * We own the contents of this list and delete them in the dtor.
+         */
+        std::list<const BasicBlockElement*> myAssignmentsforPush;
+
+        /**
+         * for anonymous reversals we need to store
+         * any array indices occuring in formal arguments,
+         * we had first assigned them and now after the call
+         * is made we tape them so we can restore them
+         * prior to the call in reverse mode.
+         */
+        PlainBasicBlock::BasicBlockElementList myPostStatementPushList;
+
+        /**
+          * list of all index variables pushed
+          * where the second of the pair
+          * is non-null pointer if the value was saved
+          * in a temporary, pointing to that temporary.
+          */
+         Expression::VariablePVariableSRPPairList myIndexVariablesPushed;
+    };
+
+    typedef std::map<const ForLoopReversalType::ForLoopReversalType_E,PushContainer> PushContainerMap;
+
+    const Expression::VariablePVariableSRPPairList& getIndexVariablesPushed() const;
+
   protected:
 
-    /**
-     * a list for storing assignments that are used for assigning
-     * expressions to temporaries in order to facilitate taping.
-     * These assignments are printed before this statement.
-     * We own the contents of this list and delete them in the dtor.
-     */
-    std::list<const BasicBlockElement*> myAssignmentsforPush;
-
-    /**
-     * a list for storing inlinable push subroutine calls
-     * as determined by PushPop.
-     * The content is printed after this statement.
-     * We own the contents of this list and delete them in the dtor.
-     */
-    std::list<const BasicBlockElement*> myGeneralPushList;
-
-    /**
-     * for anonymous reversals we need to store
-     * any array indices occuring in formal arguments,
-     * we had first assigned them and now after the call
-     * is made we tape them so we can restore them
-     * prior to the call in reverse mode.
-     */
-    PlainBasicBlock::BasicBlockElementList myIndexPostPushes;
-
-    /**
-      * list of all index variables pushed
-      * where the second of the pair
-      * is non-null pointer if the value was saved
-      * in a temporary, pointing to that temporary.
-      */
-     Expression::VariablePVariableSRPPairList myIndexVariablesPushed;
+    PushContainerMap myPushContainerMap;
 
   private:
 

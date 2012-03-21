@@ -39,39 +39,28 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   }
 
   AssignmentAlg::~AssignmentAlg() { 
-    for (PlainBasicBlock::BasicBlockElementList::iterator aBasicBlockElementListI = myIndexPostPushes.begin();
-	 aBasicBlockElementListI != myIndexPostPushes.end();
-	 ++aBasicBlockElementListI) {
-      if (*aBasicBlockElementListI)
-	delete *aBasicBlockElementListI;
-    }
-  } // end AssignmentAlg::~AssignmentAlg()
+  }
 
   void
   AssignmentAlg::printXMLHierarchy(std::ostream& os) const {
     if (getContainingAssignment().isNonInlinable()) { 
       // the assignment
       getContainingAssignment().printXMLHierarchyImpl(os);
-      if (xaifBoosterAdjointUtils::BasicBlockPrintVersion::get()==ForLoopReversalType::ANONYMOUS) { 
-        // print any assignments in myAssignmentsforPush
-        for (std::list<const BasicBlockElement*>::const_iterator assignI = myAssignmentsforPush.begin();
-            assignI != myAssignmentsforPush.end(); ++assignI)
-          (*assignI)->printXMLHierarchy(os);
-        // pushes after the call
-        for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = myIndexPostPushes.begin();
-            aBasicBlockElementListI != myIndexPostPushes.end();
-            ++aBasicBlockElementListI) {
-          (*aBasicBlockElementListI)->printXMLHierarchy(os);
-        }
-      }
-      // print any push calls in myGeneralPushList
-      for (std::list<const BasicBlockElement*>::const_iterator pushI = myGeneralPushList.begin();
-          pushI != myGeneralPushList.end(); ++pushI)
+      const PushContainer& thePushContainer(myPushContainerMap.find(xaifBoosterAdjointUtils::BasicBlockPrintVersion::get())->second);
+      for (std::list<const BasicBlockElement*>::const_iterator assignI = thePushContainer.myAssignmentsforPush.begin();
+          assignI != thePushContainer.myAssignmentsforPush.end(); ++assignI)
+        (*assignI)->printXMLHierarchy(os);
+      for (PlainBasicBlock::BasicBlockElementList::const_iterator aBasicBlockElementListI = thePushContainer.myPostStatementPushList.begin();
+          aBasicBlockElementListI != thePushContainer.myPostStatementPushList.end(); ++aBasicBlockElementListI)
+        (*aBasicBlockElementListI)->printXMLHierarchy(os);
+      const PushContainer& thePushContainer2(myPushContainerMap.find(ForLoopReversalType::HEURISTIC)->second);
+      for (std::list<BasicBlockElement*>::const_iterator pushI = thePushContainer2.myPostStatementPushList.begin();
+          pushI != thePushContainer2.myPostStatementPushList.end(); ++pushI)
         (*pushI)->printXMLHierarchy(os);
     }
     else 
       xaifBoosterBasicBlockPreaccumulation::AssignmentAlg::printXMLHierarchy(os);
-  } // end of BasicBlockAlg::printXMLHierarchy
+  }
   
   std::string 
   AssignmentAlg::debug() const {
@@ -88,34 +77,35 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   void AssignmentAlg::checkAndPush(const Variable& theVariable) { 
     // has it been pushed already? 
     bool pushedAlready=false; 
-    for (Expression::VariablePVariableSRPPairList::iterator it=myIndexVariablesPushed.begin();
-	 it!=myIndexVariablesPushed.end();
-	 ++it) { 
+    PushContainer& thePushContainer(myPushContainerMap[ForLoopReversalType::ANONYMOUS]);
+    for (Expression::VariablePVariableSRPPairList::iterator it=thePushContainer.myIndexVariablesPushed.begin();
+        it!=thePushContainer.myIndexVariablesPushed.end();
+        ++it) {
       DBG_MACRO(DbgGroup::DATA, "comparing " << theVariable.debug().c_str() << " to " << ((*it).first)->debug().c_str()); 
       if (theVariable.equivalentTo(*((*it).first))) { 
-	pushedAlready=true; 
-	break; 
+        pushedAlready=true;
+        break;
       }
     }
     if (!pushedAlready) { 
       // make the subroutine call:    
       xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall* theAssignment_p;
       if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::INTEGER_STYPE)
-	theAssignment_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theVariable.getEffectiveShape()));
+        theAssignment_p=new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(theVariable.getEffectiveShape()));
       else if (theVariable.getVariableSymbolReference().getSymbol().getSymbolType()==SymbolType::REAL_STYPE)
-	theAssignment_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString(theVariable.getEffectiveShape())));
+        theAssignment_p=(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_"+SymbolShape::toShortString(theVariable.getEffectiveShape())));
       else
-	THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::checkAndPush: no logic to push things of type " 
-				   << SymbolType::toString(theVariable.getVariableSymbolReference().getSymbol().getSymbolType()).c_str()
-				   << " and shape "
-				   << SymbolShape::toString(theVariable.getEffectiveShape()).c_str())
-	  // save it in the list
-	  myIndexPostPushes.push_back(theAssignment_p);
+        THROW_LOGICEXCEPTION_MACRO("AssignmentAlg::checkAndPush: no logic to push things of type "
+            << SymbolType::toString(theVariable.getVariableSymbolReference().getSymbol().getSymbolType()).c_str()
+            << " and shape "
+            << SymbolShape::toString(theVariable.getEffectiveShape()).c_str())
+            // save it in the list
+            thePushContainer.myPostStatementPushList.push_back(theAssignment_p);
       theAssignment_p->setId("AssignmentAlg::checkAndPush");
       theVariable.copyMyselfInto(theAssignment_p->addConcreteArgument(1).getArgument().getVariable());
-      myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
+      thePushContainer.myIndexVariablesPushed.push_back(Expression::VariablePVariableSRPPair(&theVariable,0));
     }
-  } // end AssignmentAlg::checkAndPush()
+  }
 
   void AssignmentAlg::algorithm_action_4() { 
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterBasicBlockPreaccumulationTape::AssignmentAlg::algorithm_action_4(tape array access in argument)");
@@ -135,8 +125,9 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
   bool
   AssignmentAlg::hasExpression(const Expression& anExpression) const {
     // check myIndexPushes
-    for (PlainBasicBlock::BasicBlockElementList::const_iterator pushI = myIndexPostPushes.begin();
-         pushI != myIndexPostPushes.end(); ++pushI)
+    const PushContainer& thePushContainer(myPushContainerMap.find(ForLoopReversalType::ANONYMOUS)->second);
+    for (PlainBasicBlock::BasicBlockElementList::const_iterator pushI = thePushContainer.myPostStatementPushList.begin();
+         pushI != thePushContainer.myPostStatementPushList.end(); ++pushI)
       if ((*pushI)->hasExpression(anExpression))
         return true;
     // pass on to the typechange version of this routine, which will look through the list of saveacross values
@@ -174,9 +165,5 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     }
   } // end AssignmentAlg::handleArrayAccessIndices()
 
-  const Expression::VariablePVariableSRPPairList& AssignmentAlg::getIndexVariablesPushed() const { 
-    return myIndexVariablesPushed;
-  } // end AssignmentAlg::getIndexVariablesPushed()
-  
 } // end namespace xaifBoosterBasicBlockPreaccumulationTape
 

@@ -22,19 +22,27 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   BasicBlockElementAlg::BasicBlockElementAlg(const BasicBlockElement& theContainingBasicBlockElement) : 
     BasicBlockElementAlgBase(theContainingBasicBlockElement) { 
+    for (ForLoopReversalType::TypeList::const_iterator it=ForLoopReversalType::ourTypeList.begin();
+        it!=ForLoopReversalType::ourTypeList.end();
+        ++it) {
+      myPushContainerMap.insert(std::make_pair(*it,PushContainer()));
+    }
   } // end BasicBlockElementAlg::BasicBlockElementAlg()
 
-  BasicBlockElementAlg::~BasicBlockElementAlg() {
+  BasicBlockElementAlg::PushContainer::~PushContainer() {
     // delete the contents of myAssignmentsforPush
-    for (std::list<const BasicBlockElement*>::const_iterator assignI = myAssignmentsforPush.begin();
-         assignI != myAssignmentsforPush.end(); ++assignI)
+    for (std::list<const BasicBlockElement*>::iterator assignI = myAssignmentsforPush.begin();
+        assignI != myAssignmentsforPush.end(); ++assignI)
       if (*assignI)
         delete *assignI;
     // delete the contents of myPushBlock
-    for (std::list<const BasicBlockElement*>::const_iterator pushI = myGeneralPushList.begin();
-         pushI != myGeneralPushList.end(); ++pushI)
+    for (std::list<BasicBlockElement*>::iterator pushI = myPostStatementPushList.begin();
+        pushI != myPostStatementPushList.end(); ++pushI)
       if (*pushI)
         delete *pushI;
+  }
+
+  BasicBlockElementAlg::~BasicBlockElementAlg() {
   } // end BasicBlockElementAlg::~BasicBlockElementAlg()
 
   std::string
@@ -47,16 +55,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   void
   BasicBlockElementAlg::printXMLHierarchy(std::ostream& os) const {
-    // print any assignments in myAssignmentsforPush
-//  for (std::list<const BasicBlockElement*>::const_iterator assignI = myAssignmentsforPush.begin();
-//       assignI != myAssignmentsforPush.end(); ++assignI)
-//    (*assignI)->printXMLHierarchy(os);
     getContaining().printXMLHierarchyImpl(os);
-    // print any push calls in myPushBlock
-//  for (std::list<const BasicBlockElement*>::const_iterator pushI = myPushBlock.begin();
-//       pushI != myPushBlock.end(); ++pushI)
-//    (*pushI)->printXMLHierarchy(os);
-  } // end BasicBlockElementAlg::printXMLHierarchy()
+  }
 
   void
   BasicBlockElementAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
@@ -90,10 +90,10 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
                                                   false,
                                                   false);
     // add the assignment to our assignment block
-    myAssignmentsforPush.push_back(theNewExpressionAssignment_p);
+    myPushContainerMap.find(ForLoopReversalType::HEURISTIC)->second.myAssignmentsforPush.push_back(theNewExpressionAssignment_p);
     // now push the temporary
     pushVariable(theNewExpressionAssignment_p->getLHS());
-  } // end BasicBlockElementAlg::assignAndPushRequiredValue
+  }
 
   void
   BasicBlockElementAlg::pushVariable(const Variable& aVariable) {
@@ -103,8 +103,12 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       (new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("push_i_"+SymbolShape::toShortString(aVariable.getEffectiveShape())));
     theNewPushSubroutineCall_p->setId("xaifBoosterBasicBlockPreaccumulationTape::BasicBlockElementAlg::pushRequiredValue:inline_push_i");
     aVariable.copyMyselfInto(theNewPushSubroutineCall_p->addConcreteArgument(1).getArgument().getVariable());
-    myGeneralPushList.push_back(theNewPushSubroutineCall_p);
-  } // end BasicBlockElementAlg::pushVariable()
+    myPushContainerMap.find(ForLoopReversalType::HEURISTIC)->second.myPostStatementPushList.push_back(theNewPushSubroutineCall_p);
+  }
+
+  const Expression::VariablePVariableSRPPairList& BasicBlockElementAlg::getIndexVariablesPushed() const {
+    return myPushContainerMap.find(ForLoopReversalType::ANONYMOUS)->second.myIndexVariablesPushed;
+  }
 
 } // end namespace xaifBoosterBasicBlockPreaccumulationTape
 
