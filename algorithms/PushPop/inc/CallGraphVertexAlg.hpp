@@ -36,7 +36,7 @@ namespace xaifBoosterPushPop {
     /**
      * Place pushes and pops
      */
-    virtual void algorithm_action_6();
+    virtual void algorithm_action_6_TD();
 
   private:
 

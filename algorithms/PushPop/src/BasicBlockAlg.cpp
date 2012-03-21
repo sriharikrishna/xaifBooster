@@ -43,7 +43,7 @@ namespace xaifBoosterPushPop {
   } // end BasicBlockAlg::traverseToChildren()
 
   void 
-  BasicBlockAlg::algorithm_action_6() {
+  BasicBlockAlg::algorithm_action_6_TD() {
     DBG_MACRO(DbgGroup::CALLSTACK,"xaifBoosterPushPop::BasicBlockAlg::algorithm_action_6: invoked for " << debug().c_str());
     // create a CombinedGraph for each sequence
     for (SequencePList::iterator aSequencePListI = myUniqueSequencePList.begin();

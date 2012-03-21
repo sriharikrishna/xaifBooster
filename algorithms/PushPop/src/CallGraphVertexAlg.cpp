@@ -44,7 +44,7 @@ namespace xaifBoosterPushPop {
   void CallGraphVertexAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) {
   } // end CallGraphVertexAlg::traverseToChildren()
 
-  void CallGraphVertexAlg::algorithm_action_6() {
+  void CallGraphVertexAlg::algorithm_action_6_TD() {
     DBG_MACRO(DbgGroup::CALLSTACK, "xaifBoosterPushPop::CallGraphVertexAlg::algorithm_action_6(place pushes and pops) called for: " << debug().c_str());
     // create a map from CFG vertices to their respective sets of required values
     CFGVertexP2RequiredValuePListMap theCFGVertexP2RequiredValuePListMap;
