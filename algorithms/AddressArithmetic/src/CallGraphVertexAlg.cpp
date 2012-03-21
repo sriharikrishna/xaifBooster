@@ -364,23 +364,37 @@ namespace xaifBoosterAddressArithmetic {
 	}  
       }
       if (!theUnknownIndexVariables.empty()) {
-	std::ostringstream ostr;
-	ostr<< " ";
-	for (CallGraphVertexAlg::UnknownVarInfoList::iterator it= theUnknownIndexVariables.begin();
-	     it!=theUnknownIndexVariables.end();
-	     ++it) {
-	  ostr << (*it).myVariable_p->getVariableSymbolReference().getSymbol().plainName().c_str() << " ";
-	  UnknownVarInfo anUnresolvedVar(*((*it).myVariable_p),*((*it).myContainingVertex_p),*((*it).myTapingVertex_p));
-	  anUnresolvedVar.myRequiredBy_p=aSubroutineCall_p;
-	  myExplicitReversalUnresolvedVariablesList.push_back(anUnresolvedVar);
-	}
-	DBG_MACRO(DbgGroup::ERROR,
-		  "CallGraphVertexAlg::findUnknownVariablesInBasicBlockElements: array with unknown indices ("
-		  << ostr.str().c_str()
-		  << ") is used in subroutine call to "
-		  << aSubroutineCall_p->getSymbolReference().getSymbol().getId().c_str()
-		  << " on line "
-		  << aSubroutineCall_p->getLineNumber());
+        std::ostringstream ostr;
+        ostr<< " ";
+        for (UnknownVarInfoList::iterator it= theUnknownIndexVariables.begin();
+            it!=theUnknownIndexVariables.end();
+            ++it) {
+          ostr << (*it).myVariable_p->getVariableSymbolReference().getSymbol().plainName().c_str() << " ";
+          UnknownVarInfo anUnresolvedVar(*((*it).myVariable_p),*((*it).myContainingVertex_p),*((*it).myTapingVertex_p));
+          anUnresolvedVar.myRequiredBy_p=aSubroutineCall_p;
+          myExplicitReversalUnresolvedVariablesList.push_back(anUnresolvedVar);
+        }
+        DBG_MACRO(DbgGroup::WARNING,
+                  "CallGraphVertexAlg::findUnknownVariablesInBasicBlockElements: while under a simple loop assertion, an array with non-loop-variable indices ("
+                  << ostr.str().c_str()
+                  << ") is used in a subroutine call to "
+                  << aSubroutineCall_p->getSymbolReference().getSymbol().plainName().c_str()
+                  << " on line "
+                  << aSubroutineCall_p->getLineNumber()
+                  << ", push/pop to be injected here");
+        // now remove all the ones we put in the myExplicitReversalUnresolvedVariablesList
+        for (UnknownVarInfoList::iterator it= myExplicitReversalUnresolvedVariablesList.begin();
+            it!=myExplicitReversalUnresolvedVariablesList.end();
+            ++it) {
+          for (UnknownVarInfoList::iterator itInner= theUnknownIndexVariables.begin();
+              itInner!=theUnknownIndexVariables.end();
+              ++itInner) {
+            if ((*it).myVariable_p==(*itInner).myVariable_p)  {
+              theUnknownIndexVariables.erase(itInner);
+              break;
+            }
+          }
+        }
       }
       // now check if any values are required on entry: 
       try { 
