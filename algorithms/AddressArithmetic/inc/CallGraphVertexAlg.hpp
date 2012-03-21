@@ -46,7 +46,13 @@ namespace xaifBoosterAddressArithmetic {
      * occuring in index expressions
      */
     virtual void algorithm_action_5();
-                                                                                
+
+    /**
+     * TEMPORARY: sort out values violating
+     * the simple loop assumption
+     */
+    virtual void algorithm_action_6();
+
     virtual std::string debug() const ;
 
     virtual void traverseToChildren(const GenericAction::GenericAction_E anAction_c);
