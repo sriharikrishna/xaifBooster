@@ -44,6 +44,16 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual void insertYourself(const BasicBlock& theBasicBlock);
 
+    SubroutineCallAlg& getAdjointCounterPart();
+
+    SubroutineCallAlg& getOriginalCounterPart();
+
+    /**
+     * inserts inlined restores for index values
+     */
+    void handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg,
+                                  ForLoopReversalType::ForLoopReversalType_E aReversalType);
+
   private: 
 
     /** 
@@ -63,19 +73,24 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     /** 
      * for anonymous reversals we need to restore 
-     * any array indices occuring in formal arguments
-     * this has to happen to the the call
+     * any array indices occurring in formal arguments
+     * this has to happen to the the call; populated for
+     * the adjoint instance
      */
     PlainBasicBlock::BasicBlockElementList myPops;
-
-    /** 
-     * inserts inlined restores for index values
-     */
-    void handleArrayAccessIndices(SubroutineCallAlg& orignalCallAlg);
 
     void insertYourself(const BasicBlock& theBasicBlock,
 			ForLoopReversalType::ForLoopReversalType_E aReversalType);
 
+    /**
+     * set by insertYourself if this is the algorithm of the original instance
+     */
+    SubroutineCallAlg* myAdjointCounterpart_p;
+
+    /**
+     * set by insertYourself is this the algorithm of the adjoint counterpart of an original instance
+     */
+    SubroutineCallAlg* myOriginalCounterpart_p;
 
   }; // end of class SubroutineCallAlg
  
