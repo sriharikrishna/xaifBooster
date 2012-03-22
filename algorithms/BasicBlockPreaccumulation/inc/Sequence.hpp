@@ -11,7 +11,8 @@
 // ========== end copyright notice =====================
 
 #include <list>
-#include <map>
+
+#include "xaifBooster/utils/inc/GuardedMap.hpp"
 
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/BasicBlock.hpp"
@@ -259,7 +260,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     VertexIdentificationListIndAct myVertexIdentificationListIndAct; 
 
-    typedef std::map<const Argument*,
+    typedef GuardedMap<const Argument*,
                      const ExpressionVertex*> CArgumentP2CExpressionVertexPMap;
     /// cross-assignment mapping of assignment RHS arguments to the corresp. LHS (when identifiable)
     /**
@@ -268,7 +269,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     CArgumentP2CExpressionVertexPMap myFlatteningMap;
 
-    typedef std::map<const Argument*,
+    typedef GuardedMap<const Argument*,
                      const Assignment*> CArgumentP2CAssignmentPMap;
     CArgumentP2CAssignmentPMap myLHSFlatteningMap;
 
@@ -281,7 +282,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     PrivateLinearizedComputationalGraph* myComputationalGraph_p;
 
     /// useful for temporary maps to facilitate LCG construction
-    typedef std::map<const ExpressionVertex*,
+    typedef GuardedMap<const ExpressionVertex*,
                      const PrivateLinearizedComputationalGraphVertex*> EVp2LCGVpMap;
 
     /// add \p aAssignment to the LCG

@@ -11,6 +11,7 @@
 // ========== end copyright notice =====================
 
 #include <map>
+#include "xaifBooster/utils/inc/GuardedMap.hpp"
 
 #include "xaifBooster/algorithms/BasicBlockPreaccumulation/inc/PreaccumulationCounter.hpp"
 
@@ -81,7 +82,7 @@ namespace xaifBoosterCrossCountryInterface {
     /**
      * used for propagation
      */
-    typedef std::map<const LinearizedComputationalGraphEdge*,
+    typedef GuardedMap<const LinearizedComputationalGraphEdge*,
                      const AccumulationGraphVertex*> RemainderEdge2AccumulationVertexMap;
 
     const RemainderEdge2AccumulationVertexMap& getRemainderEdge2AccumulationVertexMap() const;
@@ -142,10 +143,10 @@ namespace xaifBoosterCrossCountryInterface {
     /// for scarcity with rerouting, holds the number of reroutings
     unsigned int myNumReroutings;
 
-    typedef std::map<const LinearizedComputationalGraphEdge*,
+    typedef GuardedMap<const LinearizedComputationalGraphEdge*,
                      AccumulationGraphVertex*> LCGe_to_ACCv_map;
 
-    typedef std::map<const JacobianAccumulationExpressionVertex*,
+    typedef GuardedMap<const JacobianAccumulationExpressionVertex*,
                      AccumulationGraphVertex*> JAEv_to_ACCv_map;
 
     /**

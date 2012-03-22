@@ -175,16 +175,15 @@ namespace xaifBoosterLinearization {
   void
   ExpressionEdgeAlg::mapPartialEV2OriginalEV(const ExpressionVertex& aPartialExpressionVertex,
                                              const ExpressionVertex& aOriginalExpressionVertex) {
-    myPartialEVP2OriginalEVPMap[&aPartialExpressionVertex] = &aOriginalExpressionVertex;
+    myPartialEVP2OriginalEVPMap.addElement(&aPartialExpressionVertex, &aOriginalExpressionVertex);
   }
 
   const ExpressionVertex&
   ExpressionEdgeAlg::getOriginalExpressionVertex4ConcretePartialArgument(const ExpressionVertex& aConcretePartialEV) const {
-    CExpressionVertexP2CExpressionVertexPMap::const_iterator mapI = myPartialEVP2OriginalEVPMap.find(&aConcretePartialEV);
-    if(mapI == myPartialEVP2OriginalEVPMap.end())
+    if (!myPartialEVP2OriginalEVPMap.hasElement(&aConcretePartialEV))
       THROW_LOGICEXCEPTION_MACRO("ExpressionEdgeAlg::getOriginalExpressionVertex4ConcretePartialArgument: " <<
                                  "no original ExpressionVertex associated with " << aConcretePartialEV.debug().c_str());
-    return *(mapI->second);
+    return *(myPartialEVP2OriginalEVPMap.getElement(&aConcretePartialEV));
   }
 
 }

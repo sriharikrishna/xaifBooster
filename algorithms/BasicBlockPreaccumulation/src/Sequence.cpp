@@ -326,16 +326,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
          myVertexIdentificationListActiveRHS.canIdentify(theArgument.getVariable())
         );
         if (theLHSIdResult.getAnswer() == VertexIdentificationList::UNIQUELY_IDENTIFIED) {
-          myFlatteningMap[&theArgument] = NULL; // to indicate that no RHS identification was found/needed
-          myLHSFlatteningMap[&theArgument] = &theLHSIdResult.getAssignment();
+          myLHSFlatteningMap.addElement(&theArgument,&theLHSIdResult.getAssignment());
         }
         else if (theRHSIdResult.getAnswer() == VertexIdentificationList::UNIQUELY_IDENTIFIED) {
-          myFlatteningMap[&theArgument] = &theRHSIdResult.getExpressionVertex();
-          myLHSFlatteningMap[&theArgument] = NULL; // to indicate that no LHS identification was possible within this sequence
+          myFlatteningMap.addElement(&theArgument,&theRHSIdResult.getExpressionVertex());
         }
         else { // cannot be uniquely identified
-          myFlatteningMap[&theArgument] = &theArgument;
-          myLHSFlatteningMap[&theArgument] = &aAssignment; // to indicate that no LHS identification was possible within this sequence
+          myFlatteningMap.addElement(&theArgument,&theArgument);
+          myLHSFlatteningMap.addElement(&theArgument,&aAssignment); // to indicate that no LHS identification was possible within this sequence
           if (theRHSIdResult.getAnswer() == VertexIdentificationList::NOT_IDENTIFIED) { 
             myVertexIdentificationListActiveRHS.addElement(theArgument,
                                                                aAssignment,
@@ -442,13 +440,15 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       // find an existing corresp. LCGV or make a new one
       const PrivateLinearizedComputationalGraphVertex* correspLCGV_p;
       if (aExpressionVertex.isArgument()
-       && myLHSFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)] != NULL
-       && myLHSFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)] != &aAssignment) {
-        correspLCGV_p = &theLCG.getLCGVertexForAssignmentLHS(*myLHSFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)]);
+       && myLHSFlatteningMap.hasElement(dynamic_cast<const Argument*>(&aExpressionVertex))
+       && myLHSFlatteningMap.getElement(dynamic_cast<const Argument*>(&aExpressionVertex)) != &aAssignment) {
+	const Assignment& theAssignment(dynamic_cast<const Assignment&>(*myLHSFlatteningMap.getElement(dynamic_cast<const Argument*>(&aExpressionVertex))));
+        correspLCGV_p = &theLCG.getLCGVertexForAssignmentLHS(theAssignment);
       }
       else if (aExpressionVertex.isArgument() // an Argument that can be uniquely identifed to an existing LCGV
-       && myFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)] != &aExpressionVertex) {
-        correspLCGV_p = theEVp2LCGVpMap[myFlatteningMap[dynamic_cast<const Argument*>(&aExpressionVertex)]];
+       && myFlatteningMap.hasElement(dynamic_cast<const Argument*>(&aExpressionVertex))
+       && myFlatteningMap.getElement(dynamic_cast<const Argument*>(&aExpressionVertex)) != &aExpressionVertex) {
+        correspLCGV_p = theEVp2LCGVpMap.getElement(myFlatteningMap.getElement(dynamic_cast<const Argument*>(&aExpressionVertex)));
       }
       else { // we must make a new vertex
         PrivateLinearizedComputationalGraphVertex& theNewLCGV(
@@ -463,7 +463,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
           theNewLCGV.setOrigin(aAssignment);
         correspLCGV_p = &theNewLCGV;
       } // end else (new PLCG vertex)
-      theEVp2LCGVpMap[&aExpressionVertex] = correspLCGV_p;
+      theEVp2LCGVpMap.addElement(&aExpressionVertex,correspLCGV_p);
       //if (!aExpressionVertex.isArgument())
       //  THROW_LOGICEXCEPTION_MACRO("Sequence::buildLinearizedComputationalGraph:"
       //                             << " non-argument " << aExpressionVertex.debug().c_str()
@@ -486,8 +486,8 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       if (thePartialDerivativeKind == PartialDerivativeKind::PASSIVE) 
         continue;
       const PrivateLinearizedComputationalGraphVertex
-       &theSourceLCGV(*theEVp2LCGVpMap[&aAssignment.getRHS().getSourceOf(*eei)]),
-       &theTargetLCGV(*theEVp2LCGVpMap[&aAssignment.getRHS().getTargetOf(*eei)]);
+       &theSourceLCGV(*theEVp2LCGVpMap.getElement(&theSourceEV)),
+       &theTargetLCGV(*theEVp2LCGVpMap.getElement(&theTargetEV));
       // filter out parallel edges:
       PrivateLinearizedComputationalGraph::OutEdgeIteratorPair anOutEdgeItPair(theLCG.getOutEdgesOf(theSourceLCGV));
       PrivateLinearizedComputationalGraph::OutEdgeIterator aPrivLinCompGEdgeI(anOutEdgeItPair.first), aPrivLinCompGEdgeIEnd(anOutEdgeItPair.second);
@@ -515,7 +515,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     //                         << " Edge source:" << theSourceLCGV.debug().c_str()
     //                         << " target " << theTargetLCGV.debug().c_str());
     }  // end for all expression edges
-    return *theEVp2LCGVpMap[&aAssignment.getRHS().getMaxVertex()];
+    return *theEVp2LCGVpMap.getElement(&aAssignment.getRHS().getMaxVertex());
   }
 
   const PrivateLinearizedComputationalGraphVertex&
@@ -545,12 +545,14 @@ namespace xaifBoosterBasicBlockPreaccumulation {
     // determine the LCGVertex for the SOURCE of the direct copy (find an existing corresp. LCGV or make a new one)
     const Argument& theRHSArgument(dynamic_cast<const Argument&>(theMaxEV));
     const PrivateLinearizedComputationalGraphVertex* theSourceLCGV_p(NULL);
-    if (myLHSFlatteningMap[&theRHSArgument] != NULL
-     && myLHSFlatteningMap[&theRHSArgument] != &aAssignment) {
-      theSourceLCGV_p = &theLCG.getLCGVertexForAssignmentLHS(*myLHSFlatteningMap[&theRHSArgument]);
+    if (myLHSFlatteningMap.hasElement(&theRHSArgument)
+       && myLHSFlatteningMap.getElement(&theRHSArgument) != &aAssignment) {
+      const Assignment& theAssignment(dynamic_cast<const Assignment&>(*myLHSFlatteningMap.getElement(&theRHSArgument)));
+      theSourceLCGV_p = &theLCG.getLCGVertexForAssignmentLHS(theAssignment);
     }
-    else if (myFlatteningMap[&theRHSArgument] != &theRHSArgument) { // the RHS EV flattens to another EV (which should be an existing LCGV)
-      theSourceLCGV_p = theEVp2LCGVpMap[myFlatteningMap[&theRHSArgument]];
+    else if (myLHSFlatteningMap.hasElement(&theRHSArgument)
+      && myFlatteningMap.getElement(&theRHSArgument) != &theRHSArgument) { // the RHS EV flattens to another EV (which should be an existing LCGV)
+      theSourceLCGV_p = theEVp2LCGVpMap.getElement(myFlatteningMap.getElement(&theRHSArgument));
     }
     else { // we must make a new vertex
       PrivateLinearizedComputationalGraphVertex& theNewLCGV(
@@ -562,7 +564,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
                            aAssignment);
       theSourceLCGV_p = &theNewLCGV;
     } // end else (new PLCG vertex)
-    theEVp2LCGVpMap[&theMaxEV] = theSourceLCGV_p;
+    theEVp2LCGVpMap.addElement(&theMaxEV, theSourceLCGV_p);
 
     // we need to add the direct copy edge, we can't set a back reference because there is none
     PrivateLinearizedComputationalGraphEdge& theNewDCEdge(
