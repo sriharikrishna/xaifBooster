@@ -142,7 +142,6 @@ namespace xaifBoosterCrossCountryInterface {
     myAccumulationGraph.clear();
 
     LCGe_to_ACCv_map theLCGe_to_ACCv_map;
-    LCGe_to_ACCv_map::const_iterator lcgE2accVMapI;
 
     // First iterate through the original edges and create corresponding accumulation graph vertices 
     const PrivateLinearizedComputationalGraph& theOriginalPLCG (dynamic_cast<const PrivateLinearizedComputationalGraph&>(*myLCG_p));
@@ -159,7 +158,7 @@ namespace xaifBoosterCrossCountryInterface {
 	  theNewAccVertex_p = new AccumulationGraphVertex (currentPLCGEdge.getLinearizedExpressionEdge());
 	// add the new AccVertex to the graph and map this PLCG edge to it
 	myAccumulationGraph.supplyAndAddVertexInstance(*theNewAccVertex_p);
-	theLCGe_to_ACCv_map[&*PLCGeI] = theNewAccVertex_p;
+	theLCGe_to_ACCv_map.addElement(&*PLCGeI, theNewAccVertex_p);
       } // end regular edge (no parallels)
       // handle edge with parallels
       else {
@@ -171,7 +170,7 @@ namespace xaifBoosterCrossCountryInterface {
 	AccumulationGraphVertex* theNewAccAddVertex_p = new AccumulationGraphVertex(JacobianAccumulationExpressionVertex::ADD_OP);
 	myAccumulationGraph.supplyAndAddVertexInstance(*theNewAccAddVertex_p);
 	myAccumulationGraph.addEdge(*theNewAccVertex_p, *theNewAccAddVertex_p);
-	theLCGe_to_ACCv_map[&*PLCGeI] = theNewAccAddVertex_p;
+	theLCGe_to_ACCv_map.addElement(&*PLCGeI, theNewAccAddVertex_p);
 	// iterate over parallels: create the new vertex for the parallel edge and connect it up
 	for (PrivateLinearizedComputationalGraphEdge::ExpressionEdgePList::const_iterator parallelI = currentPLCGEdge.getParallels().begin();
 	     parallelI != currentPLCGEdge.getParallels().end(); ++parallelI) {
@@ -184,7 +183,6 @@ namespace xaifBoosterCrossCountryInterface {
 
     // used for references that occur across different JAEs and for resolving remainder graph references
     JAEv_to_ACCv_map theInterJAEvertexMap;
-    JAEv_to_ACCv_map::const_iterator jaeV2accVMapI;
 
     // iterate over all JAEs
     for(JacobianAccumulationExpressionList::GraphList::const_iterator JAEit = myJAEList.getGraphList().begin();
@@ -201,30 +199,30 @@ namespace xaifBoosterCrossCountryInterface {
 	switch (theCurrentJAEVertex.getReferenceType()) {
 	  case JacobianAccumulationExpressionVertex::INTERNAL_REF: {
 	    // find the source vertex using theInterJAEvertexMap
-	    if ((jaeV2accVMapI = theInterJAEvertexMap.find(&theCurrentJAEVertex.getInternalReference())) == theInterJAEvertexMap.end())
+	    if (!theInterJAEvertexMap.hasElement(&theCurrentJAEVertex.getInternalReference()))
 	      THROW_LOGICEXCEPTION_MACRO("Elimination::buildAccumulationGraph: could not find AccumulationGraphVertex for internal JAE vertex reference in theInterJAEvertexMap");
 	    // simply map to the corresponding vertex.  No need to create a new one...
-	    theIntraJAEvertexMap[&theCurrentJAEVertex] = jaeV2accVMapI->second;
+	    theIntraJAEvertexMap.addElement(&theCurrentJAEVertex,theInterJAEvertexMap.getElement(&theCurrentJAEVertex.getInternalReference()));
 	    break;
 	  } // end INTERNAL_REF
 	  case xaifBoosterCrossCountryInterface::JacobianAccumulationExpressionVertex::EXTERNAL_REF: {
 	    // find the corresponding AccVertex (it must have been created in the first step
-	    if ((lcgE2accVMapI = theLCGe_to_ACCv_map.find(&theCurrentJAEVertex.getExternalReference())) == theLCGe_to_ACCv_map.end())
+	    if (!theLCGe_to_ACCv_map.hasElement(&theCurrentJAEVertex.getExternalReference()))
 	      THROW_LOGICEXCEPTION_MACRO("Elimination::buildAccumulationGraph: could not find AccumulationGraphVertex for PLCG edge referred to by internal JAE vertex reference");
-	    theIntraJAEvertexMap[&theCurrentJAEVertex] = lcgE2accVMapI->second;
+	    theIntraJAEvertexMap.addElement(&theCurrentJAEVertex,theLCGe_to_ACCv_map.getElement(&theCurrentJAEVertex.getExternalReference()));
 	    // handle maximal JAE vertex
 	    if (!theCurrentJAE.numOutEdgesOf(theCurrentJAEVertex))
-	      theInterJAEvertexMap[&theCurrentJAEVertex] = lcgE2accVMapI->second;
+	      theInterJAEvertexMap.addElement(&theCurrentJAEVertex,theLCGe_to_ACCv_map.getElement(&theCurrentJAEVertex.getExternalReference()));
 	    break;
 	  } // end EXTERNAL_REF
 	  case JacobianAccumulationExpressionVertex::OPERATION: {
 	    AccumulationGraphVertex* theNewAccVertex_p = new AccumulationGraphVertex (theCurrentJAEVertex.getOperation());
 	    // create the new AccumulationGraphVertex and add it to the map
 	    myAccumulationGraph.supplyAndAddVertexInstance(*theNewAccVertex_p);
-	    theIntraJAEvertexMap[&theCurrentJAEVertex] = theNewAccVertex_p;
+	    theIntraJAEvertexMap.addElement(&theCurrentJAEVertex, theNewAccVertex_p);
 	    // add to the inter map if this is the maximal vertex
 	    if (!theCurrentJAE.numOutEdgesOf(theCurrentJAEVertex))
-	      theInterJAEvertexMap[&theCurrentJAEVertex] = theNewAccVertex_p;
+	      theInterJAEvertexMap.addElement(&theCurrentJAEVertex, theNewAccVertex_p);
 	    break;
 	  } // end OPERATION
 	  default :
@@ -238,12 +236,12 @@ namespace xaifBoosterCrossCountryInterface {
       for (JacobianAccumulationExpression::ConstEdgeIterator aJAEeI(aJAEePair.first), aJAEeIEnd(aJAEePair.second);
 	   aJAEeI != aJAEeIEnd; ++aJAEeI) {
 	// find the source and target of the new edge from theIntraJAEvertexMap
-	if ((jaeV2accVMapI = theIntraJAEvertexMap.find(&theCurrentJAE.getSourceOf(*aJAEeI))) == theIntraJAEvertexMap.end())
+	if (!theIntraJAEvertexMap.hasElement(&theCurrentJAE.getSourceOf(*aJAEeI)))
 	  THROW_LOGICEXCEPTION_MACRO("Elimination::buildAccumulationGraph: could not find AccumulationGraphVertex for internal JAE vertex reference in theInterJAEvertexMap");
-	const AccumulationGraphVertex& theSourceAccVertex (*jaeV2accVMapI->second);
-	if ((jaeV2accVMapI = theIntraJAEvertexMap.find(&theCurrentJAE.getTargetOf(*aJAEeI))) == theIntraJAEvertexMap.end())
+	const AccumulationGraphVertex& theSourceAccVertex (*theIntraJAEvertexMap.getElement(&theCurrentJAE.getSourceOf(*aJAEeI)));
+	if (!theIntraJAEvertexMap.hasElement(&theCurrentJAE.getTargetOf(*aJAEeI)))
 	  THROW_LOGICEXCEPTION_MACRO("Elimination::buildAccumulationGraph: could not find AccumulationGraphVertex for internal JAE vertex reference in theInterJAEvertexMap");
-	const AccumulationGraphVertex& theTargetAccVertex (*jaeV2accVMapI->second);
+	const AccumulationGraphVertex& theTargetAccVertex (*theIntraJAEvertexMap.getElement(&theCurrentJAE.getTargetOf(*aJAEeI)));
 	// create the edge in the accumulation graph
 	myAccumulationGraph.addEdge(theSourceAccVertex, theTargetAccVertex);
       } // end iterate over JAE edges
@@ -255,19 +253,19 @@ namespace xaifBoosterCrossCountryInterface {
       AccumulationGraphVertex* theAccVertex_p (NULL);
       if ((*ecI).myType == EdgeCorrelationEntry::LCG_EDGE) {
 	// find the corresponding AccVertex in thePLCGe_to_ACCv_map
-	if ((lcgE2accVMapI = theLCGe_to_ACCv_map.find((*ecI).myEliminationReference.myOriginalEdge_p)) == theLCGe_to_ACCv_map.end())
+	if (!theLCGe_to_ACCv_map.hasElement((*ecI).myEliminationReference.myOriginalEdge_p))
 	  THROW_LOGICEXCEPTION_MACRO("Elimination::buildAccumulationGraph: could not find AccumulationGraphVertex for external JAE vertex reference (to original PLCG edge) in thePLCGe_to_ACCv_map");
-	theAccVertex_p = lcgE2accVMapI->second;
+	theAccVertex_p = theLCGe_to_ACCv_map.getElement((*ecI).myEliminationReference.myOriginalEdge_p);
       } // end LCG_EDGE ref
       else if ((*ecI).myType == EdgeCorrelationEntry::JAE_VERT) {
 	// find the corresponding AccVertex in theInterJAEvertexMap
-	if ((jaeV2accVMapI = theInterJAEvertexMap.find((*ecI).myEliminationReference.myJAEVertex_p)) == theInterJAEvertexMap.end())
+	if (!theInterJAEvertexMap.hasElement((*ecI).myEliminationReference.myJAEVertex_p))
 	  THROW_LOGICEXCEPTION_MACRO("Elimination::buildAccumulationGraph: could not find AccumulationGraphVertex for internal JAE vertex reference in theInterJAEvertexMap");
-	theAccVertex_p = jaeV2accVMapI->second;
+	theAccVertex_p = theInterJAEvertexMap.getElement((*ecI).myEliminationReference.myJAEVertex_p);
       } // end JAE_VERT ref
       else THROW_LOGICEXCEPTION_MACRO("Elimination::buildAccumulationGraph: EdgeCorrelationEntry has invalid type");
 
-      myRemainderEdge2AccumulationVertexMap[(*ecI).myRemainderGraphEdge_p] = theAccVertex_p;
+      myRemainderEdge2AccumulationVertexMap.addElement((*ecI).myRemainderGraphEdge_p, theAccVertex_p);
       theAccVertex_p->setRemainderGraphEdge(*(*ecI).myRemainderGraphEdge_p);
     } // end iterate over myEdgeCorrelationList
 

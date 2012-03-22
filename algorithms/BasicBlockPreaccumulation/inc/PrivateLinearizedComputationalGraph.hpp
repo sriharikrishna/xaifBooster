@@ -10,9 +10,8 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
-#include <map>
-
 #include "xaifBooster/utils/inc/HashTable.hpp"
+#include "xaifBooster/utils/inc/GuardedMap.hpp"
 
 #include "xaifBooster/system/inc/Assignment.hpp"
 #include "xaifBooster/system/inc/DuUdMapUseResult.hpp"
@@ -94,7 +93,7 @@ namespace xaifBoosterBasicBlockPreaccumulation {
      */
     StatementIdList myStatementIdList;
 
-    typedef std::map<const Assignment*,
+    typedef GuardedMap<const Assignment*,
                      const PrivateLinearizedComputationalGraphVertex*> CAssignmentP2CPLCGVertexPMap;
     /** 
      * keep track of correspondence between each (active) assignment and

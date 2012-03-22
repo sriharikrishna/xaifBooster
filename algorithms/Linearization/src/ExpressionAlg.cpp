@@ -272,7 +272,7 @@ namespace xaifBoosterLinearization{
 	const InlinableIntrinsicsExpression&
 		thePartialExpression(theCatalogueItem.getExpressionVectorElement((*anExpressionEdgeI3).getPosition()));
         // maintain a mapping from abstract to concrete vertices to facilitate the expression duplication
-        std::map<const InlinableIntrinsicsExpressionVertex*,
+        GuardedMap<const InlinableIntrinsicsExpressionVertex*,
                  const ExpressionVertex*> theAbstract2ConcreteMap;
 	const ExpressionEdgeAlg::VertexPairList&theConcreteArgumentInstancesList(theI3ExpressionEdgeAlg.getConcreteArgumentInstancesList());
 
@@ -351,7 +351,7 @@ namespace xaifBoosterLinearization{
 	  // in this new graph the potentially copied Ids are useless.
 	  theNewVertex_p->overWriteId(theNewConcretePartial.getNextVertexId());
 	  theNewConcretePartial.supplyAndAddVertexInstance(*theNewVertex_p);
-          theAbstract2ConcreteMap[&(*abstractVertexIt)] = theNewVertex_p;
+          theAbstract2ConcreteMap.addElement(&(*abstractVertexIt), theNewVertex_p);
 	} // end for all abstract vertices
 
 	// only make it LINEAR if all vertices were constants and it's currently NONLINEAR (don't want to undo a passivate!)
@@ -362,8 +362,8 @@ namespace xaifBoosterLinearization{
 	InlinableIntrinsicsExpression::ConstEdgeIteratorPair anAbstractEdgePair(thePartialExpression.edges());
 	InlinableIntrinsicsExpression::ConstEdgeIterator abstractEdgeIt(anAbstractEdgePair.first), abstractEdgeEndIt(anAbstractEdgePair.second);
 	for(; abstractEdgeIt!=abstractEdgeEndIt; ++abstractEdgeIt) {
-          ExpressionEdge& theNewEdge(theNewConcretePartial.addEdge(*theAbstract2ConcreteMap[&thePartialExpression.getSourceOf(*abstractEdgeIt)],
-                                                                   *theAbstract2ConcreteMap[&thePartialExpression.getTargetOf(*abstractEdgeIt)]));
+          ExpressionEdge& theNewEdge(theNewConcretePartial.addEdge(*theAbstract2ConcreteMap.getElement(&thePartialExpression.getSourceOf(*abstractEdgeIt)),
+								   *theAbstract2ConcreteMap.getElement(&thePartialExpression.getTargetOf(*abstractEdgeIt))));
 	  theNewEdge.setId(theNewConcretePartial.getNextEdgeId());
 	  theNewEdge.setPosition((*abstractEdgeIt).getPosition());
 	} // end for all abstract edges

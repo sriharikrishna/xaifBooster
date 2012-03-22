@@ -32,19 +32,18 @@ namespace xaifBoosterBasicBlockPreaccumulation {
   }
 
   void
-  PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV(const Assignment& aAssignment,
+  PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV(const Assignment& anAssignment,
                                                               const PrivateLinearizedComputationalGraphVertex& thePLCGV) {
-    if (myAssignmentLHS2LCGVertexPMap.find(&aAssignment) != myAssignmentLHS2LCGVertexPMap.end())
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV: already mapping " << aAssignment.debug().c_str());
-    myAssignmentLHS2LCGVertexPMap[&aAssignment] = &thePLCGV;
+    if (myAssignmentLHS2LCGVertexPMap.hasElement(&anAssignment))
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV: already mapping " << anAssignment.debug().c_str());
+    myAssignmentLHS2LCGVertexPMap.addElement(&anAssignment,&thePLCGV);
   }
 
   const PrivateLinearizedComputationalGraphVertex&
-  PrivateLinearizedComputationalGraph::getLCGVertexForAssignmentLHS(const Assignment& aAssignment) const {
-    CAssignmentP2CPLCGVertexPMap::const_iterator mapI(myAssignmentLHS2LCGVertexPMap.find(&aAssignment));
-    if (mapI == myAssignmentLHS2LCGVertexPMap.end())
-      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV: no map entry for " << aAssignment.debug().c_str());
-    return *(mapI->second);
+  PrivateLinearizedComputationalGraph::getLCGVertexForAssignmentLHS(const Assignment& anAssignment) const {
+    if (!myAssignmentLHS2LCGVertexPMap.hasElement(&anAssignment))
+      THROW_LOGICEXCEPTION_MACRO("PrivateLinearizedComputationalGraph::mapAssignmentLHS2PLCGV: no map entry for " << anAssignment.debug().c_str());
+    return *myAssignmentLHS2LCGVertexPMap.getElement(&anAssignment);
   }
 
   void PrivateLinearizedComputationalGraph::addToIndependentList(const xaifBoosterCrossCountryInterface::LinearizedComputationalGraphVertex& theIndependentVertex) { 

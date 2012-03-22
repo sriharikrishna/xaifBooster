@@ -10,6 +10,8 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
+#include "xaifBooster/utils/inc/GuardedMap.hpp"
+
 #include "xaifBooster/system/inc/ExpressionEdgeAlgBase.hpp"
 #include "xaifBooster/system/inc/PartialDerivativeKind.hpp"
 #include "xaifBooster/system/inc/InlinableIntrinsicsExpression.hpp"
@@ -105,7 +107,7 @@ namespace xaifBoosterLinearization {
      */
     ExpressionEdgeAlg& operator=(const ExpressionEdgeAlg&);
 
-    typedef std::map<const ExpressionVertex*,
+    typedef GuardedMap<const ExpressionVertex*,
                      const ExpressionVertex*> CExpressionVertexP2CExpressionVertexPMap;
 
     /**
