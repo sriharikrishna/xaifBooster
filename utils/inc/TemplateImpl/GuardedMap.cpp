@@ -32,8 +32,9 @@ namespace xaifBooster {
   GuardedMap<GuardedMapKey, GuardedMapElement>::getElement(const GuardedMapKey& aKey) const {
     typename InternalMapType::const_iterator theFinder=
       myMap.find(aKey);
-    if(theFinder==myMap.end())
-      THROW_EXCEPTION_MACRO(NotFound,"GuardedMap.getElement: no element with key >" << /*aKey.debug().c_str() <<*/ "<");
+    if(theFinder==myMap.end()) {
+      THROW_EXCEPTION_MACRO(NotFound,"GuardedMap.getElement: no element with key >" << aKey->debug().c_str() << "<");
+    }
     return (*theFinder).second;
   } // end of const GuardedMap::getElement
 
@@ -43,7 +44,7 @@ namespace xaifBooster {
     typename InternalMapType::iterator theFinder=
       myMap.find(aKey);
     if(theFinder==myMap.end())
-      THROW_EXCEPTION_MACRO(NotFound,"GuardedMap.getElement: no element with key >" << /*aKey.debug().c_str() <<*/ "<");
+      THROW_EXCEPTION_MACRO(NotFound,"GuardedMap.getElement: no element with key >" << aKey->debug().c_str() << "<");
     return (*theFinder).second;
   } // end of GuardedMap::getElement
 
@@ -65,7 +66,7 @@ namespace xaifBooster {
       myMap.insert(std::make_pair(theKey,theElement));
     else 
       THROW_LOGICEXCEPTION_MACRO("GuardedMap::addElement key >" 
-				 /*			   << theElement.debug().c_str()*/
+				 << theElement->debug().c_str()
 			   << "< already exists");
   } // end of GuardedMap<GuardedMapKey, GuardedMapElement>::addElement
 
