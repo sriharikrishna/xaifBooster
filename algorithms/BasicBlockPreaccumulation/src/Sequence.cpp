@@ -447,8 +447,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       }
       else if (aExpressionVertex.isArgument() // an Argument that can be uniquely identifed to an existing LCGV
        && myFlatteningMap.hasElement(dynamic_cast<const Argument*>(&aExpressionVertex))
-       && myFlatteningMap.getElement(dynamic_cast<const Argument*>(&aExpressionVertex)) != &aExpressionVertex) {
-        correspLCGV_p = theEVp2LCGVpMap.getElement(myFlatteningMap.getElement(dynamic_cast<const Argument*>(&aExpressionVertex)));
+       && myFlatteningMap.getElement(dynamic_cast<const Argument*>(&aExpressionVertex)) != &aExpressionVertex
+       && theEVp2LCGVpMap.hasElement(myFlatteningMap.getElement(dynamic_cast<const Argument*>(&aExpressionVertex)))) {
+	const ExpressionVertex& theEV(dynamic_cast<const ExpressionVertex&>(*myFlatteningMap.getElement(dynamic_cast<const Argument*>(&aExpressionVertex))));
+        correspLCGV_p = theEVp2LCGVpMap.getElement(&theEV);
       }
       else { // we must make a new vertex
         PrivateLinearizedComputationalGraphVertex& theNewLCGV(
@@ -551,8 +553,10 @@ namespace xaifBoosterBasicBlockPreaccumulation {
       theSourceLCGV_p = &theLCG.getLCGVertexForAssignmentLHS(theAssignment);
     }
     else if (myLHSFlatteningMap.hasElement(&theRHSArgument)
-      && myFlatteningMap.getElement(&theRHSArgument) != &theRHSArgument) { // the RHS EV flattens to another EV (which should be an existing LCGV)
-      theSourceLCGV_p = theEVp2LCGVpMap.getElement(myFlatteningMap.getElement(&theRHSArgument));
+      && myFlatteningMap.getElement(&theRHSArgument) != &theRHSArgument
+      && theEVp2LCGVpMap.hasElement(myFlatteningMap.getElement(&theRHSArgument))) { // the RHS EV flattens to another EV (which should be an existing LCGV)
+      const ExpressionVertex& theEV(dynamic_cast<const ExpressionVertex&>(*myFlatteningMap.getElement(&theRHSArgument)));
+      theSourceLCGV_p = theEVp2LCGVpMap.getElement(&theEV);
     }
     else { // we must make a new vertex
       PrivateLinearizedComputationalGraphVertex& theNewLCGV(
