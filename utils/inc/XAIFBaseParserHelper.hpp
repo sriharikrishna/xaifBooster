@@ -19,6 +19,7 @@ namespace xaifBooster {
   class ArgumentList;
   class ArrayAccess;
   class Assignment;
+  class BaseLoop;
   class BasicBlock;
   class Branch;
   class CallGraph;

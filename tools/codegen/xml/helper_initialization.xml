@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.mcs.anl.gov/CodeGen CodeGenerator.xsd"
        nr_entries="3" nr_templates="1" outfile="helper_initialization.inc">
 
-  <CodeGen:RepeatableCode nr_versions="34">
+  <CodeGen:RepeatableCode nr_versions="35">
     <CodeGen:CodeTemplate nr_entries="4">
       <CodeGen:StaticCode text="my"/>
       <CodeGen:DynamicCodePlaceholder hook="1"/>
@@ -27,6 +27,9 @@
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="Assignment"/>
+    </CodeGen:CodeVersion>
+    <CodeGen:CodeVersion>
+      <CodeGen:DynamicCode hook_ref="1" text="BaseLoop"/>
     </CodeGen:CodeVersion>
     <CodeGen:CodeVersion>
       <CodeGen:DynamicCode hook_ref="1" text="BasicBlock"/>

@@ -68,6 +68,20 @@ bool XAIFBaseParserHelper::hasAssignment() const {
 return (myAssignment_p!=0);
 }
 
+void XAIFBaseParserHelper::setBaseLoop(BaseLoop& whatToSet) {
+if (myBaseLoop_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "BaseLoop" << " item already set");
+myBaseLoop_p=&whatToSet;
+}
+BaseLoop& XAIFBaseParserHelper::getBaseLoop() const {
+if (!myBaseLoop_p)
+THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::get " << "BaseLoop" << " item not set");
+return *myBaseLoop_p;
+}
+bool XAIFBaseParserHelper::hasBaseLoop() const {
+return (myBaseLoop_p!=0);
+}
+
 void XAIFBaseParserHelper::setBasicBlock(BasicBlock& whatToSet) {
 if (myBasicBlock_p)
 THROW_LOGICEXCEPTION_MACRO("XAIFBaseParserHelper" << " ::set " << "BasicBlock" << " item already set");
