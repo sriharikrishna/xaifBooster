@@ -10,9 +10,7 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
-#include "xaifBooster/system/inc/Condition.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
-#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
+#include "xaifBooster/system/inc/BaseLoop.hpp"
 
 namespace xaifBooster { 
 
@@ -20,9 +18,9 @@ namespace xaifBooster {
    * this class describes 
    * a loop with a post condition 
    */
-  class PostLoop : public ControlFlowGraphVertex,
-		   public ObjectWithLineNumber {
-  public:
+  class PostLoop : public BaseLoop {
+
+    public:
 
     PostLoop (){};
 
@@ -48,21 +46,11 @@ namespace xaifBooster {
      */
     static const std::string our_myId_XAIFName;
     
-    Condition& getCondition();
-
-    const Condition& getCondition() const;
 
     virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::POSTLOOP_VKIND;}
 
-  private:
-    
-    /** 
-     * the condition for the postloop
-     */
-    Condition myCondition;
-
   };
  
-} // end of namespace xaifBooster
+}
                                                                      
 #endif

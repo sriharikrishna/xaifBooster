@@ -20,8 +20,8 @@ namespace xaifBooster {
   const std::string ForLoop::our_myId_XAIFName("vertex_id");
 
   ForLoop::ForLoop(const ForLoopReversalType::ForLoopReversalType_E theUserReversalType) : 
-    myInitialization(true),
-    myUpdate(true) { 
+    myInitialization_p(0),
+    myUpdate_p(0) {
     myReversalType=theUserReversalType;
     myControlFlowGraphVertexAlgBase_p=ForLoopAlgFactory::instance()->makeNewAlg(*this);
   }
@@ -50,9 +50,9 @@ namespace xaifBooster {
        << ForLoopReversalType::toString(myReversalType).c_str()
        << "\">" 
        << std::endl;
-    myInitialization.printXMLHierarchy(os);
-    myCondition.printXMLHierarchy(os);
-    myUpdate.printXMLHierarchy(os);
+    getInitialization().printXMLHierarchy(os);
+    getCondition().printXMLHierarchy(os);
+    getUpdate().printXMLHierarchy(os);
     os << pm.indent() 
        << "</"
        << ourXAIFName.c_str() 
@@ -64,35 +64,54 @@ namespace xaifBooster {
   std::string ForLoop::debug () const { 
     std::ostringstream out;
     out << "ForLoop[" << this 
-	<< ControlFlowGraphVertex::debug().c_str()
-	<< ObjectWithLineNumber::debug().c_str()
+	<< BaseLoop::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of ForLoop::debug
 
+  Initialization& ForLoop::makeInitialization() {
+     if (myInitialization_p) {
+       THROW_LOGICEXCEPTION_MACRO("ForLoop::makeInitialization: already set");
+     }
+     myInitialization_p=new Initialization(true);
+     return *myInitialization_p;
+   }
+
   Initialization& ForLoop::getInitialization() { 
-    return myInitialization;
+    if (!myInitialization_p) {
+      THROW_LOGICEXCEPTION_MACRO("ForLoop::getInitialization: not set");
+    }
+    return *myInitialization_p;
   } 
 
   const Initialization& ForLoop::getInitialization() const { 
-    return myInitialization;
+    if (!myInitialization_p) {
+       THROW_LOGICEXCEPTION_MACRO("ForLoop::getInitialization: not set");
+     }
+    return *myInitialization_p;
   } 
 
-  Condition& ForLoop::getCondition() { 
-    return myCondition;
-  } 
+  Update& ForLoop::makeUpdate() {
+     if (myUpdate_p) {
+       THROW_LOGICEXCEPTION_MACRO("ForLoop::makeUpdate: already set");
+     }
+     myUpdate_p=new Update(true);
+     return *myUpdate_p;
+   }
 
-  const Condition& ForLoop::getCondition() const { 
-    return myCondition;
-  } 
+  Update& ForLoop::getUpdate() {
+    if (!myUpdate_p) {
+      THROW_LOGICEXCEPTION_MACRO("ForLoop::getUpdate: not set");
+    }
+    return *myUpdate_p;
+  }
 
-  Update& ForLoop::getUpdate() { 
-    return myUpdate;
-  } 
-
-  const Update& ForLoop::getUpdate() const { 
-    return myUpdate;
-  } 
+  const Update& ForLoop::getUpdate() const {
+    if (!myUpdate_p) {
+       THROW_LOGICEXCEPTION_MACRO("ForLoop::getUpdate: not set");
+     }
+    return *myUpdate_p;
+  }
 
   ForLoopAlgBase&
   ForLoop::getForLoopAlgBase() const {

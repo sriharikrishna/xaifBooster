@@ -11,12 +11,10 @@
 // ========== end copyright notice =====================
 
 #include "xaifBooster/system/inc/Initialization.hpp"
-#include "xaifBooster/system/inc/Condition.hpp"
 #include "xaifBooster/system/inc/Update.hpp"
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
+#include "xaifBooster/system/inc/BaseLoop.hpp"
 #include "xaifBooster/system/inc/ForLoopAlgBase.hpp"
 #include "xaifBooster/system/inc/ForLoopReversalType.hpp"
-#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
 #include "xaifBooster/system/inc/FindDefinitionResult.hpp"
 
 namespace xaifBooster { 
@@ -25,8 +23,8 @@ namespace xaifBooster {
    * this class describes 
    * a for loop
    */
-  class ForLoop : public ControlFlowGraphVertex,
-		  public ObjectWithLineNumber {
+  class ForLoop : public BaseLoop
+  {
   public:
 
     ForLoop(const ForLoopReversalType::ForLoopReversalType_E theUserReversalType);
@@ -53,16 +51,12 @@ namespace xaifBooster {
      */
     static const std::string our_myId_XAIFName;
 
+    Initialization& makeInitialization();
     Initialization& getInitialization();
-
     const Initialization& getInitialization() const;
 
-    Condition& getCondition();
-
-    const Condition& getCondition() const;
-
+    Update& makeUpdate();
     Update& getUpdate();
-
     const Update& getUpdate() const;
 
     /**
@@ -93,19 +87,14 @@ namespace xaifBooster {
      * in the ctor set to active
      * may be passivated in the parser
      */
-    Initialization myInitialization;
-
-    /** 
-     * the condition 
-     */
-    Condition myCondition;
+    Initialization* myInitialization_p;
 
     /** 
      * the update 
      * in the ctor set to active
      * may be passivated in the parser
      */
-    Update myUpdate;
+    Update* myUpdate_p;
 
   };
  

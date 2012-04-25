@@ -371,10 +371,11 @@ namespace xaifBoosterControlFlowReversal {
     supplyAndAddVertexInstance(*aNewReversibleControlFlowGraphVertex_p);
     ForLoop* aNewForLoop_p=new ForLoop(aForLoopReversalType);
     aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*aNewForLoop_p);
-    aNewForLoop_p->getInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
+    aNewForLoop_p->makeInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
 							     +
 							     theOriginalForLoop.getInitialization().getAssignment().getId());
-    aNewForLoop_p->getUpdate().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
+    aNewForLoop_p->makeCondition();
+    aNewForLoop_p->makeUpdate().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
 						     +
 						     theOriginalForLoop.getUpdate().getAssignment().getId());
     aNewReversibleControlFlowGraphVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
@@ -387,12 +388,13 @@ namespace xaifBoosterControlFlowReversal {
     // a preloop is handled by an anonymous FORLOOP
     ForLoop* aNewForLoop_p=new ForLoop(ForLoopReversalType::ANONYMOUS);
     aNewReversibleControlFlowGraphVertex_p->supplyAndAddNewVertex(*aNewForLoop_p);
-    aNewForLoop_p->getInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
+    aNewForLoop_p->makeInitialization().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
 							     +
 							     theOriginalPreLoopId
 							     +
 							     "_init");
-    aNewForLoop_p->getUpdate().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
+    aNewForLoop_p->makeCondition();
+    aNewForLoop_p->makeUpdate().getAssignment().setId(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature()
 						     +
 						     theOriginalPreLoopId
 						     +
@@ -777,7 +779,7 @@ namespace xaifBoosterControlFlowReversal {
     initialPopBlockVertex_p->getNewVertex().setAnnotation(dynamic_cast<const CallGraphAlg&>(ConceptuallyStaticInstances::instance()->getCallGraph().getCallGraphAlgBase()).getAlgorithmSignature());
     const Symbol& thePopSymb=insert_pop_integer(*initialPopBlock_p);
     // set up pre loop condition which is thePopSymb!=0
-    Expression& theConditionExpression=aNewPreLoop_p->getCondition().getExpression();
+    Expression& theConditionExpression=aNewPreLoop_p->makeCondition().getExpression();
     BooleanOperation* notEqualOp_p=new BooleanOperation(BooleanOperationType::NOT_EQUAL_OTYPE,false);
     notEqualOp_p->setId(theConditionExpression.getNextVertexId());
     theConditionExpression.supplyAndAddVertexInstance(*notEqualOp_p);

@@ -26,8 +26,8 @@ namespace xaifBooster {
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewPreLoop_p);
     theNewPreLoop_p->setId(XMLParser::getAttributeValueByName(PreLoop::our_myId_XAIFName));
     theNewPreLoop_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
-    passingOut.setCondition(theNewPreLoop_p->getCondition());
     theNewPreLoop_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    passingOut.setBaseLoop(dynamic_cast<BaseLoop&>(*theNewPreLoop_p));
   }
 
   void 
@@ -38,8 +38,8 @@ namespace xaifBooster {
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewPostLoop_p);
     theNewPostLoop_p->setId(XMLParser::getAttributeValueByName(PostLoop::our_myId_XAIFName));
     theNewPostLoop_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
-    passingOut.setCondition(theNewPostLoop_p->getCondition());
     theNewPostLoop_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    passingOut.setBaseLoop(dynamic_cast<BaseLoop&>(*theNewPostLoop_p));
   }
 
   void 
@@ -50,10 +50,9 @@ namespace xaifBooster {
     theControlFlowGraph.supplyAndAddVertexInstance(*theNewForLoop_p);
     theNewForLoop_p->setId(XMLParser::getAttributeValueByName(ForLoop::our_myId_XAIFName));
     theNewForLoop_p->setLineNumber(StringConversions::convertToUInt(XMLParser::getAttributeValueByName(ObjectWithLineNumber::our_myLineNumber_XAIFName)));
-    passingOut.setInitialization(theNewForLoop_p->getInitialization());
-    passingOut.setCondition(theNewForLoop_p->getCondition());
-    passingOut.setUpdate(theNewForLoop_p->getUpdate());
     theNewForLoop_p->setAnnotation(XMLParser::getAttributeValueByName(ObjectWithAnnotation::our_myAnnotation_XAIFName));
+    passingOut.setBaseLoop(dynamic_cast<BaseLoop&>(*theNewForLoop_p));
+    passingOut.setForLoop(*theNewForLoop_p);
   }
 
   void 
@@ -650,25 +649,30 @@ namespace xaifBooster {
   void 
   XAIFBaseParserHandlers::onInitialization(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onInitialization"); 
-    passingIn.getInitialization().getAssignment().setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
-    passingIn.getInitialization().getAssignment().getDoMapKey().
+    Initialization& theInitialization=passingIn.getForLoop().makeInitialization();
+    theInitialization.getAssignment().setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
+    theInitialization.getAssignment().getDoMapKey().
       setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Assignment::our_myDoMapKey_XAIFName)));
-    passingOut.setAssignment(passingIn.getInitialization().getAssignment());;
+    passingOut.setAssignment(theInitialization.getAssignment());;
   }
 
   void 
   XAIFBaseParserHandlers::onCondition(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
-    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onCondition"); 
-    passingOut.setExpression(passingIn.getCondition().getExpression());;
+    DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onCondition");
+    if (passingIn.hasCondition())
+      passingOut.setExpression(passingIn.getCondition().getExpression());
+    else
+      passingOut.setExpression(passingIn.getBaseLoop().makeCondition().getExpression());
   }
 
   void 
   XAIFBaseParserHandlers::onUpdate(const XAIFBaseParserHelper& passingIn, XAIFBaseParserHelper& passingOut) {
     DBG_MACRO(DbgGroup::CALLSTACK, "in XAIFBaseParserHandlers::onUpdate"); 
-    passingIn.getUpdate().getAssignment().setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
-    passingIn.getUpdate().getAssignment().getDoMapKey().
+    Update& theUpdate=passingIn.getForLoop().makeUpdate();
+    theUpdate.getAssignment().setId(XMLParser::getAttributeValueByName(Assignment::our_myId_XAIFName));
+    theUpdate.getAssignment().getDoMapKey().
       setReference(StringConversions::convertToInt(XMLParser::getAttributeValueByName(Assignment::our_myDoMapKey_XAIFName)));
-    passingOut.setAssignment(passingIn.getUpdate().getAssignment());;
+    passingOut.setAssignment(theUpdate.getAssignment());;
   }
 
   void 
