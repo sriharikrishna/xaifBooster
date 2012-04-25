@@ -33,7 +33,7 @@ namespace xaifBooster {
        << getAnnotation().c_str()
        << "\">" 
        << std::endl;
-    myCondition.printXMLHierarchy(os);
+    getCondition().printXMLHierarchy(os);
     os << pm.indent() 
        << "</"
        << ourXAIFName.c_str() 
@@ -45,16 +45,9 @@ namespace xaifBooster {
   std::string PostLoop::debug () const { 
     std::ostringstream out;
     out << "PostLoop[" << this 
+        << BaseLoop::debug().c_str()
 	<< "]" << std::ends;  
     return out.str();
   } // end of PostLoop::debug
-
-  Condition& PostLoop::getCondition() { 
-    return myCondition;
-  } 
-
-  const Condition& PostLoop::getCondition() const { 
-    return myCondition;
-  } 
 
 } // end of namespace xaifBooster 

@@ -10,10 +10,8 @@
 // level directory of the xaifBooster distribution.
 // ========== end copyright notice =====================
 
-#include "xaifBooster/system/inc/ControlFlowGraphVertex.hpp"
-#include "xaifBooster/system/inc/Condition.hpp"
+#include "xaifBooster/system/inc/BaseLoop.hpp"
 #include "xaifBooster/system/inc/PreLoopAlgBase.hpp"
-#include "xaifBooster/system/inc/ObjectWithLineNumber.hpp"
 
 namespace xaifBooster { 
 
@@ -21,8 +19,7 @@ namespace xaifBooster {
    * this class describes 
    * a preloop
    */
-  class PreLoop : public ControlFlowGraphVertex,
-		  public ObjectWithLineNumber {
+  class PreLoop : public BaseLoop {
   public:
 
     PreLoop ();
@@ -46,23 +43,12 @@ namespace xaifBooster {
 
     static const std::string our_myId_XAIFName;
     
-    Condition& getCondition();
-
-    const Condition& getCondition() const;
-
     /**
      * get algorithm
      */
     PreLoopAlgBase& getPreLoopAlgBase() const;
 
     virtual ControlFlowGraphVertexKind::ControlFlowGraphVertexKind_E getKind() const { return ControlFlowGraphVertexKind::PRELOOP_VKIND;}
-
-  private:
-    
-    /** 
-     * the condition for the preloop
-     */
-    Condition myCondition;
 
   };
  
