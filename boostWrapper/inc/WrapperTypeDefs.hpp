@@ -12,7 +12,7 @@
 
 #define BOOST_NO_HASH // gets rid of hash_set deprecation warnings until boost fixes its code
 #include "boost/graph/adjacency_list.hpp"
-#include "boost/property_map.hpp"         
+#include "boost/property_map/property_map.hpp"         
 
 namespace xaifBooster { 
 
