@@ -140,8 +140,6 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
            ++aConcreteArgumentPListI) {
         DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4 on argument " << (*aConcreteArgumentPListI)->getArgument().getVariable().getVariableSymbolReference().getSymbol().getId().c_str() << " for " << getContainingSubroutineCall().getSymbolReference().getSymbol().getId().c_str() << " which is " << (*aConcreteArgumentPListI)->debug().c_str());
         if ((*aConcreteArgumentPListI)->isArgument()
-            && 
-            (*aConcreteArgumentPListI)->getArgument().getVariable().getActiveType()
             &&
             (*aConcreteArgumentPListI)->getArgument().getVariable().hasArrayAccess()) {
           handleArrayAccessIndices(**aConcreteArgumentPListI); 
