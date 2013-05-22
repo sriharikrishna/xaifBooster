@@ -88,7 +88,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
     for (Expression::VariablePVariableSRPPairList::iterator it=aPushContainer.myVariablesPushed.begin();
         it!=aPushContainer.myVariablesPushed.end();
         ++it) {
-      DBG_MACRO(DbgGroup::DATA, "comparing " << theVariable.debug().c_str() << " to " << ((*it).first)->debug().c_str()); 
+      DBG_MACRO(DbgGroup::DATA, "for call to " << getContainingSubroutineCall().getSymbolReference().getSymbol().getId().c_str()  << " comparing " << theVariable.debug().c_str() << " to " << ((*it).first)->debug().c_str());
       if (theVariable.equivalentTo(*((*it).first))) { 
         pushedAlready=true;
         break;
@@ -138,6 +138,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
       for (SubroutineCall::ConcreteArgumentPList::const_iterator aConcreteArgumentPListI = getContainingSubroutineCall().getConcreteArgumentPList().begin();
            aConcreteArgumentPListI != getContainingSubroutineCall().getConcreteArgumentPList().end();
            ++aConcreteArgumentPListI) {
+        DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::algorithm_action_4 on argument " << (*aConcreteArgumentPListI)->getArgument().getVariable().getVariableSymbolReference().getSymbol().getId().c_str() << " for " << getContainingSubroutineCall().getSymbolReference().getSymbol().getId().c_str() << " which is " << (*aConcreteArgumentPListI)->debug().c_str());
         if ((*aConcreteArgumentPListI)->isArgument()
             && 
             (*aConcreteArgumentPListI)->getArgument().getVariable().getActiveType()
@@ -207,6 +208,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTape {
 
   void SubroutineCallAlg::handleArrayAccessIndices(ConcreteArgument& theConcreteArgument) {
     // get the CallGraphVertexAlg and BasicBlock from the traversal stack
+    DBG_MACRO(DbgGroup::DATA, "xaifBoosterBasicBlockPreaccumulationTape::SubroutineCallAlg::handleArrayAccessIndices on argument " << theConcreteArgument.getArgument().getVariable().getVariableSymbolReference().getSymbol().getId().c_str() << " for " << getContainingSubroutineCall().getSymbolReference().getSymbol().getId().c_str());
     CallGraphVertexAlg& theCallerCallGraphVertexAlg
       (dynamic_cast<CallGraphVertexAlg&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentCallGraphVertexInstance().getCallGraphVertexAlgBase()));
     const BasicBlock& theCallerBasicBlock (dynamic_cast<const BasicBlock&>(ConceptuallyStaticInstances::instance()->getTraversalStack().getCurrentBasicBlockInstance()));
