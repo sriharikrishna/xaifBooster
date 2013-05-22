@@ -117,7 +117,7 @@ namespace xaifBoosterAddressArithmetic {
 	  return;
 	}
 	else { 
-	  // there is some logic flaw here if we don't detcted it anywhere as variable but it is overwritten.
+	  // there is some logic flaw here if we didn't detect it anywhere as variable but it is overwritten.
 	  THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::findUnknownVariablesInArgument: found overwritten argument "
 				     << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str()
 				     << " in "
@@ -266,7 +266,7 @@ namespace xaifBoosterAddressArithmetic {
       }
     } 
     if (!nonValueInquiryUse && !foundIt) {
-      DBG_MACRO(DbgGroup::DATA, "scheduled to be pushed");
+      DBG_MACRO(DbgGroup::DATA, "argument " << anArgument.getVariable().getVariableSymbolReference().getSymbol().plainName().c_str() << " is scheduled to be pushed");
       theUnknownVariables.push_back(UnknownVarInfo(anArgument.getVariable(),
 						   theContainingVertex,
 						   // if it is redefined or has index variables then we need to store it locally.
