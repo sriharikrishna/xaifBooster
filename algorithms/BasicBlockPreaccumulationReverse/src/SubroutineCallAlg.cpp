@@ -52,7 +52,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   
   std::string SubroutineCallAlg::debug () const { 
     std::ostringstream out;
-    out << "xaifBoosterBasicBlockPreaccumulationReverse::SubroutineCallAlg[" << this
+    out << "xaifBoosterBasicBlockPreaccumulationReverse::SubroutineCallAlg[" 
+	<< this
+	<< ", calling "
+ 	<< getContainingSubroutineCall().getSymbolReference().getSymbol().getId().c_str()
  	<< "]" << std::ends;  
     return out.str();
   } // end of SubroutineCallAlg::debug
