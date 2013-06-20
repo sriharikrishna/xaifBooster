@@ -70,12 +70,15 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
   void SubroutineCallAlg::traverseToChildren(const GenericAction::GenericAction_E anAction_c) { 
   } 
 
+  bool SubroutineCallAlg::isExternal() const {
+    return (dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
+    (getContainingSubroutineCall().
+        getSymbolReference().getSymbol().getSymbolAlgBase())).isExternal();
+  }
+
   void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock) { 
-    xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
-						   (getContainingSubroutineCall().
-						    getSymbolReference().getSymbol().getSymbolAlgBase()));
     // we don't do this for external calls: 
-    if(theSymbolAlg.isExternal())
+    if(isExternal())
       return;
     insertYourself(theBasicBlock, ForLoopReversalType::ANONYMOUS);
     insertYourself(theBasicBlock, ForLoopReversalType::EXPLICIT);
@@ -83,11 +86,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
   void SubroutineCallAlg::insertYourself(const BasicBlock& theBasicBlock,
 					 ForLoopReversalType::ForLoopReversalType_E aReversalType) { 
-    xaifBoosterTypeChange::SymbolAlg& theSymbolAlg(dynamic_cast<xaifBoosterTypeChange::SymbolAlg&>
-						      (getContainingSubroutineCall().
-						       getSymbolReference().getSymbol().getSymbolAlgBase()));
     // we don't do this for external calls: 
-    if(theSymbolAlg.isExternal())
+    if(isExternal())
       return;
     BasicBlockAlg& theBasicBlockAlg(dynamic_cast<BasicBlockAlg&>(theBasicBlock.getBasicBlockAlgBase()));
     SubroutineCall& theNewSubroutineCall(theBasicBlockAlg.addSubroutineCall(getContainingSubroutineCall().getSymbolReference().getSymbol(),

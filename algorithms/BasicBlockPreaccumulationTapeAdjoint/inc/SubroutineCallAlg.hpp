@@ -44,6 +44,8 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
 
     virtual void insertYourself(const BasicBlock& theBasicBlock);
 
+    bool isExternal() const;
+
     SubroutineCallAlg& getAdjointCounterPart();
 
     SubroutineCallAlg& getOriginalCounterPart();
@@ -88,7 +90,7 @@ namespace xaifBoosterBasicBlockPreaccumulationTapeAdjoint {
     SubroutineCallAlg* myAdjointCounterpart_p;
 
     /**
-     * set by insertYourself is this the algorithm of the adjoint counterpart of an original instance
+     * set by insertYourself if this is the algorithm of the adjoint counterpart of an original instance
      */
     SubroutineCallAlg* myOriginalCounterpart_p;
 
