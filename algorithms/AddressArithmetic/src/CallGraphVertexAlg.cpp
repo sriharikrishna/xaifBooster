@@ -737,7 +737,7 @@ namespace xaifBoosterAddressArithmetic {
     for(std::set<xaifBoosterBasicBlockPreaccumulationTapeAdjoint::SubroutineCallAlg*>::iterator it=theSubroutineCallAlgSet.begin();
     it!=theSubroutineCallAlgSet.end();
     ++it) {
-      (*it)->getAdjointCounterPart().handleArrayAccessIndices(**it,ForLoopReversalType::EXPLICIT);
+      if (!(*it)->isExternal()) (*it)->getAdjointCounterPart().handleArrayAccessIndices(**it,ForLoopReversalType::EXPLICIT);
     }
   }
 
