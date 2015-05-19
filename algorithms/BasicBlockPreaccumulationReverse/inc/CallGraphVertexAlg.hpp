@@ -103,6 +103,16 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     ControlFlowGraph* myCFGTimeStepRestoreArguments_p;
 
     /**
+     * we own this
+     */
+    ControlFlowGraph* myCFGTimeStepStoreResults_p;
+
+    /**
+     * we own this
+     */
+    ControlFlowGraph* myCFGTimeStepRestoreResults_p;
+
+    /**
      * static memory counter
      */
     MemCounter myMemCounter;
@@ -133,14 +143,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     void handleCheckPointing(const std::string& aSubroutineNameBase,
 			     SideEffectListType::SideEffectListType_E theSideEffectListType,
 			     BasicBlock& theBasicBlock,
-			     bool reverse, MemCounter& count);
+			     bool reverse, MemCounter& count, bool storeDerivatives);
 
     /** 
      * called by handleCheckPointing to deal with one argument
      */
     void handleCheckPoint(const std::string& aSubroutineNameBase,
 			  BasicBlock& theBasicBlock,
-			  const Variable& theVariable, MemCounter& count); 
+			  const Variable& theVariable, MemCounter& count, bool storeDerivatives); 
     /** 
      * add the InlinableSubroutineCall with name  aSubroutineName
      * to theBasicBlock which pushes or pops to/from a Variable 
@@ -149,7 +159,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     void addCheckPointingInlinableSubroutineCall(const std::string& aSubroutineName,
 						 BasicBlock& theBasicBlock,
 						 const Symbol& theSymbol,
-						 const Scope& theScope);
+						 const Scope& theScope, bool storeDerivatives);
 
     /** 
      * used to control the read order for 

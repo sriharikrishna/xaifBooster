@@ -46,7 +46,9 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     myCFGRestoreArguments_p(0),
     myCFGRestoreResults_p(0),
     myCFGTimeStepStoreArguments_p(0),
-    myCFGTimeStepRestoreArguments_p(0) { 
+    myCFGTimeStepRestoreArguments_p(0),
+    myCFGTimeStepStoreResults_p(0),
+    myCFGTimeStepRestoreResults_p(0) { 
   }
 
   CallGraphVertexAlg::~CallGraphVertexAlg() { 
@@ -64,6 +66,10 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
       delete myCFGTimeStepStoreArguments_p;
     if (myCFGTimeStepRestoreArguments_p)
       delete myCFGTimeStepRestoreArguments_p;
+    if (myCFGTimeStepStoreResults_p)
+      delete myCFGTimeStepStoreResults_p;
+    if (myCFGTimeStepRestoreResults_p)
+      delete myCFGTimeStepRestoreResults_p;
   } 
 
   void
@@ -168,6 +174,14 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 							 getContaining().getControlFlowGraph().getSymbolReference().getScope(),
 							 getContaining().getControlFlowGraph().getScope(),
 							 false);
+    myCFGTimeStepStoreResults_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
+                                                     getContaining().getControlFlowGraph().getSymbolReference().getScope(),
+                                                     getContaining().getControlFlowGraph().getScope(),
+                                                     false);
+    myCFGTimeStepRestoreResults_p=new ControlFlowGraph(getContaining().getControlFlowGraph().getSymbolReference().getSymbol(),
+                                                       getContaining().getControlFlowGraph().getSymbolReference().getScope(),
+                                                       getContaining().getControlFlowGraph().getScope(),
+                                                       false);
     ReplacementId theId;
     for (theId.reset();
 	 !theId.atEnd();
@@ -206,7 +220,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 			    SideEffectListType::READ_LIST,
 			    theBasicBlock,
 			    false, 
-			    count);
+			    count,
+                            false);
         if(runtimeCounters) {
 	  xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall("countcheckpoint")));
 	  //add it to the basic block
@@ -240,7 +255,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 			    // if we write checkpoints to files we want 
 			    // to read them in forward order
 			    !ourCheckPointToFilesFlag,
-			    count);	
+			    count,
+                            false);	
 	count.reset();
 	break;
       }
@@ -264,14 +280,16 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 			    SideEffectListType::MOD_LIST,
 			    theBasicBlock,
 			    false, 
-			    count);
+			    count,
+                            false);
 	myTsarg = myTsarg + count;
 	count.reset();
 	handleCheckPointing("cp_arg_store",
 			    SideEffectListType::READ_LOCAL_LIST,
 			    theBasicBlock,
 			    false, 
-			    count);
+			    count,
+                            false);
 	myTsarg = myTsarg + count;
 	count.reset();
 	break;
@@ -284,13 +302,15 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 			      SideEffectListType::MOD_LIST,
 			      theBasicBlock,
 			      false,
-			      count);
+			      count,
+                              false);
 	  count.reset();
 	  handleCheckPointing("cp_arg_restore",
 			      SideEffectListType::READ_LOCAL_LIST,
 			      theBasicBlock,
 			      false,
-			      count);
+			      count,
+                              false);
 	  count.reset();
 	}
 	else { 
@@ -298,16 +318,54 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 			      SideEffectListType::READ_LOCAL_LIST,
 			      theBasicBlock,
 			      true, 
-			      count);
+			      count,
+                              false);
 	  count.reset();
 	  handleCheckPointing("cp_arg_restore",
 			      SideEffectListType::MOD_LIST,
 			      theBasicBlock,
 			      true, 
-			      count);
+			      count,
+                              false);
 	  count.reset();
 	}
 	break;
+      }      
+      case ReplacementId::STORETIMESTEPRESULT: {
+        theReplacement.setControlFlowGraphBase(*myCFGTimeStepStoreResults_p);
+        BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGTimeStepStoreResults_p));
+        handleCheckPointing("cp_arg_store",
+                SideEffectListType::MOD_LIST,
+                theBasicBlock,
+                false,
+                count,
+                true);
+        myTsarg = myTsarg + count;
+        count.reset();
+        break;
+      }
+      case ReplacementId::RESTORETIMESTEPRESULT: {
+          theReplacement.setControlFlowGraphBase(*myCFGTimeStepRestoreResults_p);
+          BasicBlock& theBasicBlock(initCheckPointCFG(*myCFGTimeStepRestoreResults_p));
+          if (ourCheckPointToFilesFlag) {
+            handleCheckPointing("cp_arg_restore",
+                        SideEffectListType::MOD_LIST,
+                        theBasicBlock,
+                        false,
+                        count,
+                        true);
+            count.reset();
+          }
+          else {
+            handleCheckPointing("cp_arg_restore",
+                        SideEffectListType::MOD_LIST,
+                        theBasicBlock,
+                        true,
+                        count,
+                        true);
+            count.reset();
+          }
+          break;
       }
       default: 
 	THROW_LOGICEXCEPTION_MACRO("CallGraphVertexAlg::algorithm_action_4: no handler for ReplacementID  "
@@ -364,7 +422,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   CallGraphVertexAlg::handleCheckPointing(const std::string& aSubroutineNameBase,
 					  SideEffectListType::SideEffectListType_E aSideEffectListType,
 					  BasicBlock& theBasicBlock,
-					  bool reverse, MemCounter &count) { 
+					  bool reverse, MemCounter &count, bool storeDerivatives) { 
     // initialize
     const SideEffectList::VariablePList& 
       theVariablePList(getContaining().
@@ -374,19 +432,23 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
     if (reverse) { 
       for (SideEffectList::VariablePList::const_reverse_iterator i=theVariablePList.rbegin();
 	   i!=theVariablePList.rend();
-	   ++i) { 
-	handleCheckPoint(aSubroutineNameBase,
+	   ++i) {
+        const Variable *aVariable_p = *i;
+        if(!storeDerivatives || (storeDerivatives && aVariable_p->getActiveType()))
+	  handleCheckPoint(aSubroutineNameBase,
 			 theBasicBlock,
-			 **i, count);
+			 **i, count, storeDerivatives);
       } // end for 
     }
     else { 
       for (SideEffectList::VariablePList::const_iterator i=theVariablePList.begin();
 	   i!=theVariablePList.end();
 	   ++i) { 
-	handleCheckPoint(aSubroutineNameBase,
+        const Variable *aVariable_p = *i;
+        if(!storeDerivatives || (storeDerivatives && aVariable_p->getActiveType()))
+	  handleCheckPoint(aSubroutineNameBase,
 			 theBasicBlock,
-			 **i, count);
+			 **i, count, storeDerivatives);
       } // end for 
     }
   } 
@@ -394,7 +456,7 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   void
   CallGraphVertexAlg::handleCheckPoint(const std::string& aSubroutineNameBase,
 				       BasicBlock& theBasicBlock,
-				       const Variable& aVariable, MemCounter &count) { 
+				       const Variable& aVariable, MemCounter &count, bool storeDerivatives) { 
     ControlFlowGraph::FormalResult theResult(getContaining().getControlFlowGraph().hasFormal(aVariable.getVariableSymbolReference()));
     if (theResult.first) { 
       // get the symbol alg
@@ -424,8 +486,8 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
 					    SymbolShape::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolShape()),
 					    theBasicBlock,
 					    aVariable.getVariableSymbolReference().getSymbol(),
-					    aVariable.getVariableSymbolReference().getScope());
-
+					    aVariable.getVariableSymbolReference().getScope(),
+                                            storeDerivatives);
     //strcpy("real", test);
     if(SymbolType::toString(aVariable.getVariableSymbolReference().getSymbol().getSymbolType()).compare("real") == 0)
       {
@@ -460,11 +522,13 @@ namespace xaifBoosterBasicBlockPreaccumulationReverse {
   CallGraphVertexAlg::addCheckPointingInlinableSubroutineCall(const std::string& aSubroutineName,
 							      BasicBlock& theBasicBlock,
 							      const Symbol& theSymbol,
-							      const Scope& theScope) { 
+							      const Scope& theScope, bool storeDerivatives) { 
     std::string  theName(aSubroutineName);
     // a suffix indicating an active argument
     if (theSymbol.getActiveTypeFlag())
       theName.append("_a");
+     if(storeDerivatives) 
+      theName.append("_d");
     // make the new call 
     xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall& aNewCall(*(new xaifBoosterInlinableXMLRepresentation::InlinableSubroutineCall(theName)));
     // add it to the basic block
